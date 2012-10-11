@@ -1,0 +1,455 @@
+#!/bin/bash
+
+set -e
+
+# make.doc.lib
+# ============
+# Author: R.J.Barnes
+#
+# Purpose:
+#
+# Constructs web pages from XML documentation
+#
+# Syntax:
+#
+# make.doc.lib fname
+#
+# Description:
+#
+# Makes documentation for a library.
+#
+# 
+
+############################################################################
+
+############################################################################
+
+# Locate pnmtopng
+
+############################################################################
+
+pnmtopng=${PNMTOPNG}
+
+############################################################################
+
+# Command line options
+
+############################################################################
+
+type="local"
+
+for arg in ${*}
+  do
+    if test "${arg}" = "-w"
+    then
+       type="www"
+    else
+       fname=${arg}
+    fi
+  done
+
+
+############################################################################
+
+# Define working directories
+
+############################################################################
+
+wwwpath="${DOCPATH}/html"
+
+
+if test "${type}" = "www"
+then
+  wwwpath=${WWWPATH}
+  urlbase=${URLBASE}
+fi
+
+TMPFILE=`mktemp -q /tmp/doc.XXXXXX`
+mkdir ${TMPFILE}.d
+chmod a+w ${TMPFILE}.d
+tmp=${TMPFILE}.d
+
+build=${BUILD}/doc
+
+############################################################################
+
+# Configuration files
+
+############################################################################
+
+libcfg="${build}/cfg/lib.cfg.xml"
+
+libsc="${build}/sk/lib.${type}.sk"
+libinxsc="${build}/sk/lib.inx.${type}.sk"
+
+libtagdb="${build}/tagdb/lib.tagdb.xml"
+
+############################################################################
+
+# Define script components
+
+############################################################################
+
+remove="-r FUNCTIONPAGE -r STRUCTPAGE -r UNIONPAGE"
+fnpage="-i STRUCTPAGE -i UNIONPAGE"
+stpage="-i FUNCTIONPAGE -i UNIONPAGE"
+unpage="-i FUNCTIONPAGE -i STRUCTPAGE"
+
+removeinx="-r TOP -r FUNCTIONLIST -r STRUCTHDR -r STRUCTLIST -r UNIONHDR \
+           -r UNIONLIST -r PROTOHDR -r PROTOLIST -r TAIL"
+top="-i FUNCTIONLIST -i STRUCTHDR -i STRUCTLIST -i UNIONHDR \
+     -i UNIONLIST -i PROTOHDR -i PROTOLIST -i TAIL"
+fnlist="-i TOP -i STRUCTHDR -i STRUCTLIST -i UNIONHDR \
+     -i UNIONLIST -i PROTOHDR -i PROTOLIST -i TAIL"
+sthdr="-i TOP -i FUNCTIONLIST -i STRUCTLIST -i UNIONHDR \
+     -i UNIONLIST -i PROTOHDR -i PROTOLIST -i TAIL"
+stlist="-i TOP -i FUNCTIONLIST -i STRUCTHDR -i UNIONHDR \
+     -i UNIONLIST -i PROTOHDR -i PROTOLIST -i TAIL"
+unhdr="-i TOP -i FUNCTIONLIST -i STRUCTLIST -i STRUCTHDR \
+     -i UNIONLIST -i PROTOHDR -i PROTOLIST -i TAIL"
+unlist="-i TOP -i FUNCTIONLIST -i STRUCTHDR -i STRUCTLIST -i UNIONHDR \
+      -i PROTOHDR -i PROTOLIST -i TAIL"
+prhdr="-i TOP -i FUNCTIONLIST -i STRUCTLIST -i STRUCTHDR -i UNIONHDR \
+     -i UNIONLIST -i PROTOLIST -i TAIL"
+prlist="-i TOP -i FUNCTIONLIST -i STRUCTHDR -i STRUCTLIST -i UNIONHDR \
+     -i UNIONLIST -i PROTOHDR -i TAIL"
+tail="-i TOP -i FUNCTIONLIST -i STRUCTHDR -i STRUCTLIST -i UNIONHDR \
+     -i UNIONLIST -i PROTOHDR -i PROTOLIST"
+
+############################################################################
+
+# Define temporary files
+
+############################################################################
+
+#
+# nmexml - a temporary XML file containing the library name.
+#
+
+nmexml="${tmp}/libname.xml"
+tagdb="${tmp}/lib.tagdb.xml"
+
+############################################################################
+
+# Get information
+
+############################################################################
+
+xmlname=${fname##*/}
+
+project=`xmldoc -path "library" -script "<!--PROJECT-->" \
+         -sctype 0 . ${libcfg} ${fname}`
+
+libname=`xmldoc -path "library" -script "<!--NAME-->" \
+         -sctype 0 . ${libcfg} ${fname}`
+
+libloct=`xmldoc -path "library" -script "<!--LOCATION-->" \
+         -sctype 0 . ${libcfg} ${fname}`
+
+flist=`xmldoc -path "library/function" -script "<!--NAME--> " \
+       -sctype 0 . ${libcfg} ${fname}`
+
+slist=`xmldoc -path "library/structure" -script "<!--NAME--> " \
+       -sctype 0 . ${libcfg} ${fname}`
+
+ulist=`xmldoc -path "library/union" -script "<!--NAME--> " \
+       -sctype 0 . ${libcfg} ${fname}`
+
+############################################################################
+
+# Find relative URL
+
+############################################################################
+
+if test "${type}" != "www"
+then
+  relpath=""
+  libpath=${project}/${libloct}/
+  while test ${libpath}
+  do
+    relpath="../"${relpath}
+    libpath=${libpath#*/} 
+  done
+  urlbase=${relpath%/}
+fi
+
+export URLBASE="${urlbase}"
+
+############################################################################
+
+# Build documentation pages
+
+############################################################################
+
+homeurl="${urlbase}/${project}/index.html"
+indexurl="${urlbase}/${project}/src.lib/indexdoc.html"
+
+# 
+# Take apart the location string so that we can build a navigation link
+#
+
+# 
+# Navigation link for function,structure and union definitions
+#
+
+ltree=${libloct}/
+path=""
+str=""
+while test -n "${ltree}"
+  do
+    dir=${ltree%%/*}
+    path=${path}"/"${dir}
+    str=${str}"<td>|</td><td>&lt;a href="
+    str=${str}${urlbase}"/"${project}${path}"/index.html&gt;"
+    str=${str}${dir}"&lt;/a&gt;</td>"
+    ltree=${ltree#*/}
+  done
+
+
+#
+# Navigation link for library home pages
+
+leaf=${libloct##*/}
+ltree=${libloct%/*}/
+path=""
+istr=""
+while test -n "${ltree}"
+  do
+    dir=${ltree%%/*}
+    path=${path}"/"${dir}
+    istr=${istr}"<td>|</td><td>&lt;a href=" 
+    istr=${istr}${urlbase}"/"${project}${path}"/index.html&gt;"
+    istr=${istr}${dir}"&lt;/a&gt;</td>"
+    ltree=${ltree#*/}
+  done
+  istr=${istr}"<td>|</td><td>"${leaf}"</td>"
+
+#
+# Create the temporary XML file containing the library name and
+# the URL of the library index page.
+#
+
+home="&lt;a href="${homeurl}"&gt;"${project}"&lt;/a&gt;"
+index="&lt;a href="${indexurl}"&gt;Index&lt;/a&gt;"
+xml="&lt;a href="${xmlname}"&gt;"${xmlname}"&lt;/a&gt;"
+
+echo "<table>" > ${nmexml}
+echo "<entry>" >> ${nmexml}
+echo "<search>LIBRARY</search>" >> ${nmexml}
+echo "<replace>"${libname}"</replace>" >> ${nmexml}
+echo "</entry>" >> ${nmexml}
+
+echo "<entry>" >> ${nmexml}
+echo "<search>HOME</search>" >> ${nmexml}
+echo "<replace>"${home}"</replace>" >> ${nmexml}
+echo "</entry>" >> ${nmexml}
+
+echo "<entry>" >> ${nmexml}
+echo "<search>PATH</search>" >> ${nmexml}
+echo "<replace>"${str}"</replace>" >> ${nmexml}
+echo "</entry>" >> ${nmexml}
+
+echo "<entry>" >> ${nmexml}
+echo "<search>IPATH</search>" >> ${nmexml}
+echo "<replace>"${istr}"</replace>" >> ${nmexml}
+echo "</entry>" >> ${nmexml}
+
+echo "<entry>" >> ${nmexml}
+echo "<search>INDEX</search>" >> ${nmexml}
+echo "<replace>"${index}"</replace>" >> ${nmexml}
+echo "</entry>" >> ${nmexml}
+
+echo "<entry>" >> ${nmexml}
+echo "<search>URLBASE</search>" >> ${nmexml}
+echo "<replace>${urlbase}</replace>" >> ${nmexml}
+echo "</entry>" >> ${nmexml}
+
+echo "<entry>" >> ${nmexml}
+echo "<search>XML</search>" >> ${nmexml}
+echo "<replace>"${xml}"</replace>" >> ${nmexml}
+echo "</entry>" >> ${nmexml}
+
+echo "</table>" >> ${nmexml}
+
+#
+# copy the tag database
+#
+
+cat ${libtagdb} > ${tagdb}
+
+
+#
+# Each library is installed in a unique directory which contains
+# sub-directories for extra files such as source code and images.
+#
+
+echo "Building directory structure:"
+echo ${wwwpath}/${project}/${libloct}
+
+if test ! -d ${wwwpath}/${project}/${libloct}
+  then 
+    mkdir -p ${wwwpath}/${project}/${libloct}
+  fi
+
+if test ! -d ${wwwpath}/${project}/${libloct}/src
+  then 
+    mkdir -p ${wwwpath}/${project}/${libloct}/src
+  fi
+
+if test ! -d ${wwwpath}/${project}${libloct}/img
+  then 
+    mkdir -p ${wwwpath}/${project}/${libloct}/img
+  fi
+
+
+# Determine if the library has a version number. If it has
+# use the highest version number as the source
+#
+#
+
+
+libpath=${CODEBASE}/${project}/${libloct}
+
+if test ! -d ${libpath}
+then
+  lpath=${libloct%/*}
+  lname=${libloct##*/}
+  llist=`find ${CODEBASE}/${project}/${lpath} -maxdepth 1 -name "${lname}.*" \
+         | sort`
+  libpath=${llist##* }
+fi
+
+#
+# Find the source code for the examples. If there is an RCS
+# directory then check out the code, otherwise copy it into
+# the temporary directory and the web directory
+#
+
+for fn in $flist
+do
+  echo ${libpath}/doc/src/${fn}/${fn}.c
+  if test -s ${libpath}/doc/src/${fn}/${fn}.c
+  then    
+     cat ${libpath}/doc/src/${fn}/${fn}.c > \
+         ${wwwpath}/${project}/${libloct}/src/${fn}.c
+     cat ${libpath}/doc/src/${fn}/${fn}.c > ${tmp}/${fn}.c
+
+  fi
+done
+
+# If image files exist, copy them to the web
+
+if test -d ${libpath}/doc/img
+then 
+  ilist=`find ${libpath}/doc/img -type f`
+  for img in $ilist
+  do
+    fleaf=${img##*/}
+    cat ${img} > ${wwwpath}/${project}/${libloct}/img/${fleaf}
+  done
+fi
+
+#
+# Build the HTML for each function in the library
+#
+
+for fn in $flist
+  do
+    echo "Building:${wwwpath}/${project}/${libloct}/${fn}.html" 
+
+    xmldoc ${remove} ${fnpage} \
+                    -path "library/function" -script ${libsc} \
+                    -sctype 1  ${tmp} ${libcfg} ${fname} ${fn} > \
+                    ${wwwpath}/${project}/${libloct}/${fn}.html
+    
+    chmod a+x ${wwwpath}/${project}/${libloct}/${fn}.html
+   
+    rm -f ${tmp}/${fn}.c
+  done
+
+
+#
+# Build the HTML for each structure in the library
+#
+
+for sn in $slist
+  do
+    echo "Building:${wwwpath}/${project}/${libloct}/struct${sn}.html" 
+    xmldoc ${remove} ${stpage} \
+                   -path "library/structure" -script ${libsc} \
+                    -sctype 1 ${tmp} ${libcfg} ${fname} ${sn} \
+                     > ${wwwpath}/${project}/${libloct}/struct${sn}.html
+    chmod a+x ${wwwpath}/${project}/${libloct}/struct${sn}.html
+  done
+
+
+#
+# Build the HTML for each union in the library
+#
+
+for un in $ulist
+  do
+    echo "Building:${wwwpath}/${libloct}/union${un}.html" 
+    xmldoc ${remove} ${unpage} \
+                    -path "library/union" -script ${libsc} \
+                    -sctype 1 ${tmp} ${libcfg} ${fname} ${un} \
+                     > ${wwwpath}/${project}/${libloct}/union${un}.html
+    chmod a+x ${wwwpath}/${project}/${libloct}/union${un}.html
+  done
+
+#
+# Build the library home page
+#
+
+
+scdoc ${removeinx} ${top} ${nmexml} ${libinxsc} > \
+               ${wwwpath}/${project}/${libloct}/index.html
+
+xmldoc ${removeinx} ${fnlist} -path "library/function" \
+     -script ${libinxsc} -sctype 1  ${tmp} ${libcfg} ${fname} >> \
+     ${wwwpath}/${project}/${libloct}/index.html
+
+scdoc ${removeinx} ${sthdr} ${nmexml} ${libinxsc} >> \
+       ${wwwpath}/${project}/${libloct}/index.html
+
+
+xmldoc ${removeinx} ${stlist} -path "library/structure" \
+      -script ${libinxsc} -sctype 1 ${tmp} ${libcfg} ${fname} >> \
+              ${wwwpath}/${project}/${libloct}/index.html
+
+scdoc ${removeinx} ${unhdr} ${nmexml} ${libinxsc} >> \
+               ${wwwpath}/${project}/${libloct}/index.html
+
+
+xmldoc ${removeinx} ${unlist}  -path "library/union"\
+      -script ${libinxsc} -sctype 1 ${tmp} ${libcfg} ${fname} >> \
+              ${wwwpath}/${project}/${libloct}/index.html
+
+scdoc ${removeinx} ${prhdr} ${nmexml} ${libinxsc} >> \
+               ${wwwpath}/${project}/${libloct}/index.html
+
+
+xmldoc ${removeinx} ${prlist} -path "library/function" \
+        -script ${libinxsc}  -sctype 1 ${tmp} ${libcfg} ${fname} >> \
+           ${wwwpath}/${project}/${libloct}/index.html
+
+scdoc ${removeinx} ${tail} ${nmexml} ${libinxsc} >> \
+              ${wwwpath}/${project}/${libloct}/index.html
+
+chmod a+x ${wwwpath}/${project}/${libloct}/index.html
+
+#
+# Copy the xml version of the documentation
+#
+
+cat ${fname} > ${wwwpath}/${project}/${libloct}/${xmlname}
+
+############################################################################
+
+# Cleanup
+
+############################################################################
+
+rm -fr ${tmp}
+rm -fr ${TMPFILE}
+exit 0

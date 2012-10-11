@@ -1,0 +1,53 @@
+commit 26feffd788355b3bb8ff2485f0f75b48e3545158
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Thu Mar 8 08:50:20 2012 -0500
+
+    Fixed makefile to remove redundant library.
+
+commit eaf92d110ea6b06766531056922fb06d451a211f
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 10:36:28 2010 -0500
+
+    Added .dlm file
+
+commit 82ab3475753ada636121cd2846b0c0ba54e8c740
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 10:27:04 2010 -0500
+
+    Changed destination to /home/code/rst/dlm
+
+commit 41c1d8cf433659ef34f6dd99dd0297c9cd8c1d0d
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 10:24:15 2010 -0500
+
+    Changed destination path.
+
+commit ed59a15195c45cf7cec87b297d0e1fb728844f8b
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Nov 10 18:03:55 2010 -0500
+
+    Cleaned up error trapping
+
+commit b5f2e758697adfd07b5bbfbb91e2023ae1715950
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Nov 10 17:40:41 2010 -0500
+
+    Added more error trapping for scalars.
+
+commit 3420872bcc19beeda988007d587ed0673204d989
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Nov 10 16:25:30 2010 -0500
+
+    Allow for arbitrary arrays to be passed into the conversion function
+
+commit 01e3b5de61bb994954132b55c89cd607ac81eb8f
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Nov 10 15:22:10 2010 -0500
+
+    Added extra error trapping.
+
+commit b392539a1eb904a501c93d55f4f761abda91075f
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Mon Nov 8 13:12:03 2010 -0500
+
+    AACGM DLM.

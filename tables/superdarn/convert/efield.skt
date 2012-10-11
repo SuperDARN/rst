@@ -1,0 +1,273 @@
+#header
+                            CDF NAME: dmapcdf
+                       DATA ENCODING: NETWORK
+                            MAJORITY: ROW
+                              FORMAT: SINGLE
+
+! Variables  G.Attributes  V.Attributes  Records  Dims  Sizes
+! ---------  ------------  ------------  -------  ----  -----
+  13/8           0             0         144/z    0
+
+#GLOBALattributes
+
+#VARIABLEattributes
+
+#variables
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "start_year"    CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "start_month"   CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "start_day"     CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "start_hour"    CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "start_minute"  CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "start_second"  CDF_DOUBLE    1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "end_year"      CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "end_month"     CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "end_day"       CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "end_hour"      CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "end_minute"    CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "end_second"    CDF_DOUBLE    1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "MLT"           CDF_FLOAT     1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+
+#zVariables
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "vector_mlat"   CDF_FLOAT     1         2     180 30     T     T T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "vector_mlon"   CDF_FLOAT     1         2     180 30     T     T T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "vector_E_north" CDF_FLOAT     1         2     180 30     T     T T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "vector_E_east" CDF_FLOAT     1         2     180 30     T     T T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "vector_potential" CDF_FLOAT     1         2     180 30     T     T T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "vector_V_mag"  CDF_FLOAT     1         2     180 30     T     T T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "vector_V_azm"  CDF_FLOAT     1         2     180 30     T     T T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "vector_data"   CDF_INT4      1         2     180 30     T     T T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+#end
+

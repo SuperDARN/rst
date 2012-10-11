@@ -1,0 +1,67 @@
+<head>
+<title>dmapdump</title>
+<link rel=stylesheet href="../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../general/index.html>general</a></td>
+<td>|</td><td><a href=../../../../general/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../general/src.bin/dmap/index.html>dmap</a></td><td>|</td>
+<td>dmapdump</td>
+<td width=100% align=right><a href=../../../../general/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">dmapdump</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+dmapdump --help<br>dmapdump [-d] [<em>name</em>]<br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Dump the contents of a DataMap file.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-d</code></td><td valign="top">print the data values of the array variables.</td></tr>
+<tr><td width="150" valign="top"><code><em>name</em></code></td><td valign="top">filename of the DataMap file, if this is omitted the document will be read from standard input.</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Dump the contents of a DataMap file.</p>
+<p>The contents of the DataMap file are written as plain ASCII to standard output.</p></td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">dmapdump inp.dmap | more</pre></td></tr></table>
+<p>Dump the file "<code>inp.dmap</code>", paginating using the <code>more</code> command.
+</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

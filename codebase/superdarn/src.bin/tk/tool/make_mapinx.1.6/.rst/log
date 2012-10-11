@@ -1,0 +1,23 @@
+commit e7e552663b85754c5564574526f79b8712f05ffe
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:07 2012 -0400
+
+    Updated license
+
+commit 7743bab684b80a73a3f4ce70b2ebd9105f3881ec
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 08:32:39 2010 -0400
+
+    Updated documentation
+
+commit 9c824219829bd6c254664fa82b2fa2a7b0e892a2
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:45:15 2010 -0400
+
+    Fixed makefile
+
+commit 0ea455b246f8d0d3cccdf0fc6b32f0f12ea5ce24
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:06 2010 +0000
+
+    Initial commit

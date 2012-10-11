@@ -1,0 +1,89 @@
+commit ac8fc40cdb2993f60b4f6f2e5f526ea880238c82
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:57 2012 -0400
+
+    Updated license
+
+commit 7bb3438c4ab901e8cd6dced2b6685cac7997e609
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Mar 17 15:44:10 2011 -0400
+
+    Fixed issued with calculating extended lag tables.
+
+commit 25c8546d58185342341fe4c6601e573b69e2f7ef
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Feb 18 14:49:38 2011 -0500
+
+    Fixed issue with parameter name.
+
+commit d5e3df9f607452f4db8d76d61d37a1ea62478829
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Feb 11 09:35:45 2011 -0500
+
+    Force ifmode to be set to -1 to deal with old files without this variable.
+
+commit 409dbfe81839d6807ed3ecfb8a9f0f4ecca1270a
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Mon Dec 6 15:14:29 2010 -0500
+
+    Fixes from the Oregon build
+
+commit 03c7df0c460075463d0c212a5e38e6faca1fe8aa
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Nov 9 16:31:42 2010 -0500
+
+    Fixed bug in freeing memory structure.
+
+commit fc8c51500f6e27434b7f1d2dc8ae64a0d468ea85
+Author: Code Development Account <code@virtual-debian.localdomain>
+Date:   Fri Aug 6 08:31:59 2010 -0400
+
+    Added mplgexs to parameter block.
+
+commit c9b27e68929738f19fc0d0b33f2155e11ec2844c
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Aug 5 14:57:53 2010 -0400
+
+    Added mplgexs variale and possibility of extended.
+
+commit 39b19a386c570512fc6024dba54355441cb528cb
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Fri Jun 11 09:54:48 2010 -0400
+
+    Added flatten and expand functions.
+
+commit 6368858ebe934d9fc30975fca1e8575c69f002fd
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:58:23 2010 -0400
+
+    RST 3 update
+
+commit 661048c8ed09a029a832bd2848fb87ca14024809
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:58:08 2010 -0400
+
+    RST 3 update
+
+commit 667f7c2d374c1003ec2f7b1170d9dbe10d7268f8
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 09:56:32 2010 -0400
+
+    RST3 Update
+
+commit 88797e6338d20b98eb2e89fd0a4eca5063a71be4
+Author: Code Development Account <code@robin-barness-macbook-pro.local>
+Date:   Mon May 10 06:19:54 2010 -0400
+
+    Added tests for invalid start and stop times.
+
+commit 3880deb091640e1fdb240f1dd885d20aab1e7ba1
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Mar 30 15:17:22 2010 -0400
+
+    Fixed documentation.
+
+commit eff0da6584c45cd12b273e56b64dd55e8acf99ad
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:22 2010 +0000
+
+    Initial commit

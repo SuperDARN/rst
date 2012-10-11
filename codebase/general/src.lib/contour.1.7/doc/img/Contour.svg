@@ -1,0 +1,700 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg viewBox="0 0 400 400" version="1.1"
+xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<rect x="0" y="0" width="400" height="400" style="stroke:none; fill:#ffffff;" />
+<image x="0" y="0" width="32" height="32" xlink:href="Contour-1.png" transform="matrix(12.5 0 0 12.5 0 0)" />
+<path d="M 21.1442 86.705 C 16.8221 86.3075 16.8221 86.3075 21.1442 86.705"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 21.1442 86.705 C 25.4663 87.1025 25.4663 87.1025 21.1442 86.705"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 50 93.9125 C 56.25 96.33 64.8938 102.186 67.2876 105.624"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 67.2876 105.624 C 69.6814 109.062 69.6814 116.67 67.2876 120.839"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 67.2876 120.839 C 64.8938 125.009 58.4473 131.259 54.3945 133.339"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 54.3945 133.339 C 50.3418 135.42 40.9668 138.458 35.6445 139.416"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 35.6445 139.416 C 30.3223 140.373 25 141.331 25 141.331"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="7.70026" y="145.79" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.998484 -0.0550506 0.0550506 0.998484 -8.01415 0.644919)">
+15</text>
+<path d="M 7.11198e-07 142.71 C 3.55599e-07 142.71 9.375 129.302 18.75 115.894"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 18.75 115.894 C 28.125 102.485 43.75 91.4949 50 93.9125"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 48.3744 321.498 C 42.9372 319.746 31.25 317.143 25 316.291"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 25 316.291 C 18.75 315.438 24.1872 317.189 35.8744 319.793"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 35.8744 319.793 C 47.5616 322.396 53.8116 323.249 48.3744 321.498"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 66.4338 338.877 C 68.4007 344.438 66.7094 353.125 63.0511 356.25"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 63.0511 356.25 C 59.3928 359.375 51.1759 363.811 46.6173 365.122"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 46.6173 365.122 C 42.0586 366.433 31.25 368.547 25 369.349"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 25 369.349 C 18.75 370.152 25 360.155 37.5 349.354"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 37.5 349.354 C 50 338.554 64.4669 333.315 66.4338 338.877"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 228.414 17.3273 C 232.957 19.741 240.625 23.0511 243.75 23.9475"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 243.75 23.9475 C 246.875 24.844 256.25 26.3776 262.5 27.0147"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 262.5 27.0147 C 268.75 27.6519 281.25 28.2427 287.5 28.1963"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 287.5 28.1963 C 293.75 28.15 306.25 27.3544 312.5 26.6051"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 312.5 26.6051 C 318.75 25.8558 325 25.1065 325 25.1065"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="327.702" y="27.8637" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.942844 -0.333234 0.333234 0.942844 9.44501 110.794)">
+15</text>
+<path d="M 337.5 20.6886 C 337.5 20.6886 341.176 18.6415 344.852 16.5943"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 344.852 16.5943 C 348.527 14.5472 318.984 12.5 285.765 12.5"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 285.765 12.5 C 252.546 12.5 223.87 14.9137 228.414 17.3273"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 230.507 209.56 C 234.003 208.09 243.75 205.224 250 203.828"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 250 203.828 C 256.25 202.433 265.625 200.753 268.75 200.469"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 268.75 200.469 C 271.875 200.185 280.667 199.926 286.334 199.95"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 286.334 199.95 C 292.001 199.975 301.376 200.387 305.084 200.774"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 305.084 200.774 C 308.792 201.161 312.5 201.549 312.5 201.549"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="319.294" y="206.878" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.969443 0.245316 -0.245316 0.969443 60.5071 -72.0064)">
+15</text>
+<path d="M 337.5 207.875 C 337.5 207.875 340.625 209.599 343.75 211.323"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 343.75 211.323 C 346.875 213.047 351.26 220.454 352.521 226.136"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 352.521 226.136 C 353.781 231.818 350.669 240.625 346.296 243.75"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 346.296 243.75 C 341.924 246.875 334.413 250.804 331.276 251.608"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 331.276 251.608 C 328.138 252.412 325 253.216 325 253.216"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="308" y="258.985" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.991445 -0.130522 0.130522 0.991445 -31.1683 42.4164)">
+15</text>
+<path d="M 300 256.508 C 300 256.508 293.75 256.559 287.5 256.609"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 287.5 256.609 C 281.25 256.66 268.75 256.012 262.5 255.312"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 262.5 255.312 C 256.25 254.612 246.033 252.934 242.067 251.956"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 242.067 251.956 C 238.1 250.978 229.692 246.875 225.251 243.75"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 225.251 243.75 C 220.809 240.625 216.368 237.5 216.368 237.5"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="221.932" y="230.769" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.274802 -0.961501 0.961501 0.274802 -60.94 380.741)">
+15</text>
+<path d="M 223.513 212.5 C 223.513 212.5 227.01 211.03 230.507 209.56"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 44.0716 74.33 C 40.7858 73.995 31.25 73.3444 25 73.0289"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 25 73.0289 C 18.75 72.7133 22.0358 73.0483 31.5716 73.6989"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 31.5716 73.6989 C 41.1075 74.3494 47.3575 74.665 44.0716 74.33"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 75 81.3583 C 81.25 83.4694 90.625 88.4542 93.75 91.3278"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 93.75 91.3278 C 96.875 94.2015 101.323 100.931 102.647 104.788"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 102.647 104.788 C 103.97 108.644 103.97 117.167 102.647 121.834"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 102.647 121.834 C 101.323 126.501 96.875 134.059 93.75 136.95"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 93.75 136.95 C 90.625 139.841 83.009 144.549 78.5181 146.366"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 78.5181 146.366 C 74.0271 148.183 69.5361 150 69.5361 150"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="53.9773" y="156.307" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.984706 -0.174227 0.174227 0.984706 -26.4074 11.7949)">
+30</text>
+<path d="M 50 153.457 C 50 153.457 43.75 153.992 37.5 154.527"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 37.5 154.527 C 31.25 155.062 18.75 155.753 12.5 155.909"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 12.5 155.909 C 6.25 156.065 15.625 136.45 31.25 116.678"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 31.25 116.678 C 46.875 96.9072 68.75 79.2471 75 81.3583"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 73.6076 309.166 C 68.0538 307.499 56.25 304.957 50 304.082"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 50 304.082 C 43.75 303.207 31.25 301.978 25 301.623"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 25 301.623 C 18.75 301.269 30.5538 303.811 48.6076 306.707"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 48.6076 306.707 C 66.6614 309.604 79.1614 310.833 73.6076 309.166"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 93.7715 319.582 C 96.9073 322.291 101.174 331.25 102.304 337.5"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 102.304 337.5 C 103.435 343.75 103.096 353.125 101.627 356.25"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 101.627 356.25 C 100.158 359.375 94.1763 365.625 89.6639 368.75"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 89.6639 368.75 C 85.1515 371.875 76.1044 376.228 71.5696 377.457"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 71.5696 377.457 C 67.0348 378.685 56.25 380.763 50 381.612"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 50 381.612 C 43.75 382.461 37.5 383.311 37.5 383.311"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="18.7024" y="387.852" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.998486 -0.0550139 0.0550139 0.998486 -21.3089 1.61611)">
+30</text>
+<path d="M 12.5 384.688 C 12.5 384.688 31.25 367.057 50 349.426"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 50 349.426 C 68.75 331.795 90.6358 316.873 93.7715 319.582"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 187.65 18.75 C 190.049 21.875 197.46 27.3643 202.473 29.7286"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 202.473 29.7286 C 207.487 32.0929 215.625 35.2644 218.75 36.0717"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 218.75 36.0717 C 221.875 36.879 231.25 38.4346 237.5 39.1829"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 237.5 39.1829 C 243.75 39.9313 256.25 40.9751 262.5 41.2706"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 262.5 41.2706 C 268.75 41.566 281.25 41.84 287.5 41.8186"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 287.5 41.8186 C 293.75 41.7971 300 41.7756 300 41.7756"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="306.204" y="44.936" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.998458 -0.0555126 0.0555126 0.998458 -2.02236 17.0675)">
+30</text>
+<path d="M 325 40.3856 C 325 40.3856 330.576 39.6642 336.152 38.9428"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 336.152 38.9428 C 341.728 38.2214 351.103 36.4369 354.902 35.3738"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 354.902 35.3738 C 358.701 34.3107 366.625 31.1857 370.749 29.1238"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 370.749 29.1238 C 374.874 27.0619 381.149 21.875 383.299 18.75"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 383.299 18.75 C 385.45 15.625 387.601 12.5 387.601 12.5"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="278.727" y="16" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(1 8.74228e-08 -8.74228e-08 1 1.39876e-06 -2.43671e-05)">
+30</text>
+<path d="M 357.601 12.5 C 270.227 12.5 185.252 15.625 187.65 18.75"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 191.121 206.25 C 194.374 203.125 201.345 198.547 205.063 197.094"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 205.063 197.094 C 208.782 195.641 218.75 192.919 225 191.651"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 225 191.651 C 231.25 190.382 241.459 188.71 245.419 188.307"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 245.419 188.307 C 249.378 187.903 258.753 187.265 264.169 187.03"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 264.169 187.03 C 269.584 186.796 281.25 186.581 287.5 186.602"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 287.5 186.602 C 293.75 186.623 300 186.644 300 186.644"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="302.33" y="190.259" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.998868 0.0475624 -0.0475624 0.998868 9.39142 -14.1642)">
+30</text>
+<path d="M 317.979 187.5 C 317.979 187.5 322.859 188.03 327.739 188.559"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 327.739 188.559 C 332.62 189.089 343.75 191.041 350 192.463"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 350 192.463 C 356.25 193.886 365.625 196.686 368.75 198.063"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 368.75 198.063 C 371.875 199.44 378.125 204.169 381.25 207.521"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 381.25 207.521 C 384.375 210.873 387.5 214.225 387.5 214.225"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="384.046" y="219.394" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.00899227 0.99996 -0.99996 0.00899227 599.978 -166.609)">
+30</text>
+<path d="M 387.709 237.5 C 387.709 237.5 386.486 240.625 385.262 243.75"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 385.262 243.75 C 384.038 246.875 377.736 253.039 372.657 256.078"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 372.657 256.078 C 367.579 259.117 359.375 262.955 356.25 263.754"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 356.25 263.754 C 353.125 264.552 343.75 266.227 337.5 267.102"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 337.5 267.102 C 331.25 267.978 325 268.854 325 268.854"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="306.214" y="273.451" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.998318 -0.0579763 0.0579763 0.998318 -15.3386 18.2131)">
+30</text>
+<path d="M 300 270.306 C 300 270.306 293.75 270.328 287.5 270.35"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 287.5 270.35 C 281.25 270.373 268.75 270.087 262.5 269.778"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 262.5 269.778 C 256.25 269.469 243.75 268.379 237.5 267.597"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 237.5 267.597 C 231.25 266.816 221.234 265.151 217.468 264.267"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 217.468 264.267 C 213.701 263.384 209.935 262.5 209.935 262.5"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="191.859" y="255.993" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.86344 0.504451 -0.504451 0.86344 155.336 -61.825)">
+30</text>
+<path d="M 188.54 250 C 188.54 250 186.807 246.875 185.074 243.75"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 185.074 243.75 C 183.342 240.625 182.361 231.25 183.112 225"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 183.112 225 C 183.864 218.75 187.868 209.375 191.121 206.25"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 62.3195 61.9616 C 56.1597 61.6923 43.75 61.3008 37.5 61.1785"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 37.5 61.1785 C 31.25 61.0561 18.75 60.8981 12.5 60.8624"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 12.5 60.8624 C 6.25 60.8268 18.6597 61.2183 37.3195 61.6456"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 37.3195 61.6456 C 55.9792 62.0728 68.4792 62.2308 62.3195 61.9616"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 87.5 63.927 C 93.75 64.6291 105.848 67.7485 111.696 70.1657"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 111.696 70.1657 C 117.544 72.5828 125.174 78.125 126.955 81.25"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 126.955 81.25 C 128.736 84.375 131.317 93.75 132.116 100"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 132.116 100 C 132.915 106.25 133.155 118.75 132.596 125"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 132.596 125 C 132.037 131.25 129.858 141.055 128.239 144.609"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 128.239 144.609 C 126.619 148.164 119.799 154.414 114.599 157.109"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 114.599 157.109 C 109.398 159.805 104.198 162.5 104.198 162.5"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="89.9377" y="168.17" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.989012 -0.147838 0.147838 0.989012 -23.8737 15.1441)">
+45</text>
+<path d="M 87.5 164.996 C 87.5 164.996 81.25 165.413 75 165.83"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 75 165.83 C 68.75 166.248 56.25 166.85 50 167.035"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 50 167.035 C 43.75 167.221 31.25 167.481 25 167.556"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 25 167.556 C 18.75 167.631 28.125 141.41 43.75 115.114"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 43.75 115.114 C 59.375 88.8186 81.25 63.2248 87.5 63.927"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 109.377 296.957 C 104.689 295.436 93.75 293.231 87.5 292.548"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 87.5 292.548 C 81.25 291.865 68.75 290.9 62.5 290.619"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 62.5 290.619 C 56.25 290.337 43.75 289.931 37.5 289.805"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 37.5 289.805 C 31.25 289.68 18.75 289.518 12.5 289.481"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 12.5 289.481 C 6.25 289.445 29.6886 292.056 59.3772 294.704"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 59.3772 294.704 C 89.0659 297.352 114.066 298.479 109.377 296.957"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 128.749 315.31 C 130.623 320.155 132.759 331.25 133.022 337.5"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 133.022 337.5 C 133.284 343.75 132.269 356.25 130.992 362.5"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 130.992 362.5 C 129.715 368.75 125.179 378.125 121.921 381.25"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 121.921 381.25 C 118.663 384.375 111.553 387.773 107.702 388.045"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 107.702 388.045 C 103.851 388.318 93.75 388.761 87.5 388.931"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 87.5 388.931 C 81.25 389.102 68.75 389.343 62.5 389.413"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 62.5 389.413 C 56.25 389.483 50 389.553 50 389.553"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="31.0176" y="393.148" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.999987 -0.00500525 0.00500525 0.999987 -1.9674 0.160359)">
+45</text>
+<path d="M 25 389.678 C 25 389.678 18.75 389.688 12.5 389.697"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 12.5 389.697 C 6.25 389.706 31.25 368.691 62.5 347.668"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 62.5 347.668 C 93.75 326.644 126.874 310.466 128.749 315.31"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 156.616 25 C 158.647 31.25 164.259 39.7059 167.839 41.9117"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 167.839 41.9117 C 171.42 44.1176 179.231 47.2426 183.462 48.1617"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 183.462 48.1617 C 187.693 49.0809 197.068 50.4645 202.212 50.929"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 202.212 50.929 C 207.356 51.3935 218.75 52.1174 225 52.3768"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 225 52.3768 C 231.25 52.6361 243.75 53.0104 250 53.1252"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 250 53.1252 C 256.25 53.24 268.75 53.3853 275 53.4158"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 275 53.4158 C 281.25 53.4462 287.5 53.4766 287.5 53.4766"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="293.523" y="56.9372" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.999979 -0.00655346 0.00655346 0.999979 -0.366977 1.92479)">
+45</text>
+<path d="M 312.5 53.3128 C 312.5 53.3128 318.75 53.1827 325 53.0525"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 325 53.0525 C 331.25 52.9224 343.75 52.5014 350 52.2106"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 350 52.2106 C 356.25 51.9198 366.752 51.2217 371.005 50.8145"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 371.005 50.8145 C 375.257 50.4072 382.033 46.875 384.557 43.75"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 384.557 43.75 C 387.081 40.625 389.605 37.5 389.605 37.5"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="393.288" y="31.6045" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.0307233 -0.999528 0.999528 0.0307233 349.615 423.736)">
+45</text>
+<path d="M 390.373 12.5 C 390.373 12.5 330.918 12.5 271.463 12.5"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 271.463 12.5 C 212.008 12.5 154.585 18.75 156.616 25"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 160.075 193.75 C 162.216 190.625 170.143 185.457 175.928 183.414"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 175.928 183.414 C 181.714 181.372 193.75 178.685 200 178.042"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 200 178.042 C 206.25 177.398 218.75 176.486 225 176.217"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 225 176.217 C 231.25 175.948 243.75 175.56 250 175.44"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 250 175.44 C 256.25 175.321 268.75 175.171 275 175.139"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 275 175.139 C 281.25 175.108 293.75 175.118 300 175.161"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 300 175.161 C 306.25 175.203 312.5 175.246 312.5 175.246"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="318.426" y="178.875" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.999767 0.021593 -0.021593 0.999767 3.93664 -6.8341)">
+45</text>
+<path d="M 337.5 175.786 C 337.5 175.786 343.75 176.088 350 176.389"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 350 176.389 C 356.25 176.691 368.75 177.738 375 178.483"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 375 178.483 C 381.25 179.229 388.142 184.98 388.784 189.987"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 388.784 189.987 C 389.425 194.993 390.156 206.25 390.245 212.5"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 390.245 212.5 C 390.334 218.75 390.423 225 390.423 225"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="393.792" y="244.024" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.00688638 -0.999976 0.999976 0.00688638 147.062 636.126)">
+45</text>
+<path d="M 390.251 250 C 390.251 250 389.763 256.25 389.276 262.5"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 389.276 262.5 C 388.788 268.75 384.975 276.016 381.65 277.031"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 381.65 277.031 C 378.325 278.047 368.75 279.509 362.5 279.956"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 362.5 279.956 C 356.25 280.402 343.75 281.046 337.5 281.243"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 337.5 281.243 C 331.25 281.44 325 281.637 325 281.637"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="306.046" y="285.384" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.999915 -0.0130658 0.0130658 0.999915 -3.70276 4.02299)">
+45</text>
+<path d="M 300 281.963 C 300 281.963 293.75 281.968 287.5 281.973"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 287.5 281.973 C 281.25 281.978 268.75 281.914 262.5 281.845"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 262.5 281.845 C 256.25 281.775 243.75 281.53 237.5 281.354"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 237.5 281.354 C 231.25 281.178 218.75 280.608 212.5 280.214"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 212.5 280.214 C 206.25 279.82 200 279.426 200 279.426"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="180.494" y="279.565" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.985027 0.172403 -0.172403 0.985027 50.9004 -26.9318)">
+45</text>
+<path d="M 175 275.05 C 175 275.05 171.875 273.233 168.75 271.417"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 168.75 271.417 C 165.625 269.6 160.337 263.337 158.174 258.892"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 158.174 258.892 C 156.01 254.446 153.392 243.75 152.937 237.5"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 152.937 237.5 C 152.482 231.25 152.968 218.75 153.91 212.5"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 153.91 212.5 C 154.852 206.25 157.934 196.875 160.075 193.75"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 80.5748 273.783 C 84.0374 273.174 93.5494 270.049 99.5989 267.533"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 99.5989 267.533 C 105.648 265.016 113.952 259.375 116.206 256.25"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 116.206 256.25 C 118.46 253.125 121.647 243.75 122.58 237.5"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 122.58 237.5 C 123.513 231.25 122.515 218.75 120.585 212.5"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 120.585 212.5 C 118.654 206.25 112.543 197.02 108.362 194.04"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 108.362 194.04 C 104.181 191.06 96.875 187.198 93.75 186.315"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 93.75 186.315 C 90.625 185.433 81.25 183.686 75 182.823"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 75 182.823 C 68.75 181.96 62.5 181.096 62.5 181.096"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="43.2979" y="183.425" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.998124 0.0612325 -0.0612325 0.998124 11.3128 -2.30713)">
+60</text>
+<path d="M 37.5 179.562 C 37.5 179.562 31.25 179.407 25 179.252"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 25 179.252 C 18.75 179.096 27.7874 202.955 43.0748 226.97"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 43.0748 226.97 C 58.3622 250.985 77.1122 274.391 80.5748 273.783"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 50 276.907 C 43.75 277.279 31.25 277.803 25 277.954"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 25 277.954 C 18.75 278.105 25 277.732 37.5 277.209"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 37.5 277.209 C 50 276.686 56.25 276.535 50 276.907"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 112.712 31.25 C 115.855 28.125 120.383 18.75 121.768 12.5"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 121.768 12.5 C 123.152 6.25 120.009 9.375 115.482 18.75"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 115.482 18.75 C 110.954 28.125 109.569 34.375 112.712 31.25"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 87.5 43.241 C 81.25 44.6702 68.75 46.6879 62.5 47.2763"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 62.5 47.2763 C 56.25 47.8648 43.75 48.7154 37.5 48.9776"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 37.5 48.9776 C 31.25 49.2397 18.75 49.5783 12.5 49.6548"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 12.5 49.6548 C 6.25 49.7312 25 47.4513 50 45.0951"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 50 45.0951 C 75 42.7388 93.75 41.8117 87.5 43.241"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 161.956 106.25 C 162.331 103.125 165.779 94.984 168.853 89.968"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 168.853 89.968 C 171.926 84.952 178.125 78.2484 181.25 76.5608"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 181.25 76.5608 C 184.375 74.8732 193.75 71.8794 200 70.5732"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 200 70.5732 C 206.25 69.267 218.75 67.4146 225 66.8684"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 225 66.8684 C 231.25 66.3222 243.75 65.5343 250 65.2924"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 250 65.2924 C 256.25 65.0506 268.75 64.7447 275 64.6806"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 275 64.6806 C 281.25 64.6165 293.75 64.6387 300 64.7249"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 300 64.7249 C 306.25 64.8112 312.5 64.8974 312.5 64.8974"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="318.353" y="68.6574" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.99904 0.0438013 -0.0438013 0.99904 3.3129 -13.8784)">
+60</text>
+<path d="M 337.5 65.9935 C 337.5 65.9935 343.75 66.6059 350 67.2183"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 350 67.2183 C 356.25 67.8306 368.75 69.9561 375 71.4691"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 375 71.4691 C 381.25 72.9822 387.862 77.7464 388.224 80.9976"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 388.224 80.9976 C 388.587 84.2488 389.1 93.75 389.252 100"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 389.252 100 C 389.404 106.25 389.555 112.5 389.555 112.5"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="392.732" y="131.558" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.0169701 -0.999856 0.999856 0.0169701 254.528 522.001)">
+60</text>
+<path d="M 389.131 137.5 C 389.131 137.5 388.723 141.598 388.315 145.695"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 388.315 145.695 C 387.908 149.793 381.25 155.462 375 157.033"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 375 157.033 C 368.75 158.605 356.98 160.757 351.46 161.338"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 351.46 161.338 C 345.939 161.919 336.564 162.708 332.71 162.917"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 332.71 162.917 C 328.855 163.125 325 163.334 325 163.334"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="306.093" y="167.327" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.999662 -0.025998 0.025998 0.999662 -4.2467 8.01437)">
+60</text>
+<path d="M 300 163.984 C 300 163.984 293.75 163.994 287.5 164.004"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 287.5 164.004 C 281.25 164.014 268.75 163.886 262.5 163.748"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 262.5 163.748 C 256.25 163.61 245.276 163.229 240.551 162.986"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 240.551 162.986 C 235.827 162.743 226.452 162.044 221.801 161.589"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 221.801 161.589 C 217.151 161.133 212.5 160.677 212.5 160.677"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="192.905" y="160.005" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.977242 0.212128 -0.212128 0.977242 38.3317 -37.2792)">
+60</text>
+<path d="M 187.5 155.25 C 187.5 155.25 184.375 153.657 181.25 152.063"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 181.25 152.063 C 178.125 150.47 171.875 143.389 168.75 137.902"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 168.75 137.902 C 165.625 132.415 162.176 123.321 161.853 119.714"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 161.853 119.714 C 161.529 116.107 161.581 109.375 161.956 106.25"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 162.534 331.25 C 163.108 328.125 166.512 320.861 169.341 316.722"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 169.341 316.722 C 172.171 312.583 179.5 306.333 184.001 304.222"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 184.001 304.222 C 188.501 302.111 197.876 299.118 202.751 298.237"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 202.751 298.237 C 207.625 297.355 218.75 295.942 225 295.41"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 225 295.41 C 231.25 294.879 243.75 294.112 250 293.877"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 250 293.877 C 256.25 293.641 268.75 293.344 275 293.281"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 275 293.281 C 281.25 293.219 293.75 293.241 300 293.324"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 300 293.324 C 306.25 293.408 312.5 293.492 312.5 293.492"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="318.357" y="297.245" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.999091 0.0426287 -0.0426287 0.999091 12.9605 -13.301)">
+60</text>
+<path d="M 337.5 294.559 C 337.5 294.559 343.75 295.155 350 295.751"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 350 295.751 C 356.25 296.347 366.489 297.707 370.478 298.471"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 370.478 298.471 C 374.467 299.236 381.018 303.125 383.581 306.25"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 383.581 306.25 C 386.144 309.375 388.914 318.75 389.122 325"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 389.122 325 C 389.33 331.25 389.538 337.5 389.538 337.5"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="392.833" y="356.537" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.0107845 -0.999942 0.999942 0.0107845 32.0802 745.502)">
+60</text>
+<path d="M 389.269 362.5 C 389.269 362.5 388.826 367.475 388.384 372.45"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 388.384 372.45 C 387.942 377.425 383.28 383.675 379.059 384.95"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 379.059 384.95 C 374.839 386.225 365.464 387.673 360.309 387.845"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 360.309 387.845 C 355.155 388.018 343.75 388.291 337.5 388.391"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 337.5 388.391 C 331.25 388.491 325 388.591 325 388.591"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="306.023" y="392.217" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.999978 -0.00663315 0.00663315 0.999978 -2.5949 2.03852)">
+60</text>
+<path d="M 300 388.757 C 300 388.757 293.75 388.759 287.5 388.762"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 287.5 388.762 C 281.25 388.764 268.75 388.732 262.5 388.696"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 262.5 388.696 C 256.25 388.661 243.75 388.537 237.5 388.447"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 237.5 388.447 C 231.25 388.358 218.925 388.077 212.849 387.884"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 212.849 387.884 C 206.774 387.692 200.698 387.5 200.698 387.5"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="186.899" y="387.294" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.963418 0.268002 -0.268002 0.963418 110.633 -35.9213)">
+60</text>
+<path d="M 187.5 383.829 C 187.5 383.829 183.643 381.621 179.787 379.414"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 179.787 379.414 C 175.93 377.207 169.68 369.958 167.287 364.915"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 167.287 364.915 C 164.893 359.873 162.221 350.498 161.942 346.165"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 161.942 346.165 C 161.664 341.833 161.959 334.375 162.534 331.25"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 29.0018 36.7363 C 33.2509 36.3544 43.75 34.7525 50 33.5325"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 50 33.5325 C 56.25 32.3124 66.5589 29.5693 70.6177 28.0462"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 70.6177 28.0462 C 74.6766 26.5231 82.0075 21.875 85.2795 18.75"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 85.2795 18.75 C 88.5516 15.625 73.9936 18.75 56.1636 25"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 56.1636 25 C 38.3336 31.25 24.7527 37.1181 29.0018 36.7363"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 63.5431 258.765 C 69.2716 256.898 78.125 252.803 81.25 250.576"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 81.25 250.576 C 84.375 248.35 89.3403 240.842 91.1805 235.561"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 91.1805 235.561 C 93.0208 230.281 93.0208 221.406 91.1805 217.812"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 91.1805 217.812 C 89.3403 214.218 83.4361 207.968 79.3721 205.312"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 79.3721 205.312 C 75.3082 202.656 65.9332 198.651 60.6221 197.302"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 60.6221 197.302 C 55.3111 195.952 43.75 193.855 37.5 193.107"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 37.5 193.107 C 31.25 192.359 18.75 191.393 12.5 191.175"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 12.5 191.175 C 6.25 190.957 13.0216 208.68 26.0431 226.62"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 26.0431 226.62 C 39.0647 244.56 57.8147 260.633 63.5431 258.765"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 37.5 264.249 C 31.25 264.934 18.75 265.818 12.5 266.018"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 12.5 266.018 C 6.25 266.217 12.5 265.533 25 264.648"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 25 264.648 C 37.5 263.764 43.75 263.565 37.5 264.249"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 202.663 93.75 C 206.497 90.625 213.998 86.2912 217.665 85.0825"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 217.665 85.0825 C 221.333 83.8737 231.25 81.5579 237.5 80.4509"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 237.5 80.4509 C 243.75 79.3438 256.25 77.7997 262.5 77.3625"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 262.5 77.3625 C 268.75 76.9254 281.25 76.5201 287.5 76.5518"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 287.5 76.5518 C 293.75 76.5836 306.25 77.1295 312.5 77.6436"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 312.5 77.6436 C 318.75 78.1576 331.25 79.9118 337.5 81.1519"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 337.5 81.1519 C 343.75 82.392 353.125 84.8003 356.25 85.9684"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 356.25 85.9684 C 359.375 87.1365 366.002 91.2285 369.504 94.1523"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 369.504 94.1523 C 373.006 97.0761 376.508 100 376.508 100"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="373.491" y="106.294" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.0782137 0.996937 -0.996937 0.0782137 450.247 -274.367)">
+75</text>
+<path d="M 378.469 125 C 378.469 125 375.677 128.125 372.885 131.25"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 372.885 131.25 C 370.094 134.375 362.976 139.338 358.651 141.176"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 358.651 141.176 C 354.325 143.015 344.137 146.14 338.274 147.426"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 338.274 147.426 C 332.411 148.713 323.036 150.331 319.524 150.661"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 319.524 150.661 C 316.012 150.992 312.5 151.322 312.5 151.322"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="293.63" y="155.501" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.999359 -0.0358106 0.0358106 0.999359 -5.38037 10.6147)">
+75</text>
+<path d="M 287.5 152.218 C 287.5 152.218 281.25 152.052 275 151.885"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 275 151.885 C 268.75 151.719 258.153 151.164 253.807 150.776"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 253.807 150.776 C 249.46 150.388 240.085 148.976 235.057 147.953"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 235.057 147.953 C 230.028 146.929 219.78 143.804 214.561 141.703"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 214.561 141.703 C 209.341 139.601 204.121 137.5 204.121 137.5"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="191.618" y="128.724" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.665096 0.746758 -0.746758 0.665096 160.299 -99.9821)">
+75</text>
+<path d="M 192.988 125 C 192.988 125 193.49 118.75 193.992 112.5"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 193.992 112.5 C 194.494 106.25 198.83 96.875 202.663 93.75"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 205.131 320.231 C 208.815 317.847 215.625 314.344 218.75 313.227"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 218.75 313.227 C 221.875 312.109 231.25 309.958 237.5 308.925"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 237.5 308.925 C 243.75 307.892 256.25 306.451 262.5 306.043"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 262.5 306.043 C 268.75 305.635 281.25 305.257 287.5 305.287"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 287.5 305.287 C 293.75 305.316 306.25 305.826 312.5 306.305"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 312.5 306.305 C 318.75 306.785 331.25 308.422 337.5 309.579"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 337.5 309.579 C 343.75 310.736 353.125 313.251 356.25 314.608"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 356.25 314.608 C 359.375 315.966 365.625 319.768 368.75 322.214"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 368.75 322.214 C 371.875 324.659 375 327.104 375 327.104"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="372.641" y="332.909" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.205258 0.978708 -0.978708 0.205258 621.974 -100.13)">
+75</text>
+<path d="M 379.802 350 C 379.802 350 377.814 353.125 375.827 356.25"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 375.827 356.25 C 373.84 359.375 366.389 365.301 360.926 368.102"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 360.926 368.102 C 355.463 370.903 346.875 374.456 343.75 375.208"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 343.75 375.208 C 340.625 375.959 331.25 377.459 325 378.206"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 325 378.206 C 318.75 378.954 312.5 379.701 312.5 379.701"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="293.636" y="383.914" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.999292 -0.037623 0.037623 0.999292 -14.2361 11.3193)">
+75</text>
+<path d="M 287.5 380.643 C 287.5 380.643 281.25 380.468 275 380.293"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 275 380.293 C 268.75 380.118 256.25 379.283 250 378.624"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 250 378.624 C 243.75 377.964 234.375 376.696 231.25 376.088"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 231.25 376.088 C 228.125 375.48 218.75 371.878 212.5 368.884"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 212.5 368.884 C 206.25 365.89 200 362.896 200 362.896"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<text x="189.336" y="352.903" style=" stroke:none; fill: #000000; font-family:sans-serif; font-size:10;" transform="matrix(0.544692 0.838636 -0.838636 0.544692 382.163 1.89559)">
+75</text>
+<path d="M 191.624 350 C 191.624 350 193.158 343.75 194.693 337.5"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+<path d="M 194.693 337.5 C 196.227 331.25 201.446 322.616 205.131 320.231"
+ style=" fill:none; stroke: #000000; stroke-width:0.5;" />
+</svg>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>general</project>
+<name>buffer_server</name>
+<location>src.bin/tcpip/buffer_server</location>
+<syntax>buffer_server --help</syntax>
+<syntax>buffer_server [-lf <ar>logname</ar>] [-f <ar>portname</ar>] [-l <ar>lport</ar>] <ar>hostname</ar> <ar>rport</ar></syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+
+<option><on>-lf <ar>logname</ar></on><od>log connections and information in the file <ar>logname</ar>. By default, connections are recorded in <code>log.rt</code>.</od>
+</option>
+
+<option><on>-f <ar>portname</ar></on><od>record the port number that the server is listening for connections on in the file <ar>portname</ar>. By default, the port is  recorded in <code>port.id</code>.</od>
+</option>
+
+<option><on>-l <ar>port</ar></on><od>force the server to listen on the local port number <ar>port</ar>. By default, the server requests a port number from the Operating System.</od></option>
+
+<option><on><ar>host</ar></on><od>hostname or IP number of the system to connect to.</od></option>
+<option><on><ar>rport</ar></on><od>port number to connect to on the server.</od></option>
+<synopsis><p>Simple TCP/IP connection relay and buffer.</p></synopsis>
+<description><p>The task is both a TCP/IP client and a server. It receives data from a remote host and then relays it to one or more client tasks.</p> 
+<p>Each connection spawns a new child process that connects to the remote server. As data is received it is buffered and relayed to the client. Once the client disconnects the child process will die.</p>
+<p>The main use for this program is to disguise the origin of a TCP/IP data stream.  Java Applets will not allow connections to be made with any host other than the web server that they originated from. By using the <code>buffer_server</code> task, data from any host can be relayed through the web server.</p>
+</description>
+
+
+<example>
+<command>buffer_server -f port.id -lf log  peanut.jhuapl.edu  1024</command>
+<description>Connects to the remote host <code>peanut.jhuapl.edu</code> at port 1024 and relay data from a port allocated by the operating system. The port number is recorded in the file "<code>port.id</code>" and logs of all transactions are recorded in the file "<code>log.rt</code>".</description>
+</example>
+<example>
+<command>buffer_server  -l 5000 -f port.id -lf log peanut.jhuapl.edu 1200</command>
+<description>Connects to the remote host <code>peanut.jhuapl.edu</code> at port 1024 and relay data from the port 5000. The port number is recorded in the file "<code>port.id</code>" and logs of all transactions are recorded in the file "<code>log.rt</code>".</description>
+</example>
+
+
+
+
+
+</binary>

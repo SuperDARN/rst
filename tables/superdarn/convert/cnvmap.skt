@@ -1,0 +1,1005 @@
+#header
+                            CDF NAME: dmapcdf
+                       DATA ENCODING: NETWORK
+                            MAJORITY: ROW
+                              FORMAT: SINGLE
+
+! Variables  G.Attributes  V.Attributes  Records  Dims  Sizes
+! ---------  ------------  ------------  -------  ----  -----
+  42/40           0             0         144/z    0
+
+#GLOBALattributes
+
+#VARIABLEattributes
+
+#variables
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "start_year"    CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "start_month"   CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "start_day"     CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "start_hour"    CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "start_minute"  CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "start_second"  CDF_DOUBLE    1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "end_year"      CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "end_month"     CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "end_day"       CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "end_hour"      CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "end_minute"    CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "end_second"    CDF_DOUBLE    1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "map_major_revision" CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "map_minor_revision" CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "source"        CDF_CHAR      256         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "doping_level"  CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "model_wt"      CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "error_wt"      CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "IMF_flag"      CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "IMF_delay"     CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "IMF_Bx"        CDF_DOUBLE    1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "IMF_By"        CDF_DOUBLE    1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "IMF_Bz"        CDF_DOUBLE    1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "model_angle"   CDF_CHAR      256         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "model_level"   CDF_CHAR      256         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "hemisphere"    CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "fit_order"     CDF_INT2      1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "latmin"        CDF_FLOAT     1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "chi_sqr"       CDF_DOUBLE    1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "chi_sqr_dat"   CDF_DOUBLE    1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "rms_err"       CDF_DOUBLE    1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "lon_shft"      CDF_FLOAT     1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "lat_shft"      CDF_FLOAT     1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "mlt_start"     CDF_DOUBLE    1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "mlt_end"       CDF_DOUBLE    1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "mlt_av"        CDF_DOUBLE    1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "pot_drop"      CDF_DOUBLE    1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "pot_drop_err"  CDF_DOUBLE    1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "pot_max"       CDF_DOUBLE    1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "pot_max_err"   CDF_DOUBLE    1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "pot_min"       CDF_DOUBLE    1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number    Record   Dimension
+! Name              Type     Elements  Variance  Variances
+! --------          ----     --------  --------  ---------
+
+  "pot_min_err"   CDF_DOUBLE    1         T          
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+
+#zVariables
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "stid"          CDF_INT2      1         1     20     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "channel"       CDF_INT2      1         1     20     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "nvec"          CDF_INT2      1         1     20     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "freq"          CDF_FLOAT     1         1     20     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "major_revision" CDF_INT2      1         1     20     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "minor_revision" CDF_INT2      1         1     20     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "program_id"    CDF_INT2      1         1     20     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "noise_mean"    CDF_FLOAT     1         1     20     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "noise_sd"      CDF_FLOAT     1         1     20     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "gsct"          CDF_INT2      1         1     20     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "v_min"         CDF_FLOAT     1         1     20     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "v_max"         CDF_FLOAT     1         1     20     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "p_min"         CDF_FLOAT     1         1     20     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "p_max"         CDF_FLOAT     1         1     20     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "w_min"         CDF_FLOAT     1         1     20     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "w_max"         CDF_FLOAT     1         1     20     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "ve_min"        CDF_FLOAT     1         1     20     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "ve_max"        CDF_FLOAT     1         1     20     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "vector_mlat"   CDF_FLOAT     1         1     2000     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "vector_mlon"   CDF_FLOAT     1         1     2000     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "vector_kvect"  CDF_FLOAT     1         1     2000     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "vector_stid"   CDF_INT2      1         1     2000     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "vector_channel" CDF_INT2      1         1     2000     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "vector_index"  CDF_INT4      1         1     2000     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "vector_vel_median" CDF_FLOAT     1         1     2000     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "vector_vel_sd" CDF_FLOAT     1         1     2000     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "vector_pwr_median" CDF_FLOAT     1         1     2000     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "vector_pwr_sd" CDF_FLOAT     1         1     2000     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "vector_wdt_median" CDF_FLOAT     1         1     2000     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "vector_wdt_sd" CDF_FLOAT     1         1     2000     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "N"             CDF_DOUBLE    1         1     200     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "N_1"           CDF_DOUBLE    1         1     200     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "N_2"           CDF_DOUBLE    1         1     200     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "N_3"           CDF_DOUBLE    1         1     200     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "model_mlat"    CDF_FLOAT     1         1     2000     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "model_mlon"    CDF_FLOAT     1         1     2000     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "model_kvect"   CDF_FLOAT     1         1     2000     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "model_vel_median" CDF_FLOAT     1         1     2000     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "boundary_mlat" CDF_FLOAT     1         1     180     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+! Variable          Data      Number                 Record   Dimension
+! Name              Type     Elements  Dims  Sizes  Variance  Variances
+! --------          ----     --------  ----  -----  --------  ---------
+
+  "boundary_mlon" CDF_FLOAT     1         1     180     T     T 
+
+! Attribute         Data     Value
+! Name              Type
+! --------          ----     --------
+
+.
+
+#end
+

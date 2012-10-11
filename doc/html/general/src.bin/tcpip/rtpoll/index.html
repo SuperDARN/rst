@@ -1,0 +1,68 @@
+<head>
+<title>rtpoll</title>
+<link rel=stylesheet href="../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../general/index.html>general</a></td>
+<td>|</td><td><a href=../../../../general/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../general/src.bin/tcpip/index.html>tcpip</a></td><td>|</td>
+<td>rtpoll</td>
+<td width=100% align=right><a href=../../../../general/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">rtpoll</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+rtpoll --help<br>rtpoll [-L <em>logname</em>][-if <em>pidname</em>] [-d <em>pollsec</em>] [-f <em>name</em>] <em>command</em><br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Periodically polls a file to see if it has been modified, and if it has, executes a command.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-L <em>logname</em></code></td><td valign="top">log connections and information in the file <em>logname</em>. By default, connections are recorded in <code>log.rt</code>.</td></tr>
+<tr><td width="150" valign="top"><code>-if <em>pidname</em></code></td><td valign="top">record the process Identifier (PID) of the server in the file <em>pidname</em>. By default, the PID is  recorded in <code>pid.id</code>.</td></tr>
+<tr><td width="150" valign="top"><code>-d <em>pollsec</em></code></td><td valign="top">length of time to wait between polling to see if the data file has been modified, to <em>pollsec</em> seconds.</td></tr>
+<tr><td width="150" valign="top"><code>-f <em>name</em></code></td><td valign="top">poll to see if the file <em>name</em> has been modified.</td></tr>
+<tr><td width="150" valign="top"><code><em>command</em></code></td><td valign="top">command to execute if the data file has been modified.</td></tr></table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Executes a command whenever a specified file is changed. The program is used as part for real-time data processing when an action is triggered when a file is updated.</p> 
+<p>The file to test is specified by the "<code>-f</code>" option. The "<code>-d</code>" option sets the delay in seconds between tests of this file.</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">rtpoll  -L /home/rtproc/log  -d 120 -f  /data/rt.dat /home/rtproc/script/doanalysis</pre></td></tr></table>
+<p>Test the file "<code>/data/rt.dat</code>" every two minutes for changes. If a change occurs, execute the script "<code>/home/rtproc/script/doanalysis</code>". Actions are logged in the file "<code>/home/rtproc/log.<em>YYYYMMDD</em></code>", where <em>YYYYMMDD</em> is the date.</p></td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

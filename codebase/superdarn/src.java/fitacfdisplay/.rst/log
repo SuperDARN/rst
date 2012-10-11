@@ -1,0 +1,11 @@
+commit cfead8ba5543047ad3cbe5d8a7fac1b624aeb077
+Author: Code Management Account <code@breit.jhuapl.edu>
+Date:   Sun Jan 24 00:25:14 2010 +0000
+
+    Added Inuvik radar.
+
+commit 9ce81ca0ea98d022ddea8d11f4b07ddfeec1afb2
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:04 2010 +0000
+
+    Initial commit

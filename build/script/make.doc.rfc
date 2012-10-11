@@ -1,0 +1,221 @@
+#!/bin/bash
+
+set -e 
+
+# make.doc.rfc
+# ============
+# Author: R.J.Barnes
+#
+# Purpose:
+#
+# Constructs web pages from XML documentation
+#
+# Syntax:
+#
+# make.doc.rfc [-w] codebase project
+#
+# Description:
+#
+# Make documentation for Request For Comments (RFC).
+#
+
+############################################################################
+
+
+makerfc() {
+  project=${1}
+  fname=${2}
+  
+  id=`xmldoc -script "<!--ID-->" -sctype 0 . ${rfccfg} ${fname}`
+  echo $id
+  xmldoc -script ${rfcsc} -sctype 1 ${tmp} ${rfccfg} ${fname} > \
+                    ${wwwpath}/${project}/src.doc/rfc/${id}.html
+  chmod a+x ${wwwpath}/${project}/src.doc/rfc/${id}.html
+  return 0
+}
+
+############################################################################
+
+# Command line options
+
+############################################################################
+
+type="local"
+c=0
+for arg in ${*}
+ do
+
+   if test "${arg}" = "-w"
+   then
+      type="-w"
+   else
+      if test ${c} -eq 0
+      then 
+         codebase=${arg}
+      else
+         project=${arg}
+      fi
+      let c=c+1
+   fi
+ done
+
+
+if test ! -d ${codebase}/${project}/src.doc/rfc
+then
+  exit
+fi
+
+############################################################################
+
+# Define working directories
+
+############################################################################
+
+wwwpath="${DOCPATH}/html"
+
+if test "${type}" = "www"
+then
+  wwwpath=${WWWPATH}
+  urlbase=${URLBASE}
+fi
+
+TMPFILE=`mktemp -q /tmp/doc.XXXXXX`
+mkdir ${TMPFILE}.d
+chmod a+w ${TMPFILE}.d
+tmp=${TMPFILE}.d
+
+build=${BUILD}/doc
+
+############################################################################
+
+# Configuration files
+
+############################################################################
+
+rfccfg="${build}/cfg/rfc.cfg.xml"
+
+rfcsc="${build}/sk/rfc.${type}.sk"
+rfcinxsc="${build}/sk/rfc.inx.${type}.sk"
+
+
+############################################################################
+
+# Define script components
+
+############################################################################
+
+remove="-r TOP -r MAIN -r TAIL"
+top="-i MAIN -i TAIL"
+main="-i TOP -i TAIL"
+tail="-i TOP -i MAIN"
+
+############################################################################
+
+# Define temporary files
+
+############################################################################
+
+nmexml="${tmp}/rfcname.xml"
+inxxml="${tmp}/rfcinx.xml"
+
+############################################################################
+
+# Find relative URL
+
+############################################################################
+
+if test "${type}" != "www"
+then
+  relpath=""
+  rfcpath=${project}/src.doc/rfc/
+  while test ${rfcpath}
+  do
+    relpath="../"${relpath}
+    rfcpath=${rfcpath#*/} 
+  done
+  urlbase=${relpath%/}
+fi
+
+export URLBASE="${urlbase}"
+
+############################################################################
+
+# Build page
+
+############################################################################
+
+homeurl="${urlbase}/${project}/index.html"
+indexurl="${urlbase}/${project}/rfc/indexdoc.html"
+
+
+wpath="<td>&lt;a href="${urlbase}"/"${project}"/src.doc/rfc/index.html"
+wpath=${wpath}"&gt;rfc&lt;/a&gt;</td>"
+home="&lt;a href="${homeurl}"&gt;"${project}"&lt;/a&gt;"
+index="&lt;a href="${indexurl}"&gt;Index&lt;/a&gt;"
+
+echo "<table>" > ${nmexml}
+
+echo "<entry>" >> ${nmexml}
+echo "<search>HOME</search>" >> ${nmexml}
+echo "<replace>"${home}"</replace>" >> ${nmexml}
+echo "</entry>" >> ${nmexml}
+
+echo "<entry>" >> ${nmexml}
+echo "<search>PATH</search>" >> ${nmexml}
+echo "<replace>"${wpath}"</replace>" >> ${nmexml}
+echo "</entry>" >> ${nmexml}
+
+echo "<entry>" >> ${nmexml}
+echo "<search>INDEX</search>" >> ${nmexml}
+echo "<replace>"${index}"</replace>" >> ${nmexml}
+echo "</entry>" >> ${nmexml}
+
+echo "<entry>" >> ${nmexml}
+echo "<search>URLBASE</search>" >> ${nmexml}
+echo "<replace>${urlbase}</replace>" >> ${nmexml}
+echo "</entry>" >> ${nmexml}
+
+echo "</table>" >> ${nmexml}
+
+echo '<?xml version="1.0" encoding="ISO-8859-1"?>' > ${inxxml}
+echo "<index>" >> ${inxxml}
+
+
+mkdir -p ${wwwpath}/${project}/src.doc/rfc
+
+
+flist=`find "${codebase}/${project}/src.doc/rfc" -name "*.rfc.xml" | sort`
+for fname in ${flist}
+  do
+    makerfc ${project} ${fname}
+    xmldoc \
+      -script "<rfc><id><!--ID--></id><title><!--TITLE--></title></rfc>" \
+      -sctype 0 . ${rfccfg} ${fname} >> ${inxxml}
+
+  done
+
+echo "</index>" >> ${inxxml}
+
+scdoc ${removeinx} ${top} ${nmexml} ${rfcinxsc} > \
+               ${wwwpath}/${project}/src.doc/rfc/index.html
+
+xmldoc ${removeinx} ${main} -script ${rfcinxsc} -sctype 1 \
+               -path "index/rfc" ${tmp} ${rfccfg} ${inxxml} >> \
+               ${wwwpath}/${project}/src.doc/rfc/index.html
+
+scdoc ${removeinx} ${tail} ${nmexml} ${rfcinxsc} >> \
+               ${wwwpath}/${project}/src.doc/rfc/index.html
+
+chmod a+x ${wwwpath}/${project}/src.doc/rfc/index.html
+date > ${wwwpath}/${project}/src.doc/rfc/.ignore
+
+
+############################################################################
+
+# Cleanup
+
+############################################################################
+
+rm -fr ${tmp}
+rm -fr ${TMPFILE}
+exit 0

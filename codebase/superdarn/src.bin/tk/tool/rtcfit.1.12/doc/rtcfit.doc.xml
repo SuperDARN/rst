@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>rtcfit</name>
+<location>src.bin/tk/tool/rtcfit</location>
+<syntax>rtcfit --help</syntax>
+<syntax>rtcfit [-vb] [-mp <ar>minpwr</ar>]  [-L <ar>logname</ar>] [-p <ar>pathname</ar>] [-if <ar>pidname</ar>] [-s <ar>stream</ar>] <ar>host</ar> <ar>port</ar></syntax>
+<syntax>rtcfit -rpf [-vb] [-mp <ar>minpwr</ar>] [-L <ar>logname</ar>] [-p <ar>pathname</ar>] [-if <ar>pidname</ar>] [-s <ar>stream</ar>] <ar>host</ar> <ar>portname</ar></syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-mp <ar>minpwr</ar></on><od>filter out data with values of lag-zero power less than <ar>minpwr</ar>.</od>
+</option>
+<option><on>-L <ar>logname</ar></on><od>log connections and information in the file <ar>logname</ar>. By default, connections are recorded in <code>log.rt</code>.</od>
+</option>
+
+<option><on>-p <ar>pathname</ar></on><od>store the daily files in the directory <ar>pathname</ar>.</od>
+</option>
+
+<option><on>-if <ar>pidname</ar></on><od>record the process Identifier (PID) of the server in the file <ar>pidname</ar>. By default, the PID is  recorded in <code>pid.id</code>.</od>
+</option>
+
+<option><on>-s <ar>stream</ar></on><od>for a multiplexed stream, read the stream number given by <ar>stream</ar>. A value of 255 will read all streams</od>
+</option>
+
+<option><on><ar>host</ar></on><od>hostname or IP number of the system to connect to.</od></option>
+<option><on><ar>rport</ar></on><od>port number to connect to on the server.</od></option>
+
+<option><on>-rpf</on><od>The remote port number is stored in a text file.</od>
+</option>
+<option><on><ar>rportname</ar></on><od>filename of the text file containing the remote port number.</od></option>
+
+<synopsis><p>Creates a <code>cFit</code> format file from a <code>fitacf</code> TCP/IP data stream.</p></synopsis>
+
+
+<description><p>Creates a <code>cFit</code> format file from a <code>fitacf</code> TCP/IP data stream.</p>
+<p>The data is written to a file called "<code><em>yyyymmdd.iii</em>.cfit</code>" where <em>yyyy</em> is the year, <em>mm</em> is the month, <em>dd</em> is the day, and <em>iii</em> is the radar identifier code.</p>
+</description>
+
+<example>
+<command>make_cfit -L log -if pid.id kapqnx.jhuapl.edu 1024</command>
+<description>Generates <code>cfit</code> files from the host "<code>kapqnx.jhuapl.edu</code>", served at port 1024. The process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyy</em> is the year, <em>mm</em> is the month, and <em>dd</em> is the day.</description>
+</example>
+
+<example>
+<command>make_cfit -L log -if pid.id -rpf port.kap kapqnx.jhuapl.edu</command>
+<description>Generates <code>cfit</code> files from the host "<code>kapqnx.jhuapl.edu</code>", served at port contained in the file "<code>port.kap</code>". The process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyy</em> is the year, <em>mm</em> is the month, and <em>dd</em> is the day.</description>
+</example>
+
+
+</binary>

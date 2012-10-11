@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# get.version
+# ===========
+# R.J.Barnes
+#
+# Purpose:
+#
+# Get the version number of a an element.
+#
+# Syntax:
+#
+# get.version [path]
+#
+# Description:
+#
+# Get the version number of an element.
+
+##############################################################################
+
+prm=${#}
+if test ${prm} -ne 0
+then
+  path=${1}
+else
+  path="."
+fi
+
+
+if test ! -d ${path}
+then
+  echo "No such directory"
+  exit 1
+fi
+
+vfile=${path}/.rst/version
+ 
+if test -d ${path}/.git
+  then
+  vstr=`git --git-dir ${path}/.git describe`
+elif test -s ${vfile}
+  then
+  vstr=`tail -1 ${vfile}`
+else
+  vstr="version.x.x"
+fi
+
+echo ${vstr#version.}
+
+exit 0

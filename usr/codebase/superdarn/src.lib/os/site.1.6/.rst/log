@@ -1,0 +1,29 @@
+commit 52866bd17e5234d78b43b938dc75782b253017f9
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:55 2012 -0400
+
+    Updated license
+
+commit 93ed32f91a9f1eba60d0597415ad799c59ea41ae
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Dec 8 20:16:29 2010 -0500
+
+    Modification to support dynamic library loading
+
+commit 0aa9cbd330095cff984d52efd4c1100bbd953e86
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Dec 6 16:52:45 2010 -0500
+
+    Bug fixes for oregon
+
+commit 41dda59566a6753e28c18dc7206a057423971445
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Sat Jun 12 11:05:34 2010 -0400
+
+    Integrated changes from deployment.
+
+commit 2c32fbf316c4914c0dd81c4d252d2f77a3027071
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:46 2010 +0000
+
+    Initial commit

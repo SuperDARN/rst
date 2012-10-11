@@ -1,0 +1,41 @@
+commit 602bd2372113a85dab32d463c5ece4d4fc5bb570
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:09 2012 -0400
+
+    Updated license
+
+commit 402ca0cff4ca6f2afa6badc0fb1bc03fe6200a96
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Aug 4 13:23:05 2010 -0400
+
+    Fixed makefile for dynamic linking
+
+commit f9dad79a814362c35ce9ec9cef72320d85af8015
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Tue Jun 15 13:15:39 2010 -0400
+
+    Changed socket options.
+
+commit 89331b118a1249be28d0ef437645e9b4c3969fce
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Fri Jun 11 14:24:40 2010 -0400
+
+    Fixd for new transfer method.
+
+commit 24965fd26b45bbb9aa65ce5a7f53a0b3d19794a4
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:46:27 2010 -0400
+
+    Fixed makefile
+
+commit 7af2c55f3c6c6a1547502c11bf1423094facd1f9
+Author: Code Development Account <code@robin-barness-macbook-pro.local>
+Date:   Mon May 10 06:17:31 2010 -0400
+
+    Changed version identifier.c
+
+commit 1ac16f9d9a5abc6864bf3b7e7889c814878f048d
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:22 2010 +0000
+
+    Initial commit

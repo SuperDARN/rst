@@ -1,0 +1,17 @@
+commit c02f3878c871d8c1b580ec7af8755745fc192bfb
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:13 2012 -0400
+
+    Updated license
+
+commit 111a8607f557e7be97731e0c2a0c711a1f486fa8
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Dec 6 14:13:15 2010 -0500
+
+    Added unsigned types and cleaned up 64-bit code.
+
+commit 34f45bcadb23bff41c144d27aea8741b7a8e40f7
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:36:54 2010 +0000
+
+    Initial commit

@@ -1,0 +1,29 @@
+commit 58d229363d979774674a77eb6cf28ee691c60435
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:10 2012 -0400
+
+    Updated license
+
+commit fefb6667345fb1a2b4ada975070916116e8a2f43
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Tue Jun 15 21:24:36 2010 -0400
+
+    Modified handling of signal sets.
+
+commit b61792a38854114929db9cbc7e85a00d71057b97
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Tue Jun 15 13:14:10 2010 -0400
+
+    Removed redundant option
+
+commit f1dc32375c6fa82a03322b767b327934ae2793a0
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Apr 27 12:17:27 2010 -0400
+
+    Added code to restart a crashed control program.
+
+commit 5060c4426dd71e40693c4e70d59cfda4c2eb5a66
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:22 2010 +0000
+
+    Initial commit

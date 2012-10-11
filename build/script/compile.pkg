@@ -1,0 +1,283 @@
+#!/bin/bash
+
+set -e 
+SEP="+"
+
+# compile.pkg
+# ===========
+# R.J.Barnes
+#
+# Purpose:
+#
+# Builds a distributable software archive based on an assembled package directory.
+#
+# Syntax:
+#
+# compile.pkg packagedir
+#
+# Description:
+#
+# Builds a distributable software archive based on an assembled package directory. 
+
+##############################################################################
+
+rpkg=${1}
+system=${2}
+
+if test ! -d ${rpkg}
+then
+   echo "Could not locate package directory"
+   exit 1
+fi
+
+dst=${PWD}
+
+cd ${rpkg}
+rpkg=${PWD}
+
+echo "Compiling package:"${rpkg}
+
+export RSTPATH="${rpkg}/rst"
+
+. ${RSTPATH}/.profile.bash
+
+############################################################################
+
+# makecomponent
+# 
+# Compile source code and binaries
+
+############################################################################
+
+makecomponent() {
+
+  compile=${1}
+  project=${2}
+  component=${3}
+  type=${4}
+  mode=${5} 
+ 
+  if test "${compile}" = "doc"
+  then
+   src=${rpkg}/rst/${component}
+
+   if test ! -d ${src} 
+   then
+     src=${src}.*
+   fi
+
+   if test "${type}" = "doc"
+   then
+      make.doc.rfc ${rpkg}/rst ${project}
+      if test -d ${src}/tutorial 
+      then
+        find ${src}/tutorial -name "*.doc.xml" \
+       -  exec make.doc.tutorial {} \;
+      fi
+    fi
+
+    if test "${type}" = "lib"
+    then
+      find ${src} -name "*.doc.xml" -exec make.doc.lib {} \;
+    fi
+
+    if test "${type}" = "bin"
+    then
+     find ${src} -name "*.doc.xml" -exec make.doc.bin {} \; 
+    fi 
+  else
+    opt=""
+    ctmp=${compile}
+
+    if test "${compile}" = "hdr"
+    then
+      ctmp="lib"
+      opt="-t hdr"
+    fi
+
+    if test "${ctmp}" != "${type}" 
+    then
+      return 0
+    fi
+
+    src=${rpkg}/rst/${component}
+
+    if test "${mode}" = "stdin"
+    then
+      echo ${component##*/} ${opt}
+      echo ${component##*/} | makeall ${opt} \
+           ${src%/*} stdin 
+    else
+      if test ! -d ${src}
+      then
+         src=${src}.*
+      fi
+      makeall ${opt} ${src}   
+    fi
+  fi
+  return 0
+}
+
+############################################################################
+
+# makebuild
+#
+# Make build infrastructure
+
+############################################################################
+
+makebuild() {
+
+  loct=${1}
+  type=${2}
+  path=${rpkg}/rst/codebase/base/src.${type}/${loct}
+  if test ! -d ${path}
+  then 
+    path=${path}".*"
+  fi
+
+  if test "${type}" = lib
+  then
+    mkfile=`find ${path} -maxdepth 2 -name "makefile" | sort | tail -1 `
+  else
+    mkfile=`find ${path} -maxdepth 1 -name "makefile" | sort | tail -1` 
+  fi
+  
+  make -C ${mkfile%%/makefile} clean
+  make -C ${mkfile%%/makefile}
+  
+  return 0
+}
+
+##############################################################################
+
+#  Build component
+
+##############################################################################
+
+
+buildcomponent() {
+
+  SEP="+"
+  
+  compile=${1}
+  fname=${2}
+  cmplst=`cat ${fname} | tr " " "${SEP}" `
+ 
+  for lval in ${cmplst}
+  do
+    tmp=`echo ${lval} | tr "${SEP}" " "`
+    prm=${tmp%%#*} 
+    if test -z "${prm}"; then continue; fi
+    makecomponent ${compile} ${prm}
+  done
+  return 0
+}
+
+##############################################################################
+
+#  Make code
+
+##############################################################################
+
+export BINPATH=${rpkg}/rst/build/bin
+export LIBPATH=${rpkg}/rst/build/lib
+export IPATH=${rpkg}/rst/build/include
+
+mkdir -p ${LIBPATH}
+mkdir -p ${BINPATH}
+mkdir -p ${IPATH}
+
+liblist="xml/xml xml/xmldb xml/tagdb xml/xmldoclib \
+         task/option httpd/rscript"
+binlist="xmldoc/xmldoc xmldoc/xmldoc xmldoc/scdoc \
+         build/addtext build/maketree build/makeall"
+
+for libname in ${liblist}
+do
+  makebuild ${libname} lib
+done
+  
+for binname in ${binlist}
+do
+  makebuild ${binname} bin
+done
+
+export BINPATH=${rpkg}/rst/bin
+export LIBPATH=${rpkg}/rst/lib
+export DLMPATH=${rpkg}/rst/dlm
+export IPATH=${rpkg}/rst/include
+export DOCPATH=${rpkg}/rst/doc
+
+export USR_BINPATH=${rpkg}/rst/usr/bin
+export USR_LIBPATH=${rpkg}/rst/usr/lib
+export USR_IPATH=${rpkg}/rst/usr/include
+
+mkdir -p ${LIBPATH}
+mkdir -p ${BINPATH}
+mkdir -p ${DLMPATH}
+mkdir -p ${IPATH}
+mkdir -p ${DOCPATH}
+
+mkdir -p ${USR_LIBPATH}
+mkdir -p ${USR_BINPATH}
+mkdir -p ${USR_IPATH}
+
+buildcomponent hdr ${rpkg}/tmp/build.txt
+buildcomponent lib ${rpkg}/tmp/build.txt
+buildcomponent bin ${rpkg}/tmp/build.txt
+buildcomponent dlm ${rpkg}/tmp/build.txt  
+buildcomponent doc ${rpkg}/tmp/build.txt
+make.doc.frame
+
+##############################################################################
+
+#  Package up the archive
+
+##############################################################################
+
+echo "+ Creating package archive"
+echo "+--------------------------------------------"
+
+pkgroot=${rpkg##*/}
+pkgfname=${pkgroot}.${system}
+
+tar -cvf rpkg.tar rst
+
+cd ${dst}
+
+tarlist="rpkg.tar"
+
+flist=`find "${rpkg}/tmp" -name "rpkg.*.sh" \
+      -o -name "rpkg.*.txt"`
+ 
+for fname in ${flist}
+do
+   tarlist="${tarlist} ${fname##*/}"
+done
+
+if test -f "${rpkg}/README.${pkgroot}.txt"
+then 
+  tarlist="${tarlist} README.${pkgroot}.txt"
+  cp ${rpkg}/README.${pkgroot}.txt .
+fi
+if test -f "${rpkg}/LICENSE.${pkgroot}.txt"
+then
+  tarlist="${tarlist} LICENSE.${pkgroot}.txt"
+  cp ${rpkg}/LICENSE.${pkgroot}.txt .
+fi
+
+let lnecnt="`cat ${BUILD}/script/rpkg.se | wc -l`"
+let lnecnt=$lnecnt+1
+cat ${BUILD}/script/rpkg.se | addtext -t "\$lnecnt\$" \
+       -r "${lnecnt}" > ${pkgfname}.sh
+tar -cvz -C ${rpkg} ${tarlist} >> ${pkgfname}.sh
+chmod a+x ${pkgfname}.sh
+   
+echo "+--------------------------------------------"
+
+exit 0
+
+
+
+

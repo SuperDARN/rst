@@ -1,0 +1,66 @@
+<head>
+<title>maketree</title>
+<link rel=stylesheet href="../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../base/index.html>base</a></td>
+<td>|</td><td><a href=../../../../base/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../base/src.bin/build/index.html>build</a></td><td>|</td>
+<td>maketree</td>
+<td width=100% align=right><a href=../../../../base/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">maketree</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+maketree  <em>path</em> "<em>pattern</em>"<br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td>Print a directory tree for files that match the pattern.</td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code><em>path</em></code></td><td valign="top">search path.</td></tr>
+<tr><td width="150" valign="top"><code>"<em>pattern</em>"</code></td><td valign="top">filename pattern to match, this must be quoted to avoid command line expansion.</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>The program searches for files that match the specified pattern in the directory structure given as the search path. If a matching file is found then the elements of the directory tree are printed to standard output. This output can be used to recreate the directory structure containing the file.</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">maketree www "*.xml" &gt; dir.txt</pre></td></tr></table>
+<p>Search the directory "<code>www</code>" for any files that match the pattern "<code>*.xml</code>". Record the elements of the directory tree in the file "<code>dir.txt</code>".
+</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

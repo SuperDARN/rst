@@ -1,0 +1,359 @@
+commit fcb36c59561d0c07cfa35eb034b5ef1ccad73c8c
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 14:15:00 2012 -0400
+
+    Changed the build scripts.
+
+commit 1ae415a8dacc3a8bb3ade981b0e0da0b15217dbe
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:59:38 2012 -0400
+
+    Changed location of IDL.
+
+commit 351e2856600520386a7542994a356ff7d341191b
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:54:23 2012 -0400
+
+    Update for new licensing and code sharing.
+
+commit a4f1fe6ad278b2aa1ec58d8daf30b2bf1928b68a
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:54:02 2012 -0400
+
+    Removed license files.
+
+commit dec1aaac6f8b7d2e26259c97d84dbfaf6eab7d1e
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:55 2012 -0400
+
+    Updated license
+
+commit 851bc3aeba2f4519b27491151804ac0fd472d0a0
+Author: Codfe Development Account <code@linux-pc.jhuapl.edu>
+Date:   Sun Jun 17 21:27:14 2012 -0400
+
+    Removed redundant environment variable.
+
+commit 1e075ddf0deaa1295563a6518000fdd66c82df90
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Sun Jun 17 11:32:19 2012 -0400
+
+    Added environment variables for repository sharing.
+
+commit 401fe2dc4966311674177be72cd0b189e28eb9b8
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Jun 15 22:05:14 2012 -0400
+
+    Changed to LGPL.
+
+commit 9146b14c754ff54f384601d471e5ff7b18f14ae6
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Mar 9 11:25:34 2012 -0500
+
+    Update for new AACGM and minor bug fixes.
+
+commit d26b9989fbcdc7682b4c5eebbbf4b4f6cab2075b
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Mar 9 03:55:13 2012 -0500
+
+    Update for AACGM 2010 and other bug fixes.
+
+commit 1df0b1883ef47f66bf84cadaf15afb21d01da1f4
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Mar 9 03:51:00 2012 -0500
+
+    Typo in license.
+
+commit 699a8cc22e62d3b94b0d2995b6175ce0a0e3ed72
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Mar 9 03:32:36 2012 -0500
+
+    2012 Sanity check.
+
+commit 6921e8f7641991d46d52a3a5f4dae91c0464f305
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Thu Mar 8 21:51:50 2012 -0500
+
+    2012 Sanity check.
+
+commit 1f9e2f2b00e5ffb429a53437d05bba5268bd0b18
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Thu Mar 8 08:27:17 2012 -0500
+
+    Maintenance Release.
+
+commit 4477115b0648a7a36e9880a616095452e35d526d
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Aug 26 16:00:47 2011 -0400
+
+    Final bug fixes rolled in.
+
+commit e80a14d4e682bad6aa828dae6b0ea4f77c7cd348
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Aug 26 15:45:20 2011 -0400
+
+    Fixed build scripts.
+
+commit 8e4a6afb7ecef9f5b17ba3906b1d70c60aacf8ce
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Aug 26 15:43:09 2011 -0400
+
+    Updated readme file.
+
+commit 28aad1546fa0e050e507b4416ab46a58dcb7301a
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Aug 26 15:11:44 2011 -0400
+
+    Final update
+
+commit 80cd57b308750c2a5802675ce9b14829685e74bd
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Aug 26 14:57:09 2011 -0400
+
+    Further cleanup.
+
+commit 1b99cc0cfc41cfc5d4ec14e65cde5a5dd190f089
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Aug 26 14:44:45 2011 -0400
+
+    Update for new package architecture
+
+commit 324ca775ccbb2127d1262f86d1e77ee374ea823e
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Aug 26 14:42:59 2011 -0400
+
+    Added master profile.
+
+commit f2dc9c78b4f0155b630b85ad0f2eac8d761e2105
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Aug 26 14:42:30 2011 -0400
+
+    Update for new package architecture
+
+commit 6e82543fe8b68b2aab13adf398b5f39eaf4513ca
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Jun 28 11:14:10 2011 -0400
+
+    Minor bug fixes.
+
+commit 88791ed67b145f9036b69d95a6178c1014830401
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Jun 28 10:31:48 2011 -0400
+
+    Updated profiles information for IDL.
+
+commit cc617294d3708f4c6fb04039b8dc18785fb2b740
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Jun 24 16:05:58 2011 -0400
+
+    Further bug fix.
+
+commit 0dbcc2fc3a6ce34a69d90895cdc7b9746823b8aa
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Jun 24 16:03:11 2011 -0400
+
+    Clean up of package contents.
+
+commit 75a024e1018c96c7284d3fbb65fe70e29f4755a3
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Jun 24 16:02:23 2011 -0400
+
+    Moved location of some of the time processing tasks.
+
+commit 38f545d135dd2ac92d5165b683979e5755403b79
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Jun 24 13:09:21 2011 -0400
+
+    Another release bug fix.
+
+commit e03505778fab7dcb38ff16f8ab2a085314064467
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Jun 24 13:07:17 2011 -0400
+
+    Bug fixes.
+
+commit 4dde67a72f79ab95d43d6aa2e4bf2c0248eeffdf
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Jun 24 12:22:54 2011 -0400
+
+    Update for June 2011
+
+commit ed7d558f14ace948d9ddf1004aada536aa38b6c3
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Nov 23 13:29:26 2010 -0500
+
+    Used the <IDL_DEFAULT> definition for IDL paths.
+
+commit 32f73023703e6825537cf371e1fc5ed9df375d82
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Thu Nov 18 17:59:54 2010 -0500
+
+    Updated startup.pro to include igrf.pro
+
+commit 4ec76e3318d7f16f291898b4ff482a8b9b2c5420
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 18 17:55:52 2010 -0500
+
+    Update to fix bugs in DLM read and write of fitacf and rawacf files also inclusion of IGRF DLM and native IGRF IDL library.
+
+commit 16da78657a46569bb62dd1aee1a12249bac2d8c7
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Nov 17 13:22:52 2010 -0500
+
+    Fixe to make.dst to pick up the correct profile.
+
+commit 806b71462f783aad194cbb184268a5c8846e0a34
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed Nov 17 12:42:13 2010 -0500
+
+    Final tweaks and fixes for DLM release.
+
+commit d31ec8173c75b9587ab7a68cc6749e50a853acf9
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Mon Nov 15 14:41:21 2010 -0500
+
+    Push to 3.2
+
+commit 28a8b96a5ac113e892a8cd34e193dadf507bd0e7
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Mon Nov 15 14:21:42 2010 -0500
+
+    Final release of 3.2
+
+commit 854a6ca087104b20fb6e87016d4395b5a0146f60
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 17:25:09 2010 -0500
+
+    Added DLM support to profiles.
+
+commit 94d8cef8dfcc31d5af83a3b09c8073b05d2f62a2
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 17:21:45 2010 -0500
+
+    Added DLM support.
+
+commit fb454a78dc74c0b9e0516fe4f8e8f1331655e6cc
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 17:21:11 2010 -0500
+
+    Added DLM support.
+
+commit c67770928e2dd525036624fda1cf8a0f0f43a120
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Oct 15 08:45:22 2010 -0400
+
+    Update and bug fixs for Fort Hayes Upgrade.
+
+commit f704e97f571db2d6a994ef7660ec35e85f4e9b32
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Oct 12 14:34:33 2010 -0400
+
+    Fixed issues with Southern hemisphere and with map plotting.
+
+commit 1558f8dce553443ac3bc2c5cc2eff2f13caf6c76
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Fri Sep 10 13:48:52 2010 -0400
+
+    Final cleanup.
+
+commit d654d685dd52503697895c2eafd72f9219769b28
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Fri Sep 10 11:51:44 2010 -0400
+
+    Replaced missing binaries in module.txt
+
+commit c36e2093e2d64f090efa3eeceb464d315716346d
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Fri Sep 10 11:51:19 2010 -0400
+
+    Added missing binaries.
+
+commit f53a282877cee114d30e84b367d27d819e2f6e0d
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Fri Sep 10 11:46:16 2010 -0400
+
+    Update with new PNG libraries.
+
+commit d4993f7c89c4cff35c4c00911560ae9ca872c2af
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Fri Sep 10 11:45:31 2010 -0400
+
+    Added new libraries.
+
+commit 0708e138f600a19cba916d659a2dfbb3589cafe8
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Mon Aug 9 19:47:51 2010 -0400
+
+    Release 08/09/2010
+
+commit 6f89aed501e109b917805dc59fcd1ad65dc91c71
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Fri Aug 6 16:27:09 2010 -0400
+
+    Updated profile.
+
+commit d305870186f5f2292c1c76a8f2c3d8b7e76336dc
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Fri Aug 6 13:59:26 2010 -0400
+
+    Update for bugs fixes from soak testing.
+
+commit 2d3ee45fef4d95ce3602fab15aba6b42b0b188ef
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 16 17:22:49 2010 -0400
+
+    Final release
+
+commit ace64bb82847e069bb096a089e3a9520056b38f9
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 16 15:59:31 2010 -0400
+
+    Fixed profile conditionals.
+
+commit 77c168901acc1c8894dc90ade4b4eee31a92b79d
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 16 15:32:05 2010 -0400
+
+    Integrated Astronomical Algorithm/MLT IDL routines.
+
+commit 056d6f14cca0ff0eb0fa97db0f6bc809ada8e0ec
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Tue Jun 15 21:44:45 2010 -0400
+
+    Fixed bug in packager
+
+commit 002812f29d27ba5b07b4221a095b50a2d7bafbc4
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Tue Jun 15 21:38:11 2010 -0400
+
+    Fixed bug in scheduler
+
+commit f5832983a9b1b2d488d9ee34c1134067b6aaf2d1
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Tue Jun 15 20:22:15 2010 -0400
+
+    Cleanup for release.
+
+commit 40b2b0179825412b5202c76e1e170ec849305b4f
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Tue Jun 15 16:27:57 2010 -0400
+
+    Cleaned README text.
+
+commit ca019b1a81d934699d3464f308b70f4ea7b6fd13
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Tue Jun 15 16:25:57 2010 -0400
+
+    Removed redundant text.
+
+commit d93a641710a45533a50566a24725ad75c31d69c2
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Tue Jun 15 16:20:17 2010 -0400
+
+    Update to socket handling.
+
+commit 5c15ec9c517a9abe79c86ed5e5e8097f17435a61
+Author: Code Development Account <code@virtual-debian.localdomain>
+Date:   Mon Jun 14 15:52:27 2010 -0400
+
+    Initial commit.

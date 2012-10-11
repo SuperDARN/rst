@@ -1,0 +1,88 @@
+#!/bin/bash
+
+SEP="+"
+
+# version.pkg
+# ===========
+# R.J.Barnes
+#
+# Purpose:
+#
+# Consruct a list of version numbers
+#
+# Syntax:
+#
+# version.pkg project package
+#
+# Description:
+#
+# Construct a list of version numbers for elements in a package.
+# Output is written to standard output.
+
+##############################################################################
+
+prj=${1}
+pkg=${2}
+
+##############################################################################
+
+#  Test for valid command line
+
+##############################################################################
+
+if test -z "${pkg}" 
+then
+  echo "version.pkg project package" 
+  exit 1 
+fi
+
+build=${BUILD}
+
+##############################################################################
+
+#  Checkout code from the repository and build a code module
+
+##############################################################################
+
+makeid() {
+
+  module=${1}
+  cd ${RSTPATH} 
+  gitlist=`find ${module} -name ".git" | sort`
+  for gitname in ${gitlist}
+    do
+      tag=`git --git-dir ${gitname} describe --always HEAD`
+      tmp=${gitname#./}
+      path=${tmp%/.git}
+      if test -z "${path}"
+      then 
+        path="."
+      fi
+      echo ${path} ${tag}
+    done
+  return 0
+}
+
+##############################################################################
+
+#  Start generating the distribution from the module list
+
+##############################################################################
+
+if test ! -s "${RPKG}/${prj}/${pkg}/module.txt"
+then
+  echo "Failed to locate package contents"
+  exit 1
+fi
+
+modlst=`cat ${RPKG}/${prj}/${pkg}/module.txt | tr " " "${SEP}"`
+
+for mod in ${modlst}
+do
+  tmp=`echo ${mod} | tr "${SEP}" " "`
+  prm=${tmp%%#*} 
+  if test -z "${prm}"; then continue; fi
+  makeid ${prm} 
+done
+
+

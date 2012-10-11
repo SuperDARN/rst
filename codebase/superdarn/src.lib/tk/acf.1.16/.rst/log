@@ -1,0 +1,41 @@
+commit cad64da774d96713b524e182c295cdde373f1ca0
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:59 2012 -0400
+
+    Updated license
+
+commit 970c8d55718786bf29d087517899f9bc52d89ad5
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Mon Dec 6 15:00:21 2010 -0500
+
+    Fixes from the Oregon build
+
+commit 9abc730599d858f64d13372194c8c2fdeb325731
+Author: Code Development Account <code@virtual-debian.localdomain>
+Date:   Fri Aug 6 08:47:09 2010 -0400
+
+    Removed redundant parameters.
+
+commit ef0374fa92f648d59da2aa3e86e3d7084cc27ff3
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Aug 5 14:31:05 2010 -0400
+
+    Removed last traces of multi-lags.
+
+commit a1ae58ae18e8f681bd829e706ddbf492896db474
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Aug 5 14:23:13 2010 -0400
+
+    Removed lagnum - not applicable.
+
+commit 374faaadb81e48c9bf19a2356a5269f6d64c1372
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 09:56:55 2010 -0400
+
+    RST3 Update
+
+commit 15d3e45f37f55e0aca0b8f8bda5c90203ef592bb
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:27 2010 +0000
+
+    Initial commit

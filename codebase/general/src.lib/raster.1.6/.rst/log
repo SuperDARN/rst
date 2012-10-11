@@ -1,0 +1,41 @@
+commit 8e67ede04a271376b9b241b073e954295f5c968c
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:21 2012 -0400
+
+    Updated license
+
+commit a7e5e5e8064fce3a3c741d8d33a076ebffd8c8d1
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed Apr 21 09:45:16 2010 -0400
+
+    Fixed issues with parallel lines.
+
+commit c1033fd154852ef0e5617d4f122fc570b8fab61b
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Mar 31 11:12:54 2010 -0400
+
+    Fixed SVG format
+
+commit 752553852a8b18d8d7aa504a160f2e695e24adfa
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Mar 31 11:03:40 2010 -0400
+
+    Added PNG example images
+
+commit c6c07b48237ec8f62b26fb9bf8e56aac6e3efb07
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Mar 31 09:49:32 2010 -0400
+
+    Converted documentation PPM images to PNG and renamed rplot files
+
+commit e1172932fd02baa29ab7fb9c26839eab71781be1
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Mar 31 08:55:39 2010 -0400
+
+    Documentation cleanup
+
+commit 7d7deb28d0fcf27c4a61fddf3b309199f65d4ac3
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:36:49 2010 +0000
+
+    Initial commit

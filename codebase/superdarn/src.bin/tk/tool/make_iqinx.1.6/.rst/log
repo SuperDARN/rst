@@ -1,0 +1,29 @@
+commit f588aa1f8d4869a5e9f7af5ac2e8d30b2174f851
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:03 2012 -0400
+
+    Updated license
+
+commit e546cbff3261592659c34c7ca5b498b0da10d9ca
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Fri Nov 5 10:15:50 2010 -0400
+
+    Fixed memory issue.
+
+commit b008f68b657678302a303ebec361048c8f3138a2
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 08:32:39 2010 -0400
+
+    Updated documentation
+
+commit 7842f1fdb8a5089812df97c83ac91d8b3b632f1a
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:36:44 2010 -0400
+
+    Fixed makefile.
+
+commit 31c1f2bded13f69f1321e49fe4dd4b4cd08317d7
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:18 2010 +0000
+
+    Initial commit

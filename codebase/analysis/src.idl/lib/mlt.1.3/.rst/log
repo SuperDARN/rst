@@ -1,0 +1,23 @@
+commit d6e6139b61e67ab77d784e18398d5e69d8a90255
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:18 2012 -0400
+
+    Updated license
+
+commit 01e87b306222153a3bb77cb448a1cd2a2ac3d7be
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 09:41:01 2010 -0500
+
+    Added capability to handle arbitrary arrays.
+
+commit 4c29520097cae261cf847894296df13d79681070
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 16 15:22:07 2010 -0400
+
+    Moved to new Astronomical Algorithms code.
+
+commit b3a5bdb092b51de6a69ae87a00fb6310470c09a6
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 16 06:25:45 2010 -0400
+
+    MLT Library.

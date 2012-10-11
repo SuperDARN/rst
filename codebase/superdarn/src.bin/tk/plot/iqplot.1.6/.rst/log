@@ -1,0 +1,41 @@
+commit 1fcb98e03a978cb3085cef0d08b230e70887fcc6
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:02 2012 -0400
+
+    Updated license
+
+commit 88550cac05f8bb59011156cbc7afa50276be0f23
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Aug 31 09:51:37 2010 -0400
+
+    Changed makefile for iplot library.
+
+commit 943782407af16127cb40cba1f818454224caa279
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Fri Aug 27 11:04:03 2010 -0400
+
+    Renamed iplot.h
+
+commit a86d7601a97b848cbfb1af6b6c78f6dfc9fb3da2
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Aug 16 14:35:35 2010 -0400
+
+    Added PNG Support
+
+commit fc805ea44e5c43c08be887c8f60e6d5e663dc005
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 08:34:25 2010 -0400
+
+    Updated documentation
+
+commit 957b279757b26cfbabc9f2a5525362ef71fa6605
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:36:18 2010 -0400
+
+    Fixed makefile.
+
+commit 685500e7b9b6a056f1eff821c16beb0abb67b731
+Author: Code Development Account <code@robin-barness-macbook-pro.local>
+Date:   Tue May 11 06:48:30 2010 -0400
+
+    Iq_plot

@@ -1,0 +1,23 @@
+commit 4320d14a6d0b3098a8c25291eee35fcb4ef13f9f
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:10 2012 -0400
+
+    Updated license
+
+commit 4cb1b705098134d88ef2b7a5d5fa0fdaff832964
+Author: Code Development Account <code@robin-barness-macbook-pro.local>
+Date:   Sat May 8 06:49:39 2010 -0400
+
+    Code audit
+
+commit 01b66fe83b27e5c78bc8a364096a32cfeb7aaf18
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Mar 30 14:41:29 2010 -0400
+
+    Fixed documentation
+
+commit aaad7b23ed0e4dfca3e7b396c4830064eedd8fd3
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:36:54 2010 +0000
+
+    Initial commit

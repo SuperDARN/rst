@@ -1,0 +1,290 @@
+#!/bin/bash
+
+set -e 
+SEP="+"
+
+# assemble.pkg
+# ============
+# R.J.Barnes
+#
+# Purpose:
+#
+# Builds a software package based on project and package name
+#
+# Syntax:
+#
+# assemble.pkg -m project package [version]
+#
+# Description:
+#
+# This builds a package but does not package it into a deployable
+# archive. This is so that the package can be moved to another platform
+# for compilation of the pre-built binaries
+
+##############################################################################
+
+prj=${1}
+pkg=${2}
+
+ver=""
+
+if test ${#} -gt 2
+then
+   ver=${3}
+fi
+
+##############################################################################
+
+#  Test for valid command line
+
+##############################################################################
+
+if test -z "${pkg}"
+then
+  echo "assemble.pkg project package [version]"
+  exit 1
+fi
+
+package=${RPKG}/${prj}/${pkg}
+
+if test ! -d ${package}
+then
+  echo "Failed to locate package"
+  exit 1
+fi
+
+if test -n "${ver}"
+then
+  vstr="version."${ver}
+else
+   vstr="HEAD"
+fi
+
+pid=`git --git-dir ${package}/.git log ${vstr} | \
+     head -1 | cut -f 2 -d' '`
+
+tag=`git --git-dir ${package}/.git describe --always ${pid}`
+
+if test "${tag%%.*}" = "version"
+then
+  ver=${tag#version.}
+else
+  ver="x.x" 
+fi
+
+yrval=`date +%Y`
+
+rpkg=${HOME}/${prj}-${pkg}.${ver}
+
+rm -fr ${rpkg}
+mkdir -p ${rpkg}
+
+echo "Building distribution:"${rpkg}
+
+
+
+##############################################################################
+
+# buildelement
+#
+# Extracts the source code elements
+
+##############################################################################
+
+buildelement() {
+
+  element=${1}
+  id=${2}
+  license=${3}
+
+  tag=`git --git-dir ${RSTPATH}/${element}/.git describe --always ${id}`
+
+  path=${element}
+
+  if test "${tag%%.*}" = "version"
+  then
+     path=${element}.${tag#version.}
+  fi
+
+  echo ${path} 
+
+  mkdir -p ${rpkg}/rst/${path}
+  mkdir -p ${rpkg}/rst/${path}/.rst
+
+  git --git-dir ${RSTPATH}/${element}/.git archive ${id} | \
+      tar -C ${rpkg}/rst/${path} -xf - 
+  
+  git --git-dir ${RSTPATH}/${element}/.git log ${id} > \
+      ${rpkg}/rst/${path}/.rst/log
+  
+  echo ${id} > ${rpkg}/rst/${path}/.rst/id
+ 
+  if test "${tag%%.*}" = "version"
+  then
+     echo ${tag} > ${rpkg}/rst/${path}/.rst/version
+  fi
+ 
+  return 0
+
+}
+
+##############################################################################
+
+#  Generate inventory
+
+##############################################################################
+
+makeinventory() {
+ pwd=${PWD}
+ cd ${rpkg}/rst
+ find .
+ cd ${pwd}
+ return 0
+}
+
+##############################################################################
+
+#  Replace text tags
+
+##############################################################################
+
+addtag () {
+  fname=${1}
+  cat ${fname} | addtext -t "\$version\$" -r "${ver}" | \
+  addtext -t "\$project\$" -r "${prj}" | \
+  addtext -t "\$package\$" -r "${pkg}" | \
+  addtext  -t "\$date\$" -r "${yrval}"
+  return 0
+}
+
+
+
+##############################################################################
+
+#  Build directory structure and extract package information
+
+##############################################################################
+
+mkdir -p ${rpkg}/tmp
+mkdir -p ${rpkg}/rst
+
+echo "+ Extracting package information"
+echo "+--------------------------------------------"
+
+git --git-dir ${package}/.git archive ${pid} | \
+    tar -C ${rpkg}/tmp -xvf - 
+
+echo "+--------------------------------------------"
+
+##############################################################################
+
+#  Start generating the distribution from the id list
+
+##############################################################################
+
+if test ! -s "${rpkg}/tmp/id.txt"
+then
+  echo "Failed to locate package elements"
+  exit 1
+fi
+
+echo "+ Extracting package elements"
+echo "+--------------------------------------------"
+
+ellst=`cat ${rpkg}/tmp/id.txt | tr " " "${SEP}" `
+
+for el in ${ellst}
+do
+  tmp=`echo ${el} | tr "${SEP}" " "`
+  prm=${tmp%%#*} 
+  if test -z "${prm}"; then continue; fi
+  buildelement ${prm} ${lfile}
+done
+
+echo "+--------------------------------------------"
+
+##############################################################################
+
+#  Generate rpkg resource
+
+##############################################################################
+
+buildelement rpkg/${prj}/${pkg} ${pid} ${lfile}
+
+##############################################################################
+
+#  Generate housekeeping
+
+##############################################################################
+
+echo "+ Generating houskeeping"
+echo "+--------------------------------------------"
+
+mkdir -p ${rpkg}/rst/log
+makeinventory | tee -a ${rpkg}/rst/log/${prj}-${pkg}.${ver}.inventory
+
+echo "+--------------------------------------------"
+
+##############################################################################
+
+#  Copy profile
+
+##############################################################################
+
+echo "+ Copying package profiles"
+echo "+--------------------------------------------"
+
+if test -d ${rpkg}/tmp/profile
+then
+  mkdir ${rpkg}/rst/.profile
+  flist=`find "${rpkg}/tmp/profile" -type f`
+  for fname in ${flist}
+  do
+     fleaf=${fname##*/}
+     cp -v ${fname} ${rpkg}/rst/.profile/${fleaf} 
+  done
+fi
+
+if test -f ${rpkg}/tmp/profile.bash
+then
+   cp -v ${rpkg}/tmp/profile.bash ${rpkg}/rst/.profile.bash
+fi
+
+echo "+--------------------------------------------"
+
+##############################################################################
+
+#  Copy extra files
+
+##############################################################################
+
+echo "+ Copying extra files"
+echo "+--------------------------------------------"
+
+if test -d ${rpkg}/tmp/extra
+then
+   cp -vr ${rpkg}/tmp/extra/* ${rpkg}/rst
+fi
+
+flist=`find "${rpkg}/tmp" -name "rpkg.*.sh" \
+        -o -name "rpkg.*.txt"`
+ 
+for fname in ${flist}
+ do
+   addtag ${fname} > ${rpkg}/${fname##*/}
+   
+  if test "${fname##*.}" = "sh"
+   then
+     chmod a+x ${rpkg}/${fname##*/}
+   fi
+done
+
+if test -f "${rpkg}/tmp/README.txt"
+then 
+  addtag "${rpkg}/tmp/README.txt" > \
+      ${rpkg}/README.${prj}-${pkg}.${ver}.txt
+fi
+
+cp ${BUILD}/script/compile.pkg ${rpkg}
+
+

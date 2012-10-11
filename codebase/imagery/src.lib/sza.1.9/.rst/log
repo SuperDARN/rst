@@ -1,0 +1,41 @@
+commit ec462b0123cc36ebcf064c00beb3162bc6b1c7f5
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:18 2012 -0400
+
+    Updated license
+
+commit 723f3d92f92e49d9bd030690e1a098c4a94b21a4
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Aug 11 10:33:23 2010 -0400
+
+    Fixed bad return in calculating solar declination.
+
+commit 0b679d912d6a6fc164b891efbd02197a7fca5d30
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Jun 10 12:23:19 2010 -0400
+
+    Fixed AstAlg.h header.
+
+commit 3b683f650b739ecc804f83955fdcb1ffc1b0ac77
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 9 13:39:32 2010 -0400
+
+    Fixed example code.
+
+commit 063fa6a31f01de7626a3f8f930eba5e3ee553874
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 9 10:49:28 2010 -0400
+
+    Removed deleted SZASolarLoc function example code.
+
+commit d5d9bb027fe0ea0a559445605aa28d987e122f4d
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 9 10:35:09 2010 -0400
+
+    Switched to astronomical algorithms library.
+
+commit 23f1589702f6b6f7712f53dd8a4cdfde3235ce53
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:34 2010 +0000
+
+    Initial commit

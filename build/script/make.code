@@ -1,0 +1,155 @@
+#!/bin/bash
+
+set -e
+
+# make.code
+# =========
+# Author R.J.Barnes
+#
+# Purpose:
+#
+# Make source code into binaries
+#
+# Syntax:
+#
+# make.code project
+#
+# Description:
+#
+# Make source code into a set of binaries.
+#
+
+
+############################################################################
+
+prj=${1}
+pkg=${2}
+
+############################################################################
+
+# Command line options
+
+############################################################################
+
+if [ ${#} -gt 2 ]
+then 
+  mtype=${3}
+else 
+  mtype=""
+fi
+
+if [ ${#} -gt 3 ]
+then 
+  patn="-p "${4}
+else 
+  patn=""
+fi
+
+if [ -z "${pkg}" ]
+then
+  echo "make.code project package"
+  exit 1
+fi
+
+pkgdir=$(find ${RPKG}/${prj} -type d -name "${pkg}*" | sort | tail -1)
+
+if [ ! -d "${pkgdir}" ]
+then
+ echo "Failed to locate package"
+ exit 1
+fi
+
+ver=$(get.version ${pkgdir})
+
+log="${LOGPATH}/${prj}-${pkg}.build.${ver}"
+dtval=$(date +%Y%m%d.%H%M)
+
+
+############################################################################
+
+# Compile code
+
+############################################################################
+
+makeaction() {
+
+  compile=${1}
+  project=${2}
+  module=${3}
+  type=${4}
+  mode=${5} 
+
+  if [ -n "$mtype" -a "${type}" != "${mtype}" ]; then return 0; fi
+ 
+  opt=""
+  ctmp=${compile}
+  if [ "${compile}" = "hdr" ]
+  then
+   ctmp="lib"
+   opt="-t hdr"
+  fi
+
+  if [ "${ctmp}" != "${type}" ]; then return 0; fi
+
+  if [ "${module%%/*}" = "codebase" ]
+  then
+    src=${CODEBASE}/${module#codebase/}
+  else
+    src=${USR_CODEBASE}/${module#usr/codebase/}
+  fi
+
+  if [ "${mode}" = "stdin" ]
+  then
+    echo ${module##*/} ${opt}
+    echo ${module##*/} | makeall -vb ${patn} ${opt} \
+         ${src%/*} stdin >> ${log}.${dtval}
+
+
+  else
+   if [ ! -d ${src} ]
+    then
+      src=${src}.*
+    fi
+    makeall -vb ${patn} ${opt} ${src} >> ${log}.${dtval}
+   
+  fi
+  return 0
+}
+ 
+makemodule() {
+
+  SEP="+"
+  
+  compile=${1}
+  fname=${2}
+  modlst=$(cat ${fname} | tr " " "${SEP}")
+ 
+  for lval in ${modlst}
+  do
+    tmp=`echo ${lval} | tr "${SEP}" " "`
+    prm=${tmp%%#*} 
+    if [ -z "${prm}" ]; then continue; fi
+
+    makeaction ${compile} ${prm}
+  done
+  return 0
+}
+
+if [ ! -s "${pkgdir}/build.txt" ]
+then
+  echo "Failed to locate build table"
+  exit 1
+fi
+
+mkdir -p ${LOGPATH}
+makemodule hdr ${pkgdir}/build.txt
+makemodule lib ${pkgdir}/build.txt 
+makemodule bin ${pkgdir}/build.txt 
+if [ -n "${DLMPATH}" ]; then makemodule dlm ${pkgdir}/build.txt; fi
+exit 0
+
+
+
+
+
+

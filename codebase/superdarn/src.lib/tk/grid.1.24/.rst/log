@@ -1,0 +1,35 @@
+commit 9aab108548465358698b78c88ea5dd36a1aedb75
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:58 2012 -0400
+
+    Updated license
+
+commit efaf07fd86a4a7ada6abc560228db21b03d93702
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Sun Mar 27 05:20:17 2011 -0400
+
+    Fixed possible rounding bug
+
+commit 0dc82047961333935bff34a99dd8af4581857e11
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:59:01 2010 -0400
+
+    RST 3 update
+
+commit 755a059b207e1f0912b96d605a130531a1351f83
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 09:56:45 2010 -0400
+
+    RST 3 Update
+
+commit 5bbf6e84f5b9bbe695e15f197eb5bde82a1c1f71
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Mar 30 15:13:47 2010 -0400
+
+    Fixed documentation.
+
+commit baf2c6cac3786f9054cb4de63516ea7a436a406d
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:27 2010 +0000
+
+    Initial commit

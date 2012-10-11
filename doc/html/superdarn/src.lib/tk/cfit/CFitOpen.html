@@ -1,0 +1,109 @@
+
+<head>
+<title>CFitOpen</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../superdarn/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/cfit/index.html>cfit</a></td><td>|</td>
+<td>CFitOpen</td>
+<td width=100% align=right><a href=../../../../superdarn/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">CFitOpen</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;"><a href="structCFitfp.html"><code>struct CFitfp</code></a> *CFitOpen(char *name);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">general/cfitdata.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">cfit</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="CFitOpen.html"><code>CFitOpen</code></a> function opens a <code>cFit</code> data file for reading.</p>
+<p>The name of the file to open is given by the zero terminated string pointed to by the argument <em>name</em>.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns a pointer to the file control structure.On error, a <code>NULL</code> pointer is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, a <code>NULL</code> pointer is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/CFitOpen.c">CFitOpen.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* CFitOpen.c
+   ===========
+   Author: R.J.Barnes */
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#include &quot;rtypes.h&quot;
+#include &quot;rtime.h&quot;
+#include &quot;limit.h&quot;
+#include &quot;cfitdata.h&quot;
+#include &quot;cfitread.h&quot;
+
+
+
+int main(int argc,char *argv[]) {
+ 
+  struct CFitfp *fp=NULL;
+  struct CFitdata cfit;
+
+  int yr,mo,dy,hr,mt;
+  double sc;
+
+  fp=CFitOpen(argv[1]);
+
+  if (fp==NULL) {
+    fprintf(stderr,&quot;File not found.&apos;n&quot;);
+    exit(-1);
+  }
+
+  while(CFitRead(fp,&amp;cfit) !=-1) {
+    
+    TimeEpochToYMDHMS(cfit.time,&amp;yr,&amp;mo,&amp;dy,&amp;hr,&amp;mt,&amp;sc);
+    fprintf(stdout,&quot;%.4d-%.2d-%.2d %.2d:%.2d:%.2d bmnum=%d scan=%d&apos;n&quot;,
+            yr,mo,dy,hr,mt,(int) sc,cfit.bmnum,cfit.scan);
+
+
+   
+
+
+  }
+  CFitClose(fp);
+
+  return 0;
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

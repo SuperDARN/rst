@@ -1,0 +1,56 @@
+# Makefile for the libraries
+# =======================================
+# by R.J.Barnes
+#
+#
+
+# Linux (GCC)
+#
+
+CFLAGS += -fPIC -Wall -O3 -ansi \
+         -D_GNU_SOURCE -D_LINUX $(INCLUDE)
+
+LFLAGS += -shared -lm -lz 
+SUF=so
+  
+VSTR=$(shell get.version ${CURDIR}/..)
+
+.c.o:
+	$(CC) $(CFLAGS) -c $<    
+
+ifdef OUTPUT
+$(OUTPUT): version hdr $(OBJS)
+	mkdir -p $(DSTPATH)
+	ar -r $(DSTPATH)/lib$(OUTPUT).$(VSTR).a $(OBJS)
+	$(LD) $(LFLAGS) -o $(DSTPATH)/lib$(OUTPUT).$(VSTR).$(SUF) \
+              $(OBJS) $(LNK) -L$(LIBPATH) -L$(USR_LIBPATH) $(LIBS) $(SLIB)
+	cd $(DSTPATH); ln -sf lib$(OUTPUT).$(VSTR).a \
+               lib$(OUTPUT).$(LINK).a 
+	cd $(DSTPATH); ln -sf lib$(OUTPUT).$(VSTR).so \
+               lib$(OUTPUT).$(LINK).so 
+
+
+else
+dummy: hdr
+
+endif
+
+hdr: 
+	make.hdr $(CURDIR)/../include $(INC) 
+
+
+version:
+	make.version $(CURDIR)/..
+
+
+clean:
+	rm -f *.o
+
+
+
+ 
+
+
+
+
+

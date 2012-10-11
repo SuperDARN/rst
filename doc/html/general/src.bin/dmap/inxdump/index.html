@@ -1,0 +1,71 @@
+<head>
+<title>inxdump</title>
+<link rel=stylesheet href="../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../general/index.html>general</a></td>
+<td>|</td><td><a href=../../../../general/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../general/src.bin/dmap/index.html>dmap</a></td><td>|</td>
+<td>inxdump</td>
+<td width=100% align=right><a href=../../../../general/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">inxdump</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+inxdump --help<br>inxdump [-xtd] [<em>name</em>]<br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Dump the contents of a DataMap index file.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-xtd</code></td><td valign="top">the index file is an extended index that contains both start and stop time.</td></tr>
+<tr><td width="150" valign="top"><code><em>name</em></code></td><td valign="top">filename of the DataMap index file, if this is omitted the document will be read from standard input.</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Dump the contents of a DataMap index file.</p>
+<p>Many file formats that use the DataMap format have associated index files. The index file contains a record time and file offset to quickly locate a particular block or record. These index files nearly always have the same format and this utility provides a plain ASCII dump of an index.</p>
+<p>If the "<code>-xtd</code>" option is specified then the index file is assumed to be an extended index and contain both the start time and stop time of each record.</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">inxdump test.inx | more</pre></td></tr></table>
+<p>Dump the index file "<code>test.inx</code>", paginating using the <code>more</code> command.</p>
+
+<table ><tr><td class="docbox" ><pre width="80">inxdump -xtd test.inx &gt inx.txt</pre></td></tr></table>
+<p>Dump the extended index file "<code>test.inx</code>", and store it in the file "<code>inx.txt</code>"</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

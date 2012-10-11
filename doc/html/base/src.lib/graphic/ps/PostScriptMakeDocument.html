@@ -1,0 +1,112 @@
+
+<head>
+<title>PostScriptMakeDocument</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../base/index.html>base</a></td>
+<td>|</td><td><a href=../../../../base/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/index.html>graphic</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/ps/index.html>ps</a></td><td>|</td>
+<td>PostScriptMakeDocument</td>
+<td width=100% align=right><a href=../../../../base/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">PostScriptMakeDocument</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">int PostScriptMakePlot(<a href="structPostScript.html"><code>struct PostScript</code></a> *ptr, float x,float y,float wdt,float hgt, int land);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">base/rps.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">rps</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="PostScriptMakeDocument.html"><code>PostScriptMakeDocument</code></a> function creates a PostScript document.</p>
+<p>The offset from the edge of the page is given by the arguments <em>x</em> and <em>y</em>. The size of the plot is given by the arguments <em>wdt</em> and <em>hgt</em>.</p>
+<p>If the argument <em>land</em> has a non-zero value then the PostScript plot is rotated ninety degrees to form a landscape plot.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns zero on success. On error, (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center><a href="img/PostScriptMakeDocument.ps.gz">Download PostScript</a></center>
+         <br><center>Source Code: <a href="src/PostScriptMakeDocument.c">PostScriptMakeDocument.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* PostScriptMakeDocument
+   ======================
+   Author: R.J.Barnes
+*/
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &quot;rfbuffer.h&quot;
+#include &quot;rps.h&quot;
+
+int stream(char *buf,int sze,void *data) {
+  FILE *fp;
+  fp=(FILE *) data;
+  fwrite(buf,sze,1,stdout);
+  return 0;
+} 
+
+
+int main(int argc,char *argv[]) {
+
+  struct PostScript *ps=NULL;
+
+  float wdt=400,hgt=400;
+  float xoff=50,yoff=50;
+
+  unsigned int fgcol=0xffff0000;
+
+  int x;
+
+  ps=PostScriptMake();
+  PostScriptSetText(ps,stream,stdout);   
+  PostScriptMakeDocument(ps,xoff,yoff,wdt,hgt,0);
+  PostScriptMakePlot(ps);
+
+  for (x=10;x&lt;200;x+=5) {
+    PostScriptRectangle(ps,NULL,x,x,wdt-2*x,hgt-2*x,
+                   0,fgcol,0,NULL,NULL);
+  }
+ 
+
+ 
+  PostScriptEndPlot(ps);
+  PostScriptEndDocument(ps);
+  return 0;
+}
+
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

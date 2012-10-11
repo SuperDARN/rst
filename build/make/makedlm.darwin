@@ -1,0 +1,49 @@
+# Makefile for the libraries
+# =======================================
+# by R.J.Barnes
+#
+#
+
+# Linux (GCC)
+#
+
+CFLAGS = -fPIC -Wall -O3 -ansi \
+         -D_GNU_SOURCE -D_LINUX $(INCLUDE)
+ 
+SUF=so
+  
+VSTR=$(shell get.version ${CURDIR}/..)
+
+LFLAGS= -Wl,-rpath,@loader_path/../lib/ -Wl,-rpath,@loader_path/../../lib/ \
+          -L/opt/local/lib -L$(LIBPATH) -L$(USR_LIBPATH)
+
+
+.c.o:
+	$(CC) $(CFLAGS) -c $<    
+
+ifdef OUTPUT
+$(OUTPUT): version $(OBJS)
+	mkdir -p $(DSTPATH)
+	cp ${DLMFILE} ${DSTPATH}/${DLMFILE}
+	gcc -flat_namespace -undefined suppress -bundle \
+        -o $(DSTPATH)/$(OUTPUT).$(SUF) ${LFLAGS} \
+              $(OBJS) -L$(LIBPATH) $(SLIB)	      
+	      
+
+endif
+
+version:
+	make.version $(CURDIR)/..
+
+
+clean:
+	rm -f *.o
+
+
+
+ 
+
+
+
+
+

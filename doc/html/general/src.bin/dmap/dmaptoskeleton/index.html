@@ -1,0 +1,76 @@
+<head>
+<title>dmaptoskeleton</title>
+<link rel=stylesheet href="../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../general/index.html>general</a></td>
+<td>|</td><td><a href=../../../../general/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../general/src.bin/dmap/index.html>dmap</a></td><td>|</td>
+<td>dmaptoskeleton</td>
+<td width=100% align=right><a href=../../../../general/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">dmaptoskeleton</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+dmaptoskeleton --help<br>dmaptoskeleton [-vb] <em>datamap</em> <em>skeleton</em> <em>map</em><br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Scans a DataMap file to produce a Skeleton table that can be used to create a Common Data Format (CDF) file.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-vb</code></td><td valign="top">verbose. Log information to the console.</td></tr>
+<tr><td width="150" valign="top"><code><em>datamap</em></code></td><td valign="top">filename of the DataMap file to scan.</td></tr>
+<tr><td width="150" valign="top"><code><em>skeleton</em></code></td><td valign="top">filename of the skeleton table to generate.</td></tr>
+<tr><td width="150" valign="top"><code><em>map</em></code></td><td valign="top">filename of mapping that relates variables in the DataMap file to those in the skeleton table.</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Scans a DataMap file to produce a Skeleton table that can be used to create a Common Data Format (CDF) file.</p>
+
+<p>A CDF file is divided up into rVariables and zVariables. All rVariables share the same dimensionality. zVariables can have different dimensionality from each other. A CDF file can contain multiple records but each record must have the same rVariables and zVariables.</p>
+
+<p>In translating <code>DataMap</code> files, scalars are stored in rVariables and arrays are stored in zVariables.</p>
+
+<p>An CDF file can be created from a specially formatted text file called a skeleton table. The utility skeletoncdf produces the empty CDF file from the skeleton table.</p>
+
+<p>The tool <code>dmaptoskeleton</code> first analyses a <code>DataMap</code> file to determine the variables requires and produces an outline skeleton table and a mapping table that translates the variable names in the <code>DataMap</code> file to the CDF equivalents. The user can edit this file to correct any problems and add any meta-data required.</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">dmaptoskeleton 20021219.kap.fitacf fitacf.skeleton fitmacf.cdfmap</pre></td></tr></table>
+<p>Generate the skeleton table "<code>fitacf.skeleton</code>" and mapping table  "<code>fitacf.cdfmap</code>" from the file "<code>20021219.kap.fitacf</code>".</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

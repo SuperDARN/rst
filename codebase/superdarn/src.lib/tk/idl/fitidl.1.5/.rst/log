@@ -1,0 +1,29 @@
+commit 2b0579b4139de0be4c5f0d7060f1f9960e27bfb0
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:58 2012 -0400
+
+    Updated license
+
+commit 095d63d1f6f406c5701725c507ae8d397178227f
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 18 11:32:37 2010 -0500
+
+    Fixed bug in fitacf files with invalid xcf flags.
+
+commit 263db596f3c11b05764179b86d6aa1755b922c85
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 14:54:07 2010 -0500
+
+    Fixed IDL types for 64 bit
+
+commit 37eb05be3c5b14e81a31a2b04978c234017029b4
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 4 16:19:58 2010 -0400
+
+    Removed unused variables.
+
+commit 7fbce17b6fb9a3064c98945743368b255ab7a544
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Nov 3 16:49:32 2010 -0400
+
+    fitidl support library.

@@ -1,0 +1,29 @@
+commit 72b6f0ecfb83c42dfcda8ca16235a5bd3f07ce9d
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:21 2012 -0400
+
+    Updated license
+
+commit 8486fb6552db05a300ae1147eb960bf65769f1e5
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Tue Jun 15 13:57:32 2010 -0400
+
+    Removed old headers.
+
+commit d61d22d91dcddbfdf7c8ff00a249821c0820a3bf
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Mon May 24 10:24:41 2010 -0400
+
+    Fixed name of functions.
+
+commit 606b5ab83c0fe40085a034b47bd1b44af418ddfd
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Sat May 22 14:53:49 2010 -0400
+
+    Replaced calculatations with standard UNIX time functions.
+
+commit 24ec0389b129f0a6197bdbc6967da2d94b9ceff3
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:36:48 2010 +0000
+
+    Initial commit

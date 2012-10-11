@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>general</project>
+<name>invtime</name>
+<location>src.bin/text/invtime</location>
+<syntax>invtime --help</syntax>
+<syntax>invtime [-c <ar>columns...</ar>] [<ar>name</ar>]</syntax>
+<syntax>invtime -d -sd <ar>yyyymmdd</ar> [-c <ar>columns...</ar>] [<ar>name</ar>]</syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>-c <ar>columns</ar></on><od>print only the columns given by the comma separated list <ar>columns</ar>.</od>
+</option>
+<option><on>-d</on><od>the time is given as seconds of day.</od>
+</option>
+<option><on>-sd <ar>yyyymmdd</ar></on><od>set the start date to the value of <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on><ar>name</ar></on><od>filename of the ASCII file, if this is omitted the file will be read from standard input.</od>
+</option>
+<synopsis><p>Convert back from second of epoch or second of day to regular time.</p></synopsis>
+
+
+<description><p>Convert from a time expressed as seconds from 0:00UT January 1, 1970, or seconds from the start of a day, in a text file, back to the full Universal Time.</p>
+<p>The reformatted text file is written to standard output.</p>
+
+
+<p>Each line of the data file should consist of a single record. Entries in the record should be space or tab separated and the first number represent the date and time of the record expressed either as seconds from epoch or seconds from start of day:</p>
+
+<quote>seconds data...</quote>
+
+<p>The remainder of the line is the record data.</p>
+<p>The program converts the time back to a full representation of year, month, day, hour, minute and seconds. if the "<code>-d</code>" option is specified then the "<code>-sd</code>" option can be used to set the start date of the data.</p>  
+<p>The converted time followed by the remainder of the record data is written to standard output.</p>
+</description>
+
+
+<example>
+<command>invtime data.txt &gt; data.2.txt</command>
+<description>Convert the times in the file "<code>data.txt</code>" to a full reprentation of year, month, day, hour, minute and second. The output is written to the file "<code>data.2.txt</code>".</description>
+</example>
+<example>
+<command>etime -d -sd 20040830 data.txt &gt; data.2.txt</command>
+<description>Convert the times in the file "<code>data.txt</code>" to a full representation of year, month, day, hour, minute, and seconds. The input file is assumed to contain seconds from the start of the day and the date is set to 30th August, 2004.  The output is written to the file "<code>data.2.txt</code>".</description>
+</example>
+
+
+
+</binary>

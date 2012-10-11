@@ -1,0 +1,71 @@
+commit 0f0fca902fb3883fbc1d7fa39b46015998f3e3ec
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:03 2012 -0400
+
+    Updated license
+
+commit 2ea42c1e712c4e813e898ea1a266529ed0d4b543
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Aug 26 15:57:00 2011 -0400
+
+    Fixed issue with Southern Hemisphere reference vector.
+
+commit 9599e9fe2acade4a089b3d99e1cee47abfe0e05f
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Oct 12 08:44:02 2010 -0400
+
+    Fixed time rotation for Southern Hemisphere
+
+commit 73ed6b74a0da05e297a9be56d57d40393cd29210
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed Sep 15 11:36:38 2010 -0400
+
+    New mapping functions
+
+commit 9558d904b3c2a2a5950704dc3cb0554328e245e9
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Aug 31 09:50:34 2010 -0400
+
+    Changed makefile for iplot library.
+
+commit 836d27483f4c2a4cee8f893b657c47ef0c3149b7
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Fri Aug 27 11:03:08 2010 -0400
+
+    Renamed iplot.h
+
+commit e47e71bf93b017cd44b55340cc1a94bd6c46c071
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Aug 16 11:18:00 2010 -0400
+
+    Added PNG support.
+
+commit f6d0c7913d2ded89962bc535fa8038f373c78fcd
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 08:34:10 2010 -0400
+
+    Updated documentation
+
+commit 8c1882d10d71436f827dd781d02897eef3940075
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 9 13:13:38 2010 -0400
+
+    Switched to new SZA library functions
+
+commit 56b940414e0dee90fd8a3c2fd09399b27e992c46
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 9 10:09:51 2010 -0400
+
+    Adopted MLT library.
+
+commit 97a258300cc087eb0e0811a737c7d7126856fa70
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:36:34 2010 -0400
+
+    Fixed makefile.
+
+commit a384e08d1f962a7661606e507a9727d4eaeb6044
+Author: Code Development Account <code@robin-barness-macbook-pro.local>
+Date:   Tue May 11 06:48:17 2010 -0400
+
+    Grid_plot

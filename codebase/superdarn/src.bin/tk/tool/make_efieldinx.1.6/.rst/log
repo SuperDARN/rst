@@ -1,0 +1,17 @@
+commit b77c91488cc6b4b3a152f17b768ffc324890e558
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:04 2012 -0400
+
+    Updated license
+
+commit c04cc8b8732555047eb3d0e14ad2c175bd2a5672
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 08:32:39 2010 -0400
+
+    Updated documentation
+
+commit b449eaf268dcb6c902dc0702442263608e38e472
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:05 2010 +0000
+
+    Initial commit

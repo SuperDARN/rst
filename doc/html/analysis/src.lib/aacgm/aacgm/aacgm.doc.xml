@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<library>
+<project>analysis</project>
+<name>aacgm</name>
+<location>src.lib/aacgm/aacgm</location>
+
+<function>
+<name>AACGMConvert</name>
+<location>src.lib/aacgm/aacgm</location>
+<header>analysis/aacgm.h</header>
+<syntax>int AACGMConvert(double ilat,double ilon,double hgt,double *olat,double *olon,double *r,int flg);</syntax>
+<description><p>The <fn href="AACGMConvert.html">AACGMConvert</fn> function converts to and from Altitude Adjusted Corrected Geo-Magnetic Coordinates.</p>
+<p> The arguments <ar>ilat</ar>, <ar>ilon</ar>, and <ar>hgt</ar> give the input latitude and longitude in degrees, and height of the conversion in kilometers. The latitude and longitude after the conversion are stored at the locations pointed to by the arguments <ar>olat</ar> and <ar>olon</ar>. The accuracy of the transformation is measured in terms of how close the conversion came to the unit circle, and ideal conversion being (1.0). This value is stored at the location pointed to by the argument <ar>r</ar>. The argument <ar>flg</ar> indicates what kind of transformation should be performed, a value of (0) will convert from geographic to geomagnetic coordinates, and a value of (1) will convert back from geomagnetic to geographic coordinates.</p>
+</description> 
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">AACGMConvert.c</example>
+</function>
+
+<function>
+<name>AACGMInit</name>
+<location>src.lib/aacgm/aacgm</location>
+<header>analysis/aacgm.h</header>
+<syntax>int AACGMInit(int yr);</syntax>
+<description><p>The <fn href="AACGMInit.html">AACGMInit</fn> will load the coefficient set for the year given by the argument <ar>yr</ar>.</p><p>The prefix of the coefficient filename should be given by the environment variable <env>AACGM_DAT_PREFIX</env>, the four digit year is appended to this to create the full filename.</p>
+</description> 
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">AACGMInit.c</example>
+</function>
+
+<function>
+<name>AACGMLoadCoef</name>
+<location>src.lib/aacgm/aacgm</location>
+<header>analysis/aacgm.h</header>
+<syntax>int AACGMLoadCoef(char *fname);</syntax>
+
+<description><p>The <fn href="AACGMLoadCoef.html">AACGMLoadCoef</fn> function loads a set of coefficients from the file whose name is given by the argument <ar>fname</ar>.</p>
+</description> 
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">AACGMLoadCoef.c</example>
+</function>
+
+
+</library>
+

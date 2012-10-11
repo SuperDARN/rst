@@ -1,0 +1,29 @@
+commit b2a7cfe15baf8150a5e29d391c5e4d2ccf095e90
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:16 2012 -0400
+
+    Updated license
+
+commit cc0ca34ee260d4b1a0891cf2d76274fca407aa4a
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Aug 26 14:05:49 2011 -0400
+
+    Removed redundant tests for TCP/IP libraries
+
+commit 5b46a6f0510206bdfdfc5d82adfcb9c6359d6186
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Jul 12 08:11:32 2011 -0400
+
+    Further clean up of error trapping.
+
+commit 9875c95188208a45fcc05926212259c4d51633ca
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jul 11 13:10:04 2011 -0400
+
+    Added better debugging code to the connection.
+
+commit 2bb00aedfc2a5911816fd855b4e784069afdb97f
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:36:51 2010 +0000
+
+    Initial commit

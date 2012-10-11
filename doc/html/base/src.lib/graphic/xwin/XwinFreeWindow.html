@@ -1,0 +1,150 @@
+
+<head>
+<title>XwinFreeWindow</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../base/index.html>base</a></td>
+<td>|</td><td><a href=../../../../base/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/index.html>graphic</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/xwin/index.html>xwin</a></td><td>|</td>
+<td>XwinFreeWindow</td>
+<td width=100% align=right><a href=../../../../base/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">XwinFreeWindow</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">int XwinFreeWindow(<a href="structXwinWindow.html"><code>struct XwinWindow</code></a> *wp);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">base/xwin.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">xwin</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="XwinFreeWindow.html"><code>XwinFreeWindow</code></a> function releases memory allocated to store a control structure for  a window on an X terminal.</p>
+<p>The control structure of the window is pointed to by the argument <em>wp</em>.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>None</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>None</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/XwinFreeWindow.c">XwinFreeWindow.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* XwinFreeWindow.c
+   ================ 
+   Author: R.J.Barnes
+*/
+
+#include &lt;X11/Xlib.h&gt;
+#include &lt;X11/Xutil.h&gt;
+#include &lt;X11/Xos.h&gt;
+#include &lt;X11/Xatom.h&gt;
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;time.h&gt;
+#include &lt;unistd.h&gt;
+
+#include &quot;rfbuffer.h&quot;
+#include &quot;xwin.h&quot;
+
+
+struct FrameBuffer *fbuf=NULL;
+
+int main(int argc,char *argv[]) {
+
+  struct XwinDisplay *dp;
+  struct XwinWindow *win;
+
+  int wdt=300,hgt=300;
+  unsigned int border=0;
+  int flg;
+  int i;
+
+  float x,y,z,r,g,b;
+  unsigned int cv;
+
+  char *display_name=NULL;
+ 
+  char *progname;
+  int status=0;
+ 
+  progname=argv[0];
+
+  dp=XwinOpenDisplay(display_name,&amp;flg);
+  win=XwinMakeWindow(0,0,wdt,hgt,border,
+                     dp,&quot;Test Window&quot;,
+                    &quot;Test Window&quot;,&quot;Test Window&quot;,
+                    &quot;basic&quot;,argc,argv,&amp;flg);
+                           
+
+  if ((fbuf=FrameBufferMake(&quot;Test&quot;,wdt,hgt,24))==NULL) {
+     fprintf(stderr,&quot;failed to make frame buffer.&quot;);
+     exit(-1);
+  }
+
+  for (i=0;i&lt;200;i++) {
+
+    r=((float) rand())/RAND_MAX;
+    g=((float) rand())/RAND_MAX;
+    b=((float) rand())/RAND_MAX;
+ 
+    x=((float) rand())/RAND_MAX;
+    y=((float) rand())/RAND_MAX;
+    z=((float) rand())/RAND_MAX;
+
+    cv=FrameBufferColor(255*r,255*g,255*b,255);
+
+    FrameBufferEllipse(fbuf,NULL,wdt*x,hgt*y,z*100,z*100,1,
+                         cv,0x0f,0,NULL,NULL);
+  }
+
+  XwinFrameBufferWindow(fbuf,win);
+
+  XwinShowWindow(win);
+  
+  status=XwinDisplayEvent(dp,1,&amp;win,0,NULL);
+  
+  XwinFreeWindow(win);
+
+  XwinCloseDisplay(dp);
+
+  return 0;
+}
+
+
+
+
+
+  
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

@@ -1,0 +1,116 @@
+
+<head>
+<title>CFitReadRadarScan</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../superdarn/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/cfit/index.html>cfit</a></td><td>|</td>
+<td>CFitReadRadarScan</td>
+<td width=100% align=right><a href=../../../../superdarn/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">CFitReadRadarScan</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">int CFitReadRadarScan(<a href="structCFitfp.html"><code>struct CFitfp</code></a> *fp,int *state,<a href="../../../../src.lib/tk/scan/structRadarScan.html"><code>struct RadarScan</code></a> *ptr,<a href="structCFitdata.html"><code>struct CFitdata</code></a> *cfit,int tlen, int lock,int chn);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">superdarn/cfitscan.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">cfit</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="CFitReadRadarScan.html"><code>CFitReadRadarScan</code></a> function reads one full scan of data from a <code>cFit</code> data file.</p>
+<p>The data is read from the open file pointed to by the argument <em>fp</em>.</p>
+<p>The argument <em>state</em> is a pointer to an integer that is used internally by the function to track progress through the <code>CFit</code> file. Initially this integer should be set to zero, indicating that no data has been read from the file yet. The other possible value of <em>state</em> are (1), indicating that a complete scan was read from the file and data from the next scan is pending, or (2) indicating that a file error occurred.</p>
+<p>The scan data is written to the structure pointed to by the argument <em>ptr</em>. Memory is automatically allocated within this structure to store the beam data.</p>
+<p>In order for the function to correctly identify a scan boundary, it must read the first beam from the subsequent scan. This data must be preserved so that it can be included in the next block of scan data returned by the next call to the function. This is done by providing storage for the <code>cFit</code> data pointed to by the argument <em>cfit</em>.</p>
+<p>If the argument <em>tlen</em> has a non-zero value then the function will ignore the scan flag and instead assume the the scan has a length of <em>tlen</em> seconds. If the argument <em>lock</em> has a non-zero value it is also assumed that the scan boundaries are fixed relative to the start of the day.</p>
+<p>If the final argument <em>chn</em>, is compared against the channel number recorded in the radar parameter block, if the two numbers do not match then the data record is excludef from the scan.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns zero on success, or (1) if the end of file was reached. On error, (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/CFitReadRadarScan.c">CFitReadRadarScan.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* CFitReadRadarScan.c
+   ===================
+   Author: R.J.Barnes */
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#include &quot;rtypes.h&quot;
+#include &quot;rtime.h&quot;
+#include &quot;limit.h&quot;
+#include &quot;cfitdata.h&quot;
+#include &quot;cfitread.h&quot;
+#include &quot;scandata.h&quot;
+#include &quot;cfitscan.h&quot;
+
+struct RadarScan scn;
+
+
+int main(int argc,char *argv[]) {
+ 
+  struct CFitfp *fp=NULL;
+  struct CFitdata cfit;
+  int state=0;
+
+
+  int yr,mo,dy,hr,mt;
+  double sc;
+
+  fp=CFitOpen(argv[1]);
+
+  if (fp==NULL) {
+    fprintf(stderr,&quot;File not found.&apos;n&quot;);
+    exit(-1);
+  }
+
+  while(CFitReadRadarScan(fp,&amp;state,&amp;scn,&amp;cfit,0,0,0) !=-1) {
+    TimeEpochToYMDHMS(scn.st_time,&amp;yr,&amp;mo,&amp;dy,&amp;hr,&amp;mt,&amp;sc);
+
+    fprintf(stdout,&quot;%.4d-%.2d-%.2d %.2d:%.2d:%.2d&apos;n&quot;,
+            yr,mo,dy,hr,mt,(int) sc);
+
+  }
+
+  CFitClose(fp);
+
+  return 0;
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

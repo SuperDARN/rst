@@ -1,0 +1,108 @@
+
+<head>
+<title>PostScriptColor</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../base/index.html>base</a></td>
+<td>|</td><td><a href=../../../../base/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/index.html>graphic</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/ps/index.html>ps</a></td><td>|</td>
+<td>PostScriptColor</td>
+<td width=100% align=right><a href=../../../../base/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">PostScriptColor</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">unsigned int PostScriptColor(int r,int g,int b);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">base/rps.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">rps</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="PostScriptColor.html"><code>PostScriptColor</code></a> function creates an integer representation of a color.</p>
+<p>The red, green, and blue component of the color are given by the arguments <em>r</em>, <em>g</em>, and <em>b</em>. The values of these arguments range from zero to (255).</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns an integer representation of the color on success. On error, (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center><a href="img/PostScriptColor.ps.gz">Download PostScript</a></center>
+         <br><center>Source Code: <a href="src/PostScriptColor.c">PostScriptColor.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* PostScriptColor
+   ===============
+   Author: R.J.Barnes
+*/
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &quot;rfbuffer.h&quot;
+#include &quot;rps.h&quot;
+
+int stream(char *buf,int sze,void *data) {
+  FILE *fp;
+  fp=(FILE *) data;
+  fwrite(buf,sze,1,stdout);
+  return 0;
+} 
+
+
+int main(int argc,char *argv[]) {
+
+  struct PostScript *ps=NULL;
+
+  float wdt=400,hgt=400;
+  float xoff=50,yoff=50;
+
+  unsigned int fgcol=0xff000000;
+
+  ps=PostScriptMake();
+  PostScriptSetText(ps,stream,stdout);   
+  PostScriptMakeDocument(ps,xoff,yoff,wdt,hgt,0);
+  PostScriptMakePlot(ps);
+
+  fgcol=PostScriptColor(255,128,64);
+
+  PostScriptRectangle(ps,NULL,10,10,wdt-20,hgt-20,
+                  1,fgcol,0,NULL,NULL);
+
+
+  PostScriptEndPlot(ps);
+  PostScriptEndDocument(ps);
+  return 0;
+}
+
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

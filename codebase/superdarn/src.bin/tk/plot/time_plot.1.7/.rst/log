@@ -1,0 +1,47 @@
+commit 97543a9dbaf35a05495a238439b9116d92f5a3e7
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:02 2012 -0400
+
+    Updated license
+
+commit d48e61b613150e3bcddbd56716137c6ead56b698
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Sun Mar 27 06:09:04 2011 -0400
+
+    Added new CFit headers
+
+commit 2184d7242a60b2516e14240aeaf706c3b0cb8cbc
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Aug 31 09:53:34 2010 -0400
+
+    Changed makefile for iplot library.
+
+commit 9ec9f492b390946e74a8b1bfb984ed26491e9e7a
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Fri Aug 27 11:20:55 2010 -0400
+
+    Renamed iplot.h
+
+commit 67df4ccabb0e97e11976543ea92a57834f78c797
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Aug 16 12:55:20 2010 -0400
+
+    Added PNG Support
+
+commit 1758f6ee0e291fdd1525005204103597a1724b99
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 08:34:42 2010 -0400
+
+    Updated documentation
+
+commit 5d0c3422d5732a1be3da1f5676fcc8c36f2af1ec
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:48:25 2010 -0400
+
+    Added tplot logic.
+
+commit 15830d3d341c374c7f62c16b172caff157ad9316
+Author: Code Development Account <code@robin-barness-macbook-pro.local>
+Date:   Tue May 11 06:48:50 2010 -0400
+
+    Time_plot

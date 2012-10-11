@@ -1,0 +1,35 @@
+commit 5dc3a8607c3d0410567df506abbb704805f34ce7
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:06 2012 -0400
+
+    Updated license
+
+commit 0ecf413ec2794d4980c2ad40a4ec84a0e08a34b1
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Sun Mar 27 06:19:38 2011 -0400
+
+    Added new CFit headers
+
+commit 932da6eadbe18af5e4e9e6e07014fcf5aeef5bd6
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 23 12:12:25 2010 -0400
+
+    Changed handling of end time.
+
+commit 64c7b944fad696e8f4d1c8a2394cb222b0f057ff
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 08:32:42 2010 -0400
+
+    Updated documentation
+
+commit 170b812a751faa59fbfd678867b20f3b7eccee23
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:38:16 2010 -0400
+
+    Fixed makefile.
+
+commit 582a5748e4016979fc7c8025983a7e9e19112260
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:07 2010 +0000
+
+    Initial commit

@@ -1,0 +1,146 @@
+
+<head>
+<title>OldFitInxClose</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../superdarn/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/oldfit/index.html>oldfit</a></td><td>|</td>
+<td>OldFitInxClose</td>
+<td width=100% align=right><a href=../../../../superdarn/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">OldFitInxClose</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">int OldFitInxClose(int inxfd,<a href="../../../../src.lib/tk/radar/structRadarParm.html"><code>struct RadarParm *prm</code></a>,int irec);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">superdarn/oldfitwrite.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">oldfit</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="OldFitInxClose.html"><code>OldFitInxClose</code></a> function prepares an index file of a <code>fit</code> data file for closure.</p>
+<p>The file descriptor of the open index file is  given by the argument <em>inxfd</em>. The argument <em>prm</em> point to the last radar parameter block stored in the <code>fit</code> file and the argument <em>irec</em> is the index of the last record stored in the index file.</p>
+<p>The first record of an index file contains information about the start and end times of the fit file and the total number of index records in the file. Consequently the first record of the file is actually written last.</p> 
+<p>This function must be called before the index file is closed.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns zero on success. On error, (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/OldFitInxClose.c">OldFitInxClose.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* OldFitInxClose.c
+   ================
+   Author: R.J.Barnes */
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;sys/stat.h&gt;
+#include &lt;unistd.h&gt;
+#include &quot;rtypes.h&quot;
+#include &quot;dmap.h&quot;
+#include &quot;limit.h&quot;
+#include &quot;rprm.h&quot;
+#include &quot;fitdata.h&quot;
+#include &quot;oldfitread.h&quot;
+#include &quot;oldfitwrite.h&quot;
+
+struct RadarParm pbuf[2];
+struct FitData fbuf[2];
+
+struct FitData *fptr;
+struct RadarParm *pptr;
+
+int fnum=0;
+
+int main(int argc,char *argv[]) {
+ 
+  int irec=1;
+  int drec=2,dnum;
+
+  struct OldFitFp *fitfp;
+  FILE *inxfp=0;
+
+  int inxfd;
+
+
+  fitfp=OldFitOpen(argv[1],NULL);
+
+  if (fitfp==NULL) {
+    fprintf(stderr,&quot;File not found.&apos;n&quot;);
+    exit(-1);
+  }
+
+
+  inxfp=fopen(argv[2],&quot;w&quot;);
+  if (inxfp==NULL) {
+    fprintf(stderr,&quot;could not create index file.&apos;n&quot;);
+    exit(-1);  
+  }
+  inxfd=fileno(inxfp);
+ 
+  while(OldFitRead(fitfp,&amp;pbuf[fnum],&amp;fbuf[fnum]) !=-1) {
+  
+
+
+    fptr=&amp;fbuf[fnum];
+    pptr=&amp;pbuf[fnum];
+    fnum=(fnum+1) % 2;
+    if (irec==1) OldFitInxHeaderWrite(inxfd,pptr);
+    dnum=OldFitFwrite(NULL,pptr,fptr,NULL);
+    OldFitInxWrite(inxfd,drec,dnum,pptr);
+    fprintf(stderr,&quot;%.4d-%.2d-%.2d %.2d:%.2d:%.2d&apos;n&quot;,
+            pptr-&gt;time.yr,
+            pptr-&gt;time.mo,pptr-&gt;time.dy,pptr-&gt;time.hr,pptr-&gt;time.mt,
+            pptr-&gt;time.sc);
+
+
+    drec+=dnum;
+    irec++;
+  }
+ 
+  OldFitClose(fitfp);
+  fclose(inxfp);
+  inxfp=fopen(argv[2],&quot;r+&quot;);
+  inxfd=fileno(inxfp);
+  OldFitInxClose(inxfd,pptr,irec-1);
+  fclose(inxfp);
+
+  return 0;
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

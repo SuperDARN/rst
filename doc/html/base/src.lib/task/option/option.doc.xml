@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>base</project>
+<name>opt</name>
+<location>src.lib/task/option</location>
+<function>
+<name>OptionAdd</name>
+<location>src.lib/task/option</location>
+<header>base/option.h</header>
+<syntax>int OptionAdd(<sn href="structOptionData.html">struct OptionData</sn> *opt,char *name,char type,void *data);</syntax>
+
+<description><p>The <fn href="OptionAdd.html">OptionAdd</fn> function add a command line option to a table of options.</p>
+<p>The table of command line options is given by the argument <ar>opt</ar> which is a pointer to a structure. The command line option, without the leading "-" is given by the argument <ar>name</ar>. The type of the option is given by the argument <ar>type</ar>. If the command line option takes an argument, the decoded value of that argument is written to the location given by <ar>data</ar>.</p>
+<p>The possible type codes are:</p>
+<center>
+<table>
+<tr><td><code>'x'</code></td><td>Flag</td></tr>
+<tr><td><code>'i'</code></td><td>Option takes an integer argument of type <code>int</code>.</td></tr>
+<tr><td><code>'s'</code></td><td>Option takes an integer argument of type <code>short</code>.</td></tr>
+<tr><td><code>'l'</code></td><td>Option takes an integer argument of type <code>long</code>.</td></tr>
+<tr><td><code>'f'</code></td><td>Option takes a floating point argument of type <code>float</code>.</td></tr>
+<tr><td><code>'d'</code></td><td>Option takes a floating point argument of type <code>double</code>.</td></tr>
+<tr><td><code>'t'</code></td><td>Option takes a text string as an argument.</td></tr>
+<tr><td><code>'a'</code></td><td>Option can takes a text string as an argument and occur multiple times.</td></tr>
+
+</table>
+</center>
+<p>If the option type code is <code>'t'</code>, then <ar>data</ar> should point to a pointer of type <code>char *</code>. The value of the pointer should be initialized to <code>NULL</code>. When the command line options are parsed, memory will be allocated to store the zero-terminated text string and its location will be stored in this pointer. The memory allocated should be freed when the text string is no longer required.</p>
+<p>If the option type code is <code>'a'</code>, then <ar>data</ar> should point to a pointer of type <sn href="structOptionText.html">struct OptionText *</sn>. When the command line options are parsed, memory will be allocated for this structure and it will be populated. The memory should be freed when the structure is no longer required by calling the function <fn href="OptionFreeText.html">OptionFreeText</fn>.</p> 
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OptionAdd.c</example>
+</function>
+
+<function>
+<name>OptionDump</name>
+<location>src.lib/task/option</location>
+<header>base/option.h</header>
+<syntax>void OptionDump(FILE *fp,<sn href="structOptionData.html">struct OptionData</sn> *opt);</syntax>
+<description><p>The <fn href="OptionDump.html">OptionDump</fn> write the possible command line options to a stream.</p>
+<p>The list of options are written to the stream pointed to by the argument <ar>fp</ar>. The table of command line options is given by the argument <ar>opt</ar> which is a pointer to a structure.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OptionDump.c</example>
+</function>
+
+<function>
+<name>OptionFree</name>
+<location>src.lib/task/option</location>
+<header>base/option.h</header>
+<syntax>void OptionFree(<sn href="structOptionData.html">struct OptionData</sn> *opt);</syntax>
+<description><p>The <fn href="OptionFree.html">OptionFree</fn> function releases memory used to store a table of command line options.</p>
+<p>The table of command line options is given by the argument <ar>opt</ar> which is a pointer to a structure.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OptionFree.c</example>
+</function>
+<function>
+<name>OptionFreeFile</name>
+<location>src.lib/task/option</location>
+<header>base/option.h</header>
+<syntax>void OptionFreeFile(<sn href="structOptionFile.html">struct OptionFile</sn> *ptr);</syntax>
+<description><p>The <fn href="OptionFreeFile.html">OptionFreeFile</fn> function releases memory used to store command line options parsed from a file using the function <fn href="OptionProcessFile">OptionProcessFile</fn>.</p>
+<p>The parsed command line options are given by the argument <ar>ptr</ar> which is a pointer to a structure.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OptionFreeFile.c</example>
+</function>
+<function>
+<name>OptionFreeText</name>
+<location>src.lib/task/option</location>
+<header>base/option.h</header>
+<syntax>void OptionFreeText(<sn href="structOptionText.html">struct OptionText</sn> *ptr);</syntax>
+<description><p>The <fn href="OptionFreeText.html">OptionFreeText</fn> function releases memory used to store the array of command line options.</p>
+<p>The table of command line options is given by the argument <ar>ptr</ar> which is a pointer to a structure.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OptionFreeText.c</example>
+</function>
+<function>
+<name>OptionPrintInfo</name>
+<location>src.lib/task/option</location>
+<header>base/option.h</header>
+<syntax>void OptionPrintInfo(FILE *fp,char *str[]);</syntax>
+<description><p>The <fn href="OptionPrintInfo.html">OptionPrintInfo</fn> function writes a sequence of text strings to a stream.</p>
+<p>The strings are written to the stream given by the argument <ar>fp</ar>. The <code>NULL</code> terminated array of strings is pointed to by the argument <ar>str</ar>.</p>
+</description>
+<example type="source">OptionPrintInfo.c</example>
+</function>
+<function>
+<name>OptionProcess</name>
+<location>src.lib/task/option</location>
+<header>base/option.h</header>
+<syntax>int OptionProcess(int offset,int argc,char *argv[], <sn href="structOptionData.html">struct OptionData</sn> *opt,int (*opterr)(char *));</syntax>
+<description><p>The <fn href="OptionProcess.html">OptionProcess</fn> function decoded a sequence of command line options from the command line arguments.</p>
+<p>The argument <ar>offset</ar> is the offset into the array of command line arguments at which to start processing. The number of arguments is given by <ar>argc</ar> and the array of <code>NULL</code> terminated strings pointed to by <ar>argv</ar> contains the arguments. The table of options to be passed is pointed to by <ar>opt</ar>. The final argument is a pointer to a user-defined function of the form:</p>
+<fd>int opterr(char *txt);</fd>
+<p>This function is called in the event that an error is detected in parsing the command line options. This function is passed the argument <ar>txt</ar> which is the text of the argument that caused the error. The function should return with a zero if the error can be ignored or a non-zero number to halt further processing of the command line.</p>
+<p>If there is no user-defined error function, then the final argument should be set to <code>NULL</code> and errors will be ignored.</p> 
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OptionProcess.c</example>
+</function>
+<function>
+<name>OptionProcessFile</name>
+<location>src.lib/task/option</location>
+<header>base/option.h</header>
+<syntax><sn href="structOptionFile.html">struct OptionFile</sn> *OptionProcessFile(FILE *fp);</syntax>
+<description><p>The <fn href="OptionProcessFile.html">OptionProcessFile</fn> function reads a sequence of command line options from an open stream.</p>
+<p>The command line options are read from the stream pointed to by the argument <ar>fp</ar>. The stream is broken down into a sequence of space separated strings that are used to populate the structure the function returns.</p>
+</description>
+<returns>Returns a pointer to a structure containing the processed options. On error, <code>NULL</code> is returned.</returns>
+<errors>On error, <code>NULL</code> is returned.</errors>
+<example type="source">OptionProcessFile.c</example>
+</function>
+<function>
+<name>OptionScanFileArg</name>
+<location>src.lib/task/option</location>
+<header>base/option.h</header>
+<syntax>char *OptionScanFileArg(FILE *file);</syntax>
+<description><p>The <fn href="OptionScanFileArg.html">OptionScanFileArg</fn> function extracts a single space separated command line option from an open stream.</p>
+<p>The option is read from the stream pointed to by the argument <ar>fp</ar>. Line beginning with the '#' symbol are ignored and leading spaces are ignored.</p><p>The memory used to store the text string should be freed when it is no longer used.</p>
+</description>
+<returns>Returns a pointer to a zero terminated text string containing one command line option. On error, <code>NULL</code> is returned.</returns>
+<errors>On error, <code>NULL</code> is returned.</errors>
+<example type="source">OptionScanFileArg.c</example>
+</function>
+
+
+<structure>
+ <name>OptionData</name>
+ <location>src.lib/task/option</location>
+ <header>base/option.h</header>
+ <struct>
+    <member>
+      <proto>int num;</proto>
+      <description>Number of command line options in the table.</description>
+    </member>
+    <member>
+      <proto><sn href="structOptionEntry.html">struct OptionEntry</sn> *ptr;</proto>
+      <description>Pointer to an array of command line options.</description>
+    </member>
+ </struct>
+ <description>
+<p>The <sn href="structOptionData.html">struct OptionData</sn> structure stores the table of command line entries that are processed by the <fn href="OptionProcess.html">OptionProcess</fn> function.</p>
+</description>
+</structure>
+
+<structure>
+ <name>OptionEntry</name>
+ <location>src.lib/task/option</location>
+ <header>base/option.h</header>
+ <struct>
+    <member>
+      <proto>char *name;</proto>
+      <description>Name of the command line option.</description>
+    </member>
+    <member>
+      <proto>char type;</proto>
+      <description>Type proto.</description>
+    </member>
+    <member>
+      <proto>int set;</proto>
+      <description>Flag indicating whether the option was included on the command line.</description>
+    </member>
+    <member>
+      <proto>void *ptr;</proto>
+      <description>Pointer to the location to store any associated argument of the command line option.</description>
+    </member>
+ </struct>
+<description>
+<p>The <sn href="structOptionEntry.html">struct OptionEntry</sn> structure stores a single command line entry and is used in the structure <sn href="structOptionData.html">struct OptionData</sn>.</p>
+</description>
+
+</structure>
+
+<structure>
+ <name>OptionFile</name>
+ <location>src.lib/task/option</location>
+ <header>base/option.h</header>
+ <struct>
+    <member>
+      <proto>int argc;</proto>
+      <description>Number of command line options extracted from the file.</description>
+    </member>
+    <member>
+      <proto>char **argv;</proto>
+      <description>Pointer to an array of zero terminated strings containing the command line options.</description>
+    </member>
+  </struct>
+<description>
+<p>The <sn href="structOptionFile.html">struct OptionFile</sn> structure stores an array of command line options extracted from a stream or file and is returned by the function <fn href="OptionProcessFile.html">OptionProcessFile</fn>.</p>
+</description>
+
+
+ </structure>
+
+<structure>
+ <name>OptionText</name>
+ <location>src.lib/task/option</location>
+ <header>base/option.h</header>
+ <struct>
+    <member>
+      <proto>int num;</proto>
+      <description>Number of text arrays stored in the structure.</description>
+    </member>
+    <member>
+      <proto>char **txt;</proto>
+      <description>Pointer to an array of zero terminated text strings found on the command line.</description>
+    </member>
+  </struct>
+<description>
+<p>The <sn href="structOptionText.html">struct OptionText</sn> structure stores an array of strings supplied to as an argument to a comand line option that occurs multiple times in the command line. The structure is created by the function <fn href="OptionProcess.html">OptionProcess</fn> when it encounters a command line option with the type flag of 'a'. The memory claimed by the structure can be freed using the function <fn href="OptionFreeText.html">OptionFreeText</fn>.</p>
+</description>
+
+
+ </structure>
+</library>

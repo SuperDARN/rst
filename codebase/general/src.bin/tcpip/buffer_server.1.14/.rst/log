@@ -1,0 +1,23 @@
+commit e7003e9cc580be3ddff96f60b9bd660d8b175101
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:24 2012 -0400
+
+    Updated license
+
+commit 5d75cfcf4b00dff909a678bfa1ca3a809fb2ada4
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Aug 26 14:06:10 2011 -0400
+
+    Removed redundant tests for TCP/IP libraries
+
+commit f460cd123fc16ec496bfee5db45dd0ede7ccc2ef
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Tue Jun 15 13:32:59 2010 -0400
+
+    Changed socket options.
+
+commit 60a53f2586830f4d19303e6b19cbf22a8a670304
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:36:43 2010 +0000
+
+    Initial commit

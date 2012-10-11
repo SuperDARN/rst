@@ -1,0 +1,53 @@
+commit bfbcf5eadf8ae1c790783144d617dc5d4a6f3485
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:58 2012 -0400
+
+    Updated license
+
+commit 3a642df9d2fa6d1d855a2f5ac6b3d174d0f5576a
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Jun 24 13:09:00 2011 -0400
+
+    Fixed header definition.
+
+commit 0a3944732e90b2474715f82dc662b6c2b73e0c84
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Jun 24 12:01:57 2011 -0400
+
+    Propagated error conditions.
+
+commit 26c9602b060b314ec8c754e2d89c9760cb1b1b0b
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Jun 24 11:58:19 2011 -0400
+
+    Added error tests for beam mapping.
+
+commit 2e835f1a2e06d0765c30931631bb38974c2e966a
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Oct 12 08:36:11 2010 -0400
+
+    Bug  fix azimuths close to the pole.
+
+commit 47b039f80138b8b2591d4aa5ee2159a4271ad04a
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 23 14:02:28 2010 -0400
+
+    Fixed problem with resetting noise arrays.
+
+commit 4ae55b5257b1ef46317697a30d1004bba673ac24
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 09:56:41 2010 -0400
+
+    RST 3 Update
+
+commit 97ef038cb85286f0ef116b5058c0fa0b458e9032
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Mar 30 15:14:17 2010 -0400
+
+    Fixed documentation.
+
+commit f9ca17bbd3c547b39f5ba6f9d5b35cbd0e30c1e7
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:23 2010 +0000
+
+    Initial commit

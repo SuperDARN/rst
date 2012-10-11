@@ -1,0 +1,41 @@
+commit 43667aa859f07515e2113b6743d04ebfc06dbd57
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:00 2012 -0400
+
+    Updated license
+
+commit 775a060873a6dfc20c49cf91605c44ad79e4f9ee
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 16:05:08 2010 -0500
+
+    Fixed data types
+
+commit bf5353b6786fdeefa97932d5f18a62c8059a86eb
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 15:09:25 2010 -0500
+
+    Fixed IDL types for 64 bit
+
+commit 6dfd6c23edb5edb273cfe4c30192808bb499d388
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 10:45:58 2010 -0500
+
+    Added .dlm file and fixed makefile
+
+commit 2abc2ce71d8a0b37920726735c45f0c4c7c1dfbf
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 10:32:56 2010 -0500
+
+    Changed destination to /home/code/rst/dlm
+
+commit 4a29ccc8fb25baeafcc2d99ed61848c68d90c513
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 4 18:12:47 2010 -0400
+
+    Fixed possible issue with decoding search arguments
+
+commit 4af595183c860e09d9c858795b241a6c9295c10d
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 4 12:58:00 2010 -0400
+
+    DLM for reading and writing FIT files.

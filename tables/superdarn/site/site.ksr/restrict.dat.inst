@@ -1,0 +1,6 @@
+# Restricted frequency table for the standard radar.
+default=13000
+9970 10030
+12000 12999
+13400 13495
+14970 15030

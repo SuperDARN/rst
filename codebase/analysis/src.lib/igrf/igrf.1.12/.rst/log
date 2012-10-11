@@ -1,0 +1,29 @@
+commit d6f6da7df2875648d3dbdd3266f0f156cb8a33b4
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:16 2012 -0400
+
+    Updated license
+
+commit b3d3aab08112aef0dc90f3286471651a19a444e0
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Aug 26 15:59:26 2011 -0400
+
+    Fixed issues with IGRF coordinate system.
+
+commit 53ee6cf8744bc439e72a224d2a54546b52d6ba2e
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Thu Jul 28 13:28:44 2011 -0400
+
+    Added test for return conditions to magcmp
+
+commit f510b5d79b62caa46caeaf256ce2985ffc3536c5
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 11:06:44 2010 -0400
+
+    Added 2010 coefficients and removed hardcoding of coefficient tables.
+
+commit e654d32ce9addc6f8f26b19a4c7eda1289cff410
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:01 2010 +0000
+
+    Initial commit

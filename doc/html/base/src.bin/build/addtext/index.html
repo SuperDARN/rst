@@ -1,0 +1,76 @@
+<head>
+<title>addtext</title>
+<link rel=stylesheet href="../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../base/index.html>base</a></td>
+<td>|</td><td><a href=../../../../base/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../base/src.bin/build/index.html>build</a></td><td>|</td>
+<td>addtext</td>
+<td width=100% align=right><a href=../../../../base/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">addtext</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+addtext --help<br>addtext -r <em>string</em> [-t <em>tag</em>]<br>addtext [-t <em>tag</em>] <em>name</em><br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td>Insert a block of text or string into a text file.</td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr><tr><td width="150" valign="top"><code>-r <em>string</em></code></td><td valign="top">replacement text string to insert in the document.</td></tr><tr><td width="150" valign="top"><code>-t <em>tag</em></code></td><td valign="top">tag string to match in the document. The default tag is 'License'.</td></tr><tr><td width="150" valign="top"><code><em>name</em></code></td><td valign="top">text file to read replacement text from.</td></tr></table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Inserts a block of text or string, such as Copyright or License terms, within a section of source code. The source code is read from standard input and RCS style tags of the form "<em>$tag$</em>" are searched for. The default tag string is "<code>License</code>" but this can be overridden on the command line with the <code>-t</code> option.</p>
+<p>When a tag is encountered, the text contained in the text file is substituted. As with the RCS utilities, each inserted line is prefixed by the characters that prefix the line that contains the tag:</p>
+<center><table><tr><td  class="docbox" style="font-family: courier;"><pre>
+// $license$
+</pre></td></tr></table></center>
+<p>Becomes:</p>
+<center><table><tr><td  class="docbox" style="font-family: courier;"><pre>
+// Terms and Conditions
+// The use of this program is subject to the terms and conditions
+// described in the license agreement.
+</pre></td></tr></table></center>
+<p>As with the RCS utilities, if the tag line is prefixed by "<code>/*</code>", subsequent lines are prefixed with "<code>*</code>".</p>
+<p>The modified source code is written to standard output.</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">cat src/main.c | addtext license.txt &gt; main.c</pre></td></tr></table>
+<p>Add the text contained in the file <code>license.txt</code> to the file <code>src/main.c</code>.
+</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

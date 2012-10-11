@@ -1,0 +1,71 @@
+commit 6dd494adbd0c3d5bf67e8ef71fed3c4e5a388085
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:10 2012 -0400
+
+    Updated license
+
+commit bedc996226065a698b670004b8ba7f64030b2bac
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri May 27 15:37:45 2011 -0400
+
+    Fixed issue with comments in configuration files.
+
+commit d1508932296999f7f64d7f84dc6b916dbd57a5da
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Feb 11 09:48:58 2011 -0500
+
+    Bug fixes to decoding the radar parameter block.
+
+commit 9db97a03a93a3ee5bb8c66b2337dacd495841d91
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 09:42:55 2010 -0500
+
+    Added capability to handle arbitrary arrays to radar.pro
+
+commit 2a5e1813a3cf6d9c7f88be7f346c2025eb1c4cc1
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Fri Nov 5 18:28:52 2010 -0400
+
+    Bug fixes from DLM walkthrough
+
+commit cb85ab4e72686566e81dc6c90ac991acd8123ea4
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 4 18:18:57 2010 -0400
+
+    Tidy up for DLM support.
+
+commit ed54dbb659b4239b8f4cc7d0e0eb62ecee25bcc7
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 4 14:43:55 2010 -0400
+
+    Moved parameter block processing into custom routine and modifications for DLM support.
+
+commit e3cc7c79a0a7eb04e0f8dfb88cae6c32741bc3dd
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed Aug 25 09:53:12 2010 -0400
+
+    Temporary fix for IQ file format change.
+
+commit 23d00b430ad0b3f1057bb13653cc12a0ed43e583
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 16 14:05:24 2010 -0400
+
+    Fixed extra character in iq.pro
+
+commit a229b86ced0555bca65e318d51ef363ad76c4d57
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu May 27 13:25:38 2010 -0400
+
+    Changed cfit format to include version number and more ranges.
+
+commit 2748821942b390596c8a295b47b2a4f01c4647c4
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Sat May 22 19:17:34 2010 -0400
+
+    Removed call_external functions - new implementation will use DLM to map the C routines directly to the IDL API.
+
+commit 38efbc9245987306f8996172f835976140320035
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:03 2010 +0000
+
+    Initial commit

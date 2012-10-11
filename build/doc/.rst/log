@@ -1,0 +1,35 @@
+commit 8a07499a0dbabb978f136d95cf16277b1e455bf8
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 9 16:48:01 2010 -0400
+
+    Cleanup for distribution of assembled documentation.
+
+commit 84bcdeeab2aab92d2aadb4ac0d0eb239d01c8d99
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Tue Jun 8 03:37:54 2010 -0400
+
+    Fixed home URL for local binaries.
+
+commit c63111004962a3c430a52cca75bede9b389ca99b
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Mar 30 17:19:30 2010 -0400
+
+    Tidy up for web-site redesign.
+
+commit fb9024fdc7aaec198d1341ea327b4dd422fcf394
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Mar 30 09:19:33 2010 -0400
+
+    Modification for new document style.
+
+commit e2580e7fd6c8bcd2f3bfb6ec7392bbb79e015cb8
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Thu Mar 25 09:58:36 2010 -0400
+
+    Changed name of skeleton files.
+
+commit 949f5d4b62064fb3ae938f716279ab794dfcb956
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:36:41 2010 +0000
+
+    Initial commit

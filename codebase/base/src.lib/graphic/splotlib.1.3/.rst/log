@@ -1,0 +1,17 @@
+commit 4057370105a7c9635752b173701cccfb70b69879
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:12 2012 -0400
+
+    Updated license
+
+commit ba607f25368c8883e6cab9fe6684a8dae426e9ae
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Fri Aug 27 09:46:45 2010 -0400
+
+    Renamed iplot.h
+
+commit 1dc1b060205ea83268affd284ca4066353d35de4
+Author: Code Development Account <code@robin-barness-macbook-pro.local>
+Date:   Tue May 11 06:47:15 2010 -0400
+
+    Splot Library.

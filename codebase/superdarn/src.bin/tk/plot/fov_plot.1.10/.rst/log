@@ -1,0 +1,65 @@
+commit 1f6cffbc0b0e342a5b78a8568527d6a0d79f116b
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:03 2012 -0400
+
+    Updated license
+
+commit f3ca286a4485b6e5f82f253d89c27bd9688ef450
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Oct 12 08:42:56 2010 -0400
+
+    Fixed time rotation for Southern Hemisphere
+
+commit a9880763d6b968ae0dc6947d0392674d6342e7ab
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed Sep 15 11:28:09 2010 -0400
+
+    New mapping functions
+
+commit b8b80f790b532ff55028b9de2e6582a6e88cc8c7
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Aug 31 09:50:09 2010 -0400
+
+    Changed makefile for iplot library.
+
+commit 7ce52f2d799c97c7d8b380d81db5f960a6fcee60
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Mon Aug 30 15:58:40 2010 -0400
+
+    Changed to iplot.h
+
+commit 521c6c779c80d5d1752f12cc9282629e433f46b0
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Fri Aug 27 11:01:26 2010 -0400
+
+    Renamed iplot.h
+
+commit 43a188ee65b176554878bb2c59fba62ce9470d6e
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Aug 4 12:49:19 2010 -0400
+
+    Fixed makefile for dynamic linking
+
+commit 6c31fd3fdf0294ba7d0ce5c3ee0e7ab5a6196206
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 08:33:56 2010 -0400
+
+    Updated documentation
+
+commit c431fb22df91922ba40af1e6cc7b51f1e537e00b
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 9 14:38:50 2010 -0400
+
+    Changed SZA functions.
+
+commit 76411b634e47c345e09c64fc0ea6c500f883b546
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 9 10:08:26 2010 -0400
+
+    Adopted MLT library.
+
+commit c1192e2d070d8ef42a4ad991ac53df01ab8186a9
+Author: Code Development Account <code@robin-barness-macbook-pro.local>
+Date:   Tue May 11 06:48:12 2010 -0400
+
+    Fov_plot

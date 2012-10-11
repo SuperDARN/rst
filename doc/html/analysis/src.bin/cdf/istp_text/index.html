@@ -1,0 +1,96 @@
+<head>
+<title>istp_text</title>
+<link rel=stylesheet href="../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../analysis/index.html>analysis</a></td>
+<td>|</td><td><a href=../../../../analysis/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../analysis/src.bin/cdf/index.html>cdf</a></td><td>|</td>
+<td>istp_text</td>
+<td width=100% align=right><a href=../../../../analysis/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">istp_text</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+istp_text --help<br>istp_text  [-cf <em>cfgname</em>] [-h] [-path <em>pathname</em>] [-sd <em>yyyymmdd</em>] [-st <em>hr:mn</em>] [-ed <em>yyyymmdd</em>] [-et <em>hr:mn</em>] [-ex <em>hr:mn</em> [-gse] [-pos] [-mfi] [-swe] [-mag] [-pla] [-mgf] [-lep] [-cpi] [-ace] [-wind] [-imp8] [-geotail]<br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Extract ASCII listings of  ISTP data from CDF files.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-cf <em>cfname</em></code></td><td valign="top">read command line options from the file <em>cfname</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-h</code></td><td valign="top">include headers in the text file.</td></tr>
+<tr><td width="150" valign="top"><code>-path <em>path</em></code></td><td valign="top">read the data files from the directory <em>path</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-sd <em>yyyymmdd</em></code></td><td valign="top">extract starting from the date <em>yyyymmdd</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-st <em>hr:mn</em></code></td><td valign="top">extract starting from the time <em>hr:mn</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-ed <em>yyyymmdd</em></code></td><td valign="top">stop extracting at the date <em>yyyymmdd</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-et <em>hr:mn</em></code></td><td valign="top">stop extracting at the time <em>hr:mn</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-ex <em>hr:mn</em></code></td><td valign="top">extract an interval whose extent is <em>hr:mn</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-gse</code></td><td valign="top">plot in GSE coordinates, not GSM.</td></tr>
+<tr><td width="150" valign="top"><code>-pos</code></td><td valign="top">include spacecraft position in the text file.</td></tr>
+<tr><td width="150" valign="top"><code>-mfi</code></td><td valign="top">include MFI data.</td></tr>
+<tr><td width="150" valign="top"><code>-swe</code></td><td valign="top">include SWE data.</td></tr>
+<tr><td width="150" valign="top"><code>-mag</code></td><td valign="top">include MAG data.</td></tr>
+<tr><td width="150" valign="top"><code>-pla</code></td><td valign="top">include PLA data.</td></tr>
+<tr><td width="150" valign="top"><code>-mgf</code></td><td valign="top">include MGF data.</td></tr>
+<tr><td width="150" valign="top"><code>-lep</code></td><td valign="top">include LEP data.</td></tr>
+<tr><td width="150" valign="top"><code>-cpi</code></td><td valign="top">include CPI data.</td></tr>
+<tr><td width="150" valign="top"><code>-ace</code></td><td valign="top">include ACE data.</td></tr>
+<tr><td width="150" valign="top"><code>-wind</code></td><td valign="top">include Wind data.</td></tr>
+<tr><td width="150" valign="top"><code>-imp8</code></td><td valign="top">include IMP8 data.</td></tr>
+<tr><td width="150" valign="top"><code>-geotail</code></td><td valign="top">include Geotail data.</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td>
+<p>Generates a plain ASCII text file containing ISTP magnetic field and solar wind data from a set of CDF files. The file is written to standard output.</p>
+<p>The program usually produces 24 hours of magnetic field data in GSM co-ordinates for a given start date and satellite.</p>
+<p>The data files are taken from the sub-directories "<code>ace</code>", "<code>wind</code>", "<code>imp8</code>" and "<code>geotail</code>", of the path given by the "<code>-path</code>" option or by the environment variable <em>ISTP_PATH</em>.</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">istp_text  -ace -sd 19990406 &gt; mfi.txt</pre></td></tr></table>
+<p>Generate a text file containing 24 hours of ACE data starting at 00:00UT on April, 6 1999. The output is stored in the file "<code>mfi.txt</code>".</p>
+
+<table ><tr><td class="docbox" ><pre width="80">istp_text -wind -mfi -swe -pos -sd 19971014 -st 4:00 -ex 8:00 &gt; 19981112.wnd.txt</pre></td></tr></table>
+<p>
+Generate a text file containing 8 hours of Wind MFI, SWE and position data starting at 04:00UT October 14, 1997. The output is stored in the file "<code>19981112.wnd.txt</code>".</p>
+
+<table ><tr><td class="docbox" ><pre width="80">istp_text -ace -mfi -pos -sd 19990406 -st 6:00 -ed 19990408 -et 12:00 &gt; mfi+pos.txt</pre></td></tr></table>
+<p>
+Generate a text file containing ACE MFI and Position data, starting at 06:00UT April 6, 1999 and ending at 12:00UT April 8,1999. The output is stored in the file "<code>mfi+pos.txt</code>".</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

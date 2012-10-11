@@ -1,0 +1,206 @@
+
+<head>
+<title>Contour</title>
+<link rel=stylesheet href=../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../index.html">Home</a><td>|</td>
+<td><a href=../../../general/index.html>general</a></td>
+<td>|</td><td><a href=../../../general/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../general/src.lib/contour/index.html>contour</a></td><td>|</td>
+<td>Contour</td>
+<td width=100% align=right><a href=../../../general/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">Contour</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;"><a href="../../../src.lib/polygon/structPolygonData.html"><code>struct PolygonData</code></a> **Contour(void *zbuffer,int type, int wdt,int hgt,int cnum, void *cval,int smooth,int cflag,int rflag, int bflag);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">general/contour.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">contour</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="Contour.html"><code>Contour</code></a> function traces a set of contour lines for a set of data points.</p>
+<p>The argument <em>zbuffer</em> is a pointer to the two dimensional array that contains the data to trace, the type of the array is given by the argument <em>type</em>. Possible values of type are:</p>
+<center><table>
+<tr><td><code>contour_INT</code></td><td>Pointer to an integer array of type <code>int</code>.</td></tr>
+<tr><td><code>contour_FLOAT</code></td><td>Pointer to a floating point array of type <code>float</code>.</td></tr>
+<tr><td><code>contour_DOUBLE</code></td><td>Pointer to a floating point array of type <code>double</code>.</td></tr>
+</table></center>
+<p> The arguments <em>wdt</em> and <em>hgt</em> define the width and height of the data set.</p>
+<p>The array pointed to by <em>zbuffer</em> can represent data in a cartesian, polar, or any other co-ordinate system. The tracing algorithm uses the topological relationship that adjacent entries in the array will also be adjacent in the actual co-ordinate system.</p> 
+<p> The data should be arranged in row-major form with the first <em>wdt</em> bytes of the array corresponding to the first row of data.</p>
+<p>The argument <em>cnum</em> defines the number of contours to be traced and the array pointed to by <em>cval</em> lists the corresponding contour levels.</p>
+<p>The argument smooth is a smoothing factor that determines the frequency at which points are marked along a contour line. Smaller values will yield a more accurate contour but can start to show affects due to the size of the data grid.</p>
+<p>If the argument <em>oflag</em> is non-zero then contour lines that do not close are ignored.</p>
+<p>For polar and other co-ordinate systems, the edges of the array do not represent a boundary and when a contour intersects an edge the tracing algorithm should continue on the opposite side of the array. Whether the algorithm continues searching at the intersection of the array edges is determined by the value of the argument <em>rflag</em>; (0) terminates at all edges, (1) continues at the left and right edges, (2) continues at the top and bottom edges, and (3) continues at all edges.</p>
+<p>The argument <em>bflag</em> determines whether the contour algorithm records points traced along the edges of the array or ignores them. If the value of bflag is zero then tracing is performed. If the first bit (corresponding to 1) is set, then points along the left edge of the array are ignored. If the second bit (corresponding to 2) is set, then points along the right edge of the array are ignored.  If the third bit (corresponding to 4) is set, then points along the top edge of the array are ignored. If the fourth bit (corresponding to 4) is set, then points along the bottom edge of the array are ignored.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns a pointer to an array of polygons that define the contours. On error, a <code>NULL</code> pointer is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, a <code>NULL</code> pointer is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center><img src="img/Contour.png"></img><br><a href="img/Contour.svg">Download SVG</a>|<a href="img/Contour.ps.gz">Download PostScript</a>|<a href="img/Contour.rp.xml.gz">Download rXML</a></center>
+         <br><center>Source Code: <a href="src/Contour.c">Contour.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* Contour.c
+   =========
+   Author: R.J.Barnes
+*/
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;math.h&gt;
+#include &quot;rmath.h&quot;
+#include &quot;rtypes.h&quot;
+#include &quot;rxml.h&quot;
+#include &quot;option.h&quot;
+#include &quot;rfbuffer.h&quot;
+#include &quot;fontdb.h&quot;
+#include &quot;polygon.h&quot;
+#include &quot;rplot.h&quot;
+#include &quot;rplotgraw.h&quot;
+#include &quot;contour.h&quot;
+
+
+struct FrameBuffer *img;
+double val[32*32];
+
+double cval[]={15,30,45,60,75};
+
+struct PolygonData **ctr;
+
+int txtbox(char *fntname,float sze,int num,char *txt,float *box,void *data) {
+  
+  struct FrameBufferFontDB *fontdb;
+  struct FrameBufferFont *fnt;
+  int tbox[3];
+
+  fontdb=(struct FrameBufferFontDB *)data;
+  if (fontdb==NULL) return -1;
+  fnt=FrameBufferFontDBFind(fontdb,fntname,sze);
+
+  FrameBufferTextBox(fnt,num,txt,tbox);
+  
+  box[0]=tbox[0];
+  box[1]=tbox[1];
+  box[2]=tbox[2];
+  return 0;
+}
+
+int stream(char *buf,int sze,void *data) {
+  FILE *fp;
+  fp=(FILE *) data;
+  fwrite(buf,sze,1,stdout);
+  return 0;
+} 
+
+int main(int argc,char *argv[]) {
+
+  struct FrameBufferFontDB *fontdb=NULL;
+  struct Rplot *rplot=NULL;
+  struct RplotMatrix m;
+
+  unsigned int bgcol=0xffffffff;
+  unsigned int fgcol=0xff000000;
+  int i,j;
+ 
+
+  int smth=2; /* trace all cells */
+  int cflg=0; /* include open contours */
+  int rflg=0; /* no wrapping */
+  int bflg=0; /* trace along boundaries */
+
+  char txt[16];
+  float wdt=400,hgt=400;
+  float width=0.5;
+ 
+  char *envstr;
+  FILE *fontfp;
+
+
+  envstr=getenv(&quot;FONTDB&quot;);
+  fontfp=fopen(envstr,&quot;r&quot;);
+  if (fontfp !=NULL) {
+   fontdb=FrameBufferFontDBLoad(fontfp);
+   fclose(fontfp);
+  }
+ 
+  if (fontdb==NULL) {
+   fprintf(stderr,&quot;Could not load fonts.&apos;n&quot;);
+   exit(-1);
+  }
+
+
+  img=FrameBufferMake(&quot;dummy&quot;,32,32,8);
+  
+  for (i=0;i&lt;32;i++) {
+    for (j=0;j&lt;32;j++) {
+      val[i*32+j]=50+50.0*cos(j*2.8*PI/64)*cos(i*3.5*PI/32);
+      img-&gt;img[i*32+j]=255*val[i*32+j]/100;
+      
+    }
+  }
+  
+  ctr=Contour(val,contour_DOUBLE,32,32,5,cval,smth,cflg,rflg,bflg);
+
+  rplot=RplotMake();
+  RplotSetText(rplot,stream,stdout);
+  RplotMakeDocument(rplot,&quot;Contour&quot;,&quot;1&quot;,wdt,hgt,24);   
+  RplotMakePlot(rplot,&quot;Contour&quot;,wdt,hgt,24);
+
+  RplotRectangle(rplot,NULL,0,0,wdt,hgt,
+                  1,bgcol,0x0f,0,NULL);
+ 
+ 
+  m.a=wdt/32;
+  m.b=0;
+  m.c=0;
+  m.d=hgt/32;
+  RplotImage(rplot,&amp;m,img,0x0f,0,0,1);  
+
+  for (i=0;i&lt;5;i++) {
+    sprintf(txt,&quot;%.2d&quot;,(int) cval[i]);
+    PlotRawContour(rplot,ctr[i],0,0,wdt,hgt,0.1,0.5,
+                30,i,5,strlen(txt),txt,fgcol,0x0f,width,
+		NULL,&quot;Helvetica&quot;,10.0,txtbox,fontdb);
+  } 
+  ContourFree(5,ctr);             
+  RplotEndPlot(rplot);
+  RplotEndDocument(rplot);
+  return 0;
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

@@ -1,0 +1,62 @@
+#!/bin/sh
+
+fname=$0
+rm -f rpkg.pre-message.txt
+rm -f rpkg.pre-setup.sh
+rm -f rpkg.post-message.txt
+rm -f rpkg.post-setup.sh
+rm -f rpkg.archive.tar
+
+tail -n +$lnecnt$ $fname | gunzip -c | tar -xvf -
+
+if test -f rpkg.pre-message.txt 
+then                                                                         
+    cat rpkg.pre-message.txt
+fi
+
+if test -x rpkg.pre-setup.sh 
+then                                                                         
+  ./rpkg.pre-setup.sh
+if test $? -ne 0
+  then
+    echo "Installation aborted"
+    rm -f rpkg.pre-message.txt
+    rm -f rpkg.pre-setup.sh
+    rm -f rpkg.post-message.txt
+    rm -f rpkg.post-setup.sh
+    rm -f rpkg.tar
+    exit -1
+  fi
+fi
+
+tar -xvf rpkg.tar
+
+if test -f rpkg.post-message.txt 
+then                                                                         
+    cat rpkg.post-message.txt         
+fi
+
+if test -x rpkg.post-setup.sh 
+then                                                                         
+  ./rpkg.post-setup.sh
+  if test $? -ne 0
+  then
+    echo "Installation failed"
+    rm -f rpkg.pre-message.txt
+    rm -f rpkg.pre-setup.sh
+    rm -f rpkg.post-message.txt
+    rm -f rpkg.post-setup.sh
+    rm -f rpkg.tar
+    exit -1
+  fi
+fi
+rm -f rpkg.pre-message.txt
+rm -f rpkg.pre-setup.sh
+rm -f rpkg.post-message.txt
+rm -f rpkg.post-setup.sh
+rm -f rpkg.tar
+exit 0
+
+
+
+

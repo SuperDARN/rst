@@ -1,0 +1,1 @@
+../codebase/superdarn/src.idl/startup/startup.pro

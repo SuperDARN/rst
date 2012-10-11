@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>map_addimf</name>
+<location>src.bin/tk/tool/map_addimf</location>
+<syntax>map_addimf --help</syntax>
+<syntax>map_addimf [-vb] [-new] [-ace] [-wind] [-p <ar>path</ar>] [-d <ar>hr:mn</ar>] [-ex hr:mn] [<ar>mapname</ar>]</syntax>
+<syntax>map_addimf [-vb] [-new] [-ace] [-wind] [-p <ar>path</ar>] [-df <ar>delayname</ar>] [-ex hr:mn] [<ar>mapname</ar>]</syntax>
+<syntax>map_addimf [-vb] [-new] [-ace] [-if <ar>imfname</ar>] [-d <ar>hr:mn</ar>] [<ar>mapname</ar>]</syntax>
+<syntax>map_addimf [-vb] [-new] [-ace] [-if <ar>imfname</ar>] [-df <ar>delayname</ar>] [<ar>mapname</ar>]</syntax>
+<syntax>map_addimf [-vb] [-new] [-ace] [-bx <ar>bx</ar>] [-by <ar>by</ar>] [-bz <ar>bz</bz>] [<ar>mapname</ar>]</syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-new</on><od>the input file is a <code>cnvmap</code> format file.</od></option>
+<option><on>-ace</on><od>use IMF data from ACE.</od>
+</option>
+<option><on>-wind</on><od>use IMF data from wind.</od>
+</option>
+<option><on>-p <ar>pathname</ar></on><od>set the directory path to search for the IMF data in to <ar>pathname</ar>.</od>
+</option>
+<option><on>-d <ar>hr:mn</ar></on><od>set the IMF delay time to  <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ex <ar>hr:mn</ar></on><od>read <ar>hr</ar> hours and <ar>mn</ar> minutes of IMF data. By default, 24 hours of data is read.</od>
+</option>
+<option><on><ar>mapname</ar></on><od>filename of the <code>map</code> format file. If this is omitted, the file will be read from standard input.</od>
+</option>
+<option><on>-df <ar>delayname</ar></on><od>read the delay times from the ASCII text file <ar>delayname</ar>.</od>
+</option>
+<option><on>-if <ar>imfname</ar></on><od>read the IMF data from the ASCII text file <ar>imfname</ar>.</od>
+</option>
+<option><on>-bx <ar>bx</ar></on><od>set the X component of the magnetic field to <ar>bx</ar>.</od>
+</option>
+<option><on>-by <ar>bx</ar></on><od>set the Y component of the magnetic field to <ar>by</ar>.</od>
+</option>
+<option><on>-bz <ar>bx</ar></on><od>set the Z component of the magnetic field to <ar>bz</ar>.</od>
+</option>
+<synopsis><p>Adds IMF data to a convection map file.</p></synopsis>
+
+
+
+<description><p>Adds IMF data to a convection map file.</p>
+<p>The IMF applied to the map file can be fixed, taken from the ACE or Wind spacecraft, or read from a plain text file. The processed file is written to standard output.</p>
+<p>If the "<code>-ace</code>" or "<code>-wind</code>" options are specified, the IMF data is taken from the appropriate CDF files for each spacecraft. The files are read from the "ace" and "wind" sub-directories of the path given by given by the "-path" option or by the environment variable "<code>ISTP_PATH</code>".  The argument "<code>-ex</code>" is used to specify how much IMF data should be loaded. By default only 24 hours of data is read.</p>
+<p>The IMF delay can either be fixed using the "<code>-d</code>" option or read from a text file using the "<code>-df</code>" option.  Any lines in the file beginning the character "<code>#</code>" are treated as comments and ignored. Any other lines are expected to contain a time followed by the delay in hours and minutes:</p>
+
+<quote><em>year month day hour minut second dhour dminute</em></quote>
+
+<p>The delay will be applied to the IMF starting at the time specified and will only change if a subsequent entry in the delay file alters it.</p>
+<p>The "<code>-if</code>" option will read the IMF from the plain text file ifile. Any lines in the file beginning the character "<code>#</code>" are treated as comments and ignored. Any other lines are expected to contain a time followed by the three components of the IMF defined in GSM coordinates.</p>
+
+<quote><em>year month day hour minut second bx by bz</em></quote>
+
+<p>The IMF will be fixed at this value and will only change if a subsequent entry the IMF file alters it.</p>
+</description>
+
+
+<example>
+<command>map_addimf -vb -bx 1.5 -by -1.2 -bx 0.4 19970406.map &gt; 19970406.imf.map</command>
+<description>Adds a fixed IMF of Bx=-15, By=-1.2 and Bz=0.4 to the map file "<coode>19970406.map</code>". The output is stored in the file "<code>19970406.imf.map</code>" and status is logged to standard error.</description>
+</example>
+<example>
+<command>map_addimf -ace -d 0:30 -ex 48:00 19981104.map &gt; 19981104.imf.map</command>
+
+<description>Adds IMF data from the ACE spacecraft to the map file "<code>19981104.map</code>". A delay of 30 minutes is applied to the data and the map file is expected to be 48 hours in length. The output is stored in the file "<code>19981104.imf.map</code>".</description>
+</example>
+<example>
+<command>map_addimf -ace -df delay.txt  19990712.map &gt; 19990712.imf.map</command>
+<description>Adds IMF data from the ACE spacecraft to the map file "<code>19990712.map</code>". The IMF delays are read from the file "<code>delay.txt</code>". The output is stored in the file "<code>19990712.imf.map</code>".</description>
+</example>
+<example>
+<command>map_addimf -if imf.txt -df delay.txt 2000312.map &gt; 20000312.map</command>
+<description>Adds IMF data from the text file "<code>imf.txt</code>" to the map file "<code>2000312.map</code>". The IMF delays are taken from the file "<code>delay.txt</code>". The output is stored in the file "<code>19990712.imf.map</code>".</description>
+</example>
+
+</binary>

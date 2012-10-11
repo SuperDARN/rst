@@ -1,0 +1,23 @@
+commit e83539ecd666069e30dc59ceb762be8a81411692
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:24 2012 -0400
+
+    Updated license
+
+commit 5e77567ec543a7984dc87e137f80522eb407a324
+Author: Codfe Development Account <code@linux-pc.jhuapl.edu>
+Date:   Mon Jun 20 14:07:36 2011 -0400
+
+    Fixes for null strings.
+
+commit f18c6fe4f9ff7d0cbefd8a2ff16ac50298200d40
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 09:28:42 2010 -0400
+
+    Modification to dmap internal format.
+
+commit 90e9d5e9f34c3a1c78d53e5f38d226ea71ded4c9
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:36:43 2010 +0000
+
+    Initial commit

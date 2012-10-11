@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>superdarn</project>
+<name>rscan</name>
+<location>src.lib/tk/scan</location>
+<function>
+<name>RadarScanReset</name>
+<location>src.lib/tk/scan</location>
+<header>superdarn/scandata.h</header>
+<syntax>int RadarScanReset(<sn href="structRadarScan.html">struct RadarScan</sn> *ptr);</syntax>
+<description><p>The <fn href="RadarScanReset.html">RadarScanReset</fn> frees memory reserved to store radar scan data and resets the radar scan data structure.</p>
+<p>The structure containing the radar scan data is pointed to by the argument <ar>ptr</ar>.</p>
+</description>
+
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">RadarScanReset.c</example>
+
+
+</function>
+<function>
+<name>RadarScanResetBeam</name>
+<location>src.lib/tk/scan</location>
+<header>superdarn/scandata.h</header>
+<syntax>int RadarScanResetBeam(<sn href="structRadarScan.html">struct RadarScan</sn> *ptr,int bmnum,int *bmptr);</syntax>
+
+<description><p>The <fn href="RadarScanResetBeam.html">RadarScanResetBeam</fn> function frees memory reserved to store radar scan data and resets the radar scan data structure for specific beams.</p>
+<p>The structure containing the radar scan data is pointed to by the argument <ar>ptr</ar>.</p>
+<p>The number of beams to reset is given by the argument <ar>bmnum</ar> and the corresponding beam numbers are contained in the array pointed to by the argument <ar>bmptr</ar>.</p>
+</description>
+
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">RadarScanResetBeam.c</example>
+
+
+</function>
+
+<structure>
+ <name>RadarBeam</name>
+ <location>src.lib/tk/scan</location>
+ <header>superdarn/scandata.h</header>
+ <struct>
+
+    <member>
+      <proto>int scan;</proto>
+      <description>Scan flag.</description>
+    </member>
+ 
+
+    <member>
+      <proto>int bm;</proto>
+      <description>Beam number.</description>
+    </member>
+
+    <member>
+      <proto>float bmazm;</proto>
+      <description>Beam azimith.</description>
+    </member>
+
+
+
+    <member>
+      <proto>double time;</proto>
+      <description>Beam time stamp, specified as seconds from 0:00UT January 1, 1970.</description>
+    </member>
+
+     <member>
+      <proto>int cpid;</proto>
+      <description>Control program identifier number.</description>
+    </member>
+
+    <member>
+     <struct>
+       <member>
+          <proto>int sc;</proto>
+          <description>Seconds.</description>
+       </member>
+       <member>
+          <proto>int us;</proto>
+          <description>Microseconds.</description>
+       </member>
+      </struct>
+      <proto>intt;</proto>
+      <description>Integration time.</description>
+   </member>
+
+
+
+  <member>
+      <proto>int frang;</proto>
+      <description>Distance to first range (kilometers).</description>
+    </member>
+
+    <member>
+      <proto>int rsep;</proto>
+      <description>Range separation (kilometers).</description>
+    </member>
+
+    <member>
+      <proto>int rxrise;</proto>
+      <description>Receiver rise time (microseconds).</description>
+    </member>
+
+    <member>
+      <proto>int freq;</proto>
+      <description>Transmitted frequency.</description>
+    </member>
+
+    <member>
+      <proto>int noise;</proto>
+      <description>Calculated noise from clear frequency search.</description>
+    </member>
+
+    <member>
+      <proto>int atten;</proto>
+      <description>Attenuation level.</description>
+    </member>
+
+    <member>
+      <proto>int channel;</proto>
+      <description>Channel number for a stereo radar.</description>
+    </member>
+
+    <member>
+      <proto>int nave;</proto>
+      <description>Number of pulse sequences transmitted.</description>
+    </member>
+ 
+   <member>
+      <proto>unsigned char sct[MAX_RANGE];</proto>
+      <description>Array of flags indicating that a range contains scatter. A non-zero value indicates that there is scatter at that range.</description>
+    </member>
+
+
+
+  <member>
+      <proto><sn href="structRadarCell.html">struct RadarCell</sn> rng[MAX_RANGE];</proto>
+      <description>Range data.</description>
+    </member>
+ </struct>
+
+
+<description>
+<p>The <sn href="structRadarBeam.html">struct RadarBeam</sn> structure stores the fitted parameters for a single beam.</p>
+</description>
+</structure>
+
+<structure>
+ <name>RadarCell</name>
+ <location>src.lib/tk/scan</location>
+ <header>superdarn/scandata.h</header>
+ <struct>
+
+    <member>
+      <proto>int gsct;</proto>
+      <description>Ground scatter flag.</description>
+    </member>
+
+     <member>
+      <proto>double p_0;</proto>
+      <description>Lag zero power.</description>
+    </member>
+
+    <member>
+      <proto>double p_0;</proto>
+      <description>Lag zero power error.</description>
+    </member>
+
+    <member>
+      <proto>double v;</proto>
+      <description>Velocity from ACF.</description>
+    </member>
+   
+    <member>
+      <proto>double v_e;</proto>
+      <description>Velocity error from ACF.</description>
+    </member>
+
+    <member>
+      <proto>double w_l;</proto>
+      <description>Spectral width from lambda fit of ACF.</description>
+    </member>
+
+    <member>
+      <proto>double w_l_e;</proto>
+      <description>Spectral width error from lambda fit of ACF.</description>
+    </member>
+
+    <member>
+      <proto>double p_l;</proto>
+      <description>Power from lambda fit of ACF.</description>
+    </member>
+
+    <member>
+      <proto>double p_l_e;</proto>
+      <description>Power error from lambda fit of ACF.</description>
+    </member>
+  </struct>
+
+<description>
+<p>The <sn href="structRadarCell.html">struct RadarCell</sn> structure stores the fitted parameters for a single range.</p>
+</description>
+</structure>
+
+
+
+<structure>
+ <name>RadarScan</name>
+ <location>src.lib/tk/scan</location>
+ <header>superdarn/scandata.h</header>
+ <struct>
+
+   <member>
+      <proto>int stid;</proto>
+      <description>Station Identifier number.</description>
+   </member>
+
+   <member>
+     <struct>
+       <member>
+          <proto>int major;</proto>
+          <description>Major revision number.</description>
+       </member>
+       <member>
+          <proto>int minor;</proto>
+          <description>Minor revision number.</description>
+       </member>
+      </struct>
+      <proto>version;</proto>
+      <description>Revision number.</description>
+   </member>
+
+   <member>
+      <proto>double st_time;</proto>
+      <description>Start time of the scan, specified as seconds from 0:00UT January 1, 1970.</description>
+    </member>
+
+
+    <member>
+      <proto>double ed_time;</proto>
+      <description>End time of the scan, specified as seconds from 0:00UT January 1, 1970.</description>
+    </member>
+
+   <member>
+      <proto>int num;</proto>
+      <description>Number of beams of data in the scan.</description>
+   </member>
+
+   <member>
+      <proto><sn href="structRadarBeam.html">struct RadarBeam</sn> *bm;</proto>
+      <description>Pointer to an array of structures containing the beam data.</description>
+   </member>
+
+
+</struct>
+
+<description>
+<p>The <sn href="structRadarScan.html">struct RadarScan</sn> structure stores radar scan data.</p>
+</description>
+</structure>
+
+
+</library>

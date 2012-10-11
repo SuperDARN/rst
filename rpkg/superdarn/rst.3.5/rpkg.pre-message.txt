@@ -1,0 +1,19 @@
+
+
+  
+
+
+
+
+	   	            RRRRR   SSSS  TTTTTT
+			    RR RRR SS       TT
+                            RRRRR   SSSS    TT
+                            RR RR      SS   TT
+                            RR  RR  SSSS    TT
+ 
+ 
+			        R.J.Barnes
+
+		           $project$ $package$
+
+                         Version:$version$ ($date$)

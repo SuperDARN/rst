@@ -1,0 +1,17 @@
+commit 4ad2d68fe6cc218c4798c709b2fffa6d6f7a2025
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:21 2012 -0400
+
+    Updated license
+
+commit 98d9df85c05089a57b0fd367fef4ccff358eaccc
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Mar 30 15:05:40 2010 -0400
+
+    Fixed documentation.
+
+commit 552156bd9dd364b0784285b08822d9b8b4a9f228
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:36:48 2010 +0000
+
+    Initial commit

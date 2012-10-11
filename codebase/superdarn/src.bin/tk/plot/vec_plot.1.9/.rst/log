@@ -1,0 +1,53 @@
+commit d8276f367ca76e34767bcf89580205bef2a01ddf
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:03 2012 -0400
+
+    Updated license
+
+commit 6f9fdab161f611e9ad68e2f4cc9301854758ddb5
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Aug 31 09:53:57 2010 -0400
+
+    Changed makefile for iplot library.
+
+commit 53f6138675a0b1ff98a5138db82fbd3710cf8b47
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Fri Aug 27 11:21:59 2010 -0400
+
+    Renamed iplot.h
+
+commit e357c72e06e01071e3210203211bdf153c0b411a
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Aug 16 12:57:24 2010 -0400
+
+    Added PNG Support
+
+commit d7cbc3bbdaed5ccd1054c0d0ce010a8108f458b4
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Aug 4 12:49:55 2010 -0400
+
+    Fixed makefile for dynamic linking
+
+commit 8548709f116b468cbacf265d1da77c7200452321
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Jun 10 12:38:18 2010 -0400
+
+    Fixed linking order
+
+commit af5922bfe276141f10da9f98cfd0d1c6bc3f23c6
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 08:34:59 2010 -0400
+
+    Updated documentation
+
+commit 9324c02aab9805974a2d4bb7bedc93247f8bb913
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 9 10:11:45 2010 -0400
+
+    Adopted MLT library.
+
+commit 32b59e3726837db8d3ffe260b45c31ba7064ebef
+Author: Code Development Account <code@robin-barness-macbook-pro.local>
+Date:   Tue May 11 06:48:59 2010 -0400
+
+    Vec_plot

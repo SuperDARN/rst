@@ -1,0 +1,23 @@
+commit a85f20b33c6ca1ededd1603688e07def529068c7
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:57 2012 -0400
+
+    Updated license
+
+commit 0581f180bb97c88232fb1221b58b575c8324c179
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Jul 13 14:03:17 2010 -0400
+
+    Fixed subtle bug in the filtering - checks to make sure ranges are not greater than nrang.
+
+commit 966495eae054f397d62c36210228ea42baecec86
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 09:56:11 2010 -0400
+
+    RST3 Update
+
+commit 749bb3708f7cebfad5dc32392ffed9a4777bff03
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:22 2010 +0000
+
+    Initial commit

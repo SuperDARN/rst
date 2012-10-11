@@ -1,0 +1,99 @@
+
+<head>
+<title>SZAEqOfTime</title>
+<link rel=stylesheet href=../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../index.html">Home</a><td>|</td>
+<td><a href=../../../imagery/index.html>imagery</a></td>
+<td>|</td><td><a href=../../../imagery/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../imagery/src.lib/sza/index.html>sza</a></td><td>|</td>
+<td>SZAEqOfTime</td>
+<td width=100% align=right><a href=../../../imagery/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">SZAEqOfTime</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">double SZAEqOfTime(double lon,int yr);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">imagery/sza.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">sza</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="SZAEqOfTime.html"><code>SZAEqOfTime</code></a> function calculates the Equation of Time for a given longitude and year.</p>
+<p>The mean solar longitude is given by the argument <em>lon</em> and the year by the argument <em>yr</em>.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns the calculated value for the Equation of Time.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>None</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/SZAEqOfTime.c">SZAEqOfTime.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* SZAEqOfTime.c
+   =============
+   Author: R.J.Barnes
+*/
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &quot;sza.h&quot;
+
+
+int main(int argc,char *argv[]) {
+
+  int yr,mo,dy,hr,mt,sc;
+ 
+  double dec,eqt;
+
+  yr=2002;
+  mo=8;
+  dy=30;
+  hr=10;
+  mt=0;
+  sc=0;
+
+
+  dec=SZASolarDec(yr,mo,dy,hr,mt,sc);
+  eqt=SZAEqOfTime(yr,mo,dy,hr,mt,sc);
+
+
+
+  fprintf(stdout,&quot;SZAEqOfTime&apos;n&quot;);
+  fprintf(stdout,&quot;Time: %.4d-%.2d-%.2d %.2d:%.2d:%.2d&apos;n&quot;,yr,mo,dy,hr,mt,sc);
+
+  fprintf(stdout,&quot;Output: Equation of Time=%g&apos;n&quot;,eqt);
+  return 0;
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

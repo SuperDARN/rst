@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>analysis</project>
+<name>rcdf</name>
+<location>src.lib/cdf/rcdf</location>
+<function>
+<name>RCDFMajority</name>
+<location>src.lib/cdf/rcdf</location>
+<header>analysis/rcdf.h</header>
+<syntax>int RCDFMajority(CDFid id);</syntax>
+<description><p>The <fn href="RCDFMajority.html">RCDFMajority</fn> function determines the majority of the open CDF file identified by the argument <ar>id</ar>.</p></description>
+<returns>Returns the majority on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">RCDFMajority.c</example>
+</function>
+<function>
+<name>RCDFMaxRecR</name>
+<location>src.lib/cdf/rcdf</location>
+<header>analysis/rcdf.h</header>
+<syntax>int RCDFMaxRecR(CDFid id,char *varname);</syntax>
+<description><p>The <fn href="RCDFMaxRecR.html">RCDFMaxRecR</fn> function determines the maximum record number for an <b>R</b> variable in the open CDF file identified by the argument <ar>id</ar>.The <b>R</b> variable is identified by the argument <ar>varname</ar>.</p></description>
+<returns>Returns the number of records on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">RCDFMaxRecR.c</example>
+</function>
+<function>
+<name>RCDFMaxRecZ</name>
+<location>src.lib/cdf/rcdf</location>
+<header>analysis/rcdf.h</header>
+<syntax>int RCDFMaxRecZ(CDFid id,char *varname);</syntax>
+<description><p>The <fn href="RCDFMaxRecZ.html">RCDFMaxRecZ</fn> function determines the maximum record number for a <b>Z</b> variable in the open CDF file identified by the argument <ar>id</ar>.The <b>Z</b> variable is identified by the argument <ar>varname</ar>.</p></description>
+<returns>Returns the number of records on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">RCDFMaxRecZ.c</example>
+</function>
+<function>
+<name>RCDFReadR</name>
+<location>src.lib/cdf/rcdf</location>
+<header>analysis/rcdf.h</header>
+<syntax>int RCDFReadR(CDFid id,int recno,char **varname,<sn href="structRCDFData.html">struct RCDFData</sn> *ptr);</syntax>
+<description><p>The <fn href="RCDFReadR.html">RCDFReadR</fn> function reads a set of <b>R</b> variables from and open CDF file.</p>
+<p>The CDF file is identified by the argument <ar>id</ar> and the argument <ar>recno</ar> defines the record number to read. The argument <ar>varname</ar> is a NULL terminated array of variable names to extract from the record. Each variable it stored in the appropriate element of the array of structures pointed to by the argument <ar>ptr</ar>.</p></description>
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">RCDFReadR.c</example>
+</function>
+<function>
+<name>RCDFReadZ</name>
+<location>src.lib/cdf/rcdf</location>
+<header>analysis/rcdf.h</header>
+<syntax>int RCDFReadZ(CDFid id,int recno,char **varname,<sn href="structRCDFData.html">struct RCDFData</sn> *ptr);</syntax>
+<description><p>The <fn href="RCDFReadZ.html">RCDFReadZ</fn> function reads a set of <b>Z</b> variables from and open CDF file.</p>
+<p>The CDF file is identified by the argument <ar>id</ar> and the argument <ar>recno</ar> defines the record number to read. The argument <ar>varname</ar> is a NULL terminated array of variable names to extract from the record. Each variable it stored in the appropriate element of the array of structures pointed to by the argument <ar>ptr</ar>.</p></description>
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">RCDFReadZ.c</example>
+</function>
+<function>
+<name>RCDFSize</name>
+<location>src.lib/cdf/rcdf</location>
+<header>analysis/rcdf.h</header>
+<syntax>int RCDFSize(int type);</syntax>
+<description><p>The <fn href="RCDFSize.html">RCDFSize</fn> function determines the size in bytes of the CDF data type given by the argument <ar>type</ar>.</p></description>
+<returns>Returns the size in bytes on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">RCDFSize.c</example>
+</function>
+<function>
+<name>RCDFVarNumR</name>
+<location>src.lib/cdf/rcdf</location>
+<header>analysis/rcdf.h</header>
+<syntax>int RCDFVarNumR(CDFid id);</syntax>
+<description><p>The <fn href="RCDFVarNumR.html">RCDFVarNumR</fn> function determines the number of <b>R</b> variables in the open CDF file identified by the argument <ar>id</ar>.</p></description>
+<returns>Returns the number of variables on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">RCDFVarNumR.c</example>
+</function>
+<function>
+<name>RCDFVarNumZ</name>
+<location>src.lib/cdf/rcdf</location>
+<header>analysis/rcdf.h</header>
+<syntax>int RCDFVarNumZ(CDFid id);</syntax>
+<description><p>The <fn href="RCDFVarNumZ.html">RCDFVarNumZ</fn> function determines the number of <b>Z</b> variables in the open CDF file identified by the argument <ar>id</ar>.</p></description>
+<returns>Returns the number of variables on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">RCDFVarNumZ.c</example>
+</function>
+
+
+<structure>
+ <name>RCDFData</name>
+ <location>src.lib/cdf/rcdf</location>
+ <header>analysis/rcdf.h</header>
+ <struct>
+    <member>
+      <proto>char name[CDF_VAR_NAME_LEN+1];</proto>
+      <description>CDF variable name.</description>
+    </member>
+    <member>
+      <proto>CDFstatus status;</proto>
+      <description>status reported by the read operation.</description>
+   </member>
+   <member>
+      <proto>int num;</proto>
+      <description>variable number.</description>
+   </member>
+   <member>
+      <proto>int type;</proto>
+      <description>variable type.</description>
+   </member>
+   <member>
+      <proto>int numdim;</proto>
+      <description>number of dimensions.</description>
+   </member>
+   <member>
+      <proto>int var[CDF_MAX_DIMS];</proto>
+      <description>dimension variances.</description>
+   </member>
+   <member>
+      <proto>int dim[CDF_MAX_DIMS];</proto>
+      <description>dimension sizes.</description>
+   </member>
+   <member>
+      <proto>int size;</proto>
+      <description>size of data buffer in bytes.</description>
+   </member>
+   <member>
+      <proto>void *data;</proto>
+      <description>buffer containing the variable data.</description>
+   </member>
+  </struct>
+
+<description>
+<p>The <sn href="structRCDFData.html">struct RCDFData</sn> structure stores a CDF variable.</p>
+</description>
+
+</structure>
+
+</library>

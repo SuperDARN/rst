@@ -1,0 +1,81 @@
+<head>
+<title>dmaptoncdf</title>
+<link rel=stylesheet href="../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../general/index.html>general</a></td>
+<td>|</td><td><a href=../../../../general/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../general/src.bin/dmap/index.html>dmap</a></td><td>|</td>
+<td>dmaptoncdf</td>
+<td width=100% align=right><a href=../../../../general/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">dmaptoncdf</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+dmaptoncdf --help<br>dmaptoncdf [-vb] <em>datamap</em> <em>map</em> <em>netcdf</em><br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Converts a <code>DataMap</code> file to a Network Common Data Format (netCDF) file.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-vb</code></td><td valign="top">verbose. Log information to the console.</td></tr>
+<tr><td width="150" valign="top"><code><em>datamap</em></code></td><td valign="top">filename of the DataMap file to convert.</td></tr>
+<option><tr><td width="150" valign="top"><code><em>map</em></code></td><td valign="top">map file that relates variables in the DataMap file to those in the netCDF file.</td></tr>
+</option>
+<option><tr><td width="150" valign="top"><code><em>netcdf</em></code></td><td valign="top">filename of the netCDF file to generate.</td></tr>
+</option>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Converts a <code>DataMap</code> file to a Network Common Data Format (netCDF) file.</p>
+
+<p>The netCDF format has no concept of a "record". A netCDF dataset is just a collection of arrays of fixed length, named, dimensions. One dimension can be defined as "unlimited". The unlimited dimension does not have a fixed length and it's index can effectively be thought of as the record number.</p>
+
+<p>In translating <code>DataMap</code> files, each record in the file is mapped to an index of the unlimited dimension;scalars become 1 dimensional arrays, and arrays gain one extra dimension.</p>
+
+<p>NetCDF has a simple text based scripting language called CDL (Common Data form Language) that can be used to describe the layout of a dataset. The utility <code>ncgen</code> can convert a CDL file to an empty dataset ready to store data.</p>
+
+<p>The tool <code>dmaptocdl</code> first analyses a dmap file to determine the size of the arrays required and produces an outline CDL file. The user can edit this CDL file to correct any problems and add any meta-data (attributes), before creating an empty CDF file using ncgen. The user then populates the dataset by using <code>dmaptoncdf</code>.</p>
+
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">dmaptoncdf 20021219.kap.fitacf fitacf.cdfmap 20021219.kap.netcdf</pre></td></tr></table>
+<p>Populate the empty netCDF dataset "<code>20021219.kap.netcdf</code>" with data from the file "<code>20021219.kap.fitacf</code>" using the mapping table "<code>fitacf.cdfmap</code>".</p>
+
+
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

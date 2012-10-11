@@ -1,0 +1,71 @@
+commit 6efc0c60b7296d49f7ff1e3baa4ad0b043c4822b
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:18 2012 -0400
+
+    Updated license
+
+commit 756e8a5e647401b8296f1ae2a7b1fffd11fd71f7
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Aug 31 09:41:32 2010 -0400
+
+    Changed makefile for iplot library.
+
+commit c74b641af0948c60762e8411f218a0bf977651d1
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Fri Aug 27 10:21:01 2010 -0400
+
+    Renamed iplot.h
+
+commit 945d1573220971167a0ef810130dfc6fb282423d
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Aug 24 16:04:00 2010 -0400
+
+    Switched to GEOPACK 2005
+
+commit 0b2f839fc191eabb908902147f0f16c583c18bea
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Aug 16 10:57:52 2010 -0400
+
+    Added PNG support.
+
+commit 6a1184f690f56b14a729ede537632c7b48ea83eb
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jul 19 12:08:13 2010 -0400
+
+    Fixed bug in plotting wind data.
+
+commit 25915b4d531dd0ebdd885767aead2d24d798e8fd
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Jul 16 09:52:24 2010 -0400
+
+    Fixed problem with spanning year boundaries
+
+commit ed040cac6fc5f702ce994e8010885c35b12aac55
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Jul 16 08:40:49 2010 -0400
+
+    Fixed issue with WIND SWE.
+
+commit 575e66d015d24fbafade0e07ff9fc48282d509ca
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu May 27 10:05:57 2010 -0400
+
+    Removed debug code
+
+commit 87868128d7c41b607fe759554b491b5eec622da1
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu May 27 09:53:54 2010 -0400
+
+    Changed to 64 bit CDF implementation
+
+commit dd7a0c07fbfc6f99f7be20079693d067d532803f
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 09:43:33 2010 -0400
+
+    Fixed makefile
+
+commit 26eaad762a9fff126a1feb1247ee2d446db6b6ab
+Author: Code Development Account <code@robin-barness-macbook-pro.local>
+Date:   Tue May 11 06:46:21 2010 -0400
+
+    Plot ISTP CDF files

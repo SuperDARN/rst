@@ -1,0 +1,41 @@
+commit cdfa92de204aaa58becfdd53940ef782af74a546
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:21 2012 -0400
+
+    Updated license
+
+commit 48b90582ac3940fb05d9080b266e3f68408ed66f
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed Sep 15 10:32:50 2010 -0400
+
+    Modification to deal with new map projection solution.
+
+commit 1ac760f4b56c3135d5b16ad55bae2d61e21c1778
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Mar 31 11:12:51 2010 -0400
+
+    Fixed SVG format
+
+commit 576ec7eb45b4aa4f0ee845ea18fe8d03e0e9a969
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Mar 31 11:03:36 2010 -0400
+
+    Added PNG example images
+
+commit 551eb7616852213de8fd7d51ced65a53e8da73db
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Mar 31 09:49:32 2010 -0400
+
+    Converted documentation PPM images to PNG and renamed rplot files
+
+commit 890a56ec4bf7c465afc15009ea7d79cdec7cf1b5
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Mar 31 08:55:35 2010 -0400
+
+    Documentation cleanup
+
+commit 116c40ee4e530dd9a63160943e3c94e9da5d19ac
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:36:49 2010 +0000
+
+    Initial commit

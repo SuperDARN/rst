@@ -1,0 +1,29 @@
+commit eb5fc0cdfe47e73856595529d26904631122588e
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:11 2012 -0400
+
+    Updated license
+
+commit 58f38e2de9002a0b3c50650160e9ba48d66912e2
+Author: Code Development Account <code@robin-barness-macbook-pro.local>
+Date:   Sat May 8 06:50:35 2010 -0400
+
+    Code audit
+
+commit d73cf8efaff6eb48c11a64c920b51e0212f505d5
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Mar 30 14:37:02 2010 -0400
+
+    Fixed documenation.
+
+commit c210dd133eef72ed773e49091aee18c5f2752671
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Mon Mar 22 11:04:22 2010 -0400
+
+    Fixed location of library in documentation.
+
+commit 4a650913e901be4f9327291bde080aa110436c01
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:36:56 2010 +0000
+
+    Initial commit

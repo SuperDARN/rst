@@ -1,0 +1,60 @@
+commit eebb1a668d2d604a641c06156243fab7ad53b5a3
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:59 2012 -0400
+
+    Updated license
+
+commit 3cc333aa9cbd93c3c48ec9143ab12b86eeae0280
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Sun Mar 27 05:22:55 2011 -0400
+
+    Fixed possible rounding bug
+
+commit 81c62cc01786c951dd1a9dec985f05228e9c06d8
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Jul 15 09:36:48 2010 -0400
+
+    Fixed bug in freeing slist array prior to finishing with it.
+
+commit d31a54f50be5e6a8b5a3027be2fdd2baa04628a8
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Fri Jun 18 09:10:02 2010 -0400
+
+    Fixed issue with data containing elevation angle but not XCF data. Behaviour is
+    to now ignore it.
+
+commit 21e60e96c92517200756a176de81461ff8b775fe
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Sat Jun 12 10:22:25 2010 -0400
+
+    Removed redundant header.
+
+commit 259cacf0e2c1867f2b6cfb7858824d8ad2b807d6
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Fri Jun 11 09:55:49 2010 -0400
+
+    Added flatten and expand functions
+
+commit 2c1d276348a9322cfec93abcf114f6cba0add1f9
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:59:43 2010 -0400
+
+    RST 3 Update
+
+commit c1c24f260bde0ac267ee955f45eb992c9cdb0a55
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 09:56:58 2010 -0400
+
+    RST3 Update
+
+commit 576d0c0256101736cdea457467d6683972d9e20e
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Mar 30 15:12:15 2010 -0400
+
+    Fixed documentation.
+
+commit 276c7484daf0566b0b353609aca87c3b4de4fe86
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:26 2010 +0000
+
+    Initial commit

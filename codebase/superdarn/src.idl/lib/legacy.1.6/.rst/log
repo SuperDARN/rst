@@ -1,0 +1,41 @@
+commit e0b2b467fec18ddabcb42ff8279d5831db4ef17e
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:10 2012 -0400
+
+    Updated license
+
+commit b1329ca776657117650bf82f019207caa07b95b7
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Feb 11 10:55:38 2011 -0500
+
+    Fixed bugs introduced by subtle DLM changes.
+
+commit b3d884c845234f8757eec844b223a3c8cfac2222
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 18 17:39:59 2010 -0500
+
+    Fixed calling sequence to IGRFMODELCALL
+
+commit 9e41a033724c05d5e0f266872b26bacfef40adfe
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Oct 12 09:12:45 2010 -0400
+
+    Fixed issue with duplicate variable names.
+
+commit d34d9cd47656dd66bb83beaad19b01a084308b03
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 16 06:23:26 2010 -0400
+
+    Fixed some MLT calls.
+
+commit ec83c2f394f6fa9bf7262a9d0a3200988bbb6b0a
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 16 06:20:53 2010 -0400
+
+    Update to underlying AACGM/MLT library.
+
+commit 72341312da34b3eabda9786e18d94c93d7c1ea79
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:04 2010 +0000
+
+    Initial commit

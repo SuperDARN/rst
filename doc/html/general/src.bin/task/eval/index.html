@@ -1,0 +1,72 @@
+<head>
+<title>eval</title>
+<link rel=stylesheet href="../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../general/index.html>general</a></td>
+<td>|</td><td><a href=../../../../general/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../general/src.bin/task/index.html>task</a></td><td>|</td>
+<td>eval</td>
+<td width=100% align=right><a href=../../../../general/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">eval</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+eval --help<br>eval [-c <em>cast</em>] [-f <em>format</em>] <em>expr</em><br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Evaluate a mathematical expression.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-c <em>cast</em></code></td><td valign="top">force the final calculated value of the expression to be <em>cast</em> data type.</td></tr>
+<tr><td width="150" valign="top"><code>-f <em>format</em></code></td><td valign="top">use the string <em>format</em> to format the output text. The string uses the printf syntax. </td></tr>
+<tr><td width="150" valign="top"><code><em>expr</em></code></td><td valign="top">the mathematical expression to evaluate.</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Evaluate a mathematical expression.</p>
+<p>The calculated value is written to standard output</p>
+<p>The expression to evaluate should be quoted.</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">eval "2.5*3.12/6"</pre></td></tr></table>
+<p>Evaluate 2.5*3.12/6.</p>
+
+<table ><tr><td class="docbox" ><pre width="80">eval -c int -f "%d" "2.3*0.5"</pre></td></tr></table>
+<p>Evaluate 2.3*0.5, convert the result to an integer and print it using the format "<code>%d</code>".</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

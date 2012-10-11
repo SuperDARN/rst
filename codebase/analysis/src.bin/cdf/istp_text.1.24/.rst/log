@@ -1,0 +1,41 @@
+commit 118aa5be19295166a16751329d0206cb20d5ce62
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:17 2012 -0400
+
+    Updated license
+
+commit 134f81d0f617a91e2b0cc3fbe8f067fde4ce3611
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Aug 24 16:04:28 2010 -0400
+
+    Switched to GEOPACK 2005
+
+commit 8af85e4f28ecc7651a066803c90dc4c7a1b4b82f
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Jul 16 09:52:12 2010 -0400
+
+    Fixed problem with spanning year boundaries
+
+commit b5fd593f0c31a1b27d4dd8d58cc5ccd1a933a1f0
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Jul 16 08:38:54 2010 -0400
+
+    Fixed issue with WIND SWE
+
+commit 51e22369bc0f31c6bcbbc0543d6f0252d23e7e79
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu May 27 10:05:21 2010 -0400
+
+    Removed debug code
+
+commit fe7fe7032ec380a8d4392e6eb4e84caac1c4da32
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu May 27 09:53:04 2010 -0400
+
+    Changed to 64 bit CDF implementation.
+
+commit 502c5fdc2fd6271ea31347b994e17d7b24e5dfcb
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:36:59 2010 +0000
+
+    Initial commit

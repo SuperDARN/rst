@@ -1,0 +1,23 @@
+commit 07a3b49f540d7c33dbf1505b451b60dbbe8dd17d
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:13 2012 -0400
+
+    Updated license
+
+commit f4068d5fd1a59e54a0f951f4601f10b8a328a76a
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Tue Jun 15 13:54:15 2010 -0400
+
+    Removed old headers.
+
+commit 8cff063be93023958f6c68aa27e9614eedc3e799
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 09:41:51 2010 -0400
+
+    Added ability to do a simple pattern search for compilation.
+
+commit 46392ace6d0cb0012951b55170134192ea5d81ee
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:36:52 2010 +0000
+
+    Initial commit

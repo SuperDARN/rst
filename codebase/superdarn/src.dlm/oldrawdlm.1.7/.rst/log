@@ -1,0 +1,41 @@
+commit 2966d65a78a6cbd00bf5293d3a9c78b77d98ff6a
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:59 2012 -0400
+
+    Updated license
+
+commit 8cb8a5c5f77cfedb6d9ce2e96373d9debd4f559e
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 16:06:20 2010 -0500
+
+    Fixed data types
+
+commit df2a675a8378182a2437903b79bd867d948c92e3
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 14:58:51 2010 -0500
+
+    Fixed IDL types for 64 bit
+
+commit 0f2d95ef582614d2f442faa8c5f52bff69d7e7b1
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 10:46:10 2010 -0500
+
+    Added .dlm file and fixed makefile
+
+commit 74154ae13fc0d9b99e937f1e32337f86e8e7c276
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 10:33:28 2010 -0500
+
+    Changed destination to /home/code/rst/dlm
+
+commit 6d023e62a1ece3872c3cce7fb411e49bd11fba04
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 4 18:13:38 2010 -0400
+
+    Fixed possible issue with decoding search arguments
+
+commit f339b0972b271a5aabf40a2789bd8e1c9d381df0
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 4 15:09:22 2010 -0400
+
+    DLM for reading and writing dat files.

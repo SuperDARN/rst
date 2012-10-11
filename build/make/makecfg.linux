@@ -1,0 +1,9 @@
+# makecfg.linux
+# ==============
+
+DFL=-Bdynamic
+ARC=-Bstatic
+SHR=-Bdynamic
+
+LNK=$(ARC)
+

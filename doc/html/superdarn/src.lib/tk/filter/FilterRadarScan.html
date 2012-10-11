@@ -1,0 +1,194 @@
+
+<head>
+<title>FilterRadarScan</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../superdarn/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/filter/index.html>filter</a></td><td>|</td>
+<td>FilterRadarScan</td>
+<td width=100% align=right><a href=../../../../superdarn/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">FilterRadarScan</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">int FilterRadarScan(int mode,int depth,int inx,<a href="../../../../src.lib/tk/scan/structRadarScan.html"><code>struct RadarScan</code></a> *src,<a href="../../../../src.lib/superdarn/atk/scan/structRadarScan.html"><code>struct RadarScan</code></a> *dst,int prm);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">superdarn/filter.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">filter</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="FilterRadarScan.html"><code>FilterRadarScan</code></a> function performs median filtering on a sequence of radar scan data. The filter operates on each range-beam cell. A 3x3x3 grid of the neighboring cells in both time and space is extracted from the input data and a weighted sum of the number containing scatter is calculated. If this sum is below a certain threshold then the output cell is considered to be empty and the filter continues on to the next co-ordinate.</p>
+<p>The threshold can be controlled using the lowest bit (1) of the argument <em>mode</em>. If the bit is set then a higher threshold is used. If the threshold is exceeded then the output cell is populated. The values of the output parameters are calculated by taking the median value of each parameter from the 3x3x3 input cells. The errors associated with the parameters are calculated from the standard deviation of the input parameters.</p> 
+<p>The number of scans of data supplied to the function is given by the argument <em>depth</em>, and the first scan to apply the filter to is given by the argument <em>inx</em>. The argument <em>src</em> is a pointer to an array of structures containing the scan data.</p>
+<p>The filtered data is stored in the structure pointed to by the argument <em>dst</em>.</p>
+<p>The bits of the argument <em>prm</em> determine which parameters are included in the output. If the lowest bit (1) is set the velocity parameter is included in the output, if the second bit (2) is set then the power parameter is included, and if the third bit (4) is set the spectral width is included.</p>
+<p>The third bit of the argument <em>mode</em> is set then the scan information, such as the beam integration time, frequency and noise values, for the output are copied from the middle of the three input scans. If the bit is not set then the average value for all three scans is used.</p>
+
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns zero if . On error, (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/FilterRadarScan.c">FilterRadarScan.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* FilterRadarScan.c
+   =================
+   Author: R.J.Barnes */
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#include &quot;rtypes.h&quot;
+#include &quot;rtime.h&quot;
+#include &quot;dmap.h&quot;
+#include &quot;limit.h&quot;
+#include &quot;rprm.h&quot;
+#include &quot;fitdata.h&quot;
+#include &quot;fitread.h&quot;
+#include &quot;scandata.h&quot;
+#include &quot;cfitdata.h&quot;
+#include &quot;cfitwrite.h&quot;
+#include &quot;fitscan.h&quot;
+#include &quot;filter.h&quot;
+#include &quot;checkops.h&quot;
+#include &quot;bound.h&quot;
+
+struct RadarScan src[3];
+struct RadarScan dst;
+
+
+struct RadarParm prm;
+struct FitData fit;
+struct CFitdata cfit;
+
+int main(int argc,char *argv[]) {
+
+  FILE *fp;
+  int state=0;
+
+  double min[4]={35,3,10,0};
+  double max[4]={2000,50,1000,200};
+  int fmax=500;
+
+  int yr,mo,dy,hr,mt;
+  double sc;
+ 
+  int tflg=1;
+
+  int index=0,num=0,chk;
+  int mode=0,nbox=3;
+  int n,r;
+
+  fp=fopen(argv[1],&quot;r&quot;);
+
+  if (fp==NULL) {
+    fprintf(stderr,&quot;File not found.&apos;n&quot;);
+    exit(-1);
+  }
+
+  while(FitFreadRadarScan(fp,&amp;state,&amp;src[index],&amp;prm,&amp;fit,0,0,0) !=-1) {
+    TimeEpochToYMDHMS(src[index].st_time,&amp;yr,&amp;mo,&amp;dy,&amp;hr,&amp;mt,&amp;sc);
+
+    fprintf(stderr,&quot;%.4d-%.2d-%.2d %.2d:%.2d:%.2d&apos;n&quot;,
+            yr,mo,dy,hr,mt,(int) sc);
+
+    FilterBoundType(&amp;src[index],tflg);
+
+
+    FilterBound(15,&amp;src[index],min,max);
+
+
+    if (num&gt;2) {
+      chk=FilterCheckOps(nbox,src,fmax);
+      if (chk !=-0) continue;
+    }
+
+    if (num&gt;2) {
+
+      FilterRadarScan(mode,nbox,index,src,&amp;dst,15);   
+
+      for (n=0;n&lt;dst.num;n++) {
+        cfit.stid=dst.stid;
+	cfit.time=dst.bm[n].time;
+	cfit.bmnum=dst.bm[n].bm;
+	cfit.cp=dst.bm[n].cpid;
+        cfit.intt.sc=dst.bm[n].intt.sc;
+        cfit.intt.us=dst.bm[n].intt.us;
+	cfit.nave=dst.bm[n].nave;
+	cfit.frang=dst.bm[n].frang;
+	cfit.rsep=dst.bm[n].rsep;
+	cfit.rxrise=dst.bm[n].rxrise;
+	cfit.tfreq=dst.bm[n].freq;
+	cfit.noise=dst.bm[n].noise;
+	cfit.atten=dst.bm[n].atten;
+	cfit.channel=dst.bm[n].channel;
+	cfit.nrang=MAX_RANGE;
+	if (n==0) cfit.scan=1;
+	else cfit.scan=0;
+	cfit.num=0;
+	for (r=0;r&lt;MAX_RANGE;r++) {
+	  if (dst.bm[n].sct[r]==0) continue;
+	  cfit.rng[cfit.num]=r;
+	  cfit.data[cfit.num].gsct=dst.bm[n].rng[r].gsct;
+	  cfit.data[cfit.num].p_0=dst.bm[n].rng[r].p_0;
+	  cfit.data[cfit.num].p_0_e=dst.bm[n].rng[r].p_0_e;
+	  cfit.data[cfit.num].v=dst.bm[n].rng[r].v;
+	  cfit.data[cfit.num].v_e=dst.bm[n].rng[r].v_e;
+	  cfit.data[cfit.num].p_l=dst.bm[n].rng[r].p_l;
+	  cfit.data[cfit.num].p_l_e=dst.bm[n].rng[r].p_l_e;
+	  cfit.data[cfit.num].w_l=dst.bm[n].rng[r].w_l;
+	  cfit.data[cfit.num].w_l_e=dst.bm[n].rng[r].w_l_e;
+	  cfit.num++;
+	}
+      }
+      CFitFwrite(stdout,&amp;cfit);      
+    }
+   
+    index++;
+    if (index&gt;2) index=0;
+    num++;
+
+  
+  }
+
+  fclose(fp);
+
+
+  return 0;
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

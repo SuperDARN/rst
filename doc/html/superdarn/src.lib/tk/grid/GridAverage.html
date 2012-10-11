@@ -1,0 +1,114 @@
+
+<head>
+<title>GridAverage</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../superdarn/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/grid/index.html>grid</a></td><td>|</td>
+<td>GridAverage</td>
+<td width=100% align=right><a href=../../../../superdarn/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">GridAverage</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">void GridAverage(<a href="structGridData.html"><code>struct GridData</code></a> *a,<a href="struct/GridData.html"><code>struct GridData</code></a> *b,int flg);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">superdarn/griddata.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">grd</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="GridAverage.html"><code>GridAverage</code></a> function averages together data in coincident cells in a sets of gridded data.</p>
+<p>The result of the averaging is stored in the structure pointed to by the argument <em>a</em>. The gridded data to average is taken from the structure pointed to by the argument <em>b</em>.</p>
+<p>The argument <em>flg</em> determines the type of operation that is performed. A value of zero will average together all the data points in a cell to produce a single output value. A value of (1) will set the output to the data point with the maximum power. A value of (2) will set the output to the data point with the maximum velocity. A value of (3) sets the output to the point with maximum spectral width. A value of (4) sets the output to the minimum power, a value of (5) to the minimum velocity, and a value of (6) to the minimum spectral width.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>None</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>None</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/GridAverage.c">GridAverage.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* GridAverage.c
+   =============
+   Author: R.J.Barnes */
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#include &quot;rtypes.h&quot;
+#include &quot;rtime.h&quot;
+#include &quot;dmap.h&quot;
+#include &quot;limit.h&quot;
+#include &quot;griddata.h&quot;
+#include &quot;gridread.h&quot;
+#include &quot;gridwrite.h&quot;
+
+struct GridData grd;
+struct GridData ogrd;
+
+int main(int argc,char *argv[]) {
+
+  int flg=0; 
+  FILE *fp;
+
+  int yr,mo,dy,hr,mt;
+  double sc;
+
+  fp=fopen(argv[1],&quot;r&quot;);
+
+  if (fp==NULL) {
+    fprintf(stderr,&quot;File not found.&apos;n&quot;);
+    exit(-1);
+  }
+
+  while(GridFread(fp,&amp;grd) !=-1) {
+
+    TimeEpochToYMDHMS(grd.st_time,&amp;yr,&amp;mo,&amp;dy,&amp;hr,&amp;mt,&amp;sc);
+    fprintf(stderr,&quot;%.4d-%.2d-%.2d %.2d:%.2d:%.2d pnts=%d&apos;n&quot;,
+            yr,mo,dy,hr,mt,(int) sc,grd.vcnum);
+
+    GridAverage(&amp;grd,&amp;ogrd,flg);
+    GridFwrite(stdout,&amp;ogrd);
+    
+  }
+ 
+  fclose(fp);
+
+
+  return 0;
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

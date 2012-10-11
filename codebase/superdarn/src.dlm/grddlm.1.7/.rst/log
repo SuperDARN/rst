@@ -1,0 +1,35 @@
+commit ecc67cf1467988fab99851a177eacf5be3ffde92
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 10:45:13 2010 -0500
+
+    Added .dlm file and fixed makefile
+
+commit 5170891420e237f3b330e0ad1b8c128f94619060
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 10:31:58 2010 -0500
+
+    Changed destination to /home/code/rst/dlm
+
+commit 5db47847b6f35925764fb49f70fe35b6607e2c74
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Fri Nov 5 18:26:50 2010 -0400
+
+    Bug fix on argument checking
+
+commit e42b7f9c0bc82207bb7e651092efaf832ace7bc9
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Fri Nov 5 18:23:27 2010 -0400
+
+    Added checks for empty records
+
+commit d8aa399531cc2433413155a6510711a1d50cfa17
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 4 18:10:23 2010 -0400
+
+    Fixed possible issue with searches.
+
+commit 4e2aa3f4fa0ac72f4e854bbeb5ca65197f034b71
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 4 18:07:10 2010 -0400
+
+    DLM for reading grdmap files.

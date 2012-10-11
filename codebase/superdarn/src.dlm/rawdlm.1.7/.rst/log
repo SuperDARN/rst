@@ -1,0 +1,35 @@
+commit 4981aafacb6b66e09369cecce24ae26129d0b7dc
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 10:46:15 2010 -0500
+
+    Added .dlm file and fixed makefile
+
+commit ab37dc92168d83b5750824fd808a2e7996b9a95b
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 10:33:35 2010 -0500
+
+    Changed destination to /home/code/rst/dlm
+
+commit 1d7dcd23732da9ca1ae52a0b5a8c03cdfe1cdf43
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Fri Nov 5 10:54:10 2010 -0400
+
+    Fixed bug in close routine.
+
+commit 0cab1e125b0f73397a86c91e46ea4d6108dbcb79
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Fri Nov 5 10:52:10 2010 -0400
+
+    Fixed error in decoding search arguments.
+
+commit c38e842737c71cc17ba54094236e92fa8c3e19ca
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 4 18:14:53 2010 -0400
+
+    Fixed possible issue with decoding search arguments
+
+commit 05ee5c3c5f8f202f76828d033b84c9b09f68b9a9
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 4 13:59:53 2010 -0400
+
+    IDL DLM to read and write rawacf files.

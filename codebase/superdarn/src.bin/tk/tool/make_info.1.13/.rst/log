@@ -1,0 +1,47 @@
+commit d0610b0028e889b4ce26f258445898b87cc7271e
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:04 2012 -0400
+
+    Updated license
+
+commit c1163dbf03a3b2a820a3b313e8c6b871f633365f
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Mar 4 14:47:17 2011 -0500
+
+    Fixed problem with printing different file types.
+
+commit 15c96c70d0485039ff76982c9be6a31bd83618d1
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed Mar 2 16:56:23 2011 -0500
+
+    Fixed bug in dealing with missing space.
+
+commit 1014951b85d492a805c8a07493271257512bd7ba
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Aug 4 12:56:16 2010 -0400
+
+    Fixed makefile for dynamic linking
+
+commit fec2a7713544157a637d15a5193ea86c00b9b1ba
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 08:32:39 2010 -0400
+
+    Updated documentation
+
+commit 644a6c4393c3dabb2f74cc9f15d428544b5f9637
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:49:28 2010 -0400
+
+    Fixed data structures.
+
+commit eacf892103405368a340046fcc528be8d2738395
+Author: Code Development Account <code@robin-barness-macbook-pro.local>
+Date:   Mon May 10 06:18:12 2010 -0400
+
+    Added comment buffer.
+
+commit 2526fdb30098901de39e7b29e361b22065ec6677
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:07 2010 +0000
+
+    Initial commit

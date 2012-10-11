@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>superdarn</project>
+<name>rpos</name>
+<location>src.lib/tk/rpos</location>
+<function>
+<name>RPosCalcVector</name>
+<location>src.lib/tk/rpos</location>
+<header>superdarn/calcvector.h</header>
+<syntax>void RPosCalcVector(double lat,double lon,double mag,double azm, double *clat,double *clon);</syntax>
+
+<description><p>The <fn href="RPosCalcVector.html">RPosCalcVector</fn> function calculates the end point of a vector.</p>
+<p>The argument <ar>lat</ar> and <ar>lon</ar> give the start point of the vector. The magnitude and azimuth and are given by the arguments <ar>mag</ar> and <ar>azm</ar>.</p>
+<p>The latitude and longitude of the calculated end point are stored at the locations pointed to by the arguments <ar>clat</ar> and <ar>clon</ar>.</p>
+</description>
+
+<example type="source">RPosCalcVector.c</example>
+
+
+</function>
+<function>
+<name>RPosCubic</name>
+<location>src.lib/tk/rpos</location>
+<header>superdarn/rpos.h</header>
+<syntax>void RPosCubic(int center,int bcrd,int rcrd,<sn href="&root;/src.lib/tk/radar/structRadarSite.html">struct RadarSite</sn> *hdw, int frang,int rsep,int rxrise,double height, double *x,double *y,double *z);</syntax>
+
+
+<description><p>The <fn href="RPosCubic.html">RPosCubic</fn> find the position of a radar range-beam cell in cubic coordinates.</p>
+<p>The function returns either the coordinates of the corner of the cell or the center point. If the argument <ar>center</ar> is set to zero then the corner point is returned, if <ar>center</ar> is set to (1) then the center point is returned.</p>
+<p>The arguments <ar>bcrd</ar> and <ar>rcrd</ar> give the beam and range number of the cell. When calculating the corner point of a cell, the beam number ranges from zero to (16) and the range number ranges from zero to one more than the maximum range. This allows all the corners of the radar range-beam cells to be determined.</p>
+<p>The argument <ar>hdw</ar> points to a structure containing the radar site and hardware information.</p>
+<p>The distance to the first range and the range separation are given by the arguments <ar>frang</ar>, <ar>rsep</ar>.</p>
+<p>The argument <ar>rxrise</ar> gives the receiver rise time, if this is set to zero then the receiver rise time will be taken from the hardware table.</p>
+<p>If the argument <ar>height</ar> is less than or equal to 90 it corresponds to the elevation angle in degrees associated with the calculation, otherwise is corresponds to the height in kilometers.</p>
+<p>The calculated position in cartesian coordinates is stored at the locations pointed to by the arguments <ar>x</ar>, <ar>y</ar>, and <ar>z</ar>.</p>
+</description>
+
+<example type="source">RPosCubic.c</example>
+
+
+</function>
+<function>
+<name>RPosCubicGS</name>
+<location>src.lib/tk/rpos</location>
+<header>superdarn/rpos.h</header>
+<syntax>void RPosCubicGS(int center,int bcrd,int rcrd,<sn href="&root;/src.lib/tk/radar/structRadarSite.html">struct RadarSite</sn> *hdw, int frang,int rsep,int rxrise,double height, double *x,double *y,double *z);</syntax>
+
+
+<description><p>The <fn href="RPosCubicGS.html">RPosCubic</fn> find the position of a radar range-beam cell containing ground scatter in cubic coordinates.</p>
+<p>The function returns either the coordinates of the corner of the cell or the center point. If the argument <ar>center</ar> is set to zero then the corner point is returned, if <ar>center</ar> is set to (1) then the center point is returned.</p>
+<p>The arguments <ar>bcrd</ar> and <ar>rcrd</ar> give the beam and range number of the cell. When calculating the corner point of a cell, the beam number ranges from zero to (16) and the range number ranges from zero to one more than the maximum range. This allows all the corners of the radar range-beam cells to be determined.</p>
+<p>The argument <ar>hdw</ar> points to a structure containing the radar site and hardware information.</p>
+<p>The distance to the first range and the range separation are given by the arguments <ar>frang</ar>, <ar>rsep</ar>.</p>
+<p>The argument <ar>rxrise</ar> gives the receiver rise time, if this is set to zero then the receiver rise time will be taken from the hardware table.</p>
+<p>If the argument <ar>height</ar> is less than or equal to 90 it corresponds to the elevation angle in degrees associated with the calculation, otherwise is corresponds to the height in kilometers.</p>
+<p>The calculated position in cartesian coordinates is stored at the locations pointed to by the arguments <ar>x</ar>, <ar>y</ar>, and <ar>z</ar>.</p>
+</description>
+
+<example type="source">RPosCubicGS.c</example>
+
+
+</function>
+<function>
+<name>RPosGeo</name>
+<location>src.lib/tk/rpos</location>
+<header>superdarn/rpos.h</header>
+<syntax>void RPosGeo(int center,int bcrd,int rcrd,<sn href="&root;/src.lib/tk/radar/structRadarSite.html">struct RadarSite</sn> *hdw, int frang,int rsep, int rxrise,double height, double *rho,double *lat,double *lon);</syntax>
+
+
+
+<description><p>The <fn href="RPosGeo.html">RPosGeo</fn> find the position of a radar range-beam cell in geographic coordinates.</p>
+<p>The function returns either the coordinates of the corner of the cell or the center point. If the argument <ar>center</ar> is set to zero then the corner point is returned, if <ar>center</ar> is set to (1) then the center point is returned.</p>
+<p>The arguments <ar>bcrd</ar> and <ar>rcrd</ar> give the beam and range number of the cell. When calculating the corner point of a cell, the beam number ranges from zero to (16) and the range number ranges from zero to one more than the maximum range. This allows all the corners of the radar range-beam cells to be determined.</p>
+<p>The argument <ar>hdw</ar> points to a structure containing the radar site and hardware information.</p>
+<p>The distance to the first range and the range separation are given by the arguments <ar>frang</ar>, <ar>rsep</ar>.</p>
+<p>The argument <ar>rxrise</ar> gives the receiver rise time, if this is set to zero then the receiver rise time will be taken from the hardware table.</p>
+<p>If the argument <ar>height</ar> is less than or equal to 90 it corresponds to the elevation angle in degrees associated with the calculation, otherwise is corresponds to the height in kilometers.</p>
+<p>The distance from the earth's center, geographic latitude and longitude are stored at the locations pointed to by the arguments <ar>rho</ar>, <ar>lat</ar>, and <ar>lon</ar>.</p>
+</description>
+
+<example type="source">RPosGeo.c</example>
+
+
+</function>
+<function>
+<name>RPosGeoGS</name>
+<location>src.lib/tk/rpos</location>
+<header>superdarn/rpos.h</header>
+<syntax>void RPosGeoGS(int center,int bcrd,int rcrd,<sn href="&root;/src.lib/tk/radar/structRadarSite.html">struct RadarSite</sn> *hdw, int frang,int rsep,int rxrise,double height, double *rho,double *lat,double *lon);</syntax>
+
+<description><p>The <fn href="RPosGeoGS.html">RPosGeoGS</fn> find the position of a radar range-beam cell containing ground scatter in geographic coordinates.</p>
+<p>The function returns either the coordinates of the corner of the cell or the center point. If the argument <ar>center</ar> is set to zero then the corner point is returned, if <ar>center</ar> is set to (1) then the center point is returned.</p>
+<p>The arguments <ar>bcrd</ar> and <ar>rcrd</ar> give the beam and range number of the cell. When calculating the corner point of a cell, the beam number ranges from zero to (16) and the range number ranges from zero to one more than the maximum range. This allows all the corners of the radar range-beam cells to be determined.</p>
+<p>The argument <ar>hdw</ar> points to a structure containing the radar site and hardware information.</p>
+<p>The distance to the first range and the range separation are given by the arguments <ar>frang</ar>, <ar>rsep</ar>.</p>
+<p>The argument <ar>rxrise</ar> gives the receiver rise time, if this is set to zero then the receiver rise time will be taken from the hardware table.</p>
+<p>If the argument <ar>height</ar> is less than or equal to 90 it corresponds to the elevation angle in degrees associated with the calculation, otherwise is corresponds to the height in kilometers.</p>
+<p>The distance from the earth's center, geographic latitude and longitude are stored stored at the locations pointed to by the arguments <ar>rho</ar>, <ar>lat</ar>, and <ar>lon</ar>.</p>
+
+</description>
+<example type="source">RPosGeoGS.c</example>
+
+
+
+</function>
+<function>
+<name>RPosInvMag</name>
+<location>src.lib/tk/rpos</location>
+<header>superdarn/invmag.h</header>
+<syntax>void RPosInvMag(int bm,int rn,int year,<sn href="&root;/src.lib/tk/radar/structRadarSite.html">struct RadarSite</sn> *hdw,double frang, double rsep,double rx,double height, double *mlat,double *mlon,double *azm);</syntax>
+
+
+
+<description><p>The <fn href="RPosInvMag.html">RPosInvMag</fn> function calculates the invariant magnetic co-ordinates of a radar range-beam cell.</p>
+<p>The arguments <ar>bcrd</ar> and <ar>rcrd</ar> give the beam and range number of the cell.</p>
+<p>The argument <ar>year</ar> defines the year for which the calculatation should be performed.</p> 
+<p>The argument <ar>hdw</ar> points to a structure containing the radar site and hardware information.</p>
+<p>The distance to the first range and the range separation are given by the arguments <ar>frang</ar>, <ar>rsep</ar>.</p>
+<p>The argument <ar>rxrise</ar> gives the receiver rise time, if this is set to zero then the receiver rise time will be taken from the hardware table.</p>
+<p>If the argument <ar>height</ar> is less than or equal to 90 it corresponds to the elevation angle in degrees associated with the calculation, otherwise is corresponds to the height in kilometers.</p>
+<p>The invariant magnetic latitude, longitude and azimuth are stored stored at the locations pointed to by the arguments <ar>mlat</ar>, <ar>mlon</ar>, and <ar>azm</ar>.</p>
+
+
+</description>
+<example type="source">RPosInvMag.c</example>
+
+
+</function>
+<function>
+<name>RPosMag</name>
+<location>src.lib/tk/rpos</location>
+<header>superdarn/rpos.h</header>
+<syntax>void RPosMag(int center,int bcrd,int rcrd, <sn href="&root;/src.lib/tk/radar/structRadarSite.html">struct RadarSite</sn> *hdw, int frang,int rsep,int rxrise,double height, double *rho,double *lat,double *lon);</syntax>
+<description><p>The <fn href="RPosMag.html">RPosMag</fn> find the position of a radar range-beam cell in magnetic coordinates.</p>
+<p>The function returns either the coordinates of the corner of the cell or the center point. If the argument <ar>center</ar> is set to zero then the corner point is returned, if <ar>center</ar> is set to (1) then the center point is returned.</p>
+<p>The arguments <ar>bcrd</ar> and <ar>rcrd</ar> give the beam and range number of the cell. When calculating the corner point of a cell, the beam number ranges from zero to (16) and the range number ranges from zero to one more than the maximum range. This allows all the corners of the radar range-beam cells to be determined.</p>
+<p>The argument <ar>hdw</ar> points to a structure containing the radar site and hardware information.</p>
+<p>The distance to the first range and the range separation are given by the arguments <ar>frang</ar>, <ar>rsep</ar>.</p>
+<p>The argument <ar>rxrise</ar> gives the receiver rise time, if this is set to zero then the receiver rise time will be taken from the hardware table.</p>
+<p>If the argument <ar>height</ar> is less than or equal to 90 it corresponds to the elevation angle in degrees associated with the calculation, otherwise is corresponds to the height in kilometers.</p>
+<p>The distance from the earth's center, geomagnetic latitude and longitude are stored stored at the locations pointed to by the arguments <ar>rho</ar>, <ar>lat</ar>, and <ar>lon</ar>.</p>
+
+</description>
+
+
+<example type="source">RPosMag.c</example>
+
+
+</function>
+<function>
+<name>RPosMagGS</name>
+<location>src.lib/tk/rpos</location>
+<header>superdarn/rpos.h</header>
+<syntax>void RPosMagGS(int center,int bcrd,int rcrd,<sn href="&root;/src.lib/tk/radar/structRadarSite.html">struct RadarSite</sn> *hdw, int frang,int rsep,int rxrise,double height, double *rho,double *lat,double *lon);</syntax>
+
+
+<description><p>The <fn href="RPosMagGS.html">RPosMagGS</fn> find the position of a radar range-beam cell containing ground scatter in magnetic coordinates coordinates.</p>
+
+<p>The function returns either the coordinates of the corner of the cell or the center point. If the argument <ar>center</ar> is set to zero then the corner point is returned, if <ar>center</ar> is set to (1) then the center point is returned.</p>
+<p>The arguments <ar>bcrd</ar> and <ar>rcrd</ar> give the beam and range number of the cell. When calculating the corner point of a cell, the beam number ranges from zero to (16) and the range number ranges from zero to one more than the maximum range. This allows all the corners of the radar range-beam cells to be determined.</p>
+<p>The argument <ar>hdw</ar> points to a structure containing the radar site and hardware information.</p>
+<p>The distance to the first range and the range separation are given by the arguments <ar>frang</ar>, <ar>rsep</ar>.</p>
+<p>The argument <ar>rxrise</ar> gives the receiver rise time, if this is set to zero then the receiver rise time will be taken from the hardware table.</p>
+<p>If the argument <ar>height</ar> is less than or equal to 90 it corresponds to the elevation angle in degrees associated with the calculation, otherwise is corresponds to the height in kilometers.</p>
+<p>The distance from the earth's center, geomagnetic latitude and longitude are stored stored at the locations pointed to by the arguments <ar>rho</ar>, <ar>lat</ar>, and <ar>lon</ar>.</p>
+</description>
+
+<example type="source">RPosMagGS.c</example>
+
+
+</function>
+<function>
+<name>RPosRngBmAzmElv</name>
+<location>src.lib/tk/rpos</location>
+<header>superdarn/invmag.h</header>
+<syntax>void RPosRngBmAzmElv(int bm,int rn,int year,<sn href="&root;/src.lib/tk/radar/structRadarSite.html">struct RadarSite</sn> *hdw,double frang, double rsep,double rx,double height, double *azm,double *elv);</syntax>
+
+
+<description><p>The <fn href="RPosRngBmAzmElv.html">RPosRngBmAzmElv</fn> function calculates the azimuth and elevation angle of a radar range-beam cell.</p>
+<p>The arguments <ar>bcrd</ar> and <ar>rcrd</ar> give the beam and range number of the cell.</p>
+<p>The argument <ar>year</ar> defines the year for which the calculatation should be performed.</p> 
+<p>The argument <ar>hdw</ar> points to a structure containing the radar site and hardware information.</p>
+<p>The distance to the first range and the range separation are given by the arguments <ar>frang</ar>, <ar>rsep</ar>.</p>
+<p>The argument <ar>rxrise</ar> gives the receiver rise time, if this is set to zero then the receiver rise time will be taken from the hardware table.</p>
+<p>If the argument <ar>height</ar> is less than or equal to 90 it corresponds to the elevation angle in degrees associated with the calculation, otherwise is corresponds to the height in kilometers.</p>
+<p>The azimuth and elvation angle are stored stored at the locations pointed to by the arguments <ar>azm</ar>, <ar>elv</ar>.</p>
+
+
+</description>
+
+<example type="source">RPosRngBmAzmElv.c</example>
+
+
+</function>
+</library>

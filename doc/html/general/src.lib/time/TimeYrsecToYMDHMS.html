@@ -1,0 +1,90 @@
+
+<head>
+<title>TimeYrsecToYMDHMS</title>
+<link rel=stylesheet href=../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../index.html">Home</a><td>|</td>
+<td><a href=../../../general/index.html>general</a></td>
+<td>|</td><td><a href=../../../general/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../general/src.lib/time/index.html>time</a></td><td>|</td>
+<td>TimeYrsecToYMDHMS</td>
+<td width=100% align=right><a href=../../../general/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">TimeYrsecToYMDHMS</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">void TimeYrsecToYMDHMS(int yrsec,int yr,  int *mo,int *dy, int *hr,int *mn,int *sc);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">general/rtime.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">rtime</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="TimeYrsecToYMDHMS.html"><code>TimeJulianToYMDHMS</code></a> function converts a time expressed as seconds from the start of the year, into a year, month, day, hour,minute and second.</p>
+<p>The time to convert is given by the argument <em>yrsec</em> and <em>yr</em>. The converted time and date are stored at the locations pointed to by the arguments <em>mo</em>, <em>dy</em>, <em>hr</em>, <em>mt</em>, and <em>sc</em>.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>None</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>None</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/TimeYrsecToYMDHMS.c">TimeYrsecToYMDHMS.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* TimeYrsecToYMDHMS.c
+   ===================
+   Author: R.J.Barnes
+*/
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &quot;rtime.h&quot;
+
+
+int main(int argc,char *argv[]) {
+
+  int yr,mo,dy,hr,mt,sc;
+
+  int tval=18000;
+  yr=2002;
+
+  TimeYrsecToYMDHMS(tval,yr,&amp;mo,&amp;dy,&amp;hr,&amp;mt,&amp;sc);
+
+  fprintf(stdout,&quot;TimeYrsecToYMDHMS&apos;n&quot;);
+  fprintf(stdout,&quot;Tval: %d&apos;n&quot;,tval);
+  fprintf(stdout,&quot;Time: %.4d-%.2d-%.2d %.2d:%.2d:%.2d&apos;n&quot;,
+          yr,mo,dy,hr,mt,sc);
+
+  return 0;
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

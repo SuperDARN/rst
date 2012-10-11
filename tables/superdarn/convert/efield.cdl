@@ -1,0 +1,29 @@
+netcdf dmap {
+
+dimensions:
+	block=unlimited;
+	lat=180;
+	lon=30;
+variables:
+	short start_year(block);
+	short start_month(block);
+	short start_day(block);
+	short start_hour(block);
+	short start_minute(block);
+	double start_second(block);
+	short end_year(block);
+	short end_month(block);
+	short end_day(block);
+	short end_hour(block);
+	short end_minute(block);
+	double end_second(block);
+	float MLT(block);
+	float vector_mlat(block,lat,lon);
+	float vector_mlon(block,lat,lon);
+	float vector_E_north(block,lat,lon);
+	float vector_E_east(block,lat,lon);
+	float vector_potential(block,lat,lon);
+	float vector_V_mag(block,lat,lon);
+	float vector_V_azm(block,lat,lon);
+	int vector_data(block,lat,lon);
+}

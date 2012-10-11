@@ -1,0 +1,41 @@
+commit 67eb03504b7f165e94f1f2b629c2b25e620ac2db
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:56 2012 -0400
+
+    Updated license
+
+commit 7900befeeb435694c380bd34fa671be065b039ec
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Sun Mar 27 05:18:01 2011 -0400
+
+    Fixed possible rounding bug
+
+commit cfc8fed019333ef8131df911b15b193eb54f5ac9
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Fri Jun 11 09:55:42 2010 -0400
+
+    Added flatten and expand functions
+
+commit 460b28cd5da0f9339bd054ed7f7e4739c7b1d9c5
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:57:55 2010 -0400
+
+    RST 3 update
+
+commit 5a4d62371e946e2bc879f6c2efbfd69da916b1e2
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 09:56:04 2010 -0400
+
+    RST3 Update
+
+commit 10b17636d578a4b10ebb2f9879cdae6d20cc502c
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Mar 30 15:17:50 2010 -0400
+
+    Fixed documentation.
+
+commit b9da6bc213e654a560f460b428cf19d15a40f263
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:22 2010 +0000
+
+    Initial commit

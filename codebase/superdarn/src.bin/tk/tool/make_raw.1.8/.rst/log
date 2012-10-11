@@ -1,0 +1,29 @@
+commit 6d9bd305ac9d976fb49db6c1573361bf222ec5d9
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:07 2012 -0400
+
+    Updated license
+
+commit fa587bccd2296862e50691cfb59ddfb936b23cb2
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Aug 5 14:32:05 2010 -0400
+
+    Removed multi-lag capability - not applicable.
+
+commit bf7e202ab43e40c25624ca80d5697c99b6a08e66
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 08:32:39 2010 -0400
+
+    Updated documentation
+
+commit fbfb90a845678d968e5d2e6d88e778284e246fa7
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:45:24 2010 -0400
+
+    Fixed makefile
+
+commit ca89e86fab564d9d5d9f177b6eb209d0fe511830
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:18 2010 +0000
+
+    Initial commit

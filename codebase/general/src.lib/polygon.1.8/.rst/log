@@ -1,0 +1,47 @@
+commit 1e3ad7f72e59691f7412b296db2976ce33308005
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:22 2012 -0400
+
+    Updated license
+
+commit 1e6eb5c63c641bab34518676ccfe9bc83693cda0
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed Sep 15 10:22:43 2010 -0400
+
+    Simplification as map transformation problem now solved.
+
+commit b8c20256146365f9eaf552f7f174a93e9ca72cf4
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Mar 31 11:12:54 2010 -0400
+
+    Fixed SVG format
+
+commit 7be6f737024a7ad1987e06bfb85c926eaddbc823
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Mar 31 11:03:40 2010 -0400
+
+    Added PNG example images
+
+commit 233d756743cf074a3dcfe3115273052594f8f478
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Mar 31 09:49:32 2010 -0400
+
+    Converted documentation PPM images to PNG and renamed rplot files
+
+commit 1e3312dfbc3231b1428c80d0aee428857fc8649e
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Mar 31 08:55:39 2010 -0400
+
+    Documentation cleanup
+
+commit 7e2f58249c73d855ef621beeb1bdc5d8bc8cc02c
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Mar 30 15:04:41 2010 -0400
+
+    Fixed documentation.
+
+commit 46aae07d2670ce15c826a2ad4cc438750a68559a
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:36:46 2010 +0000
+
+    Initial commit

@@ -1,0 +1,23 @@
+commit 94b20e7b527a174854e86d445f57a6f16e19d1ad
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:09 2012 -0400
+
+    Updated license
+
+commit af8d280b4bf8ac93c9b4b1a535565277c1ea7349
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Mon Dec 6 15:22:37 2010 -0500
+
+    Fixes from the Oregon build
+
+commit 42cdc7123c66c45d4db0e0b7dc86f1423cdd3419
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Tue Jun 15 13:27:38 2010 -0400
+
+    Changed socket options.
+
+commit c76322ce5045b0130fa20d96c826432c2c457887
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:21 2010 +0000
+
+    Initial commit

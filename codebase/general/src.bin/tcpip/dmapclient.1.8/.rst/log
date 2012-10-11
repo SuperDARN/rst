@@ -1,0 +1,23 @@
+commit 4552a1879c1d5af841238378010889d7c28ec77a
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:24 2012 -0400
+
+    Updated license
+
+commit ec6deaa9d30b2323607030fc4befba193de9bb43
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Aug 26 14:06:16 2011 -0400
+
+    Removed redundant tests for TCP/IP libraries
+
+commit e145285aeab86773025387dfc18882bf2da96823
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 09:28:12 2010 -0400
+
+    Modification to dmap internal format.
+
+commit 2283b3f1adb2c7b2370f068c4c079c5e4bdea940
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:36:42 2010 +0000
+
+    Initial commit

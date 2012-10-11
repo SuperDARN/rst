@@ -1,0 +1,17 @@
+commit 9df7ad56da12ca7ed165cf5dfa9d4012fa3ca695
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:18 2012 -0400
+
+    Updated license
+
+commit bdfb366c6d226de6fa72016b63c213cb42266c9f
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 9 08:52:11 2010 -0400
+
+    Switched to new MLT library.
+
+commit 9ff8d2b52e4bd2209ce5506e8494d55ab6f895bc
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:00 2010 +0000
+
+    Initial commit

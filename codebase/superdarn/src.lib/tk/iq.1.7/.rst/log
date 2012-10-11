@@ -1,0 +1,41 @@
+commit 6b84d63346c4fd7771cb7ce24817f89465d4984e
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:58 2012 -0400
+
+    Updated license
+
+commit 916f487501b1f93ec18aa8c1399cee9a35dcf73d
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Sun Mar 27 05:20:57 2011 -0400
+
+    Fixed possible rounding bug
+
+commit 71740c9970c87ffece920338a853741d71c3b5ec
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Dec 6 16:26:17 2010 -0500
+
+    Fixed error in number of samples
+
+commit 64a9ee899273e6adea80b2a07ba065c6ee361e33
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Mon Dec 6 15:06:12 2010 -0500
+
+    Fixes from the Oregon build
+
+commit 46fd85acabb12526e2dacb28bbd91f4bd20e094c
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Fri Jun 11 17:23:07 2010 -0400
+
+    Fixed flattening of IQ structure.
+
+commit 3c6d00a5993c64b282ce263e11dc21cee3ee0b3d
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Fri Jun 11 09:55:55 2010 -0400
+
+    Added flatten and expand functions
+
+commit 40f1c04bdc37fbfe721722f76b50a0111c98fd04
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 09:33:23 2010 -0400
+
+    IQ data library.

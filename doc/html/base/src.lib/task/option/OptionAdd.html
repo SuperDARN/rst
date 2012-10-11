@@ -1,0 +1,113 @@
+
+<head>
+<title>OptionAdd</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../base/index.html>base</a></td>
+<td>|</td><td><a href=../../../../base/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../base/src.lib/task/index.html>task</a></td><td>|</td><td><a href=../../../../base/src.lib/task/option/index.html>option</a></td><td>|</td>
+<td>OptionAdd</td>
+<td width=100% align=right><a href=../../../../base/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">OptionAdd</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">int OptionAdd(<a href="structOptionData.html"><code>struct OptionData</code></a> *opt,char *name,char type,void *data);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">base/option.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">opt</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="OptionAdd.html"><code>OptionAdd</code></a> function add a command line option to a table of options.</p>
+<p>The table of command line options is given by the argument <em>opt</em> which is a pointer to a structure. The command line option, without the leading "-" is given by the argument <em>name</em>. The type of the option is given by the argument <em>type</em>. If the command line option takes an argument, the decoded value of that argument is written to the location given by <em>data</em>.</p>
+<p>The possible type codes are:</p>
+<center>
+<table>
+<tr><td><code>'x'</code></td><td>Flag</td></tr>
+<tr><td><code>'i'</code></td><td>Option takes an integer argument of type <code>int</code>.</td></tr>
+<tr><td><code>'s'</code></td><td>Option takes an integer argument of type <code>short</code>.</td></tr>
+<tr><td><code>'l'</code></td><td>Option takes an integer argument of type <code>long</code>.</td></tr>
+<tr><td><code>'f'</code></td><td>Option takes a floating point argument of type <code>float</code>.</td></tr>
+<tr><td><code>'d'</code></td><td>Option takes a floating point argument of type <code>double</code>.</td></tr>
+<tr><td><code>'t'</code></td><td>Option takes a text string as an argument.</td></tr>
+<tr><td><code>'a'</code></td><td>Option can takes a text string as an argument and occur multiple times.</td></tr>
+
+</table>
+</center>
+<p>If the option type code is <code>'t'</code>, then <em>data</em> should point to a pointer of type <code>char *</code>. The value of the pointer should be initialized to <code>NULL</code>. When the command line options are parsed, memory will be allocated to store the zero-terminated text string and its location will be stored in this pointer. The memory allocated should be freed when the text string is no longer required.</p>
+<p>If the option type code is <code>'a'</code>, then <em>data</em> should point to a pointer of type <a href="structOptionText.html"><code>struct OptionText *</code></a>. When the command line options are parsed, memory will be allocated for this structure and it will be populated. The memory should be freed when the structure is no longer required by calling the function <a href="OptionFreeText.html"><code>OptionFreeText</code></a>.</p> 
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns zero on success. On error, (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/OptionAdd.c">OptionAdd.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* OptionAdd.c
+   ===========
+   Author: R.J.Barnes
+*/
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &quot;option.h&quot;
+
+
+struct OptionData opt;
+int arg=0;
+
+int main(int argc,char *argv[]) {
+
+  unsigned char flag=0;
+  char *text=NULL;
+
+  OptionAdd(&amp;opt,&quot;flag&quot;,'x',&amp;flag); 
+  OptionAdd(&amp;opt,&quot;text&quot;,'t',&amp;text);
+
+  arg=OptionProcess(1,argc,argv,&amp;opt,NULL);
+
+  OptionFree(&amp;opt);
+
+  if (flag) fprintf(stdout,&quot;flag set&apos;n&quot;);
+  else fprintf(stdout,&quot;flag not set&apos;n&quot;);
+  if (text !=NULL) fprintf(stdout,&quot;%s&apos;n&quot;,text);
+  
+  return 0;
+}
+   
+
+
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

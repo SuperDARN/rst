@@ -1,0 +1,23 @@
+commit 88ded398714219733d48905e9c0c35f446cae090
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:13 2012 -0400
+
+    Updated license
+
+commit b18bee6c0ddd1c04faa8fa167d940e05e0d262af
+Author: Codfe Development Account <code@linux-pc.jhuapl.edu>
+Date:   Fri Jun 17 13:24:01 2011 -0400
+
+    Added support for unsigned variables
+
+commit fee775e4a1a1f17899ea4612a799377c16d181ab
+Author: Codfe Development Account <code@linux-pc.jhuapl.edu>
+Date:   Fri Jun 17 12:00:46 2011 -0400
+
+    Added unsigned types to conversion functions.
+
+commit 3345491ec403dbad4a59ebad969f38a850573f5b
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:36:54 2010 +0000
+
+    Initial commit

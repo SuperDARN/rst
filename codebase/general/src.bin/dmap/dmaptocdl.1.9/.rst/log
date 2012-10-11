@@ -1,0 +1,17 @@
+commit 9067cb97f547b004d8f491ddeee2018320c974de
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:24 2012 -0400
+
+    Updated license
+
+commit db1887f353853049a2bb5cce1311d43d20354a40
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 09:28:27 2010 -0400
+
+    Modification to dmap internal format.
+
+commit 43aaed5495dabefc40b0039e8bf546c92291dd56
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:36:43 2010 +0000
+
+    Initial commit
