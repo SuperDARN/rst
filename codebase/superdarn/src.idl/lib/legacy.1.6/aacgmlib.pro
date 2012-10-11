@@ -149,7 +149,7 @@ function mlt, year, t, mlong
   if (n_elements(t) EQ 1) then $
     mt=MLTConvertYrSec(year,t,mlong) $
   else $
-    for i=0,n_elements(t)-1 do mt(i)=MLTConvert(year,t(i),mlong)
+    for i=0,n_elements(t)-1 do mt(i)=MLTConvertYrSec(year,t(i),mlong)
     return, mt
 end
 
