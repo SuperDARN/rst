@@ -1,0 +1,184 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;+
+;NAME:
+; radar_info
+;
+; PURPOSE:
+;		This fills the arrays passed to it with radar info for all of the radars,
+; 		unless the rad_abbr keyword is set, in which case only the information for
+; 		the requested radar is outputted.  Note that magnetic coords will NOT be right.
+;
+; CATEGORY:
+; 	Radar
+;
+; CALLING SEQUENCE:
+;		radar_info,stid,glat,glon,mlat,mlon,oneletter,threeletter,name,stid_flg,$
+;              RAD_ABBR=rad_abbr,CAP_FLG=cap_flg
+;
+;
+;	INPUTS:
+;
+;
+; OPTIONAL INPUTS:
+;   rad_abbr:		  assign a three letter abbreviation of a radar to this keyword
+;                   to be returned one-element arrays with only the info of the
+;                   requested radar
+;
+; KEYWORD PARAMETERS:
+;		cap_flg:		  set this flag to get the one letter radar abbreviations capitalized
+;
+; EXAMPLE:
+;
+; OUTPUTS:
+;   stid:				  the array to be filled with station ID numbers
+;   glat:					the array to be filled with the geographic latitude of radars
+;   glon:					the array to be filled with the geographic longitude of radars
+;   mlat:					the array to be filled with the magnetic latitude of radars
+;   mlon:					the array to be filled with the magnetic longitude of radars
+;   oneletter:		the array to be filled with the one letter abbreviations of radars
+;   threeletter:	the array to be filled with the three letter abbreviations of radars
+;
+;
+;
+; COPYRIGHT:
+; Copyright (C) 2011 by Virginia Tech
+;
+; Permission is hereby granted, free of charge, to any person obtaining a copy
+; of this software and associated documentation files (the "Software"), to deal
+; in the Software without restriction, including without limitation the rights
+; to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+; copies of the Software, and to permit persons to whom the Software is
+; furnished to do so, subject to the following conditions:
+;
+; The above copyright notice and this permission notice shall be included in
+; all copies or substantial portions of the Software.
+;
+; THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+; IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+; FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+; AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+; LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+; THE SOFTWARE.
+;
+;
+; MODIFICATION HISTORY:
+; Written by AJ Ribeiro 06/11/2009
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+PRO radar_info,stid,glat,glon,mlat,mlon,oneletter,threeletter,name,stid_flg,$
+              RAD_ABBR=rad_abbr,CAP_FLG=cap_flg
+
+  ;initialize the arrays
+  nrad        = 28
+  stid        = intarr(nrad)
+  glat        = fltarr(nrad)
+  glon        = fltarr(nrad)
+  mlat        = fltarr(nrad)
+  mlon        = fltarr(nrad)
+  oneletter   = strarr(nrad)
+  threeletter = strarr(nrad)
+
+  ;populate the arrays
+  stid        = [33,1,4,10,40,64,3,15,16,7,6,9,65,11,5,2,8,13,12,14,18,32,205,204,206,207,0,92]
+  glat        = [37.10,53.32,-75.52,62.32,43.33,68.42,49.39,-49.22,58.68,$
+                57.60,53.98,63.77,62.82,-71.68,52.16,54.80,63.86,-69.00,$
+                -69.00,-43.40,-46.51,37.93,38.86,38.86,43.271,43.271,37.10,-62.595]
+  glon        = [-77.95,-60.46,-26.63,26.61,143.61,-133.50,-82.32,70.14,-156.65,$
+                -152.20,-122.59,-20.54,-93.11,-2.85,-106.53,-66.80,-22.02,39.58,$
+                39.58,147.20,168.38,-75.47,-99.39,-99.39,-120.358,-120.358,-77.95,-77.058]
+  oneletter   = ['i','g','h','f','i','i','k','p','c','a','b','e','i','d','t',$
+                's','w','n','j','r','u','i','z','z','z','z','z','i']
+  threeletter = ['bks','gbr','hal','han','hok','inv','kap','ker','ksr','kod',$
+                'pgr','pyk','rkn','san','sas','sch','sto','sye','sys','tig','unw','wal',$
+                'fhe','fhw','cvw','cve','tst','waf']
+  name =        ['Blackstone','Goose Bay','Halley Bay','Hankalsalmi','Hokkaido','Inuvik','Kapuskasing','Kerguelen','King Salmon','Kodiak',$
+                'Prince George','Pykkvibaer','Rankin Inlet','Sanae','Saskatoon','Schefferville','Stokkseyri','Syowa East',$
+                'Syowa South','Tiger','Unwin','Wallops Island',$
+                'Fort Hays East','Fort Hays West','Christmas Valley West','Christmas Valley East','Test Radar','Wallops Island Fake']
+
+  ;sort the arrays by station id #
+  glat        = glat[SORT(stid)]
+  glon        = glon[SORT(stid)]
+  oneletter   = oneletter[SORT(stid)]
+  threeletter = threeletter[SORT(stid)]
+  name = name[SORT(stid)]
+  stid        = stid[SORT(stid)]
+
+  ;populate the magnetic coordinate arrays
+  for i=0,nrad-1 do begin
+;     mpos = cnvcoord(glat(i),glon(i),100.)
+;     mlat(i) = mpos(0)
+;     mlon(i) = mpos(1)
+  endfor
+
+  ;if we only want one radar, reform the arrays
+  if(keyword_set(rad_abbr)) then begin
+    index=-1
+    for i=0,nrad-1 do begin
+      if(threeletter(i) eq rad_abbr) then begin
+        glat        = reform(glat(i:i))
+        glon        = reform(glon(i:i))
+        mlat        = reform(mlat(i:i))
+        mlon        = reform(mlon(i:i))
+        oneletter   = reform(oneletter(i:i))
+        threeletter = reform(threeletter(i:i))
+        name        = reform(name(i:i))
+        stid        = reform(stid(i:i))
+        index       = i
+        break
+      endif
+    endfor
+    if(index eq -1) then print,"radar abbreviation not recognized"
+  endif
+
+  ;if we only want one radar, reform the arrays
+	index=-1
+	for i=0,nrad-1 do begin
+		if(stid(i) eq stid_flg) then begin
+			glat        = reform(glat(i:i))
+			glon        = reform(glon(i:i))
+			mlat        = reform(mlat(i:i))
+			mlon        = reform(mlon(i:i))
+			oneletter   = reform(oneletter(i:i))
+			threeletter = reform(threeletter(i:i))
+			name        = reform(name(i:i))
+			stid        = reform(stid(i:i))
+			index       = i
+			break
+		endif
+	endfor
+
+
+
+  ;if we want capital one-letter abbreviations
+  if(keyword_set(cap_flg)) then begin
+    for i=0,n_elements(oneletter)-1 do begin
+      oneletter(i) = strupcase(oneletter(i))
+    endfor
+  endif
+
+end
+
+function get_cp_name,cpid
+
+	name = ' '
+	case cpid of
+		150: name = 'normalscan'
+		151: name = 'normalscan -fast'
+		-151: name = 'normalscan -fast'
+		3300: name = 'themisscan'
+		503: name = 'tauscan -fast'
+		3310: name = 'themis-tauscan'
+		153: name = 'stereoscan'
+		9211: name = 'pcpscan'
+		-9211: name = 'pcpscan'
+		else: name = 'unknown'
+	endcase
+
+	return,name
+
+end
+
+
+

@@ -1,0 +1,98 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;+
+;NAME:
+; acf_plot_power_panel
+;
+; PURPOSE:
+; plots the actual and fitted power variation of an ACF
+;
+; CATEGORY:
+; Graphics
+;
+; CALLING SEQUENCE:
+;		acf_plot_power_panel,powers,fpowers,mplgs,lagnums,badlags,snr,wid,position
+;
+;
+;	INPUTS:
+;		powers: 		an array of size mplgs with the powers of the ACF
+;		fpowers: 		an array of size mplgs with the fitted powers of the ACF
+;		mplgs:			number of lags in the acf
+;		lagnums:		an array of size mplgs containing the lag numbers of the ACF
+;		badlags:		an array of size mplgs with flags indicating bad lags (2=good, 1=more_badlags,0=badlags)
+;		snr:				the final fitted power of the ACF
+;		wid:  			the final fitted spectral width of the ACF
+;		position:		position to put the panel
+;
+; OPTIONAL INPUTS:
+;
+; KEYWORD PARAMETERS:
+;
+; EXAMPLE:
+;
+; OUTPUT:
+;
+;
+; COPYRIGHT:
+; Copyright (C) 2011 by Virginia Tech
+;
+; Permission is hereby granted, free of charge, to any person obtaining a copy
+; of this software and associated documentation files (the "Software"), to deal
+; in the Software without restriction, including without limitation the rights
+; to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+; copies of the Software, and to permit persons to whom the Software is
+; furnished to do so, subject to the following conditions:
+;
+; The above copyright notice and this permission notice shall be included in
+; all copies or substantial portions of the Software.
+;
+; THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+; IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+; FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+; AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+; LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+; THE SOFTWARE.
+;
+;
+; MODIFICATION HISTORY:
+; Written by AJ Ribeiro 02/06/2012
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+pro acf_plot_model_panel,phases,errs,thresh,position
+
+	S = findgen(17)*(!PI*2./16.)
+
+	x1 = position(0)
+	y1 = position(1)
+	x2 = position(2)
+	y2 = position(3)
+
+	xyouts,x2+.04,y2-.03,'Error',/normal,charsize=.7
+	xyouts,x2+.04,y2-.06,'Min',/normal,charsize=.7
+	xyouts,x2+.04,y2-.09,'Threshold',/normal,charsize=.7
+
+	ymax = max(abs(errs))*1.2
+
+	plot,findgen(1),findgen(1),/nodata,xrange=[-180,180],yrange=[0,ymax],$
+				xstyle=1,ystyle=1,xthick=4,ythick=4,pos=position,/noerase,thick=2.,$
+				yticklen=-.01,title='Model Phase Comparison',charthick=3,charsize=.6
+
+	loadct,34
+	usersym,cos(S),sin(S),/FILL
+	plots,[-180,180],[thresh,thresh],linestyle=2,col=250,thick=3
+	plots,phases,errs,linestyle=0,col=50,thick=3
+	plots,phases,errs,psym=8,col=50,symsize=.6
+
+	plots,phases(where(errs eq min(errs))),errs(where(errs eq min(errs))),psym=8,col=225,symsize=.65
+
+; 	plots,lagnums,fpowers,linestyle=1,col=150,thick=3
+	usersym,cos(S),sin(S),/FILL
+	plots,x2+.02,y2-.025,psym=8,col=50,/normal,symsize=.6
+	plots,x2+.02,y2-.055,psym=8,col=225,/normal,symsize=.65
+	plots,[x2+.01,x2+.03],[y2-.085,y2-.085],linestyle=2,col=250,/normal,thick=3
+; 	usersym,cos(S),sin(S)
+; 	plots,.85,.525,psym=8,col=150,/normal
+
+	;go back to davit ct
+	init_colors
+
+end

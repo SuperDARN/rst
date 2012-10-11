@@ -1,0 +1,177 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;+
+;NAME:
+; plot_merge
+;
+; PURPOSE:
+; Plots the results of vector merging
+;
+; CATEGORY:
+; Graphics
+;
+; CALLING SEQUENCE:
+; first call the c routine read_merge, e.g.
+; 	read_merge [-mag] yyyymmdd.rad1.rad2.merge
+;
+; next, call the IDL routine, e.g.
+; 	plot_merge,[/ORIG]
+;
+;	INPUTS:
+;
+; OPTIONAL INPUTS:
+;		/ORIG -- plot the original radar vectors instead of the merged vectors
+;
+; KEYWORD PARAMETERS:
+;
+; EXAMPLE:
+; read_merge -mag 20100112.bks.fhe.merge
+; plot_merge
+;
+; OUTPUT:
+; /rst/output_plots/merge.ps (standard)
+;	/rst/output_plots/merge.2rad.ps (/ORIG)
+;
+;
+; COPYRIGHT:
+; Copyright (C) 2011 by Virginia Tech
+;
+; Permission is hereby granted, free of charge, to any person obtaining a copy
+; of this software and associated documentation files (the "Software"), to deal
+; in the Software without restriction, including without limitation the rights
+; to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+; copies of the Software, and to permit persons to whom the Software is
+; furnished to do so, subject to the following conditions:
+;
+; The above copyright notice and this permission notice shall be included in
+; all copies or substantial portions of the Software.
+;
+; THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+; IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+; FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+; AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+; LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+; THE SOFTWARE.
+;
+;
+; MODIFICATION HISTORY:
+; Written by AJ Ribeiro 08/24/2011
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+pro sort_merge
+  ;the file we are reading data from
+  file_in = '/rst/output_files/mergevec.out.txt'
+
+  openr,unit,file_in,/get_lun
+
+	;read the first line
+	readf,unit,mag_flg,stid1,stid2
+
+	vel1_arr = dblarr(100000)
+	pwr1_arr = dblarr(100000)
+	w1_arr = dblarr(100000)
+	lat1_arr = dblarr(100000)
+	lon1_arr = dblarr(100000)
+	azm1_arr = dblarr(100000)
+	vel2_arr = dblarr(100000)
+	pwr2_arr = dblarr(100000)
+	w2_arr = dblarr(100000)
+	lat2_arr = dblarr(100000)
+	lon2_arr = dblarr(100000)
+	azm2_arr = dblarr(100000)
+	vel_arr = dblarr(100000)
+	lat_arr = dblarr(100000)
+	lon_arr = dblarr(100000)
+	azm_arr = dblarr(100000)
+	time_arr = dblarr(100000)
+	n_pnts = 0L
+
+	time = 0d
+	;read the file
+	while(~ EOF(unit)) do begin
+		readf,unit,vel1,pwr1,w1,lat1,lon1,azm1,vel2,pwr2,w2,lat2,lon2,azm2,vel,lat,lon,azm,time
+		
+		vel1_arr(n_pnts) = vel1
+		pwr1_arr(n_pnts) = pwr1
+		w1_arr(n_pnts) = w1
+		lat1_arr(n_pnts) = lat1
+		lon1_arr(n_pnts) = lon1
+		azm1_arr(n_pnts) = azm1
+		vel2_arr(n_pnts) = vel2
+		pwr2_arr(n_pnts) = pwr2
+		w2_arr(n_pnts) = w2
+		lat2_arr(n_pnts) = lat2
+		lon2_arr(n_pnts) = lon2
+		azm2_arr(n_pnts) = azm2
+		vel_arr(n_pnts) = vel
+		lat_arr(n_pnts) = lat
+		lon_arr(n_pnts) = lon
+		azm_arr(n_pnts) = azm
+		time_arr(n_pnts) = time
+
+		n_pnts = n_pnts+1
+	endwhile
+
+	;close the input file
+  close,unit
+  free_lun,unit
+
+
+
+	vel1_arr = reform(vel1_arr(0:n_pnts-1))
+	pwr1_arr = reform(pwr1_arr(0:n_pnts-1))
+	w1_arr = reform(w1_arr(0:n_pnts-1))
+	lat1_arr = reform(lat1_arr(0:n_pnts-1))
+	lon1_arr = reform(lon1_arr(0:n_pnts-1))
+	azm1_arr = reform(azm1_arr(0:n_pnts-1))
+	vel2_arr = reform(vel2_arr(0:n_pnts-1))
+	pwr2_arr = reform(pwr2_arr(0:n_pnts-1))
+	w2_arr = reform(w2_arr(0:n_pnts-1))
+	lat2_arr = reform(lat2_arr(0:n_pnts-1))
+	lon2_arr = reform(lon2_arr(0:n_pnts-1))
+	azm2_arr = reform(azm2_arr(0:n_pnts-1))
+	vel_arr = reform(vel_arr(0:n_pnts-1))
+	lat_arr = reform(lat_arr(0:n_pnts-1))
+	lon_arr = reform(lon_arr(0:n_pnts-1))
+	azm_arr = reform(azm_arr(0:n_pnts-1))
+	time_arr = reform(time_arr(0:n_pnts-1))
+
+	x = sort(time_arr)
+	vel1_arr = vel1_arr[x]
+	pwr1_arr = pwr1_arr[x]
+	w1_arr = w1_arr[x]
+	lat1_arr = lat1_arr[x]
+	lon1_arr = lon1_arr[x]
+	azm1_arr = azm1_arr[x]
+	vel2_arr = vel2_arr[x]
+	pwr2_arr = pwr2_arr[x]
+	w2_arr = w2_arr[x]
+	lat2_arr = lat2_arr[x]
+	lon2_arr = lon2_arr[x]
+	azm2_arr = azm2_arr[x]
+	vel_arr = vel_arr[x]
+	lat_arr = lat_arr[x]
+	lon_arr = lon_arr[x]
+	azm_arr = azm_arr[x]
+	time_arr = time_arr[x]
+
+
+	file_in = '/rst/output_files/mergevec.out.txt.mult'
+  openw,unit,file_in,/get_lun
+
+	;read the first line
+	printf,unit,mag_flg,stid1,stid2
+
+	for i=0,n_pnts-1 do begin
+		printf,unit,vel1_arr(i),pwr1_arr(i),w1_arr(i),lat1_arr(i),lon1_arr(i),azm1_arr(i),vel2_arr(i),$
+						pwr2_arr(i),w2_arr(i),lat2_arr(i),lon2_arr(i),azm2_arr(i),vel_arr(i),lat_arr(i),lon_arr(i),azm_arr(i),time_arr(i), Format='(F20.10)'
+	endfor
+
+	;close the input file
+  close,unit
+  free_lun,unit
+
+
+
+end

@@ -1,0 +1,225 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;+
+;NAME:
+; acf_plot_lmfit
+;
+; PURPOSE:
+; Plots the results of fitting ACFs from 1 beam sounding with the lmfit algorithm
+;
+; CATEGORY:
+; Graphics
+;
+; CALLING SEQUENCE:
+; first call the c routine test_lmfit, e.g.
+; 	test_lmfit [-new] -hr 5 -min 3 -beam 7 myfile.rawacf > /rst/output_files/timestamp.lmfit.test
+;
+; next, call the IDL routine, e.g.
+; 	plot_lmfit,timestamp
+;
+;	INPUTS:
+;		time:  a string with a timestamp to be used for a file name
+;
+; OPTIONAL INPUTS:
+;
+; KEYWORD PARAMETERS:
+;
+; EXAMPLE:
+; test_lmfit -new -hr 5 -min 3 -beam 7 myfile.rawacf > /rst/output_files/timestamp.lmfit.test
+; plot_lmfit
+;
+; OUTPUT:
+; /rst/output_plots/timestamp.lmfit.ps
+;
+;
+; COPYRIGHT:
+; Copyright (C) 2011 by Virginia Tech
+;
+; Permission is hereby granted, free of charge, to any person obtaining a copy
+; of this software and associated documentation files (the "Software"), to deal
+; in the Software without restriction, including without limitation the rights
+; to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+; copies of the Software, and to permit persons to whom the Software is
+; furnished to do so, subject to the following conditions:
+;
+; The above copyright notice and this permission notice shall be included in
+; all copies or substantial portions of the Software.
+;
+; THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+; IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+; FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+; AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+; LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+; THE SOFTWARE.
+;
+;
+; MODIFICATION HISTORY:
+; Written by AJ Ribeiro 07/29/2011
+;	Update 02/08/2012 AJR
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+pro acf_plot_lmfit,time
+  ;the file we are reading data from
+  file_in = '/rst/output_files/'+time+'.lmfit.test'
+  set_plot,'PS',/copy
+  device,/landscape,/COLOR,BITS_PER_PIXEL=8,filename='/rst/output_plots/'+time+'.lmfit.ps'
+  S = findgen(17)*(!PI*2./16.)
+  !p.multi = [0,1,1]
+
+	;open the file
+  openr,unit,file_in,/get_lun
+
+	;read the first line
+  readf,unit,nrang,mplgs,skynoise,tfreq,mpinc
+  readf,unit,stid,yr,mo,dy,hr,mt,sc,bmnum,nave,cpid,lagfr,smsep,vdir
+	lambda = 3.e8/(tfreq*1.e3)
+	
+	;get rad info
+  radar_info,stid,glat,glon,mlat,mlon,oneletter,threeletter,name,fix(stid)
+
+  if(hr lt 10) then hrstr = '0'+strtrim(round(hr),2) $
+  else hrstr = strtrim(round(hr),2)
+
+  if(mt lt 10) then mtstr = '0'+strtrim(round(mt),2) $
+  else mtstr = strtrim(round(mt),2)
+
+  if(sc lt 10) then scstr = '0'+strtrim(round(sc),2) $
+  else scstr = strtrim(round(sc),2)
+
+  date_str = name+'	 '+$
+							strtrim(fix(yr),2)+'/'+strtrim(fix(mo),2)+'/'+strtrim(fix(dy),2)
+  date_str = date_str+'	 '
+  date_str = date_str+hrstr+':'+mtstr+':'+scstr+' UT'
+  date_str = date_str+'		'
+  date_str = date_str+'Beam: '+strtrim(fix(bmnum),2)
+    date_str = date_str+'		'
+  date_str = date_str+'Freq: '+strtrim(fix(tfreq),2)+' kHz'
+  date_str = date_str + '  LMFIT  '
+
+  mystr = 'Nave: '+strtrim(round(nave),2)
+  mystr = mystr + '  CPID: '+strtrim(round(cpid),2)+' ('+get_cp_name(round(cpid))+')'
+  mystr = mystr + '  Noise: '+strtrim(round(skynoise),2)
+  mystr = mystr + '  Lagfr: '+strtrim(round(lagfr),2)+' us'
+  mystr = mystr + '  Smsep: '+strtrim(round(smsep),2)+' us'
+
+	;declare the arrays
+	lagnums = intarr(nrang,mplgs)
+	acfs = dblarr(nrang,mplgs,2)
+	fitted_acfs = dblarr(mplgs,2)
+	pwr_flgs = intarr(nrang)
+	lag_flgs = intarr(nrang)
+	init_guess = dblarr(nrang,3)
+	sct_flgs = intarr(nrang)
+	stat_arr = intarr(nrang)
+	npegged = intarr(nrang)
+	fit_params = dblarr(nrang,3)
+	acferrs = dblarr(nrang)
+	niter_arr = intarr(nrang)
+	n_lags = intarr(nrang)
+	bad_lags = intarr(nrang,mplgs)
+	
+	;read the rest of the file
+	for i=0,nrang-1 do begin
+		readf,unit,r,thresh
+		print,r
+		;read the acfs
+		for j=0,mplgs-1 do begin
+			readf,unit,lag,re,im,good
+			lagnums(i,j) = lag
+			acfs(i,j,0) = re
+			acfs(i,j,1) = im
+			if(good) then n_lags(i) = n_lags(i) + 1
+			bad_lags(i,j) = good*2
+		endfor
+		;read the params that determine if fitting is performed
+		readf,unit,pflg,lflg
+		pwr_flgs(i) = pflg
+		lag_flgs(i) = lflg
+		;if a fit was performed
+		if(pflg AND lflg) then begin
+			;read initial guesses
+			readf,unit,t,f,p
+			init_guess(i,0) = t
+			init_guess(i,1) = f
+			init_guess(i,2) = p
+			;read final params
+			readf,unit,flg,stat,peg,t,f,p,err,n
+			sct_flgs(i) = flg
+			npegged(i) = peg
+			fit_params(i,0) = t
+			fit_params(i,1) = f
+			fit_params(i,2) = p
+			acferrs(i) = err
+			niter_arr(i) = n
+		endif
+	endfor
+	;close the input file
+  close,unit
+  free_lun,unit
+
+	;plot the frontpage
+	acf_plot_frontpage,yr,mo,dy,hr,mt,sc,name,bmnum,tfreq,nave,cpid,nrang,$
+								skynoise,2,sct_flgs,(10.*alog10((fit_params(*,2)+skynoise)/skynoise)),(lambda*fit_params(*,1)/(4.*!pi)),$
+								(lambda/(fit_params(*,0)*2.*!pi)),n_lags,glat,lagfr,smsep
+
+
+  ;start the plotting
+  for i=0,nrang-1 do begin
+
+  	loadct,0
+
+		;annotate the page
+		xyouts,.5,.97,date_str+'Range: '+strtrim(i,2),align=.5,charsize=.8,charthick=3.,/normal
+		xyouts,.5,.93,mystr,align=.5,charsize=.8,charthick=3.,/normal
+
+		;plot the rawacf
+		acf_plot_rawacf,acfs(i,*,0),acfs(i,*,1),mplgs,lagnums(i,*),bad_lags(i,*),[.1,.67,.83,.87]
+
+		;check fitting status
+		if(pwr_flgs(i) eq 0 OR lag_flgs(i) eq 0) then begin
+			if(pwr_flgs(i) eq 0) then $
+				xyouts,.5,.45,'Lag 0 Power too low for a fit',/normal,align=.5,charsize=1.5,charthick=3.
+			if(lag_flgs(i) eq 0) then $
+				xyouts,.5,.4,'Not enough good lags for a fit',/normal,align=.5,charsize=1.5,charthick=3.
+			erase
+			continue
+		endif
+
+		;calculate the fitted ACF
+		for j=0,mplgs-1 do begin
+			tau = mpinc*lagnums(i,j)
+			fitted_acfs(j,0) = fit_params(i,2)*exp(-1.0*tau/fit_params(i,0))*cos(tau*fit_params(i,1))
+			fitted_acfs(j,1) = fit_params(i,2)*exp(-1.0*tau/fit_params(i,0))*sin(tau*fit_params(i,1))
+		endfor
+
+		;plot the LMFIT results
+		acf_plot_rawacf,acfs(i,*,0),acfs(i,*,1),mplgs,lagnums(i,*),bad_lags(i,*),[.1,.38,.83,.58],$
+											ref=fitted_acfs(*,0),imf=fitted_acfs(*,1),lmheader='LMFIT Results'
+
+		;check fitting status
+		if(sct_flgs(i) eq 0) then begin
+			xyouts,.5,.25,'No Good Fit',/normal,align=.5,charsize=1.5,charthick=3.
+			erase
+			continue
+		endif
+
+		;plot the phase panel
+		acf_plot_phase_panel,atan(acfs(i,*,1),acfs(i,*,0)),atan(fitted_acfs(*,1),fitted_acfs(*,0)),$
+													mplgs,lagnums(i,*),bad_lags(i,*),(lambda*fit_params(i,1)/vdir/(4.*!pi)),-1,0,$
+													[.1,.09,.39,.29]
+
+		;plot the power panel
+		acf_plot_power_panel,sqrt(acfs(i,*,1)^2+acfs(i,*,0)^2),sqrt(fitted_acfs(*,1)^2+fitted_acfs(*,0)^2),$
+													mplgs,lagnums(i,*),bad_lags(i,*),(10.*alog10((fit_params(i,2)+skynoise)/skynoise)),$
+													(lambda/(fit_params(i,0)*2.*!pi)),[.54,.09,.83,.29]
+
+		erase
+
+  endfor
+
+  ;close the postscript file
+  device,/close
+
+
+end

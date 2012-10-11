@@ -1,0 +1,318 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;+
+;NAME:
+; plot_lmfit
+;
+; PURPOSE:
+; Plots the results of fitting ACFs from 1 beam sounding with the lmfit algorithm
+;
+; CATEGORY:
+; Graphics
+;
+; CALLING SEQUENCE:
+; first call the c routine test_lmfit, e.g.
+; 	test_lmfit [-new] -hr 5 -min 3 -beam 7 myfile.rawacf > /rst/output_files/timestamp.lmfit.test
+;
+; next, call the IDL routine, e.g.
+; 	plot_lmfit,time
+;
+;	INPUTS:
+;		time:  a string with a timestamp to be used for a file name
+;
+; OPTIONAL INPUTS:
+;
+; KEYWORD PARAMETERS:
+;
+; EXAMPLE:
+; test_lmfit -new -hr 5 -min 3 -beam 7 myfile.rawacf > /rst/output_files/timestamp.lmfit.test
+; plot_lmfit
+;
+; OUTPUT:
+; /rst/output_plots/timestamp.lmfit.ps
+;
+;
+; COPYRIGHT:
+; Copyright (C) 2011 by Virginia Tech
+;
+; Permission is hereby granted, free of charge, to any person obtaining a copy
+; of this software and associated documentation files (the "Software"), to deal
+; in the Software without restriction, including without limitation the rights
+; to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+; copies of the Software, and to permit persons to whom the Software is
+; furnished to do so, subject to the following conditions:
+;
+; The above copyright notice and this permission notice shall be included in
+; all copies or substantial portions of the Software.
+;
+; THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+; IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+; FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+; AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+; LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+; THE SOFTWARE.
+;
+;
+; MODIFICATION HISTORY:
+; Written by AJ Ribeiro 07/29/2011
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+pro plot_lmfit,time
+  ;the file we are reading data from
+  file_in = '/rst/output_files/'+time+'.lmfit.test'
+  set_plot,'PS',/copy
+  device,/landscape,/COLOR,BITS_PER_PIXEL=8,filename='/rst/output_plots/'+time+'.lmfit.ps'
+  S = findgen(17)*(!PI*2./16.)
+  !p.multi = [0,1,1]
+
+	;open the file
+  openr,unit,file_in,/get_lun
+
+	;read the first line
+  readf,unit,nrang,mplgs,skynoise,tfreq,mpinc
+  readf,unit,stid,yr,mo,dy,hr,mt,sc,bmnum
+	lambda = 3.e8/(tfreq*1.e3)
+	;get rad info
+  radar_info,stid,glat,glon,mlat,mlon,oneletter,threeletter,name,fix(stid)
+  date_str = name+'				'+$
+							strtrim(fix(yr),2)+'/'+strtrim(fix(mo),2)+'/'+strtrim(fix(dy),2)
+  date_str = date_str+'				'
+  date_str = date_str+strtrim(fix(hr),2)+':'+strtrim(fix(mt),2)+':'+strtrim(fix(sc),2)
+  date_str = date_str+'				'
+  date_str = date_str+'Beam: '+strtrim(fix(bmnum),2)
+    date_str = date_str+'				'
+  date_str = date_str+'Freq: '+strtrim(fix(tfreq),2)
+
+
+	;declare the arrays
+	lagnums = intarr(nrang,mplgs)
+	acfs = dblarr(nrang,mplgs,2)
+	fitted_acfs = dblarr(mplgs,2)
+	good_lags = intarr(nrang,mplgs)
+	pwr_flgs = intarr(nrang)
+	lag_flgs = intarr(nrang)
+	init_guess = dblarr(nrang,3)
+	sct_flgs = intarr(nrang)
+	stat_arr = intarr(nrang)
+	npegged = intarr(nrang)
+	fit_params = dblarr(nrang,3)
+	acferrs = dblarr(nrang)
+	niter_arr = intarr(nrang)
+	;read the rest of the file
+	for i=0,nrang-1 do begin
+		readf,unit,r,thresh
+		print,r
+		;read the acfs
+		for j=0,mplgs-1 do begin
+			readf,unit,lag,re,im,good
+			lagnums(i,j) = lag
+			acfs(i,j,0) = re
+			acfs(i,j,1) = im
+			good_lags(i,j) = good
+		endfor
+		;read the params that determine if fitting is performed
+		readf,unit,pflg,lflg
+		pwr_flgs(i) = pflg
+		lag_flgs(i) = lflg
+		;if a fit was performed
+		if(pflg AND lflg) then begin
+			;read initial guesses
+			readf,unit,t,f,p
+			init_guess(i,0) = t
+			init_guess(i,1) = f
+			init_guess(i,2) = p
+			;read final params
+			readf,unit,flg,stat,peg,t,f,p,err,n
+			sct_flgs(i) = flg
+			npegged(i) = peg
+			fit_params(i,0) = t
+			fit_params(i,1) = f
+			fit_params(i,2) = p
+			acferrs(i) = err
+			niter_arr(i) = n
+		endif
+	endfor
+	;close the input file
+  close,unit
+  free_lun,unit
+
+  ;start the plotting
+  for i=0,nrang-1 do begin
+		loadct,0
+		;annotate the page
+		xyouts,.5,.97,date_str+'				Range Gate : '+strtrim(i,2),align=.5,charsize=1.25,charthick=3.,/normal
+		;plot the original ACF
+		ymax = max(abs(acfs(i,*,*)))*1.5
+		ptitle = 'Original Raw ACF'+'		'+$
+							'Lag 0 Power = '+strtrim(round(acfs(i,0,0)),2)+'		'+$
+							'Noise = '+strtrim(round(skynoise),2)+'		'+$
+							'Pwr Flg = '+strtrim(round(pwr_flgs(i)),2)+'		'+$
+							'Lag Flg = '+strtrim(round(lag_flgs(i)),2)
+		plot,findgen(1),findgen(1),/nodata,xrange=[0,max(lagnums(i,*))],yrange=[-1.0*ymax,ymax],$
+					xstyle=1,ystyle=1,xthick=4,ythick=4,pos=[.05,.72,.85,.92],/noerase,thick=2.,$
+					yticklen=-.01,title=ptitle,charthick=3,charsize=.75
+		loadct,34
+		usersym,cos(S),sin(S)
+		plots,0,acfs(i,0,0)+skynoise,psym=8,col=150
+		for j=0,mplgs-1 do begin
+			if(good_lags(i,j)) then p = 2 else p = 8
+			plots,lagnums(i,j),acfs(i,j,0),psym=p,col=250
+			plots,lagnums(i,j),acfs(i,j,1),psym=p,col=50
+		endfor
+		plots,lagnums(i,*),acfs(i,*,0),linestyle=0,col=250,thick=2
+		plots,lagnums(i,*),acfs(i,*,1),linestyle=0,col=50,thick=2
+
+		;annotate the plot
+		plots,.89,.895,/normal,col=250,psym=2
+		plots,.89,.865,/normal,col=50,psym=2
+		plots,.89,.835,/normal,col=250,psym=8
+		plots,.91,.835,/normal,col=50,psym=8
+		plots,.89,.805,/normal,psym=8,col=150
+		loadct,0
+		xyouts,.91,.89,'Real',charthick=3.,/normal
+		xyouts,.91,.86,'Imag',charthick=3.,/normal
+		xyouts,.93,.83,'Bad',charthick=3.,/normal
+		xyouts,.91,.80,'P0 + n',charthick=3.,/normal
+
+		if(pwr_flgs(i) eq 0 OR lag_flgs(i) eq 0) then begin
+			if(pwr_flgs(i) eq 0) then $
+				xyouts,.5,.65,'Lag 0 Power too low for a fit',/normal,align=.5,charsize=1.5,charthick=3.
+			if(lag_flgs(i) eq 0) then $
+				xyouts,.5,.6,'Not enough food lags for a fit',/normal,align=.5,charsize=1.5,charthick=3.
+			erase
+			continue
+		endif
+
+		;plot the fitted ACF
+		loadct,0
+		ymax = max(abs(acfs(i,*,*)))*1.5
+		ptitle = 'Fitted ACF		'+$
+							'Velocity Guess = '+strtrim(round(lambda*init_guess(i,1)/(4.*!pi)),2)+' m/s	'+$
+							'Width Guess = '+strtrim(round(lambda/(init_guess(i,0)*2.*!pi)),2)+' m/s '+$
+							'Power Guess = '+strtrim(round(init_guess(i,2)),2)+' '+$
+							'ACF Error = '+strtrim(round(acferrs(i)),2)+'	'+$
+							'LM Status = '+strtrim(round(stat_arr(i)),2)
+
+		plot,findgen(1),findgen(1),/nodata,xrange=[0,max(lagnums(i,*))],yrange=[-1.0*ymax,ymax],$
+					xstyle=1,ystyle=1,xthick=4,ythick=4,pos=[.05,.46,.85,.66],/noerase,thick=2.,$
+					yticklen=-.01,title=ptitle,charthick=3,charsize=.75
+
+
+		loadct,34
+		for j=0,mplgs-1 do begin
+			tau = mpinc*lagnums(i,j)
+			fitted_acfs(j,0) = fit_params(i,2)*exp(-1.0*tau/fit_params(i,0))*cos(tau*fit_params(i,1))
+			fitted_acfs(j,1) = fit_params(i,2)*exp(-1.0*tau/fit_params(i,0))*sin(tau*fit_params(i,1))
+		endfor
+		for j=0,mplgs-1 do begin
+			;plot the actual ACF
+			if(good_lags(i,j)) then begin
+				plots,lagnums(i,j),acfs(i,j,0),psym=2,col=250
+				plots,lagnums(i,j),acfs(i,j,1),psym=2,col=50
+			endif
+			plots,lagnums(i,j),fitted_acfs(j,0),psym=6,col=225
+			plots,lagnums(i,j),fitted_acfs(j,1),psym=6,col=75
+		endfor
+		plots,lagnums(i,*),fitted_acfs(*,0),linestyle=0,col=225,thick=2
+		plots,lagnums(i,*),fitted_acfs(*,1),linestyle=0,col=75,thick=2
+
+		;annotate the plot
+		plots,.89,.595,/normal,col=250,psym=2
+		plots,.89,.565,/normal,col=50,psym=2
+		plots,.89,.535,/normal,col=225,psym=6
+		plots,.89,.505,/normal,psym=6,col=75
+		loadct,0
+		xyouts,.91,.59,'Real',charthick=3.,/normal
+		xyouts,.91,.56,'Imag',charthick=3.,/normal
+		xyouts,.91,.53,'Fit Real',charthick=3.,/normal
+		xyouts,.91,.50,'Fit Imag',charthick=3.,/normal
+
+
+		if(sct_flgs(i) eq 0) then begin
+			xyouts,.5,.35,'No Good Fit',/normal,align=.5,charsize=1.5,charthick=3.
+			erase
+			continue
+		endif
+
+
+		;plot the velocity
+		loadct,0
+		ptitle = 'Phase Fit: Velocity = '+strtrim(round(lambda*fit_params(i,1)/(4.*!pi)),2)+' m/s	'
+
+		plot,findgen(1),findgen(1),/nodata,xrange=[0,max(lagnums(i,*))],yrange=[-!pi,!pi],$
+					xstyle=1,ystyle=1,xthick=4,ythick=4,pos=[.05,.2,.4,.40],/noerase,thick=2.,$
+					yticklen=-.01,title=ptitle,charthick=3,charsize=.75
+
+
+		loadct,34
+		phases = dblarr(mplgs)
+		for j=0,mplgs-1 do begin
+			;plot the actual ACF
+			if(good_lags(i,j)) then begin
+				usersym,cos(S),sin(S),/FILL
+				plots,lagnums(i,j),atan(acfs(i,j,1),acfs(i,j,0)),psym=8,col=0
+				usersym,cos(S),sin(S)
+			endif
+			plots,lagnums(i,j),atan(fitted_acfs(j,1),fitted_acfs(j,0)),psym=8,col=150
+			phases(j) = atan(fitted_acfs(j,1),fitted_acfs(j,0))
+		endfor
+		plots,lagnums(i,*),phases(*),linestyle=1,col=150,thick=2
+
+		;annotate the plot
+		usersym,cos(S),sin(S),/FILL
+		plots,.42,.355,/normal,col=0,psym=8
+		usersym,cos(S),sin(S)
+		plots,.42,.325,/normal,col=150,psym=8
+		loadct,0
+		xyouts,.44,.35,'ACF',charthick=3.,/normal
+		xyouts,.44,.32,'Fit',charthick=3.,/normal
+
+		;;;;;;;;;;;;;;;;;;;;;;;;
+		;plot the spectral width
+		;;;;;;;;;;;;;;;;;;;;;;;;
+		loadct,0
+		ymax = max(abs(acfs(i,*,*)))*1.5
+		ptitle = 'Power Fit: Width = '+strtrim(round(lambda/(fit_params(i,0)*2.*!pi)),2)+' m/s '+$
+							'Power = '+strtrim(round(fit_params(i,2)),2)+' '+$
+							'SNR = '+strtrim(round(10.*alog10((fit_params(i,2)+skynoise)/skynoise)),2)
+
+
+		plot,findgen(1),findgen(1),/nodata,xrange=[0,max(lagnums(i,*))],yrange=[0,alog10(ymax)],$
+					xstyle=1,ystyle=1,xthick=4,ythick=4,pos=[.5,.2,.85,.40],/noerase,thick=2.,$
+					yticklen=-.01,title=ptitle,charthick=3,charsize=.75
+
+
+		loadct,34
+		powers = dblarr(mplgs)
+		for j=0,mplgs-1 do begin
+			;plot the actual ACF
+			if(good_lags(i,j)) then begin
+				usersym,cos(S),sin(S),/FILL
+				plots,lagnums(i,j),alog10(sqrt(acfs(i,j,1)^2+acfs(i,j,0)^2)),psym=8,col=250
+				usersym,cos(S),sin(S)
+			endif
+			plots,lagnums(i,j),alog10(sqrt(fitted_acfs(j,1)^2+fitted_acfs(j,0)^2)),psym=8,col=150
+			powers(j) = alog10(sqrt(fitted_acfs(j,1)^2+fitted_acfs(j,0)^2))
+		endfor
+		plots,lagnums(i,*),powers(*),linestyle=1,col=150,thick=2
+
+		;annotate the plot
+		usersym,cos(S),sin(S),/FILL
+		plots,.87,.355,/normal,col=250,psym=8
+		usersym,cos(S),sin(S)
+		plots,.87,.325,/normal,col=150,psym=8
+		loadct,0
+		xyouts,.89,.35,'ACF',charthick=3.,/normal
+		xyouts,.89,.32,'Fit',charthick=3.,/normal
+
+
+		erase
+
+  endfor
+
+  ;close the postscript file
+  device,/close
+
+
+end

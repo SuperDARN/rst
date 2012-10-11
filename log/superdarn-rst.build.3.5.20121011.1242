@@ -1,0 +1,2658 @@
+makeall
+Package Source Directory:/rst/codebase/base/src.lib
+Abort on failure:yes
+Compile most recent version of code only:yes
+================================================================================
+Located Source Code:
+1.Located Library:/rst/codebase/base/src.lib/graphic/fbuffer.1.18
+2.Located Library:/rst/codebase/base/src.lib/graphic/fontdb.1.9
+3.Located Library:/rst/codebase/base/src.lib/graphic/imagedb.1.4
+4.Located Library:/rst/codebase/base/src.lib/graphic/iplotlib.1.4
+5.Located Library:/rst/codebase/base/src.lib/graphic/ps.1.9
+6.Located Library:/rst/codebase/base/src.lib/graphic/splotlib.1.3
+7.Located Library:/rst/codebase/base/src.lib/graphic/xwin.1.5
+8.Located Library:/rst/codebase/base/src.lib/httpd/cgi.1.6
+9.Located Library:/rst/codebase/base/src.lib/httpd/rscript.1.6
+10.Located Library:/rst/codebase/base/src.lib/math/rmath.1.8
+11.Located Library:/rst/codebase/base/src.lib/memory/shmem.1.2
+12.Located Library:/rst/codebase/base/src.lib/task/convert.1.11
+13.Located Library:/rst/codebase/base/src.lib/task/option.1.7
+14.Located Library:/rst/codebase/base/src.lib/task/rtypes.1.5
+15.Located Library:/rst/codebase/base/src.lib/tcpip/cnx.1.17
+16.Located Library:/rst/codebase/base/src.lib/xml/tagdb.1.7
+17.Located Library:/rst/codebase/base/src.lib/xml/xml.1.8
+18.Located Library:/rst/codebase/base/src.lib/xml/xmldb.1.6
+19.Located Library:/rst/codebase/base/src.lib/xml/xmldoclib.1.5
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/graphic/fbuffer.1.18
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/base/src.lib/graphic/fbuffer.1.18/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/graphic/fbuffer.1.18/src/../include/rfbuffer.h
+`/rst.3.5/rst/codebase/base/src.lib/graphic/fbuffer.1.18/src/../include/rfbuffer.h' -> `/rst/include/base/rfbuffer.h'
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/graphic/fontdb.1.9
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/base/src.lib/graphic/fontdb.1.9/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/graphic/fontdb.1.9/src/../include/fontdb.h
+`/rst.3.5/rst/codebase/base/src.lib/graphic/fontdb.1.9/src/../include/fontdb.h' -> `/rst/include/base/fontdb.h'
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/graphic/imagedb.1.4
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/base/src.lib/graphic/imagedb.1.4/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/graphic/imagedb.1.4/src/../include/imagedb.h
+`/rst.3.5/rst/codebase/base/src.lib/graphic/imagedb.1.4/src/../include/imagedb.h' -> `/rst/include/base/imagedb.h'
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/graphic/iplotlib.1.4
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/base/src.lib/graphic/iplotlib.1.4/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/graphic/iplotlib.1.4/src/../include/iplot.h
+`/rst.3.5/rst/codebase/base/src.lib/graphic/iplotlib.1.4/src/../include/iplot.h' -> `/rst/include/base/iplot.h'
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/graphic/ps.1.9
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/base/src.lib/graphic/ps.1.9/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/graphic/ps.1.9/src/../include/rps.h
+`/rst.3.5/rst/codebase/base/src.lib/graphic/ps.1.9/src/../include/rps.h' -> `/rst/include/base/rps.h'
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/graphic/splotlib.1.3
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/base/src.lib/graphic/splotlib.1.3/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/graphic/splotlib.1.3/src/../include/splot.h
+`/rst.3.5/rst/codebase/base/src.lib/graphic/splotlib.1.3/src/../include/splot.h' -> `/rst/include/base/splot.h'
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/graphic/xwin.1.5
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/base/src.lib/graphic/xwin.1.5/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/graphic/xwin.1.5/src/../include/xwin.h
+`/rst.3.5/rst/codebase/base/src.lib/graphic/xwin.1.5/src/../include/xwin.h' -> `/rst/include/base/xwin.h'
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/httpd/cgi.1.6
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/base/src.lib/httpd/cgi.1.6/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/httpd/cgi.1.6/src/../include/rcgi.h
+`/rst.3.5/rst/codebase/base/src.lib/httpd/cgi.1.6/src/../include/rcgi.h' -> `/rst/include/base/rcgi.h'
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/httpd/rscript.1.6
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/base/src.lib/httpd/rscript.1.6/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/httpd/rscript.1.6/src/../include/rscript.h
+`/rst.3.5/rst/codebase/base/src.lib/httpd/rscript.1.6/src/../include/rscript.h' -> `/rst/include/base/rscript.h'
+/rst.3.5/rst/codebase/base/src.lib/httpd/rscript.1.6/src/../include/rscriptHTML.h
+`/rst.3.5/rst/codebase/base/src.lib/httpd/rscript.1.6/src/../include/rscriptHTML.h' -> `/rst/include/base/rscriptHTML.h'
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/math/rmath.1.8
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/base/src.lib/math/rmath.1.8/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/math/rmath.1.8/src/../include/fft.h
+`/rst.3.5/rst/codebase/base/src.lib/math/rmath.1.8/src/../include/fft.h' -> `/rst/include/base/fft.h'
+/rst.3.5/rst/codebase/base/src.lib/math/rmath.1.8/src/../include/rmath.h
+`/rst.3.5/rst/codebase/base/src.lib/math/rmath.1.8/src/../include/rmath.h' -> `/rst/include/base/rmath.h'
+/rst.3.5/rst/codebase/base/src.lib/math/rmath.1.8/src/../include/nrfit.h
+`/rst.3.5/rst/codebase/base/src.lib/math/rmath.1.8/src/../include/nrfit.h' -> `/rst/include/base/nrfit.h'
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/memory/shmem.1.2
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/base/src.lib/memory/shmem.1.2/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/memory/shmem.1.2/src/../include/shmem.h
+`/rst.3.5/rst/codebase/base/src.lib/memory/shmem.1.2/src/../include/shmem.h' -> `/rst/include/base/shmem.h'
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/task/convert.1.11
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/base/src.lib/task/convert.1.11/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/task/convert.1.11/src/../include/rconvert.h
+`/rst.3.5/rst/codebase/base/src.lib/task/convert.1.11/src/../include/rconvert.h' -> `/rst/include/base/rconvert.h'
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/task/option.1.7
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/base/src.lib/task/option.1.7/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/task/option.1.7/src/../include/option.h
+`/rst.3.5/rst/codebase/base/src.lib/task/option.1.7/src/../include/option.h' -> `/rst/include/base/option.h'
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/task/rtypes.1.5
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/base/src.lib/task/rtypes.1.5/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/task/rtypes.1.5/src/../include/rtypes.h
+`/rst.3.5/rst/codebase/base/src.lib/task/rtypes.1.5/src/../include/rtypes.h' -> `/rst/include/base/rtypes.h'
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/tcpip/cnx.1.17
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/base/src.lib/tcpip/cnx.1.17/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/tcpip/cnx.1.17/src/../include/connex.h
+`/rst.3.5/rst/codebase/base/src.lib/tcpip/cnx.1.17/src/../include/connex.h' -> `/rst/include/base/connex.h'
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/xml/tagdb.1.7
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/base/src.lib/xml/tagdb.1.7/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/xml/tagdb.1.7/src/../include/tagdb.h
+`/rst.3.5/rst/codebase/base/src.lib/xml/tagdb.1.7/src/../include/tagdb.h' -> `/rst/include/base/tagdb.h'
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/xml/xml.1.8
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/base/src.lib/xml/xml.1.8/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/xml/xml.1.8/src/../include/rxml.h
+`/rst.3.5/rst/codebase/base/src.lib/xml/xml.1.8/src/../include/rxml.h' -> `/rst/include/base/rxml.h'
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/xml/xmldb.1.6
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/base/src.lib/xml/xmldb.1.6/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/xml/xmldb.1.6/src/../include/rxmldb.h
+`/rst.3.5/rst/codebase/base/src.lib/xml/xmldb.1.6/src/../include/rxmldb.h' -> `/rst/include/base/rxmldb.h'
+/rst.3.5/rst/codebase/base/src.lib/xml/xmldb.1.6/src/../include/entity.h
+`/rst.3.5/rst/codebase/base/src.lib/xml/xmldb.1.6/src/../include/entity.h' -> `/rst/include/base/entity.h'
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/xml/xmldoclib.1.5
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/base/src.lib/xml/xmldoclib.1.5/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/xml/xmldoclib.1.5/src/../include/rxmldoc.h
+`/rst.3.5/rst/codebase/base/src.lib/xml/xmldoclib.1.5/src/../include/rxmldoc.h' -> `/rst/include/base/rxmldoc.h'
+makeall
+Package Source Directory:/rst/codebase/general/src.lib
+Abort on failure:yes
+Compile most recent version of code only:yes
+================================================================================
+Located Source Code:
+1.Located Library:/rst/codebase/general/src.lib/contour.1.7
+2.Located Library:/rst/codebase/general/src.lib/dmap.1.25
+3.Located Library:/rst/codebase/general/src.lib/evallib.1.4
+4.Located Library:/rst/codebase/general/src.lib/grplotlib.1.4
+5.Located Library:/rst/codebase/general/src.lib/map.1.18
+6.Located Library:/rst/codebase/general/src.lib/polygon.1.8
+7.Located Library:/rst/codebase/general/src.lib/raster.1.6
+8.Located Library:/rst/codebase/general/src.lib/rfile.1.9
+9.Located Library:/rst/codebase/general/src.lib/stdkey.1.5
+10.Located Library:/rst/codebase/general/src.lib/time.1.7
+================================================================================
+Compiling Library:/rst/codebase/general/src.lib/contour.1.7
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/general/src.lib/contour.1.7/src/../include /rst/include/general 
+/rst.3.5/rst/codebase/general/src.lib/contour.1.7/src/../include/contour.h
+`/rst.3.5/rst/codebase/general/src.lib/contour.1.7/src/../include/contour.h' -> `/rst/include/general/contour.h'
+================================================================================
+Compiling Library:/rst/codebase/general/src.lib/dmap.1.25
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/general/src.lib/dmap.1.25/src/../include /rst/include/general 
+/rst.3.5/rst/codebase/general/src.lib/dmap.1.25/src/../include/dmap.h
+`/rst.3.5/rst/codebase/general/src.lib/dmap.1.25/src/../include/dmap.h' -> `/rst/include/general/dmap.h'
+================================================================================
+Compiling Library:/rst/codebase/general/src.lib/evallib.1.4
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/general/src.lib/evallib.1.4/src/../include /rst/include/general 
+/rst.3.5/rst/codebase/general/src.lib/evallib.1.4/src/../include/reval.h
+`/rst.3.5/rst/codebase/general/src.lib/evallib.1.4/src/../include/reval.h' -> `/rst/include/general/reval.h'
+================================================================================
+Compiling Library:/rst/codebase/general/src.lib/grplotlib.1.4
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/general/src.lib/grplotlib.1.4/src/../include /rst/include/general 
+/rst.3.5/rst/codebase/general/src.lib/grplotlib.1.4/src/../include/grplotraw.h
+`/rst.3.5/rst/codebase/general/src.lib/grplotlib.1.4/src/../include/grplotraw.h' -> `/rst/include/general/grplotraw.h'
+/rst.3.5/rst/codebase/general/src.lib/grplotlib.1.4/src/../include/grplotstd.h
+`/rst.3.5/rst/codebase/general/src.lib/grplotlib.1.4/src/../include/grplotstd.h' -> `/rst/include/general/grplotstd.h'
+/rst.3.5/rst/codebase/general/src.lib/grplotlib.1.4/src/../include/grplot.h
+`/rst.3.5/rst/codebase/general/src.lib/grplotlib.1.4/src/../include/grplot.h' -> `/rst/include/general/grplot.h'
+================================================================================
+Compiling Library:/rst/codebase/general/src.lib/map.1.18
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/general/src.lib/map.1.18/src/../include /rst/include/general 
+/rst.3.5/rst/codebase/general/src.lib/map.1.18/src/../include/rmap.h
+`/rst.3.5/rst/codebase/general/src.lib/map.1.18/src/../include/rmap.h' -> `/rst/include/general/rmap.h'
+================================================================================
+Compiling Library:/rst/codebase/general/src.lib/polygon.1.8
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/general/src.lib/polygon.1.8/src/../include /rst/include/general 
+/rst.3.5/rst/codebase/general/src.lib/polygon.1.8/src/../include/polygon.h
+`/rst.3.5/rst/codebase/general/src.lib/polygon.1.8/src/../include/polygon.h' -> `/rst/include/general/polygon.h'
+================================================================================
+Compiling Library:/rst/codebase/general/src.lib/raster.1.6
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/general/src.lib/raster.1.6/src/../include /rst/include/general 
+/rst.3.5/rst/codebase/general/src.lib/raster.1.6/src/../include/raster.h
+`/rst.3.5/rst/codebase/general/src.lib/raster.1.6/src/../include/raster.h' -> `/rst/include/general/raster.h'
+================================================================================
+Compiling Library:/rst/codebase/general/src.lib/rfile.1.9
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/general/src.lib/rfile.1.9/src/../include /rst/include/general 
+/rst.3.5/rst/codebase/general/src.lib/rfile.1.9/src/../include/rfile.h
+`/rst.3.5/rst/codebase/general/src.lib/rfile.1.9/src/../include/rfile.h' -> `/rst/include/general/rfile.h'
+================================================================================
+Compiling Library:/rst/codebase/general/src.lib/stdkey.1.5
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/general/src.lib/stdkey.1.5/src/../include /rst/include/general 
+/rst.3.5/rst/codebase/general/src.lib/stdkey.1.5/src/../include/stdkey.h
+`/rst.3.5/rst/codebase/general/src.lib/stdkey.1.5/src/../include/stdkey.h' -> `/rst/include/general/stdkey.h'
+================================================================================
+Compiling Library:/rst/codebase/general/src.lib/time.1.7
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/general/src.lib/time.1.7/src/../include /rst/include/general 
+/rst.3.5/rst/codebase/general/src.lib/time.1.7/src/../include/rtime.h
+`/rst.3.5/rst/codebase/general/src.lib/time.1.7/src/../include/rtime.h' -> `/rst/include/general/rtime.h'
+makeall
+Package Source Directory:/rst/codebase/analysis/src.lib
+Abort on failure:yes
+Compile most recent version of code only:yes
+================================================================================
+Located Source Code:
+1.Located Library:/rst/codebase/analysis/src.lib/aacgm/aacgm.1.15
+2.Located Library:/rst/codebase/analysis/src.lib/astalg/astalg.1.5
+3.Located Library:/rst/codebase/analysis/src.lib/cdf/rcdf.1.5
+4.Located Library:/rst/codebase/analysis/src.lib/geopack/geopack.1.4
+5.Located Library:/rst/codebase/analysis/src.lib/idl/idlsave.1.2
+6.Located Library:/rst/codebase/analysis/src.lib/igrf/igrf.1.12
+7.Located Library:/rst/codebase/analysis/src.lib/mlt/mlt.1.4
+================================================================================
+Compiling Library:/rst/codebase/analysis/src.lib/aacgm/aacgm.1.15
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/analysis/src.lib/aacgm/aacgm.1.15/src/../include /rst/include/analysis 
+/rst.3.5/rst/codebase/analysis/src.lib/aacgm/aacgm.1.15/src/../include/aacgm.h
+`/rst.3.5/rst/codebase/analysis/src.lib/aacgm/aacgm.1.15/src/../include/aacgm.h' -> `/rst/include/analysis/aacgm.h'
+================================================================================
+Compiling Library:/rst/codebase/analysis/src.lib/astalg/astalg.1.5
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/analysis/src.lib/astalg/astalg.1.5/src/../include /rst/include/analysis 
+/rst.3.5/rst/codebase/analysis/src.lib/astalg/astalg.1.5/src/../include/AstAlg.h
+`/rst.3.5/rst/codebase/analysis/src.lib/astalg/astalg.1.5/src/../include/AstAlg.h' -> `/rst/include/analysis/AstAlg.h'
+================================================================================
+Compiling Library:/rst/codebase/analysis/src.lib/cdf/rcdf.1.5
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/analysis/src.lib/cdf/rcdf.1.5/src/../include /rst/include/analysis 
+/rst.3.5/rst/codebase/analysis/src.lib/cdf/rcdf.1.5/src/../include/rcdf.h
+`/rst.3.5/rst/codebase/analysis/src.lib/cdf/rcdf.1.5/src/../include/rcdf.h' -> `/rst/include/analysis/rcdf.h'
+================================================================================
+Compiling Library:/rst/codebase/analysis/src.lib/geopack/geopack.1.4
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/analysis/src.lib/geopack/geopack.1.4/src/../include /rst/include/analysis 
+/rst.3.5/rst/codebase/analysis/src.lib/geopack/geopack.1.4/src/../include/geopack.h
+`/rst.3.5/rst/codebase/analysis/src.lib/geopack/geopack.1.4/src/../include/geopack.h' -> `/rst/include/analysis/geopack.h'
+================================================================================
+Compiling Library:/rst/codebase/analysis/src.lib/idl/idlsave.1.2
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/analysis/src.lib/idl/idlsave.1.2/src/../include /rst/include/analysis 
+/rst.3.5/rst/codebase/analysis/src.lib/idl/idlsave.1.2/src/../include/idlsave.h
+`/rst.3.5/rst/codebase/analysis/src.lib/idl/idlsave.1.2/src/../include/idlsave.h' -> `/rst/include/analysis/idlsave.h'
+================================================================================
+Compiling Library:/rst/codebase/analysis/src.lib/igrf/igrf.1.12
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/analysis/src.lib/igrf/igrf.1.12/src/../include /rst/include/analysis 
+/rst.3.5/rst/codebase/analysis/src.lib/igrf/igrf.1.12/src/../include/magcmp.h
+`/rst.3.5/rst/codebase/analysis/src.lib/igrf/igrf.1.12/src/../include/magcmp.h' -> `/rst/include/analysis/magcmp.h'
+/rst.3.5/rst/codebase/analysis/src.lib/igrf/igrf.1.12/src/../include/igrfcall.h
+`/rst.3.5/rst/codebase/analysis/src.lib/igrf/igrf.1.12/src/../include/igrfcall.h' -> `/rst/include/analysis/igrfcall.h'
+================================================================================
+Compiling Library:/rst/codebase/analysis/src.lib/mlt/mlt.1.4
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/analysis/src.lib/mlt/mlt.1.4/src/../include /rst/include/analysis 
+/rst.3.5/rst/codebase/analysis/src.lib/mlt/mlt.1.4/src/../include/mlt.h
+`/rst.3.5/rst/codebase/analysis/src.lib/mlt/mlt.1.4/src/../include/mlt.h' -> `/rst/include/analysis/mlt.h'
+makeall
+Package Source Directory:/rst/codebase/imagery/src.lib
+Abort on failure:yes
+Compile most recent version of code only:yes
+================================================================================
+Located Source Code:
+1.Located Library:/rst/codebase/imagery/src.lib/sza.1.9
+2.Located Library:/rst/codebase/imagery/src.lib/szamap.1.11
+================================================================================
+Compiling Library:/rst/codebase/imagery/src.lib/sza.1.9
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/imagery/src.lib/sza.1.9/src/../include /rst/include/imagery 
+/rst.3.5/rst/codebase/imagery/src.lib/sza.1.9/src/../include/sza.h
+`/rst.3.5/rst/codebase/imagery/src.lib/sza.1.9/src/../include/sza.h' -> `/rst/include/imagery/sza.h'
+================================================================================
+Compiling Library:/rst/codebase/imagery/src.lib/szamap.1.11
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/imagery/src.lib/szamap.1.11/src/../include /rst/include/imagery 
+/rst.3.5/rst/codebase/imagery/src.lib/szamap.1.11/src/../include/szamap.h
+`/rst.3.5/rst/codebase/imagery/src.lib/szamap.1.11/src/../include/szamap.h' -> `/rst/include/imagery/szamap.h'
+makeall
+Package Source Directory:/rst/codebase/superdarn/src.lib
+Abort on failure:yes
+Compile most recent version of code only:yes
+================================================================================
+Located Source Code:
+1.Located Library:/rst/codebase/superdarn/src.lib/os/errlog.1.3
+2.Located Library:/rst/codebase/superdarn/src.lib/os/fio.1.3
+3.Located Library:/rst/codebase/superdarn/src.lib/os/freq.1.2
+4.Located Library:/rst/codebase/superdarn/src.lib/os/rmsgrcv.1.2
+5.Located Library:/rst/codebase/superdarn/src.lib/os/rmsgsnd.1.2
+6.Located Library:/rst/codebase/superdarn/src.lib/os/rosmsg.1.5
+7.Located Library:/rst/codebase/superdarn/src.lib/os/rshell.1.2
+8.Located Library:/rst/codebase/superdarn/src.lib/os/tcpipmsg.1.2
+9.Located Library:/rst/codebase/superdarn/src.lib/tk/acf.1.16
+10.Located Library:/rst/codebase/superdarn/src.lib/tk/cfit.1.19
+11.Located Library:/rst/codebase/superdarn/src.lib/tk/cnvmap.1.17
+12.Located Library:/rst/codebase/superdarn/src.lib/tk/filter.1.8
+13.Located Library:/rst/codebase/superdarn/src.lib/tk/fit.1.35
+14.Located Library:/rst/codebase/superdarn/src.lib/tk/fitacf.2.5
+15.Located Library:/rst/codebase/superdarn/src.lib/tk/fitacfex2.1.0
+16.Located Library:/rst/codebase/superdarn/src.lib/tk/fitcnx.1.16
+17.Located Library:/rst/codebase/superdarn/src.lib/tk/grid.1.24
+18.Located Library:/rst/codebase/superdarn/src.lib/tk/gtable.1.14
+19.Located Library:/rst/codebase/superdarn/src.lib/tk/gtablewrite.1.9
+20.Located Library:/rst/codebase/superdarn/src.lib/tk/idl/cnvmapidl.1.3
+21.Located Library:/rst/codebase/superdarn/src.lib/tk/idl/fitidl.1.5
+22.Located Library:/rst/codebase/superdarn/src.lib/tk/idl/grdidl.1.4
+23.Located Library:/rst/codebase/superdarn/src.lib/tk/idl/rawidl.1.5
+24.Located Library:/rst/codebase/superdarn/src.lib/tk/idl/rprmidl.1.6
+25.Located Library:/rst/codebase/superdarn/src.lib/tk/iq.1.7
+26.Located Library:/rst/codebase/superdarn/src.lib/tk/lmfit.1.0
+27.Located Library:/rst/codebase/superdarn/src.lib/tk/oldcnvmap.1.2
+28.Located Library:/rst/codebase/superdarn/src.lib/tk/oldfit.1.25
+29.Located Library:/rst/codebase/superdarn/src.lib/tk/oldfitcnx.1.10
+30.Located Library:/rst/codebase/superdarn/src.lib/tk/oldgrid.1.3
+31.Located Library:/rst/codebase/superdarn/src.lib/tk/oldgtablewrite.1.4
+32.Located Library:/rst/codebase/superdarn/src.lib/tk/oldraw.1.16
+33.Located Library:/rst/codebase/superdarn/src.lib/tk/radar.1.21
+34.Located Library:/rst/codebase/superdarn/src.lib/tk/raw.1.22
+35.Located Library:/rst/codebase/superdarn/src.lib/tk/rpos.1.7
+36.Located Library:/rst/codebase/superdarn/src.lib/tk/scan.1.7
+37.Located Library:/rst/codebase/superdarn/src.lib/tk/shf.1.10
+38.Located Library:/rst/codebase/superdarn/src.lib/tk/sim_data.1.0
+39.Located Library:/rst/codebase/superdarn/src.lib/tk/smr.1.7
+40.Located Library:/rst/codebase/superdarn/src.lib/tk/tsg.1.13
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/os/errlog.1.3
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/os/errlog.1.3/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/os/errlog.1.3/src/../include/errlog.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/os/errlog.1.3/src/../include/errlog.h' -> `/rst/include/superdarn/errlog.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/os/fio.1.3
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/os/fio.1.3/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/os/fio.1.3/src/../include/fio.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/os/fio.1.3/src/../include/fio.h' -> `/rst/include/superdarn/fio.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/os/freq.1.2
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/os/freq.1.2/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/os/freq.1.2/src/../include/freq.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/os/freq.1.2/src/../include/freq.h' -> `/rst/include/superdarn/freq.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/os/rmsgrcv.1.2
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/os/rmsgrcv.1.2/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/os/rmsgrcv.1.2/src/../include/rmsg.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/os/rmsgrcv.1.2/src/../include/rmsg.h' -> `/rst/include/superdarn/rmsg.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/os/rmsgrcv.1.2/src/../include/rmsgrcv.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/os/rmsgrcv.1.2/src/../include/rmsgrcv.h' -> `/rst/include/superdarn/rmsgrcv.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/os/rmsgsnd.1.2
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/os/rmsgsnd.1.2/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/os/rmsgsnd.1.2/src/../include/rmsgsnd.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/os/rmsgsnd.1.2/src/../include/rmsgsnd.h' -> `/rst/include/superdarn/rmsgsnd.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/os/rosmsg.1.5
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/os/rosmsg.1.5/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/os/rosmsg.1.5/src/../include/rosmsg.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/os/rosmsg.1.5/src/../include/rosmsg.h' -> `/rst/include/superdarn/rosmsg.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/os/rshell.1.2
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/os/rshell.1.2/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/os/rshell.1.2/src/../include/radarshell.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/os/rshell.1.2/src/../include/radarshell.h' -> `/rst/include/superdarn/radarshell.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/os/tcpipmsg.1.2
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/os/tcpipmsg.1.2/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/os/tcpipmsg.1.2/src/../include/tcpipmsg.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/os/tcpipmsg.1.2/src/../include/tcpipmsg.h' -> `/rst/include/superdarn/tcpipmsg.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/acf.1.16
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/acf.1.16/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/acf.1.16/src/../include/acf.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/acf.1.16/src/../include/acf.h' -> `/rst/include/superdarn/acf.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/cfit.1.19
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include/cfitread.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include/cfitread.h' -> `/rst/include/superdarn/cfitread.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include/cfitscan.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include/cfitscan.h' -> `/rst/include/superdarn/cfitscan.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include/cfitseek.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include/cfitseek.h' -> `/rst/include/superdarn/cfitseek.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include/cfitdata.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include/cfitdata.h' -> `/rst/include/superdarn/cfitdata.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include/cfitindex.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include/cfitindex.h' -> `/rst/include/superdarn/cfitindex.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include/cfitwrite.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include/cfitwrite.h' -> `/rst/include/superdarn/cfitwrite.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/cnvmap.1.17
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/cnvmap.1.17/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/cnvmap.1.17/src/../include/cnvmapread.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/cnvmap.1.17/src/../include/cnvmapread.h' -> `/rst/include/superdarn/cnvmapread.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/cnvmap.1.17/src/../include/cnvmapindex.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/cnvmap.1.17/src/../include/cnvmapindex.h' -> `/rst/include/superdarn/cnvmapindex.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/cnvmap.1.17/src/../include/cnvmapseek.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/cnvmap.1.17/src/../include/cnvmapseek.h' -> `/rst/include/superdarn/cnvmapseek.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/cnvmap.1.17/src/../include/cnvmapwrite.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/cnvmap.1.17/src/../include/cnvmapwrite.h' -> `/rst/include/superdarn/cnvmapwrite.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/filter.1.8
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/filter.1.8/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/filter.1.8/src/../include/bound.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/filter.1.8/src/../include/bound.h' -> `/rst/include/superdarn/bound.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/filter.1.8/src/../include/checkops.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/filter.1.8/src/../include/checkops.h' -> `/rst/include/superdarn/checkops.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/filter.1.8/src/../include/filter.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/filter.1.8/src/../include/filter.h' -> `/rst/include/superdarn/filter.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/fit.1.35
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitread.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitread.h' -> `/rst/include/superdarn/fitread.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitwrite.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitwrite.h' -> `/rst/include/superdarn/fitwrite.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitdata.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitdata.h' -> `/rst/include/superdarn/fitdata.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitcfit.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitcfit.h' -> `/rst/include/superdarn/fitcfit.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitindex.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitindex.h' -> `/rst/include/superdarn/fitindex.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitseek.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitseek.h' -> `/rst/include/superdarn/fitseek.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitscan.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitscan.h' -> `/rst/include/superdarn/fitscan.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/fitacf.2.5
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/dofit.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/dofit.h' -> `/rst/include/superdarn/dofit.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/fitacf.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/fitacf.h' -> `/rst/include/superdarn/fitacf.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/fitblk.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/fitblk.h' -> `/rst/include/superdarn/fitblk.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/badlags.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/badlags.h' -> `/rst/include/superdarn/badlags.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/badsmp.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/badsmp.h' -> `/rst/include/superdarn/badsmp.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/fitacfex2.1.0
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacfex2.1.0/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacfex2.1.0/src/../include/fitacfex2.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacfex2.1.0/src/../include/fitacfex2.h' -> `/rst/include/superdarn/fitacfex2.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/fitcnx.1.16
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/fitcnx.1.16/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitcnx.1.16/src/../include/fitcnx.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitcnx.1.16/src/../include/fitcnx.h' -> `/rst/include/superdarn/fitcnx.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/grid.1.24
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/grid.1.24/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/grid.1.24/src/../include/griddata.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/grid.1.24/src/../include/griddata.h' -> `/rst/include/superdarn/griddata.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/grid.1.24/src/../include/gridseek.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/grid.1.24/src/../include/gridseek.h' -> `/rst/include/superdarn/gridseek.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/grid.1.24/src/../include/gridread.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/grid.1.24/src/../include/gridread.h' -> `/rst/include/superdarn/gridread.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/grid.1.24/src/../include/gridwrite.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/grid.1.24/src/../include/gridwrite.h' -> `/rst/include/superdarn/gridwrite.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/grid.1.24/src/../include/gridindex.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/grid.1.24/src/../include/gridindex.h' -> `/rst/include/superdarn/gridindex.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/gtable.1.14
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/gtable.1.14/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/gtable.1.14/src/../include/gtable.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/gtable.1.14/src/../include/gtable.h' -> `/rst/include/superdarn/gtable.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/gtablewrite.1.9
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/gtablewrite.1.9/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/gtablewrite.1.9/src/../include/gtablewrite.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/gtablewrite.1.9/src/../include/gtablewrite.h' -> `/rst/include/superdarn/gtablewrite.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/idl/cnvmapidl.1.3
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/cnvmapidl.1.3/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/cnvmapidl.1.3/src/../include/cnvmapidl.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/cnvmapidl.1.3/src/../include/cnvmapidl.h' -> `/rst/include/superdarn/cnvmapidl.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/idl/fitidl.1.5
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/fitidl.1.5/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/fitidl.1.5/src/../include/fitidl.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/fitidl.1.5/src/../include/fitidl.h' -> `/rst/include/superdarn/fitidl.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/idl/grdidl.1.4
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/grdidl.1.4/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/grdidl.1.4/src/../include/grdidl.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/grdidl.1.4/src/../include/grdidl.h' -> `/rst/include/superdarn/grdidl.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/idl/rawidl.1.5
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/rawidl.1.5/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/rawidl.1.5/src/../include/rawidl.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/rawidl.1.5/src/../include/rawidl.h' -> `/rst/include/superdarn/rawidl.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/idl/rprmidl.1.6
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/rprmidl.1.6/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/rprmidl.1.6/src/../include/rprmidl.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/rprmidl.1.6/src/../include/rprmidl.h' -> `/rst/include/superdarn/rprmidl.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/iq.1.7
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/iq.1.7/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/iq.1.7/src/../include/iqwrite.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/iq.1.7/src/../include/iqwrite.h' -> `/rst/include/superdarn/iqwrite.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/iq.1.7/src/../include/iqread.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/iq.1.7/src/../include/iqread.h' -> `/rst/include/superdarn/iqread.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/iq.1.7/src/../include/iqindex.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/iq.1.7/src/../include/iqindex.h' -> `/rst/include/superdarn/iqindex.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/iq.1.7/src/../include/iq.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/iq.1.7/src/../include/iq.h' -> `/rst/include/superdarn/iq.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/iq.1.7/src/../include/iqseek.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/iq.1.7/src/../include/iqseek.h' -> `/rst/include/superdarn/iqseek.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/lmfit.1.0
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/lmfit.1.0/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/lmfit.1.0/src/../include/lmfit.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/lmfit.1.0/src/../include/lmfit.h' -> `/rst/include/superdarn/lmfit.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/oldcnvmap.1.2
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/oldcnvmap.1.2/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/oldcnvmap.1.2/src/../include/oldcnvmapwrite.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/oldcnvmap.1.2/src/../include/oldcnvmapwrite.h' -> `/rst/include/superdarn/oldcnvmapwrite.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/oldcnvmap.1.2/src/../include/oldcnvmapread.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/oldcnvmap.1.2/src/../include/oldcnvmapread.h' -> `/rst/include/superdarn/oldcnvmapread.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/oldfit.1.25
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/oldfit.1.25/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/oldfit.1.25/src/../include/oldfitscan.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/oldfit.1.25/src/../include/oldfitscan.h' -> `/rst/include/superdarn/oldfitscan.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/oldfit.1.25/src/../include/oldfitread.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/oldfit.1.25/src/../include/oldfitread.h' -> `/rst/include/superdarn/oldfitread.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/oldfit.1.25/src/../include/oldfitwrite.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/oldfit.1.25/src/../include/oldfitwrite.h' -> `/rst/include/superdarn/oldfitwrite.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/oldfitcnx.1.10
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/oldfitcnx.1.10/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/oldfitcnx.1.10/src/../include/oldfitcnx.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/oldfitcnx.1.10/src/../include/oldfitcnx.h' -> `/rst/include/superdarn/oldfitcnx.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/oldgrid.1.3
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/oldgrid.1.3/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/oldgrid.1.3/src/../include/oldgridread.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/oldgrid.1.3/src/../include/oldgridread.h' -> `/rst/include/superdarn/oldgridread.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/oldgrid.1.3/src/../include/oldgridwrite.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/oldgrid.1.3/src/../include/oldgridwrite.h' -> `/rst/include/superdarn/oldgridwrite.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/oldgtablewrite.1.4
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/oldgtablewrite.1.4/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/oldgtablewrite.1.4/src/../include/oldgtablewrite.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/oldgtablewrite.1.4/src/../include/oldgtablewrite.h' -> `/rst/include/superdarn/oldgtablewrite.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/oldraw.1.16
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/oldraw.1.16/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/oldraw.1.16/src/../include/oldrawwrite.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/oldraw.1.16/src/../include/oldrawwrite.h' -> `/rst/include/superdarn/oldrawwrite.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/oldraw.1.16/src/../include/oldrawread.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/oldraw.1.16/src/../include/oldrawread.h' -> `/rst/include/superdarn/oldrawread.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/radar.1.21
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/radar.1.21/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/radar.1.21/src/../include/rprm.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/radar.1.21/src/../include/rprm.h' -> `/rst/include/superdarn/rprm.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/radar.1.21/src/../include/radar.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/radar.1.21/src/../include/radar.h' -> `/rst/include/superdarn/radar.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/raw.1.22
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/raw.1.22/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/raw.1.22/src/../include/rawdata.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/raw.1.22/src/../include/rawdata.h' -> `/rst/include/superdarn/rawdata.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/raw.1.22/src/../include/rawwrite.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/raw.1.22/src/../include/rawwrite.h' -> `/rst/include/superdarn/rawwrite.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/raw.1.22/src/../include/rawread.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/raw.1.22/src/../include/rawread.h' -> `/rst/include/superdarn/rawread.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/raw.1.22/src/../include/rawseek.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/raw.1.22/src/../include/rawseek.h' -> `/rst/include/superdarn/rawseek.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/raw.1.22/src/../include/rawindex.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/raw.1.22/src/../include/rawindex.h' -> `/rst/include/superdarn/rawindex.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/rpos.1.7
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/rpos.1.7/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/rpos.1.7/src/../include/rpos.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/rpos.1.7/src/../include/rpos.h' -> `/rst/include/superdarn/rpos.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/rpos.1.7/src/../include/calcvector.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/rpos.1.7/src/../include/calcvector.h' -> `/rst/include/superdarn/calcvector.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/rpos.1.7/src/../include/invmag.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/rpos.1.7/src/../include/invmag.h' -> `/rst/include/superdarn/invmag.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/scan.1.7
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/scan.1.7/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/scan.1.7/src/../include/scandata.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/scan.1.7/src/../include/scandata.h' -> `/rst/include/superdarn/scandata.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/shf.1.10
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/shf.1.10/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/shf.1.10/src/../include/crdshft.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/shf.1.10/src/../include/crdshft.h' -> `/rst/include/superdarn/crdshft.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/shf.1.10/src/../include/evalefield.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/shf.1.10/src/../include/evalefield.h' -> `/rst/include/superdarn/evalefield.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/shf.1.10/src/../include/cnvgrid.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/shf.1.10/src/../include/cnvgrid.h' -> `/rst/include/superdarn/cnvgrid.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/shf.1.10/src/../include/cnvmap.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/shf.1.10/src/../include/cnvmap.h' -> `/rst/include/superdarn/cnvmap.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/shf.1.10/src/../include/cnvmapsolve.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/shf.1.10/src/../include/cnvmapsolve.h' -> `/rst/include/superdarn/cnvmapsolve.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/shf.1.10/src/../include/evallegendre.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/shf.1.10/src/../include/evallegendre.h' -> `/rst/include/superdarn/evallegendre.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/shf.1.10/src/../include/evalvelocity.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/shf.1.10/src/../include/evalvelocity.h' -> `/rst/include/superdarn/evalvelocity.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/shf.1.10/src/../include/fitmap.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/shf.1.10/src/../include/fitmap.h' -> `/rst/include/superdarn/fitmap.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/shf.1.10/src/../include/evalpotential.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/shf.1.10/src/../include/evalpotential.h' -> `/rst/include/superdarn/evalpotential.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/shf.1.10/src/../include/shfconst.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/shf.1.10/src/../include/shfconst.h' -> `/rst/include/superdarn/shfconst.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/sim_data.1.0
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/sim_data.1.0/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/sim_data.1.0/src/../include/sim_data.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/sim_data.1.0/src/../include/sim_data.h' -> `/rst/include/superdarn/sim_data.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/smr.1.7
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/smr.1.7/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/smr.1.7/src/../include/smrseek.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/smr.1.7/src/../include/smrseek.h' -> `/rst/include/superdarn/smrseek.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/smr.1.7/src/../include/smrwrite.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/smr.1.7/src/../include/smrwrite.h' -> `/rst/include/superdarn/smrwrite.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/smr.1.7/src/../include/smrscan.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/smr.1.7/src/../include/smrscan.h' -> `/rst/include/superdarn/smrscan.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/smr.1.7/src/../include/smrread.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/smr.1.7/src/../include/smrread.h' -> `/rst/include/superdarn/smrread.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/tsg.1.13
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/tsg.1.13/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/tsg.1.13/src/../include/maketsg.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/tsg.1.13/src/../include/maketsg.h' -> `/rst/include/superdarn/maketsg.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/tsg.1.13/src/../include/tsg.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/tsg.1.13/src/../include/tsg.h' -> `/rst/include/superdarn/tsg.h'
+makeall
+Package Source Directory:/rst/usr/codebase/superdarn/src.lib/tk
+Abort on failure:yes
+Compile most recent version of code only:yes
+================================================================================
+Located Source Code:
+1.Located Library:/rst/usr/codebase/superdarn/src.lib/tk/acfex.1.3
+2.Located Library:/rst/usr/codebase/superdarn/src.lib/tk/fitacfex.1.3
+================================================================================
+Compiling Library:/rst/usr/codebase/superdarn/src.lib/tk/acfex.1.3
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/usr/codebase/superdarn/src.lib/tk/acfex.1.3/src/../include /rst/usr/include/superdarn 
+/rst.3.5/rst/usr/codebase/superdarn/src.lib/tk/acfex.1.3/src/../include/acfex.h
+`/rst.3.5/rst/usr/codebase/superdarn/src.lib/tk/acfex.1.3/src/../include/acfex.h' -> `/rst/usr/include/superdarn/acfex.h'
+================================================================================
+Compiling Library:/rst/usr/codebase/superdarn/src.lib/tk/fitacfex.1.3
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/usr/codebase/superdarn/src.lib/tk/fitacfex.1.3/src/../include /rst/usr/include/superdarn 
+/rst.3.5/rst/usr/codebase/superdarn/src.lib/tk/fitacfex.1.3/src/../include/fitacfex.h
+`/rst.3.5/rst/usr/codebase/superdarn/src.lib/tk/fitacfex.1.3/src/../include/fitacfex.h' -> `/rst/usr/include/superdarn/fitacfex.h'
+makeall
+Package Source Directory:/rst/usr/codebase/superdarn/src.lib/os
+Abort on failure:yes
+Compile most recent version of code only:yes
+================================================================================
+Located Source Code:
+1.Located Library:/rst/usr/codebase/superdarn/src.lib/os/ops.1.13
+2.Located Library:/rst/usr/codebase/superdarn/src.lib/os/site.1.6
+3.Located Library:/rst/usr/codebase/superdarn/src.lib/os/site.cve.1.3
+4.Located Library:/rst/usr/codebase/superdarn/src.lib/os/site.cvw.1.3
+5.Located Library:/rst/usr/codebase/superdarn/src.lib/os/site.fhe.1.11
+6.Located Library:/rst/usr/codebase/superdarn/src.lib/os/site.fhw.1.10
+7.Located Library:/rst/usr/codebase/superdarn/src.lib/os/site.tst.1.8
+================================================================================
+Compiling Library:/rst/usr/codebase/superdarn/src.lib/os/ops.1.13
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/usr/codebase/superdarn/src.lib/os/ops.1.13/src/../include /rst/usr/include/superdarn 
+/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/ops.1.13/src/../include/limit.h
+`/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/ops.1.13/src/../include/limit.h' -> `/rst/usr/include/superdarn/limit.h'
+/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/ops.1.13/src/../include/build.h
+`/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/ops.1.13/src/../include/build.h' -> `/rst/usr/include/superdarn/build.h'
+/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/ops.1.13/src/../include/global.h
+`/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/ops.1.13/src/../include/global.h' -> `/rst/usr/include/superdarn/global.h'
+/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/ops.1.13/src/../include/sync.h
+`/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/ops.1.13/src/../include/sync.h' -> `/rst/usr/include/superdarn/sync.h'
+/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/ops.1.13/src/../include/setup.h
+`/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/ops.1.13/src/../include/setup.h' -> `/rst/usr/include/superdarn/setup.h'
+/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/ops.1.13/src/../include/reopen.h
+`/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/ops.1.13/src/../include/reopen.h' -> `/rst/usr/include/superdarn/reopen.h'
+================================================================================
+Compiling Library:/rst/usr/codebase/superdarn/src.lib/os/site.1.6
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/usr/codebase/superdarn/src.lib/os/site.1.6/src/../include /rst/usr/include/superdarn 
+/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/site.1.6/src/../include/sitebuild.h
+`/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/site.1.6/src/../include/sitebuild.h' -> `/rst/usr/include/superdarn/sitebuild.h'
+/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/site.1.6/src/../include/site.h
+`/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/site.1.6/src/../include/site.h' -> `/rst/usr/include/superdarn/site.h'
+/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/site.1.6/src/../include/siteglobal.h
+`/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/site.1.6/src/../include/siteglobal.h' -> `/rst/usr/include/superdarn/siteglobal.h'
+================================================================================
+Compiling Library:/rst/usr/codebase/superdarn/src.lib/os/site.cve.1.3
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/usr/codebase/superdarn/src.lib/os/site.cve.1.3/src/../include /rst/usr/include/superdarn 
+/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/site.cve.1.3/src/../include/site.cve.h
+`/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/site.cve.1.3/src/../include/site.cve.h' -> `/rst/usr/include/superdarn/site.cve.h'
+================================================================================
+Compiling Library:/rst/usr/codebase/superdarn/src.lib/os/site.cvw.1.3
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/usr/codebase/superdarn/src.lib/os/site.cvw.1.3/src/../include /rst/usr/include/superdarn 
+/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/site.cvw.1.3/src/../include/site.cvw.h
+`/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/site.cvw.1.3/src/../include/site.cvw.h' -> `/rst/usr/include/superdarn/site.cvw.h'
+================================================================================
+Compiling Library:/rst/usr/codebase/superdarn/src.lib/os/site.fhe.1.11
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/usr/codebase/superdarn/src.lib/os/site.fhe.1.11/src/../include /rst/usr/include/superdarn 
+/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/site.fhe.1.11/src/../include/site.fhe.h
+`/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/site.fhe.1.11/src/../include/site.fhe.h' -> `/rst/usr/include/superdarn/site.fhe.h'
+================================================================================
+Compiling Library:/rst/usr/codebase/superdarn/src.lib/os/site.fhw.1.10
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/usr/codebase/superdarn/src.lib/os/site.fhw.1.10/src/../include /rst/usr/include/superdarn 
+/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/site.fhw.1.10/src/../include/site.fhw.h
+`/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/site.fhw.1.10/src/../include/site.fhw.h' -> `/rst/usr/include/superdarn/site.fhw.h'
+================================================================================
+Compiling Library:/rst/usr/codebase/superdarn/src.lib/os/site.tst.1.8
+================================================================================
+make hdr
+make.hdr /rst.3.5/rst/usr/codebase/superdarn/src.lib/os/site.tst.1.8/src/../include /rst/usr/include/superdarn 
+/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/site.tst.1.8/src/../include/site.tst.h
+`/rst.3.5/rst/usr/codebase/superdarn/src.lib/os/site.tst.1.8/src/../include/site.tst.h' -> `/rst/usr/include/superdarn/site.tst.h'
+makeall
+Package Source Directory:/rst/codebase/base/src.lib
+Abort on failure:yes
+Compile most recent version of code only:yes
+================================================================================
+Located Source Code:
+1.Located Library:/rst/codebase/base/src.lib/graphic/fbuffer.1.18
+2.Located Library:/rst/codebase/base/src.lib/graphic/fontdb.1.9
+3.Located Library:/rst/codebase/base/src.lib/graphic/imagedb.1.4
+4.Located Library:/rst/codebase/base/src.lib/graphic/iplotlib.1.4
+5.Located Library:/rst/codebase/base/src.lib/graphic/ps.1.9
+6.Located Library:/rst/codebase/base/src.lib/graphic/splotlib.1.3
+7.Located Library:/rst/codebase/base/src.lib/graphic/xwin.1.5
+8.Located Library:/rst/codebase/base/src.lib/httpd/cgi.1.6
+9.Located Library:/rst/codebase/base/src.lib/httpd/rscript.1.6
+10.Located Library:/rst/codebase/base/src.lib/math/rmath.1.8
+11.Located Library:/rst/codebase/base/src.lib/memory/shmem.1.2
+12.Located Library:/rst/codebase/base/src.lib/task/convert.1.11
+13.Located Library:/rst/codebase/base/src.lib/task/option.1.7
+14.Located Library:/rst/codebase/base/src.lib/task/rtypes.1.5
+15.Located Library:/rst/codebase/base/src.lib/tcpip/cnx.1.17
+16.Located Library:/rst/codebase/base/src.lib/xml/tagdb.1.7
+17.Located Library:/rst/codebase/base/src.lib/xml/xml.1.8
+18.Located Library:/rst/codebase/base/src.lib/xml/xmldb.1.6
+19.Located Library:/rst/codebase/base/src.lib/xml/xmldoclib.1.5
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/graphic/fbuffer.1.18
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/base/src.lib/graphic/fbuffer.1.18/src/..
+make.hdr /rst.3.5/rst/codebase/base/src.lib/graphic/fbuffer.1.18/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/graphic/fbuffer.1.18/src/../include/rfbuffer.h
+`/rst.3.5/rst/codebase/base/src.lib/graphic/fbuffer.1.18/src/../include/rfbuffer.h' -> `/rst/include/base/rfbuffer.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c png.c    
+png.c: In function ‘FrameBufferLoadPNG’:
+png.c:39:23: warning: variable ‘nump’ set but not used [-Wunused-but-set-variable]
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c bezier.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c char.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c color.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c clip.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c dash.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c image.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c line.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c make.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c matrix.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c polygon.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c ppm.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c shape.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c user.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c xml.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/librfbuf.1.18.a png.o bezier.o char.o color.o clip.o dash.o image.o line.o make.o matrix.o polygon.o ppm.o shape.o user.o xml.o
+ld -shared -lm -lz  -o /rst/lib/librfbuf.1.18.so \
+              png.o bezier.o char.o color.o clip.o dash.o image.o line.o make.o matrix.o polygon.o ppm.o shape.o user.o xml.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf librfbuf.1.18.a \
+               librfbuf."1".a 
+cd /rst/lib; ln -sf librfbuf.1.18.so \
+               librfbuf."1".so 
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/graphic/fontdb.1.9
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/base/src.lib/graphic/fontdb.1.9/src/..
+make.hdr /rst.3.5/rst/codebase/base/src.lib/graphic/fontdb.1.9/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/graphic/fontdb.1.9/src/../include/fontdb.h
+`/rst.3.5/rst/codebase/base/src.lib/graphic/fontdb.1.9/src/../include/fontdb.h' -> `/rst/include/base/fontdb.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c fontdb.c    
+fontdb.c: In function ‘FrameBufferFontDBEnd’:
+fontdb.c:124:3: warning: format not a string literal and no format arguments [-Wformat-security]
+mkdir -p /rst/lib
+ar -r /rst/lib/libfontdb.1.9.a fontdb.o
+ld -shared -lm -lz  -o /rst/lib/libfontdb.1.9.so \
+              fontdb.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libfontdb.1.9.a \
+               libfontdb."1".a 
+cd /rst/lib; ln -sf libfontdb.1.9.so \
+               libfontdb."1".so 
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/graphic/imagedb.1.4
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/base/src.lib/graphic/imagedb.1.4/src/..
+make.hdr /rst.3.5/rst/codebase/base/src.lib/graphic/imagedb.1.4/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/graphic/imagedb.1.4/src/../include/imagedb.h
+`/rst.3.5/rst/codebase/base/src.lib/graphic/imagedb.1.4/src/../include/imagedb.h' -> `/rst/include/base/imagedb.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c imagedb.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libimagedb.1.4.a imagedb.o
+ld -shared -lm -lz  -o /rst/lib/libimagedb.1.4.so \
+              imagedb.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libimagedb.1.4.a \
+               libimagedb."1".a 
+cd /rst/lib; ln -sf libimagedb.1.4.so \
+               libimagedb."1".so 
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/graphic/iplotlib.1.4
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/base/src.lib/graphic/iplotlib.1.4/src/..
+make.hdr /rst.3.5/rst/codebase/base/src.lib/graphic/iplotlib.1.4/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/graphic/iplotlib.1.4/src/../include/iplot.h
+`/rst.3.5/rst/codebase/base/src.lib/graphic/iplotlib.1.4/src/../include/iplot.h' -> `/rst/include/base/iplot.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c color.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c dash.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c matrix.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c make.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c bezier.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c line.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c shape.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c polygon.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c text.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c image.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c imagename.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c embed.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c include.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c info.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c clip.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c plot.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c document.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libiplot.1.4.a color.o dash.o matrix.o make.o bezier.o line.o shape.o polygon.o text.o image.o imagename.o embed.o include.o info.o clip.o plot.o document.o
+ld -shared -lm -lz  -o /rst/lib/libiplot.1.4.so \
+              color.o dash.o matrix.o make.o bezier.o line.o shape.o polygon.o text.o image.o imagename.o embed.o include.o info.o clip.o plot.o document.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libiplot.1.4.a \
+               libiplot."1".a 
+cd /rst/lib; ln -sf libiplot.1.4.so \
+               libiplot."1".so 
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/graphic/ps.1.9
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/base/src.lib/graphic/ps.1.9/src/..
+make.hdr /rst.3.5/rst/codebase/base/src.lib/graphic/ps.1.9/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/graphic/ps.1.9/src/../include/rps.h
+`/rst.3.5/rst/codebase/base/src.lib/graphic/ps.1.9/src/../include/rps.h' -> `/rst/include/base/rps.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c matrix.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c color.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c dash.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c clip.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c state.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c make.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c bezier.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c line.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c polygon.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c shape.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c text.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c image.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c plot.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/librps.1.9.a matrix.o color.o dash.o clip.o state.o make.o bezier.o line.o polygon.o shape.o text.o image.o plot.o
+ld -shared -lm -lz  -o /rst/lib/librps.1.9.so \
+              matrix.o color.o dash.o clip.o state.o make.o bezier.o line.o polygon.o shape.o text.o image.o plot.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf librps.1.9.a \
+               librps."1".a 
+cd /rst/lib; ln -sf librps.1.9.so \
+               librps."1".so 
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/graphic/splotlib.1.3
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/base/src.lib/graphic/splotlib.1.3/src/..
+make.hdr /rst.3.5/rst/codebase/base/src.lib/graphic/splotlib.1.3/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/graphic/splotlib.1.3/src/../include/splot.h
+`/rst.3.5/rst/codebase/base/src.lib/graphic/splotlib.1.3/src/../include/splot.h' -> `/rst/include/base/splot.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c make.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c bezier.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c line.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c shape.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c polygon.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c text.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c image.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c clip.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c plot.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c document.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libsplot.1.3.a make.o bezier.o line.o shape.o polygon.o text.o image.o clip.o plot.o document.o 
+ld -shared -lm -lz  -o /rst/lib/libsplot.1.3.so \
+              make.o bezier.o line.o shape.o polygon.o text.o image.o clip.o plot.o document.o  -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libsplot.1.3.a \
+               libsplot."1".a 
+cd /rst/lib; ln -sf libsplot.1.3.so \
+               libsplot."1".so 
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/graphic/xwin.1.5
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/base/src.lib/graphic/xwin.1.5/src/..
+make.hdr /rst.3.5/rst/codebase/base/src.lib/graphic/xwin.1.5/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/graphic/xwin.1.5/src/../include/xwin.h
+`/rst.3.5/rst/codebase/base/src.lib/graphic/xwin.1.5/src/../include/xwin.h' -> `/rst/include/base/xwin.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/usr/X11R6/include -c xwin.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libxwin.1.5.a xwin.o
+ld -shared -lm -lz  -o /rst/lib/libxwin.1.5.so \
+              xwin.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libxwin.1.5.a \
+               libxwin."1".a 
+cd /rst/lib; ln -sf libxwin.1.5.so \
+               libxwin."1".so 
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/httpd/cgi.1.6
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/base/src.lib/httpd/cgi.1.6/src/..
+make.hdr /rst.3.5/rst/codebase/base/src.lib/httpd/cgi.1.6/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/httpd/cgi.1.6/src/../include/rcgi.h
+`/rst.3.5/rst/codebase/base/src.lib/httpd/cgi.1.6/src/../include/rcgi.h' -> `/rst/include/base/rcgi.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c cgi.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/librcgi.1.6.a cgi.o
+ld -shared -lm -lz  -o /rst/lib/librcgi.1.6.so \
+              cgi.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf librcgi.1.6.a \
+               librcgi."1".a 
+cd /rst/lib; ln -sf librcgi.1.6.so \
+               librcgi."1".so 
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/httpd/rscript.1.6
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/base/src.lib/httpd/rscript.1.6/src/..
+make.hdr /rst.3.5/rst/codebase/base/src.lib/httpd/rscript.1.6/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/httpd/rscript.1.6/src/../include/rscript.h
+`/rst.3.5/rst/codebase/base/src.lib/httpd/rscript.1.6/src/../include/rscript.h' -> `/rst/include/base/rscript.h'
+/rst.3.5/rst/codebase/base/src.lib/httpd/rscript.1.6/src/../include/rscriptHTML.h
+`/rst.3.5/rst/codebase/base/src.lib/httpd/rscript.1.6/src/../include/rscriptHTML.h' -> `/rst/include/base/rscriptHTML.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c rscript.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c rscriptHTML.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/librscript.1.6.a rscript.o rscriptHTML.o
+ld -shared -lm -lz  -o /rst/lib/librscript.1.6.so \
+              rscript.o rscriptHTML.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf librscript.1.6.a \
+               librscript."1".a 
+cd /rst/lib; ln -sf librscript.1.6.so \
+               librscript."1".so 
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/math/rmath.1.8
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/base/src.lib/math/rmath.1.8/src/..
+make.hdr /rst.3.5/rst/codebase/base/src.lib/math/rmath.1.8/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/math/rmath.1.8/src/../include/fft.h
+`/rst.3.5/rst/codebase/base/src.lib/math/rmath.1.8/src/../include/fft.h' -> `/rst/include/base/fft.h'
+/rst.3.5/rst/codebase/base/src.lib/math/rmath.1.8/src/../include/rmath.h
+`/rst.3.5/rst/codebase/base/src.lib/math/rmath.1.8/src/../include/rmath.h' -> `/rst/include/base/rmath.h'
+/rst.3.5/rst/codebase/base/src.lib/math/rmath.1.8/src/../include/nrfit.h
+`/rst.3.5/rst/codebase/base/src.lib/math/rmath.1.8/src/../include/nrfit.h' -> `/rst/include/base/nrfit.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c nrfit.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c fft.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/librmath.1.8.a nrfit.o fft.o
+ld -shared -lm -lz  -o /rst/lib/librmath.1.8.so \
+              nrfit.o fft.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf librmath.1.8.a \
+               librmath."1".a 
+cd /rst/lib; ln -sf librmath.1.8.so \
+               librmath."1".so 
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/memory/shmem.1.2
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/base/src.lib/memory/shmem.1.2/src/..
+make.hdr /rst.3.5/rst/codebase/base/src.lib/memory/shmem.1.2/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/memory/shmem.1.2/src/../include/shmem.h
+`/rst.3.5/rst/codebase/base/src.lib/memory/shmem.1.2/src/../include/shmem.h' -> `/rst/include/base/shmem.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base  -c shmem.c    
+shmem.c: In function ‘ShMemAlloc’:
+shmem.c:65:7: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+mkdir -p /rst/lib
+ar -r /rst/lib/libshmem.1.2.a shmem.o
+ld -shared -lm -lz  -o /rst/lib/libshmem.1.2.so \
+              shmem.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libshmem.1.2.a \
+               libshmem."1".a 
+cd /rst/lib; ln -sf libshmem.1.2.so \
+               libshmem."1".so 
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/task/convert.1.11
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/base/src.lib/task/convert.1.11/src/..
+make.hdr /rst.3.5/rst/codebase/base/src.lib/task/convert.1.11/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/task/convert.1.11/src/../include/rconvert.h
+`/rst.3.5/rst/codebase/base/src.lib/task/convert.1.11/src/../include/rconvert.h' -> `/rst/include/base/rconvert.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c convert.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/librcnv.1.11.a convert.o
+ld -shared -lm -lz  -o /rst/lib/librcnv.1.11.so \
+              convert.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf librcnv.1.11.a \
+               librcnv."1".a 
+cd /rst/lib; ln -sf librcnv.1.11.so \
+               librcnv."1".so 
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/task/option.1.7
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/base/src.lib/task/option.1.7/src/..
+make.hdr /rst.3.5/rst/codebase/base/src.lib/task/option.1.7/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/task/option.1.7/src/../include/option.h
+`/rst.3.5/rst/codebase/base/src.lib/task/option.1.7/src/../include/option.h' -> `/rst/include/base/option.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c option.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c printinfo.c    
+printinfo.c: In function ‘OptionPrintInfo’:
+printinfo.c:54:7: warning: format not a string literal and no format arguments [-Wformat-security]
+printinfo.c:59:5: warning: format not a string literal and no format arguments [-Wformat-security]
+printinfo.c:62:5: warning: format not a string literal and no format arguments [-Wformat-security]
+printinfo.c:76:11: warning: format not a string literal and no format arguments [-Wformat-security]
+printinfo.c:80:9: warning: format not a string literal and no format arguments [-Wformat-security]
+printinfo.c:91:5: warning: format not a string literal and no format arguments [-Wformat-security]
+mkdir -p /rst/lib
+ar -r /rst/lib/libopt.1.7.a option.o printinfo.o
+ld -shared -lm -lz  -o /rst/lib/libopt.1.7.so \
+              option.o printinfo.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libopt.1.7.a \
+               libopt."1".a 
+cd /rst/lib; ln -sf libopt.1.7.so \
+               libopt."1".so 
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/task/rtypes.1.5
+================================================================================
+make clean
+rm -f *.o
+make
+make.hdr /rst.3.5/rst/codebase/base/src.lib/task/rtypes.1.5/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/task/rtypes.1.5/src/../include/rtypes.h
+`/rst.3.5/rst/codebase/base/src.lib/task/rtypes.1.5/src/../include/rtypes.h' -> `/rst/include/base/rtypes.h'
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/tcpip/cnx.1.17
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/base/src.lib/tcpip/cnx.1.17/src/..
+make.hdr /rst.3.5/rst/codebase/base/src.lib/tcpip/cnx.1.17/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/tcpip/cnx.1.17/src/../include/connex.h
+`/rst.3.5/rst/codebase/base/src.lib/tcpip/cnx.1.17/src/../include/connex.h' -> `/rst/include/base/connex.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -DPOSIX -D__EXTENSIONS__ -c connex.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -DPOSIX -D__EXTENSIONS__ -c msg.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -DPOSIX -D__EXTENSIONS__ -c err.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libcnx.1.17.a connex.o msg.o err.o 
+ld -shared -lm -lz  -o /rst/lib/libcnx.1.17.so \
+              connex.o msg.o err.o  -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libcnx.1.17.a \
+               libcnx."1".a 
+cd /rst/lib; ln -sf libcnx.1.17.so \
+               libcnx."1".so 
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/xml/tagdb.1.7
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/base/src.lib/xml/tagdb.1.7/src/..
+make.hdr /rst.3.5/rst/codebase/base/src.lib/xml/tagdb.1.7/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/xml/tagdb.1.7/src/../include/tagdb.h
+`/rst.3.5/rst/codebase/base/src.lib/xml/tagdb.1.7/src/../include/tagdb.h' -> `/rst/include/base/tagdb.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c tagdb.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libtagdb.1.7.a tagdb.o
+ld -shared -lm -lz  -o /rst/lib/libtagdb.1.7.so \
+              tagdb.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libtagdb.1.7.a \
+               libtagdb."1".a 
+cd /rst/lib; ln -sf libtagdb.1.7.so \
+               libtagdb."1".so 
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/xml/xml.1.8
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/base/src.lib/xml/xml.1.8/src/..
+make.hdr /rst.3.5/rst/codebase/base/src.lib/xml/xml.1.8/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/xml/xml.1.8/src/../include/rxml.h
+`/rst.3.5/rst/codebase/base/src.lib/xml/xml.1.8/src/../include/rxml.h' -> `/rst/include/base/rxml.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c rxml.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c call.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/librxml.1.8.a rxml.o call.o
+ld -shared -lm -lz  -o /rst/lib/librxml.1.8.so \
+              rxml.o call.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf librxml.1.8.a \
+               librxml."1".a 
+cd /rst/lib; ln -sf librxml.1.8.so \
+               librxml."1".so 
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/xml/xmldb.1.6
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/base/src.lib/xml/xmldb.1.6/src/..
+make.hdr /rst.3.5/rst/codebase/base/src.lib/xml/xmldb.1.6/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/xml/xmldb.1.6/src/../include/rxmldb.h
+`/rst.3.5/rst/codebase/base/src.lib/xml/xmldb.1.6/src/../include/rxmldb.h' -> `/rst/include/base/rxmldb.h'
+/rst.3.5/rst/codebase/base/src.lib/xml/xmldb.1.6/src/../include/entity.h
+`/rst.3.5/rst/codebase/base/src.lib/xml/xmldb.1.6/src/../include/entity.h' -> `/rst/include/base/entity.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c rxmldb.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c table.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c element.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c entity.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c buffer.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c tree.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/librxmldb.1.6.a rxmldb.o table.o element.o entity.o buffer.o tree.o 
+ld -shared -lm -lz  -o /rst/lib/librxmldb.1.6.so \
+              rxmldb.o table.o element.o entity.o buffer.o tree.o  -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf librxmldb.1.6.a \
+               librxmldb."1".a 
+cd /rst/lib; ln -sf librxmldb.1.6.so \
+               librxmldb."1".so 
+================================================================================
+Compiling Library:/rst/codebase/base/src.lib/xml/xmldoclib.1.5
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/base/src.lib/xml/xmldoclib.1.5/src/..
+make.hdr /rst.3.5/rst/codebase/base/src.lib/xml/xmldoclib.1.5/src/../include /rst/include/base 
+/rst.3.5/rst/codebase/base/src.lib/xml/xmldoclib.1.5/src/../include/rxmldoc.h
+`/rst.3.5/rst/codebase/base/src.lib/xml/xmldoclib.1.5/src/../include/rxmldoc.h' -> `/rst/include/base/rxmldoc.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c getstring.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c build.c    
+build.c: In function ‘XMLdocGetConfigSection’:
+build.c:78:7: warning: variable ‘s’ set but not used [-Wunused-but-set-variable]
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c make.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c render.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -c set.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/librxmldoc.1.5.a getstring.o build.o make.o render.o set.o
+ld -shared -lm -lz  -o /rst/lib/librxmldoc.1.5.so \
+              getstring.o build.o make.o render.o set.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf librxmldoc.1.5.a \
+               librxmldoc."1".a 
+cd /rst/lib; ln -sf librxmldoc.1.5.so \
+               librxmldoc."1".so 
+makeall
+Package Source Directory:/rst/codebase/general/src.lib
+Abort on failure:yes
+Compile most recent version of code only:yes
+================================================================================
+Located Source Code:
+1.Located Library:/rst/codebase/general/src.lib/contour.1.7
+2.Located Library:/rst/codebase/general/src.lib/dmap.1.25
+3.Located Library:/rst/codebase/general/src.lib/evallib.1.4
+4.Located Library:/rst/codebase/general/src.lib/grplotlib.1.4
+5.Located Library:/rst/codebase/general/src.lib/map.1.18
+6.Located Library:/rst/codebase/general/src.lib/polygon.1.8
+7.Located Library:/rst/codebase/general/src.lib/raster.1.6
+8.Located Library:/rst/codebase/general/src.lib/rfile.1.9
+9.Located Library:/rst/codebase/general/src.lib/stdkey.1.5
+10.Located Library:/rst/codebase/general/src.lib/time.1.7
+================================================================================
+Compiling Library:/rst/codebase/general/src.lib/contour.1.7
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/general/src.lib/contour.1.7/src/..
+make.hdr /rst.3.5/rst/codebase/general/src.lib/contour.1.7/src/../include /rst/include/general 
+/rst.3.5/rst/codebase/general/src.lib/contour.1.7/src/../include/contour.h
+`/rst.3.5/rst/codebase/general/src.lib/contour.1.7/src/../include/contour.h' -> `/rst/include/general/contour.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c contour.c    
+contour.c: In function ‘Contour’:
+contour.c:67:22: warning: variable ‘sy’ set but not used [-Wunused-but-set-variable]
+contour.c:67:19: warning: variable ‘sx’ set but not used [-Wunused-but-set-variable]
+mkdir -p /rst/lib
+ar -r /rst/lib/libcontour.1.7.a contour.o 
+ld -shared -lm -lz  -o /rst/lib/libcontour.1.7.so \
+              contour.o  -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libcontour.1.7.a \
+               libcontour."1".a 
+cd /rst/lib; ln -sf libcontour.1.7.so \
+               libcontour."1".so 
+================================================================================
+Compiling Library:/rst/codebase/general/src.lib/dmap.1.25
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/general/src.lib/dmap.1.25/src/..
+make.hdr /rst.3.5/rst/codebase/general/src.lib/dmap.1.25/src/../include /rst/include/general 
+/rst.3.5/rst/codebase/general/src.lib/dmap.1.25/src/../include/dmap.h
+`/rst.3.5/rst/codebase/general/src.lib/dmap.1.25/src/../include/dmap.h' -> `/rst/include/general/dmap.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c dmap.c    
+dmap.c: In function ‘DataMapEncodeBuffer’:
+dmap.c:667:3: warning: pointer targets in passing argument 2 of ‘ConvertFromInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:27:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:669:3: warning: pointer targets in passing argument 2 of ‘ConvertFromInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:27:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:671:3: warning: pointer targets in passing argument 2 of ‘ConvertFromInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:27:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:673:3: warning: pointer targets in passing argument 2 of ‘ConvertFromInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:27:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:690:7: warning: pointer targets in passing argument 2 of ‘ConvertFromShort’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:28:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:694:7: warning: pointer targets in passing argument 2 of ‘ConvertFromInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:27:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:698:7: warning: pointer targets in passing argument 2 of ‘ConvertFromLong’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:26:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:707:7: warning: pointer targets in passing argument 2 of ‘ConvertFromUShort’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:31:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:711:7: warning: pointer targets in passing argument 2 of ‘ConvertFromUInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:30:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:715:7: warning: pointer targets in passing argument 2 of ‘ConvertFromULong’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:29:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:720:7: warning: pointer targets in passing argument 2 of ‘ConvertFromFloat’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:24:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:724:7: warning: pointer targets in passing argument 2 of ‘ConvertFromDouble’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:25:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:742:9: warning: pointer targets in passing argument 2 of ‘ConvertFromInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:27:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:749:9: warning: pointer targets in passing argument 2 of ‘ConvertFromInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:27:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:764:5: warning: pointer targets in passing argument 2 of ‘ConvertFromInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:27:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:767:7: warning: pointer targets in passing argument 2 of ‘ConvertFromInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:27:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:779:9: warning: pointer targets in passing argument 2 of ‘ConvertFromShort’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:28:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:785:9: warning: pointer targets in passing argument 2 of ‘ConvertFromInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:27:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:791:9: warning: pointer targets in passing argument 2 of ‘ConvertFromLong’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:26:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:802:9: warning: pointer targets in passing argument 2 of ‘ConvertFromUShort’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:31:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:808:9: warning: pointer targets in passing argument 2 of ‘ConvertFromUInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:30:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:814:9: warning: pointer targets in passing argument 2 of ‘ConvertFromULong’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:29:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:821:9: warning: pointer targets in passing argument 2 of ‘ConvertFromFloat’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:24:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:827:9: warning: pointer targets in passing argument 2 of ‘ConvertFromDouble’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:25:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:849:11: warning: pointer targets in passing argument 2 of ‘ConvertFromInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:27:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:856:11: warning: pointer targets in passing argument 2 of ‘ConvertFromInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:27:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c: In function ‘DataMapDecodeBuffer’:
+dmap.c:987:3: warning: pointer targets in passing argument 1 of ‘ConvertToInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:17:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:989:3: warning: pointer targets in passing argument 1 of ‘ConvertToInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:17:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:991:3: warning: pointer targets in passing argument 1 of ‘ConvertToInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:17:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:993:3: warning: pointer targets in passing argument 1 of ‘ConvertToInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:17:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:1053:7: warning: pointer targets in passing argument 1 of ‘ConvertToShort’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:18:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:1062:7: warning: pointer targets in passing argument 1 of ‘ConvertToInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:17:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:1071:7: warning: pointer targets in passing argument 1 of ‘ConvertToLong’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:16:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:1089:7: warning: pointer targets in passing argument 1 of ‘ConvertToUShort’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:21:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:1098:7: warning: pointer targets in passing argument 1 of ‘ConvertToUInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:20:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:1107:7: warning: pointer targets in passing argument 1 of ‘ConvertToULong’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:19:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:1116:7: warning: pointer targets in passing argument 1 of ‘ConvertToFloat’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:23:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:1125:7: warning: pointer targets in passing argument 1 of ‘ConvertToDouble’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:22:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:1162:7: warning: pointer targets in passing argument 1 of ‘ConvertToInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:17:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:1196:5: warning: pointer targets in passing argument 1 of ‘ConvertToInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:17:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:1201:8: warning: pointer targets in passing argument 1 of ‘ConvertToInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:17:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:1224:9: warning: pointer targets in passing argument 1 of ‘ConvertToShort’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:18:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:1235:9: warning: pointer targets in passing argument 1 of ‘ConvertToInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:17:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:1246:9: warning: pointer targets in passing argument 1 of ‘ConvertToLong’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:16:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:1267:9: warning: pointer targets in passing argument 1 of ‘ConvertToUShort’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:21:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:1278:9: warning: pointer targets in passing argument 1 of ‘ConvertToUInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:20:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:1289:9: warning: pointer targets in passing argument 1 of ‘ConvertToULong’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:19:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:1300:9: warning: pointer targets in passing argument 1 of ‘ConvertToFloat’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:23:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:1311:2: warning: pointer targets in passing argument 1 of ‘ConvertToDouble’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:22:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+dmap.c:1342:9: warning: pointer targets in passing argument 1 of ‘ConvertToInt’ differ in signedness [-Wpointer-sign]
+/rst/include/base/rconvert.h:17:6: note: expected ‘unsigned char *’ but argument is of type ‘char *’
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c merge.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c fp.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libdmap.1.25.a dmap.o merge.o fp.o
+ld -shared -lm -lz  -o /rst/lib/libdmap.1.25.so \
+              dmap.o merge.o fp.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libdmap.1.25.a \
+               libdmap."1".a 
+cd /rst/lib; ln -sf libdmap.1.25.so \
+               libdmap."1".so 
+================================================================================
+Compiling Library:/rst/codebase/general/src.lib/evallib.1.4
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/general/src.lib/evallib.1.4/src/..
+make.hdr /rst.3.5/rst/codebase/general/src.lib/evallib.1.4/src/../include /rst/include/general 
+/rst.3.5/rst/codebase/general/src.lib/evallib.1.4/src/../include/reval.h
+`/rst.3.5/rst/codebase/general/src.lib/evallib.1.4/src/../include/reval.h' -> `/rst/include/general/reval.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/general -c eval.c    
+eval.c: In function ‘Eval’:
+eval.c:355:7: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+eval.c:371:7: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+eval.c:374:7: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+mkdir -p /rst/lib
+ar -r /rst/lib/libreval.1.4.a eval.o
+ld -shared -lm -lz  -o /rst/lib/libreval.1.4.so \
+              eval.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libreval.1.4.a \
+               libreval."1".a 
+cd /rst/lib; ln -sf libreval.1.4.so \
+               libreval."1".so 
+================================================================================
+Compiling Library:/rst/codebase/general/src.lib/grplotlib.1.4
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/general/src.lib/grplotlib.1.4/src/..
+make.hdr /rst.3.5/rst/codebase/general/src.lib/grplotlib.1.4/src/../include /rst/include/general 
+/rst.3.5/rst/codebase/general/src.lib/grplotlib.1.4/src/../include/grplotraw.h
+`/rst.3.5/rst/codebase/general/src.lib/grplotlib.1.4/src/../include/grplotraw.h' -> `/rst/include/general/grplotraw.h'
+/rst.3.5/rst/codebase/general/src.lib/grplotlib.1.4/src/../include/grplotstd.h
+`/rst.3.5/rst/codebase/general/src.lib/grplotlib.1.4/src/../include/grplotstd.h' -> `/rst/include/general/grplotstd.h'
+/rst.3.5/rst/codebase/general/src.lib/grplotlib.1.4/src/../include/grplot.h
+`/rst.3.5/rst/codebase/general/src.lib/grplotlib.1.4/src/../include/grplot.h' -> `/rst/include/general/grplot.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c grplot_key.c    
+grplot_key.c: In function ‘GrplotKey’:
+grplot_key.c:59:7: warning: variable ‘s’ set but not used [-Wunused-but-set-variable]
+grplot_key.c: In function ‘GrplotKeyLog’:
+grplot_key.c:121:7: warning: variable ‘s’ set but not used [-Wunused-but-set-variable]
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c grplot.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c grplotstd_key.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c grplotraw_key.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c grplotraw_contour.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c grplotraw.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libgrplot.1.4.a grplot_key.o grplot.o grplotstd_key.o grplotraw_key.o grplotraw_contour.o grplotraw.o 
+ld -shared -lm -lz  -o /rst/lib/libgrplot.1.4.so \
+              grplot_key.o grplot.o grplotstd_key.o grplotraw_key.o grplotraw_contour.o grplotraw.o  -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libgrplot.1.4.a \
+               libgrplot."1".a 
+cd /rst/lib; ln -sf libgrplot.1.4.so \
+               libgrplot."1".so 
+================================================================================
+Compiling Library:/rst/codebase/general/src.lib/map.1.18
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/general/src.lib/map.1.18/src/..
+make.hdr /rst.3.5/rst/codebase/general/src.lib/map.1.18/src/../include /rst/include/general 
+/rst.3.5/rst/codebase/general/src.lib/map.1.18/src/../include/rmap.h
+`/rst.3.5/rst/codebase/general/src.lib/map.1.18/src/../include/rmap.h' -> `/rst/include/general/rmap.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c transform.c    
+transform.c: In function ‘MapModify’:
+transform.c:196:9: warning: variable ‘s’ set but not used [-Wunused-but-set-variable]
+transform.c:194:7: warning: variable ‘flg’ set but not used [-Wunused-but-set-variable]
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c clip.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c wrap.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c load.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c gcircle.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c tfunc.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c plot.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/librmap.1.18.a transform.o clip.o wrap.o load.o gcircle.o tfunc.o plot.o
+ld -shared -lm -lz  -o /rst/lib/librmap.1.18.so \
+              transform.o clip.o wrap.o load.o gcircle.o tfunc.o plot.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf librmap.1.18.a \
+               librmap."1".a 
+cd /rst/lib; ln -sf librmap.1.18.so \
+               librmap."1".so 
+================================================================================
+Compiling Library:/rst/codebase/general/src.lib/polygon.1.8
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/general/src.lib/polygon.1.8/src/..
+make.hdr /rst.3.5/rst/codebase/general/src.lib/polygon.1.8/src/../include /rst/include/general 
+/rst.3.5/rst/codebase/general/src.lib/polygon.1.8/src/../include/polygon.h
+`/rst.3.5/rst/codebase/general/src.lib/polygon.1.8/src/../include/polygon.h' -> `/rst/include/general/polygon.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/general -c poly.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/general -c isect.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libpoly.1.8.a poly.o isect.o
+ld -shared -lm -lz  -o /rst/lib/libpoly.1.8.so \
+              poly.o isect.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libpoly.1.8.a \
+               libpoly."1".a 
+cd /rst/lib; ln -sf libpoly.1.8.so \
+               libpoly."1".so 
+================================================================================
+Compiling Library:/rst/codebase/general/src.lib/raster.1.6
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/general/src.lib/raster.1.6/src/..
+make.hdr /rst.3.5/rst/codebase/general/src.lib/raster.1.6/src/../include /rst/include/general 
+/rst.3.5/rst/codebase/general/src.lib/raster.1.6/src/../include/raster.h
+`/rst.3.5/rst/codebase/general/src.lib/raster.1.6/src/../include/raster.h' -> `/rst/include/general/raster.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/general -c raster.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libraster.1.6.a raster.o 
+ld -shared -lm -lz  -o /rst/lib/libraster.1.6.so \
+              raster.o  -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libraster.1.6.a \
+               libraster."1".a 
+cd /rst/lib; ln -sf libraster.1.6.so \
+               libraster."1".so 
+================================================================================
+Compiling Library:/rst/codebase/general/src.lib/rfile.1.9
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/general/src.lib/rfile.1.9/src/..
+make.hdr /rst.3.5/rst/codebase/general/src.lib/rfile.1.9/src/../include /rst/include/general 
+/rst.3.5/rst/codebase/general/src.lib/rfile.1.9/src/../include/rfile.h
+`/rst.3.5/rst/codebase/general/src.lib/rfile.1.9/src/../include/rfile.h' -> `/rst/include/general/rfile.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c rfile.c    
+rfile.c: In function ‘RfileRead’:
+rfile.c:354:11: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+rfile.c:355:11: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+rfile.c:356:11: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+rfile.c:357:11: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+rfile.c:358:11: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+mkdir -p /rst/lib
+ar -r /rst/lib/librfile.1.9.a rfile.o
+ld -shared -lm -lz  -o /rst/lib/librfile.1.9.so \
+              rfile.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf librfile.1.9.a \
+               librfile."1".a 
+cd /rst/lib; ln -sf librfile.1.9.so \
+               librfile."1".so 
+================================================================================
+Compiling Library:/rst/codebase/general/src.lib/stdkey.1.5
+================================================================================
+make clean
+rm -f *.o
+make
+rm -fv *.o
+rm -fv paltable.c
+rm -fv make_palette
+removed `make_palette'
+cc -o make_palette make_palette.c -lm			 
+./make_palette	
+making spectra.
+making color bars.
+printing palette table.
+printing rgb tables.
+make.version /rst.3.5/rst/codebase/general/src.lib/stdkey.1.5/src/..
+make.hdr /rst.3.5/rst/codebase/general/src.lib/stdkey.1.5/src/../include /rst/include/general 
+/rst.3.5/rst/codebase/general/src.lib/stdkey.1.5/src/../include/stdkey.h
+`/rst.3.5/rst/codebase/general/src.lib/stdkey.1.5/src/../include/stdkey.h' -> `/rst/include/general/stdkey.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX  -c paltable.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libstdkey.1.5.a paltable.o
+ld -shared -lm -lz  -o /rst/lib/libstdkey.1.5.so \
+              paltable.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libstdkey.1.5.a \
+               libstdkey."1".a 
+cd /rst/lib; ln -sf libstdkey.1.5.so \
+               libstdkey."1".so 
+rm -fv paltable.c
+removed `paltable.c'
+mv -f stdkey.h /rst/include/general/stdkey.h
+================================================================================
+Compiling Library:/rst/codebase/general/src.lib/time.1.7
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/general/src.lib/time.1.7/src/..
+make.hdr /rst.3.5/rst/codebase/general/src.lib/time.1.7/src/../include /rst/include/general 
+/rst.3.5/rst/codebase/general/src.lib/time.1.7/src/../include/rtime.h
+`/rst.3.5/rst/codebase/general/src.lib/time.1.7/src/../include/rtime.h' -> `/rst/include/general/rtime.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/general -c time.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/general -c read.c    
+read.c: In function ‘TimeReadClock’:
+read.c:45:7: warning: variable ‘s’ set but not used [-Wunused-but-set-variable]
+mkdir -p /rst/lib
+ar -r /rst/lib/librtime.1.7.a time.o read.o
+ld -shared -lm -lz  -o /rst/lib/librtime.1.7.so \
+              time.o read.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf librtime.1.7.a \
+               librtime."1".a 
+cd /rst/lib; ln -sf librtime.1.7.so \
+               librtime."1".so 
+makeall
+Package Source Directory:/rst/codebase/analysis/src.lib
+Abort on failure:yes
+Compile most recent version of code only:yes
+================================================================================
+Located Source Code:
+1.Located Library:/rst/codebase/analysis/src.lib/aacgm/aacgm.1.15
+2.Located Library:/rst/codebase/analysis/src.lib/astalg/astalg.1.5
+3.Located Library:/rst/codebase/analysis/src.lib/cdf/rcdf.1.5
+4.Located Library:/rst/codebase/analysis/src.lib/geopack/geopack.1.4
+5.Located Library:/rst/codebase/analysis/src.lib/idl/idlsave.1.2
+6.Located Library:/rst/codebase/analysis/src.lib/igrf/igrf.1.12
+7.Located Library:/rst/codebase/analysis/src.lib/mlt/mlt.1.4
+================================================================================
+Compiling Library:/rst/codebase/analysis/src.lib/aacgm/aacgm.1.15
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/analysis/src.lib/aacgm/aacgm.1.15/src/..
+make.hdr /rst.3.5/rst/codebase/analysis/src.lib/aacgm/aacgm.1.15/src/../include /rst/include/analysis 
+/rst.3.5/rst/codebase/analysis/src.lib/aacgm/aacgm.1.15/src/../include/aacgm.h
+`/rst.3.5/rst/codebase/analysis/src.lib/aacgm/aacgm.1.15/src/../include/aacgm.h' -> `/rst/include/analysis/aacgm.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c math.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c aacgm.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c altitude_to_cgm.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c cgm_to_altitude.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c coeff.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c convert_geo_coord.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -c rylm.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libaacgm.1.15.a math.o aacgm.o altitude_to_cgm.o cgm_to_altitude.o coeff.o convert_geo_coord.o rylm.o 
+ld -shared -lm -lz  -o /rst/lib/libaacgm.1.15.so \
+              math.o aacgm.o altitude_to_cgm.o cgm_to_altitude.o coeff.o convert_geo_coord.o rylm.o  -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libaacgm.1.15.a \
+               libaacgm."1".a 
+cd /rst/lib; ln -sf libaacgm.1.15.so \
+               libaacgm."1".so 
+================================================================================
+Compiling Library:/rst/codebase/analysis/src.lib/astalg/astalg.1.5
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/analysis/src.lib/astalg/astalg.1.5/src/..
+make.hdr /rst.3.5/rst/codebase/analysis/src.lib/astalg/astalg.1.5/src/../include /rst/include/analysis 
+/rst.3.5/rst/codebase/analysis/src.lib/astalg/astalg.1.5/src/../include/AstAlg.h
+`/rst.3.5/rst/codebase/analysis/src.lib/astalg/astalg.1.5/src/../include/AstAlg.h' -> `/rst/include/analysis/AstAlg.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/analysis -c AstAlg_apparent_obliquity.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/analysis -c AstAlg_apparent_solar_longitude.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/analysis -c AstAlg_dday.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/analysis -c AstAlg_equation_of_time.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/analysis -c AstAlg_geometric_solar_longitude.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/analysis -c AstAlg_jde.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/analysis -c AstAlg_jde2calendar.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/analysis -c AstAlg_lunar_ascending_node.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/analysis -c AstAlg_mean_lunar_longitude.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/analysis -c AstAlg_mean_obliquity.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/analysis -c AstAlg_mean_solar_anomaly.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/analysis -c AstAlg_mean_solar_longitude.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/analysis -c AstAlg_nutation_corr.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/analysis -c AstAlg_solar_declination.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/analysis -c AstAlg_solar_right_ascension.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libastalg.1.5.a AstAlg_apparent_obliquity.o AstAlg_apparent_solar_longitude.o AstAlg_dday.o AstAlg_equation_of_time.o AstAlg_geometric_solar_longitude.o AstAlg_jde.o AstAlg_jde2calendar.o AstAlg_lunar_ascending_node.o AstAlg_mean_lunar_longitude.o AstAlg_mean_obliquity.o AstAlg_mean_solar_anomaly.o AstAlg_mean_solar_longitude.o AstAlg_nutation_corr.o AstAlg_solar_declination.o AstAlg_solar_right_ascension.o
+ld -shared -lm -lz  -o /rst/lib/libastalg.1.5.so \
+              AstAlg_apparent_obliquity.o AstAlg_apparent_solar_longitude.o AstAlg_dday.o AstAlg_equation_of_time.o AstAlg_geometric_solar_longitude.o AstAlg_jde.o AstAlg_jde2calendar.o AstAlg_lunar_ascending_node.o AstAlg_mean_lunar_longitude.o AstAlg_mean_obliquity.o AstAlg_mean_solar_anomaly.o AstAlg_mean_solar_longitude.o AstAlg_nutation_corr.o AstAlg_solar_declination.o AstAlg_solar_right_ascension.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libastalg.1.5.a \
+               libastalg."1".a 
+cd /rst/lib; ln -sf libastalg.1.5.so \
+               libastalg."1".so 
+================================================================================
+Compiling Library:/rst/codebase/analysis/src.lib/cdf/rcdf.1.5
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/analysis/src.lib/cdf/rcdf.1.5/src/..
+make.hdr /rst.3.5/rst/codebase/analysis/src.lib/cdf/rcdf.1.5/src/../include /rst/include/analysis 
+/rst.3.5/rst/codebase/analysis/src.lib/cdf/rcdf.1.5/src/../include/rcdf.h
+`/rst.3.5/rst/codebase/analysis/src.lib/cdf/rcdf.1.5/src/../include/rcdf.h' -> `/rst/include/analysis/rcdf.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/analysis -I/usr/local/cdf/include -c rcdf.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/librcdf.1.5.a rcdf.o
+ld -shared -lm -lz  -o /rst/lib/librcdf.1.5.so \
+              rcdf.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf librcdf.1.5.a \
+               librcdf."1".a 
+cd /rst/lib; ln -sf librcdf.1.5.so \
+               librcdf."1".so 
+================================================================================
+Compiling Library:/rst/codebase/analysis/src.lib/geopack/geopack.1.4
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/analysis/src.lib/geopack/geopack.1.4/src/..
+make.hdr /rst.3.5/rst/codebase/analysis/src.lib/geopack/geopack.1.4/src/../include /rst/include/analysis 
+/rst.3.5/rst/codebase/analysis/src.lib/geopack/geopack.1.4/src/../include/geopack.h
+`/rst.3.5/rst/codebase/analysis/src.lib/geopack/geopack.1.4/src/../include/geopack.h' -> `/rst/include/analysis/geopack.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/analysis -c geopackwrap.c    
+geopackwrap.c: In function ‘GeoPackGeiGeo’:
+geopackwrap.c:301:20: warning: variable ‘fzgei’ set but not used [-Wunused-but-set-variable]
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/analysis -c geopack_2005.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/analysis -c f2c.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libgeopack.1.4.a geopackwrap.o geopack_2005.o f2c.o 
+ld -shared -lm -lz  -o /rst/lib/libgeopack.1.4.so \
+              geopackwrap.o geopack_2005.o f2c.o  -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libgeopack.1.4.a \
+               libgeopack."1".a 
+cd /rst/lib; ln -sf libgeopack.1.4.so \
+               libgeopack."1".so 
+================================================================================
+Compiling Library:/rst/codebase/analysis/src.lib/idl/idlsave.1.2
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/analysis/src.lib/idl/idlsave.1.2/src/..
+make.hdr /rst.3.5/rst/codebase/analysis/src.lib/idl/idlsave.1.2/src/../include /rst/include/analysis 
+/rst.3.5/rst/codebase/analysis/src.lib/idl/idlsave.1.2/src/../include/idlsave.h
+`/rst.3.5/rst/codebase/analysis/src.lib/idl/idlsave.1.2/src/../include/idlsave.h' -> `/rst/include/analysis/idlsave.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/analysis -c idlsave.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libidlsave.1.2.a idlsave.o
+ld -shared -lm -lz  -o /rst/lib/libidlsave.1.2.so \
+              idlsave.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libidlsave.1.2.a \
+               libidlsave."1".a 
+cd /rst/lib; ln -sf libidlsave.1.2.so \
+               libidlsave."1".so 
+================================================================================
+Compiling Library:/rst/codebase/analysis/src.lib/igrf/igrf.1.12
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/analysis/src.lib/igrf/igrf.1.12/src/..
+make.hdr /rst.3.5/rst/codebase/analysis/src.lib/igrf/igrf.1.12/src/../include /rst/include/analysis 
+/rst.3.5/rst/codebase/analysis/src.lib/igrf/igrf.1.12/src/../include/magcmp.h
+`/rst.3.5/rst/codebase/analysis/src.lib/igrf/igrf.1.12/src/../include/magcmp.h' -> `/rst/include/analysis/magcmp.h'
+/rst.3.5/rst/codebase/analysis/src.lib/igrf/igrf.1.12/src/../include/igrfcall.h
+`/rst.3.5/rst/codebase/analysis/src.lib/igrf/igrf.1.12/src/../include/igrfcall.h' -> `/rst/include/analysis/igrfcall.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/analysis -c shval3.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/analysis -c dihf.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/analysis -c interpshc.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/analysis -c extrapshc.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/analysis -c magcmp.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/analysis -c igrfcall.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/analysis -c getshc.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libigrf.1.12.a shval3.o dihf.o interpshc.o extrapshc.o magcmp.o igrfcall.o getshc.o
+ld -shared -lm -lz  -o /rst/lib/libigrf.1.12.so \
+              shval3.o dihf.o interpshc.o extrapshc.o magcmp.o igrfcall.o getshc.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libigrf.1.12.a \
+               libigrf."1".a 
+cd /rst/lib; ln -sf libigrf.1.12.so \
+               libigrf."1".so 
+================================================================================
+Compiling Library:/rst/codebase/analysis/src.lib/mlt/mlt.1.4
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/analysis/src.lib/mlt/mlt.1.4/src/..
+make.hdr /rst.3.5/rst/codebase/analysis/src.lib/mlt/mlt.1.4/src/../include /rst/include/analysis 
+/rst.3.5/rst/codebase/analysis/src.lib/mlt/mlt.1.4/src/../include/mlt.h
+`/rst.3.5/rst/codebase/analysis/src.lib/mlt/mlt.1.4/src/../include/mlt.h' -> `/rst/include/analysis/mlt.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/analysis -c mlt.c    
+mlt.c: In function ‘astmlt1’:
+mlt.c:57:7: warning: variable ‘err’ set but not used [-Wunused-but-set-variable]
+mkdir -p /rst/lib
+ar -r /rst/lib/libmlt.1.4.a mlt.o
+ld -shared -lm -lz  -o /rst/lib/libmlt.1.4.so \
+              mlt.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libmlt.1.4.a \
+               libmlt."1".a 
+cd /rst/lib; ln -sf libmlt.1.4.so \
+               libmlt."1".so 
+makeall
+Package Source Directory:/rst/codebase/imagery/src.lib
+Abort on failure:yes
+Compile most recent version of code only:yes
+================================================================================
+Located Source Code:
+1.Located Library:/rst/codebase/imagery/src.lib/sza.1.9
+2.Located Library:/rst/codebase/imagery/src.lib/szamap.1.11
+================================================================================
+Compiling Library:/rst/codebase/imagery/src.lib/sza.1.9
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/imagery/src.lib/sza.1.9/src/..
+make.hdr /rst.3.5/rst/codebase/imagery/src.lib/sza.1.9/src/../include /rst/include/imagery 
+/rst.3.5/rst/codebase/imagery/src.lib/sza.1.9/src/../include/sza.h
+`/rst.3.5/rst/codebase/imagery/src.lib/sza.1.9/src/../include/sza.h' -> `/rst/include/imagery/sza.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/analysis -I/rst/include/imagery -c sza.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libsza.1.9.a sza.o
+ld -shared -lm -lz  -o /rst/lib/libsza.1.9.so \
+              sza.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libsza.1.9.a \
+               libsza."1".a 
+cd /rst/lib; ln -sf libsza.1.9.so \
+               libsza."1".so 
+================================================================================
+Compiling Library:/rst/codebase/imagery/src.lib/szamap.1.11
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/imagery/src.lib/szamap.1.11/src/..
+make.hdr /rst.3.5/rst/codebase/imagery/src.lib/szamap.1.11/src/../include /rst/include/imagery 
+/rst.3.5/rst/codebase/imagery/src.lib/szamap.1.11/src/../include/szamap.h
+`/rst.3.5/rst/codebase/imagery/src.lib/szamap.1.11/src/../include/szamap.h' -> `/rst/include/imagery/szamap.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/analysis -I/rst/include/imagery -c szamap.c    
+szamap.c: In function ‘SZAContour’:
+szamap.c:76:7: warning: variable ‘s’ set but not used [-Wunused-but-set-variable]
+mkdir -p /rst/lib
+ar -r /rst/lib/libszamap.1.11.a szamap.o
+ld -shared -lm -lz  -o /rst/lib/libszamap.1.11.so \
+              szamap.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libszamap.1.11.a \
+               libszamap."1".a 
+cd /rst/lib; ln -sf libszamap.1.11.so \
+               libszamap."1".so 
+makeall
+Package Source Directory:/rst/codebase/superdarn/src.lib
+Abort on failure:yes
+Compile most recent version of code only:yes
+================================================================================
+Located Source Code:
+1.Located Library:/rst/codebase/superdarn/src.lib/os/errlog.1.3
+2.Located Library:/rst/codebase/superdarn/src.lib/os/fio.1.3
+3.Located Library:/rst/codebase/superdarn/src.lib/os/freq.1.2
+4.Located Library:/rst/codebase/superdarn/src.lib/os/rmsgrcv.1.2
+5.Located Library:/rst/codebase/superdarn/src.lib/os/rmsgsnd.1.2
+6.Located Library:/rst/codebase/superdarn/src.lib/os/rosmsg.1.5
+7.Located Library:/rst/codebase/superdarn/src.lib/os/rshell.1.2
+8.Located Library:/rst/codebase/superdarn/src.lib/os/tcpipmsg.1.2
+9.Located Library:/rst/codebase/superdarn/src.lib/tk/acf.1.16
+10.Located Library:/rst/codebase/superdarn/src.lib/tk/cfit.1.19
+11.Located Library:/rst/codebase/superdarn/src.lib/tk/cnvmap.1.17
+12.Located Library:/rst/codebase/superdarn/src.lib/tk/filter.1.8
+13.Located Library:/rst/codebase/superdarn/src.lib/tk/fit.1.35
+14.Located Library:/rst/codebase/superdarn/src.lib/tk/fitacf.2.5
+15.Located Library:/rst/codebase/superdarn/src.lib/tk/fitacfex2.1.0
+16.Located Library:/rst/codebase/superdarn/src.lib/tk/fitcnx.1.16
+17.Located Library:/rst/codebase/superdarn/src.lib/tk/grid.1.24
+18.Located Library:/rst/codebase/superdarn/src.lib/tk/gtable.1.14
+19.Located Library:/rst/codebase/superdarn/src.lib/tk/gtablewrite.1.9
+20.Located Library:/rst/codebase/superdarn/src.lib/tk/idl/cnvmapidl.1.3
+21.Located Library:/rst/codebase/superdarn/src.lib/tk/idl/fitidl.1.5
+22.Located Library:/rst/codebase/superdarn/src.lib/tk/idl/grdidl.1.4
+23.Located Library:/rst/codebase/superdarn/src.lib/tk/idl/rawidl.1.5
+24.Located Library:/rst/codebase/superdarn/src.lib/tk/idl/rprmidl.1.6
+25.Located Library:/rst/codebase/superdarn/src.lib/tk/iq.1.7
+26.Located Library:/rst/codebase/superdarn/src.lib/tk/lmfit.1.0
+27.Located Library:/rst/codebase/superdarn/src.lib/tk/oldcnvmap.1.2
+28.Located Library:/rst/codebase/superdarn/src.lib/tk/oldfit.1.25
+29.Located Library:/rst/codebase/superdarn/src.lib/tk/oldfitcnx.1.10
+30.Located Library:/rst/codebase/superdarn/src.lib/tk/oldgrid.1.3
+31.Located Library:/rst/codebase/superdarn/src.lib/tk/oldgtablewrite.1.4
+32.Located Library:/rst/codebase/superdarn/src.lib/tk/oldraw.1.16
+33.Located Library:/rst/codebase/superdarn/src.lib/tk/radar.1.21
+34.Located Library:/rst/codebase/superdarn/src.lib/tk/raw.1.22
+35.Located Library:/rst/codebase/superdarn/src.lib/tk/rpos.1.7
+36.Located Library:/rst/codebase/superdarn/src.lib/tk/scan.1.7
+37.Located Library:/rst/codebase/superdarn/src.lib/tk/shf.1.10
+38.Located Library:/rst/codebase/superdarn/src.lib/tk/sim_data.1.0
+39.Located Library:/rst/codebase/superdarn/src.lib/tk/smr.1.7
+40.Located Library:/rst/codebase/superdarn/src.lib/tk/tsg.1.13
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/os/errlog.1.3
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/os/errlog.1.3/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/os/errlog.1.3/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/os/errlog.1.3/src/../include/errlog.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/os/errlog.1.3/src/../include/errlog.h' -> `/rst/include/superdarn/errlog.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/superdarn -c errlog.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/liberrlog.1.3.a errlog.o
+ld -shared -lm -lz  -o /rst/lib/liberrlog.1.3.so \
+              errlog.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf liberrlog.1.3.a \
+               liberrlog."1".a 
+cd /rst/lib; ln -sf liberrlog.1.3.so \
+               liberrlog."1".so 
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/os/fio.1.3
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/os/fio.1.3/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/os/fio.1.3/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/os/fio.1.3/src/../include/fio.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/os/fio.1.3/src/../include/fio.h' -> `/rst/include/superdarn/fio.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/superdarn -c fio.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libfio.1.3.a fio.o
+ld -shared -lm -lz  -o /rst/lib/libfio.1.3.so \
+              fio.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libfio.1.3.a \
+               libfio."1".a 
+cd /rst/lib; ln -sf libfio.1.3.so \
+               libfio."1".so 
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/os/freq.1.2
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/os/freq.1.2/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/os/freq.1.2/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/os/freq.1.2/src/../include/freq.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/os/freq.1.2/src/../include/freq.h' -> `/rst/include/superdarn/freq.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/superdarn -c freq.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libfreq.1.2.a freq.o
+ld -shared -lm -lz  -o /rst/lib/libfreq.1.2.so \
+              freq.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libfreq.1.2.a \
+               libfreq."1".a 
+cd /rst/lib; ln -sf libfreq.1.2.so \
+               libfreq."1".so 
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/os/rmsgrcv.1.2
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/os/rmsgrcv.1.2/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/os/rmsgrcv.1.2/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/os/rmsgrcv.1.2/src/../include/rmsg.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/os/rmsgrcv.1.2/src/../include/rmsg.h' -> `/rst/include/superdarn/rmsg.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/os/rmsgrcv.1.2/src/../include/rmsgrcv.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/os/rmsgrcv.1.2/src/../include/rmsgrcv.h' -> `/rst/include/superdarn/rmsgrcv.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/superdarn -c rmsgrcv.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/librmsgrcv.1.2.a rmsgrcv.o
+ld -shared -lm -lz  -o /rst/lib/librmsgrcv.1.2.so \
+              rmsgrcv.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf librmsgrcv.1.2.a \
+               librmsgrcv."1".a 
+cd /rst/lib; ln -sf librmsgrcv.1.2.so \
+               librmsgrcv."1".so 
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/os/rmsgsnd.1.2
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/os/rmsgsnd.1.2/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/os/rmsgsnd.1.2/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/os/rmsgsnd.1.2/src/../include/rmsgsnd.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/os/rmsgsnd.1.2/src/../include/rmsgsnd.h' -> `/rst/include/superdarn/rmsgsnd.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/superdarn -c rmsgsnd.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/librmsgsnd.1.2.a rmsgsnd.o
+ld -shared -lm -lz  -o /rst/lib/librmsgsnd.1.2.so \
+              rmsgsnd.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf librmsgsnd.1.2.a \
+               librmsgsnd."1".a 
+cd /rst/lib; ln -sf librmsgsnd.1.2.so \
+               librmsgsnd."1".so 
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/os/rosmsg.1.5
+================================================================================
+make clean
+rm -f *.o
+make
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/os/rosmsg.1.5/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/os/rosmsg.1.5/src/../include/rosmsg.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/os/rosmsg.1.5/src/../include/rosmsg.h' -> `/rst/include/superdarn/rosmsg.h'
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/os/rshell.1.2
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/os/rshell.1.2/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/os/rshell.1.2/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/os/rshell.1.2/src/../include/radarshell.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/os/rshell.1.2/src/../include/radarshell.h' -> `/rst/include/superdarn/radarshell.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/superdarn -c radarshell.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libradarshell.1.2.a radarshell.o
+ld -shared -lm -lz  -o /rst/lib/libradarshell.1.2.so \
+              radarshell.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libradarshell.1.2.a \
+               libradarshell."1".a 
+cd /rst/lib; ln -sf libradarshell.1.2.so \
+               libradarshell."1".so 
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/os/tcpipmsg.1.2
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/os/tcpipmsg.1.2/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/os/tcpipmsg.1.2/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/os/tcpipmsg.1.2/src/../include/tcpipmsg.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/os/tcpipmsg.1.2/src/../include/tcpipmsg.h' -> `/rst/include/superdarn/tcpipmsg.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/superdarn  -c tcpipmsg.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/superdarn  -c err.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libtcpipmsg.1.2.a tcpipmsg.o err.o
+ld -shared -lm -lz  -o /rst/lib/libtcpipmsg.1.2.so \
+              tcpipmsg.o err.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libtcpipmsg.1.2.a \
+               libtcpipmsg."1".a 
+cd /rst/lib; ln -sf libtcpipmsg.1.2.so \
+               libtcpipmsg."1".so 
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/acf.1.16
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/tk/acf.1.16/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/acf.1.16/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/acf.1.16/src/../include/acf.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/acf.1.16/src/../include/acf.h' -> `/rst/include/superdarn/acf.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/superdarn  -c acfcalculate.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/superdarn  -c average.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/superdarn  -c badlag.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/superdarn  -c normalize.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/superdarn  -c sumpower.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/superdarn  -c sumproduct.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libacf.1.16.a acfcalculate.o average.o badlag.o normalize.o sumpower.o sumproduct.o
+ld -shared -lm -lz  -o /rst/lib/libacf.1.16.so \
+              acfcalculate.o average.o badlag.o normalize.o sumpower.o sumproduct.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libacf.1.16.a \
+               libacf."1".a 
+cd /rst/lib; ln -sf libacf.1.16.so \
+               libacf."1".so 
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/cfit.1.19
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include/cfitread.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include/cfitread.h' -> `/rst/include/superdarn/cfitread.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include/cfitscan.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include/cfitscan.h' -> `/rst/include/superdarn/cfitscan.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include/cfitseek.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include/cfitseek.h' -> `/rst/include/superdarn/cfitseek.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include/cfitdata.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include/cfitdata.h' -> `/rst/include/superdarn/cfitdata.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include/cfitindex.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include/cfitindex.h' -> `/rst/include/superdarn/cfitindex.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include/cfitwrite.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/cfit.1.19/src/../include/cfitwrite.h' -> `/rst/include/superdarn/cfitwrite.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c cfit.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c cfitopen.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c cfitclose.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c cfitwrite.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c cfitread.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c cfitseek.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c cfitscan.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c cfitinx.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libcfit.1.19.a cfit.o cfitopen.o cfitclose.o cfitwrite.o cfitread.o cfitseek.o cfitscan.o cfitinx.o
+ld -shared -lm -lz  -o /rst/lib/libcfit.1.19.so \
+              cfit.o cfitopen.o cfitclose.o cfitwrite.o cfitread.o cfitseek.o cfitscan.o cfitinx.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libcfit.1.19.a \
+               libcfit."1".a 
+cd /rst/lib; ln -sf libcfit.1.19.so \
+               libcfit."1".so 
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/cnvmap.1.17
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/tk/cnvmap.1.17/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/cnvmap.1.17/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/cnvmap.1.17/src/../include/cnvmapread.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/cnvmap.1.17/src/../include/cnvmapread.h' -> `/rst/include/superdarn/cnvmapread.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/cnvmap.1.17/src/../include/cnvmapindex.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/cnvmap.1.17/src/../include/cnvmapindex.h' -> `/rst/include/superdarn/cnvmapindex.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/cnvmap.1.17/src/../include/cnvmapseek.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/cnvmap.1.17/src/../include/cnvmapseek.h' -> `/rst/include/superdarn/cnvmapseek.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/cnvmap.1.17/src/../include/cnvmapwrite.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/cnvmap.1.17/src/../include/cnvmapwrite.h' -> `/rst/include/superdarn/cnvmapwrite.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -I/rst/include/analysis    -c cnvmap.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -I/rst/include/analysis    -c readmap.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -I/rst/include/analysis    -c writemap.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -I/rst/include/analysis    -c mapseek.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -I/rst/include/analysis    -c mapinx.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libcnvmap.1.17.a cnvmap.o readmap.o writemap.o mapseek.o mapinx.o
+ld -shared -lm -lz  -o /rst/lib/libcnvmap.1.17.so \
+              cnvmap.o readmap.o writemap.o mapseek.o mapinx.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libcnvmap.1.17.a \
+               libcnvmap."1".a 
+cd /rst/lib; ln -sf libcnvmap.1.17.so \
+               libcnvmap."1".so 
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/filter.1.8
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/tk/filter.1.8/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/filter.1.8/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/filter.1.8/src/../include/bound.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/filter.1.8/src/../include/bound.h' -> `/rst/include/superdarn/bound.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/filter.1.8/src/../include/checkops.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/filter.1.8/src/../include/checkops.h' -> `/rst/include/superdarn/checkops.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/filter.1.8/src/../include/filter.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/filter.1.8/src/../include/filter.h' -> `/rst/include/superdarn/filter.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c filter.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c bound.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c checkops.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libfilter.1.8.a filter.o bound.o checkops.o
+ld -shared -lm -lz  -o /rst/lib/libfilter.1.8.so \
+              filter.o bound.o checkops.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libfilter.1.8.a \
+               libfilter."1".a 
+cd /rst/lib; ln -sf libfilter.1.8.so \
+               libfilter."1".so 
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/fit.1.35
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitread.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitread.h' -> `/rst/include/superdarn/fitread.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitwrite.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitwrite.h' -> `/rst/include/superdarn/fitwrite.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitdata.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitdata.h' -> `/rst/include/superdarn/fitdata.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitcfit.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitcfit.h' -> `/rst/include/superdarn/fitcfit.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitindex.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitindex.h' -> `/rst/include/superdarn/fitindex.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitseek.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitseek.h' -> `/rst/include/superdarn/fitseek.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitscan.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fit.1.35/src/../include/fitscan.h' -> `/rst/include/superdarn/fitscan.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c fit.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c fitscan.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c fitcfit.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c fitread.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c fitwrite.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c fitseek.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c fitinx.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libfit.1.35.a fit.o fitscan.o fitcfit.o fitread.o fitwrite.o fitseek.o fitinx.o
+ld -shared -lm -lz  -o /rst/lib/libfit.1.35.so \
+              fit.o fitscan.o fitcfit.o fitread.o fitwrite.o fitseek.o fitinx.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libfit.1.35.a \
+               libfit."1".a 
+cd /rst/lib; ln -sf libfit.1.35.so \
+               libfit."1".so 
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/fitacf.2.5
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacf.2.5/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/dofit.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/dofit.h' -> `/rst/include/superdarn/dofit.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/fitacf.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/fitacf.h' -> `/rst/include/superdarn/fitacf.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/fitblk.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/fitblk.h' -> `/rst/include/superdarn/fitblk.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/badlags.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/badlags.h' -> `/rst/include/superdarn/badlags.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/badsmp.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/badsmp.h' -> `/rst/include/superdarn/badsmp.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general  -I/rst/include/superdarn/fit -I/rst/include/superdarn -c acf_preproc.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general  -I/rst/include/superdarn/fit -I/rst/include/superdarn -c dbl_cmp.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general  -I/rst/include/superdarn/fit -I/rst/include/superdarn -c elevation.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general  -I/rst/include/superdarn/fit -I/rst/include/superdarn -c elev_goose.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general  -I/rst/include/superdarn/fit -I/rst/include/superdarn -c omega_guess.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general  -I/rst/include/superdarn/fit -I/rst/include/superdarn -c ground_scatter.c    
+ground_scatter.c: In function ‘ground_scatter’:
+ground_scatter.c:73:14: warning: variable ‘dw’ set but not used [-Wunused-but-set-variable]
+ground_scatter.c:73:10: warning: variable ‘dv’ set but not used [-Wunused-but-set-variable]
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general  -I/rst/include/superdarn/fit -I/rst/include/superdarn -c more_badlags.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general  -I/rst/include/superdarn/fit -I/rst/include/superdarn -c badlags.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general  -I/rst/include/superdarn/fit -I/rst/include/superdarn -c badlags_s.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general  -I/rst/include/superdarn/fit -I/rst/include/superdarn -c calc_phi_res.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general  -I/rst/include/superdarn/fit -I/rst/include/superdarn -c rang_badlags.c    
+rang_badlags.c: In function ‘lag_overlap’:
+rang_badlags.c:80:10: warning: variable ‘nave’ set but not used [-Wunused-but-set-variable]
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general  -I/rst/include/superdarn/fit -I/rst/include/superdarn -c noise_stat.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general  -I/rst/include/superdarn/fit -I/rst/include/superdarn -c fit_acf.c    
+fit_acf.c: In function ‘fit_acf’:
+fit_acf.c:58:39: warning: variable ‘sum_kphi’ set but not used [-Wunused-but-set-variable]
+fit_acf.c:58:31: warning: variable ‘sum_phi’ set but not used [-Wunused-but-set-variable]
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general  -I/rst/include/superdarn/fit -I/rst/include/superdarn -c do_fit.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general  -I/rst/include/superdarn/fit -I/rst/include/superdarn -c do_phase_fit.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general  -I/rst/include/superdarn/fit -I/rst/include/superdarn -c fitacf.c    
+fitacf.c: In function ‘FitACF’:
+fitacf.c:88:7: warning: variable ‘fnum’ set but not used [-Wunused-but-set-variable]
+mkdir -p /rst/lib
+ar -r /rst/lib/libfitacf.2.5.a acf_preproc.o dbl_cmp.o elevation.o elev_goose.o omega_guess.o ground_scatter.o more_badlags.o badlags.o badlags_s.o calc_phi_res.o rang_badlags.o noise_stat.o fit_acf.o do_fit.o do_phase_fit.o fitacf.o 
+ld -shared -lm -lz  -o /rst/lib/libfitacf.2.5.so \
+              acf_preproc.o dbl_cmp.o elevation.o elev_goose.o omega_guess.o ground_scatter.o more_badlags.o badlags.o badlags_s.o calc_phi_res.o rang_badlags.o noise_stat.o fit_acf.o do_fit.o do_phase_fit.o fitacf.o  -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libfitacf.2.5.a \
+               libfitacf."1".a 
+cd /rst/lib; ln -sf libfitacf.2.5.so \
+               libfitacf."1".so 
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/fitacfex2.1.0
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacfex2.1.0/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacfex2.1.0/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacfex2.1.0/src/../include/fitacfex2.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitacfex2.1.0/src/../include/fitacfex2.h' -> `/rst/include/superdarn/fitacfex2.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -I/rst/include/analysis -I/data/fit/aj/cmpfit-1.2/ -c fitacfex2.c    
+In file included from fitacfex2.c:16:0:
+/rst/include/superdarn/rprm.h:123:48: warning: ‘struct DataMap’ declared inside parameter list [enabled by default]
+/rst/include/superdarn/rprm.h:123:48: warning: its scope is only this definition or declaration, which is probably not what you want [enabled by default]
+/rst/include/superdarn/rprm.h:125:48: warning: ‘struct DataMap’ declared inside parameter list [enabled by default]
+fitacfex2.c: In function ‘fitacfex2’:
+fitacfex2.c:209:14: warning: variable ‘err’ set but not used [-Wunused-but-set-variable]
+fitacfex2.c:208:19: warning: variable ‘v_temp’ set but not used [-Wunused-but-set-variable]
+fitacfex2.c:208:10: warning: variable ‘prev_err’ set but not used [-Wunused-but-set-variable]
+mkdir -p /rst/lib
+ar -r /rst/lib/libfitacfex2.x.x.a fitacfex2.o
+ld -shared -lm -lz  -o /rst/lib/libfitacfex2.x.x.so \
+              fitacfex2.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libfitacfex2.x.x.a \
+               libfitacfex2."1".a 
+cd /rst/lib; ln -sf libfitacfex2.x.x.so \
+               libfitacfex2."1".so 
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/fitcnx.1.16
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/tk/fitcnx.1.16/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/fitcnx.1.16/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitcnx.1.16/src/../include/fitcnx.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/fitcnx.1.16/src/../include/fitcnx.h' -> `/rst/include/superdarn/fitcnx.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c fitcnx.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c decodemsg.c    
+decodemsg.c: In function ‘FitCnxDecodeIPMsg’:
+decodemsg.c:46:3: warning: pointer targets in passing argument 1 of ‘DataMapDecodeBuffer’ differ in signedness [-Wpointer-sign]
+/rst/include/general/dmap.h:173:17: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+mkdir -p /rst/lib
+ar -r /rst/lib/libfitcnx.1.16.a fitcnx.o decodemsg.o 
+ld -shared -lm -lz  -o /rst/lib/libfitcnx.1.16.so \
+              fitcnx.o decodemsg.o  -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libfitcnx.1.16.a \
+               libfitcnx.1.a 
+cd /rst/lib; ln -sf libfitcnx.1.16.so \
+               libfitcnx.1.so 
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/grid.1.24
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/tk/grid.1.24/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/grid.1.24/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/grid.1.24/src/../include/griddata.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/grid.1.24/src/../include/griddata.h' -> `/rst/include/superdarn/griddata.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/grid.1.24/src/../include/gridseek.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/grid.1.24/src/../include/gridseek.h' -> `/rst/include/superdarn/gridseek.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/grid.1.24/src/../include/gridread.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/grid.1.24/src/../include/gridread.h' -> `/rst/include/superdarn/gridread.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/grid.1.24/src/../include/gridwrite.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/grid.1.24/src/../include/gridwrite.h' -> `/rst/include/superdarn/gridwrite.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/grid.1.24/src/../include/gridindex.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/grid.1.24/src/../include/gridindex.h' -> `/rst/include/superdarn/gridindex.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c grid.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c addgrid.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c avggrid.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c copygrid.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c integrategrid.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c mergegrid.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c readgrid.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c writegrid.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c sortgrid.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c gridseek.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c gridinx.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libgrd.1.24.a grid.o addgrid.o avggrid.o copygrid.o integrategrid.o mergegrid.o readgrid.o writegrid.o sortgrid.o gridseek.o gridinx.o
+ld -shared -lm -lz  -o /rst/lib/libgrd.1.24.so \
+              grid.o addgrid.o avggrid.o copygrid.o integrategrid.o mergegrid.o readgrid.o writegrid.o sortgrid.o gridseek.o gridinx.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libgrd.1.24.a \
+               libgrd."1".a 
+cd /rst/lib; ln -sf libgrd.1.24.so \
+               libgrd."1".so 
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/gtable.1.14
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/tk/gtable.1.14/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/gtable.1.14/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/gtable.1.14/src/../include/gtable.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/gtable.1.14/src/../include/gtable.h' -> `/rst/include/superdarn/gtable.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn  -c gtable.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libgtable.1.14.a gtable.o 
+ld -shared -lm -lz  -o /rst/lib/libgtable.1.14.so \
+              gtable.o  -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libgtable.1.14.a \
+               libgtable."1".a 
+cd /rst/lib; ln -sf libgtable.1.14.so \
+               libgtable."1".so 
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/gtablewrite.1.9
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/tk/gtablewrite.1.9/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/gtablewrite.1.9/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/gtablewrite.1.9/src/../include/gtablewrite.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/gtablewrite.1.9/src/../include/gtablewrite.h' -> `/rst/include/superdarn/gtablewrite.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn  -c gtablewrite.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libgtabw.1.9.a gtablewrite.o 
+ld -shared -lm -lz  -o /rst/lib/libgtabw.1.9.so \
+              gtablewrite.o  -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libgtabw.1.9.a \
+               libgtabw."1".a 
+cd /rst/lib; ln -sf libgtabw.1.9.so \
+               libgtabw."1".so 
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/idl/cnvmapidl.1.3
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/cnvmapidl.1.3/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/cnvmapidl.1.3/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/cnvmapidl.1.3/src/../include/cnvmapidl.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/cnvmapidl.1.3/src/../include/cnvmapidl.h' -> `/rst/include/superdarn/cnvmapidl.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -I/usr/local/itt/idl/external/include -c cnvmapidl.c    
+cnvmapidl.c: In function ‘IDLMakeCnvMapPrm’:
+cnvmapidl.c:316:5: warning: missing braces around initializer [-Wmissing-braces]
+cnvmapidl.c:316:5: warning: (near initialization for ‘ttime[6]’) [-Wmissing-braces]
+cnvmapidl.c:323:5: warning: missing braces around initializer [-Wmissing-braces]
+cnvmapidl.c:323:5: warning: (near initialization for ‘tmlt[3]’) [-Wmissing-braces]
+cnvmapidl.c:362:5: warning: missing braces around initializer [-Wmissing-braces]
+cnvmapidl.c:362:5: warning: (near initialization for ‘cnvmapprm[35]’) [-Wmissing-braces]
+cnvmapidl.c: In function ‘IDLMakeCnvMapBnd’:
+cnvmapidl.c:388:5: warning: missing braces around initializer [-Wmissing-braces]
+cnvmapidl.c:388:5: warning: (near initialization for ‘cnvmapbnd[2]’) [-Wmissing-braces]
+cnvmapidl.c:393:4: warning: return from incompatible pointer type [enabled by default]
+cnvmapidl.c: In function ‘IDLMakeCnvMapInx’:
+cnvmapidl.c:408:5: warning: missing braces around initializer [-Wmissing-braces]
+cnvmapidl.c:408:5: warning: (near initialization for ‘grdinx[2]’) [-Wmissing-braces]
+mkdir -p /rst/lib
+ar -r /rst/lib/libcnvmapidl.1.3.a cnvmapidl.o
+ld -shared -lm -lz  -o /rst/lib/libcnvmapidl.1.3.so \
+              cnvmapidl.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libcnvmapidl.1.3.a \
+               libcnvmapidl."1".a 
+cd /rst/lib; ln -sf libcnvmapidl.1.3.so \
+               libcnvmapidl."1".so 
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/idl/fitidl.1.5
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/fitidl.1.5/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/fitidl.1.5/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/fitidl.1.5/src/../include/fitidl.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/fitidl.1.5/src/../include/fitidl.h' -> `/rst/include/superdarn/fitidl.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -I/usr/local/itt/idl/external/include -c fitidl.c    
+fitidl.c: In function ‘IDLMakeFitData’:
+fitidl.c:156:5: warning: missing braces around initializer [-Wmissing-braces]
+fitidl.c:156:5: warning: (near initialization for ‘revision[2]’) [-Wmissing-braces]
+fitidl.c:162:5: warning: missing braces around initializer [-Wmissing-braces]
+fitidl.c:162:5: warning: (near initialization for ‘noise[3]’) [-Wmissing-braces]
+fitidl.c:206:5: warning: missing braces around initializer [-Wmissing-braces]
+fitidl.c:206:5: warning: (near initialization for ‘fitdata[39]’) [-Wmissing-braces]
+fitidl.c: In function ‘IDLMakeFitInx’:
+fitidl.c:232:5: warning: missing braces around initializer [-Wmissing-braces]
+fitidl.c:232:5: warning: (near initialization for ‘fitinx[2]’) [-Wmissing-braces]
+mkdir -p /rst/lib
+ar -r /rst/lib/libfitidl.1.5.a fitidl.o
+ld -shared -lm -lz  -o /rst/lib/libfitidl.1.5.so \
+              fitidl.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libfitidl.1.5.a \
+               libfitidl."1".a 
+cd /rst/lib; ln -sf libfitidl.1.5.so \
+               libfitidl."1".so 
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/idl/grdidl.1.4
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/grdidl.1.4/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/grdidl.1.4/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/grdidl.1.4/src/../include/grdidl.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/grdidl.1.4/src/../include/grdidl.h' -> `/rst/include/superdarn/grdidl.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -I/usr/local/itt/idl/external/include -c grdidl.c    
+grdidl.c: In function ‘IDLMakeGridPrm’:
+grdidl.c:218:5: warning: missing braces around initializer [-Wmissing-braces]
+grdidl.c:218:5: warning: (near initialization for ‘ttime[6]’) [-Wmissing-braces]
+grdidl.c:227:5: warning: missing braces around initializer [-Wmissing-braces]
+grdidl.c:227:5: warning: (near initialization for ‘gridprm[5]’) [-Wmissing-braces]
+grdidl.c: In function ‘IDLMakeGridStVec’:
+grdidl.c:250:5: warning: missing braces around initializer [-Wmissing-braces]
+grdidl.c:250:5: warning: (near initialization for ‘noise[2]’) [-Wmissing-braces]
+grdidl.c:255:5: warning: missing braces around initializer [-Wmissing-braces]
+grdidl.c:255:5: warning: (near initialization for ‘limit[2]’) [-Wmissing-braces]
+grdidl.c:271:5: warning: missing braces around initializer [-Wmissing-braces]
+grdidl.c:271:5: warning: (near initialization for ‘gridstvec[13]’) [-Wmissing-braces]
+grdidl.c: In function ‘IDLMakeGridGVec’:
+grdidl.c:297:5: warning: missing braces around initializer [-Wmissing-braces]
+grdidl.c:297:5: warning: (near initialization for ‘value[2]’) [-Wmissing-braces]
+grdidl.c:311:5: warning: missing braces around initializer [-Wmissing-braces]
+grdidl.c:311:5: warning: (near initialization for ‘gridgvec[9]’) [-Wmissing-braces]
+grdidl.c: In function ‘IDLMakeGridInx’:
+grdidl.c:339:5: warning: missing braces around initializer [-Wmissing-braces]
+grdidl.c:339:5: warning: (near initialization for ‘grdinx[2]’) [-Wmissing-braces]
+mkdir -p /rst/lib
+ar -r /rst/lib/libgrdidl.1.4.a grdidl.o
+ld -shared -lm -lz  -o /rst/lib/libgrdidl.1.4.so \
+              grdidl.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libgrdidl.1.4.a \
+               libgrdidl."1".a 
+cd /rst/lib; ln -sf libgrdidl.1.4.so \
+               libgrdidl."1".so 
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/idl/rawidl.1.5
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/rawidl.1.5/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/rawidl.1.5/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/rawidl.1.5/src/../include/rawidl.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/rawidl.1.5/src/../include/rawidl.h' -> `/rst/include/superdarn/rawidl.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -I/usr/local/itt/idl/external/include -c rawidl.c    
+rawidl.c: In function ‘IDLMakeRawData’:
+rawidl.c:94:5: warning: missing braces around initializer [-Wmissing-braces]
+rawidl.c:94:5: warning: (near initialization for ‘revision[2]’) [-Wmissing-braces]
+rawidl.c: In function ‘IDLMakeRawInx’:
+rawidl.c:127:5: warning: missing braces around initializer [-Wmissing-braces]
+rawidl.c:127:5: warning: (near initialization for ‘rawinx[2]’) [-Wmissing-braces]
+mkdir -p /rst/lib
+ar -r /rst/lib/librawidl.1.5.a rawidl.o
+ld -shared -lm -lz  -o /rst/lib/librawidl.1.5.so \
+              rawidl.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf librawidl.1.5.a \
+               librawidl."1".a 
+cd /rst/lib; ln -sf librawidl.1.5.so \
+               librawidl."1".so 
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/idl/rprmidl.1.6
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/rprmidl.1.6/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/rprmidl.1.6/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/rprmidl.1.6/src/../include/rprmidl.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/idl/rprmidl.1.6/src/../include/rprmidl.h' -> `/rst/include/superdarn/rprmidl.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -I/usr/local/itt/idl/external/include -c rprmidl.c    
+rprmidl.c: In function ‘IDLMakeRadarParm’:
+rprmidl.c:189:5: warning: missing braces around initializer [-Wmissing-braces]
+rprmidl.c:189:5: warning: (near initialization for ‘revision[2]’) [-Wmissing-braces]
+rprmidl.c:195:5: warning: missing braces around initializer [-Wmissing-braces]
+rprmidl.c:195:5: warning: (near initialization for ‘origin[3]’) [-Wmissing-braces]
+rprmidl.c:205:5: warning: missing braces around initializer [-Wmissing-braces]
+rprmidl.c:205:5: warning: (near initialization for ‘time[7]’) [-Wmissing-braces]
+rprmidl.c:210:5: warning: missing braces around initializer [-Wmissing-braces]
+rprmidl.c:210:5: warning: (near initialization for ‘stat[2]’) [-Wmissing-braces]
+rprmidl.c:215:7: warning: missing braces around initializer [-Wmissing-braces]
+rprmidl.c:215:7: warning: (near initialization for ‘noise[2]’) [-Wmissing-braces]
+rprmidl.c:220:5: warning: missing braces around initializer [-Wmissing-braces]
+rprmidl.c:220:5: warning: (near initialization for ‘intt[2]’) [-Wmissing-braces]
+rprmidl.c:260:5: warning: missing braces around initializer [-Wmissing-braces]
+rprmidl.c:260:5: warning: (near initialization for ‘rprm[36]’) [-Wmissing-braces]
+mkdir -p /rst/lib
+ar -r /rst/lib/librprmidl.1.6.a rprmidl.o
+ld -shared -lm -lz  -o /rst/lib/librprmidl.1.6.so \
+              rprmidl.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf librprmidl.1.6.a \
+               librprmidl."1".a 
+cd /rst/lib; ln -sf librprmidl.1.6.so \
+               librprmidl."1".so 
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/iq.1.7
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/tk/iq.1.7/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/iq.1.7/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/iq.1.7/src/../include/iqwrite.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/iq.1.7/src/../include/iqwrite.h' -> `/rst/include/superdarn/iqwrite.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/iq.1.7/src/../include/iqread.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/iq.1.7/src/../include/iqread.h' -> `/rst/include/superdarn/iqread.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/iq.1.7/src/../include/iqindex.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/iq.1.7/src/../include/iqindex.h' -> `/rst/include/superdarn/iqindex.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/iq.1.7/src/../include/iq.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/iq.1.7/src/../include/iq.h' -> `/rst/include/superdarn/iq.h'
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/iq.1.7/src/../include/iqseek.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/iq.1.7/src/../include/iqseek.h' -> `/rst/include/superdarn/iqseek.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c iq.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c iqread.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c iqwrite.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c iqseek.c    
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -c iqinx.c    
+mkdir -p /rst/lib
+ar -r /rst/lib/libiqdata.1.7.a iq.o iqread.o iqwrite.o iqseek.o iqinx.o
+ld -shared -lm -lz  -o /rst/lib/libiqdata.1.7.so \
+              iq.o iqread.o iqwrite.o iqseek.o iqinx.o -Bstatic -L/rst/lib -L/rst/usr/lib  
+cd /rst/lib; ln -sf libiqdata.1.7.a \
+               libiqdata."1".a 
+cd /rst/lib; ln -sf libiqdata.1.7.so \
+               libiqdata."1".so 
+================================================================================
+Compiling Library:/rst/codebase/superdarn/src.lib/tk/lmfit.1.0
+================================================================================
+make clean
+rm -f *.o
+make
+make.version /rst.3.5/rst/codebase/superdarn/src.lib/tk/lmfit.1.0/src/..
+make.hdr /rst.3.5/rst/codebase/superdarn/src.lib/tk/lmfit.1.0/src/../include /rst/include/superdarn 
+/rst.3.5/rst/codebase/superdarn/src.lib/tk/lmfit.1.0/src/../include/lmfit.h
+`/rst.3.5/rst/codebase/superdarn/src.lib/tk/lmfit.1.0/src/../include/lmfit.h' -> `/rst/include/superdarn/lmfit.h'
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/rst/include/base -I/rst/include/general -I/rst/include/superdarn -I/rst/include/analysis -I//cmpfit-1.2/ -c lmfit.c    
+In file included from lmfit.c:16:0:
+/rst/include/superdarn/rprm.h:123:48: warning: ‘struct DataMap’ declared inside parameter list [enabled by default]
+/rst/include/superdarn/rprm.h:123:48: warning: its scope is only this definition or declaration, which is probably not what you want [enabled by default]
+/rst/include/superdarn/rprm.h:125:48: warning: ‘struct DataMap’ declared inside parameter list [enabled by default]
+lmfit.c:23:19: fatal error: mpfit.h: No such file or directory
+compilation terminated.
+make: *** [lmfit.o] Error 1
+Compilation Aborted.
