@@ -47,6 +47,7 @@ void RPosGeo(int center,int bcrd,int rcrd,
                 struct RadarSite *pos,
                 int lagfr,int smsep,int rxrise,double height,
                 double *rho,double *lat,double *lng);
+
 void RPosMag(int center,int bcrd,int rcrd,
                 struct RadarSite *pos,
                 int lagfr,int smsep,int rxrise,double height,
@@ -61,6 +62,7 @@ void RPosGeoGS(int center,int bcrd,int rcrd,
                 struct RadarSite *pos,
                 int lagfr,int smsep,int rxrise,double height,
                 double *rho,double *lat,double *lng);
+
 void RPosMagGS(int center,int bcrd,int rcrd,
                 struct RadarSite *pos,
                 int lagfr,int smsep,int rxrise,double height,
