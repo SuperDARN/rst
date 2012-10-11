@@ -1,0 +1,29 @@
+commit 0cf6244371560d56323e573ace02af3e9c7ff8d8
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:07 2012 -0400
+
+    Updated license
+
+commit ccce5f348ed32cd818e3f9cc318f82264b59f1db
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Aug 4 12:55:51 2010 -0400
+
+    Fixed makefile for dynamic linking
+
+commit aea4264e362054620de0bf5c13888e9775469169
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 08:32:40 2010 -0400
+
+    Updated documentation
+
+commit 991249b2e03a607ec76469c5c7c787d5ddf515c7
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:45:06 2010 -0400
+
+    fixed makefile
+
+commit 58f51c33f0365f3f64f410b89d0c975c4bc01f51
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:06 2010 +0000
+
+    Initial commit

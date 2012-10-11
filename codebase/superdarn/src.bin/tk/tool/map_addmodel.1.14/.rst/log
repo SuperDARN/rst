@@ -1,0 +1,35 @@
+commit 514bf119eabce394c888caffd6d294dcca43f837
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:07 2012 -0400
+
+    Updated license
+
+commit 5f4b7db1e9ff64418827e05aa885ec6d1c7aa969
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Jul 13 11:53:07 2010 -0400
+
+    Removed debug code.
+
+commit edbacefe58922f28c67cec67d5174d8862a7ef2a
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 08:32:40 2010 -0400
+
+    Updated documentation
+
+commit aacf67bd297a08fa86132865ca37fed6dc534eac
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Mon May 24 20:56:34 2010 -0400
+
+    Fixed missing function calls to create data structures.
+
+commit 116f452e271ea43f30f1738455a7c64f66a79847
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:44:53 2010 -0400
+
+    Fixed makefile
+
+commit 1023d5f401601a280e135c4c4d103274319bb2dc
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:06 2010 +0000
+
+    Initial commit

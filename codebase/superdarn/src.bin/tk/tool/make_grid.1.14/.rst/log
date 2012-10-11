@@ -1,0 +1,35 @@
+commit fabc40982fc38db089305b678c647b56d95912aa
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:05 2012 -0400
+
+    Updated license
+
+commit 1775bb36aa8f9add40d08c77d53b0b105878750a
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Jun 24 12:18:05 2011 -0400
+
+    Added tests to make sure beam mapping is correct.
+
+commit edbd5e403ca590e4c0640d45a9515978b5172647
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Sun Mar 27 06:11:54 2011 -0400
+
+    Added new CFit headers
+
+commit e5e6727156dfb14874302367e37578e7f0a24964
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 08:32:39 2010 -0400
+
+    Updated documentation
+
+commit 9f949165e244fd6b39a1fd324664ae9e2bff5c3b
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:37:47 2010 -0400
+
+    Fixed makefile.
+
+commit 2d652cc44030e0817cb27c207b515d95f5ab22bb
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:19 2010 +0000
+
+    Initial commit

@@ -1,0 +1,77 @@
+commit 6de13073e0a5d948ac3e8bb4a1b64355fdc9b95b
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:21 2012 -0400
+
+    Updated license
+
+commit 82d02f04985eac593190533d77542bffe6c977cd
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Dec 1 10:32:42 2010 -0500
+
+    Changed limits on minimum great circle distance.
+
+commit b710cdeaff68947ecfff5b436a3f925e2c3e8bbb
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Dec 1 10:19:33 2010 -0500
+
+    Added check to make sure we don't bother to fill in segments if the two points are close together.
+
+commit d4c1bb69f159e2139e0ad2e06e2e298ed5f82c8f
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Thu Sep 30 11:38:17 2010 -0400
+
+    added missing object to makefile (WTF)
+
+commit 7f6946ead50122cd54bc3ebacd9a731c532345ff
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed Sep 15 13:10:55 2010 -0400
+
+    New map projection handling.
+
+commit 1840939186be1ecfee7e584a54e55403b922c69e
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed Sep 15 10:33:45 2010 -0400
+
+    Modification for new map projection solution - hold point.
+
+commit e4121dc32b92d18656a54ae85a372032b922c8ae
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Fri Aug 27 10:02:06 2010 -0400
+
+    Renamed iplot.h
+
+commit f0ff41fe0008615bfc149a23996a6ae6858ccca4
+Author: Code Development Account <code@robin-barness-macbook-pro.local>
+Date:   Mon May 10 06:16:01 2010 -0400
+
+    Implemented plot abstraction layer.
+
+commit cea1d9193a280ef634c2981ec7e675e3d1439e70
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Mar 31 11:12:53 2010 -0400
+
+    Fixed SVG format
+
+commit 0aac8dd00a3e6852d5e589c5bee5d2dbf65d42c1
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Mar 31 11:03:39 2010 -0400
+
+    Added PNG example images
+
+commit 388bcc365002b23064c2642f06d3ac3014c2097f
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Mar 31 09:49:32 2010 -0400
+
+    Converted documentation PPM images to PNG and renamed rplot files
+
+commit f682bee2018a1a0eacec8530ad6879e481863da2
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Mar 31 08:55:35 2010 -0400
+
+    Documentation cleanup
+
+commit eb648396b4c71c30308f8e0377556319746ec94c
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:36:46 2010 +0000
+
+    Initial commit

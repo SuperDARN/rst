@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>general</project>
+<name>contour</name>
+<location>src.lib/contour</location>
+<function>
+<name>Contour</name>
+<location>src.lib/contour</location>
+<header>general/contour.h</header>
+<syntax><sn href="&root;/src.lib/polygon/structPolygonData.html">struct PolygonData</sn> **Contour(void *zbuffer,int type, int wdt,int hgt,int cnum, void *cval,int smooth,int cflag,int rflag, int bflag);</syntax>
+<description><p>The <fn href="Contour.html">Contour</fn> function traces a set of contour lines for a set of data points.</p>
+<p>The argument <ar>zbuffer</ar> is a pointer to the two dimensional array that contains the data to trace, the type of the array is given by the argument <ar>type</ar>. Possible values of type are:</p>
+<center><table>
+<tr><td><code>contour_INT</code></td><td>Pointer to an integer array of type <code>int</code>.</td></tr>
+<tr><td><code>contour_FLOAT</code></td><td>Pointer to a floating point array of type <code>float</code>.</td></tr>
+<tr><td><code>contour_DOUBLE</code></td><td>Pointer to a floating point array of type <code>double</code>.</td></tr>
+</table></center>
+<p> The arguments <ar>wdt</ar> and <ar>hgt</ar> define the width and height of the data set.</p>
+<p>The array pointed to by <ar>zbuffer</ar> can represent data in a cartesian, polar, or any other co-ordinate system. The tracing algorithm uses the topological relationship that adjacent entries in the array will also be adjacent in the actual co-ordinate system.</p> 
+<p> The data should be arranged in row-major form with the first <ar>wdt</ar> bytes of the array corresponding to the first row of data.</p>
+<p>The argument <ar>cnum</ar> defines the number of contours to be traced and the array pointed to by <ar>cval</ar> lists the corresponding contour levels.</p>
+<p>The argument smooth is a smoothing factor that determines the frequency at which points are marked along a contour line. Smaller values will yield a more accurate contour but can start to show affects due to the size of the data grid.</p>
+<p>If the argument <ar>oflag</ar> is non-zero then contour lines that do not close are ignored.</p>
+<p>For polar and other co-ordinate systems, the edges of the array do not represent a boundary and when a contour intersects an edge the tracing algorithm should continue on the opposite side of the array. Whether the algorithm continues searching at the intersection of the array edges is determined by the value of the argument <ar>rflag</ar>; (0) terminates at all edges, (1) continues at the left and right edges, (2) continues at the top and bottom edges, and (3) continues at all edges.</p>
+<p>The argument <ar>bflag</ar> determines whether the contour algorithm records points traced along the edges of the array or ignores them. If the value of bflag is zero then tracing is performed. If the first bit (corresponding to 1) is set, then points along the left edge of the array are ignored. If the second bit (corresponding to 2) is set, then points along the right edge of the array are ignored.  If the third bit (corresponding to 4) is set, then points along the top edge of the array are ignored. If the fourth bit (corresponding to 4) is set, then points along the bottom edge of the array are ignored.</p>
+</description>
+<returns>Returns a pointer to an array of polygons that define the contours. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
+<example type="rplot">Contour</example>  
+<example type="source">Contour.c</example>
+
+</function>
+<function>
+<name>ContourFree</name>
+<location>src.lib/contour</location>
+<header>general/contour.h</header>
+<syntax>void ContourFree(int cnum,<sn href="&root;/src.lib/polygon/structPolygonData.html">struct PolygonData</sn> **ptr);</syntax>
+<description><p>The <fn href="ContourFree.html">ContourFree</fn> function frees the memory allocated to store contours.</p>
+<p>The argument <ar>cnum</ar> defines the number of contours and the argument <ar>ptr</ar> is a pointer to the array of contours.</p>
+</description>
+<example type="rplot">ContourFree</example>  
+<example type="source">ContourFree.c</example>
+
+</function>
+<function>
+<name>ContourModify</name>
+<location>src.lib/contour</location>
+<header>general/contour.h</header>
+<syntax>void ContourModify(int cnum,<sn href="&root;/src.lib/polygon/PolygonData.html">struct PolygonData</sn> **src, int (*trf)(int ssze,void *src,int dsze, void *dst,void *data), void *data);</syntax>
+
+<description><p>The <fn href="ContourModify.html">ContourModify</fn> function modifies a set of contours.</p>
+<p>The argument <ar>cnum</ar> gives the number of contours in the array pointed to by the argument <ar>src</ar>.</p>
+<p>The argument <ar>trnf</ar> is a pointer to a function of the form:</p>
+<fd>int (*trnf) (int ssze,void *src,int dsze,void *dst,void *dptr);</fd>
+<p>This function performs the modification of the points in the contour.</p>
+<p>The size in bytes of the input coordinate is given be the argument <ar>ssze</ar>. The coordinate data is pointed to by the argument <ar>src</ar>. The first two elements stored in the coordinate data block are assumed to be single precision floating point numbers of type float that represent the actual coordinate.</p>
+<p>The size in bytes of the output coordinate is given be the argument <ar>dsze</ar>. The coordinate data is pointed to by the argument <ar>dst</ar>. The first two elements stored in the coordinate data block are assumed to be single precision floating point numbers of type float that represent the actual coordinate.</p>
+<p>The transformation should read the coordinate from <ar>src</ar>, modify it and write the value to <ar>dst</ar>.</p>
+<p>The <ar>data</ar> argument of the  <fn href="ContourModify.html">ContourModify</fn> function is passed directly as the <ar>dptr</ar> argument and allows extra parameters to be passed to the function.</p>
+<p>The function should return a zero if the modification was successfully applied or (-1) if an error occurred.</p>
+</description>
+<example type="rplot">ContourModify</example>  
+<example type="source">ContourModify.c</example>
+
+
+</function>
+<function>
+<name>ContourTransform</name>
+<location>src.lib/contour</location>
+<header>general/contour.h</header>
+<syntax> <sn href="&root;/src.lib/polygon/PolygonData.html">struct PolygonData</sn> **ContourTransform(int cnum,<sn href="&root;/src.lib/general/polygon/structPolygonData.html">struct PolygonData</sn> **src, int (*trf)(int ssze,void *src,int dsze, void *dst,void *data), void *data);</syntax>
+<description><p>The <fn href="ContourTransform.html">ContourTransform</fn> function applies a map transform to a set of contours.</p>
+<p>The argument <ar>cnum</ar> gives the number of contours in the array pointed to by the argument <ar>src</ar>.</p>
+<p>The argument <ar>trnf</ar> is a pointer to a function of the form:</p>
+
+<fd>int (*trnf) (int ssze,void *src,int dsze,void *dst,void *dptr);</fd>
+<p>This function performs the modification of the points in the contour.</p>
+<p>The size in bytes of the input coordinate is given be the argument <ar>ssze</ar>. The coordinate data is pointed to by the argument <ar>src</ar>. The first two elements stored in the coordinate data block are assumed to be single precision floating point numbers of type float that represent the actual coordinate.</p>
+<p>The size in bytes of the output coordinate is given be the argument <ar>dsze</ar>. The coordinate data is pointed to by the argument <ar>dst</ar>. The first two elements stored in the coordinate data block are assumed to be single precision floating point numbers of type float that represent the actual coordinate.</p>
+<p>The transformation should read the coordinate from <ar>src</ar>, modify it and write the value to <ar>dst</ar>.</p>
+<p>The <ar>data</ar> argument of the  <fn href="ContourTransform.html">ContourTransform</fn> function is passed directly as the <ar>dptr</ar> argument of the transform and allows extra parameters to be passed to the function.</p>
+<p>The function should return a zero if the transformation was successfully applied or (-1) if an error occurred.</p>
+</description>
+
+<returns>Returns a pointer to an array of polygons that define the mapped contours. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
+
+<example type="rplot">ContourTransform</example>  
+<example type="source">ContourTransform.c</example>
+
+
+</function>
+</library>

@@ -1,0 +1,35 @@
+commit caea411c47513e3308c741aef157cb6ef5483bb0
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:59 2012 -0400
+
+    Updated license
+
+commit 424bd7e146a1f1707968c510ac048f35c4e46197
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Sun Mar 27 05:22:19 2011 -0400
+
+    Fixed possible rounding bug
+
+commit c51ed9c0a0376b160dafbe9059a75deb41bf5fc5
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 4 15:01:16 2010 -0400
+
+    Fixed memory allocation error in file searches.
+
+commit ffa704495c9e7d9aec6ea59db714bd845b03b068
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 09:56:52 2010 -0400
+
+    RST3 Update
+
+commit f5445cc9d3185cffd83cb7bcab4422ea23278e6e
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Mar 30 15:15:23 2010 -0400
+
+    Fixed documentation.
+
+commit 8b68bd2ca6bc17bc0c134754067907496881c7b9
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:22 2010 +0000
+
+    Initial commit

@@ -1,0 +1,142 @@
+
+<head>
+<title>RPosRngBmAzmElv</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../superdarn/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/rpos/index.html>rpos</a></td><td>|</td>
+<td>RPosRngBmAzmElv</td>
+<td width=100% align=right><a href=../../../../superdarn/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">RPosRngBmAzmElv</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">void RPosRngBmAzmElv(int bm,int rn,int year,<a href="../../../../src.lib/tk/radar/structRadarSite.html"><code>struct RadarSite</code></a> *hdw,double frang, double rsep,double rx,double height, double *azm,double *elv);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">superdarn/invmag.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">rpos</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="RPosRngBmAzmElv.html"><code>RPosRngBmAzmElv</code></a> function calculates the azimuth and elevation angle of a radar range-beam cell.</p>
+<p>The arguments <em>bcrd</em> and <em>rcrd</em> give the beam and range number of the cell.</p>
+<p>The argument <em>year</em> defines the year for which the calculatation should be performed.</p> 
+<p>The argument <em>hdw</em> points to a structure containing the radar site and hardware information.</p>
+<p>The distance to the first range and the range separation are given by the arguments <em>frang</em>, <em>rsep</em>.</p>
+<p>The argument <em>rxrise</em> gives the receiver rise time, if this is set to zero then the receiver rise time will be taken from the hardware table.</p>
+<p>If the argument <em>height</em> is less than or equal to 90 it corresponds to the elevation angle in degrees associated with the calculation, otherwise is corresponds to the height in kilometers.</p>
+<p>The azimuth and elvation angle are stored stored at the locations pointed to by the arguments <em>azm</em>, <em>elv</em>.</p>
+
+
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>None</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>None</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/RPosRngBmAzmElv.c">RPosRngBmAzmElv.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* RposRngBmAzmElv
+   ===============
+   Author: R.J.Barnes */
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#include &quot;rtypes.h&quot;
+#include &quot;radar.h&quot;
+#include &quot;invmag.h&quot;
+
+struct RadarNetwork *network; 
+struct RadarSite *site; 
+
+int main(int argc,char *argv[]) {
+  char *envstr;
+  FILE *fp;
+  char *code=NULL;
+  int st;
+  int bm,rng;
+  int frang=180,rsep=45,rxrise=100.0;
+  double hgt=150.0;
+  double azm,elv;
+
+  envstr=getenv(&quot;SD_RADAR&quot;);
+  if (envstr==NULL) {
+    fprintf(stderr,&quot;Environment variable 'SD_RADAR' must be defined.&apos;n&quot;);
+    exit(-1);
+  }
+
+  fp=fopen(envstr,&quot;r&quot;);
+
+  if (fp==NULL) {
+    fprintf(stderr,&quot;Could not locate radar information file.&apos;n&quot;);
+    exit(-1);
+  }
+
+  network=RadarLoad(fp);
+  fclose(fp); 
+  if (network==NULL) {
+    fprintf(stderr,&quot;Failed to read radar information.&apos;n&quot;);
+    exit(-1);
+  }
+
+  envstr=getenv(&quot;SD_HDWPATH&quot;);
+  if (envstr==NULL) {
+    fprintf(stderr,&quot;Environment variable 'SD_HDWPATH' must be defined.&apos;n&quot;);
+    exit(-1);
+  }
+
+  RadarLoadHardware(envstr,network);
+  
+  code=argv[1];
+  bm=atoi(argv[2]);
+  rng=atoi(argv[3]);
+
+  st=RadarGetID(network,code);
+
+  site=RadarYMDHMSGetSite(RadarGetRadar(network,st),2002,8,30,10,30,0);
+
+  RPosRngBmAzmElv(bm,rng,2002,site,frang,rsep,rxrise,hgt,&amp;azm,&amp;elv);
+
+  fprintf(stdout,&quot;RPosRngBmAzmElv&apos;n&quot;);
+  fprintf(stdout,&quot;%s bm=%d rng=%d&apos;n&quot;,code,bm,rng);
+  fprintf(stdout,&quot;azm=%g elv=%g&apos;n&quot;,azm,elv);
+
+
+
+  return 0;
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

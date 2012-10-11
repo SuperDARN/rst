@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>map_addmodel</name>
+<location>src.bin/tk/tool/map_addmodel</location>
+<syntax>map_addmodel --help</syntax>
+<syntax>map_addmodel [-vb] [-new] [-o <ar>order</ar>] [-d <ar>doping</ar>] [<ar>mapname</ar>]</syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-new</on><od>the input file is a <code>cnvmap</code> format file.</od></option>
+<option><on>-o <ar>order</ar></on><od>set the order of fit to be <ar>order</ar>.</od>
+</option>
+<option><on>-d <ar>doping</ar></on><od>set the doping level to <ar>dp</ar>. Possible values are low, medium, or high.</od>
+</option>
+<option><on><ar>mapname</ar></on><od>filename of the <code>map</code> format file. If this is omitted, the file will be read from standard input.</od>
+</option>
+<synopsis><p>Calculates the statistical model and adds it to a convection map file.</p></synopsis>
+
+<description><p>Calculates the statistical model and adds it to a convection map file.</p>
+<p>The file created is written to standard output.</p>
+<p>The input convection map file must have valid IMF data.</p>
+</description>
+
+<example>
+<command>map_addmodel -d l -o 8 -vb 19981020.map &gt; 19981020.model.map</command>
+<description>Adds model vectors to the map file called  "<code>19981020.map</code>". The order of fit is set to 8 and the doping level to light. The file created is called "<code>19981020.model.map</code>" and status is logged to standard error.</description>
+</example>
+
+
+
+
+</binary>

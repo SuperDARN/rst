@@ -1,0 +1,113 @@
+
+<head>
+<title>FitCnxRead</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../superdarn/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/fitcnx/index.html>fitcnx</a></td><td>|</td>
+<td>FitCnxRead</td>
+<td width=100% align=right><a href=../../../../superdarn/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">FitCnxRead</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">int FitCnxRead(int num,int *sock,<a href="../../../../src.lib/tk/radar/structRadarParm.html"><code>struct RadarParm</code></a> *prm, <a href="../../../../src.lib/superdarn/atk/fit/structFitData.html"><code>struct FitData</code></a> *fit,int *flag, struct timeval *tmout);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">superdarn/fitcnx.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">fitcnx</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="FitCnxRead.html"><code>FitCnxRead</code></a> function reads fitted ACF data from a remote server.</p>
+<p>The argument <em>sock</em> is a pointer to an array of file descriptors associated with a set of connections. The argument <em>num</em> is the number of elements in the array.</p>
+<p> When a block of data is received from one of the connections it is decoded
+and used to populate the appropriate members of the array of radar parameter blocks pointed to by the argument <em>prm</em> and the array of <code>fit</code> data structures pointed to by the argument <em>fit</em>.</p>  
+<p>The argument <em>flag</em> is a pointer to an array used to record whether a message read from a particular connection was successfully decoded. If no message was received for a connection, then the corresponding element of the array is set to zero. If a message was successfully decoded, the element is set to (1), and if an error occurred it is set to (-1).</p>
+<p>The argument <em>tout</em> is a pointer that defines a time limit for the function. If no messages are received within the specified time, the function will return. If tout is a <code>NULL</code> pointer the function will wait indefinitely for a message to be received.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns zero on success. On error, (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/FitCnxRead.c">FitCnxRead.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* FitCnxRead
+   =============
+   Author: R.J.Barnes */
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#include &quot;rtypes.h&quot;
+#include &quot;connex.h&quot;
+#include &quot;limit.h&quot;
+#include &quot;rprm.h&quot;
+#include &quot;fitdata.h&quot;
+#include &quot;fitcnx.h&quot;
+
+
+struct RadarParm prm;
+struct FitData fit;
+
+int main(int argc,char *argv[]) {
+  int sock;
+  int port=0;
+  char *host;
+  int flag,status;
+
+  host=argv[argc-2];
+  port=atoi(argv[argc-1]);
+
+  sock=ConnexOpen(host,port);
+  if (sock&lt;0) {
+    fprintf(stderr,&quot;Could not connect to host.&apos;n&quot;);
+    exit(-1);
+  }
+  do {
+    status=FitCnxRead(1,&amp;sock,&amp;prm,&amp;fit,&amp;flag,NULL);
+    if (status==-1) break;
+    if (flag !=-1) fprintf(stdout,&quot;%d-%d-%d %d:%d:%d %d %d&apos;n&quot;,
+              prm.time.yr,prm.time.mo,prm.time.dy,
+	      prm.time.hr,prm.time.mt,prm.time.sc,prm.bmnum,prm.scan);
+
+             
+
+  } while(1);
+  fprintf(stderr,&quot;Connection failed.&apos;n&quot;);
+  return 0;
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

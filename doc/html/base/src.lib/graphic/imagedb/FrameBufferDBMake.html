@@ -1,0 +1,129 @@
+
+<head>
+<title>FrameBufferDBMake</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../base/index.html>base</a></td>
+<td>|</td><td><a href=../../../../base/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/index.html>graphic</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/imagedb/index.html>imagedb</a></td><td>|</td>
+<td>FrameBufferDBMake</td>
+<td width=100% align=right><a href=../../../../base/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">FrameBufferDBMake</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;"><a href="structFrameBufferDB.html"><code>struct FrameBufferDB</code></a> *FrameBufferDBMake();</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">base/imagedb.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">imagedb</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="FrameBufferDBMake.html"><code>FrameBufferDBMake</code></a> function allocates memory to store a frame buffer database.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns a pointer to the structure containing the empty frame buffer database on success. On error, a <code>NULL</code> pointer is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, a <code>NULL</code> pointer is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center><img src="img/FrameBufferDBMake.png"></img><br></center>
+         <br><center>Source Code: <a href="src/FrameBufferDBMake.c">FrameBufferDBMake.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* FrameBufferDBMake.c
+   ===================
+   Author: R.J.Barnes
+*/
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &quot;rfbuffer.h&quot;
+#include &quot;imagedb.h&quot;
+
+int stream(char *buf,int sze,void *data) {
+  FILE *fp;
+  fp=(FILE *) data;
+  fwrite(buf,sze,1,stdout);
+  return 0;
+} 
+
+
+int main(int argc,char *argv[]) {
+
+  char name[32];
+
+  int wdt=400;
+  int hgt=400;
+  int n;
+
+  struct FrameBuffer *out,*img;
+
+  struct FrameBufferDB *imagedb;
+
+  imagedb=FrameBufferDBMake();
+
+  for (n=0;n&lt;3;n++) {
+    sprintf(name,&quot;image%d&quot;,n);
+    img=FrameBufferMake(name,10,10,24);
+
+    FrameBufferClear(img,0xff000000,0x0f);
+    FrameBufferEllipse(img,NULL,5,5,2+n,2+n,1,0xff00ff00,0x0f,0,NULL,NULL);
+    FrameBufferDBAdd(imagedb,img);
+
+  }
+
+
+  
+  out=FrameBufferMake(&quot;image&quot;,wdt,hgt,24);
+
+  img=FrameBufferDBFind(imagedb,&quot;image0&quot;);
+  if (img !=NULL) FrameBufferImage(out,NULL,img,0x0f,40,190,1,NULL);
+
+  img=FrameBufferDBFind(imagedb,&quot;image1&quot;);
+  if (img !=NULL) FrameBufferImage(out,NULL,img,0x0f,190,190,1,NULL);
+
+  img=FrameBufferDBFind(imagedb,&quot;image2&quot;);
+  if (img !=NULL) FrameBufferImage(out,NULL,img,0x0f,340,190,1,NULL);
+
+
+  FrameBufferSavePPM(out,stdout);
+
+  
+  FrameBufferFree(out);
+  FrameBufferDBFree(imagedb);
+  
+
+  return 0;
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

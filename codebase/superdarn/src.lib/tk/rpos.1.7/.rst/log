@@ -1,0 +1,23 @@
+commit 971252270f761c171050d5a6b14a7d1d12647c60
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:58 2012 -0400
+
+    Updated license
+
+commit 830e8e2ca8deab2544de6bf871c5bb0f187e120c
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Jun 24 12:48:16 2011 -0400
+
+    Updated header.
+
+commit 17bd361f6d17d6e5085500fe60989c85c9f00f34
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Jun 24 11:53:51 2011 -0400
+
+    Added error tests for invariant magnetic coordinates.
+
+commit 478ddd0fd1aa08f56c95c19ea03ff433ba936111
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:25 2010 +0000
+
+    Initial commit

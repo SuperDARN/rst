@@ -1,0 +1,41 @@
+commit 9039979917701282a819684e5ba3319555d3f04e
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:09 2012 -0400
+
+    Updated license
+
+commit f426fc56d096e89dbbb2ac5a2080846db9e6c043
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Aug 4 13:23:29 2010 -0400
+
+    Fixed makefile for dynamic linking
+
+commit 2382522235ffb653e72216c0272410fadd8a679b
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Tue Jun 15 13:06:42 2010 -0400
+
+    Changed socket option to reuse port during a restart.
+
+commit 13c9425c066f29885c4eec81c8e7a72b76f1a5d7
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Fri Jun 11 17:28:50 2010 -0400
+
+    Moved to new data transport mechanism.
+
+commit 2a23944bec9b615bb4c04dc904f67663cddb21c2
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:46:24 2010 -0400
+
+    Fixed makefile
+
+commit ab2d96931248a9ecadd3dd1c5a8228b3f83f09c8
+Author: Code Development Account <code@robin-barness-macbook-pro.local>
+Date:   Mon May 10 06:18:06 2010 -0400
+
+    Changed version identifiers.
+
+commit 5b9575b496532897ef836fda16fbe39c9e4922f9
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:21 2010 +0000
+
+    Initial commit

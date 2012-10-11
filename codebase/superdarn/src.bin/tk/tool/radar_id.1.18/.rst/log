@@ -1,0 +1,59 @@
+commit 64d87851d312cfbd1858378c70227a8447ea3d59
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:05 2012 -0400
+
+    Updated license
+
+commit 9bfb803e2c2f46637548a9ec94e8b916db3e435d
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed Jul 20 15:35:16 2011 -0400
+
+    Added maxbeam and maxrange to the hardware report.
+
+commit abb508ac84efd928a1ff6c99484a17976ede8c7d
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Aug 4 12:50:45 2010 -0400
+
+    Fixed makefile for dynamic linking
+
+commit 0ddf8f7602f7ff8c4cc24adc711dd5aaccfb715f
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 08:32:41 2010 -0400
+
+    Updated documentation
+
+commit 05bc3d4d0fb59f48f3cd8b67ebf2458030e3554d
+Author: Code Development Account <code@robin-barness-macbook-pro.local>
+Date:   Tue May 11 04:14:58 2010 -0400
+
+    Corrected how active radars are determined.
+
+commit 3472037b05654f1630a956a46cc17e07e65dffee
+Author: Code Development Account <code@robin-barness-macbook-pro.local>
+Date:   Mon May 10 06:19:22 2010 -0400
+
+    Added new tests for invalid start and end times.
+
+commit 212c150472d528a4f44b57f3b7ae1764ff690a27
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Feb 15 20:57:12 2010 -0500
+
+    Added test for radar start and end dates.
+
+commit 9b8c4c2741cc886d09cde937e899a063568e63d8
+Author: Code Development Account <code@debian.localdomain>
+Date:   Sun Feb 14 21:21:52 2010 -0500
+
+    Fixed bug in station code.
+
+commit 9dd1d5c36b596412dbc10f7f39dd548c389e0f8d
+Author: Code Development Account <code@debian.localdomain>
+Date:   Sun Feb 14 21:10:56 2010 -0500
+
+    Changed to allow multiple stations to be specified.
+
+commit aa01e551c2bda5d84120b264655d091fa56afb15
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:20 2010 +0000
+
+    Initial commit

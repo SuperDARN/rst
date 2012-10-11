@@ -1,0 +1,35 @@
+commit 17c303996c433e88875dbc1b0de63f0edb21d06b
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:09 2012 -0400
+
+    Updated license
+
+commit 2a29409e8f46eaa4559df150451e66844c9dafe2
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Tue Jun 15 13:15:53 2010 -0400
+
+    Changed socket options.
+
+commit 6b986ac5ff2253c5d112de0070454e6da86ce9f7
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Fri Jun 11 17:29:29 2010 -0400
+
+    Moved to new data transport mechanism.
+
+commit fad9af00f5f711c4bd1b552128df216aa0b7965e
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:46:35 2010 -0400
+
+    Fixed makefile
+
+commit dac5181d56caed48593a1d0c3628c0e8571e20a8
+Author: Code Development Account <code@robin-barness-macbook-pro.local>
+Date:   Mon May 10 06:17:50 2010 -0400
+
+    Changed version identifiers
+
+commit 2b4a6f6a4180b1dd771cc07f40c9458ad717eb54
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:21 2010 +0000
+
+    Initial commit

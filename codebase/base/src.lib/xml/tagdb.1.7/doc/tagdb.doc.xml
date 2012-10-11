@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>base</project>
+<name>tagdb</name>
+<location>src.lib/xml/tagdb</location>
+<function>
+<name>TagDBAddTable</name>
+<location>src.lib/xml/tagdb</location>
+<header>base/tagdb.h</header>
+<syntax>int TagDBAddTable(<sn href="structTagDBtable.html">struct TagDBtable</sn> *ptr, <sn href="&root/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *name,<sn href="&root;/src.lib/base/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *start, <sn href="&root;/src.lib/base/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *end);</syntax>
+
+<description><p>The <fn href="TagDBAddTable.html">TagDBAddTable</fn> function add a tag to a lookup table of tags.</p>
+<p>The structure containing the tag lookup table is pointed to by the argument <ar>ptr</ar>.</p>
+<p>The name of the tag is stored in the structure pointed to by the argument <ar>name</ar>.</p>
+<p>The replacement text to use when the start and end tags are parsed, is stored in the structures pointed to by the arguments <ar>start</ar> and <ar>end</ar>.</p>
+</description>
+
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error (-1) is returned.</errors>
+</function>
+<function>
+<name>TagDBBuild</name>
+<location>src.lib/xml/tagdb</location>
+<header>base/tagdb.h</header>
+<syntax>int TagDBBuild(<sn href="&root;/src.lib/xml/xmldb/structXMLDBtable.html">struct XMLDBtable</sn> *ptr,<sn href="&root;/src.lib/base/xml/xmldb/structXMLDBtable.html">struct XMLDBtable</sn> *tree,void *data);</syntax>
+
+<description><p>The <fn href="TagDBBuild.html">TagDBBuild</fn> function is used to decode an XML encoded tag database. It is used as the text decoding function for an XML database parser.</p>
+</description>
+
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error (-1) is returned.</errors>
+
+</function>
+<function>
+<name>TagDBDecode</name>
+<location>src.lib/xml/tagdb</location>
+<header>base/tagdb.h</header>
+<syntax>int TagDBDecode(char *buf,int sze,void *data);</syntax>
+</function>
+<function>
+<name>TagDBEnd</name>
+<location>src.lib/xml/tagdb</location>
+<header>base/tagdb.h</header>
+<syntax>int TagDBEnd(char *name,char *buf,int sze,void *data);</syntax>
+</function>
+<function>
+<name>TagDBFree</name>
+<location>src.lib/xml/tagdb</location>
+<header>base/tagdb.h</header>
+<syntax>void TagDBFree(<sn href="structTagDBdata.html">struct TagDBdata</sn> *ptr);</syntax>
+</function>
+<function>
+<name>TagDBFreeTable</name>
+<location>src.lib/xml/tagdb</location>
+<header>base/tagdb.h</header>
+<syntax>void TagDBFreeTable(<sn href="structTagDBtable.html">struct TagDBtable</sn> *ptr);</syntax>
+</function>
+<function>
+<name>TagDBMake</name>
+<location>src.lib/xml/tagdb</location>
+<header>base/tagdb.h</header>
+<syntax><sn href="structTagDBdata.html">struct TagDBdata</sn> *TagDBMake(<sn href="structTagDBtable.html">struct TagDBtable</sn> *tagdb);</syntax>
+</function>
+<function>
+<name>TagDBMakeTable</name>
+<location>src.lib/xml/tagdb</location>
+<header>base/tagdb.h</header>
+<syntax><sn href="structTagDBdata.html">struct TagDBtable</sn> *TagDBMakeTable();</syntax>
+</function>
+<function>
+<name>TagDBSetTable</name>
+<location>src.lib/xml/tagdb</location>
+<header>base/tagdb.h</header>
+<syntax>int TagDBSetTable(<sn href="structTagDBdata.html">struct TagDBdata</sn> *ptr,<sn href="structTagDBtable.html">struct TagDBtable</sn> *tagdb);</syntax>
+</function>
+<function>
+<name>TagDBSetText</name>
+<location>src.lib/xml/tagdb</location>
+<header>base/tagdb.h</header>
+<syntax>int TagDBSetText(<sn href="structTagDBdata.html">struct TagDBdata</sn> *ptr, int (*text)(char *,int,void *),void *data);</syntax>
+</function>
+<function>
+<name>TagDBStart</name>
+<location>src.lib/xml/tagdb</location>
+<header>base/tagdb.h</header>
+<syntax>int TagDBStart(char *name,int atnum,char **atname,char **atval, char *buf,int sze,void *data);</syntax>
+</function>
+<function>
+<name>TagDBText</name>
+<location>src.lib/xml/tagdb</location>
+<header>base/tagdb.h</header>
+<syntax>int TagDBText(char *buf,int sze,void *data);</syntax>
+</function>
+
+
+<structure>
+ <name>TagDBtag</name>
+ <location>src.lib/xml/tagdb</location>
+ <header>base/tagdb.h</header>
+ <struct>
+    <member>
+      <proto>char *name;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <struct>
+        <member>
+           <proto><sn href="&root;/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *enproto;</proto>
+           <description>None.</description>
+        </member>
+        <member>
+           <proto><sn href="&root;src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *deproto;</proto>
+           <description>None.</description>
+        </member>
+      </struct>
+      <proto>start;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <struct>
+        <member>
+           <proto><sn href="&root;/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *enproto;</proto>
+           <description>None.</description>
+        </member>
+        <member>
+           <proto><sn href="&root;/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *deproto;</proto>
+           <description>None.</description>
+        </member>
+      </struct>
+      <proto>end;</proto>
+      <description>None.</description>
+    </member>
+ </struct>
+</structure>
+  
+<structure>
+ <name>TagDBtable</name>
+ <location>src.lib/xml/tagdb</location>
+ <header>base/tagdb.h</header>
+ <struct>
+    <member>
+      <proto>int num;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto><sn href="structTagDBtag.html">struct TagDBtag</sn> **tag;</proto>
+      <description>None.</description>
+    </member>
+  </struct>
+</structure>
+
+
+<structure>
+ <name>TagDBdata</name>
+ <location>src.lib/xml/tagdb</location>
+ <header>base/tagdb.h</header>
+ <struct>
+   <member>
+      <proto><sn href="&root;/src.lib/xml/xml/XMLdata.html">struct XMLdata</sn> *ptr;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto><sn href="structTagDBtable.html">struct TagDBtable</sn> *tagdb;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <struct>
+        <member>
+          <proto>int (*user)(char *buf,int sze,void *data);</proto>
+          <description>None.</description>
+        </member>
+        <member>
+          <proto>void *data;</proto>
+          <description>None.</description>
+        </member>
+      </struct>
+      <proto>text;</proto>
+      <description>None.</description>
+    </member>
+ </struct>
+</structure>
+</library>

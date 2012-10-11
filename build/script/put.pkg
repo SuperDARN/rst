@@ -1,0 +1,104 @@
+#!/bin/bash
+
+SEP="+"
+
+# put.pkg
+# ===============
+# R.J.Barnes
+#
+# Purpose:
+#
+# Clone a list of git repositories for a package.
+#
+# Syntax:
+#
+# put.pkg project package dst
+#
+# Description:
+#
+# Clone a set of bare repositories suitable for sharing. The optionaly baseurl
+# option overrides the default url used in each repository
+# for pulling updates from the server.
+
+##############################################################################
+
+prj=${1}
+pkg=${2}
+dst=${3}
+
+baseurl=${GITURLBASE}/rst
+
+##############################################################################
+
+#  Test for valid command line
+
+##############################################################################
+
+if test -z "${dst}" 
+then
+  echo "put.pkg project package dst" 
+  exit 1 
+fi
+
+build=${BUILD}
+glist=${PWD}/${prj}-${pkg}.glst
+
+
+##############################################################################
+
+#  Checkout code from the repository and build a code module
+
+##############################################################################
+
+clone() {
+
+  module=${1}
+  cd ${RSTPATH} 
+  gitlist=`find ${module} -name ".git" | sort`
+  for gitname in ${gitlist}
+    do
+      tmp=${gitname#./}
+      path=${tmp%/.git}
+      if test -z "${path}"
+      then 
+        path="."
+      fi
+      if test ! -s ${dst}/${path}.git 
+      then
+        git --git-dir ${gitname} clone --bare ${path} ${dst}/${path}.git 
+      else 
+        git --git-dir ${gitname} push ${dst}/${path}.git
+      fi
+      git --git-dir ${dst}/${path}.git remote set-url origin \
+          ${baseurl}/${path}.git
+      echo ${path} ${baseurl}/${path}.git >> ${glist}
+    done
+  return 0
+}
+
+##############################################################################
+
+#  Start generating the distribution from the module list
+
+##############################################################################
+
+if test ! -s "${RPKG}/${prj}/${pkg}/module.txt"
+then
+  echo "Failed to locate package contents"
+  exit 1
+fi
+
+modlst=`cat ${RPKG}/${prj}/${pkg}/module.txt | tr " " "${SEP}"`
+
+for mod in ${modlst}
+do
+
+  tmp=`echo ${mod} | tr "${SEP}" " "`
+  prm=${tmp%%#*} 
+  if test -z "${prm}"; then continue; fi
+  clone ${prm}
+
+   
+done
+
+clone rpkg/${prj}/${pkg}

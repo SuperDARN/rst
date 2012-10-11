@@ -1,0 +1,111 @@
+
+<head>
+<title>RadarLoad</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../superdarn/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/radar/index.html>radar</a></td><td>|</td>
+<td>RadarLoad</td>
+<td width=100% align=right><a href=../../../../superdarn/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">RadarLoad</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;"><a href="structRadarNetwork.html"><code>struct RadarNetwork</code></a> *RadarLoad(FILE *fp);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">superdarn/radar.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">radar</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="RadarLoad.html"><code>RadarLoad</code></a> function reads information about the radar network from an open stream.</p>
+<p>The radar information file is read from the stream pointed to by the argument <em>fp</em>.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns a pointer to a structure containing information about the radar network. On error, a <code>NULL</code> pointer is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, a <code>NULL</code> pointer is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/RadarLoad.c">RadarLoad.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* RadarLoad
+   =========
+   Author: R.J.Barnes */
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#include &quot;rtypes.h&quot;
+#include &quot;radar.h&quot;
+
+struct RadarNetwork *network; 
+
+int main(int argc,char *argv[]) {
+  char *envstr;
+  FILE *fp;
+  char *code=NULL;
+  int st;
+
+  envstr=getenv(&quot;SD_RADAR&quot;);
+  if (envstr==NULL) {
+    fprintf(stderr,&quot;Environment variable 'SD_RADAR' must be defined.&apos;n&quot;);
+    exit(-1);
+  }
+
+  fp=fopen(envstr,&quot;r&quot;);
+
+  if (fp==NULL) {
+    fprintf(stderr,&quot;Could not locate radar information file.&apos;n&quot;);
+    exit(-1);
+  }
+
+  network=RadarLoad(fp);
+  fclose(fp); 
+  if (network==NULL) {
+    fprintf(stderr,&quot;Failed to read radar information.&apos;n&quot;);
+    exit(-1);
+  }
+  
+  code=argv[argc-1];
+
+  st=RadarGetID(network,code);
+
+  fprintf(stdout,&quot;RadarLoad&apos;n&quot;);
+  fprintf(stdout,&quot;%s=%d&apos;n&quot;,code,st);
+
+  return 0;
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

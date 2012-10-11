@@ -1,0 +1,76 @@
+<head>
+<title>dmaptocdl</title>
+<link rel=stylesheet href="../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../general/index.html>general</a></td>
+<td>|</td><td><a href=../../../../general/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../general/src.bin/dmap/index.html>dmap</a></td><td>|</td>
+<td>dmaptocdl</td>
+<td width=100% align=right><a href=../../../../general/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">dmaptocdl</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+dmaptocdl --help<br>dmaptocdl [-vb] <em>datamap</em> <em>cdl</em> <em>map</em><br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Scans a DataMap file to produce a Commond Data Form Language (CDL) file.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-vb</code></td><td valign="top">verbose. Log information to the console.</td></tr>
+<tr><td width="150" valign="top"><code><em>datamap</em></code></td><td valign="top">filename of the DataMap file to scan.</td></tr>
+<tr><td width="150" valign="top"><code><em>cdl</em></code></td><td valign="top">filename of the CDL file to generate.</td></tr>
+<tr><td width="150" valign="top"><code><em>map</em></code></td><td valign="top">filename of mapping that relates variables in the DataMap file to those in the CDL file.</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Scans a DataMap file to produce a Commond Data Form Language (CDL) file.</p>
+
+<p>The netCDF format has no concept of a "record". A netCDF dataset is just a collection of arrays of fixed length, named, dimensions. One dimension can be defined as "unlimited". The unlimited dimension does not have a fixed length and it's index can effectively be thought of as the record number.</p>
+
+<p>In translating <code>DataMap</code> files, each record in the file is mapped to an index of the unlimited dimension;scalars become 1 dimensional arrays, and arrays gain one extra dimension.</p>
+
+<p>NetCDF has a simple text based scripting language called CDL (Common Data form Language) that can be used to describe the layout of a dataset. The utility <code>ncgen</code> can convert a CDL file to an empty dataset ready to store data.</p>
+
+<p>The tool <code>dmaptocdl</code> first analyses a dmap file to determine the size of the arrays required and produces an outline CDL file. The user can edit this CDL file to correct any problems and add any meta-data (attributes).</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">dmaptocdl 20021219.kap.fitacf fitacf.cdl fitmacf.cdfmap</pre></td></tr></table>
+<p>Generate the CDL file  "<code>fitacf.cdl</code>" and mapping table  "<code>fitacf.cdfmap</code>" from the file "<code>20021219.kap.fitacf</code>".</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

@@ -1,0 +1,17 @@
+commit 30ae055b1efc5a98502991c9f5d7f21dd729cae7
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:09 2012 -0400
+
+    Updated license
+
+commit 880069149b3b1e77295a5f03dec8773e774b5d52
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Tue Jun 15 13:17:21 2010 -0400
+
+    Changed socket options.
+
+commit 09d015938fbf4e63e5614e58112f6b97a5e4fd8d
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:21 2010 +0000
+
+    Initial commit

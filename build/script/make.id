@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# make.id
+# =======
+# R.J.Barnes
+#
+# Purpose:
+#
+# Consruct a list of git commit identifiers for elements in a package.
+#
+# Syntax:
+#
+# make.id project package
+#
+# Description:
+#
+# Construct a list of git commit identifiers for elements in a package.
+
+##############################################################################
+
+prj=${1}
+pkg=${2}
+
+##############################################################################
+
+#  Test for valid command line
+
+##############################################################################
+
+if test -z "${pkg}" 
+then
+  echo "make.id project package" 
+  exit 1
+fi
+
+build=${BUILD}
+
+##############################################################################
+
+#  Start generating the distribution from the module list
+
+##############################################################################
+
+if test ! -s "${RPKG}/${prj}/${pkg}/module.txt"
+then
+  echo "Failed to locate package contents"
+  exit 1
+fi
+
+rm -f ${RPKG}/${prj}/${pkg}/id.txt
+id.pkg ${prj} ${pkg} | tee -a ${RPKG}/${prj}/${pkg}/id.txt
+
+exit 0

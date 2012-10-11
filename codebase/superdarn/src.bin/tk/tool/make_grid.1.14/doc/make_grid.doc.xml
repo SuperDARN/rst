@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>make_grid</name>
+<location>src.bin/tk/tool/make_grid</location>
+<syntax>make_grid --help</syntax>
+<syntax>make_grid [<ar>options</ar>] <ar>fitname</ar> [<ar>inxname</ar>]</syntax>
+<syntax>make_grid -new  [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]</syntax>
+<syntax>make_grid -cfit [<ar>options</ar>] <ar>cfitname</ar></syntax>
+<syntax>make_grid -cfit -new [<ar>options</ar>] <ar>cfitname</ar></syntax>
+<syntax>make_grid -c [<ar>options</ar>] <ar>fitnames...</ar></syntax>
+<syntax>make_grid -c -new [<ar>options</ar>] <ar>fitacfnames...</ar></syntax>
+<syntax>make_grid -c -cfit [<ar>options</ar>] <ar>cfitnames...</ar></syntax>
+<syntax>make_grid -c -cfit -new [<ar>options</ar>] <ar>cfitnames...</ar></syntax>
+
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-sd <ar>yyyymmdd</ar></on><od>start from the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-st <ar>hr:mn</ar></on><od>start from the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ed <ar>yyyymmdd</ar></on><od>stop at the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-et <ar>hr:mn</ar></on><od>stop at the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ex <ar>hr:mn</ar></on><od>use the interval whose extent is <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-tl <ar>tlen</ar></on><od>ignore the scan flag and instead use a fixed length scan of  <ar>tlen</ar> seconds.</od>
+</option>
+<option><on>-i <ar>intt</ar></on><od>integrate the grid data into records of length <ar>intt</ar> seconds.</od>
+</option>
+<option><on>-cn <ar>channel</ar></on><od>process data from channel <ar>channel</ar> for stereo mode data.</od>
+</option>
+<option><on>-ebm <ar>ebeams</ar></on><od>exclude the beams listed in <ar>ebeams</ar>, which is a comma separated list of beam numbers.</od>
+</option>
+<option><on>-minrng <ar>minrange</ar></on><od>exclude data from range gates lower than <ar>minrange</ar>.</od>
+</option>
+<option><on>-maxrng <ar>maxrange</ar></on><od>exclude data from range gates higher than <ar>maxrange</ar>.</od>
+</option>
+<option><on>-fwgt <ar>mode</ar></on><od>set the filter weighting mode to <ar>mode</ar>.</od>
+</option>
+
+<option><on>-pmax <ar>pmax</ar></on><od>exclude data with a power greater than <ar>pmax</ar>.</od>
+</option>
+<option><on>-vmax <ar>vmax</ar></on><od>exclude data with an absolute velocity greater than <ar>vmax</ar>.</od>
+</option>
+<option><on>-wmax <ar>wmax</ar></on><od>exclude data with a spectral width greater than <ar>wmax</ar>.</od>
+</option>
+<option><on>-vemax <ar>vemax</ar></on><od>exclude data with a velocity error greater than <ar>vemax</ar>.</od>
+</option>
+
+
+<option><on>-pmin <ar>pmin</ar></on><od>exclude data with a power less than <ar>pmin</ar>.</od>
+</option>
+<option><on>-vmin <ar>vmin</ar></on><od>exclude data with an absolute velocity less than <ar>vmin</ar>.</od>
+</option>
+<option><on>-wmin <ar>wmin</ar></on><od>exclude data with a spectral width less than <ar>wmin</ar>.</od>
+</option>
+<option><on>-vemin <ar>vemin</ar></on><od>exclude data with a velocity error less than <ar>vemin</ar>.</od>
+</option>
+
+<option><on>-fmax <ar>fmax</ar></on><od>set the maximum allowed variation in frequency to be <ar>fmax</ar> Hertz.</od>
+</option>
+
+
+<option><on>-alt <ar>alt</ar></on><od>set the altitude at which the mapping is done to be <ar>alt</ar> kilometers.</od>
+</option>
+
+
+<option><on>-nav</on><od>do not perform temporal averaging.</od>
+</option>
+
+<option><on>-nlm</on><od>do not exclude data because it exceeds the data limits.</od>
+</option>
+
+<option><on>-nb</on><od>do not exclude data based on the operating parameters.</od>
+</option>
+
+<option><on>-xtd</on><od>create extended output that includes both the power and spectral width measurements.</od>
+</option>
+
+<option><on>-ion</on><od>exclude data marked as ground scatter.</od>
+</option>
+
+<option><on>-gs</on><od>exclude data marked as ionospheric scatter.</od>
+</option>
+
+<option><on>-both</on><od>do not exclude data based on the type flag.</od>
+</option>
+
+<option><on>-inertial</on><od>calculate the grid file in the inertial reference frame.</od>
+</option>
+
+<option><on><ar>fitname</ar></on><od>filename of the <code>fit</code> format file.</od>
+</option>
+
+<option><on><ar>inxname</ar></on><od>filename of the index file.</od>
+
+</option>
+
+<option><on>-new</on><od>the input file is in the <code>fitacf</code> format, and the output should be in <code>grdmap</code> format. (If the input format is in <code>cfit</code> format as specified by the -cfit option, then the output will be in <code>grdmap</code> format).</od>
+</option>
+
+<option><on><ar>fitacfname</ar></on><od>filename of the <code>fitacf</code> format file.</od>
+</option>
+
+
+<option><on>-cfit</on><od>the input file is in the <code>cfit</code> format.</od>
+</option>
+
+<option><on><ar>cfitfname</ar></on><od>filename of the <code>cfit</code> format file.</od>
+</option>
+
+<option><on>-c</on><od>concatenate multiple input files.</od>
+</option>
+
+<option><on><ar>fitnames</ar></on><od>filenames of the <code>fit</code> format files.</od>
+</option>
+
+<option><on><ar>fitacfnames</ar></on><od>filenames of the <code>fitacf</code> format files.</od>
+</option>
+
+<option><on><ar>cfitnames</ar></on><od>filenames of the <code>cfit</code> format files.</od>
+</option>
+
+<synopsis><p>Creates a <code>grid</code> format file from either a <code>fit</code>, <code>fitacf</code> or <code>cfit</code> format file.</p></synopsis>
+
+<description><p>Creates a <code>grid</code> format file from either a <code>fit</code>, <code>fitacf</code> or <code>cfit</code> format file.</p>
+<p>A grid file is a highly processed data product consisting of geo-magnetically located line of sight velocity vectors.</p>
+<p>The algorithm optionally applies a median filter to the scan data to remove noise. Each range-beam cell together with its immediate neighbors in the current, preceding and following scans is examined. A weighted sum of all the cells containing scatter is calculated and if this sum exceeds a certain threshold, the median data value of the cells is substituted for the central cell. Various command line options control how the filter is applied.</p> 
+<p>Once the data has been filtered, the geo-magnetic location of each line of sight velocity measurement is calculated.  The vectors are then fixed to an equi-area grid to ensure that the data is not biased according to its location in the radar field of view.</p>
+<p>The vectors in each cell are averaged together over a fixed period of time to generate a data record, which is then written to standard output.</p>
+<p>The program operates in two modes. The first operates on a single fit file. The second, specified by the "<code>-c</code>" option will concatenate multiple fit files together for processing.</p>
+<p>In addition to the regular grid file output, the program can also produce "extended" grid files that contain information about the spectral width, power and composition of each data point by specifying the "<code>-xtd</code>" command line option.</p>
+</description>
+
+
+<example>
+<command>make_grid -vb 19991120.kap.fit &gt; 19991120.kap.grd</command>
+<description>Generate a grid file from the fit file "<code>19991120.kap.fit</code>" and store it in the file "<code>19991120.kap.grd</code>". Report the status on standard error.</description>
+</example>
+
+
+<example>
+<command>make_grid -c -i 240 20000510.*.kod.fit &gt; 20000510.kod.grd</command>
+<description>Concatenate all the fit files in the current directory to create a grid file with a 4-minute record length. Store the output in the file "<code>20000510.kod.grd</code>".</description>
+</example>
+ 
+<example>
+<command>make_grid -tl 120 -vemax 500 -both  -xtd  19981012.gbr.fit &gt; 19981012.gbr.grd</command>
+<description>Generate a grid file from the fit file "<code>19981012.gbr.fit</code>" using a fixed scan length of 120 seconds. Ignore date points with a velocity error exceeding 500 m/s and process both ionospheric and ground scatter vectors. Store an extended format grid file in "<code>19981012.gbr.grd</code>"
+</description>
+</example>
+
+<example>
+<command>make_grid -nb -nlm 19970810.kap.fit &gt; 19970810.kap.grd</command>
+<description>Generate a grid file from the fit file "<code>19970810.kap.fit</code>" without applying any thresholds to the vectors and any changes in radar parameters between scans, are ignored. Store the grid file in "<code>19970810.kap.grd</code>"
+</description>
+</example>
+
+
+
+
+
+</binary>

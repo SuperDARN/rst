@@ -1,0 +1,29 @@
+commit 461f13d7accfb030d64e280655d250ba9b012782
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:17 2012 -0400
+
+    Updated license
+
+commit 646ce83a96e616bddf8c806abd672a9794c9bc08
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 9 09:09:43 2010 -0400
+
+    Removed AACGMConvertMLT function
+
+commit f41c036b7ccae2c5a15905a4537973e024842d00
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 9 08:54:24 2010 -0400
+
+    Fixed documentation.
+
+commit b6edce847f8dbaf938f828f449fe341465d03818
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 9 08:42:57 2010 -0400
+
+    Removed MLT calculation to new library with improved ephemeris calulcation.
+
+commit 09d075c301b6b33cbc97e88f4547e5951ebd8418
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:03 2010 +0000
+
+    Initial commit

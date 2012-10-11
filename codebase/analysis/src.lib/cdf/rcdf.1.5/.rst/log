@@ -1,0 +1,23 @@
+commit 0dbf8a4d07f21c8d7dd32541ad099c364b1f82f6
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:17 2012 -0400
+
+    Updated license
+
+commit 0a921d460765b288e4ef80ef439987ae6b446eb4
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu May 27 09:28:27 2010 -0400
+
+    64-bit implementation of CDF and better memory management.
+
+commit c120b1ac49c540bf837df2967438d4068c718a53
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Mar 30 14:52:59 2010 -0400
+
+    Fixed documentation.
+
+commit 146a75bd8c357cad904b10924a34c21129a67ecd
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:00 2010 +0000
+
+    Initial commit

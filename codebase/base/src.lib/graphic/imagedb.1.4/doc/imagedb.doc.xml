@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>base</project>
+<name>imagedb</name>
+<location>src.lib/graphic/imagedb</location>
+<function>
+<name>FrameBufferDBAdd</name>
+<location>src.lib/graphic/imagedb</location>
+<header>base/imagedb.h</header>
+<syntax>int FrameBufferDBAdd(<sn href="structFrameBufferDB.html">struct FrameBufferDB</sn> *ptr,<sn href="&root;/src.lib/graphic/fbuffer/structFrameBuffer.html">struct FrameBuffer</sn> *img);</syntax>
+
+<description><p>The <fn href="FrameBufferDBAdd.html">FrameBufferDBAdd</fn> function addd a frame buffer or bitmap to a frame buffer database.</p>
+<p>The structure containing the frame buffer database is pointed to by the argument <ar>ptr</ar>.</p>
+<p>The structure containing the frame buffer or bitmap to add is pointed to  by the argument <ar>img</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error (-1) is returned.</errors>
+<example type="image">FrameBufferDBAdd</example>
+<example type="source">FrameBufferDBAdd.c</example>
+
+
+</function>
+<function>
+<name>FrameBufferDBFind</name>
+<location>src.lib/graphic/imagedb</location>
+<header>base/imagedb.h</header>
+<syntax><sn href="&root;/src.lib/graphic/fbuffer/structFrameBuffer.html">struct FrameBuffer</sn> *FrameBufferDBFind(<sn href="structFrameBufferDB.html">struct FrameBufferDB</sn> *ptr,char *name);</syntax>
+
+<description><p>The <fn href="FrameBufferDBFind.html">FrameBufferDBFind</fn> function attempts to locate a frame buffer or bitmap in a frame buffer database.</p>
+<p>The structure containing the frame buffer database is pointed to by the argument <ar>ptr</ar>.</p>
+<p>The name of the frame buffer or bitmap to search for is given by the zero terminated string pointed to by the argument <ar>name</ar>.</p>
+</description>
+<returns>Returns a pointer to the structure containing the bitmap font on success. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
+
+<example type="image">FrameBufferDBFind</example>
+<example type="source">FrameBufferDBFind.c</example>
+
+
+</function>
+<function>
+<name>FrameBufferDBFree</name>
+<location>src.lib/graphic/imagedb</location>
+<header>base/imagedb.h</header>
+<syntax>void FrameBufferDBFree(<sn href="structFrameBufferDB.html">struct FrameBufferDB</sn> *ptr);</syntax>
+
+<description><p>The <fn href="FrameBufferDBFree.html">FrameBufferDBFree</fn> function releases memory allocated to store a frame buffer database.</p>
+<p>The structure containing the frame buffer database is pointed to by the argument <ar>ptr</ar>.</p>
+</description>
+
+<example type="image">FrameBufferDBFree</example>
+<example type="source">FrameBufferDBFree.c</example>
+
+
+</function>
+<function>
+<name>FrameBufferDBMake</name>
+<location>src.lib/graphic/imagedb</location>
+<header>base/imagedb.h</header>
+<syntax><sn href="structFrameBufferDB.html">struct FrameBufferDB</sn> *FrameBufferDBMake();</syntax>
+
+<description><p>The <fn href="FrameBufferDBMake.html">FrameBufferDBMake</fn> function allocates memory to store a frame buffer database.</p>
+</description>
+<returns>Returns a pointer to the structure containing the empty frame buffer database on success. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
+
+<example type="image">FrameBufferDBMake</example>
+<example type="source">FrameBufferDBMake.c</example>
+
+</function>
+
+<structure>
+ <name>FrameBufferDB</name>
+ <location>src.lib/graphic/imagedb</location>
+ <header>base/imagedb.h</header>
+ <struct>
+    <member>
+      <proto>int num;</proto>
+      <description>Number of frame buffers or bitmaps in the database.</description>
+    </member>
+    <member>
+      <proto><sn href="&root;/src.lib/graphic/fbuffer/structFrameBuffer.html">struct FrameBuffer</sn> **img;</proto>
+      <description>Pointer to an array of pointers to the frame buffers or bitmaps in the database.</description>
+    </member>
+  </struct>
+
+<description><p>The <sn href="structFrameBufferDB.html">struct FrameBufferDB</sn> structure stores a frame buffer database.</p>
+</description>
+
+</structure>
+
+</library>

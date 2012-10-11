@@ -1,0 +1,11 @@
+commit be75e88aaf8e879924da366b3a694d77e4c954c4
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:55 2012 -0400
+
+    Updated license
+
+commit 4d90c2674ca66b1ef7345e4aeb2ac51a11aabd60
+Author: Code Development Account <code@debian.localdomain>
+Date:   Wed Feb 10 22:01:33 2010 -0500
+
+    Give scatter statistics for entire array.

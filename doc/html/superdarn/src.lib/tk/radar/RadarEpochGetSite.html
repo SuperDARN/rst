@@ -1,0 +1,129 @@
+
+<head>
+<title>RadarEpochGetSite</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../superdarn/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/radar/index.html>radar</a></td><td>|</td>
+<td>RadarEpochGetSite</td>
+<td width=100% align=right><a href=../../../../superdarn/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">RadarEpochGetSite</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">struct RadarSite *RadarEpochGetSite(<a href="structRadar.html"><code>struct Radar</code></a> *ptr,double tval);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">superdarn/radar.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">radar</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="RadarEpochGetSite.html"><code>RadarEpochGetSite</code></a> function locates the hardware information for one of the radars.</p>
+<p>The argument <em>ptr</em> is a pointer to the structure containing the radar information block. The radar hardware parameters can vary over time, so the time for which the hardware information is requested is given by the argument <em>tval</em>, expressed inseconds from 0:00UT January 1, 1970.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns a pointer to the radar hardware information for the desired time. On error, a <code>NULL</code> pointer is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, a <code>NULL</code> pointer is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/RadarEpochGetSite.c">RadarEpochGetSite.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* RadarEpochGetSite
+   =================
+   Author: R.J.Barnes */
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#include &quot;rtypes.h&quot;
+#include &quot;rtime.h&quot;
+#include &quot;radar.h&quot;
+
+struct RadarNetwork *network; 
+struct RadarSite *site; 
+
+int main(int argc,char *argv[]) {
+  char *envstr;
+  FILE *fp;
+  char *code=NULL;
+  double tval;
+  int st;
+
+  envstr=getenv(&quot;SD_RADAR&quot;);
+  if (envstr==NULL) {
+    fprintf(stderr,&quot;Environment variable 'SD_RADAR' must be defined.&apos;n&quot;);
+    exit(-1);
+  }
+
+  fp=fopen(envstr,&quot;r&quot;);
+
+  if (fp==NULL) {
+    fprintf(stderr,&quot;Could not locate radar information file.&apos;n&quot;);
+    exit(-1);
+  }
+
+  network=RadarLoad(fp);
+  fclose(fp); 
+  if (network==NULL) {
+    fprintf(stderr,&quot;Failed to read radar information.&apos;n&quot;);
+    exit(-1);
+  }
+
+  envstr=getenv(&quot;SD_HDWPATH&quot;);
+  if (envstr==NULL) {
+    fprintf(stderr,&quot;Environment variable 'SD_HDWPATH' must be defined.&apos;n&quot;);
+    exit(-1);
+  }
+
+  RadarLoadHardware(envstr,network);
+  
+  code=argv[argc-1];
+
+  st=RadarGetID(network,code);
+
+  tval=TimeYMDHMSToEpoch(2002,8,30,10,30,0);
+
+  site=RadarEpochGetSite(RadarGetRadar(network,st),tval);
+
+  fprintf(stdout,&quot;RadarEpochGetSite&apos;n&quot;);
+  fprintf(stdout,&quot;%s=%d&apos;n&quot;,code,st);
+  fprintf(stdout,&quot;lat=%g lon=%g&apos;n&quot;,site-&gt;geolat,site-&gt;geolon);
+
+
+
+  return 0;
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

@@ -1,0 +1,29 @@
+commit a4f293e6d425aa52bf0209862a815636a5aaf8d5
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:55 2012 -0400
+
+    Updated license
+
+commit 5a077c667a871c264f09f281f83adf9bdcc29f4d
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Dec 8 20:20:47 2010 -0500
+
+    Support for dynamic loading
+
+commit 808653526868a46d6779a62c3f17198b403cea95
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Dec 7 17:30:26 2010 -0500
+
+    Fix for Oregon
+
+commit e1e7318f9b99edf94835faf1ba25f9c21e2fce4f
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Sep 27 12:15:36 2010 -0400
+
+    Folded in changes from Fort Hays.
+
+commit a7f4c429bfc74dce11ac9b408fccc75aaa335432
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Fri Aug 6 12:50:12 2010 -0400
+
+    First attempt at tauscan.

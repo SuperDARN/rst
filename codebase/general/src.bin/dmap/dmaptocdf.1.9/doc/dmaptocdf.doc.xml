@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>general</project>
+<name>dmaptocdf</name>
+<location>src.bin/dmap/dmaptocdf</location>
+<syntax>dmaptocdf --help</syntax>
+<syntax>dmaptocdf [-vb] <ar>datamap</ar> <ar>map</ar> <ar>cdf</ar></syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on><ar>datamap</ar></on><od>filename of the DataMap file to convert.</od>
+</option>
+<option><on><ar>map</ar></on><od>filename of the mapping file that relates variables in the DataMap file to those in the CDF file.</od>
+</option>
+<option><on><ar>cdf</ar></on><od>filename of an empty CDF file to populate.</od>
+</option>
+<synopsis><p>Convert a <code>DataMap</code> file into a Common Data Format (CDF) file.</p></synopsis>
+
+<description><p>Convert a DataMap file into a Common Data Format (CDF) file.</p><p>A CDF file is divided up into rVariables and zVariables. All rVariables share the same dimensionality. zVariables can have different dimensionality from each other. A CDF file can contain multiple records but each record must have the same rVariables and zVariables.</p>
+
+<p>In translating <code>DataMap</code> files, scalars are stored in rVariables and arrays are stored in zVariables.</p>
+
+<p>An CDF file can be created from a specially formatted text file called a skeleton table. The utility skeletoncdf produces the empty CDF file from the skeleton table.</p>
+
+<p>The tool <code>dmaptoskeleton</code> first analyses a <code>DataMap</code> file to determine the variables requires and produces an outline skeleton table and a mapping table that translates the variable names in the <code>DataMap</code> file to the CDF equivalents. The user can edit this file to correct any problems and add any meta-data required. The user then creates an empty CDF file using <code>skeletoncdf</code>. The final step is to populate the CDF file using <code>dmaptocdf</code>.</p>
+</description>
+
+<example>
+<command>dmaptocdf 20021219.kap.fitacf fitacf.cdfmap 20021219.kap.cdf</command>
+<description>Populate the empty CDF file "<code>20021219.kap.cdf</code>" with data from the file "<code>20021219.kap.fitacf</code>" using the mapping table "<code>fitacf.cdfmap</code>".</description>
+</example>
+
+
+
+
+
+</binary>

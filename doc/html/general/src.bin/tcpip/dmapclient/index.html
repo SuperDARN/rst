@@ -1,0 +1,72 @@
+<head>
+<title>dmapclient</title>
+<link rel=stylesheet href="../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../general/index.html>general</a></td>
+<td>|</td><td><a href=../../../../general/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../general/src.bin/tcpip/index.html>tcpip</a></td><td>|</td>
+<td>dmapclient</td>
+<td width=100% align=right><a href=../../../../general/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">dmapclient</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+dmapclient --help<br>dmapclient [-d] [-s <em>stream</em>] <em>host</em> <em>port</em><br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Simple client program for a DataMap TCP/IP stream.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-d</code></td><td valign="top">print the data values in the array variables.</td></tr>
+<tr><td width="150" valign="top"><code>-s <em>stream</em></code></td><td valign="top">for a multiplexed stream, read the stream number given by <em>stream</em>. A value of 255 will read all streams</td></tr>
+<tr><td width="150" valign="top"><code><em>host</em></code></td><td valign="top">hostname or IP address of the system to connect to.</td></tr>
+<tr><td width="150" valign="top"><code><em>port</em></code></td><td valign="top">port number to connect to on  the system.</td></tr></table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>A Simple diagnostic client program for a DataMap TCP/IP streams.</p>
+<p>The program will connect to a remote server delivering DatMap formatted packets and dump them to the console.</p>
+<p>If the remote server uses multiplexed streams then the "<code>-s</code"> command line option can be used to select the stream.</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">dmapclient peanut.jhuapl.edu 1024</pre></td></tr></table>
+<p>Connect to the remote host <code>peanut.jhuapl.edu</code> at port 1024.</p>
+
+<table ><tr><td class="docbox" ><pre width="80">dmapclient -d -s 1 peanut.jhuapl.edu 1024</pre></td></tr></table>
+<p>Connect to the remote host <code>peanut.jhuapl.edu</code> at port 1024.Use stream number 1. Print the data values in the array variables.</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

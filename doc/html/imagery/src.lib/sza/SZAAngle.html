@@ -1,0 +1,105 @@
+
+<head>
+<title>SZAAngle</title>
+<link rel=stylesheet href=../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../index.html">Home</a><td>|</td>
+<td><a href=../../../imagery/index.html>imagery</a></td>
+<td>|</td><td><a href=../../../imagery/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../imagery/src.lib/sza/index.html>sza</a></td><td>|</td>
+<td>SZAAngle</td>
+<td width=100% align=right><a href=../../../imagery/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">SZAAngle</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">double SZAAngle(double lon,double lat,double dec,double Hangle);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">imagery/sza.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">sza</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="SZAAngle.html"><code>SZAAngle</code></a> function calculates the Solar-Zenith Angle at a given location and time.</p>
+<p>The geographic position of the point to calculate the angle for is given by the arguments <em>lon</em> and <em>lat</em>. The solar declination angle and the solar hour angle are given by the arguments <em>dec</em> and <em>Hangle</em>.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns the Solar-Zenith Angle in degrees.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>None</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/SZAAngle.c">SZAAngle.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* SZAAngle.c
+   ==========
+   Author: R.J.Barnes
+*/
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#include &quot;sza.h&quot;
+
+
+int main(int argc,char *argv[]) {
+
+  int yr,mo,dy,hr,mt,sc;
+
+  double lat=50.3,lon=0.0;
+  double dec,eqt,LsoT,Hangle,sza;
+
+  yr=2002;
+  mo=8;
+  dy=30;
+  hr=10;
+  mt=0;
+  sc=0;
+
+
+  dec=SZASolarDec(yr,mo,dy,hr,mt,sc);
+  eqt=SZAEqOfTime(yr,mo,dy,hr,mt,sc);
+
+  LsoT=(hr*3600+mt*60)+(lon*4*60)+eqt;
+  Hangle=15*((LsoT/3600)-12);
+
+  sza=SZAAngle(lon,lat,dec,Hangle);  
+
+  fprintf(stdout,&quot;SZAAngle&apos;n&quot;);
+  fprintf(stdout,&quot;Time: %.4d-%.2d-%.2d %.2d:%.2d:%.2d&apos;n&quot;,yr,mo,dy,hr,mt,sc);
+
+  fprintf(stdout,&quot;Input: lat=%g, lon=%g&apos;n&quot;,lat,lon);
+  fprintf(stdout,&quot;Output: SZA=%g&apos;n&quot;,sza);
+  return 0;
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

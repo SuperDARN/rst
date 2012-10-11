@@ -1,0 +1,29 @@
+commit c0f219aac11167967ef8f6b2c132209b6e8b4052
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:12 2012 -0400
+
+    Updated license
+
+commit 3dcf23ca26e9f6e8f1aad42d91c6309b1dd2af69
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Mar 31 09:49:28 2010 -0400
+
+    Converted documentation PPM images to PNG and renamed rplot files
+
+commit d936882ca238fe8a9091dc266e0258a9cfeacefb
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Mar 31 08:55:32 2010 -0400
+
+    Documentation cleanup
+
+commit 71bda37ba9bb7812ac6416ef92db493a824ae8be
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Mar 30 14:49:03 2010 -0400
+
+    Fixed documentation.
+
+commit 7a35145a2e044088022cbfb433043aee253fd644
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:36:55 2010 +0000
+
+    Initial commit

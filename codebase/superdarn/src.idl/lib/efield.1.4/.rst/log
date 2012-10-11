@@ -1,0 +1,17 @@
+commit 98015be396bdd3072ad49229a1e5ad858fc3fe43
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:10 2012 -0400
+
+    Updated license
+
+commit 0cdafbaa2facf4b86bb059367be743c3d790a91a
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 09:42:22 2010 -0500
+
+    Added open/close routines
+
+commit 7fd173285a29bd346ebd5168e081d4d39a90d8a4
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:04 2010 +0000
+
+    Initial commit

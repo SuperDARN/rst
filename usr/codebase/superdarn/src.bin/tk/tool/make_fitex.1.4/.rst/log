@@ -1,0 +1,23 @@
+commit 8c0c1f4fbde0bf013be7f7222b90cd0b0f048428
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:55 2012 -0400
+
+    Updated license
+
+commit 4501a5c4044600d995b2fd1942cb4ecbc11f78db
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Aug 4 13:25:36 2010 -0400
+
+    Fixed makefile for dynamic linking
+
+commit 99dc4a87f5c961ff3a4d69cc4466eb55d3a83588
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 11:01:58 2010 -0400
+
+    RST 3 Update
+
+commit c5724551edb4bc58c31bb40223c83927cf8d1a3f
+Author: Code Management Account <code@breit.jhuapl.edu>
+Date:   Sun Jan 24 02:23:54 2010 +0000
+
+    Initial commit.

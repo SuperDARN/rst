@@ -1,0 +1,627 @@
+#!/bin/bash
+
+set -e 
+
+# make.doc.frame
+# ==============
+# Author: R.J.Barnes
+#
+# Purpose:
+#
+# Constructs web pages from XML documentation
+#
+# Syntax:
+#
+# make.doc.frame [-w]
+#
+# Description:
+#
+# Makes the framework pages for the HTML documentation.
+#
+
+############################################################################
+
+
+
+############################################################################
+
+# Command line options
+
+############################################################################
+
+type="local"
+
+for arg in ${*}
+  do
+    if test "${arg}" = "-w"
+    then
+       type="www"
+    fi
+  done
+
+############################################################################
+
+# Make directory sections
+
+############################################################################
+
+makesection() {
+  type=${1}
+  project=${2}
+  section=${3}
+
+  
+   homeurl="${project}/index.html"
+   indexurl="${project}/${section}/indexdoc.html"
+
+  if test ! -d ${wwwpath}/${project}/${section}
+  then
+    return 0
+  fi
+
+  dirlist=`maketree ${wwwpath}/${project}/${section} "*.xml"`
+
+  for dir in $dirlist
+  do
+
+# 
+# If we are the top level directory we can ignore it 
+#
+
+#
+# If the directory contains the an xml file we can ignore it - 
+# it is a documentation directory
+#
+ 
+    if test -f ${dir}/*.xml
+     then
+       continue 1
+     fi
+
+    if test -f ${dir}/.ignore
+     then
+       continue 1
+    fi
+
+    if test "${type}" != "www"
+    then
+      relpath=""
+      path=${dir#$wwwpath/}/
+      while test ${path}
+      do
+        relpath="../"${relpath}
+        path=${path#*/} 
+        
+      done
+      urlbase=${relpath%/}
+    fi
+
+    export URLBASE="${urlbase}"
+
+
+#
+# Build the list of sub-directories in this directory - sections for 
+# this level of the documentation.
+#
+
+    echo '<?xml version="1.0" encoding="ISO-8859-1"?>' > ${secxml}
+    echo "<index>" >> ${secxml}
+    dlist=`find $dir -maxdepth 1 -mindepth 1 -type d`
+    for dname in $dlist
+      do
+        dleaf=${dname##*/}
+        echo "<section>" >> ${secxml}
+        echo "<name>"${dleaf}"</name>" >> ${secxml}
+        echo "<url>"${dleaf}"/index.html</url>" >> ${secxml}
+        echo "</section>" >> ${secxml}
+    done
+    echo "</index>" >> ${secxml}
+
+   
+#
+# Cut up the directory path into sections so that we can build a navigation
+# link.
+#
+
+   leaf=${dir##*/}
+   ltree=${dir%/*}/
+   ltree=${ltree#$wwwpath/$project/}
+   path=""
+   str=""
+   while test -n "${ltree}"
+   do
+      dtmp=${ltree%%/*}
+      path=${path}"/"${dtmp}
+      str=${str}"<td>|</td><td>&lt;a href="
+      str=${str}${urlbase}"/"${project}${path}"/index.html&gt;"
+      str=${str}${dtmp}"&lt;/a&gt;</td>"
+      ltree=${ltree#*/}
+   done
+   str=${str}"<td>|</td><td>"${leaf}"</td>"
+
+   home="&lt;a href="${urlbase}/${homeurl}"&gt;"${project}"&lt;/a&gt;"
+   index="&lt;a href="${urlbase}/${indexurl}"&gt;Index&lt;/a&gt;"
+   section=${dir}/
+   section=${section#$wwwpath/$project/} 
+   section=${section%/}
+   section=${section##*/}
+   if test ! -n "${section}"
+   then
+     section="code"
+   fi
+
+   echo "<table>" > ${nmexml}
+   echo "<entry>" >> ${nmexml}
+   echo "<search>SECTION</search>" >> ${nmexml}
+   echo "<replace>"${section}"</replace>" >> ${nmexml}
+   echo "</entry>" >> ${nmexml}
+  
+   echo "<entry>" >> ${nmexml} 
+   echo "<search>HOME</search>" >> ${nmexml}
+   echo "<replace>"${home}"</replace>" >> ${nmexml}
+   echo "</entry>" >> ${nmexml}
+
+   echo "<entry>" >> ${nmexml}
+   echo "<search>PATH</search>" >> ${nmexml}
+   echo "<replace>"${str}"</replace>" >> ${nmexml}
+   echo "</entry>" >> ${nmexml}
+
+   echo "<entry>" >> ${nmexml}
+   echo "<search>INDEX</search>" >> ${nmexml}
+   echo "<replace>"${index}"</replace>" >> ${nmexml}
+   echo "</entry>" >> ${nmexml}
+
+   echo "<entry>" >> ${nmexml}
+   echo "<search>URLBASE</search>" >> ${nmexml}
+   echo "<replace>"${urlbase}"</replace>" >> ${nmexml}
+   echo "</entry>" >> ${nmexml}
+
+   echo "</table>" >> ${nmexml}
+   
+   scdoc ${remove} ${top} ${nmexml} ${docsectionsc} > \
+                  ${dir}/index.html
+
+   xmldoc ${remove} ${main}  -script ${docsectionsc} -sctype 1 \
+            ${tmp} ${docsectioncfg} ${secxml} >> ${dir}/index.html
+
+   scdoc ${remove} ${tail} ${nmexml} ${docsectionsc} >> \
+            ${dir}/index.html
+
+   chmod a+x ${dir}/index.html
+  done
+
+  return 0
+}
+
+
+############################################################################
+
+# Build index
+
+############################################################################
+
+
+buildindex() {
+
+  project=${1}
+  section=${2}
+  path=${3}
+  script=${4}
+  nmeformat=${5}
+  lnkformat=${6}
+ 
+  if test ! -d ${wwwpath}/${project}/${section}
+  then
+    return 0
+  fi
+
+  if test "${type}" != "www"
+  then
+    urlbase="../.."
+  fi
+
+ 
+  doctable=`find ${wwwpath}/${project}/${section} -name *.doc.xml`
+ 
+  for doc in ${doctable}
+    do
+      ilist=`xmldoc -path ${path} -script "${script}#" \
+               -sctype 0 . ${docindexcfg} ${doc} | tr " #" "+ "`
+   
+      droot=${doc#$wwwpath/}
+      droot=${urlbase}/${droot%/*.xml}
+      
+      for in in $ilist
+        do
+          instr=${in//+/ }   
+     echo '"'${nmeformat/+/${instr}}'" '${droot}/${lnkformat/+/${instr}} 
+        done
+
+    done
+  return 0
+} 
+
+
+############################################################################
+
+# Make index
+
+############################################################################
+
+makeindex() {
+
+  type=${1}
+  project=${2}
+  section=${3}
+  
+  if test "${type}" != "www"
+  then
+    urlbase="../.."
+  fi
+
+
+  homeurl="${urlbase}/${project}/index.html"
+  indexurl=${urlbase}/${project}/${section}/indexdoc.html
+  indexhtml="${wwwpath}/${project}/${section}/indexdoc.html"
+
+  alphabet="A B C D E F G H I J K L M N O P Q R S T U V W X Y Z"
+
+  if test ! -d ${wwwpath}/${project}/${section}
+  then
+    return 0
+  fi
+ 
+#
+# Create XML index files from the master index and chop
+# them up into letter sections
+# 
+
+
+  for let in $alphabet
+    do
+      echo "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>" \
+           > ${inxxml}.${let}.xml
+      echo "<index>" >> ${inxxml}.${let}.xml 
+    done
+
+    cat ${inxtxt}
+
+    sort -f ${inxtxt} | while read line
+    do
+      html=${line##\"*\" }
+      tmp=${line%\" $html}
+      name=${tmp#\"} 
+      let=`echo ${name} | cut -c 1 | tr [:lower:] [:upper:]`
+      echo "<entry>" >> ${inxxml}.${let}.xml 
+      echo "<name>"${name}"</name>" >> ${inxxml}.${let}.xml 
+      echo "<location>"${html}"</location>" >> ${inxxml}.${let}.xml 
+      echo "</entry>" >> ${inxxml}.${let}.xml 
+    done
+
+  for let in $alphabet
+    do      
+      echo "</index>" >> ${inxxml}.${let}.xml 
+    done
+
+#
+# Approximate where the column split should occur
+#
+
+  mid=`cat ${inxxml}.?.xml | wc -l`
+
+  let mid=10#${mid}/2
+
+  cnt=0
+  flg=0
+
+  home="&lt;a href="${homeurl}"&gt;"${project}"&lt;/a&gt;"
+  
+  echo "<table>" > ${nmexml}  
+  echo "<entry>" >> ${nmexml} 
+  echo "<search>HOME</search>" >> ${nmexml}
+  echo "<replace>"${home}"</replace>" >> ${nmexml}
+  echo "</entry>" >> ${nmexml}
+  echo "<entry>" >> ${nmexml}
+  echo "<search>URLBASE</search>" >> ${nmexml}
+  echo "<replace>"${urlbase}"</replace>" >> ${nmexml}
+  echo "</entry>" >> ${nmexml}
+  echo "</table>" >> ${nmexml}
+
+  scdoc ${removeinx} ${topinx} ${nmexml} ${docindexsc} > \
+               ${indexhtml}
+
+  c=1
+  for let in $alphabet
+    do
+
+      echo "<table>" > ${letxml}
+      echo "<entry>" >> ${letxml}
+      echo "<search>LETTER</search>" >> ${letxml}
+      echo "<replace>"${let}"</replace>" >> ${letxml}
+      echo "</entry>" >> ${letxml}
+      scdoc ${removeinx} ${letterinx} ${letxml} ${docindexsc} >> \
+                     ${indexhtml}
+      xmldoc ${removeinx} ${maininx} -script ${docindexsc} -sctype 1 \
+                      ${tmp} ${docindexcfg} \
+                      ${inxxml}.${let}.xml >> ${indexhtml} 
+
+      tmp=`cat ${inxxml}.${let}.xml | wc -l`
+      let cnt=cnt+tmp
+      if test ${cnt} -gt ${mid} -a ${flg} -eq 0
+      then
+        echo "</td><td valign=top>" >> ${indexhtml}
+        flg=1
+      fi
+    done
+
+   
+  echo "<table>" > ${nmexml}  
+  echo "<entry>" >> ${nmexml} 
+  echo "<search>HOME</search>" >> ${nmexml}
+  echo "<replace>"${home}"</replace>" >> ${nmexml}
+  echo "</entry>" >> ${nmexml}
+  echo "<entry>" >> ${nmexml}
+  echo "<search>URLBASE</search>" >> ${nmexml}
+  echo "<replace>"${urlbase}"</replace>" >> ${nmexml} 
+  echo "</entry>" >> ${nmexml}
+  echo "</table>" >> ${nmexml}
+
+  scdoc ${removeinx} ${tailinx} ${nmexml} ${docindexsc} >> \
+               ${indexhtml}
+
+  chmod a+x ${indexhtml}
+  return 0
+}
+
+
+makeproject() {
+
+  type=${1}
+  project=${2}
+  homehtml="${wwwpath}/${project}/index.html"
+
+  if test "${type}" != "www"
+  then
+    urlbase=".."
+  fi
+ 
+  echo "<table>" > ${nmexml}
+  echo "<entry>" >> ${nmexml}
+  echo "<search>URLBASE</search>" >> ${nmexml}
+  echo "<replace>"${urlbase}"</replace>" >> ${nmexml}
+  echo "</entry>" >> ${nmexml}
+  echo "</table>" >> ${nmexml}
+
+  ignhome=""
+
+  if test ! -d ${wwwpath}/${project}/src.doc
+  then
+    ignhome=" -i OTHER"
+  fi
+
+  if test ! -d ${wwwpath}/${project}/src.lib
+  then
+    ignhome=${ignhome}" -i LIBRARY"
+  fi
+
+
+  if test ! -d ${wwwpath}/${project}/src.bin
+  then
+    ignhome=${ignhome}" -i BINARY"
+  fi
+
+  scdoc ${ignhome} ${nmexml} ${dochomesc} > ${homehtml}
+  chmod a+x  ${homehtml}
+
+  makesection ${type} ${project} src.lib
+  makesection ${type} ${project} src.bin
+  makesection ${type} ${project} src.doc
+ 
+  buildindex ${project} src.lib "library/function" "<!--NAME-->" \
+                   "+" "+.html" "+" > ${inxtxt}
+  buildindex ${project} src.lib "library/structure" "<!--NAME-->" \
+                   "struct +" "struct+.html" >> ${inxtxt}
+  buildindex ${project} src.lib "library/union" "<!--NAME-->" \
+                    "union +" "union+.html" >> ${inxtxt}
+
+  makeindex ${type} ${project} src.lib
+
+  buildindex ${project} src.bin "binary" "<!--NAME-->" "+" "index.html" > \
+           ${inxtxt}
+  makeindex ${type} ${project} src.bin
+  
+  buildindex ${project} src.doc "other" "<!--TITLE-->" "+" "index.html" > \
+           ${inxtxt}
+
+  makeindex ${type} ${project} src.doc
+  return 0
+}
+
+
+############################################################################
+
+# Define working directories
+
+############################################################################
+
+wwwpath="${DOCPATH}/html"
+urlbase="."
+
+if test "${type}" = "www"
+then
+  wwwpath=${WWWPATH}
+  urlbase=${URLBASE}
+fi
+
+TMPFILE=`mktemp -q /tmp/doc.XXXXXX`
+mkdir ${TMPFILE}.d
+chmod a+w ${TMPFILE}.d
+tmp=${TMPFILE}.d
+
+build=${BUILD}/doc
+
+############################################################################
+
+# Configuration files
+
+############################################################################
+docrootcfg="${build}/cfg/doc.root.cfg.xml"
+docsectioncfg="${build}/cfg/doc.section.cfg.xml"
+docindexcfg="${build}/cfg/doc.index.cfg.xml"
+
+docrootsc="${build}/sk/doc.root.${type}.sk"
+docsectionsc="${build}/sk/doc.section.${type}.sk" 
+docindexsc="${build}/sk/doc.index.${type}.sk"
+dochomesc="${build}/sk/doc.home.${type}.sk"
+
+############################################################################
+
+# Define script components
+
+############################################################################
+
+remove="-r TOP -r MAIN -r TAIL"
+top="-i MAIN -i TAIL"
+main="-i TOP -i TAIL"
+tail="-i TOP -i MAIN"
+
+removeinx="-r TOP -r LETTERBREAK -r MAIN -r TAIL"
+topinx="-i LETTERBREAK -i MAIN -i TAIL"
+letterinx="-i TOP -i MAIN -i TAIL"
+maininx="-i TOP -i LETTERBREAK -i TAIL"
+tailinx="-i TOP -i LETTERBREAK -i MAIN"
+
+############################################################################
+
+# Define temporary files
+
+############################################################################
+
+secxml=${tmp}/section.xml
+nmexml=${tmp}/name.xml
+
+inxtxt=${tmp}/inx.txt
+inxxml=${tmp}/inx
+letxml=${tmp}/let.xml
+
+rtxml=${tmp}/root.xml
+
+############################################################################
+
+# Report to user
+
+############################################################################
+
+echo "make.doc.frame"
+echo "=============="
+
+echo "URL base:" ${urlbase}
+echo "www path:"${wwwpath}
+echo "type:"${type}
+echo
+
+############################################################################
+
+# Make parent directory
+
+############################################################################
+
+mkdir -p ${wwwpath}
+mkdir -p ${wwwpath}/img
+mkdir -p ${wwwpath}/css
+
+############################################################################
+
+# Copy supporting files
+
+############################################################################
+
+flist=`find ${build}/img -type f`
+for fname in ${flist}
+  do
+    fleaf=${fname##*/}
+    cat ${fname} > ${wwwpath}/img/${fleaf}
+    chmod u+w ${wwwpath}/img/${fleaf}
+  done
+
+
+echo "<table>" > ${nmexml}
+echo "<entry>" >> ${nmexml}
+echo "<search>URLBASE</search>" >> ${nmexml}
+echo "<replace>"${urlbase}"</replace>" >> ${nmexml}
+echo "</entry>" >> ${nmexml}
+echo "</table>" >> ${nmexml}
+
+scdoc ${nmexml} ${build}/css/doc.${type}.css > ${wwwpath}/css/doc.css
+
+############################################################################
+
+# Build page
+
+############################################################################
+
+echo '<?xml version="1.0" encoding="ISO-8859-1"?>' > ${rtxml}
+echo "<index>" >> ${rtxml}
+
+prjlist=`find ${wwwpath} -maxdepth 1 -mindepth 1 -type d | sort`
+for prjdir in ${prjlist}
+ do
+
+   project=${prjdir##*/}
+
+   if test "${project}" = "css"
+   then 
+     continue
+   fi
+   if test "${project}" = "img"
+   then
+     continue
+   fi
+   echo ${project}
+   makeproject ${type} ${project}
+
+   echo "<project>" >> ${rtxml}
+   echo "<name>"${project}"</name>" >> ${rtxml}
+   echo "<url>"${project}"/index.html</url>" >> ${rtxml}
+   echo "</project>" >> ${rtxml}
+ done
+
+echo "</index>" >> ${rtxml}
+
+if test "${type}" != "www"
+then
+   urlbase="."
+fi
+export URLBASE="${urlbase}"
+
+echo "<table>" > ${nmexml}
+echo "<entry>" >> ${nmexml}
+echo "<search>URLBASE</search>" >> ${nmexml}
+echo "<replace>"${urlbase}"</replace>" >> ${nmexml} 
+echo "</entry>" >> ${nmexml}
+echo "</table>" >> ${nmexml}
+
+scdoc ${remove} ${top} ${nmexml} ${docrootsc} > \
+                  ${wwwpath}/index.html
+
+
+
+xmldoc ${remove} ${main}  -script ${docrootsc} -sctype 1 \
+        ${tmp} ${docrootcfg} ${rtxml} >> ${wwwpath}/index.html
+
+scdoc ${remove} ${tail} ${nmexml} ${docrootsc} >> \
+       ${wwwpath}/index.html
+
+chmod a+x ${wwwpath}/index.html
+
+
+
+############################################################################
+
+# Cleanup
+
+############################################################################
+
+rm -fr ${tmp}
+rm -fr ${TMPFILE}
+exit 0

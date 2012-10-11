@@ -1,0 +1,74 @@
+<head>
+<title>ppmtoppmx</title>
+<link rel=stylesheet href="../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../base/index.html>base</a></td>
+<td>|</td><td><a href=../../../../base/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../base/src.bin/graphic/index.html>graphic</a></td><td>|</td>
+<td>ppmtoppmx</td>
+<td width=100% align=right><a href=../../../../base/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">ppmtoppmx</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+ppmtoppmx --help<br>ppmtoppmx [-name <em>iname</em>] [<em>name</em>]<br>ppmtoppmx -alpha <em>alpha</em> [-name <em>iname</em>] [<em>name</em>]<br>ppmtoppmx -nz [-name <em>iname</em>] [<em>name</em>]<br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Convert a Portable PixMap (PPM) image to an extended Portable PixMap (PPMX) image.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-name <em>iname</em></code></td><td valign="top">set the image name in the output image to <em>iname</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-alpha <em>alpha</em></code></td><td valign="top">set alpha channel for all pixels to the value given by <em>alpha</em>. The value can be given as a decimal, percentage or hexadecimal.</td></tr>
+<tr><td width="150" valign="top"><code>-nz</code></td><td valign="top">set alpha channel to full on (0xff) for any non-zero value pixel in the input image.</td></tr> 
+<tr><td width="150" valign="top"><code><em>name</em></code></td><td valign="top">input image filename. If this is omitted the image  will be read from standard input.</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Convert a Portable PixMap (PPM) image to an extended Portable PixMap (PPMX) image.</p>
+<p>The PPMX image file is written to standard output.</p>
+<p>Extended Portable PixMap files are an enhanced form of PPM files that include an extra alpha channel mask.</p></td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">ppmtoppmx -name "test" inp.ppm &gt; out.ppmx</pre></td></tr></table>
+<p>Convert PPM file <code>inp.ppm</code> to the PPMX file <code>out.ppmx</code>. Set the name of the image to "<code>test</code>".
+</p>
+
+<table ><tr><td class="docbox" ><pre width="80">ppmtoppmx -nz inp.ppm &gt; out.ppmx</pre></td></tr></table>
+<p>Convert PPM file <code>inp.ppm</code> to the PPMX file <code>out.ppmx</code>. The alpha channel is set to full on for any non-zero pixels in the input image.
+</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

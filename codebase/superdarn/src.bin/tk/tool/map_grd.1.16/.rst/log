@@ -1,0 +1,35 @@
+commit d5b459c276685c771072a93cf5b532aad36e3a08
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:05 2012 -0400
+
+    Updated license
+
+commit f5582358b78ac21fffb553225cc73d1dad5e5a9d
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Jun 10 12:44:38 2010 -0400
+
+    Fixed linking order
+
+commit f111727511ee52ab906dbc6582698233d5d28315
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 08:32:40 2010 -0400
+
+    Updated documentation
+
+commit 6f9b23f4654459e9ae8096886abfc950b6f53321
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 9 10:06:08 2010 -0400
+
+    Adopted MLT library.
+
+commit 1ffdf5d6b9e0ad91fad6f021290100ebb29c5ae1
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:37:30 2010 -0400
+
+    Fixed makefile.
+
+commit b824ed431c0c85439f16ce0cd6a373e5eb5841ba
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:06 2010 +0000
+
+    Initial commit

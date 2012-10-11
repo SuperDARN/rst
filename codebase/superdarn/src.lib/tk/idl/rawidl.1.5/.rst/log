@@ -1,0 +1,29 @@
+commit 17156b4999a931be21c7ff6dd3aa2441587a1195
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:58 2012 -0400
+
+    Updated license
+
+commit c0034b730b761b79af079dce260ac79edb339f39
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 18 11:34:46 2010 -0500
+
+    Fixed possible bug with invalid xcf flags.
+
+commit 8343065966f8a82d3d84c6a821475cc26ea97287
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 14:56:15 2010 -0500
+
+    Fixed IDL types for 64 bit
+
+commit 2e0261db35721d47ce29562f02b2ced44f83a5fd
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 4 16:20:49 2010 -0400
+
+    Removed unused variables.
+
+commit 7e0304128e16841152482311375e3591ac6fc757
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 4 13:59:13 2010 -0400
+
+    Rawacf IDL interface library.

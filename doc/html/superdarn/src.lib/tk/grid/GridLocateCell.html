@@ -1,0 +1,111 @@
+
+<head>
+<title>GridLocateCell</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../superdarn/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/grid/index.html>grid</a></td><td>|</td>
+<td>GridLocateCell</td>
+<td width=100% align=right><a href=../../../../superdarn/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">GridLocateCell</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">int GridLocateCell(int npnt,<a href="structGridGVec.html"><code>struct GridGVec</code></a> *ptr,int index);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">general/griddata.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">grd</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="GridLocateCell.html"><code>GridLocateCell</code></a> function finds an instance of a particular grid cell in a set of gridded data points.</p>
+<p>The number of data points is given by the argument <em>npnt</em> and the array pointed to by the argument <em>ptr</em> contains the points.</p>
+<p>The cell to search for is given by the argument <em>index</em>.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns the index into the array of the gridded data points of the first occurence of the grid cell. If the cell could not be found then <em>npnt</em> is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>None</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/GridLocateCell.c">GridLocateCell.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* GridLocateCell.c
+   ================
+   Author: R.J.Barnes */
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#include &quot;rtypes.h&quot;
+#include &quot;rtime.h&quot;
+#include &quot;dmap.h&quot;
+#include &quot;limit.h&quot;
+#include &quot;griddata.h&quot;
+#include &quot;gridread.h&quot;
+
+struct GridData grd;
+
+int main(int argc,char *argv[]) {
+ 
+  FILE *fp;
+
+  int yr,mo,dy,hr,mt;
+  double sc;
+
+  int index=32031,ival;
+
+  fp=fopen(argv[1],&quot;r&quot;);
+
+  if (fp==NULL) {
+    fprintf(stderr,&quot;File not found.&apos;n&quot;);
+    exit(-1);
+  }
+
+  while(GridFread(fp,&amp;grd) !=-1) {
+
+    ival=GridLocateCell(grd.vcnum,grd.data,index);
+    TimeEpochToYMDHMS(grd.st_time,&amp;yr,&amp;mo,&amp;dy,&amp;hr,&amp;mt,&amp;sc);
+    fprintf(stdout,&quot;%.4d-%.2d-%.2d %.2d:%.2d:%.2d pnts=%d&apos;n&quot;,
+            yr,mo,dy,hr,mt,(int) sc,ival);
+
+  }
+ 
+  fclose(fp);
+
+
+  return 0;
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

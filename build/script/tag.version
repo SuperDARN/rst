@@ -1,0 +1,105 @@
+#!/bin/bash
+
+# tag.version
+# ===========
+# Author R.J.Barnes
+#
+# Purpose:
+#
+# Automatically increment version numbers
+#
+# Syntax:
+#
+# tag.version [git-options]
+# tag.version -init [git-options]
+# tag.version -major [git-options]
+#
+#
+# Description:
+#
+# Automatically increment version numbers as part of the
+# checkin process.
+
+##############################################################################
+
+init=0
+major=0
+version=0
+gitmsg=""
+
+for arg in "${@}"
+do
+  echo ${arg}
+  if test "${arg}" = "-init"
+  then
+    init=1
+    continue
+  elif test "${arg}" = "-major"
+  then 
+    major=1
+    continue
+  elif test "${arg}" = "-version"
+  then
+    version=1
+    continue
+  fi
+done
+
+if test ! -d ".git"
+then
+  echo "No git repository"
+  exit 1
+fi
+
+vstr=`git describe | cut -f 2,3 -d'.' | cut -f 1 -d'-'`
+
+if test ${init} -ne 0 -a -z "${vstr}"
+then
+  vstr="version.1.1"
+elif test ${init} -ne 0 -a -n "${vstr}"
+then
+  echo "Version number already initialized."
+  exit 1
+elif test ${init} -eq 0 -a -z "${vstr}"
+then
+  echo "No version number."
+  exit 1
+fi
+
+if test ${init} -ne 0
+then
+  shift 1
+  echo "Initializing version:"${vstr}
+  git tag -a "${vstr}" "${@}"
+  exit 0
+fi
+
+if test ${version} -ne 0
+then 
+  shift 1
+  ver=${1}
+  shift 1
+  vstr="version.${ver}"
+  git tag -a "${vstr}" "${@}"
+  exit 0
+fi
+
+let vmajor=10#${vstr%%.*}
+let vminor=10#${vstr##*.}
+
+if test ${major} -ne 0 
+then
+  shift 1
+  let vmajor=vmajor+1
+  let vminor=1
+else
+  let vminor=vminor+1
+fi
+
+vstr="version."${vmajor}"."${vminor}
+echo "Version:"${vstr}
+ 
+git tag -a "${vstr}" "${@}"
+
+
+

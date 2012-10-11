@@ -1,0 +1,23 @@
+commit 57fcc3eebb5e4cec50fd8c60cccc2cd3f35aa9b1
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:20:01 2012 -0400
+
+    Removed redundant license file - it is now included in the source.
+
+commit af7eb4aae687eda3b3b1a5624e727cd9ffa04330
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:19:42 2012 -0400
+
+    Updated license
+
+commit 469aa0776ae7a1332575aa0381724d1a2207a0c7
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 9 20:25:59 2010 -0400
+
+    Moved license file.
+
+commit 091be603a4758c4ead1beef3f081f9739ade0478
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 9 08:47:30 2010 -0400
+
+    Astronomical Algorithms library.

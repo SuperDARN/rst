@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>general</project>
+<name>reval</name>
+<location>src.lib/eval</location>
+<function>
+<name>Eval</name>
+<location>src.lib/eval</location>
+<header>general/reval.h</header>
+<syntax>int Eval(char *sum,double *ptr,int (*dvar)(char *ptr,double *val,void *data),void *vdata,int (*dfun)(char *ptr,int argnum,double *argptr,double *val,void *data),void *fdata);</syntax>
+<description><p>The <fn href="Eval.html">Eval</fn> function evaluates a mathematical expression.</p>
+<p>The zero terminated string pointed to by the argument <ar>sum</ar> contains the expression to evaluate. The result is stored at the location pointed to by the argument <ar>result</ar>.</p>
+<p>The argument dvar is a pointer to a function of the form:</p>
+<fd>int (*dvar) (char *str,double *val,void *data);</fd>
+<p>This function returns the value of each operand in the expression. The zero terminated string pointed to by <ar>str</ar> contains the operand. If the operand is a simple numeric value, the function should evaluate it and store the value at the location pointed to by <ar>val</ar>. If the operand is a variable name the function should set <ar>val</ar> to the value of this variable.</p> 
+<p>The <ar>vdata</ar> argument of the eval function is passed directly as the data argument of the <code>dvar</code> function.</p>
+<p>If the operand is successfully evaluated the function should return zero, otherwise a non-zero value should be returned.</p>
+<p>The argument dfun is a pointer to a function of the form:</p>
+<fd>int (*dfun) (char *str,int argnum,double *argptr,double *val,void *data);</fd>
+<p>This function evaluates a function call within an expression. The zero terminated string pointed to by <ar>str</ar> contains the name of the function. The argument <ar>argnum</ar> gives the number of arguments passed to the function, and the argument <ar>argptr</ar> contains an array of pointers to the actual arguments. The function should be evaluated and the value returned stored at the location pointed to by <ar>val</ar>.</p>
+<p>The <ar>fdata</ar> argument of the eval function is passed directly as the data argument of the <ar>dfun</ar> function.</p>
+<p>If the function is successfully evaluated then zero should be returned, otherwise a non-zero value should be returned.</p>
+</description>
+<returns>Returns zero on success. On error, a non-zero value indicating the error is returned.</returns>
+<errors><p>On error, a non-zero value indicating the error is returned:</p>
+<center><table>
+<tr><td><b>Return Value</b></td><td><b>Meaning</b></td></tr>
+<tr><td>0</td><td>Success.</td></tr>
+<tr><td>2</td><td>Mismatched parentheses.</td></tr>
+<tr><td>3</td><td>Unrecognized operand or variable.</td></tr>
+<tr><td>4</td><td>Unrecognize function.</td></tr>
+</table>
+</center>
+</errors>
+<example type="source">Eval.c</example>
+</function>
+</library>

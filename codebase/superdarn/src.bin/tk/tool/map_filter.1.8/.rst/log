@@ -1,0 +1,29 @@
+commit 5dc353b9da419abf2a5c507cf640a127cb271fe9
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:04 2012 -0400
+
+    Updated license
+
+commit cdc5c996feba5e563f9c6c3ac7ba8e66e00b0619
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Jul 20 10:59:45 2010 -0400
+
+    Changed default skip time.
+
+commit c063b500944d5d9f57f6c9d82615d9d460e99230
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 08:32:40 2010 -0400
+
+    Updated documentation
+
+commit 889c12faf21d9862b3e4536b2f3e3849f96d41a5
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:36:47 2010 -0400
+
+    Fixed makefile.
+
+commit 4f9f6728f97752f683a295e87b524637a7731773
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:06 2010 +0000
+
+    Initial commit

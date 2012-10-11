@@ -1,0 +1,90 @@
+#!/bin/bash
+
+SEP="+"
+
+# id.pkg
+# ======
+# R.J.Barnes
+#
+# Purpose:
+#
+# Consruct a list of git commit identifiers for elements in a package.
+#
+# Syntax:
+#
+# id.pkg project package
+#
+# Description:
+#
+# Construct a list of git commit identifiers for elements in a package.
+# Output is written to standard output.
+
+##############################################################################
+
+prj=${1}
+pkg=${2}
+
+##############################################################################
+
+#  Test for valid command line
+
+##############################################################################
+
+if test -z "${pkg}" 
+then
+  echo "id.pkg project package" 
+  exit 1 
+fi
+
+build=${BUILD}
+
+##############################################################################
+
+#  Checkout code from the repository and build a code module
+
+##############################################################################
+
+makeid() {
+
+  module=${1}
+  cd ${RSTPATH} 
+  gitlist=`find ${module} -name ".git" | sort`
+  for gitname in ${gitlist}
+    do
+      tmp=${gitname#./}
+      path=${tmp%/.git}
+      if test -z "${path}"
+      then 
+        path="."
+      fi
+      id=`git --git-dir ${gitname} log | head -1 | cut -f 2 -d' '`
+      echo ${path} ${id}
+    done
+  return 0
+}
+
+##############################################################################
+
+#  Start generating the distribution from the module list
+
+##############################################################################
+
+if test ! -s "${RPKG}/${prj}/${pkg}/module.txt"
+then
+  echo "Failed to locate package contents"
+  exit 1
+fi
+
+modlst=`cat ${RPKG}/${prj}/${pkg}/module.txt | tr " " "${SEP}"`
+
+for mod in ${modlst}
+do
+
+  tmp=`echo ${mod} | tr "${SEP}" " "`
+  prm=${tmp%%#*} 
+  if test -z "${prm}"; then continue; fi
+
+  makeid ${prm}
+   
+done
+

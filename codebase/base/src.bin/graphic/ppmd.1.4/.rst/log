@@ -1,0 +1,17 @@
+commit 39e835e7b5a1891f8bedbb794ffd9390eb214ef3
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:14 2012 -0400
+
+    Updated license
+
+commit dab509749051d2ac1ffb77e130809a1cc6fbd411
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Aug 16 14:16:27 2010 -0400
+
+    Added PNG Support
+
+commit 9ec2e814e4b18dd0ea2485cb3bfeed1cb578ffce
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:36:53 2010 +0000
+
+    Initial commit

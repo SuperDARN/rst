@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>base</project>
+<name>shmemsend</name>
+<location>src.bin/memory/shmemsend</location>
+<syntax>shmemsend --help</syntax>
+</binary>
+
+
+
+
+

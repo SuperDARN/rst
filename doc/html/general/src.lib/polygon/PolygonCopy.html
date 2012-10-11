@@ -1,0 +1,164 @@
+
+<head>
+<title>PolygonCopy</title>
+<link rel=stylesheet href=../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../index.html">Home</a><td>|</td>
+<td><a href=../../../general/index.html>general</a></td>
+<td>|</td><td><a href=../../../general/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../general/src.lib/polygon/index.html>polygon</a></td><td>|</td>
+<td>PolygonCopy</td>
+<td width=100% align=right><a href=../../../general/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">PolygonCopy</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;"><a href="structPolygonData.html"><code>struct PolygonData</code></a> *PolygonCopy(<a href="structPolygonData.html"><code>struct PolygonData</code></a> *src);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">general/polygon.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">poly</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="PolygonCopy.html"><code>PolygonCopy</code></a> function duplicates a polygon group.</p>
+<p>The polygon group to copy is pointed to by the argument <em>src</em>.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns a pointer to the new polygon group on success. On error, a <code>NULL</code> pointer is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, a <code>NULL</code> pointer is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center><img src="img/PolygonCopy.png"></img><br><a href="img/PolygonCopy.svg">Download SVG</a>|<a href="img/PolygonCopy.ps.gz">Download PostScript</a>|<a href="img/PolygonCopy.rp.xml.gz">Download rXML</a></center>
+         <br><center>Source Code: <a href="src/PolygonCopy.c">PolygonCopy.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* PolygonCopy.c
+   =============
+   Author: R.J.Barnes
+*/
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &quot;rtypes.h&quot;
+#include &quot;rxml.h&quot;
+#include &quot;option.h&quot;
+#include &quot;rfbuffer.h&quot;
+#include &quot;rplot.h&quot;
+#include &quot;polygon.h&quot;
+#include &quot;rmap.h&quot;
+
+struct PolygonData *poly;
+struct PolygonData *copy;
+
+
+float fx[256],fy[256];
+int t[256];
+
+int stream(char *buf,int sze,void *data) {
+  FILE *fp;
+  fp=(FILE *) data;
+  fwrite(buf,sze,1,stdout);
+  return 0;
+} 
+
+int main(int argc,char *argv[]) {
+
+  struct Rplot *rplot=NULL;
+
+  float wdt=400,hgt=400;
+
+  unsigned int bgcol=0xffffffff;
+  unsigned int fgcol=0xff000000;
+
+  int i,j;
+  float x;
+ 
+  float pnt[2]; 
+  float *ptr;
+
+  poly=PolygonMake(sizeof(float)*2,PolygonXYbbox);
+ 
+  for (x=0.4;x&gt;0.1;x-=0.1) {
+
+    PolygonAddPolygon(poly,1);
+
+    pnt[0]=0.5-x;
+    pnt[1]=0.5-x;
+    PolygonAdd(poly,pnt,0);
+
+    pnt[0]=0.5-x;
+    pnt[1]=0.5+x;
+    PolygonAdd(poly,pnt,0);
+
+    pnt[0]=0.5+x;
+    pnt[1]=0.5+x;
+    PolygonAdd(poly,pnt,0);
+
+    pnt[0]=0.5+x;
+    pnt[1]=0.5-x;
+    PolygonAdd(poly,pnt,0);
+  }
+
+  copy=PolygonCopy(poly);
+  PolygonFree(poly);
+
+
+  rplot=RplotMake();
+  RplotSetText(rplot,stream,stdout);  
+  RplotMakeDocument(rplot,&quot;PolygonCopy&quot;,&quot;1&quot;,wdt,hgt,24);
+ 
+  RplotMakePlot(rplot,&quot;PolygonCopy&quot;,wdt,hgt,24);
+
+  RplotRectangle(rplot,NULL,0,0,wdt,hgt,
+                  1,bgcol,0x0f,0,NULL);
+
+  for (i=0;i&lt;copy-&gt;polnum;i++) {
+  
+    fgcol=RplotColor(239-i*16,239-i*16,239-i*16,255);
+    for (j=0;j&lt;copy-&gt;num[i];j++) {
+      ptr=(float *) PolygonRead(copy,i,j);
+      fx[j]=ptr[0]*wdt;
+      fy[j]=ptr[1]*hgt;
+      t[j]=0;
+    }
+    RplotPolygon(rplot,NULL,0,0,copy-&gt;num[i],fx,fy,t,
+                  1,fgcol,0x0f,0,NULL);
+
+
+  }
+
+  RplotEndPlot(rplot);
+  RplotEndDocument(rplot);
+  return 0;
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

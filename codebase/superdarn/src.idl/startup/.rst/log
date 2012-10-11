@@ -1,0 +1,23 @@
+commit d2b18c7aee84ab50c16e3b9182a4ce3400127d30
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Thu Nov 18 17:59:20 2010 -0500
+
+    Added IGRF library to startup.
+
+commit 62aa33ab3345a0b0557be662d3ff1c959b50ce40
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 16 16:34:05 2010 -0400
+
+    Added missing astalg library.
+
+commit 4842335d031de4dd31db6344d0cdb3ef13ce15c1
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 16 06:23:51 2010 -0400
+
+    Added MLT library and temporarily removed IGRF/GEOP
+
+commit 4d6f73dc0c809505bc6e1e21e5e607f8a6bf16c1
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:03 2010 +0000
+
+    Initial commit

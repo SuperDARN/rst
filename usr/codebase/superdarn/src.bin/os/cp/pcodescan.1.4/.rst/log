@@ -1,0 +1,23 @@
+commit bad7eadfaa799bbbe91ccc55c20508c9fc387c4a
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:55 2012 -0400
+
+    Updated license
+
+commit 69e953aacd038b81d503fd779df00691c65ce90c
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Dec 8 20:20:33 2010 -0500
+
+    Support for dynamic loading
+
+commit 09e68f380957c05d0b7a529ef713834741adaa09
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Dec 7 17:30:34 2010 -0500
+
+    Fix for Oregon
+
+commit 629ccab1998a5eb166244f63b3e520bc92b30e5e
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Mon Sep 27 12:39:53 2010 -0400
+
+    Pulse code modulation control program.

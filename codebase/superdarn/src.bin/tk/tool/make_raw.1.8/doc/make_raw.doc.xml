@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>make_raw</name>
+<location>src.bin/tk/tool/make_raw</location>
+<syntax>make_raw --help</syntax>
+<syntax>make_raw [-vb] [<ar>iqdatname</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+
+<option><on><ar>iqdatname</ar></on><od>filename of the <code>iqdat</code>  format file. If this is omitted the file is read from standard input.</od>
+</option>
+
+<synopsis><p>Creates a <code>rawacf</code> format file from a <code>iqdat</code> format file.</p></synopsis>
+
+<description><p>Creates a <code>rawacf</code> format file from a <code>iqdat</code> format file.</p>
+<p>The <code>rawacf</code> format file  is written to standard output.</p>
+</description>
+<example>
+<command>make_raw -new 20040830.gbr.iqdat &gt; 20040830.gbr.rawacf</command>
+<description>Create an <code>rawacf</code> format file from the <code>iqdat</code> format file "<code>20040830.gbr.iqdat</code>".The <code>rawacf</code> format ile is written to "<code>20040830.gbr.rawacf</code>".</description>
+</example>
+
+
+</binary>

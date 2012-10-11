@@ -1,0 +1,65 @@
+commit 6706e7f479bb8338bc1a29877b75778785e49889
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:55 2012 -0400
+
+    Updated license
+
+commit 92ed86082a6e38f5bd6f8e652f463390150d4a3a
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Dec 8 20:19:04 2010 -0500
+
+    Support for dynamic loading
+
+commit 8e0bc8410d1b123e66255e7f30183e23e9c51292
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Dec 7 17:12:16 2010 -0500
+
+    Fixed issue with makefile.
+
+commit de98dc7ba365881955c2893fd21b714b004ce3c3
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Dec 7 16:58:36 2010 -0500
+
+    Fixes for Oregon.
+
+commit 6867052b31e00c012970880035e06b61c81b64bb
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Sep 27 12:02:21 2010 -0400
+
+    Folded in changes from Fort Hays
+
+commit 0ffa6c9fde0cdb9f60f97596eac4ee661ad1f9e9
+Author: Code Development Account <code@virtual-debian.localdomain>
+Date:   Fri Aug 6 07:53:01 2010 -0400
+
+    Added acfex library to makefile.
+
+commit 82c45b0d0945ac3f20c8095f1f29e18cfd711b14
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Aug 4 13:30:37 2010 -0400
+
+    Fixed makefile for dynamic linking
+
+commit 928f4166b968fbc43151fb4ceaa3288479e77a93
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Sat Jun 12 12:39:52 2010 -0400
+
+    Incorporated changes from deployment.
+
+commit 4b3da5549ab99c60a2836ba2b99218900f97612f
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 03:55:45 2010 -0400
+
+    Changed output name.
+
+commit eecc66d7e73199e402a7b134a3253bee2bd886d4
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 11:02:01 2010 -0400
+
+    RST 3 Update
+
+commit d3bc475a87a9dc5a07533890d1420e7a86530587
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:46 2010 +0000
+
+    Initial commit

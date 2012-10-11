@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>general</project>
+<name>rtpoll</name>
+<location>src.bin/tcpip/rtpoll</location>
+<syntax>rtpoll --help</syntax>
+<syntax>rtpoll [-L <ar>logname</ar>][-if <ar>pidname</ar>] [-d <ar>pollsec</ar>] [-f <ar>name</ar>] <ar>command</ar></syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+
+<option><on>-L <ar>logname</ar></on><od>log connections and information in the file <ar>logname</ar>. By default, connections are recorded in <code>log.rt</code>.</od>
+</option>
+
+<option><on>-if <ar>pidname</ar></on><od>record the process Identifier (PID) of the server in the file <ar>pidname</ar>. By default, the PID is  recorded in <code>pid.id</code>.</od>
+</option>
+
+
+<option><on>-d <ar>pollsec</ar></on><od>length of time to wait between polling to see if the data file has been modified, to <ar>pollsec</ar> seconds.</od>
+</option>
+
+<option><on>-f <ar>name</ar></on><od>poll to see if the file <ar>name</ar> has been modified.</od>
+</option>
+<option><on><ar>command</ar></on><od>command to execute if the data file has been modified.</od></option>
+<synopsis><p>Periodically polls a file to see if it has been modified, and if it has, executes a command.</p></synopsis>
+<description><p>Executes a command whenever a specified file is changed. The program is used as part for real-time data processing when an action is triggered when a file is updated.</p> 
+<p>The file to test is specified by the "<code>-f</code>" option. The "<code>-d</code>" option sets the delay in seconds between tests of this file.</p>
+</description>
+
+
+<example>
+<command>rtpoll  -L /home/rtproc/log  -d 120 -f  /data/rt.dat /home/rtproc/script/doanalysis</command>
+<description>Test the file "<code>/data/rt.dat</code>" every two minutes for changes. If a change occurs, execute the script "<code>/home/rtproc/script/doanalysis</code>". Actions are logged in the file "<code>/home/rtproc/log.<ar>YYYYMMDD</ar></code>", where <ar>YYYYMMDD</ar> is the date.</description></example>
+
+
+
+
+</binary>

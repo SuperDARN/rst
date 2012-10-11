@@ -1,0 +1,111 @@
+
+<head>
+<title>RadarScanReset</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../superdarn/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/scan/index.html>scan</a></td><td>|</td>
+<td>RadarScanReset</td>
+<td width=100% align=right><a href=../../../../superdarn/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">RadarScanReset</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">int RadarScanReset(<a href="structRadarScan.html"><code>struct RadarScan</code></a> *ptr);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">superdarn/scandata.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">rscan</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="RadarScanReset.html"><code>RadarScanReset</code></a> frees memory reserved to store radar scan data and resets the radar scan data structure.</p>
+<p>The structure containing the radar scan data is pointed to by the argument <em>ptr</em>.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns zero on success. On error, (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/RadarScanReset.c">RadarScanReset.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* RadarScanReset.c
+   ================
+   Author: R.J.Barnes */
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#include &quot;rtypes.h&quot;
+#include &quot;rtime.h&quot;
+#include &quot;dmap.h&quot;
+#include &quot;limit.h&quot;
+#include &quot;rprm.h&quot;
+#include &quot;fitdata.h&quot;
+#include &quot;fitread.h&quot;
+#include &quot;scandata.h&quot;
+#include &quot;fitscan.h&quot;
+
+struct RadarScan scn;
+
+
+int main(int argc,char *argv[]) {
+ 
+  FILE *fp=NULL;
+
+  struct RadarParm prm;
+  struct FitData fit;
+  
+  fp=fopen(argv[1],&quot;r&quot;);
+
+  if (fp==NULL) {
+    fprintf(stderr,&quot;File not found.&apos;n&quot;);
+    exit(-1);
+  }
+
+
+  while(FitFread(fp,&amp;prm,&amp;fit) !=-1) {
+
+    FitToRadarScan(&amp;scn,&amp;prm,&amp;fit);
+    if (prm.scan !=1) continue;
+   
+    fprintf(stdout,&quot;%d&apos;n&quot;,scn.num);
+    RadarScanReset(&amp;scn);
+
+  }
+
+  return 0;
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

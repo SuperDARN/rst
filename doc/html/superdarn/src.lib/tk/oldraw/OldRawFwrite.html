@@ -1,0 +1,117 @@
+
+<head>
+<title>OldRawFwrite</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../superdarn/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/oldraw/index.html>oldraw</a></td><td>|</td>
+<td>OldRawFwrite</td>
+<td width=100% align=right><a href=../../../../superdarn/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">OldRawFwrite</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">int OldRawFwrite(FILE *rawfp,char *name,<a href="../../../../src.lib/tk/radar/structRadarParm.html"><code>struct RadarParm *prm</code></a>, <a href="../../../../src.lib/superdarn/atk/raw/structRawData.html"><code>struct RawData</code></a> *raw,int32 recnum,int *rtab);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">superdarn/oldrawwrite.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">oldraw</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="OldRawFwrite.html"><code>OldRawFwrite</code></a> function writes a <code>raw</code> data record to an open stream.</p>
+<p>The data is written to the open stream pointed to by the argument <em>fp</em>. The data record is contructed the radar parameter block pointed to by the argument <em>prm</em> and the <code>raw</code> data structure pointer to by the argument <em>raw</em>.</p>
+<p>The associated record number is given by the argument <em>recnum</em>.</p>
+<p>The <code>raw</code> data records are limited to a maximum of 75 ranges. However the data could consist of more ranges than this and some form of mapping from the actual number of ranges to the (75)allowed in the file is required. This is done by using the <em>rtab</em> argument which is a pointer to an array listing which actual range each of the (75) allowed in the file. If this argument is set to a <code>NULL</code> pointer then no mapping is done and the first (75) ranges are used.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns the number of bytes written on success. On error, (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/OldRawFwrite.c">OldRawFwrite.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* OldRawFwrite.c
+   ==============
+   Author: R.J.Barnes */
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;sys/stat.h&gt;
+#include &lt;unistd.h&gt;
+#include &quot;rtypes.h&quot;
+#include &quot;dmap.h&quot;
+#include &quot;limit.h&quot;
+#include &quot;rprm.h&quot;
+#include &quot;rawdata.h&quot;
+#include &quot;oldrawread.h&quot;
+#include &quot;oldrawwrite.h&quot;
+
+int main(int argc,char *argv[]) {
+ 
+  int thr=0; 
+  int recnum=0;
+
+  struct RadarParm prm;
+  struct RawData raw;
+
+  struct OldRawFp *fp;
+
+  fp=OldRawOpen(argv[1],NULL);
+
+  if (fp==NULL) {
+    fprintf(stderr,&quot;File not found.&apos;n&quot;);
+    exit(-1);
+  }
+
+  OldRawHeaderFwrite(stdout,&quot;rawwrite&quot;,&quot;1.00&quot;,thr,&quot;Demonstration code.&quot;);
+
+  while(OldRawRead(fp,&amp;prm,&amp;raw) !=-1) {
+    fprintf(stderr,&quot;%.4d-%.2d-%.2d %.2d:%.2d:%.2d&apos;n&quot;,
+             prm.time.yr,prm.time.mo,prm.time.dy,
+             prm.time.hr,prm.time.mt,prm.time.sc);
+
+    prm.cp=1000;
+    recnum++;
+    OldRawFwrite(stdout,&quot;rawwrite&quot;,&amp;prm,&amp;raw,recnum,NULL);
+    
+  }
+ 
+  OldRawClose(fp);
+
+  return 0;
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

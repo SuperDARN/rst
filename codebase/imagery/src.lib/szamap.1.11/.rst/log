@@ -1,0 +1,47 @@
+commit 02868a57f49d2ff5af88480eecc92833f81525d6
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:18 2012 -0400
+
+    Updated license
+
+commit b77e4bdacfd53bffa885be200df5b33286685507
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed Sep 15 10:41:00 2010 -0400
+
+    Modification for new polygon structure.
+
+commit 4dce075bcf32d1d6e32d809aab395d0bdf887c5b
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 9 10:35:51 2010 -0400
+
+    Switched to new SZA library.
+
+commit 0e69e3e2d1550b71a3cbdf3372e6b66231235a5e
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Mar 31 11:12:55 2010 -0400
+
+    Fixed SVG format
+
+commit 66a5c5fc1329bec1f0384fd867c333627be103c6
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Mar 31 11:03:43 2010 -0400
+
+    Added PNG example images
+
+commit 67145b93445ba0bf807053d5bfa22fa5a0c584d3
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Mar 31 09:49:34 2010 -0400
+
+    Converted documentation PPM images to PNG and renamed rplot files
+
+commit eef281765b019949cf022f7f40240597a2a24f5f
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Mar 31 08:55:41 2010 -0400
+
+    Documentation cleanup
+
+commit 2b7a1d4a8b575077c35aaa45af31c1b8b684aba3
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:34 2010 +0000
+
+    Initial commit

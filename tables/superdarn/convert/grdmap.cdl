@@ -1,0 +1,57 @@
+netcdf dmap {
+
+dimensions:
+	block=unlimited;
+	string=256;
+	station=20;
+        vector=2000;
+        shf=200;
+        model=2000;
+        boundary=180;        
+
+
+variables:
+	short start_year(block);
+	short start_month(block);
+	short start_day(block);
+	short start_hour(block);
+	short start_minute(block);
+	double start_second(block);
+	short end_year(block);
+	short end_month(block);
+	short end_day(block);
+	short end_hour(block);
+	short end_minute(block);
+	double end_second(block);
+        short stid(block,station);
+	short channel(block,station);
+	short nvec(block,station);
+	float freq(block,station);
+	short major_revision(block,station);
+	short minor_revision(block,station);
+	short program_id(block,station);
+	float noise_mean(block,station);
+	float noise_sd(block,station);
+	short gsct(block,station);
+	float v_min(block,station);
+	float v_max(block,station);
+	float p_min(block,station);
+	float p_max(block,station);
+	float w_min(block,station);
+	float w_max(block,station);
+	float ve_min(block,station);
+	float ve_max(block,station);
+	float vector_mlat(block,vector);
+	float vector_mlon(block,vector);
+	float vector_kvect(block,vector);
+	short vector_stid(block,vector);
+	short vector_channel(block,vector);
+	int vector_index(block,vector);
+	float vector_vel_median(block,vector);
+	float vector_vel_sd(block,vector);
+	float vector_pwr_median(block,vector);
+	float vector_pwr_sd(block,vector);
+	float vector_wdt_median(block,vector);
+	float vector_wdt_sd(block,vector);
+
+}

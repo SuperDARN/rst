@@ -1,0 +1,228 @@
+
+<head>
+<title>ContourTransform</title>
+<link rel=stylesheet href=../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../index.html">Home</a><td>|</td>
+<td><a href=../../../general/index.html>general</a></td>
+<td>|</td><td><a href=../../../general/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../general/src.lib/contour/index.html>contour</a></td><td>|</td>
+<td>ContourTransform</td>
+<td width=100% align=right><a href=../../../general/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">ContourTransform</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;"> <a href="../../../src.lib/polygon/PolygonData.html"><code>struct PolygonData</code></a> **ContourTransform(int cnum,<a href="../../../src.lib/general/polygon/structPolygonData.html"><code>struct PolygonData</code></a> **src, int (*trf)(int ssze,void *src,int dsze, void *dst,void *data), void *data);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">general/contour.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">contour</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="ContourTransform.html"><code>ContourTransform</code></a> function applies a map transform to a set of contours.</p>
+<p>The argument <em>cnum</em> gives the number of contours in the array pointed to by the argument <em>src</em>.</p>
+<p>The argument <em>trnf</em> is a pointer to a function of the form:</p>
+
+<center><table><tr><td  class="docbox" style="font-family: courier;">int (*trnf) (int ssze,void *src,int dsze,void *dst,void *dptr);</td></tr></table></center>
+<p>This function performs the modification of the points in the contour.</p>
+<p>The size in bytes of the input coordinate is given be the argument <em>ssze</em>. The coordinate data is pointed to by the argument <em>src</em>. The first two elements stored in the coordinate data block are assumed to be single precision floating point numbers of type float that represent the actual coordinate.</p>
+<p>The size in bytes of the output coordinate is given be the argument <em>dsze</em>. The coordinate data is pointed to by the argument <em>dst</em>. The first two elements stored in the coordinate data block are assumed to be single precision floating point numbers of type float that represent the actual coordinate.</p>
+<p>The transformation should read the coordinate from <em>src</em>, modify it and write the value to <em>dst</em>.</p>
+<p>The <em>data</em> argument of the  <a href="ContourTransform.html"><code>ContourTransform</code></a> function is passed directly as the <em>dptr</em> argument of the transform and allows extra parameters to be passed to the function.</p>
+<p>The function should return a zero if the transformation was successfully applied or (-1) if an error occurred.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns a pointer to an array of polygons that define the mapped contours. On error, a <code>NULL</code> pointer is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, a <code>NULL</code> pointer is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center><img src="img/ContourTransform.png"></img><br><a href="img/ContourTransform.svg">Download SVG</a>|<a href="img/ContourTransform.ps.gz">Download PostScript</a>|<a href="img/ContourTransform.rp.xml.gz">Download rXML</a></center>
+         <br><center>Source Code: <a href="src/ContourTransform.c">ContourTransform.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* ContourTransform.c
+   ==================
+   Author: R.J.Barnes
+*/
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;math.h&gt;
+#include &quot;rmath.h&quot;
+#include &quot;rtypes.h&quot;
+#include &quot;rxml.h&quot;
+#include &quot;option.h&quot;
+#include &quot;rfbuffer.h&quot;
+#include &quot;fontdb.h&quot;
+#include &quot;polygon.h&quot;
+#include &quot;rplot.h&quot;
+#include &quot;rplotgraw.h&quot;
+#include &quot;contour.h&quot;
+
+
+struct FrameBuffer *img;
+double val[32*32];
+
+double cval[]={15,30,45,60,75};
+
+struct PolygonData **ctr;
+struct PolygonData **nctr;
+
+int rotate(int ssze,void *src,int dsze,void *dst,void *data) {
+
+  float *arg=NULL;
+  float *pnt;
+  float px,py;
+  float rad;
+  arg=(float *) data;
+  rad=arg[0]*PI/180.0;
+ 
+  pnt=(float *) src;
+  px=pnt[0];
+  py=pnt[1];
+  pnt=(float *) dst;
+  
+  pnt[0]=0.5+(px-0.5)*cos(rad)-(py-0.5)*sin(rad);
+  pnt[1]=0.5+(px-0.5)*sin(rad)+(py-0.5)*cos(rad);
+  return 0;
+}
+
+int txtbox(char *fntname,float sze,int num,char *txt,float *box,void *data) {
+  
+  struct FrameBufferFontDB *fontdb;
+  struct FrameBufferFont *fnt;
+  int tbox[3];
+
+  fontdb=(struct FrameBufferFontDB *)data;
+  if (fontdb==NULL) return -1;
+  fnt=FrameBufferFontDBFind(fontdb,fntname,sze);
+
+  FrameBufferTextBox(fnt,num,txt,tbox);
+  
+  box[0]=tbox[0];
+  box[1]=tbox[1];
+  box[2]=tbox[2];
+  return 0;
+}
+
+int stream(char *buf,int sze,void *data) {
+  FILE *fp;
+  fp=(FILE *) data;
+  fwrite(buf,sze,1,stdout);
+  return 0;
+} 
+
+int main(int argc,char *argv[]) {
+
+  struct FrameBufferFontDB *fontdb=NULL;
+  struct Rplot *rplot=NULL;
+  struct RplotMatrix m;
+
+  unsigned int bgcol=0xffffffff;
+  unsigned int fgcol=0xff000000;
+  int i,j;
+ 
+  float marg[1];
+
+  int smth=2; /* trace all cells */
+  int cflg=0; /* include open contours */
+  int rflg=0; /* no wrapping */
+  int bflg=0; /* trace along boundaries */
+
+  char txt[16];
+  float wdt=400,hgt=400;
+  float width=0.5;
+ 
+  char *envstr;
+  FILE *fontfp;
+
+
+  envstr=getenv(&quot;FONTDB&quot;);
+  fontfp=fopen(envstr,&quot;r&quot;);
+  if (fontfp !=NULL) {
+   fontdb=FrameBufferFontDBLoad(fontfp);
+   fclose(fontfp);
+  }
+ 
+  if (fontdb==NULL) {
+   fprintf(stderr,&quot;Could not load fonts.&apos;n&quot;);
+   exit(-1);
+  }
+
+
+  img=FrameBufferMake(&quot;dummy&quot;,32,32,8);
+  
+  for (i=0;i&lt;32;i++) {
+    for (j=0;j&lt;32;j++) {
+      val[i*32+j]=50+50.0*cos(j*2.8*PI/64)*cos(i*3.5*PI/32);
+      img-&gt;img[i*32+j]=255*val[i*32+j]/100;
+      
+    }
+  }
+  
+  ctr=Contour(val,contour_DOUBLE,32,32,5,cval,smth,cflg,rflg,bflg);
+
+  marg[0]=90;
+  nctr=ContourTransform(5,ctr,rotate,marg);
+
+  rplot=RplotMake();
+  RplotSetText(rplot,stream,stdout);   
+  RplotMakeDocument(rplot,&quot;ContourModify&quot;,&quot;1&quot;,wdt,hgt,24);
+  RplotMakePlot(rplot,&quot;ContourModify&quot;,wdt,hgt,24);
+
+  RplotRectangle(rplot,NULL,0,0,wdt,hgt,
+                  1,bgcol,0x0f,0,NULL);
+ 
+ 
+  m.a=wdt/32;
+  m.b=0;
+  m.c=0;
+  m.d=hgt/32;
+  RplotImage(rplot,&amp;m,img,0x0f,0,0,1);  
+
+  for (i=0;i&lt;5;i++) {
+    sprintf(txt,&quot;%.2d&quot;,(int) cval[i]);
+    PlotRawContour(rplot,nctr[i],0,0,wdt,hgt,0.1,0.5,
+                30,i,5,strlen(txt),txt,fgcol,0x0f,width,
+		NULL,&quot;Helvetica&quot;,10.0,txtbox,fontdb);
+  } 
+  ContourFree(5,ctr);  
+  ContourFree(5,nctr);  
+           
+  RplotEndPlot(rplot);
+  RplotEndDocument(rplot);
+  return 0;
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>base</project>
+<name>scdoc</name>
+<location>src.bin/xmldoc/scdoc</location>
+<syntax>scdoc --help</syntax>
+<syntax>scdoc <ar>table</ar> <ar>script</ar></syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on><ar>table</ar></on><od>filename of the file containing the table of search and replace terms.</od>
+</option>
+<option><on><ar>script</ar></on><od>outline text script.</od></option>
+<synopsis><p>Simple script search and replace function.</p></synopsis>
+<description><p>The program performs simple search and replace operations on a text file known as a script. The script file contains special tags in the form of HTML comments that are replaced with text taken from a lookup table.</p>
+<p>The lookup table is an XML database containing a list of tags to search for and the replacement text to subsitute:</p>
+<quote>&lt;table&gt;
+&lt;entry&gt;
+&lt;search&gt;NAME&lt;/search&gt;
+&lt;replace&gt;Robin Barnes&lt;/replace&gt;
+&lt;/entry&gt;
+
+&lt;entry&gt;
+&lt;search&gt;MAIL&lt;/search&gt;
+&lt;replace&gt;robin.barnes@jhuapl.edu&lt;/replace&gt;
+&lt;/entry&gt;
+&lt;/table&gt;
+</quote>
+<p>The script is an ASCII file and can be either plain text or HTML;</p>
+
+<quote>
+&lt;body&gt;
+&lt;h1&gt;Welcome, &lt;!--NAME--&gt;&lt;/h1&gt;
+&lt;p&gt;Your email address is &lt;!--MAIL--&gt;&lt;/p&gt;
+&lt;/body&gt;
+</quote>
+<p>In the above example the two HTML comments are replaced with the text from the lookup table:</p>
+
+<quote>
+&lt;body&gt;
+&lt;h1&gt;Welcome, Robin Barnes&lt;/h1&gt;
+&lt;p&gt;Your email address is robin.barnes@jhuapl.edu&lt;/p&gt;
+&lt;/body&gt;
+</quote>
+<p>The lookup table and script are read from the two files specified on the command line, the resultant output text is written to standard output.</p>
+<p>This program is primarily used to generate HTML pages for the documentation system.</p>
+</description>
+<example>
+<command>scdoc table.xml page.script &gt; page.html</command>
+<description>Read the lookup table from the file "<code>table.xml</code>" and use it to replace text in the script "<code>page.script</code>". Write the HTML output to the file "<code>page.html</code>".
+</description>
+</example>
+
+
+</binary>

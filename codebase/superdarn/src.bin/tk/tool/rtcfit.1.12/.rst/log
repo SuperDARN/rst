@@ -1,0 +1,59 @@
+commit b0c976e87bc4bcd26d9127c0885f02186a3ae82c
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:08 2012 -0400
+
+    Updated license
+
+commit ac4a03c472a6768af9a6e3b29918933bbb9cea8d
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Aug 26 14:07:31 2011 -0400
+
+    Removed redundant tests for TCP/IP libraries
+
+commit e271ee971e5a717d08e1af404a5c52a4298ef26f
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Thu Jul 21 13:16:19 2011 -0400
+
+    Removed stream selection.
+
+commit 44bbfc45eb916817d6d3be387588953928ee6417
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Thu Sep 30 11:16:04 2010 -0400
+
+    Removed redundant "addid" option.
+
+commit 8c51d3a5d4a0f0123410cc22fc58ed3d6448fb42
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Jul 16 16:16:16 2010 -0400
+
+    Removed redundant code to store 24 hours of data - takes too long.
+
+commit 8e6a08e63292525149cdaa7579b5f0145ec41d02
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Jul 15 13:36:53 2010 -0400
+
+    Implmeneted the "last 24 hours" functionality to store the last 24 hours of data.
+
+commit 36c0b403907eda45bd329339755a454e8385197d
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Fri Jun 18 08:48:33 2010 -0400
+
+    Fixed writing of file.
+
+commit e56cb1f65c5fe31cfdfe9b117b86945d93fb62f6
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 08:32:41 2010 -0400
+
+    Updated documentation
+
+commit 858723afd53d46511e1cd2037d9f545505d6b9a6
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:45:42 2010 -0400
+
+    Fixed makefile
+
+commit ccb0f3afa4766729d92e7ae2843866580e12339c
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:07 2010 +0000
+
+    Initial commit

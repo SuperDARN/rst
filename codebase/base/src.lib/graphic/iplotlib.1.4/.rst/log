@@ -1,0 +1,23 @@
+commit 8ae1f323a1452c8c135c78e768ad47fd220d9029
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:12 2012 -0400
+
+    Updated license
+
+commit 450a58c0ab8266d6a27ec6838b4739b9be9d9664
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Sep 10 10:07:08 2010 -0400
+
+    Added missing include directory.
+
+commit c00aa6f557f0ef48197e644804e79fb3fe41cb1c
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Fri Aug 27 09:30:28 2010 -0400
+
+    Changed library name to iplot to avoid conflict with gnuplotutils
+
+commit 2efe6a1356983dc14f4ca94792bc079381046620
+Author: Code Development Account <code@robin-barness-macbook-pro.local>
+Date:   Tue May 11 06:46:50 2010 -0400
+
+    Plot abstraction library.

@@ -1,0 +1,29 @@
+commit 32479196607874f3714ec486c6d3c9a4368541c4
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:57 2012 -0400
+
+    Updated license
+
+commit 24f0bca79280cee878629f05755aa07d81f53f50
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 4 15:03:57 2010 -0400
+
+    Fixed memory allocation error in file searches.
+
+commit 5c373b8d58614793a8831ae07e15a25b59d1e312
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 09:56:07 2010 -0400
+
+    RST3 Update
+
+commit 5dbce0986ec91637b2a950ae9795dddc1dc51655
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Mar 30 15:16:37 2010 -0400
+
+    Fixed documentation.
+
+commit 0597602138a6f286717faf945d6adfae424b0cbf
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:22 2010 +0000
+
+    Initial commit

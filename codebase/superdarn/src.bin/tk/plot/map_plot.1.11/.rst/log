@@ -1,0 +1,71 @@
+commit 32fc09840f69c842fdd511eb292f1b045a83c4e1
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:02 2012 -0400
+
+    Updated license
+
+commit 223030e873599a6fa72248c2b0c65b0b1f72b739
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Aug 26 15:55:58 2011 -0400
+
+    Fixed issue with Southern Hemisphere reference vector.
+
+commit de12dd9a4c8fcf4c9b4fb48d7994da72465befa5
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Oct 12 08:39:06 2010 -0400
+
+    Corrected rotation for Southern hemisphere.
+
+commit a0ffbe2de8c2a3f46a72377d75f4b44eba1a03da
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed Sep 15 11:39:20 2010 -0400
+
+    New mapping functions
+
+commit 08000a4d0af902cfa3ee272695abb9f0e127ad84
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Aug 31 09:52:06 2010 -0400
+
+    Changed makefile for iplot library.
+
+commit 0d428a058fe278aadd53725c14bc7fe686f13ff4
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Fri Aug 27 11:19:07 2010 -0400
+
+    Renamed iplot.h
+
+commit c781e21b579c2996b414d304d8e3c8fca150f10b
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Aug 16 11:48:10 2010 -0400
+
+    Added PNG Support
+
+commit 6e66903d4a5c012fdcbe23df5f27c34782725c30
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 08:34:32 2010 -0400
+
+    Updated documentation
+
+commit 4895e4758f5981c7b9fca7fba9c6f1bd7c609cc1
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 9 14:40:29 2010 -0400
+
+    Changed SZA functions.
+
+commit 2dd25113d8e274c190e01fdaff770e56f389a93b
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 9 10:10:43 2010 -0400
+
+    Adopted MLT library.
+
+commit c1603276d9454c261baac3f64d9179722cd38b8e
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:36:22 2010 -0400
+
+    Fixed makefile.
+
+commit 4b68dd72f06e0942aed69153c5486faef4a44100
+Author: Code Development Account <code@robin-barness-macbook-pro.local>
+Date:   Tue May 11 06:48:35 2010 -0400
+
+    Map_plot

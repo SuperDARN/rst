@@ -1,0 +1,73 @@
+<head>
+<title>ppmxtoppm</title>
+<link rel=stylesheet href="../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../base/index.html>base</a></td>
+<td>|</td><td><a href=../../../../base/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../base/src.bin/graphic/index.html>graphic</a></td><td>|</td>
+<td>ppmxtoppm</td>
+<td width=100% align=right><a href=../../../../base/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">ppmxtoppm</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+ppmxtoppm --help<br>ppmxtoppm [-bgcol <em>rrggbb</em>] [-a <em>alphaname</em>] [<em>name</em>]<br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Convert an extended Portable PixMap (PPMX) image to Portable PixMap (PPM).</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-bgcol <em>rrggbb</em></code></td><td valign="top">set the background color of the output image to <em>rrggbb</em>, specified as the  hexadecimal value for the 24-bit red,green and blue component color.</td></tr>
+<tr><td width="150" valign="top"><code>-alpha <em>alphaname</em></code></td><td valign="top">save the alpha channel of the file as the file <em>alphaname</em>.</td></tr>
+<tr><td width="150" valign="top"><code><em>name</em></code></td><td valign="top">input image filename. If this is omitted the image  will be read from standard input.</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Convert an extended Portable PixMap (PPMX) image to Portable PixMap (PPM).</p>
+<p>The PPM image file is written to standard output.</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">ppmxtoppm inp.ppmx &gt; out.ppm</pre></td></tr></table>
+<p>Convert PPMX file <code>inp.ppmx</code> to the PPM file <code>out.ppm</code>.
+</p>
+
+<table ><tr><td class="docbox" ><pre width="80">ppmxtoppm -bgcol ff0000 inp.ppmx &gt; out.ppm</pre></td></tr></table>
+<p>Convert PPMX file <code>inp.ppmx</code> to the PPM file <code>out.ppm</code>. Set the background color to <code>ff0000</code> (Red).
+</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

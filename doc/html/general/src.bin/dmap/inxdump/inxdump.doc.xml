@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>general</project>
+<name>inxdump</name>
+<location>src.bin/dmap/inxdump</location>
+<syntax>inxdump --help</syntax>
+<syntax>inxdump [-xtd] [<ar>name</ar>]</syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>-xtd</on><od>the index file is an extended index that contains both start and stop time.</od>
+</option>
+<option><on><ar>name</ar></on><od>filename of the DataMap index file, if this is omitted the document will be read from standard input.</od>
+</option>
+<synopsis><p>Dump the contents of a DataMap index file.</p></synopsis>
+<description><p>Dump the contents of a DataMap index file.</p>
+<p>Many file formats that use the DataMap format have associated index files. The index file contains a record time and file offset to quickly locate a particular block or record. These index files nearly always have the same format and this utility provides a plain ASCII dump of an index.</p>
+<p>If the "<code>-xtd</code>" option is specified then the index file is assumed to be an extended index and contain both the start time and stop time of each record.</p>
+</description>
+<example>
+<command>inxdump test.inx | more</command>
+<description>Dump the index file "<code>test.inx</code>", paginating using the <code>more</code> command.</description>
+</example>
+
+<example>
+<command>inxdump -xtd test.inx &gt inx.txt</command>
+<description>Dump the extended index file "<code>test.inx</code>", and store it in the file "<code>inx.txt</code>"</description>
+</example>
+
+
+
+</binary>
+
+

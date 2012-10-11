@@ -1,0 +1,278 @@
+/* fitwrite.c
+   ========== 
+   Author R.J.Barnes
+*/
+
+/*
+ LICENSE AND DISCLAIMER
+ 
+ Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
+ 
+ This file is part of the Radar Software Toolkit (RST).
+ 
+ RST is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Lesser General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ any later version.
+ 
+ RST is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Lesser General Public License for more details.
+ 
+ You should have received a copy of the GNU Lesser General Public License
+ along with RST.  If not, see <http://www.gnu.org/licenses/>.
+ 
+ 
+ 
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <zlib.h>
+#include "rtypes.h"
+#include "dmap.h"
+#include "rprm.h"
+#include "fitblk.h"
+#include "fitdata.h"
+
+
+
+int FitEncode(struct DataMap *ptr,struct RadarParm *prm, struct FitData *fit) {
+
+  int c,x;
+  int32 snum,xnum;
+  int32 p0num;
+
+  int16 *slist=NULL;
+  float *pwr0=NULL;
+
+  int16 *nlag=NULL;
+
+  char *qflg=NULL;
+  char *gflg=NULL;
+
+  float *p_l=NULL;
+  float *p_l_e=NULL;
+  float *p_s=NULL;
+  float *p_s_e=NULL;
+
+  float *v=NULL;
+  float *v_e=NULL;
+
+  float *w_l=NULL;
+  float *w_l_e=NULL;
+  float *w_s=NULL;
+  float *w_s_e=NULL;
+
+  float *sd_l=NULL;
+  float *sd_s=NULL;
+  float *sd_phi=NULL;
+
+  char *x_qflg=NULL;
+  char *x_gflg=NULL;
+
+  float *x_p_l=NULL;
+  float *x_p_l_e=NULL;
+  float *x_p_s=NULL;
+  float *x_p_s_e=NULL;
+
+  float *x_v=NULL;
+  float *x_v_e=NULL;
+
+  float *x_w_l=NULL;
+  float *x_w_l_e=NULL;
+  float *x_w_s=NULL;
+  float *x_w_s_e=NULL;
+
+  float *phi0=NULL;
+  float *phi0_e=NULL;
+  float *elv=NULL;
+  float *elv_low=NULL;
+  float *elv_high=NULL;
+
+  float *x_sd_l=NULL;
+  float *x_sd_s=NULL;
+  float *x_sd_phi=NULL;
+
+  float sky_noise;
+  float lag0_noise;
+  float vel_noise;
+
+  DataMapAddScalar(ptr,"fitacf.revision.major",DATAINT,
+		    &fit->revision.major);
+  DataMapAddScalar(ptr,"fitacf.revision.minor",DATAINT,
+		    &fit->revision.minor);
+
+  sky_noise=fit->noise.skynoise;
+  lag0_noise=fit->noise.lag0;
+  vel_noise=fit->noise.vel;
+
+  DataMapStoreScalar(ptr,"noise.sky",DATAFLOAT,&sky_noise);
+  DataMapStoreScalar(ptr,"noise.lag0",DATAFLOAT,&lag0_noise);
+  DataMapStoreScalar(ptr,"noise.vel",DATAFLOAT,&vel_noise);
+
+  
+  p0num=prm->nrang;
+  pwr0=DataMapStoreArray(ptr,"pwr0",DATAFLOAT,1,&p0num,NULL);
+  for (c=0;c<p0num;c++) pwr0[c]=fit->rng[c].p_0;
+ 
+  snum=0;
+  for (c=0;c<prm->nrang;c++) {
+    if ( (fit->rng[c].qflg==1) || 
+         ((fit->xrng !=NULL) && (fit->xrng[c].qflg==1))) snum++;  
+  }
+
+  if (prm->xcf !=0) xnum=snum;
+  else xnum=0;
+ 
+  if (snum==0) return 0;
+
+  slist=DataMapStoreArray(ptr,"slist",DATASHORT,1,&snum,NULL);
+  nlag=DataMapStoreArray(ptr,"nlag",DATASHORT,1,&snum,NULL);
+
+  qflg=DataMapStoreArray(ptr,"qflg",DATACHAR,1,&snum,NULL); 
+  gflg=DataMapStoreArray(ptr,"gflg",DATACHAR,1,&snum,NULL); 
+  
+  p_l=DataMapStoreArray(ptr,"p_l",DATAFLOAT,1,&snum,NULL);   
+  p_l_e=DataMapStoreArray(ptr,"p_l_e",DATAFLOAT,1,&snum,NULL); 
+  
+  p_s=DataMapStoreArray(ptr,"p_s",DATAFLOAT,1,&snum,NULL); 
+  p_s_e=DataMapStoreArray(ptr,"p_s_e",DATAFLOAT,1,&snum,NULL); 
+  v=DataMapStoreArray(ptr,"v",DATAFLOAT,1,&snum,NULL); 
+  v_e=DataMapStoreArray(ptr,"v_e",DATAFLOAT,1,&snum,NULL); 
+ 
+  w_l=DataMapStoreArray(ptr,"w_l",DATAFLOAT,1,&snum,NULL); 
+  w_l_e=DataMapStoreArray(ptr,"w_l_e",DATAFLOAT,1,&snum,NULL); 
+  w_s=DataMapStoreArray(ptr,"w_s",DATAFLOAT,1,&snum,NULL); 
+  w_s_e=DataMapStoreArray(ptr,"w_s_e",DATAFLOAT,1,&snum,NULL); 
+  
+  sd_l=DataMapStoreArray(ptr,"sd_l",DATAFLOAT,1,&snum,NULL); 
+  sd_s=DataMapStoreArray(ptr,"sd_s",DATAFLOAT,1,&snum,NULL); 
+  sd_phi=DataMapStoreArray(ptr,"sd_phi",DATAFLOAT,1,&snum,NULL); 
+  
+  if (prm->xcf !=0) {
+    x_qflg=DataMapStoreArray(ptr,"x_qflg",DATACHAR,1,&xnum,NULL); 
+    x_gflg=DataMapStoreArray(ptr,"x_gflg",DATACHAR,1,&xnum,NULL); 
+  
+    x_p_l=DataMapStoreArray(ptr,"x_p_l",DATAFLOAT,1,&xnum,NULL);   
+    x_p_l_e=DataMapStoreArray(ptr,"x_p_l_e",DATAFLOAT,1,&xnum,NULL); 
+    x_p_s=DataMapStoreArray(ptr,"x_p_s",DATAFLOAT,1,&xnum,NULL); 
+    x_p_s_e=DataMapStoreArray(ptr,"x_p_s_e",DATAFLOAT,1,&xnum,NULL); 
+  
+    x_v=DataMapStoreArray(ptr,"x_v",DATAFLOAT,1,&xnum,NULL); 
+    x_v_e=DataMapStoreArray(ptr,"x_v_e",DATAFLOAT,1,&xnum,NULL); 
+ 
+    x_w_l=DataMapStoreArray(ptr,"x_w_l",DATAFLOAT,1,&xnum,NULL); 
+    x_w_l_e=DataMapStoreArray(ptr,"x_w_l_e",DATAFLOAT,1,&xnum,NULL);   
+    x_w_s=DataMapStoreArray(ptr,"x_w_s",DATAFLOAT,1,&xnum,NULL); 
+    x_w_s_e=DataMapStoreArray(ptr,"x_w_s_e",DATAFLOAT,1,&xnum,NULL); 
+  
+    phi0=DataMapStoreArray(ptr,"phi0",DATAFLOAT,1,&xnum,NULL); 
+    phi0_e=DataMapStoreArray(ptr,"phi0_e",DATAFLOAT,1,&xnum,NULL); 
+    elv=DataMapStoreArray(ptr,"elv",DATAFLOAT,1,&xnum,NULL); 
+    elv_low=DataMapStoreArray(ptr,"elv_low",DATAFLOAT,1,&xnum,NULL); 
+    elv_high=DataMapStoreArray(ptr,"elv_high",DATAFLOAT,1,&xnum,NULL); 
+
+    x_sd_l=DataMapStoreArray(ptr,"x_sd_l",DATAFLOAT,1,&xnum,NULL); 
+    x_sd_s=DataMapStoreArray(ptr,"x_sd_s",DATAFLOAT,1,&xnum,NULL); 
+    x_sd_phi=DataMapStoreArray(ptr,"x_sd_phi",DATAFLOAT,1,&xnum,NULL);   
+  }
+  x=0;
+  for (c=0;c<prm->nrang;c++) {
+    if ( (fit->rng[c].qflg==1) ||
+         ((fit->xrng !=NULL) && (fit->xrng[c].qflg==1))) {
+      slist[x]=c;
+      nlag[x]=fit->rng[c].nump;
+      
+      qflg[x]=fit->rng[c].qflg;
+      gflg[x]=fit->rng[c].gsct;
+        
+      p_l[x]=fit->rng[c].p_l;
+      p_l_e[x]=fit->rng[c].p_l_err;
+      p_s[x]=fit->rng[c].p_s;
+      p_s_e[x]=fit->rng[c].p_s_err;
+        
+      v[x]=fit->rng[c].v;
+      v_e[x]=fit->rng[c].v_err;
+
+      w_l[x]=fit->rng[c].w_l;
+      w_l_e[x]=fit->rng[c].w_l_err;
+      w_s[x]=fit->rng[c].w_s;
+      w_s_e[x]=fit->rng[c].w_s_err;
+
+      sd_l[x]=fit->rng[c].sdev_l;
+      sd_s[x]=fit->rng[c].sdev_s;
+      sd_phi[x]=fit->rng[c].sdev_phi;
+
+      if (xnum !=0) {
+        x_qflg[x]=fit->xrng[c].qflg;
+        x_gflg[x]=fit->xrng[c].gsct;
+    
+        x_qflg[x]=fit->xrng[c].qflg;
+        x_gflg[x]=fit->xrng[c].gsct;
+        
+        x_p_l[x]=fit->xrng[c].p_l;
+        x_p_l_e[x]=fit->xrng[c].p_l_err;
+        x_p_s[x]=fit->xrng[c].p_s;
+        x_p_s_e[x]=fit->xrng[c].p_s_err;
+        
+        x_v[x]=fit->xrng[c].v;
+        x_v_e[x]=fit->xrng[c].v_err;
+
+  
+        x_w_l[x]=fit->xrng[c].w_l;
+        x_w_l_e[x]=fit->xrng[c].w_l_err;
+        x_w_s[x]=fit->xrng[c].w_s;
+        x_w_s_e[x]=fit->xrng[c].w_s_err;
+
+        phi0[x]=fit->xrng[c].phi0;
+        phi0_e[x]=fit->xrng[c].phi0_err;
+        elv[x]=fit->elv[c].normal;
+        elv_low[x]=fit->elv[c].low;
+        elv_high[x]=fit->elv[c].high;
+
+        x_sd_l[x]=fit->xrng[c].sdev_l;
+        x_sd_s[x]=fit->xrng[c].sdev_s;
+        x_sd_phi[x]=fit->xrng[c].sdev_phi;
+      }
+      x++;
+    }
+  }      
+  return 0;
+}
+
+
+
+int FitWrite(int fid,struct RadarParm *prm,
+            struct FitData *fit) {
+
+  int s;
+  struct DataMap *ptr=NULL;
+
+  ptr=DataMapMake();
+  if (ptr==NULL) return -1;
+
+  s=RadarParmEncode(ptr,prm);
+  
+  if (s==0) s=FitEncode(ptr,prm,fit);
+  
+  if (s==0) {
+    if (fid !=-1) s=DataMapWrite(fid,ptr);
+    else s=DataMapSize(ptr);
+  }
+
+  DataMapFree(ptr);
+  return s;
+
+}
+
+
+int FitFwrite(FILE *fp,struct RadarParm *prm,
+              struct FitData *fit) {
+  return FitWrite(fileno(fp),prm,fit);
+}
+
+

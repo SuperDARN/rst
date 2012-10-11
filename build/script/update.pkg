@@ -1,0 +1,54 @@
+#!/bin/bash
+
+set -e
+
+# update.pkg
+# ==========
+# R.J.Barnes
+#
+# Purpose:
+#
+# Bring a package contents up to date.
+#
+# Syntax:
+#
+# update.pkg project package
+#
+# Description:
+#
+# Bring a package contents up to date by re-creating the element ID list
+# and committing it to the repository. The version tag is not updated.
+
+##############################################################################
+
+prj=${1}
+pkg=${2}
+
+shift 2
+
+##############################################################################
+
+#  Test for valid command line
+
+##############################################################################
+
+if test -z "${pkg}" 
+then
+  echo "update.pkg project package" 
+  exit 1
+fi
+
+build=${BUILD}
+
+##############################################################################
+
+#  Start generating the distribution from the module list
+
+##############################################################################
+
+cd ${RPKG}/${prj}/${pkg}
+make.id ${prj} ${pkg}
+git.pkg ${prj} ${pkg} add id.txt
+git.pkg ${prj} ${pkg} commit "${@}"
+
+exit 0

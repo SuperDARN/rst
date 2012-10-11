@@ -1,0 +1,53 @@
+commit bd04f64df1099babcbee71fd78a8467984083b6e
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:56 2012 -0400
+
+    Updated license
+
+commit e52029d1e1b899179e067ebbda31af8d41cfd050
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Sun Mar 27 05:42:36 2011 -0400
+
+    Added improved seek and index.
+
+commit 76fbb911ffc6460e31b4621a8be2e4c7d73c32d1
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 23 13:46:46 2010 -0400
+
+    Fixed search routine.
+
+commit 0cff0b23030dfa5822af2930099ca4e124359b9c
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Sat Jun 19 16:17:21 2010 -0400
+
+    Fixed bug in decoding ground scatter flag.
+
+commit 1d529a57e11a7095f689d09cf3f8219788b02e1b
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Sat Jun 12 10:22:47 2010 -0400
+
+    Removed redundant header.
+
+commit e32516d4d7c0e5b121707df19e1d941a29d818c7
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:57:04 2010 -0400
+
+    RST 3 update
+
+commit 1402c4f27d0886b1529e1b6e1f02dcbf303bf42a
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 09:55:36 2010 -0400
+
+    RST3 update
+
+commit dddafa5928a53c02bb01d64018409ea9df8f5b44
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Mar 30 15:10:38 2010 -0400
+
+    Fixed documentation.
+
+commit 7509720e3ff7a3d204d4dbb20d1322532cf28633
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:24 2010 +0000
+
+    Initial commit

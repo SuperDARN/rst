@@ -1,0 +1,29 @@
+commit d487577f3fe5e359300601a9d146efa6ea2bf393
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:18 2012 -0400
+
+    Updated license
+
+commit 720f740de6db6495e74cb8d9ba0a1d7133373422
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 09:29:29 2010 -0500
+
+    Modifications to allow arbitrarily dimensioned arrays.
+
+commit 706e3d07da364be6fb31a39ff66aed8a3425e585
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Thu Oct 14 11:44:39 2010 -0400
+
+    Vectorized AACGM call in preparation of DLM version.
+
+commit 2934dbd0cd7d3e106a6b6706605c84975835c420
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 16 06:25:12 2010 -0400
+
+    Moved MLT to a different library.
+
+commit 788bf5e0fd4b9cc4ee06ead1de5b0ff6487eed48
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Sat May 22 18:43:12 2010 -0400
+
+    AACGM IDL library.

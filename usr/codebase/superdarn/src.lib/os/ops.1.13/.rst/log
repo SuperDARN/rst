@@ -1,0 +1,59 @@
+commit 47d39193780b77631503aa4d29741259608e659a
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:55 2012 -0400
+
+    Updated license
+
+commit ad8af6b556c5f5b61bdfd2a2dda9e22333b641fc
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Dec 7 16:54:52 2010 -0500
+
+    Extended max range.
+
+commit e6fdef3790565ad7439bac48c12148bb3c36bdc6
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Dec 6 16:52:59 2010 -0500
+
+    Bug fixes for oregon
+
+commit 147f43af153a359c6b0d60c6b0c3a508a37d2855
+Author: Code Development Account <code@virtual-debian.localdomain>
+Date:   Fri Aug 6 08:39:09 2010 -0400
+
+    Added mplgexs to global variable list.
+
+commit 5d0050238d54a25bad18ee0be3b7fcd3721cc962
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Aug 5 15:17:43 2010 -0400
+
+    Added support for mplgexs
+
+commit 112a8334c04ccfec739e6c631251c63263404097
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Aug 5 14:05:42 2010 -0400
+
+    Changed lagnum to mplgexs
+
+commit 1121caaa4257a88448ecf3cb88984c749ea318c8
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Jun 10 17:29:48 2010 -0400
+
+    Fixed problems with the build routines.
+
+commit 0bf99ccfc0c9c8818b7c1a810ce78510b9a36971
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 12:45:25 2010 -0400
+
+    Added missing header.
+
+commit 89f7e5298bcb9f95ba9c9e0c2ee8968f0efcdee9
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 11:01:43 2010 -0400
+
+    RST 3 Update
+
+commit dfa7c44c8c8cf1c70310f3030fc4102e669cc3f4
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:46 2010 +0000
+
+    Initial commit

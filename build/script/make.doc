@@ -1,0 +1,159 @@
+#!/bin/bash
+
+set -e 
+
+# make.doc
+# ========
+# Author R.J.Barnes
+#
+# Purpose:
+#
+# Make documentation
+#
+# Syntax:
+#
+# make.doc project package
+#
+# Description:
+#
+# Make a documentation set for a package.
+#
+
+############################################################################
+
+############################################################################
+
+# Command line options
+
+############################################################################
+
+option=""
+c=0
+
+for arg in ${*}
+ do
+
+   if test "${arg}" = "-w"
+   then
+      option="-w"
+   else
+      if test ${c} -eq 0
+      then 
+         prj=${arg}
+      else
+         pkg=${arg}
+      fi
+      let c=c+1
+   fi
+ done
+
+if test -z "${pkg}"
+then
+  echo "make.doc [-w] project package"
+  exit
+fi
+
+
+build=${BUILD}
+
+pkgdir=${RPKG}/${prj}/${pkg}
+if test ! -d ${pkgdir}
+then
+  pkgdir=`find ${RPKG}/${prj}/ -name "${pkg}.*" | sort | tail -1`
+fi
+
+if test ! -d "${pkgdir}"
+then
+ echo "Failed to locate package"
+ exit 1
+fi
+
+ver=`get.version ${pkgdir}`
+
+log="${LOGPATH}/${prj}-${pkg}.doc.${ver}"
+dtval=`date +%Y%m%d.%H%M`
+
+
+
+############################################################################
+
+# Generate documenation section
+
+############################################################################
+
+makeaction() {
+  project=${1}
+  module=${2} 
+  type=${3}
+
+  codebase=${module%%/*}
+
+  if test "${codebase}" = "codebase"
+  then
+    src=${CODEBASE}/${module#codebase/}
+  elif test "${codebase}" = "usr"
+  then
+    src=${USR_CODEBASE}/${module#usr/codebase/}
+  else
+    src=${RSTPATH}/${module}
+  fi
+
+  if test ! -d ${src} 
+  then
+    src=${src}.*
+  fi
+
+
+  if test "${type}" = "doc"
+  then
+    make.doc.rfc ${option} ${CODEBASE} ${project}
+    if test -d ${src}/tutorial 
+    then
+      find ${src}/tutorial -name "*.doc.xml" \
+       -exec make.doc.tutorial ${option} {} \; 2>&1 | tee -a ${log}.${dtval}
+    fi
+  fi
+
+  if test "${type}" = "lib"
+  then
+    find ${src} -name "*.doc.xml" -exec make.doc.lib ${option} {} \; 2>&1 | \
+         tee -a ${log}.${dtval} 
+  fi
+
+  if test "${type}" = "bin"
+  then
+   find ${src} -name "*.doc.xml" -exec make.doc.bin ${option} {} \; 2>&1| \
+         tee -a ${log}.${dtval} 
+  fi
+  return 0
+}
+
+makedoc() {
+
+  SEP="+"
+
+  fname=${1}
+  modlst=`cat ${fname} | tr " " "${SEP}" `
+
+  for lval in ${modlst}
+  do
+    tmp=`echo ${lval} | tr "${SEP}" " "`
+    prm=${tmp%%#*} 
+    if test -z "${prm}"; then continue; fi
+    makeaction ${prm}
+  done
+  return 0
+}
+
+if test ! -s "${pkgdir}/build.txt"
+then
+  echo "Failed to locate build table"
+  exit 1
+fi
+
+mkdir -p ${LOGPATH}
+makedoc ${pkgdir}/build.txt 
+make.doc.frame ${option}
+exit 0
+
+

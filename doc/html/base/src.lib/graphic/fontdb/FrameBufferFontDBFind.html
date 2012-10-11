@@ -1,0 +1,131 @@
+
+<head>
+<title>FrameBufferFontDBFind</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../base/index.html>base</a></td>
+<td>|</td><td><a href=../../../../base/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/index.html>graphic</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/fontdb/index.html>fontdb</a></td><td>|</td>
+<td>FrameBufferFontDBFind</td>
+<td width=100% align=right><a href=../../../../base/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">FrameBufferFontDBFind</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;"><a href="../../../../src.lib/graphic/fbuffer/structFrameBufferFont.html"><code>struct FrameBufferFont</code></a> *FrameBufferFontDBFind(<a href="structFrameBufferFontDB.html"><code>struct FrameBufferFontDB</code></a> *ptr,char *name,int sze);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">base/fontdb.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">fontdb</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="FrameBufferFontDBFind.html"><code>FrameBufferFontDBFind</code></a> function attempts to locate a bitmap font in a font database.</p>
+<p>The structure containing the font database is pointed to by the argument <em>ptr</em>.</p>
+<p>The name of the font to search for is given by the zero terminated string pointed to by the argument <em>name</em> and the size of the font is given by the argument <em>sze</em>.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns a pointer to the structure containing the bitmap font on success. On error a <code>NULL</code> pointer is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error a <code>NULL</code> pointer is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center><img src="img/FrameBufferFontDBFind.png"></img><br></center>
+         <br><center>Source Code: <a href="src/FrameBufferFontDBFind.c">FrameBufferFontDBFind.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* FrameBufferFontDBFind.c
+   =======================
+   Author: R.J.Barnes
+*/
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &quot;rfbuffer.h&quot;
+#include &quot;fontdb.h&quot;
+
+int stream(char *buf,int sze,void *data) {
+  FILE *fp;
+  fp=(FILE *) data;
+  fwrite(buf,sze,1,stdout);
+  return 0;
+} 
+
+
+int main(int argc,char *argv[]) {
+
+  char *txt={&quot;Hello World&quot;};
+
+  int wdt=400;
+  int hgt=400;
+
+  struct FrameBuffer *fb=NULL;
+
+  struct FrameBufferFontDB *fontdb=NULL;
+  struct FrameBufferFont *font;
+
+  FILE *fontfp=NULL;
+  char *fntdbfname=NULL;
+
+  char *fontname=&quot;Helvetica&quot;;
+  float fontsize=34.0;
+
+  fntdbfname=getenv(&quot;FONTDB&quot;);
+  fontfp=fopen(fntdbfname,&quot;r&quot;);
+  if (fontfp !=NULL) {
+   fontdb=FrameBufferFontDBLoad(fontfp);
+   fclose(fontfp);
+  }
+ 
+  if (fontdb==NULL) {
+   fprintf(stderr,&quot;Could not load fonts.&apos;n&quot;);
+   exit(-1);
+  }
+
+  
+  fb=FrameBufferMake(&quot;image&quot;,wdt,hgt,24);
+
+  font=FrameBufferFontDBFind(fontdb,fontname,fontsize);
+
+
+  FrameBufferText(fb,NULL,font,20,200,strlen(txt),
+                  txt,0xffffffff,0x0f,1,NULL);
+
+  FrameBufferSavePPM(fb,stdout);
+  FrameBufferFree(fb);
+
+  FrameBufferFontDBFree(fontdb);
+
+  return 0;
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

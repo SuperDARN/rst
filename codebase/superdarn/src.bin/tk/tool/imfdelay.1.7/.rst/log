@@ -1,0 +1,41 @@
+commit 9381bd6f308666b6c5fd430899b53b12305da67f
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:05 2012 -0400
+
+    Updated license
+
+commit 1dd8ee593f2409c44e22b28ca34541ac02242dea
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Aug 24 16:04:48 2010 -0400
+
+    Switched to GEOPACK 2005
+
+commit 8f95d861a51dc2d9a594c503b1bf78aad25a711a
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Jul 16 09:50:22 2010 -0400
+
+    Fixed problem with spanning year boundaries.
+
+commit 52733f304b845e34fd2ba4f049630d08a41adbdf
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Jul 16 08:39:12 2010 -0400
+
+    Fixed issue with WIND SWE.
+
+commit 0db1990ddefc61d5b5abf7459f1185637aa30b72
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu May 27 10:32:26 2010 -0400
+
+    64 bit CDF support
+
+commit 30be71363c51cedf8431367081f51f1387876a15
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Fri Mar 19 20:51:07 2010 -0400
+
+    Added backup position if position data is not available.
+
+commit 4ad220437a96e2b4d81647ee477d588b1b0e4ba2
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Mar 18 19:16:46 2010 -0400
+
+    Propogate IMF delays.

@@ -1,0 +1,23 @@
+commit c23d3260ac2dccd30010331189dad9a49860d8b2
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:22 2012 -0400
+
+    Updated license
+
+commit f4ff7db74ffa8b303de7259a96bf74f27e6962e6
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed Dec 8 12:43:02 2010 -0500
+
+    Added padding to the color bar to deal with SVG output.
+
+commit a818e4ff7e17d4097806e7127389e165cf95a00d
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Sep 10 10:16:43 2010 -0400
+
+    Changed to iplot library.
+
+commit 6c12f0b37046d4e44dcdaf6c2887a023eb61060e
+Author: Code Development Account <code@robin-barness-macbook-pro.local>
+Date:   Tue May 11 06:47:44 2010 -0400
+
+    Grplot - graph library.

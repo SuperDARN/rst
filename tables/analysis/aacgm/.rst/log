@@ -1,0 +1,11 @@
+commit d60b20567bf77a3875bc598f82227cf12035d691
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Thu Mar 8 09:52:36 2012 -0500
+
+    Added 2010 Coefficients.
+
+commit 6b9ae2a1bd95b2d919967c827743c5763604694f
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 09:56:49 2010 -0400
+
+    AACGM coefficients

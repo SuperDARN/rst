@@ -1,0 +1,78 @@
+#!/bin/bash
+
+SEP="+"
+
+# rpkg.status
+# ==========
+# R.J.Barnes
+#
+# Purpose:
+#
+# Reports the status of the git repositories in a package.
+#
+# Syntax:
+#
+# rpkg.status project package
+#
+# Description:
+#
+# Reports the status of the git repositories based on project name 
+# and package.
+
+##############################################################################
+
+prj=${1}
+pkg=${2}
+
+##############################################################################
+
+#  Test for valid command line
+
+##############################################################################
+
+if test -z "${pkg}" 
+then
+  echo "rpkg.status project package" 
+  exit 1
+fi
+
+build=${BUILD}
+
+##############################################################################
+
+#  Check status of repositories
+
+##############################################################################
+
+checkelement() {
+
+  element=${1}
+  id=${2}
+  echo ${element} 
+  cd ${RSTPATH}/${element}
+  git --no-pager status
+  echo status=$?
+  return 0     
+}
+
+##############################################################################
+
+# Check repositories based on package content
+
+##############################################################################
+
+if test ! -s "${RPKG}/${prj}/${pkg}/id.txt"
+then
+  echo "Failed to locate package elements"
+  exit 1
+fi
+
+ellst=`cat ${RPKG}/${prj}/${pkg}/id.txt | tr " " "${SEP}" `
+
+for el in ${ellst}
+do
+  tmp=`echo ${el} | tr "${SEP}" " "`
+  prm=${tmp%%#*} 
+  if test -z "${prm}"; then continue; fi
+  checkelement ${prm}
+done

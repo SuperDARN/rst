@@ -1,0 +1,53 @@
+commit 7b4e86073f190298d41513c749ea58cadee78837
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:24 2012 -0400
+
+    Updated license
+
+commit 887e5a21d7d5994fe6160b9281376e40b0760c85
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Aug 26 14:06:24 2011 -0400
+
+    Removed redundant tests for TCP/IP libraries
+
+commit ba0d95257c1dba7bbdc301fce6aba5852c7947b0
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Jul 12 08:50:02 2011 -0400
+
+    Changed reset slightly - use the existing timeout when establishing the connection.
+
+commit 3eecaa49ace2b1268ffc5b092b181d6ed2f9230c
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Jul 12 08:47:37 2011 -0400
+
+    Added a reset clock in addition to the timeout - This should speed up resets.
+
+commit 8db2154436757d12bc956ecd66fa119815ab048b
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Sat Jul 9 13:39:02 2011 -0400
+
+    Cleaned up code and removed stream selection as redundant.
+
+commit f8b9c02f66aa69530a685f6b60675a0cc70e4472
+Author: Codfe Development Account <code@linux-pc.jhuapl.edu>
+Date:   Fri Jul 8 15:02:33 2011 -0400
+
+    Added code to set whether the time is logged or not.
+
+commit 407944690bca2478a09fc60fc2e4769ad95c4d64
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Tue Jun 15 13:56:46 2010 -0400
+
+    Removed old headers.
+
+commit 6802140d47462cd9563d28cadc4014de644c2477
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Tue Jun 15 13:35:36 2010 -0400
+
+    Changed socket options.
+
+commit 736f6a285ea4361c04fdd193c3474b317ce58d4c
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:36:42 2010 +0000
+
+    Initial commit

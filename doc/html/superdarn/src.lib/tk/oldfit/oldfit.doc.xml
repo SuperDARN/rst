@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>superdarn</project>
+<name>oldfit</name>
+<location>src.lib/tk/oldfit</location>
+<function>
+<name>OldFitClose</name>
+<location>src.lib/tk/oldfit</location>
+<header>superdarn/oldfitread.h</header>
+<syntax>void OldFitClose(<sn href="structOldFitFtp.html">struct OldFitFp</sn> *ptr);</syntax>
+
+<description><p>The <fn href="OldFitClose.html">OldFitClose</fn> function closes <code>fit</code> data file.</p>
+<p>The open file is pointed to by the argument <ar>ptr</ar>.</p>
+</description>
+<example type="source">OldFitClose.c</example>
+
+
+</function>
+<function>
+<name>OldFitFwrite</name>
+<location>src.lib/tk/oldfit</location>
+<header>superdarn/oldfitwrite.h</header>
+<syntax>int OldFitFwrite(FILE *fitfp,<sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>, <sn href="&root;/src.lib/superdarn/atk/fit/structFitData.html">struct FitData</sn> *fit,int *rtab);</syntax>
+<description><p>The <fn href="OldFitFwrite.html">OldFitFwrite</fn> function writes a <code>fit</code> data record to an open stream.</p>
+<p>The data is written to the open stream pointed to by the argument <ar>fp</ar>. The data record is contructed the radar parameter block pointed to by the argument <ar>prm</ar> and the <code>fit</code> data structure pointer to by the argument <ar>fit</ar>.</p>
+<p>The <code>raw</code> data records are limited to a maximum of 75 ranges. However the data could consist of more ranges than this and some form of mapping from the actual number of ranges to the (75)allowed in the file is required. This is done by using the <ar>rtab</ar> argument which is a pointer to an array listing which actual range each of the (75) allowed in the file. If this argument is set to a <code>NULL</code> pointer then no mapping is done and the first (75) ranges are used.</p>
+</description>
+<returns>Returns the number of bytes written on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldFitFwrite.c</example>
+
+</function>
+<function>
+<name>OldFitHeaderFwrite</name>
+<location>src.lib/tk/oldfit</location>
+<header>superdarn/oldfitwrite.h</header>
+<syntax>int OldFitHeaderFwrite(FILE *fitfp, char *text, char *name, char *version);</syntax>
+
+<description><p>The <fn href="OldFitHeaderFwrite.html">OldFitHeaderFwrite</fn> function writes a <code>fit</code> header record to an open stream.</p>
+<p>The header is written to the open stream pointed to by the argument <ar>fp</ar>. The name, version and descriptive text to store in the header are given by the zero terminated strings pointed to by the arguments <ar>name</ar>, <ar>version</ar> and <ar>text</ar>.</p> 
+</description>
+<returns>Returns the number of bytes written on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldFitHeaderFwrite.c</example>
+
+
+</function>
+<function>
+<name>OldFitHeaderWrite</name>
+<location>src.lib/tk/oldfit</location>
+<header>superdarn/oldfitwrite.h</header>
+<syntax>int OldFitHeaderWrite(int fitfp, char *text, char *name, char *version);</syntax>
+
+<description><p>The <fn href="OldFitHeaderWrite.html">OldFitHeaderWrite</fn> function writes a <code>fit</code> header record to an file.</p>
+<p>The header is written to the file with descriptor given by the argument <ar>fid</ar>. The name, version and descriptive text to store in the header are given by the zero terminated strings pointed to by the arguments <ar>name</ar>, <ar>version</ar> and <ar>text</ar>.</p> 
+</description>
+<returns>Returns the number of bytes written on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldFitHeaderWrite.c</example>
+
+
+</function>
+<function>
+<name>OldFitInxClose</name>
+<location>src.lib/tk/oldfit</location>
+<header>superdarn/oldfitwrite.h</header>
+<syntax>int OldFitInxClose(int inxfd,<sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>,int irec);</syntax>
+
+<description><p>The <fn href="OldFitInxClose.html">OldFitInxClose</fn> function prepares an index file of a <code>fit</code> data file for closure.</p>
+<p>The file descriptor of the open index file is  given by the argument <ar>inxfd</ar>. The argument <ar>prm</ar> point to the last radar parameter block stored in the <code>fit</code> file and the argument <ar>irec</ar> is the index of the last record stored in the index file.</p>
+<p>The first record of an index file contains information about the start and end times of the fit file and the total number of index records in the file. Consequently the first record of the file is actually written last.</p> 
+<p>This function must be called before the index file is closed.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldFitInxClose.c</example>
+
+</function>
+<function>
+<name>OldFitInxFclose</name>
+<location>src.lib/tk/oldfit</location>
+<header>superdarn/oldfitwrite.h</header>
+<syntax>int OldFitInxFclose(FILE *inxfp,<sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>,int irec);</syntax>
+
+<description><p>The <fn href="OldFitInxFclose.html">OldFitInxFclose</fn> function prepares an index of a <code>fit</code> data file for closure.</p>
+<p>The index is written to the open stream pointed to by the argument <ar>inxfp</ar>. The argument <ar>prm</ar> point to the last radar parameter block stored in the <code>fit</code> file and the argument <ar>irec</ar> is the index of the last record stored in the index file.</p>
+<p>The first record of an index file contains information about the start and end times of the fit file and the total number of index records in the file. Consequently the first record of the file is actually written last.</p> 
+<p>This function must be called before the index file is closed.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldFitInxFclose.c</example>
+
+
+</function>
+<function>
+<name>OldFitInxFwrite</name>
+<location>src.lib/tk/oldfit</location>
+<header>superdarn/oldfitwrite.h</header>
+<syntax>int OldFitInxFwrite(FILE *inxfp,int drec,int dnum,<sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>);</syntax>
+<description><p>The <fn href="OldFitInxFwrite.html">OldFitInxFwrite</fn> function writes a record to an index of a <code>fit</code> data file.</p>
+<p>The index is written to the open stream pointed to by the argument <ar>inxfp</ar>.The argument <ar>drec</ar>, is the block number of the start of the <code>fit</code> record in the associated <code>fit</code> file and the argument <ar>dnum</ar>, is the number of blocks required to store the <code>fit</code> data.</p>
+<p>The final argument <ar>prm</ar> is a pointer to the radar parameter block associated with the <code>fit</code> data.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldFitInxFwrite.c</example>
+
+
+
+</function>
+<function>
+<name>OldFitInxHeaderFwrite</name>
+<location>src.lib/tk/oldfit</location>
+<header>superdarn/oldfitwrite.h</header>
+<syntax>int OldFitInxHeaderFwrite(FILE *inxfp,<sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>);</syntax>
+<description><p>The <fn href="OldFitInxHeaderFwrite.html">OldFitInxHeaderFwrite</fn> function writes a header record to an index of a <code>fit</code> data file.</p>
+<p>The header is written to the open stream pointed to by the argument <ar>inxfp</ar>.</p>
+<p>The argument <ar>prm</ar> is a pointer to the radar parameter block associated with the <code>fit</code> data.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldFitInxHeaderFwrite.c</example>
+
+
+</function>
+<function>
+<name>OldFitInxHeaderWrite</name>
+<location>src.lib/tk/oldfit</location>
+<header>superdarn/oldfitwrite.h</header>
+<syntax>int OldFitInxHeaderWrite(int inxfd,<sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>);</syntax>
+<description><p>The <fn href="OldFitInxHeaderWrite.html">OldFitInxHeaderWrite</fn> function writes a header record to an index file of a <code>fit</code> data file.</p>
+<p>The header is written to the file with the descriptor given by the argument <ar>inxfd</ar>.</p>
+<p>The argument <ar>prm</ar> is a pointer to the radar parameter block associated with the <code>fit</code> data.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldFitInxHeaderWrite.c</example>
+
+
+</function>
+<function>
+<name>OldFitInxWrite</name>
+<location>src.lib/tk/oldfit</location>
+<header>superdarn/oldfitwrite.h</header>
+<syntax>int OldFitInxWrite(int inxfp,int drec,int dnum,<sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>);</syntax>
+
+<description><p>The <fn href="OldFitInxWrite.html">OldFitInxWrite</fn> function writes a record to an index file of a <code>fit</code> data file.</p>
+<p>The record is written to the file with the descriptor given by the argument <ar>inxfd</ar>.The argument <ar>drec</ar>, is the block number of the start of the <code>fit</code> record in the associated <code>fit</code> file and the argument <ar>dnum</ar>, is the number of blocks required to store the <code>fit</code> data.</p>
+<p>The final argument <ar>prm</ar> is a pointer to the radar parameter block associated with the <code>fit</code> data.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldFitInxWrite.c</example>
+
+
+</function>
+<function>
+<name>OldFitOpen</name>
+<location>src.lib/tk/oldfit</location>
+<header>superdarn/oldfitread.h</header>
+<syntax><sn href="structOldFitFp.html">struct OldFitFp</sn> *OldFitOpen(char *fitfile,char *inxfile);</syntax>
+
+<description><p>The <fn href="OldfitOpen.html">OldFitOpen</fn> function opens a <code>fit</code> data file for reading.</p>
+<p>The name of the file to open is given by the zero terminated string pointed to by the argument <ar>fitfile</ar>. If the argument <ar>inxfile</ar> is not a <code>NULL</code> pointer is is assumed to point to a zero terminated string that gives the name of the index file associated with the <code>fit</code> file.</p>
+</description>
+<returns>Returns a pointer to the file control structure.On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
+<example type="source">OldFitOpen.c</example>
+
+</function>
+<function>
+<name>OldFitRead</name>
+<location>src.lib/tk/oldfit</location>
+<header>superdarn/oldfitread.h</header>
+<syntax>int OldFitRead(<sn href="structOldFitFp.html">struct OldFitFp *ptr</sn>,<sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>, <sn href="&root;/src.lib/superdarn/atk/fit/structFitData.html">struct FitData</sn> *fit);</syntax>
+<description><p>The <fn href="OldFitRead.html">OldFitRead</fn> function reads a record from a <code>fit</code> data file.</p>
+<p>The data is read from the open file pointed to by the argument <ar>ptr</ar>. The data is decoded and used to populate the radar parameter block pointed to by the argument <ar>raw</ar> and the <code>fit</code> data structure pointer to by the argument <ar>fit</ar>.</p>  
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldFitRead.c</example>
+
+
+</function>
+<function>
+<name>OldFitReadRadarScan</name>
+<location>src.lib/tk/oldfit</location>
+<header>superdarn/oldfitread.h</header>
+<syntax>int OldFitReadRadarScan(<sn href="structOldFitFp.html">struct OldFitFp</sn> *fp,int *state,  <sn href="&root;/src.lib/tk/scan/structRadarScan.html">struct RadarScan *ptr</sn>, <sn href="&root;/src.lib/superdarn/atk/radar/structRadarParm.html">struct RadarParm *prm</sn>, <sn href="&root;/src.lib/superdarn/atk/fit/structFitData.html">struct FitData</sn> *fit, int tlen, int lock,int chn);</syntax>
+
+<description><p>The <fn href="OldFitReadRadarScan.html">OldFitReadRadarScan</fn> function reads one full scan of data from a <code>fit</code> data file.</p>
+<p>The data is read from the open file pointed to by the argument <ar>fp</ar>.</p>
+<p>The argument <ar>state</ar> is a pointer to an integer that is used internally by the function to track progress through the <code>fit</code> file. Initially this integer should be set to zero, indicating that no data has been read from the file yet. The other possible value of <ar>state</ar> are (1), indicating that a complete scan was read from the file and data from the next scan is pending, or (2) indicating that a file error occurred.</p>
+<p>The scan data is written to the structure pointed to by the argument <ar>ptr</ar>. Memory is automatically allocated within this structure to store the beam data.</p>
+<p>In order for the function to correctly identify a scan boundary, it must read the first beam from the subsequent scan. This data must be preserved so that it can be included in the next block of scan data returned by the next call to the function. This is done by providing storage for the radar parameter block and the <code>fit</code> data pointed to by the arguments <ar>prm</ar> and <ar>fit</ar>.</p>
+<p>If the argument <ar>tlen</ar> has a non-zero value then the function will ignore the scan flag and instead assume the the scan has a length of <ar>tlen</ar> seconds. If the argument <ar>lock</ar> has a non-zero value it is also assumed that the scan boundaries are fixed relative to the start of the day.</p>
+<p>If the final argument <ar>chn</ar>, is compared against the channel number recorded in the radar parameter block, if the two numbers do not match then the data record is excludef from the scan.</p>
+</description> 
+<returns>Returns zero on success, or (1) if the end of file was reached. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldFitReadRadarScan.c</example>
+
+
+</function>
+<function>
+<name>OldFitSeek</name>
+<location>src.lib/tk/oldfit</location>
+<header>superdarn/oldfitread.h</header>
+<syntax>int OldFitSeek(<sn href="structOldFitFp.html">struct OldFitFp</sn> *fp, int yr,int mo,int dy,int hr,int mt,int sc,double *atme);</syntax>
+
+<description><p>The <fn href="OldFitSeek.html">OldFitSeek</fn> function searches for a <code>fit</code> data record for a specific time.</p>
+<p>The search is performed on the file pointed to by the argument <ar>fp</ar>. The time to search for is specified by the arguments <ar>yr</ar>, <ar>mo</ar>,<ar>dy</ar>,<ar>hr</ar>,<ar>mt</ar>,<ar>sc</ar> giving the year, month, day, hour, minute and second.</p>
+<p>The argument <ar>atme</ar> is a pointer to a double precision floating point number that is used to store the time of the closest record to the time requested expressed in seconds from 0:00UT January 1, 1970. If this argument is set to a <code>NULL</code> pointer then the time is not returned.</p>  
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldFitSeek.c</example>
+</function>
+<function>
+<name>OldFitWrite</name>
+<location>src.lib/tk/oldfit</location>
+<header>superdarn/oldfitwrite.h</header>
+<syntax>int OldFitWrite(int fitfp,<sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>, <sn href="&root;/src.lib/superdarn/atk/fit/structFitData.html">struct FitData</sn> *fit,int *rtab);</syntax>
+
+<description><p>The <fn href="OldFitWrite.html">OldFitWrite</fn> function writes a <code>fit</code> data record to an open file.</p>
+<p>The data is written to the open file with the descriptor given by the argument <ar>fid</ar>. The data record is contructed the radar parameter block pointed to by the argument <ar>prm</ar> and the <code>fit</code> data structure pointer to by the argument <ar>fit</ar>.</p>
+<p>The <code>raw</code> data records are limited to a maximum of 75 ranges. However the data could consist of more ranges than this and some form of mapping from the actual number of ranges to the (75)allowed in the file is required. This is done by using the <ar>rtab</ar> argument which is a pointer to an array listing which actual range each of the (75) allowed in the file. If this argument is set to a <code>NULL</code> pointer then no mapping is done and the first (75) ranges are used.</p>
+
+</description>
+<returns>Returns the number of bytes written on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldFitWrite.c</example>
+</function>
+
+
+<structure>
+ <name>OldFitFp</name>
+ <location>src.lib/tk/oldfit</location>
+ <header>superdarn/oldfitread.h</header>
+ <struct>
+
+  <member>
+      <proto>int fitfp;</proto>
+      <description>File descriptor for the data file.</description>
+  </member>
+ 
+ <member>
+      <proto>int inxfp;</proto>
+      <description>File descriptor for the index file.</description>
+ </member>
+
+  <member>
+      <proto>int fit_recl;</proto>
+      <description>Size of a record in the data.</description>
+  </member>
+
+ <member>
+      <proto>int inx_recl;</proto>
+      <description>Size of a record in the index file.</description>
+  </member>
+
+
+  <member>
+      <proto>struct stat rstat;</proto>
+      <description>File status for the data file.</description>
+  </member>
+
+  <member>
+      <proto>struct stat istat;</proto>
+      <description>File status for the index file.</description>
+  </member>
+
+  <member>
+      <proto>int blen;</proto>
+      <description>Number of blocks in the current record.</description>
+  </member>
+
+  <member>
+      <proto>int inx_srec;</proto>
+      <description>Start record in index file.</description>
+  </member>
+
+  <member>
+      <proto>int inx_erec;</proto>
+      <description>End record in index file.</description>
+  </member>
+
+ <member>
+      <proto>double ctime;</proto>
+      <description>Current record time of the file, specified as seconds from 0:00UT January 1, 1970.</description>
+  </member>
+
+ <member>
+      <proto>double stime;</proto>
+      <description>Start time of the file, specified as seconds from 0:00UT January 1, 1970.</description>
+  </member>
+
+ <member>
+      <proto>double etime;</proto>
+      <description>End time of the file, specified as seconds from 0:00UT January 1, 1970.</description>
+  </member>
+
+  <member>
+      <proto>int time;</proto>
+      <description>(Redundant).</description>
+  </member>
+
+  <member>
+      <proto>char header[80];</proto>
+      <description>Header record.</description>
+  </member>
+
+   <member>
+      <proto>char date[32];</proto>
+      <description>Creation date.</description>
+  </member>
+
+  <member>
+      <proto>char extra[256];</proto>
+      <description>Extra information recorded in the header.</description>
+  </member>
+
+ <member>
+      <proto>int major_rev;</proto>
+      <description>File major revision number.</description>
+  </member>
+
+  <member>
+      <proto>int minor_rev;</proto>
+      <description>File minor revision number.</description>
+  </member>
+
+  <member>
+      <proto>int (*fitread)(<sn href="structOldFitFp.html">struct OldFitFp</sn> *fp,<sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>, <sn href="&root;/src.lib/superdarn/atk/fit/structFitData.html">struct FitData</sn> *fit);</proto>
+      <description>Pointer to the function that reads records from the file.</description>
+  </member>
+ </struct>
+
+<description>
+<p>The <sn href="structOldFitFp.html">struct OldFitFp</sn> structure stores the open file descriptor information for a fit data file.</p>
+</description>
+</structure>
+
+
+
+</library>

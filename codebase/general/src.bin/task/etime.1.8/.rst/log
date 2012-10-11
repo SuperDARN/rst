@@ -1,0 +1,29 @@
+commit 4a2056f99dc196d24aa96ac764ad5e54eda13060
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:23 2012 -0400
+
+    Updated license
+
+commit c30dc26c0800c8b416ffdd577e79c76a148c100b
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed Apr 21 09:45:57 2010 -0400
+
+    Fixed issues with parallel lines.
+
+commit a5b190aba5192c777c36aa2f8eb63e33b25db99b
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Mon Apr 5 15:19:33 2010 -0400
+
+    Modification to deal with relative time and specifying time ranges.
+
+commit e56f4004ef2542f2936155ca41c540237783ab71
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Fri Apr 2 22:31:08 2010 -0400
+
+    Added the ability to convert to relative time.
+
+commit 9dafad6a465980db1887a9c39f833918521121ce
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:36:43 2010 +0000
+
+    Initial commit

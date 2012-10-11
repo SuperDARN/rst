@@ -1,0 +1,35 @@
+commit 113e79bd94a04bdb34fab9bc052f0d4d8ccd8be1
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:57 2012 -0400
+
+    Updated license
+
+commit 3aa3c59c9383d85c12f273414b464aae2c5a3a10
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Thu May 26 10:30:41 2011 -0400
+
+    Added IF mode flag.
+
+commit 7b98df75f48cf147441688aa1721034231480abb
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Feb 11 09:41:25 2011 -0500
+
+    Added ifmode variable.
+
+commit 58c368c3e07e164eda0f3a213737291e040e118a
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 14:56:56 2010 -0500
+
+    Fixed IDL types for 64 bit
+
+commit 72101b93253d71c0ccba5c4fc1afaba7c97e6c62
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Nov 3 17:41:01 2010 -0400
+
+    Fixed issue with null strings in old files.
+
+commit 1b666d21a49f49765c224c44b6dadefb166eed22
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Nov 3 16:18:35 2010 -0400
+
+    rprmidl support library for DLMs.

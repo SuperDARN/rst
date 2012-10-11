@@ -1,0 +1,11 @@
+commit 1ebec3e0415bd1ab1790f3ec3e4c6bd0f613039d
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Mar 9 08:55:18 2012 -0500
+
+    Removed redundant library.
+
+commit 9d6760a4bbf2475ea050cda4088392253cf791ea
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 18 17:54:16 2010 -0500
+
+    DLM for calling IGRF from IDL

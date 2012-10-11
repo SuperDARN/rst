@@ -1,0 +1,107 @@
+commit 0bb03ab7603e0752dba54e2661fd53c134030fa4
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 14:14:30 2012 -0400
+
+    Added get script.
+
+commit 7de0798d24e20c49978369ca5d2a549a77bca382
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:53:18 2012 -0400
+
+    Removed licensing from assemble.pkg as it is now done in the source files themselves.
+
+commit 2d8c4c47b8f3f2887020a43139233fea13df1b99
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:55 2012 -0400
+
+    Updated license
+
+commit e733b8ac36356d86f14b3214a63c38d75883d9d0
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 11:10:41 2012 -0400
+
+    Renamed script to put.pkg
+
+commit 0d0bd7ec1f0a3b3d26c4b499d85bb7ac6e2412a0
+Author: Codfe Development Account <code@linux-pc.jhuapl.edu>
+Date:   Sun Jun 17 21:26:18 2012 -0400
+
+    Added explicit need for a destination directory.
+
+commit dcaf3f02a21738835c3019c12314929ae2cb32e8
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Sun Jun 17 15:25:53 2012 -0400
+
+    Added share
+
+commit ef47dda8769ebb1f22433d64ffbf401e01003763
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Mar 9 03:46:04 2012 -0500
+
+    Fixed name of compile script in assemble  script
+
+commit a67fa5693bcbc4f72f22baf87e4b23d3eb7953d1
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Mar 9 03:42:29 2012 -0500
+
+    Updated package building instructions.
+
+commit 05f1522adc0ca6d993560c9dca051f6ce0a46788
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Mar 9 03:41:25 2012 -0500
+
+    Renamed scripts for consistency.
+
+commit a5f20e860267803ce9628e146f46df66c9f0d8a5
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Thu Mar 8 09:37:49 2012 -0500
+
+    Added license to IDL code too.
+
+commit 9372e0134e04568a9674406e727c495b1a4cc5c0
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Thu Mar 8 09:11:27 2012 -0500
+
+    Fixed bug in make.code that meant that it looked in directories
+
+commit c410114b055479bb339aa8ce9d9582a9e8271bed
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Aug 26 15:45:03 2011 -0400
+
+    Fixed version script.
+
+commit ba4ee164515e7fe2d7d1bc6fafa071fc67522481
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Aug 26 15:11:00 2011 -0400
+
+    Fixed issue with make.dst
+
+commit bff895cc3bbbe22557ee18b71481b80269d881b0
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Aug 26 14:56:38 2011 -0400
+
+    Changed location of rpkg.se
+
+commit 0e7a314f6bc8c78eeff16c391ecf5fc30826ca8f
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Aug 26 13:19:34 2011 -0400
+
+    Fixed the make.dst script.
+
+commit b3e35c97116814094b0728ea30125cb8dcbcd9b0
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Aug 26 13:05:59 2011 -0400
+
+    Fixed bug in copying profile
+
+commit 50973cb20a41b2392ae696c8b6e6aace84ffe8b7
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Aug 26 13:01:46 2011 -0400
+
+    Changed how profiles are handled
+
+commit f990d7acd557773c7f0306b06c755231f17216ff
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Aug 26 12:55:39 2011 -0400
+
+    Build scripts.

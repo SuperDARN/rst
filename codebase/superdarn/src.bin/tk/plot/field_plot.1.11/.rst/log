@@ -1,0 +1,71 @@
+commit c3403efb1d76a2fcd6897deeaab8beb25f28bf83
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:03 2012 -0400
+
+    Updated license
+
+commit ac234ea1a59d949da2a7463424736099530e829e
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Sun Mar 27 06:06:08 2011 -0400
+
+    Added new CFit headers
+
+commit e977bd767cb351d0245f414d7b42aaf8f624697c
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Oct 12 08:40:46 2010 -0400
+
+    Corrected time rotation for Southern Hemisphere.
+
+commit 46718dc1c703fbdd90b02e930f18926e671b2147
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed Sep 15 11:23:31 2010 -0400
+
+    New mapping functions
+
+commit 81a1f50a8c374aaf5a922db0ad1f2d34be0ae0fc
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Aug 31 09:49:42 2010 -0400
+
+    Changed makefile for iplot library.
+
+commit 21480f83f8b66948b1f03f0be651506687d66fb1
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Fri Aug 27 10:35:11 2010 -0400
+
+    Renamed iplot.h
+
+commit 1100bffc8584992989cbf2006ed7c0d00862d1f1
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Aug 16 11:11:44 2010 -0400
+
+    Added PNG support.
+
+commit d7ed365bbe1d8c3759186c3e34af6e75411029f9
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 08:33:32 2010 -0400
+
+    Updated documentation
+
+commit 542bf905dbebe718a0d80874b3616c0b1cee7f29
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 9 14:37:39 2010 -0400
+
+    Changed SZA functions.
+
+commit ecc2018cfe357a46b8b79ef9682cd205c8ab9ee9
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Wed Jun 9 10:07:24 2010 -0400
+
+    Adopted MLT library.
+
+commit a6059d7477bb86a37255a0504449194abbbaa54c
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:36:40 2010 -0400
+
+    Fixed makefile.
+
+commit aff6f5d4bebdb04bb3a5cd9f6b0cec71fd8c1190
+Author: Code Development Account <code@robin-barness-macbook-pro.local>
+Date:   Tue May 11 06:47:59 2010 -0400
+
+    Field_plot

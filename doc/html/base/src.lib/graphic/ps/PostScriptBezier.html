@@ -1,0 +1,112 @@
+
+<head>
+<title>PostScriptBezier</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../base/index.html>base</a></td>
+<td>|</td><td><a href=../../../../base/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/index.html>graphic</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/ps/index.html>ps</a></td><td>|</td>
+<td>PostScriptBezier</td>
+<td width=100% align=right><a href=../../../../base/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">PostScriptBezier</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">int PostScriptBezier(<a href="structPostScript.html"><code>struct PostScript</code></a> *ptr, float x1,float y1,float x2,float y2,float x3,float y3, float x4,float y4, unsigned int color,float width, <a href="structPostScriptDash.html"><code>struct PostScriptDash</code></a> *dash,<a href="structPostScriptClip.html"><code>struct PostScriptClip</code></a> *clip);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">base/rps.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">rps</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="PostScriptBezier.html"><code>PostScriptBezier</code></a> function plots a bezier curve.</p>
+<p>The argument <em>ptr</em> is a pointer to the <code>PostScript</code> control structure.</p> 
+<p>The coordinates of the four points that define the bezier curve are given by the arguments
+<em>x1</em>, <em>y1</em>,<em>x2</em>, <em>y2</em>,<em>x2</em>, <em>y3</em>, and <em>x4</em>, <em>y4</em>. The two end points are defined by <em>x1</em>, <em>y1</em> and <em>x4</em>,<em>y4</em>. The other two coordinates are the control points.</p>
+
+<p>The color used to plot the curve is given by the <em>color</em> which is a 24-bit number that represents the red,green and blue components of the color as 8-bit numbers. The red channel occupies the most significant bits and the blue channel occupies the least significant bits.</p>
+<p>The width of the line used to plot the curve is controlled using the argument <em>width</em>, a value of zero will plot a hairline. The dot-dash pattern is given by <em>dash</em>. If this is set to a <code>NULL</code> pointer, a solid line is plotted.</p>
+<p>The clipping polygon is given by the argument <em>clip</em>. If this is set to a <code>NULL</code> pointer, no clipping is performed.</p>
+
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns zero on success. On error, (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center><a href="img/PostScriptBezier.ps.gz">Download PostScript</a></center>
+         <br><center>Source Code: <a href="src/PostScriptBezier.c">PostScriptBezier.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* PostScriptBezier.c
+   ==================
+   Author: R.J.Barnes
+*/
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &quot;rfbuffer.h&quot;
+#include &quot;rps.h&quot;
+
+int stream(char *buf,int sze,void *data) {
+  FILE *fp;
+  fp=(FILE *) data;
+  fwrite(buf,sze,1,stdout);
+  return 0;
+} 
+
+
+int main(int argc,char *argv[]) {
+
+  struct PostScript *ps=NULL;
+
+  float wdt=400,hgt=400;
+  float xoff=50,yoff=50;
+
+  unsigned int fgcol=0xff000000;
+
+  ps=PostScriptMake();
+  PostScriptSetText(ps,stream,stdout);   
+  PostScriptMakeDocument(ps,xoff,yoff,wdt,hgt,0);
+  PostScriptMakePlot(ps);
+
+  PostScriptBezier(ps,20,20,0,hgt/2,wdt,hgt/2,wdt-20,hgt-20,
+              fgcol,1.0,NULL,NULL);
+
+  PostScriptEndPlot(ps);
+  PostScriptEndDocument(ps);
+  return 0;
+}
+
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

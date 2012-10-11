@@ -1,0 +1,29 @@
+commit 77f94b1c48b12a3d72f944c1597fb4e16215a48b
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:23 2012 -0400
+
+    Updated license
+
+commit 44c1727f44148810705c9ace4b15a85568c70998
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Jun 28 11:13:16 2011 -0400
+
+    Added license comment.
+
+commit 54a1f6b6b2a844418cc60c702cb4454ddd945344
+Author: Codfe Development Account <code@linux-pc.jhuapl.edu>
+Date:   Fri Jun 10 09:27:19 2011 -0400
+
+    Added better control on the delta term.
+
+commit f73dd160471cf225e8867dc1a87d30dd6296f62b
+Author: Codfe Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Jun 9 16:16:11 2011 -0400
+
+    Added more flexibility in setting the delay term.
+
+commit 9e1fc642df05d180f0321e2a8536162c069e0012
+Author: Codfe Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Jun 9 15:29:22 2011 -0400
+
+    Convert UNIX time to other formats.

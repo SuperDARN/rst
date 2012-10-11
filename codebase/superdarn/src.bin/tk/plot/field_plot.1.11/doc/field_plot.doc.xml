@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>field_plot</name>
+<location>src.bin/tk/plot/field_plot</location>
+<syntax>field_plot --help</syntax>
+
+
+<syntax>field_plot [<ar>options</ar>] <ar>fitname</ar> [<ar>inxname</ar>]
+</syntax>
+<syntax>field_plot -new [<ar>options</ar>] [<ar>fitacfname</ar>] [<ar>inxname</ar>]
+</syntax>
+<syntax>field_plot -cfit [<ar>options</ar>] [<ar>cfitname</ar>]
+</syntax>
+<syntax>field_plot -csd [<ar>options</ar>] [<ar>csdname</ar>]
+</syntax>
+<syntax>field_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] <ar>fitname</ar> [<ar>inxname</ar>]
+</syntax>
+<syntax>field_plot -new -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] [<ar>fitacfname</ar>] [<ar>inxname</ar>]
+</syntax>
+<syntax>field_plot -cfit -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] [<ar>cfitname</ar>]
+</syntax>
+<syntax>field_plot -csd -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] [<ar>csdname</ar>] [<ar>csdname</ar>]
+</syntax>
+<syntax>field_plot -ppm [<ar>options</ar>] <ar>fitname</ar> [<ar>inxname</ar>]
+</syntax>
+<syntax>field_plot -new -ppm [<ar>options</ar>] [<ar>fitacfname</ar>] [<ar>inxname</ar>]
+</syntax>
+<syntax>field_plot -cfit -ppm [<ar>options</ar>] [<ar>cfitname</ar>]
+</syntax>
+<syntax>field_plot -csd -ppm [<ar>options</ar>] [<ar>csdname</ar>] 
+</syntax>
+<syntax>field_plot -ppmx [<ar>options</ar>] <ar>fitname</ar> [<ar>inxname</ar>]
+</syntax>
+<syntax>field_plot -new -ppmx [<ar>options</ar>] [<ar>fitacfname</ar>] [<ar>inxname</ar>]
+</syntax>
+<syntax>field_plot -cfit -ppmx [<ar>options</ar>] [<ar>cfitname</ar>]
+</syntax>
+<syntax>field_plot -csd -ppmx [<ar>options</ar>] [<ar>csdname</ar>]
+</syntax>
+
+<syntax>field_plot -xml [<ar>options</ar>] <ar>fitname</ar> [<ar>inxname</ar>]
+</syntax>
+<syntax>field_plot -new -xml [<ar>options</ar>] [<ar>fitacfname</ar>] [<ar>inxname</ar>]
+</syntax>
+<syntax>field_plot -cfit -xml [<ar>options</ar>] [<ar>cfitname</ar>]
+</syntax>
+<syntax>field_plot -csd -xml [<ar>options</ar>] [<ar>csdname</ar>]
+</syntax>
+<syntax>field_plot -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [-delay <ar>delay</ar>] [<ar>options</ar>] <ar>fitname</ar> [<ar>inxname</ar>]
+</syntax>
+<syntax>field_plot -new -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [-delay <ar>delay</ar>] [<ar>options</ar>] [<ar>fitacfname</ar>] [<ar>inxname</ar>]
+</syntax>
+<syntax>field_plot -cfit -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [-delay <ar>delay</ar>] [<ar>options</ar>] [<ar>cfitname</ar>]
+</syntax>
+<syntax>field_plot -csd -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [-delay <ar>delay</ar>] [<ar>options</ar>] [<ar>csdname</ar>]
+</syntax>
+
+
+
+
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>-cf <ar>cfname</ar></on><od>read command line options from the file <ar>cfname</ar>.</od>
+</option>
+<option><on>-def</on><od>plot using some sensible default options so that the user will see something plotted.</od>
+</option>
+
+<option><on>-r <ar>repeat</ar></on><od>set the number of rows and columns of panels in the plot to <ar>repeat</ar>. The default value of 2 produces a 2x2 panel plot. If this value is set to zero then the program will produce sequential plots and write them to a file.</od>
+</option>
+
+<option><on>-sd <ar>yyyymmdd</ar></on><od>plot starting from the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-st <ar>hr:mn</ar></on><od>plot starting from the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ed <ar>yyyymmdd</ar></on><od>stop plotting at the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-et <ar>hr:mn</ar></on><od>stop plotting at the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ex <ar>hr:mn</ar></on><od>plot an interval whose extent is <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-tn</on><od>generate filenames of the form <code><em>hrmn.sc.xxx</em></code> when producing sequential plots.</od>
+</option>
+<option><on>-dn</on><od>generate filenames of the form <code><em>yyyymmdd.hrmn.sc.xxx</em> when producing sequential plots</code>.</od>
+</option>
+<option><on>-wdt <ar>width</ar></on><od>set the width of the plot to <ar>width</ar>.</od>
+</option>
+<option><on>-hgt <ar>height</ar></on><od>set the height of the plot to <ar>height</ar>.</od>
+</option>
+<option><on>-pad <ar>pad</ar></on><od>set the padding around the edge of the plot to  <ar>pad</ar>.</od>
+</option>
+<option><on>-sf <ar>scale</ar></on><od>set the scale factor (magnification) to <ar>scale</ar>. The default scale factor is 1.</od>
+</option>
+<option><on>-ortho</on><od>use an orthographic projection.</od>
+</option>
+<option><on>-lat <ar>lat</ar></on><od>center the plot on the latitude given by <ar>lat</ar>.</od>
+</option>
+<option><on>-lon <ar>lon</ar></on><od>center the plot on the longitude given by <ar>lon</ar>.</od>
+</option>
+<option><on>-latmin <ar>latmin</ar></on><od>adjust the scale factor so that the lowest visible latitude is  <ar>latmin</ar>. Applies when the stereographic projection is used.</od>
+</option>
+<option><on>-mag</on><od>use magnetic coordinates.</od>
+</option>
+<option><on>-rotate</on><od>rotate the plot so that the local noon is at the top of the plot.</od>
+</option>
+<option><on>-flip</on><od>flip the direction of the X-axis.</od>
+</option>
+<option><on>-square</on><od>force the use of a square bounding box around the plot.</od>
+</option>
+<option><on>-coast</on><od>plot coastlines.</od>
+</option>
+<option><on>-fcoast</on><od>plot filled coastlines.</od>
+</option>
+<option><on>-bnd</on><od>plot state boundaries.</od>
+</option>
+<option><on>-grd</on><od>plot a grid.</od>
+</option>
+<option><on>-grdlat <ar>grdlat</ar></on><od>set the latitude spacing of the grid to <ar>grdlat</ar> degrees.</od>
+</option>
+<option><on>-grdlon <ar>grdlon</ar></on><od>set the longitude spacing of the grid to <ar>grdlon</ar> degrees.</od>
+</option>
+<option><on>-igrd</on><od>plot the inverse grid, if the plot is in geographic coordinates, a geomagnetic grid is plotted, if the plot is in geomagnetic coordinates, a geographic grid is plotted.</od>
+</option>
+<option><on>-igrdlat <ar>igrdlat</ar></on><od>set the latitude spacing of the inverse grid to <ar>grdlat</ar> degrees.</od>
+</option>
+<option><on>-igrdlon <ar>igrdlon</ar></on><od>set the longitude spacing of the inverse grid to <ar>grdlon</ar> degrees.</od>
+</option>
+<option><on>-igrdontop</on><od>plot the inverse grid on top.</od>
+</option>
+<option><on>-grdontop</on><od>plot the grid on top.</od>
+</option>
+<option><on>-tmk</on><od>plot a clock-dial grid showing the time.</od>
+</option>
+<option><on>-fov</on><od>plot the radar fields of view of other SuperDARN radars.</od>
+</option>
+<option><on>-ffov</on><od>plot the filled radar fields of view of other SuperDARN radars.</od>
+</option>
+
+<option><on>-fan</on><od>plot the radar field of view.</od>
+</option>
+<option><on>-ffan</on><od>plot the filled radar field of view.</od>
+</option>
+
+
+<option><on>-tmtick <ar>tick</ar></on><od>set the grid interval for the time clock-dial to <ar>tick</ar> hours.</od>
+</option>
+<option><on>-lst</on><od>use local solar time rather than local time.</od>
+</option>
+<option><on>-term</on><od>plot the terminator.</od>
+</option>
+<option><on>-fterm</on><od>plot a filled terminator.</od>
+</option>
+<option><on>-tmlbl</on><od>Label the time clock-dial.</od>
+</option>
+
+<option><on>-bgcol <ar>aarrggbb</ar></on><od>set the background color to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha, red,green and blue component color.</od>
+</option>
+
+<option><on>-txtcol <ar>aarrggbb</ar></on><od>set the color of the text to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+
+<option><on>-grdcol <ar>aarrggbb</ar></on><od>set the color of the grid to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+
+<option><on>-igrdcol <ar>aarrggbb</ar></on><od>set the color of the inverse grid to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+
+
+<option><on>-cstcol <ar>aarrggbb</ar></on><od>set the color of the coastline to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+
+<option><on>-bndcol <ar>aarrggbb</ar></on><od>set the color of the state boundaries to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+
+<option><on>-lndcol <ar>aarrggbb</ar></on><od>set the color of the land to <ar>aarrggbb</ar>, specified as the  hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+
+<option><on>-seacol <ar>aarrggbb</ar></on><od>set the color of the sea to <ar>aarrggbb</ar>, specified as the  hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+
+<option><on>-tmkcol <ar>aarrggbb</ar></on><od>set the color of the time clock-dial to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+
+<option><on>-fovcol <ar>aarrggbb</ar></on><od>set the color of the fields of view outline of other SuperDARN radars to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+
+<option><on>-ffovcol <ar>aarrggbb</ar></on><od>set the color of the filled fields of view of other SuperDARN radars to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+
+
+<option><on>-fancol <ar>aarrggbb</ar></on><od>set the color of the field of view outline of this radar to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+
+<option><on>-ffancol <ar>aarrggbb</ar></on><od>set the color of the filled field of view of this radar to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+
+
+
+
+<option><on>-trmcol <ar>aarrggbb</ar></on><od>set the color of the terminator outline to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha, red,green and blue component color.</od>
+</option>
+
+<option><on>-ftrmcol <ar>aarrggbb</ar></on><od>set the color of the filled terminator outline to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+
+<option><on>-gscol <ar>aarrggbb</ar></on><od>set the color of ground scatter to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+
+<option><on>-vkey <ar>vkeyname</ar></on><od>load the colorkey used to plot velocity vectors from the file <ar>vkeyname</ar>.</od>
+</option>
+
+<option><on>-key <ar>keyname</ar></on><od>load the colorkey from the file <ar>xkeyname</ar>.</od>
+</option>
+
+<option><on>-p</on><od>plot power.</od>
+</option>
+<option><on>-v</on><od>plot velocity.</od>
+</option>
+<option><on>-w</on><od>plot spectral width.</od>
+</option>
+<option><on>-vec</on><od>plot velocity vectors.</od>
+</option>
+
+
+<option><on>-pmin <ar>pmin</ar></on><od>set the minimum value of the power scale to <ar>pmin</ar>.</od>
+</option>
+<option><on>-pmax <ar>pmax</ar></on><od>set the maximum value of the power scale to <ar>pmax</ar>.</od>
+</option>
+
+<option><on>-vmin <ar>vmin</ar></on><od>set the minimum value of the velocity scale to <ar>vmin</ar>.</od>
+</option>
+<option><on>-vmax <ar>vmax</ar></on><od>set the maximum value of the velocity scale to <ar>vmax</ar>.</od>
+</option>
+
+<option><on>-wmin <ar>wmin</ar></on><od>set the minimum value of the spectral width scale to <ar>wmin</ar>.</od>
+</option>
+<option><on>-wmax <ar>wmax</ar></on><od>set the maximum value of the spectral width scale to <ar>wmax</ar>.</od>
+</option>
+
+<option><on>-gs</on><od>color ground scatter.</od>
+</option>
+<option><on>-gm</on><od>mask out ground scatter.</od>
+</option>
+
+<option><on>-keyp</on><od>plot the color key.</od>
+</option>
+
+<option><on>-vkeyp</on><od>plot the color key for velocity vectors.</od>
+</option>
+
+<option><on>-vecp</on><od>plot the example vector.</od>
+</option>
+
+<option><on>-vsf <ar>vsf</ar></on><od>set the vector scale factor to <ar>vsf</ar>.</od>
+</option>
+
+<option><on>-vecr <ar>radius</ar></on><od>set the radius of the circle at the end of the vector to <ar>radius</ar>.</od>
+</option>
+
+
+<option><on>-logo</on><od>plot the logo and credits.</od>
+</option>
+
+<option><on>-time</on><od>plot the time of the plotted data.</od>
+</option>
+
+<option><on>-frame</on><od>add a frame around the borders of the plot.</od>
+</option>
+
+<option><on>-over</on><od>the output plot will be overlaid on another plot, do not paint the background with the bacground color.</od>
+</option>
+
+<option><on>-tl <ar>tlen</ar></on><od>ignore the scan flag and instead use a fixed length scan of  <ar>tlen</ar> seconds.</od>
+</option>
+
+<option><on>-cn <ar>channel</ar></on><od>for stereo mode data, plot channel <ar>channel</ar>, if omitted then both channels are plotted.</od>
+</option>
+
+<option><on>-cp <ar>cpid</ar></on><od>plot beams that contain the program identifier <ar>cpid</ar> only.</od>
+</option>
+
+<option><on>-scan <ar>scan</ar></on><od>plot beams that have a value for the scan flag of <ar>scan</ar>.</od>
+</option>
+
+
+<option><on>-ns</on><od>ignore non-scan data (data with a scan flag of -1)..</od></option>
+
+
+<option><on>-s <ar>step</ar></on><od>set the number of scans  skipped between plots to <ar>step</ar>.</od></option>
+
+<option><on><ar>fitname</ar></on><od>filename of the <code>fit</code> format file to plot.</od>
+</option>
+
+<option><on><ar>inxname</ar></on><od>filename of the index file.</od>
+</option>
+
+<option><on>-new</on><od>file is in the <code>fitacf</code> format.</od>
+</option>
+
+<option><on><ar>fitacfname</ar></on><od>filename of the <code>fitacf</code> format file to plot.</od>
+</option>
+
+<option><on>-cfit</on><od>file is in the <code>cfit</code> format.</od>
+</option>
+
+<option><on><ar>cfitname</ar></on><od>filename of the <code>cfit</code> format file to plot.</od>
+</option>
+
+<option><on>-csd</on><od>file is in the <code>csd</code> format.</od>
+</option>
+
+<option><on><ar>csd</ar></on><od>filename of the <code>csd</code> format file to plot.</od>
+</option>
+
+<option><on>-ps</on><od>produce a PostScript plot as the output.</od>
+</option>
+
+<option><on>-xp <ar>xoff</ar></on><od>set the X offset of the PostScript plot to <ar>xoff</ar>.</od>
+</option>
+<option><on>-yp <ar>xoff</ar></on><od>set the Y offset of the PostScript plot to <ar>yoff</ar>.</od>
+</option>
+<option><on>-ppm</on><od>produce a Portable PixMap (PPM) image as the output.</od>
+</option>
+<option><on>-ppmx</on><od>produce an extended Portable PixMap (PPMX) image as the output.</od>
+</option>
+<option><on>-xml</on><od>produce an XML image representation as the output.</od>
+</option>
+
+<option><on>-x</on><od>plot the data on an X-terminal.</od></option>
+
+
+<option><on>-display <ar>display</ar></on><od>connect to the xterminal named <ar>display</ar>.</od>
+</option>
+
+<option><on>-xoff <ar>xoff</ar></on><od>open the window, <ar>xoff</ar> pixels from the left edge of the screen.</od>
+</option>
+
+<option><on>-yoff <ar>yoff</ar></on><od>open the window <ar>ypad</ar> pixels from the top edge of the screen.</od>
+</option>
+
+<option><on>-delay <ar>delay</ar></on><od>set the delay between frames to <ar>delay</ar> milliseconds, a value of 0 will pause the frame until a mouse button is pressed.</od>
+</option>
+
+<synopsis><p>Plot <code>fit</code>, <code>fitacf</code>, <code>cfit</code> and <code>csd</code> format files.</p></synopsis>
+
+
+<description><p>Plot <code>fit</code>, <code>fitacf</code>, <code>cfit</code> and <code>csd</code> format files.</p>
+<p>The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, or PostScript file. The default output is XML.</p>
+<p>The program produces either a multi-panel plot showing a sequence of up to 16 images, or a single-panel plot that can be used to produce movies. Multi-panel plots are written to standard output, while the single panel plots are written to individual files.</p>
+<p>The number of panels contained in the plot is controlled by the "<code>-r</code>" option. If this is set to zero then single panel plots are produced.</p>
+
+<p>The task only plots what it is instructed to plot on the command line which means that at least some of the options must be included if the plot is to show anything.</p>
+<p>The default map projection is a stereographic projection.</p>
+<p>A sensible set of default plot options can be invoked using the "<code>-def</code>" option.</p>
+<p>The option "<code>-vec</code>" will plot the line of sight velocity vectors.</p>
+<p>The options "<code>-key</code>" and "-vkey" allows a user defined color key to be used to plot the data or the  velocity vectors.</p>
+<p>The color key file is a plain text file that defines the red green and blue components for each index in the color bar. Any line in the file beginning with a "<code>#</code>" is treated as a comment and ignored. The first line that is not a comment defines the number of entries in the table. The remaining lines in the file contain color values for each index, one value per line. The values are hexadecimal numbers of the form <em>aarrggbb</em>, where <em>aa</em> is the alpha channel, <em>rr</em> is the red component, <em>gg</em> is the blue component and <em>bb</em> is the blue component.</p>
+
+<p>The number and complexity of the command line options makes typing them a laborious process, especially when producing multiple plots. To solve this problem, command line options can be placed in plain text file that can be parsed by the program using the " <code>-cf</code>" option. This allows the user to create a set of configuration files for producing different plots.</p> 
+</description>
+
+<example>
+<command>field_plot -wdt 540 -hgt 540 -ffov -fov -fan -v -def -r 0 -delay 0 -x 20041020.kap.fit</command>
+<description>Plot the velocity data from the file "<code>20041020.fit</code>" on the  Xterminal. Use the default set of options and plot the fields of view the other radars.</description> 
+</example>
+
+<example>
+<command>field_plot -ps -st 1:30 -square -grd -fcoast -coast -ffov -fov -fan -sf 2 -p -time -keyp 20021219.han.fit &gt; han.ps</command>
+<description>Generate a PostScript plot the power data from the file "<code>20021219.han.fit</code>". Plot the data using magnetic coordinates. Plot the coastlines, and radar fields of view. The plot is written to the file "<code>han.ps</code>".
+</description>
+</example>
+<example type="rplot">example1</example>
+
+
+
+<example>
+<command>field_plot -wdt 540 -hgt 540 -mag -st 1:00 -lat 90 -lon 0 -tmk -time -latmin 55 -rotate -grd -fcoast -coast -keyp -ffov -fov -r 0 -fan -p</command>
+
+<description>
+Generate rPlot xml plots of power data from the file "<code>20021219.han.fit</code>". Store the plots in files named "<code>xxxx</code>.xml", starting at 01:00UTC. Use magnetic coordinates, rotated so that magnetic local noon is at the top of the plot.Plot filled coastlines, terminator, a clockdial representing time, and the time.</description>
+</example>
+
+<example type="rplot">example2</example>
+
+
+
+
+</description>
+
+
+</binary>

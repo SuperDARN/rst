@@ -1,0 +1,35 @@
+commit 84bce624b70238a34d0ff799c4eb0c0cc056a6a7
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:00 2012 -0400
+
+    Updated license
+
+commit 5ea9e68d14031d9d5a2eaab078e2f2c189f94e1d
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 15:10:00 2010 -0500
+
+    Fixed IDL types for 64 bit
+
+commit e8e30773efac8d8dc72b4060bb0d76d718c69909
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 10:46:04 2010 -0500
+
+    Added .dlm file and fixed makefile
+
+commit a537af9c1666bb6bb52abe319255fbc6308b03da
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 10:33:19 2010 -0500
+
+    Changed destination to /home/code/rst/dlm
+
+commit 6304594dc53af36ad91a0b6825297fc9a6fb835f
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Fri Nov 5 18:26:15 2010 -0400
+
+    Added checks for empty records
+
+commit 9efbfa27770d15324b07af20dbeba8c337f11fb5
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Fri Nov 5 09:18:08 2010 -0400
+
+    DLM for reading old grid files.

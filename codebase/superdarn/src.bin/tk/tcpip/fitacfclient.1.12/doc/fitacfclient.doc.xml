@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>fitacfclient</name>
+<location>src.bin/tk/tcpip/fitacfclient</location>
+<syntax>fitacfclient --help</syntax>
+<syntax>fitacfclient [-s <ar>stream</ar>] <ar>host</ar> <ar>port</ar></syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>-s <ar>stream</ar></on><od>for a multiplexed stream, read the stream number given by <ar>stream</ar>. A value of 255 will read all streams</od>
+</option>
+<option><on><ar>host</ar></on><od>hostname or IP address of the system to connect to.</od>
+</option>
+<option><on><ar>port</ar></on><od>port number to connect to on  the system.</od></option>
+<synopsis><p>Simple client program for <code>fitacf</code> TCP/IP data streams.</p></synopsis>
+<description><p>Simple client program for <code>fitacf</code> TCP/IP data streams.</p>
+<p>The program dumps an ASCII representation of the <code>fitacf</code> data stream to standard output.</p>
+<p>If the stream from the server is multiplexed then the "<code>-s</code>" option can be used to select the appropriate stream.</p>
+</description>
+
+<example>
+<command>fitacfclient peanut.jhuapl.edu 1024</command>
+<description>Connect to the host <code>peanut.jhuapl.edu</code> at port 1024 and display the data stream.</description>
+</example>
+ 
+<example>
+<command>fitacfclient -s 2 peanut.jhuapl.edu 1024</command>
+<description>Connect to the host <code>peanut.jhuapl.edu</code> at port 1024 and display data stream number 2.</description>
+</example>
+ 
+
+</binary>

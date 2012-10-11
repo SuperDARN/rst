@@ -1,0 +1,47 @@
+commit b83530cf2c707bd74181b88ad0dfa1225cceb124
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:08 2012 -0400
+
+    Updated license
+
+commit db348be539d1dbe760c7ab6d6af84a3ae89cc0fe
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Aug 26 14:08:39 2011 -0400
+
+    Removed redundant tests for TCP/IP libraries
+
+commit e18c2f6c045d18c1187612208441cadb24a740ec
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Thu Jul 21 13:40:22 2011 -0400
+
+    Removed stream selection.
+
+commit 611bed84e0aff5ee7b824a45514b17a6e7a7216f
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Aug 4 13:21:29 2010 -0400
+
+    Fixed makefile for dynamic linking
+
+commit 90930587517e8d06fef743115435adeedba4bc13
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Tue Jun 15 13:48:46 2010 -0400
+
+    Changed socket options.
+
+commit a5665968e0ad0d219103d2e122be51e46895d3e4
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Tue Jun 15 13:45:33 2010 -0400
+
+    Changed socket options.
+
+commit d2ccc47f9b4c42e37d26c05b31a61d36664f0b46
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:45:54 2010 -0400
+
+    Fixed makefile
+
+commit 9e3d7c0d586095bde67ec2431e55cccfca319a8a
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:04 2010 +0000
+
+    Initial commit

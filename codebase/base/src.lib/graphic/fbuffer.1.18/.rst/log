@@ -1,0 +1,35 @@
+commit 2398ffe484c25ed6e9d42edd70e9968fd0a42a3c
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:11 2012 -0400
+
+    Updated license
+
+commit e23b3443ee2d86e68399d9a01e2a537dc87e85e7
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Fri Aug 27 15:13:34 2010 -0400
+
+    Fixed misalignment of mask data in png writing.
+
+commit c9a5e800397c759179d8434bc16b3904d75f4c2e
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Fri Aug 13 16:30:58 2010 -0400
+
+    Added PNG read and write routines.
+
+commit 023088684f242a1cde7d985f3ed62d7158a1eab3
+Author: Code Development Account <code@robin-barness-macbook-pro.local>
+Date:   Mon May 10 06:14:34 2010 -0400
+
+    Added storage of initial phase to dash structure.
+
+commit 0af194497b1902bd090df17473a3256dfab62af9
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Mar 30 14:47:54 2010 -0400
+
+    Fixed documentation.
+
+commit 13f749cbb07e80f361000682c78cf4695f27d742
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:36:55 2010 +0000
+
+    Initial commit

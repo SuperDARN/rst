@@ -1,0 +1,67 @@
+<head>
+<title>dmapblkinx</title>
+<link rel=stylesheet href="../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../general/index.html>general</a></td>
+<td>|</td><td><a href=../../../../general/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../general/src.bin/dmap/index.html>dmap</a></td><td>|</td>
+<td>dmapblkinx</td>
+<td width=100% align=right><a href=../../../../general/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">dmapblkinx</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+dmapblkinx --help<br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Dump the block index (file offsets for each block) of a DataMap file.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code><em>name</em></code></td><td valign="top">filename of the DataMap file, if this is omitted the document will be read from standard input.</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Dump the block index (file offsets for each block) of a DataMap file.</p>
+<p>The offsets are written to standard output. The block offsets can be used to quickly locate a specific block in the DataMap file.</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">dmapblkinx inp.dmap &gt; out.binx</pre></td></tr></table>
+<p>Find the block offsets from the  file <code>inp.dmap</code> and store them in the file <code>out.binx</code>
+</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+    <center><p>
+    &copy; Johns Hopkins Applied Physics Laboratory 2010
+    </p></center>
+</div>
+
+</div>
+
+</body>
+
+
+
+

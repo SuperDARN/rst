@@ -1,0 +1,29 @@
+commit 69238e16f3e87050ab9ceb86f3b65e6c9674dbe7
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:07 2012 -0400
+
+    Updated license
+
+commit c8e2f266e6e20197dba6a47284a10d970562d0bb
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Sat Jul 9 15:06:31 2011 -0400
+
+    Added the ability to read the list of files to merge from the command line.
+
+commit 8a1c4e3e800bc8f371647a22f89b2aad1edf7436
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 08:32:41 2010 -0400
+
+    Updated documentation
+
+commit 1f241fe2c6333eac3b05ef6656c364894bb0567a
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:38:31 2010 -0400
+
+    Fixed makefile.
+
+commit 651cc6bf3753c6c90ae478414999f569230a3b7f
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:19 2010 +0000
+
+    Initial commit

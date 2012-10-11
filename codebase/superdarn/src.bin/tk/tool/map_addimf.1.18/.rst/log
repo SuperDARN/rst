@@ -1,0 +1,47 @@
+commit d60681c4a2bae7121068856bbc4e89d9916b380c
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:06 2012 -0400
+
+    Updated license
+
+commit e045ba9a502f18b6457f2ebcf293d9f90a25a267
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Tue Aug 24 16:04:56 2010 -0400
+
+    Switched to GEOPACK 2005
+
+commit 76c3ddb5939b14eee0502be2804019059d16f33f
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Fri Jul 16 09:51:11 2010 -0400
+
+    Fixed problem with spanning year boundaries.
+
+commit 78c692d0a318466cbb458de70e4d546497c01427
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu Jun 10 08:32:40 2010 -0400
+
+    Updated documentation
+
+commit 42339df5f1ff2a1b6562223d69d92081240d95dd
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Thu May 27 10:28:27 2010 -0400
+
+    64 bit CDF support.
+
+commit 268ff38757349f5877da202399ca9272c9c07229
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 10:38:27 2010 -0400
+
+    Fixed makefile.
+
+commit 12e87bc46973c3c09e3d4dd5cdbb8270eae06478
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Mar 18 19:14:00 2010 -0400
+
+    Added new interpolation algorithm.
+
+commit a654ee4e2f46db6d5bd0646895b8b54dc279a129
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:05 2010 +0000
+
+    Initial commit

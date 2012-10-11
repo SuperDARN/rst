@@ -1,0 +1,35 @@
+commit 0dd85a1f2461a964b8e7700ad9a63257abf14258
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 10:45:06 2010 -0500
+
+    Added .dlm file and fixed makefile
+
+commit c51ec25ce5aff8fbfee292a48a33957b7c212f8d
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 10:31:50 2010 -0500
+
+    Changed destination to /home/code/rst/dlm
+
+commit de6c05929381c061db0d924788e7c2f83aa21a7a
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 4 18:11:29 2010 -0400
+
+    Fixed possible issue with decoding search arguments
+
+commit 27fe300715324753abc541cdd055d6f064b5df36
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 4 10:15:25 2010 -0400
+
+    Fixed bug in close routine.
+
+commit 6556339f8d3fa87db5f009fa721b024782482eb0
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Nov 3 16:50:55 2010 -0400
+
+    Moved the common fit functions to a library.
+
+commit 988dcc984edc5c80fbdfcbe4e3b0d55e3b7f98da
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Wed Nov 3 16:17:38 2010 -0400
+
+    FitACF DLM.

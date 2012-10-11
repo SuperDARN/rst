@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# git.pkg
+# =======
+# R.J.Barnes
+#
+# Purpose:
+#
+# Perform git operations on a package.
+#
+# Syntax:
+#
+# git.pkg project package .....
+#
+# Description:
+#
+# Perform git operations on a package.
+
+##############################################################################
+
+prj=${1}
+pkg=${2}
+
+##############################################################################
+
+#  Test for valid command line
+
+##############################################################################
+
+shift 2
+
+if test -z "${pkg}" 
+then
+  echo "git.pkg project package" 
+  exit
+fi
+
+build=${BUILD}
+
+if test ! -s "${RPKG}/${prj}/${pkg}/.git"
+then
+  echo "Failed to locate package"
+  exit 1
+fi
+
+cd ${RPKG}/${prj}/${pkg}
+git "${@}"
+
+

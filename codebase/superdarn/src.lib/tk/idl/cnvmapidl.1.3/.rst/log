@@ -1,0 +1,17 @@
+commit 80460bf6c3045e9ec82e8df2c4f1b3074b1ab12d
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:58 2012 -0400
+
+    Updated license
+
+commit 3aa603fb34c06bf137bf133cf25b7b5c17754b01
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Thu Nov 11 14:52:35 2010 -0500
+
+    Fixed IDL types for 64 bit.
+
+commit f88fa76e7cea744e0df7d8d0429a36e5e8e0d9cd
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Fri Nov 5 17:36:10 2010 -0400
+
+    IDL CnvMap interface library

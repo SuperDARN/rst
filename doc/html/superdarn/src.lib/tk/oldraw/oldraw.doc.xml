@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>superdarn</project>
+<name>oldraw</name>
+<location>src.lib/tk/oldraw</location>
+<function>
+<name>OldRawClose</name>
+<location>src.lib/tk/oldraw</location>
+<header>superdarn/oldrawread.h</header>
+<syntax>void OldRawClose(<sn href="structOldRawFp.html">struct OldRawFp</sn> *ptr);</syntax>
+<description><p>The <fn href="OldRawClose.html">OldRawClose</fn> function closes <code>raw</code> data file.</p>
+<p>The open file is pointed to by the argument <ar>ptr</ar>.</p>
+</description>
+<example type="source">OldRawClose.c</example>
+</function>
+<function>
+<name>OldRawFwrite</name>
+<location>src.lib/tk/oldraw</location>
+<header>superdarn/oldrawwrite.h</header>
+<syntax>int OldRawFwrite(FILE *rawfp,char *name,<sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>, <sn href="&root;/src.lib/superdarn/atk/raw/structRawData.html">struct RawData</sn> *raw,int32 recnum,int *rtab);</syntax>
+<description><p>The <fn href="OldRawFwrite.html">OldRawFwrite</fn> function writes a <code>raw</code> data record to an open stream.</p>
+<p>The data is written to the open stream pointed to by the argument <ar>fp</ar>. The data record is contructed the radar parameter block pointed to by the argument <ar>prm</ar> and the <code>raw</code> data structure pointer to by the argument <ar>raw</ar>.</p>
+<p>The associated record number is given by the argument <ar>recnum</ar>.</p>
+<p>The <code>raw</code> data records are limited to a maximum of 75 ranges. However the data could consist of more ranges than this and some form of mapping from the actual number of ranges to the (75)allowed in the file is required. This is done by using the <ar>rtab</ar> argument which is a pointer to an array listing which actual range each of the (75) allowed in the file. If this argument is set to a <code>NULL</code> pointer then no mapping is done and the first (75) ranges are used.</p>
+</description>
+<returns>Returns the number of bytes written on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldRawFwrite.c</example>
+
+
+</function>
+<function>
+<name>OldFitHeaderFwrite</name>
+<location>src.lib/tk/oldraw</location>
+<header>superdarn/oldrawwrite.h</header>
+<syntax>int OldRawHeaderFwrite(FILE *rawp,char *name, char *version,int thr,char *text);</syntax>
+<description><p>The <fn href="OldRawHeaderFwrite.html">OldRawHeaderFwrite</fn> function writes a <code>raw</code> header record to an open stream.</p>
+<p>The header is written to the open stream pointed to by the argument <ar>fp</ar>. The name, version and descriptive text to store in the header are given by the zero terminated strings pointed to by the arguments <ar>name</ar>, <ar>version</ar> and <ar>text</ar>. The argument <ar>thr</ar>, defines the threshold applied to the lag-zero power. Ranges with lag zero power less than half the value of the noise multiplied by this threshold are ignored.</p> 
+</description>
+<returns>Returns the number of bytes written on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldRawHeaderFwrite.c</example>
+
+
+</function>
+<function>
+<name>OldRawHeaderWrite</name>
+<location>src.lib/tk/oldraw</location>
+<header>superdarn/oldrawwrite.h</header>
+<syntax>int OldRawHeaderWrite(int fid,char *name,char *version,int thr,char *text);</syntax>
+<description><p>The <fn href="OldRawHeaderWrite.html">OldRawHeaderWrite</fn> function writes a <code>raw</code> header record to an file.</p>
+<p>The header is written to the file with descriptor given by the argument <ar>fid</ar>. The name, version and descriptive text to store in the header are given by the zero terminated strings pointed to by the arguments <ar>name</ar>, <ar>version</ar> and <ar>text</ar>. The argument <ar>thr</ar>, defines the threshold applied to the lag-zero power. Ranges with lag zero power less than half the value of the noise multiplied by this threshold are ignored.</p> 
+</description>
+<returns>Returns the number of bytes written on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldRawHeaderWrite.c</example>
+
+
+</function>
+<function>
+<name>OldRawOpen</name>
+<location>src.lib/tk/oldraw</location>
+<header>superdarn/oldrawread.h</header>
+<syntax><sn href="structOldRawFp.html">struct OldRawFp</sn> *OldRawOpen(char *rawfile,char *inxfile);</syntax>
+<description><p>The <fn href="OldRawOpen.html">OldRawOpen</fn> function opens a <code>raw</code> data file for reading.</p>
+<p>The name of the file to open is given by the zero terminated string pointed to by the argument <ar>rawfile</ar>. The argument <ar>inxfile</ar> is ignored and is included for compatibility.</p>
+</description>
+<returns>Returns a pointer to the file control structure.On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
+<example type="source">OldRawOpen.c</example>
+
+
+</function>
+<function>
+<name>OldRawRead</name>
+<location>src.lib/tk/oldraw</location>
+<header>superdarn/oldrawread.h</header>
+<syntax>int OldRawRead(<sn href="struct OldRawFp.html">struct OldRawFp *ptr</sn>,<sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>, <sn href="&root;/src.lib/superdarn/atk/raw/structRawData.html">struct RawData</sn> *raw);</syntax>
+<description><p>The <fn href="OldRawRead.html">OldRawRead</fn> function reads a record from a <code>raw</code> data file.</p>
+<p>The data is read from the open file pointed to by the argument <ar>ptr</ar>. The data is decoded and used to populate the radar parameter block pointed to by the argument <ar>prm</ar> and the <code>raw</code> data structure pointer to by the argument <ar>raw</ar>.</p>  
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldRawRead.c</example>
+
+
+</function>
+
+<function>
+<name>OldRawSeek</name>
+<location>src.lib/tk/oldraw</location>
+<header>superdarn/oldrawread.h</header>
+<syntax>int OldRawSeek(<sn href="OldRawFp.html">struct OldRawFp</sn> *fp, int yr,int mo,int dy,int hr,int mt,int sc,double *atme);</syntax>
+
+<description><p>The <fn href="OldRawSeek.html">OldRawSeek</fn> function searches for a <code>raw</code> data record for a specific time.</p>
+<p>The search is performed on the file pointed to by the argument <ar>fp</ar>. The time to search for is specified by the arguments <ar>yr</ar>, <ar>mo</ar>,<ar>dy</ar>,<ar>hr</ar>,<ar>mt</ar>,<ar>sc</ar> giving the year, month, day, hour, minute and second.</p>
+<p>The argument <ar>atme</ar> is a pointer to a double precision floating point number that is used to store the time of the closest record to the time requested expressed in seconds from 0:00UT January 1, 1970. If this argument is set to a <code>NULL</code> pointer then the time is not returned.</p>  
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldRawSeek.c</example>
+
+</function>
+<function>
+<name>OldRawWrite</name>
+<location>src.lib/tk/oldraw</location>
+<header>superdarn/oldrawwrite.h</header>
+<syntax>int OldRawWrite(int fid,char *name,<sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>, <sn href="&root;/src.lib/superdarn/atk/raw/structRawData.html">struct RawData</sn> *raw,int32 recnum);</syntax>
+
+<description><p>The <fn href="OldRawWrite.html">OldRawWrite</fn> function writes a <code>raw</code> data record to an open file.</p>
+<p>The data is written to the open file with the descriptor given by the argument <ar>fid</ar>. The data record is contructed the radar parameter block pointed to by the argument <ar>prm</ar> and the <code>raw</code> data structure pointer to by the argument <ar>raw</ar>.</p>
+<p>The associated record number is given by the argument <ar>recnum</ar>.</p>
+<p>The <code>raw</code> data records are limited to a maximum of 75 ranges. However the data could consist of more ranges than this and some form of mapping from the actual number of ranges to the (75)allowed in the file is required. This is done by using the <ar>rtab</ar> argument which is a pointer to an array listing which actual range each of the (75) allowed in the file. If this argument is set to a <code>NULL</code> pointer then no mapping is done and the first (75) ranges are used.</p>
+
+</description>
+<returns>Returns the number of bytes written on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+
+<example type="source">OldRawWrite.c</example>
+
+
+</function>
+
+<structure>
+ <name>OldRawFp</name>
+ <location>src.lib/tk/oldraw</location>
+ <header>superdarn/oldrawread.h</header>
+ <struct>
+
+  <member>
+      <proto>int rawfp;</proto>
+      <description>File descriptor for the data file.</description>
+  </member>
+ 
+ <member>
+      <proto>int inxfp;</proto>
+      <description>File descriptor for the index file. (Redundant)</description>
+</member>
+
+  <member>
+      <proto>struct stat rstat;</proto>
+      <description>File status for the data file.</description>
+  </member>
+
+  <member>
+      <proto>struct stat istat;</proto>
+      <description>File status for the index file. (Redundant)</description>
+  </member>
+
+  <member>
+      <proto>double ctime;</proto>
+      <description>Current record time of the file, specified as seconds from 0:00UT January 1, 1970.</description>
+  </member>
+
+ <member>
+      <proto>double stime;</proto>
+      <description>Start time of the file, specified as seconds from 0:00UT January 1, 1970.</description>
+  </member>
+
+
+  <member>
+      <proto>int frec;</proto>
+      <description>Byte offset to first data record in the file.</description>
+  </member>
+
+  <member>
+      <proto>int rlen;</proto>
+      <description>Length in bytes of each record in the file.</description>
+  </member>
+
+  <member>
+      <proto>int ptr;</proto>
+      <description>Current offset in bytes in the file.</description>
+  </member>
+
+  <member>
+      <proto>int thr;</proto>
+      <description>Lag-zero power threshold level.</description>
+  </member>
+
+ <member>
+      <proto>int major_rev;</proto>
+      <description>File major revision number.</description>
+  </member>
+
+  <member>
+      <proto>int minor_rev;</proto>
+      <description>File minor revision number.</description>
+  </member>
+
+  <member>
+      <proto>int (*rawread)(<sn href="structOldRawFp.html">struct OldRawFp</sn> *fp,<sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>, <sn href="&root;/src.lib/superdarn/atk/raw/structRawData.html">struct RawData</sn> *raw);</proto>
+      <description>Pointer to the function that reads records from the file.</description>
+  </member>
+ </struct>
+
+<description>
+<p>The <sn href="structOldRawFp.html">struct OldRawFp</sn> structure stores the open file descriptor information for a <proto>raw</proto> data file.</p>
+</description>
+</structure>
+
+
+
+
+</library>
