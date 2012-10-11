@@ -72,17 +72,28 @@ function cnvcoord, in1, in2, in3, geo = geo, model = model
 
   common aacgm_common, modyr
 
-  if (keyword_set(model)) then myear = model else myear = 1995
+	print,'dfl;jdl;fjasf'
+
+  if (keyword_set(model)) then myear = model else myear = 2005
   myear = fix(myear)
-  if (n_params() GE 3) then inp = float([in1,in2,in3]) $
-    else inp = float(in1)
+  if (n_params() GE 3) then begin
+		if(n_elements(in1) gt 1) then begin
+			ret_val = AACGMConvert(in1, in1, in3, out_lat, out_lon, out_alt, geo=geo)
+			if ret_val ne 0 then $
+				return, [-1., -1., -1.]
+			return, transpose([[out_lat], [out_lon], [out_alt]])
+		endif
+		inp = float([in1,in2,in3])
+  endif else begin
+		inp = float(in1)
+	endelse
   if (n_elements(inp) MOD 3 NE 0) then begin
     print,'input position must be fltarr(3) [lat,long,height]'
     return,[0,0,0]
   end
 
   if (n_elements(modyr) eq 0) then modyr=0
-  
+  print,modyr,myear
   if (modyr ne myear) then begin
     modyr=myear
     prefix=getenv('AACGM_DAT_PREFIX')
