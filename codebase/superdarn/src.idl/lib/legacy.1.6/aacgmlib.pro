@@ -147,7 +147,7 @@ function mlt, year, t, mlong
   mlong = float(mlong)
   if (n_elements(t) EQ 1) then mt=0.0 else mt=fltarr(n_elements(t))
   if (n_elements(t) EQ 1) then $
-    mt=MLTConvert(year,t,mlong) $
+    mt=MLTConvertYrSec(year,t,mlong) $
   else $
     for i=0,n_elements(t)-1 do mt(i)=MLTConvert(year,t(i),mlong)
     return, mt
