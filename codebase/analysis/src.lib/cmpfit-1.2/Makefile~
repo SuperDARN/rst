@@ -1,0 +1,16 @@
+# Makefile for poly
+# =================
+# by R.J.Barnes
+#
+#
+INCLUDE= /data/fit/aj/cmpfit-1.2/
+
+SRC=mpfit.c
+OBJS = mpfit.o
+LINK="1"
+DSTPATH=$(LIBPATH)
+OUTPUT = mpfit
+include $(MAKELIB)
+
+
+ 

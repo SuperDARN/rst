@@ -1,0 +1,195 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;+
+;NAME:
+; plot_merge
+;
+; PURPOSE:
+; Plots the results of vector merging
+;
+; CATEGORY:
+; Graphics
+;
+; CALLING SEQUENCE:
+; first call the c routine read_merge, e.g.
+; 	read_merge [-mag] yyyymmdd.rad1.rad2.merge
+;
+; next, call the IDL routine, e.g.
+; 	plot_merge,[/ORIG]
+;
+;	INPUTS:
+;
+; OPTIONAL INPUTS:
+;		/ORIG -- plot the original radar vectors instead of the merged vectors
+;
+; KEYWORD PARAMETERS:
+;
+; EXAMPLE:
+; read_merge -mag 20100112.bks.fhe.merge
+; plot_merge
+;
+; OUTPUT:
+; /rst/output_plots/merge.ps (standard)
+;	/rst/output_plots/merge.2rad.ps (/ORIG)
+;
+;
+; COPYRIGHT:
+; Copyright (C) 2011 by Virginia Tech
+;
+; Permission is hereby granted, free of charge, to any person obtaining a copy
+; of this software and associated documentation files (the "Software"), to deal
+; in the Software without restriction, including without limitation the rights
+; to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+; copies of the Software, and to permit persons to whom the Software is
+; furnished to do so, subject to the following conditions:
+;
+; The above copyright notice and this permission notice shall be included in
+; all copies or substantial portions of the Software.
+;
+; THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+; IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+; FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+; AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+; LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+; THE SOFTWARE.
+;
+;
+; MODIFICATION HISTORY:
+; Written by AJ Ribeiro 08/24/2011
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+pro plot_merge,orig=orig
+  ;the file we are reading data from
+  file_in = '/rst/output_files/mergevec.out.txt.mult'
+  set_plot,'PS',/copy
+  if(keyword_set(orig)) then fname = '/rst/output_plots/merge.orig.ps' $
+  else fname = '/rst/output_plots/merge.ps'
+  device,/landscape,/COLOR,BITS_PER_PIXEL=8,filename=fname
+  S = findgen(17)*(!PI*2./16.)
+  usersym,cos(S),sin(S),/FILL
+  !p.multi = [0,1,1]
+	if(keyword_set(orig)) then device,/landscape,/COLOR,BITS_PER_PIXEL=8,filename='/rst/output_plots/merge.2rad.ps' $
+	else device,/landscape,/COLOR,BITS_PER_PIXEL=8,filename='/rst/output_plots/merge.ps'
+	old_time = double(-999999)
+	time=0d
+	vel_max = 150
+	;open the file
+  openr,unit,file_in,/get_lun
+
+	;read the first line
+	readf,unit,mag_flg,stid1,stid2
+
+	;get boundaries for the maps
+	if(mag_flg) then begin
+		pos1 = rbpos(60,height=300,beam=0,lagfr=1200,smsep=300, $
+						rxrise=100,station=stid1,year=2010,yrsec=1000000,/CENTER)
+		pos2 = rbpos(60,height=300,beam=16,lagfr=1200,smsep=300, $
+						rxrise=100,station=stid1,year=2010,yrsec=1000000,/CENTER)
+		pos3 = rbpos(60,height=300,beam=0,lagfr=1200,smsep=300, $
+						rxrise=100,station=stid2,year=2010,yrsec=1000000,/CENTER)
+		pos4 = rbpos(60,height=300,beam=16,lagfr=1200,smsep=300, $
+						rxrise=100,station=stid2,year=2010,yrsec=1000000,/CENTER)
+		radar_info,stid,glat,glon,mlat,mlon,oneletter,threeletter,name,stid1
+		pos = cnvcoord([glat,glon,300.])
+		lat1 = pos(0)
+		radar_info,stid,glat,glon,mlat,mlon,oneletter,threeletter,name,stid2
+		pos = cnvcoord([glat,glon,300.])
+		lat2 = pos(0)
+
+	endif else begin
+; 	print,'okay'
+; 		pos1 = rbpos(0,height=300,beam=0,lagfr=1200,smsep=300, $
+; 						rxrise=100,station=stid1,year=2010,yrsec=1000000,/GEO,/CENTER)
+; 						print,'okay'
+; 		pos2 = rbpos(60,height=300,beam=15,lagfr=1200,smsep=300, $
+; 						rxrise=100,station=stid1,year=2010,yrsec=1000000,/GEO,/CENTER)
+; 		pos3 = rbpos(60,height=300,beam=15,lagfr=1200,smsep=300, $
+; 						rxrise=100,station=stid2,year=2010,yrsec=1000000,/GEO,/CENTER)
+; 		pos4 = rbpos(60,height=300,beam=15,lagfr=1200,smsep=300, $
+; 						rxrise=100,station=stid2,year=2010,yrsec=1000000,/GEO,/CENTER)
+		radar_info,stid,glat,glon,mlat,mlon,oneletter,threeletter,name,stid1
+		rlat1=glat
+		rlon1=glon
+		radar_info,stid,glat,glon,mlat,mlon,oneletter,threeletter,name,stid2
+		rlat2=glat
+		rlon2=glon
+	endelse
+
+; 	lats=[pos1(0),pos2(0),pos3(0),pos4(0)]
+; 	lons=[pos1(1),pos2(1),pos3(1),pos4(1)]
+; 
+; 	bound = [min([lat1,lat2]),min(lons),max(lats),max(lons)]
+	pos = [0.15,0.15,0.85,0.85]
+
+	bound = [40,-120,60,-80]
+
+	;read the file
+	while(~ EOF(unit)) do begin
+		readf,unit,vel1,pwr1,w1,lat1,lon1,azm1,vel2,pwr2,w2,lat2,lon2,azm2,vel,lat,lon,azm,time
+
+		;check if we have started a new scan
+		if(time ne old_time) then begin
+			if(old_time ne -999999.) then erase
+			caldat,time,mo,dy,yr,hr,mn,sc
+			title_str = strtrim(mo,2)+'/'+strtrim(dy,2)+'/'+strtrim(yr,2)+'     '+strtrim(hr,2)+':'+strtrim(mn,2)+':'+strtrim(fix(sc),2)
+			loadct,0
+			if(mag_flg) then $
+				map_set,(rlat1+rlat2)/2,(rlon1+rlon2)/2,limit=bound,/orthographic,/isotropic,/label,/noerase,position=pos,title=title_str $
+			else $
+				map_set,50,-100,limit=bound,/orthographic,/isotropic,/label,/noerase,position=pos,/continents,title=title_str
+				draw_colorbar_round,140,0,'Velocity','m/s',[.88,.4,.92,.8],ct=34
+; 			plot_colorbar,1,1,0,0,pos=[.88,.4,.92,.8],param='Velocity',scale=[0,150],charsize=.6
+			loadct,34
+			old_time = time
+		endif
+		;now do the plotting
+		;if we are plotting original vectors
+		if(keyword_set(orig)) then begin
+			;plot the first radar's vector
+			;get end of vector
+			getendpoints,vel1,1,vel_max,.03,lat1,lon1,azm1,n_xy_e
+			;get beginning of vector
+			n_xy_s = convert_coord(lon1,lat1,/data,/to_normal)
+			color = (abs(vel1)/vel_max)*255
+			if(color gt 255) then color = 255
+			if(color lt 0) then color = 0
+			plots,n_xy_s(0),n_xy_s(1),psym=8,col=color,/normal,symsize=.5
+			plots,[n_xy_s(0),n_xy_e(0)],[n_xy_s(1),n_xy_e(1)],col=color,/normal
+
+			;plot the second radar's vector
+			;get end of vector
+			getendpoints,vel2,1,vel_max,.03,lat2,lon2,azm2,n_xy_e
+			;get beginning of vector
+			n_xy_s = convert_coord(lon2,lat2,/data,/to_normal)
+			color = (abs(vel2)/vel_max)*255
+			if(color gt 255) then color = 255
+			if(color lt 0) then color = 0
+			plots,n_xy_s(0),n_xy_s(1),psym=8,col=color,/normal,symsize=.5
+			plots,[n_xy_s(0),n_xy_e(0)],[n_xy_s(1),n_xy_e(1)],col=color,/normal
+
+		;if we are plotting merged vectors
+		endif else begin
+			;get end of vector
+			getendpoints,vel,3,vel_max,.03,lat,lon,azm,n_xy_e
+			;get beginning of vector
+			n_xy_s = convert_coord(lon,lat,/data,/to_normal)
+			color = (abs(vel)/vel_max)*255
+			if(color gt 255) then color = 255
+			if(color lt 0) then color = 0
+			plots,n_xy_s(0),n_xy_s(1),psym=8,col=color,/normal,symsize=.5
+			plots,[n_xy_s(0),n_xy_e(0)],[n_xy_s(1),n_xy_e(1)],col=color,/normal
+		endelse
+
+
+	endwhile
+
+	;close the input file
+  close,unit
+  free_lun,unit
+
+  ;close the postscript file
+  device,/close
+
+
+end

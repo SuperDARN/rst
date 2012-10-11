@@ -1,0 +1,344 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;+
+;NAME:
+; badlag_calc
+;
+; PURPOSE:
+; 	Plots pulse sequence and badlag information
+;
+; CATEGORY:
+; 	Graphics
+;
+; CALLING SEQUENCE:
+; 	badlag_calc,seq,mpinc,lagfr,nrang,nblnk,time
+;
+;	INPUTS:
+;		seq: which pulse sequence to use, 0=katscan, 1=old normalscan, 2=tauscan
+;		mpinc: the number of samples per fundamental lag
+;		lagfr: lag to first range in samples
+;		nrang: number of range gates
+;		nblnk: number of samples blanked for each pulse
+;		time:  a string with a timestamp to be used for a file name
+;
+; OPTIONAL INPUTS:
+;
+; KEYWORD PARAMETERS:
+;
+; EXAMPLE:
+;		badlag_calc,0,5,4,100,3,011112
+;
+; OUTPUT:
+; 	/rst/output_plots/011112.badlags.ps
+;
+;
+; COPYRIGHT:
+; Copyright (C) 2011 by Virginia Tech
+;
+; Permission is hereby granted, free of charge, to any person obtaining a copy
+; of this software and associated documentation files (the "Software"), to deal
+; in the Software without restriction, including without limitation the rights
+; to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+; copies of the Software, and to permit persons to whom the Software is
+; furnished to do so, subject to the following conditions:
+;
+; The above copyright notice and this permission notice shall be included in
+; all copies or substantial portions of the Software.
+;
+; THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+; IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+; FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+; AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+; LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+; THE SOFTWARE.
+;
+;
+; MODIFICATION HISTORY:
+; Written by AJ Ribeiro 03/06/2012
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+pro badlag_calc,seq,mpinc,lagfr,nrang,nblnk,time
+
+  set_plot,'PS',/copy
+  device,/landscape,/COLOR,BITS_PER_PIXEL=8,filename='/rst/output_plots/'+time+'.badlags.ps'
+  
+	;set information for katscan
+	if(seq eq 0) then begin
+		npul = 8
+		nlags = 23
+		name='katscan'
+		;pulse sequence
+		pulse = [0,14,22,24,27,31,42,43]
+		;lag table
+		lagt1 = [0,42,22,24,27,22,24,14,22,14,31,31,14,0, 27,27,14,24,24,22,22,0, 0]
+		lagt2 = [0,43,24,27,31,27,31,22,31,24,42,43,27,14,42,43,31,42,43,42,43,22,24]
+		lag_avail = lagt2-lagt1
+		fac=1.
+	endif
+
+	;set information for normalscan
+	if(seq eq 1) then begin
+		npul =7 
+		nlags = 17
+		name='normalscan (old)'
+		;pulse sequence
+		pulse = [0,9,12,20,22,26,27]
+                ;lag table
+		lagt1 = [0,26,20, 9,22,22,20,20,0,12, 9, 0, 9,12,12, 9, 9]
+		lagt2 = [0,27,22,12,26,27,26,27,9,22,20,12,22,26,27,26,27]
+		lag_avail = lagt2-lagt1
+		fac=1.
+	endif
+
+	;set information for tauscan
+	if(seq eq 2) then begin
+		npul = 13
+		nlags = 17
+		name='tauscan'
+		;pulse sequence
+		pulse = [0,15,16,23,27,29,32,47,50,52,56,63,64]
+    ;lag table 1
+		lagt1 = [0,15,27,29,23,27,23,16,15,23,16,15,16,15, 0, 0,15]
+		lagt2 = [0,16,29,32,27,32,29,23,23,32,27,27,29,29,15,16,32]
+		;lag table 2
+		lagt3 = [64,63,50,47,52,47,50,56,56,47,52,52,50,50,32,47,47]
+		lagt4 = [64,64,52,50,56,52,56,63,64,56,63,64,63,64,47,63,64]
+		lag_avail = lagt2-lagt1
+		fac=.66
+	endif
+	
+	
+  ;calculate the number of samples
+	nsamp = pulse(npul-1)*mpinc+lagfr+nrang
+	samples = intarr(nsamp)
+	;calculate the bad samples
+	for i=0,npul-1 do begin
+		for j=0,nblnk-1 do begin
+			samples(pulse(i)*mpinc+j) = 1
+		endfor
+	endfor
+	loadct,0
+
+	title = name+' mpinc='+strtrim(mpinc,2)+' lagfr='+strtrim(lagfr,2)+' nrang='+strtrim(nrang,2)+' nblnk='+strtrim(nblnk,2)
+
+	;first, plot the pulse sequence
+	plot,findgen(1),findgen(1),xrange=[0,nsamp],yrange=[0,.75],$
+				ystyle=1,xstyle=1,yticks=1,/nodata,/noerase,pos=[.05,.725,.95,.95],$
+				title='Pulse sequence for '+title,ytickname=replicate(' ',3),xtitle='time (samples)',charsize=.6,$
+				charthick=3.,xthick=3.,ythick=3.,xticklen=-.02
+	for i=0,npul-1 do begin
+		if(i MOD 2 eq 0) then y = .55 $
+		else y = .62
+		polyfill,[pulse(i)*mpinc,pulse(i)*mpinc+nblnk,pulse(i)*mpinc+nblnk,pulse(i)*mpinc],[0,0,.5,.5],/data
+		xyouts,mean([pulse(i)*mpinc,pulse(i)*mpinc+nblnk]),y,strtrim(pulse(i),2),/data,charthick=3.,align=.5,charsize=.6
+	endfor
+	;next, plot the samples
+	plot,findgen(1),findgen(1),xrange=[0,nsamp],yrange=[0,.75],$
+				ystyle=1,xstyle=1,yticks=1,/nodata,/noerase,pos=[.05,.4,.95,.625],$
+				title='Samples for '+title,ytickname=replicate(' ',3),xtitle='time (samples)',charsize=.6,$
+				charthick=3.,xthick=3.,ythick=3.,xticklen=-.02
+	xyouts,.945,.605,'-> blanked samples',alignment=1.,charsize=.5,charthick=3.,/normal
+	xyouts,.795,.605,'[i,j],',alignment=1.,charsize=.5,charthick=3.,/normal
+	loadct,34
+	xyouts,.82,.605,'Red',alignment=1.,charsize=.5,charthick=3.,/normal,col=250
+	cnt = 0
+	for i=0,nsamp-1 do begin
+		if(samples(i) eq 0) then color = 150 $
+		else color = 255
+		plots,[i,i],[0,.5],col=color,thick=3.,linestyle=0
+		x = where(pulse eq (double(i)/double(mpinc)))
+		if(x ge 0) then begin
+			print,x
+			loadct,0
+			if(x MOD 2 eq 0) then y = .55 $
+			else y = .62
+			xyouts,mean([i,i+nblnk-1]),y,'['+strtrim(i,2)+','+strtrim(i+nblnk-1,2)+']',/data,charthick=3.,align=.5,charsize=.6*fac
+; 			cnt = cnt + 1
+			loadct,34
+		endif
+	endfor
+
+	loadct,0
+	;next plot the lag table
+	xyouts,.5,.31,'Lag table for '+title,align=.5,charthick=3.,/normal,charsize=.8
+	plots,[.05,.95],[.3,.3],/normal,thick=3.
+
+	if(nlags MOD 2 eq 0) then x_cells = nlags/2+1 $
+	else x_cells = (nlags+1)/2+1
+	x_wid = .9/x_cells
+	for i=0,x_cells do begin
+		plots,[i*x_wid+.05,i*x_wid+.05],[.06,.3],/normal,thick=3.
+	endfor
+	for i=1,4 do begin
+		plots,[.05,.95],[.3-i*.06,.3-i*.06],/normal,thick=3.
+	endfor
+
+	xyouts,.06,.25,'Lag',/normal,charthick=3.,charsize=.8
+	xyouts,.06,.19,'Pulses',/normal,charthick=3.,charsize=.8
+	xyouts,.06,.13,'Lag',/normal,charthick=3.,charsize=.8
+	xyouts,.06,.07,'Pulses',/normal,charthick=3.,charsize=.8
+
+	for i=0,nlags-1 do begin
+		if(i lt x_cells-1) then row = 0 $
+		else row = 1
+		;plot the lag numbers
+		y = .25-row*.12
+		if(row eq 0) then x = .055+x_wid*(i+1) $
+		else x = .055+x_wid*(i-x_cells+2)
+		xyouts,x,y,strtrim(lag_avail(i),2),/normal,charthick=3.,charsize=.8
+
+		;plot the pulses used
+		y = .19-row*.12
+		xyouts,x,y,strtrim(lagt1(i),2)+','+strtrim(lagt2(i),2),/normal,charthick=3.,charsize=.8*fac
+
+		if(seq eq 2) then begin
+			xyouts,x+x_wid/2.-.01,y,'; '+strtrim(lagt3(i),2)+','+strtrim(lagt4(i),2),/normal,charthick=3.,charsize=.8*fac
+		endif
+	endfor
+
+	erase
+
+	nrow = 25.
+	ncol = (nrang/nrow)
+	if(fix(ncol) ne (nrang/nrow)) then ncol = fix(ncol)+1
+	ncol = ncol*2
+
+	plot,findgen(1),findgen(1),xrange=[0,ncol],yrange=[0,nrow],xstyle=1,ystyle=1,$
+			/nodata,/noerase,pos=[.05,.05,.95,.95],title='Bad lags by range gate for '+title,$
+			xticks=1,yticks=1,charthick=3.,xthick=3.,ythick=3.,xtickname=replicate(' ',2),$
+			ytickname=replicate(' ',2)
+
+	for i=0,nrang-1 do begin
+		row = 24 - (i MOD 25)
+		col = fix(i/nrow)
+		xyouts,col*2+.05,row+.3,strtrim(i,2),/data,charthick=3
+		plots,[col*2,col*2],[0,nrow],thick=3.
+		plots,[col*2+.4,col*2+.4],[0,nrow],thick=3.
+		plots,[0,ncol],[row,row],thick=3.
+
+		if(seq ne 2) then begin
+			bad_str = ''
+			for j=0,nlags-1 do begin
+				samp1 = lagt1(j)*mpinc+lagfr+i
+				samp2 = lagt2(j)*mpinc+lagfr+i
+				if(samples(samp1) eq 1 OR samples(samp2) eq 1) then bad_str = bad_str+strtrim(lagt2(j)-lagt1(j),2)+','
+			endfor
+		endif else begin
+			bad_str = ''
+			for j=0,nlags-1 do begin
+				samp1 = lagt1(j)*mpinc+lagfr+i
+				samp2 = lagt2(j)*mpinc+lagfr+i
+				samp3 = lagt3(j)*mpinc+lagfr+i
+				samp4 = lagt4(j)*mpinc+lagfr+i
+				if((samples(samp1) eq 1 OR samples(samp2) eq 1)AND(samples(samp3) eq 1 OR samples(samp4) eq 1)) then $
+					bad_str = bad_str+strtrim(lagt2(j)-lagt1(j),2)+','
+			endfor
+		endelse
+		xyouts,col*2+.45,row+.3,strmid(bad_str,0,strlen(bad_str)-2),/data,charthick=3
+	endfor
+
+	erase
+
+	oldpage = -1
+	x_cells = lag_avail(nlags-1)+1
+	x_wid = .9/x_cells
+	y_height = .06
+	y_cells = .9/y_height
+	delta = .002
+	for i=0,nrang-1 do begin
+		page = i/15
+		if(page ne oldpage) then begin
+			erase
+			for j=0,y_cells do begin
+				plots,[.05,.95],[.91-j*y_height,.91-j*y_height],thick=3.,/normal
+			endfor
+			for j=0,x_cells do begin
+				plots,[.05+j*x_wid,.05+j*x_wid],[.01,.91],thick=3.,/normal
+			endfor
+			xyouts,.01,.5,'Range Gate',/normal,orientation=90,alignment=.5,charthick=3.,charsize=.8
+		endif
+		oldpage = page
+		col = (i MOD y_cells)
+		xyouts,.02,.93-(col+1)*y_height,strtrim(i,2),charthick=3.,/normal,charsize=.8
+		for j=0,x_cells-1 do begin
+				if(col eq 0) then begin
+					xyouts,.05+x_wid/2.+j*x_wid,.92,strtrim(j,2),align=.5,charthick=3.,/normal,charsize=.8
+					if(j eq 0) then begin
+						xyouts,.5,.99,'Solution of lags by sample pairs for '+title,/normal,charthick=3.,alignment=.5,charsize=.8
+						loadct,34
+						xyouts,.61,.95,'Red',/normal,charthick=3.,alignment=0.,charsize=.8,col=250
+						loadct,0
+						xyouts,.95,.95,' -> blanked sample/missing lag',/normal,charthick=3.,alignment=1.,charsize=.8
+						xyouts,.5,.95,'Lag',/normal,charthick=3.,alignment=.5,charsize=.8
+					endif
+				endif
+			if(seq ne 2) then begin
+				x1 = .05+j*x_wid+delta
+				x2 = .05+(j+1)*x_wid-delta
+				y1 = .91-col*y_height-delta
+				y2 = .91-(col+1)*y_height+delta
+				x = where(lag_avail eq j)
+				if(x eq -1) then begin
+					polyfill,[x1,x2,x2,x1],[y1,y1,y2,y2],/normal,col=150
+					continue
+				endif
+				loadct,34
+				samp1 = lagt1(x)*mpinc+lagfr+i
+				samp2 = lagt2(x)*mpinc+lagfr+i
+	; 			if(samples(samp1) eq 1 OR samples(samp2) eq 1) then polyfill,[x1,x2,x2,x1],[y1,y1,y2,y2],/normal,col=250
+				if(samples(samp1) eq 1 OR samples(samp2) eq 1) then begin
+					plots,[x1,x1],[y1,y2],/normal,col=250,thick=5.
+					plots,[x2,x2],[y1,y2],/normal,col=250,thick=5.
+					plots,[x1,x2],[y1,y1],/normal,col=250,thick=5.
+					plots,[x1,x2],[y2,y2],/normal,col=250,thick=5.
+				endif
+				ym = (y1+y2)/2.
+				if(samples(samp1) eq 1) then polyfill,[x1,x2,x2,x1],[y1,y1,ym,ym],/normal,col=250
+				if(samples(samp2) eq 1) then polyfill,[x1,x2,x2,x1],[ym,ym,y2,y2],/normal,col=250
+				loadct,0
+				xyouts,x1+.002,y2+.035,strtrim(samp1,2),charthick=3.,/normal,charsize=.7*fac
+				xyouts,x1+.002,y2+.005,strtrim(samp2,2),charthick=3.,/normal,charsize=.7*fac
+			endif else begin
+				x1 = .05+j*x_wid+delta
+				x2 = .05+(j+1)*x_wid-delta
+				y1 = .91-col*y_height-delta
+				y2 = .91-(col+1)*y_height+delta
+				x = where(lag_avail eq j)
+				if(x eq -1) then begin
+					polyfill,[x1,x2,x2,x1],[y1,y1,y2,y2],/normal,col=150
+					continue
+				endif
+				loadct,34
+				samp1 = lagt1(x)*mpinc+lagfr+i
+				samp2 = lagt2(x)*mpinc+lagfr+i
+				samp3 = lagt3(x)*mpinc+lagfr+i
+				samp4 = lagt4(x)*mpinc+lagfr+i
+	; 			if(samples(samp1) eq 1 OR samples(samp2) eq 1) then polyfill,[x1,x2,x2,x1],[y1,y1,y2,y2],/normal,col=250
+				if((samples(samp1) eq 1 OR samples(samp2) eq 1)AND(samples(samp3) eq 1 OR samples(samp4) eq 1)) then begin
+					plots,[x1,x1],[y1,y2],/normal,col=250,thick=5.
+					plots,[x2,x2],[y1,y2],/normal,col=250,thick=5.
+					plots,[x1,x2],[y1,y1],/normal,col=250,thick=5.
+					plots,[x1,x2],[y2,y2],/normal,col=250,thick=5.
+				endif
+				ym = (y1+y2)/2.
+				xm = (x1+x2)/2.
+				if(samples(samp1) eq 1) then polyfill,[x1,xm,xm,x1],[y1,y1,ym,ym],/normal,col=250
+				if(samples(samp2) eq 1) then polyfill,[x1,xm,xm,x1],[ym,ym,y2,y2],/normal,col=250
+				if(samples(samp3) eq 1) then polyfill,[xm,x2,x2,xm],[y1,y1,ym,ym],/normal,col=250
+				if(samples(samp4) eq 1) then polyfill,[xm,x2,x2,xm],[ym,ym,y2,y2],/normal,col=250
+				loadct,0
+				xyouts,x1+.002,y2+.035,strtrim(samp1,2),charthick=3.,/normal,charsize=.7*fac
+				xyouts,x1+.002,y2+.005,strtrim(samp2,2),charthick=3.,/normal,charsize=.7*fac
+				xyouts,xm+.002,y2+.035,strtrim(samp3,2),charthick=3.,/normal,charsize=.7*fac
+				xyouts,xm+.002,y2+.005,strtrim(samp4,2),charthick=3.,/normal,charsize=.7*fac
+			endelse
+		endfor
+
+	endfor
+	;Finally, plot the good/bad lags chart
+	
+
+
+	;close the postscript file
+  device,/close
+end

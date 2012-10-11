@@ -1,0 +1,96 @@
+pro draw_wait_fov
+
+
+  set_plot,'PS',/copy
+  device,/landscape,/COLOR,BITS_PER_PIXEL=8,filename='/rst/output_plots/wait_fov.ps'
+  
+	S = findgen(17)*(!PI*2./16.)
+	usersym,cos(S),sin(S),/FILL
+	
+  loadct,0
+	frang = .1
+	rmax = 1.4
+	theta0 = 63.6
+	dt = 3.3
+	dr = (rmax-frang)/75.
+	plots,0,0,psym=8,symsize=1,/data
+	bmnum = 15
+	rngcnt = 0
+	while(bmnum ge 0) do begin
+		i = bmnum
+		for k=0,rngcnt-1,25 do begin
+			r1 = frang+dr*k
+			r2 = r1+dr*25
+			print,r1,r2,dr
+			x1 = r1*cos((theta0+dt*i)*!pi/180.)
+			x2 = r2*cos((theta0+dt*i)*!pi/180.)
+			x3 = r1*cos((theta0+dt*(i+1))*!pi/180.)
+			x4 = r2*cos((theta0+dt*(i+1))*!pi/180.)
+			y1 = r1*sin((theta0+dt*i)*!pi/180.)
+			y2 = r2*sin((theta0+dt*i)*!pi/180.)
+			y3 = r1*sin((theta0+dt*(i+1))*!pi/180.)
+			y4 = r2*sin((theta0+dt*(i+1))*!pi/180.)
+			loadct,33
+			polyfill,[x1,x2,x4,x3],[y1,y2,y4,y3],/data,col=200
+			loadct,0
+			plots,[x1,x2],[y1,y2],thick=1.,/data
+			plots,[x3,x4],[y3,y4],thick=1.,/data
+; 			plots,[x1,x3],[y1,y3],thick=1.,/data
+; 			plots,[x2,x4],[y2,y4],thick=1.,/data
+		endfor
+		loadct,0
+		for i=15,0,-1 do begin
+			for k=0,0 do begin
+				r1 = frang+dr*k
+				r2 = r1+dr*75
+				x1 = r1*cos((theta0+dt*i)*!pi/180.)
+				x2 = r2*cos((theta0+dt*i)*!pi/180.)
+				x3 = r1*cos((theta0+dt*(i+1))*!pi/180.)
+				x4 = r2*cos((theta0+dt*(i+1))*!pi/180.)
+				y1 = r1*sin((theta0+dt*i)*!pi/180.)
+				y2 = r2*sin((theta0+dt*i)*!pi/180.)
+				y3 = r1*sin((theta0+dt*(i+1))*!pi/180.)
+				y4 = r2*sin((theta0+dt*(i+1))*!pi/180.)
+				plots,[x1,x2],[y1,y2],thick=1.,/data
+				plots,[x3,x4],[y3,y4],thick=1.,/data
+				plots,[x1,x3],[y1,y3],thick=1.,/data
+				plots,[x2,x4],[y2,y4],thick=1.,/data
+			endfor
+		endfor
+		for i=15,bmnum+1,-1 do begin
+			for k=0,0 do begin
+				r1 = frang+dr*k
+				r2 = r1+dr*75
+				x1 = r1*cos((theta0+dt*i)*!pi/180.)
+				x2 = r2*cos((theta0+dt*i)*!pi/180.)
+				x3 = r1*cos((theta0+dt*(i+1))*!pi/180.)
+				x4 = r2*cos((theta0+dt*(i+1))*!pi/180.)
+				y1 = r1*sin((theta0+dt*i)*!pi/180.)
+				y2 = r2*sin((theta0+dt*i)*!pi/180.)
+				y3 = r1*sin((theta0+dt*(i+1))*!pi/180.)
+				y4 = r2*sin((theta0+dt*(i+1))*!pi/180.)
+				if(i ge bmnum) then begin
+					loadct,33
+					if(i eq bmnum) then color = 200 else color = 255
+					polyfill,[x1,x2,x4,x3],[y1,y2,y4,y3],/data,col=color
+				endif
+				loadct,0
+				plots,[x1,x2],[y1,y2],thick=1.,/data
+				plots,[x3,x4],[y3,y4],thick=1.,/data
+				plots,[x1,x3],[y1,y3],thick=1.,/data
+				plots,[x2,x4],[y2,y4],thick=1.,/data
+			endfor
+		endfor
+		erase
+		if(rngcnt eq 75) then begin
+			rngcnt = 0
+			bmnum = bmnum-1
+		endif else begin
+			rngcnt = rngcnt+25
+		endelse
+	endwhile
+
+	;close the postscript file
+  device,/close
+
+end
