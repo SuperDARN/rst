@@ -1,0 +1,17 @@
+/* errstr.h
+   ========
+   Author: R.J.Barnes
+*/
+
+/*
+ $License$
+*/
+
+
+char *errstr[]={
+"make_lmfit - Creates a fit or fitacf format file from a raw (dat) or rawacf format file.\n",
+"make_lmfit --help\n",
+"make_lmfit rawname fitname\n",
+"make_lmfit -new \n",
+
+NULL};
