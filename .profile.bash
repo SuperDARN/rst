@@ -11,5 +11,5 @@ export PATH="${PATH}:/opt/local/bin:/usr/bin/:${HOME}/bin:${HOME}/script"
 . $RSTPATH/.profile/general.bash
 . $RSTPATH/.profile/superdarn.bash
 
-. $RSTPATH/.profile/idl.bash
+# . $RSTPATH/.profile/idl.bash
 
