@@ -141,7 +141,7 @@ end
 ;
 ;-----------------------------------------------------------------------------
 
-function mlt, year, t, mlong
+function mltrst, year, t, mlong
   year = fix(year)
   t = long(t)
   mlong = float(mlong)
