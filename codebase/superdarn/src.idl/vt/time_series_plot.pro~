@@ -130,7 +130,7 @@ pro time_series_plot,yr,mo,dy,sthr,stmn,edhr,edmn,rad,filtflg,tgtbeam,ytype,ctyp
     dind = dind + 1
   endwhile
   free_lun,inp
-
+	print,dind
   prm_arr = reform(prm_arr(0:dind-1))
   fit_arr = reform(fit_arr(0:dind-1))
   ;allow plotting space for last integration period
@@ -222,7 +222,7 @@ pro time_series_plot,yr,mo,dy,sthr,stmn,edhr,edmn,rad,filtflg,tgtbeam,ytype,ctyp
       ymin = 0
       for i=0,dind-1 do $
         if(prm_arr(i).nrang gt ymax) then $
-          ymax = 30;prm_arr(i).nrang
+          ymax = prm_arr(i).nrang
       yname = 'Range Gate'
     endif
     ;plot in geo coords
@@ -286,7 +286,7 @@ pro time_series_plot,yr,mo,dy,sthr,stmn,edhr,edmn,rad,filtflg,tgtbeam,ytype,ctyp
     for i=0,dind-1 do begin
       ;only plot channel A
       if(prm_arr(i).channel eq 2) then continue
-      for j=0,29 do begin
+      for j=0,prm.nrang-1 do begin
         ;check for backscatter in the RB cell
         if(fit_arr(i).qflg(j) eq 0) then continue
         ;get x coords

@@ -112,6 +112,7 @@ pro time_series_plot,yr,mo,dy,sthr,stmn,edhr,edmn,rad,filtflg,tgtbeam,ytype,ctyp
   dind = 0L
   ;open the fit file
   inp  = FitOpen(filename,/read)
+print,filename
   ;start reading the fit file
   while FitRead(inp,prm,fit) ne -1 do begin
     if(prm.bmnum ne tgtbeam OR prm.channel eq 2) then continue
@@ -130,7 +131,7 @@ pro time_series_plot,yr,mo,dy,sthr,stmn,edhr,edmn,rad,filtflg,tgtbeam,ytype,ctyp
     dind = dind + 1
   endwhile
   free_lun,inp
-
+	print,dind
   prm_arr = reform(prm_arr(0:dind-1))
   fit_arr = reform(fit_arr(0:dind-1))
   ;allow plotting space for last integration period
