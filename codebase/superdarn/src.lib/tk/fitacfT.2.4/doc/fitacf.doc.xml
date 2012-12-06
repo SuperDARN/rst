@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>superdarn</project>
+<name>fitacf</name>
+<location>src.lib/tk/fitacf</location>
+<function>
+<name>FitACF</name>
+<location>src.lib/tk/fitacf</location>
+<header>superdarn/fitacf.h</header>
+<syntax>void FitACF(<sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm,<sn href="&root;/src.lib/superdarn/atk/raw/structRawData.html">struct RawData</sn> *ptr,<sn href="structFitBlock.html">struct FitBlock</sn> *input,<sn href="&root;/src.lib/superdarn/atk/fit/structFitData.html">struct FitData</sn> *fit);</syntax>
+<description><p>The <fn href="FitACF.html">FitACF</fn> function applies the <em>fitacf</em> algorithm to raw ACF data.</p>
+<p>The argument <ar>prm</ar> points to the radar parameter block of the data to process and the argument <ar>raw</ar> points to the raw ACF data.</p>
+<p>The configuration used by the algorithm is stored in the structure pointed to by the argument <ar>input</ar>.</p>
+<p>The calculated, fitted parameters are stored in the structure pointed to by the argument <ar>fit</ar>.</p>
+</description>
+<example type="source">FitACF.c</example>
+</function>
+
+
+<function>
+<name>FitACFBadLags</name>
+<location>src.lib/tk/fitacf</location>
+<header>superdarn/badlags.h</header>
+<syntax>void FitACFBadLags(<sn href="structFitPrm.html">struct FitPrm</sn> *ptr,
+<sn href="structFitACFBadSample.html">struct FitACFBadSample</sn> *bptr);</syntax>
+<description><p>The <fn href="FitACFBadLags.html">FitACFBadLags</fn> function finds samples that should be excluded from the analysis as they result in a bad lag in the ACF.</p>
+<p>The argument <ar>ptr</ar> points to the data structure containing the parameters used by the <em>fitacf</em> algorithm.</p>
+<p>The calculated bad samples are stored in the structure pointed to by <ar>bptr</ar>.</p>
+</description>
+<example type="source">FitACFBadLags.c</example>
+
+</function>
+
+
+
+<function>
+<name>FitACFBadLagsStereo</name>
+<location>src.lib/tk/fitacf</location>
+<header>superdarn/badlags.h</header>
+<syntax>void FitACFBadLagsStereo(<sn href="structFitPrm.html">struct FitPrm</sn> *ptr,
+<sn href="structFitACFBadSample.html">struct FitACFBadSample</sn> *bptr);</syntax>
+<description><p>The <fn href="FitACFBadLags.html">FitACFBadLags</fn> function finds samples from a radar operating in stereo mode that should be excluded from the analysis as they result in a bad lag in the ACF.</p>
+<p>The argument <ar>ptr</ar> points to the data structure containing the parameters used by the <em>fitacf</em> algorithm.</p>
+<p>The calculated bad samples are stored in the structure pointed to by <ar>bptr</ar>.</p>
+</description>
+<example type="source">FitACFBadLagsStereo.c</example>
+
+</function>
+
+<function>
+<name>FitACFCkRng</name>
+<location>src.lib/tk/fitacf</location>
+<header>superdarn/badlags.h</header>
+<syntax>void FitACFCkRng(int range,int *badlag,<sn href="structFitACFBadSample.html">struct FitACFBadSample</sn> *bptr,<sn href="structFitPrm.html">struct FitPrm</sn> *ptr);</syntax>
+<description><p>The <fn href="FitACFCkRng.html">FitACFCkRng</fn> function determines the bad lags for an ACF at a given range.</p>
+<p>The badlags are found for the range given by the argument <ar>range</ar>. The calculated bad lags are stored in the array pointed to by the argument <ar>badlag</ar>.</p>
+<p>The lags are found using the table of bad samples pointed to by the argument <ar>bptr</ar> and the parameters of the <em>fitacf</em> algorithm pointed to by the argument <ar>ptr</ar>.</p>
+</description>
+<example type="source">FitACFCkRng.c</example>
+
+</function>
+
+
+
+<function>
+<name>FitACFEnd</name>
+<location>src.lib/tk/fitacf</location>
+<header>superdarn/fitacf.h</header>
+<syntax>void FitACFEnd(<sn href="structFitBlock.html">struct FitBlock</sn> *fptr);</syntax>
+<description><p>The <fn href="FitACFEnd.html">FitACFEnd</fn> function frees memory allocated for the <em>fitacf</em> algorithm.</p>
+<p>The argument <ar>fptr</ar> points to the data structure containing the memory buffers used by the algorithm.</p>
+</description>
+<example type="source">FitACFEnd.c</example>
+
+</function>
+<function>
+<name>FitACFStart</name>
+<location>src.lib/tk/fitacf</location>
+<header>superdarn/fitacf.h</header>
+<syntax>void FitACFStart(<sn href="&root;/src.lib/tk/radar/structRadarSite.html">struct RadarSite</sn> *hd,int yr,<sn href="structFitBlock.html">struct FitBlock</sn> *fptr);</syntax>
+<description><p>The <fn href="FitACFStart.html">FitACFStart</fn> function sets up a data structure in preparation for using the <em>fitacf</em> algorithm.</p>
+<p>The argument <ar>site</ar> points to the site hardware configuration for the radar. The argument <ar>yr</ar> is the year that the raw ACF data was generated.</p>
+<p>The data structure to set up is pointed to by the argument <ar>fptr</ar>.</p></description>
+<example type="source">FitACFStart.c</example>
+</function>
+
+
+<structure>
+ <name>FitACFBadSample</name>
+ <location>src.lib/tk/fit</location>
+ <header>superdarn/badsmp.h</header>
+ <struct>
+
+    <member>
+      <proto>int nbad;</proto>
+      <description>Number of bad samples.</description>
+    </member>
+
+    <member>
+      <proto>int badsmp[MAXBAD];</proto>
+      <description>Array of bad samples.</description>
+    </member>
+</struct>
+
+<description>
+<p>The <sn href="structFitACFBadSample.html">struct FitACFBadSample</sn> structure stores an array of bad samples.</p>
+</description>
+</structure>
+
+<structure>
+ <name>FitBlock</name>
+ <location>src.lib/tk/fit</location>
+ <header>superdarn/fitblk.h</header>
+ <struct>
+
+   <member>
+      <proto><sn href="structFitPrm.html">struct FitPrm</sn> prm;</proto>
+      <description>Parameters used by the algorithm.</description>
+    </member>
+
+   <member>
+      <proto>struct complex *acfd[MAX_RANGE];</proto>
+      <description>An array of pointers to the raw ACF data.</description>
+    </member>
+    <member>
+      <proto>struct complex *xcfd[MAX_RANGE];</proto>
+      <description>An array of pointers to the raw XCF data.</description>
+    </member>
+</struct>
+
+<description>
+<p>The <sn href="structFitBlock.html">struct FitBlock</sn> structure stores the global parameters used by the <em>fitacf</em> algorithm.</p>
+</description>
+</structure>
+
+
+
+
+<structure>
+ <name>FitElv</name>
+ <location>src.lib/tk/fit</location>
+ <header>superdarn/fitblk.h</header>
+ <struct>
+
+
+   <member>
+      <proto>double normal;</proto>
+      <description>Angle of arrival estimate.</description>
+    </member>
+   
+    <member>
+      <proto>double low;</proto>
+      <description>Lowest angle of arrival estimate.</description>
+    </member>
+ 
+  <member>
+      <proto>double high;</proto>
+      <description>Highest angle of arrival estimate.</description>
+    </member>
+</struct>
+
+<description>
+<p>The <sn href="structFitElv.html">struct FitElv</sn> structure stores the derived elevation angles.</p>
+</description>
+</structure>
+
+
+<structure>
+ <name>FitNoise</name>
+ <location>src.lib/tk/fit</location>
+ <header>superdarn/fitblk.h</header>
+ <struct>
+
+
+   <member>
+      <proto>double vel;</proto>
+      <description>Velocity found from fitting the noise ACF.</description>
+    </member>
+   
+    <member>
+      <proto>double skynoise;</proto>
+      <description>Sky noise.</description>
+    </member>
+ 
+  <member>
+      <proto>double lag0;</proto>
+      <description>Lag zero power of the noise ACF.</description>
+    </member>
+</struct>
+
+<description>
+<p>The <sn href="structFitNoise.html">struct FitElv</sn> structure stores the derived noise values.</p>
+</description>
+</structure>
+
+
+
+
+<structure>
+ <name>FitPrm</name>
+ <location>src.lib/tk/fit</location>
+ <header>superdarn/fitblk.h</header>
+ <struct>
+
+    <member>
+      <proto>int channel;</proto>
+      <description>Channel number being processed, zero indicates data is from a mono radar, a value of (1) indicates channel A, and value of (2) indicates channel B.</description>
+    </member>
+
+ 
+    <member>
+      <proto>int offset;</proto>
+      <description>Offset between channels for a stereo radar.</description>
+    </member>
+
+    <member>
+      <proto>int cp;</proto>
+      <description>Control program Identifier number.</description>
+    </member>
+
+    <member>
+      <proto>int xcf;</proto>
+      <description>XCF flag.</description>
+    </member>
+
+    <member>
+      <proto>int tfreq;</proto>
+      <description>Transmitted frequency.</description>
+    </member>
+
+    <member>
+      <proto>int noise;</proto>
+      <description>Noise calculated from clear frequency search.</description>
+    </member>
+
+
+    <member>
+      <proto>int nrang;</proto>
+      <description>Number of ranges.</description>
+    </member>
+
+    <member>
+      <proto>int smsep;</proto>
+      <description>Sample separation (microseconds).</description>
+    </member>
+
+
+    <member>
+      <proto>int nave;</proto>
+      <description>Number of pulse sequences transmitted.</description>
+    </member>
+
+    <member>
+      <proto>int mplgs;</proto>
+      <description>Number of lags in ACF.</description>
+    </member>
+
+
+    <member>
+      <proto>int mppul;</proto>
+      <description>Number of pulses in sequence.</description>
+    </member>
+
+    <member>
+      <proto>int txpl;</proto>
+      <description>Transmit pulse length (microseconds).</description>
+    </member>
+
+    <member>
+      <proto>int lagfr;</proto>
+      <description>Lag to  first range (microseconds).</description>
+    </member>
+
+    <member>
+      <proto>int mppul;</proto>
+      <description>Number of pulses in sequence.</description>
+    </member>
+
+
+    <member>
+      <proto>int bmnum;</proto>
+      <description>Beam number.</description>
+    </member>
+
+
+    <member>
+      <proto>int lag[LAG_SIZE][2];</proto>
+      <description>Lag table.</description>
+    </member>
+
+    <member>
+      <proto>int pulse[PULSE_SIZE];</proto>
+      <description>Pulse table.</description>
+    </member>
+
+    <member>
+      <proto>int pwr0[MAX_RANGE];</proto>
+      <description>Lag-zero powers.</description>
+    </member>
+
+    <member>
+      <proto>double interfer[3];</proto>
+      <description>the x, y, z position of the interferometer array with respect to the main array. The values are given in meters. X is in the direction parallel to the main array, with +X being to the right looking along the boresite. Y is in the boresite direction, with +Y in front of the array. Z is the vertical displacement, with +Z being up.</description>           
+    </member>
+
+    <member>
+      <proto>double bmsep;</proto>
+      <description>Beam separation angle.</description>
+    </member>
+
+    <member>
+      <proto>double phidiff;</proto>
+      <description>Sign of the phase shift of the interferometer array (+1 indicates the inteferometer is in front of the main array).</description>
+    </member>
+
+    <member>
+      <proto>double tdiff;</proto>
+      <description>Time delay in microseconds of the signal from the interferometer array and the main array.</description>
+    </member>
+
+    <member>
+      <proto>double vdir;</proto>
+      <description>Definition of velocity direction. (+1.0 is normal, -1.0 indicates that the I & Q inputs to the receiver are reversed).</description>
+    </member>
+
+</struct>
+
+<description>
+<p>The <sn href="structFitPrm.html">struct FitPrm</sn> structure stores the parameters used by the <em>fitacf</em> algorithm.</p>
+</description>
+</structure>
+
+
+
+<structure>
+ <name>FitRange</name>
+ <location>src.lib/tk/fit</location>
+ <header>superdarn/fitblk.h</header>
+ <struct>
+
+
+   <member>
+      <proto>double v;</proto>
+      <description>Velocity from ACF.</description>
+    </member>
+   
+    <member>
+      <proto>double v_err;</proto>
+      <description>Velocity error from ACF.</description>
+    </member>
+ 
+    <member>
+      <proto>double p_0;</proto>
+      <description>Lag zero power.</description>
+    </member>
+
+    <member>
+      <proto>double p_l;</proto>
+      <description>Power from lambda fit of ACF.</description>
+    </member>
+
+    <member>
+      <proto>double p_l_err;</proto>
+      <description>Power error from lambda fit of ACF.</description>
+    </member>
+
+   <member>
+      <proto>double p_s;</proto>
+      <description>Power from sigma fit of ACF.</description>
+    </member>
+
+
+    <member>
+      <proto>double p_s_err;</proto>
+      <description>Power error from sigma fit of ACF.</description>
+    </member>
+
+   <member>
+      <proto>double w_l;</proto>
+      <description>Spectral width from lambda fit of ACF.</description>
+    </member>
+
+    <member>
+      <proto>double w_l_err;</proto>
+      <description>Spectral width error from lambda fit of ACF.</description>
+    </member>
+
+    <member>
+      <proto>double w_s;</proto>
+      <description>Spectral width from sigma fit of ACF.</description>
+    </member>
+
+
+    <member>
+      <proto>double w_s_err;</proto>
+      <description>Spectral width error from sigma fit of ACF.</description>
+    </member>
+
+   <member>
+      <proto>double phi0;</proto>
+      <description>Phase determination at lag zero of the ACF.</description>
+    </member>
+
+    <member>
+      <proto>double phi0_err;</proto>
+      <description>Phase determination error at lag zero of the ACF.</description>
+    </member>
+
+    <member>
+      <proto>double sdev_l;</proto>
+      <description>Standard deviation of lambda fit.</description>
+    </member>
+
+    <member>
+      <proto>double sdev_s;</proto>
+      <description>Standard deviation of sigma fit .</description>
+    </member>
+
+    <member>
+      <proto>double sdev_phi;</proto>
+      <description>Standard deviation of phase fit.</description>
+    </member>
+
+    <member>
+      <proto>int qflg;</proto>
+      <description>Quality flag.</description>
+    </member>
+
+    <member>
+      <proto>int gsct;</proto>
+      <description>Ground scatter flag.</description>
+    </member>
+
+    <member>
+      <proto>int nump;</proto>
+      <description>Number of points in the fit.</description>
+    </member>
+
+
+
+</struct>
+
+<description>
+<p>The <sn href="structFitRange.html">struct FitRange</sn> structure stores the fitted parameters for a single range.</p>
+</description>
+</structure>
+
+
+</library>

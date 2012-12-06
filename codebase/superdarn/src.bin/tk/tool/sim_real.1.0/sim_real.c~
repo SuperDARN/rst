@@ -367,14 +367,14 @@ int main(int argc,char *argv[])
 		**********************************************************/
 		for(i=0;i<nrang;i++)
 		{
-			fprintf(stderr,"%d  MY T %d  %d\n",i,pulse_t[0],pulse_t[1]);
 			fscanf(fitfp,"%*d  %d  %lf  %lf  %lf\n",&qflg[i],&v_dop,&amp0,&t_d);
 			t_d = lambda/(t_d*2.*PI);
 			if(t_d > 999999.) t_d = 0.;
 			t_d_arr[i] = t_d;
 
 			v_dop_arr[i] = v_dop;
-
+			
+			fprintf(stderr,"%lf  %lf\n",amp0,noise_lev*pow(10.,(amp0/10.)));
 			amp0 = noise_lev*pow(10.,(amp0/10.));
 			amp0_arr[i] = amp0;
 
@@ -382,6 +382,7 @@ int main(int argc,char *argv[])
 			for(j=0;j<n_lags;j++)
 				acfs[i][j] = 0.+I*0.;
 		}
+		fprintf(stderr,"%d  %d  %d\n",tau[0],tau[1],tau[2]);
 		
 		/*call the simulation function*/
 		sim_data(t_d_arr, t_g_arr, t_c_arr, v_dop_arr, qflg, velo_arr, amp0_arr, freq, noise_lev,

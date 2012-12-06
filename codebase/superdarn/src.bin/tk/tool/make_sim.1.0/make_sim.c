@@ -105,7 +105,7 @@ void makeRadarParm(struct RadarParm * prm, char * argv[], int argc, int cpid, in
   prm->ercod = 0;
   prm->stat.agc = 8192;
   prm->stat.lopwr = 8192;
-  prm->noise.search = noise_lev*amp0;
+  prm->noise.search = noise_lev;
   prm->noise.mean = 0.;
   prm->channel = 0;
   prm->bmnum = 7;
@@ -488,6 +488,8 @@ int main(int argc,char *argv[])
   double * amp0_arr = malloc(nrang*sizeof(double));
   for(i=0;i<nrang;i++)
     amp0_arr[i] = amp0;
+	
+	if(noise_flg) noise_lev *= amp0;
 
   /*call the simulation function*/
   sim_data(t_d_arr, t_g_arr, t_c_arr, v_dop_arr, qflg, velo_arr, amp0_arr, freq, noise_lev,

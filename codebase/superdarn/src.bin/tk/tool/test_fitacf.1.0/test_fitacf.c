@@ -27,7 +27,7 @@
 #include "fitdata.h"
 #include "radar.h"
 
-#include "fitacf.h"
+#include "fitacfT.h"
 #include "rawread.h"
 #include "fitwrite.h"
 
@@ -217,7 +217,7 @@ int main(int argc,char *argv[]) {
 	{
 		fprintf(stdout,"%d  %d  %d  %d  %d  %d  %d  %d\n",prm->stid,prm->time.yr,prm->time.mo,
 									prm->time.dy,prm->time.hr,prm->time.mt,(int)prm->time.sc,prm->bmnum);
-		FitACF(prm,raw,fblk,fit,1);
+		FitACFT(prm,raw,fblk,fit,1);
 		done=1;
 	}
 
@@ -247,7 +247,7 @@ int main(int argc,char *argv[]) {
 		{
 			fprintf(stdout,"%d  %d  %d  %d  %d  %d  %d  %d\n",prm->stid,prm->time.yr,prm->time.mo,
 									prm->time.dy,prm->time.hr,prm->time.mt,(int)prm->time.sc,prm->bmnum);
-			FitACF(prm,raw,fblk,fit,1);
+			FitACFT(prm,raw,fblk,fit,1);
 			done = 1;
 		}
 

@@ -373,7 +373,7 @@ int main(int argc,char *argv[])
 			t_d_arr[i] = t_d;
 
 			v_dop_arr[i] = v_dop;
-
+			
 			amp0 = noise_lev*pow(10.,(amp0/10.));
 			amp0_arr[i] = amp0;
 

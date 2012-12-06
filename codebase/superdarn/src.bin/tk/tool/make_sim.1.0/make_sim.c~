@@ -105,7 +105,7 @@ void makeRadarParm(struct RadarParm * prm, char * argv[], int argc, int cpid, in
   prm->ercod = 0;
   prm->stat.agc = 8192;
   prm->stat.lopwr = 8192;
-  prm->noise.search = noise_lev*noise_lev*amp0;
+  prm->noise.search = noise_lev*amp0;
   prm->noise.mean = 0.;
   prm->channel = 0;
   prm->bmnum = 7;
@@ -304,7 +304,7 @@ int main(int argc,char *argv[])
     else if (strcmp(argv[i], "-noise") == 0)
     {
       noise_flg = 1;
-      noise_lev = 1./pow(10.,((double)atoi(argv[i+1]))/20.);
+      noise_lev = 1./pow(10.,((double)atoi(argv[i+1]))/10.);
     }
     /*command line amplitude*/
     else if (strcmp(argv[i], "-amp") == 0)

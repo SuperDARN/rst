@@ -445,7 +445,7 @@ int main(int argc,char *argv[]) {
             
       OpsBuildRaw(raw);
    
-      FitACF(prm,raw,fblk,fit,0);
+      FitACF(prm,raw,fblk,fit);
       
       msg.num=0;
       msg.tsize=0;
@@ -565,7 +565,7 @@ int main(int argc,char *argv[]) {
           OpsBuildPrm(prm,ptab,lags);
           OpsBuildIQ(iq,&badtr);
           OpsBuildRaw(raw);
-          FitACF(prm,raw,fblk,fit);
+          FitACF(prm,raw,fblk,fit,0);
 
           ErrLog( errlog.sock, progname, "Sending SND messages.");
           msg.num= 0;

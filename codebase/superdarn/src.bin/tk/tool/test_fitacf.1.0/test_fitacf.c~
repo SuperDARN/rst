@@ -27,7 +27,7 @@
 #include "fitdata.h"
 #include "radar.h"
 
-#include "fitacf.h"
+#include "fitacfT.h"
 #include "rawread.h"
 #include "fitwrite.h"
 
@@ -213,7 +213,7 @@ int main(int argc,char *argv[]) {
 
   fblk=FitACFMake(site,prm->time.yr); 
 
-	if(prm->time.hr >= tgthr && prm->time.mt >= tgtmin && prm->bmnum == tgtbeam && prm->channel != 2)
+	if(prm->time.hr == tgthr && prm->time.mt == tgtmin && prm->bmnum == tgtbeam && prm->channel != 2)
 	{
 		fprintf(stdout,"%d  %d  %d  %d  %d  %d  %d  %d\n",prm->stid,prm->time.yr,prm->time.mo,
 									prm->time.dy,prm->time.hr,prm->time.mt,(int)prm->time.sc,prm->bmnum);
@@ -242,12 +242,12 @@ int main(int argc,char *argv[]) {
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
 
-    if(prm->time.hr >= tgthr && prm->time.mt >= tgtmin && prm->bmnum == tgtbeam
+    if(prm->time.hr == tgthr && prm->time.mt == tgtmin && prm->bmnum == tgtbeam
 				&& status == 0 && !done && prm->channel != 2)
 		{
 			fprintf(stdout,"%d  %d  %d  %d  %d  %d  %d  %d\n",prm->stid,prm->time.yr,prm->time.mo,
 									prm->time.dy,prm->time.hr,prm->time.mt,(int)prm->time.sc,prm->bmnum);
-			FitACF(prm,raw,fblk,fit,1);
+			FitACFT(prm,raw,fblk,fit,1);
 			done = 1;
 		}
 
