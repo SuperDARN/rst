@@ -191,7 +191,6 @@ int main(int argc,char *argv[]) {
     strcat(command,argv[c]);
   }
 
-	prm->lagfr = 1800;
 
 
   if (vb) 
@@ -241,7 +240,6 @@ int main(int argc,char *argv[]) {
     
     if (old) status=OldRawRead(rawfp,prm,raw);
     else status=RawFread(fp,prm,raw);
-		prm->lagfr = 1800;
 
      if (vb) 
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,

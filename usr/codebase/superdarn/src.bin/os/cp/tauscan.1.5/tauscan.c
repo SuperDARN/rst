@@ -375,7 +375,7 @@ int main(int argc,char *argv[]) {
             
       OpsBuildRaw(raw);
    
-      FitACF(prm,raw,fblk,fit,0);
+      FitACF(prm,raw,fblk,fit);
       
       msg.num=0;
       msg.tsize=0;

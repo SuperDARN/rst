@@ -73,7 +73,7 @@ int main(int argc,char *argv[])
   int dnum=0;
 
   time_t ctime;
-  int c,n;
+  int c,n,samps=0;
   char command[128];
   char tmstr[40];
 
@@ -83,6 +83,7 @@ int main(int argc,char *argv[])
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
   OptionAdd(&opt,"vb",'x',&vb);
+	OptionAdd(&opt,"samps",'i',&samps);
 
   arg=OptionProcess(1,argc,argv,&opt,NULL);
 
@@ -186,8 +187,8 @@ int main(int argc,char *argv[])
     tmstr[24]=0;
     RadarParmSetOriginTime(prm,tmstr);
 
-		prm->lagfr = 1800;
-		prm->frang = 270;
+		prm->lagfr += prm->smsep*samps;
+		prm->frang += prm->rsep*samps;
 
     status=RawFwrite(stdout,prm,raw);
 
