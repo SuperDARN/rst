@@ -131,11 +131,11 @@ void add_make(char *name,char type) {
 
   for (j=strlen(name)-1;(name[j] !='.') && (j>0);j--);
   if (j>0) {
-    minor=atoi(name+j);
+    minor=atoi(name+j+1); /* +1 bugfix found by SGS 12Dec2012 */
     for (k=j-1;(name[k] !='.') && (k>0);k--);
     if (k>0) {
       name[j]=0;
-      major=atoi(name+k);
+      major=atoi(name+k+1); /* +1 bugfix found by SGS 12Dec2012 */
       name[j]='.';
       j=k;
     } else {
@@ -164,6 +164,8 @@ void add_make(char *name,char type) {
   }
   makename[num]=malloc(strlen(name)+1);
   maketype[num]=type;
+  makevmajor[num]=major;	/* added from SGS bugfix 12Dec2012 */
+  makevminor[num]=minor;	/* added from SGS bugfix 12Dec2012 */
   strcpy(makename[num],name);
   name[j]=0;
   makeroot[num]=malloc(strlen(name+i)+1);
