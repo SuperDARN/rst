@@ -433,6 +433,10 @@ end
 ;
 ; PURPOSE:
 ;       Internal function for RPos
+;                       Converts from geodetic coordinates (gdlat,gdlon) to geocentric spherical
+;                       coordinates (glat,glon). The radius of the Earth (grho) and the deviation
+;                       off the vertical (del) are calculated. The IAU 1964 oblate spheroid model
+;                       of the Earth is adopted.
 ;       
 ;
 ; CALLING SEQUENCE:
@@ -466,14 +470,21 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;+
 ; NAME:
-;       RadarGeoFldPnt
+;       RadarFldPnt
 ;
 ; PURPOSE:
 ;       Internal function for RPos
+;                       This subroutine calculates the geocentric coordinates (frho,flat,flon)
+;                       of a field point given the angular geocentric coordinates (rrho,rlat,rlon)
+;                       of the point of origin, the azimuth (ral), the elevation (rel), and the
+;                       slant range (r). Note that the azimuth and elevation are reckoned from the
+;                       horizon that is defined by the plane perpendicular to the radial vector from
+;                       the center of the Earth through the point of origin. For conversion from the
+;                       radarpointing coordinates to these coordinates, call RadarGeoCnvrt.
 ;       
 ;
 ; CALLING SEQUENCE:
-;       RadarGeoTGC,rrho,rlat,rlon,ral,rel,r,frho,flat,flon
+;       RadarFldPnt,rrho,rlat,rlon,ral,rel,r,frho,flat,flon
 ;
 ;-----------------------------------------------------------------
 ;
@@ -481,15 +492,18 @@ end
 
 pro RadarFldPnt,rrho,rlat,rlon,ral,rel,r,frho,flat,flon 
 
+        ; Convert from global spherical (rrho,lat,lon) to global cartesian (rx,ry,rz: Earth centered)
    sinteta=sin(!PI*(90.0-rlat)/180.0)
    rx=rrho*sinteta*cos(!PI*rlon/180.0)
    ry=rrho*sinteta*sin(!PI*rlon/180.0)
    rz=rrho*cos(!PI*(90.0-rlat)/180.0)
 
+        ; Convert from local spherical (r,ral,rel) to local cartesian (sx,sy,sz: South,East,Up)
    sx=-r*cos(!PI*rel/180.0)*cos(!PI*ral/180.0)
    sy=r*cos(!PI*rel/180.0)*sin(!PI*ral/180.0)
    sz=r*sin(!PI*rel/180.0)
 
+        ; Convert from local cartesian to global cartesian
    tx  =  cos(!PI*(90.0-rlat)/180.0)*sx + sin(!PI*(90.0-rlat)/180.0)*sz
    ty  =  sy
    tz  = -sin(!PI*(90.0-rlat)/180.0)*sx + cos(!PI*(90.0-rlat)/180.0)*sz
@@ -497,10 +511,12 @@ pro RadarFldPnt,rrho,rlat,rlon,ral,rel,r,frho,flat,flon
    sy  =  sin(!PI*rlon/180.0)*tx + cos(!PI*rlon/180.0)*ty
    sz  =  tz
 
+        ; Find global cartesian coordinates of new point by vector addition
    tx=rx+sx
    ty=ry+sy
    tz=rz+sz
 
+        ; Convert from global cartesian to global spherical
    frho=sqrt((tx*tx)+(ty*ty)+(tz*tz))
    flat=90.0-acos(tz/(frho))*180.0/!PI
    if ((tx eq 0) and (ty eq 0)) then flon=0 $
@@ -514,7 +530,16 @@ end
 ;
 ; PURPOSE:
 ;       Internal function for RPos
-;       
+;                               Converts from pointing azimuth and elevation (xal,xel) measured
+;                       with respect to the local horizon to azimuth and elevation angles
+;                       (ral,rel) appropriate to a horizon defined by the plane perpendicular
+;                       to the Earth-centered radial vector drawn through the point of origin.
+;                       (this is an adjustment to the measured azimuth and elevation for the
+;                       oblateness of the Earth). The conversion is effected by means of a cartesian
+;                       coordinate transformation that rotates the local vertical velocity onto the
+;                       direction of the Earth-centeredradial vecrtor. The angle of rotation about
+;                       the x-axis is the deviation off the vertical. (x: east, y:west, z:up).
+;
 ;
 ; CALLING SEQUENCE:
 ;       RadarGeoCnvrt,gdlat,gdlon,xal,xel,ral,rel
@@ -553,6 +578,11 @@ end
 ;
 ; PURPOSE:
 ;       Internal function for RPos
+;       This subroutine calculates the geocentric coordinates (frho,flat,flon)
+;                       of a radar field point given the angular coordinates (glat, glon) of the
+;                       radar site, given the cone angle (psi), the field point height (fh),
+;                       and the slant range (r). Note that the elevation angle is found that
+;                       accomodate (fh,r).
 ;       
 ;
 ; CALLING SEQUENCE:
@@ -583,14 +613,21 @@ pro RadarFldPnth,gdlat,gdlon,psi,bore,fh,r,frho,flat,flon
   RadarGeoTGC,1,gdlat,gdlon,rrad,rlat,rlon,del
 
   rrho=rrad
+; Radius of the Earth beneath the field point
   frad=rrad
- 
+
+; Iterate until the altitude corresponding to the calculated elevation
+; matches the desired altitude
   repeat begin 
     frho=frad+xh
  
+    ; Pointing elevation (spherical Earth value)
+    if r gt 2*rrad then r = 2*rrad  ; This was a problem with p-code when an incorrect number of gates was passed
+
     rel=asin(((frho*frho)-(rrad*rrad)-(r*r))/(2*rrad*r))*180.0/!PI
     xel=rel
 
+    ; Estimate the off-array-normal azimuth
     if (((cos(!PI*psi/180.0)*cos(!PI*psi/180.0))- $
          (sin(!PI*xel/180.0)*sin(!PI*xel/180.0))) lt 0) then tan_azi=1e32 $
       else tan_azi=sqrt( (sin(!PI*psi/180.0)*sin(!PI*psi/180.0))/ $
@@ -599,13 +636,19 @@ pro RadarFldPnth,gdlat,gdlon,psi,bore,fh,r,frho,flat,flon
     if (psi gt 0) then azi=atan(tan_azi)*180.0/!PI $
     else azi=-atan(tan_azi)*180.0/!PI
 
+    ; Obtain the corresponding value of pointing azimuth
     xal=azi+bore
-  
+
+    ; Adjust azimuth and elevation for the oblateness of the Earth
     RadarGeoCnvrt,gdlat,gdlon,xal,xel,ral,dum
     
+    ; Obtain the global spherical coordinates of the field point
     RadarFldPnt,rrho,rlat,rlon,ral,rel,r,frho,flat,flon
+
+    ; Recomputes the radius of the Earth beneath the field point
     RadarGeoTGC,-1,dum1,dum2,frad,flat,flon,dum3
-  
+
+    ; Check altitude
     fhx=frho-frad    
   endrep until (abs(fhx-xh) le 0.5) 
 end
