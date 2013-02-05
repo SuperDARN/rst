@@ -452,6 +452,7 @@ pro RadarGeoTGC,iopt,gdlat,gdlon,grho,glat,glon,del
    a=6378.16D
    f=1.0D/298.25D
   
+
    b=a*(1.0-f)
    e2=(a*a)/(b*b)-1
    if (iopt gt 0) then begin
@@ -619,13 +620,14 @@ pro RadarFldPnth,gdlat,gdlon,psi,bore,fh,r,frho,flat,flon
 ; matches the desired altitude
   repeat begin 
     frho=frad+xh
+ 
+    ; Pointing elevation (spherical Earth value)
+    if r gt 2*rrad then r = 2*rrad  ; This was a problem with p-code when an incorrect number of gates was passed
 
-		; Pointing elevation (spherical Earth value)
-		if r gt 2*rrad then r = 2*rrad	; This was a problem with p-code when an incorrect number of gates was passed
-		rel=asin(((frho*frho)-(rrad*rrad)-(r*r))/(2*rrad*r))*180.0/!PI
+    rel=asin(((frho*frho)-(rrad*rrad)-(r*r))/(2*rrad*r))*180.0/!PI
     xel=rel
 
-		; Estimate the off-array-normal azimuth
+    ; Estimate the off-array-normal azimuth
     if (((cos(!PI*psi/180.0)*cos(!PI*psi/180.0))- $
          (sin(!PI*xel/180.0)*sin(!PI*xel/180.0))) lt 0) then tan_azi=1e32 $
       else tan_azi=sqrt( (sin(!PI*psi/180.0)*sin(!PI*psi/180.0))/ $
@@ -634,20 +636,19 @@ pro RadarFldPnth,gdlat,gdlon,psi,bore,fh,r,frho,flat,flon
     if (psi gt 0) then azi=atan(tan_azi)*180.0/!PI $
     else azi=-atan(tan_azi)*180.0/!PI
 
-		; Obtain the corresponding value of pointing azimuth
+    ; Obtain the corresponding value of pointing azimuth
     xal=azi+bore
-  
-		; Adjust azimuth and elevation for the oblateness of the Earth
+
+    ; Adjust azimuth and elevation for the oblateness of the Earth
     RadarGeoCnvrt,gdlat,gdlon,xal,xel,ral,dum
-
-
+    
     ; Obtain the global spherical coordinates of the field point
     RadarFldPnt,rrho,rlat,rlon,ral,rel,r,frho,flat,flon
 
     ; Recomputes the radius of the Earth beneath the field point
     RadarGeoTGC,-1,dum1,dum2,frad,flat,flon,dum3
-  
-		; Check altitude
+
+    ; Check altitude
     fhx=frho-frad    
   endrep until (abs(fhx-xh) le 0.5) 
 end
@@ -800,7 +801,7 @@ function RadarPos,center,bcrd,rcrd,site,frang,rsep,rxrise,$
     
      if (N_ELEMENTS(frang) eq 1) then fr=frang
      if (N_ELEMENTS(rsep) eq 1) then begin 
-       if (center eq 0) then range_edge=-0.5*rsep*20.0/3.0
+       if (center eq 0) then re=-0.5*rsep*20.0/3.0
        rs=rsep
      endif
 
@@ -813,7 +814,7 @@ function RadarPos,center,bcrd,rcrd,site,frang,rsep,rxrise,$
      for i=0,n-1 do begin
         if N_ELEMENTS(frang) ne 1 then fr=frang[i]
         if N_ELEMENTS(rsep) ne 1 then begin 
-          if (center eq 0) then range_edge=-0.5*rsep*20.0/3.0
+          if (center eq 0) then re=-0.5*rsep*20.0/3.0
           rs=rsep[i]
         endif
         if N_ELEMENTS(rxrise) ne 1 then rx=rxrise[i]
@@ -942,7 +943,7 @@ function RadarPosGS,center,bcrd,rcrd,site,frang,rsep,rxrise,$
     
      if (N_ELEMENTS(frang) eq 1) then fr=frang
      if (N_ELEMENTS(rsep) eq 1) then begin 
-       if (center eq 0) then range_edge=-0.5*rsep*20.0/3.0
+       if (center eq 0) then re=-0.5*rsep*20.0/3.0
        rs=rsep
      endif
 
@@ -955,7 +956,7 @@ function RadarPosGS,center,bcrd,rcrd,site,frang,rsep,rxrise,$
      for i=0,n-1 do begin
         if N_ELEMENTS(frang) ne 1 then fr=frang[i]
         if N_ELEMENTS(rsep) ne 1 then begin 
-          if (center eq 0) then range_edge=-0.5*rsep*20.0/3.0
+          if (center eq 0) then re=-0.5*rsep*20.0/3.0
           rs=rsep[i]
         endif
         if N_ELEMENTS(rxrise) ne 1 then rx=rxrise[i]
