@@ -39,6 +39,5 @@ export LD_LIBRARY_PATH="${LIBPATH}:${USR_LIBPATH}:/usr/local/cdf/lib"
 export MAKECFG=${BUILD}/make/makecfg
 export MAKEBIN=${BUILD}/make/makebin
 export MAKELIB=${BUILD}/make/makelib
-export MAKEDLM=${BUILD}/make/makedlm
 
 
