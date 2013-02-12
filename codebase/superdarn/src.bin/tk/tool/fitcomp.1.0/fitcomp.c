@@ -43,7 +43,7 @@ THE SOFTWARE.
 #include "radar.h"
 
 #include "lmfit.h"
-#include "fitacfT.h"
+#include "fitacf.h"
 #include "rawread.h"
 #include "fitwrite.h"
 
@@ -88,10 +88,10 @@ double calc_acf_err(struct RawData * raw, struct FitData * fit, struct RadarParm
 	{
 		lag = fabs(prm->lag[0][j]-prm->lag[1][j]);
 		tau = lag*prm->mpinc*1.e-6;
-		re = raw->acfd[0][i*prm->mplgs+j]/(10000./pow(i+1,2));
-		im = raw->acfd[1][i*prm->mplgs+j]/(10000./pow(i+1,2));
-		ref = p0*exp(-1.0*tau/t_if)*cos(tau*f_if)/(10000./pow(i+1,2));
-		imf = p0*exp(-1.0*tau/t_if)*sin(tau*f_if)/(10000./pow(i+1,2));
+		re = raw->acfd[0][i*prm->mplgs+j]/(10000.);
+		im = raw->acfd[1][i*prm->mplgs+j]/(10000.);
+		ref = p0*exp(-1.0*tau/t_if)*cos(tau*f_if)/(10000.);
+		imf = p0*exp(-1.0*tau/t_if)*sin(tau*f_if)/(10000.);
 		acferr += (pow(re-ref,2) + pow(im-imf,2));
 	}
 	acferr /= prm->mplgs;
@@ -277,8 +277,8 @@ int main(int argc,char *argv[])
 	fblkacf=FitACFMake(site,prm1->time.yr);
 	fblkex=FitACFMake(site,prm2->time.yr);
 	fblklm=FitACFMake(site,prm3->time.yr);
-/*
-	FitACFT(prm1,raw1,fblkacf,fitacf,0);*/
+
+	FitACF(prm1,raw1,fblkacf,fitacf);
 	fitacfex2(prm2,raw2,fitex,fblkex,0);
 	lmfit(prm3,raw3,fitlm,fblklm,0);
 
@@ -450,8 +450,8 @@ int main(int argc,char *argv[])
 	     prm1->time.dy,prm1->time.hr,prm1->time.mt,prm1->time.sc,prm1->bmnum);
 
     if (status==0)
-		{/*
-			FitACFT(prm1,raw1,fblkacf,fitacf,0);*/
+		{
+			FitACF(prm1,raw1,fblkacf,fitacf);
 			fitacfex2(prm2,raw2,fitex,fblkex,0);
 			lmfit(prm3,raw3,fitlm,fblklm,0);
 		}
