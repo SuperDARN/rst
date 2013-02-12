@@ -260,7 +260,7 @@ void lm_noise_stat(struct RadarParm *prm, struct RawData * raw,
     j=0;
     for(R=0;R<prm->nrang;R++)
     {
-      pwrd[j] = sqrt(raw->acfd[0][R*prm->mplgs]*raw->acfd[0][R*prm->mplgs]);
+      pwrd[j] = raw->pwr0[R];
       if(pwrd[j] > 0.)
         j++;
     }
