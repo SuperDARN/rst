@@ -53,8 +53,8 @@ double elevation_ex(struct FitPrm *prm,double phi0) {
 
   if (antenna_separation == 0.0) {
     antenna_separation= sqrt(prm->interfer[1]*prm->interfer[1] +
-			                 prm->interfer[0]*prm->interfer[0] +
-	                         prm->interfer[2]*prm->interfer[2]);
+                       prm->interfer[0]*prm->interfer[0] +
+                           prm->interfer[2]*prm->interfer[2]);
     elev_corr= prm->phidiff* asin( prm->interfer[2]/ antenna_separation);
     if (prm->interfer[1] > 0.0) /* interferometer in front of main antenna */
       phi_sign= 1.0;
@@ -134,8 +134,8 @@ double bisect(float w_guess, float diff, struct RawData *raw, float *good_lags, 
   {
     if (f2 < f1)
     {
-			if(print)
-				fprintf(stdout,"%lf\n%lf\n",x2,f2);
+      if(print)
+        fprintf(stdout,"%lf\n%lf\n",x2,f2);
       x0 = x1;
       x1 = x2;
       x2 = r_fac*x1 + c_fac*x3;
@@ -144,8 +144,8 @@ double bisect(float w_guess, float diff, struct RawData *raw, float *good_lags, 
     }
     else
     {
-			if(print)
-				fprintf(stdout,"%lf\n%lf\n",x1,f1);
+      if(print)
+        fprintf(stdout,"%lf\n%lf\n",x1,f1);
       x3 = x2;
       x2 = x1;
       x1 = r_fac*x2 + c_fac*x0;
@@ -170,17 +170,17 @@ double bisect(float w_guess, float diff, struct RawData *raw, float *good_lags, 
     }
   }
   if (f1 < f2)
-	{
-		if(print)
-			fprintf(stdout,"%lf\n%lf\n",x1,f1);
+  {
+    if(print)
+      fprintf(stdout,"%lf\n%lf\n",x1,f1);
     return x1;
-	}
+  }
   else
-	{
-		if(print)
-			fprintf(stdout,"%lf\n%lf\n",x2,f2);
+  {
+    if(print)
+      fprintf(stdout,"%lf\n%lf\n",x2,f2);
     return x2; 
-	}
+  }
 }
 
 void fitacfex2(struct RadarParm *prm,struct RawData *raw,
@@ -209,7 +209,7 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
   float diff,err;
   int *badlag = malloc(prm->mplgs * sizeof(int));
   struct FitACFBadSample badsmp;
-	float *sigma = malloc(prm->mplgs*sizeof(double));
+  float *sigma = malloc(prm->mplgs*sizeof(double));
 
   /* need this for bisection method */
   diff=(180.0/nslopes);
@@ -276,20 +276,20 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
 
   prm->noise.mean = skynoise;
 
-	if(print)
-	{
-		fprintf(stdout,"%d  %d  %lf  %d  %lf  %d  %lf\n",prm->nrang,prm->mplgs,skynoise,prm->tfreq,prm->mpinc*1.e-6,nslopes,diff);
-		fprintf(stdout,"%d  %d  %d  %d  %d  %d  %d  %d  %d  %d  %d  %d  %lf\n",prm->stid,prm->time.yr,prm->time.mo,
-										prm->time.dy,prm->time.hr,prm->time.mt,(int)prm->time.sc,prm->bmnum,prm->cp,
-										prm->nave,prm->lagfr,prm->smsep,fblk->prm.vdir);
-	}
-	/* Loop every range gate and calculate parameters */
+  if(print)
+  {
+    fprintf(stdout,"%d  %d  %lf  %d  %lf  %d  %lf\n",prm->nrang,prm->mplgs,skynoise,prm->tfreq,prm->mpinc*1.e-6,nslopes,diff);
+    fprintf(stdout,"%d  %d  %d  %d  %d  %d  %d  %d  %d  %d  %d  %d  %lf\n",prm->stid,prm->time.yr,prm->time.mo,
+                    prm->time.dy,prm->time.hr,prm->time.mt,(int)prm->time.sc,prm->bmnum,prm->cp,
+                    prm->nave,prm->lagfr,prm->smsep,fblk->prm.vdir);
+  }
+  /* Loop every range gate and calculate parameters */
   for (R=0;R<prm->nrang;R++)
   {
 
 
-		if(!((fabs(prm->cp) == 210 || fabs(prm->cp) == 230 || fabs(prm->cp) == 502 || fabs(prm->cp) == 503 || fabs(prm->cp) == 3310) && prm->mplgs == 18))
-			raw->acfd[0][R*prm->mplgs] -= skynoise;
+    if(!((fabs(prm->cp) == 210 || fabs(prm->cp) == 230 || fabs(prm->cp) == 502 || fabs(prm->cp) == 503 || fabs(prm->cp) == 3310) && prm->mplgs == 18))
+      raw->acfd[0][R*prm->mplgs] -= skynoise;
 
 
     fit->rng[R].v        = 0.;
@@ -313,8 +313,8 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
 
     lag0pwr  = 10.0*log10((raw->acfd[0][R*prm->mplgs])/skynoise);
 
-		if(print)
-			fprintf(stdout,"%d  %lf\n",R,raw->acfd[0][R*prm->mplgs]/sqrt(1.0*prm->nave));
+    if(print)
+      fprintf(stdout,"%d  %lf\n",R,raw->acfd[0][R*prm->mplgs]/sqrt(1.0*prm->nave));
 
     for(j=0;j<=2*nslopes;j++)
       model_errors[j] = 1.0e30;
@@ -337,8 +337,8 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
         }
         else lagpwr[lag] = 0.0;
         if(print)
-					fprintf(stdout,"%d  %lf  %lf  %d\n",lag,raw->acfd[0][R*prm->mplgs+L],raw->acfd[1][R*prm->mplgs+L],
-																						!(lagpwr[lag]>raw->acfd[0][R*prm->mplgs]/sqrt(1.0*prm->nave)));
+          fprintf(stdout,"%d  %lf  %lf  %d\n",lag,raw->acfd[0][R*prm->mplgs+L],raw->acfd[1][R*prm->mplgs+L],
+                                            !(lagpwr[lag]>raw->acfd[0][R*prm->mplgs]/sqrt(1.0*prm->nave)));
       }
       pwr_flg = (lag0pwr>=minpwr);
     }
@@ -358,13 +358,13 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
         }
         else lagpwr[lag] = 0.0;
         if(print)
-					fprintf(stdout,"%d  %lf  %lf  %d\n",lag,raw->acfd[0][R*prm->mplgs+L],raw->acfd[1][R*prm->mplgs+L],
-																								!(lagpwr[lag]>raw->acfd[0][R*prm->mplgs]/sqrt(1.0*prm->nave)));
+          fprintf(stdout,"%d  %lf  %lf  %d\n",lag,raw->acfd[0][R*prm->mplgs+L],raw->acfd[1][R*prm->mplgs+L],
+                                                !(lagpwr[lag]>raw->acfd[0][R*prm->mplgs]/sqrt(1.0*prm->nave)));
       }
       pwr_flg = (lag0pwr>=minpwr);
     }
     /*check for non-tauscan operation (lag power checking, badlag checking, no SNR checking)*/
-    else if(fabs(prm->cp) == 153 || fabs(prm->cp) > 26000)
+    else if(fabs(prm->cp) == 153 || (fabs(prm->cp) >= 26000 && fabs(prm->cp) < 27000))
     {
       FitACFCkRng(R+1,badlag,&badsmp,&fblk->prm);
       for (L=0;L<prm->mplgs-1;L++)
@@ -402,13 +402,13 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
         re  = raw->acfd[0][R*prm->mplgs+L]; 
         im  = raw->acfd[1][R*prm->mplgs+L];
         lagpwr[lag] = sqrt(re*re + im*im);
-				availflg = 0;
+        availflg = 0;
         if(badlag[L] == 1)
           availflg = 1;
         else if(badlag[L] == 11)
           availflg = 11;
-				else if(lagpwr[lag]<raw->acfd[0][R*prm->mplgs]/sqrt(1.0*prm->nave))
-					availflg = 3;
+        else if(lagpwr[lag]<raw->acfd[0][R*prm->mplgs]/sqrt(1.0*prm->nave))
+          availflg = 3;
         if(badlag[L] == 0 && lagpwr[lag]>raw->acfd[0][R*prm->mplgs]/sqrt(1.0*prm->nave))
         {
           lag_avail[availcnt] = lag;
@@ -416,22 +416,22 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
         }
         else lagpwr[lag] = 0.0;
         if(print)
-					fprintf(stdout,"%d  %lf  %lf  %d\n",lag,raw->acfd[0][R*prm->mplgs+L],raw->acfd[1][R*prm->mplgs+L],availflg);
+          fprintf(stdout,"%d  %lf  %lf  %d\n",lag,raw->acfd[0][R*prm->mplgs+L],raw->acfd[1][R*prm->mplgs+L],availflg);
       }
       pwr_flg = (sqrt(raw->acfd[0][R*prm->mplgs]*raw->acfd[0][R*prm->mplgs])>=skynoise);
       minlag = 4;
     }
 
     if(print)
-			fprintf(stdout,"%d  %d\n",(pwr_flg),(availcnt>=minlag));
+      fprintf(stdout,"%d  %d\n",(pwr_flg),(availcnt>=minlag));
 
     /*if SNR is high enough and we have ge 6 good lags*/
     if((pwr_flg) && (availcnt>=minlag))
     {
       /* Determine Lambda Power and Spectral Width from least square fit */
       goodcnt = 0;
-			pwr = 0;
-			for(i=0;i<availcnt;i++)
+      pwr = 0;
+      for(i=0;i<availcnt;i++)
       {
         lag = lag_avail[i];
         pwr += lagpwr[lag];
@@ -440,7 +440,7 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
       {
         lag = lag_avail[i];
         logpwr[goodcnt]    = log(lagpwr[lag]);
-				sigma[i] = pwr/lagpwr[lag];
+        sigma[i] = pwr/lagpwr[lag];
         good_lags[goodcnt] = lag;
         goodcnt++;
       }
@@ -448,10 +448,10 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
       fitted_width = -2.9979e8*b/(prm->mpinc*1.e-6)/
                             (2*PI*1000.0*prm->tfreq);
       if(fitted_width<=0.00) fitted_width = 1.e-2;
-			fitted_power = log(exp(a));
+      fitted_power = log(exp(a));
 
-			if(print)
-				fprintf(stdout,"%lf  %lf  %lf  %lf\n",10.0*(fitted_power/2.3026 - log10(skynoise)),fitted_width,a,b);
+      if(print)
+        fprintf(stdout,"%lf  %lf  %lf  %lf\n",10.0*(fitted_power/2.3026 - log10(skynoise)),fitted_width,a,b);
 
       /* Determine Doppler velocity by comparing the phase with models */
       pwr = 0.0;
@@ -459,9 +459,9 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
       {
         lag = good_lags[i];
         if((fabs(prm->cp) == 210 || fabs(prm->cp) == 230 || fabs(prm->cp) == 502 || fabs(prm->cp) == 503 || fabs(prm->cp) == 3310) && prm->mplgs == 18)
-        	L = lag;
+          L = lag;
         else
-        	for(j=0;j<prm->mplgs;j++)
+          for(j=0;j<prm->mplgs;j++)
           {
             if(abs(prm->lag[0][j]-prm->lag[1][j])==lag)
             {
@@ -472,14 +472,14 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
 
 
         data_phi = atan2(raw->acfd[1][R*prm->mplgs+L],raw->acfd[0][R*prm->mplgs+L])*180.0/PI;
-				if(fblk->prm.xcf)
-					xcf_phases[i]=atan2(raw->xcfd[1][R*prm->mplgs+L],raw->xcfd[0][R*prm->mplgs+L])*180./PI;
+        if(fblk->prm.xcf)
+          xcf_phases[i]=atan2(raw->xcfd[1][R*prm->mplgs+L],raw->xcfd[0][R*prm->mplgs+L])*180./PI;
         data_phi_pos[i] = data_phi;
         data_phi_neg[i] = 360 - data_phi;
         if(data_phi<0)
         {
           data_phi_pos[i] += 360;
-					data_phi_neg[i]  = -data_phi;
+          data_phi_neg[i]  = -data_phi;
         }
         pwr += lagpwr[lag];
       }
@@ -504,8 +504,8 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
       }
 
       for(i=0;i<nslopes*2+1;i++)
-				if(print)
-					fprintf(stdout,"%lf  %lf\n",i*diff-180.,model_errors[i]);
+        if(print)
+          fprintf(stdout,"%lf  %lf\n",i*diff-180.,model_errors[i]);
 
       /*check for aliasing limit*/
       int concnt = 0;
@@ -554,8 +554,8 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
 
       model_sd = sqrt(model_sd/(nslopes*2));
 
-			if(prm->stid == 204 || prm->stid == 205) 
-				minpwr = 5.; 
+      if(prm->stid == 204 || prm->stid == 205) 
+        minpwr = 5.; 
 
       /*tauscan operation, check for exceptional minimum error, more SNR checking*/
       if(fabs(prm->cp) == 210 || fabs(prm->cp) == 230 || fabs(prm->cp) == 502 || fabs(prm->cp) == 503 || fabs(prm->cp) == 3310)
@@ -572,9 +572,9 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
 
 
 
-			if(print)
-				fprintf(stdout,"%lf  %d  %lf  %d  %d  %d\n",(model_mean - sderr*model_sd),mininx,model_vels[mininx],
-																		(10*log10((exp(a))/skynoise) > minpwr),(model_min<(model_mean - sderr*model_sd)),sct_flg);
+      if(print)
+        fprintf(stdout,"%lf  %d  %lf  %d  %d  %d\n",(model_mean - sderr*model_sd),mininx,model_vels[mininx],
+                                    (10*log10((exp(a))/skynoise) > minpwr),(model_min<(model_mean - sderr*model_sd)),sct_flg);
 
       if(sct_flg)
       {
@@ -584,11 +584,11 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
         w_guess = (mininx-nslopes)*diff;
 
 
-				/*proper bisection method*/
+        /*proper bisection method*/
         w_guess = bisect(w_guess,diff,raw,good_lags,goodcnt,R,lagpwr,pwr,prm,print);
 
-				if(print)
-					fprintf(stdout,"4321\n");
+        if(print)
+          fprintf(stdout,"4321\n");
 
         fit->rng[R].v     = fblk->prm.vdir*2.9979E8/2.0*(1-1000.0*prm->tfreq/
                             (1000.0*prm->tfreq+w_guess/360.0/(prm->mpinc*1.0e-6)));
@@ -596,8 +596,8 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
 
         fit->rng[R].v_err   = calc_err(w_guess,raw,good_lags,goodcnt,R,lagpwr,pwr,prm);
 
-				if(print)
-					fprintf(stdout,"%lf  %lf  %lf\n",w_guess,fit->rng[R].v,fit->rng[R].v_err);
+        if(print)
+          fprintf(stdout,"%lf  %lf  %lf\n",w_guess,fit->rng[R].v,fit->rng[R].v_err);
 
         fit->rng[R].qflg  = 1;
 
@@ -620,61 +620,61 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
               fit->rng[R].gsct = 1;
         else fit->rng[R].gsct = 0;
 
-				if(prm->xcf)
-				{
-					int wrap_cnt = 0;
-					float m_p2,m_p;
-					for(i=1;i<goodcnt;i++)
-					{
-						/*find phase of current*/
-						m_p2 = w_guess * good_lags[i];
-						/*find phase of previous lag*/
-						m_p = w_guess * good_lags[i-1];
+        if(prm->xcf)
+        {
+          int wrap_cnt = 0;
+          float m_p2,m_p;
+          for(i=1;i<goodcnt;i++)
+          {
+            /*find phase of current*/
+            m_p2 = w_guess * good_lags[i];
+            /*find phase of previous lag*/
+            m_p = w_guess * good_lags[i-1];
 
-						/*while current lag is less than -pi, increment by 2pi*/
-						while(m_p2 < -180.)
-							m_p2 += 360.;
-						/*while current lag is gt +pi, subtract 2pi*/
-						while(m_p2 > 180.)
-							m_p2 -= 360.;
+            /*while current lag is less than -pi, increment by 2pi*/
+            while(m_p2 < -180.)
+              m_p2 += 360.;
+            /*while current lag is gt +pi, subtract 2pi*/
+            while(m_p2 > 180.)
+              m_p2 -= 360.;
 
-						/*while previous lag is lt -pi, subtract 2pi*/
-						while(m_p < -180.)
-							m_p += 360.;
-						/*while previous lag is gt +pi, subtract 2pi*/
-						while(m_p > 180.)
-							m_p -= 360.;
+            /*while previous lag is lt -pi, subtract 2pi*/
+            while(m_p < -180.)
+              m_p += 360.;
+            /*while previous lag is gt +pi, subtract 2pi*/
+            while(m_p > 180.)
+              m_p -= 360.;
 
-						/*if slope is less than 0 AND current lag is gt 0 AND previous lag is less than 0 OR
-						slope is gt 0 AND previous lag is gt 0 AND current lag is lt 0
-						we have wrapped around (ie, sign change in fitted line from ACF phases)*/
-						if((w_guess < 0 && m_p2 > 0 && m_p < 0) || (w_guess > 0 && m_p2 < 0 && m_p > 0))
-							wrap_cnt++;
-						/*if we have wrapped at least once*/
-						if(wrap_cnt != 0)
-						{
-							/*adjust xcf phases for number of wraps*/
-							xcf_phases[i] += (wrap_cnt-1)*(360.);
+            /*if slope is less than 0 AND current lag is gt 0 AND previous lag is less than 0 OR
+            slope is gt 0 AND previous lag is gt 0 AND current lag is lt 0
+            we have wrapped around (ie, sign change in fitted line from ACF phases)*/
+            if((w_guess < 0 && m_p2 > 0 && m_p < 0) || (w_guess > 0 && m_p2 < 0 && m_p > 0))
+              wrap_cnt++;
+            /*if we have wrapped at least once*/
+            if(wrap_cnt != 0)
+            {
+              /*adjust xcf phases for number of wraps*/
+              xcf_phases[i] += (wrap_cnt-1)*(360.);
 
-							
-							if(fabs(xcf_phases[i] - m_p2+(360.*(wrap_cnt-1))) > 180.)
-								xcf_phases[i] += (360.);
-						}
+              
+              if(fabs(xcf_phases[i] - m_p2+(360.*(wrap_cnt-1))) > 180.)
+                xcf_phases[i] += (360.);
+            }
 
-					}
-					phi0 = calc_phi0(good_lags,xcf_phases, w_guess, goodcnt)*PI/180.;
-					fit->xrng[R].phi0 = phi0;
-					fit->elv[R].normal = elevation_ex(&fblk->prm,phi0);
-					fit->elv[R].high = elevation_ex(&fblk->prm,phi0);
-					fit->elv[R].low = elevation_ex(&fblk->prm,phi0);
-				}
-				else
-					{
-						fit->xrng[R].phi0 = 0.;
-						fit->elv[R].normal = 0.;
-						fit->elv[R].high = 0.;
-						fit->elv[R].low = 0.;
-					}
+          }
+          phi0 = calc_phi0(good_lags,xcf_phases, w_guess, goodcnt)*PI/180.;
+          fit->xrng[R].phi0 = phi0;
+          fit->elv[R].normal = elevation_ex(&fblk->prm,phi0);
+          fit->elv[R].high = elevation_ex(&fblk->prm,phi0);
+          fit->elv[R].low = elevation_ex(&fblk->prm,phi0);
+        }
+        else
+          {
+            fit->xrng[R].phi0 = 0.;
+            fit->elv[R].normal = 0.;
+            fit->elv[R].high = 0.;
+            fit->elv[R].low = 0.;
+          }
       }
     }
   }
@@ -687,7 +687,7 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
   free(data_phi_pos);
   free(data_phi_neg);
   free(lag_avail);
-	free(sigma);
+  free(sigma);
   free(good_lags);
 
   return;
