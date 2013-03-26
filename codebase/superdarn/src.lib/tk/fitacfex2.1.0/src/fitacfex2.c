@@ -364,13 +364,42 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
       pwr_flg = (lag0pwr>=minpwr);
     }
     /*check for non-tauscan operation (lag power checking, badlag checking, no SNR checking)*/
+    else if(fabs(prm->cp) == 153 || fabs(prm->cp) > 26000)
+    {
+      FitACFCkRng(R+1,badlag,&badsmp,&fblk->prm);
+      for (L=0;L<prm->mplgs-1;L++)
+      {
+        lag = abs(prm->lag[0][L] - prm->lag[1][L]);
+        re  = raw->acfd[0][R*prm->mplgs+L]; 
+        im  = raw->acfd[1][R*prm->mplgs+L];
+        lagpwr[lag] = sqrt(re*re + im*im);
+        availflg = 0;
+        if(badlag[L] == 1)
+          availflg = 1;
+        else if(badlag[L] == 11)
+          availflg = 11;
+        else if(lagpwr[lag]<raw->acfd[0][R*prm->mplgs]/sqrt(1.0*prm->nave))
+          availflg = 3;
+        if(badlag[L] == 0 && lagpwr[lag]>raw->acfd[0][R*prm->mplgs]/sqrt(1.0*prm->nave))
+        {
+          lag_avail[availcnt] = lag;
+          availcnt++;
+        }
+        else lagpwr[lag] = 0.0;
+        if(print)
+          fprintf(stdout,"%d  %lf  %lf  %d\n",lag,raw->acfd[0][R*prm->mplgs+L],raw->acfd[1][R*prm->mplgs+L],availflg);
+      }
+      pwr_flg = (sqrt(raw->acfd[0][R*prm->mplgs]*raw->acfd[0][R*prm->mplgs])>=skynoise);
+      minlag = 4;
+    }
+    /*check for non-tauscan operation (lag power checking, badlag checking, no SNR checking)*/
     else
     {
       FitACFCkRng(R+1,badlag,&badsmp,&fblk->prm);
       for (L=0;L<prm->mplgs;L++)
       {
         lag = abs(prm->lag[0][L] - prm->lag[1][L]);
-        re  = raw->acfd[0][R*prm->mplgs+L];
+        re  = raw->acfd[0][R*prm->mplgs+L]; 
         im  = raw->acfd[1][R*prm->mplgs+L];
         lagpwr[lag] = sqrt(re*re + im*im);
 				availflg = 0;
@@ -437,6 +466,7 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
             if(abs(prm->lag[0][j]-prm->lag[1][j])==lag)
             {
               L = j;
+              break;
             }
           }
 

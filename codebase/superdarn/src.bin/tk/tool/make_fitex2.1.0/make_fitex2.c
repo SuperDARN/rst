@@ -230,7 +230,6 @@ int main(int argc,char *argv[])
     OldFitHeaderFwrite(fitfp,"make_fit","fitacf",vstr);
   }
 
-
   do
   {
     ctime = time((time_t) 0);
