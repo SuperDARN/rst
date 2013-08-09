@@ -1,6 +1,6 @@
 /* make_fit.c
    ==========
-   Author: R.J.Barnes
+   Author: A. J. Ribeiro
 */
 
 /*
@@ -94,7 +94,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"new",'x',&new);
 	OptionAdd(&opt,"hr",'i',&tgthr);
   OptionAdd(&opt,"min",'i',&tgtmin);
-  OptionAdd(&opt,"min",'i',&tgtsec);
+  OptionAdd(&opt,"sec",'i',&tgtsec);
 	OptionAdd(&opt,"beam",'i',&tgtbeam);
 
   arg=OptionProcess(1,argc,argv,&opt,NULL);
