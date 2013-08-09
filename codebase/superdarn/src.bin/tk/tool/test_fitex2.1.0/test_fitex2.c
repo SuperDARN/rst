@@ -75,7 +75,7 @@ int main(int argc,char *argv[])
   unsigned char option=0;
 
   unsigned char vb=0;
-	int tgthr = 0, tgtmin = 0, tgtbeam = 7, done = 0;
+	int tgthr = 0, tgtmin = 0, tgtbeam = 7, tgtsec = 0, done = 0;
 
   FILE *fp=NULL;
   struct OldRawFp *rawfp=NULL;
@@ -99,6 +99,7 @@ int main(int argc,char *argv[])
   OptionAdd(&opt,"new",'x',&new);
 	OptionAdd(&opt,"hr",'i',&tgthr);
   OptionAdd(&opt,"min",'i',&tgtmin);
+  OptionAdd(&opt,"sec",'i',&tgtsec);
 	OptionAdd(&opt,"beam",'i',&tgtbeam);
 
   arg=OptionProcess(1,argc,argv,&opt,NULL);
@@ -219,7 +220,7 @@ int main(int argc,char *argv[])
 
   fblk=FitACFMake(site,prm->time.yr);
 
-	if(prm->time.hr >= tgthr && prm->time.mt >= tgtmin && prm->bmnum == tgtbeam && prm->channel != 2)
+	if(prm->time.hr >= tgthr && prm->time.mt >= tgtmin && prm->time.sc >= tgtsec && prm->bmnum == tgtbeam && prm->channel != 2)
 	{
 		fitacfex2(prm,raw,fit,fblk,1);
 		done=1;
@@ -246,7 +247,7 @@ int main(int argc,char *argv[])
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
 
-		if(prm->time.hr >= tgthr && prm->time.mt >= tgtmin && prm->bmnum == tgtbeam
+		if(prm->time.hr >= tgthr && prm->time.mt >= tgtmin && prm->time.sc >= tgtsec && prm->bmnum == tgtbeam
 				&& status == 0 && !done && prm->channel != 2)
 		{
 			fitacfex2(prm,raw,fit,fblk,1);
