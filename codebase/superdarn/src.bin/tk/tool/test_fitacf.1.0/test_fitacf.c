@@ -81,7 +81,7 @@ int main(int argc,char *argv[]) {
   int c,n;
   char command[128];
   char tmstr[40];
-	int tgthr=0,tgtmin=0,tgtbeam=7;
+	int tgthr=0,tgtmin=0,tgtbeam=7,tgtsec=0;
 	int done=0;
  
   prm=RadarParmMake();
@@ -94,6 +94,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"new",'x',&new);
 	OptionAdd(&opt,"hr",'i',&tgthr);
   OptionAdd(&opt,"min",'i',&tgtmin);
+  OptionAdd(&opt,"min",'i',&tgtsec);
 	OptionAdd(&opt,"beam",'i',&tgtbeam);
 
   arg=OptionProcess(1,argc,argv,&opt,NULL);
@@ -213,7 +214,7 @@ int main(int argc,char *argv[]) {
 
   fblk=FitACFMake(site,prm->time.yr); 
 
-	if(prm->time.hr == tgthr && prm->time.mt == tgtmin && prm->bmnum == tgtbeam && prm->channel != 2)
+	if(prm->time.hr == tgthr && prm->time.mt == tgtmin && prm->time.sc >= tgtsec && prm->bmnum == tgtbeam && prm->channel != 2)
 	{
 		fprintf(stdout,"%d  %d  %d  %d  %d  %d  %d  %d\n",prm->stid,prm->time.yr,prm->time.mo,
 									prm->time.dy,prm->time.hr,prm->time.mt,(int)prm->time.sc,prm->bmnum);
@@ -242,7 +243,7 @@ int main(int argc,char *argv[]) {
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
 
-    if(prm->time.hr == tgthr && prm->time.mt == tgtmin && prm->bmnum == tgtbeam
+    if(prm->time.hr == tgthr && prm->time.mt == tgtmin && prm->time.sc >= tgtsec && prm->bmnum == tgtbeam
 				&& status == 0 && !done && prm->channel != 2)
 		{
 			fprintf(stdout,"%d  %d  %d  %d  %d  %d  %d  %d\n",prm->stid,prm->time.yr,prm->time.mo,
