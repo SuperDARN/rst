@@ -4,24 +4,7 @@
 */
 
 /*
- LICENSE AND DISCLAIMER
- 
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
+ (c) 2010 JHU/APL & Others - Please Consult LICENSE.superdarn-rst.3.2-beta-4-g32f7302.txt for more information.
  
  
  
@@ -65,6 +48,7 @@ int CnvMapWrite(int fid,struct CnvMapData *map,struct GridData *grd) {
   int16 imf_flag;
   int16 imf_delay;
   int16 hemisphere;
+  int16 igrf_flag;
   int16 fit_order;
   float latmin;
 
@@ -72,8 +56,10 @@ int CnvMapWrite(int fid,struct CnvMapData *map,struct GridData *grd) {
   float lat_shft;
  
   char *src=NULL;
+  char *mod_name=NULL;
   char *mod_ang=NULL;
   char *mod_lev=NULL;
+  char *mod_tilt=NULL;
 
 
   int16 *stid=NULL;
@@ -133,6 +119,7 @@ int CnvMapWrite(int fid,struct CnvMapData *map,struct GridData *grd) {
 
   int xtd=0;
   int n,p;
+
   for (n=0;n<grd->stnum;n++) if (grd->sdata[n].st_id !=-1) stnum++;
   if (stnum==0) return 0;
 
@@ -345,6 +332,7 @@ int CnvMapWrite(int fid,struct CnvMapData *map,struct GridData *grd) {
   latmin=map->latmin;
 
   hemisphere=map->hemisphere;
+  igrf_flag=map->igrf_flag;
   fit_order=map->fit_order;
   
   lat_shft=map->lat_shft;
@@ -382,17 +370,23 @@ int CnvMapWrite(int fid,struct CnvMapData *map,struct GridData *grd) {
   DataMapAddScalar(data,"IMF.Bx",DATADOUBLE,&map->Bx);
   DataMapAddScalar(data,"IMF.By",DATADOUBLE,&map->By);
   DataMapAddScalar(data,"IMF.Bz",DATADOUBLE,&map->Bz);
+  DataMapAddScalar(data,"IMF.Vx",DATADOUBLE,&map->Vx);
+  DataMapAddScalar(data,"IMF.tilt",DATADOUBLE,&map->tilt);
 
  
   if (strlen(map->imf_model[0]) !=0) {
     mod_ang=map->imf_model[0];
     mod_lev=map->imf_model[1];
+    mod_tilt=map->imf_model[2];
+    mod_name=map->imf_model[3];
     DataMapAddScalar(data,"model.angle",DATASTRING,&mod_ang);
     DataMapAddScalar(data,"model.level",DATASTRING,&mod_lev);
+    DataMapAddScalar(data,"model.tilt",DATASTRING,&mod_tilt);
+    DataMapAddScalar(data,"model.name",DATASTRING,&mod_name);
   }
     
-
   DataMapAddScalar(data,"hemisphere",DATASHORT,&hemisphere);
+  DataMapAddScalar(data,"igrf.flag",DATASHORT,&igrf_flag);
   DataMapAddScalar(data,"fit.order",DATASHORT,&fit_order);
   DataMapAddScalar(data,"latmin",DATAFLOAT,&latmin);
   DataMapAddScalar(data,"chi.sqr",DATADOUBLE,&map->chi_sqr);
@@ -468,7 +462,6 @@ int CnvMapWrite(int fid,struct CnvMapData *map,struct GridData *grd) {
     DataMapAddArray(data,"boundary.mlat",DATAFLOAT,1,&num_bnd,bnd_lat);
     DataMapAddArray(data,"boundary.mlon",DATAFLOAT,1,&num_bnd,bnd_lon);
   }
-
 
   if (fid !=-1) s=DataMapWrite(fid,data);
   else s=DataMapSize(data);

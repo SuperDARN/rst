@@ -5,24 +5,7 @@
 
 
 /*
- LICENSE AND DISCLAIMER
- 
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
+ (c) 2010 JHU/APL & Others - Please Consult LICENSE.superdarn-rst.3.2-beta-4-g32f7302.txt for more information.
  
  
  
@@ -35,13 +18,14 @@
 #include "rtypes.h"
 #include "rmath.h"
 #include "rfile.h"
+#include "rtime.h"
 #include "griddata.h"
 #include "cnvmap.h"
 #include "cnvgrid.h"
 #include "evallegendre.h"
 #include "crdshft.h"
 #include "shfconst.h"
-
+#include "calc_bmag.h"
 
 double *CnvMapEvalThetaCoef(int Lmax,double *coef,double *theta,int n,
 		            double latmin) {
@@ -155,8 +139,18 @@ void CnvMapEvalVelocity(int Lmax,double *coef,double *plm,
   double *ex; 
   double *ey;
   double lon,lat,tmp=0;
+  float decyear=0;
+  int tme, yrsec, yr, mo, dy, hr, mt;
+  double sc;
 
   double vx,vy;  
+
+  if (ptr->igrf_flag == 1) { /* Need to find time for use in IGRF */
+    tme=(ptr->st_time+ptr->ed_time)/2.0;
+    TimeEpochToYMDHMS(tme,&yr,&mo,&dy,&hr,&mt,&sc);
+    yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
+    decyear = yr + (float)yrsec/TimeYMDHMSToYrsec(yr,12,31,23,59,59);
+  }
 
   theta=malloc(vptr->num*sizeof(double));
   phi=malloc(vptr->num*sizeof(double));
@@ -183,9 +177,10 @@ void CnvMapEvalVelocity(int Lmax,double *coef,double *plm,
     if (ptr->hemisphere == -1) bpolar = BNorth;
     else bpolar = BSouth;
 
-    bmag = bpolar*(1.0 - 3.0 * Altitude/Re)*
-           sqrt(3.0*(cos(theta[i])*cos(theta[i])) + 1.0)/2.0;
-
+    if (ptr->igrf_flag == 0) {
+      bmag = bpolar*(1.0 - 3.0 * Altitude/Re)*
+	sqrt(3.0*(cos(theta[i])*cos(theta[i]))+ 1.0)/2.0; 
+    } else bmag = -calc_bmag(vptr->lat[i],vptr->lon[i],decyear);
 
     vx=ey[i]/bmag;
     vy=-ex[i]/bmag;

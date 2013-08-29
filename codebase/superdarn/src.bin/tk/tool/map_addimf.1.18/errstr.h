@@ -15,6 +15,6 @@ char *errstr[]={
 "map_addimf [-vb] [-new] [-ace] [-wind] [-p path] [-df delayname] [-ex hr:mn] [mapname]\n",
 "map_addimf [-vb] [-new] [-ace] [-if imfname] [-d hr:mn] [mapname]\n",
 "map_addimf [-vb] [-new] [-ace] [-if imfname] [-df delayname] [mapname]\n",
-"map_addimf [-vb] [-new] [-ace] [-bx bx] [-by by] [-bz bz</bz>] [mapname]\n",
+"map_addimf [-vb] [-new] [-ace] [-bx bx] [-by by] [-bz bz] [-vx vx] [mapname]\n",
 
 NULL};

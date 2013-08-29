@@ -4,24 +4,7 @@
 */
 
 /*
- LICENSE AND DISCLAIMER
- 
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
+ (c) 2010 JHU/APL & Others - Please Consult LICENSE.superdarn-rst.3.2-beta-4-g32f7302.txt for more information.
  
  
  
@@ -60,6 +43,8 @@ struct CnvMapData  *map;
  
 char dpath[256]={"/data"};
 
+unsigned char vb=0;
+
 double st_time;
 double ed_time;
 
@@ -90,7 +75,7 @@ int findvalue(int inx,int cnt,double *time,float *data,double tval,float *val) {
   val[2]=FILL_VALUE;
 
   for (i=0;(i<cnt) && (time[i]<=tval);i++);
-
+    
   einx=i;
   while ((einx<cnt) && (fabs(data[3*einx])>fabs(FILL_VALUE/2))) einx++;
   sinx=i-1;
@@ -101,6 +86,7 @@ int findvalue(int inx,int cnt,double *time,float *data,double tval,float *val) {
 
   etime=time[einx];
   stime=time[sinx];
+
   if (tval<stime) return -1;
   if (tval>etime) return -1;
 
@@ -271,7 +257,8 @@ int load_ace() {
   CDFstatus status;
  
   sprintf(path,"%s/%s",dpath,"ace");
-  fprintf(stderr,"%s\n",path);
+
+  if (vb==1) fprintf(stderr,"%s\n",path);
 
   /* first check to see if we have the h0 files */
 
@@ -279,7 +266,7 @@ int load_ace() {
 
   if (fptr->cnt !=0) {
     for (i=0;i<fptr->cnt;i++) {
-      fprintf(stderr,"%s\n",fptr->fname[i]);
+      if (vb==1) fprintf(stderr,"%s\n",fptr->fname[i]);
       status=CDFopen(fptr->fname[i],&id);
       if (status !=CDF_OK) {
         fprintf(stderr,"Could not open cdf file.\n");
@@ -295,7 +282,7 @@ int load_ace() {
     fptr=locate_files(path,"k1_mfi",st_time,ed_time);
 
     for (i=0;i<fptr->cnt;i++) {
-      fprintf(stderr,"%s\n",fptr->fname[i]);
+      if (vb==1) fprintf(stderr,"%s\n",fptr->fname[i]);
 
        status=CDFopen(fptr->fname[i],&id);
       if (status !=CDF_OK) {
@@ -331,8 +318,6 @@ int main(int argc,char *argv[]) {
   unsigned char help=0;
   unsigned char option=0;
 
-  unsigned char vb=0;
-
   char *envstr;
  
   char *dname=NULL;
@@ -353,6 +338,7 @@ int main(int argc,char *argv[]) {
   float dBx=0;
   float dBy=0;
   float dBz=0;
+  float dVx=0;
 
   char *pstr=NULL;
   char *dstr=NULL;
@@ -384,6 +370,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"bx",'f',&dBx);
   OptionAdd(&opt,"by",'f',&dBy);
   OptionAdd(&opt,"bz",'f',&dBz);
+  OptionAdd(&opt,"vx",'f',&dVx);
 
   OptionAdd(&opt,"ex",'t',&estr);
 
@@ -443,10 +430,7 @@ int main(int argc,char *argv[]) {
   ed_time=map->st_time-delay+extent; 
 
   if (wflg==1) load_wind();
-  else if (aflg==1) load_ace();
-    
-
- 
+  else if (aflg==1) load_ace(); 
 
   j=0;
   k=0;
@@ -464,10 +448,14 @@ int main(int argc,char *argv[]) {
     map->Bx=dBx;
     map->By=dBy;
     map->Bz=dBz;
+    if (new) map->Vx=dVx;
+    else if (dVx != 0.) map->Bx=dVx;
+
     map->imf_flag=9;
 
     if (imf.cnt !=0) {
       findvalue(0,imf.cnt,imf.time,imf.BGSMc,tme,tmp);
+
       map->Bx=tmp[0];
       map->By=tmp[1];
       map->Bz=tmp[2];
@@ -479,17 +467,16 @@ int main(int argc,char *argv[]) {
     if (vb==1) {
        TimeEpochToYMDHMS(map->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
        fprintf(stderr,
-               "%d-%d-%d %d:%d:%d delay=%d:%d Bx=%g By=%g Bz=%g\n",
+               "%d-%d-%d %d:%d:%d delay=%d:%d Bx=%g By=%g Bz=%g Vx=%g\n",
                yr,mo,dy,hr,mt,(int) sc,(int) (delay/3600),
                ( (int) delay % 3600)/60,
-               map->Bx,map->By,map->Bz);
+               map->Bx,map->By,map->Bz,map->Vx);
     }  
 
     if (old) s=OldCnvMapFread(fp,map,grd);
     else s=CnvMapFread(fp,map,grd);
 
   } while (s!=-1);
-
 
   fclose(fp); 
   return 0; 

@@ -787,7 +787,7 @@ L3:
 /* ===================================================================================== */
 
 /* Subroutine */ int recalc_(integer *iyear, integer *iday, integer *ihour, 
-	integer *min__, integer *isec)
+			     integer *min__, integer *isec, real *tilt)
 {
     /* Initialized data */
 
@@ -1439,6 +1439,7 @@ L300:
     r__1 = geopack1_2.sps;
     geopack1_2.cps = sqrt(1.f - r__1 * r__1);
     geopack1_2.psi = asin(geopack1_2.sps);
+    *tilt          = geopack1_2.psi;                 /* EDC added tilt output, 3/18/2011 */
 
 /*    THE ELEMENTS OF THE MATRIX MAG TO SM ARE THE SCALAR PRODUCTS: */
 /* CFI=GM22=(EYSM,EYMAG), SFI=GM23=(EYSM,EXMAG); THEY CAN BE DERIVED AS FOLLOWS: */

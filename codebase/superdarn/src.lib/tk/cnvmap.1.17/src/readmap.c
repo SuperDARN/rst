@@ -5,24 +5,7 @@
 
 
 /*
- LICENSE AND DISCLAIMER
- 
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
+ (c) 2010 JHU/APL & Others - Please Consult LICENSE.superdarn-rst.3.2-beta-4-g32f7302.txt for more information.
  
  
  
@@ -69,9 +52,14 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
                  "IMF.Bx",
                  "IMF.By",
                  "IMF.Bz",
+                 "IMF.Vx",
+                 "IMF.tilt",
                  "model.angle",
                  "model.level",
+		 "model.tilt",
+		 "model.name",
                  "hemisphere",
+		 "igrf.flag",
                  "fit.order",
                  "latmin",
                  "chi.sqr",
@@ -88,8 +76,6 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
                  "pot.max.err",
                  "pot.min",
                  "pot.min.err",
-              
-
                  0};
 
   int stype[]={DATASHORT,DATASHORT,DATASHORT,DATASHORT,DATASHORT,DATADOUBLE,
@@ -104,8 +90,13 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
                DATADOUBLE,
                DATADOUBLE,
                DATADOUBLE,
+               DATADOUBLE,
+               DATADOUBLE,
                DATASTRING,
                DATASTRING,
+               DATASTRING,
+               DATASTRING,
+               DATASHORT,
                DATASHORT,
                DATASHORT,
                DATAFLOAT,
@@ -126,7 +117,7 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
                0
               };
 
-  struct DataMapScalar *sdata[42];
+  struct DataMapScalar *sdata[47];
 
   char *aname[]={"stid","channel","nvec",
                  "freq","major.revision","minor.revision",
@@ -172,11 +163,9 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
     for (x=0;sname[x] !=0;x++) 
       if ((strcmp(s->name,sname[x])==0) && (s->type==stype[x])) {
         sdata[x]=s;
-        break;
+	if (s==NULL) break;
       }
   }
-
-
 
   for (c=0;c<ptr->anum;c++) {
     a=ptr->arr[c];
@@ -190,11 +179,13 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
 
   for (x=0;sname[x] !=0;x++) {
     if (x==14) continue;
-    if (x==23) continue;
-    if (x==24) continue;
+    if (x==25) continue;
+    if (x==26) continue;
+    if (x==27) continue;
+    if (x==28) continue;
     if (sdata[x]==NULL) break;
   }
-
+  
   if ((sname[x] !=0) && (sdata[x]==NULL)) {
     DataMapFree(ptr);
     return -1;
@@ -207,8 +198,6 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
     DataMapFree(ptr);
     return -1;
   }
-
- 
 
   yr=*(sdata[0]->data.sptr);
   mo=*(sdata[1]->data.sptr);
@@ -243,35 +232,42 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
   map->Bx=*(sdata[20]->data.dptr);
   map->By=*(sdata[21]->data.dptr);
   map->Bz=*(sdata[22]->data.dptr);
+  map->Vx=*(sdata[23]->data.dptr);
+  map->tilt=*(sdata[24]->data.dptr);
 
-  if (sdata[23] !=NULL) 
-    strncpy(map->imf_model[0],*((char **) sdata[23]->data.vptr),64);
-  if (sdata[24] !=NULL) 
-  strncpy(map->imf_model[1],*((char **) sdata[24]->data.vptr),64);
+  if (sdata[25] !=NULL) 
+    strncpy(map->imf_model[0],*((char **) sdata[25]->data.vptr),64);
+  if (sdata[26] !=NULL) 
+    strncpy(map->imf_model[1],*((char **) sdata[26]->data.vptr),64);
+  if (sdata[27] !=NULL) 
+    strncpy(map->imf_model[2],*((char **) sdata[27]->data.vptr),64);
+  if (sdata[28] !=NULL) 
+    strncpy(map->imf_model[3],*((char **) sdata[26]->data.vptr),64);
 
-  map->hemisphere=*(sdata[25]->data.sptr);
-  map->fit_order=*(sdata[26]->data.sptr);
-  map->latmin=*(sdata[27]->data.fptr);
- 
-  map->chi_sqr=*(sdata[28]->data.dptr);
-  map->chi_sqr_dat=*(sdata[29]->data.dptr);
-  map->rms_err=*(sdata[30]->data.dptr);
+  map->hemisphere=*(sdata[29]->data.sptr);
+  map->igrf_flag=*(sdata[30]->data.sptr);
+  map->fit_order=*(sdata[31]->data.sptr);
+  map->latmin=*(sdata[32]->data.fptr);
 
-  map->lat_shft=*(sdata[31]->data.fptr);
-  map->lon_shft=*(sdata[32]->data.fptr);
+  map->chi_sqr=*(sdata[33]->data.dptr);
+  map->chi_sqr_dat=*(sdata[34]->data.dptr);
+  map->rms_err=*(sdata[35]->data.dptr);
 
-  map->mlt.start=*(sdata[33]->data.dptr);
-  map->mlt.end=*(sdata[34]->data.dptr);
-  map->mlt.av=*(sdata[35]->data.dptr);
+  map->lat_shft=*(sdata[36]->data.fptr);
+  map->lon_shft=*(sdata[37]->data.fptr);
 
-  map->pot_drop=*(sdata[36]->data.dptr);
-  map->pot_drop_err=*(sdata[37]->data.dptr);
+  map->mlt.start=*(sdata[38]->data.dptr);
+  map->mlt.end=*(sdata[39]->data.dptr);
+  map->mlt.av=*(sdata[40]->data.dptr);
 
-  map->pot_max=*(sdata[38]->data.dptr);
-  map->pot_max_err=*(sdata[39]->data.dptr);
+  map->pot_drop=*(sdata[41]->data.dptr);
+  map->pot_drop_err=*(sdata[42]->data.dptr);
 
-  map->pot_min=*(sdata[40]->data.dptr);
-  map->pot_min_err=*(sdata[41]->data.dptr);
+  map->pot_max=*(sdata[43]->data.dptr);
+  map->pot_max_err=*(sdata[44]->data.dptr);
+
+  map->pot_min=*(sdata[45]->data.dptr);
+  map->pot_min_err=*(sdata[46]->data.dptr);
 
   grd->stnum=adata[0]->rng[0];
   if (grd->stnum==0) {
@@ -455,9 +451,7 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
         map->bnd_lon[n]=adata[39]->data.fptr[n];   
      }
   }
- 
-
-   
+    
   DataMapFree(ptr);
   return size;
 }

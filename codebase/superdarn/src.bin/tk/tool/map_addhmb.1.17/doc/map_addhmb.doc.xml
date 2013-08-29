@@ -4,7 +4,7 @@
 <name>map_addhmb</name>
 <location>src.bin/tk/tool/map_addhmb</location>
 <syntax>map_addhmb --help</syntax>
-<syntax>map_addhmb [-vb] [-new] [-cnt <ar>count</ar>] [-vel <ar>vmin</ar>] [-ex exlist] [<ar>mapname</ar>]</syntax>
+<syntax>map_addhmb [-vb] [-new] [-nodef] [-cnt <ar>count</ar>] [-vel <ar>vmin</ar>] [-ex exlist] [<ar>mapname</ar>]</syntax>
 <syntax>map_addhmb -t [-vb] [-new] [-cnt <ar>count</ar>] [-vel <ar>vmin</ar>] [-ex exlist] [<ar>mapname</ar>]</syntax>
 <syntax>map_addhmb -lf <ar>latname</ar> [-vb] [-new] [<ar>mapname</ar>]</syntax>
 <syntax>map_addhmb -lat <ar>latmin</ar> [-vb] [-new] [<ar>mapname</ar>]</syntax>
@@ -14,9 +14,13 @@
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
 <option><on>-new</on><od>the input file is a <code>cnvmap</code> format file.</od></option>
+<option><on>-nodef</on><od>do not use a default boundary if there is insufficient data in the map file to find one. Boundary is instead determined by model pattern in map_addmodel procedure.</od>
+</option>
 <option><on>-cnt <ar>count</ar></on><od>set the number of scatter points to get a match to be <ar>count</ar>.</od>
 </option>
 <option><on>-vel <ar>vmin</ar></on><od>set the minimum velocity to  <ar>vmin</ar>.</od>
+</option>
+<option><on>-nodef</on><od>do not use a default boundary if there is insufficient data in the map file to find one. Boundary is instead determined by model pattern in map_addmodel procedure.</od>
 </option>
 <option><on>-ex <ar>exlist</ar></on><od>exclude data from the stations listed in  <ar>exlist</ar>, which is a comma separated list of radar station numbers.</od>
 </option>
@@ -46,7 +50,7 @@
 </description>
 
 <example>
-<command>map_addhmb -vb 19980410.map &gt; 19980410.hmb.map</command>
+<command>map_addhmb -vb -nodef 19980410.map &gt; 19980410.hmb.map</command>
 <description>Locate the Heppner-Maynard boundary for the map file "<code>19980410.map</code>". The output is written to the file "<code>19980410.hmb.map</code>" and status is logged to standard error.</description>
 </example>
 <example>

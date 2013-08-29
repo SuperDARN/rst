@@ -15,7 +15,7 @@ char *hlpstr[]={
 "map_addimf [-vb] [-new] [-ace] [-wind] [-p path] [-df delayname] [-ex hr:mn] [mapname]\n",
 "map_addimf [-vb] [-new] [-ace] [-if imfname] [-d hr:mn] [mapname]\n",
 "map_addimf [-vb] [-new] [-ace] [-if imfname] [-df delayname] [mapname]\n",
-"map_addimf [-vb] [-new] [-ace] [-bx bx] [-by by] [-bz bz</bz>] [mapname]\n",
+"map_addimf [-vb] [-new] [-ace] [-bx bx] [-by by] [-bz bz] [-vx vx] [mapname]\n",
 
 "--help\tprint the help message and exit.\n",
 "-vb\tverbose. Log information to the console.\n",
@@ -29,7 +29,8 @@ char *hlpstr[]={
 "-df delayname\tread the delay times from the ASCII text file delayname.\n",
 "-if imfname\tread the IMF data from the ASCII text file imfname.\n",
 "-bx bx\tset the X component of the magnetic field to bx.\n",
-"-by bx\tset the Y component of the magnetic field to by.\n",
-"-bz bx\tset the Z component of the magnetic field to bz.\n",
+"-by by\tset the Y component of the magnetic field to by.\n",
+"-bz bz\tset the Z component of the magnetic field to bz.\n",
+"-vx vx\tset the X component of the solar wind velocity to vx.\n",
 
 NULL};

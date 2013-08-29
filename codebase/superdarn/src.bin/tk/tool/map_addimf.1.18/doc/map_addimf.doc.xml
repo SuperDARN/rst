@@ -8,7 +8,7 @@
 <syntax>map_addimf [-vb] [-new] [-ace] [-wind] [-p <ar>path</ar>] [-df <ar>delayname</ar>] [-ex hr:mn] [<ar>mapname</ar>]</syntax>
 <syntax>map_addimf [-vb] [-new] [-ace] [-if <ar>imfname</ar>] [-d <ar>hr:mn</ar>] [<ar>mapname</ar>]</syntax>
 <syntax>map_addimf [-vb] [-new] [-ace] [-if <ar>imfname</ar>] [-df <ar>delayname</ar>] [<ar>mapname</ar>]</syntax>
-<syntax>map_addimf [-vb] [-new] [-ace] [-bx <ar>bx</ar>] [-by <ar>by</ar>] [-bz <ar>bz</bz>] [<ar>mapname</ar>]</syntax>
+<syntax>map_addimf [-vb] [-new] [-ace] [-bx <ar>bx</ar>] [-by <ar>by</ar>] [-bz <ar>bz</ar>] [-vx <ar>vx</ar>] [<ar>mapname</ar>]</syntax>
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
@@ -32,9 +32,11 @@
 </option>
 <option><on>-bx <ar>bx</ar></on><od>set the X component of the magnetic field to <ar>bx</ar>.</od>
 </option>
-<option><on>-by <ar>bx</ar></on><od>set the Y component of the magnetic field to <ar>by</ar>.</od>
+<option><on>-by <ar>by</ar></on><od>set the Y component of the magnetic field to <ar>by</ar>.</od>
 </option>
-<option><on>-bz <ar>bx</ar></on><od>set the Z component of the magnetic field to <ar>bz</ar>.</od>
+<option><on>-bz <ar>bz</ar></on><od>set the Z component of the magnetic field to <ar>bz</ar>.</od>
+</option>
+<option><on>-vx <ar>vx</ar></on><od>set the X component of the solar wind velocity to <ar>vx</ar>.</od>
 </option>
 <synopsis><p>Adds IMF data to a convection map file.</p></synopsis>
 
@@ -57,8 +59,8 @@
 
 
 <example>
-<command>map_addimf -vb -bx 1.5 -by -1.2 -bx 0.4 19970406.map &gt; 19970406.imf.map</command>
-<description>Adds a fixed IMF of Bx=-15, By=-1.2 and Bz=0.4 to the map file "<coode>19970406.map</code>". The output is stored in the file "<code>19970406.imf.map</code>" and status is logged to standard error.</description>
+<command>map_addimf -vb -bx 1.5 -by -1.2 -bx 0.4 -vx 430 19970406.map &gt; 19970406.imf.map</command>
+<description>Adds a fixed IMF of Bx=-15, By=-1.2 and Bz=0.4 and solar wind Vx=430 to the map file "<coode>19970406.map</code>". The output is stored in the file "<code>19970406.imf.map</code>" and status is logged to standard error.</description>
 </example>
 <example>
 <command>map_addimf -ace -d 0:30 -ex 48:00 19981104.map &gt; 19981104.imf.map</command>

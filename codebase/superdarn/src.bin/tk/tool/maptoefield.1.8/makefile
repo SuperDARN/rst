@@ -15,6 +15,6 @@ DSTPATH = $(BINPATH)
 OUTPUT = maptoefield
 
 SLIB=-lm -lz
-LIBS=  -lcnvmap.1 -loldcnvmap.1 -lshf.1 -lgrd.1 -loldgrd.1 -laacgm.1 -ldmap.1 -lrfile.1 -lrtime.1 -lopt.1 -lrcnv.1  
+LIBS=  -lcnvmap.1 -loldcnvmap.1 -lshf.1 -lgrd.1 -loldgrd.1 -laacgm.1 -ldmap.1 -lrfile.1 -lrtime.1 -lopt.1 -lrcnv.1 -ligrf.1  
 
 include $(MAKEBIN).$(SYSTEM)

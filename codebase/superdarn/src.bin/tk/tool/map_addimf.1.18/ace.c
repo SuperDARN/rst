@@ -57,7 +57,7 @@ int acemfi_imf(CDFid id,struct imfdata *ptr,double stime,double etime,
   
   double gsex,gsey,gsez;
   double gsmx,gsmy,gsmz;
-  
+  float tilt;
 
   if (cnv==1) varlist[2]=NULL;
 
@@ -102,7 +102,7 @@ int acemfi_imf(CDFid id,struct imfdata *ptr,double stime,double etime,
          gsey=fptr[1];
          gsez=fptr[2];
 
-         GeoPackRecalc(yr,mo,dy,hr,mt,(sc+1.0*ms/1000.0));
+         GeoPackRecalc(yr,mo,dy,hr,mt,(sc+1.0*ms/1000.0),&tilt);
          GeoPackGseGsm(gsex,gsey,gsez,&gsmx,&gsmy,&gsmz);
 
          ptr->BGSMc[cnt*3]=gsmx;

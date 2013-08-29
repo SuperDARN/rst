@@ -4,24 +4,7 @@
 */
 
 /*
- LICENSE AND DISCLAIMER
- 
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
+ (c) 2010 JHU/APL & Others - Please Consult LICENSE.superdarn-rst.3.2-beta-4-g32f7302.txt for more information.
  
  
  
@@ -33,6 +16,8 @@
 #include <math.h>
 #include "f2c.h"
 #include "rtime.h"
+
+#define PI 3.14159
 
 int GeoPackIGRFGSM(double xgsm,double ygsm,double zgsm,
                    double *Hxgsm,double *Hygsm,double *Hzgsm) {
@@ -231,19 +216,26 @@ int GeoPackBCarSp(double x,double y,double z,double bx,double by,double bz,
 
 }
 
-int GeoPackRecalc(int yr,int mo,int dy,int hr,int mt,int sc) {
+int GeoPackRecalc(int yr,int mo,int dy,int hr,int mt,int sc, float *tilt) {
 
+   int s;
    integer fyr,fdy,fhr,fmt,fsc;
+   real ftilt;
 
    extern int recalc_(integer *iyear, integer *iday, integer *ihour, 
-	    integer *min__, integer *isec);
+		      integer *min__, integer *isec, real *tilt);
 
    fyr=yr;
    fdy=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,sc)/(24*3600)+1;
    fhr=hr;
    fmt=mt;
    fsc=sc;
-   return recalc_(&fyr,&fdy,&fhr,&fmt,&fsc);
+
+   s =  recalc_(&fyr,&fdy,&fhr,&fmt,&fsc,&ftilt);
+
+   *tilt = 180. * ftilt / PI;
+
+   return s;
 }
 
 int GeoPackGeoMag(double xgeo,double ygeo,double zgeo,

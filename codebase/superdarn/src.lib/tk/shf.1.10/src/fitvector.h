@@ -32,7 +32,5 @@
 
 
 double CnvMapFitVector(int num,struct CnvMapSHFVec *data,
-		       double *coef,double *vel,
-		        int order,double latmin);
-
-
+		       double *coef,double *vel,int order,
+		       double latmin, float decyear, int igrf_flag);

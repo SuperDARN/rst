@@ -4,24 +4,7 @@
 */
 
 /*
- LICENSE AND DISCLAIMER
- 
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
+ (c) 2012 JHU/APL & Others - Please Consult LICENSE.superdarn-rst.3.3-6-g9146b14.txt for more information.
  
  
  
@@ -31,6 +14,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <time.h>
+#include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -98,6 +82,8 @@ int main (int argc,char *argv[]) {
   }
     
   while (OldCnvMapFread(fp,map,grd) !=-1) {
+    strcpy(map->imf_model[2],"Null");
+    strcpy(map->imf_model[3],"Null");
    if (vb) {
       TimeEpochToYMDHMS(map->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
       fprintf(stderr,"%.4d-%.2d-%.2d %.2d:%.2d:%.2d\n",

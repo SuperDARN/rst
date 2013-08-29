@@ -4,24 +4,7 @@
  */
 
 /*
- LICENSE AND DISCLAIMER
- 
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
+ (c) 2010 JHU/APL & Others - Please Consult LICENSE.superdarn-rst.3.2-beta-4-g32f7302.txt for more information.
  
  
  
@@ -341,6 +324,8 @@ int main(int argc,char *argv[]) {
 
   char *exstr=NULL;
 
+  int nodef=0;
+
   for (i=0;i<3;i++) {
     grd[i]=GridMake();
     map[i]=CnvMapMake();
@@ -360,6 +345,8 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"lf",'t',&lname);
   OptionAdd(&opt,"lat",'f',&hmblat);
   OptionAdd(&opt,"ex",'t',&exstr);
+
+  OptionAdd(&opt,"nodef",'x',&nodef); /* no default latmin */
 
   arg=OptionProcess(1,argc,argv,&opt,NULL);
 
@@ -461,7 +448,7 @@ int main(int argc,char *argv[]) {
 
    
       /* now do the HMB determination */
- 
+   
       c=0;
       for (i=0;i<grd[buf]->vcnum;i++) 
         if (grd[buf]->data[i].vel.median>vel_min) c++;
@@ -498,12 +485,16 @@ int main(int argc,char *argv[]) {
     
         for (i=0;(i<nlat) && (latcnt[i]<cnt_req);i++);
         if (i<nlat) latmin[buf]=lathmb[i];
-        else latmin[buf]=latdef;
-
-      } else latmin[buf]=latdef;
+        else {
+	  if (nodef==1) latmin[buf] = -1;
+	  else latmin[buf]=latdef;
+	}
+      } else {
+	  if (nodef==1) latmin[buf] = -1;
+	  else latmin[buf]=latdef;
+      }
      
     
-
       /* add the boundary to the map */
 
       if (cnt>1) {
@@ -520,7 +511,8 @@ int main(int argc,char *argv[]) {
         if (cnt==2) { /* write the very first record*/
 
           if (tflg==0) {
-            map_addhmb(yr,yrsec,map[0],bndnp,bndstep,latref,latmed); 
+	    if (latmed != -1) map_addhmb(yr,yrsec,map[0],bndnp,bndstep,latref,latmed); 
+	    else map[0]->latmin = -1;
             if (old) OldCnvMapFwrite(stdout,map[0],grd[0]);
             else CnvMapFwrite(stdout,map[0],grd[0]);
 
@@ -540,7 +532,8 @@ int main(int argc,char *argv[]) {
         }
 
         if (tflg==0) {
-          map_addhmb(yr,yrsec,map[idx],bndnp,bndstep,latref,latmed); 
+	  if (latmed != -1) map_addhmb(yr,yrsec,map[idx],bndnp,bndstep,latref,latmed); 
+	  else map[idx]->latmin = -1;
           if (old) OldCnvMapFwrite(stdout,map[idx],grd[idx]);
           else CnvMapFwrite(stdout,map[idx],grd[idx]);
           TimeEpochToYMDHMS(grd[idx]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
@@ -563,7 +556,6 @@ int main(int argc,char *argv[]) {
 
       if (old) s=OldCnvMapFread(fp,map[buf],grd[buf]);
       else s=CnvMapFread(fp,map[buf],grd[buf]);
-
     }
 
     if (cnt==0) exit(0); /* no record to write out */
@@ -574,27 +566,28 @@ int main(int argc,char *argv[]) {
     if (cnt<3) latmed=latmin[idx];
     if (cnt==2) { /* we must write out the first record */
       if (tflg==0) {
-            map_addhmb(yr,yrsec,map[0],bndnp,bndstep,latref,latmed); 
-            if (old) OldCnvMapFwrite(stdout,map[0],grd[0]);
-            else CnvMapFwrite(stdout,map[0],grd[0]);
-            TimeEpochToYMDHMS(grd[0]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
-            if (vb==1) 
-              fprintf(stderr,"%d-%d-%d %d:%d:%d latmin=%g\n",yr,mo,dy,
-	            hr,mt,(int) sc,map[0]->latmin); 
-	  } else {
+	if (latmed != -1) map_addhmb(yr,yrsec,map[0],bndnp,bndstep,latref,latmed); 
+	else map[0]->latmin = -1;
+	if (old) OldCnvMapFwrite(stdout,map[0],grd[0]);
+	else CnvMapFwrite(stdout,map[0],grd[0]);
+	TimeEpochToYMDHMS(grd[0]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
+	if (vb==1) 
+	  fprintf(stderr,"%d-%d-%d %d:%d:%d latmin=%g\n",yr,mo,dy,
+		  hr,mt,(int) sc,map[0]->latmin); 
+      } else {
  
-           TimeEpochToYMDHMS(grd[0]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
-           fprintf(stdout,"%.4d %.2d %.2d %.2d %.2d %.2d %.2g %.2g\n",
-                   yr,mo,dy,hr,mt,(int) sc,latmed,latmin[0]);
-           if (vb==1) 
-           fprintf(stderr,"%d-%d-%d %d:%d:%d latmin: median=%g actual=%g\n",
-                   yr,mo,dy,hr,mt,(int) sc,latmed,latmin[0]);  
-	  }
+	TimeEpochToYMDHMS(grd[0]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
+	fprintf(stdout,"%.4d %.2d %.2d %.2d %.2d %.2d %.2g %.2g\n",
+		yr,mo,dy,hr,mt,(int) sc,latmed,latmin[0]);
+	if (vb==1) 
+	  fprintf(stderr,"%d-%d-%d %d:%d:%d latmin: median=%g actual=%g\n",
+		  yr,mo,dy,hr,mt,(int) sc,latmed,latmin[0]);  
+      }
     }
    
-
     if (tflg==0) {  
-      map_addhmb(yr,yrsec,map[idx],bndnp,bndstep,latref,latmed); 
+      if (latmed != -1) map_addhmb(yr,yrsec,map[idx],bndnp,bndstep,latref,latmed); 
+      else map[idx]->latmin = -1;
       if (old) OldCnvMapFwrite(stdout,map[idx],grd[idx]);
       else CnvMapFwrite(stdout,map[idx],grd[idx]);
       TimeEpochToYMDHMS(grd[idx]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);

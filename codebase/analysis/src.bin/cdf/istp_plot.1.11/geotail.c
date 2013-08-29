@@ -54,7 +54,7 @@ int geomgf_pos(CDFid id,struct posdata *ptr,double stime,double etime) {
 
   double gsex,gsey,gsez;
   double gsmx,gsmy,gsmz;
-
+  float tilt;
 
   double *dptr;
 
@@ -97,7 +97,7 @@ int geomgf_pos(CDFid id,struct posdata *ptr,double stime,double etime) {
        gsey=dptr[1];
        gsez=dptr[2];
 
-       GeoPackRecalc(yr,mo,dy,hr,mt,(sc+1.0*ms/1000.0));
+       GeoPackRecalc(yr,mo,dy,hr,mt,(sc+1.0*ms/1000.0),&tilt);
        GeoPackGseGsm(gsex,gsey,gsez,&gsmx,&gsmy,&gsmz);
    
        ptr->PGSM[cnt*3]=gsmx/6370;
@@ -127,6 +127,7 @@ int geolep_pos(CDFid id,struct posdata *ptr,double stime,double etime) {
 
   double gsex,gsey,gsez;
   double gsmx,gsmy,gsmz;
+  float tilt;
 
   double *dptr;
 
@@ -170,7 +171,7 @@ int geolep_pos(CDFid id,struct posdata *ptr,double stime,double etime) {
        gsey=dptr[1];
        gsez=dptr[2];
 
-       GeoPackRecalc(yr,mo,dy,hr,mt,(sc+1.0*ms/1000.0));
+       GeoPackRecalc(yr,mo,dy,hr,mt,(sc+1.0*ms/1000.0),&tilt);
        GeoPackGseGsm(gsex,gsey,gsez,&gsmx,&gsmy,&gsmz);
 
        ptr->PGSM[cnt*3]=gsmx/6370;
@@ -199,6 +200,7 @@ int geocpi_plasma(CDFid id,struct plasmadata *ptr,double stime,double etime) {
 
   double gsex,gsey,gsez;
   double gsmx,gsmy,gsmz;
+  float tilt;
 
   double *dptr;
   float *fptr;
@@ -275,7 +277,7 @@ int geocpi_plasma(CDFid id,struct plasmadata *ptr,double stime,double etime) {
        gsey=fptr[1];
        gsez=fptr[2];
 
-       GeoPackRecalc(yr,mo,dy,hr,mt,(sc+1.0*ms/1000.0));
+       GeoPackRecalc(yr,mo,dy,hr,mt,(sc+1.0*ms/1000.0),&tilt);
        GeoPackGseGsm(gsex,gsey,gsez,&gsmx,&gsmy,&gsmz);
 
        ptr->VGSM[cnt*3]=gsmx;
@@ -322,6 +324,7 @@ int geomgf_imf(CDFid id,struct imfdata *ptr,double stime,double etime) {
 
   double gsex,gsey,gsez;
   double gsmx,gsmy,gsmz;
+  float tilt;
 
   strcpy(ptr->sat,"ge");
   strcpy(ptr->ins,"mgf");
@@ -362,7 +365,7 @@ int geomgf_imf(CDFid id,struct imfdata *ptr,double stime,double etime) {
        gsey=sptr[1]/10.0;
        gsez=sptr[2]/10.0;
 
-       GeoPackRecalc(yr,mo,dy,hr,mt,(sc+1.0*ms/1000.0));
+       GeoPackRecalc(yr,mo,dy,hr,mt,(sc+1.0*ms/1000.0),&tilt);
        GeoPackGseGsm(gsex,gsey,gsez,&gsmx,&gsmy,&gsmz);
 
        ptr->BGSMc[cnt*3]=gsmx;

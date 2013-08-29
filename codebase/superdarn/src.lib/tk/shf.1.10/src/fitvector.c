@@ -4,24 +4,7 @@
 */
 
 /*
- LICENSE AND DISCLAIMER
- 
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
+ (c) 2010 JHU/APL & Others - Please Consult LICENSE.superdarn-rst.3.2-beta-4-g32f7302.txt for more information.
  
  
  
@@ -36,11 +19,10 @@
 #include "shfvector.h"
 #include "fitvector.h"
 
+#include "calc_bmag.h"
 #include "svdcmp.h"
 #include "svdbksb.h"
 #include "shfconst.h"
-
-
 
 void CnvMapEvalLegendre(int Lmax,double *x,int n,double *plm);
 int CnvMapIndexLegendre(int,int); 
@@ -49,8 +31,8 @@ void CnvMapLegendreIndex(int,int *,int *);
  
 #define PLM(L,m,i) *(plm+(m)*num+(L)*(order+1)*num+(i))
 
-double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
-			 int order,double latmin) {
+double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,int order,
+			 double latmin, float decyear, int igrf_flag) {
   int kmax;
   int i,m,L,k;
 
@@ -67,6 +49,7 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
   double *a=NULL;
   double *phi=NULL;
   double *theta=NULL;
+  int hemi = 1;
 
   x=malloc(sizeof(double)*num);
   if (x==NULL) return NULL;
@@ -86,33 +69,23 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
   kmax=CnvMapIndexLegendre(order,order)+1;
 
   if (latmin>0) {
-
     bpolar = BNorth;
-
+    hemi   = 1;
     thetamax=(90-latmin)*PI/180;
-    alpha=PI/thetamax;
-    for (i=0;i<num;i++) {
-      x[i]=cos(alpha*(90.0-data[i].lat)*PI/180);
-      y[i]=sin(alpha*(90.0-data[i].lat)*PI/180);
-      phi[i]=data[i].lon*PI/180.0;
-      theta[i]=(90.0-data[i].lat)*PI/180.0;
-      phi[i]=(phi[i]>PI) ? (phi[i]-2.0*PI) : phi[i];
-    }
   } else {
-
     bpolar = BSouth;
-
+    hemi   = -1;
     thetamax=(90+latmin)*PI/180;
-    alpha=PI/thetamax;
-    for (i=0;i<num;i++) {
-      x[i]=cos(alpha*(90.0+data[i].lat)*PI/180);
-      y[i]=sin(alpha*(90.0+data[i].lat)*PI/180);
-      phi[i]=data[i].lon*PI/180.0;
-      theta[i]=(90.0+data[i].lat)*PI/180.0;
-      phi[i]=(phi[i]>PI) ? (phi[i]-2.0*PI) : phi[i];
-    }
   }
 
+  alpha=PI/thetamax;
+  for (i=0;i<num;i++) {
+    x[i]=cos(alpha*(90.0-data[i].lat)*PI/180);
+    y[i]=sin(alpha*(90.0-data[i].lat)*PI/180);
+    phi[i]=data[i].lon*PI/180.0;
+    theta[i]=(90.0-data[i].lat)*PI/180.0;
+    phi[i]=(phi[i]>PI) ? (phi[i]-2.0*PI) : phi[i];
+  }
 
   CnvMapEvalLegendre(order,x,num,plm);
   
@@ -127,14 +100,16 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
     return NULL;
   } 
   m=0;
+
   for (L=1;L<=order;L++) {
     k=CnvMapIndexLegendre(L,m);
     for (i=0;i<num;i++) {
-
-      bmag = bpolar*(1.0 - 3.0 * Altitude/Re)*
-             sqrt(3.0*(cos(theta[i])*cos(theta[i]))
-	          + 1.0)/2.0;
-
+      
+      if (igrf_flag == 0) {
+	bmag = bpolar*(1.0 - 3.0 * Altitude/Re)*
+	       sqrt(3.0*(cos(theta[i])*cos(theta[i]))+ 1.0)/2.0; 
+      } else bmag = -calc_bmag(hemi*data[i].lat,data[i].lon,decyear);
+      
       etheta=alpha/Radial_Dist*L*(PLM(L-1,0,i)-x[i]*PLM(L,0,i))/y[i];
       vphi=-etheta/(bmag);  
       vlos=vphi*data[i].sin;
@@ -145,10 +120,12 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
     for (L=m;L<=order;L++) {
       k=CnvMapIndexLegendre(L,m);
       for (i=0;i<num;i++) {
-
-        bmag = bpolar*(1.0 - 3.0 * Altitude/Re)*
-                       sqrt(3.0*(cos(theta[i])*cos(theta[i]))+ 1.0)/2.0;
-
+	
+	if (igrf_flag == 0) {
+	  bmag = bpolar*(1.0 - 3.0 * Altitude/Re)*
+	         sqrt(3.0*(cos(theta[i])*cos(theta[i]))+ 1.0)/2.0; 
+	} else bmag = -calc_bmag(hemi*data[i].lat,data[i].lon,decyear);
+	
         etheta=-(cos(m*phi[i])/y[i]*(-((L+m)*PLM(L-1,m,i))+
 			             L*x[i]*PLM(L,m,i)));
         etheta=etheta*alpha/Radial_Dist;
@@ -184,8 +161,8 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
 }
 
 double CnvMapFitVector(int num,struct CnvMapSHFVec *data,
-		       double *coef,double *fitvel,
-		        int order,double latmin) {
+		       double *coef,double *fitvel,int order,
+		       double latmin, float decyear, int igrf_flag) {
 
   int kmax;
   int i,k,n,L,m;
@@ -223,7 +200,7 @@ double CnvMapFitVector(int num,struct CnvMapSHFVec *data,
   var=malloc(sizeof(double)*(kmax+1)*(kmax+1));
   a=malloc(sizeof(double)*num*(kmax+1)); 
 
-  amat=CnvMapVlosMatrix(num,data,order,latmin);
+  amat=CnvMapVlosMatrix(num,data,order,latmin,decyear,igrf_flag);
   if (amat==NULL) { 
     free(result);
     free(soltn);
@@ -245,8 +222,10 @@ double CnvMapFitVector(int num,struct CnvMapSHFVec *data,
      
   n=(num<(kmax+1)) ? (kmax+1) : num;
   for (i=0;i<=kmax;i++) if (fabs(w[i])>wmax) wmax=fabs(w[i]);
-  for (i=0;i<=kmax;i++) if (fabs(w[i])<(wmax*n*2e-16)) w[i]=0;
- 
+  for (i=0;i<=kmax;i++) if (fabs(w[i])<(wmax*n*2e-16)) {
+      /* fprintf(stderr,"zeroing small singular value: %lf\n",w[i]); */
+      w[i]=0;
+    }
   CnvMapSVDBKSB(a,w,v,num,kmax+1,result,soltn);
   
   for (i=0;i<num;i++) { /* calculate chi-squared error estimate */
