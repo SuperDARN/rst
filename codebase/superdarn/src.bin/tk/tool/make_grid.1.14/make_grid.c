@@ -311,8 +311,12 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"sd",'t',&sdtestr);
   OptionAdd(&opt,"ed",'t',&edtestr);
   OptionAdd(&opt,"ex",'t',&exstr);
-  
+
+/* Here tlen is a +/- type of window.  So the window is expanded by
+   tlen on each side of stime to etime -KTS 20140225 */
   OptionAdd(&opt,"tl",'i',&tlen);
+/* Here avlen is the step time of how long the grid file is stepping
+   through. -KTS 20140225 */
   OptionAdd(&opt,"i",'i',&avlen);
 
   OptionAdd(&opt,"cn",'t',&chnstr);
@@ -667,7 +671,8 @@ int main(int argc,char *argv[]) {
          if (nsflg) exclude_outofscan(src[index]); 
          exclude_range(src[index],minrng,maxrng);
          FilterBoundType(src[index],grid->gsct);
-         if (bflg) FilterBound(15,src[index],min,max);
+/* Is the 15 here a possible hard coding of a 16 beam radar? -KTS 20140225 */
+	if (bflg) FilterBound(15,src[index],min,max);
 
          if ((num>=nbox) && (limit==1) && (mode !=-1))
   	   chk=FilterCheckOps(nbox,src,fmax);
