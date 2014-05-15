@@ -312,8 +312,8 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"ed",'t',&edtestr);
   OptionAdd(&opt,"ex",'t',&exstr);
 
-/* Here tlen is a +/- type of window.  So the window is expanded by
-   tlen on each side of stime to etime -KTS 20140225 */
+/* Here tlen will ignore the scan glad in radar data and
+   keep loading in data for tlen seconds.  -KTS 20140515 */
   OptionAdd(&opt,"tl",'i',&tlen);
 /* Here avlen is the step time of how long the grid file is stepping
    through. -KTS 20140225 */
