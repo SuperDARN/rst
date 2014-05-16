@@ -272,6 +272,8 @@ int FilterRadarScan(int mode,int depth,int inx,struct RadarScan **src,
 	} 
       }
 
+      /* If certain criteria aren't met, lets continue on to the next range or beam */
+
       if (cnum==0) continue;
       if ((bm==0) || (bm==maxbeam-1)) w=w*1.5;
       if (w<=thresh[mode % 2]) continue;
@@ -281,24 +283,30 @@ int FilterRadarScan(int mode,int depth,int inx,struct RadarScan **src,
       dst->bm[bm].rng[rng].p_l=0;
       dst->bm[bm].rng[rng].w_l=0; 
       dst->bm[bm].rng[rng].v=0;
- 
+
+      /* First lets look at velocity */
+
       if (prm & 0x01) {
         mean=0;
         variance=0;
         sigma=0;
         cnt=0;
+        /* Determine the mean of the selected velocity values */
         for (c=0;c<cnum;c++) mean+=cell[c]->v;
         mean=mean/cnum;
+        /* Determine the variance of the selected velocity values */
         for (c=0;c<cnum;c++) 
            variance+=(cell[c]->v-mean)*(cell[c]->v-mean);
         variance=variance/cnum;
         if (variance>0) sigma=sqrt(variance);
+	/* Filter out values that are outside of a +/-2 sigma window */
         for (c=0;c<cnum;c++) {
           if (fabs(cell[c]->v-mean)>2*sigma) continue;
 	  median[cnt]=cell[c]; 
           cnt++;
 	}
         qsort(median,cnt,sizeof(struct RadarCell *), FilterCmpVel);
+	/* Select the median of the trimmed velocity set */
         dst->bm[bm].rng[rng].v=median[cnt/2]->v;
         mean=0;
         variance=0;
@@ -311,6 +319,8 @@ int FilterRadarScan(int mode,int depth,int inx,struct RadarScan **src,
         else sigma=0;
         dst->bm[bm].rng[rng].v_e=sigma;
       }
+      
+      /* Now lets look at lag power, p_l */
       
       if (prm & 0x02) {
         mean=0;
@@ -342,6 +352,8 @@ int FilterRadarScan(int mode,int depth,int inx,struct RadarScan **src,
         dst->bm[bm].rng[rng].p_l_e=sigma;
       }
 
+      /* Lets look at spectral width, w_l */
+
       if (prm & 0x04) {
         mean=0;
         variance=0;
@@ -371,6 +383,9 @@ int FilterRadarScan(int mode,int depth,int inx,struct RadarScan **src,
         else sigma=0;
         dst->bm[bm].rng[rng].w_l_e=sigma;
       }
+      
+      /* Lets look at lag zero power, p_o */
+      
       if (prm & 0x08) {
         mean=0;
         variance=0;
@@ -401,6 +416,7 @@ int FilterRadarScan(int mode,int depth,int inx,struct RadarScan **src,
         dst->bm[bm].rng[rng].p_0_e=sigma;
       }
       
+    /* End of big range gate nested in to beam for loop(s) */
 
     }
   }
