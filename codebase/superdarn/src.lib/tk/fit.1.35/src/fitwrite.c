@@ -5,26 +5,26 @@
 
 /*
  LICENSE AND DISCLAIMER
- 
+
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
+
  This file is part of the Radar Software Toolkit (RST).
- 
+
  RST is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
- 
+
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Lesser General Public License for more details.
- 
+
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+
+
+
 */
 
 #include <stdio.h>
@@ -114,45 +114,45 @@ int FitEncode(struct DataMap *ptr,struct RadarParm *prm, struct FitData *fit) {
   DataMapStoreScalar(ptr,"noise.lag0",DATAFLOAT,&lag0_noise);
   DataMapStoreScalar(ptr,"noise.vel",DATAFLOAT,&vel_noise);
 
-  
+
   p0num=prm->nrang;
   pwr0=DataMapStoreArray(ptr,"pwr0",DATAFLOAT,1,&p0num,NULL);
   for (c=0;c<p0num;c++) pwr0[c]=fit->rng[c].p_0;
- 
+
   snum=0;
   for (c=0;c<prm->nrang;c++) {
-    if ( (fit->rng[c].qflg==1) || 
-         ((fit->xrng !=NULL) && (fit->xrng[c].qflg==1))) snum++;  
+    if ( (fit->rng[c].qflg==1) ||
+         ((fit->xrng !=NULL) && (fit->xrng[c].qflg==1))) snum++;
   }
 
   if (prm->xcf !=0) xnum=snum;
   else xnum=0;
- 
+
   if (snum==0) return 0;
 
   slist=DataMapStoreArray(ptr,"slist",DATASHORT,1,&snum,NULL);
   nlag=DataMapStoreArray(ptr,"nlag",DATASHORT,1,&snum,NULL);
 
-  qflg=DataMapStoreArray(ptr,"qflg",DATACHAR,1,&snum,NULL); 
-  gflg=DataMapStoreArray(ptr,"gflg",DATACHAR,1,&snum,NULL); 
+  qflg=DataMapStoreArray(ptr,"qflg",DATACHAR,1,&snum,NULL);
+  gflg=DataMapStoreArray(ptr,"gflg",DATACHAR,1,&snum,NULL);
   
-  p_l=DataMapStoreArray(ptr,"p_l",DATAFLOAT,1,&snum,NULL);   
-  p_l_e=DataMapStoreArray(ptr,"p_l_e",DATAFLOAT,1,&snum,NULL); 
-  
-  p_s=DataMapStoreArray(ptr,"p_s",DATAFLOAT,1,&snum,NULL); 
-  p_s_e=DataMapStoreArray(ptr,"p_s_e",DATAFLOAT,1,&snum,NULL); 
-  v=DataMapStoreArray(ptr,"v",DATAFLOAT,1,&snum,NULL); 
-  v_e=DataMapStoreArray(ptr,"v_e",DATAFLOAT,1,&snum,NULL); 
- 
-  w_l=DataMapStoreArray(ptr,"w_l",DATAFLOAT,1,&snum,NULL); 
-  w_l_e=DataMapStoreArray(ptr,"w_l_e",DATAFLOAT,1,&snum,NULL); 
-  w_s=DataMapStoreArray(ptr,"w_s",DATAFLOAT,1,&snum,NULL); 
-  w_s_e=DataMapStoreArray(ptr,"w_s_e",DATAFLOAT,1,&snum,NULL); 
-  
-  sd_l=DataMapStoreArray(ptr,"sd_l",DATAFLOAT,1,&snum,NULL); 
-  sd_s=DataMapStoreArray(ptr,"sd_s",DATAFLOAT,1,&snum,NULL); 
-  sd_phi=DataMapStoreArray(ptr,"sd_phi",DATAFLOAT,1,&snum,NULL); 
-  
+  p_l=DataMapStoreArray(ptr,"p_l",DATAFLOAT,1,&snum,NULL);
+  p_l_e=DataMapStoreArray(ptr,"p_l_e",DATAFLOAT,1,&snum,NULL);
+
+  p_s=DataMapStoreArray(ptr,"p_s",DATAFLOAT,1,&snum,NULL);
+  p_s_e=DataMapStoreArray(ptr,"p_s_e",DATAFLOAT,1,&snum,NULL);
+  v=DataMapStoreArray(ptr,"v",DATAFLOAT,1,&snum,NULL);
+  v_e=DataMapStoreArray(ptr,"v_e",DATAFLOAT,1,&snum,NULL);
+
+  w_l=DataMapStoreArray(ptr,"w_l",DATAFLOAT,1,&snum,NULL);
+  w_l_e=DataMapStoreArray(ptr,"w_l_e",DATAFLOAT,1,&snum,NULL);
+  w_s=DataMapStoreArray(ptr,"w_s",DATAFLOAT,1,&snum,NULL);
+  w_s_e=DataMapStoreArray(ptr,"w_s_e",DATAFLOAT,1,&snum,NULL);
+
+  sd_l=DataMapStoreArray(ptr,"sd_l",DATAFLOAT,1,&snum,NULL);
+  sd_s=DataMapStoreArray(ptr,"sd_s",DATAFLOAT,1,&snum,NULL);
+  sd_phi=DataMapStoreArray(ptr,"sd_phi",DATAFLOAT,1,&snum,NULL);
+
   if (prm->xcf !=0) {
     x_qflg=DataMapStoreArray(ptr,"x_qflg",DATACHAR,1,&xnum,NULL); 
     x_gflg=DataMapStoreArray(ptr,"x_gflg",DATACHAR,1,&xnum,NULL); 
