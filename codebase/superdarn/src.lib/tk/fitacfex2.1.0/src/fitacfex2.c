@@ -287,6 +287,11 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
   for (R=0;R<prm->nrang;R++)
   {
 
+    /* Do a simple check to see if the record contains an acf.  Not all records contain acfs. -KTS 20140814 */
+    if(raw->acfd[0] == NULL){
+       /* fprintf(stderr, "No acf data found\n"); */
+       continue;
+    }
 
     if(!((fabs(prm->cp) == 210 || fabs(prm->cp) == 230 || fabs(prm->cp) == 502 || fabs(prm->cp) == 503 || fabs(prm->cp) == 3310) && prm->mplgs == 18))
       raw->acfd[0][R*prm->mplgs] -= skynoise;
