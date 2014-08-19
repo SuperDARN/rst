@@ -453,7 +453,8 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
 
 
         data_phi = atan2(raw->acfd[1][R*prm->mplgs+L],raw->acfd[0][R*prm->mplgs+L])*180.0/PI;
-        if(fblk->prm.xcf)
+        /* Double check that there is actually data in the xcfd array even if the xcf flag is set -KTS 20140819*/
+        if ((fblk->prm.xcf) && (raw->xcfd[0] != NULL) )
           xcf_phases[i]=atan2(raw->xcfd[1][R*prm->mplgs+L],raw->xcfd[0][R*prm->mplgs+L])*180./PI;
         data_phi_pos[i] = data_phi;
         data_phi_neg[i] = 360 - data_phi;
