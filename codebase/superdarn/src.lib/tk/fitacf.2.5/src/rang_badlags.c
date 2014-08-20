@@ -52,8 +52,15 @@ void r_overlap(struct FitPrm *ptr) {
   int diff_pulse;
 
   /* define constants */
-  tau = ptr->mpinc / ptr->smsep;
- 
+  /* Found a few cases where smsep isn't written or is zero.  So lets use txpl
+     in its place */
+  if (ptr->smsep != 0) {
+     tau = ptr->mpinc / ptr->smsep;
+  } else {
+     fprintf( stderr, "r_overlap: WARNING, using txpl instead of smsep...\n");
+     tau = ptr->mpinc / ptr->txpl;
+  }
+
   for (ck_pulse = 0; ck_pulse < ptr->mppul; ++ck_pulse) {
     for (pulse = 0; pulse < ptr->mppul; ++pulse) {
       diff_pulse = ptr->pulse[ck_pulse] - 
