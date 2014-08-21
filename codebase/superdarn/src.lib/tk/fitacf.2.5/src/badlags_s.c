@@ -44,7 +44,7 @@ int maxbad=MAXBAD;
 
 void FitACFBadlagsStereo(struct FitPrm *ptr, struct FitACFBadSample *bptr) {
     int i, k, l, n, sample;
-    int first=0, step;
+    int first=0;
     long ts, t1=0, t2=0;
     int nbad;
     
@@ -66,18 +66,19 @@ void FitACFBadlagsStereo(struct FitPrm *ptr, struct FitACFBadSample *bptr) {
     t2 = 0L;
     
     /* the loops below assume that smsep is not zero...this is not always the case */
-    if ( ptr->smsep > 0) {
-    	step = ptr->smsep;
-    } else if ( ptr->txpl > 0) {
-	   if (first == 0) {
+    if ( ptr->smsep <= 0 ) {
+    	   /* First lets do a check to see if txpl is valid so that we can use that in place of smsep */
+    	   if ( ptr->txpl <= 0){
+    	   	fprintf( stderr, "FitACFBadlagsStereo: ERROR, both smsep and txpl are invalid...\n");
+    		return;
+    	   }
+    	   /* If txpl is a valid value, lets set it as smsep and throw off a warning */
+    	   if (first == 0) {
 	   	fprintf( stderr, "FitACFBadlagsStereo: WARNING using txpl instead of smsep...\n")
 	        first=1;
            }
-           step = ptr->txpl;
-    } else {
-    	fprintf( stderr, "FitACFBadlagsStereo: error, both smsep and txpl are invalid...\n");
-    	return;
-    }
+           ptr->smsep = ptr->txpl;
+   
 
     while (i < (ptr->mppul - 1)) {
 	/* first, skip over any pulses that occur before the first sample */
@@ -95,7 +96,7 @@ void FitACFBadlagsStereo(struct FitPrm *ptr, struct FitACFBadSample *bptr) {
 	
 	while (ts < t1) {
 	    sample++;
-	    ts += step;
+	    ts += ptr->smsep;
 	}
 	
 	/* ok, we now have a sample which occurs after the pulse starts.
@@ -115,7 +116,7 @@ void FitACFBadlagsStereo(struct FitPrm *ptr, struct FitACFBadSample *bptr) {
 	    badtmp[k] = sample;
 	    k++;
 	    sample++;
-	    ts += step;
+	    ts += ptr->smsep;
 	}
     }
 
@@ -154,7 +155,7 @@ void FitACFBadlagsStereo(struct FitPrm *ptr, struct FitACFBadSample *bptr) {
 
 	while (ts < t1)	{
 	    sample++;
-	    ts += step;
+	    ts += ptr->smsep;
 	}
 	
 	/*  ok, we now have a sample which occurs after the pulse starts.
@@ -173,7 +174,7 @@ void FitACFBadlagsStereo(struct FitPrm *ptr, struct FitACFBadSample *bptr) {
 	    badtmp[k] = sample;
 	    k++;
 	    sample++;
-	    ts += step;
+	    ts += ptr->smsep;
 	}
     }
 
