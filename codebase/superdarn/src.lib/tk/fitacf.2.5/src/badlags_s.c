@@ -74,11 +74,11 @@ void FitACFBadlagsStereo(struct FitPrm *ptr, struct FitACFBadSample *bptr) {
     	   }
     	   /* If txpl is a valid value, lets set it as smsep and throw off a warning */
     	   if (first == 0) {
-	   	fprintf( stderr, "FitACFBadlagsStereo: WARNING using txpl instead of smsep...\n")
+	   	fprintf( stderr, "FitACFBadlagsStereo: WARNING using txpl instead of smsep...\n");
 	        first=1;
            }
            ptr->smsep = ptr->txpl;
-   
+    }   
 
     while (i < (ptr->mppul - 1)) {
 	/* first, skip over any pulses that occur before the first sample */
