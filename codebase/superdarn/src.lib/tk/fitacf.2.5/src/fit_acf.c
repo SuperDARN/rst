@@ -528,7 +528,7 @@ int fit_acf (struct complex *acf,int range,
 		  npp++;
 	    }
 	  wbar = wbar/npp;
-	  ptr->sdev_l = sqrt(e2/sum_w/(npp - 2));
+	  ptr->sdev_l = sqrt(e2/sum_w * npp /(npp - 2));
 
 	  if ((sum_w*sum_wk2 - sum_wk*sum_wk) <=0) {
 	    ptr->p_l_err = HUGE_VAL;
@@ -571,7 +571,7 @@ int fit_acf (struct complex *acf,int range,
 		  npp++;
 	    }
 	  wbar = wbar/npp;
-	  ptr->sdev_s = sqrt(e2/sum_w/(npp - 2));
+	  ptr->sdev_s = sqrt(e2/sum_w * npp /(npp - 2));
 
 	  if ((sum_w*sum_wk4 - sum_wk2*sum_wk2) <= 0.0 ) {
 	    ptr->p_s_err = HUGE_VAL;
