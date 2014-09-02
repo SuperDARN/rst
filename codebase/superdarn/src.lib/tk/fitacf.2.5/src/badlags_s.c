@@ -51,11 +51,11 @@ void FitACFBadlagsStereo(struct FitPrm *ptr, struct FitACFBadSample *bptr) {
     int offset;
     
     if (badtmp==NULL) {
-	badtmp = malloc(maxbad*sizeof(int));
-	if ( badtmp==NULL) {
-	    fprintf( stderr, "badlags: memory allocation failure\n" );
-	    return;
-	}
+    badtmp = malloc(maxbad*sizeof(int));
+    if ( badtmp==NULL) {
+        fprintf( stderr, "badlags: memory allocation failure\n" );
+        return;
+    }
     }
     
     i = -1;
@@ -67,57 +67,57 @@ void FitACFBadlagsStereo(struct FitPrm *ptr, struct FitACFBadSample *bptr) {
     
     /* the loops below assume that smsep is not zero...this is not always the case */
     if ( ptr->smsep <= 0 ) {
-    	   /* First lets do a check to see if txpl is valid so that we can use that in place of smsep */
-    	   if ( ptr->txpl <= 0){
-    	   	fprintf( stderr, "FitACFBadlagsStereo: ERROR, both smsep and txpl are invalid...\n");
-    		return;
-    	   }
-    	   /* If txpl is a valid value, lets set it as smsep and throw off a warning */
-    	   if (first == 0) {
-	   	fprintf( stderr, "FitACFBadlagsStereo: WARNING using txpl instead of smsep...\n");
-	        first=1;
+           /* First lets do a check to see if txpl is valid so that we can use that in place of smsep */
+           if ( ptr->txpl <= 0){
+            fprintf( stderr, "FitACFBadlagsStereo: ERROR, both smsep and txpl are invalid...\n");
+            return;
+           }
+           /* If txpl is a valid value, lets set it as smsep and throw off a warning */
+           if (first == 0) {
+        fprintf( stderr, "FitACFBadlagsStereo: WARNING using txpl instead of smsep...\n");
+            first=1;
            }
            ptr->smsep = ptr->txpl;
     }   
 
     while (i < (ptr->mppul - 1)) {
-	/* first, skip over any pulses that occur before the first sample */
-	
-	while ((ts > t2) && (i < (ptr->mppul - 1))) {
-	    i++;
-	    t1 = (long) (ptr->pulse[i]) * (long) (ptr->mpinc)
-		- ptr->txpl/2;
-	    t2 = t1 + 3*ptr->txpl/2 + 100; /* adjust for rx-on delay */
-	}	
-	
-	/*  we now have a pulse that occurs after the current sample.  Start
-	    incrementing the sample number until we find a sample that lies
-	    within the pulse */
-	
-	while (ts < t1) {
-	    sample++;
-	    ts += ptr->smsep;
-	}
-	
-	/* ok, we now have a sample which occurs after the pulse starts.
-	   check to see if it occurs before the pulse ends, and if so, mark
-		it as a bad sample */
-	
-	while ((ts >= t1) && (ts <= t2)) {
-	    if ( k > maxbad ) {	/* run out of storage, double the allocation */
-		maxbad += MAXBAD;
-		badtmp = realloc( badtmp,maxbad*sizeof(int));
-		if (badtmp==NULL) {
-		    fprintf( stderr, "badlags: memory allocation failure\n" );
-		    return;
-		}
-	    }
+    /* first, skip over any pulses that occur before the first sample */
+    
+    while ((ts > t2) && (i < (ptr->mppul - 1))) {
+        i++;
+        t1 = (long) (ptr->pulse[i]) * (long) (ptr->mpinc)
+        - ptr->txpl/2;
+        t2 = t1 + 3*ptr->txpl/2 + 100; /* adjust for rx-on delay */
+    }   
+    
+    /*  we now have a pulse that occurs after the current sample.  Start
+        incrementing the sample number until we find a sample that lies
+        within the pulse */
+    
+    while (ts < t1) {
+        sample++;
+        ts += ptr->smsep;
+    }
+    
+    /* ok, we now have a sample which occurs after the pulse starts.
+       check to see if it occurs before the pulse ends, and if so, mark
+        it as a bad sample */
+    
+    while ((ts >= t1) && (ts <= t2)) {
+        if ( k > maxbad ) { /* run out of storage, double the allocation */
+        maxbad += MAXBAD;
+        badtmp = realloc( badtmp,maxbad*sizeof(int));
+        if (badtmp==NULL) {
+            fprintf( stderr, "badlags: memory allocation failure\n" );
+            return;
+        }
+        }
 
-	    badtmp[k] = sample;
-	    k++;
-	    sample++;
-	    ts += ptr->smsep;
-	}
+        badtmp[k] = sample;
+        k++;
+        sample++;
+        ts += ptr->smsep;
+    }
     }
 
 
@@ -140,46 +140,46 @@ void FitACFBadlagsStereo(struct FitPrm *ptr, struct FitACFBadSample *bptr) {
 
 
     while ( offset != 0 && i < (ptr->mppul - 1) && k < maxbad ) {
-	/* first, skip over any pulses that occur before the first sample */
+    /* first, skip over any pulses that occur before the first sample */
 
-	while ((ts > t2) && (i < (ptr->mppul - 1))) {
-	    i++;
-	    t1 = (long) (ptr->pulse[i]) * (long) (ptr->mpinc)
-			    - ptr->txpl/2 + offset;
-	    t2 = t1 + 3*ptr->txpl/2 + 100; /* adjust for rx-on delay */
-	}	
+    while ((ts > t2) && (i < (ptr->mppul - 1))) {
+        i++;
+        t1 = (long) (ptr->pulse[i]) * (long) (ptr->mpinc)
+                - ptr->txpl/2 + offset;
+        t2 = t1 + 3*ptr->txpl/2 + 100; /* adjust for rx-on delay */
+    }   
 
-	/*   we now have a pulse that occurs after the current sample.  Start
-	     incrementing the sample number until we find a sample that lies
-	     within the pulse */
+    /*   we now have a pulse that occurs after the current sample.  Start
+         incrementing the sample number until we find a sample that lies
+         within the pulse */
 
-	while (ts < t1)	{
-	    sample++;
-	    ts += ptr->smsep;
-	}
-	
-	/*  ok, we now have a sample which occurs after the pulse starts.
-	    check to see if it occurs before the pulse ends, and if so, mark
-	    it as a bad sample */
+    while (ts < t1) {
+        sample++;
+        ts += ptr->smsep;
+    }
+    
+    /*  ok, we now have a sample which occurs after the pulse starts.
+        check to see if it occurs before the pulse ends, and if so, mark
+        it as a bad sample */
 
-	while ((ts >= t1) && (ts <= t2) && k < maxbad ) {
-	    if ( k > maxbad ) {	/* run out of storage, double the allocation */
-		maxbad +=MAXBAD;
-		badtmp = realloc(badtmp,maxbad*sizeof(int));
-		if (badtmp==NULL) {
-		    fprintf( stderr, "badlags: memory allocation failure\n" );
-		    return;
-		}
-	    }
-	    badtmp[k] = sample;
-	    k++;
-	    sample++;
-	    ts += ptr->smsep;
-	}
+    while ((ts >= t1) && (ts <= t2) && k < maxbad ) {
+        if ( k > maxbad ) { /* run out of storage, double the allocation */
+        maxbad +=MAXBAD;
+        badtmp = realloc(badtmp,maxbad*sizeof(int));
+        if (badtmp==NULL) {
+            fprintf( stderr, "badlags: memory allocation failure\n" );
+            return;
+        }
+        }
+        badtmp[k] = sample;
+        k++;
+        sample++;
+        ts += ptr->smsep;
+    }
     }
 
    
-    nbad = k;	/* total number of bad samples */
+    nbad = k;   /* total number of bad samples */
     
 
 
@@ -190,33 +190,33 @@ void FitACFBadlagsStereo(struct FitPrm *ptr, struct FitACFBadSample *bptr) {
     for ( i = 1; i < nbad; i++ ) {
 
       if ( n >= MAXBAD ) {
-	fprintf( stderr, "badlags: internal storage for bad lags exceeded\n" );
-	break;
+    fprintf( stderr, "badlags: internal storage for bad lags exceeded\n" );
+    break;
       }
 
-	for ( k = n-1; k >= 0; k-- ) {
-	    if ( badtmp[i] == bptr->badsmp[k] )    /* duplicate, reject it */
-		break;
+    for ( k = n-1; k >= 0; k-- ) {
+        if ( badtmp[i] == bptr->badsmp[k] )    /* duplicate, reject it */
+        break;
 
-	    if ( badtmp[i] > bptr->badsmp[k] ) {  
+        if ( badtmp[i] > bptr->badsmp[k] ) {  
                 /* put it in the list after the current entry */
-		for ( l = n; l > k+1; l-- )
-		    bptr->badsmp[l] = bptr->badsmp[l-1];
-		bptr->badsmp[k+1] = badtmp[i];
-		n++;
-		break;
-	    }
+        for ( l = n; l > k+1; l-- )
+            bptr->badsmp[l] = bptr->badsmp[l-1];
+        bptr->badsmp[k+1] = badtmp[i];
+        n++;
+        break;
+        }
 
- 	    if ( k == 0 ) {  	
+        if ( k == 0 ) {     
             /* must be less than all entries, 
                put it in the list at the start */
-		for ( l = n; l > 0; l-- )
-		    bptr->badsmp[l] = bptr->badsmp[l-1];
-		bptr->badsmp[0] = badtmp[i];
-		n++;
-	    }
-	}
-	
+        for ( l = n; l > 0; l-- )
+            bptr->badsmp[l] = bptr->badsmp[l-1];
+        bptr->badsmp[0] = badtmp[i];
+        n++;
+        }
+    }
+    
     }
 
     bptr->nbad = n;
@@ -225,4 +225,3 @@ void FitACFBadlagsStereo(struct FitPrm *ptr, struct FitACFBadSample *bptr) {
     r_overlap(ptr);
     return;
 }
-
