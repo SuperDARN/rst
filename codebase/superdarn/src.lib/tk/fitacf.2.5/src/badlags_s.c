@@ -44,7 +44,6 @@ int maxbad=MAXBAD;
 
 void FitACFBadlagsStereo(struct FitPrm *ptr, struct FitACFBadSample *bptr) {
     int i, k, l, n, sample;
-    int first=0;
     long ts, t1=0, t2=0;
     int nbad;
     
@@ -66,17 +65,16 @@ void FitACFBadlagsStereo(struct FitPrm *ptr, struct FitACFBadSample *bptr) {
     t2 = 0L;
     
     /* the loops below assume that smsep is not zero...this is not always the case */
-    if ( ptr->smsep <= 0 ) {
+    if ( ptr->smsep <= 0 ) 
+    {
            /* First lets do a check to see if txpl is valid so that we can use that in place of smsep */
-           if ( ptr->txpl <= 0){
-            fprintf( stderr, "FitACFBadlagsStereo: ERROR, both smsep and txpl are invalid...\n");
-            return;
+           if ( ptr->txpl <= 0)
+           {
+               fprintf( stderr, "FitACFBadlagsStereo: ERROR, both smsep and txpl are invalid...\n");
+               return;
            }
            /* If txpl is a valid value, lets set it as smsep and throw off a warning */
-           if (first == 0) {
-        fprintf( stderr, "FitACFBadlagsStereo: WARNING using txpl instead of smsep...\n");
-            first=1;
-           }
+           fprintf( stderr, "FitACFBadlagsStereo: WARNING using txpl instead of smsep...\n");
            ptr->smsep = ptr->txpl;
     }   
 
