@@ -378,6 +378,9 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
       for (L=0;L<prm->mplgs;L++)
       {
         lag = abs(prm->lag[0][L] - prm->lag[1][L]);
+        /* Here we've introduced a limitation that the maximum difference between prm->lag's is 100 */
+        if(lag >= 100) continue;
+        /* If the lag is greater than or equal to 100, then it will cause the next line to fault */
         if(lag_flg[lag] != -1) continue;
         lag_flg[lag] = 0;
         re  = raw->acfd[0][R*prm->mplgs+L]; 
