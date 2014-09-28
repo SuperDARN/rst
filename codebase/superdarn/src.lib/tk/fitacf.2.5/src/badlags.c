@@ -27,7 +27,7 @@
  
 */
 
-
+#include <stdio.h>
 
 #include "badsmp.h"
 #include "fitblk.h"
@@ -45,6 +45,20 @@ void FitACFBadlags(struct FitPrm *ptr,struct FitACFBadSample *bptr) {
   k = 0;
 
   t2 = 0L;
+
+  /* The loops below assume that smsep is not zero...that is not always the case */
+  if ( ptr->smsep <= 0 )
+  {
+      /* First lets do a check to see if txpl is valid so that we can use that in place of smsep */
+      if ( ptr->txpl <= 0 )
+      {
+          fprintf( stderr, "FitACFBadlags: ERROR, both smsep and txpl are invalid...\n");
+          return;
+      }
+      /* If txpl is a valid value, lets set it as smsep and throw off a warning */
+      fprintf( stderr, "FitACFBadlags: WARNING using txpl instead of smsep...\n");
+      ptr->smsep = ptr->txpl;
+  }
 
   while (i < (ptr->mppul - 1)) {
 	/* first, skip over any pulses that occur before the first sample */
