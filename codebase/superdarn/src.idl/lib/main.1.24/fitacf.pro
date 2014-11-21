@@ -203,7 +203,7 @@ end
 
 pro FitACFCkRng,range,mplgs,mpinc,smsep,ltab,nbad,badsmp,badlag,old=old
   
-    LAG_SIZE=96
+    LAG_SIZE=150
 
     if (n_elements(badlag) eq 0) then badlag=intarr(LAG_SIZE)
     for i=0,mplgs-1 do begin
