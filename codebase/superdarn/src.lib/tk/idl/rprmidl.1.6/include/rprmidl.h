@@ -32,7 +32,7 @@
 #define _RPRMIDL_H
 
 #define PULSE_SIZE 64
-#define LAG_SIZE 96
+#define LAG_SIZE 150 
 #define MAX_RANGE 800
 
 #define ORIGIN_TIME_SIZE 26
