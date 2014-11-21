@@ -60,7 +60,7 @@ pro RadarMakeRadarPrm,prm
 
   PULSE_SIZE=64
   LAG_SIZE=96
-  MAX_RANGE=300
+  MAX_RANGE=800
 
   prm={RadarPrm, $
          revision: {rbstr, major: 0B, minor: 0B}, $ 
