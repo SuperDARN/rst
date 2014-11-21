@@ -71,8 +71,8 @@
 
 pro RawMakeRawData,raw
 
-  LAG_SIZE=96
-  MAX_RANGE=300
+  LAG_SIZE=150
+  MAX_RANGE=800
 
   raw={RawData, $
          revision: {rlstr, major: 0L, minor: 0L}, $ 
