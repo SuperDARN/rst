@@ -701,7 +701,7 @@ int main(int argc,char *argv[]) {
                exit(-1);
              }
              site=RadarYMDHMSGetSite(radar,yr,mo,dy,hr,mt,(int) sc);
-	   }
+           }
 
            s=GridTableTest(grid,out,avlen);
 
@@ -714,7 +714,7 @@ int main(int argc,char *argv[]) {
            if (s !=0) {
             fprintf(stderr,"Error mapping beams.\n");
             break;
-	  }
+           }
          }
 
          if (bxcar) index++;
