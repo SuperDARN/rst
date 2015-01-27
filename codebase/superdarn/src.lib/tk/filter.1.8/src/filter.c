@@ -89,6 +89,7 @@ int FilterRadarScan(int mode,int depth,int inx,struct RadarScan **src,
 
   if (depth>FILTER_DEPTH) depth=FILTER_DEPTH;
 
+  /* Combing through the files for the largest beam and range numbers.  -KTS 20150127 */
   for (i=0;i<depth;i++) {
     for (n=0;n<src[i]->num;n++) {
       bm=src[i]->bm[n].bm;
@@ -121,7 +122,6 @@ int FilterRadarScan(int mode,int depth,int inx,struct RadarScan **src,
        bmcnt[bm][z]=0;
      }
   }
-  
   for (z=0;z<depth;z++) {
     i=(inx-(depth-1)+z);
     if (i<0) i+=depth;
@@ -202,7 +202,7 @@ int FilterRadarScan(int mode,int depth,int inx,struct RadarScan **src,
           if (dst->bm[bm].intt.us>1e6) {
             dst->bm[bm].intt.sc++;
             dst->bm[bm].intt.us-=1e6;
-	  }
+          }
           dst->bm[bm].nave+=b->nave;
           dst->bm[bm].frang+=b->frang;
           dst->bm[bm].rsep+=b->rsep;
@@ -212,7 +212,7 @@ int FilterRadarScan(int mode,int depth,int inx,struct RadarScan **src,
           dst->bm[bm].atten+=b->atten;
           if (dst->bm[bm].channel==0) dst->bm[bm].channel=b->channel;
           if (dst->bm[bm].nrang==-1) dst->bm[bm].nrang=b->nrang;    
-	}
+        }
       }
     }
     for (n=0;n<maxbeam;n++) {

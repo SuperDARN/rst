@@ -358,7 +358,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"fit",'x',&fitflg);
   OptionAdd(&opt,"cfit",'x',&cfitflg);
 
-  OptionAdd(&opt,"c",'x',&catflg);
+  OptionAdd(&opt,"c",'x',&catflg);  /* Concatenate multiple input files -KTS 20150127 */
 
   farg=OptionProcess(1,argc,argv,&opt,NULL);
 
@@ -424,7 +424,10 @@ int main(int argc,char *argv[]) {
 
   if (cfitflg==0) fitflg=1;
 
+  /* Big if statement to separate dealing with one input file or multiple input files */
+  /* -KTS 20150127 */
   if (catflg==0) {
+    /* Here we'll deal with just one input file -KTS 20150127 */
     if (argc-farg>1) {
       dname=argv[argc-2];
       iname=argv[argc-1];
@@ -617,7 +620,11 @@ int main(int argc,char *argv[]) {
       if (old) OldFitClose(oldfitfp);
       else fclose(fitfp);
     } else CFitClose(cfitfp);
-  } else {
+
+/* Other part of the if statement from way above the else here notes multiple input files */
+/* -KTS 20150127 */
+
+   } else {
    index=0;
    num=0;
    for (fnum=farg;fnum<argc;fnum++) {
