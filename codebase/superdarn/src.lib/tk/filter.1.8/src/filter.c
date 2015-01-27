@@ -139,7 +139,6 @@ int FilterRadarScan(int mode,int depth,int inx,struct RadarScan **src,
       if (bmcnt[bm][z]>mxbm) mxbm=bmcnt[bm][z];
     }
     if (n !=src[i]->num) break;
-    if (z == depth) exit(-1);
   }
 
   if (z !=depth) {
