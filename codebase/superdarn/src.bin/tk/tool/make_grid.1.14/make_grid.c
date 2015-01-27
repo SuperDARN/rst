@@ -3,26 +3,26 @@
 
 /*
  LICENSE AND DISCLAIMER
- 
+
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
+
  This file is part of the Radar Software Toolkit (RST).
- 
+
  RST is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
- 
+
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Lesser General Public License for more details.
- 
+
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+
+
+
 */
 
 #include <stdio.h>
@@ -76,7 +76,7 @@ struct RadarScan *out;
 struct FitIndex *inx;
 
 
-struct RadarNetwork *network;  
+struct RadarNetwork *network;
 struct Radar *radar;
 struct RadarSite *site;
 
@@ -84,7 +84,7 @@ struct RadarSite *site;
 int nbox;
 
 int ebmno=0;
-int ebm[32*3]; 
+int ebm[32*3];
 int minrng=-1;
 int maxrng=-1;
 
@@ -128,11 +128,11 @@ void exclude_range(struct RadarScan *ptr,int minrng,int maxrng) {
   int bm,rng;
   for (bm=0;bm<ptr->num;bm++) {
     if (ptr->bm[bm].bm==-1) continue;
-    if (minrng !=-1) for (rng=0;rng<minrng;rng++) ptr->bm[bm].sct[rng]=0;     
-    if (maxrng !=-1) for (rng=maxrng;rng<ptr->bm[bm].nrang;rng++) 
-       ptr->bm[bm].sct[rng]=0; 
- 
-  } 
+    if (minrng !=-1) for (rng=0;rng<minrng;rng++) ptr->bm[bm].sct[rng]=0;
+    if (maxrng !=-1) for (rng=maxrng;rng<ptr->bm[bm].nrang;rng++)
+       ptr->bm[bm].sct[rng]=0;
+
+  }
 }
 
 void parse_ebeam(char *str) {
@@ -159,7 +159,7 @@ double strdate(char *text) {
   dy=val % 100;
   mo=(val / 100) % 100;
   yr=(val / 10000);
-  if (yr<1970) yr+=1900;  
+  if (yr<1970) yr+=1900;
   tme=TimeYMDHMSToEpoch(yr,mo,dy,0,0,0);
 
   return tme;
@@ -175,7 +175,7 @@ double strtime(char *text) {
   hr=atoi(text);
   mn=atoi(text+i+1);
   return hr*3600L+mn*60L;
-}   
+}
 
 struct OptionData opt;
 
@@ -183,7 +183,7 @@ int main(int argc,char *argv[]) {
 
   /* File format transistion
    * ------------------------
-   * 
+   *
    * When we switch to the new file format remove any reference
    * to "new". Change the command line option "new" to "old" and
    * remove "old=!new".
@@ -239,9 +239,9 @@ int main(int argc,char *argv[]) {
   int syncflg=1;
 
   unsigned char catflg=0;
-  
+
   int s=0,i;
-  int state=0; 
+  int state=0;
   char *dname=NULL,*iname=NULL;
   FILE *fitfp=NULL;
   struct OldFitFp *oldfitfp=NULL;
@@ -265,7 +265,7 @@ int main(int argc,char *argv[]) {
 
   prm=RadarParmMake();
   fit=FitMake();
-  cfit=CFitMake(); 
+  cfit=CFitMake();
   for (i=0;i<3;i++) src[i]=RadarScanMake();
   dst=RadarScanMake();
 
@@ -285,7 +285,7 @@ int main(int argc,char *argv[]) {
   }
 
   network=RadarLoad(fp);
-  fclose(fp); 
+  fclose(fp);
   if (network==NULL) {
     fprintf(stderr,"Failed to read radar information.\n");
     exit(-1);
@@ -298,11 +298,11 @@ int main(int argc,char *argv[]) {
   }
 
   RadarLoadHardware(envstr,network);
- 
+
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
 
-  OptionAdd(&opt,"new",'x',&new); 
+  OptionAdd(&opt,"new",'x',&new);
 
   OptionAdd(&opt,"vb",'x',&vb);
 
@@ -330,7 +330,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"vmax",'d',&max[0]);
   OptionAdd(&opt,"wmax",'d',&max[2]);
   OptionAdd(&opt,"vemax",'d',&max[3]);
- 
+
   OptionAdd(&opt,"pmin",'d',&min[1]);
   OptionAdd(&opt,"vmin",'d',&min[0]);
   OptionAdd(&opt,"wmin",'d',&min[2]);
@@ -357,7 +357,7 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"fit",'x',&fitflg);
   OptionAdd(&opt,"cfit",'x',&cfitflg);
- 
+
   OptionAdd(&opt,"c",'x',&catflg);
 
   farg=OptionProcess(1,argc,argv,&opt,NULL);
@@ -396,6 +396,7 @@ int main(int argc,char *argv[]) {
 
   if (mode>0) mode--;
 
+  /* Inverse the variables -KTS 20150127  */
   bxcar=!bxcar;
   bflg=!bflg;
   limit=!limit;
@@ -410,7 +411,7 @@ int main(int argc,char *argv[]) {
 
   if (channel !=-1) grid->chn=channel;
   else grid->chn=0;
-  
+
   for (i=0;i<4;i++) {
     grid->min[i]=min[i];
     grid->max[i]=max[i];
@@ -418,11 +419,11 @@ int main(int argc,char *argv[]) {
 
   if (bxcar) nbox=3;
   else nbox=1;
- 
+
   out=dst;
 
   if (cfitflg==0) fitflg=1;
- 
+
   if (catflg==0) {
     if (argc-farg>1) {
       dname=argv[argc-2];
@@ -436,7 +437,7 @@ int main(int argc,char *argv[]) {
           fprintf(stderr,"File not found.\n");
           exit(-1);
         }
-  
+
         s=OldFitReadRadarScan(oldfitfp,&state,src[0],prm,
 			 fit,tlen,syncflg,channel);
         if (s==-1) {
@@ -461,10 +462,10 @@ int main(int argc,char *argv[]) {
           fprintf(stderr,"File not found.\n");
           exit(-1);
         }
-        
+
         s=FitFreadRadarScan(fitfp,&state,src[0],prm,fit,
                             tlen,syncflg,channel);
-        
+
         if (s==-1) {
           fprintf(stderr,"Error reading file.\n");
           exit(-1);
@@ -476,21 +477,21 @@ int main(int argc,char *argv[]) {
         fprintf(stderr,"File not found.\n");
         exit(-1);
       }
-  
+
       s=CFitReadRadarScan(cfitfp,&state,src[0],cfit,tlen,syncflg,channel);
       if (s==-1) {
         fprintf(stderr,"Error reading file.\n");
         exit(-1);
       }
-    }   
+    }
 
-    if ((stime !=-1) || (sdate !=-1)) { 
+    if ((stime !=-1) || (sdate !=-1)) {
       /* we must skip the start of the files */
       int yr,mo,dy,hr,mt;
-      double sc;  
-    
+      double sc;
+
       if (stime==-1) stime= ( (int) src[0]->st_time % (24*3600));
-      if (sdate==-1) stime+=src[0]->st_time - 
+      if (sdate==-1) stime+=src[0]->st_time -
                             ( (int) src[0]->st_time % (24*3600));
       else stime+=sdate;
 
@@ -520,9 +521,9 @@ int main(int argc,char *argv[]) {
 	  }
         } else state=0;
         if (old) s=OldFitReadRadarScan(oldfitfp,&state,src[0],prm,fit,
-                              tlen,syncflg,channel);  
+                              tlen,syncflg,channel);
         else s=FitFreadRadarScan(fitfp,&state,src[0],prm,fit,
-                              tlen,syncflg,channel);  
+                              tlen,syncflg,channel);
       } else {
 	 s=CFitSeek(cfitfp,yr,mo,dy,hr,mt,sc,NULL,NULL);
         if (s ==-1) {
@@ -535,11 +536,11 @@ int main(int argc,char *argv[]) {
 	  }
         } else state=0;
         s=CFitReadRadarScan(cfitfp,&state,src[0],cfit,tlen,syncflg,channel);
-      }      
+      }
     } else stime=src[0]->st_time;
-  
+
     if (etime !=-1) {
-      if (edate==-1) etime+=src[0]->st_time - 
+      if (edate==-1) etime+=src[0]->st_time -
                             ( (int) src[0]->st_time % (24*3600));
       else etime+=edate;
     }
@@ -552,9 +553,9 @@ int main(int argc,char *argv[]) {
 
     num=1;
     index=0;
-  
+
     do {
-      
+
       RadarScanResetBeam(src[index],ebmno,ebm);
       if (nsflg) exclude_outofscan(src[index]);
       exclude_range(src[index],minrng,maxrng);
@@ -564,14 +565,14 @@ int main(int argc,char *argv[]) {
       if ((num>=nbox) && (limit==1) && (mode !=-1))
 	chk=FilterCheckOps(nbox,src,fmax);
       else chk=0;
-     
+
       if ((chk==0) && (num>=nbox)) {
 
           if (mode !=-1) FilterRadarScan(mode,nbox,index,src,dst,15);
           else out=src[index];
 
           TimeEpochToYMDHMS(out->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
-          
+
           if (site==NULL) {
             radar=RadarGetRadar(network,out->stid);
             if (radar==NULL) {
@@ -580,21 +581,21 @@ int main(int argc,char *argv[]) {
             }
             site=RadarYMDHMSGetSite(radar,yr,mo,dy,hr,mt,(int) sc);
 	  }
-       
+
           s=GridTableTest(grid,out,avlen);
-          
+
           if ((s==1) && (grid->st_time>=stime)) {
             if (old) OldGridTableFwrite(stdout,grid,vbuf,xtd);
             else GridTableFwrite(stdout,grid,vbuf,xtd);
             if (vbuf !=NULL) fprintf(stderr,"Storing:%s\n",vbuf);
-          }    
-          
-          s=GridTableMap(grid,out,site,avlen,iflg,alt);     
-          if (s !=0) { 
-            fprintf(stderr,"Error mapping beams.\n");  
+          }
+
+          s=GridTableMap(grid,out,site,avlen,iflg,alt);
+          if (s !=0) {
+            fprintf(stderr,"Error mapping beams.\n");
             break;
 	  }
-      }  
+      }
 
       if (bxcar) index++;
       if (index>2) index=0;
@@ -604,10 +605,10 @@ int main(int argc,char *argv[]) {
                               tlen,syncflg,channel);
         else s=FitFreadRadarScan(fitfp,&state,src[index],prm,fit,
                               tlen,syncflg,channel);
-      } else 
+      } else
         s=CFitReadRadarScan(cfitfp,&state,src[index],
                             cfit,tlen,syncflg,channel);
- 
+
       if ((etime !=-1) && (src[index]->st_time>etime)) break;
       num++;
 
@@ -629,10 +630,10 @@ int main(int argc,char *argv[]) {
              fprintf(stderr,"File not found.\n");
              continue;
            }
-  
+
            s=OldFitReadRadarScan(oldfitfp,&state,src[index],prm,fit,
                                tlen,syncflg,channel);
-           
+
            if (s !=0) {
 	     OldFitClose(oldfitfp);
              continue;
@@ -642,7 +643,7 @@ int main(int argc,char *argv[]) {
            if (fitfp==NULL) {
              fprintf(stderr,"File not found.\n");
              continue;
-	   } 
+	   }
 
            s=FitFreadRadarScan(fitfp,&state,src[index],prm,fit,
                                tlen,syncflg,channel);
@@ -668,7 +669,7 @@ int main(int argc,char *argv[]) {
        num++;
        do {
          RadarScanResetBeam(src[index],ebmno,ebm);
-         if (nsflg) exclude_outofscan(src[index]); 
+         if (nsflg) exclude_outofscan(src[index]);
          exclude_range(src[index],minrng,maxrng);
          FilterBoundType(src[index],grid->gsct);
 /* Is the 15 here a possible hard coding of a 16 beam radar? -KTS 20140225 */
@@ -677,14 +678,14 @@ int main(int argc,char *argv[]) {
          if ((num>=nbox) && (limit==1) && (mode !=-1))
   	   chk=FilterCheckOps(nbox,src,fmax);
          else chk=0;
-         
+
          if ((chk==0) && (num>=nbox)) {
-	
+
            if (mode !=-1) FilterRadarScan(mode,nbox,index,src,dst,15);
            else out=src[index];
-         
+
            TimeEpochToYMDHMS(out->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
-       
+
 
            if (site==NULL) {
              radar=RadarGetRadar(network,out->stid);
@@ -696,15 +697,15 @@ int main(int argc,char *argv[]) {
 	   }
 
            s=GridTableTest(grid,out,avlen);
-  
+
            if ((s==1) && (grid->st_time>=stime)) {
              if (old) OldGridTableFwrite(stdout,grid,vbuf,xtd);
              else GridTableFwrite(stdout,grid,vbuf,xtd);
              if (vbuf !=NULL) fprintf(stderr,"Storing:%s\n",vbuf);
-           }    
+           }
            s=GridTableMap(grid,out,site,avlen,iflg,alt);
-           if (s !=0) { 
-            fprintf(stderr,"Error mapping beams.\n");  
+           if (s !=0) {
+            fprintf(stderr,"Error mapping beams.\n");
             break;
 	  }
          }
@@ -717,7 +718,7 @@ int main(int argc,char *argv[]) {
            else s=FitFreadRadarScan(fitfp,&state,src[index],
                                           prm,fit,tlen,syncflg,channel);
 
-         } else 
+         } else
            s=CFitReadRadarScan(cfitfp,&state,src[index],cfit,tlen,
                               syncflg,channel);
          if ((etime !=-1) && (src[index]->st_time>etime)) break;
