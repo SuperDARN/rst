@@ -341,6 +341,11 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"fmax",'i',&fmax);
 
+/* The -nav option turns off the temporal averaging that is usually
+   done without including this option.  For example, without this
+   option, a -i of 5 minutes will result in 15 minutes total being 
+   read for one 5 minute increment of grid data.  -KTS 20150127
+   */
   OptionAdd(&opt,"nav",'x',&bxcar);
   OptionAdd(&opt,"nlm",'x',&limit);
   OptionAdd(&opt,"nb",'x',&bflg);
