@@ -6,24 +6,24 @@
 
 /*
  LICENSE AND DISCLAIMER
- 
+
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
+
  This file is part of the Radar Software Toolkit (RST).
- 
+
  RST is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
- 
+
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Lesser General Public License for more details.
- 
+
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
+
 */
 
 
@@ -33,8 +33,8 @@
 #include "fitblk.h"
 
 
-void free_arrays(double **sum_wk2_arr, double **phi_res, double **tau, 
-                    double **tau2, double **phi_k, double **w, double **pwr, 
+void free_arrays(double **sum_wk2_arr, double **phi_res, double **tau,
+                    double **tau2, double **phi_k, double **w, double **pwr,
                     double **wt, double **wt2, double **wp, int **bad_pwr){
     if (*sum_wk2_arr != NULL) free(*sum_wk2_arr);
     if (*phi_res != NULL)  free(*phi_res);
@@ -67,8 +67,8 @@ void zero_fitrange(struct FitRange *ptr){
 }
 
 /*allocate the arrays for the least squares fit*/
-int allocate_ls_arrays(struct FitPrm *prm, double **sum_wk2_arr, double **phi_res, double **tau, 
-                    double **tau2, double **phi_k, double **w, double **pwr, 
+int allocate_ls_arrays(struct FitPrm *prm, double **sum_wk2_arr, double **phi_res, double **tau,
+                    double **tau2, double **phi_k, double **w, double **pwr,
                     double **wt, double **wt2, double **wp, int **bad_pwr){
 
     int s=0;
@@ -97,7 +97,7 @@ int allocate_ls_arrays(struct FitPrm *prm, double **sum_wk2_arr, double **phi_re
     if (*bad_pwr==NULL) s=-1;
 
     if (s != 0) {
-        free_arrays(sum_wk2_arr, phi_res, tau, tau2, 
+        free_arrays(sum_wk2_arr, phi_res, tau, tau2,
                     phi_k, w, pwr, wt, wt2, wp, bad_pwr);
         return -1;
     }
