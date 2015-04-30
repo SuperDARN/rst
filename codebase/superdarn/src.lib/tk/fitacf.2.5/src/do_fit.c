@@ -176,21 +176,28 @@ int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
     nptr->lag0=0.0;
     nptr->vel=0.0;
 
-
     if (iptr->prm.nave <= 1) return 0;
 
     freq_to_vel = C/(4*PI)/(iptr->prm.tfreq * 1000.0);
 
     badlag=malloc(sizeof(int)*iptr->prm.nrang*iptr->prm.mplgs);
-    if (badlag==NULL) return -1;
+/*    badlag=malloc(sizeof(int)*800*iptr->prm.mplgs); */
+    if (badlag==NULL){
+	 fprintf(stderr,"Unable to allocate memory for badlag\n");
+	 return -1;
+    }
 
     pwrd=malloc(sizeof(double)*iptr->prm.nrang);
+/*    pwrd=malloc(sizeof(double)*800); */
     if (pwrd==NULL) {
+	fprintf(stderr,"Unable to allocate memory for pwrd\n");
         free(badlag);
         return -1;
     }
     pwrt=malloc(sizeof(double)*iptr->prm.nrang);
+/*    pwrt=malloc(sizeof(double)*800); */
     if (pwrt==NULL) {
+	fprintf(stderr,"Unable to allocate memory for pwrt\n");
         free(badlag);
         free(pwrd);
         return -1;
@@ -202,7 +209,9 @@ int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
 
     mnpwr = 0.0;
     s = calc_skynoise(iptr, nptr, &mnpwr, pwrd, pwrt);
+    /* How is s ever not zero since zero is returned from the function? -KTS 20150430 */
     if (s == -1){
+	/* Should the badlag, pwrd, and pwrt allocations be freed here? -KTS 20150430 */
         return -1;
     }
     /* Now determine the level which will be used as the cut-off power
@@ -387,8 +396,11 @@ int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
     }
 
     free(badlag);
+/*    fprintf(stderr,"badlag freed\n"); */
     free(pwrd);
+/*    fprintf(stderr,"pwrd freed\n");  */
     free(pwrt);
+/*    fprintf(stderr,"pwrt freed\n"); */
     return i;
 }
 
