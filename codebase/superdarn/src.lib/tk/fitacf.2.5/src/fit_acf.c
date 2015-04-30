@@ -5,26 +5,26 @@
 
 /*
  LICENSE AND DISCLAIMER
- 
+
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
+
  This file is part of the Radar Software Toolkit (RST).
- 
+
  RST is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
- 
+
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Lesser General Public License for more details.
- 
+
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
-    
+
+
+
 */
 
 
@@ -38,13 +38,13 @@
 #include "fitblk.h"
 
 
-#include "acf_preproc.h" 
+#include "acf_preproc.h"
 #include "calc_phi_res.h"
 #include "omega_guess.h"
 #include "badlags.h"
 #include "more_badlags.h"
-#include "do_phase_fit.h"  
-#include "power_fits.h"    
+#include "do_phase_fit.h"
+#include "power_fits.h"
 #include "fit_mem_helpers.h"
 
 int fit_acf (struct complex *acf,int range,
@@ -55,11 +55,11 @@ int fit_acf (struct complex *acf,int range,
 
     double sum_np,sum_w,sum_wk,sum_wk2,*sum_wk2_arr=NULL,sum_wk4,
             sum_p,sum_pk,sum_pk2,sum_phi,sum_kphi, t0,t2,t4,*phi_res=NULL;
-    int j, npp, s = 0, last_good, status, *bad_pwr = NULL;    
+    int j, npp, s = 0, last_good, status, *bad_pwr = NULL;
     long k;
     double *tau=NULL, *tau2=NULL, *phi_k=NULL, *w=NULL, *pwr=NULL,
             *wt=NULL, *wt2=NULL, *wp=NULL, c_log,c_log_err,
-            omega_loc, omega_err_loc, phi_loc, noise_lev, omega_base, 
+            omega_loc, omega_err_loc, phi_loc, noise_lev, omega_base,
             omega_high, omega_low, phase_sdev, phi_err, omega_err;
 
     /*  The following variables have been added for version 2.0 of cfitacf */
@@ -70,7 +70,7 @@ int fit_acf (struct complex *acf,int range,
     int acf_stat=ACF_UNMODIFIED;
 
     /* ----------------End of declarations ----------------------------------*/
- 
+
     /*if the lag 0 power is less than the noise level,
         then assign label 3 to badlag and return zeros in the
         fitrange object*/
@@ -84,7 +84,7 @@ int fit_acf (struct complex *acf,int range,
     }
 
     /* allocate memory for least square arrays */
-    s = allocate_ls_arrays(prm, &sum_wk2_arr, &phi_res, &tau, &tau2, 
+    s = allocate_ls_arrays(prm, &sum_wk2_arr, &phi_res, &tau, &tau2,
                             &phi_k, &w, &pwr, &wt, &wt2, &wp, &bad_pwr);
 
     if (s == -1){
@@ -103,7 +103,7 @@ int fit_acf (struct complex *acf,int range,
         }
     */
 
-    /* 
+    /*
         This next statement provides a hook for a routine to pre-process
         the ACF and return a modified ACF that will actually be fitted.
 
@@ -146,11 +146,11 @@ int fit_acf (struct complex *acf,int range,
         }
     }
 
-    /* 
+    /*
         Check if lag 0 power minus the fluctuation level is above the noise level.
         The amount to be subtracted is P(0)/sqrt(nave)
         which is the approximate expectation value of the power level after the
-        ACF has decorrelated. 
+        ACF has decorrelated.
 
         [ To derive this, determine the expectation value of
         P**2 = R(tau)*conj(R(tau))]
@@ -158,10 +158,10 @@ int fit_acf (struct complex *acf,int range,
 
     P0n = w[0]/sqrt((double) prm->nave);
     if ((w[0] - P0n) < noise_lev) {
-        free_arrays(&sum_wk2_arr, &phi_res, &tau, &tau2, 
+        free_arrays(&sum_wk2_arr, &phi_res, &tau, &tau2,
                     &phi_k, &w, &pwr, &wt, &wt2, &wp, &bad_pwr);
-        return 2; 
-    } 
+        return 2;
+    }
     /* give up if left over pwr is too low */
 
 
@@ -172,26 +172,26 @@ int fit_acf (struct complex *acf,int range,
 
     /*  We must have at least lag_lim good lags */
     if (sum_np < lag_lim) {
-        free_arrays(&sum_wk2_arr, &phi_res, &tau, &tau2, 
+        free_arrays(&sum_wk2_arr, &phi_res, &tau, &tau2,
                     &phi_k, &w, &pwr, &wt, &wt2, &wp, &bad_pwr);
         return 4;
     }
 
     /* this is required to make logs ok */
     if (noise_lev <= 0.0) {
-        noise_lev = 0.1; 
+        noise_lev = 0.1;
     }
-    
-    /* This is to remove background delta-correlated noise from lag 0 power (version 2.0)*/
-    w[0] = w[0]-prm->noise; 
 
-    /* OK, now we have determined the good lags for the phase fit.  
+    /* This is to remove background delta-correlated noise from lag 0 power (version 2.0)*/
+    w[0] = w[0]-prm->noise;
+
+    /* OK, now we have determined the good lags for the phase fit.
          Now subtract of P0n from the power profile */
 
     /* calculate the power values for each lag.  'w' is the linear power.
-         wt is the power times the lag.  wt2 is power times lag**2.  
+         wt is the power times the lag.  wt2 is power times lag**2.
          pwr is the log of the power. wp is the linear power times the log of
-         the power.  The items that involve the linear power are all parts of 
+         the power.  The items that involve the linear power are all parts of
          the least squares fits with the weighting done by the linear power. */
     for (k=0; k<prm->mplgs; k++) {
         if (w[k] <= P0n) {
@@ -206,7 +206,7 @@ int fit_acf (struct complex *acf,int range,
     /* we now have to check to see how many additional bad lags have been
          introduced by subtracting off P0n. */
     for (k=0, npp=0; k < prm->mplgs; k++) {
-        if (w[k] < noise_lev+P0n && !badlag[k]) bad_pwr[k] = 1; 
+        if (w[k] < noise_lev+P0n && !badlag[k]) bad_pwr[k] = 1;
         /* if (w[k] < noise_lev && !badlag[k]) bad_pwr[k] = 1; */
         else bad_pwr[k] = 0;
         if (! (badlag[k] || bad_pwr[k])) ++npp;
@@ -232,7 +232,7 @@ int fit_acf (struct complex *acf,int range,
     /* if calc_phi_res returns a bad status abort the fit */
     s = calc_phi_res(acf, badlag, phi_res, prm->mplgs);
     if (s != 0) {
-        free_arrays(&sum_wk2_arr, &phi_res, &tau, &tau2, 
+        free_arrays(&sum_wk2_arr, &phi_res, &tau, &tau2,
                     &phi_k, &w, &pwr, &wt, &wt2, &wp, &bad_pwr);
         return 2;
     }
@@ -252,7 +252,7 @@ int fit_acf (struct complex *acf,int range,
     }
 
 
-    /*  The preliminaries are now over.  
+    /*  The preliminaries are now over.
     Now start the fitting process */
 
     /* first, calculate the sums needed for the phase fit */
@@ -270,7 +270,7 @@ int fit_acf (struct complex *acf,int range,
 
     /* Now do the phase fit using the best initial guess for omega */
 
- 
+
     status = do_phase_fit (omega_loc, xflag, prm->mplgs, acf, tau,
              w, sum_wk2_arr, phi_res, badlag, t0,
              sum_w, sum_wk, sum_wk2,
@@ -283,7 +283,7 @@ int fit_acf (struct complex *acf,int range,
     ptr->phi0_err = phi_err;
     ptr->v_err = omega_err;
 
-    /* check the status of the phase fit to see if it was actually OK.  
+    /* check the status of the phase fit to see if it was actually OK.
          if not, set error bars to HUGE_VAL */
 
     if (status != 0) {
@@ -291,7 +291,7 @@ int fit_acf (struct complex *acf,int range,
         ptr->v_err = HUGE_VAL;
         if (xflag) ptr->phi0_err = HUGE_VAL;
     }
-    
+
     /* OK, we now have our baseline value for omega.  Now re-do the
          phase fit, but using omega_loc + omega__err_loc. */
 
@@ -304,7 +304,7 @@ int fit_acf (struct complex *acf,int range,
                                 &omega_high, &phi_loc, &phase_sdev,
                                 &phi_err, &omega_err);
 
-        status = do_phase_fit (omega_loc - omega_err_loc, 
+        status = do_phase_fit (omega_loc - omega_err_loc,
                                 xflag, prm->mplgs, acf, tau,
                                 w, sum_wk2_arr, phi_res, badlag, t0,
                                 sum_w, sum_wk, sum_wk2,
@@ -316,7 +316,7 @@ int fit_acf (struct complex *acf,int range,
              we will use the original fit as our best guess for the
              velocity, but we'll set the error to be the difference between
              the high and low values.  Actually, at this point we should have
-             non-symmetric error bar, but the file format has no provision 
+             non-symmetric error bar, but the file format has no provision
              for that. */
 
         if (fabs(omega_high - omega_low) >= 2*ptr->v_err) {
@@ -324,14 +324,14 @@ int fit_acf (struct complex *acf,int range,
             ptr->v_err = fabs(omega_high - omega_low);
         }
     }
-    
+
 
     /* POWER FITS:  We now turn to the power fits.  The sums have to be
     partially redone, since we have subtracted P0n. */
 
-    /* We are now faced with the question of what to do if we don't have enough 
+    /* We are now faced with the question of what to do if we don't have enough
     lags left to do a fit.  we can't abaondon the data because the phase fit is
-    actually ok.  we have to have at least 3 points to do the fit and estimate 
+    actually ok.  we have to have at least 3 points to do the fit and estimate
     an error on the fit.
 
     If we don't have at least 3 good points, then simply set the lamda and
@@ -353,7 +353,7 @@ int fit_acf (struct complex *acf,int range,
          this at the beginning. */
 
         if (c_log < 0 ) {
-            free_arrays(&sum_wk2_arr, &phi_res, &tau, &tau2, 
+            free_arrays(&sum_wk2_arr, &phi_res, &tau, &tau2,
                         &phi_k, &w, &pwr, &wt, &wt2, &wp, &bad_pwr);
             return 2;
         }
@@ -411,32 +411,32 @@ int fit_acf (struct complex *acf,int range,
 
         c_log_err = 0;
         /*  start with the lamda fit */
-        do_lambda_fit(prm, ptr, badlag, 
-                        bad_pwr, w,  tau, pwr, sum_np, sum_w, t0, 
+        do_lambda_fit(prm, ptr, badlag,
+                        bad_pwr, w,  tau, pwr, sum_np, sum_w, t0,
                         sum_wk, sum_wk2, c_log_err, sum_p, t2, sum_pk);
 
         /* ----------------now do the sigma fit ------------------------ */
-        do_sigma_fit(prm, ptr, badlag, 
-                        bad_pwr,  w,  tau,  tau2, pwr, sum_np, 
+        do_sigma_fit(prm, ptr, badlag,
+                        bad_pwr,  w,  tau,  tau2, pwr, sum_np,
                         sum_w, t0, sum_wk, sum_wk2, c_log_err,
-                        sum_p, t2, sum_pk, sum_wk4, t4, 
+                        sum_p, t2, sum_pk, sum_wk4, t4,
                         sum_pk2);
-        
+
         /* finally check for ground scatter fit */
 
         /*  first, see if an ACF preprocessor has already identified the
             scatter as being ground scatter.  */
         if (acf_stat == ACF_GROUND_SCAT) {
-            ptr->gsct = 1; 
+            ptr->gsct = 1;
         }
         else {
             ptr->gsct = 0;
         }
     }
 
-    free_arrays(&sum_wk2_arr, &phi_res, &tau, &tau2, 
+    free_arrays(&sum_wk2_arr, &phi_res, &tau, &tau2,
                 &phi_k, &w, &pwr, &wt, &wt2, &wp, &bad_pwr);
- 
+
     /* all done - return code = 1 */
     if (npp < 1) {
         return 4;
