@@ -5,9 +5,9 @@
 
 /*
  (c) 2010 JHU/APL & Others - Please Consult LICENSE.superdarn-rst.3.2-beta-4-g32f7302.txt for more information.
- 
- 
- 
+
+
+
 */
 
 #include <stdio.h>
@@ -16,7 +16,7 @@
 #include <string.h>
 #include <time.h>
 #include <zlib.h>
- 
+
 #include "rtypes.h"
 #include "option.h"
 
@@ -44,7 +44,7 @@ struct RawData *raw;
 struct FitData *fit;
 struct FitBlock *fblk;
 
-struct RadarNetwork *network;  
+struct RadarNetwork *network;
 struct Radar *radar;
 struct RadarSite *site;
 
@@ -54,7 +54,7 @@ int main(int argc,char *argv[]) {
 
   /* File format transistion
    * ------------------------
-   * 
+   *
    * When we switch to the new file format remove any reference
    * to "new". Change the command line option "new" to "old" and
    * remove "old=!new".
@@ -76,7 +76,7 @@ int main(int argc,char *argv[]) {
   FILE *fp=NULL;
   struct OldRawFp *rawfp=NULL;
   FILE *fitfp=NULL;
-  FILE *inxfp=NULL;  
+  FILE *inxfp=NULL;
   int irec=1;
   int drec=2;
   int dnum=0;
@@ -85,7 +85,7 @@ int main(int argc,char *argv[]) {
   int c,n;
   char command[128];
   char tmstr[40];
- 
+
   prm=RadarParmMake();
   raw=RawMake();
   fit=FitMake();
@@ -133,7 +133,7 @@ int main(int argc,char *argv[]) {
   }
 
   network=RadarLoad(fp);
-  fclose(fp); 
+  fclose(fp);
   if (network==NULL) {
     fprintf(stderr,"Failed to read radar information.\n");
     exit(-1);
@@ -146,7 +146,7 @@ int main(int argc,char *argv[]) {
   }
 
   RadarLoadHardware(envstr,network);
-  
+
 
   if (old) {
      rawfp=OldRawOpen(argv[arg],NULL);
@@ -154,8 +154,8 @@ int main(int argc,char *argv[]) {
        fprintf(stderr,"File not found.\n");
        exit(-1);
      }
-     status=OldRawRead(rawfp,prm,raw);  
-  } else { 
+     status=OldRawRead(rawfp,prm,raw);
+  } else {
     if (arg==argc) fp=stdin;
     else fp=fopen(argv[arg],"r");
 
@@ -193,21 +193,21 @@ int main(int argc,char *argv[]) {
 
 
 
-  if (vb) 
+  if (vb)
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
-  fblk=FitACFMake(site,prm->time.yr); 
+  fblk=FitACFMake(site,prm->time.yr);
 
   FitACF(prm,raw,fblk,fit);
-  
+
   if (old) {
     char vstr[256];
     fitfp=fopen(argv[arg+1],"w");
     if (fitfp==NULL) {
       fprintf(stderr,"Could not create fit file.\n");
       exit(-1);
-    } 
+    }
     if (argc-arg>2) {
       inxfp=fopen(argv[arg+2],"w");
       if (inxfp==NULL) {
@@ -221,7 +221,7 @@ int main(int argc,char *argv[]) {
   }
 
 
-  
+
   do {
 
 
@@ -229,7 +229,7 @@ int main(int argc,char *argv[]) {
     RadarParmSetOriginCommand(prm,command);
     strcpy(tmstr,asctime(gmtime(&ctime)));
     tmstr[24]=0;
-    RadarParmSetOriginTime(prm,tmstr);  
+    RadarParmSetOriginTime(prm,tmstr);
 
     if (old) {
        dnum=OldFitFwrite(fitfp,prm,fit,NULL);
@@ -237,20 +237,20 @@ int main(int argc,char *argv[]) {
        drec+=dnum;
        irec++;
     } else status=FitFwrite(stdout,prm,fit);
-    
+
     if (old) status=OldRawRead(rawfp,prm,raw);
     else status=RawFread(fp,prm,raw);
 
-     if (vb) 
+     if (vb)
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
 
     if (status==0) FitACF(prm,raw,fblk,fit);
 
-  
+
   } while (status==0);
-  
+
   FitACFFree(fblk);
   if (old) OldRawClose(rawfp);
   return 0;
