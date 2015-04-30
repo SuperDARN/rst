@@ -5,26 +5,26 @@
 
 /*
  LICENSE AND DISCLAIMER
- 
+
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
+
  This file is part of the Radar Software Toolkit (RST).
- 
+
  RST is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
- 
+
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Lesser General Public License for more details.
- 
+
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
-    
+
+
+
 */
 
 
@@ -48,32 +48,32 @@ int calc_skynoise(struct FitBlock *iptr, struct FitNoise *nptr, double *mnpwr,
 
     int i;
 
-    /* Determine the lag_0 noise level (0 dB reference) and the noise level at 
-     which fit_acf is to quit (average power in the 
+    /* Determine the lag_0 noise level (0 dB reference) and the noise level at
+     which fit_acf is to quit (average power in the
      fluctuations of the acfs which are pure noise) */
 
     for (i=0; i < iptr->prm.nrang; i++) {
-        pwrd[i] = (double) iptr->prm.pwr0[i];   
+        pwrd[i] = (double) iptr->prm.pwr0[i];
                     /* transfer powers into local array */
         pwrt[i] = pwrd[i];
     }
     qsort(pwrt, iptr->prm.nrang, sizeof(double), dbl_cmp);
     /* determine the average lag0 power of the 10 lowest power acfs */
-    
+
     int ni = 0;
     i=0;
 
-    
-    /*  look for the lowest 10 values of lag0 power and average to 
+
+    /*  look for the lowest 10 values of lag0 power and average to
             get the noise level.  Ignore values that are exactly 0.  If
             you can't find 10 useable values within the first 1/3 of the
-            sorted power list, then just use whatever you got in that 
+            sorted power list, then just use whatever you got in that
             first 1/3.  If you didn't get any useable values, then use
             the NOISE parameter */
-        
+
     while ((ni < 10) && (i < iptr->prm.nrang/3)) {
         if (pwrt[i]) ++ni;
-        *mnpwr += pwrt[i++];  
+        *mnpwr += pwrt[i++];
     }
 
     ni = (ni > 0) ? ni :  1;
@@ -86,10 +86,10 @@ int calc_skynoise(struct FitBlock *iptr, struct FitNoise *nptr, double *mnpwr,
 
 /*
     compares lag 0 power with the noise level and if it's below
-    the noise then it is given -50dB magnitude, otherwise 
+    the noise then it is given -50dB magnitude, otherwise
     it is recalculated into SNR by subtraction
-*/ 
-void power_to_snr(struct FitBlock *iptr, struct FitRange *ptr, struct FitNoise *nptr, 
+*/
+void power_to_snr(struct FitBlock *iptr, struct FitRange *ptr, struct FitNoise *nptr,
                     double *skylog, double *pwrd){
 
     int i;
@@ -97,7 +97,7 @@ void power_to_snr(struct FitBlock *iptr, struct FitRange *ptr, struct FitNoise *
     if (nptr->skynoise > 0.0) *skylog = 10.0 * log10(nptr->skynoise);
     else *skylog = 0.0;
 
-    for (i=0; i<iptr->prm.nrang; i++) { 
+    for (i=0; i<iptr->prm.nrang; i++) {
 
         pwrd[i] = pwrd[i] - nptr->skynoise;
         if (pwrd[i] <= 0.0) ptr[i].p_0 = -50.0;
@@ -106,7 +106,7 @@ void power_to_snr(struct FitBlock *iptr, struct FitRange *ptr, struct FitNoise *
 
 }
 
-void init_fit_range_data(struct FitRange *ptr,struct FitRange *xptr, 
+void init_fit_range_data(struct FitRange *ptr,struct FitRange *xptr,
                         struct FitElv *elv, int nrang){
 
     int i;
@@ -170,7 +170,7 @@ int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
     double mnpwr, skylog, freq_to_vel, range;
     double xomega=0.0;
 
-    double noise_pwr=0.0; 
+    double noise_pwr=0.0;
 
     nptr->skynoise=0.0;
     nptr->lag0=0.0;
@@ -196,8 +196,8 @@ int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
         return -1;
     }
 
-    if (iptr->prm.channel==0) FitACFBadlags(&iptr->prm,&badsmp);    
-    else FitACFBadlagsStereo(&iptr->prm,&badsmp);  
+    if (iptr->prm.channel==0) FitACFBadlags(&iptr->prm,&badsmp);
+    else FitACFBadlagsStereo(&iptr->prm,&badsmp);
 
 
     mnpwr = 0.0;
@@ -205,12 +205,12 @@ int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
     if (s == -1){
         return -1;
     }
-    /* Now determine the level which will be used as the cut-off power 
+    /* Now determine the level which will be used as the cut-off power
          for fit_acf.  This is the average power at all non-zero lags of all
          acfs which have lag0 power < 1.6*mnpwr + 1 stnd. deviation from that
          average power level */
 
-    noise_pwr = noise_stat(mnpwr,&iptr->prm,&badsmp,iptr->acfd); 
+    noise_pwr = noise_stat(mnpwr,&iptr->prm,&badsmp,iptr->acfd);
 
     /*convert lag0powers to snr AND assign -50dB to those with SNR below 1*/
     power_to_snr(iptr, ptr, nptr, &skylog, pwrd);
@@ -228,9 +228,9 @@ int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
                                 lag_lim,&iptr->prm,noise_pwr,0,0.0,&ptr[k]);
         xomega=ptr[k].v;
         if (ptr[k].qflg == 1)   {
-            /* several changes have been made here to 
+            /* several changes have been made here to
              fix an apparent problem in handling HUGE_VAL.
-                     
+
              If there are too few points in an ACF to allow
              the error on a parameter to be calculated then
                          the subroutine fit_acf sets the value to HUGE_VAL.
@@ -268,10 +268,10 @@ int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
             /* flag absurdly high velocities with qflg of 8 */
 
             if (ptr[k].v > (freq_to_vel* (PI* 1000.0* 1000.0)/ iptr->prm.mpinc))
-                 ptr[k].qflg= 8;      
-        
+                 ptr[k].qflg= 8;
+
             ptr[k].v_err = (ptr[k].v_err == HUGE_VAL) ?
-                HUGE_VAL : 
+                HUGE_VAL :
                 freq_to_vel*ptr[k].v_err;
 
             /* convert decay parameters to spectral widths */
@@ -287,9 +287,9 @@ int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
             ptr[k].w_s = (ptr[k].w_s >= 0) ? sqrt(ptr[k].w_s) : -sqrt(-ptr[k].w_s);
 
 
-            if ((ptr[k].w_s !=0.0) && (ptr[k].w_s_err != HUGE_VAL))  
+            if ((ptr[k].w_s !=0.0) && (ptr[k].w_s_err != HUGE_VAL))
                 ptr[k].w_s_err = 0.5*ptr[k].w_s_err/fabs(ptr[k].w_s);
-            else 
+            else
                 ptr[k].w_s_err=HUGE_VAL;
 
 
@@ -299,14 +299,14 @@ int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
             ptr[k].w_s_err = (ptr[k].w_s_err == HUGE_VAL) ?
                                 HUGE_VAL :
                                 3.33*freq_to_vel*ptr[k].w_s_err;
-             
+
 
             /*  Now check the values of power, velocity and width
                     to see if this should be flagged as ground-scatter */
-                    
-            if (ptr[k].gsct == 0) ptr[k].gsct=ground_scatter(&ptr[k]); 
+
+            if (ptr[k].gsct == 0) ptr[k].gsct=ground_scatter(&ptr[k]);
         }
-    
+
         if ((iptr->prm.xcf==0) || (ptr[k].qflg !=1)) {
             if (ptr[k].qflg == 1) {
                 i++;
@@ -314,12 +314,12 @@ int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
             continue;
         }
 
-    
+
         xptr[k].qflg = fit_acf(&iptr->xcfd[k*iptr->prm.mplgs], k+1,
                                 &badlag[k*iptr->prm.mplgs],&badsmp,
                                 lag_lim,&iptr->prm,noise_pwr,1,xomega,
                                 &xptr[k]);
-             
+
         if (xptr[k].qflg == 1) {
             xptr[k].p_l = xptr[k].p_l*LN_TO_LOG - skylog;
             xptr[k].p_s = xptr[k].p_s*LN_TO_LOG - skylog;
@@ -345,7 +345,7 @@ int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
                                             HUGE_VAL :
                                             freq_to_vel*2*xptr[k].w_l_err;
 
-            /* sigma is returned as sigma**2 so check the sign for validity  
+            /* sigma is returned as sigma**2 so check the sign for validity
             if sigma**2 is negative take sqrt of the abs and transfer the sign */
 
             xptr[k].w_s = (xptr[k].w_s >= 0) ? sqrt(xptr[k].w_s) : -sqrt(-xptr[k].w_s);
@@ -355,21 +355,21 @@ int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
             else xptr[k].w_s_err=HUGE_VAL;
 
             xptr[k].w_s = 3.33*freq_to_vel*xptr[k].w_s;
-            xptr[k].w_s_err = (xptr[k].w_s_err == HUGE_VAL) ? 
+            xptr[k].w_s_err = (xptr[k].w_s_err == HUGE_VAL) ?
                                             HUGE_VAL :
                                             3.33*freq_to_vel*xptr[k].w_s_err;
 
 
-        
+
             /* calculate the elevation angle */
-    
+
             if (xptr[k].phi0 > PI)  xptr[k].phi0 = xptr[k].phi0 - 2*PI;
             if (xptr[k].phi0 < -PI) xptr[k].phi0 = xptr[k].phi0 + 2*PI;
-            if (iptr->prm.phidiff != 0) 
+            if (iptr->prm.phidiff != 0)
                 xptr[k].phi0 = xptr[k].phi0*iptr->prm.phidiff;
- 
+
             /* changes which array is first */
-        
+
             range = 0.15*(iptr->prm.lagfr + iptr->prm.smsep*(k-1));
             if (goose == 0) {
                 elv[k].normal = elevation(&iptr->prm,range, xptr[k].phi0);
