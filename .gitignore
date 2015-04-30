@@ -2,3 +2,5 @@
 *.so
 *~
 log/
+bin/
+lib/
