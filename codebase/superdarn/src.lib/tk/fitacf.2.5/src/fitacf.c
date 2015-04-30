@@ -5,26 +5,26 @@
 
 /*
  LICENSE AND DISCLAIMER
- 
+
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
+
  This file is part of the Radar Software Toolkit (RST).
- 
+
  RST is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
- 
+
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Lesser General Public License for more details.
- 
+
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+
+
+
 */
 
 
@@ -57,7 +57,7 @@ void FitACFFree(struct FitBlock *fptr) {
     if (fptr->xcfd !=NULL) free(fptr->xcfd);
 }
 
- 
+
 struct FitBlock *FitACFMake(struct RadarSite *hd,
                  int year) {
     int i;
@@ -137,18 +137,18 @@ int fill_fit_block(struct RadarParm *prm, struct RawData *raw,
     if (input->xcfd==NULL) tmp=malloc(sizeof(struct complex)*input->prm.nrang*
                                                                         input->prm.mplgs);
     else tmp=realloc(input->xcfd,sizeof(struct complex)*input->prm.nrang*
-                                                                     input->prm.mplgs); 
+                                                                     input->prm.mplgs);
     if (tmp==NULL) return -1;
     input->xcfd=tmp;
 
     memset(input->acfd,0,sizeof(struct complex)*input->prm.nrang*
-                                                                     input->prm.mplgs);   
+                                                                     input->prm.mplgs);
     memset(input->xcfd,0,sizeof(struct complex)*input->prm.nrang*
-                                                                     input->prm.mplgs);   
+                                                                     input->prm.mplgs);
 
     for (i=0;i<input->prm.nrang;i++) {
         input->prm.pwr0[i]=raw->pwr0[i];
-        
+
         if (raw->acfd[0] !=NULL) {
             for (j=0;j<input->prm.mplgs;j++) {
                 input->acfd[i*input->prm.mplgs+j].x=raw->acfd[0][i*input->prm.mplgs+j];
@@ -160,9 +160,9 @@ int fill_fit_block(struct RadarParm *prm, struct RawData *raw,
                 input->xcfd[i*input->prm.mplgs+j].x=raw->xcfd[0][i*input->prm.mplgs+j];
                 input->xcfd[i*input->prm.mplgs+j].y=raw->xcfd[1][i*input->prm.mplgs+j];
             }
-        } 
-    } 
- 
+        }
+    }
+
     return 0;
 }
 int FitACF(struct RadarParm *prm, struct RawData *raw,struct FitBlock *input, struct FitData *fit) {
@@ -187,8 +187,8 @@ int FitACF(struct RadarParm *prm, struct RawData *raw,struct FitBlock *input, st
      FitSetXrng(fit,input->prm.nrang);
      FitSetElv(fit,input->prm.nrang);
     }
-    
-    
+
+
     goose = (prm->stid == GOOSEBAY);
 
     fnum = do_fit(input, 5, goose, fit->rng, fit->xrng, fit->elv, &fit->noise);
