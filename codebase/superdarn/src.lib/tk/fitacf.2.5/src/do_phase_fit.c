@@ -5,26 +5,26 @@
 
 /*
  LICENSE AND DISCLAIMER
- 
+
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
+
  This file is part of the Radar Software Toolkit (RST).
- 
+
  RST is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
- 
+
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Lesser General Public License for more details.
- 
+
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+
+
+
 */
 
 
@@ -52,7 +52,7 @@
         acf - (struct complex) the acf (or xcf) to be fitted
         tau - (double) array of lag values
         w - (double) array of weights (powers) for each lag
-        sum_wk2_arr - (double) array of sum of w*k^2 
+        sum_wk2_arr - (double) array of sum of w*k^2
         phi_res - (double) array of measured phases
         badlag - (int) array of bad lag flags
         t0 - (double) basic time lag
@@ -70,8 +70,8 @@
 
 #define determ(aa,bb,cc,dd) (((aa)*(dd)) - ((bb)*(cc)))
 
-int do_phase_fit (double omega_guess, 
-                    char xflag, 
+int do_phase_fit (double omega_guess,
+                    char xflag,
                     int mplgs,
                     struct complex *acf,
                     double *tau,
@@ -83,7 +83,6 @@ int do_phase_fit (double omega_guess,
                     double sum_w,
                     double sum_wk,
                     double sum_wk2,
-                    
                     double *omega,
                     double *phi0,
                     double *sdev,
@@ -166,17 +165,17 @@ int do_phase_fit (double omega_guess,
         for (k=1; k<mplgs; k++) {
             if (badlag[k]) continue;
             phi_pred = phi_loc + omega_loc*tau[k]*t0;
-     
+
             /* The code for calculating n_twopi had a problem, the conversion to
                  an integer sometimes produded the wrong result
             */
 
-         
-            phitmp = ((PI + phi_pred - phi_res[k])/(2*PI) - 
+
+            phitmp = ((PI + phi_pred - phi_res[k])/(2*PI) -
                 ((omega_loc > 0) ? 0.0 : 1.0));
 
             phifrc=modf(phitmp,&phiint);
-            n_twopi=(int) phiint;            
+            n_twopi=(int) phiint;
             if (phifrc>0.5) n_twopi++;
             if (phifrc<-0.5) n_twopi--;
 
@@ -186,7 +185,7 @@ int do_phase_fit (double omega_guess,
                 if (phi_pred > phi_tot) phi_tot = phi_tot + 2*PI;
                 else phi_tot = phi_tot - 2*PI;
             }
-            
+
 
             phi_k[k] = phi_tot;
             sum_phi = sum_phi + phi_tot*w[k]*w[k];
