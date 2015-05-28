@@ -403,7 +403,7 @@ int fit_acf (struct complex *acf,int range,
 
   if (fabs(omega_high - omega_low) >= 2*ptr->v_err) {
     ptr->v = omega_base;
-    ptr->v_err = fabs(omega_high - omega_low);
+    ptr->v_err = - ptr->v_err;
     }
   }
   
