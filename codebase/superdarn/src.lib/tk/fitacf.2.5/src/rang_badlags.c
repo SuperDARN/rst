@@ -85,7 +85,7 @@ void lag_overlap(int range,int *badlag,struct FitPrm *ptr) {
   int bad_pulse[PULSE_SIZE];  /* 1 if there is a bad pulse */
   int i;
   double nave;
-   
+  double tot_cri; /* cumulative CRI power */ 
   --range;  /* compensate for the index which starts from 0 instead of 1 */
 
   nave = (double) (ptr->nave);
@@ -94,17 +94,19 @@ void lag_overlap(int range,int *badlag,struct FitPrm *ptr) {
       bad_pulse[pulse] = 0;
 
   for (ck_pulse = 0;  ck_pulse < ptr->mppul; ++ck_pulse) {
+      tot_cri=(double) 0;  /* Zeroing total CRI power for the next pulse sample */ 
     for (pulse = 0; pulse < ptr->mppul; ++pulse) {
       ck_range = range_overlap[ck_pulse][pulse] + range;
       if ((pulse != ck_pulse) && (0 <= ck_range) && 
-	      (ck_range < ptr->nrang)) {
-        pwr_ratio = (long) 1;  /*pwr_ratio = (long) (nave * MIN_PWR_RATIO);*/
+	      (ck_range < ptr->nrang)) 
+              tot_cri=tot_cri+ptr->pwr0[ck_range];  /* Accumulating CRI power */	      
+     }
+        pwr_ratio = (long) 1;  /*Power ratio threshold*/
         min_pwr =  pwr_ratio * ptr->pwr0[range];
-        if(min_pwr < ptr->pwr0[ck_range])
+        if(min_pwr < tot_cri)    /* Comparing lag 0 power of the checked sample (pulse) with cumulative lag 0 power from all interfering ranges */
         bad_pulse[ck_pulse] = 1;
       }
-    } 
-  }           
+               
   
   /* mark the bad lag */
 
