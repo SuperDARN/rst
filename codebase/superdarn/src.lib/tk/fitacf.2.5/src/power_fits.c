@@ -32,21 +32,36 @@
 
 #include "fitblk.h"
 
+/*
+Preprocessor macro expansion for a determinant
+*/
 #define determ(aa,bb,cc,dd) (aa*dd - bb*cc)
 
-void set_sigma_error_huge(struct FitRange *ptr){
-    ptr->p_s_err = HUGE_VAL;
-    ptr->w_s_err = HUGE_VAL;
-    ptr->sdev_s = HUGE_VAL;
+/**
+If a sigma fit cannot be performed with enough accuracy then
+the error levels are set to HUGE_VAL
+*/
+void set_sigma_error_huge(struct FitRange *fit_range){
+    fit_range->p_s_err = HUGE_VAL;
+    fit_range->w_s_err = HUGE_VAL;
+    fit_range->sdev_s = HUGE_VAL;
 }
 
-void set_lambda_error_huge(struct FitRange *ptr){
-    ptr->p_l_err = HUGE_VAL;
-    ptr->w_l_err = HUGE_VAL;
-    ptr->sdev_l = HUGE_VAL;
+
+/**
+If a lambda fit cannot be performed with enough accuracy then
+the error levels are set to HUGE_VAL
+*/
+void set_lambda_error_huge(struct FitRange *fit_range){
+    fit_range->p_l_err = HUGE_VAL;
+    fit_range->w_l_err = HUGE_VAL;
+    fit_range->sdev_l = HUGE_VAL;
 }
 
-void do_sigma_fit(struct FitPrm *prm, struct FitRange *ptr, int *badlag, 
+/**
+Performs a sigma power fit
+*/
+void do_sigma_fit(struct FitPrm *fitted_prms, struct FitRange *fit_range, int *badlag, 
                     int *bad_pwr, double *w, double *tau, double *tau2, double *pwr, double sum_np, 
                     double sum_w, double t0, double sum_wk, double sum_wk2, double c_log_err,
                     double sum_p, double t2, double sum_pk, double sum_wk4, double t4, 
@@ -57,18 +72,18 @@ void do_sigma_fit(struct FitPrm *prm, struct FitRange *ptr, int *badlag,
     d = determ(sum_w,-t2*sum_wk2,t2*sum_wk2,-t4*sum_wk4);
     c_log = determ(sum_p,-t2*sum_wk2,t2*sum_pk2,-t4*sum_wk4)/d;
 
-    ptr->p_s = c_log;
+    fit_range->p_s = c_log;
 
-    ptr->w_s = determ(sum_w,sum_p,t2*sum_wk2,t2*sum_pk2)/d;
+    fit_range->w_s = determ(sum_w,sum_p,t2*sum_wk2,t2*sum_pk2)/d;
 
     if (sum_np > 3) {   
         e2 = 0.;
         wbar = 0.;
         npp = 0;
-        for (k=0; k<prm->mplgs; k++)
+        for (k=0; k<fitted_prms->mplgs; k++)
         {
             if ((badlag[k] == 0) && (bad_pwr[k] == 0)) {
-                temp = pwr[k] - (c_log - tau2[k]*t2* (ptr->w_s)); 
+                temp = pwr[k] - (c_log - tau2[k]*t2* (fit_range->w_s)); 
                 e2 = e2 + w[k]*w[k]*(temp*temp);
                 wbar = wbar + w[k];
                 npp++;
@@ -76,23 +91,26 @@ void do_sigma_fit(struct FitPrm *prm, struct FitRange *ptr, int *badlag,
         }
 
         wbar = wbar/npp;
-        ptr->sdev_s = sqrt(e2/sum_w/(npp - 2));
+        fit_range->sdev_s = sqrt(e2/sum_w/(npp - 2));
 
         if ((sum_w*sum_wk4 - sum_wk2*sum_wk2) <= 0.0 ) {
-            set_sigma_error_huge(ptr);
+            set_sigma_error_huge(fit_range);
         } else {
-            c_log_err = ptr->sdev_s * wbar *
+            c_log_err = fit_range->sdev_s * wbar *
                 sqrt(sum_wk4/(sum_w*sum_wk4 - sum_wk2*sum_wk2));
-            ptr->p_s_err = c_log_err;       
-            ptr->w_s_err = ptr->sdev_s * wbar * 
+            fit_range->p_s_err = c_log_err;       
+            fit_range->w_s_err = fit_range->sdev_s * wbar * 
                 sqrt(sum_w/(t4*(sum_w*sum_wk4 - sum_wk2*sum_wk2)));
         }
     } else {
-        set_sigma_error_huge(ptr);
+        set_sigma_error_huge(fit_range);
     }   
 }
 
-void do_lambda_fit(struct FitPrm *prm, struct FitRange *ptr, int *badlag, 
+/**
+Performs a lamda power fit
+*/
+void do_lambda_fit(struct FitPrm *fitted_prms, struct FitRange *fit_range, int *badlag, 
                     int *bad_pwr, double *w, double * tau, double *pwr, double sum_np, 
                     double sum_w, double t0, double sum_wk, double sum_wk2, double c_log_err,
                     double sum_p, double t2, double sum_pk) {
@@ -103,35 +121,35 @@ void do_lambda_fit(struct FitPrm *prm, struct FitRange *ptr, int *badlag,
     d = determ(sum_w,-t0*sum_wk,t0*sum_wk,-t2*sum_wk2);
     c_log = determ(sum_p,-t0*sum_wk,t0*sum_pk,-t2*sum_wk2)/d;
 
-    ptr->p_l = c_log;
+    fit_range->p_l = c_log;
 
-    ptr->w_l = determ(sum_w,sum_p,t0*sum_wk,t0*sum_pk)/d;
+    fit_range->w_l = determ(sum_w,sum_p,t0*sum_wk,t0*sum_pk)/d;
 
     if (sum_np > 3) {
         e2 = 0.;
         wbar = 0.;
         npp = 0;
-        for (k=0; k<prm->mplgs; k++)
+        for (k=0; k<fitted_prms->mplgs; k++)
             if ((badlag[k] == 0) && (bad_pwr[k] == 0)) {
-                temp = pwr[k] - (c_log - tau[k]*t0* (ptr->w_l));
+                temp = pwr[k] - (c_log - tau[k]*t0* (fit_range->w_l));
                 e2 = e2 + w[k]*w[k]*(temp*temp);
                 wbar = wbar + w[k];
                 npp++;
             }
         wbar = wbar/npp;
-        ptr->sdev_l = sqrt(e2/sum_w/(npp - 2));
+        fit_range->sdev_l = sqrt(e2/sum_w/(npp - 2));
 
         if ((sum_w*sum_wk2 - sum_wk*sum_wk) <=0) {
-            set_lambda_error_huge(ptr);
+            set_lambda_error_huge(fit_range);
         } else {
-            c_log_err = ptr->sdev_l * wbar *
+            c_log_err = fit_range->sdev_l * wbar *
                 sqrt(sum_wk2/(sum_w*sum_wk2 - sum_wk*sum_wk));
-            ptr->p_l_err = c_log_err;
-            ptr->w_l_err = ptr->sdev_l * wbar *
+            fit_range->p_l_err = c_log_err;
+            fit_range->w_l_err = fit_range->sdev_l * wbar *
                 sqrt(sum_w/(t2*(sum_w*sum_wk2 - sum_wk*sum_wk)));
         }
     } else {
-        set_lambda_error_huge(ptr);
+        set_lambda_error_huge(fit_range);
     }
 }
 
