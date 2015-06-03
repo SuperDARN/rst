@@ -32,6 +32,6 @@
 
 int fit_acf (struct complex *acf,int range,int *badlag,
 	     struct FitACFBadSample *badsmp,int lag_lim,
-	     struct FitPrm *prm,
+	     struct FitPrm *fitted_prms,
 	     double noise_lev_in,char xflag,double xomega,
-             struct FitRange *ptr);
+             struct FitRange *fit_range);
