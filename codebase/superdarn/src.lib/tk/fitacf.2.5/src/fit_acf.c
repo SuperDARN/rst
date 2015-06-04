@@ -47,134 +47,7 @@
 #include "power_fits.h"    
 #include "fit_mem_helpers.h"
 
-/*
-This struct holds the sums used for least square fitting
-*/
-typedef struct sums{
-    double num_points; /*sum_np*/
-    double w;          /*sum_w*/
-    double wk;         /*sum_wk*/
-    double wk2;        /*sum_wk2*/
-    double *wk2_arr;   /*sum_wk2_arr*/
-    double wk4;        /*sum_wk4*/
-    double p;          /*sum_p*/
-    double pk;         /*sum_pk*/
-    double pk2;        /*sum_pk2*/
-    double phi;        /*sum_phi*/
-    double kphi;       /*sum_kphi*/
-}SUMS;
 
-
-/*
-This struct holds all the data necessary for least square fitting*/
-typedef struct least_squares_data{
-    SUMS *sums;
-
-    double t0;
-    double t2;
-    double t4;
-    double *phi_res;
-    double *tau;
-    double *tau2;
-    double *phi_k;
-    double *w;
-    double *pwr;
-    double *wt;
-    double *wt2;
-    double *wp;
-    double omega_loc;
-    double omega_err_loc;
-    double phi_loc;
-    double omega_base;
-    double omega_high;
-    double omega_low;
-    double phase_sdev;
-    double phi_err;
-    double omega_err;
-
-    int *bad_pwr;
-}LS_DATA;
-
-/*
-This function allocates and initializes a new least squares data structure*/
-LS_DATA* new_least_squares_data(struct FitPrm *fitted_prms){
-    SUMS *new_sums;
-    LS_DATA *new_ls_data;
-    int s;
-
-    new_sums=malloc(sizeof(SUMS));
-
-    new_sums->num_points = 0.0; 
-    new_sums->w = 0.0;          
-    new_sums->wk = 0.0;         
-    new_sums->wk2 = 0.0;    
-    new_sums->wk2_arr = NULL;   
-    new_sums->wk4 = 0.0;        
-    new_sums->p = 0.0;        
-    new_sums->pk = 0.0;        
-    new_sums->pk2 = 0.0;        
-    new_sums->phi = 0.0;        
-    new_sums->kphi = 0.0; 
-
-    new_ls_data = malloc(sizeof(LS_DATA));
-
-    new_ls_data->sums = new_sums;
-    new_ls_data->t0 = 0.0;
-    new_ls_data->t2 = 0.0;
-    new_ls_data->t4 = 0.0;
-    new_ls_data->phi_res = NULL;
-    new_ls_data->tau = NULL;
-    new_ls_data->tau2 = NULL;
-    new_ls_data->phi_k = NULL;
-    new_ls_data->w = NULL;
-    new_ls_data->pwr = NULL;
-    new_ls_data->wt = NULL;
-    new_ls_data->wt2 = NULL;
-    new_ls_data->wp = NULL;
-    new_ls_data->omega_loc = 0.0;
-    new_ls_data->omega_err_loc = 0.0;
-    new_ls_data->phi_loc = 0.0;
-    new_ls_data->omega_base = 0.0;
-    new_ls_data->omega_high = 0.0;
-    new_ls_data->omega_low = 0.0;
-    new_ls_data->phase_sdev = 0.0;
-    new_ls_data->phi_err = 0.0;
-    new_ls_data->omega_err = 0.0;
-    new_ls_data->bad_pwr =NULL;
-
-    s = allocate_ls_arrays(fitted_prms,
-                           &new_ls_data->sums->wk2_arr,
-                           &new_ls_data->phi_res,
-                           &new_ls_data->tau,
-                           &new_ls_data->tau2, 
-                           &new_ls_data->phi_k,
-                           &new_ls_data->w, 
-                           &new_ls_data->pwr,
-                           &new_ls_data->wt,
-                           &new_ls_data->wt2,
-                           &new_ls_data->wp,
-                           &new_ls_data->bad_pwr);
-
-    return s > -1 ? new_ls_data : NULL;
-
-}
-
-void free_ls_data(LS_DATA* ls_data){
-    free_arrays(&ls_data->sums->wk2_arr,
-                &ls_data->phi_res,
-                &ls_data->tau,
-                &ls_data->tau2, 
-                &ls_data->phi_k,
-                &ls_data->w, 
-                &ls_data->pwr, 
-                &ls_data->wt, 
-                &ls_data->wt2, 
-                &ls_data->wp, 
-                &ls_data->bad_pwr);
-
-    free(ls_data);
-
-}
 
 /**
 Prepares data for ACF fitting and calls procedures for phase and power fitting
@@ -197,8 +70,6 @@ int fit_acf (struct complex *acf,int range,
 
     LS_DATA *ls_data = NULL;
 
-    FILE *fp = NULL;
-
     /*  The following variables have been added for version 2.0 of cfitacf */
     double /*P0, */ P0n;   /* this is the power level where the acf levels off */
 
@@ -220,27 +91,13 @@ int fit_acf (struct complex *acf,int range,
         return 2;
     }
 
-    fp = fopen("/home/k2/Documents/FITACF/VTRST3.5/testing/logging.txt","w");
+    /*Creating new data structure for least square fitting*/
     if( (ls_data = new_least_squares_data(fitted_prms)) == NULL){
         free_ls_data(ls_data);
         fprintf(stderr,"Error allocating new least squares data\n");
-        fprintf(fp,"failed ls data\n");
         return -1;
     }
-    else{
-        fprintf(fp,"successful ls data\n");
-    }
-
-    fclose(fp);
-
-
-    /* allocate memory for least square arrays */
-   /* s = allocate_ls_arrays(fitted_prms, &sum_wk2_arr, &phi_res, &tau, &tau2, 
-                            &phi_k, &w, &pwr, &wt, &wt2, &wp, &bad_pwr);
-
-    if (s == -1){
-        return -1;
-    }*/
+    
 
     /* initialize the table of abs(acf[k]) and log(abs(acf[k])) */
     FitACFCkRng(range, badlag, badsmp, fitted_prms);
@@ -310,8 +167,6 @@ int fit_acf (struct complex *acf,int range,
     P0n = ls_data->w[0]/sqrt((double) fitted_prms->nave);
     if ((ls_data->w[0] - P0n) < noise_lev) {
         free_ls_data(ls_data);
-        /*free_arrays(&sum_wk2_arr, &phi_res, &tau, &tau2, 
-                    &phi_k, &w, &pwr, &wt, &wt2, &wp, &bad_pwr);*/
         return 2; 
     } 
     /* give up if left over pwr is too low */
@@ -325,9 +180,7 @@ int fit_acf (struct complex *acf,int range,
     /*  We must have at least lag_lim good lags */
     if (ls_data->sums->num_points < lag_lim) {
         free_ls_data(ls_data);
-/*        free_arrays(&sum_wk2_arr, &phi_res, &tau, &tau2, 
-                    &phi_k, &w, &pwr, &wt, &wt2, &wp, &bad_pwr);
-*/        return 4;
+        return 4;
     }
 
     /* this is required to make logs ok */
@@ -366,21 +219,7 @@ int fit_acf (struct complex *acf,int range,
     }
 
     /* set the sums to initial values*/
-/*    sum_np = 1;
-    sum_w = w[0]*w[0];
-    sum_wk = 0;
-    sum_wk2 = 0;
-    sum_wk2_arr[0] = 0;
-    sum_wk4 = 0;
-    sum_p = w[0]*w[0]*pwr[0];
-    sum_pk = 0;
-    sum_pk2 = 0;
-    phi_loc = atan2(acf[0].y, acf[0].x);
-    sum_kphi = 0;
-    t0 =  fitted_prms->mpinc * 1.0e-6;
-    t2 = t0 * t0;
-    t4 = t2 * t2;
-*/
+
     ls_data->sums->num_points = 1;
     ls_data->sums->w = ls_data->w[0] * ls_data->w[0];
     ls_data->sums->wk = 0;
@@ -403,8 +242,6 @@ int fit_acf (struct complex *acf,int range,
     s = calc_phi_res(acf, badlag, ls_data->phi_res, fitted_prms->mplgs);
     if (s != 0) {
         free_ls_data(ls_data);
-        /*free_arrays(&sum_wk2_arr, &phi_res, &tau, &tau2, 
-                    &phi_k, &w, &pwr, &wt, &wt2, &wp, &bad_pwr);*/
         return 2;
     }
 
@@ -588,11 +425,7 @@ int fit_acf (struct complex *acf,int range,
                         ls_data->sums->wk, ls_data->sums->wk2, c_log_err, ls_data->sums->p, ls_data->t2, ls_data->sums->pk);
 
         /* ----------------now do the sigma fit ------------------------ */
-        do_sigma_fit(fitted_prms, fit_range, badlag, 
-                        ls_data->bad_pwr,  ls_data->w,  ls_data->tau,  ls_data->tau2, ls_data->pwr, ls_data->sums->num_points, 
-                        ls_data->sums->w, ls_data->t0, ls_data->sums->wk, ls_data->sums->wk2, c_log_err,
-                        ls_data->sums->p, ls_data->t2, ls_data->sums->pk, ls_data->sums->wk4, ls_data->t4, 
-                        ls_data->sums->pk2);
+        do_sigma_fit(fitted_prms, fit_range, badlag,ls_data);
         
         /* finally check for ground scatter fit */
 
@@ -607,8 +440,6 @@ int fit_acf (struct complex *acf,int range,
     }
 
     free_ls_data(ls_data);
-    /*free_arrays(&sum_wk2_arr, &phi_res, &tau, &tau2, 
-                &phi_k, &w, &pwr, &wt, &wt2, &wp, &bad_pwr);*/
  
     /* all done - return code = 1 */
     if (npp < 1) {

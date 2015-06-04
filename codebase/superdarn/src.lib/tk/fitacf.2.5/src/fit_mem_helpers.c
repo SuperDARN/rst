@@ -31,6 +31,7 @@
 #include <stdlib.h>
 
 #include "fitblk.h"
+#include "fit_mem_helpers.h"
 
 
 void free_arrays(double **sum_wk2_arr, double **phi_res, double **tau, 
@@ -104,3 +105,90 @@ int allocate_ls_arrays(struct FitPrm *prm, double **sum_wk2_arr, double **phi_re
 
     return 0;
 }
+
+/*
+This function allocates and initializes a new least squares data structure*/
+LS_DATA* new_least_squares_data(struct FitPrm *fitted_prms){
+    SUMS *new_sums;
+    LS_DATA *new_ls_data;
+    int s;
+
+    new_sums=malloc(sizeof(SUMS));
+
+    new_sums->num_points = 0.0; 
+    new_sums->w = 0.0;          
+    new_sums->wk = 0.0;         
+    new_sums->wk2 = 0.0;    
+    new_sums->wk2_arr = NULL;   
+    new_sums->wk4 = 0.0;        
+    new_sums->p = 0.0;        
+    new_sums->pk = 0.0;        
+    new_sums->pk2 = 0.0;        
+    new_sums->phi = 0.0;        
+    new_sums->kphi = 0.0; 
+
+    new_ls_data = malloc(sizeof(LS_DATA));
+
+    new_ls_data->sums = new_sums;
+    new_ls_data->t0 = 0.0;
+    new_ls_data->t2 = 0.0;
+    new_ls_data->t4 = 0.0;
+    new_ls_data->phi_res = NULL;
+    new_ls_data->tau = NULL;
+    new_ls_data->tau2 = NULL;
+    new_ls_data->phi_k = NULL;
+    new_ls_data->w = NULL;
+    new_ls_data->pwr = NULL;
+    new_ls_data->wt = NULL;
+    new_ls_data->wt2 = NULL;
+    new_ls_data->wp = NULL;
+    new_ls_data->omega_loc = 0.0;
+    new_ls_data->omega_err_loc = 0.0;
+    new_ls_data->phi_loc = 0.0;
+    new_ls_data->omega_base = 0.0;
+    new_ls_data->omega_high = 0.0;
+    new_ls_data->omega_low = 0.0;
+    new_ls_data->phase_sdev = 0.0;
+    new_ls_data->phi_err = 0.0;
+    new_ls_data->omega_err = 0.0;
+    new_ls_data->bad_pwr =NULL;
+
+    s = allocate_ls_arrays(fitted_prms,
+                           &new_ls_data->sums->wk2_arr,
+                           &new_ls_data->phi_res,
+                           &new_ls_data->tau,
+                           &new_ls_data->tau2, 
+                           &new_ls_data->phi_k,
+                           &new_ls_data->w, 
+                           &new_ls_data->pwr,
+                           &new_ls_data->wt,
+                           &new_ls_data->wt2,
+                           &new_ls_data->wp,
+                           &new_ls_data->bad_pwr);
+
+    return s > -1 ? new_ls_data : NULL;
+
+}
+
+/**
+This function frees all data associated with a least squares 
+data structure
+*/
+void free_ls_data(LS_DATA* ls_data){
+    free_arrays(&ls_data->sums->wk2_arr,
+                &ls_data->phi_res,
+                &ls_data->tau,
+                &ls_data->tau2, 
+                &ls_data->phi_k,
+                &ls_data->w, 
+                &ls_data->pwr, 
+                &ls_data->wt, 
+                &ls_data->wt2, 
+                &ls_data->wp, 
+                &ls_data->bad_pwr);
+
+    free(ls_data);
+
+}
+
+
