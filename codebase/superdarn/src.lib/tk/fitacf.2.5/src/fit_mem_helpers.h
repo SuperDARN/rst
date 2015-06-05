@@ -6,11 +6,11 @@
 
 
 /**
-This struct holds the sums used for least sqaure fitting
+This struct holds the sums used for least square fitting
 */
 typedef struct sums{
     double num_points; /*!<number of good lags*/
-    double w;          /*!<sum of ACF powers*/
+    double w;          /*!<sum of squared ACF powers*/
     double wk;         /*!<sum of squared ACF power multiplied by lag*/
     double wk2;        /*!<sum of squared ACF power multiplied by squared lag*/
     double *wk2_arr;   /*!<*/

@@ -420,10 +420,8 @@ int fit_acf (struct complex *acf,int range,
 
         c_log_err = 0;
         /*  start with the lamda fit */
-        do_lambda_fit(fitted_prms, fit_range, badlag, 
-                        ls_data->bad_pwr, ls_data->w,  ls_data->tau, ls_data->pwr, ls_data->sums->num_points, ls_data->sums->w, ls_data->t0, 
-                        ls_data->sums->wk, ls_data->sums->wk2, c_log_err, ls_data->sums->p, ls_data->t2, ls_data->sums->pk);
-
+        do_lambda_fit(fitted_prms, fit_range, badlag,ls_data);
+        
         /* ----------------now do the sigma fit ------------------------ */
         do_sigma_fit(fitted_prms, fit_range, badlag,ls_data);
         
