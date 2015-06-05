@@ -30,7 +30,7 @@
 
 
 
-int fit_acf (struct complex *acf,int range,int *badlag,
+int fit_acf (struct complex *acf,int range,int *lag,
 	     struct FitACFBadSample *badsmp,int lag_lim,
 	     struct FitPrm *fitted_prms,
 	     double noise_lev_in,char xflag,double xomega,

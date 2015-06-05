@@ -36,7 +36,7 @@ typedef struct least_squares_data{
     double *tau2;  			/*!<ACF lags expressed as quantity of basic lags squared*/
     double *phi_k;  		/*!<*/
     double *w;  			/*!<ACF power values*/
-    double *pwr;  			/*!<natural log of ACF power values */
+    double *ln_pwr;  			/*!<natural log of ACF power values */
     double *wt;  			/*!<sqaured ACF power values multiplied by tau*/
     double *wt2;  			/*!<squared ACF power values multiplied by tau squared*/
     double *wp;  			/*!<sqaured ACF power values multiplied by log power values*/
@@ -50,7 +50,7 @@ typedef struct least_squares_data{
     double phi_err;  		/*!<*/
     double omega_err;  		/*!<*/
 
-    int *bad_pwr			/*!<Lags marked with unacceptable power levels*/;
+    int *pwr_level			/*!<Power levels marked as good or bad for each lag*/;
 }LS_DATA;
 
 void free_ls_data(LS_DATA* ls_data);

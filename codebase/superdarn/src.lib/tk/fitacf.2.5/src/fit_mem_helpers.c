@@ -138,7 +138,7 @@ LS_DATA* new_least_squares_data(struct FitPrm *fitted_prms){
     new_ls_data->tau2 = NULL;
     new_ls_data->phi_k = NULL;
     new_ls_data->w = NULL;
-    new_ls_data->pwr = NULL;
+    new_ls_data->ln_pwr = NULL;
     new_ls_data->wt = NULL;
     new_ls_data->wt2 = NULL;
     new_ls_data->wp = NULL;
@@ -151,7 +151,7 @@ LS_DATA* new_least_squares_data(struct FitPrm *fitted_prms){
     new_ls_data->phase_sdev = 0.0;
     new_ls_data->phi_err = 0.0;
     new_ls_data->omega_err = 0.0;
-    new_ls_data->bad_pwr =NULL;
+    new_ls_data->pwr_level =NULL;
 
     s = allocate_ls_arrays(fitted_prms,
                            &new_ls_data->sums->wk2_arr,
@@ -160,11 +160,11 @@ LS_DATA* new_least_squares_data(struct FitPrm *fitted_prms){
                            &new_ls_data->tau2, 
                            &new_ls_data->phi_k,
                            &new_ls_data->w, 
-                           &new_ls_data->pwr,
+                           &new_ls_data->ln_pwr,
                            &new_ls_data->wt,
                            &new_ls_data->wt2,
                            &new_ls_data->wp,
-                           &new_ls_data->bad_pwr);
+                           &new_ls_data->pwr_level);
 
     return s > -1 ? new_ls_data : NULL;
 
@@ -181,11 +181,11 @@ void free_ls_data(LS_DATA* ls_data){
                 &ls_data->tau2, 
                 &ls_data->phi_k,
                 &ls_data->w, 
-                &ls_data->pwr, 
+                &ls_data->ln_pwr, 
                 &ls_data->wt, 
                 &ls_data->wt2, 
                 &ls_data->wp, 
-                &ls_data->bad_pwr);
+                &ls_data->pwr_level);
 
     free(ls_data);
 

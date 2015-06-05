@@ -32,6 +32,7 @@
 
 #include "fitblk.h"
 #include "fit_mem_helpers.h"
+#include "badlags.h"
 
 
 /*
@@ -101,7 +102,7 @@ This function provides the uncertainty in the determination of
 power and spectral width from the sigma fit
 */
 void set_sigma_fit_errors_for_range(struct FitPrm *fitted_prms,struct FitRange *fit_range,
-                                    int *badlag, LS_DATA *ls_data){
+                                    int *lag, LS_DATA *ls_data){
     double e2, wbar,log_pwr_err, spectral_err, constant_a, constant_b;
     int k, npp;
 
@@ -112,9 +113,9 @@ void set_sigma_fit_errors_for_range(struct FitPrm *fitted_prms,struct FitRange *
 
         for (k=0; k<fitted_prms->mplgs; k++){
 
-            if ((badlag[k] == 0) && (ls_data->bad_pwr[k] == 0)) {
+            if ((lag[k] == GOOD) && (ls_data->pwr_level[k] == GOOD)) {
                 constant_a = fit_range->p_s - ls_data->tau2[k] * ls_data->t2 * (fit_range->w_s);
-                constant_b = ls_data->pwr[k] - constant_a; 
+                constant_b = ls_data->ln_pwr[k] - constant_a; 
 
                 e2 += ls_data->w[k] * ls_data->w[k] * (constant_b * constant_b);
 
@@ -190,7 +191,7 @@ This function provides the uncertainty in the determination of
 power and spectral width from the lambda fit
 */
 void set_lambda_fit_errors_for_range(struct FitPrm *fitted_prms,struct FitRange *fit_range,
-                                    int *badlag, LS_DATA *ls_data){
+                                    int *lag, LS_DATA *ls_data){
     double e2, wbar,log_pwr_err, spectral_err, constant_a, constant_b;
     int k, npp;
 
@@ -200,9 +201,9 @@ void set_lambda_fit_errors_for_range(struct FitPrm *fitted_prms,struct FitRange 
         npp = 0;
 
         for (k=0; k<fitted_prms->mplgs; k++)
-            if ((badlag[k] == 0) && (ls_data->bad_pwr[k] == 0)) {
+            if ((lag[k] == GOOD) && (ls_data->pwr_level[k] == GOOD)) {
                 constant_a = fit_range->p_l - ls_data->tau[k] * ls_data->t0 * fit_range->w_l;
-                constant_b = ls_data->pwr[k] - constant_a;
+                constant_b = ls_data->ln_pwr[k] - constant_a;
                 e2 = e2 + ls_data->w[k] * ls_data->w[k] * (constant_b * constant_b);
                 wbar = wbar + ls_data->w[k];
                 npp++;
@@ -233,11 +234,11 @@ void set_lambda_fit_errors_for_range(struct FitPrm *fitted_prms,struct FitRange 
 Performs a sigma power fit and its respective error calculations
 */
 void do_sigma_fit(struct FitPrm *fitted_prms,struct FitRange *fit_range,
-                  int *badlag, LS_DATA *ls_data) {
+                  int *lag, LS_DATA *ls_data) {
 
     sigma_power_and_width_fit_for_range(ls_data,fit_range);
 
-    set_sigma_fit_errors_for_range(fitted_prms,fit_range,badlag,ls_data);
+    set_sigma_fit_errors_for_range(fitted_prms,fit_range,lag,ls_data);
 
 }
 
@@ -245,12 +246,12 @@ void do_sigma_fit(struct FitPrm *fitted_prms,struct FitRange *fit_range,
 Performs a lamda power fit and its respective error calculations
 */
 void do_lambda_fit(struct FitPrm *fitted_prms, struct FitRange *fit_range,
-                   int *badlag,LS_DATA *ls_data) {
+                   int *lag,LS_DATA *ls_data) {
 
 
     lambda_power_and_width_fit_for_range(ls_data,fit_range);
 
-    set_lambda_fit_errors_for_range(fitted_prms,fit_range,badlag,ls_data);
+    set_lambda_fit_errors_for_range(fitted_prms,fit_range,lag,ls_data);
 
 }
 

@@ -53,7 +53,7 @@
 Prepares data for ACF fitting and calls procedures for phase and power fitting
 */
 int fit_acf (struct complex *acf,int range,
-                int *badlag,struct FitACFBadSample *badsmp,int lag_lim,
+                int *lag,struct FitACFBadSample *badsmp,int lag_lim,
                 struct FitPrm *fitted_prms,
                 double noise_lev_in,char xflag,double xomega,
                 struct FitRange *fit_range) {
@@ -69,6 +69,7 @@ int fit_acf (struct complex *acf,int range,
     double c_log,c_log_err, noise_lev;
 
     LS_DATA *ls_data = NULL;
+    FILE *fp;
 
     /*  The following variables have been added for version 2.0 of cfitacf */
     double /*P0, */ P0n;   /* this is the power level where the acf levels off */
@@ -84,7 +85,7 @@ int fit_acf (struct complex *acf,int range,
         fitrange object*/
     if (cabs(acf[0]) < noise_lev_in) {
         for (j=0; j<fitted_prms->mplgs; j++) {
-            badlag[j]=3;
+            lag[j]=3;
         }
         /*set the fit structure to zeroes*/
         zero_fitrange(fit_range);
@@ -100,7 +101,7 @@ int fit_acf (struct complex *acf,int range,
     
 
     /* initialize the table of abs(acf[k]) and log(abs(acf[k])) */
-    FitACFCkRng(range, badlag, badsmp, fitted_prms);
+    FitACFCkRng(range, lag, badsmp, fitted_prms);
 
     /* Save the original ACF in a new variable so we can try some
          preprocessing on it.
@@ -173,7 +174,7 @@ int fit_acf (struct complex *acf,int range,
 
 
     /*  identify any additional bad lags */
-    ls_data->sums->num_points = more_badlags(ls_data->w, badlag, noise_lev, fitted_prms->mplgs,fitted_prms->nave);
+    ls_data->sums->num_points = more_badlags(ls_data->w, lag, noise_lev, fitted_prms->mplgs,fitted_prms->nave);
 
     fit_range->nump = (char) ls_data->sums->num_points;
 
@@ -205,17 +206,17 @@ int fit_acf (struct complex *acf,int range,
         }
         ls_data->wt[k] = ls_data->w[k] * ls_data->w[k] * ls_data->tau[k];
         ls_data->wt2[k] = ls_data->wt[k] * ls_data->tau[k];
-        ls_data->pwr[k] = log(ls_data->w[k]);
-        ls_data->wp[k] = ls_data->w[k] * ls_data->w[k] * ls_data->pwr[k];
+        ls_data->ln_pwr[k] = log(ls_data->w[k]);
+        ls_data->wp[k] = ls_data->w[k] * ls_data->w[k] * ls_data->ln_pwr[k];
     }
 
     /* we now have to check to see how many additional bad lags have been
          introduced by subtracting off P0n. */
     for (k=0, npp=0; k < fitted_prms->mplgs; k++) {
-        if (ls_data->w[k] < noise_lev + P0n && !badlag[k]) ls_data->bad_pwr[k] = 1; 
+        if (ls_data->w[k] < noise_lev + P0n && (lag[k]==GOOD)) ls_data->pwr_level[k] = BAD; 
         /* if (w[k] < noise_lev && !badlag[k]) bad_pwr[k] = 1; */
-        else ls_data->bad_pwr[k] = 0;
-        if (! (badlag[k] || ls_data->bad_pwr[k])) ++npp;
+        else ls_data->pwr_level[k] = GOOD;
+        if ( (lag[k] == GOOD) && (ls_data->pwr_level[k] == GOOD)) ++npp;
     }
 
     /* set the sums to initial values*/
@@ -226,7 +227,7 @@ int fit_acf (struct complex *acf,int range,
     ls_data->sums->wk2 = 0;
     ls_data->sums->wk2_arr[0] = 0;
     ls_data->sums->wk4 = 0;
-    ls_data->sums->p = ls_data->w[0] * ls_data->w[0] * ls_data->pwr[0];
+    ls_data->sums->p = ls_data->w[0] * ls_data->w[0] * ls_data->ln_pwr[0];
     ls_data->sums->pk = 0;
     ls_data->sums->pk2 = 0;
     ls_data->sums->kphi = 0;
@@ -239,7 +240,7 @@ int fit_acf (struct complex *acf,int range,
 
     /* calculate all the residual phases */
     /* if calc_phi_res returns a bad status abort the fit */
-    s = calc_phi_res(acf, badlag, ls_data->phi_res, fitted_prms->mplgs);
+    s = calc_phi_res(acf, lag, ls_data->phi_res, fitted_prms->mplgs);
     if (s != 0) {
         free_ls_data(ls_data);
         return 2;
@@ -249,7 +250,7 @@ int fit_acf (struct complex *acf,int range,
     if (!xflag) {
         /*if it's a regular fit (not XCF)*/
         if (acf_stat == ACF_GROUND_SCAT) ls_data->omega_loc = 0.0;
-        else ls_data->omega_loc = omega_guess(acf, ls_data->tau, badlag, ls_data->phi_res, &ls_data->omega_err_loc,fitted_prms->mpinc,fitted_prms->mplgs);
+        else ls_data->omega_loc = omega_guess(acf, ls_data->tau, lag, ls_data->phi_res, &ls_data->omega_err_loc,fitted_prms->mpinc,fitted_prms->mplgs);
         ls_data->phi_k[0] = 0;
         ls_data->sums->phi = 0;
     } else {
@@ -265,7 +266,7 @@ int fit_acf (struct complex *acf,int range,
 
     /* first, calculate the sums needed for the phase fit */
     for (k=1; k<fitted_prms->mplgs; k++) {
-        if (badlag[k]) {
+        if (lag[k] != GOOD) {
             ls_data->sums->wk2_arr[k] = ls_data->sums->wk2_arr[k-1];
             continue;
         }
@@ -280,7 +281,7 @@ int fit_acf (struct complex *acf,int range,
 
  
     status = do_phase_fit (ls_data->omega_loc, xflag, fitted_prms->mplgs, acf, ls_data->tau,
-             ls_data->w, ls_data->sums->wk2_arr, ls_data->phi_res, badlag, ls_data->t0,
+             ls_data->w, ls_data->sums->wk2_arr, ls_data->phi_res, lag, ls_data->t0,
              ls_data->sums->w, ls_data->sums->wk, ls_data->sums->wk2,
              &ls_data->omega_base, &ls_data->phi_loc, &ls_data->phase_sdev,
              &ls_data->phi_err, &ls_data->omega_err);
@@ -307,14 +308,14 @@ int fit_acf (struct complex *acf,int range,
     if (!xflag && (status == 0)) {
         status = do_phase_fit (ls_data->omega_loc + ls_data->omega_err_loc,
                                 xflag, fitted_prms->mplgs, acf, ls_data->tau,
-                                ls_data->w, ls_data->sums->wk2_arr, ls_data->phi_res, badlag, ls_data->t0,
+                                ls_data->w, ls_data->sums->wk2_arr, ls_data->phi_res, lag, ls_data->t0,
                                 ls_data->sums->w, ls_data->sums->wk, ls_data->sums->wk2,
                                 &ls_data->omega_high, &ls_data->phi_loc, &ls_data->phase_sdev,
                                 &ls_data->phi_err, &ls_data->omega_err);
 
         status = do_phase_fit (ls_data->omega_loc - ls_data->omega_err_loc, 
                                 xflag, fitted_prms->mplgs, acf, ls_data->tau,
-                                ls_data->w, ls_data->sums->wk2_arr, ls_data->phi_res, badlag, ls_data->t0,
+                                ls_data->w, ls_data->sums->wk2_arr, ls_data->phi_res, lag, ls_data->t0,
                                 ls_data->sums->w, ls_data->sums->wk, ls_data->sums->wk2,
                                 &ls_data->omega_low, &ls_data->phi_loc, &ls_data->phase_sdev,
                                 &ls_data->phi_err, &ls_data->omega_err);
@@ -353,7 +354,7 @@ int fit_acf (struct complex *acf,int range,
 */
 
     if (npp < 3) {
-        c_log = ls_data->pwr[0];
+        c_log = ls_data->ln_pwr[0];
 
         /* if c_log < 0 it means that after subtracting the noise and P0n,
          the result is less than 1.0.  This must really be pretty meaningless
@@ -372,7 +373,7 @@ int fit_acf (struct complex *acf,int range,
 
         /* find the last good lag */
         last_good = -1;
-        for (k= 0; k < fitted_prms->mplgs; k++) if (!badlag[k]) last_good = k;
+        for (k= 0; k < fitted_prms->mplgs; k++) if (lag[k] == GOOD) last_good = k;
 
         /* if there are no good lags, or only lag-0 is good, set the width
              to a high negative value, by setting the last_good lag to 1
@@ -397,12 +398,12 @@ int fit_acf (struct complex *acf,int range,
     } else {
         /*  Calculate the sums that were not used in the phase fit */
         for (k=1; k < fitted_prms->mplgs; k++) {
-            if (badlag[k] || ls_data->bad_pwr[k]) {
+            if (lag[k] != GOOD || ls_data->pwr_level[k] == BAD) {
                 continue;
             }
             ls_data->sums->p = ls_data->sums->p + ls_data->wp[k];
-            ls_data->sums->pk = ls_data->sums->pk + ls_data->pwr[k] * ls_data->wt[k];
-            ls_data->sums->pk2 = ls_data->sums->pk2 + ls_data->pwr[k] * ls_data->wt2[k];
+            ls_data->sums->pk = ls_data->sums->pk + ls_data->ln_pwr[k] * ls_data->wt[k];
+            ls_data->sums->pk2 = ls_data->sums->pk2 + ls_data->ln_pwr[k] * ls_data->wt2[k];
             ls_data->sums->wk4 = ls_data->sums->wk4 + ls_data->wt2[k] * ls_data->tau2[k];
         }
 
@@ -410,7 +411,7 @@ int fit_acf (struct complex *acf,int range,
              have changed because of additional bad lags */
 
         for (k=1; k< fitted_prms->mplgs; k++) {
-            if (ls_data->bad_pwr[k]) {
+            if (ls_data->pwr_level[k]) {
                 ls_data->sums->w = ls_data->sums->w - ls_data->w[k] * ls_data->w[k];
                 ls_data->sums->num_points = ls_data->sums->num_points - 1;
                 ls_data->sums->wk = ls_data->sums->wk - ls_data->w[k] * ls_data->w[k] * ls_data->tau[k];
@@ -420,10 +421,10 @@ int fit_acf (struct complex *acf,int range,
 
         c_log_err = 0;
         /*  start with the lamda fit */
-        do_lambda_fit(fitted_prms, fit_range, badlag,ls_data);
-        
+        do_lambda_fit(fitted_prms, fit_range, lag,ls_data);
+
         /* ----------------now do the sigma fit ------------------------ */
-        do_sigma_fit(fitted_prms, fit_range, badlag,ls_data);
+        do_sigma_fit(fitted_prms, fit_range, lag,ls_data);
         
         /* finally check for ground scatter fit */
 
@@ -438,7 +439,7 @@ int fit_acf (struct complex *acf,int range,
     }
 
     free_ls_data(ls_data);
- 
+
     /* all done - return code = 1 */
     if (npp < 1) {
         return 4;
