@@ -196,7 +196,7 @@ int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
         return -1;
     }
 
-    if (iptr->prm.channel==0) FitACFBadlags(&iptr->prm,&badsmp);    
+    if (iptr->prm.channel==0) FitACFMarkBadSamples(&iptr->prm,&badsmp);    
     else FitACFBadlagsStereo(&iptr->prm,&badsmp);  
 
 

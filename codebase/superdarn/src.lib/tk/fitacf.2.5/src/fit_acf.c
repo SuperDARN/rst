@@ -449,7 +449,7 @@ int fit_acf (struct complex *acf,int range,
     
 
     /* initialize the table of abs(acf[k]) and log(abs(acf[k])) */
-    FitACFCkRng(range, lag, badsmp, fitted_prms);
+    FitACFMarkBadLags(range, lag, badsmp, fitted_prms);
 
 
     /*Adjusting the ACF power to account for fluctuation level*/
@@ -470,7 +470,7 @@ int fit_acf (struct complex *acf,int range,
         return status;
     }
 
-    /*Now start power fits
+    /*Now start POWER FITS
       If fit is bad, return status*/
     if((status = power_fits(fitted_prms,ls_data,fit_range,lag,npp))){
         return status;

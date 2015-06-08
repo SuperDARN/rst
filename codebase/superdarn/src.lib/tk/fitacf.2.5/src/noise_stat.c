@@ -71,7 +71,7 @@ double noise_stat(double mnpwr,struct FitPrm *ptr,
 
   for (i=0; i < ptr->nrang; ++i) { 
     if ((acf[i*ptr->mplgs].x > plim) || (acf[i*ptr->mplgs].x <= 0.0)) continue;
-	FitACFCkRng((i+1), bdlag,badsmp, ptr);
+	FitACFMarkBadLags((i+1), bdlag,badsmp, ptr);
 	++np0;
 	fluct = ((double) acf[i*ptr->mplgs].x)/sqrt(ptr->nave);
 	low_lim = acf[i*ptr->mplgs].x - 2.0*fluct;

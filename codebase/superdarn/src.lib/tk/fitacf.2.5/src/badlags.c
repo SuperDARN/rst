@@ -35,9 +35,10 @@
 #include "rang_badlags.h"
 
 /**
-Identifies bad lags caused by transmitter pulse overlap
+Identifies bad lags caused by transmitter pulse overlap and defines a table
+of interfering ranges
 */
-void FitACFBadlags(struct FitPrm *fitted_prms,struct FitACFBadSample *samples) {
+void FitACFMarkBadSamples(struct FitPrm *fitted_prms,struct FitACFBadSample *samples) {
   int i, k, sample;
   long ts, t1=0, t2=0;
 
@@ -87,9 +88,10 @@ return;
 }
 
 /*	This routine uses the table set up by badlags to locate which lags
-	are bad for a specified range */
+	are bad for a specified range and which lags are tainted by cross range
+	interference*/
 
-void FitACFCkRng(int range,int *lag,struct FitACFBadSample *samples,
+void FitACFMarkBadLags(int range,int *lag,struct FitACFBadSample *samples,
 	       struct FitPrm *fitted_prms) {
 
   int sam1, sam2, i, j;
