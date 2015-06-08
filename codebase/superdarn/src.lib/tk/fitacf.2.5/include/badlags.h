@@ -8,9 +8,12 @@
 #ifndef _BADLAGS_H
 #define _BADLAGS_H
 
+#include "fitblk.h"
+#include "badsmp.h"
+
 #define BAD 1
 #define GOOD 0
-   
+ 
 void FitACFBadlags(struct FitPrm *fitted_prms,struct FitACFBadSample *samples);
 void FitACFBadlagsStereo(struct FitPrm *ptr,struct FitACFBadSample *bptr);
 void FitACFCkRng(int range,int *lag,struct FitACFBadSample *samples,

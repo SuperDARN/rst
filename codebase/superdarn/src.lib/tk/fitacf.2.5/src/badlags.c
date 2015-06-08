@@ -34,7 +34,9 @@
 #include "badlags.h"
 #include "rang_badlags.h"
 
-
+/**
+Identifies bad lags caused by transmitter pulse overlap
+*/
 void FitACFBadlags(struct FitPrm *fitted_prms,struct FitACFBadSample *samples) {
   int i, k, sample;
   long ts, t1=0, t2=0;

@@ -30,5 +30,5 @@
 
 
 
-void r_overlap(struct FitPrm *ptr);
-void lag_overlap(int range,int *badlag,struct FitPrm *ptr);
+void r_overlap(struct FitPrm *fitted_prms);
+void lag_overlap(int range,int *lag,struct FitPrm *fitted_prms);
