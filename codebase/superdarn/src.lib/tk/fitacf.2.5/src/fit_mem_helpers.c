@@ -32,6 +32,7 @@
 
 #include "fitblk.h"
 #include "fit_mem_helpers.h"
+#include "rmath.h"
 
 
 void free_arrays(double **sum_wk2_arr, double **phi_res, double **tau, 
@@ -108,14 +109,15 @@ int allocate_ls_arrays(struct FitPrm *prm, double **sum_wk2_arr, double **phi_re
 
 /*
 This function allocates and initializes a new least squares data structure*/
-LS_DATA* new_least_squares_data(struct FitPrm *fitted_prms){
+LS_DATA* new_least_squares_data(struct FitPrm *fitted_prms, double noise_level,
+                                struct complex *acf,int stat_val){
     SUMS *new_sums;
     LS_DATA *new_ls_data;
-    int s;
+    int s,k;
 
     new_sums=malloc(sizeof(SUMS));
 
-    new_sums->num_points = 0.0; 
+    new_sums->num_points = 0; 
     new_sums->w = 0.0;          
     new_sums->wk = 0.0;         
     new_sums->wk2 = 0.0;    
@@ -152,6 +154,7 @@ LS_DATA* new_least_squares_data(struct FitPrm *fitted_prms){
     new_ls_data->phi_err = 0.0;
     new_ls_data->omega_err = 0.0;
     new_ls_data->pwr_level =NULL;
+    new_ls_data->acf_stat = stat_val;
 
     s = allocate_ls_arrays(fitted_prms,
                            &new_ls_data->sums->wk2_arr,
@@ -165,6 +168,22 @@ LS_DATA* new_least_squares_data(struct FitPrm *fitted_prms){
                            &new_ls_data->wt2,
                            &new_ls_data->wp,
                            &new_ls_data->pwr_level);
+
+    /*
+        fill in arrays for tau, tau^2, and power
+        and then mark lags with power below the noise level
+    */
+
+    if(s > -1){
+        for (k=0; k<fitted_prms->mplgs; k++) {
+            new_ls_data->tau[k] = fitted_prms->lag[1][k] - fitted_prms->lag[0][k];
+            new_ls_data->tau2[k] = new_ls_data->tau[k] * new_ls_data->tau[k];
+            new_ls_data->w[k] = cabs(acf[k]); /* w[k] = cabs(acf[k])- noise_lev; */
+            if (new_ls_data->w[k] <= noise_level) {
+                new_ls_data->w[k] = 0.1; /* if (w[k] <= 0.0) w[k] = 0.1; */
+            }
+        }
+    }
 
     return s > -1 ? new_ls_data : NULL;
 

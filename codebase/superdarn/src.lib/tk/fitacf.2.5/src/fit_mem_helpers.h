@@ -9,7 +9,7 @@
 This struct holds the sums used for least square fitting
 */
 typedef struct sums{
-    double num_points; /*!<number of good lags*/
+    int num_points; /*!<number of good lags*/
     double w;          /*!<sum of squared ACF powers*/
     double wk;         /*!<sum of squared ACF power multiplied by lag*/
     double wk2;        /*!<sum of squared ACF power multiplied by squared lag*/
@@ -51,6 +51,7 @@ typedef struct least_squares_data{
     double omega_err;  		/*!<*/
 
     int *pwr_level			/*!<Power levels marked as good or bad for each lag*/;
+    int acf_stat;
 }LS_DATA;
 
 void free_ls_data(LS_DATA* ls_data);
@@ -61,5 +62,6 @@ void zero_fitrange(struct FitRange *ptr);
 int allocate_ls_arrays(struct FitPrm *prm, double **sum_wk2_arr, double **phi_res, double **tau, 
                     double **tau2, double **phi_k, double **w, double **pwr, 
                     double **wt, double **wt2, double **wp, int **bad_pwr);
-LS_DATA* new_least_squares_data(struct FitPrm *fitted_prms);
+LS_DATA* new_least_squares_data(struct FitPrm *fitted_prms, double noise_level,
+                                struct complex *acf, int acf_stat);
 #endif
