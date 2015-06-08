@@ -31,29 +31,30 @@
 
 #include "badsmp.h"
 #include "fitblk.h"
-
+#include "badlags.h"
 #include "rang_badlags.h"
 
 
-void FitACFBadlags(struct FitPrm *ptr,struct FitACFBadSample *bptr) {
+void FitACFBadlags(struct FitPrm *fitted_prms,struct FitACFBadSample *samples) {
   int i, k, sample;
   long ts, t1=0, t2=0;
 
   i = -1;
-  ts = (long) ptr->lagfr;
+  ts = (long) fitted_prms->lagfr;
   sample = 0;
   k = 0;
 
   t2 = 0L;
 
-  while (i < (ptr->mppul - 1)) {
-	/* first, skip over any pulses that occur before the first sample */
+  while (i < (fitted_prms->mppul - 1)) {
+	/* first, skip over any pulses that occur before the first sample
+	   defines transmitter pulse blanket window*/
 
-	while ((ts > t2) && (i < (ptr->mppul - 1))) {
+	while ((ts > t2) && (i < (fitted_prms->mppul - 1))) {
       i++;
-	  t1 = (long) (ptr->pulse[i]) * (long) (ptr->mpinc)
-				- ptr->txpl/2;
-	  t2 = t1 + 3*ptr->txpl/2 + 100; /* adjust for rx-on delay */
+	  t1 = (long) (fitted_prms->pulse[i]) * (long) (fitted_prms->mpinc)
+				- fitted_prms->txpl/2;
+	  t2 = t1 + 3*fitted_prms->txpl/2 + 100; /* adjust for rx-on delay */
 	}	
 
 	/*	we now have a pulse that occurs after the current sample.  Start
@@ -62,7 +63,7 @@ void FitACFBadlags(struct FitPrm *ptr,struct FitACFBadSample *bptr) {
 
 	while (ts < t1) {
       sample++;
-	  ts = ts + ptr->smsep;
+	  ts = ts + fitted_prms->smsep;
 	}
 	
 	/*	ok, we now have a sample which occurs after the pulse starts.
@@ -70,46 +71,53 @@ void FitACFBadlags(struct FitPrm *ptr,struct FitACFBadSample *bptr) {
 		it as a bad sample */
 
 	while ((ts >= t1) && (ts <= t2)) {
-	  bptr->badsmp[k] = sample;
+	  samples->badsmp[k] = sample;
 	  k++;
 	  sample++;
-	  ts = ts + ptr->smsep;
+	  ts = ts + fitted_prms->smsep;
 	}
   }
-  bptr->nbad = k;	/* total number of bad samples */
+  samples->nbad = k;	/* total number of bad samples */
 
   /* Now set up a table for checking range interference */
-  r_overlap(ptr);
+  r_overlap(fitted_prms);
 return;
 }
 
 /*	This routine uses the table set up by badlags to locate which lags
 	are bad for a specified range */
 
-void FitACFCkRng(int range,int *badlag,struct FitACFBadSample *bptr,
-	       struct FitPrm *ptr) {
-  int sam1, sam2, i, j;
-  for (i=0; i<ptr->mplgs; i++) {
-	badlag[i] = 0;
-	sam1 = ptr->lag[0][i]*(ptr->mpinc/ptr->smsep)
-			+ range - 1;
-	sam2 = ptr->lag[1][i]*(ptr->mpinc/ptr->smsep)
-			+ range - 1;
+void FitACFCkRng(int range,int *lag,struct FitACFBadSample *samples,
+	       struct FitPrm *fitted_prms) {
 
-	for (j=0; j<bptr->nbad; j++) {
-      if ((sam1 == bptr->badsmp[j]) || (sam2 == bptr->badsmp[j])) 
-        badlag[i] = 1;
-	  if (sam2 < bptr->badsmp[j]) break;
+  int sam1, sam2, i, j;
+  int lag_sample_base1, lag_sample_base2, range_offset;
+
+  for (i=0; i<fitted_prms->mplgs; i++) {
+	lag[i] = GOOD;
+
+	range_offset = range - 1;
+	lag_sample_base1 = fitted_prms->lag[0][i] * (fitted_prms->mpinc/fitted_prms->smsep);
+	sam1 = lag_sample_base1 + range_offset;
+
+	lag_sample_base2 = fitted_prms->lag[1][i] * (fitted_prms->mpinc/fitted_prms->smsep);
+	sam2 = lag_sample_base2 + range_offset;
+			
+
+	for (j=0; j<samples->nbad; j++) {
+      if ((sam1 == samples->badsmp[j]) || (sam2 == samples->badsmp[j])) 
+        lag[i] = BAD;
+	  if (sam2 < samples->badsmp[j]) break;
     }
   }
 	
   /* This section of code is only of use to fitacf for reprocessing old
 	data that used the 16 lag, 7 pulse code.  */
 	
-  if ((ptr->mplgs == 17) && (ptr->old !=0) )
-	badlag[13] = 1;
+  if ((fitted_prms->mplgs == 17) && (fitted_prms->old !=0) )
+	lag[13] = BAD;
 	 
   /* finally, check for range interference */
-  lag_overlap(range, badlag, ptr);
+  lag_overlap(range, lag, fitted_prms);
   return;
 }

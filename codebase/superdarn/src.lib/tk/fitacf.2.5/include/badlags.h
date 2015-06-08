@@ -11,9 +11,9 @@
 #define BAD 1
 #define GOOD 0
    
-void FitACFBadlags(struct FitPrm *ptr,struct FitACFBadSample *bptr);
+void FitACFBadlags(struct FitPrm *fitted_prms,struct FitACFBadSample *samples);
 void FitACFBadlagsStereo(struct FitPrm *ptr,struct FitACFBadSample *bptr);
-void FitACFCkRng(int range,int *badlag,struct FitACFBadSample *bptr,
-	         struct FitPrm *ptr);
+void FitACFCkRng(int range,int *lag,struct FitACFBadSample *samples,
+	         struct FitPrm *fitted_prms);
 
 #endif
