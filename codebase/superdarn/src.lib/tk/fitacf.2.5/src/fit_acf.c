@@ -37,7 +37,7 @@
 #include "badsmp.h"
 #include "fitblk.h"
 
-
+#include "fit_mem_helpers.h"
 #include "acf_preproc.h" 
 #include "calc_phi_res.h"
 #include "omega_guess.h"
@@ -45,7 +45,7 @@
 #include "more_badlags.h"
 #include "do_phase_fit.h"  
 #include "power_fits.h"    
-#include "fit_mem_helpers.h"
+
 
 /**
 This function adjusts the ACF power profile to account for statistical
@@ -199,11 +199,7 @@ int phase_fitting(struct FitPrm *fitted_prms, LS_DATA* ls_data,
     }
 
     /* Now do the phase fit using the best initial guess for omega */ 
-    status = do_phase_fit (ls_data->omega_loc, xflag, fitted_prms->mplgs, acf, ls_data->tau,
-             ls_data->w, ls_data->sums->wk2_arr, ls_data->phi_res, lag, ls_data->t0,
-             ls_data->sums->w, ls_data->sums->wk, ls_data->sums->wk2,
-             &ls_data->omega_base, &ls_data->phi_loc, &ls_data->phase_sdev,
-             &ls_data->phi_err, &ls_data->omega_err);
+    status = do_phase_fit (ls_data->omega_loc, xflag, fitted_prms->mplgs, acf, lag,&ls_data->omega_base ,ls_data);
 
     fit_range->phi0 = ls_data->phi_loc;
     fit_range->v = ls_data->omega_base;
@@ -226,18 +222,10 @@ int phase_fitting(struct FitPrm *fitted_prms, LS_DATA* ls_data,
 
     if (!xflag && (status == 0)) {
         status = do_phase_fit (ls_data->omega_loc + ls_data->omega_err_loc,
-                                xflag, fitted_prms->mplgs, acf, ls_data->tau,
-                                ls_data->w, ls_data->sums->wk2_arr, ls_data->phi_res, lag, ls_data->t0,
-                                ls_data->sums->w, ls_data->sums->wk, ls_data->sums->wk2,
-                                &ls_data->omega_high, &ls_data->phi_loc, &ls_data->phase_sdev,
-                                &ls_data->phi_err, &ls_data->omega_err);
+                                xflag, fitted_prms->mplgs, acf, lag, &ls_data->omega_high, ls_data);
 
         status = do_phase_fit (ls_data->omega_loc - ls_data->omega_err_loc, 
-                                xflag, fitted_prms->mplgs, acf, ls_data->tau,
-                                ls_data->w, ls_data->sums->wk2_arr, ls_data->phi_res, lag, ls_data->t0,
-                                ls_data->sums->w, ls_data->sums->wk, ls_data->sums->wk2,
-                                &ls_data->omega_low, &ls_data->phi_loc, &ls_data->phase_sdev,
-                                &ls_data->phi_err, &ls_data->omega_err);
+                                xflag, fitted_prms->mplgs, acf, lag, &ls_data->omega_low,ls_data);
 
         /* if the difference between the high and low values of omega
              is greater than the error estimate of the original fit,

@@ -4,7 +4,7 @@
 #ifndef _FIT_MEM_HELPERS_H
 #define _FIT_MEM_HELPERS_H
 
-
+#include "fitblk.h"
 /**
 This struct holds the sums used for least square fitting
 */
@@ -50,7 +50,7 @@ typedef struct least_squares_data{
     double phi_err;  		/*!<*/
     double omega_err;  		/*!<*/
 
-    int *pwr_level			/*!<Power levels marked as good or bad for each lag*/;
+    int *pwr_level;			/*!<Power levels marked as good or bad for each lag*/;
     int acf_stat;
 }LS_DATA;
 

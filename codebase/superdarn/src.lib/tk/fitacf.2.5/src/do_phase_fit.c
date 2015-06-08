@@ -40,25 +40,25 @@
         32 = NO_CONVERGENCE
 
     returned values:
-        omega  -  (double) the least square error fit for the slope
-        phi0 - (double) phase at lag 0 (may be non-zero for XCFs)
-        sdev - (double) average standard deviation of the points in the fit
-        omega_err - (double) 1-sigma error estimate of the slope
-        phi0_err - (double) 1-sima error estimate on lag-0 phase
+        *omega  -  (double) the least square error fit for the slope
+        ls_data->phi_loc - (double) phase at lag 0 (may be non-zero for XCFs)
+        ls_data->phase_sdev - (double) average standard deviation of the points in the fit
+        ls_data->omega_err - (double) 1-sigma error estimate of the slope
+        ls_data->phi_err - (double) 1-sima error estimate on lag-0 phase
     input values:
-        omega_guess - (double) initial guess for the value of omega
+        omega_guess - (double) initial guess for the value of *omega
         xflag - (char) flag to indicate this is an XCF fit
         mplgs - (int) number of lags in the acf
         acf - (struct complex) the acf (or xcf) to be fitted
         tau - (double) array of lag values
-        w - (double) array of weights (powers) for each lag
-        sum_wk2_arr - (double) array of sum of w*k^2 
-        phi_res - (double) array of measured phases
+        ls_data->w - (double) array of weights (powers) for each lag
+        ls_data->sums->wk2_arr - (double) array of sum of ls_data->w*k^2 
+        ls_data->phi_res - (double) array of measured phases
         badlag - (int) array of bad lag flags
-        t0 - (double) basic time lag
-        sum_w - (double) sum of the weights
-        sum_wk - (double) sum of w*k
-        sum_wk2 - (double) sum of w*k^2
+        ls_data->t0 - (double) basic time lag
+        ls_data->sums->w - (double) sum of the weights
+        ls_data->sums->wk - (double) sum of ls_data->w*k
+        ls_data->sums->wk2 - (double) sum of ls_data->w*k^2
 
 */
 
@@ -67,28 +67,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include "rmath.h"
+#include "do_phase_fit.h"
 
 #define determ(aa,bb,cc,dd) (((aa)*(dd)) - ((bb)*(cc)))
 
-int do_phase_fit (double omega_guess, 
-                    char xflag, 
-                    int mplgs,
-                    struct complex *acf,
-                    double *tau,
-                    double *w,
-                    double *sum_wk2_arr,
-                    double *phi_res,
-                    int *badlag,
-                    double t0,
-                    double sum_w,
-                    double sum_wk,
-                    double sum_wk2,
-                    
-                    double *omega,
-                    double *phi0,
-                    double *sdev,
-                    double *phi0_err,
-                    double *omega_err) {
+int do_phase_fit (double omega_guess, char xflag, int mplgs,
+                struct complex *acf, int *badlag,
+                double *omega, LS_DATA *ls_data) {
 
     /*  local declarations */
     double omega_loc, omega_init;
@@ -111,7 +96,7 @@ int do_phase_fit (double omega_guess,
     double d=0.0, e2;
 
     omega_loc = omega_guess;
-    t2 = t0*t0;
+    t2 = ls_data->t0 * ls_data->t0;
 
     phi_k = malloc(sizeof(double)*mplgs);
     if (phi_k==NULL) {
@@ -125,25 +110,25 @@ int do_phase_fit (double omega_guess,
     while (fabs(omega_old - omega_loc) > fabs(omega_loc * PI/64.)) {
 
         /* if omega_loc == omega_old_2 it means we are oscillating between
-             two different values of omega */
+             two different values of *omega */
 
         if ((icnt>0) && (omega_loc == omega_old_2)) {
             *omega = (omega_old + omega_loc)/2.;
-            /* return the average value of the two omega values and return
+            /* return the average value of the two *omega values and return
                 with error code 16 */
-            *phi0 = phi_loc;
+            ls_data->phi_loc = phi_loc;
             free(phi_k);
             return 16;
         }
 
         /* if icnt >= 5 it means we aren't converging on a stable value for
-             omega */
+             *omega */
 
         if (++icnt >= 5) {
             /* return whatever we have at this moment
                 and set error code 32 */
             *omega = omega_loc;
-            *phi0 = phi_loc;
+            ls_data->phi_loc = phi_loc;
             free(phi_k);
             return 32;
         }
@@ -155,24 +140,24 @@ int do_phase_fit (double omega_guess,
         if (!xflag) phi_loc = 0.;
 
         sum_phi = atan2(acf[0].y,acf[0].x);
-        sum_phi = sum_phi*w[0]*w[0];
+        sum_phi = sum_phi * ls_data->w[0] * ls_data->w[0];
         sum_kphi = 0.0;
         n_twopi = 0;
         nphi = 0;
 
         /* now go through the point, one at a time, predicting the new
-             value for phi_tot from the current best value for omega */
+             value for phi_tot from the current best value for *omega */
 
         for (k=1; k<mplgs; k++) {
             if (badlag[k]) continue;
-            phi_pred = phi_loc + omega_loc*tau[k]*t0;
+            phi_pred = phi_loc + omega_loc * ls_data->tau[k] * ls_data->t0;
      
             /* The code for calculating n_twopi had a problem, the conversion to
-                 an integer sometimes produded the wrong result
+                 an integer sometimes produced the wrong result
             */
 
          
-            phitmp = ((PI + phi_pred - phi_res[k])/(2*PI) - 
+            phitmp = ((PI + phi_pred - ls_data->phi_res[k])/(2*PI) - 
                 ((omega_loc > 0) ? 0.0 : 1.0));
 
             phifrc=modf(phitmp,&phiint);
@@ -180,7 +165,7 @@ int do_phase_fit (double omega_guess,
             if (phifrc>0.5) n_twopi++;
             if (phifrc<-0.5) n_twopi--;
 
-            phi_tot = phi_res[k] + n_twopi*(2*PI);
+            phi_tot = ls_data->phi_res[k] + n_twopi*(2*PI);
 
             if (fabs(phi_pred - phi_tot) > PI) {
                 if (phi_pred > phi_tot) phi_tot = phi_tot + 2*PI;
@@ -189,43 +174,43 @@ int do_phase_fit (double omega_guess,
             
 
             phi_k[k] = phi_tot;
-            sum_phi = sum_phi + phi_tot*w[k]*w[k];
-            sum_kphi = sum_kphi + tau[k]*phi_tot*w[k]*w[k];
+            sum_phi = sum_phi + phi_tot * ls_data->w[k] * ls_data->w[k];
+            sum_kphi = sum_kphi + ls_data->tau[k] * phi_tot * ls_data->w[k] * ls_data->w[k];
             ++nphi;
 
-            /* if this is the first time through the omega fit loop AND
+            /* if this is the first time through the *omega fit loop AND
             we are doing ACFs, NOT xcfs, and we've got enough points to
         draw a line, THEN compute a new value of omega_loc as we add each
         new point */
 
-            if (!xflag && sum_wk2_arr[k] && (omega_old_2 == 9999.)) {
-                omega_loc = sum_kphi/(t0*sum_wk2_arr[k]);
-                omega_loc = (nphi*omega_loc + omega_init)/(nphi + 1);
+            if (!xflag && ls_data->sums->wk2_arr[k] && (omega_old_2 == 9999.)) {
+                omega_loc = sum_kphi/(ls_data->t0 * ls_data->sums->wk2_arr[k]);
+                omega_loc = (nphi * omega_loc + omega_init)/(nphi + 1);
             }
         }
 
         if (xflag) {
-            d = determ(sum_w,sum_wk*t0,sum_wk*t0,sum_wk2*t2);
+            d = determ(ls_data->sums->w,ls_data->sums->wk * ls_data->t0,ls_data->sums->wk * ls_data->t0,ls_data->sums->wk2 * t2);
             if (d == 0) {
                 free(phi_k);
                 return 8;
             }
-            phi_loc = determ(sum_phi,sum_wk*t0,sum_kphi*t0,sum_wk2*t2)/d;
-            omega_loc = determ(sum_w,sum_phi,sum_wk*t0,sum_kphi*t0)/d;
+            phi_loc = determ(sum_phi,ls_data->sums->wk * ls_data->t0,sum_kphi * ls_data->t0,ls_data->sums->wk2 * t2)/d;
+            omega_loc = determ(ls_data->sums->w,sum_phi,ls_data->sums->wk * ls_data->t0,sum_kphi * ls_data->t0)/d;
         } else {
             phi_loc = 0;
-            if (sum_wk2 <= 0.0) {
+            if (ls_data->sums->wk2 <= 0.0) {
                 free(phi_k);
                 return 8;
             }
-            omega_loc = sum_kphi/(t0*sum_wk2);
+            omega_loc = sum_kphi/(ls_data->t0*ls_data->sums->wk2);
         }
     }
     /*  End of While loop */
 
     if (phi_loc > PI) phi_loc = phi_loc - 2*PI;
 
-    *phi0 = phi_loc;
+    ls_data->phi_loc = phi_loc;
     *omega = omega_loc;
 
     /* Now we calculate the estimated error of the fit */
@@ -235,23 +220,23 @@ int do_phase_fit (double omega_guess,
     nphi = 0;
     for (k=0; k<mplgs; k++) {
         if (!badlag[k]) {
-            e2 += w[k]*w[k]*(phi_k[k] - phi_loc - omega_loc*tau[k]*t0)*
-                         (phi_k[k] - phi_loc - omega_loc*tau[k]*t0);
-            wbar += w[k];
+            e2 += ls_data->w[k]*ls_data->w[k]*(phi_k[k] - phi_loc - omega_loc * ls_data->tau[k]*ls_data->t0)*
+                         (phi_k[k] - phi_loc - omega_loc * ls_data->tau[k] * ls_data->t0);
+            wbar += ls_data->w[k];
             nphi++;
         }
     }
     wbar = wbar/nphi;
-    if (xflag) *sdev = sqrt(e2/(sum_w)/(nphi-2));
-    else *sdev = sqrt(e2/sum_w/(nphi-1));
+    if (xflag) ls_data->phase_sdev = sqrt(e2/(ls_data->sums->w)/(nphi-2));
+    else ls_data->phase_sdev = sqrt(e2/ls_data->sums->w/(nphi-1));
 
     if (xflag) {
-        *phi0_err =  *sdev * wbar * sqrt(sum_wk2*t2/d);
-        *omega_err = *sdev * wbar * sqrt(sum_w/d);
+        ls_data->phi_err =  ls_data->phase_sdev * wbar * sqrt(ls_data->sums->wk2*t2/d);
+        ls_data->omega_err = ls_data->phase_sdev * wbar * sqrt(ls_data->sums->w/d);
     }
     else {
-        *phi0_err = 0;
-        *omega_err = *sdev*wbar/sqrt(sum_wk2)/t0;
+        ls_data->phi_err = 0;
+        ls_data->omega_err = ls_data->phase_sdev*wbar/sqrt(ls_data->sums->wk2)/ls_data->t0;
     }
     free(phi_k);
     return 0;
