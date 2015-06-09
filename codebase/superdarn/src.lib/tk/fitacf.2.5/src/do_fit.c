@@ -43,21 +43,32 @@
 #include "elev_goose.h"
 #include "ground_scatter.h"
 
-int calc_skynoise(struct FitBlock *iptr, struct FitNoise *nptr, double *mnpwr,
-                    double *pwrd, double *pwrt){
+/**
+Determines the lag 0 noise level and ACF cut off power
+*/
+double calc_skynoise(struct FitBlock *fit_blk, double *pwrd, size_t size){
 
     int i;
+    double min_pwr = 0.0;
+    double *pwrt;
+
+    pwrt=malloc(size);
+
+    if(pwrt == NULL){
+        return -1.0;
+    }
 
     /* Determine the lag_0 noise level (0 dB reference) and the noise level at 
      which fit_acf is to quit (average power in the 
      fluctuations of the acfs which are pure noise) */
 
-    for (i=0; i < iptr->prm.nrang; i++) {
-        pwrd[i] = (double) iptr->prm.pwr0[i];   
+    for (i=0; i < fit_blk->prm.nrang; i++) {
+        pwrd[i] = (double) fit_blk->prm.pwr0[i];   
                     /* transfer powers into local array */
         pwrt[i] = pwrd[i];
     }
-    qsort(pwrt, iptr->prm.nrang, sizeof(double), dbl_cmp);
+
+    qsort(pwrt, fit_blk->prm.nrang, sizeof(double), dbl_cmp);
     /* determine the average lag0 power of the 10 lowest power acfs */
     
     int ni = 0;
@@ -71,17 +82,17 @@ int calc_skynoise(struct FitBlock *iptr, struct FitNoise *nptr, double *mnpwr,
             first 1/3.  If you didn't get any useable values, then use
             the NOISE parameter */
         
-    while ((ni < 10) && (i < iptr->prm.nrang/3)) {
+    while ((ni < 10) && (i < fit_blk->prm.nrang/3)) {
         if (pwrt[i]) ++ni;
-        *mnpwr += pwrt[i++];  
+        min_pwr += pwrt[i++];  
     }
 
     ni = (ni > 0) ? ni :  1;
-    *mnpwr = *mnpwr/ni;
-    if (*mnpwr < 1.0) *mnpwr = iptr->prm.noise;
-    nptr->skynoise = *mnpwr;
+    min_pwr = min_pwr/ni;
+    if (min_pwr < 1.0) min_pwr = fit_blk->prm.noise;
 
-    return 0;
+    free(pwrt);
+    return min_pwr;
 }
 
 /*
@@ -89,304 +100,336 @@ int calc_skynoise(struct FitBlock *iptr, struct FitNoise *nptr, double *mnpwr,
     the noise then it is given -50dB magnitude, otherwise 
     it is recalculated into SNR by subtraction
 */ 
-void power_to_snr(struct FitBlock *iptr, struct FitRange *ptr, struct FitNoise *nptr, 
+void power_to_snr(struct FitBlock *fit_blk, struct FitRange *acf_fit_range, struct FitNoise *fit_noise, 
                     double *skylog, double *pwrd){
 
     int i;
     /*  convert the lag0 powers to dB */
-    if (nptr->skynoise > 0.0) *skylog = 10.0 * log10(nptr->skynoise);
+    if (fit_noise->skynoise > 0.0) *skylog = 10.0 * log10(fit_noise->skynoise);
     else *skylog = 0.0;
 
-    for (i=0; i<iptr->prm.nrang; i++) { 
+    for (i=0; i<fit_blk->prm.nrang; i++) { 
 
-        pwrd[i] = pwrd[i] - nptr->skynoise;
-        if (pwrd[i] <= 0.0) ptr[i].p_0 = -50.0;
-        else ptr[i].p_0 = 10.0*log10(pwrd[i]) - *skylog;
+        pwrd[i] = pwrd[i] - fit_noise->skynoise;
+        if (pwrd[i] <= 0.0) acf_fit_range[i].p_0 = -50.0;
+        else acf_fit_range[i].p_0 = 10.0*log10(pwrd[i]) - *skylog;
     }
 
 }
 
-void init_fit_range_data(struct FitRange *ptr,struct FitRange *xptr, 
+void init_acf_range_data(struct FitRange *acf_fit_range, int nrang){
+
+    int i;
+
+    if(acf_fit_range != NULL)
+        for (i=0; i<nrang; i++) {
+            acf_fit_range[i].p_l = -50.0;
+            acf_fit_range[i].p_s = -50.0;
+            acf_fit_range[i].p_l_err= 0.0;
+            acf_fit_range[i].p_s_err= 0.0;
+            acf_fit_range[i].w_l = 0.0;
+            acf_fit_range[i].w_s = 0.0;
+            acf_fit_range[i].w_l_err = 0.0;
+            acf_fit_range[i].w_s_err = 0.0;
+            acf_fit_range[i].v = 0.0;
+            acf_fit_range[i].v_err = 0.0;
+            acf_fit_range[i].phi0 = 0.0;
+            acf_fit_range[i].phi0_err=0.0;
+            acf_fit_range[i].sdev_l = 0.0;
+            acf_fit_range[i].sdev_s = 0.0;
+            acf_fit_range[i].sdev_phi = 0.0;
+            acf_fit_range[i].gsct = 0.0;
+            acf_fit_range[i].qflg = 0;
+            acf_fit_range[i].nump=0;
+        }
+}
+
+void init_xcf_range_data(struct FitRange *xcf_fit_range, 
                         struct FitElv *elv, int nrang){
 
     int i;
-    for (i=0; i<nrang; i++) {
-        ptr[i].p_l = -50.0;
-        ptr[i].p_s = -50.0;
-        ptr[i].p_l_err= 0.0;
-        ptr[i].p_s_err= 0.0;
-        ptr[i].w_l = 0.0;
-        ptr[i].w_s = 0.0;
-        ptr[i].w_l_err = 0.0;
-        ptr[i].w_s_err = 0.0;
-        ptr[i].v = 0.0;
-        ptr[i].v_err = 0.0;
-        ptr[i].phi0 = 0.0;
-        ptr[i].phi0_err=0.0;
-        ptr[i].sdev_l = 0.0;
-        ptr[i].sdev_s = 0.0;
-        ptr[i].sdev_phi = 0.0;
-        ptr[i].gsct = 0.0;
-        ptr[i].qflg = 0;
-        ptr[i].nump=0;
-        if (xptr !=NULL) {
-            xptr[i].p_l = -50.0;
-            xptr[i].p_s = -50.0;
-            xptr[i].p_l_err= 0.0;
-            xptr[i].p_s_err= 0.0;
-            xptr[i].w_l = 0.0;
-            xptr[i].w_s = 0.0;
-            xptr[i].w_l_err = 0.0;
-            xptr[i].w_s_err = 0.0;
-            xptr[i].v = 0.0;
-            xptr[i].v_err = 0.0;
-            xptr[i].phi0 = 0.0;
-            xptr[i].phi0_err=0.0;
-            xptr[i].sdev_l = 0.0;
-            xptr[i].sdev_s = 0.0;
-            xptr[i].sdev_phi = 0.0;
-            xptr[i].gsct = 0.0;
-            xptr[i].qflg = 0;
-            xptr[i].nump=0;
+
+    if (xcf_fit_range != NULL) {
+        for (i=0; i<nrang; i++) {
+            xcf_fit_range[i].p_l = -50.0;
+            xcf_fit_range[i].p_s = -50.0;
+            xcf_fit_range[i].p_l_err= 0.0;
+            xcf_fit_range[i].p_s_err= 0.0;
+            xcf_fit_range[i].w_l = 0.0;
+            xcf_fit_range[i].w_s = 0.0;
+            xcf_fit_range[i].w_l_err = 0.0;
+            xcf_fit_range[i].w_s_err = 0.0;
+            xcf_fit_range[i].v = 0.0;
+            xcf_fit_range[i].v_err = 0.0;
+            xcf_fit_range[i].phi0 = 0.0;
+            xcf_fit_range[i].phi0_err=0.0;
+            xcf_fit_range[i].sdev_l = 0.0;
+            xcf_fit_range[i].sdev_s = 0.0;
+            xcf_fit_range[i].sdev_phi = 0.0;
+            xcf_fit_range[i].gsct = 0.0;
+            xcf_fit_range[i].qflg = 0;
+            xcf_fit_range[i].nump=0;
 
             elv[i].normal= 0.0;
             elv[i].low = 0.0;
             elv[i].high = 0.0;
         }
-
     }
 }
 
-int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
-         struct FitRange *ptr,struct FitRange *xptr, struct FitElv *elv,
-         struct FitNoise *nptr) {
+/**
+Once an ACF has been fitted, this function will determine parameters such as
+velocity, spectral width, etc from the fitted data for a given range
+*/
+void determinations_from_fitted_acf(struct FitBlock *fit_blk, struct FitRange *acf_fit_range,
+    double skylog, double freq_to_vel, int range){
 
-    struct FitACFBadSample badsmp;
-    int *badlag=NULL;
+    /* several changes have been made here to 
+     fix an apparent problem in handling HUGE_VAL.
+             
+     If there are too few points in an ACF to allow
+     the error on a parameter to be calculated then
+                 the subroutine fit_acf sets the value to HUGE_VAL.
 
-    int i=0, k, s;
+     However, in this routine the error values are converted
+     to natural units (e.g. velocity instead of frequency).
+     It appears that multiplying HUGE_VAL by something causes
+     a floating point exception that then sets the result of
+     the calculation to 0.  Thus the error values that were being
+     stored in the file would be zero instead of HUGE_VAL.
 
-    double *pwrd=NULL,*pwrt=NULL;
-    double mnpwr, skylog, freq_to_vel, range;
-    double xomega=0.0;
+     The code now checks to see if the value is set to
+     HUGE_VAL before doing the conversion.  If it is then
+     instead of a converted version the error value is
+     reset to HUGE_VAL.
+    */
 
-    double noise_pwr=0.0; 
+    /* convert power from natural log to dB */
 
-    nptr->skynoise=0.0;
-    nptr->lag0=0.0;
-    nptr->vel=0.0;
+    acf_fit_range[range].p_l = acf_fit_range[range].p_l*LN_TO_LOG - skylog;
+    acf_fit_range[range].p_s = acf_fit_range[range].p_s*LN_TO_LOG - skylog;
 
+    acf_fit_range[range].p_l_err = (acf_fit_range[range].p_l_err == HUGE_VAL) ? 
+        HUGE_VAL : acf_fit_range[range].p_l_err*LN_TO_LOG;
 
-    if (iptr->prm.nave <= 1) return 0;
+    acf_fit_range[range].p_s_err = (acf_fit_range[range].p_s_err == HUGE_VAL) ? 
+        HUGE_VAL : acf_fit_range[range].p_s_err*LN_TO_LOG;
 
-    freq_to_vel = C/(4*PI)/(iptr->prm.tfreq * 1000.0);
+    /* convert Doppler frequency to velocity */
 
-    badlag=malloc(sizeof(int)*iptr->prm.nrang*iptr->prm.mplgs);
-    if (badlag==NULL) return -1;
+    acf_fit_range[range].v = fit_blk->prm.vdir*freq_to_vel*acf_fit_range[range].v;
 
-    pwrd=malloc(sizeof(double)*iptr->prm.nrang);
-    if (pwrd==NULL) {
-        free(badlag);
-        return -1;
+    /* flag absurdly high velocities with qflg of 8 */
+
+    if (acf_fit_range[range].v > (freq_to_vel* (PI* 1000.0* 1000.0)/ fit_blk->prm.mpinc)){
+       acf_fit_range[range].qflg= 8;      
     }
-    pwrt=malloc(sizeof(double)*iptr->prm.nrang);
-    if (pwrt==NULL) {
-        free(badlag);
-        free(pwrd);
-        return -1;
+
+    acf_fit_range[range].v_err = (acf_fit_range[range].v_err == HUGE_VAL) ?
+        HUGE_VAL : freq_to_vel*acf_fit_range[range].v_err;
+
+    /* convert decay parameters to spectral widths */
+
+    acf_fit_range[range].w_l = freq_to_vel*2*acf_fit_range[range].w_l;
+    acf_fit_range[range].w_l_err = (acf_fit_range[range].w_l_err == HUGE_VAL) ?
+        HUGE_VAL : freq_to_vel*2*acf_fit_range[range].w_l_err;
+
+    /* sigma is returned as sigma**2 so check the sign for validity
+         if sigma**2 is negative take sqrt of the abs and transfer the sign */
+
+    acf_fit_range[range].w_s = (acf_fit_range[range].w_s >= 0) ? sqrt(acf_fit_range[range].w_s) : -sqrt(-acf_fit_range[range].w_s);
+
+
+    if ((acf_fit_range[range].w_s !=0.0) && (acf_fit_range[range].w_s_err != HUGE_VAL)){  
+        acf_fit_range[range].w_s_err = 0.5*acf_fit_range[range].w_s_err/fabs(acf_fit_range[range].w_s);
+    }
+    else{ 
+        acf_fit_range[range].w_s_err=HUGE_VAL;
     }
 
-    if (iptr->prm.channel==0) FitACFMarkBadSamples(&iptr->prm,&badsmp);    
-    else FitACFBadlagsStereo(&iptr->prm,&badsmp);  
+    acf_fit_range[range].w_s = 3.33*freq_to_vel*acf_fit_range[range].w_s;
+    acf_fit_range[range].w_s_err = (acf_fit_range[range].w_s_err == HUGE_VAL) ?
+        HUGE_VAL : 3.33*freq_to_vel*acf_fit_range[range].w_s_err;
 
 
-    mnpwr = 0.0;
-    s = calc_skynoise(iptr, nptr, &mnpwr, pwrd, pwrt);
-    if (s == -1){
-        return -1;
-    }
-    /* Now determine the level which will be used as the cut-off power 
-         for fit_acf.  This is the average power at all non-zero lags of all
-         acfs which have lag0 power < 1.6*mnpwr + 1 stnd. deviation from that
-         average power level */
+    /*  Now check the values of power, velocity and width
+            to see if this should be flagged as ground-scatter */
 
-    noise_pwr = noise_stat(mnpwr,&iptr->prm,&badsmp,iptr->acfd); 
+    if (acf_fit_range[range].gsct == 0) acf_fit_range[range].gsct=ground_scatter(&acf_fit_range[range]); 
 
-    /*convert lag0powers to snr AND assign -50dB to those with SNR below 1*/
-    power_to_snr(iptr, ptr, nptr, &skylog, pwrd);
+}
 
-    /*  reset the output arrays */
-    init_fit_range_data(ptr, xptr, elv, iptr->prm.nrang);
+/**
+Once an XCF has been fitted, this function will determine parameters such as
+velocity, spectral width, etc as well as elevation angle
+*/
+void determinations_from_fitted_xcf(struct FitBlock *fit_blk, struct FitRange *xcf_fit_range,
+    struct FitElv *elv, int goose, double skylog, double freq_to_vel, int range){
 
-    /* ----------------------------------------------------------------------*/
-    /*  Now do the fits for each acf */
+    double range_gate;
+        /* convert power from natural log to dB */
 
-    for (k=0, i=0; k<iptr->prm.nrang;k++) {
+    xcf_fit_range[range].p_l = xcf_fit_range[range].p_l*LN_TO_LOG - skylog;
+    xcf_fit_range[range].p_s = xcf_fit_range[range].p_s*LN_TO_LOG - skylog;
+    xcf_fit_range[range].p_l_err = (xcf_fit_range[range].p_l_err == HUGE_VAL) ?
+        HUGE_VAL : xcf_fit_range[range].p_l_err*LN_TO_LOG;
 
-        ptr[k].qflg = fit_acf(&iptr->acfd[k*iptr->prm.mplgs], k+1,
-                                &badlag[k*iptr->prm.mplgs],&badsmp,
-                                lag_lim,&iptr->prm,noise_pwr,0,0.0,&ptr[k]);
-        xomega=ptr[k].v;
-        if (ptr[k].qflg == 1)   {
-            /* several changes have been made here to 
-             fix an apparent problem in handling HUGE_VAL.
-                     
-             If there are too few points in an ACF to allow
-             the error on a parameter to be calculated then
-                         the subroutine fit_acf sets the value to HUGE_VAL.
-
-             However, in this routine the error values are converted
-             to natural units (e.g. velocity instead of frequency).
-             It appears that multiplying HUGE_VAL by something causes
-             a floating point exception that then sets the result of
-             the calculation to 0.  Thus the error values that were being
-             stored in the file would be zero instead of HUGE_VAL.
-
-             The code now checks to see if the value is set to
-             HUGE_VAL before doing the conversion.  If it is then
-             instead of a converted version the error value is
-             reset to HUGE_VAL.
-            */
-
-            /* convert power from natural log to dB */
-
-            ptr[k].p_l = ptr[k].p_l*LN_TO_LOG - skylog;
-            ptr[k].p_s = ptr[k].p_s*LN_TO_LOG - skylog;
-
-            ptr[k].p_l_err = (ptr[k].p_l_err == HUGE_VAL) ?
-                                         HUGE_VAL :
-                                         ptr[k].p_l_err*LN_TO_LOG;
-
-            ptr[k].p_s_err = (ptr[k].p_s_err == HUGE_VAL) ?
-                                         HUGE_VAL :
-                                         ptr[k].p_s_err*LN_TO_LOG;
+    xcf_fit_range[range].p_s_err = (xcf_fit_range[range].p_s_err == HUGE_VAL) ?
+        HUGE_VAL : xcf_fit_range[range].p_s_err*LN_TO_LOG;
 
             /* convert Doppler frequency to velocity */
 
-            ptr[k].v = iptr->prm.vdir*freq_to_vel*ptr[k].v;
-
-            /* flag absurdly high velocities with qflg of 8 */
-
-            if (ptr[k].v > (freq_to_vel* (PI* 1000.0* 1000.0)/ iptr->prm.mpinc))
-                 ptr[k].qflg= 8;      
-        
-            ptr[k].v_err = (ptr[k].v_err == HUGE_VAL) ?
-                HUGE_VAL : 
-                freq_to_vel*ptr[k].v_err;
+    xcf_fit_range[range].v = fit_blk->prm.vdir*freq_to_vel*xcf_fit_range[range].v;
+    xcf_fit_range[range].v_err = (xcf_fit_range[range].v_err == HUGE_VAL) ?
+        HUGE_VAL : freq_to_vel*xcf_fit_range[range].v_err;
 
             /* convert decay parameters to spectral widths */
 
-            ptr[k].w_l = freq_to_vel*2*ptr[k].w_l;
-            ptr[k].w_l_err = (ptr[k].w_l_err == HUGE_VAL) ?
-                                         HUGE_VAL :
-                                         freq_to_vel*2*ptr[k].w_l_err;
-
-            /* sigma is returned as sigma**2 so check the sign for validity
-                 if sigma**2 is negative take sqrt of the abs and transfer the sign */
-
-            ptr[k].w_s = (ptr[k].w_s >= 0) ? sqrt(ptr[k].w_s) : -sqrt(-ptr[k].w_s);
-
-
-            if ((ptr[k].w_s !=0.0) && (ptr[k].w_s_err != HUGE_VAL))  
-                ptr[k].w_s_err = 0.5*ptr[k].w_s_err/fabs(ptr[k].w_s);
-            else 
-                ptr[k].w_s_err=HUGE_VAL;
-
-
-
-
-            ptr[k].w_s = 3.33*freq_to_vel*ptr[k].w_s;
-            ptr[k].w_s_err = (ptr[k].w_s_err == HUGE_VAL) ?
-                                HUGE_VAL :
-                                3.33*freq_to_vel*ptr[k].w_s_err;
-             
-
-            /*  Now check the values of power, velocity and width
-                    to see if this should be flagged as ground-scatter */
-                    
-            if (ptr[k].gsct == 0) ptr[k].gsct=ground_scatter(&ptr[k]); 
-        }
-    
-        if ((iptr->prm.xcf==0) || (ptr[k].qflg !=1)) {
-            if (ptr[k].qflg == 1) {
-                i++;
-            }
-            continue;
-        }
-
-    
-        xptr[k].qflg = fit_acf(&iptr->xcfd[k*iptr->prm.mplgs], k+1,
-                                &badlag[k*iptr->prm.mplgs],&badsmp,
-                                lag_lim,&iptr->prm,noise_pwr,1,xomega,
-                                &xptr[k]);
-             
-        if (xptr[k].qflg == 1) {
-            xptr[k].p_l = xptr[k].p_l*LN_TO_LOG - skylog;
-            xptr[k].p_s = xptr[k].p_s*LN_TO_LOG - skylog;
-            xptr[k].p_l_err = (xptr[k].p_l_err == HUGE_VAL) ?
-                                            HUGE_VAL :
-                                            xptr[k].p_l_err*LN_TO_LOG;
-
-            xptr[k].p_s_err = (xptr[k].p_s_err == HUGE_VAL) ?
-                                            HUGE_VAL :
-                                            xptr[k].p_s_err*LN_TO_LOG;
-
-            /* convert Doppler frequency to velocity */
-
-            xptr[k].v = iptr->prm.vdir*freq_to_vel*xptr[k].v;
-            xptr[k].v_err = (xptr[k].v_err == HUGE_VAL) ?
-                                        HUGE_VAL :
-                                        freq_to_vel*xptr[k].v_err;
-
-            /* convert decay parameters to spectral widths */
-
-            xptr[k].w_l = freq_to_vel*2*xptr[k].w_l;
-            xptr[k].w_l_err = (xptr[k].w_l_err == HUGE_VAL) ?
-                                            HUGE_VAL :
-                                            freq_to_vel*2*xptr[k].w_l_err;
+    xcf_fit_range[range].w_l = freq_to_vel*2*xcf_fit_range[range].w_l;
+    xcf_fit_range[range].w_l_err = (xcf_fit_range[range].w_l_err == HUGE_VAL) ?
+        HUGE_VAL : freq_to_vel*2*xcf_fit_range[range].w_l_err;
 
             /* sigma is returned as sigma**2 so check the sign for validity  
             if sigma**2 is negative take sqrt of the abs and transfer the sign */
 
-            xptr[k].w_s = (xptr[k].w_s >= 0) ? sqrt(xptr[k].w_s) : -sqrt(-xptr[k].w_s);
+    xcf_fit_range[range].w_s = (xcf_fit_range[range].w_s >= 0) ? sqrt(xcf_fit_range[range].w_s) : -sqrt(-xcf_fit_range[range].w_s);
 
-            if ((xptr[k].w_s !=0.0) && (xptr[k].w_s_err != HUGE_VAL))
-                xptr[k].w_s_err = 0.5*xptr[k].w_s_err/fabs(xptr[k].w_s);
-            else xptr[k].w_s_err=HUGE_VAL;
-
-            xptr[k].w_s = 3.33*freq_to_vel*xptr[k].w_s;
-            xptr[k].w_s_err = (xptr[k].w_s_err == HUGE_VAL) ? 
-                                            HUGE_VAL :
-                                            3.33*freq_to_vel*xptr[k].w_s_err;
-
-
-        
-            /* calculate the elevation angle */
-    
-            if (xptr[k].phi0 > PI)  xptr[k].phi0 = xptr[k].phi0 - 2*PI;
-            if (xptr[k].phi0 < -PI) xptr[k].phi0 = xptr[k].phi0 + 2*PI;
-            if (iptr->prm.phidiff != 0) 
-                xptr[k].phi0 = xptr[k].phi0*iptr->prm.phidiff;
- 
-            /* changes which array is first */
-        
-            range = 0.15*(iptr->prm.lagfr + iptr->prm.smsep*(k-1));
-            if (goose == 0) {
-                elv[k].normal = elevation(&iptr->prm,range, xptr[k].phi0);
-                elv[k].low = elevation(&iptr->prm,range, xptr[k].phi0+xptr[k].phi0_err);
-                elv[k].high = elevation(&iptr->prm,range,xptr[k].phi0-xptr[k].phi0_err);
-            } else {
-                elv[k].normal = elev_goose(&iptr->prm,range, xptr[k].phi0);
-                elv[k].low = elev_goose(&iptr->prm,range, xptr[k].phi0+xptr[k].phi0_err);
-                elv[k].high = elev_goose(&iptr->prm,range, xptr[k].phi0-xptr[k].phi0_err);
-            }
-        }
-        if(ptr[k].qflg == 1) {
-            i++;
-        }
+    if ((xcf_fit_range[range].w_s !=0.0) && (xcf_fit_range[range].w_s_err != HUGE_VAL)){
+        xcf_fit_range[range].w_s_err = 0.5*xcf_fit_range[range].w_s_err/fabs(xcf_fit_range[range].w_s);
+    }
+    else{ 
+        xcf_fit_range[range].w_s_err=HUGE_VAL;
     }
 
-    free(badlag);
+    xcf_fit_range[range].w_s = 3.33*freq_to_vel*xcf_fit_range[range].w_s;
+    xcf_fit_range[range].w_s_err = (xcf_fit_range[range].w_s_err == HUGE_VAL) ? 
+        HUGE_VAL : 3.33*freq_to_vel*xcf_fit_range[range].w_s_err;
+
+
+
+            /* calculate the elevation angle */
+    
+    if (xcf_fit_range[range].phi0 > PI)  xcf_fit_range[range].phi0 = xcf_fit_range[range].phi0 - 2*PI;
+    if (xcf_fit_range[range].phi0 < -PI) xcf_fit_range[range].phi0 = xcf_fit_range[range].phi0 + 2*PI;
+    if (fit_blk->prm.phidiff != 0) 
+        xcf_fit_range[range].phi0 = xcf_fit_range[range].phi0*fit_blk->prm.phidiff;
+
+            /* changes which array is first */
+
+    range_gate = 0.15*(fit_blk->prm.lagfr + fit_blk->prm.smsep*(range-1));
+    if (goose == 0) {
+        elv[range].normal = elevation(&fit_blk->prm,range_gate, xcf_fit_range[range].phi0);
+        elv[range].low = elevation(&fit_blk->prm,range_gate, xcf_fit_range[range].phi0+xcf_fit_range[range].phi0_err);
+        elv[range].high = elevation(&fit_blk->prm,range_gate,xcf_fit_range[range].phi0-xcf_fit_range[range].phi0_err);
+    } else {
+        elv[range].normal = elev_goose(&fit_blk->prm,range_gate, xcf_fit_range[range].phi0);
+        elv[range].low = elev_goose(&fit_blk->prm,range_gate, xcf_fit_range[range].phi0+xcf_fit_range[range].phi0_err);
+        elv[range].high = elev_goose(&fit_blk->prm,range_gate, xcf_fit_range[range].phi0-xcf_fit_range[range].phi0_err);
+    }
+  
+}
+
+/**
+Do_fit finds intialize noise levels and power cut offs for ACFs. It then marks
+bad samples. Each range gate then has its ACF fitted and parameters are then
+determined from fitted data
+*/
+int do_fit(struct FitBlock *fit_blk,int lag_lim,int goose,
+         struct FitRange *acf_fit_range,struct FitRange *xcf_fit_range, struct FitElv *elv,
+         struct FitNoise *fit_noise) {
+
+    struct FitACFBadSample samples;
+    int *lag=NULL;
+
+    int i=0, k, s;
+
+    double *pwrd=NULL,*pwrt=NULL;
+    double min_pwr, skylog, freq_to_vel, range;
+    double xomega=0.0;
+
+    double noise_pwr=0.0; 
+
+    fit_noise->skynoise=0.0;
+    fit_noise->lag0=0.0;
+    fit_noise->vel=0.0;
+
+
+    if (fit_blk->prm.nave <= 1) return 0;
+
+    lag=malloc(sizeof(int)*fit_blk->prm.nrang*fit_blk->prm.mplgs);
+    if (lag==NULL){
+        return -1;
+    }
+
+    pwrd=malloc(sizeof(double)*fit_blk->prm.nrang);
+    if (pwrd==NULL) {
+        free(lag);
+        return -1;
+    }
+
+    if (fit_blk->prm.channel==0) FitACFMarkBadSamples(&fit_blk->prm,&samples);    
+    else FitACFBadlagsStereo(&fit_blk->prm,&samples);  
+
+    min_pwr = calc_skynoise(fit_blk, pwrd, sizeof(double)*fit_blk->prm.nrang);
+    if (min_pwr < 0.0){
+        free(lag);
+        free(pwrd);
+        return -1;
+    }
+    fit_noise->skynoise = min_pwr;
+    /* Now determine the level which will be used as the cut-off power 
+         for fit_acf.  This is the average power at all non-zero lags of all
+         acfs which have lag0 power < 1.6*min_pwr + 1 stnd. deviation from that
+         average power level */
+
+    noise_pwr = noise_stat(min_pwr,&fit_blk->prm,&samples,fit_blk->acfd); 
+
+    /*convert lag0powers to snr AND assign -50dB to those with SNR below 1*/
+    power_to_snr(fit_blk, acf_fit_range, fit_noise, &skylog, pwrd);
+
+    /*  reset the output arrays */
+
+    init_acf_range_data(acf_fit_range, fit_blk->prm.nrang);
+
+    init_xcf_range_data(xcf_fit_range, elv,fit_blk->prm.nrang);
+
+    /* ----------------------------------------------------------------------*/
+
+
+    freq_to_vel = C/(4*PI)/(fit_blk->prm.tfreq * 1000.0);
+
+    /*  Now do the fits for each acf */
+
+    for (k=0, i=0; k<fit_blk->prm.nrang;k++) {
+
+        acf_fit_range[k].qflg = fit_acf(&fit_blk->acfd[k*fit_blk->prm.mplgs], k+1,
+                                &lag[k*fit_blk->prm.mplgs],&samples,
+                                lag_lim,&fit_blk->prm,noise_pwr,0,0.0,&acf_fit_range[k]);
+
+        xomega=acf_fit_range[k].v;
+        if(acf_fit_range[k].qflg == 1){
+            determinations_from_fitted_acf(fit_blk, acf_fit_range, skylog, freq_to_vel, k);
+            i++;
+        }
+        
+    
+        if ((fit_blk->prm.xcf==0) || (acf_fit_range[k].qflg !=1)) {
+            continue;
+        }
+
+        
+        xcf_fit_range[k].qflg = fit_acf(&fit_blk->xcfd[k*fit_blk->prm.mplgs], k+1,
+                                &lag[k*fit_blk->prm.mplgs],&samples,
+                                lag_lim,&fit_blk->prm,noise_pwr,1,xomega,
+                                &xcf_fit_range[k]);
+
+        if(xcf_fit_range[k].qflg == 1){
+            determinations_from_fitted_xcf(fit_blk, xcf_fit_range, elv, goose, skylog, freq_to_vel, k);
+        }
+             
+    }
+
+    free(lag);
     free(pwrd);
     free(pwrt);
     return i;
