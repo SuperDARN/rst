@@ -68,55 +68,52 @@
 #include <string.h>
 #include "rmath.h"
 #include "do_phase_fit.h"
+#include "badlags.h"
 
 #define determ(aa,bb,cc,dd) (((aa)*(dd)) - ((bb)*(cc)))
 
-int do_phase_fit (double omega_guess, char xflag, int mplgs,
+/**
+Fits a straight line to the phase using a iterative fitting approach
+*/
+int phase_fit(double omega_guess, char xflag, int mplgs,
                 struct complex *acf, int *badlag,
-                double *omega, LS_DATA *ls_data) {
-
-    /*  local declarations */
+                double *omega, LS_DATA *ls_data, double *phi_k, double *omega__loc,
+                double *phi__loc, double *d){
     double omega_loc, omega_init;
     double omega_old_2=9999.0, omega_old = 9999.0;
     int icnt = 0;
-
-    double phi_loc = 0.0;
+    double phase_slope[3];
+    double phase_diff = 0.0;
     double sum_phi = 0.0;
     double sum_kphi = 0.0;
     double phi_pred;
     double phi_tot;
-    double *phi_k=NULL;
-    double t2;
+    /*double ls_data->t2;*/
     double wbar;
     double phitmp,phifrc,phiint;
     int n_twopi;
     int nphi;
     int k;
+    int i = 2;
+    double d_aa, d_bb, d_cc, d_dd;
+    double b_aa, b_bb, b_cc, b_dd; 
+    double a_aa, a_bb, a_cc, a_dd; 
 
-    double d=0.0, e2;
+        
+    phase_slope[2] = omega_guess;
+    phase_slope[1] = 9999.0;
+    phase_slope[0] = 9999.0;
 
-    omega_loc = omega_guess;
-    t2 = ls_data->t0 * ls_data->t0;
-
-    phi_k = malloc(sizeof(double)*mplgs);
-    if (phi_k==NULL) {
-        return -1;
-    }
-
-    for (k=0;k<mplgs;k++) {
-        phi_k[k]=0;
-    }
-
-    while (fabs(omega_old - omega_loc) > fabs(omega_loc * PI/64.)) {
+    while (fabs(phase_slope[i-1] - phase_slope[i]) > fabs(phase_slope[i] * PI/64.)) {
 
         /* if omega_loc == omega_old_2 it means we are oscillating between
              two different values of *omega */
 
-        if ((icnt>0) && (omega_loc == omega_old_2)) {
-            *omega = (omega_old + omega_loc)/2.;
+        if ((icnt>0) && (phase_slope[i] == phase_slope[i-2])) {
+            *omega = (phase_slope[i-1] + phase_slope[i])/2.;
             /* return the average value of the two *omega values and return
                 with error code 16 */
-            ls_data->phi_loc = phi_loc;
+            ls_data->phi_loc = phase_diff;
             free(phi_k);
             return 16;
         }
@@ -127,17 +124,17 @@ int do_phase_fit (double omega_guess, char xflag, int mplgs,
         if (++icnt >= 5) {
             /* return whatever we have at this moment
                 and set error code 32 */
-            *omega = omega_loc;
-            ls_data->phi_loc = phi_loc;
+            *omega = phase_slope[i];
+            ls_data->phi_loc = phase_diff;
             free(phi_k);
             return 32;
         }
 
-        omega_old_2 = omega_old;
-        omega_old = omega_loc;
-        omega_init = omega_loc;
+        phase_slope[i-2] = phase_slope[i-1];
+        phase_slope[i-1] = phase_slope[i];
 
-        if (!xflag) phi_loc = 0.;
+
+        if (!xflag) phase_diff = 0.;
 
         sum_phi = atan2(acf[0].y,acf[0].x);
         sum_phi = sum_phi * ls_data->w[0] * ls_data->w[0];
@@ -150,7 +147,7 @@ int do_phase_fit (double omega_guess, char xflag, int mplgs,
 
         for (k=1; k<mplgs; k++) {
             if (badlag[k]) continue;
-            phi_pred = phi_loc + omega_loc * ls_data->tau[k] * ls_data->t0;
+            phi_pred = phase_diff + phase_slope[i] * ls_data->tau[k] * ls_data->t0;
      
             /* The code for calculating n_twopi had a problem, the conversion to
                  an integer sometimes produced the wrong result
@@ -158,7 +155,7 @@ int do_phase_fit (double omega_guess, char xflag, int mplgs,
 
          
             phitmp = ((PI + phi_pred - ls_data->phi_res[k])/(2*PI) - 
-                ((omega_loc > 0) ? 0.0 : 1.0));
+                ((phase_slope[i] > 0) ? 0.0 : 1.0));
 
             phifrc=modf(phitmp,&phiint);
             n_twopi=(int) phiint;            
@@ -183,39 +180,144 @@ int do_phase_fit (double omega_guess, char xflag, int mplgs,
         draw a line, THEN compute a new value of omega_loc as we add each
         new point */
 
-            if (!xflag && ls_data->sums->wk2_arr[k] && (omega_old_2 == 9999.)) {
-                omega_loc = sum_kphi/(ls_data->t0 * ls_data->sums->wk2_arr[k]);
-                omega_loc = (nphi * omega_loc + omega_init)/(nphi + 1);
+            if (!xflag && ls_data->sums->wk2_arr[k] && (phase_slope[i-2] == 9999.)) {
+                phase_slope[i] = sum_kphi/(ls_data->t0 * ls_data->sums->wk2_arr[k]);
+                phase_slope[i] = (nphi * phase_slope[i] + phase_slope[i-1])/(nphi + 1);
             }
         }
 
         if (xflag) {
-            d = determ(ls_data->sums->w,ls_data->sums->wk * ls_data->t0,ls_data->sums->wk * ls_data->t0,ls_data->sums->wk2 * t2);
+            d_aa = ls_data->sums->w;
+            d_bb = ls_data->sums->wk * ls_data->t0;
+            d_cc = ls_data->sums->wk * ls_data->t0;
+            d_dd = ls_data->sums->wk2 * ls_data->t2;
+            *d = determ(d_aa,d_bb,d_cc,d_dd);
             if (d == 0) {
                 free(phi_k);
                 return 8;
             }
-            phi_loc = determ(sum_phi,ls_data->sums->wk * ls_data->t0,sum_kphi * ls_data->t0,ls_data->sums->wk2 * t2)/d;
-            omega_loc = determ(ls_data->sums->w,sum_phi,ls_data->sums->wk * ls_data->t0,sum_kphi * ls_data->t0)/d;
+
+            b_aa = sum_phi;
+            b_bb = ls_data->sums->wk * ls_data->t0;
+            b_cc = sum_kphi * ls_data->t0;
+            b_dd = ls_data->sums->wk2 * ls_data->t2;
+
+            phase_diff = determ(b_aa,b_bb,b_cc,b_dd)/ *d;
+
+            a_aa = ls_data->sums->w;
+            a_bb = sum_phi;
+            a_cc = ls_data->sums->wk * ls_data->t0;
+            a_dd = sum_kphi * ls_data->t0;
+
+            phase_slope[i] = determ(a_aa,a_bb,a_cc,a_dd)/ *d;
         } else {
-            phi_loc = 0;
+            phase_diff = 0;
             if (ls_data->sums->wk2 <= 0.0) {
                 free(phi_k);
                 return 8;
             }
-            omega_loc = sum_kphi/(ls_data->t0*ls_data->sums->wk2);
+            phase_slope[i] = sum_kphi/(ls_data->t0*ls_data->sums->wk2);
         }
     }
     /*  End of While loop */
 
-    if (phi_loc > PI) phi_loc = phi_loc - 2*PI;
+    if (phase_diff > PI) phase_diff = phase_diff - 2*PI;
 
-    ls_data->phi_loc = phi_loc;
-    *omega = omega_loc;
+    ls_data->phi_loc = phase_diff;
+    *omega = phase_slope[i];
+
+    *phi__loc=phase_diff;
+    *omega__loc=phase_slope[i];
+
+    return 0;
+}
+
+/**
+This function provides the uncertainty in the phase fit
+*/
+void phase_fit_error(LS_DATA *ls_data, double phase_diff, double phase_slope, 
+                     int *lag, int xflag, int mplgs, double *phi_k,
+                     double d){
+    double wbar;
+    int nphi;
+    double e2;
+    int k;
+    double constant_a, constant_b;
+    wbar = 0;
+    e2 = 0.;
+    nphi = 0;
+    for (k=0; k<mplgs; k++) {
+        if (lag[k] == GOOD) {
+            constant_a = phi_k[k] - phase_diff - phase_slope * ls_data->tau[k] * ls_data->t0;
+            e2 += ls_data->w[k]*ls_data->w[k] * constant_a * constant_a;
+            wbar += ls_data->w[k];
+            nphi++;
+        }
+    }
+    wbar = wbar/nphi;
+    if (xflag) ls_data->phase_sdev = sqrt(e2/(ls_data->sums->w)/(nphi-2));
+    else ls_data->phase_sdev = sqrt(e2/ls_data->sums->w/(nphi-1));
+
+    if (xflag) {
+        ls_data->phi_err =  ls_data->phase_sdev * wbar * sqrt(ls_data->sums->wk2*ls_data->t2/d);
+        ls_data->omega_err = ls_data->phase_sdev * wbar * sqrt(ls_data->sums->w/d);
+    }
+    else {
+        ls_data->phi_err = 0;
+        ls_data->omega_err = ls_data->phase_sdev*wbar/sqrt(ls_data->sums->wk2)/ls_data->t0;
+    }
+}
+
+/**
+Performs a fit to the phase and its respective error calculations
+*/
+int do_phase_fit (double omega_guess, char xflag, int mplgs,
+                struct complex *acf, int *badlag,
+                double *omega, LS_DATA *ls_data) {
+
+    /*  local declarations */
+    double omega_loc, omega_init;
+    double omega_old_2=9999.0, omega_old = 9999.0;
+    int icnt = 0;
+
+    double phi_loc = 0.0;
+    double sum_phi = 0.0;
+    double sum_kphi = 0.0;
+    double phi_pred;
+    double phi_tot;
+    double *phi_k=NULL;
+    /*double ls_data->t2;*/
+    double wbar;
+    double phitmp,phifrc,phiint;
+    int n_twopi;
+    int nphi;
+    int k;
+    int status;
+
+    double d=0.0, e2;
+
+    
+    ls_data->t2 = ls_data->t0 * ls_data->t0;
+
+    phi_k = malloc(sizeof(double)*mplgs);
+    if (phi_k==NULL) {
+        return -1;
+    }
+
+    for (k=0;k<mplgs;k++) {
+        phi_k[k]=0;
+    }
+
+
+    status = phase_fit(omega_guess,xflag,mplgs,acf, badlag, omega, ls_data, phi_k ,&omega_loc,&phi_loc, &d);
+    
+    if (status > 0) return status;
 
     /* Now we calculate the estimated error of the fit */
 
-    wbar = 0;
+    phase_fit_error(ls_data, phi_loc, omega_loc, badlag, xflag, mplgs, phi_k, d);
+
+/*    wbar = 0;
     e2 = 0.;
     nphi = 0;
     for (k=0; k<mplgs; k++) {
@@ -231,13 +333,13 @@ int do_phase_fit (double omega_guess, char xflag, int mplgs,
     else ls_data->phase_sdev = sqrt(e2/ls_data->sums->w/(nphi-1));
 
     if (xflag) {
-        ls_data->phi_err =  ls_data->phase_sdev * wbar * sqrt(ls_data->sums->wk2*t2/d);
+        ls_data->phi_err =  ls_data->phase_sdev * wbar * sqrt(ls_data->sums->wk2*ls_data->t2/d);
         ls_data->omega_err = ls_data->phase_sdev * wbar * sqrt(ls_data->sums->w/d);
     }
     else {
         ls_data->phi_err = 0;
         ls_data->omega_err = ls_data->phase_sdev*wbar/sqrt(ls_data->sums->wk2)/ls_data->t0;
-    }
+    }*/
     free(phi_k);
     return 0;
 }

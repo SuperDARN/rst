@@ -165,6 +165,7 @@ int fill_fit_block(struct RadarParm *prm, struct RawData *raw,
  
     return 0;
 }
+
 int FitACF(struct RadarParm *prm, struct RawData *raw,struct FitBlock *input, struct FitData *fit) {
 
     int fnum, goose, s;
