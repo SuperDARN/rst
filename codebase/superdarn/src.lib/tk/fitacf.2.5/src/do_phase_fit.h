@@ -29,9 +29,14 @@
 
 #include "fit_mem_helpers.h"
 
+typedef enum omega{
+	HIGH,
+	LOW,
+	BASE
+}OMEGA;
 
 int do_phase_fit(double omega_guess, char xflag, int mplgs,
 		  struct complex *acf, int *badlag, 
-		  double *omega,LS_DATA *ls_data
+		  OMEGA location,LS_DATA *ls_data
 		);
 

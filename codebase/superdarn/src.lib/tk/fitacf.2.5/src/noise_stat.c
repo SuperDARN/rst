@@ -43,63 +43,71 @@
 #define ROOT_3 1.7
 
 
-double lag_power(struct complex *a) {
-  return sqrt(a->x*a->x + a->y*a->y);
+ double lag_power(struct complex *a) {
+   return sqrt(a->x*a->x + a->y*a->y);
 }
 
-double noise_stat(double mnpwr,struct FitPrm *ptr,
+/**
+Calculates cutoff power for fit_acf. The cutoff power is 
+equal to the average of all non-zero lags of all acfs that have
+a lag 0 power lower within a std dev of 1.6 * min_pwr
+*/
+double noise_stat(double mnpwr,struct FitPrm *fitted_prms,
                   struct FitACFBadSample *badsmp,
-		  struct complex *acf) {
-	         /* double *signal)  { */
-  double plim;
-  int i, j, np0, npt;
-  int *bdlag;
-  double var, sigma, P, P2;
-  double temp, fluct, low_lim, high_lim;
+                  struct complex *acf) {
 
-  plim = PLIM * mnpwr;
+     double plim;
+     int i, j, np0, npt;
+     int *lag;
+     double var, sigma, P, P2;
+     double temp, fluct, low_lim, high_lim;
 
-  P = 0.0;
-  P2 = 0.0;
-  var = 0.0;
-  np0 = 0;
-  npt = 0;
-  
-  bdlag=malloc(sizeof(int)*ptr->mplgs);
-  if (bdlag==NULL) return -1;
-  memset(bdlag,0,sizeof(int)*ptr->mplgs);
+     plim = PLIM * mnpwr;
 
-  for (i=0; i < ptr->nrang; ++i) { 
-    if ((acf[i*ptr->mplgs].x > plim) || (acf[i*ptr->mplgs].x <= 0.0)) continue;
-	FitACFMarkBadLags((i+1), bdlag,badsmp, ptr);
-	++np0;
-	fluct = ((double) acf[i*ptr->mplgs].x)/sqrt(ptr->nave);
-	low_lim = acf[i*ptr->mplgs].x - 2.0*fluct;
-	if (low_lim < 0) low_lim = low_lim + fluct;
-	high_lim = acf[i*ptr->mplgs].x + fluct;
+     P = 0.0;
+     P2 = 0.0;
+     var = 0.0;
+     np0 = 0;
+     npt = 0;
 
-	for (j=1; j < ptr->mplgs; ++j) {
-      if (bdlag[j]) continue;
-	  temp = lag_power(&acf[i*ptr->mplgs+j]);
-	  if (temp < low_lim || temp > high_lim) continue;
-	  ++npt;
-	  P = P + temp;
-	  P2 = P2 + temp*temp;
-    }
-  }
+     lag=malloc(sizeof(int)*fitted_prms->mplgs);
+     if (lag==NULL) return -1;
+     memset(lag,0,sizeof(int)*fitted_prms->mplgs);
 
-  free(bdlag);
+     for (i=0; i < fitted_prms->nrang; ++i) { 
+          if ((acf[i*fitted_prms->mplgs].x > plim) || (acf[i*fitted_prms->mplgs].x <= 0.0)) continue;
 
-  if (npt < 2) {
-  /*  *signal = 0; */
-	return plim/sqrt((double) ptr->nave);
-  }
+          FitACFMarkBadLags((i+1), lag,badsmp, fitted_prms);
+          ++np0;
+          fluct = ((double) acf[i*fitted_prms->mplgs].x)/sqrt(fitted_prms->nave);
+          low_lim = acf[i*fitted_prms->mplgs].x - 2.0*fluct;
 
-  P = P/npt;
-  var = (P2 - P*P*npt)/((double) (npt-1));
-  sigma = (var > 0.0) ? sqrt(var) : 0.0;
+          if (low_lim < 0) low_lim = low_lim + fluct;
 
-  /*if ((P >= sigma * ROOT_3) && (sigma > 0.0)) *signal = P;
-  else *signal = 0.0; */
-  return (P > sigma) ? P : sigma;
+          high_lim = acf[i*fitted_prms->mplgs].x + fluct;
+
+          for (j=1; j < fitted_prms->mplgs; ++j) {
+              if (lag[j] != GOOD) continue;
+              temp = lag_power(&acf[i*fitted_prms->mplgs+j]);
+              if (temp < low_lim || temp > high_lim) continue;
+              ++npt;
+              P = P + temp;
+              P2 = P2 + temp*temp;
+          }
+     }
+
+     free(lag);
+
+     if (npt < 2) {
+       /*  *signal = 0; */
+     	return plim/sqrt((double) fitted_prms->nave);
+     }
+
+     P = P/npt;
+     var = (P2 - P*P*npt)/((double) (npt-1));
+     sigma = (var > 0.0) ? sqrt(var) : 0.0;
+
+       /*if ((P >= sigma * ROOT_3) && (sigma > 0.0)) *signal = P;
+       else *signal = 0.0; */
+     return (P > sigma) ? P : sigma;
 }

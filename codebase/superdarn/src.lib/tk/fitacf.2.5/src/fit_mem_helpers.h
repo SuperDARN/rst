@@ -13,13 +13,13 @@ typedef struct sums{
     double w;          /*!<sum of squared ACF powers*/
     double wk;         /*!<sum of squared ACF power multiplied by lag*/
     double wk2;        /*!<sum of squared ACF power multiplied by squared lag*/
-    double *wk2_arr;   /*!<*/
+    double *wk2_arr;   /*!<Array of squared ACF power multiplied by squared lag*/
     double wk4;        /*!<sum of squared ACF powers multiplied by lag^4*/
     double p;          /*!<sum of squared ACF powers multiplied by log power*/
     double pk;         /*!<sum of squared ACF powers multiplied by log power and lag*/
     double pk2;        /*!<sum of squared ACF powers multiplied by log power and squared lag*/
-    double phi;        /*!<*/
-    double kphi;       /*!<*/
+    double phi;        /*!<sum of ACf phase multiplied by squared power*/
+    double kphi;       /*!<sum of ACF phase multiplied by lag and squared power*/
 }SUMS;
 
 
@@ -36,19 +36,19 @@ typedef struct least_squares_data{
     double *tau2;  			/*!<ACF lags expressed as quantity of basic lags squared*/
     double *phi_k;  		/*!<*/
     double *w;  			/*!<ACF power values*/
-    double *ln_pwr;  			/*!<natural log of ACF power values */
+    double *ln_pwr;  		/*!<natural log of ACF power values */
     double *wt;  			/*!<sqaured ACF power values multiplied by tau*/
     double *wt2;  			/*!<squared ACF power values multiplied by tau squared*/
-    double *wp;  			/*!<sqaured ACF power values multiplied by log power values*/
-    double omega_loc;   	/*!<*/
+    double *wp;  			/*!<squared ACF power values multiplied by log power values*/
+    double omega_loc;   	/*!<Phase slope*/
     double omega_err_loc;   /*!<*/
-    double phi_loc;  		/*!<*/
-    double omega_base;  	/*!<*/
-    double omega_high;  	/*!<*/
-    double omega_low;  		/*!<*/
-    double phase_sdev;  	/*!<*/
-    double phi_err;  		/*!<*/
-    double omega_err;  		/*!<*/
+    double phi_loc;  		/*!<ACF Phase*/
+    double omega_base;  	/*!<Base phase slope*/
+    double omega_high;  	/*!<High end offset estimate of slope*/
+    double omega_low;  		/*!<Low end offset estimate of slope*/
+    double phase_sdev;  	/*!<Standard deviation in slope*/
+    double phi_err;  		/*!<ACF phase error*/
+    double omega_err;  		/*!<Phase slope error*/
 
     int *pwr_level;			/*!<Power levels marked as good or bad for each lag*/;
     int acf_stat;

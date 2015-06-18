@@ -68,7 +68,7 @@ int adjust_power_profile(LS_DATA *ls_data, struct FitPrm *fitted_prms,
 
     fluc_lev = ls_data->w[0]/sqrt((double) fitted_prms->nave);
     if ((ls_data->w[0] - fluc_lev) < noise_lev) {
-        free_ls_data(ls_data);
+        /*free_ls_data(ls_data);*/
         return -2; 
     } 
     /* give up if left over pwr is too low */
@@ -81,7 +81,7 @@ int adjust_power_profile(LS_DATA *ls_data, struct FitPrm *fitted_prms,
 
     /*  We must have at least lag_lim good lags */
     if (ls_data->sums->num_points < lag_lim) {
-        free_ls_data(ls_data);
+        /*free_ls_data(ls_data);*/
         return -4;
     }
 
@@ -148,7 +148,7 @@ int phase_fit_preliminaries(struct FitPrm *fitted_prms,LS_DATA *ls_data,
     /* if calc_phi_res returns a bad status abort the fit */
     s = calc_phi_res(acf, lag, ls_data->phi_res, fitted_prms->mplgs);
     if (s != 0) {
-        free_ls_data(ls_data);
+        /*free_ls_data(ls_data);*/
         return 2;
     }
 
@@ -162,7 +162,7 @@ int phase_fit_preliminaries(struct FitPrm *fitted_prms,LS_DATA *ls_data,
     } else {
         /*if it's an XCF fit (not ACF)*/
         ls_data->phi_k[0] = ls_data->phi_loc;
-        ls_data->sums->phi = ls_data->phi_loc * ls_data->w[0] * ls_data->w[0];
+        /*ls_data->sums->phi = ls_data->phi_loc * ls_data->w[0] * ls_data->w[0];*/
         ls_data->omega_loc = xomega;
     }
 
@@ -199,7 +199,7 @@ int phase_fitting(struct FitPrm *fitted_prms, LS_DATA* ls_data,
     }
 
     /* Now do the phase fit using the best initial guess for omega */ 
-    status = do_phase_fit (ls_data->omega_loc, xflag, fitted_prms->mplgs, acf, lag,&ls_data->omega_base ,ls_data);
+    status = do_phase_fit (ls_data->omega_loc, xflag, fitted_prms->mplgs, acf, lag,BASE ,ls_data);
 
     fit_range->phi0 = ls_data->phi_loc;
     fit_range->v = ls_data->omega_base;
@@ -222,10 +222,10 @@ int phase_fitting(struct FitPrm *fitted_prms, LS_DATA* ls_data,
 
     if (!xflag && (status == 0)) {
         status = do_phase_fit (ls_data->omega_loc + ls_data->omega_err_loc,
-                                xflag, fitted_prms->mplgs, acf, lag, &ls_data->omega_high, ls_data);
+                                xflag, fitted_prms->mplgs, acf, lag, HIGH, ls_data);
 
         status = do_phase_fit (ls_data->omega_loc - ls_data->omega_err_loc, 
-                                xflag, fitted_prms->mplgs, acf, lag, &ls_data->omega_low,ls_data);
+                                xflag, fitted_prms->mplgs, acf, lag, LOW,ls_data);
 
         /* if the difference between the high and low values of omega
              is greater than the error estimate of the original fit,
@@ -282,7 +282,7 @@ int power_fits(struct FitPrm *fitted_prms,LS_DATA *ls_data,
          this at the beginning. */
 
         if (c_log < 0 ) {
-            free_ls_data(ls_data);
+            /*free_ls_data(ls_data);*/
             return 2;
         }
 
@@ -456,8 +456,12 @@ int fit_acf (struct complex *acf,int range,
     npp = adjust_power_profile(ls_data,fitted_prms,fit_range,lag_lim,noise_lev_in,lag);
 
     switch(npp){
-        case -2 : return 2;
-        case -4 : return 4;
+        case -2 : 
+            free_ls_data(ls_data);
+            return 2;
+        case -4 : 
+            return 4;
+            free_ls_data(ls_data);
         default  : break;
     }
 
@@ -467,12 +471,14 @@ int fit_acf (struct complex *acf,int range,
       If fit is bad, return status*/
 
     if((status = phase_fitting(fitted_prms, ls_data, fit_range, acf, lag, xflag, xomega))){
+        free_ls_data(ls_data);
         return status;
     }
 
     /*Now start POWER FITS
       If fit is bad, return status*/
     if((status = power_fits(fitted_prms,ls_data,fit_range,lag,npp))){
+        free_ls_data(ls_data);
         return status;
     }
 

@@ -194,6 +194,7 @@ void set_lambda_fit_errors_for_range(struct FitPrm *fitted_prms,struct FitRange 
                                     int *lag, LS_DATA *ls_data){
     double e2, wbar,log_pwr_err, spectral_err, constant_a, constant_b;
     int k, npp;
+    double d, d_aa, d_bb, d_cc, d_dd;
 
     if (ls_data->sums->num_points > 3) {
         e2 = 0.;
@@ -223,6 +224,7 @@ void set_lambda_fit_errors_for_range(struct FitPrm *fitted_prms,struct FitRange 
             constant_a = ls_data->t2 * (ls_data->sums->w * ls_data->sums->wk2 - ls_data->sums->wk * ls_data->sums->wk);
             spectral_err = fit_range->sdev_l * wbar * sqrt(ls_data->sums->w/constant_a);
             fit_range->w_l_err = spectral_err ;
+
         }
     } else {
         set_lambda_error_huge(fit_range);
