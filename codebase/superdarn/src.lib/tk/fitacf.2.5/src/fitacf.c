@@ -49,116 +49,149 @@
 
 #define GOOSEBAY 1
 
-void FitACFFree(struct FitBlock *fptr) {
-    if (fptr->prm.pulse !=NULL) free(fptr->prm.pulse);
-    if (fptr->prm.lag[0] !=NULL) free(fptr->prm.lag[0]);
-    if (fptr->prm.lag[1] !=NULL) free(fptr->prm.lag[1]);
-    if (fptr->acfd !=NULL) free(fptr->acfd);
-    if (fptr->xcfd !=NULL) free(fptr->xcfd);
+/**
+Free a fit block
+*/
+void FitACFFree(struct FitBlock *fit_blk) {
+    if (fit_blk->prm.pulse !=NULL) free(fit_blk->prm.pulse);
+    if (fit_blk->prm.lag[0] !=NULL) free(fit_blk->prm.lag[0]);
+    if (fit_blk->prm.lag[1] !=NULL) free(fit_blk->prm.lag[1]);
+    if (fit_blk->acfd !=NULL) free(fit_blk->acfd);
+    if (fit_blk->xcfd !=NULL) free(fit_blk->xcfd);
 }
 
  
-struct FitBlock *FitACFMake(struct RadarSite *hd,
+/**
+Creates and initializes a new fit block
+*/
+struct FitBlock *FitACFMake(struct RadarSite *radar_site,
                  int year) {
     int i;
-    struct FitBlock *fptr;
-    fptr=malloc(sizeof(struct FitBlock));
-    if (fptr==NULL) return NULL;
+    struct FitBlock *fit_blk;
+    fit_blk=malloc(sizeof(struct FitBlock));
+    if (fit_blk==NULL) return NULL;
 
-    if (year < 1993) fptr->prm.old=1;
-    for (i=0;i<3;i++) fptr->prm.interfer[i]=hd->interfer[i];
-    fptr->prm.bmsep=hd->bmsep;
-    fptr->prm.phidiff=hd->phidiff;
-    fptr->prm.tdiff=hd->tdiff;
-    fptr->prm.vdir=hd->vdir;
-    fptr->prm.maxbeam=hd->maxbeam;
-    fptr->prm.pulse=NULL;
-    fptr->prm.lag[0]=NULL;
-    fptr->prm.lag[1]=NULL;
-    fptr->prm.pwr0=NULL;
-    fptr->acfd=NULL;
-    fptr->xcfd=NULL;
-    return fptr;
+    if (year < 1993) fit_blk->prm.old=1;
+    for (i=0;i<3;i++) fit_blk->prm.interfer[i]=radar_site->interfer[i];
+    fit_blk->prm.bmsep=radar_site->bmsep;
+    fit_blk->prm.phidiff=radar_site->phidiff;
+    fit_blk->prm.tdiff=radar_site->tdiff;
+    fit_blk->prm.vdir=radar_site->vdir;
+    fit_blk->prm.maxbeam=radar_site->maxbeam;
+    fit_blk->prm.pulse=NULL;
+    fit_blk->prm.lag[0]=NULL;
+    fit_blk->prm.lag[1]=NULL;
+    fit_blk->prm.pwr0=NULL;
+    fit_blk->acfd=NULL;
+    fit_blk->xcfd=NULL;
+    return fit_blk;
 }
 
-int fill_fit_block(struct RadarParm *prm, struct RawData *raw,
-                    struct FitBlock *input, struct FitData *fit){
+/**
+Fills the fit block with the radar parameters and raw data to fit
+*/
+int fill_fit_block(struct RadarParm *radar_prms, struct RawData *raw_data,
+                    struct FitBlock *fit_blk, struct FitData *fit_data){
 
     int i, j, n;
     void *tmp=NULL;
 
-    input->prm.xcf=prm->xcf;
-    input->prm.tfreq=prm->tfreq;
-    input->prm.noise=prm->noise.search;
-    input->prm.nrang=prm->nrang;
-    input->prm.smsep=prm->smsep;
-    input->prm.nave=prm->nave;
-    input->prm.mplgs=prm->mplgs;
-    input->prm.mpinc=prm->mpinc;
-    input->prm.txpl=prm->txpl;
-    input->prm.lagfr=prm->lagfr;
-    input->prm.mppul=prm->mppul;
-    input->prm.bmnum=prm->bmnum;
-    input->prm.cp=prm->cp;
-    input->prm.channel=prm->channel;
-    input->prm.offset=prm->offset;  /* stereo offset */
+    fit_blk->prm.xcf=radar_prms->xcf;
+    fit_blk->prm.tfreq=radar_prms->tfreq;
+    fit_blk->prm.noise=radar_prms->noise.search;
+    fit_blk->prm.nrang=radar_prms->nrang;
+    fit_blk->prm.smsep=radar_prms->smsep;
+    fit_blk->prm.nave=radar_prms->nave;
+    fit_blk->prm.mplgs=radar_prms->mplgs;
+    fit_blk->prm.mpinc=radar_prms->mpinc;
+    fit_blk->prm.txpl=radar_prms->txpl;
+    fit_blk->prm.lagfr=radar_prms->lagfr;
+    fit_blk->prm.mppul=radar_prms->mppul;
+    fit_blk->prm.bmnum=radar_prms->bmnum;
+    fit_blk->prm.cp=radar_prms->cp;
+    fit_blk->prm.channel=radar_prms->channel;
+    fit_blk->prm.offset=radar_prms->offset;  /* stereo offset */
 
     /* need to incorporate Sessai's code for setting the offset
          for legacy data here.
     */
-    if (input->prm.pulse==NULL) tmp=malloc(sizeof(int)*input->prm.mppul);
-    else tmp=realloc(input->prm.pulse,sizeof(int)*input->prm.mppul);
+    if (fit_blk->prm.pulse==NULL){
+        tmp=malloc(sizeof(int)*fit_blk->prm.mppul);
+    }
+    else{ 
+        tmp=realloc(fit_blk->prm.pulse,sizeof(int)*fit_blk->prm.mppul);
+    }
+
     if (tmp==NULL) return -1;
-    input->prm.pulse=tmp;
-    for (i=0;i<input->prm.mppul;i++) input->prm.pulse[i]=prm->pulse[i];
+    fit_blk->prm.pulse=tmp;
+
+    for (i=0;i<fit_blk->prm.mppul;i++){
+        fit_blk->prm.pulse[i]=radar_prms->pulse[i];
+    }
 
     for (n=0;n<2;n++) {
-        if (input->prm.lag[n]==NULL) tmp=malloc(sizeof(int)*(input->prm.mplgs+1));
-        else tmp=realloc(input->prm.lag[n],sizeof(int)*(input->prm.mplgs+1));
+        if (fit_blk->prm.lag[n]==NULL){
+            tmp=malloc(sizeof(int)*(fit_blk->prm.mplgs+1));
+        }
+        else{
+            tmp=realloc(fit_blk->prm.lag[n],sizeof(int)*(fit_blk->prm.mplgs+1));
+        }
         if (tmp==NULL) return -1;
-        input->prm.lag[n]=tmp;
-        for (i=0;i<=input->prm.mplgs;i++) input->prm.lag[n][i]=prm->lag[n][i];
+        fit_blk->prm.lag[n]=tmp;
+
+        for (i=0;i<=fit_blk->prm.mplgs;i++){
+            fit_blk->prm.lag[n][i]=radar_prms->lag[n][i];
+        }
     }
 
 
 
-    if (input->prm.pwr0==NULL) tmp=malloc(sizeof(int)*input->prm.nrang);
-    else tmp=realloc(input->prm.pwr0,sizeof(int)*input->prm.nrang); 
+    if (fit_blk->prm.pwr0==NULL){
+        tmp=malloc(sizeof(int)*fit_blk->prm.nrang);
+    }
+    else{
+        tmp=realloc(fit_blk->prm.pwr0,sizeof(int)*fit_blk->prm.nrang); 
+    }
+
     if (tmp==NULL) return -1;
-    input->prm.pwr0=tmp;
+    fit_blk->prm.pwr0=tmp;
 
-    if (input->acfd==NULL) tmp=malloc(sizeof(struct complex)*input->prm.nrang*
-                                                                        input->prm.mplgs);
-    else tmp=realloc(input->acfd,sizeof(struct complex)*input->prm.nrang*
-                                                                     input->prm.mplgs); 
+    if (fit_blk->acfd==NULL){
+        tmp=malloc(sizeof(struct complex)*fit_blk->prm.nrang * fit_blk->prm.mplgs);
+    }
+    else{
+        tmp=realloc(fit_blk->acfd,sizeof(struct complex)*fit_blk->prm.nrang * fit_blk->prm.mplgs);
+    }
+
     if (tmp==NULL) return -1;
-    input->acfd=tmp;
+    fit_blk->acfd=tmp;
 
-    if (input->xcfd==NULL) tmp=malloc(sizeof(struct complex)*input->prm.nrang*
-                                                                        input->prm.mplgs);
-    else tmp=realloc(input->xcfd,sizeof(struct complex)*input->prm.nrang*
-                                                                     input->prm.mplgs); 
+    if (fit_blk->xcfd==NULL){
+        tmp=malloc(sizeof(struct complex)*fit_blk->prm.nrang*fit_blk->prm.mplgs);
+    }
+    else{
+        tmp=realloc(fit_blk->xcfd,sizeof(struct complex)*fit_blk->prm.nrang*fit_blk->prm.mplgs);
+    }
+
     if (tmp==NULL) return -1;
-    input->xcfd=tmp;
+    fit_blk->xcfd=tmp;
 
-    memset(input->acfd,0,sizeof(struct complex)*input->prm.nrang*
-                                                                     input->prm.mplgs);   
-    memset(input->xcfd,0,sizeof(struct complex)*input->prm.nrang*
-                                                                     input->prm.mplgs);   
+    memset(fit_blk->acfd,0,sizeof(struct complex)*fit_blk->prm.nrang*fit_blk->prm.mplgs);   
+    memset(fit_blk->xcfd,0,sizeof(struct complex)*fit_blk->prm.nrang*fit_blk->prm.mplgs);   
 
-    for (i=0;i<input->prm.nrang;i++) {
-        input->prm.pwr0[i]=raw->pwr0[i];
+    for (i=0;i<fit_blk->prm.nrang;i++) {
+        fit_blk->prm.pwr0[i]=raw_data->pwr0[i];
         
-        if (raw->acfd[0] !=NULL) {
-            for (j=0;j<input->prm.mplgs;j++) {
-                input->acfd[i*input->prm.mplgs+j].x=raw->acfd[0][i*input->prm.mplgs+j];
-                input->acfd[i*input->prm.mplgs+j].y=raw->acfd[1][i*input->prm.mplgs+j];
+        if (raw_data->acfd[0] !=NULL) {
+            for (j=0;j<fit_blk->prm.mplgs;j++) {
+                fit_blk->acfd[i*fit_blk->prm.mplgs+j].x=raw_data->acfd[0][i*fit_blk->prm.mplgs+j];
+                fit_blk->acfd[i*fit_blk->prm.mplgs+j].y=raw_data->acfd[1][i*fit_blk->prm.mplgs+j];
             }
         }
-        if (raw->xcfd[0] !=NULL) {
-            for (j=0;j<input->prm.mplgs;j++) {
-                input->xcfd[i*input->prm.mplgs+j].x=raw->xcfd[0][i*input->prm.mplgs+j];
-                input->xcfd[i*input->prm.mplgs+j].y=raw->xcfd[1][i*input->prm.mplgs+j];
+        if (raw_data->xcfd[0] !=NULL) {
+            for (j=0;j<fit_blk->prm.mplgs;j++) {
+                fit_blk->xcfd[i*fit_blk->prm.mplgs+j].x=raw_data->xcfd[0][i*fit_blk->prm.mplgs+j];
+                fit_blk->xcfd[i*fit_blk->prm.mplgs+j].y=raw_data->xcfd[1][i*fit_blk->prm.mplgs+j];
             }
         } 
     } 
@@ -166,33 +199,36 @@ int fill_fit_block(struct RadarParm *prm, struct RawData *raw,
     return 0;
 }
 
-int FitACF(struct RadarParm *prm, struct RawData *raw,struct FitBlock *input, struct FitData *fit) {
+/**
+Initializes a block for fitted data and then runs the ACF fitting 
+procedure*/
+int FitACF(struct RadarParm *radar_prms, struct RawData *raw_data,struct FitBlock *fit_blk, struct FitData *fit_data) {
 
     int fnum, goose, s;
 
-    if (prm->time.yr < 1993) {
-        input->prm.old=1;
+    if (radar_prms->time.yr < 1993) {
+        fit_blk->prm.old=1;
     }
 
-    fit->revision.major=FITACF_MAJOR_REVISION;
-    fit->revision.minor=FITACF_MINOR_REVISION;
+    fit_data->revision.major=FITACF_MAJOR_REVISION;
+    fit_data->revision.minor=FITACF_MINOR_REVISION;
 
     /*initialize the fitblock with prm*/
-    s = fill_fit_block(prm, raw, input, fit);
+    s = fill_fit_block(radar_prms, raw_data, fit_blk, fit_data);
     if (s == -1){
         return -1;
     }
 
-    FitSetRng(fit,input->prm.nrang);
-    if (input->prm.xcf) {
-     FitSetXrng(fit,input->prm.nrang);
-     FitSetElv(fit,input->prm.nrang);
+    FitSetRng(fit_data,fit_blk->prm.nrang);
+    if (fit_blk->prm.xcf) {
+     FitSetXrng(fit_data,fit_blk->prm.nrang);
+     FitSetElv(fit_data,fit_blk->prm.nrang);
     }
     
     
-    goose = (prm->stid == GOOSEBAY);
+    goose = (radar_prms->stid == GOOSEBAY);
 
-    fnum = do_fit(input, 5, goose, fit->rng, fit->xrng, fit->elv, &fit->noise);
+    fnum = do_fit(fit_blk, 5, goose, fit_data->rng, fit_data->xrng, fit_data->elv, &fit_data->noise);
 
     return 0;
 }

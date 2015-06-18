@@ -247,7 +247,7 @@ void phase_fit_error(LS_DATA *ls_data, OMEGA location,
     int nphi;
     double e2;
     int k;
-    double constant_a, constant_b;
+    double constant_a;
     double d, d_aa, d_bb, d_cc, d_dd;
     double phase_slope;
     wbar = 0;
@@ -306,7 +306,6 @@ int do_phase_fit (double omega_guess, char xflag, int mplgs,
                 struct complex *acf, int *lag,
                 OMEGA location, LS_DATA *ls_data) {
 
-    int k;
     int status;
     ls_data->phi_k[0] = 0;
 
