@@ -1,0 +1,29 @@
+commit e2232b12e0d74c0f77387f9ab92490a0809e642a
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:41:57 2012 -0400
+
+    Updated license
+
+commit e1ec7186d46bc6690d22297a2889c20fd46c52db
+Author: Rob Barnes <robin.barnes@jhuapl.edu>
+Date:   Sat Jun 19 16:05:00 2010 -0400
+
+    Fixed problem with empty input arrays.
+
+commit b2a559d4de02ef5d9d26425b02a5b787dabb8739
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 09:56:15 2010 -0400
+
+    RST3 Update
+
+commit 070ada0186e3ad753fe6340fc76c3029483d0a56
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Mar 30 15:12:55 2010 -0400
+
+    Fixed documentation.
+
+commit 53447f38766e6774dd293838924ee7068d2a6f1c
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:37:27 2010 +0000
+
+    Initial commit

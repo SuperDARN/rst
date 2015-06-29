@@ -1,0 +1,21 @@
+make.version /home/k2/Documents/FITACF/VTRST3.5/codebase/superdarn/src.lib/tk/fitacf.2.5/src/..
+make.hdr /home/k2/Documents/FITACF/VTRST3.5/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include /home/k2/Documents/FITACF/VTRST3.5/include/superdarn 
+/home/k2/Documents/FITACF/VTRST3.5/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/badlags.h
+‘/home/k2/Documents/FITACF/VTRST3.5/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/badlags.h’ -> ‘/home/k2/Documents/FITACF/VTRST3.5/include/superdarn/badlags.h’
+/home/k2/Documents/FITACF/VTRST3.5/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/badsmp.h
+‘/home/k2/Documents/FITACF/VTRST3.5/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/badsmp.h’ -> ‘/home/k2/Documents/FITACF/VTRST3.5/include/superdarn/badsmp.h’
+/home/k2/Documents/FITACF/VTRST3.5/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/dofit.h
+‘/home/k2/Documents/FITACF/VTRST3.5/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/dofit.h’ -> ‘/home/k2/Documents/FITACF/VTRST3.5/include/superdarn/dofit.h’
+/home/k2/Documents/FITACF/VTRST3.5/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/fitacf.h
+‘/home/k2/Documents/FITACF/VTRST3.5/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/fitacf.h’ -> ‘/home/k2/Documents/FITACF/VTRST3.5/include/superdarn/fitacf.h’
+/home/k2/Documents/FITACF/VTRST3.5/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/fitblk.h
+‘/home/k2/Documents/FITACF/VTRST3.5/codebase/superdarn/src.lib/tk/fitacf.2.5/src/../include/fitblk.h’ -> ‘/home/k2/Documents/FITACF/VTRST3.5/include/superdarn/fitblk.h’
+cc -fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX -I/home/k2/Documents/FITACF/VTRST3.5/include/base -I/home/k2/Documents/FITACF/VTRST3.5/include/general  -I/home/k2/Documents/FITACF/VTRST3.5/include/superdarn/fit -I/home/k2/Documents/FITACF/VTRST3.5/include/superdarn -c fit_acf.c    
+mkdir -p /home/k2/Documents/FITACF/VTRST3.5/lib
+ar -r /home/k2/Documents/FITACF/VTRST3.5/lib/libfitacf.2.5.a acf_preproc.o dbl_cmp.o elevation.o elev_goose.o omega_guess.o ground_scatter.o more_badlags.o badlags.o badlags_s.o power_fits.o calc_phi_res.o fit_mem_helpers.o rang_badlags.o noise_stat.o fit_acf.o do_fit.o do_phase_fit.o fitacf.o 
+ld -shared -lm -lz  -o /home/k2/Documents/FITACF/VTRST3.5/lib/libfitacf.2.5.so \
+              acf_preproc.o dbl_cmp.o elevation.o elev_goose.o omega_guess.o ground_scatter.o more_badlags.o badlags.o badlags_s.o power_fits.o calc_phi_res.o fit_mem_helpers.o rang_badlags.o noise_stat.o fit_acf.o do_fit.o do_phase_fit.o fitacf.o  -Bstatic -L/home/k2/Documents/FITACF/VTRST3.5/lib -L/home/k2/Documents/FITACF/VTRST3.5/usr/lib  
+cd /home/k2/Documents/FITACF/VTRST3.5/lib; ln -sf libfitacf.2.5.a \
+               libfitacf."1".a 
+cd /home/k2/Documents/FITACF/VTRST3.5/lib; ln -sf libfitacf.2.5.so \
+               libfitacf."1".so 
