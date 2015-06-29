@@ -105,7 +105,7 @@ void set_sigma_fit_errors_for_range(struct FitPrm *fitted_prms,struct FitRange *
                                     int *lag, LS_DATA *ls_data){
     double e2, wbar,log_pwr_err, spectral_err, constant_a, constant_b;
     int k, npp;
-
+    double dof_corrector;
     if (ls_data->sums->num_points > 3) {   
         e2 = 0.;
         wbar = 0.;
@@ -202,7 +202,7 @@ void set_lambda_fit_errors_for_range(struct FitPrm *fitted_prms,struct FitRange 
     double e2, wbar,log_pwr_err, spectral_err, constant_a, constant_b;
     int k, npp;
     double d, d_aa, d_bb, d_cc, d_dd;
-
+    double dof_corrector;
 
     if (ls_data->sums->num_points > 3) {
         e2 = 0.;

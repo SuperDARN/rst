@@ -242,7 +242,7 @@ int phase_fit(double omega_guess, char xflag, struct FitPrm *fitted_prms,
 This function provides the uncertainty in the phase fit
 */
 void phase_fit_error(LS_DATA *ls_data, OMEGA location,
-                     int *lag, int xflag, struct FitPrm *fitted_prms, int mppul){
+                     int *lag, int xflag, struct FitPrm *fitted_prms){
     double wbar;
     int nphi;
     double e2;
