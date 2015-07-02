@@ -237,7 +237,7 @@ int phase_fitting(struct FitPrm *fitted_prms, LS_DATA* ls_data,
 
         if (fabs(ls_data->omega_high - ls_data->omega_low) >= 2*fit_range->v_err) {
             fit_range->v = ls_data->omega_base;
-            fit_range->v_err = fabs(ls_data->omega_high - ls_data->omega_low);
+            fit_range->v_err = -fit_range->v_err;
         }
     }
     
