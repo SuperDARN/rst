@@ -404,7 +404,7 @@ int do_fit(struct FitBlock *fit_blk,int lag_lim,int goose,
 
         acf_fit_range[k].qflg = fit_acf(&fit_blk->acfd[k*fit_blk->prm.mplgs], k+1,
                                 &lag[k*fit_blk->prm.mplgs],&samples,
-                                lag_lim,&fit_blk->prm,noise_pwr,0,0.0,&acf_fit_range[k]);
+                                lag_lim,&fit_blk->prm,noise_pwr,0,0.0,&acf_fit_range[k],fit_noise);
 
         xomega=acf_fit_range[k].v;
         if(acf_fit_range[k].qflg == 1){
@@ -421,7 +421,7 @@ int do_fit(struct FitBlock *fit_blk,int lag_lim,int goose,
         xcf_fit_range[k].qflg = fit_acf(&fit_blk->xcfd[k*fit_blk->prm.mplgs], k+1,
                                 &lag[k*fit_blk->prm.mplgs],&samples,
                                 lag_lim,&fit_blk->prm,noise_pwr,1,xomega,
-                                &xcf_fit_range[k]);
+                                &xcf_fit_range[k],fit_noise);
 
         if(xcf_fit_range[k].qflg == 1){
             determinations_from_fitted_xcf(fit_blk, xcf_fit_range, elv, goose, skylog, freq_to_vel, k);
