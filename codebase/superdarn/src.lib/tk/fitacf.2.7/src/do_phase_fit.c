@@ -325,7 +325,6 @@ int do_phase_fit (double omega_guess, char xflag, struct FitPrm *fitted_prms,
                 OMEGA location, LS_DATA *ls_data) {
 
     int status;
-    ls_data->phi_k[0] = 0;
 
     status = phase_fit(omega_guess,xflag,fitted_prms,acf, lag, location, ls_data);
     

@@ -54,7 +54,7 @@ on success
 */
 int adjust_power_profile(LS_DATA *ls_data, struct FitPrm *fitted_prms,
                           struct FitRange *fit_range,int lag_lim, 
-                          double noise_lev, int *lag){
+                          double noise_lev, int *lag, struct FitNoise *fit_noise){
     int k,npp;
     double fluc_lev;
       /* 
@@ -86,7 +86,7 @@ int adjust_power_profile(LS_DATA *ls_data, struct FitPrm *fitted_prms,
     }
 
     /* This is to remove background delta-correlated noise from lag 0 power (version 2.0)*/
-    ls_data->w[0] = ls_data->w[0] - fitted_prms->noise; 
+    ls_data->w[0] = ls_data->w[0] - fit_noise->skynoise; 
 
         /* this is required to make logs ok */
     if (noise_lev <= 0.0) {
@@ -419,7 +419,7 @@ int fit_acf (struct complex *acf,int range,
                 int *lag,struct FitACFBadSample *badsmp,int lag_lim,
                 struct FitPrm *fitted_prms,
                 double noise_lev_in,char xflag,double xomega,
-                struct FitRange *fit_range) {
+                struct FitRange *fit_range, struct FitNoise *fit_noise) {
 
     int j, npp, status; /**bad_pwr = NULL; */   
 
@@ -453,7 +453,7 @@ int fit_acf (struct complex *acf,int range,
 
 
     /*Adjusting the ACF power to account for fluctuation level*/
-    npp = adjust_power_profile(ls_data,fitted_prms,fit_range,lag_lim,noise_lev_in,lag);
+    npp = adjust_power_profile(ls_data,fitted_prms,fit_range,lag_lim,noise_lev_in,lag,fit_noise);
 
     switch(npp){
         case -2 : 
