@@ -1,6 +1,5 @@
 *.a
 *.so
-*~
 log/
 bin/
 lib/
