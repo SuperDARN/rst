@@ -83,7 +83,7 @@
 #     gain control of an analog receiver or front-end.)
 # 16) Maxinum of range gates used (Number of gates. This is used for
 #     allocation of array storage.)
-# 17) Maximum number of beams to be used at a particular radar site.
+# 17) Maximum number  of beams to be used at a particular radar site.
 #     (Number of beams. It is important to specify the true  maximum. This
 #     will assure that a given beam number always points in the same
 #     direction. A subset of these beams, e.g. 8-23, can be used for
