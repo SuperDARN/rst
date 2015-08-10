@@ -32,16 +32,16 @@ pkg=${2}
 ############################################################################
 
 if [ ${#} -gt 2 ]
-then 
+then
   mtype=${3}
-else 
+else
   mtype=""
 fi
 
 if [ ${#} -gt 3 ]
-then 
+then
   patn="-p "${4}
-else 
+else
   patn=""
 fi
 
@@ -77,10 +77,10 @@ makeaction() {
   project=${2}
   module=${3}
   type=${4}
-  mode=${5} 
+  mode=${5}
 
   if [ -n "$mtype" -a "${type}" != "${mtype}" ]; then return 0; fi
- 
+
   opt=""
   ctmp=${compile}
   if [ "${compile}" = "hdr" ]
@@ -111,29 +111,30 @@ makeaction() {
       src=${src}.*
     fi
     makeall -vb ${patn} ${opt} ${src} >> ${log}.${dtval}
-   
+
   fi
   return 0
 }
- 
+
 makemodule() {
 
   SEP="+"
-  
+
   compile=${1}
   fname=${2}
   modlst=$(cat ${fname} | tr " " "${SEP}")
- 
+
   for lval in ${modlst}
   do
     tmp=`echo ${lval} | tr "${SEP}" " "`
-    prm=${tmp%%#*} 
+    prm=${tmp%%#*}
     if [ -z "${prm}" ]; then continue; fi
 
     makeaction ${compile} ${prm}
   done
   return 0
 }
+
 
 if [ ! -s "${pkgdir}/build.txt" ]
 then
@@ -143,9 +144,28 @@ fi
 
 mkdir -p ${LOGPATH}
 makemodule hdr ${pkgdir}/build.txt
-makemodule lib ${pkgdir}/build.txt 
-makemodule bin ${pkgdir}/build.txt 
+makemodule lib ${pkgdir}/build.txt
+makemodule bin ${pkgdir}/build.txt
 if [ -n "${DLMPATH}" ]; then makemodule dlm ${pkgdir}/build.txt; fi
+
+
+## The mpfit seems to be an external library that was folded in during the creation of lmfit.  This
+## is the band-aid way to compile and copy this library into the appropriate directory.  A better
+## solution than this may exist.  -KTS 20150810
+
+echo "================================================================================"
+echo "Compiling Library:${CODEBASE}/analysis/src.lib/cmpfit-1.2"
+echo "================================================================================"
+
+cd ${CODEBASE}/analysis/src.lib/cmpfit-1.2/
+echo "make clean"
+make clean
+echo "make"
+make
+
+echo "cp -vp *.a ${LIBPATH}"
+cp -vp *.a ${LIBPATH}
+
 exit 0
 
 
