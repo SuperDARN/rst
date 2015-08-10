@@ -1,8 +1,9 @@
 *.a
 *.so
 *.o
-log/
 bin/
+build/lib/
 lib/
+log/
 usr/lib/
 usr/bin/
