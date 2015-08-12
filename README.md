@@ -9,7 +9,7 @@ netcdf (dev)
 
 CDF 3.X
 
-CDF can be downloaded from NASA.  You can find the lastest release at: http://cdf.gsfc.nasa.gov/
+- CDF can be downloaded from NASA.  You can find the lastest release at: http://cdf.gsfc.nasa.gov/
 
 
 netpbm
