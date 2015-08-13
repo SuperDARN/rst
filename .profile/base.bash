@@ -11,7 +11,7 @@ export XPATH="/usr/X11R6"
 
 # Compile netCDF software
 
-export NETCDF_PATH="/usr"
+export NETCDF_PATH="/usr/include"
 
 # pathname for the CDF software
 
