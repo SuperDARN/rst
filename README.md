@@ -11,6 +11,12 @@ HDF5
   straight forward package to install:
         sudo apt-get install libhdf5-serial-dev
 
+zlib
+
+- In order to compile netCDF, you'll also need this package.  For Ubuntu, this is a fairly
+  straight forward package to install:
+        sudo apt-get install zlib1g-dev
+
 netCDF (dev)
 
 - netCDF can be downloaded from UCAR at:  www.unidata.ucar.edu/software/netcdf/.  Here go to 
@@ -36,8 +42,6 @@ CDF 3.X
 netpbm
 
 libpng (dev)
-
-zlib
 
 ncurses (dev)
 
