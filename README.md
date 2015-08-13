@@ -5,7 +5,13 @@ In addition to this code, you will need the following packages:
 
 IDL 8.X
 
-netcdf (dev)
+HDF5
+
+- In order to compile netCDF, you'll need to have this installed.  For Ubuntu, this is a fairly
+  straight forward package to install:
+        sudo apt-get install libhdf5-serial-dev
+
+netCDF (dev)
 
 - netCDF can be downloaded from UCAR at:  www.unidata.ucar.edu/software/netcdf/.  Here go to 
   Download and then "The Latest Stable netCDF-C Release, tar.gz form"  (or .zip form if you want).
