@@ -7,6 +7,21 @@ IDL 8.X
 
 netcdf (dev)
 
+- netCDF can be downloaded from UCAR at:  www.unidata.ucar.edu/software/netcdf/.  Here go to 
+  Download and then "The Latest Stable netCDF-C Release, tar.gz form"  (or .zip form if you want).
+  Suppose you downloaded the tarball into your home directory /home/user. Unzip and untar the 
+  netCDF package: 
+       cd /home/user 
+       gunzip netcdf-X.X.tar.gz 
+       tar xvf netcdf-X.X.tar
+  The last command will create a directory called /home/user/netcdf-X.X. Enter the directory 
+  /home/user/netcdfX.X and compile the netCDF software. If you choose to install netCDF system 
+  wide in /usr/local/netcdf, you will need the correct privileges. In the directory 
+  /home/user/netcdf-X.X, enter (with the correct privileges) 
+       ./configure --prefix=/usr/local/netcdf --disable-netcdf-4 make check install
+
+
+
 CDF 3.X
 
 - CDF can be downloaded from NASA.  You can find the lastest release at: http://cdf.gsfc.nasa.gov/
