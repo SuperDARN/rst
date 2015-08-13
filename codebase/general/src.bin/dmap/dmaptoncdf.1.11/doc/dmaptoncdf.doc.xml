@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>general</project>
+<name>dmaptoncdf</name>
+<location>src.bin/dmap/dmaptoncdf</location>
+<syntax>dmaptoncdf --help</syntax>
+<syntax>dmaptoncdf [-vb] <ar>datamap</ar> <ar>map</ar> <ar>netcdf</ar></syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on><ar>datamap</ar></on><od>filename of the DataMap file to convert.</od>
+<option><on><ar>map</ar></on><od>map file that relates variables in the DataMap file to those in the netCDF file.</od>
+</option>
+<option><on><ar>netcdf</ar></on><od>filename of the netCDF file to generate.</od>
+</option>
+</option>
+<synopsis><p>Converts a <code>DataMap</code> file to a Network Common Data Format (netCDF) file.</p></synopsis>
+
+
+<description><p>Converts a <code>DataMap</code> file to a Network Common Data Format (netCDF) file.</p>
+
+<p>The netCDF format has no concept of a "record". A netCDF dataset is just a collection of arrays of fixed length, named, dimensions. One dimension can be defined as "unlimited". The unlimited dimension does not have a fixed length and it's index can effectively be thought of as the record number.</p>
+
+<p>In translating <code>DataMap</code> files, each record in the file is mapped to an index of the unlimited dimension;scalars become 1 dimensional arrays, and arrays gain one extra dimension.</p>
+
+<p>NetCDF has a simple text based scripting language called CDL (Common Data form Language) that can be used to describe the layout of a dataset. The utility <code>ncgen</code> can convert a CDL file to an empty dataset ready to store data.</p>
+
+<p>The tool <code>dmaptocdl</code> first analyses a dmap file to determine the size of the arrays required and produces an outline CDL file. The user can edit this CDL file to correct any problems and add any meta-data (attributes), before creating an empty CDF file using ncgen. The user then populates the dataset by using <code>dmaptoncdf</code>.</p>
+
+</description>
+
+<example>
+<command>dmaptoncdf 20021219.kap.fitacf fitacf.cdfmap 20021219.kap.netcdf</command>
+<description>Populate the empty netCDF dataset "<code>20021219.kap.netcdf</code>" with data from the file "<code>20021219.kap.fitacf</code>" using the mapping table "<code>fitacf.cdfmap</code>".</description>
+
+
+</example>
+
+
+</binary>

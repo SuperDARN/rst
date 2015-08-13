@@ -1,0 +1,23 @@
+commit 224a15c808c144d19c8da73d30bc9915853ed335
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Mon Jun 18 13:42:24 2012 -0400
+
+    Updated license
+
+commit 559f88ca06e16585bf562631d4645fda2c5925ad
+Author: Code Development Account <code@linux-pc.jhuapl.edu>
+Date:   Tue Nov 16 16:03:53 2010 -0500
+
+    Fixed issue with int and longs.
+
+commit 1bc0c12a441534fae7d5fbb7daa755b003536fdc
+Author: Code Development Account <code@morpheus.jhuapl.edu>
+Date:   Wed May 19 09:28:34 2010 -0400
+
+    Modification to dmap internal format.
+
+commit fddc7a45171fa4c0293c5f3cbb6071314996c0d8
+Author: Code Development Account <code@debian.localdomain>
+Date:   Mon Jan 4 00:36:43 2010 +0000
+
+    Initial commit
