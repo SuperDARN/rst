@@ -19,7 +19,12 @@ zlib
 
 netCDF (dev)
 
-- netCDF can be downloaded from UCAR at:  www.unidata.ucar.edu/software/netcdf/.  Here go to 
+- (New way): netCDF can be easily downloaded in linux using package management programs such as 
+  apt, rpm, yum etc.  Here, search for repository names such as "netcdf-devel" or "libnetcdf-dev".
+  For Ubuntu/apt do:
+       sudo apt-get install libnetcdf-dev
+
+- (Old way, and not sure if this still works): netCDF can be downloaded from UCAR at:  www.unidata.ucar.edu/software/netcdf/.  Here go to 
   Download and then "The Latest Stable netCDF-C Release, tar.gz form"  (or .zip form if you want).
   Suppose you downloaded the tarball into your home directory /home/user. Unzip and untar the 
   netCDF package: 
@@ -61,7 +66,17 @@ your computer.
         . $RSTPATH/.profile.bash
 
    where the INSTALL LOCATION is the path with the VTRST3.5 repository has been copied to on your
-   computer.  In order to load the environment, you'll need to close your current terminal and
+   computer.  
+
+   Also, you'll need to edit the location that your netCDF package was installed at by editing the
+   entry in the ~/VTRST3.5/.profile/base.bash file:
+
+        export NETCDF_PATH="/usr/include"
+
+   The given example is where Ubuntu 12.04 placed the netcdf.h file using the apt-get package 
+   manager.  
+
+   In order to load the environment, you'll need to close your current terminal and
    open a new terminal.
 
 2. With CDF library, you will need to copy a few choice files into certain places.  Namely:
@@ -83,4 +98,5 @@ Again...this may not be everything, but we'll start here.
 
 - Need to restore functionality to dmaptoncdf.1.11.  This package was tarred up so that the code 
   could compile.  Whenever this package is in the codebase, the rst doesn't compile as it is 
-  missing a .h file.
+  missing a .h file.  __SOLVED:__ Seems as though netcdf has been added to several install
+  package managers as seen in the notes above!
