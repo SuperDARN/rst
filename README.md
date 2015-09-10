@@ -76,7 +76,7 @@ your computer.
    The given example is where Ubuntu 12.04 placed the netcdf.h file using the apt-get package 
    manager.  
 
-   In order to load the environment, you'll need to close your current terminal and
+   In order to load the environment variables you just setup, you'll need to close your current terminal and
    open a new terminal.
 
 2. With CDF library, you will need to copy a few choice files into certain places.  Namely:
@@ -85,9 +85,12 @@ your computer.
         Copy the libcdf.a and libcdf.so into ~/VTRST3.5/lib/
 
 
-3. Run 'make.build' from the command line
+3. Run 'make.build' from the command line.  This runs a helper script that sets up other 
+compiling code.  The source code for make.build can be found in ~/build/script/
 
-4. Run 'make.code superdarn rst' to compile all of the code.
+4. Run 'make.code superdarn rst' to compile all of the code.  This runs a script to find
+all of the source codes and compile them into binaries.  A log of this compilation is 
+stored in ${LOGPATH}.  
 
 
 Again...this may not be everything, but we'll start here.
