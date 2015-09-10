@@ -54,7 +54,7 @@ It is HIGHLY recommended to setup git on your local computer as updates are easi
 your computer.
 
 
-##Install notes (There is a more complete document somewhere, but we'll start with this):
+##Install notes:
 
 
 1. Upon cloning the repository (with git clone or downloading zip file), load the RST environment 
