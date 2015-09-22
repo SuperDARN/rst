@@ -6,26 +6,26 @@
 
 /*
  LICENSE AND DISCLAIMER
- 
+
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
+
  This file is part of the Radar Software Toolkit (RST).
- 
+
  RST is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
- 
+
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Lesser General Public License for more details.
- 
+
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+
+
+
  */
 
 
@@ -72,21 +72,21 @@ int do_make(char *target,char *path) {
   char tmpname[256];
   time_t ltime;
   pid_t pid;
-  
+
   pid=getpid();
-  time(&ltime);  
+  time(&ltime);
 
   sprintf(tmpname,"log.%d.%d",pid,(int) ltime);
- 
+
   pid=fork();
   if (pid==-1) return -1;
   if (pid==0) { /* execute the make command here */
     int s;
     freopen(tmpname,"a+",stderr);
     freopen(tmpname,"a+",stdout);
- 
-    if (target !=NULL) s=execlp("make","make",target,NULL); 
-    else s=execlp("make","make",NULL); 
+
+    if (target !=NULL) s=execlp("make","make",target,NULL);
+    else s=execlp("make","make",NULL);
 
     exit(s);
   }
@@ -101,7 +101,7 @@ int do_make(char *target,char *path) {
        fclose(fp);
        unlink(tmpname);
        return status;
-     } 
+     }
   } while(1);
 }
 
@@ -146,15 +146,15 @@ void add_make(char *name,char type) {
 
   if (vflg==1) {
     for (k=0;k<num;k++) {
-      if ((strlen(makeroot[k])==(j-i)) && 
+      if ((strlen(makeroot[k])==(j-i)) &&
           (strncmp(makeroot[k],name+i,j-i)==0)) break;
-    }  
+    }
     if (k<num) {
-   
+
       /* now compare version numbers */
       if (major<makevmajor[k]) return;
       if (minor<makevminor[k]) return;
-  
+
       makevmajor[k]=major;
       makevminor[k]=minor;
       makename[k]=realloc(makename[k],strlen(name)+1);
@@ -169,7 +169,7 @@ void add_make(char *name,char type) {
   strcpy(makename[num],name);
   name[j]=0;
   makeroot[num]=malloc(strlen(name+i)+1);
-  strcpy(makeroot[num],name+i);  
+  strcpy(makeroot[num],name+i);
   num++;
 
 }
@@ -178,17 +178,17 @@ void add_make(char *name,char type) {
 int find_makefile(char *path) {
   struct dirent *direntp=NULL;
   DIR *dirp;
-  int s; 
+  int s;
   struct stat dstat;
   int state=0;
   char spath[4096];
 
   dirp=opendir(path);
   if (dirp==NULL) return 0;
-  
+
   while ((direntp=readdir(dirp)) !=NULL) {
      if (direntp->d_name[0]=='.') continue;
-     if ((strcmp(direntp->d_name,"makefile")==0) && (instr(path,patn) !=-1)) 
+     if ((strcmp(direntp->d_name,"makefile")==0) && (instr(path,patn) !=-1))
         add_make(path,'b');
      if (strcmp(direntp->d_name,"src")==0) state++;
      if (strcmp(direntp->d_name,"include")==0) state++;
@@ -200,9 +200,9 @@ int find_makefile(char *path) {
        dirpl=opendir(spath);
        if (dirpl==NULL) break;
        while ((direntpl=readdir(dirpl)) !=NULL) {
-         
+
          if (direntpl->d_name[0]=='.') continue;
-	 if ((strcmp(direntpl->d_name,"makefile")==0) && 
+	 if ((strcmp(direntpl->d_name,"makefile")==0) &&
              (instr(path,patn)!=-1)) add_make(path,'l');
        }
        closedir(dirpl);
@@ -211,10 +211,10 @@ int find_makefile(char *path) {
 
      if (state !=0) continue;
 
-      
+
      sprintf(spath,"%s/%s",path,direntp->d_name);
-     s=stat(spath,&dstat); 
-    
+     s=stat(spath,&dstat);
+
      if ((s==0) && (S_ISDIR(dstat.st_mode))) {
        /* recurse here */
        find_makefile(spath);
@@ -235,14 +235,14 @@ void load_list(FILE *fp) {
     if (line[i]=='#') continue;
 
     memmove(line,line+i,strlen(line)+1-i);
-    for (i=0;(line[i] !=0) && (line[i] !='\n') && (line[i] !=' ');i++); 
-    line[i]=0; 
+    for (i=0;(line[i] !=0) && (line[i] !='\n') && (line[i] !=' ');i++);
+    line[i]=0;
     if (strlen(line)==0) continue;
     makelist[lnum]=malloc(strlen(line)+1);
     strcpy(makelist[lnum],line);
     lnum++;
 
-  } 
+  }
 }
 
 int dsort(const void *a,const void *b) {
@@ -252,7 +252,7 @@ int dsort(const void *a,const void *b) {
   y=(char **) b;
   return strcmp(*x,*y);
 }
- 
+
 void print_info(FILE *fp,char *str[]) {
   int i;
   for (i=0;str[i] !=NULL;i++) fprintf(fp,str[i]);
@@ -261,7 +261,7 @@ void print_info(FILE *fp,char *str[]) {
 
 
 int main(int argc,char *argv[]) {
- 
+
   char logstr[1024];
   char path[4096];
 
@@ -302,16 +302,16 @@ int main(int argc,char *argv[]) {
     if (strcmp(argv[i+1],"stdin")==0) load_list(stdin);
     else {
       for (j=0;j<(argc-i-1);j++) makelist[j]=argv[j+i+1];
-      lnum=j;      
+      lnum=j;
     }
   }
- 
 
- 
+
+
   find_makefile(src);
 
   log_info("makeall\n");
-  
+
 
   sprintf(logstr,"Package Source Directory:%s\n",src);
   log_info(logstr);
@@ -321,7 +321,7 @@ int main(int argc,char *argv[]) {
 
   log_info(logstr);
 
-  
+
 
   if (vflg !=0) sprintf(logstr,
                 "Compile most recent version of code only:yes\n");
@@ -338,21 +338,21 @@ int main(int argc,char *argv[]) {
       log_info(logstr);
     }
   }
- 
+
   if (lnum==0) {
     lnum=num;
     for (i=0;i<num;i++) makelist[i]=makeroot[i];
 
     /* sort the make list into alphabetical order */
        qsort(makelist,num,sizeof(char *),dsort);
-     
-  
+
+
 
   }
 
- 
+
   log_info("Located Source Code:\n");
- 
+
   for (i=0;i<lnum;i++) {
     for (j=0;j<num;j++) if (strcmp(makelist[i],makeroot[j])==0) break;
     if (j==num) continue;
@@ -361,8 +361,8 @@ int main(int argc,char *argv[]) {
     else sprintf(logstr,"%d.Located Library:%s\n",i+1,makename[j]);
     log_info(logstr);
   }
-  
-  
+
+
   for (i=0;i<lnum;i++) {
      for (j=0;j<num;j++) if (strcmp(makelist[i],makeroot[j])==0) break;
     if (j==num) continue;
@@ -371,8 +371,8 @@ int main(int argc,char *argv[]) {
     else sprintf(logstr,"Compiling Library:%s\n",makename[j]);
     log_info(logstr);
     log_info(sep);
-    
-    
+
+
 
     if (maketype[j]=='b') sprintf(path,"%s",makename[j]);
     else sprintf(path,"%s/src",makename[j]);
@@ -392,21 +392,21 @@ int main(int argc,char *argv[]) {
 
     status=do_make(target,path);
     if ((aflg !=0) && (status !=0)) break;
-    
+
   }
   if (i<lnum) {
     log_info("Compilation Aborted.\n");
     return 1;
   }
-   
+
 
 
   return 0;
 }
- 
 
 
-  
+
+
 
 
 
