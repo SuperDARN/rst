@@ -41,20 +41,34 @@ struct RadarSite *RadarEpochGetSite(struct Radar *ptr,double tval) {
 
   int s;
 
+//  fprintf(stderr,"StartingRadarEpochGetSite\n");
+//  fprintf(stderr,"ptr->st_time: %f\n",ptr->st_time);
+//  fprintf(stderr,"tval: %f\n",tval);
+  /* If tval is before the radar.dat start time of the radar
+     then return NULL */
   if ((ptr->st_time !=-1) && (tval<ptr->st_time)) return NULL;
+//  fprintf(stderr,"Start time got?\n");
+  /* If tval is after the radar.dat end time of the radar
+     then return NULL */
   if ((ptr->ed_time !=-1) && (tval>ptr->ed_time)) return NULL;
-  for (s=0;(s<ptr->snum) && (ptr->site[s].tval !=-1) && 
+//  fprintf(stderr,"Ed_time got?\n");
+  for (s=0;(s<ptr->snum) && (ptr->site[s].tval !=-1) &&
       (ptr->site[s].tval<tval);s++);
+//  fprintf(stderr,"snum done got?\n");
   if (s==ptr->snum) return NULL;
+//  fprintf(stderr,"EpochGetSite passed?\n");
   return &(ptr->site[s]);
- 
+
 }
 
 struct RadarSite *RadarYMDHMSGetSite(struct Radar *ptr,int yr,
                                int mo,int dy,int hr,int mt,int sc) {
- 
+
   double tval;
+//  fprintf(stderr,"Converting time to Epoch?\n");
   tval=TimeYMDHMSToEpoch(yr,mo,dy,hr,mt,sc);
+//  fprintf(stderr,"yr: %d  mo: %d  dy: %d  hr: %d  mt: %d  sc: %d\n",yr,mo,dy,hr,mt,sc);
+//  fprintf(stderr,"tval: %f\n",tval);
   return RadarEpochGetSite(ptr,tval);
 }
 
