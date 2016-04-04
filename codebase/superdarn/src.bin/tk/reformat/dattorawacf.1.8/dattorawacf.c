@@ -23,9 +23,9 @@
 
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+
+
+
 */
 
 
@@ -43,7 +43,7 @@
 #include "rprm.h"
 #include "rawdata.h"
 #include "rawwrite.h"
-#include "radar.h" 
+#include "radar.h"
 
 
 
@@ -75,10 +75,10 @@ int main(int argc,char *argv[]) {
   int c,n;
   char command[128];
   char tmstr[40];
- 
+
   char *envstr=NULL;
   FILE *fp;
- 
+
   float offset;
   int cnt=0;
 
@@ -99,7 +99,7 @@ int main(int argc,char *argv[]) {
   }
 
   network=RadarLoad(fp);
-  fclose(fp); 
+  fclose(fp);
   if (network==NULL) {
     fprintf(stderr,"Failed to read radar information.\n");
     exit(-1);
@@ -154,41 +154,27 @@ int main(int argc,char *argv[]) {
 
     rprm->origin.code=1;
     ctime = time((time_t) 0);
-//    fprintf(stderr,"Calling RadarParmSetOriginCommand\n");
     RadarParmSetOriginCommand(rprm,command);
-//    fprintf(stderr,"Calling strcpy\n");
     strcpy(tmstr,asctime(gmtime(&ctime)));
     tmstr[24]=0;
-//    fprintf(stderr,"Calling RadarParmSetOriginTime\n");
     RadarParmSetOriginTime(rprm,tmstr);
 
-//    fprintf(stderr,"Get radar info?\n");
     radar=RadarGetRadar(network,rprm->stid);
-//    fprintf(stderr,"Set site information\n");
     site=RadarYMDHMSGetSite(radar,rprm->time.yr,
                     rprm->time.mo,rprm->time.dy,rprm->time.hr,rprm->time.mt,
 			        rprm->time.sc);
     if (site==NULL) {
         fprintf(stderr,"ERROR! Something went wrong with getting the time from the site.\n");
-/*        if (s==-1) {
-           cnt=-1;
-            break;
-        }
         if (vb) fprintf(stderr,"%.4d-%.2d-%.2d %.2d:%.2d:%.2d\n",rprm->time.yr,
                         rprm->time.mo,rprm->time.dy,rprm->time.hr,rprm->time.mt,
                         rprm->time.sc);
-
-        cnt++;  */
         continue;
     }
 
     /* calculate beam azimuth */
-//    fprintf(stderr,"Calculate beam azimuth\n");
     offset=site->maxbeam/2.0-0.5;
-//    fprintf(stderr,"Set bmazm\n");
     rprm->bmazm=site->boresite+site->bmsep*(rprm->bmnum-offset);
     if (thr !=-1) rawacf->thr=thr;
-//    fprintf(stderr,"Calling RawFwrite\n");
     s=RawFwrite(stdout,rprm,rawacf);
     if (s==-1) {
       cnt=-1;
