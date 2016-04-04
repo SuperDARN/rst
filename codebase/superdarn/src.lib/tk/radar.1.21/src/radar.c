@@ -5,26 +5,26 @@
 
 /*
  LICENSE AND DISCLAIMER
- 
+
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
+
  This file is part of the Radar Software Toolkit (RST).
- 
+
  RST is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
- 
+
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Lesser General Public License for more details.
- 
+
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+
+
+
 */
 
 
@@ -41,22 +41,15 @@ struct RadarSite *RadarEpochGetSite(struct Radar *ptr,double tval) {
 
   int s;
 
-//  fprintf(stderr,"StartingRadarEpochGetSite\n");
-//  fprintf(stderr,"ptr->st_time: %f\n",ptr->st_time);
-//  fprintf(stderr,"tval: %f\n",tval);
   /* If tval is before the radar.dat start time of the radar
      then return NULL */
   if ((ptr->st_time !=-1) && (tval<ptr->st_time)) return NULL;
-//  fprintf(stderr,"Start time got?\n");
   /* If tval is after the radar.dat end time of the radar
      then return NULL */
   if ((ptr->ed_time !=-1) && (tval>ptr->ed_time)) return NULL;
-//  fprintf(stderr,"Ed_time got?\n");
   for (s=0;(s<ptr->snum) && (ptr->site[s].tval !=-1) &&
       (ptr->site[s].tval<tval);s++);
-//  fprintf(stderr,"snum done got?\n");
   if (s==ptr->snum) return NULL;
-//  fprintf(stderr,"EpochGetSite passed?\n");
   return &(ptr->site[s]);
 
 }
@@ -65,10 +58,7 @@ struct RadarSite *RadarYMDHMSGetSite(struct Radar *ptr,int yr,
                                int mo,int dy,int hr,int mt,int sc) {
 
   double tval;
-//  fprintf(stderr,"Converting time to Epoch?\n");
   tval=TimeYMDHMSToEpoch(yr,mo,dy,hr,mt,sc);
-//  fprintf(stderr,"yr: %d  mo: %d  dy: %d  hr: %d  mt: %d  sc: %d\n",yr,mo,dy,hr,mt,sc);
-//  fprintf(stderr,"tval: %f\n",tval);
   return RadarEpochGetSite(ptr,tval);
 }
 
@@ -84,13 +74,13 @@ int RadarGetID(struct RadarNetwork *ptr,char *code) {
   int r=0,c=0;
   if (code==NULL) return -1;
   if (ptr==NULL) return -1;
-  
+
   for (r=0;(r<ptr->rnum);r++) {
-    for (c=0;(c<ptr->radar[r].cnum) && 
+    for (c=0;(c<ptr->radar[r].cnum) &&
         (strcmp(ptr->radar[r].code[c],code) !=0);c++);
-    if (c<ptr->radar[r].cnum) break;   
+    if (c<ptr->radar[r].cnum) break;
   }
-  
+
   if (r==ptr->rnum) return -1;
   return ptr->radar[r].id;
 }
@@ -142,7 +132,7 @@ void RadarFree(struct RadarNetwork *ptr) {
   int r,c;
   if (ptr==NULL) return;
   for (r=0;r<ptr->rnum;r++) {
-    for (c=0;c<ptr->radar[r].cnum;c++) 
+    for (c=0;c<ptr->radar[r].cnum;c++)
     if (ptr->radar[r].code[c] !=NULL) free(ptr->radar[r].code[c]);
     if (ptr->radar[r].code !=NULL) free(ptr->radar[r].code);
     if (ptr->radar[r].name !=NULL) free(ptr->radar[r].name);
@@ -162,10 +152,10 @@ int RadarLoadHardware(char *hdwpath,struct RadarNetwork *ptr) {
   int snum;
   int stid,yr,mo,dy,hr,mt,sc,yrsec;
   double tval;
-  double geolat, geolon, alt; 
-  double boresite, bmsep; 
+  double geolat, geolon, alt;
+  double boresite, bmsep;
   double vdir,atten,tdiff,phidiff;
-  double interfer[3]; 
+  double interfer[3];
   double recrise;
   int maxatten,maxrange,maxbeam;
   int status;
@@ -180,30 +170,30 @@ int RadarLoadHardware(char *hdwpath,struct RadarNetwork *ptr) {
       for (i=0;(line[i] !=0) && ((line[i]=='\n') || (line[i]==' '));i++);
       if (line[i]==0) continue;
       if (line[i]=='#') continue;
-      status=sscanf(line+i, 
+      status=sscanf(line+i,
                   "%d%d%d%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%d%d%d",
 	          &stid, &yr, &yrsec, &geolat, &geolon,
 	          &alt, &boresite, &bmsep,
 	          &vdir, &atten, &tdiff, &phidiff,
-	          &interfer[0], &interfer[1], 
+	          &interfer[0], &interfer[1],
 	          &interfer[2],
 		  &recrise,&maxatten,&maxrange,&maxbeam);
-      
+
       if (status<16) continue;
       if (stid !=ptr->radar[n].id) continue;
-      
-      if (ptr->radar[n].site==NULL) 
+
+      if (ptr->radar[n].site==NULL)
           ptr->radar[n].site=malloc(sizeof(struct RadarSite));
       else ptr->radar[n].site=realloc(ptr->radar[n].site,
                                       sizeof(struct RadarSite)*(snum+1));
       if (ptr->radar[n].site==NULL) break;
 
-      
+
       if (yr==2999) tval=-1;
       else {
-        TimeYrsecToYMDHMS(yrsec,yr,&mo,&dy,&hr,&mt,&sc);  
+        TimeYrsecToYMDHMS(yrsec,yr,&mo,&dy,&hr,&mt,&sc);
         tval=TimeYMDHMSToEpoch(yr,mo,dy,hr,mt,sc);
-      } 
+      }
 
       ptr->radar[n].site[snum].tval=tval;
       ptr->radar[n].site[snum].geolat=geolat;
@@ -238,15 +228,15 @@ struct RadarNetwork *RadarLoad(FILE *fp) {
   struct RadarNetwork *ptr=NULL;
   int i,j,k,c;
   char line[1024];
-  int yr,mo,dy;  
+  int yr,mo,dy;
   int num=0;
-  
+
   if (fp==NULL) return NULL;
   ptr=malloc(sizeof(struct RadarNetwork));
   if (ptr==NULL) return NULL;
   ptr->rnum=0;
   ptr->radar=NULL;
-  
+
   while(fgets(line,1023,fp) !=NULL) {
     for (i=0;(line[i] !=0) && ((line[i]=='\n') || (line[i]==' '));i++);
     if (line[i]==0) continue;
@@ -257,7 +247,7 @@ struct RadarNetwork *RadarLoad(FILE *fp) {
     if (ptr->radar==NULL) break;
 
     ptr->radar[num].snum=0;
-    ptr->radar[num].site=NULL;  
+    ptr->radar[num].site=NULL;
     ptr->radar[num].cnum=0;
     ptr->radar[num].code=NULL;
     ptr->radar[num].operator=NULL;
@@ -310,7 +300,7 @@ struct RadarNetwork *RadarLoad(FILE *fp) {
     for (j=i;(line[j] !='"') && (line[j] !=0);j++);
     if (line[j]==0) continue;
     i=j+1;
-    for (k=0;(line[i+k] !='"') && (line[i+k] !=0);k++) 
+    for (k=0;(line[i+k] !='"') && (line[i+k] !=0);k++)
     if (line[i+k]==0) continue;
     ptr->radar[num].name=malloc(k+1);
     if (ptr->radar[num].name==NULL) continue;
@@ -321,7 +311,7 @@ struct RadarNetwork *RadarLoad(FILE *fp) {
     for (j=i;(line[j] !='"') && (line[j] !=0);j++);
     if (line[j]==0) continue;
     i=j+1;
-    for (k=0;(line[i+k] !='"') && (line[i+k] !=0);k++) 
+    for (k=0;(line[i+k] !='"') && (line[i+k] !=0);k++)
     if (line[i+k]==0) continue;
     ptr->radar[num].operator=malloc(k+1);
     if (ptr->radar[num].operator==NULL) continue;
@@ -333,7 +323,7 @@ struct RadarNetwork *RadarLoad(FILE *fp) {
     for (j=i;(line[j] !='"') && (line[j] !=0);j++);
     if (line[j]==0) continue;
     i=j+1;
-    for (k=0;(line[i+k] !='"') && (line[i+k] !=0);k++) 
+    for (k=0;(line[i+k] !='"') && (line[i+k] !=0);k++)
     if (line[i+k]==0) continue;
     ptr->radar[num].hdwfname=malloc(k+1);
     if (ptr->radar[num].hdwfname==NULL) continue;
@@ -342,34 +332,32 @@ struct RadarNetwork *RadarLoad(FILE *fp) {
     i=i+k+1;
 
     c=0;
-    while (line[i] !=0) { 
+    while (line[i] !=0) {
       for (j=i;(line[j] !='"') && (line[j] !=0);j++);
       if (line[j]==0) break;
       i=j+1;
-      for (k=0;(line[i+k] !='"') && (line[i+k] !=0);k++) 
+      for (k=0;(line[i+k] !='"') && (line[i+k] !=0);k++)
       if (line[i+k]==0) break;
-      if (ptr->radar[num].code==NULL) 
-        ptr->radar[num].code=malloc(sizeof(char *));   
+      if (ptr->radar[num].code==NULL)
+        ptr->radar[num].code=malloc(sizeof(char *));
       else {
         char **tmp;
         tmp=realloc(ptr->radar[num].code,(c+1)*sizeof(char *));
         if (tmp==NULL) break;
         ptr->radar[num].code=tmp;
-      } 
+      }
       ptr->radar[num].code[c]=malloc(k+1);
       if (ptr->radar[num].code[c]==NULL) break;
       memcpy(ptr->radar[num].code[c],line+i,k);
       ptr->radar[num].code[c][k]=0;
-     
+
       c++;
       i=i+k+1;
     }
     ptr->radar[num].cnum=c;
-    num++; 
+    num++;
   }
   ptr->rnum=num;
   return ptr;
 };
-
-
 
