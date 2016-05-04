@@ -100,7 +100,7 @@ function rbpos,range,height=height,beam=beam,lagfr=first_lag,smsep=smsp, $
       stop
     endif
     s=RadarLoadHardware(network,path=getenv('SD_HDWPATH'))
-    if (s le 0) then begin
+    if (s ne 0) then begin
       print, 'Could not load hardware information'
       stop
     endif
