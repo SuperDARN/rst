@@ -88,6 +88,8 @@ int main (int argc,char *argv[]) {
   int bmcnt;
   int stid;
 
+  prm=RadarParmMake();
+
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
 
