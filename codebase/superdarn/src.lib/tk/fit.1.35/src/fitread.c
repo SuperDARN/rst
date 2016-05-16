@@ -97,7 +97,6 @@ int FitDecode(struct DataMap *ptr,
         (a->dim==1)) xcf=1;
   }
 
-
   FitSetRng(fit,nrang);
   if (xcf) {
     FitSetXrng(fit,nrang);
