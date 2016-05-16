@@ -182,7 +182,6 @@ int RadarParmDecode(struct DataMap *ptr,struct RadarParm *prm) {
   struct DataMapScalar *s;
   struct DataMapArray *a;
 
-  fprintf(stdout,"Within RadarParmDecode\n");
   if (ptr==NULL) return -1;
   if (prm==NULL) return -2;
 
@@ -201,7 +200,6 @@ int RadarParmDecode(struct DataMap *ptr,struct RadarParm *prm) {
 
   prm->ifmode=-1;
 
-  fprintf(stdout,"ptr->snum: %d\n",ptr->snum);
   for (c=0;c<ptr->snum;c++) {
     s=ptr->scl[c];
 
@@ -305,7 +303,6 @@ int RadarParmDecode(struct DataMap *ptr,struct RadarParm *prm) {
 
   }
 
-  fprintf(stdout,"Through first BIG for loop \n");
   for (c=0;c<ptr->anum;c++) {
    a=ptr->arr[c];
    if ((strcmp(a->name,"ptab")==0) && (a->type==DATASHORT) &&
@@ -315,7 +312,6 @@ int RadarParmDecode(struct DataMap *ptr,struct RadarParm *prm) {
         (a->dim==2)) RadarParmSetLag(prm,a->rng[1]-1,a->data.sptr);
   }
 
-  fprintf(stdout,"Through second for loop \n");
   return 0;
 }
 
