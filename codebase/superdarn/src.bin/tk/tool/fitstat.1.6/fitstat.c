@@ -140,7 +140,7 @@ int main (int argc,char *argv[]) {
     }
     if (bmcnt>0) {
 
-     fprintf(stdout,"%s:",argv[arg]);
+      fprintf(stdout,"%s:",argv[arg]);
       TimeEpochToYMDHMS(st_time,&yr,&mo,&dy,&hr,&mt,&sc);
       fprintf(stdout,"%.4d %.2d %.2d %.2d %.2d %.2d",yr,mo,dy,hr,mt,(int) sc);
       TimeEpochToYMDHMS(ed_time,&yr,&mo,&dy,&hr,&mt,&sc);
@@ -151,26 +151,29 @@ int main (int argc,char *argv[]) {
     } else exit(2);
     OldFitClose(fitfp);
   } else {
+    fprintf(stdout,"We're in the new part, mate. \n");
     fp=fopen(argv[arg],"r");
     if (fp==NULL) {
       fprintf(stderr,"Could not open file.\n");
       exit(1);
     }
+    fprintf(stdout,"Got the file open \n");
     bmcnt=0;
     st_time=-1;
     ed_time=-1;
     stid=0;
     while (FitFread(fp,prm,fit) !=-1) {
+      fprintf(stdout,"In the while loop, readin some data. \n");
       ed_time=TimeYMDHMSToEpoch(prm->time.yr,prm->time.mo,prm->time.dy,
                prm->time.hr,prm->time.mt,prm->time.sc);
-
+      fprintf(stdout,"Grabbed some time info \n");
       if (bmcnt==0) {
         st_time=ed_time;
         stid=prm->stid;
       }
       bmcnt++;
     }
-
+    fprintf(stdout,"Done loopin \n");
     if (bmcnt>0) {
       fprintf(stdout,"%s:",argv[arg]);
       TimeEpochToYMDHMS(st_time,&yr,&mo,&dy,&hr,&mt,&sc);
@@ -180,7 +183,10 @@ int main (int argc,char *argv[]) {
       fprintf(stdout,"%.4d %.2d %.2d %.2d %.2d %.2d ",yr,mo,dy,hr,mt,
                         (int) sc);
       fprintf(stdout,"[%.2d] (%d)\n",stid,bmcnt);
-    } else exit(1);
+    } else {
+        fprintf(stderr,"Error, no beams read\n");
+        exit(1);
+    }
     fclose(fp);
   }
   exit(0);
