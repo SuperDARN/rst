@@ -5,26 +5,26 @@
 
 /*
  LICENSE AND DISCLAIMER
- 
+
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
+
  This file is part of the Radar Software Toolkit (RST).
- 
+
  RST is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
- 
+
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Lesser General Public License for more details.
- 
+
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+
+
+
 */
 
 
@@ -44,7 +44,7 @@ struct RadarParm *RadarParmMake() {
 
   ptr=malloc(sizeof(struct RadarParm));
   if (ptr==NULL) return NULL;
-  memset(ptr,0,sizeof(struct RadarParm)); 
+  memset(ptr,0,sizeof(struct RadarParm));
   ptr->origin.time=NULL;
   ptr->origin.command=NULL;
   ptr->pulse=NULL;
@@ -77,7 +77,7 @@ int RadarParmSetOriginTime(struct RadarParm *ptr,char *str) {
 
   if (ptr->origin.time==NULL) tmp=malloc(strlen(str)+1);
   else tmp=realloc(ptr->origin.time,strlen(str)+1);
-  
+
   if (tmp==NULL) return -1;
   strcpy(tmp,str);
   ptr->origin.time=tmp;
@@ -99,9 +99,9 @@ int RadarParmSetOriginCommand(struct RadarParm *ptr,char *str) {
 
   if (ptr->origin.command==NULL) tmp=malloc(strlen(str)+1);
   else tmp=realloc(ptr->origin.command,strlen(str)+1);
- 
+
   if (tmp==NULL) return -1;
-  strcpy(tmp,str); 
+  strcpy(tmp,str);
   ptr->origin.command=tmp;
   return 0;
 
@@ -119,7 +119,7 @@ int RadarParmSetCombf(struct RadarParm *ptr,char *str) {
 
   if (ptr->combf==NULL) tmp=malloc(strlen(str)+1);
   else tmp=realloc(ptr->combf,strlen(str)+1);
- 
+
   if (tmp==NULL) return -1;
   strcpy(tmp,str);
   ptr->combf=tmp;
@@ -160,7 +160,7 @@ int RadarParmSetLag(struct RadarParm *ptr,int mplgs,int16 *lag) {
     }
     return 0;
   }
- 
+
   for (n=0;n<2;n++) {
     if (ptr->lag[n]==NULL) tmp=malloc(sizeof(int16)*(mplgs+1));
     else tmp=realloc(ptr->lag[n],sizeof(int16)*(mplgs+1));
@@ -202,7 +202,7 @@ int RadarParmDecode(struct DataMap *ptr,struct RadarParm *prm) {
 
   for (c=0;c<ptr->snum;c++) {
     s=ptr->scl[c];
-   
+
     if ((strcmp(s->name,"radar.revision.major")==0) && (s->type==DATACHAR))
       prm->revision.major=*(s->data.cptr);
     if ((strcmp(s->name,"radar.revision.minor")==0) && (s->type==DATACHAR))
@@ -210,13 +210,13 @@ int RadarParmDecode(struct DataMap *ptr,struct RadarParm *prm) {
 
     if ((strcmp(s->name,"origin.code")==0) && (s->type==DATACHAR))
       prm->origin.code=*(s->data.cptr);
-    
+
     if ((strcmp(s->name,"origin.time")==0) && (s->type==DATASTRING))
       RadarParmSetOriginTime(prm,*((char **) s->data.vptr));
 
     if ((strcmp(s->name,"origin.command")==0) && (s->type==DATASTRING))
       RadarParmSetOriginCommand(prm,*((char **) s->data.vptr));
-    
+
     if ((strcmp(s->name,"cp")==0) && (s->type==DATASHORT))
       prm->cp=*(s->data.sptr);
     if ((strcmp(s->name,"stid")==0) && (s->type==DATASHORT))
@@ -297,12 +297,12 @@ int RadarParmDecode(struct DataMap *ptr,struct RadarParm *prm) {
       prm->mxpwr=*(s->data.iptr);
     if ((strcmp(s->name,"lvmax")==0) && (s->type==DATAINT))
       prm->lvmax=*(s->data.sptr);
-    
+
     if ((strcmp(s->name,"combf")==0) && (s->type==DATASTRING))
       RadarParmSetCombf(prm,*((char **) s->data.vptr));
-    
+
   }
-  
+
   for (c=0;c<ptr->anum;c++) {
    a=ptr->arr[c];
    if ((strcmp(a->name,"ptab")==0) && (a->type==DATASHORT) &&
@@ -311,13 +311,13 @@ int RadarParmDecode(struct DataMap *ptr,struct RadarParm *prm) {
    if ((strcmp(a->name,"ltab")==0) && (a->type==DATASHORT) &&
         (a->dim==2)) RadarParmSetLag(prm,a->rng[1]-1,a->data.sptr);
   }
-  
+
   return 0;
 }
 
 int RadarParmEncode(struct DataMap *ptr,struct RadarParm *prm) {
 
-  int n,x;  
+  int n,x;
   int16 *pulse=NULL,*lag=NULL;
   int32 pnum;
   int32 lnum[2];
@@ -329,7 +329,7 @@ int RadarParmEncode(struct DataMap *ptr,struct RadarParm *prm) {
 
   DataMapAddScalar(ptr,"radar.revision.major",DATACHAR,&prm->revision.major);
   DataMapAddScalar(ptr,"radar.revision.minor",DATACHAR,&prm->revision.minor);
-  DataMapAddScalar(ptr,"origin.code",DATACHAR,&prm->origin.code);   
+  DataMapAddScalar(ptr,"origin.code",DATACHAR,&prm->origin.code);
   DataMapAddScalar(ptr,"origin.time",DATASTRING,&prm->origin.time);
   DataMapAddScalar(ptr,"origin.command",DATASTRING,&prm->origin.command);
   DataMapAddScalar(ptr,"cp",DATASHORT,&prm->cp);
@@ -377,7 +377,7 @@ int RadarParmEncode(struct DataMap *ptr,struct RadarParm *prm) {
 
   DataMapAddScalar(ptr,"mxpwr",DATAINT,&prm->mxpwr);
   DataMapAddScalar(ptr,"lvmax",DATAINT,&prm->lvmax);
-    
+
   DataMapAddScalar(ptr,"combf",DATASTRING,&prm->combf);
 
   pulse=(int16 *) DataMapStoreArray(ptr,"ptab",DATASHORT,1,&pnum,NULL);
@@ -421,7 +421,7 @@ void *RadarParmFlatten(struct RadarParm *ptr,size_t *size) {
 
   buf=malloc(s);
   if (buf==NULL) return NULL;
-  *size=s; 
+  *size=s;
 
   r=(struct RadarParm *) buf;
   memcpy(buf,ptr,sizeof(struct RadarParm));
@@ -431,20 +431,20 @@ void *RadarParmFlatten(struct RadarParm *ptr,size_t *size) {
     strcpy(buf+p,ptr->origin.time);
     r->origin.time=(void *) p;
     p+=strlen(ptr->origin.time)+1;
-  } 
-      
+  }
+
   if (ptr->origin.command !=NULL) {
     strcpy(buf+p,ptr->origin.command);
     r->origin.command=(void *) p;
     p+=strlen(ptr->origin.command)+1;
-  } 
+  }
 
   if (ptr->combf !=NULL) {
     strcpy(buf+p,ptr->combf);
     r->combf=(void *) p;
     p+=strlen(ptr->combf)+1;
-  } 
-  
+  }
+
   if (ptr->pulse !=NULL) {
     memcpy(buf+p,ptr->pulse,ptr->mppul*sizeof(int16));
     r->pulse=(void *) p;
@@ -480,7 +480,7 @@ int RadarParmExpand(struct RadarParm *ptr,void *buffer) {
     ptr->origin.time=malloc(strlen(p)+1);
     strcpy(ptr->origin.time,p);
   }
-  
+
   if (ptr->origin.command !=NULL) {
     p=buffer+(size_t) ptr->origin.command;
     ptr->origin.command=malloc(strlen(p)+1);
@@ -490,7 +490,7 @@ int RadarParmExpand(struct RadarParm *ptr,void *buffer) {
   if (ptr->combf !=NULL) {
     p=buffer+(size_t) ptr->combf;
     ptr->combf=malloc(strlen(p)+1);
-    strcpy(ptr->combf,p);   
+    strcpy(ptr->combf,p);
   }
 
   if (ptr->pulse !=NULL) {
@@ -503,12 +503,12 @@ int RadarParmExpand(struct RadarParm *ptr,void *buffer) {
     if (ptr->lag[n]==NULL) continue;
     if (ptr->mplgexs !=0) lnum=ptr->mplgexs+1;
     else lnum=ptr->mplgs+1;
-    p=buffer+(size_t) ptr->lag[n]; 
+    p=buffer+(size_t) ptr->lag[n];
     ptr->lag[n]=malloc(lnum*sizeof(int16));
     memcpy(ptr->lag[n],p,lnum*sizeof(int16));
   }
 
- 
+
   return 0;
 }
 
