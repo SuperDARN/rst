@@ -96,7 +96,7 @@ stored in ${LOGPATH}.
 	Copy the idl_export.h file into ~/VTRST3.5/include/superdarn
 
 
-Again...this may not be everything, but we'll start here.
+Again...this may not be everything, but we'll start here now.
 
 
 
