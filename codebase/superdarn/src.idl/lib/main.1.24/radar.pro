@@ -801,7 +801,7 @@ function RadarPos,center,bcrd,rcrd,site,frang,rsep,rxrise,$
     
      if (N_ELEMENTS(frang) eq 1) then fr=frang
      if (N_ELEMENTS(rsep) eq 1) then begin 
-       if (center eq 0) then re=-0.5*rsep*20.0/3.0
+       if (center eq 0) then range_edge=-0.5*rsep*20.0/3.0
        rs=rsep
      endif
 
@@ -814,7 +814,7 @@ function RadarPos,center,bcrd,rcrd,site,frang,rsep,rxrise,$
      for i=0,n-1 do begin
         if N_ELEMENTS(frang) ne 1 then fr=frang[i]
         if N_ELEMENTS(rsep) ne 1 then begin 
-          if (center eq 0) then re=-0.5*rsep*20.0/3.0
+          if (center eq 0) then range_edge=-0.5*rsep*20.0/3.0
           rs=rsep[i]
         endif
         if N_ELEMENTS(rxrise) ne 1 then rx=rxrise[i]
