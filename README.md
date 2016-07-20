@@ -84,7 +84,6 @@ your computer.
         Copy the cdf.h file into ~/VTRST3.5/codebase/analysis/src.lib/cdf/rcdf.1.5/include/
         Copy the libcdf.a and libcdf.so into ~/VTRST3.5/lib/
 
-
 3. Run 'make.build' from the command line.  This runs a helper script that sets up other 
 compiling code.  The source code for make.build can be found in ~/build/script/
 
@@ -92,8 +91,12 @@ compiling code.  The source code for make.build can be found in ~/build/script/
 all of the source codes and compile them into binaries.  A log of this compilation is 
 stored in ${LOGPATH}.  
 
+5. If compilation fails at aacgmdlm.1.10 you will need to do the following:
 
-Again...this may not be everything, but we'll start here.
+	Copy the idl_export.h file into ~/VTRST3.5/include/superdarn
+
+
+Again...this may not be everything, but we'll start here now.
 
 
 
