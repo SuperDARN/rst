@@ -1,30 +1,30 @@
 /* fitread.c
-   ========= 
+   =========
    Author: R.J.Barnes
 */
 
 /*
  LICENSE AND DISCLAIMER
- 
+
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
+
  This file is part of the Radar Software Toolkit (RST).
- 
+
  RST is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
- 
+
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Lesser General Public License for more details.
- 
+
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+
+
+
 */
 
 #include <stdio.h>
@@ -66,7 +66,7 @@ int FitDecode(struct DataMap *ptr,
 
   for (c=0;c<ptr->snum;c++) {
     s=ptr->scl[c];
-   
+
     if ((strcmp(s->name,"fitacf.revision.major")==0) && (s->type==DATAINT))
       fit->revision.major=*(s->data.iptr);
     if ((strcmp(s->name,"fitacf.revision.minor")==0) && (s->type==DATAINT))
@@ -79,7 +79,7 @@ int FitDecode(struct DataMap *ptr,
     if ((strcmp(s->name,"noise.vel")==0) && (s->type==DATAFLOAT))
       fit->noise.vel=*(s->data.fptr);
   }
- 
+
   for (c=0;c<ptr->anum;c++) {
     a=ptr->arr[c];
 
@@ -97,13 +97,12 @@ int FitDecode(struct DataMap *ptr,
         (a->dim==1)) xcf=1;
   }
 
- 
   FitSetRng(fit,nrang);
   if (xcf) {
     FitSetXrng(fit,nrang);
     FitSetElv(fit,nrang);
-  } 
-  
+  }
+
   for (c=0;c<ptr->anum;c++) {
 
     a=ptr->arr[c];
@@ -119,7 +118,7 @@ int FitDecode(struct DataMap *ptr,
         (a->dim==1)) {
       for (x=0;x<a->rng[0];x++) fit->rng[slist[x]].nump=a->data.sptr[x];
     }
-    
+
     if ((strcmp(a->name,"qflg")==0) && (a->type==DATACHAR) &&
         (a->dim==1)) {
       qflg=1;
@@ -137,7 +136,7 @@ int FitDecode(struct DataMap *ptr,
     }
     if ((strcmp(a->name,"p_l_e")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) {
-      for (x=0;x<a->rng[0];x++) 
+      for (x=0;x<a->rng[0];x++)
         fit->rng[slist[x]].p_l_err=a->data.fptr[x];
     }
 
@@ -147,7 +146,7 @@ int FitDecode(struct DataMap *ptr,
     }
     if ((strcmp(a->name,"p_s_e")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) {
-      for (x=0;x<a->rng[0];x++) 
+      for (x=0;x<a->rng[0];x++)
         fit->rng[slist[x]].p_s_err=a->data.fptr[x];
     }
 
@@ -166,7 +165,7 @@ int FitDecode(struct DataMap *ptr,
     }
     if ((strcmp(a->name,"w_l_e")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) {
-      for (x=0;x<a->rng[0];x++) 
+      for (x=0;x<a->rng[0];x++)
         fit->rng[slist[x]].w_l_err=a->data.fptr[x];
     }
 
@@ -176,57 +175,57 @@ int FitDecode(struct DataMap *ptr,
     }
     if ((strcmp(a->name,"w_s_e")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) {
-      for (x=0;x<a->rng[0];x++) 
+      for (x=0;x<a->rng[0];x++)
         fit->rng[slist[x]].w_s_err=a->data.fptr[x];
     }
 
     if ((strcmp(a->name,"sd_l")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) {
-      for (x=0;x<a->rng[0];x++) 
+      for (x=0;x<a->rng[0];x++)
         fit->rng[slist[x]].sdev_l=a->data.fptr[x];
     }
     if ((strcmp(a->name,"sd_s")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) {
-      for (x=0;x<a->rng[0];x++) 
+      for (x=0;x<a->rng[0];x++)
         fit->rng[slist[x]].sdev_s=a->data.fptr[x];
     }
     if ((strcmp(a->name,"sd_phi")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) {
-      for (x=0;x<a->rng[0];x++) 
+      for (x=0;x<a->rng[0];x++)
 	fit->rng[slist[x]].sdev_phi=a->data.fptr[x];
     }
 
     if (!xcf) continue;
-    
+
     if ((strcmp(a->name,"x_qflg")==0) && (a->type==DATACHAR) &&
-        (a->dim==1)) { 
+        (a->dim==1)) {
       xqflg=1;
       for (x=0;x<a->rng[0];x++) fit->xrng[slist[x]].qflg=a->data.cptr[x];
     }
-   
+
     if ((strcmp(a->name,"x_gflg")==0) && (a->type==DATACHAR) &&
         (a->dim==1)) {
       for (x=0;x<a->rng[0];x++) fit->xrng[slist[x]].gsct=a->data.cptr[x];
     }
-    
+
     if ((strcmp(a->name,"x_p_l")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) {
       for (x=0;x<a->rng[0];x++) fit->xrng[slist[x]].p_l=a->data.fptr[x];
     }
-    
+
     if ((strcmp(a->name,"x_p_l_e")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) {
-      for (x=0;x<a->rng[0];x++) 
+      for (x=0;x<a->rng[0];x++)
         fit->xrng[slist[x]].p_l_err=a->data.fptr[x];
     }
-    
+
     if ((strcmp(a->name,"x_p_s")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) {
       for (x=0;x<a->rng[0];x++) fit->xrng[slist[x]].p_s=a->data.fptr[x];
     }
     if ((strcmp(a->name,"x_p_s_e")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) {
-      for (x=0;x<a->rng[0];x++) 
+      for (x=0;x<a->rng[0];x++)
          fit->xrng[slist[x]].p_s_err=a->data.fptr[x];
     }
 
@@ -245,7 +244,7 @@ int FitDecode(struct DataMap *ptr,
     }
     if ((strcmp(a->name,"x_w_l_e")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) {
-      for (x=0;x<a->rng[0];x++) 
+      for (x=0;x<a->rng[0];x++)
         fit->xrng[slist[x]].w_l_err=a->data.fptr[x];
     }
 
@@ -255,7 +254,7 @@ int FitDecode(struct DataMap *ptr,
     }
     if ((strcmp(a->name,"x_w_s_e")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) {
-      for (x=0;x<a->rng[0];x++) 
+      for (x=0;x<a->rng[0];x++)
         fit->xrng[slist[x]].w_s_err=a->data.fptr[x];
     }
 
@@ -266,14 +265,14 @@ int FitDecode(struct DataMap *ptr,
 
     if ((strcmp(a->name,"phi0_e")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) {
-      for (x=0;x<a->rng[0];x++) 
+      for (x=0;x<a->rng[0];x++)
         fit->xrng[slist[x]].phi0_err=a->data.fptr[x];
     }
 
 
     if ((strcmp(a->name,"elv")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) {
-      for (x=0;x<a->rng[0];x++) 
+      for (x=0;x<a->rng[0];x++)
         fit->elv[slist[x]].normal=a->data.fptr[x];
     }
 
@@ -289,20 +288,20 @@ int FitDecode(struct DataMap *ptr,
 
     if ((strcmp(a->name,"x_sd_l")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) {
-      for (x=0;x<a->rng[0];x++) 
+      for (x=0;x<a->rng[0];x++)
         fit->xrng[slist[x]].sdev_l=a->data.fptr[x];
     }
     if ((strcmp(a->name,"x_sd_s")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) {
-      for (x=0;x<a->rng[0];x++) 
+      for (x=0;x<a->rng[0];x++)
         fit->xrng[slist[x]].sdev_s=a->data.fptr[x];
     }
     if ((strcmp(a->name,"x_sd_phi")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) {
-      for (x=0;x<a->rng[0];x++) 
+      for (x=0;x<a->rng[0];x++)
         fit->xrng[slist[x]].sdev_phi=a->data.fptr[x];
     }
-    
+
   }
 
 
