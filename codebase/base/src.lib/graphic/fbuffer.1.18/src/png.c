@@ -37,7 +37,7 @@
 
 struct FrameBuffer *FrameBufferLoadPNG(FILE *fp,char *name) {
   int s=0,x,y,d=1,m=0,nump=0;
-  int wdt,hgt;
+  int wdt,hgt,rowbytes;
 
   unsigned char hdr[8];
   png_structp pngptr=NULL;
@@ -74,10 +74,10 @@ struct FrameBuffer *FrameBufferLoadPNG(FILE *fp,char *name) {
 
   png_read_info(pngptr,infoptr);
 
-  wdt = infoptr->width;
-  hgt = infoptr->height;
+  wdt = (int)png_get_image_width(pngptr, infoptr);
+  hgt = (int)png_get_image_height(pngptr, infoptr);
   
-  switch (infoptr->color_type) {
+  switch (png_get_color_type(pngptr, infoptr)) {
   case PNG_COLOR_TYPE_GRAY:
     d=1;
     m=0;
@@ -96,7 +96,7 @@ struct FrameBuffer *FrameBufferLoadPNG(FILE *fp,char *name) {
     break;
   }
 
-  if (infoptr->bit_depth !=8) {
+  if (png_get_color_type(pngptr, infoptr) != 8) {
     png_destroy_read_struct(&pngptr,&infoptr,NULL);
     return NULL;
   }
@@ -161,10 +161,11 @@ struct FrameBuffer *FrameBufferLoadPNG(FILE *fp,char *name) {
 
   rowptr=(png_bytep *) malloc(sizeof(png_bytep)*hgt);
   if (rowptr==NULL) s=-1;
-
-  if (s==0) imgptr=(png_byte *) malloc(infoptr->rowbytes*hgt);
-  if (imgptr==NULL) s=-1;  
   
+  rowbytes = png_get_rowbytes(pngptr, infoptr);
+  if (s==0) imgptr=(png_byte *) malloc(rowbytes*hgt);
+  if (imgptr==NULL) s=-1;  
+
   if (s !=0) {
     if (ptr->name !=NULL) free(ptr->name);
     if (ptr->img !=NULL) free(ptr->img);
@@ -178,7 +179,7 @@ struct FrameBuffer *FrameBufferLoadPNG(FILE *fp,char *name) {
    
 
   for (y=0; y<hgt; y++)
-    rowptr[y] = (png_byte*) &imgptr[y*infoptr->rowbytes];
+    rowptr[y] = (png_byte*) &imgptr[y*rowbytes];
   
   png_read_image(pngptr,rowptr);
 
