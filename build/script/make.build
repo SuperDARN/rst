@@ -21,6 +21,11 @@ set -e
 
 ############################################################################
 
+if [ -z "$BUILD" ]; then
+    echo "BUILD environment variable is empty, please set"
+    exit 1
+fi
+
 export LD_LIBRARY_PATH=${BUILD}/lib
 export BINPATH=${BUILD}/bin
 export LIBPATH=${BUILD}/lib
