@@ -138,7 +138,7 @@ int main(int argc,char *argv[]) {
   }
 
   network=RadarLoad(fp);
-  fclose(fp); 
+  fclose(fp);
   if (network==NULL)
 	{
     fprintf(stderr,"Failed to read radar information.\n");
