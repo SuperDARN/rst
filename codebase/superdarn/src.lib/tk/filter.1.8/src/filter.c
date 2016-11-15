@@ -408,7 +408,7 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
                         for (c=0;c<bmcnt[x][z];c++) {
               
                             /* Get pointer to current beam */
-	                        b=bmptr[x][z][c];
+                            b=bmptr[x][z][c];
               
                             /* Add weight of current cell if scatter is present */
                             w+=weight[x-bbox][y-rbox][z]*b->sct[y]; 
@@ -424,7 +424,7 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
                             if (b->sct[y] !=0) {
                                 cell[cnum]=&b->rng[y];
                                 cnum++;
-	                        }
+                            }
 	    
                         }
 	  

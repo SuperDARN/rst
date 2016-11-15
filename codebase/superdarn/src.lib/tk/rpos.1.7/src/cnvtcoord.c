@@ -313,7 +313,6 @@ void RPosGeo(int center, int bcrd, int rcrd,
     double bm_edge=0;
     double range_edge=0;
   
-  
     /* If not calculating center position of range-beam cell then calculate
      * position of near-left corner instead */
     if (center==0) {
