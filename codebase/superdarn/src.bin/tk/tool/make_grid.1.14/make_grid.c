@@ -266,7 +266,7 @@ int main(int argc,char *argv[]) {
     char *exstr=NULL;
 
     /* Default lower limits for velocity, power, spectral width, and velocity error */
-    double min[4]={35,3,10,0};i
+    double min[4]={35,3,10,0};
 
     /* Default upper limits for velocity, power, spectral width, and velocity error */
     double max[4]={2000,50,1000,200};
@@ -667,7 +667,7 @@ int main(int argc,char *argv[]) {
                                     tlen,syncflg,channel);
 
             } else {
-	            /* Input file is in cfit format */
+                /* Input file is in cfit format */
 
                 s=CFitSeek(cfitfp,yr,mo,dy,hr,mt,sc,NULL,NULL);
                 
@@ -903,7 +903,7 @@ int main(int argc,char *argv[]) {
                         continue;
                     }
 
-	            }
+                }
                 
             } else {
                 /* Input file is in cfit format */

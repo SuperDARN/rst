@@ -287,7 +287,8 @@ int GridTableAddBeam(struct GridTable *ptr,
     /* Inertial velocity correction as a function of radar geodetic latitude [m/s] */
     velco=(2*PI/86400.0)*6356.779*1000*cos(PI*pos->geolat/180.0);
 
-    /* */
+    /* If the GridBm structure doesn't exist in GridTable then create one, 
+     * otherwise add another beam to the array and update the beam number */
     if (ptr->bm==NULL) tmp=malloc(sizeof(struct GridBm));
     else tmp=realloc(ptr->bm,sizeof(struct GridBm)*(ptr->bnum+1));
 
@@ -519,7 +520,7 @@ int GridTableMap(struct GridTable *ptr, struct RadarScan *scan,
             ptr->pnt[inx].azm+=bm->azm[r];
 
             if (iflg !=0) { 
-	            /* If gridding in inertial frame then add north/east velocities to
+                /* If gridding in inertial frame then add north/east velocities to
                  * GridPnt structure including ival correction */
                 ptr->pnt[inx].vel.median_n+=
 	                -(scan->bm[n].rng[r].v+bm->ival[r])*
