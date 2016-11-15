@@ -45,7 +45,7 @@ int IGRFMagCmp(double date, double frho, double flat, double flon,
     frho = frho - 6372.;
 
     /* Calculate magnetic field componenets at field point */
-    s=IGRFCall(date, flat, flon, height, bx, by, bz);
+    s=IGRFCall(date, flat, flon, frho, bx, by, bz);
   
     /* Calculate magnitude of magnetic field vector */
     *b = sqrt(*bx * *bx + *by * *by + *bz * *bz);
