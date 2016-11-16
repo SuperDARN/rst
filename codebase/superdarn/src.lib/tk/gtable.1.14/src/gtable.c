@@ -51,14 +51,14 @@ double w_l_e_min=1;
  * single time interval.
  **/
 struct GridTable *GridTableMake() {
-  
+
     struct GridTable *ptr;
     ptr=malloc(sizeof(struct GridTable));
     if (ptr==NULL) return NULL;
     memset(ptr,0,sizeof(struct GridTable));
     ptr->bm=NULL;
     ptr->pnt=NULL;
-  
+
     /* Initialize start time to -1 to indicate this is the first grid record */
     ptr->st_time=-1;
 
@@ -73,11 +73,11 @@ struct GridTable *GridTableMake() {
  * Frees memory allocated to GridTable, GridBm, and GridPnt structures.
  **/
 void GridTableFree(struct GridTable *ptr) {
-  
+
     int n;
 
     if (ptr==NULL) return;
- 
+
     if (ptr->bm !=NULL) {
         for (n=0;n<ptr->bnum;n++) {
             if (ptr->bm[n].azm !=NULL) free(ptr->bm[n].azm);
@@ -128,19 +128,19 @@ int GridTableTest(struct GridTable *ptr, struct RadarScan *scan, int tlen) {
 
     double tm;
     int i;
-  
+
     /* Calculate time at center of radar scan */
     tm=(scan->st_time+scan->ed_time)/2.0;
 
     /* If this is the first iteration in make_grid then return */
     if (ptr->st_time==-1) return 0;
 
-    /* If the currently loaded RadarScan structure occurred after the end of 
+    /* If the currently loaded RadarScan structure occurred after the end of
      * the GridTable structure then begin with the function */
     if (tm>ptr->ed_time) {
         /* average the grid */
-  
-        /* Initialize the number of grid points in the GridTable structure 
+
+        /* Initialize the number of grid points in the GridTable structure
          * to zero */ 
         ptr->npnt=0;
 
@@ -152,48 +152,48 @@ int GridTableTest(struct GridTable *ptr, struct RadarScan *scan, int tlen) {
 
         /* Loop over number of points in GridTable structure */
         for (i=0;i<ptr->pnum;i++) {
-            
+
             /* If no velocity measurements in GridPnt then continue */
             if (ptr->pnt[i].cnt==0) continue;
-      
+
             /* If at least 25% of the possible GridPnt cells don't have velocity
              * measurements then continue */
             if (ptr->pnt[i].cnt<=(0.25*ptr->nscan*ptr->pnt[i].max)) {
                 ptr->pnt[i].cnt=0;
                 continue;
             }
-     
+
             /* Update the total number of grid points in the GridTable structure */
             ptr->npnt++;
 
             /* Calculate weighted mean of north/east velocity components */
             ptr->pnt[i].vel.median_n=ptr->pnt[i].vel.median_n/ptr->pnt[i].vel.sd;
             ptr->pnt[i].vel.median_e=ptr->pnt[i].vel.median_e/ptr->pnt[i].vel.sd;
-      
+
             /* Calculate magnitude of weighted mean velocity vector */
             ptr->pnt[i].vel.median=sqrt(ptr->pnt[i].vel.median_n*ptr->pnt[i].vel.median_n +
-				  ptr->pnt[i].vel.median_e*ptr->pnt[i].vel.median_e);
-      
+            ptr->pnt[i].vel.median_e*ptr->pnt[i].vel.median_e);
+
             /* Calculate azimuth of weighted mean velocity vector */
             ptr->pnt[i].azm=atan2(ptr->pnt[i].vel.median_e,ptr->pnt[i].vel.median_n)*180./acos(-1.);
-      
+
             /* Calculate weighted mean of spectral width and power */
             ptr->pnt[i].wdt.median=ptr->pnt[i].wdt.median/ptr->pnt[i].wdt.sd;
             ptr->pnt[i].pwr.median=ptr->pnt[i].pwr.median/ptr->pnt[i].pwr.sd;
-      
+
             /* Calculate standard deviation of velocity, power, and spectral width */
             ptr->pnt[i].vel.sd=1/sqrt(ptr->pnt[i].vel.sd);
             ptr->pnt[i].wdt.sd=1/sqrt(ptr->pnt[i].wdt.sd);
             ptr->pnt[i].pwr.sd=1/sqrt(ptr->pnt[i].pwr.sd);
 
         }
-    
+
         /* Reset status of GridTable structure to zero */
         ptr->status=0;
 
         /* GridTable structure ready to write to file */
         return 1;
-  
+
     }
 
     /* GridTable structure not ready to write to file */
@@ -208,9 +208,9 @@ int GridTableTest(struct GridTable *ptr, struct RadarScan *scan, int tlen) {
  * storing gridded radar data.
  **/
 int GridTableAddPoint(struct GridTable *ptr) {
-  
+
     void *tmp=NULL;  
-  
+
     /* Make sure that pointer to the GridTable structure exists */
     if (ptr==NULL) return -1;
 
@@ -221,10 +221,10 @@ int GridTableAddPoint(struct GridTable *ptr) {
     if (tmp==NULL) return -1;
     ptr->pnt=tmp;
     memset(&ptr->pnt[ptr->pnum],0,sizeof(struct GridPnt));
-  
+
     /* Update the total number of points in the GridTable structure */
     ptr->pnum++;
-  
+
     /* Return the index of the current point */
     return ptr->pnum-1;
 
@@ -238,13 +238,13 @@ int GridTableAddPoint(struct GridTable *ptr) {
  * in the GridTable structure, then a value of -1 is returned.
  **/
 int GridTableFindPoint(struct GridTable *ptr, int ref) {
-  
+
     int n;
-  
+
     /* Loop over all points in GridTable structure. If point ref
      * matches input ref then break */
     for (n=0;n<ptr->pnum;n++) if (ref==ptr->pnt[n].ref) break;
-  
+
     /* Return error flag if point not found */
     if (n==ptr->pnum) return -1;
 
@@ -287,7 +287,7 @@ int GridTableAddBeam(struct GridTable *ptr,
     /* Inertial velocity correction as a function of radar geodetic latitude [m/s] */
     velco=(2*PI/86400.0)*6356.779*1000*cos(PI*pos->geolat/180.0);
 
-    /* If the GridBm structure doesn't exist in GridTable then create one, 
+    /* If the GridBm structure doesn't exist in GridTable then create one,
      * otherwise add another beam to the array and update the beam number */
     if (ptr->bm==NULL) tmp=malloc(sizeof(struct GridBm));
     else tmp=realloc(ptr->bm,sizeof(struct GridBm)*(ptr->bnum+1));
@@ -295,10 +295,10 @@ int GridTableAddBeam(struct GridTable *ptr,
     if (tmp==NULL) return -1;
     ptr->bm=tmp;
     b=&ptr->bm[ptr->bnum];
-  
+
     /* Update the total number of beams in the GridTable structure */
     ptr->bnum++;
-  
+
     /* Populate GridBm structure with info from RadarBeam structure */
     b->bm=bm->bm;
     b->frang=bm->frang;
@@ -318,17 +318,17 @@ int GridTableAddBeam(struct GridTable *ptr,
 
     /* Loop through range gates along beam */
     for (r=0;r<b->nrang;r++) {
-        
+
         /* Calculate geographic azimuth and elevation to range/beam position */
         s=RPosRngBmAzmElv(b->bm,r,yr,pos,
                     b->frang,b->rsep,b->rxrise,
                     alt,&geoazm,&elv);
 
-        /* If geographic azimuth/elevation calculation failed then 
+        /* If geographic azimuth/elevation calculation failed then
          * break out of loop */
         if (s==-1) break;
 
-        /* Calculate magnetic latitude, longitude, and azimuth of range/beam 
+        /* Calculate magnetic latitude, longitude, and azimuth of range/beam
          * position */
         s=RPosInvMag(b->bm,r,yr,pos,
                b->frang,b->rsep,b->rxrise,
@@ -350,7 +350,7 @@ int GridTableAddBeam(struct GridTable *ptr,
         /* If southern hemi point is below 50S then shift its latitude to 50S */
         if ((lat<0) && (lat>-50)) lat=-50;
 
-        /* Calculate magnetic grid cell latitude 
+        /* Calculate magnetic grid cell latitude
          * (eg, 72.1->72.5, 57.8->57.5, etc) */
         if (lat>0) grdlat=(int) (lat)+0.5;
         else grdlat=(int) (lat)-0.5;
@@ -371,7 +371,7 @@ int GridTableAddBeam(struct GridTable *ptr,
 
         /* If matching GridPnt structure not found then create one */
         if (inx==-1) inx=GridTableAddPoint(ptr);
- 
+
         /* Get pointer to the GridPnt structure */
         p=&ptr->pnt[inx];  
 
@@ -384,20 +384,20 @@ int GridTableAddBeam(struct GridTable *ptr,
         /* Set the magnetic latitude and longitude of GridPnt structure */
         p->mlat=grdlat;
         p->mlon=grdlon;
-    
+
         /* Set the index, magnetic azimuth, and inertial velocity correction factor of
          * the GridBm structure */
         b->inx[r]=inx;    
         b->azm[r]=azm;
         b->ival[r]=velco*cos(PI*(90+geoazm)/180.0);
-  
+
     }
-  
+
     /* Return error if didn't finish looping through all range gates */
     if (r !=b->nrang) {
         return -1;
     }
-  
+
     /* Return the index of the beam number added to the GridTable structure */
     return ptr->bnum-1;
 
@@ -412,9 +412,9 @@ int GridTableAddBeam(struct GridTable *ptr,
  * of -1 is returned.
  **/
 int GridTableFindBeam(struct GridTable *ptr, struct RadarBeam *bm) {
-  
+
     int n;
-  
+
     /* Loop over number of beams in GridTable structure */
     for (n=0;n<ptr->bnum;n++) {
 
@@ -445,8 +445,8 @@ int GridTableFindBeam(struct GridTable *ptr, struct RadarBeam *bm) {
  * Maps radar scan data to an equi-area grid in magnetic coordinates.
  **/
 int GridTableMap(struct GridTable *ptr, struct RadarScan *scan,
-                struct RadarSite *pos, int tlen, int iflg, double alt) {
-  
+                 struct RadarSite *pos, int tlen, int iflg, double alt) {
+
     double freq=0,noise=0;
     double variance=0;
     double tm;
@@ -475,7 +475,7 @@ int GridTableMap(struct GridTable *ptr, struct RadarScan *scan,
 
     /* Loop over number of beams in RadarScan structure */
     for (n=0;n<scan->num;n++) {
-    
+
         /* Make sure beam record is valid, else skip */
         if (scan->bm[n].bm==-1) continue;
 
@@ -494,7 +494,7 @@ int GridTableMap(struct GridTable *ptr, struct RadarScan *scan,
 
         /* Loop over range gates along radar beam */
         for (r=0;r<scan->bm[n].nrang;r++) {
-      
+
             /* If no scatter in beam/range gate cell then continue
              * (filters in make_grid can also manually change sct value to 0) */
             if (scan->bm[n].sct[r]==0) continue;
@@ -503,66 +503,66 @@ int GridTableMap(struct GridTable *ptr, struct RadarScan *scan,
             v_e=scan->bm[n].rng[r].v_e;
             p_l_e=scan->bm[n].rng[r].p_l_e;
             w_l_e=scan->bm[n].rng[r].w_l_e;
-    
+
             /* If velocity error is less than 100 m/s then set it to 100 m/s */
             if (v_e<v_e_min) v_e=v_e_min;
-      
+
             /* If power error is less than 1 dB then set it to 1 dB */
             if (p_l_e<p_l_e_min) p_l_e=p_l_e_min;
 
             /* If spectral width error is less than 1 m/s then set it to 1 m/s */
             if (w_l_e<w_l_e_min) w_l_e=w_l_e_min;
- 
+
             /* Get grid cell index of radar beam / gate measurement */
-	        inx=bm->inx[r];
-      
-            /*Add magnetic azimuth of radar beam to GridPnt structure */  
+            inx=bm->inx[r];
+
+            /*Add magnetic azimuth of radar beam to GridPnt structure */
             ptr->pnt[inx].azm+=bm->azm[r];
 
-            if (iflg !=0) { 
+            if (iflg !=0) {
                 /* If gridding in inertial frame then add north/east velocities to
                  * GridPnt structure including ival correction */
                 ptr->pnt[inx].vel.median_n+=
-	                -(scan->bm[n].rng[r].v+bm->ival[r])*
-	                1/(v_e*v_e)*cosd(bm->azm[r]);
-	            ptr->pnt[inx].vel.median_e+=
-	                -(scan->bm[n].rng[r].v+bm->ival[r])*
-	                1/(v_e*v_e)*sind(bm->azm[r]);
-	        } else { 
-                /* Otherwise add north/east veocity components to GridPnt 
+                  -(scan->bm[n].rng[r].v+bm->ival[r])*
+                  1/(v_e*v_e)*cosd(bm->azm[r]);
+                ptr->pnt[inx].vel.median_e+=
+                  -(scan->bm[n].rng[r].v+bm->ival[r])*
+                  1/(v_e*v_e)*sind(bm->azm[r]);
+            } else {
+                /* Otherwise add north/east veocity components to GridPnt
                  * structure normally */
                 ptr->pnt[inx].vel.median_n+=-scan->bm[n].rng[r].v*cosd(bm->azm[r])/(v_e*v_e);
                 ptr->pnt[inx].vel.median_e+=-scan->bm[n].rng[r].v*sind(bm->azm[r])/(v_e*v_e);
-	        }
+            }
 
             /* Add power and spectral width values to GridPnt structure */
             ptr->pnt[inx].pwr.median+=scan->bm[n].rng[r].p_l*1/(p_l_e*p_l_e);
             ptr->pnt[inx].wdt.median+=scan->bm[n].rng[r].w_l*1/(w_l_e*w_l_e);
 
-            /* Add velocity, power, and spectral width standard deviations to 
+            /* Add velocity, power, and spectral width standard deviations to
              * GridPnt structure */
             ptr->pnt[inx].vel.sd+=1/(v_e*v_e);
             ptr->pnt[inx].pwr.sd+=1/(p_l_e*p_l_e);
             ptr->pnt[inx].wdt.sd+=1/(w_l_e*w_l_e);
-      
-            /* Update the total number of measurements contained in GridPnt 
+
+            /* Update the total number of measurements contained in GridPnt
              * structure */
             ptr->pnt[inx].cnt++;
-        
+
         }
-  
+
     }
-  
+
     /* Return an error if all beams in RadarScan structure were not considered */
     if (n !=scan->num) return -1;
 
     /* Loop over number of beams in RadarScan structure */
     for (n=0;n<scan->num;n++) {
-    
+
         /* Make sure beam record is valid, else skip */
         if (scan->bm[n].bm==-1) continue;
         ptr->prog_id=scan->bm[n].cpid;
-    
+
         /* Sum the frequency and noise values */
         freq+=scan->bm[n].freq;
         noise+=scan->bm[n].noise;
@@ -575,16 +575,16 @@ int GridTableMap(struct GridTable *ptr, struct RadarScan *scan,
     /* Calculate average frequency and noise of all beams in RadarScan structure */
     freq=freq/cnt;
     noise=noise/cnt;
-  
+
     /* Loop over number of beams in RadarScan structure */
     for (n=0;n<scan->num;n++) {
-        
+
         /* Make sure beam record is valid, else skip */
         if (scan->bm[n].bm==-1) continue;
 
         /* Calculate variance of noise values */
         variance+=(scan->bm[n].noise-noise)*(scan->bm[n].noise-noise);
-    
+
     }
 
     /* Add noise mean, noise standard deviation, and frequency values to
