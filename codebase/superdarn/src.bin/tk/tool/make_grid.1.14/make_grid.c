@@ -696,7 +696,7 @@ int main(int argc,char *argv[]) {
                                          * input file */
 
         /* If end time provided then determine end date */
-        if (etime !=-1) {i
+        if (etime !=-1) {
 
             /* If end date not provided then use date of first record
              * in input file */

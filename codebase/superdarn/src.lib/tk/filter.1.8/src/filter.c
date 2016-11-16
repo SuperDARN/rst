@@ -399,7 +399,7 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
             for (x=bmin;x<=bmax;x++) {
         
                 /* Loop over range dimension */
-                for (y=rmin;y<=rmax;y++) {i
+                for (y=rmin;y<=rmax;y++) {
           
                     /* Loop over temporal dimension */
 	                for (z=0;z<depth;z++) {
