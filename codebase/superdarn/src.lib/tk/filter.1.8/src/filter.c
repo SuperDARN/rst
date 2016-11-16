@@ -39,7 +39,7 @@ int FilterCmpVel(const void *x,const void *y) {
   struct RadarCell *a,*b;
   a=*((struct RadarCell **) x);
   b=*((struct RadarCell **) y);
- 
+
   if (a->v<b->v) return -1;
   if (a->v>b->v) return 1;
   return 0;
@@ -79,7 +79,7 @@ int FilterCmpWdt(const void *x,const void *y) {
  **/
 int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
                     struct RadarScan *dst, int prm) {
-  
+
     int thresh[2] = {12,24};
     double us;
     int bmin,bmax,rmin,rmax,bbox,rbox;
@@ -103,11 +103,11 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
 
     /* Loop over temporal dimension (depth) of median filter */
     for (i=0;i<depth;i++) {
-    
-        /* Loop over number of beams in each RadarScan structure */  
+
+        /* Loop over number of beams in each RadarScan structure */
         for (n=0;n<src[i]->num;n++) {
-      
-            /* Get current beam number from RadarBeam structure */  
+
+            /* Get current beam number from RadarBeam structure */
             bm=src[i]->bm[n].bm;
 
             /* Update largest beam number if necessary */
@@ -128,24 +128,24 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
 
     /* Loop over temporal dimension of median filter */
     for (z=0;z<depth;z++) {
-    
+
         /* Loop over range dimension of median filter */
         for (y=0;y<FILTER_HEIGHT;y++) {
-      
+
             /* Loop over beam dimension of median filter */
             for (x=0;x<FILTER_WIDTH;x++) {
-          
+
                 /* Calculate weight of each cell in 3x3x3 filtering grid */
                 f=(x !=0) & (x !=FILTER_WIDTH-1) & 
                   (y !=0) & (y !=FILTER_HEIGHT-1);
                 w=1+f;
                 f=(z !=0) & (z !=FILTER_DEPTH-1);
                 weight[x][y][z]=w*(1+f);
-       
+
             }
-    
+
         }
-  
+
     }
 
     /* Reset any information contained in dst RadarScan structure */
@@ -153,22 +153,22 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
 
     /* Loop over number of beams found from src RadarScan structures */
     for (bm=0;bm<maxbeam;bm++) {
-     
+
         /* Add a new beam to the dst RadarScan structure */
         b=RadarScanAddBeam(dst,maxrange);
-     
+
         /* Initialize the beam number of each beam to -1 */
         b->bm=-1;
         for (z=0;z<depth;z++)  {
             bmptr[bm][z]=NULL;
             bmcnt[bm][z]=0;
         }
-  
+
     }
 
     /* Loop over temporal dimension of median filter */
     for (z=0;z<depth;z++) {
-    
+
         /* Figure out if scan corresponds to previous, center, or next scan in filter */
         i=(inx-(depth-1)+z);
         if (i<0) i+=depth;
@@ -178,7 +178,7 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
 
             /* Get current beam number from RadarBeam structure */
             bm=src[i]->bm[n].bm;
-      
+
             /* Get index of current beam in bmptr structure */
             c=bmcnt[bm][z];
             if (bmptr[bm][z]==NULL) bmptr[bm][z]=malloc(sizeof(struct RadarBeam **));
@@ -187,7 +187,7 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
                 if (tmp==NULL) break;
                 bmptr[bm][z]=tmp;
             }
-      
+
             /* Store pointer to current beam in bmptr structure */
             bmptr[bm][z][c]=&src[i]->bm[n];
 
@@ -196,12 +196,12 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
 
             /* Update maximum beam count for beam and temporal dimensions */
             if (bmcnt[bm][z]>mxbm) mxbm=bmcnt[bm][z];
-    
+
         }
-    
+
         /* Break out of loop if something went wrong */
         if (n !=src[i]->num) break;
-  
+
     }
 
     /* Error check to make sure previous loop worked */
@@ -222,14 +222,14 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
     dst->version.minor=src[i]->version.minor;
     dst->st_time=src[i]->st_time;
     dst->ed_time=src[i]->ed_time;
- 
+
     /* If 4-bit is set then use operating parameters from first
      * beam found on 'center' scan for the output RadarScan structure */
     if ((mode & 4)==4) {
-        
+
         /* Loop over maximum number of beams in median filter */
         for (bm=0;bm<maxbeam;bm++) {
-      
+
             /* If no beams were found for 'center' scan then continue */
             if (bmcnt[bm][depth/2]==0) continue;
 
@@ -250,14 +250,14 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
             dst->bm[bm].atten=b->atten;
             dst->bm[bm].channel=b->channel;
             dst->bm[bm].nrang=b->nrang;    
-        
+
         }
-  
+
     } else {
-    
+
         /* Loop over maximum number of beams in median filter */
         for (n=0;n<maxbeam;n++) {
-      
+
             /* Initialize radar operating parameters in RadarBeam structure */
             dst->bm[n].cpid=-1;
             dst->bm[n].time=0;
@@ -271,15 +271,15 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
             dst->bm[n].atten=0;
             dst->bm[n].channel=-1;
             dst->bm[n].nrang=-1;
-    
+
         }
-    
+
         /* Loop over temporal dimension of median filter */
         for (z=0;z<depth;z++) {
-      
+
             /* Loop over maximum number of beams in median filter */
             for (bm=0;bm<maxbeam;bm++) {
-        
+
                 /* If no beams were previously found then continue */
                 if (bmcnt[bm][z]==0) continue;
 
@@ -288,14 +288,14 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
 
                 /* Loop over number of beams found in median filter time/beam cell */
                 for (c=0;c<bmcnt[bm][z];c++) {
-          
+
                     /* Get pointer to current beam */
                     b=bmptr[bm][z][c];
 
                     /* If this is the first beam in time/beam cell then use it
                      * to set CPID value for RadarBeam structure */
                     if (dst->bm[bm].cpid==-1) dst->bm[bm].cpid=b->cpid;
-          
+
                     /* Sum the operating parameters for later averaging across
                      * all beams in each time/beam cell */
                     dst->bm[bm].time+=b->time;
@@ -313,26 +313,26 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
                     dst->bm[bm].noise+=b->noise;
                     dst->bm[bm].atten+=b->atten;
                     if (dst->bm[bm].channel==0) dst->bm[bm].channel=b->channel;
-          
+
                     /* If this is the first beam in time/beam cell then use it
                      * to set the number of range gates for RadarBeam structure */
-                    if (dst->bm[bm].nrang==-1) dst->bm[bm].nrang=b->nrang;    
-        
+                    if (dst->bm[bm].nrang==-1) dst->bm[bm].nrang=b->nrang;
+
                 }
-      
+
             }
-    
+
         }
-    
+
         /* Loop over maximum number of beams in median filter */
         for (n=0;n<maxbeam;n++) {
-      
+
             cnt=0;
-      
+
             /* Loop over temporal dimension and count the total number of times
              * each beam was sampled */
             for (z=0;z<depth;z++) cnt+=bmcnt[n][z];
-      
+
             /* If no beams were found the continue */
             if (cnt==0) continue; 
 
@@ -350,9 +350,9 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
             dst->bm[n].freq=dst->bm[n].freq/cnt;
             dst->bm[n].noise=dst->bm[n].noise/cnt;
             dst->bm[n].atten=dst->bm[n].atten/cnt;
-    
+
         }
-  
+
     }
 
     /* Create empty RadarCell structure to store all velocity/power/width values
@@ -367,10 +367,10 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
 
     /* Loop over maximum number of beams in median filter */
     for (bm=0;bm<maxbeam;bm++) {
-    
+
         /* Loop over maximum number of range gates in median filter */
         for (rng=0;rng<maxrange;rng++) {
-      
+
             /* Set up the spatial 3x3 (Beam-x-Width) filtering boundaries */
             cnum=0;
             bmin=bm-FILTER_WIDTH/2;
@@ -382,10 +382,10 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
 
             /* Set lower beam boundary to zero when at edge of FOV */
             if (bmin<0) bmin=0;
-      
+
             /* Set upper beam boundary to highest beam when at other edge of FOV */
             if (bmax>=maxbeam) bmax=maxbeam-1;
-      
+
             /* Set lower range boundary to zero when at nearest edge of FOV */
             if (rmin<0) rmin=0;
 
@@ -397,19 +397,19 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
 
             /* Loop over beam dimension */
             for (x=bmin;x<=bmax;x++) {
-        
+
                 /* Loop over range dimension */
                 for (y=rmin;y<=rmax;y++) {
-          
+
                     /* Loop over temporal dimension */
-	                for (z=0;z<depth;z++) {
-            
+                    for (z=0;z<depth;z++) {
+
                         /* Loop over number of beams found in time/beam cell */
                         for (c=0;c<bmcnt[x][z];c++) {
-              
+
                             /* Get pointer to current beam */
                             b=bmptr[x][z][c];
-              
+
                             /* Add weight of current cell if scatter is present */
                             w+=weight[x-bbox][y-rbox][z]*b->sct[y]; 
 
@@ -425,13 +425,13 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
                                 cell[cnum]=&b->rng[y];
                                 cnum++;
                             }
-	    
+
                         }
-	  
+
                     }
-	
+
                 } 
-      
+
             }
 
             /* If no cells were found containing scatter then continue */
@@ -457,31 +457,31 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
 
             /* Bitwise and test of prm option to perform velocity median filtering */
             if (prm & 0x01) {
-        
+
                 mean=0;
                 variance=0;
                 sigma=0;
                 cnt=0;
-        
+
                 /* Calculate the mean of the velocity values */
                 for (c=0;c<cnum;c++) mean+=cell[c]->v;
                 mean=mean/cnum;
-        
+
                 /* Calculate the variance of the velocity values */
                 for (c=0;c<cnum;c++) 
                     variance+=(cell[c]->v-mean)*(cell[c]->v-mean);
                 variance=variance/cnum;
-        
+
                 /* Calculate the standard deviation of the velocity values */
                 if (variance>0) sigma=sqrt(variance);
-	    
+
                 /* Loop over number of median filter cells for beam/gate */
                 for (c=0;c<cnum;c++) {
-          
+
                     /* If the velocity deviation from the mean is greater
                      * than 2 standard deviations the continue */
                     if (fabs(cell[c]->v-mean)>2*sigma) continue;
-	  
+
                     /* If the velocity mean difference is less than 2 sigma
                      * then load the cell values into the median RadarCell
                      * structure */
@@ -490,17 +490,17 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
                     /* Update the total number of cells with a velocity mean 
                      * difference of less than 2 sigma */
                     cnt++;
-	    
+
                 }
-        
+
                 /* Sort velocity values in median Radarcell structure
                  * from most negative to most positive velocity */
                 qsort(median,cnt,sizeof(struct RadarCell *), FilterCmpVel);
-        
+
                 /* Set current beam/gate velocity to the center of the above
                  * array sorted by velocity (ie the median) */
                 dst->bm[bm].rng[rng].v=median[cnt/2]->v;
-        
+
                 /* Reset the mean and variance to zero */
                 mean=0;
                 variance=0;
@@ -513,19 +513,19 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
                 for (c=0;c<cnt;c++) 
                     variance+=(median[c]->v-mean)*(median[c]->v-mean);
                 variance=variance/cnt;
-        
+
                 /* Calculate the standard deviation of the sorted velocities */
                 if (variance>0) sigma=sqrt(variance);
                 else sigma=0;
 
                 /* Set the velocity error to the calculated standard deviation */
                 dst->bm[bm].rng[rng].v_e=sigma;
-      
+
             }
-      
+
             /* Bitwise and test of prm option to perform power median filtering */
             if (prm & 0x02) {
-            
+
                 mean=0;
                 variance=0;
                 sigma=0;
@@ -542,10 +542,10 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
 
                 /* Calculate the standard deviation of the lambda power values */
                 if (variance>0) sigma=sqrt(variance);
-        
+
                 /* Loop over number of median filter cells for beam/gate */
                 for (c=0;c<cnum;c++) {
-          
+
                     /* If the lambda power deviation from the mean is greater
                      * than 2 standard deviations then continue */
                     if (fabs(cell[c]->p_l-mean)>2*sigma) continue;
@@ -553,22 +553,22 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
                     /* If the lambda power mean difference is less than 2 sigma
                      * then load the cell values in the median RadarCell
                      * structure */
-	                median[cnt]=cell[c]; 
+                    median[cnt]=cell[c]; 
 
                     /* Update the total number of cells with a power mean
                      * difference of less than 2 sigma */
                     cnt++;
-	    
+
                 }
-        
+
                 /* Sort velocity values in median RadarCell structure
                  * from most negative to most positive velocity */
                 qsort(median,cnt,sizeof(struct RadarCell *), FilterCmpVel);
-        
+
                 /* Set current beam/gate power to the center of the above
                  * array sorted by velocity (ie the median) */
                 dst->bm[bm].rng[rng].p_l=median[cnt/2]->p_l;
-        
+
                 /* Reset the mean and variance to zero */
                 mean=0;
                 variance=0;
@@ -588,12 +588,12 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
 
                 /* Set the power error to the calculated standard deviation */
                 dst->bm[bm].rng[rng].p_l_e=sigma;
-      
+
             }
 
             /* Bitwise and test of prm option to perform width median filtering */
             if (prm & 0x04) {
-            
+
                 mean=0;
                 variance=0;
                 sigma=0;
@@ -610,10 +610,10 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
 
                 /* Calculate the standard deviation of the spectral width values */
                 if (variance>0) sigma=sqrt(variance);
-        
+
                 /* Loop over number of median filter cells for beam/gate */
                 for (c=0;c<cnum;c++) {
-          
+
                     /* If the spectral width deviation from the mean is greater
                      * than 2 standard deviations then continue */
                     if (fabs(cell[c]->w_l-mean)>2*sigma) continue;
@@ -621,22 +621,22 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
                     /* If the spectral width mean difference is less than 2 sigma
                      * then load the cell values in to the median RadarCell
                      * structure */
-	                median[cnt]=cell[c];
+                    median[cnt]=cell[c];
 
                     /* Update the total number of cells with a width mean
                      * difference of less than 2 sigma */
                     cnt++;
-	    
+
                 }
-        
+
                 /* Sort velocity values in median Radarcell structure
                  * from most negative to most positive */
                 qsort(median,cnt,sizeof(struct RadarCell *), FilterCmpVel);
-        
+
                 /* Set current beam/gate width to the center of the above
                  * array sorted by velocity (ie the median) */
                 dst->bm[bm].rng[rng].w_l=median[cnt/2]->w_l;
-        
+
                 /* Reset the mean and variance to zero */
                 mean=0;
                 variance=0;
@@ -658,10 +658,10 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
                 dst->bm[bm].rng[rng].w_l_e=sigma;
 
             }
-      
+
             /* Bitwise and test of prm option to perform lag0 power median filtering */
             if (prm & 0x08) {
-        
+
                 mean=0;
                 variance=0;
                 sigma=0;
@@ -681,7 +681,7 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
 
                 /* Loop over number of median filter cells for beam/gate */
                 for (c=0;c<cnum;c++) {
-          
+
                     /* If the lag0 power deviation from the mean is greater
                     * than 2 standard deviations then continue */
                     if (fabs(cell[c]->p_0-mean)>2*sigma) continue;
@@ -689,14 +689,14 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
                     /* if the lag0 power mean difference is less than 2 sigma
                      * then load the cell values into the median RadarCell
                      * structure */
-	                median[cnt]=cell[c];
+                    median[cnt]=cell[c];
 
                     /* Update the total number of cells with a lag0 power mean
                      * difference of less than 2 sigma */
                     cnt++;
-	    
+
                 }
-        
+
                 /* Sort velocity values in median RadarCell structure
                  * from most negative to most positive velocity */
                 qsort(median,cnt,sizeof(struct RadarCell *), FilterCmpVel);
@@ -724,17 +724,17 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
 
                 /* Set the lag0 power error to the calculated standard deviation */
                 dst->bm[bm].rng[rng].p_0_e=sigma;
-      
+
             }
-    
+
         }
-  
+
     }
 
     /* Free memory used for cell and median RadarCell structures */
     free(median);  
     free(cell);
-  
+
     /* Free memory used for bmptr RadarBeam structures */
     for (x=0;x<depth;x++) {
         for (bm=0;bm<maxbeam;bm++) if (bmptr[bm][x] !=NULL) free(bmptr[bm][x]);

@@ -39,11 +39,11 @@
  * Calculates the slant range to a range gate.
  **/
 double slant_range(int frang, int rsep,
-		   double rxris, double range_edge,
-		   int range_gate) {
-   
+                   double rxris, double range_edge,
+                   int range_gate) {
+
     int lagfr,smsep;
-   
+
     /* Calculate the lag to first range gate in microseconds */
     lagfr=frang*20/3;
 
@@ -65,7 +65,7 @@ double slant_range(int frang, int rsep,
  **/
 void geodtgc(int iopt, double *gdlat, double *gdlon,
              double *grho, double *glat,
-			 double *glon, double *del) {
+             double *glon, double *del) {
 
     /* IAU 1964 oblate spheroid defining parameters */
     double a=6378.16;
@@ -79,20 +79,20 @@ void geodtgc(int iopt, double *gdlat, double *gdlon,
     e2=(a*a)/(b*b)-1;
 
     if (iopt>0) {
-        
+
         /* Convert geodetic latitude/longitude to geocentric [deg] */
         *glat=atand( (b*b)/(a*a)*tand(*gdlat));
         *glon=*gdlon;
 
         /* Convert geocentric longitude to +/- 180 degrees */
         if (*glon > 180) *glon=*glon-360;
-    
+
     } else {
-    
+
         /* Convert geocentric latitude/longitude to geodetic [deg] */
         *gdlat=atand( (a*a)/(b*b)*tand(*glat));
         *gdlon=*glon;
-  
+
     }
 
     /* Calculate the geocentric Earth radius at the geodetic latitue [km] */
@@ -111,8 +111,8 @@ void geodtgc(int iopt, double *gdlat, double *gdlon,
  * the azimuth (ral), elevation (rel), and slant range (r).
  **/
 void fldpnt(double rrho, double rlat, double rlon, double ral,
-			double rel, double r, double *frho, double *flat,
-                        double *flon) {
+            double rel, double r, double *frho, double *flat,
+            double *flon) {
 
     double rx,ry,rz,sx,sy,sz,tx,ty,tz;
     double sinteta;
@@ -157,7 +157,7 @@ void fldpnt(double rrho, double rlat, double rlon, double ral,
  * 
  **/
 void geocnvrt(double gdlat, double gdlon,
-			  double xal, double xel, double *ral, double *rel) {
+              double xal, double xel, double *ral, double *rel) {
 
     double kxg,kyg,kzg,kxr,kyr,kzr;
     double rrad,rlat,rlon,del;
@@ -181,13 +181,13 @@ void geocnvrt(double gdlat, double gdlon,
  * Calculates the geocentric coordinates (frho,flat,flon) of a radar field point.
  **/
 void fldpnth(double gdlat, double gdlon, double psi, double bore,
-			 double fh, double r, double *frho, double *flat,
-	                 double *flon) {
+             double fh, double r, double *frho, double *flat,
+             double *flon) {
 
     double rrad,rlat,rlon,del;
     double tan_azi,azi,rel,xel,fhx,xal,rrho,ral,xh;
     double dum,dum1,dum2,dum3;
-    double frad;  
+    double frad;
 
     /* Standard virtual height model */
     if (fh<=150) xh=fh;
@@ -200,20 +200,20 @@ void fldpnth(double gdlat, double gdlon, double psi, double bore,
 
     /* Calculate radius of the Earth beneath the radar */
     geodtgc(1,&gdlat,&gdlon,&rrad,&rlat,&rlon,&del);
-  
+
     /* Radius of the Earth beneath the radar */
     rrho=rrad;
 
     /* Radius of the Earth beneath the field point (updates) */
     frad=rrad;
- 
+
     /* Iterate until the altitude corresponding to the calculated elevation
      * matches the desired altitude (within 0.5 km) */
     do {
-    
+
         /* Distance from center of Earth to field point location */
         *frho=frad+xh;
-  
+
         /* Elevation angle relative to local horizon [deg] */
         rel=asind( ((*frho**frho) - (rrad*rrad) - (r*r)) / (2*rrad*r));
 
@@ -226,7 +226,7 @@ void fldpnth(double gdlat, double gdlon, double psi, double bore,
                 ((cosd(psi)*cosd(psi))-(sind(xel)*sind(xel))));
         if (psi>0) azi=atand(tan_azi)*1.0;
         else azi=atand(tan_azi)*-1.0;
-    
+
         /* Obtain the corresponding value of pointing azimuth */  
         xal=azi+bore;
 
@@ -301,10 +301,10 @@ void fldpnth_gs(double gdlat,double gdlon,double psi,double bore,
  * coordinates (rho,lat,long).
  **/
 void RPosGeo(int center, int bcrd, int rcrd,
-                struct RadarSite *pos,
-                int frang, int rsep,
-                int rxrise, double height,
-                double *rho, double *lat, double *lng) {
+             struct RadarSite *pos,
+             int frang, int rsep,
+             int rxrise, double height,
+             double *rho, double *lat, double *lng) {
 
     double rx;
     double psi,d;
@@ -312,14 +312,14 @@ void RPosGeo(int center, int bcrd, int rcrd,
     double offset;
     double bm_edge=0;
     double range_edge=0;
-  
+
     /* If not calculating center position of range-beam cell then calculate
      * position of near-left corner instead */
     if (center==0) {
         bm_edge=-pos->bmsep*0.5;
         range_edge=-0.5*rsep*20/3;
     }
-  
+
     if (rxrise==0) rx=pos->recrise;
     else rx=rxrise;
 
@@ -337,7 +337,7 @@ void RPosGeo(int center, int bcrd, int rcrd,
 
     /* Calculate the geocentric coordinates of the field point */
     fldpnth(pos->geolat,pos->geolon,psi,pos->boresite,
-		  height,d,rho,lat,lng);
+            height,d,rho,lat,lng);
 
 }
 

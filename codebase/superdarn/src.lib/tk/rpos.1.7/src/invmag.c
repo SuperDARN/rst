@@ -50,7 +50,7 @@ void norm_vec(double *x, double *y, double *z) {
 
     /* Calculate magnitude of vector */
     r=sqrt(*x**x+*y**y+*z**z);
-  
+
     /* Normalize each vector component to create unit vector */
     *x=*x/r;
     *y=*y/r;
@@ -66,7 +66,7 @@ void norm_vec(double *x, double *y, double *z) {
  **/
 void sphtocar(double r, double theta, double phi, 
               double *x, double *y, double *z) {
-  
+
     *x=r*sind(90.0-theta)*cosd(phi);
     *y=r*sind(90.0-theta)*sind(phi);
     *z=r*cosd(90.0-theta);
@@ -82,7 +82,7 @@ void sphtocar(double r, double theta, double phi,
  **/
 void fldpnt_sph(double frho, double flat, double flon, double az,
                 double r, double *xlat, double *xlon) {
-   
+
     double api,aside,bside,cside;
     double Aangl,Bangl,arg;
 
@@ -95,16 +95,16 @@ void fldpnt_sph(double frho, double flat, double flon, double az,
     bside=r/frho*(180.0/api);
 
     arg=cosd(bside)*cosd(cside)+sind(bside)*sind(cside)*cosd(Aangl);
-    
+
     if (arg <= -1.0) arg=-1.0;
     if (arg >= 1.0) arg=1.0;
-    
+
     aside=acosd(arg);
     arg=(cosd(bside)-cosd(aside)*cosd(cside))/(sind(aside)*sind(cside));
-  
+
     if (arg <= -1.0) arg=-1.0;
     if (arg >= 1.0) arg=1.0;
-    
+
     Bangl=acosd(arg);
     if (Aangl <0) Bangl=-Bangl;
 
@@ -132,20 +132,20 @@ void fldpnt_azm(double mlat, double mlon, double nlat, double nlon, double *az) 
     api=4*atan(1.0);
     aside=90-nlat;
     cside=90-mlat;
- 
+
     Bangl=nlon-mlon;
-  
+
     arg=cosd(aside)*cosd(cside)+sind(aside)*sind(cside)*cosd(Bangl);
     bside=acosd(arg);
-  
+
     arg=(cosd(aside)-cosd(bside)*cosd(cside))/
         (sind(bside)*sind(cside));
-  
+
     Aangl=acosd(arg);
 
     if (Bangl<0) Aangl=-Aangl;
     *az=Aangl;
- 
+
 } 
 
 
@@ -158,12 +158,12 @@ void fldpnt_azm(double mlat, double mlon, double nlat, double nlon, double *az) 
 void glbthor(int iopt, double lat, double lon,
              double *rx, double *ry, double *rz,
              double *tx, double *ty, double *tz) {
-   
+
     double sx,sy,sz,lax;
-  
+
     if (iopt>0) {
         /* Convert the input vector from Cartesian XYZ to local south/east/vertical */
-        
+
         /* Rotate the input vector about the z-axis by the longitude */
         sx=cosd(lon)**rx+sind(lon)**ry;
         sy=-sind(lon)**rx+cosd(lon)**ry;
@@ -192,7 +192,7 @@ void glbthor(int iopt, double lat, double lon,
         *rx=cosd(lon)*sx-sind(lon)*sy;
         *ry=sind(lon)*sx+cosd(lon)*sy;
         *rz=sz;
-  
+
     }
 
 }
@@ -205,9 +205,9 @@ void glbthor(int iopt, double lat, double lon,
  * an inertial reference frame).
  **/
 int RPosRngBmAzmElv(int bm, int rn, int year,
-                     struct RadarSite *hdw, double frang,
-                     double rsep, double rx, double height,
-                     double *azm, double *elv) {
+                    struct RadarSite *hdw, double frang,
+                    double rsep, double rx, double height,
+                    double *azm, double *elv) {
 
     double flat,flon,frho;
     double fx,fy,fz;
@@ -221,39 +221,39 @@ int RPosRngBmAzmElv(int bm, int rn, int year,
     double dummy;
     int s;
 
-    /* Get geodetic latitude/longitude from radar hardware info [deg] */ 
+    /* Get geodetic latitude/longitude from radar hardware info [deg] */
     gdlat=hdw->geolat;
     gdlon=hdw->geolon;
 
     /* Get receiver rise time from site information if not provided */
     if (rx==0) rx=hdw->recrise;
 
-    /* Convert center of range/beam cell to geocentric spherical 
-     * latitude/longitude (flat,flon) and distance from the center of the 
-     * surface of the oblate spheroid (ie not constant with latitude) plus 
+    /* Convert center of range/beam cell to geocentric spherical
+     * latitude/longitude (flat,flon) and distance from the center of the
+     * surface of the oblate spheroid (ie not constant with latitude) plus
      * virtual height (frho) */
     RPosGeo(1,bm,rn,hdw,frang,rsep,rx,
              height,&frho,&flat,&flon);
-  
-    /* Convert range/beam position from geocentric spherical coordinates 
+
+    /* Convert range/beam position from geocentric spherical coordinates
      * (frho,flat,flon) to global Cartesian coordinates (fx,fy,fz) */
     sphtocar(frho,flat,flon,&fx,&fy,&fz);
 
-    /* Convert radar site geodetic latitude/longitude (gdlat,gdlon) to 
-     * geocentric spherical coordinates (glat,glon) and distance from the 
+    /* Convert radar site geodetic latitude/longitude (gdlat,gdlon) to
+     * geocentric spherical coordinates (glat,glon) and distance from the
      * center to the surface of the oblate spheroid (gdrho) */
     geodtgc(1,&gdlat,&gdlon,&gdrho,&glat,&glon,&dummy);
 
-    /* Convert radar geocentric coordinates (gdrho,glat,glon) to global 
+    /* Convert radar geocentric coordinates (gdrho,glat,glon) to global
      * Cartesian coordinates (gbx,gby,gbz) */
-    sphtocar(gdrho,glat,glon,&gbx,&gby,&gbz);       
-  
+    sphtocar(gdrho,glat,glon,&gbx,&gby,&gbz);
+
     /* Calculate vector from the radar to center of range/beam cell (gx,gy,gz) */
     gx=fx-gbx;
     gy=fy-gby;
     gz=fz-gbz;
 
-    /* Normalize the vector from the radar to center of range/beam cell */ 
+    /* Normalize the vector from the radar to center of range/beam cell */
     norm_vec(&gx,&gy,&gz);
 
     /* Convert the normalized vector from the radar-to-range/beam cell into
@@ -262,12 +262,12 @@ int RPosRngBmAzmElv(int bm, int rn, int year,
 
     /* Normalize the local horizontal radar-to-range/beam cell vector */
     norm_vec(&ghx,&ghy,&ghz);
-  
-    /* Calculate the magnetic field vector (bx,by,bz) at the geocentric spherical 
-     * range/beam position (frho,flat,flon) in global Cartesian coordinates */ 
+
+    /* Calculate the magnetic field vector (bx,by,bz) at the geocentric spherical
+     * range/beam position (frho,flat,flon) in global Cartesian coordinates */
     s=IGRFMagCmp(year,frho,flat,flon,&bx,&by,&bz,&b);
     if (s==-1) return -1;
-  
+
     /* Normalize the magnetic field vector */
     norm_vec(&bx,&by,&bz);
 
@@ -275,7 +275,7 @@ int RPosRngBmAzmElv(int bm, int rn, int year,
      *  vector becomes orthogonal to the magnetic field at the range/beam position
      * (gh dot b = 0) */
     ghz=-(bx*ghx+by*ghy)/bz;
-  
+
     /* Normalize the new radar-to-range/beam vector (which is now orthogonal to B) */
     norm_vec(&ghx,&ghy,&ghz);
 
@@ -297,8 +297,8 @@ int RPosRngBmAzmElv(int bm, int rn, int year,
  * in a given beam and range gate cell.
  **/
 int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
-             double rsep, double rx, double height,
-             double *mlat, double *mlon, double *azm) {
+               double rsep, double rx, double height,
+               double *mlat, double *mlon, double *azm) {
 
     double flat,flon,frho;
     double fx,fy,fz;
@@ -315,78 +315,78 @@ int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
     double xlat,xlon,nlat,nlon;
     int s;
 
-    /* Get geodetic latitude/longitude from radar hardware info [deg] */ 
+    /* Get geodetic latitude/longitude from radar hardware info [deg] */
     gdlat=hdw->geolat;
     gdlon=hdw->geolon;
 
     /* Get receiver rise time from site information if not provided */
     if (rx==0) rx=hdw->recrise;
 
-    /* Convert center of range/beam cell to geocentric spherical 
-     * latitude/longitude (flat,flon) and distance from the center of the 
-     * surface of the oblate spheroid (ie not constant with latitude) plus 
+    /* Convert center of range/beam cell to geocentric spherical
+     * latitude/longitude (flat,flon) and distance from the center of the
+     * surface of the oblate spheroid (ie not constant with latitude) plus
      * virtual height (frho) */
     RPosGeo(1,bm,rn,hdw,frang,rsep,rx,
              height,&frho,&flat,&flon);
 
-    /* Convert range/beam position from geocentric spherical coordinates 
+    /* Convert range/beam position from geocentric spherical coordinates
      * (frho,flat,flon) to global Cartesian coordinates (fx,fy,fz) */
     sphtocar(frho,flat,flon,&fx,&fy,&fz);       
-  
-    /* Convert radar site geodetic latitude/longitude (gdlat,gdlon) to 
-     * geocentric spherical coordinates (glat,glon) and distance from the 
+
+    /* Convert radar site geodetic latitude/longitude (gdlat,gdlon) to
+     * geocentric spherical coordinates (glat,glon) and distance from the
      * center to the surface of the oblate spheroid (gdrho) */
     geodtgc(1,&gdlat,&gdlon,&gdrho,&glat,&glon,&dummy);
-  
-    /* Convert radar geocentric coordinates (gdrho,glat,glon) to global 
+
+    /* Convert radar geocentric coordinates (gdrho,glat,glon) to global
      * Cartesian coordinates (gbx,gby,gbz) */
-    sphtocar(gdrho,glat,glon,&gbx,&gby,&gbz);       
-  
+    sphtocar(gdrho,glat,glon,&gbx,&gby,&gbz);
+
     /* Calculate vector from the radar to center of range/beam cell (gx,gy,gz) */
     gx=fx-gbx;
     gy=fy-gby;
-    gz=fz-gbz;     
-  
-    /* Normalize the vector from the radar to center of range/beam cell */ 
+    gz=fz-gbz;
+
+    /* Normalize the vector from the radar to center of range/beam cell */
     norm_vec(&gx,&gy,&gz);
-  
+
     /* Convert the normalized vector from the radar-to-range/beam cell into
      * local south/east/vertical (horizontal) coordinates (ghx,ghy,ghz) */
     glbthor(1,flat,flon,&gx,&gy,&gz,&ghx,&ghy,&ghz);
-  
+
     /* Normalize the local horizontal radar-to-range/beam cell vector */
     norm_vec(&ghx,&ghy,&ghz);
 
-    /* Calculate the magnetic field vector (bx,by,bz) at the geocentric spherical 
-     * range/beam position (frho,flat,flon) in global Cartesian coordinates */ 
+    /* Calculate the magnetic field vector (bx,by,bz) at the geocentric spherical
+     * range/beam position (frho,flat,flon) in global Cartesian coordinates */
     s=IGRFMagCmp(year,frho,flat,flon,&bx,&by,&bz,&b);
     if (s==-1) return -1;
-  
+
     /* Normalize the magnetic field vector */
     norm_vec(&bx,&by,&bz);
-  
+
     /* Calculate a new local vertical component such that the radar-to-range/beam
      *  vector becomes orthogonal to the magnetic field at the range/beam position
      * (gh dot b = 0) */
     ghz=-(bx*ghx+by*ghy)/bz;
-  
+
     /* Normalize the new radar-to-range/beam vector (which is now orthogonal to B) */
     norm_vec(&ghx,&ghy,&ghz);
-  
+
     /* Calculate the elevation angle of the orthogonal radar-to-range/beam vector */
     elv=atan2d(ghz,sqrt(ghx*ghx+ghy*ghy));
-  
+
     /* Calculate the azimuth of the orthogonal radar-to-range/beam vector */
     azc=atan2d(ghy,-ghx);
-      
+
     /* Convert range/beam position from geocentric (flat,flon) to geodetic
      * latitude/longitude (gdlat,gdlon) and calculate distance from the center
      * of the oblate spheroid (fdrho) */
     geodtgc(-1,&gdlat,&gdlon,&gdrho,&flat,&flon,&dummy);
-  
+
     /* Calculate virtual height of range/beam position */
     tmp_ht=frho-gdrho;
-  
+
     /* Load AACGM coefficients for input year - EGT */
     /*AACGMInit(year);*/
 
@@ -399,19 +399,19 @@ int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
      * distance (rsep) and bearing (azc) from the radar position (flat,flon)
      * at the field point radius (frho) */
     fldpnt_sph(frho,flat,flon,azc,rsep,&xlat,&xlon);
-  
+
     /* Convert pointing direction position from geocentric latitude/longitude
      * (xlat,xlon) at virtual height (tmp_height) to AACGM magnetic
      * latitude/longitude coordinates (nlat,nlon) */
     s=AACGMConvert(xlat,xlon,tmp_ht,&nlat,&nlon,&dummy,0);
     if (s==-1) return -1;
-  
-    /* Make sure nlon varies between +/- 180 degrees */  
+
+    /* Make sure nlon varies between +/- 180 degrees */
     if ((nlon-*mlon) > 180)  nlon=nlon-360;
     if ((nlon-*mlon) < -180) nlon=nlon+360;
 
     /* Calculate bearing (azm) to pointing direction latitude/longitude
-     * (nlat,nlon) from the radar position (mlat,mlon) in magnetic 
+     * (nlat,nlon) from the radar position (mlat,mlon) in magnetic
      * coordinates */
     fldpnt_azm(*mlat,*mlon,nlat,nlon,azm);
 
