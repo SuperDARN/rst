@@ -5,9 +5,9 @@
 
 /*
  (c) 2010 JHU/APL & Others - Please Consult LICENSE.superdarn-rst.3.2-beta-4-g32f7302.txt for more information.
- 
- 
- 
+
+
+
 */
 
 #include <stdio.h>
@@ -16,7 +16,7 @@
 #include <string.h>
 #include <time.h>
 #include <zlib.h>
- 
+
 #include "rtypes.h"
 #include "option.h"
 
@@ -44,7 +44,7 @@ struct RawData *raw;
 struct FitData *fit;
 struct FitBlock *fblk;
 
-struct RadarNetwork *network;  
+struct RadarNetwork *network;
 struct Radar *radar;
 struct RadarSite *site;
 
@@ -54,7 +54,7 @@ int main(int argc,char *argv[]) {
 
   /* File format transistion
    * ------------------------
-   * 
+   *
    * When we switch to the new file format remove any reference
    * to "new". Change the command line option "new" to "old" and
    * remove "old=!new".
@@ -83,7 +83,7 @@ int main(int argc,char *argv[]) {
   char tmstr[40];
 	int tgthr=0,tgtmin=0,tgtbeam=7,tgtsec=0;
 	int done=0;
- 
+
   prm=RadarParmMake();
   raw=RawMake();
   fit=FitMake();
@@ -138,7 +138,7 @@ int main(int argc,char *argv[]) {
   }
 
   network=RadarLoad(fp);
-  fclose(fp); 
+  fclose(fp);
   if (network==NULL)
 	{
     fprintf(stderr,"Failed to read radar information.\n");
@@ -153,7 +153,7 @@ int main(int argc,char *argv[]) {
   }
 
   RadarLoadHardware(envstr,network);
-  
+
 
   if (old)
 	{
@@ -163,7 +163,7 @@ int main(int argc,char *argv[]) {
        fprintf(stderr,"File not found.\n");
        exit(-1);
      }
-     status=OldRawRead(rawfp,prm,raw);  
+     status=OldRawRead(rawfp,prm,raw);
   }
   else
 	{
@@ -206,13 +206,12 @@ int main(int argc,char *argv[]) {
     strcat(command,argv[c]);
   }
 
-	
 
-  if (vb) 
+  if (vb)
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
-  fblk=FitACFMake(site,prm->time.yr); 
+  fblk=FitACFMake(site,prm->time.yr);
 
 	if(prm->time.hr == tgthr && prm->time.mt == tgtmin && prm->time.sc >= tgtsec && prm->bmnum == tgtbeam && prm->channel != 2)
 	{
@@ -232,13 +231,13 @@ int main(int argc,char *argv[]) {
     strcpy(tmstr,asctime(gmtime(&ctime)));
     tmstr[24]=0;
     RadarParmSetOriginTime(prm,tmstr);
- 
+
     if (old)
 			status=OldRawRead(rawfp,prm,raw);
     else
 			status=RawFread(fp,prm,raw);
 
-     if (vb) 
+     if (vb)
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
