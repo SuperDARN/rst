@@ -36,8 +36,8 @@
  * geocentric coordinates.
  **/
 int IGRFMagCmp(double date, double frho, double flat, double flon, 
-           double *bx, double *by, double *bz, double *b) {
-  
+               double *bx, double *by, double *bz, double *b) {
+
     int s;
 
     /* Calculate virtual height of range/beam measurement [km]
@@ -46,14 +46,14 @@ int IGRFMagCmp(double date, double frho, double flat, double flon,
 
     /* Calculate magnetic field componenets at field point */
     s=IGRFCall(date, flat, flon, frho, bx, by, bz);
-  
+
     /* Calculate magnitude of magnetic field vector */
     *b = sqrt(*bx * *bx + *by * *by + *bz * *bz);
-  
+
     /* For some reason we reverse the sign of Bx and Bz components? */
     *bx = -*bx;
     *bz = -*bz;
-  
+
     return s;
 
 }

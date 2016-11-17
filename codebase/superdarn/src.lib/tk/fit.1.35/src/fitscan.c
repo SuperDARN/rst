@@ -62,21 +62,21 @@ int FitReadRadarScan(int fid, int *state,
     if (ptr==NULL) return -1;
     if (fit==NULL) return -1;
     if (state==NULL) return -1;
-  
+
     /* If the end of the fit file has not already been reached then read the
      * next record into the prm and fit structures */
     if (*state!=1) {
-    
+
         /* If no channel is specified then read the next available record */
         if (chn==0) fstatus=FitRead(fid,prm,fit);
-    
+
         else {
-            
+
             /* If a channel is specified then continue reading fit records until
              * either a record for the correct channel is found or the end of
              * the file is reached */
             do {
-        
+
                 fstatus=FitRead(fid,prm,fit); /* read first fit record */
 
                 if (fstatus==-1) break;
@@ -90,52 +90,52 @@ int FitReadRadarScan(int fid, int *state,
                       ((chn==1) && (prm->channel ==2)));
 
         }
-    
+
         if (fstatus==-1) return -1;
-  
+
     }
-  
+
     /* If no errors occurred when reading the fit record then begin populating
      * the RadarScan structure with parameters from the prm structure */
     if (*state !=2) {
-        
+
         ptr->stid=prm->stid;
         ptr->version.major=prm->revision.major;
         ptr->version.minor=prm->revision.minor;
         ptr->st_time=TimeYMDHMSToEpoch(prm->time.yr,prm->time.mo,
-		                    prm->time.dy,
-			                prm->time.hr,prm->time.mt,
-			                prm->time.sc+prm->time.us/1.0e6); 
- 
+                      prm->time.dy,
+                      prm->time.hr,prm->time.mt,
+                      prm->time.sc+prm->time.us/1.0e6);
+
         /* If scan flag is being ignored and assuming scan boundaries are fixed
          * relative to start of day, then recalculate scan start time */
         if ((tlen !=0) && (lock !=0)) ptr->st_time=tlen*(int) (ptr->st_time/tlen);
-    
+
         /* Reset number of beams in RadarScan structure to zero, etc. */
-        RadarScanReset(ptr);  
-  
+        RadarScanReset(ptr);
+
     }
-  
+
     /* Indicate that fit data was successfully read and the next record is pending */
     *state=1;
 
     /* Add fit and prm records to RadarScan structure until either a new scan
      * flag is found or the data duration exceeds tlen, depending on input options */
     do {
-    
+
         /* Add a new beam to the RadarScan structure */
         bm=RadarScanAddBeam(ptr,prm->nrang);
         if (bm==NULL) {
             flg=-1;
             break;
         }
-    
+
         /* Calculate time of radar beam sounding */
         bm->time=TimeYMDHMSToEpoch(prm->time.yr,prm->time.mo,
-			            prm->time.dy,
-			            prm->time.hr,prm->time.mt,
-			            prm->time.sc+prm->time.us/1.0e6); 
- 
+                  prm->time.dy,
+                  prm->time.hr,prm->time.mt,
+                  prm->time.sc+prm->time.us/1.0e6);
+
         /* Load radar operating parameters into RadarBeam structure */
         bm->scan=prm->scan;
         bm->bm=prm->bmnum;
@@ -159,7 +159,7 @@ int FitReadRadarScan(int fid, int *state,
         /* Loop over number of range gates along radar beam, populating
          * RadarBeam structure with fit data */
         for (r=0;r<bm->nrang;r++) {
-      
+
             bm->sct[r]=(fit->rng[r].qflg==1);
             bm->rng[r].gsct=fit->rng[r].gsct;
             bm->rng[r].p_0=fit->rng[r].p_0;
@@ -167,16 +167,16 @@ int FitReadRadarScan(int fid, int *state,
             bm->rng[r].v=fit->rng[r].v;
             bm->rng[r].p_l=fit->rng[r].p_l;
             bm->rng[r].w_l=fit->rng[r].w_l;
-            bm->rng[r].v_e=fit->rng[r].v_err;    
-    
+            bm->rng[r].v_e=fit->rng[r].v_err;
+
         }
-    
+
         /* Calculate end time of radar scan */
         ptr->ed_time=TimeYMDHMSToEpoch(prm->time.yr,prm->time.mo,
-			                prm->time.dy,
-			                prm->time.hr,prm->time.mt,
-			                prm->time.sc+prm->time.us/1.0e6); 
- 
+                      prm->time.dy,
+                      prm->time.hr,prm->time.mt,
+                      prm->time.sc+prm->time.us/1.0e6);
+
         /* Error check if too many beams were included in RadarScan structure */
         if (ptr->num>1000) {
             flg=-1;
@@ -186,14 +186,14 @@ int FitReadRadarScan(int fid, int *state,
         /* Read the next record into the prm and fit structures */
         if (chn==0) fstatus=FitRead(fid,prm,fit);
         else {
-      
+
             /* If a channel is specified then continue reading fit records until
              * either a record for the correct channel is found or the end of
              * the file is reached */
-            do { 
-        
+            do {
+
                 fstatus=FitRead(fid,prm,fit);
-        
+
                 if (fstatus==-1) break;
 
 
@@ -201,28 +201,28 @@ int FitReadRadarScan(int fid, int *state,
                  * If the channel is set to zero then the file is mono
                  * and we should treat the data as channel A.
                 */
-       
+
             } while ( ((chn==2) && (prm->channel !=2)) || 
                       ((chn==1) && (prm->channel ==2)));
-      
+
         }
-    
+
         /* If end of file was reached by FitRead then set flg equal to 2 */
         if (fstatus==-1) flg=2;
         else {
-      
+
             if (tlen==0) {
-                
+
                 /* Set flg equal to 1 if scan data according to scan flag
                  * was successfully stored in RadarScan structure */
                 if (prm->scan==1) flg=1;
-        
+
                 /* Set flg equal to 1 if scan data of length tlen was
                  * successfully stored in RadarScan structure */
             } else if (ptr->ed_time-ptr->st_time>=tlen) flg=1;
-    
+
         }
-  
+
     } while (flg==0);
 
     /* Decrement value of flg, such that 2->1 indicates the end of the file was
