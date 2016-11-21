@@ -69,7 +69,7 @@ your computer.
    computer.
 
    Also, you'll need to edit the CDF_PATH entry in ~/rst/.profile/base.bash and the IDL_IPATH
-   entry in the ~/rst/.profile/ild.bash file.
+   entry in the ~/rst/.profile/idl.bash file.
 
    In order to load the environment variables you just setup, you'll need to close your current terminal and
    open a new terminal.
