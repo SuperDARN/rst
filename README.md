@@ -1,4 +1,4 @@
-VTRST3.5
+RST3.6
 ========
 
 In addition to this code, you will need the following packages:
@@ -62,47 +62,27 @@ your computer.
    adding:
 
         # bash profile for rst
-        export RSTPATH="INSTALL LOCATION"/VTRST3.5
+        export RSTPATH="INSTALL LOCATION"/rst
         . $RSTPATH/.profile.bash
 
-   where the INSTALL LOCATION is the path with the VTRST3.5 repository has been copied to on your
-   computer.  
+   where the INSTALL LOCATION is the path with the RST repository that has been copied to your
+   computer.
 
-   Also, you'll need to edit the location that your netCDF package was installed at by editing the
-   entry in the ~/VTRST3.5/.profile/base.bash file:
-
-        export NETCDF_PATH="/usr/include"
-
-   The given example is where Ubuntu 12.04 placed the netcdf.h file using the apt-get package 
-   manager.  
+   Also, you'll need to edit the CDF_PATH entry in ~/rst/.profile/base.bash and the IDL_IPATH
+   entry in the ~/rst/.profile/ild.bash file.
 
    In order to load the environment variables you just setup, you'll need to close your current terminal and
    open a new terminal.
 
-2. With CDF library, you will need to copy a few choice files into certain places.  Namely:
+2. With CDF library, you will need to copy a cdf.h file into one particular place.  Namely:
 
-        Copy the cdf.h file into ~/VTRST3.5/codebase/analysis/src.lib/cdf/rcdf.1.5/include/
-        Copy the libcdf.a and libcdf.so into ~/VTRST3.5/lib/
+        Copy the cdf.h file into ~/rst/codebase/analysis/src.lib/cdf/rcdf.1.5/include/
 
 3. Run 'make.build' from the command line.  This runs a helper script that sets up other 
-compiling code.  The source code for make.build can be found in ~/build/script/
+compiling code.  The source code for make.build can be found in ~/rst/build/script/
 
 4. Run 'make.code superdarn rst' to compile all of the code.  This runs a script to find
 all of the source codes and compile them into binaries.  A log of this compilation is 
-stored in ${LOGPATH}.  
-
-5. If compilation fails at aacgmdlm.1.10 you will need to do the following:
-
-	Copy the idl_export.h file into ~/VTRST3.5/include/superdarn
-
+stored in ${LOGPATH}.
 
 Again...this may not be everything, but we'll start here now.
-
-
-
-##To do's:
-
-- Need to restore functionality to dmaptoncdf.1.11.  This package was tarred up so that the code 
-  could compile.  Whenever this package is in the codebase, the rst doesn't compile as it is 
-  missing a .h file.  __SOLVED:__ Seems as though netcdf has been added to several install
-  package managers as seen in the notes above!

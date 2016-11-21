@@ -159,6 +159,9 @@ make clean
 echo "make"
 make
 
+echo "mkdir -p ${LIBPATH}"
+mkdir -p ${LIBPATH}
+
 echo "cp -vp *.a ${LIBPATH}"
 cp -vp *.a ${LIBPATH}
 
