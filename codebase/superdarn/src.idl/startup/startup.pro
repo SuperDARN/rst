@@ -27,8 +27,8 @@
 
 .run efield.pro
 
-; stuff needed for terminator
-.r calculate_sunset
+; stuff needed for terminator (VT-specific)
+;.r calculate_sunset
 
 ; Legacy interfaces
 ;.run genlib.pro
