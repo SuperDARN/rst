@@ -1,6 +1,7 @@
 *.a
 *.so
 *.o
+*~
 bin/
 build/lib/
 lib/
