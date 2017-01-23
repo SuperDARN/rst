@@ -68,7 +68,7 @@
 
 
 
-function cnvcoordrst, in1, in2, in3, geo = geo, model = model
+function cnvcoord, in1, in2, in3, geo = geo, model = model
 
   common aacgm_common, modyr
 
@@ -141,7 +141,7 @@ end
 ;
 ;-----------------------------------------------------------------------------
 
-function mltrst, year, t, mlong
+function mlt, year, t, mlong
   year = fix(year)
   t = long(t)
   mlong = float(mlong)
