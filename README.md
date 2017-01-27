@@ -1,4 +1,4 @@
-RST3.6
+Radar Software Toolkit
 ========
 
 In addition to this code, you will need the following packages:
@@ -78,10 +78,10 @@ your computer.
 
         Copy the cdf.h file into ~/rst/codebase/analysis/src.lib/cdf/rcdf.1.5/include/
 
-3. Run 'make.build' from the command line.  This runs a helper script that sets up other 
+3. Run `make.build` from the command line.  This runs a helper script that sets up other 
 compiling code.  The source code for make.build can be found in ~/rst/build/script/
 
-4. Run 'make.code superdarn rst' to compile all of the code.  This runs a script to find
+4. Run `make.code superdarn rst` to compile all of the code.  This runs a script to find
 all of the source codes and compile them into binaries.  A log of this compilation is 
 stored in ${LOGPATH}.
 
