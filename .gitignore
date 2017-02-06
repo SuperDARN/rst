@@ -13,6 +13,6 @@ usr/bin/
 codebase/analysis/src.lib/cdf/rcdf.1.5/include/cdf.h
 include/analysis/cdf.h
 
-*errstr.h
-*hlpstr.h
-*version.h
+*/errstr.h
+*/hlpstr.h
+*/version.h
