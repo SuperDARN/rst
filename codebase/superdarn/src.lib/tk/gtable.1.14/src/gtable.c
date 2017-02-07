@@ -344,12 +344,6 @@ int GridTableAddBeam(struct GridTable *ptr,
         /* Make sure magnetic longitude varies between 0-360 degrees */
         if (lon<0) lon+=360;
 
-        /* If northern hemi point is below 50N then shift its latitude to 50N */
-        if ((lat>0) && (lat<50)) lat=50;
-
-        /* If southern hemi point is below 50S then shift its latitude to 50S */
-        if ((lat<0) && (lat>-50)) lat=-50;
-
         /* Calculate magnetic grid cell latitude
          * (eg, 72.1->72.5, 57.8->57.5, etc) */
         if (lat>0) grdlat=(int) (lat)+0.5;
@@ -363,8 +357,8 @@ int GridTableAddBeam(struct GridTable *ptr,
 
         /* Calculate reference number to grid latitude/longitude cell */
         if (lat>0)
-            ref=1000*( (int) lat-50)+( (int) (lon*lspc) );
-        else ref=-1000*( (int) -lat-50)-( (int) (lon*lspc) );
+            ref=1000*( (int) lat ) + ( (int) (lon*lspc) );
+        else ref=-1000*( (int) -lat ) - ( (int) (lon*lspc) );
 
         /* Find index of GridPnt structure corresponding to reference number */
         inx=GridTableFindPoint(ptr,ref);
