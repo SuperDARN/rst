@@ -438,6 +438,8 @@ int main(int argc,char *argv[]) {
   int cpnum=0;
   int cptab[256];
 
+  int chisham=0;
+
   prm=RadarParmMake();
   fit=FitMake();
   cfit=CFitMake();
@@ -1032,12 +1034,12 @@ int main(int argc,char *argv[]) {
                                  tplot.rsep,tplot.rxrise,300,&rho,
                                  &blat,&lon);   
           else RPosGeo(0,tplot.bmnum,rng-1,site,tplot.frang,tplot.rsep,
-                        tplot.rxrise,300,&rho,&blat,&lon);   
+                        tplot.rxrise,300,&rho,&blat,&lon,chisham);   
    
           if (magflg) RPosMag(0,tplot.bmnum,rng,site,tplot.frang,tplot.rsep,
                                tplot.rxrise,300,&rho,&tlat,&lon);   
           else RPosGeo(0,tplot.bmnum,rng,site,tplot.frang,tplot.rsep,
-                        tplot.rxrise,300,&rho,&tlat,&lon);   
+                        tplot.rxrise,300,&rho,&tlat,&lon,chisham);   
 
           
 

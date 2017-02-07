@@ -178,25 +178,38 @@ void geocnvrt(double gdlat, double gdlon,
 
 
 /**
- * Calculates the geocentric coordinates (frho,flat,flon) of a radar field point.
+ * Calculates the geocentric coordinates (frho,flat,flon) of a radar field point,
+ * using either the standard or Chisham virtual height model.
  **/
 void fldpnth(double gdlat, double gdlon, double psi, double bore,
              double fh, double r, double *frho, double *flat,
-             double *flon) {
+             double *flon, int chisham) {
 
     double rrad,rlat,rlon,del;
     double tan_azi,azi,rel,xel,fhx,xal,rrho,ral,xh;
     double dum,dum1,dum2,dum3;
     double frad;
+    double gamma,beta;
 
-    /* Standard virtual height model */
-    if (fh<=150) xh=fh;
-    else {
-        if (r<=600) xh=115;
-        else if ((r>600) && (r<800)) xh=(r-600)/200*(fh-115)+115;
-        else xh=fh;
+    if (chisham) {
+        /* Chisham virtual height model */
+        double A_const[3]={108.974,384.416,1098.28};
+        double B_const[3]={0.0191271,-0.178640,-0.354557};
+        double C_const[3]={6.68283e-5,1.81405e-4,9.39961e-5};
+
+        if (r<790) xh=A_const[0]+B_const[0]*r+C_const[0]*r*r;
+        else if (r<2130) xh=A_const[1]+B_const[1]*r+C_const[1]*r*r;
+        else xh=A_const[2]+B_const[2]*r+C_const[2]*r*r;
+    } else {
+        /* Standard virtual height model */
+        if (fh<=150) xh=fh;
+        else {
+            if (r<=600) xh=115;
+            else if ((r>600) && (r<800)) xh=(r-600)/200*(fh-115)+115;
+            else xh=fh;
+        }
+        if (r<150) xh=(r/150.0)*115.0;
     }
-    if (r<150) xh=(r/150.0)*115.0;
 
     /* Calculate radius of the Earth beneath the radar */
     geodtgc(1,&gdlat,&gdlon,&rrad,&rlat,&rlon,&del);
@@ -217,8 +230,16 @@ void fldpnth(double gdlat, double gdlon, double psi, double bore,
         /* Elevation angle relative to local horizon [deg] */
         rel=asind( ((*frho**frho) - (rrad*rrad) - (r*r)) / (2*rrad*r));
 
-        /* Elevation angle used for estimating off-array-normal azimuth */
-        xel=rel;
+        /* Need to calculate actual elevation angle for 1.5-hop propagation
+         * when using Chisham model for coning angle correction */
+        if ((chisham) && (r>2130)) {
+            gamma = acosd( (rrad*rrad + *frho**frho - r*r )/(2*rrad**frho) );
+            beta = asind( rrad*sind(gamma/3.0)/(r/3.0) );
+            xel = 90.0-beta-gamma;
+        } else {
+            /* Elevation angle used for estimating off-array-normal azimuth */
+            xel=rel;
+        }
 
         /* Estimate the off-array-normal azimuth */
         if (((cosd(psi)*cosd(psi))-(sind(xel)*sind(xel)))<0) tan_azi=1e32;
@@ -304,7 +325,8 @@ void RPosGeo(int center, int bcrd, int rcrd,
              struct RadarSite *pos,
              int frang, int rsep,
              int rxrise, double height,
-             double *rho, double *lat, double *lng) {
+             double *rho, double *lat, double *lng,
+             int chisham) {
 
     double rx;
     double psi,d;
@@ -337,7 +359,7 @@ void RPosGeo(int center, int bcrd, int rcrd,
 
     /* Calculate the geocentric coordinates of the field point */
     fldpnth(pos->geolat,pos->geolon,psi,pos->boresite,
-            height,d,rho,lat,lng);
+            height,d,rho,lat,lng,chisham);
 
 }
 
@@ -357,6 +379,8 @@ void RPosMag(int center,int bcrd,int rcrd,
   double range_edge=0;
   double offset=0;
  
+  int chisham=0;
+
   if (center==0) {
     bm_edge=-pos->bmsep*0.5;
     range_edge=-0.5*rsep*20/3;
@@ -371,7 +395,7 @@ void RPosMag(int center,int bcrd,int rcrd,
   if (height < 90) height=-re+sqrt((re*re)+2*d*re*sind(height)+(d*d));
  
   fldpnth(pos->geolat,pos->geolon,psi,pos->boresite,
-		  height,d,rho,lat,lng); 
+		  height,d,rho,lat,lng,chisham); 
  
   AACGMConvert(*lat,*lng,(double) height,lat,lng,&radius,0);
  
@@ -393,6 +417,8 @@ void RPosCubic(int center,int bcrd,int rcrd,
   double bm_edge=0;
   double range_edge=0;
 
+  int chisham=0;
+
   if (center==0) {
     bm_edge=-pos->bmsep*0.5;
     range_edge=-0.5*rsep*20/3;
@@ -407,7 +433,7 @@ void RPosCubic(int center,int bcrd,int rcrd,
   d=slant_range(frang,rsep,rx,range_edge,rcrd+1);
   if (height < 90) height=-re+sqrt((re*re)+2*d*re*sind(height)+(d*d));
   fldpnth(pos->geolat,pos->geolon,psi,pos->boresite,
-	      height,d,&rho,&lat,&lng);  
+	      height,d,&rho,&lat,&lng,chisham);  
 
   /* convert to x,y,z (normalized to the unit sphere) */
 

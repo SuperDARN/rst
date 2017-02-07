@@ -94,6 +94,9 @@
 <option><on>-inertial</on><od>calculate the grid file in the inertial reference frame.</od>
 </option>
 
+<option><on>-chisham</on><od>calculate the grid file using the Chisham virtual height model.</od>
+</option>
+
 <option><on><ar>fitname</ar></on><od>filename of the <code>fit</code> format file.</od>
 </option>
 
