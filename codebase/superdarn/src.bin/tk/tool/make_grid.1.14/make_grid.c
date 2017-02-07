@@ -391,7 +391,7 @@ int main(int argc,char *argv[]) {
     OptionAdd(&opt,"cn",'t',&chnstr);   /* Process data from stereo channel a or b */
     OptionAdd(&opt,"ebm",'t',&bmstr);   /* Comma separated list of beams to exclude */
     OptionAdd(&opt,"minrng",'i',&minrng); /* Exclude data from gates lower than minrng */
-    OptionAdd(&opt,"maxrng",'i',&minrng); /* Exclude data from gates higher than maxrng */
+    OptionAdd(&opt,"maxrng",'i',&maxrng); /* Exclude data from gates higher than maxrng */
 
     OptionAdd(&opt,"fwgt",'i',&mode);   /* Filter weighting mode */
 
