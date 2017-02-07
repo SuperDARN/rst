@@ -40,10 +40,6 @@ int IGRFMagCmp(double date, double frho, double flat, double flon,
 
     int s;
 
-    /* Calculate virtual height of range/beam measurement [km]
-     * using fixed value for Earth radius */
-    frho = frho - 6372.;
-
     /* Calculate magnetic field componenets at field point */
     s=IGRFCall(date, flat, flon, frho, bx, by, bz);
 
