@@ -436,7 +436,7 @@ end
 ;       Internal function for RPos
 ; 			Converts from geodetic coordinates (gdlat,gdlon) to geocentric spherical
 ; 			coordinates (glat,glon). The radius of the Earth (grho) and the deviation
-; 			off the vertical (del) are calculated. The IAU 1964 oblate spheroid model
+; 			off the vertical (del) are calculated. The WGS 84 oblate spheroid model
 ; 			of the Earth is adopted.
 ;       
 ;
@@ -449,8 +449,8 @@ end
 
 pro RadarGeoTGC,iopt,gdlat,gdlon,grho,glat,glon,del
 
-   a=6378.16D
-   f=1.0D/298.25D
+   a=6378.137D
+   f=1.0D/298.257223563D
   
 
    b=a*(1.0-f)
