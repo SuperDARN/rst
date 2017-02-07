@@ -5,13 +5,11 @@
 bin/
 build/bin/
 build/lib/
+include/
 lib/
 log/
 usr/lib/
 usr/bin/
-
-codebase/analysis/src.lib/cdf/rcdf.1.5/include/cdf.h
-include/analysis/cdf.h
 
 codebase/analysis/src.lib/cmpfit-1.2/testmpfit
 codebase/general/src.lib/stdkey.1.5/src/make_palette
