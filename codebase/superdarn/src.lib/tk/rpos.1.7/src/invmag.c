@@ -387,8 +387,8 @@ int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
     /* Calculate virtual height of range/beam position */
     tmp_ht=frho-gdrho;
 
-    /* Load AACGM coefficients for input year - EGT */
-    /*AACGMInit(year);*/
+    /* Load AACGM coefficients for input year */
+    AACGMInit(year);
 
     /* Convert range/beam position from geocentric latitude/longitude (flat,flon)
      * at virtual height (tmp_ht) to AACGM magnetic latitude/longitude
