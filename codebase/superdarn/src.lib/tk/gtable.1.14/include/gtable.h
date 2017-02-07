@@ -81,6 +81,6 @@ struct GridTable *GridTableMake();
 void GridTableFree(struct GridTable *ptr);
 int GridTableTest(struct GridTable *ptr,struct RadarScan *scan,int tlen);
 int GridTableMap(struct GridTable *ptr,struct RadarScan *scan,
-                  struct RadarSite *pos,int tlen,int iflg,double alt);
+                  struct RadarSite *pos,int tlen,int iflg,double alt,int chisham);
  
 #endif

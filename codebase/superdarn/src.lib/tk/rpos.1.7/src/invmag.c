@@ -207,7 +207,7 @@ void glbthor(int iopt, double lat, double lon,
 int RPosRngBmAzmElv(int bm, int rn, int year,
                     struct RadarSite *hdw, double frang,
                     double rsep, double rx, double height,
-                    double *azm, double *elv) {
+                    double *azm, double *elv, int chisham) {
 
     double flat,flon,frho;
     double fx,fy,fz;
@@ -233,7 +233,7 @@ int RPosRngBmAzmElv(int bm, int rn, int year,
      * surface of the oblate spheroid (ie not constant with latitude) plus
      * virtual height (frho) */
     RPosGeo(1,bm,rn,hdw,frang,rsep,rx,
-             height,&frho,&flat,&flon);
+             height,&frho,&flat,&flon,chisham);
 
     /* Convert range/beam position from geocentric spherical coordinates
      * (frho,flat,flon) to global Cartesian coordinates (fx,fy,fz) */
@@ -298,7 +298,7 @@ int RPosRngBmAzmElv(int bm, int rn, int year,
  **/
 int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
                double rsep, double rx, double height,
-               double *mlat, double *mlon, double *azm) {
+               double *mlat, double *mlon, double *azm, int chisham) {
 
     double flat,flon,frho;
     double fx,fy,fz;
@@ -327,7 +327,7 @@ int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
      * surface of the oblate spheroid (ie not constant with latitude) plus
      * virtual height (frho) */
     RPosGeo(1,bm,rn,hdw,frang,rsep,rx,
-             height,&frho,&flat,&flon);
+             height,&frho,&flat,&flon,chisham);
 
     /* Convert range/beam position from geocentric spherical coordinates
      * (frho,flat,flon) to global Cartesian coordinates (fx,fy,fz) */

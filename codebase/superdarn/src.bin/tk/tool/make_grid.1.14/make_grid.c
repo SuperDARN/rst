@@ -297,6 +297,8 @@ int main(int argc,char *argv[]) {
 
     int syncflg=1;
 
+    int chisham=0;
+
     unsigned char catflg=0;
 
     int s=0,i;
@@ -420,6 +422,8 @@ int main(int argc,char *argv[]) {
     OptionAdd(&opt,"both",'x',&bthflg); /* Do not exclude data based on scatter flag */
 
     OptionAdd(&opt,"inertial",'x',&iflg); /* Create grid file in inertial reference frame */
+    
+    OptionAdd(&opt,"chisham",'x',&chisham); /* Map data using Chisham virtual height model */
 
     OptionAdd(&opt,"fit",'x',&fitflg);   /* Input file is in the fit format */
     OptionAdd(&opt,"cfit",'x',&cfitflg); /* Input file is in the cfit format */
@@ -799,7 +803,7 @@ int main(int argc,char *argv[]) {
                 /* Map radar scan data in structure pointed to by 'out' to an
                  * equi-area grid in magnetic coordinates, storing the output
                  * in the grid GridTable structure */
-                s=GridTableMap(grid,out,site,avlen,iflg,alt);
+                s=GridTableMap(grid,out,site,avlen,iflg,alt,chisham);
 
                 /* Return an error if mapping failed */
                 if (s !=0) {
@@ -1008,7 +1012,7 @@ int main(int argc,char *argv[]) {
                     /* Map radar scan data in structure pointed to by 'out' to an
                      * equi-area grid in magnetic coordinates, storing the output
                      * in the grid GridTable structure */
-                    s=GridTableMap(grid,out,site,avlen,iflg,alt);
+                    s=GridTableMap(grid,out,site,avlen,iflg,alt,chisham);
 
                     /* Return an error if mapping failed */
                     if (s !=0) {

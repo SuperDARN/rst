@@ -45,9 +45,10 @@
 int GeoLocCenter(struct RadarSite *site,int mag,float *lat,float *lon) {
 
   int s;
+  int chisham=0;
   double glat,glon,mlat,mlon,rho;
   RPosGeo(0,8,35,site,180,45,100,
-            300.0,&rho,&glat,&glon);
+          300.0,&rho,&glat,&glon,chisham);
 
   if (mag) { 
     s=AACGMConvert(glat,glon,300,&mlat,&mlon,&rho,0);
@@ -65,7 +66,9 @@ int GeoLocBeam(struct RadarSite *site,int year,
   int n,s,x;
   int rng;
   double rho,lat,lon,glat,glon,mlat,mlon;
-  double geoazm,elv,magazm; 
+  double geoazm,elv,magazm;
+
+  int chisham=0;
 
   for (n=0;n<geol->num;n++) {
     if (geol->bm[n].bm !=bm->bm) continue;
@@ -107,21 +110,21 @@ int GeoLocBeam(struct RadarSite *site,int year,
 
   for (rng=0;rng<=bm->nrang;rng++) {
     RPosGeo(0,bm->bm,rng,site,bm->frang,bm->rsep,bm->rxrise,
-               300.0,&rho,&lat,&lon);
+               300.0,&rho,&lat,&lon,chisham);
     geol->bm[n].glat[0][rng]=lat;
     geol->bm[n].glon[0][rng]=lon;
     RPosGeo(0,bm->bm+1,rng,site,bm->frang,bm->rsep,bm->rxrise,
-               300.0,&rho,&lat,&lon);
+               300.0,&rho,&lat,&lon,chisham);
     geol->bm[n].glat[2][rng]=lat;
     geol->bm[n].glon[2][rng]=lon;
     if (rng<bm->nrang) {
       RPosGeo(1,bm->bm,rng,site,bm->frang,bm->rsep,bm->rxrise,
-                 300.0,&rho,&lat,&lon);
+                 300.0,&rho,&lat,&lon,chisham);
       geol->bm[n].glat[1][rng]=lat;
       geol->bm[n].glon[1][rng]=lon;
       RPosRngBmAzmElv(bm->bm,rng,year,site,
                    bm->frang,bm->rsep,bm->rxrise,
-                   300.0,&geoazm,&elv);
+                   300.0,&geoazm,&elv,chisham);
       geol->bm[n].gazm[rng]=geoazm;
     }
     
@@ -138,7 +141,7 @@ int GeoLocBeam(struct RadarSite *site,int year,
     geol->bm[n].mlon[2][rng]=mlon;
     if (rng<bm->nrang) {
       RPosInvMag(bm->bm,rng,year,site,bm->frang,bm->rsep,bm->rxrise,
-              300.0,&mlat,&mlon,&magazm);
+              300.0,&mlat,&mlon,&magazm,chisham);
       geol->bm[n].mlat[1][rng]=mlat;
       geol->bm[n].mlon[1][rng]=mlon;
       geol->bm[n].mazm[rng]=magazm;
