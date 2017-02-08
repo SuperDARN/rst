@@ -40,6 +40,10 @@
 </option>
 <option><on>-maxrng <ar>maxrange</ar></on><od>exclude data from range gates higher than <ar>maxrange</ar>.</od>
 </option>
+<option><on>-minsrng <ar>minsrange</ar></on><od>exclude data from slant ranges lower than <ar>minsrange</ar> (this takes precedence over minrng/maxrng).</od>
+</option>
+<option><on>-maxsrng <ar>maxsrange</ar></on><od>exclude data from slant ranges higher than <ar>maxsrange</ar> (this takes precedence over minrng/maxrng).</od>
+</option>
 <option><on>-fwgt <ar>mode</ar></on><od>set the filter weighting mode to <ar>mode</ar>.</od>
 </option>
 
