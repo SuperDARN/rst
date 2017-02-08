@@ -403,7 +403,7 @@ int main(int argc,char *argv[]) {
     OptionAdd(&opt,"vemax",'d',&max[3]); /* Exclude data with verror greater than vemax */
 
     OptionAdd(&opt,"pmin",'d',&min[1]); /* Exclude data with power less than pmin */
-    OptionAdd(&opt,"vmin",'d',&min[0]); /* Exclude data with velocity less than vmax */
+    OptionAdd(&opt,"vmin",'d',&min[0]); /* Exclude data with velocity less than vmin */
     OptionAdd(&opt,"wmin",'d',&min[2]); /* Exclude data with width less than wmin */
     OptionAdd(&opt,"vemin",'d',&min[3]); /* Exclude data with verror less than vemin */
 
@@ -487,11 +487,12 @@ int main(int argc,char *argv[]) {
     else grid->chn=0;
 
     /* Store the velocity, power, width, and velocity error bounding threshold
-     * values in GridTable (whether or not they are actually applied by 
-     * FilterBound!) */
-    for (i=0;i<4;i++) {
-        grid->min[i]=min[i];
-        grid->max[i]=max[i];
+     * values in GridTable only if they are applied by FilterBound */ 
+    if (bflg) {
+        for (i=0;i<4;i++) {
+            grid->min[i]=min[i];
+            grid->max[i]=max[i];
+        }
     }
 
     /* If median filtering is going to be applied the initialize nbox so that 3
