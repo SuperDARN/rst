@@ -189,7 +189,7 @@ void fldpnth(double gdlat, double gdlon, double psi, double bore,
     double tan_azi,azi,rel,xel,fhx,xal,rrho,ral,xh;
     double dum,dum1,dum2,dum3;
     double frad;
-    double gamma,beta;
+    double gmma,beta;
 
     if (chisham) {
         /* Chisham virtual height model */
@@ -233,9 +233,9 @@ void fldpnth(double gdlat, double gdlon, double psi, double bore,
         /* Need to calculate actual elevation angle for 1.5-hop propagation
          * when using Chisham model for coning angle correction */
         if ((chisham) && (r>2130)) {
-            gamma = acosd( (rrad*rrad + *frho**frho - r*r )/(2*rrad**frho) );
-            beta = asind( rrad*sind(gamma/3.0)/(r/3.0) );
-            xel = 90.0-beta-gamma;
+            gmma = acosd( (rrad*rrad + *frho**frho - r*r )/(2*rrad**frho) );
+            beta = asind( rrad*sind(gmma/3.0)/(r/3.0) );
+            xel = 90.0-beta-gmma;
         } else {
             /* Elevation angle used for estimating off-array-normal azimuth */
             xel=rel;
