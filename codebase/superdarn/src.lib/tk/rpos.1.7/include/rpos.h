@@ -43,6 +43,10 @@ struct RPos {
   double rxris;
 };
 
+double slant_range(int frang,int rsep,
+                   double rxris,double range_edge,
+	               int rang_gate);
+
 void RPosGeo(int center,int bcrd,int rcrd,
                 struct RadarSite *pos,
                 int lagfr,int smsep,int rxrise,double height,

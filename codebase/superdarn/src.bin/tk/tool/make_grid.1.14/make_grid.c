@@ -53,6 +53,7 @@
 #include "filter.h"
 #include "bound.h"
 #include "checkops.h"
+#include "rpos.h"
 
 #include "gtable.h"
 #include "gtablewrite.h"
@@ -82,6 +83,8 @@ int ebmno=0;
 int ebm[32*3];
 int minrng=-1;
 int maxrng=-1;
+double minsrng=-1;
+double maxsrng=-1;
 
 struct GridTable *grid;
 
@@ -131,11 +134,18 @@ int exclude_outofscan(struct RadarScan *ptr) {
 
 
 /**
- * Exclude scatter in range gates below minrng or beyond maxrng.
+ * Exclude scatter in range gates below minrng or beyond maxrng,
+ * or from slant ranges below minsrng or beyond maxsrng. If range
+ * gate and slant range thresholds are both provided, only the
+ * slant range thresholds are considered.
  **/
-void exclude_range(struct RadarScan *ptr,int minrng,int maxrng) {
+void exclude_range(struct RadarScan *ptr,int minrng,int maxrng,
+                   double minsrng,double maxsrng) {
 
     int bm,rng;
+    int frang,rsep,rxrise,nrang;
+    double r;
+    double range_edge=0;
 
     /* Loop over number of beams in RadarScan structure */
     for (bm=0;bm<ptr->num;bm++) {
@@ -143,14 +153,33 @@ void exclude_range(struct RadarScan *ptr,int minrng,int maxrng) {
         /* If RadarBeam structure not set then continue */
         if (ptr->bm[bm].bm==-1) continue;
 
-        /* If minrng option set then mark all scatter in range gates
-         * less than minrng as being empty */
-        if (minrng !=-1) for (rng=0;rng<minrng;rng++) ptr->bm[bm].sct[rng]=0;
+        /* If minsrng or maxsrng option set then exclude data using
+         * slant range instead of range gate */
+        if ((minsrng !=-1) || (maxsrng !=-1)) {
 
-        /* If maxrng option set then mark all scatter in range gates
-         * greater than maxrng as being empty */
-        if (maxrng !=-1) for (rng=maxrng;rng<ptr->bm[bm].nrang;rng++)
-            ptr->bm[bm].sct[rng]=0;
+            /* Get radar operating parameters from RadarBeam structure */
+            frang=ptr->bm[bm].frang;
+            rsep=ptr->bm[bm].rsep;
+            rxrise=ptr->bm[bm].rxrise;
+            nrang=ptr->bm[bm].nrang;
+
+            /* Calculate slant range to each range gate and compare to thresholds */
+            for (rng=0;rng<nrang;rng++) {
+                r=slant_range(frang,rsep,rxrise,range_edge,rng+1);
+                if ((minsrng !=-1) && (r<minsrng)) ptr->bm[bm].sct[rng]=0;
+                if ((maxsrng !=-1) && (r>maxsrng)) ptr->bm[bm].sct[rng]=0;
+            }
+
+        } else {
+            /* If minrng option set then mark all scatter in range gates
+             * less than minrng as being empty */
+            if (minrng !=-1) for (rng=0;rng<minrng;rng++) ptr->bm[bm].sct[rng]=0;
+
+            /* If maxrng option set then mark all scatter in range gates
+             * greater than maxrng as being empty */
+            if (maxrng !=-1) for (rng=maxrng;rng<ptr->bm[bm].nrang;rng++)
+                ptr->bm[bm].sct[rng]=0;
+        }
 
     }
 
@@ -394,6 +423,8 @@ int main(int argc,char *argv[]) {
     OptionAdd(&opt,"ebm",'t',&bmstr);   /* Comma separated list of beams to exclude */
     OptionAdd(&opt,"minrng",'i',&minrng); /* Exclude data from gates lower than minrng */
     OptionAdd(&opt,"maxrng",'i',&maxrng); /* Exclude data from gates higher than maxrng */
+    OptionAdd(&opt,"minsrng",'d',&minsrng); /* Exclude data from slant ranges lower than minsrng */
+    OptionAdd(&opt,"maxsrng",'d',&maxsrng); /* Exclude data from slant ranges higher than maxsrng */
 
     OptionAdd(&opt,"fwgt",'i',&mode);   /* Filter weighting mode */
 
@@ -740,8 +771,9 @@ int main(int argc,char *argv[]) {
             /* If 'is' option not set then */
             if (nsflg) exclude_outofscan(src[index]);
 
-            /* Exclude scatter in range gates below minrng or beyond maxrng */
-            exclude_range(src[index],minrng,maxrng);
+            /* Exclude scatter in range gates below minrng or beyond maxrng,
+             * or below minsrng or beyond maxsrng */
+            exclude_range(src[index],minrng,maxrng,minsrng,maxsrng);
 
             /* Exclude either ground or ionospheric scatter based on gsct flag */
             FilterBoundType(src[index],grid->gsct);
@@ -949,8 +981,9 @@ int main(int argc,char *argv[]) {
                 /* If 'is' option not set then */
                 if (nsflg) exclude_outofscan(src[index]);
 
-                /* Exclude scatter in range gates below minrng or beyond maxrng */
-                exclude_range(src[index],minrng,maxrng);
+                /* Exclude scatter in range gates below minrng or beyond maxrng,
+                 * or below minsrng or beyond maxsrng */
+                exclude_range(src[index],minrng,maxrng,minsrng,maxsrng);
 
                 /* Exclude either ground or ionospheric scatter based on gsct flag */
                 FilterBoundType(src[index],grid->gsct);
