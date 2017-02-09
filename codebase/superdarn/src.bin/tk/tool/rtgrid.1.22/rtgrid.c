@@ -573,7 +573,7 @@ int main(int argc,char *argv[]) {
             else strcat(fname,".grdmap");
 	  }
        
-           s=GridTableTest(grid,out,avlen);
+           s=GridTableTest(grid,out);
            
          
            if (s==1) {

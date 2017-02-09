@@ -124,7 +124,7 @@ int GridTableZero(int pnum, struct GridPnt *ptr) {
  * Tests whether gridded data should be written to a file. Returns a non-zero
  * value if the data should be written.
  **/
-int GridTableTest(struct GridTable *ptr, struct RadarScan *scan, int tlen) {
+int GridTableTest(struct GridTable *ptr, struct RadarScan *scan) {
 
     double tm;
     int i;
