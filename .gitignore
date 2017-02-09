@@ -5,6 +5,8 @@
 bin/
 build/bin/
 build/lib/
+dlm/
+doc/
 include/
 lib/
 log/
