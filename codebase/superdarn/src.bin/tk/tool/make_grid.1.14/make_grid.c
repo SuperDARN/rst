@@ -817,8 +817,8 @@ int main(int argc,char *argv[]) {
 
                 /* Test whether gridded data should be written to a file; if so
                  * returns weighted average velocity, power, and width values
-                 * for each grid cell (Note: avlen not actually used) */
-                s=GridTableTest(grid,out,avlen);
+                 * for each grid cell */
+                s=GridTableTest(grid,out);
 
                 /* If no errors were returned by GridTableTest and the beginning
                  * of the grid record is equal to or after stime then write
@@ -1027,8 +1027,8 @@ int main(int argc,char *argv[]) {
 
                     /* Test whether gridded data should be written to a file; if so
                      * returns weighted average velocity, power, and width values
-                     * for each grid cell (Note: avlen not actually used) */
-                    s=GridTableTest(grid,out,avlen);
+                     * for each grid cell */
+                    s=GridTableTest(grid,out);
 
                     /* If no errors were returned by GridTableTest and the beginning
                      * of the grid record is equal to or after stime then write

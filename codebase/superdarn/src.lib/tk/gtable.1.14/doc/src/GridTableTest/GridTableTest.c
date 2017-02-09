@@ -122,7 +122,7 @@ int main(int argc,char *argv[]) {
      
       }
 
-      s=GridTableTest(&grid,&dst,avlen);
+      s=GridTableTest(&grid,&dst);
     
       if (s==1) {
         GridTableFwrite(stdout,&grid,wrtlog,xtd);
