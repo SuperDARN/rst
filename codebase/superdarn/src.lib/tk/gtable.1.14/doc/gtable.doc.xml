@@ -3,6 +3,7 @@
 <project>superdarn</project>
 <name>gtable</name>
 <location>src.lib/tk/gtable</location>
+
 <function>
 <name>GridTableMap</name>
 <location>src.lib/tk/gtable</location>
@@ -34,8 +35,8 @@
 
 <structure>
   <name>GridBm</name>
-  <location>src.lib/tk/grid</location>
-  <header>superdarn/griddata.h</header>
+  <location>src.lib/tk/gtable</location>
+  <header>superdarn/gtable.h</header>
   <struct>
 
     <member>
@@ -45,22 +46,22 @@
     
     <member>
       <proto>int frang;</proto>
-      <description>Distance to the first range for beam.</description>
+      <description>Distance to first range (kilometers).</description>
     </member>
 
     <member>
       <proto>int rsep;</proto>
-      <description>Range separation for beam.</description>
+      <description>Range separation (kilometers).</description>
     </member>
 
     <member>
       <proto>int rxrise;</proto>
-      <description>Receiver rise time for beam.</description>
+      <description>Receiver rise time (microseconds).</description>
     </member>
 
     <member>
       <proto>int nrang;</proto>
-      <description>Number of ranges for beam.</description>
+      <description>Number of ranges.</description>
     </member>
 
     <member>
@@ -88,8 +89,8 @@
 
 <structure>
   <name>GridPnt</name>
-  <location>src.lib/tk/grid</location>
-  <header>superdarn/griddata.h</header>
+  <location>src.lib/tk/gtable</location>
+  <header>superdarn/gtable.h</header>
   <struct>
 
     <member>
