@@ -609,7 +609,7 @@ pro RadarFldPnth,gdlat,gdlon,psi,bore,fh,r,frho,flat,flon,chisham=chisham
 
         if r lt 790 then $
             xh = A[0] + B[0]*r + C[0]*r*r $
-        else if r lt 2130 then $
+        else if r le 2130 then $
             xh = A[1] + B[1]*r + C[1]*r*r $
         else $
             xh = A[2] + B[2]*r + C[2]*r*r
