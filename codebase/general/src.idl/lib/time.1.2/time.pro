@@ -74,7 +74,8 @@ function TimeYrsecToYMDHMS,yr,mo,dy,hr,mt,sc,yrsec
   dt=yrsec mod (24L*60L*60L)
   hr=fix(dt/(60L*60L)) 
   mt=fix((dt mod (60L*60L))/60L) 
-  sc=fix(dt mod 60L)
+  ;sc=fix(dt mod 60L)
+  sc=(dt mod 60L)
  
   return, 0
 end
@@ -118,7 +119,8 @@ function TimeYMDHMSToYrsec,yr,mo,dy,hr,mt,sc
   if ( (mo gt 2) and ((yr mod 4) eq 0) and $ 
        (((yr mod 100) ne 0) or ((yr mod 400) eq 0))) then t=t+1
 
-  return, (((t*24L + hr)*60L + mt)*60L)+sc
+  ;return, (((t*24L + hr)*60L + mt)*60L)+sc
+  return, (((t*24D + hr)*60D + mt)*60D)+sc
 end
 
 
@@ -151,7 +153,8 @@ function TimeYMDHMSToEpoch,yr,mo,dy,hr,mt,sc
 
   yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,sc);
   if (yrsec eq -1) then return, -1
-  tme=double(yrsec)
+  ;tme=double(yrsec)
+  tme=yrsec
    
   lpyear=(yr-1969)/4;
   ryear=(yr-1970)-lpyear;
