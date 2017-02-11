@@ -413,13 +413,8 @@ function GridTableAddBeam, GridTable, RadarSite, alt, tval, RadarBeam, chisham=c
     if ~ptr_valid(RadarBeam) then $
         return, -1
 
-    ; Calculate Earth radius at radar site geodetic latitude
-    ; *Note: changed from using hardcoded RE value of 6356.779 km (v1)*
-    ret = RadarGeoTGC(RadarSite.geolat, RadarSite.geolon, gdrho, dummy, dummy, dummy)
-
     ; Velocity correction as a function of radar geodetic latitude [m/s]
-    ; *Note: changed from using hardcoded RE value of 6356.779 km (v1)*
-    velco = (2*!pi/86400.0)*gdrho*1000*cos(RadarSite.geolat*!pi/180.0)
+    velco = (2*!pi/86400.0)*6356.779*1000*cos(RadarSite.geolat*!pi/180.0)
     
     ; Get current beam from the GridTable structure
     GridBm = (*GridTable).bm[(*GridTable).bnum]
