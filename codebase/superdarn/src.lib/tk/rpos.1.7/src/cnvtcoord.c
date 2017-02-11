@@ -198,7 +198,7 @@ void fldpnth(double gdlat, double gdlon, double psi, double bore,
         double C_const[3]={6.68283e-5,1.81405e-4,9.39961e-5};
 
         if (r<790) xh=A_const[0]+B_const[0]*r+C_const[0]*r*r;
-        else if (r<2130) xh=A_const[1]+B_const[1]*r+C_const[1]*r*r;
+        else if (r<=2130) xh=A_const[1]+B_const[1]*r+C_const[1]*r*r;
         else xh=A_const[2]+B_const[2]*r+C_const[2]*r*r;
     } else {
         /* Standard virtual height model */
@@ -228,14 +228,14 @@ void fldpnth(double gdlat, double gdlon, double psi, double bore,
         *frho=frad+xh;
 
         /* Elevation angle relative to local horizon [deg] */
-        rel=asind( ((*frho**frho) - (rrad*rrad) - (r*r)) / (2*rrad*r));
+        rel=asind(((*frho**frho) - (rrad*rrad) - (r*r))/(2.0*rrad*r));
 
         /* Need to calculate actual elevation angle for 1.5-hop propagation
          * when using Chisham model for coning angle correction */
         if ((chisham) && (r>2130)) {
-            gmma = acosd( (rrad*rrad + *frho**frho - r*r )/(2*rrad**frho) );
-            beta = asind( rrad*sind(gmma/3.0)/(r/3.0) );
-            xel = 90.0-beta-gmma;
+            gmma = acosd((rrad*rrad + *frho**frho - r*r )/(2.0*rrad**frho));
+            beta = asind(rrad*sind(gmma/3.0)/(r/3.0));
+            xel = 90.0 - beta - (gmma/3.0);
         } else {
             /* Elevation angle used for estimating off-array-normal azimuth */
             xel=rel;
