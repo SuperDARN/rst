@@ -86,7 +86,7 @@ pro GridTableWrite, fname, GridTable, xtd=xtd, new_file=new_file, grdfp=grdfp
     stvec.chn = (*GridTable).chn
     stvec.npnt = (*GridTable).npnt
     stvec.freq = (*GridTable).freq
-    stvec.major_revision = 2                        ; *Note: changed from 1 to 2 (v2)*
+    stvec.major_revision = 2
     stvec.minor_revision = 0
     stvec.prog_id = (*GridTable).prog_id
     stvec.gsct = (*GridTable).gsct
