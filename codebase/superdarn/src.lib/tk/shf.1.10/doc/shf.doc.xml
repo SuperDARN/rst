@@ -269,7 +269,7 @@
     </member>
 
     <member>
-      <proto><sn href="&root;/src.lib/tk/grid/structGridGVec.html">struct GridGVec</sn> *model;</proto>
+      <proto><sn href="&root;/superdarn/src.lib/tk/grid/structGridGVec.html">struct GridGVec</sn> *model;</proto>
       <description>?</description>
     </member>
     

@@ -8,7 +8,7 @@
 <name>GridTableFwrite</name>
 <location>src.lib/tk/gtablewrite</location>
 <header>superdarn/gtablewrite.h</header>
-<syntax>int GridTableFwrite(FILE *fp,<sn href="&root;/src.lib/tk/gtable/structGridTable.html">struct GridTable</sn> *ptr,char *log,int xtd);</syntax>
+<syntax>int GridTableFwrite(FILE *fp,<sn href="&root;/superdarn/src.lib/tk/gtable/structGridTable.html">struct GridTable</sn> *ptr,char *log,int xtd);</syntax>
 <description><p>The <fn href="GridTableFwrite.html">GridTableFwrite</fn> function writes gridded data to an open stream.</p>
 <p>The data is written to the stream pointed to by the argument <ar>fp</ar>.If <ar>fid</ar> is set to (-1) then the function will just calculate the number of bytes required to store the data.</p>
 <p>The gridded data is taken from the structure pointed to by the argument <ar>ptr</ar>.</p>
@@ -24,7 +24,7 @@
 <name>GridTableWrite</name>
 <location>src.lib/tk/gtablewrite</location>
 <header>superdarn/gtablewrite.h</header>
-<syntax>int GridTableWrite(int fid,<sn href="&root;/src.lib/tk/gtable/structGridTable.html">struct GridTable</sn> *ptr,char *log,int xtd);</syntax>
+<syntax>int GridTableWrite(int fid,<sn href="&root;/superdarn/src.lib/tk/gtable/structGridTable.html">struct GridTable</sn> *ptr,char *log,int xtd);</syntax>
 <description><p>The <fn href="GridTableWrite.html">GridTableWrite</fn> function writes gridded data to an open file.</p>
 <p>The data is written to the file with the descriptor given by the argument <ar>fid</ar>.If <ar>fid</ar> is set to (-1) then the function will just calculate the number of bytes required to store the data.</p>
 <p>The gridded data is taken from the structure pointed to by the argument <ar>ptr</ar>.</p>

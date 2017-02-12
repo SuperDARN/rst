@@ -8,13 +8,14 @@
 <name>GridTableMap</name>
 <location>src.lib/tk/gtable</location>
 <header>superdarn/gtable.h</header>
-<syntax>void GridTableMap(<sn href="structGridTable.html">struct GridTable</sn> *ptr,<sn href="&root;/src.lib/tk/scan/structRadarScan.html">struct RadarScan</sn> *scan,<sn href="&root;/src.lib/superdarn/atk/radar/structRadarSite.html">struct RadarSite</sn> *pos,int tlen,int iflg,double alt);</syntax>
+<syntax>void GridTableMap(<sn href="structGridTable.html">struct GridTable</sn> *ptr,<sn href="&root;/src.lib/tk/scan/structRadarScan.html">struct RadarScan</sn> *scan,<sn href="&root;/src.lib/superdarn/atk/radar/structRadarSite.html">struct RadarSite</sn> *pos,int tlen,int iflg,double alt,int chisham);</syntax>
 <description><p>The <fn href="GridTableMap.html">GridTableMap</fn> function maps radar scan data to an equi-area grid in geomagnetic coordinates.</p>
 <p>The gridded data stored in the structure pointed to by the argument <ar>ptr</ar>.</p>
 <p>The structure containing the radar scan data to map is pointed to by the argument <ar>scan</ar>. The hardware information for the radar is pointed to by the argument <ar>pos</ar>.</p>
 <p>The argument <ar>tlen</ar> is the integration time for each set of gridded data.</p>
 <p>If the argument <ar>iflg</ar> has a non-zero value then the mapping will be performed using an inertial reference frame; the component of the line of sight velocities due to the Earth's rotation is subtracted.</p>
-<p>The final argument <ar>alt</ar> sets the altitude at which the mapping is performed</p>
+<p>The argument <ar>alt</ar> sets the altitude at which the mapping is performed</p>
+<p>If the argument <ar>chisham</ar> is set to (1) then the Chisham et al. [2008] virtual height model is used instead of the standard model.</p>
 </description>
 <returns>Returns zero on success. On error, (-1) is returned.</returns>
 <example type="source">GridTableMap.c</example>
