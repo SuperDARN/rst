@@ -6,9 +6,9 @@
 
 <function>
 <name>OldGridTableFwrite</name>
-<location>src.lib/tk/grid</location>
+<location>src.lib/tk/oldgtablewrite</location>
 <header>superdarn/oldgtablewrite.h</header>
-<syntax>int OldGridTableFwrite(FILE *fp,<sn href="&root;/superdarn/src.lib/tk/gtable/struct/GridTable.html">struct GridTable</sn> *ptr,char *log,int xtd);</syntax>
+<syntax>int OldGridTableFwrite(FILE *fp,<sn href="&root;/superdarn/src.lib/tk/gtable/structGridTable.html">struct GridTable</sn> *ptr,char *log,int xtd);</syntax>
 <description><p>The <fn href="OldGridTableFwrite.html">OldGridTableFwrite</fn> function writes old formatted gridded data to an open stream.</p>
 <p>The data is written to the stream pointed to by the argument <ar>fp</ar>.If <ar>fid</ar> is set to (-1) then the function will just calculate the number of bytes required to store the data.</p>
 <p>The gridded data is taken from the structure pointed to by the argument <ar>ptr</ar>.</p>
@@ -22,7 +22,7 @@
 
 <function>
 <name>OldGridTableWrite</name>
-<location>src.lib/tk/grid</location>
+<location>src.lib/tk/oldgtablewrite</location>
 <header>superdarn/oldgtablewrite.h</header>
 <syntax>int OldGridTableWrite(int fid,<sn href="&root;/superdarn/src.lib/tk/gtable/structGridTable.html">struct GridTable</sn> *ptr,char *log,int xtd);</syntax>
 <description><p>The <fn href="OldGridTableWrite.html">OldGridTableWrite</fn> function writes old format gridded data to an open file.</p>

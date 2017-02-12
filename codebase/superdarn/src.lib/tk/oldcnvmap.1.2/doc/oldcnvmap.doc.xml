@@ -36,7 +36,7 @@
 <name>OldCnvMapFwrite</name>
 <location>src.lib/tk/oldcnvmap</location>
 <header>superdarn/oldcnvmapwrite.h</header>
-<syntax>int OldCnvMapFwrite(FILE *fp,<sn href="&root;/superdarn/src.lib/tk/shf/structCnvMapData.html">struct CnvMapData</sn> *map,<sn href="&root;/superdarn/src.lib/grid/structGridData.html">struct GridData</sn>  *grd);</syntax>
+<syntax>int OldCnvMapFwrite(FILE *fp,<sn href="&root;/superdarn/src.lib/tk/shf/structCnvMapData.html">struct CnvMapData</sn> *map,<sn href="&root;/superdarn/src.lib/tk/grid/structGridData.html">struct GridData</sn>  *grd);</syntax>
 <description><p>The <fn href="OldCnvMapFwrite.html">OldCnvMapFwrite</fn> function writes a old formatted cnvmapded data to an open stream.</p>
 <p>The data is written to the open stream pointed to by the argument <ar>fp</ar>.</p>
 <p>The parameters and co-efficients used to generate the convection map are taken from the structure pointed to by the argument <ar>map</ar> and the gridded data used to generate the map is taken from the structure pointed to by the argument <ar>grd</ar>.</p>
