@@ -8,7 +8,7 @@
 <name>CnvMapFread</name>
 <location>src.lib/tk/cnvmap</location>
 <header>superdarn/cnvmapread.h</header>
-<syntax>int CnvMapFread(FILE *fp,<sn href="&root;/src.lib/tk/shf/structCnvMapData.html">struct CnvMapData</sn> *map,<sn href="&root;/src.lib/superdarn/tk/grid/structGridData.html">struct GridData</sn> *grd);</syntax>
+<syntax>int CnvMapFread(FILE *fp,<sn href="&root;/superdarn/src.lib/tk/shf/structCnvMapData.html">struct CnvMapData</sn> *map,<sn href="&root;/superdarn/src.lib/tk/grid/structGridData.html">struct GridData</sn> *grd);</syntax>
 <description><p>The <fn href="CnvMapFread.html">CnvMapFread</fn> function reads a convection map from an open stream.</p>
 <p>The convection map is read from the open stream pointed to by the argument <ar>fp</ar>. The parameters and co-efficients used to generate the convection map are stored in the structure pointed to by the argument <ar>map</ar>. The gridded data used to generate the map is stored in the structure pointed to by the argument <ar>grd</ar>.</p>
 </description>
@@ -36,7 +36,7 @@
 <name>CnvMapFwrite</name>
 <location>src.lib/tk/cnvmap</location>
 <header>superdarn/cnvmapwrite.h</header>
-<syntax>int CnvMapFwrite(FILE *fp,<sn href="&root;/src.lib/tk/shf/structCnvMapData.html">struct CnvMapData</sn> *map,<sn href="&root;/src.lib/superdarn/tk/grid/structGridData.html">struct GridData</sn> *grd);</syntax>
+<syntax>int CnvMapFwrite(FILE *fp,<sn href="&root;/superdarn/src.lib/tk/shf/structCnvMapData.html">struct CnvMapData</sn> *map,<sn href="&root;/superdarn/src.lib/tk/grid/structGridData.html">struct GridData</sn> *grd);</syntax>
 <description><p>The <fn href="CnvMapFwrite.html">CnvMapFwrite</fn> function writes a convection map to an open stream.</p>
 <p>The data is written to the open stream pointed to by the argument <ar>fp</ar>.</p>
 <p>The parameters and co-efficients used to generate the convection map are taken from the structure pointed to by the argument <ar>map</ar> and the gridded data used to generate the map is taken from the structure pointed to by the argument <ar>grd</ar>.</p>
@@ -87,7 +87,7 @@
 <name>CnvMapRead</name>
 <location>src.lib/tk/cnvmap</location>
 <header>superdarn/cnvmapread.h</header>
-<syntax>int CnvMapRead(int fid,<sn href="&root;/src.lib/tk/shf/structCnvMapData.html">struct CnvMapData</sn> *map,<sn href="&root;/src.lib/superdarn/tk/grid/structGridData.html">struct GridData</sn>  *grd);</syntax>
+<syntax>int CnvMapRead(int fid,<sn href="&root;/superdarn/src.lib/tk/shf/structCnvMapData.html">struct CnvMapData</sn> *map,<sn href="&root;/superdarn/src.lib/tk/grid/structGridData.html">struct GridData</sn>  *grd);</syntax>
 <description><p>The <fn href="CnvMapRead.html">CnvMapRead</fn> function reads a convection map from an open file.</p>
 <p>The convection map is read from the file with the descriptor given by the argument <ar>fid</ar>. The parameters and co-efficients used to generate the convection map are stored in the structure pointed to by the argument <ar>map</ar>. The gridded data used to generate the map is stored in the structure pointed to by the argument <ar>grd</ar>.</p>
 </description>
@@ -115,7 +115,7 @@
 <name>CnvMapWrite</name>
 <location>src.lib/tk/cnvmap</location>
 <header>superdarn/cnvmapwrite.h</header>
-<syntax>int CnvMapWrite(int fid,<sn href="&root;/src.lib/tk/shf/structCnvMapData.html">struct CnvMapData</sn> *map,<sn href="&root;/src.lib/superdarn/tk/grid/structGridData.html">struct GridData</sn>  *grd);</syntax>
+<syntax>int CnvMapWrite(int fid,<sn href="&root;/superdarn/src.lib/tk/shf/structCnvMapData.html">struct CnvMapData</sn> *map,<sn href="&root;/superdarn/src.lib/tk/grid/structGridData.html">struct GridData</sn>  *grd);</syntax>
 <description><p>The <fn href="CnvMapWrite.html">CnvMapWrite</fn> function writes a convection map to an open file.</p>
 <p>The data is written to the file with the descriptor given by the argument <ar>fid</ar>.If <ar>fid</ar> is set to (-1) then the function will just calculate the number of bytes required to store the data.</p>
 <p>The parameters and co-efficients used to generate the convection map are taken from the structure pointed to by the argument <ar>map</ar> and the gridded data used to generate the map is taken from the structure pointed to by the argument <ar>grd</ar>.</p>

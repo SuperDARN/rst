@@ -8,7 +8,7 @@
 <name>OldGridFread</name>
 <location>src.lib/tk/oldgrid</location>
 <header>superdarn/oldgridread.h</header>
-<syntax>int OldGridFread(FILE *fp,<sn href="&root;/src.lib/tk/grid/structGridData.html">struct GridData</sn> *ptr);</syntax>
+<syntax>int OldGridFread(FILE *fp,<sn href="&root;/superdarn/src.lib/tk/grid/structGridData.html">struct GridData</sn> *ptr);</syntax>
 <description><p>The <fn href="OldGridFread.html">OldGridFread</fn> function reads old formatted gridded data from an open stream.</p>
 <p>The gridded data is read from the open stream pointed to by the argument <ar>fp</ar>. The gridded data is stored in the structure pointed to by the argument <ar>grd</ar>.</p>
 </description>
@@ -29,13 +29,13 @@
 <returns>Returns zero on success. On error, (-1) is returned.</returns>
 <errors>On error, (-1) is returned.</errors>
 <example type="source">OldGridFseek.c</example>
-
 </function>
+
 <function>
 <name>OldGridFwrite</name>
 <location>src.lib/tk/oldgrid</location>
 <header>superdarn/oldgridwrite.h</header>
-<syntax>int OldGridFwrite(FILE *fp,<sn href="&root;/src.lib/tk/grid/structGridData.html">struct GridData</sn> *ptr);</syntax>
+<syntax>int OldGridFwrite(FILE *fp,<sn href="&root;/superdarn/src.lib/tk/grid/structGridData.html">struct GridData</sn> *ptr);</syntax>
 <description><p>The <fn href="OldGridFwrite.html">OldGridFwrite</fn> function writes a old formatted gridded data to an open stream.</p>
 <p>The data is written to the open stream pointed to by the argument <ar>fp</ar>.</p>
 <p>The gridded data is taken from the structure pointed to by the argument <ar>grd</ar>.</p>
