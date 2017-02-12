@@ -8,7 +8,7 @@
 <name>GridTableMap</name>
 <location>src.lib/tk/gtable</location>
 <header>superdarn/gtable.h</header>
-<syntax>void GridTableMap(<sn href="structGridTable.html">struct GridTable</sn> *ptr,<sn href="&root;/src.lib/tk/scan/structRadarScan.html">struct RadarScan</sn> *scan,<sn href="&root;/src.lib/superdarn/atk/radar/structRadarSite.html">struct RadarSite</sn> *pos,int tlen,int iflg,double alt,int chisham);</syntax>
+<syntax>void GridTableMap(<sn href="structGridTable.html">struct GridTable</sn> *ptr,<sn href="&root;/superdarn/src.lib/tk/scan/structRadarScan.html">struct RadarScan</sn> *scan,<sn href="&root;/superdarn/src.lib/tk/radar/structRadarSite.html">struct RadarSite</sn> *pos,int tlen,int iflg,double alt,int chisham);</syntax>
 <description><p>The <fn href="GridTableMap.html">GridTableMap</fn> function maps radar scan data to an equi-area grid in geomagnetic coordinates.</p>
 <p>The gridded data stored in the structure pointed to by the argument <ar>ptr</ar>.</p>
 <p>The structure containing the radar scan data to map is pointed to by the argument <ar>scan</ar>. The hardware information for the radar is pointed to by the argument <ar>pos</ar>.</p>
@@ -25,7 +25,7 @@
 <name>GridTableTest</name>
 <location>src.lib/tk/gtable</location>
 <header>superdarn/gtable.h</header>
-<syntax>int GridTableTest(<sn href="structGridTable.html">struct GridTable</sn> *ptr,<sn href="&root;/src.lib/tk/scan/structRadarScan.html">struct RadarScan</sn> *scan);</syntax>
+<syntax>int GridTableTest(<sn href="structGridTable.html">struct GridTable</sn> *ptr,<sn href="&root;/superdarn/src.lib/tk/scan/structRadarScan.html">struct RadarScan</sn> *scan);</syntax>
 <description><p>The <fn href="GridTableTest.html">GridTableTest</fn> function tests whether gridded data should be written to a file. The argument <ar>ptr</ar> is a pointer to the structure containing the gridded data.</p>
 <p>The argument <ar>scan</ar> points to the next setof radar scan data to be fitted to the grid.</p>
 </description>

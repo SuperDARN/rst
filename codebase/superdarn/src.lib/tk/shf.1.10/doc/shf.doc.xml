@@ -8,7 +8,7 @@
 <name>CnvMapCrdShft</name>
 <location>src.lib/tk/shf</location>
 <header>superdarn/crdshft.h</header>
-<syntax>void CnvMapCrdShft(double *lat,double *lon,double *vazm,double lat_shft, double lon_shft);</syntax>
+<syntax>void CnvMapCrdShft(double *lat,double *lon,double *vazm,double lat_shft,double lon_shft);</syntax>
 </function>
 
 <function>
@@ -22,7 +22,7 @@
 <name>CnvMapEvalEfield</name>
 <location>src.lib/tk/shf</location>
 <header>superdarn/evalefield.h</header>
-<syntax>void CnvMapEvalEfield(int Lmax,double *coef,double *plm, struct CnvGrid *vptr, double latmin,struct CnvMapData *ptr);</syntax>
+<syntax>void CnvMapEvalEfield(int Lmax,double *coef,double *plm,<sn href="structCnvGrid.html">struct CnvGrid</sn> *vptr,double latmin,<sn href="structCnvMapData.html">struct CnvMapData</sn> *ptr);</syntax>
 </function>
 
 <function>
@@ -57,21 +57,21 @@
 <name>CnvMapEvalVelocity</name>
 <location>src.lib/tk/shf</location>
 <header>superdarn/evalvelocity.h</header>
-<syntax>void CnvMapEvalVelocity(int Lmax,double *coef,double *plm,struct CnvGrid *vptr, double latmin,struct CnvMapData *ptr);</syntax>
+<syntax>void CnvMapEvalVelocity(int Lmax,double *coef,double *plm,<sn href="structCnvGrid.html">struct CnvGrid</sn> *vptr,double latmin,<sn href="structCnvMapData.html">struct CnvMapData</sn> *ptr);</syntax>
 </function>
 
 <function>
 <name>CnvMapFitMap</name>
 <location>src.lib/tk/shf</location>
 <header>superdarn/fitmap.h</header>
-<syntax>int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd);</syntax>
+<syntax>int CnvMapFitMap(<sn href="structCnvMapData.html">struct CnvMapData</sn> *map,<sn href="&root;/superdarn/src.lib/tk/grid/structGridData.html">struct GridData</sn> *grd);</syntax>
 </function>
 
 <function>
 <name>CnvMapFitVector</name>
 <location>src.lib/tk/shf</location>
 <header>src.lib/tk/shf/src/fitvector.h</header>
-<syntax>double CnvMapFitVector(int num,struct CnvMapSHFVec *data, double *coef,double *vel, int order,double latmin);</syntax>
+<syntax>double CnvMapFitVector(int num,<sn href="structCnvMapSHFVec.html">struct CnvMapSHFVec</sn> *data, double *coef,double *vel, int order,double latmin);</syntax>
 </function>
 
 <function>
@@ -85,8 +85,83 @@
 <name>CnvMapSolve</name>
 <location>src.lib/tk/shf</location>
 <header>superdarn/cnvmapsolve.h</header>
-<syntax>int CnvMapSolve(struct CnvMapData *ptr,struct CnvGrid *gptr);</syntax>
+<syntax>int CnvMapSolve(<sn href="structCnvMapData.html">struct CnvMapData</sn> *ptr,<sn href="structCnvGrid.html">struct CnvGrid</sn> *gptr);</syntax>
 </function>
+
+
+<structure>
+  <name>CnvGrid</name>
+  <location>src.lib/tk/shf</location>
+  <header>superdarn/cnvgrid.h</header>
+  <struct>
+
+    <member>
+      <proto>int type;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>int num;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>int nlat;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>int nlon;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>int poly;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>int *vertex;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double *lat;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double *lon;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double *mag;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double *azm;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double *ex;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double *ey;</proto>
+      <description>?</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structCnvGrid.html">struct CnvGrid</sn> structure stores ?.</p>
+  </description>
+</structure>
+
 
 <structure>
   <name>CnvMapData</name>
@@ -292,6 +367,50 @@
 
   <description>
   <p>The <sn href="structCnvMapData.html">struct CnvMapData</sn> structure stores ?.</p>
+  </description>
+</structure>
+
+
+<structure>
+  <name>CnvGrid</name>
+  <location>src.lib/tk/shf</location>
+  <header>src.lib/tk/shf/src/shfvector.h</header>
+  <struct>
+
+    <member>
+      <proto>double lat;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double lon;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double vlos;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double verr;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double cos;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double sin;</proto>
+      <description>?</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structCnvMapSHFVec.html">struct CnvMapSHFVec</sn> structure stores ?.</p>
   </description>
 </structure>
 
