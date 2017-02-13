@@ -59,7 +59,7 @@ build=${BUILD}
 pkgdir=${RPKG}/${prj}/${pkg}
 if test ! -d ${pkgdir}
 then
-  pkgdir=`find ${RPKG}/${prj}/ -name "${pkg}.*" | sort | tail -1`
+  pkgdir=$(find ${RPKG}/${prj} -type d -name "${pkg}*" | sort | tail -1)
 fi
 
 if test ! -d "${pkgdir}"
