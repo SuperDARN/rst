@@ -6,21 +6,21 @@
 
 /*
  LICENSE AND DISCLAIMER
- 
+
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
+
  This file is part of the Radar Software Toolkit (RST).
- 
+
  RST is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
- 
+
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Lesser General Public License for more details.
- 
+
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -64,7 +64,7 @@ void norm_vec(double *x, double *y, double *z) {
  * Converts from global geocentric spherical coordinates (r,theta,phi) to
  * global Cartesian coordinates (x,y,z), with input values in degrees.
  **/
-void sphtocar(double r, double theta, double phi, 
+void sphtocar(double r, double theta, double phi,
               double *x, double *y, double *z) {
 
     *x=r*sind(90.0-theta)*cosd(phi);
@@ -146,7 +146,7 @@ void fldpnt_azm(double mlat, double mlon, double nlat, double nlon, double *az) 
     if (Bangl<0) Aangl=-Aangl;
     *az=Aangl;
 
-} 
+}
 
 
 
@@ -179,7 +179,7 @@ void glbthor(int iopt, double lat, double lon,
 
     } else {
         /* Convert the input vector from local south/east/vertical to Cartesian XYZ */
-        
+
         /* Calculate the colatitude */
         lax=90-lat;
 
@@ -233,7 +233,7 @@ int RPosRngBmAzmElv(int bm, int rn, int year,
      * surface of the oblate spheroid (ie not constant with latitude) plus
      * virtual height (frho) */
     RPosGeo(1,bm,rn,hdw,frang,rsep,rx,
-             height,&frho,&flat,&flon,chisham);
+            height,&frho,&flat,&flon,chisham);
 
     /* Convert range/beam position from geocentric spherical coordinates
      * (frho,flat,flon) to global Cartesian coordinates (fx,fy,fz) */
@@ -327,11 +327,11 @@ int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
      * surface of the oblate spheroid (ie not constant with latitude) plus
      * virtual height (frho) */
     RPosGeo(1,bm,rn,hdw,frang,rsep,rx,
-             height,&frho,&flat,&flon,chisham);
+            height,&frho,&flat,&flon,chisham);
 
     /* Convert range/beam position from geocentric spherical coordinates
      * (frho,flat,flon) to global Cartesian coordinates (fx,fy,fz) */
-    sphtocar(frho,flat,flon,&fx,&fy,&fz);       
+    sphtocar(frho,flat,flon,&fx,&fy,&fz);
 
     /* Convert radar site geodetic latitude/longitude (gdlat,gdlon) to
      * geocentric spherical coordinates (glat,glon) and distance from the

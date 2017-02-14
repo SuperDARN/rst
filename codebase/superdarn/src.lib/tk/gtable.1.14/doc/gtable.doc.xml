@@ -44,7 +44,7 @@
       <proto>int bm;</proto>
       <description>Beam number.</description>
     </member>
-    
+
     <member>
       <proto>int frang;</proto>
       <description>Distance to first range (kilometers).</description>
@@ -81,7 +81,7 @@
     </member>
 
   </struct>
-  
+
   <description>
   <p>The <sn href="structGridBm.html">struct GridBm</sn> structure stores information about a single radar beam in a set of gridded data.</p>
   </description>
@@ -98,7 +98,7 @@
       <proto>int max;</proto>
       <description>Number of range points that map to this cell.</description>
     </member>
-    
+
     <member>
       <proto>int cnt;</proto>
       <description>Number of data points that map to this cell.</description>
@@ -178,7 +178,7 @@
     </member>
 
   </struct>
-  
+
   <description>
   <p>The <sn href="structGridPnt.html">struct GridPnt</sn> structure stores information about a single data point in a set of gridded data.</p>
   </description>
@@ -205,7 +205,7 @@
       <proto>int chn;</proto>
       <description>Channel number for a stereo radar.</description>
     </member>
-    
+
     <member>
       <proto>int status;</proto>
       <description>Indicates whether beginning a new grid (0) or populating an existing one (1).</description>
@@ -230,12 +230,12 @@
       <proto>int npnt;</proto>
       <description>Number of grid points produces by the analysis.</description>
     </member>
-    
+
     <member>
       <proto>double freq;</proto>
       <description>Frequency that the radar was using for this period.</description>
     </member>
-    
+
     <member>
       <struct>
         <member>
@@ -250,12 +250,12 @@
       <proto>noise;</proto>
       <description>Noise statistics.</description>
     </member>
-    
+
     <member>
       <proto>int gsct;</proto>
       <description>Ground scatter flag.</description>
     </member>
-    
+
     <member>
       <proto>double min[4];</proto>
       <description>Filter lower thresholds (velocity, power, spectral width, velocity error).</description>
@@ -265,7 +265,7 @@
       <proto>double max[4];</proto>
       <description>Filter upper thresholds (velocity, power, spectral width, velocity error).</description>
     </member>
-    
+
     <member>
       <proto>int bnum;</proto>
       <description>Number of beams included in the analysis.</description>
