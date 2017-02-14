@@ -34,6 +34,8 @@
 </option>
 <option><on>-cn <ar>channel</ar></on><od>process data from channel <ar>channel</ar> for stereo mode data.</od>
 </option>
+<option><on>-cn_fix <ar>channel</ar></on><od>manually set <ar>channel</ar> information written to output file.</od>
+</option>
 <option><on>-ebm <ar>ebeams</ar></on><od>exclude the beams listed in <ar>ebeams</ar>, which is a comma separated list of beam numbers.</od>
 </option>
 <option><on>-minrng <ar>minrange</ar></on><od>exclude data from range gates lower than <ar>minrange</ar>.</od>
