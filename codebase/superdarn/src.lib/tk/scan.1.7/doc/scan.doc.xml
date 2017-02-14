@@ -165,7 +165,7 @@
       <proto>double v;</proto>
       <description>Velocity from ACF.</description>
     </member>
-   
+
     <member>
       <proto>double v_e;</proto>
       <description>Velocity error from ACF.</description>

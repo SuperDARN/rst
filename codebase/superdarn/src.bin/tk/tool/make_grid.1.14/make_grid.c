@@ -1,5 +1,6 @@
 /* make_grid.c
-   =========== */
+   ===========
+*/
 
 /*
  LICENSE AND DISCLAIMER
@@ -453,7 +454,7 @@ int main(int argc,char *argv[]) {
     OptionAdd(&opt,"both",'x',&bthflg); /* Do not exclude data based on scatter flag */
 
     OptionAdd(&opt,"inertial",'x',&iflg); /* Create grid file in inertial reference frame */
-    
+
     OptionAdd(&opt,"chisham",'x',&chisham); /* Map data using Chisham virtual height model */
 
     OptionAdd(&opt,"fit",'x',&fitflg);   /* Input file is in the fit format */
@@ -552,13 +553,13 @@ int main(int argc,char *argv[]) {
         /* Open the fit, fitacf, or cfit file and read the first scan */
         if (fitflg) {
             /* Input file is in fit or fitacf format */
-            
+
             if (old) {
                 /* Input file is in fit format */
-                
+
                 /* Open the fit file for reading */
                 oldfitfp=OldFitOpen(dname,iname);
-                
+
                 /* Verify that the fit file was properly opened */
                 if (oldfitfp==NULL) {
                     fprintf(stderr,"File not found.\n");

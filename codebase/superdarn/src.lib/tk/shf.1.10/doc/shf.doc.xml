@@ -372,7 +372,7 @@
 
 
 <structure>
-  <name>CnvGrid</name>
+  <name>CnvMapSHFVec</name>
   <location>src.lib/tk/shf</location>
   <header>src.lib/tk/shf/src/shfvector.h</header>
   <struct>

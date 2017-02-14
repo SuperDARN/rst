@@ -6,21 +6,21 @@
 
 /*
  LICENSE AND DISCLAIMER
- 
+
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
+
  This file is part of the Radar Software Toolkit (RST).
- 
+
  RST is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
- 
+
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Lesser General Public License for more details.
- 
+
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -270,45 +270,44 @@ void fldpnth(double gdlat, double gdlon, double psi, double bore,
 
 
 void fldpnth_gs(double gdlat,double gdlon,double psi,double bore,
-			 double fh,double r,double *frho,double *flat,
-	                 double *flon) {
+                double fh,double r,double *frho,double *flat,
+                double *flon) {
 
-  double rrad,rlat,rlon,del;
-  double tan_azi,azi,rel,xel,fhx,xal,rrho,ral,xh;
-  double dum,dum1,dum2,dum3;
-  double frad;  
- 
-  if (fh<=150) xh=fh;
-  else {
-    if (r<=300) xh=115;
-    else if ((r>300) && (r<500)) xh=(r-300)/200*(fh-115)+115;
-    else xh=fh;
-  }
+    double rrad,rlat,rlon,del;
+    double tan_azi,azi,rel,xel,fhx,xal,rrho,ral,xh;
+    double dum,dum1,dum2,dum3;
+    double frad;  
 
-  if (r<150) xh=(r/150.0)*115.0;
-  geodtgc(1,&gdlat,&gdlon,&rrad,&rlat,&rlon,&del);
-  rrho=rrad;
-  frad=rrad;
- 
+    if (fh<=150) xh=fh;
+    else {
+        if (r<=300) xh=115;
+        else if ((r>300) && (r<500)) xh=(r-300)/200*(fh-115)+115;
+        else xh=fh;
+    }
 
-  do {
-    *frho=frad+xh;
-  
-    rel=asind( ((*frho**frho) - (rrad*rrad) - (r*r)) / (2*rrad*r));
-    xel=rel;
-    if (((cosd(psi)*cosd(psi))-(sind(xel)*sind(xel)))<0) tan_azi=1e32;
-      else tan_azi=sqrt( (sind(psi)*sind(psi))/
-                ((cosd(psi)*cosd(psi))-(sind(xel)*sind(xel))));
-    if (psi>0) azi=atand(tan_azi)*1.0;
-      else azi=atand(tan_azi)*-1.0;
-    xal=azi+bore;
-    geocnvrt(gdlat,gdlon,xal,xel,&ral,&dum);
+    if (r<150) xh=(r/150.0)*115.0;
+    geodtgc(1,&gdlat,&gdlon,&rrad,&rlat,&rlon,&del);
+    rrho=rrad;
+    frad=rrad;
 
-    fldpnt(rrho,rlat,rlon,ral,rel,r,frho,flat,flon);
-    geodtgc(-1,&dum1,&dum2,&frad,flat,flon,&dum3);
-    fhx=*frho-frad; 
-  } while(fabs(fhx-xh) > 0.5);
-} 
+    do {
+        *frho=frad+xh;
+
+        rel=asind( ((*frho**frho) - (rrad*rrad) - (r*r)) / (2*rrad*r));
+        xel=rel;
+        if (((cosd(psi)*cosd(psi))-(sind(xel)*sind(xel)))<0) tan_azi=1e32;
+        else tan_azi=sqrt( (sind(psi)*sind(psi))/
+                          ((cosd(psi)*cosd(psi))-(sind(xel)*sind(xel))));
+        if (psi>0) azi=atand(tan_azi)*1.0;
+        else azi=atand(tan_azi)*-1.0;
+        xal=azi+bore;
+        geocnvrt(gdlat,gdlon,xal,xel,&ral,&dum);
+
+        fldpnt(rrho,rlat,rlon,ral,rel,r,frho,flat,flon);
+        geodtgc(-1,&dum1,&dum2,&frad,flat,flon,&dum3);
+        fhx=*frho-frad; 
+    } while(fabs(fhx-xh) > 0.5);
+}
 
 
 
@@ -352,7 +351,7 @@ void RPosGeo(int center, int bcrd, int rcrd,
 
     /* Calculate the slant range to the range gate [km] */
     d=slant_range(frang,rsep,rx,range_edge,rcrd+1);
-  
+
     /* If the input height is less than 90 then it is actually an input
      * elevation angle [deg], so we calculat the field point height */
     if (height < 90) height=-re+sqrt((re*re)+2*d*re*sind(height)+(d*d));
@@ -366,189 +365,189 @@ void RPosGeo(int center, int bcrd, int rcrd,
 
 
 void RPosMag(int center,int bcrd,int rcrd,
-                struct RadarSite *pos,
-                int frang,int rsep,int rxrise,double height,
-                double *rho,double *lat,double *lng) {
+             struct RadarSite *pos,
+             int frang,int rsep,int rxrise,double height,
+             double *rho,double *lat,double *lng) {
 
-  double rx;
-  double radius;
-  double psi,d;
-  double re=6356.779;
+    double rx;
+    double radius;
+    double psi,d;
+    double re=6356.779;
 
-  double bm_edge=0;
-  double range_edge=0;
-  double offset=0;
- 
-  int chisham=0;
+    double bm_edge=0;
+    double range_edge=0;
+    double offset=0;
 
-  if (center==0) {
-    bm_edge=-pos->bmsep*0.5;
-    range_edge=-0.5*rsep*20/3;
-  }
-  
-  if (rxrise==0) rx=pos->recrise;
-  else rx=rxrise;
+    int chisham=0;
 
-  offset=pos->maxbeam/2.0-0.5;
-  psi=pos->bmsep*(bcrd-offset)+bm_edge;
-  d=slant_range(frang,rsep,rx,range_edge,rcrd+1);
-  if (height < 90) height=-re+sqrt((re*re)+2*d*re*sind(height)+(d*d));
- 
-  fldpnth(pos->geolat,pos->geolon,psi,pos->boresite,
-		  height,d,rho,lat,lng,chisham); 
- 
-  AACGMConvert(*lat,*lng,(double) height,lat,lng,&radius,0);
- 
+    if (center==0) {
+        bm_edge=-pos->bmsep*0.5;
+        range_edge=-0.5*rsep*20/3;
+    }
+
+    if (rxrise==0) rx=pos->recrise;
+    else rx=rxrise;
+
+    offset=pos->maxbeam/2.0-0.5;
+    psi=pos->bmsep*(bcrd-offset)+bm_edge;
+    d=slant_range(frang,rsep,rx,range_edge,rcrd+1);
+    if (height < 90) height=-re+sqrt((re*re)+2*d*re*sind(height)+(d*d));
+
+    fldpnth(pos->geolat,pos->geolon,psi,pos->boresite,
+            height,d,rho,lat,lng,chisham);
+
+    AACGMConvert(*lat,*lng,(double) height,lat,lng,&radius,0);
+
 }
 
 
 
 void RPosCubic(int center,int bcrd,int rcrd,
-		   struct RadarSite *pos,
-		   int frang,int rsep,int rxrise,double height,
-           double *x,double *y,double *z) {
-   
+               struct RadarSite *pos,
+               int frang,int rsep,int rxrise,double height,
+               double *x,double *y,double *z) {
+
     /* returns cartesian cubic co-ordinates */
-  double rx;
-  double psi,d;
-  double rho,lat,lng;
-  double re=6356.779;
-  double offset=0;
-  double bm_edge=0;
-  double range_edge=0;
+    double rx;
+    double psi,d;
+    double rho,lat,lng;
+    double re=6356.779;
+    double offset=0;
+    double bm_edge=0;
+    double range_edge=0;
 
-  int chisham=0;
+    int chisham=0;
 
-  if (center==0) {
-    bm_edge=-pos->bmsep*0.5;
-    range_edge=-0.5*rsep*20/3;
-  }
+    if (center==0) {
+        bm_edge=-pos->bmsep*0.5;
+        range_edge=-0.5*rsep*20/3;
+    }
 
-  if (rxrise==0) rx=pos->recrise;
-  else rx=rxrise;
+    if (rxrise==0) rx=pos->recrise;
+    else rx=rxrise;
 
-  offset=pos->maxbeam/2.0-0.5;
-  psi=pos->bmsep*(bcrd-offset)+bm_edge;
-  
-  d=slant_range(frang,rsep,rx,range_edge,rcrd+1);
-  if (height < 90) height=-re+sqrt((re*re)+2*d*re*sind(height)+(d*d));
-  fldpnth(pos->geolat,pos->geolon,psi,pos->boresite,
-	      height,d,&rho,&lat,&lng,chisham);  
+    offset=pos->maxbeam/2.0-0.5;
+    psi=pos->bmsep*(bcrd-offset)+bm_edge;
 
-  /* convert to x,y,z (normalized to the unit sphere) */
+    d=slant_range(frang,rsep,rx,range_edge,rcrd+1);
+    if (height < 90) height=-re+sqrt((re*re)+2*d*re*sind(height)+(d*d));
+    fldpnth(pos->geolat,pos->geolon,psi,pos->boresite,
+            height,d,&rho,&lat,&lng,chisham);
 
-  lng=90-lng;
-  *x=rho*cos(lng*PI/180.0)*cos(lat*PI/180.0)/re;
-  *y=rho*sin(lat*PI/180.0)/re;
-  *z=rho*sin(lng*PI/180.0)*cos(lat*PI/180.0)/re;
+    /* convert to x,y,z (normalized to the unit sphere) */
 
-} 
+    lng=90-lng;
+    *x=rho*cos(lng*PI/180.0)*cos(lat*PI/180.0)/re;
+    *y=rho*sin(lat*PI/180.0)/re;
+    *z=rho*sin(lng*PI/180.0)*cos(lat*PI/180.0)/re;
+
+}
 
 
 
 void RPosGeoGS(int center,int bcrd,int rcrd,
-                struct RadarSite *pos,
-                int frang,int rsep,int rxrise,double height,
-                double *rho,double *lat,double *lng) {
- 
-  double rx;
-  double psi,d;
-  double re=6356.779;
-  double offset=0;
-  double bm_edge=0;
-  double range_edge=0;
-  
-  if (center==0) {
-    bm_edge=-pos->bmsep*0.5;
-    range_edge=-0.5*rsep*20/3;
-  }
-  
-  if (rxrise==0) rx=pos->recrise;
-  else rx=rxrise;
+               struct RadarSite *pos,
+               int frang,int rsep,int rxrise,double height,
+               double *rho,double *lat,double *lng) {
 
-  offset=pos->maxbeam/2.0-0.5;
-  psi=pos->bmsep*(bcrd-offset)+bm_edge;
- 
-  d=slant_range(frang,rsep,rx,range_edge,rcrd+1)/2;
-  if (height < 90) height=-re+sqrt((re*re)+2*d*re*sind(height)+(d*d));
- 
-  fldpnth_gs(pos->geolat,pos->geolon,psi,pos->boresite,
-		  height,d,rho,lat,lng); 
+    double rx;
+    double psi,d;
+    double re=6356.779;
+    double offset=0;
+    double bm_edge=0;
+    double range_edge=0;
+
+    if (center==0) {
+        bm_edge=-pos->bmsep*0.5;
+        range_edge=-0.5*rsep*20/3;
+    }
+
+    if (rxrise==0) rx=pos->recrise;
+    else rx=rxrise;
+
+    offset=pos->maxbeam/2.0-0.5;
+    psi=pos->bmsep*(bcrd-offset)+bm_edge;
+
+    d=slant_range(frang,rsep,rx,range_edge,rcrd+1)/2;
+    if (height < 90) height=-re+sqrt((re*re)+2*d*re*sind(height)+(d*d));
+
+    fldpnth_gs(pos->geolat,pos->geolon,psi,pos->boresite,
+               height,d,rho,lat,lng);
 }
 
 
 
 void RPosMagGS(int center,int bcrd,int rcrd,
-                struct RadarSite *pos,
-                int frang,int rsep,int rxrise,double height,
-                double *rho,double *lat,double *lng) {
-  double rx;
-  double radius;
-  double psi,d;
-  double re=6356.779;
-  double offset=0;
-  double bm_edge=0;
-  double range_edge=0;
-  
-  if (center==0) {
-    bm_edge=-pos->bmsep*0.5;
-    range_edge=-0.5*rsep*20/3;
-  }
-  
-  if (rxrise==0) rx=pos->recrise;
-  else rx=rxrise;
+               struct RadarSite *pos,
+               int frang,int rsep,int rxrise,double height,
+               double *rho,double *lat,double *lng) {
 
-  offset=pos->maxbeam/2.0-0.5;
-  psi=pos->bmsep*(bcrd-offset)+bm_edge;
+    double rx;
+    double radius;
+    double psi,d;
+    double re=6356.779;
+    double offset=0;
+    double bm_edge=0;
+    double range_edge=0;
 
-  
-  d=slant_range(frang,rsep,rx,range_edge,rcrd+1)/2;
-  if (height < 90) height=-re+sqrt((re*re)+2*d*re*sind(height)+(d*d));
- 
-  fldpnth_gs(pos->geolat,pos->geolon,psi,pos->boresite,
-		  height,d,rho,lat,lng); 
- 
-  AACGMConvert(*lat,*lng,(double) height,lat,lng,&radius,0);
- 
+    if (center==0) {
+        bm_edge=-pos->bmsep*0.5;
+        range_edge=-0.5*rsep*20/3;
+    }
+
+    if (rxrise==0) rx=pos->recrise;
+    else rx=rxrise;
+
+    offset=pos->maxbeam/2.0-0.5;
+    psi=pos->bmsep*(bcrd-offset)+bm_edge;
+
+    d=slant_range(frang,rsep,rx,range_edge,rcrd+1)/2;
+    if (height < 90) height=-re+sqrt((re*re)+2*d*re*sind(height)+(d*d));
+
+    fldpnth_gs(pos->geolat,pos->geolon,psi,pos->boresite,
+               height,d,rho,lat,lng);
+
+    AACGMConvert(*lat,*lng,(double) height,lat,lng,&radius,0);
+
 }
 
 
 
 void RPosCubicGS(int center,int bcrd,int rcrd,
-		   struct RadarSite *pos,
-		   int frang,int rsep,int rxrise,double height,
-           double *x,double *y,double *z) {
-   
+                 struct RadarSite *pos,
+                 int frang,int rsep,int rxrise,double height,
+                 double *x,double *y,double *z) {
+
     /* returns cartesian cubic co-ordinates */
-  double rx;
-  double psi,d; 
-  double rho,lat,lng;
-  double re=6356.779;
-  double offset=0;
-  double bm_edge=0;
-  double range_edge=0;
+    double rx;
+    double psi,d; 
+    double rho,lat,lng;
+    double re=6356.779;
+    double offset=0;
+    double bm_edge=0;
+    double range_edge=0;
 
-  if (center==0) {
-    bm_edge=-pos->bmsep*0.5;
-    range_edge=-0.5*rsep*20/3;
-  }
+    if (center==0) {
+        bm_edge=-pos->bmsep*0.5;
+        range_edge=-0.5*rsep*20/3;
+    }
 
-  if (rxrise==0) rx=pos->recrise;
-  else rx=rxrise;
+    if (rxrise==0) rx=pos->recrise;
+    else rx=rxrise;
 
-  offset=pos->maxbeam/2.0-0.5;
-  psi=pos->bmsep*(bcrd-offset)+bm_edge;
+    offset=pos->maxbeam/2.0-0.5;
+    psi=pos->bmsep*(bcrd-offset)+bm_edge;
 
-  d=slant_range(frang,rsep,rx,range_edge,rcrd+1)/2;
-  if (height < 90) height=-re+sqrt((re*re)+2*d*re*sind(height)+(d*d));
-  fldpnth_gs(pos->geolat,pos->geolon,psi,pos->boresite,
-	      height,d,&rho,&lat,&lng);  
+    d=slant_range(frang,rsep,rx,range_edge,rcrd+1)/2;
+    if (height < 90) height=-re+sqrt((re*re)+2*d*re*sind(height)+(d*d));
+    fldpnth_gs(pos->geolat,pos->geolon,psi,pos->boresite,
+               height,d,&rho,&lat,&lng);
 
-  /* convert to x,y,z (normalized to the unit sphere) */
+    /* convert to x,y,z (normalized to the unit sphere) */
 
-  lng=90-lng;
-  *x=rho*cos(lng*PI/180.0)*cos(lat*PI/180.0)/re;
-  *y=rho*sin(lat*PI/180.0)/re;
-  *z=rho*sin(lng*PI/180.0)*cos(lat*PI/180.0)/re;
+    lng=90-lng;
+    *x=rho*cos(lng*PI/180.0)*cos(lat*PI/180.0)/re;
+    *y=rho*sin(lat*PI/180.0)/re;
+    *z=rho*sin(lng*PI/180.0)*cos(lat*PI/180.0)/re;
 
-} 
+}
