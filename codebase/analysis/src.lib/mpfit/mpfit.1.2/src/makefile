@@ -1,4 +1,4 @@
-# Makefile for cmpfit library
+# Makefile for mpfit library
 # ===========================
 include $(MAKECFG).$(SYSTEM)
 
@@ -9,7 +9,7 @@ OBJS = mpfit.o
 
 INC=$(IPATH)/analysis
 DSTPATH=$(LIBPATH)
-OUTPUT = cmpfit
+OUTPUT = mpfit
 LINK="1"
 
 include $(MAKELIB).$(SYSTEM)
