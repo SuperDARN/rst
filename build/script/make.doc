@@ -91,9 +91,6 @@ makeaction() {
   if test "${codebase}" = "codebase"
   then
     src=${CODEBASE}/${module#codebase/}
-  elif test "${codebase}" = "usr"
-  then
-    src=${USR_CODEBASE}/${module#usr/codebase/}
   else
     src=${RSTPATH}/${module}
   fi

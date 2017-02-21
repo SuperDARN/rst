@@ -21,9 +21,7 @@ superdarn codebase/superdarn/src.bin/bin
 superdarn codebase/superdarn/src.dlm dlm
 superdarn codebase/superdarn/src.doc doc
 
-superdarn usr/codebase/superdarn/src.lib/tk lib
 superdarn usr/codebase/superdarn/src.lib/os lib
-superdarn usr/codebase/superdarn/src.bin/tk bin
 superdarn usr/codebase/superdarn/src.bin/os bin
 
 

@@ -9,16 +9,9 @@ INCLUDE=-I$(IPATH)/base
 OBJS = sctnorm.o
 SRC=sctnorm.c config.h
 
-DSTPATH=$(USR_BINPATH)
+DSTPATH=$(BINPATH)
 OUTPUT = sctnorm
 LIBS=-lopt.1
 SLIB=-lm
 
 include $(MAKEBIN).$(SYSTEM)
-
- 
-
-
-
-
-

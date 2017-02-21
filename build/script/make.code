@@ -94,8 +94,6 @@ makeaction() {
   if [ "${module%%/*}" = "codebase" ]
   then
     src=${CODEBASE}/${module#codebase/}
-  else
-    src=${USR_CODEBASE}/${module#usr/codebase/}
   fi
 
   if [ "${mode}" = "stdin" ]
