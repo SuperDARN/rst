@@ -23,13 +23,8 @@ setenv LIBPATH "${RSTPATH}/lib"
 setenv BINPATH "${RSTPATH}/bin"
 setenv IPATH "${RSTPATH}/include"
 
-setenv USR_CODEBASE "${RSTPATH}/usr/codebase"
-setenv USR_LIBPATH "${RSTPATH}/usr/lib"
-setenv USR_BINPATH "${RSTPATH}/usr/bin"
-setenv USR_IPATH "${RSTPATH}/usr/include"
-
-setenv PATH "${PATH}:${BUILD}/bin:${BUILD}/script:${RSTPATH}/bin:${RSTPATH}/usr/bin:${RSTPATH}/script"
-setenv LD_LIBRARY_PATH "${LIBPATH}:${USR_LIBPATH}:/usr/local/cdf/lib"
+setenv PATH "${PATH}:${BUILD}/bin:${BUILD}/script:${RSTPATH}/bin:${RSTPATH}/script"
+setenv LD_LIBRARY_PATH "${LIBPATH}:/usr/local/cdf/lib"
 
 #####################################################################
 #                                                                   #

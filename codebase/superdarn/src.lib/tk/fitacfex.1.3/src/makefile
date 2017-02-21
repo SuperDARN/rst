@@ -6,15 +6,12 @@
 include $(MAKECFG).$(SYSTEM)
 
 
-INCLUDE=-I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/superdarn -I$(USR_IPATH)/superdarn
+INCLUDE=-I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/superdarn
 
-SRC = fitacfex.c 
+SRC = fitacfex.c
 OBJS = fitacfex.o
-INC=$(USR_IPATH)/superdarn
+INC=$(IPATH)/superdarn
 LINK="1"
-DSTPATH=$(USR_LIBPATH)
+DSTPATH=$(LIBPATH)
 OUTPUT = fitacfex
 include $(MAKELIB).$(SYSTEM)
-
-
-
