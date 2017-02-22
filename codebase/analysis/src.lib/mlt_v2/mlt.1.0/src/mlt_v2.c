@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "aacgmlib_v2.h"
-#include "cnvtime.h"
+#include "time.h"
 #include "astalg.h"
 
 
@@ -89,7 +89,7 @@ double MLTConvert_v2(int yr, int mo, int dy, int hr, int mt ,int sc,
 			return (NAN);
 		}
 	}
-//printf("** %lf\n", mlon_ref);
+/*printf("** %lf\n", mlon_ref);*/
 
 	aacgm_mlt = 12. + (mlon - mlon_ref)/15.;	/* MLT based on subsolar point */
 

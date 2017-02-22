@@ -6,7 +6,7 @@
 #include "igrflib.h"
 #include "genmag.h"
 
-//#define DEBUG 1
+/*#define DEBUG 1*/
 /* TO DO: should these stuff go in igrflib.h? */
 
 struct {
@@ -107,7 +107,7 @@ int IGRF_loadcoeffs(void)
 		printf("***************************************************************\n");
 		return (-99);
 	}
-//	strcpy(filename,getenv("IGRF_COEFFS"));
+/*	strcpy(filename,getenv("IGRF_COEFFS")); */
 
 	#if DEBUG > 1
 	printf("Schmidt quasi-normalization factors\n");
@@ -119,7 +119,7 @@ int IGRF_loadcoeffs(void)
 	for (k=2; k<= 2*IGRF_ORDER; k++)
   	fctrl[k] = k*fctrl[k-1];
 
-	//for(k=0; k<=2*IGRF_ORDER; k++) printf("%lf\n", fctrl[k]);
+	/*for(k=0; k<=2*IGRF_ORDER; k++) printf("%lf\n", fctrl[k]); */
 
 	/* double factorial */
 	dfc[1] = 1;
@@ -442,7 +442,7 @@ int IGRF_Plm(double theta, int order, double *plmval, double *dplmval) {
 int IGRF_compute(const double rtp[], double brtp[]) {
 
 	int k,l,m,n;
-//	double brr,btt,bpp;
+/*	double brr,btt,bpp; */
 	double tbrtp[3], st, theta;
 	double aor, afac;
 	double dplmval[IGRF_MAXK], plmval[IGRF_MAXK];
@@ -466,29 +466,24 @@ int IGRF_compute(const double rtp[], double brtp[]) {
 	/* Compute the values of the Legendre Polynomials, and derivatives */
 	IGRF_Plm(theta,nmx,plmval,dplmval);
 
-//	aor  = RE/r;			/* a/r, where RE = a */
-//	aor  = RE/rtp[0];			/* a/r, where RE = a */
+/*	aor  = RE/r;*/			/* a/r, where RE = a */
+/*	aor  = RE/rtp[0];*/		/* a/r, where RE = a */
 	aor = 1./rtp[0];		/* r is in units of RE to be consistent with geopack, */
 											/* we want RE/r */
 
-	//printf("aor = %lf\n", aor);
+	/*printf("aor = %lf\n", aor);*/
 	afac = aor*aor;
 
 	/* array of trig functions in phi for faster computation */
 	for (k=0; k<=IGRF_ORDER; k++) {
-//		cosm_arr[k] = cos(k*phi);
-//		sinm_arr[k] = sin(k*phi);
 		cosm_arr[k] = cos(k*rtp[2]);
 		sinm_arr[k] = sin(k*rtp[2]);
 	}
 
-//	*br = *btheta = *bphi = 0.;
 	for (k=0;k<3;k++)	brtp[k] = 0;
 
 	for (l=1; l<=nmx; l++) {	/* no l = 0 term in IGRF */
-//		brr = btt = bpp = 0.;
 		for (k=0;k<3;k++)	tbrtp[k] = 0;
-//		printf("l = %d, afac = %lf\n", l, afac);
 		for (m=0; m<=l; m++) {
 			k = l*(l+1) + m;	/* g */
 			n = l*(l+1) - m;	/* h */
@@ -500,33 +495,33 @@ int IGRF_compute(const double rtp[], double brtp[]) {
 			tbrtp[2] += (-IGRF_coefs[k]*sinm_arr[m] + IGRF_coefs[n]*cosm_arr[m]) *
 							m*plmval[k];
 
-//			printf("%2d %2d %e %e %e\n", l,m, IGRF_coefs[k],IGRF_coefs[n], plmval[k]);
+/*			printf("%2d %2d %e %e %e\n", l,m, IGRF_coefs[k],IGRF_coefs[n], plmval[k]);
 //			printf("[]: %e %e %e\n", tbrtp[0], tbrtp[1], tbrtp[2]);
 //			printf("  %2d: brr=%lf, coef[k]=%lf, coef[n]=%lf, plmval[k]=%lf\n",
 //						m,brr,IGRF_coefs[k],IGRF_coefs[n],plmval[k]);
-//			printf("  %2d: brr=%lf, cosm=%lf, sinm=%lf\n", m,brr,cosm_arr[m],sinm_arr[m]);
+//			printf("  %2d: brr=%lf, cosm=%lf, sinm=%lf\n", m,brr,cosm_arr[m],sinm_arr[m]);*/
 		}
-//		printf("%2d brr = %lf\n", l,brr);
+/*		printf("%2d brr = %lf\n", l,brr);*/
 		afac *= aor;
 
-//		*br     += afac*(l+1)*brr;
+/*		*br     += afac*(l+1)*brr;
 //		*btheta -= afac*btt;
-//		*bphi   -= afac*bpp;
+//		*bphi   -= afac*bpp; */
 		brtp[0] += afac*(l+1)*tbrtp[0];
 		brtp[1] -= afac*tbrtp[1];
 		brtp[2] -= afac*tbrtp[2];
 	}
 
-//	*bphi /= sin(theta);
+/*	*bphi /= sin(theta);
 //printf("*** %e %e\n", brtp[2], sin(rtp[1]));
-//printf("*** %e %e %e\n", brtp[0], brtp[1], brtp[2]);
+//printf("*** %e %e %e\n", brtp[0], brtp[1], brtp[2]); */
 	brtp[2] /= sin(theta);
-//	if (sin(rtp[1]) > 1.e-19) {	/* from geopack ... */
-//		brtp[2] /= sin(rtp[1]);
+/*	if (sin(rtp[1]) > 1.e-19) {	*//* from geopack ... */
+/*		brtp[2] /= sin(rtp[1]);
 //	} else {
 //		if (cos(rtp[1]) < 0.) brtp[2] = -brtp[2];
 //	}
-//printf("*** %e %e %e\n", brtp[0], brtp[1], brtp[2]);
+//printf("*** %e %e %e\n", brtp[0], brtp[1], brtp[2]); */
 
 	return (0);
 } 
@@ -860,7 +855,6 @@ fprintf(stderr,
 ;
 ;+-----------------------------------------------------------------------------
 */
-//int sph2car(double r,double theta,double phi, double *x,double *y,double *z) {
 int sph2car(const double rtp[], double xyz[]) {
 	double sq;
 
@@ -907,7 +901,6 @@ int sph2car(const double rtp[], double xyz[]) {
 ;+-----------------------------------------------------------------------------
 */
 
-//int car2sph(double x,double y,double z, double *r,double *theta,double *phi) {
 int car2sph(const double xyz[], double rtp[]) {
 	double sq;
 
@@ -970,8 +963,6 @@ int car2sph(const double xyz[], double rtp[]) {
 ;+-----------------------------------------------------------------------------
 */
 
-//int bspcar(double theta,double phi, double br,double btheta,double bphi,
-//						double *bx, double *by, double *bz) {
 int bspcar(double theta,double phi, const double brtp[], double bxyz[]) {
 	double st,ct,sp,cp,be;
 
@@ -1028,8 +1019,6 @@ int bspcar(double theta,double phi, const double brtp[], double bxyz[]) {
 ;+-----------------------------------------------------------------------------
 */
 
-//int bcarsp(double x,double y,double z, double bx,double by,double bz,
-//						double *br,double *btheta,double *bphi) {
 int bcarsp(const double xyz[], const double bxyz[], double brtp[]) {
 	double r,rho,rho2,cp,sp,ct,st;
 
@@ -1076,7 +1065,6 @@ int bcarsp(const double xyz[], const double bxyz[], double brtp[]) {
 }
 
 
-//int geo2mag(double xg,double yg,double zg, double *xm,double *ym,double *zm) {
 int geo2mag(const double xyzg[], double xyzm[]) {
 
 	xyzm[0] = xyzg[0]*geopack.ctcl + xyzg[1]*geopack.ctsl - xyzg[2]*geopack.st0;
@@ -1091,7 +1079,6 @@ int geo2mag(const double xyzg[], double xyzm[]) {
 	return (0);
 }
 
-//int mag2geo(double xm,double ym,double zm, double *xg,double *yg,double *zg) {
 int mag2geo(const double xyzm[], double xyzg[]) {
 
 	xyzg[0] = xyzm[0]*geopack.ctcl - xyzm[1]*geopack.sl0 + xyzm[2]*geopack.stcl;
@@ -1446,14 +1433,14 @@ int AACGM_v2_RK45(double xyz[], int idir, double *ds, double eps, int code) {
 																							the LTEs of the two methods, but
 																							I cannot find them written down
 																							anywhere. */
-				//newds = ds * delt;
-				//ds = newds;
+				/*newds = ds * delt;
+				//ds = newds;*/
 				*ds *= delt;
 
 				/* maximum stepsize is fixed to max_ds in units of Re */
-				//if keyword_set(max_ds) then	ds = min([max_ds,ds])
+				/*if keyword_set(max_ds) then	ds = min([max_ds,ds])*/
 				/* maximum stepsize is r^2 * 1km, where r is in units of Re */
-				//if keyword_set(RRds) then		ds = min([50*r*r*r/RE, ds])
+				/*if keyword_set(RRds) then		ds = min([50*r*r*r/RE, ds])*/
 				*ds = MIN(50*rtp[0]*rtp[0]*rtp[0]/RE, *ds);
 			}	/* otherwise leave the stepsize alone */
 		}
