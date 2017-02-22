@@ -27,7 +27,7 @@ endif
 CFLAGS += $(INCLUDE)
 
 LFLAGS =  -Wl,-rpath,@loader_path/../lib/ -Wl,-rpath,@loader_path/../../lib/ \
-          -L/opt/local/lib -L$(LIBPATH) -L$(USR_LIBPATH)
+          -L/opt/local/lib -L$(LIBPATH)
 
 .c.o:
 	$(CC) $(CFLAGS) -c $<    
