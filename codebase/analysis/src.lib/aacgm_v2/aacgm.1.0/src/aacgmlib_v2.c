@@ -534,7 +534,7 @@ int convert_geo_coord(double lat_in, double lon_in, double height_in,
 	int i,j,k,l,m,f,a,t,flag;
 	int i_err64, err;
 
-//	extern int rylm();
+/*	extern int rylm(); */
 	double ylmval[AACGM_KMAX];
 	double colat_temp;
 	double lon_output;
@@ -1336,7 +1336,7 @@ int AACGM_v2_Trace(double lat_in, double lon_in, double alt,
 	IGRF_SetDateTime(aacgm_date.year, aacgm_date.month, aacgm_date.day,
 										aacgm_date.hour, aacgm_date.minute, aacgm_date.second);
 
-	// Q: these could eventually be command-line options
+	/* Q: these could eventually be command-line options */
 	ds    = 1.;
 	dsRE  = ds/RE;
 	dsRE0 = dsRE;
@@ -1373,7 +1373,7 @@ int AACGM_v2_Trace(double lat_in, double lon_in, double alt,
 
 		for (kk=0;kk<3;kk++) xyzp[kk] = xyzg[kk]; /* save as previous */
 
-		AACGM_v2_RK45(xyzg, idir, &dsRE, eps, 1); // set to 0 for RK4: /noadapt)
+		AACGM_v2_RK45(xyzg, idir, &dsRE, eps, 1); /* set to 0 for RK4: /noadapt) */
 
 		/* convert to magnetic Dipole coordinates */
 		geo2mag(xyzg, xyzm);
@@ -1434,13 +1434,13 @@ int AACGM_v2_Trace_inv(double lat_in, double lon_in, double alt,
 	IGRF_SetDateTime(aacgm_date.year, aacgm_date.month, aacgm_date.day,
 										aacgm_date.hour, aacgm_date.minute, aacgm_date.second);
 
-	// Q: these could eventually be command-line options
+	/* Q: these could eventually be command-line options */
 	ds    = 1.;
 	dsRE  = ds/RE;
 	dsRE0 = dsRE;
 	eps   = 1.e-4/RE;
 
-	// Q: Test this
+	/* Q: Test this */
 	/* poles map to infinity */
 	if (fabs(fabs(lat_in) - 90.) < 1e-6)
 		lat_in += (lat_in > 0) ? -1e-6 : 1e-6;
@@ -1475,7 +1475,7 @@ int AACGM_v2_Trace_inv(double lat_in, double lon_in, double alt,
 		while (rtp[0] >  (RE + alt)/RE) {
 			for (kk=0;kk<3;kk++) xyzp[kk] = xyzg[kk]; /* save as previous */
 
-			AACGM_v2_RK45(xyzg, idir, &dsRE, eps, 1);  // set to 0 for RK4: /noadapt)
+			AACGM_v2_RK45(xyzg, idir, &dsRE, eps, 1); /* set to 0 for RK4: /noadapt)*/
 
 			car2sph(xyzg, rtp);
 
