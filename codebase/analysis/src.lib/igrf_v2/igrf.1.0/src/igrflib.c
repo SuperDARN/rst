@@ -86,10 +86,12 @@ int IGRF_loadcoeffs(void)
 	int k,l,m,n, ll,mm;
 	int fac, len;
 	int iyear, nyear;
-	int dgrf[MAXNYR], epoch[MAXNYR];
+	int dgrf[MAXNYR];
+	int epoch[MAXNYR];
 	char jnk;
 	char *filename;
-	char header[2][MAXSTR], line[MAXSTR];
+/*	char header[2][MAXSTR];*/
+	char line[MAXSTR];
 	double fyear;
 	double coef, sv;
 	double Slm[IGRF_MAXK], fctrl[2*IGRF_ORDER+1], dfc[2*IGRF_ORDER];
@@ -158,7 +160,7 @@ int IGRF_loadcoeffs(void)
 		m = 0;
 		while (jnk != '\n') {
 			fscanf(fp, "%c", &jnk);
-			header[k][m] = (jnk == '\n') ? (char)0 : jnk;
+/*			header[k][m] = (jnk == '\n') ? (char)0 : jnk;*/
 			m++;
 		}
 	}

@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "aacgmlib_v2.h"
-#include "time.h"
+#include "rtime.h"
 #include "astalg.h"
 
 
