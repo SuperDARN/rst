@@ -531,7 +531,8 @@ double AACGM_v2_Sgn(double a, double b)
 int convert_geo_coord(double lat_in, double lon_in, double height_in,
 											double *lat_out, double *lon_out, int code, int order) {
 
-	int i,j,k,l,m,f,a,t,flag;
+/*	int i,j,k,l,m,f,a,t,flag;*/
+	int i,j,k,l,m,flag;
 	int i_err64, err;
 
 /*	extern int rylm(); */
@@ -540,7 +541,7 @@ int convert_geo_coord(double lat_in, double lon_in, double height_in,
 	double lon_output;
     
 	double lat_adj=0;
-	double lat_alt=0;
+/*	double lat_alt=0; */
 	double colat_input; 
    
 	double alt_var_cu=0, lon_temp=0, alt_var_sq=0, alt_var_qu=0;
@@ -743,7 +744,7 @@ int AACGM_v2_LoadCoefFP(FILE *fp, int code)
 {
 	/*	char tmp[64]; */
 	double tmp;
-	int f,l,a,t,i;
+	int f,l,a,t;
 
 	#if DEBUG > 0
 	printf("AACGM_v2_LoadCoefFP\n");
@@ -1508,6 +1509,6 @@ int AACGM_v2_Trace_inv(double lat_in, double lon_in, double alt,
 		err = 0;
 	}
 
-	return (0);
+	return (err);
 }
 
