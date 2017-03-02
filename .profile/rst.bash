@@ -9,11 +9,8 @@
 
 export BUILD="${RSTPATH}/build"
 export CODEBASE="${RSTPATH}/codebase"
-export RPKG="${RSTPATH}/rpkg"
 export LOGPATH="${RSTPATH}/log"
 export DOCPATH="${RSTPATH}/doc"
-
-export GITURLBASE="http://superdarn.jhuapl.edu/git"
 
 export WWWPATH="${DOCPATH}/www"
 export URLBASE="/doc"
