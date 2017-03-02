@@ -32,7 +32,7 @@
 #include <string.h>
 #include <math.h> 
 #include "rmath.h"
-#include "AstAlg.h"
+#include "astalg.h"
 
 double SZASolarDec(int yr,int mo,int dy,int hr,int mt,int sc) {
 
