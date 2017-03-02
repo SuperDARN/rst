@@ -4,16 +4,17 @@
 *~
 bin/
 build/bin/
-build/lib/
 build/include/
+build/lib/
 dlm/
 doc/
+idl/
 include/
 lib/
 log/
 usr/bin/
-usr/lib/
 usr/include/
+usr/lib/
 
 codebase/analysis/src.lib/cmpfit-1.2/testmpfit
 codebase/general/src.lib/stdkey.1.5/src/make_palette
