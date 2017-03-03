@@ -13,3 +13,5 @@ setenv SD_MODEL_TABLE ${RSTPATH}"/tables/superdarn/model"
 setenv AACGM_v2_DAT_PREFIX "${RSTPATH}/tables/analysis/aacgm/aacgm_coeffs-12-"
 setenv IGRF_COEFFS "${IGRF_PATH}igrf12coeffs.txt"
 
+setenv COLOR_TABLE_PATH ${RSTPATH}"/tables/base/key/"
+

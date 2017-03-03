@@ -13,3 +13,5 @@ export SD_MODEL_TABLE=${RSTPATH}"/tables/superdarn/model"
 export AACGM_v2_DAT_PREFIX="${RSTPATH}/tables/analysis/aacgm/aacgm_coeffs-12-"
 export IGRF_COEFFS="${IGRF_PATH}igrf12coeffs.txt"
 
+export COLOR_TABLE_PATH=${RSTPATH}"/tables/base/key/"
+
