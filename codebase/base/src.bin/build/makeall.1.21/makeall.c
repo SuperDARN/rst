@@ -153,7 +153,8 @@ void add_make(char *name,char type) {
 
       /* now compare version numbers */
       if (major<makevmajor[k]) return;
-      if (minor<makevminor[k]) return;
+      if (minor<makevminor[k] && major == makevmajor[k]) return;
+			/* bugfix SGS: 17Feb2017 was returning when major> and minor< */
 
       makevmajor[k]=major;
       makevminor[k]=minor;
