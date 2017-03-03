@@ -15,3 +15,5 @@ export SD_MODEL_TABLE=${RSTPATH}"/tables/superdarn/model"
 
 
 
+export COLOR_TABLE_PATH=${RSTPATH}"/tables/base/key/"
+
