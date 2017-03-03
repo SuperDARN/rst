@@ -12,17 +12,9 @@ analysis codebase/analysis/src.lib lib
 analysis codebase/analysis/src.bin bin
 analysis codebase/analysis/src.dlm dlm
 
-
 imagery codebase/imagery/src.lib lib
 
 superdarn codebase/superdarn/src.lib lib
 superdarn codebase/superdarn/src.bin bin
-superdarn codebase/superdarn/src.bin/bin
 superdarn codebase/superdarn/src.dlm dlm
 superdarn codebase/superdarn/src.doc doc
-
-superdarn usr/codebase/superdarn/src.lib/os lib
-superdarn usr/codebase/superdarn/src.bin/os bin
-
-
-
