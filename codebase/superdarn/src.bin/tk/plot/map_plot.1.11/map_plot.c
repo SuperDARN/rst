@@ -569,6 +569,8 @@ int main(int argc,char *argv[]) {
 
   char *bgcol_txt=NULL;
   char *txtcol_txt=NULL;
+  char *key_path=NULL;
+  char kname[256];
   char *vkey_fname=NULL;
   char *pkey_fname=NULL;
   char *xkey_fname=NULL;
@@ -1205,7 +1207,14 @@ int main(int argc,char *argv[]) {
   if (ffovcol_txt !=NULL) ffovcol=PlotColorStringRGBA(ffovcol_txt);
 
   if (vkey_fname !=NULL) {
-    keyfp=fopen(vkey_fname,"r");
+    key_path = getenv("COLOR_TABLE_PATH");
+    if (key_path != NULL) {
+      strcpy(kname, key_path);
+      strcat(kname, vkey_fname);
+    } else {
+      fprintf(stderr, "No COLOR_TABLE_PATH set\n");
+    }
+    keyfp=fopen(kname,"r");
     if (keyfp !=NULL) {
       load_key(keyfp,&vkey);
       fclose(keyfp);
@@ -1215,7 +1224,14 @@ int main(int argc,char *argv[]) {
   vkey.defcol=veccol;
 
   if (pkey_fname !=NULL) {
-    keyfp=fopen(pkey_fname,"r");
+    if (key_path == NULL) key_path = getenv("COLOR_TABLE_PATH");
+    if (key_path != NULL) {
+      strcpy(kname, key_path);
+      strcat(kname, pkey_fname);
+    } else {
+      fprintf(stderr, "No COLOR_TABLE_PATH set\n");
+    }
+    keyfp=fopen(kname,"r");
     if (keyfp !=NULL) {
       load_key(keyfp,&pkey);
       fclose(keyfp);
@@ -1223,6 +1239,13 @@ int main(int argc,char *argv[]) {
   }
 
   if (xkey_fname !=NULL) {
+    if (key_path == NULL) key_path = getenv("COLOR_TABLE_PATH");
+    if (key_path != NULL) {
+      strcpy(kname, key_path);
+      strcat(kname, xkey_fname);
+    } else {
+      fprintf(stderr, "No COLOR_TABLE_PATH set\n");
+    }
     keyfp=fopen(xkey_fname,"r");
     if (keyfp !=NULL) {
       load_key(keyfp,&xkey);
@@ -1230,11 +1253,9 @@ int main(int argc,char *argv[]) {
     }
   }
 
-
   pkey.max=cmax;
   pkey.min=-cmax;
   pkey.defcol=fpolycol;
-
 
 
   if (pwrflg) xkey.max=pmax;
