@@ -340,6 +340,8 @@ int main(int argc,char *argv[]) {
   unsigned int gscolor=0;
   char *gsctxt=NULL;
 
+  char *key_path=NULL;
+  char kname[256];
   char *pkey_fname=NULL;
   char *vkey_fname=NULL;
   char *wkey_fname=NULL;
@@ -623,7 +625,14 @@ int main(int argc,char *argv[]) {
   if (txttxt !=NULL)  sscanf(txttxt,"%x",&txtcolor);
 
   if (pkey_fname !=NULL) {
-    fp=fopen(pkey_fname,"r");
+    key_path = getenv("COLOR_TABLE_PATH");
+    if (key_path != NULL) {
+      strcpy(kname, key_path);
+      strcat(kname, pkey_fname);
+    } else {
+      fprintf(stderr, "No COLOR_TABLE_PATH set\n");
+    }
+    fp=fopen(kname,"r");
     if (fp !=NULL) {
       load_key(fp,&pkey);
       fclose(fp);
@@ -631,7 +640,14 @@ int main(int argc,char *argv[]) {
   }
 
   if (vkey_fname !=NULL) {
-    fp=fopen(vkey_fname,"r");
+    if (key_path == NULL) key_path = getenv("COLOR_TABLE_PATH");
+    if (key_path != NULL) {
+      strcpy(kname, key_path);
+      strcat(kname, vkey_fname);
+    } else {
+      fprintf(stderr, "No COLOR_TABLE_PATH set\n");
+    }
+    fp=fopen(kname,"r");
     if (fp !=NULL) {
       load_key(fp,&vkey);
       fclose(fp);
@@ -639,7 +655,14 @@ int main(int argc,char *argv[]) {
   }
 
   if (wkey_fname !=NULL) {
-    fp=fopen(wkey_fname,"r");
+    if (key_path == NULL) key_path = getenv("COLOR_TABLE_PATH");
+    if (key_path != NULL) {
+      strcpy(kname, key_path);
+      strcat(kname, wkey_fname);
+    } else {
+      fprintf(stderr, "No COLOR_TABLE_PATH set\n");
+    }
+    fp=fopen(kname,"r");
     if (fp !=NULL) {
       load_key(fp,&wkey);
       fclose(fp);
@@ -647,7 +670,14 @@ int main(int argc,char *argv[]) {
   }
 
   if (fkey_fname !=NULL) {
-    fp=fopen(fkey_fname,"r");
+    if (key_path == NULL) key_path = getenv("COLOR_TABLE_PATH");
+    if (key_path != NULL) {
+      strcpy(kname, key_path);
+      strcat(kname, fkey_fname);
+    } else {
+      fprintf(stderr, "No COLOR_TABLE_PATH set\n");
+    }
+    fp=fopen(kname,"r");
     if (fp !=NULL) {
       load_key(fp,&fkey);
       fclose(fp);
@@ -655,7 +685,14 @@ int main(int argc,char *argv[]) {
   }
 
   if (nkey_fname !=NULL) {
-    fp=fopen(nkey_fname,"r");
+    if (key_path == NULL) key_path = getenv("COLOR_TABLE_PATH");
+    if (key_path != NULL) {
+      strcpy(kname, key_path);
+      strcat(kname, nkey_fname);
+    } else {
+      fprintf(stderr, "No COLOR_TABLE_PATH set\n");
+    }
+    fp=fopen(kname,"r");
     if (fp !=NULL) {
       load_key(fp,&nkey);
       fclose(fp);
