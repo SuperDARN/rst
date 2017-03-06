@@ -1,7 +1,6 @@
 # Makefile for map_addhmb
 # =======================
-# Author: R.J.Barnes
-# by R.J.Barnes
+# Author: R.J.Barnes and others
 #
 #
 include $(MAKECFG).$(SYSTEM)

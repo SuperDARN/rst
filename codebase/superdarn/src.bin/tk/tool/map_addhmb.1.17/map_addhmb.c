@@ -1,6 +1,6 @@
  /* map_addhmb.c
    =============
-   Author: R.J.Barrnes
+   Author: R.J.Barrnes and others
  */
 
 /*
@@ -26,9 +26,9 @@
 #include "oldcnvmapread.h"
 #include "cnvmapwrite.h"
 #include "oldcnvmapwrite.h"
-#include "aacgm.h"
+/*#include "aacgm.h"*/
 #include "mlt.h"
-#include "aacgmlib_v2.h"
+/*#include "aacgmlib_v2.h"*/
 #include "mlt_v2.h"
 #include "hlpstr.h"
 
@@ -389,7 +389,7 @@ int main(int argc,char *argv[]) {
          latmin[0]=hmblat;
        }  
        if (tflg==0) {
-         map_addhmb(yr,yrsec,map[0],bndnp,bndstep,latref,latmed); 
+         map_addhmb(yr,yrsec,map[0],bndnp,bndstep,latref,latmed,old_aacgm); 
          if (old) OldCnvMapFwrite(stdout,map[0],grd[0]);
          else        CnvMapFwrite(stdout,map[0],grd[0]);
          TimeEpochToYMDHMS(grd[0]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
@@ -499,7 +499,7 @@ int main(int argc,char *argv[]) {
         }
 
         if (tflg==0) {
-          map_addhmb(yr,yrsec,map[idx],bndnp,bndstep,latref,latmed,old_aaacgm); 
+          map_addhmb(yr,yrsec,map[idx],bndnp,bndstep,latref,latmed,old_aacgm); 
           if (old) OldCnvMapFwrite(stdout,map[idx],grd[idx]);
           else        CnvMapFwrite(stdout,map[idx],grd[idx]);
           TimeEpochToYMDHMS(grd[idx]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);

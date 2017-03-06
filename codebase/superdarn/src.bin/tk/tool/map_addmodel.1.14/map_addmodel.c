@@ -1,31 +1,11 @@
 /* map_addmodel.c
    =============== 
-   Author: R.J.Barnes 
+   Author: R.J.Barnes and others
 */
 
 
 /*
  LICENSE AND DISCLAIMER
- 
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
 */
 
 
@@ -48,12 +28,10 @@
 #include "oldcnvmapread.h"
 #include "cnvmapwrite.h"
 #include "oldcnvmapwrite.h"
-#include "aacgm.h"
+/*#include "aacgm.h"
+#include "aacgmlib_v2.h"*/
 
 #include "hlpstr.h"
-
-
-
 
 
 char *mod_lev[]={"2t3","0t4","4t6","6t12","7t20",0};
@@ -633,17 +611,7 @@ void add_model(struct CnvMapData *map,int num,struct GridGVec *ptr) {
 
 int main(int argc,char *argv[]) {
 
-
- /* File format transistion
-   * ------------------------
-   * 
-   * When we switch to the new file format remove any reference
-   * to "new". Change the command line option "new" to "old" and
-   * remove "old=!new".
-   */
-
   int old=0;
-  int new=0;
   
   int arg;
   unsigned char help=0;
@@ -690,15 +658,13 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
 
-  OptionAdd(&opt,"new",'x',&new);
+  OptionAdd(&opt,"old",'x',&old);
   OptionAdd(&opt,"vb",'x',&vb);
   OptionAdd(&opt,"o",'i',&order);
   OptionAdd(&opt,"d",'t',&dpstr);
 
 
   arg=OptionProcess(1,argc,argv,&opt,NULL);
-
-  old=!new;
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
@@ -842,25 +808,4 @@ int main(int argc,char *argv[]) {
 
   return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
