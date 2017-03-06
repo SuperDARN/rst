@@ -27,7 +27,7 @@
 ; AACGM_v2_Alt2CGM  - not used
 ; AACGM_v2_CGM2Alt
 ; AACGM_v2_Sgn
-; convert_geo_coord
+; convert_geo_coord_v2
 ; AACGM_v2_LoadCoefFP
 ; AACGM_v2_LoadCoef
 ; AACGM_v2_LoadCoefs
@@ -496,14 +496,14 @@ double AACGM_v2_Sgn(double a, double b)
 /*-----------------------------------------------------------------------------
 ;
 ; NAME:
-;       convert_geo_coord
+;       convert_geo_coord_v2
 ;
 ; PURPOSE:
 ;       Second-level function used to determine the lat/lon of the input
 ;       coordinates.
 ;
 ; CALLING SEQUENCE:
-;       err = convert_geo_coord(in_lat,in_lon,height, out_lat,out_lon,
+;       err = convert_geo_coord_v2(in_lat,in_lon,height, out_lat,out_lon,
 ;                               code,order);
 ;     
 ;     Input Arguments:  
@@ -528,7 +528,7 @@ double AACGM_v2_Sgn(double a, double b)
 ;+-----------------------------------------------------------------------------
 */
 
-int convert_geo_coord(double lat_in, double lon_in, double height_in,
+int convert_geo_coord_v2(double lat_in, double lon_in, double height_in,
 											double *lat_out, double *lon_out, int code, int order) {
 
 /*	int i,j,k,l,m,f,a,t,flag;*/
@@ -553,7 +553,7 @@ int convert_geo_coord(double lat_in, double lon_in, double height_in,
 	static double cint[AACGM_KMAX][NCOORD][NFLAG];
 
 	#if DEBUG > 0
-	printf("convert_geo_coord\n");
+	printf("convert_geo_coord_v2\n");
 	#endif
 
 	/* no date/time set so use current time */
@@ -1024,7 +1024,7 @@ int AACGM_v2_Convert(double in_lat, double in_lon, double height,
 	}
 
 	/* all inputs are geocentric */
-	err = convert_geo_coord(in_lat,in_lon,height, out_lat,out_lon, code,order);
+	err = convert_geo_coord_v2(in_lat,in_lon,height, out_lat,out_lon, code,order);
 	/* all outputs are geocentric */
 
 	if ((code & A2G) == 0) {		/* forward: G2A */
