@@ -168,6 +168,30 @@ cp -vp *.a ${LIBPATH}
 # Get back to the old directory that we were in before
 cd ${currentdir}
 
+# This modification allows for automatic compilation for systems without IDL
+if [ ! -n "${DLMPATH}" ]; then
+  if [ -d ${RSTPATH}/codebase/superdarn/src.lib/tk/idl ]; then
+    currentdir=(`pwd`)
+    cd ${RSTPATH}/codebase/superdarn/src.lib/tk
+    tar -P -czvf idl.tar.gz idl
+    rm -R idl
+    cd ${currentdir}
+  fi
+else
+  if [ ! -d ${RSTPATH}/codebase/superdarn/src.lib/tk/idl ]; then
+    if [ -a ${RSTPATH}/codebase/superdarn/src.lib/tk/idl.tar.gz ]; then
+      currentdir=(`pwd`)
+      cd ${RSTPATH}/codebase/superdarn/src.lib/tk
+      tar -xzvf idl.tar.gz
+      rm idl.tar.gz
+      cd ${currentdir}
+    else
+      echo "Failed to locate IDL libraries for DLMs"
+      exit 1
+    fi
+  fi
+fi
+
 mkdir -p ${LOGPATH}
 makemodule hdr ${pkgdir}/build.txt
 makemodule lib ${pkgdir}/build.txt
