@@ -1,32 +1,11 @@
  /* map_grd.c
    ========== 
-   Author: R.J.Barnes
+   Author: R.J.Barnes and others
  */
 
 /*
- LICENSE AND DISCLAIMER
- 
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+ * LICENSE AND DISCLAIMER
 */
-
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -48,17 +27,15 @@
 #include "oldcnvmapwrite.h"
 #include "cnvmapwrite.h"
 #include "aacgm.h"
+#include "aacgmlib_v2.h"
 #include "mlt.h"
+#include "mlt_v2.h"
 
 #include "radar.h" 
-
-
-
 
 struct RadarNetwork *network;  
 struct Radar *radar;
 struct RadarSite *site;
-
 
 #include "hlpstr.h"
 
@@ -69,18 +46,10 @@ struct OptionData opt;
 
 int main(int argc,char *argv[]) {
 
-  /* File format transistion
-   * ------------------------
-   * 
-   * When we switch to the new file format remove any reference
-   * to "new". Change the command line option "new" to "old" and
-   * remove "old=!new".
-   */
-
   int old=0;
-  int new=0;
+  int old_aacgm=0;
 
-  int arg;
+  int i, arg;
   unsigned char help=0;
   unsigned char option=0;
 
@@ -100,6 +69,11 @@ int main(int argc,char *argv[]) {
   int yr,mo,dy,hr,mt;
   double sc;
 
+  /* function pointers for file reading/writing (old and new) and MLT */
+  int (*Grid_Read)(FILE *, struct GridData *);
+  int (*Map_Write)(FILE *, struct CnvMapData *, struct GridData *);
+  double (*MLTCnv)(int, int, double);
+
   grd=GridMake();
   map=CnvMapMake();
 
@@ -110,7 +84,6 @@ int main(int argc,char *argv[]) {
   }
 
   fp=fopen(envstr,"r");
-
   if (fp==NULL) {
     fprintf(stderr,"Could not locate radar information file.\n");
     exit(-1);
@@ -134,16 +107,15 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
 
-  OptionAdd(&opt,"new",'x',&new);
+  OptionAdd(&opt,"old",'x',&old);
   OptionAdd(&opt,"vb",'x',&vb);
   OptionAdd(&opt,"sh",'x',&sh);
   OptionAdd(&opt,"l",'f',&latmin);
   OptionAdd(&opt,"s",'f',&latshft);
+  OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);
  
   arg=OptionProcess(1,argc,argv,&opt,NULL);
   
-  old=!new;
-
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
     exit(0);
@@ -153,7 +125,6 @@ int main(int argc,char *argv[]) {
     OptionDump(stdout,&opt);
     exit(0);
   } 
-
   
   if (arg !=argc) fname=argv[arg];
  
@@ -171,126 +142,68 @@ int main(int argc,char *argv[]) {
   map->error_wt=1;
   map->hemisphere=1;
   map->lat_shft=latshft;
-  
-  if (sh==1) map->hemisphere=-1;
+
+  /* set function pointer to read/write old or new */
   if (old) {
-    while (OldGridFread(fp,grd) !=-1) {
-      TimeEpochToYMDHMS(grd->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
-
-      if (cnt==0) {
-        int i;
-        for (i=0;i<grd->stnum;i++) {
-	  radar=RadarGetRadar(network,grd->sdata[i].st_id);
-          if (radar!=NULL) 
-            site=RadarYMDHMSGetSite(radar,yr,mo,dy,hr,mt,(int) sc);
-          if ((site !=NULL) && (site->geolat<0)) {
-             map->hemisphere=-1;
-             break;
-           }
-        }
-      } 
-
-      yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
-      map->mlt.start=MLTConvertYrsec(yr,yrsec,0.0);
-
-      TimeEpochToYMDHMS(grd->ed_time,&yr,&mo,&dy,&hr,&mt,&sc);
-      yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
-      map->mlt.end=MLTConvertYrsec(yr,yrsec,0.0);
-
-      tme=(grd->st_time+grd->ed_time)/2.0;
-      TimeEpochToYMDHMS(tme,&yr,&mo,&dy,&hr,&mt,&sc);
-      yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
-      map->mlt.av=MLTConvertYrsec(yr,yrsec,0.0);
- 
-      if (latshft !=0) {
-        map->lon_shft=(map->mlt.av-12)*15.0;
-        map->latmin-=latshft;
-      }
-
-      if (map->hemisphere==1) map->latmin=latmin;  
-      else map->latmin=-latmin;
-
-      map->st_time=grd->st_time;
-      map->ed_time=grd->ed_time;
-
-      OldCnvMapFwrite(stdout,map,grd);
-      TimeEpochToYMDHMS(grd->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
-      if (vb==1) 
-        fprintf(stderr,"%d-%d-%d %d:%d:%d\n",yr,mo,dy,
-	      hr,mt,(int) sc);  
-      cnt++;
-    }
+    Grid_Read = &OldGridFread;
+    Map_Write = &OldCnvMapFwrite;
   } else {
-    while (GridFread(fp,grd) !=-1) {
-      TimeEpochToYMDHMS(grd->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
-
-      if (cnt==0) {
-        int i;
-        for (i=0;i<grd->stnum;i++) {
-	  radar=RadarGetRadar(network,grd->sdata[i].st_id);
-          if (radar!=NULL) 
-            site=RadarYMDHMSGetSite(radar,yr,mo,dy,hr,mt,(int) sc);
-          if ((site !=NULL) && (site->geolat<0)) {
-             map->hemisphere=-1;
-             break;
-           }
-        }
-      } 
-
-      yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
-      map->mlt.start=MLTConvertYrsec(yr,yrsec,0.0);
-
-      TimeEpochToYMDHMS(grd->ed_time,&yr,&mo,&dy,&hr,&mt,&sc);
-      yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
-      map->mlt.end=MLTConvertYrsec(yr,yrsec,0.0);
-
-      tme=(grd->st_time+grd->ed_time)/2.0;
-      TimeEpochToYMDHMS(tme,&yr,&mo,&dy,&hr,&mt,&sc);
-      yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
-      map->mlt.av=MLTConvertYrsec(yr,yrsec,0.0);
- 
-      if (latshft !=0) {
-        map->lon_shft=(map->mlt.av-12)*15.0;
-        map->latmin-=latshft;
-      }
-
-      if (map->hemisphere==1) map->latmin=latmin;  
-      else map->latmin=-latmin;
-
-      map->st_time=grd->st_time;
-      map->ed_time=grd->ed_time;
-
-      CnvMapFwrite(stdout,map,grd);
-      TimeEpochToYMDHMS(grd->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
-      if (vb==1) 
-        fprintf(stderr,"%d-%d-%d %d:%d:%d\n",yr,mo,dy,
-	      hr,mt,(int) sc);  
-      cnt++;
-    }
+    Grid_Read = &GridFread;
+    Map_Write = &CnvMapFwrite;
   }
 
+  /* set function pointer to compute MLT or MLT_v2 */
+  if (old_aacgm) MLTCnv = &MLTConvertYrsec;
+  else           MLTCnv = &MLTConvertYrsec_v2;
+
+  if (sh==1) map->hemisphere=-1;
+
+  while (Grid_Read(fp,grd) !=-1) {
+    TimeEpochToYMDHMS(grd->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
+
+    if (cnt==0) {
+      for (i=0;i<grd->stnum;i++) {
+        radar=RadarGetRadar(network,grd->sdata[i].st_id);
+        if (radar!=NULL) 
+          site=RadarYMDHMSGetSite(radar,yr,mo,dy,hr,mt,(int) sc);
+        if ((site !=NULL) && (site->geolat<0)) {
+          map->hemisphere=-1;
+          break;
+        }
+      }
+    } 
+
+    yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
+    map->mlt.start=MLTCnv(yr,yrsec,0.0);
+
+    TimeEpochToYMDHMS(grd->ed_time,&yr,&mo,&dy,&hr,&mt,&sc);
+    yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
+    map->mlt.end=MLTCnv(yr,yrsec,0.0);
+
+    tme=(grd->st_time+grd->ed_time)/2.0;
+    TimeEpochToYMDHMS(tme,&yr,&mo,&dy,&hr,&mt,&sc);
+    yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
+    map->mlt.av=MLTCnv(yr,yrsec,0.0);
+ 
+    if (latshft !=0) {
+      map->lon_shft=(map->mlt.av-12)*15.0;
+      map->latmin-=latshft;
+    }
+
+    if (map->hemisphere==1) map->latmin=latmin;  
+    else map->latmin=-latmin;
+
+    map->st_time=grd->st_time;
+    map->ed_time=grd->ed_time;
+
+    Map_Write(stdout,map,grd);
+    TimeEpochToYMDHMS(grd->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
+    if (vb==1) 
+      fprintf(stderr,"%d-%d-%d %d:%d:%d\n",yr,mo,dy, hr,mt,(int) sc);  
+
+    cnt++;
+  }
 
   return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
