@@ -308,7 +308,6 @@ int main(int argc,char *argv[]) {
   struct delaytab *dtable=NULL;
 
   char *iname=NULL;
- 
 
   unsigned char aflg=0,wflg=0;
 
@@ -330,6 +329,10 @@ int main(int argc,char *argv[]) {
   float tmp[3];
 
   int j,k;
+
+  /* function pointers for file reading/writing (old and new) and MLT */
+  int (*Map_Read)(FILE *, struct CnvMapData *, struct GridData *);
+  int (*Map_Write)(FILE *, struct CnvMapData *, struct GridData *);
 
   grd=GridMake();
   map=CnvMapMake(); 
@@ -403,8 +406,16 @@ int main(int argc,char *argv[]) {
 
   if (dtable !=NULL) delay=dtable->delay[0];
 
-  if (old) s=OldCnvMapFread(fp,map,grd);
-  else s=CnvMapFread(fp,map,grd);
+  /* set function pointer to read/write old or new */
+  if (old) {
+    Map_Read  = &OldCnvMapFread;
+    Map_Write = &OldCnvMapFwrite;
+  } else {
+    Map_Read  = &CnvMapFread;
+    Map_Write = &CnvMapFwrite;
+  }
+
+  s = Map_Read(fp,map,grd);
 
   st_time=map->st_time-delay;
   ed_time=map->st_time-delay+extent; 
@@ -412,11 +423,7 @@ int main(int argc,char *argv[]) {
   if (wflg==1) load_wind();
   else if (aflg==1) load_ace();
     
-
- 
-
-  j=0;
-  k=0;
+  j = k = 0;
 
   do {  
 
@@ -425,7 +432,6 @@ int main(int argc,char *argv[]) {
       if (k==0) delay=dtable->delay[0];
       else delay=dtable->delay[k-1];
     }  
-    
  
     tme=map->st_time-delay;
     map->Bx=dBx;
@@ -440,8 +446,8 @@ int main(int argc,char *argv[]) {
       map->Bz=tmp[2];
     }
     map->imf_delay=delay/60;
-    if (old) OldCnvMapFwrite(stdout,map,grd);
-    else CnvMapFwrite(stdout,map,grd);
+
+    Map_Write(stdout,map,grd);
 
     if (vb==1) {
        TimeEpochToYMDHMS(map->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
@@ -452,8 +458,7 @@ int main(int argc,char *argv[]) {
                map->Bx,map->By,map->Bz);
     }  
 
-    if (old) s=OldCnvMapFread(fp,map,grd);
-    else s=CnvMapFread(fp,map,grd);
+    s = Map_Read(fp,map,grd);
 
   } while (s!=-1);
 
@@ -461,5 +466,4 @@ int main(int argc,char *argv[]) {
   fclose(fp); 
   return 0; 
 }
-
 

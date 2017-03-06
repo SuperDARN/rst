@@ -644,6 +644,10 @@ int main(int argc,char *argv[]) {
 
   struct GridGVec *mdata=NULL;
 
+  /* function pointers for file reading/writing (old and new) and MLT */
+  int (*Map_Read)(FILE *, struct CnvMapData *, struct GridData *);
+  int (*Map_Write)(FILE *, struct CnvMapData *, struct GridData *);
+
 
   map=CnvMapMake();
   grd=GridMake();
@@ -699,111 +703,62 @@ int main(int argc,char *argv[]) {
 
   load_all_models(envstr);
   
+  /* set function pointer to read/write old or new */
   if (old) {
-    while (OldCnvMapFread(fp,map,grd)!=-1) {  
-   
-      tme=(grd->st_time+grd->ed_time)/2.0;
-      TimeEpochToYMDHMS(tme,&yr,&mo,&dy,&hr,&mt,&sc);
-      yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
-    
-    
-      /* determine the model */
-      if (map->hemisphere==-1) modnum=determine_model(map->Bx,-map->By,map->Bz);
-      else modnum=determine_model(map->Bx,map->By,map->Bz);
- 
-      /* get the position of the model vectors */
-
-
-
-      if (order !=0) map->fit_order=order;
-      if (doping !=-1) map->doping_level=doping;
-
-      if ((modnum !=oldmodnum) || (map->latmin !=oldlatmin)) {
-
-       if (mdata !=NULL)  free(mdata);
-
-        mdata=get_model_pos(map->fit_order,fabs(map->latmin),map->hemisphere,
-                          map->doping_level,&num);    
-    
-
-        /* solve for the model */
-     
-    
-        status=solve_model(num,mdata,fabs(map->latmin),model[modnum],
-                         map->hemisphere);
-        oldmodnum=modnum;
-        oldlatmin=map->latmin;
-      }
-
-      /* now transform the model vectors and add them to the map file */
-        
-    
-      add_model(map,num,mdata);
-    
-      strcpy(map->imf_model[1],model[modnum]->level);
-      strcpy(map->imf_model[0],model[modnum]->angle);
-
-
-      OldCnvMapFwrite(stdout,map,grd);
-      TimeEpochToYMDHMS(grd->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
-      if (vb==1) 
-        fprintf(stderr,"%d-%d-%d %d:%d:%d %s %s\n",yr,mo,dy,
-	        hr,mt,(int) sc,model[modnum]->level,
-                model[modnum]->angle);  
-
-      cnt++;
-    }
+    Map_Read  = &OldCnvMapFread;
+    Map_Write = &OldCnvMapFwrite;
   } else {
-    while (CnvMapFread(fp,map,grd)!=-1) {  
+    Map_Read  = &CnvMapFread;
+    Map_Write = &CnvMapFwrite;
+  }
+
+  while (Map_Read(fp,map,grd)!=-1) {  
    
-      tme=(grd->st_time+grd->ed_time)/2.0;
-      TimeEpochToYMDHMS(tme,&yr,&mo,&dy,&hr,&mt,&sc);
-      yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
+    tme=(grd->st_time+grd->ed_time)/2.0;
+    TimeEpochToYMDHMS(tme,&yr,&mo,&dy,&hr,&mt,&sc);
+    yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
     
-      /* determine the model */
-      if (map->hemisphere==-1) modnum=determine_model(map->Bx,-map->By,map->Bz);
-      else modnum=determine_model(map->Bx,map->By,map->Bz);
+    /* determine the model */
+    if (map->hemisphere==-1) modnum=determine_model(map->Bx,-map->By,map->Bz);
+    else modnum=determine_model(map->Bx,map->By,map->Bz);
  
-      /* get the position of the model vectors */
+    /* get the position of the model vectors */
 
-      if (order !=0) map->fit_order=order;
-      if (doping !=-1) map->doping_level=doping;
+    if (order !=0) map->fit_order=order;
+    if (doping !=-1) map->doping_level=doping;
 
-      if ((modnum !=oldmodnum) || (map->latmin !=oldlatmin)) {
+    if ((modnum !=oldmodnum) || (map->latmin !=oldlatmin)) {
 
-       if (mdata !=NULL)  free(mdata);
+      if (mdata !=NULL)  free(mdata);
 
-        mdata=get_model_pos(map->fit_order,fabs(map->latmin),map->hemisphere,
+      mdata=get_model_pos(map->fit_order,fabs(map->latmin),map->hemisphere,
                           map->doping_level,&num);    
     
 
-        /* solve for the model */
+      /* solve for the model */
      
     
-        status=solve_model(num,mdata,fabs(map->latmin),model[modnum],
+      status=solve_model(num,mdata,fabs(map->latmin),model[modnum],
                          map->hemisphere);
-        oldmodnum=modnum;
-        oldlatmin=map->latmin;
-      }
-
-      /* now transform the model vectors and add them to the map file */
-        
-    
-      add_model(map,num,mdata);
-    
-      strcpy(map->imf_model[1],model[modnum]->level);
-      strcpy(map->imf_model[0],model[modnum]->angle);
-
-
-      CnvMapFwrite(stdout,map,grd);
-      TimeEpochToYMDHMS(grd->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
-      if (vb==1) 
-        fprintf(stderr,"%d-%d-%d %d:%d:%d %s %s\n",yr,mo,dy,
-	        hr,mt,(int) sc,model[modnum]->level,
-                model[modnum]->angle);  
-
-      cnt++;
+      oldmodnum=modnum;
+      oldlatmin=map->latmin;
     }
+
+    /* now transform the model vectors and add them to the map file */
+    
+    add_model(map,num,mdata);
+    
+    strcpy(map->imf_model[1],model[modnum]->level);
+    strcpy(map->imf_model[0],model[modnum]->angle);
+
+    Map_Write(stdout,map,grd);
+    TimeEpochToYMDHMS(grd->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
+    if (vb==1) 
+      fprintf(stderr,"%d-%d-%d %d:%d:%d %s %s\n",yr,mo,dy,
+                      hr,mt,(int) sc,model[modnum]->level,
+                      model[modnum]->angle);  
+
+    cnt++;
   }
 
   return 0;
