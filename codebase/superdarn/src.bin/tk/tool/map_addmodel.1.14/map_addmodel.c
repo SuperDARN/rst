@@ -644,7 +644,7 @@ int main(int argc,char *argv[]) {
 
   struct GridGVec *mdata=NULL;
 
-  /* function pointers for file reading/writing (old and new) and MLT */
+  /* function pointers for file reading/writing (old and new) */
   int (*Map_Read)(FILE *, struct CnvMapData *, struct GridData *);
   int (*Map_Write)(FILE *, struct CnvMapData *, struct GridData *);
 
@@ -712,7 +712,7 @@ int main(int argc,char *argv[]) {
     Map_Write = &CnvMapFwrite;
   }
 
-  while (Map_Read(fp,map,grd)!=-1) {  
+  while ((*Map_Read)(fp,map,grd)!=-1) {  
    
     tme=(grd->st_time+grd->ed_time)/2.0;
     TimeEpochToYMDHMS(tme,&yr,&mo,&dy,&hr,&mt,&sc);
@@ -751,7 +751,7 @@ int main(int argc,char *argv[]) {
     strcpy(map->imf_model[1],model[modnum]->level);
     strcpy(map->imf_model[0],model[modnum]->angle);
 
-    Map_Write(stdout,map,grd);
+    (*Map_Write)(stdout,map,grd);
     TimeEpochToYMDHMS(grd->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
     if (vb==1) 
       fprintf(stderr,"%d-%d-%d %d:%d:%d %s %s\n",yr,mo,dy,

@@ -330,7 +330,7 @@ int main(int argc,char *argv[]) {
 
   int j,k;
 
-  /* function pointers for file reading/writing (old and new) and MLT */
+  /* function pointers for file reading/writing (old and new) */
   int (*Map_Read)(FILE *, struct CnvMapData *, struct GridData *);
   int (*Map_Write)(FILE *, struct CnvMapData *, struct GridData *);
 
@@ -415,7 +415,7 @@ int main(int argc,char *argv[]) {
     Map_Write = &CnvMapFwrite;
   }
 
-  s = Map_Read(fp,map,grd);
+  s = (*Map_Read)(fp,map,grd);
 
   st_time=map->st_time-delay;
   ed_time=map->st_time-delay+extent; 
@@ -447,7 +447,7 @@ int main(int argc,char *argv[]) {
     }
     map->imf_delay=delay/60;
 
-    Map_Write(stdout,map,grd);
+    (*Map_Write)(stdout,map,grd);
 
     if (vb==1) {
        TimeEpochToYMDHMS(map->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
@@ -458,7 +458,7 @@ int main(int argc,char *argv[]) {
                map->Bx,map->By,map->Bz);
     }  
 
-    s = Map_Read(fp,map,grd);
+    s = (*Map_Read)(fp,map,grd);
 
   } while (s!=-1);
 

@@ -61,7 +61,7 @@ int main(int argc,char *argv[]) {
   int major=-1;
   int minor=-1;
 
-  /* function pointers for file reading/writing (old and new) and MLT */
+  /* function pointers for file reading/writing (old and new) */
   int (*Map_Read)(FILE *, struct CnvMapData *, struct GridData *);
   int (*Map_Write)(FILE *, struct CnvMapData *, struct GridData *);
 
@@ -123,7 +123,7 @@ int main(int argc,char *argv[]) {
     Map_Write = &CnvMapFwrite;
   }
 
-  while (Map_Read(fp,map,grd) !=-1) {
+  while ((*Map_Read)(fp,map,grd) !=-1) {
           
     TimeEpochToYMDHMS(map->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
 
@@ -138,7 +138,7 @@ int main(int argc,char *argv[]) {
     else map->minor_rev=atoi(MINOR_VERSION);
 
     CnvMapFitMap(map,grd);
-    Map_Write(stdout,map,grd);
+    (*Map_Write)(stdout,map,grd);
     if (vb==1) 
       fprintf(stderr,
               "%d-%d-%d %d:%d:%d dp=%g error=%g chi_sqr=%g rms_err=%g\n",

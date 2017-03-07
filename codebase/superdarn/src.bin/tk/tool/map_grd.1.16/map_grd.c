@@ -158,7 +158,7 @@ int main(int argc,char *argv[]) {
 
   if (sh==1) map->hemisphere=-1;
 
-  while (Grid_Read(fp,grd) !=-1) {
+  while ((*Grid_Read)(fp,grd) !=-1) {
     TimeEpochToYMDHMS(grd->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
 
     if (cnt==0) {
@@ -174,16 +174,16 @@ int main(int argc,char *argv[]) {
     } 
 
     yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
-    map->mlt.start=MLTCnv(yr,yrsec,0.0);
+    map->mlt.start=(*MLTCnv)(yr,yrsec,0.0);
 
     TimeEpochToYMDHMS(grd->ed_time,&yr,&mo,&dy,&hr,&mt,&sc);
     yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
-    map->mlt.end=MLTCnv(yr,yrsec,0.0);
+    map->mlt.end=(*MLTCnv)(yr,yrsec,0.0);
 
     tme=(grd->st_time+grd->ed_time)/2.0;
     TimeEpochToYMDHMS(tme,&yr,&mo,&dy,&hr,&mt,&sc);
     yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
-    map->mlt.av=MLTCnv(yr,yrsec,0.0);
+    map->mlt.av=(*MLTCnv)(yr,yrsec,0.0);
  
     if (latshft !=0) {
       map->lon_shft=(map->mlt.av-12)*15.0;

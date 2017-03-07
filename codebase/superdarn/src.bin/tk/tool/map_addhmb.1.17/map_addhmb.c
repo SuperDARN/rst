@@ -111,6 +111,11 @@ void add_hmb_grd(float latmin,int yr,int yrsec,struct CnvMapData *map,
   int c=0;
   int off;
 
+  double (*MLTCnv)(int, int, double);
+
+  if (old_aacgm) MLTCnv = &MLTConvertYrsec;
+  else           MLTCnv = &MLTConvertYrsec_v2;
+
   /* We should do something about the hemisphere here */
 
   for (lat=latmin+0.5;lat<90;lat++) {  
@@ -127,8 +132,7 @@ void add_hmb_grd(float latmin,int yr,int yrsec,struct CnvMapData *map,
     lon=0.5*lstp;
     for (i=0;i<nlon;i++) {
 
-      if (old_aacgm) mlt = MLTConvertYrsec(yr,yrsec,lon);
-      else           mlt = MLTConvertYrsec_v2(yr,yrsec,lon);
+      mlt = (*MLTCnv)(yr,yrsec,lon);
     
       bfac=(90-latmin)/(90-latref);
       del_L=bfac*5.5;
@@ -205,6 +209,11 @@ void map_addhmb(int yr, int yrsec, struct CnvMapData *map, int bndnp,
   float bfac,del_L;
   float mlt;
 
+  double (*MLTCnv)(int, int, double);
+
+  if (old_aacgm) MLTCnv = &MLTConvertYrsec;
+  else           MLTCnv = &MLTConvertYrsec_v2;
+
   map->num_bnd=bndnp;
 
   if (map->bnd_lat==NULL) map->bnd_lat=malloc(sizeof(double)*map->num_bnd);
@@ -215,8 +224,7 @@ void map_addhmb(int yr, int yrsec, struct CnvMapData *map, int bndnp,
 
   for (i=0;i<map->num_bnd;i++) {
     map->bnd_lon[i]=i*bndstep;
-    if (old_aacgm) mlt = MLTConvertYrsec(yr,yrsec,map->bnd_lon[i]);
-    else           mlt = MLTConvertYrsec_v2(yr,yrsec,map->bnd_lon[i]);
+    mlt = (*MLTCnv)(yr,yrsec,map->bnd_lon[i]);
      
     bfac=(90-latmin)/(90-latref);
     del_L=bfac*5.5;
@@ -385,7 +393,7 @@ int main(int argc,char *argv[]) {
   if ((hmbtab !=NULL) || (hmblat !=0))  {
       /* take the latitude limits from a file or from a predefined value */
      cnt=0;
-     s = Map_Read(fp,map[0],grd[0]);
+     s = (*Map_Read)(fp,map[0],grd[0]);
      while (s!=-1) { 
 
        tme=(grd[buf]->st_time+grd[buf]->ed_time)/2.0;
@@ -407,7 +415,7 @@ int main(int argc,char *argv[]) {
        }  
        if (tflg==0) {
          map_addhmb(yr,yrsec,map[0],bndnp,bndstep,latref,latmed,old_aacgm); 
-         Map_Write(stdout,map[0],grd[0]);
+         (*Map_Write)(stdout,map[0],grd[0]);
          TimeEpochToYMDHMS(grd[0]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
          if (vb==1) 
             fprintf(stderr,"%d-%d-%d %d:%d:%d latmin=%g\n",yr,mo,dy,
@@ -420,13 +428,13 @@ int main(int argc,char *argv[]) {
            fprintf(stderr,"%d-%d-%d %d:%d:%d latmin: median=%g actual=%g\n",
                  yr,mo,dy,hr,mt,(int) sc,latmed,latmin[0]);  
        }
-       Map_Read(fp,map[0],grd[0]);
+       (*Map_Read)(fp,map[0],grd[0]);
      }
 
   } else { /* generate the latitude limit from the data */
 
     make_hmb();
-    Map_Read(fp,map[buf],grd[buf]);
+    (*Map_Read)(fp,map[buf],grd[buf]);
     while (s !=-1) {  
 
       tme=(grd[buf]->st_time+grd[buf]->ed_time)/2.0;
@@ -452,7 +460,7 @@ int main(int argc,char *argv[]) {
           for (j=0;j<exnum;j++) if (grd[buf]->data[i].st_id==exid[j]) break;
           if (j !=exnum) continue;
 	  
-          mlti=(int)(MLTCnv(yr,yrsec,grd[buf]->data[i].mlon)+0.5);
+          mlti=(int)((*MLTCnv)(yr,yrsec,grd[buf]->data[i].mlon)+0.5);
           if (mlti==24) mlti=0;
           latdif=90;  
           for (j=0;j<nlat;j++) {
@@ -491,7 +499,7 @@ int main(int argc,char *argv[]) {
 
           if (tflg==0) {
             map_addhmb(yr,yrsec,map[0],bndnp,bndstep,latref,latmed,old_aacgm); 
-            Map_Write(stdout,map[0],grd[0]);
+            (*Map_Write)(stdout,map[0],grd[0]);
 
             TimeEpochToYMDHMS(grd[0]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
             if (vb==1) 
@@ -510,7 +518,7 @@ int main(int argc,char *argv[]) {
 
         if (tflg==0) {
           map_addhmb(yr,yrsec,map[idx],bndnp,bndstep,latref,latmed,old_aacgm); 
-          Map_Write(stdout,map[idx],grd[idx]);
+          (*Map_Write)(stdout,map[idx],grd[idx]);
           TimeEpochToYMDHMS(grd[idx]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
           if (vb==1) 
             fprintf(stderr,"%d-%d-%d %d:%d:%d latmin=%g\n",yr,mo,dy,
@@ -529,7 +537,7 @@ int main(int argc,char *argv[]) {
       buf++;
       buf=buf % 3;
 
-      s = Map_Read(fp,map[buf],grd[buf]);
+      s = (*Map_Read)(fp,map[buf],grd[buf]);
     }
 
     if (cnt==0) exit(0); /* no record to write out */
@@ -541,7 +549,7 @@ int main(int argc,char *argv[]) {
     if (cnt==2) { /* we must write out the first record */
       if (tflg==0) {
         map_addhmb(yr,yrsec,map[0],bndnp,bndstep,latref,latmed,old_aacgm); 
-        Map_Write(stdout,map[0],grd[0]);
+        (*Map_Write)(stdout,map[0],grd[0]);
         TimeEpochToYMDHMS(grd[0]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
         if (vb==1) 
           fprintf(stderr,"%d-%d-%d %d:%d:%d latmin=%g\n",yr,mo,dy,
@@ -559,7 +567,7 @@ int main(int argc,char *argv[]) {
    
     if (tflg==0) {  
       map_addhmb(yr,yrsec,map[idx],bndnp,bndstep,latref,latmed,old_aacgm); 
-      Map_Write(stdout,map[idx],grd[idx]);
+      (*Map_Write)(stdout,map[idx],grd[idx]);
       TimeEpochToYMDHMS(grd[idx]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
       if (vb==1) 
         fprintf(stderr,"%d-%d-%d %d:%d:%d latmin=%g\n",yr,mo,dy,
