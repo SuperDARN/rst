@@ -13,11 +13,11 @@ setenv XPATH "/usr/X11R6"
 
 # Compile netCDF software
 
-setenv NETCDF_PATH "/project/ampere/software"
+setenv NETCDF_PATH "/usr/include"
 
 # pathname for the CDF software
 
-setenv CDF_PATH "/project/ampere/software/opt/cdf"
+setenv CDF_PATH "/usr/local/cdf"
 
 # SVG library
 
@@ -31,11 +31,4 @@ setenv SVGLIB "rsvg.1"
 
 setenv FONTPATH ${RSTPATH}"/tables/base/fonts"
 setenv FONTDB ${RSTPATH}"/tables/base/fonts/fontdb.xml"
-
-
-
-
-
-
-
 
