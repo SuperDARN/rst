@@ -20,7 +20,7 @@
 </div>
 
 <div id="main">
-<center>Navigate by using the toolbar above or by clicking on the links below.</center>
+<center>Navigate by clicking on the links below.</center>
 <ul>
 <!--TOP-->
 <!--MAIN-->
@@ -31,9 +31,6 @@
 </div>
 
 <div id="tail">
-    <center><p>
-    &copy; Johns Hopkins Applied Physics Laboratory 2010
-    </p></center>
 </div>
 
 </div>
