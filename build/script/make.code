@@ -143,31 +143,6 @@ then
 fi
 
 
-## The mpfit seems to be an external library that was folded in during the creation of lmfit.  This
-## is the band-aid way to compile and copy this library into the appropriate directory.  A better
-## solution than this may exist.  -KTS 20150810
-
-# Save current working directory for later
-currentdir=(`pwd`)
-echo "================================================================================"
-echo "Compiling Library:${CODEBASE}/analysis/src.lib/cmpfit-1.2"
-echo "================================================================================"
-
-cd ${CODEBASE}/analysis/src.lib/cmpfit-1.2/
-echo "make clean"
-make clean
-echo "make"
-make
-
-echo "mkdir -p ${LIBPATH}"
-mkdir -p ${LIBPATH}
-
-echo "cp -vp *.a ${LIBPATH}"
-cp -vp *.a ${LIBPATH}
-
-# Get back to the old directory that we were in before
-cd ${currentdir}
-
 # This modification allows for automatic compilation for systems without IDL
 if [ ! -n "${DLMPATH}" ]; then
   if [ -d ${RSTPATH}/codebase/superdarn/src.lib/tk/idl ]; then
@@ -192,15 +167,10 @@ else
   fi
 fi
 
+
 mkdir -p ${LOGPATH}
 makemodule hdr ${pkgdir}/build.txt
 makemodule lib ${pkgdir}/build.txt
 makemodule bin ${pkgdir}/build.txt
 if [ -n "${DLMPATH}" ]; then makemodule dlm ${pkgdir}/build.txt; fi
 exit 0
-
-
-
-
-
-
