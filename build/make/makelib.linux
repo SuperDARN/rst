@@ -23,7 +23,7 @@ $(OUTPUT): version hdr $(OBJS)
 	mkdir -p $(DSTPATH)
 	ar -r $(DSTPATH)/lib$(OUTPUT).$(VSTR).a $(OBJS)
 	$(LD) $(LFLAGS) -o $(DSTPATH)/lib$(OUTPUT).$(VSTR).$(SUF) \
-              $(OBJS) $(LNK) -L$(LIBPATH) -L$(USR_LIBPATH) $(LIBS) $(SLIB)
+              $(OBJS) $(LNK) -L$(LIBPATH) $(LIBS) $(SLIB)
 	cd $(DSTPATH); ln -sf lib$(OUTPUT).$(VSTR).a \
                lib$(OUTPUT).$(LINK).a 
 	cd $(DSTPATH); ln -sf lib$(OUTPUT).$(VSTR).so \

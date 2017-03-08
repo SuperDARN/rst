@@ -26,7 +26,7 @@ endif
 
 CFLAGS += $(INCLUDE)
 
-LFLAGS += -L$(LIBPATH) -L$(USR_LIBPATH)
+LFLAGS += -L$(LIBPATH)
 
 # Library identifier letters
 
