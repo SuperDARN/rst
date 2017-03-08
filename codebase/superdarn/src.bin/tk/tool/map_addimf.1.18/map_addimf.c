@@ -1,30 +1,10 @@
 /* map_addimf.c
    =========== 
-   Author: R.J.Barnes
+   Author: R.J.Barnes and others
 */
 
 /*
  LICENSE AND DISCLAIMER
- 
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
 */
 
 #include <stdio.h>
@@ -124,8 +104,6 @@ int findvalue(int inx,int cnt,double *time,float *data,double tval,float *val) {
   }
   return sinx;
 }
-
-
 
 
 int load_text(FILE *fp,struct imfdata *ptr) {
@@ -316,16 +294,7 @@ int load_ace() {
 
 int main(int argc,char *argv[]) {
 
- /* File format transistion
-   * ------------------------
-   * 
-   * When we switch to the new file format remove any reference
-   * to "new". Change the command line option "new" to "old" and
-   * remove "old=!new".
-   */
-
   int old=0;
-  int new=0;
 
   int arg;
   unsigned char help=0;
@@ -339,7 +308,6 @@ int main(int argc,char *argv[]) {
   struct delaytab *dtable=NULL;
 
   char *iname=NULL;
- 
 
   unsigned char aflg=0,wflg=0;
 
@@ -362,6 +330,10 @@ int main(int argc,char *argv[]) {
 
   int j,k;
 
+  /* function pointers for file reading/writing (old and new) */
+  int (*Map_Read)(FILE *, struct CnvMapData *, struct GridData *);
+  int (*Map_Write)(FILE *, struct CnvMapData *, struct GridData *);
+
   grd=GridMake();
   map=CnvMapMake(); 
  
@@ -371,7 +343,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
 
-  OptionAdd(&opt,"new",'x',&new);
+  OptionAdd(&opt,"old",'x',&old);
   OptionAdd(&opt,"vb",'x',&vb);
   OptionAdd(&opt,"ace",'x',&aflg);
   OptionAdd(&opt,"wind",'x',&wflg);
@@ -388,8 +360,6 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"ex",'t',&estr);
 
   arg=OptionProcess(1,argc,argv,&opt,NULL);
-
-  old=!new;
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
@@ -436,8 +406,16 @@ int main(int argc,char *argv[]) {
 
   if (dtable !=NULL) delay=dtable->delay[0];
 
-  if (old) s=OldCnvMapFread(fp,map,grd);
-  else s=CnvMapFread(fp,map,grd);
+  /* set function pointer to read/write old or new */
+  if (old) {
+    Map_Read  = &OldCnvMapFread;
+    Map_Write = &OldCnvMapFwrite;
+  } else {
+    Map_Read  = &CnvMapFread;
+    Map_Write = &CnvMapFwrite;
+  }
+
+  s = (*Map_Read)(fp,map,grd);
 
   st_time=map->st_time-delay;
   ed_time=map->st_time-delay+extent; 
@@ -445,11 +423,7 @@ int main(int argc,char *argv[]) {
   if (wflg==1) load_wind();
   else if (aflg==1) load_ace();
     
-
- 
-
-  j=0;
-  k=0;
+  j = k = 0;
 
   do {  
 
@@ -458,7 +432,6 @@ int main(int argc,char *argv[]) {
       if (k==0) delay=dtable->delay[0];
       else delay=dtable->delay[k-1];
     }  
-    
  
     tme=map->st_time-delay;
     map->Bx=dBx;
@@ -473,8 +446,8 @@ int main(int argc,char *argv[]) {
       map->Bz=tmp[2];
     }
     map->imf_delay=delay/60;
-    if (old) OldCnvMapFwrite(stdout,map,grd);
-    else CnvMapFwrite(stdout,map,grd);
+
+    (*Map_Write)(stdout,map,grd);
 
     if (vb==1) {
        TimeEpochToYMDHMS(map->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
@@ -485,8 +458,7 @@ int main(int argc,char *argv[]) {
                map->Bx,map->By,map->Bz);
     }  
 
-    if (old) s=OldCnvMapFread(fp,map,grd);
-    else s=CnvMapFread(fp,map,grd);
+    s = (*Map_Read)(fp,map,grd);
 
   } while (s!=-1);
 
@@ -494,10 +466,4 @@ int main(int argc,char *argv[]) {
   fclose(fp); 
   return 0; 
 }
-
-
-
-
-
-
 
