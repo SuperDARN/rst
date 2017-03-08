@@ -20,6 +20,8 @@
 ; 20140918 SGS v1.0  change function names to _v2 for wider distribution
 ; 20150810 SGS v1.1  added code to default to geodetic coordinates for inverse
 ;                    transformation. This code was left out in the C version.
+; 20170308 SGS v1.2  Added static to global variables in order to work with RST
+;                    library.
 ;
 ; Functions:
 ;
@@ -58,7 +60,7 @@
 #define DEBUG 0
 
 /* put these in the library header file when you figure out how to do so... */
-struct {
+static struct {
 	int year;
 	int month;
 	int day;
@@ -69,15 +71,15 @@ struct {
 	int daysinyear;
 } aacgm_date = {-1,-1,-1,-1,-1,-1,-1,-1};
 
-int myear = 0;				/* model year: 5-year epoch */
-double fyear = 0.;		/* floating point year */
+static int myear = 0;				/* model year: 5-year epoch */
+static double fyear = 0.;		/* floating point year */
 
-int myear_old = -1;
-double fyear_old = -1.;
+static int myear_old = -1;
+static double fyear_old = -1.;
 
-double height_old[2] = {-1,-1};
+static double height_old[2] = {-1,-1};
 
-struct {
+static struct {
   double coef[AACGM_KMAX][NCOORD][POLYORD][NFLAG];			/* interpolated coefs */
   double coefs[AACGM_KMAX][NCOORD][POLYORD][NFLAG][2];	/* bracketing coefs */
 } sph_harm_model;
@@ -649,7 +651,7 @@ int convert_geo_coord_v2(double lat_in, double lon_in, double height_in,
 			z += cint[k][2][flag]*ylmval[k];
 		}
 	}
-
+ 
 	/* COMMENT: SGS
 	 * 
 	 * This answers one of my questions about how the coordinates for AACGM are
