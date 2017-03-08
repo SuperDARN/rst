@@ -12,11 +12,7 @@ idl/
 include/
 lib/
 log/
-usr/bin/
-usr/include/
-usr/lib/
 
-codebase/analysis/src.lib/cmpfit-1.2/testmpfit
 codebase/general/src.lib/stdkey.1.5/src/make_palette
 
 *errstr.h
