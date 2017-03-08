@@ -3,21 +3,21 @@ Radar Software Toolkit
 
 In addition to this code, you will need the following packages:
 
-IDL 8.X
+*IDL 8.X*
 
-HDF5
+*HDF5*
 
 - In order to compile netCDF, you'll need to have this installed.  For Ubuntu, this is a fairly
   straight forward package to install:
         sudo apt-get install libhdf5-serial-dev
 
-zlib
+*zlib*
 
 - In order to compile netCDF, you'll also need this package.  For Ubuntu, this is a fairly
   straight forward package to install:
         sudo apt-get install zlib1g-dev
 
-netCDF (dev)
+*netCDF (dev)*
 
 - (New way): netCDF can be easily downloaded in linux using package management programs such as 
   apt, rpm, yum etc.  Here, search for repository names such as "netcdf-devel" or "libnetcdf-dev".
@@ -38,17 +38,29 @@ netCDF (dev)
        ./configure --prefix=/usr/local/netcdf --disable-netcdf-4 make check install
 
 
-
-CDF 3.X
+*CDF 3.X*
 
 - CDF can be downloaded from NASA.  You can find the lastest release at: http://cdf.gsfc.nasa.gov/
 
 
-netpbm
+*netpbm*
 
-libpng (dev)
+*libpng (dev)*
 
-ncurses (dev)
+*ncurses (dev)*
+
+*X11 library*
+
+- For Ubuntu 14 and 16, it seems as though you'll need to install the X11 dev library. So use
+sudo apt-get instal libx11-dev to install this library
+
+*X11 extension library*
+
+- Also for Ubuntu 14 and 16, you'll need to install the various X11 extensions. So use
+sudo apt-get install libxext-dev to install this library
+
+
+
 
 It is HIGHLY recommended to setup git on your local computer as updates are easily downloaded to
 your computer.
@@ -73,6 +85,8 @@ your computer.
 
    In order to load the environment variables you just setup, you'll need to close your current terminal and
    open a new terminal.
+
+   Note: to compile without any IDL dependencies, comment out the DLMPATH entry in ~/rst/.profile/idl.bash
 
 2. Run `make.build` from the command line.  This runs a helper script that sets up other 
 compiling code.  The source code for make.build can be found in ~/rst/build/script/

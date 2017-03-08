@@ -84,8 +84,6 @@ makeaction() {
   if [ "${module%%/*}" = "codebase" ]
   then
     src=${CODEBASE}/${module#codebase/}
-  else
-    src=${USR_CODEBASE}/${module#usr/codebase/}
   fi
 
   if [ "${mode}" = "stdin" ]
@@ -133,30 +131,30 @@ then
 fi
 
 
-## The mpfit seems to be an external library that was folded in during the creation of lmfit.  This
-## is the band-aid way to compile and copy this library into the appropriate directory.  A better
-## solution than this may exist.  -KTS 20150810
+# This modification allows for automatic compilation for systems without IDL
+if [ ! -n "${DLMPATH}" ]; then
+  if [ -d ${RSTPATH}/codebase/superdarn/src.lib/tk/idl ]; then
+    currentdir=(`pwd`)
+    cd ${RSTPATH}/codebase/superdarn/src.lib/tk
+    tar -P -czvf idl.tar.gz idl
+    rm -R idl
+    cd ${currentdir}
+  fi
+else
+  if [ ! -d ${RSTPATH}/codebase/superdarn/src.lib/tk/idl ]; then
+    if [ -a ${RSTPATH}/codebase/superdarn/src.lib/tk/idl.tar.gz ]; then
+      currentdir=(`pwd`)
+      cd ${RSTPATH}/codebase/superdarn/src.lib/tk
+      tar -xzvf idl.tar.gz
+      rm idl.tar.gz
+      cd ${currentdir}
+    else
+      echo "Failed to locate IDL libraries for DLMs"
+      exit 1
+    fi
+  fi
+fi
 
-# Save current working directory for later
-currentdir=(`pwd`)
-echo "================================================================================"
-echo "Compiling Library:${CODEBASE}/analysis/src.lib/cmpfit-1.2"
-echo "================================================================================"
-
-cd ${CODEBASE}/analysis/src.lib/cmpfit-1.2/
-echo "make clean"
-make clean
-echo "make"
-make
-
-echo "mkdir -p ${LIBPATH}"
-mkdir -p ${LIBPATH}
-
-echo "cp -vp *.a ${LIBPATH}"
-cp -vp *.a ${LIBPATH}
-
-# Get back to the old directory that we were in before
-cd ${currentdir}
 
 mkdir -p ${LOGPATH}
 makemodule hdr ${BUILD}/script/build.txt
@@ -182,3 +180,4 @@ then
     ln -svf ../codebase/superdarn/src.idl/startup/startup.pro startup.pro
 fi
 exit 0
+

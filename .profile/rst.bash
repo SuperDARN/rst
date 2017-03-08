@@ -19,13 +19,8 @@ export LIBPATH="${RSTPATH}/lib"
 export BINPATH="${RSTPATH}/bin"
 export IPATH="${RSTPATH}/include"
 
-export USR_CODEBASE="${RSTPATH}/usr/codebase"
-export USR_LIBPATH="${RSTPATH}/usr/lib"
-export USR_BINPATH="${RSTPATH}/usr/bin"
-export USR_IPATH="${RSTPATH}/usr/include"
-
-export PATH="${PATH}:${BUILD}/bin:${BUILD}/script:${RSTPATH}/bin:${RSTPATH}/usr/bin:${RSTPATH}/script"
-export LD_LIBRARY_PATH="${LIBPATH}:${USR_LIBPATH}:/usr/local/cdf/lib"
+export PATH="${PATH}:${BUILD}/bin:${BUILD}/script:${RSTPATH}/bin:${RSTPATH}/script"
+export LD_LIBRARY_PATH="${LIBPATH}:/usr/local/cdf/lib"
 
 #####################################################################
 #                                                                   #
