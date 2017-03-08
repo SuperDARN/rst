@@ -6,39 +6,12 @@
 include $(MAKECFG).$(SYSTEM)
 
 
-INCLUDE=-I$(IPATH)/base -I$(IPATH)/superdarn -I$(USR_IPATH)/superdarn
+INCLUDE=-I$(IPATH)/base -I$(IPATH)/superdarn
 
-SRC = acfex.c 
+SRC = acfex.c
 OBJS = acfex.o
-INC=$(USR_IPATH)/superdarn
+INC=$(IPATH)/superdarn
 LINK="1"
-DSTPATH=$(USR_LIBPATH)
+DSTPATH=$(LIBPATH)
 OUTPUT = acfex
 include $(MAKELIB).$(SYSTEM)
-
-
-
-
-
-
-
-
-
- 
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
