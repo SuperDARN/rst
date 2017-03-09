@@ -6,7 +6,7 @@ com_opts='-ps -coast -fcoast -mag -rotate -grd -grdlon 30 -tmlbl -time \
 # Create some PostScript figures of grid data
 #
 
-grd='20130316.0600-0630.north.grd'
+grd='20130316.0600-0610.north.grd'
 
 opts="$com_opts -raw"
 
