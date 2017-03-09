@@ -14,3 +14,5 @@ setenv SD_MODEL_TABLE ${RSTPATH}"/tables/superdarn/model"
 
 
 
+setenv COLOR_TABLE_PATH ${RSTPATH}"/tables/base/key/"
+

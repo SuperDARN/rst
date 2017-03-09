@@ -9,7 +9,7 @@ build/lib/
 dlm/
 doc/
 idl/
-include/
+/include/
 lib/
 log/
 
