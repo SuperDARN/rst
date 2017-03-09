@@ -51,17 +51,7 @@ then
   exit 1
 fi
 
-pkgdir=$(find ${RPKG}/${prj} -type d -name "${pkg}*" | sort | tail -1)
-
-if [ ! -d "${pkgdir}" ]
-then
- echo "Failed to locate package"
- exit 1
-fi
-
-ver=$(get.version ${pkgdir})
-
-log="${LOGPATH}/${prj}-${pkg}.build.${ver}"
+log="${LOGPATH}/${prj}-${pkg}.build"
 dtval=$(date +%Y%m%d.%H%M)
 
 
@@ -134,7 +124,7 @@ makemodule() {
 }
 
 
-if [ ! -s "${pkgdir}/build.txt" ]
+if [ ! -s "${BUILD}/script/build.txt" ]
 then
   echo "Failed to locate build table"
   exit 1
@@ -167,8 +157,27 @@ fi
 
 
 mkdir -p ${LOGPATH}
-makemodule hdr ${pkgdir}/build.txt
-makemodule lib ${pkgdir}/build.txt
-makemodule bin ${pkgdir}/build.txt
-if [ -n "${DLMPATH}" ]; then makemodule dlm ${pkgdir}/build.txt; fi
+makemodule hdr ${BUILD}/script/build.txt
+makemodule lib ${BUILD}/script/build.txt
+makemodule bin ${BUILD}/script/build.txt
+if [ -n "${DLMPATH}" ]
+then 
+    makemodule dlm ${BUILD}/script/build.txt
+
+    mkdir -p ${RSTPATH}/idl
+    mkdir -p ${RSTPATH}/idl/lib
+    mkdir -p ${RSTPATH}/idl/app
+
+    cd ${RSTPATH}/idl/lib
+    ln -svf ../../codebase/analysis/src.idl/lib analysis
+    ln -svf ../../codebase/general/src.idl/lib general
+    ln -svf ../../codebase/superdarn/src.idl/lib superdarn
+
+    cd ${RSTPATH}/idl/app
+    ln -svf ../../codebase/superdarn/src.idl/app superdarn
+
+    cd ${RSTPATH}/idl
+    ln -svf ../codebase/superdarn/src.idl/startup/startup.pro startup.pro
+fi
 exit 0
+
