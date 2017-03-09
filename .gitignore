@@ -4,10 +4,11 @@
 *~
 bin/
 build/bin/
-build/lib/
 build/include/
+build/lib/
 dlm/
 doc/
+/idl/
 /include/
 lib/
 log/

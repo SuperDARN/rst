@@ -56,21 +56,7 @@ fi
 
 build=${BUILD}
 
-pkgdir=${RPKG}/${prj}/${pkg}
-if test ! -d ${pkgdir}
-then
-  pkgdir=$(find ${RPKG}/${prj} -type d -name "${pkg}*" | sort | tail -1)
-fi
-
-if test ! -d "${pkgdir}"
-then
- echo "Failed to locate package"
- exit 1
-fi
-
-ver=`get.version ${pkgdir}`
-
-log="${LOGPATH}/${prj}-${pkg}.doc.${ver}"
+log="${LOGPATH}/${prj}-${pkg}.doc"
 dtval=`date +%Y%m%d.%H%M`
 
 
@@ -142,15 +128,13 @@ makedoc() {
   return 0
 }
 
-if test ! -s "${pkgdir}/build.txt"
+if test ! -s "${BUILD}/script/build.txt"
 then
   echo "Failed to locate build table"
   exit 1
 fi
 
 mkdir -p ${LOGPATH}
-makedoc ${pkgdir}/build.txt 
+makedoc ${BUILD}/script/build.txt 
 make.doc.frame ${option}
 exit 0
-
-

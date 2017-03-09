@@ -9,14 +9,10 @@
 
 setenv BUILD "${RSTPATH}/build"
 setenv CODEBASE "${RSTPATH}/codebase"
-setenv RPKGPATH "${RSTPATH}/rpkg"
 setenv LOGPATH "${RSTPATH}/log"
 setenv DOCPATH "${RSTPATH}/doc"
 
-
-setenv GITURLBASE "http://superdarn.jhuapl.edu/git"
-
-setenv WWWPATH "/www/superdarn/htdocs/doc"
+setenv WWWPATH "${DOCPATH}/www"
 setenv URLBASE "/doc"
 
 setenv LIBPATH "${RSTPATH}/lib"
