@@ -8,7 +8,7 @@ build/lib/
 build/include/
 dlm/
 doc/
-include/
+/include/
 lib/
 log/
 
