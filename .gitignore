@@ -7,7 +7,7 @@ build/bin/
 build/include/
 build/lib/
 dlm/
-doc/
+/doc/
 /idl/
 /include/
 lib/
