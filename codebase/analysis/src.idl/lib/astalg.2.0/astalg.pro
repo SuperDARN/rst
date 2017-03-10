@@ -2,7 +2,7 @@
 ; ==========
 ; Author: R.J.Barnes (Based on C routines by Kile Baker)
 
-;                                                                     
+;                                                                    
 ; $License$
 ;                                                             
 
@@ -75,22 +75,22 @@ end
 
 function AstAlg_jde,year,month,day
 
-	; 20150209 SGS : use local variables for year and month to prevent
-	;                modification
+    ; 20150209 SGS : use local variables for year and month to prevent
+    ;                modification
 
-	yr = year
-	mo = month
-  if (mo le 2) then begin
-		yr = year-1
-    mo=mo+12
-  endif
+    yr = year
+    mo = month
+    if (mo le 2) then begin
+        yr = year-1
+        mo=mo+12
+    endif
 
-  a=fix(yr/100.0D)
-  b=double(2-a + a/4)
+    a=fix(yr/100.0D)
+    b=double(2-a + a/4)
 
-  return, double( long(365.25D*(yr+4716.0D)) + $
-                 double(long(30.6001D*(mo+1.0D)))) + day+b-1524.5D
- 
+    return, double( long(365.25D*(yr+4716.0D)) + $
+                    double(long(30.6001D*(mo+1.0D)))) + day+b-1524.5D
+
 end
 
 
