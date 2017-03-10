@@ -132,7 +132,8 @@ fi
 
 
 # This modification allows for automatic compilation for systems without IDL
-if [ ! -n "${DLMPATH}" ]; then
+if [ ! -r ${IDL_IPATH}/idl_export.h ]; then
+  echo "Failed to locate idl_export.h - will not compile IDL libraries or DLMs"
   if [ -d ${RSTPATH}/codebase/superdarn/src.lib/tk/idl ]; then
     currentdir=(`pwd`)
     cd ${RSTPATH}/codebase/superdarn/src.lib/tk
@@ -160,24 +161,24 @@ mkdir -p ${LOGPATH}
 makemodule hdr ${BUILD}/script/build.txt
 makemodule lib ${BUILD}/script/build.txt
 makemodule bin ${BUILD}/script/build.txt
-if [ -n "${DLMPATH}" ]
+if [ -r ${IDL_IPATH}/idl_export.h ]
 then 
-    makemodule dlm ${BUILD}/script/build.txt
+  makemodule dlm ${BUILD}/script/build.txt
 
-    mkdir -p ${RSTPATH}/idl
-    mkdir -p ${RSTPATH}/idl/lib
-    mkdir -p ${RSTPATH}/idl/app
+  mkdir -p ${RSTPATH}/idl
+  mkdir -p ${RSTPATH}/idl/lib
+  mkdir -p ${RSTPATH}/idl/app
 
-    cd ${RSTPATH}/idl/lib
-    ln -svf ../../codebase/analysis/src.idl/lib analysis
-    ln -svf ../../codebase/general/src.idl/lib general
-    ln -svf ../../codebase/superdarn/src.idl/lib superdarn
+  cd ${RSTPATH}/idl/lib
+  if ! [ -L analysis ]; then ln -svf ../../codebase/analysis/src.idl/lib analysis; fi
+  if ! [ -L general ]; then ln -svf ../../codebase/general/src.idl/lib general; fi
+  if ! [ -L superdarn ]; then  ln -svf ../../codebase/superdarn/src.idl/lib superdarn; fi
 
-    cd ${RSTPATH}/idl/app
-    ln -svf ../../codebase/superdarn/src.idl/app superdarn
+  cd ${RSTPATH}/idl/app
+  if ! [ -L superdarn ]; then ln -svf ../../codebase/superdarn/src.idl/app superdarn; fi
 
-    cd ${RSTPATH}/idl
-    ln -svf ../codebase/superdarn/src.idl/startup/startup.pro startup.pro
+  cd ${RSTPATH}/idl
+  if ! [ -L startup.pro ]; then ln -svf ../codebase/superdarn/src.idl/startup/startup.pro startup.pro; fi
 fi
 exit 0
 
