@@ -15,11 +15,7 @@
 </option>
 <option><on>-new</on><od>the input file is a <code>grdmap</code> format file.</od>
 </option>
-
-
 <synopsis><p>Extract statistics from a grid file.</p></synopsis>
-
-
 <description><p>Extracts the scatter statistics from a grid file.</p>
 <p>The number of stations, their identifier codes and the number of vectors that they contribute to each record is extracted and written to standard output.
 Each record in the grid file produces a single line of output containing the full start and end times of the record:</p>
@@ -28,9 +24,9 @@ Each record in the grid file produces a single line of output containing the ful
 
 <quote><em>myear mmonth mday mhour mminute mseconds...</em></quote>
 
-<p>The remainder of the line lists the number of stations in the record followed by each stations identifier number, the total number of vectors in the record, and the number of vectors associated with each station:</p>
+<p>The remainder of the line lists the total number of vectors and stations in the record followed by the number of vectors associated with each station and each station's identifier number:</p>
 
-<quote><em>nid idA idB idC...idn  nvec vecA vecB vecC...vecn</em></quote>
+<quote><em>nvec nid vecA vecB vecC...vecn idA idB idC...idn</em></quote>
 </description>
 <example>
 <command>extract_grid 19981020.grd</command>
@@ -41,7 +37,5 @@ Each record in the grid file produces a single line of output containing the ful
 <command>extract_grid -new -mid 19991120.grdmap &gt; 19991120.sct</command>
 <description>Extract the scatter statistics from the grid file "<code>19991120.grdmap</code>" to produce the output file "<code>19991120.sct</code>". The middle time of each record is recorded in the file.</description>
 </example>
-
-
 
 </binary>
