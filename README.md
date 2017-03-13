@@ -86,8 +86,6 @@ your computer.
    In order to load the environment variables you just setup, you'll need to close your current terminal and
    open a new terminal.
 
-   Note: to compile without any IDL dependencies, comment out the DLMPATH entry in ~/rst/.profile/idl.bash
-
 2. Run `make.build` from the command line.  This runs a helper script that sets up other 
 compiling code.  The source code for make.build can be found in ~/rst/build/script/
 
