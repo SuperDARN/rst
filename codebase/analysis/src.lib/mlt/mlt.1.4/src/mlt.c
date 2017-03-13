@@ -32,7 +32,7 @@
 #include <math.h>
 #include "rtime.h"
 #include "aacgm.h"
-#include "AstAlg.h"
+#include "astalg.h"
 
 
 static double sol_dec_old=0;
