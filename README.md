@@ -3,54 +3,24 @@ Radar Software Toolkit
 
 In addition to this code, you will need the following packages:
 
-*Debian 8.7*
-
-- gcc
-- libhdf5-serial-dev
-- libnetcdf-dev
-- libncurses
-- libpng12-dev
-- libx11-dev
-- libxext-dev
-- netpbm
-
-*Mint 18.1*
-
-- libc6-dev
-- libncurses5-dev
-- libnetcdf-dev
-- libpng16-dev
-- libx11-dev
-- libxext-dev
-
-*OpenSUSE 42.2*
-
-- gcc
-- hdf5-devel
-- libpng16-devel
-- libX11-devel
-- libXext6
-- libXext-devel
-- netcdf
-- netcdf-devel
-- ncurses-devel
-- zlib-devel
-
-*Ubuntu 16.04*
-
-- libhdf5-serial-dev
-- libncurses-dev
-- libnetcdf-dev
-- libpng12-dev
-- libx11-dev
-- libxext-dev
-- netpbm
+Debian 8.7 | Mint 18.1 | OpenSUSE 42.2 | Ubuntu 16.04
+---------- | --------- | ------------- | ------------
+gcc | libc6-dev | gcc | libhdf5-serial-dev
+libhdf5-serial-dev | libncurses5-dev | hdf5-devel | libncurses-dev
+libnetcdf-dev | libnetcdf-dev | libpng16-devel | libnetcdf-dev
+libncurses | libpng16-dev | libX11-devel | libpng12-dev
+libpng12-dev | libx11-dev | libXext6 | libx11-dev
+libx11-dev | libxext-dev | libXext-devel | libxext-dev
+libxext-dev | | netcdf | netpbm
+netpbm | | netcdf-devel |
+| | ncurses-devel |
+| | zlib-devel |
 
 You will also need the CDF (Common Data Format) library which can be downloaded from NASA.
 You can find the latest release at: http://cdf.gsfc.nasa.gov/
 
 
-##Install notes:
+## Install notes:
 
 
 1. Upon cloning the repository (with git clone or downloading zip file), make sure the RST
