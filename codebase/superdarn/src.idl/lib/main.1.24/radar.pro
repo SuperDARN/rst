@@ -607,12 +607,14 @@ pro RadarFldPnth,gdlat,gdlon,psi,bore,fh,r,frho,flat,flon,chisham=chisham
         B = [0.0191271, -0.178640, -0.354557]
         C = [6.68283e-5, 1.81405e-4, 9.39961e-5]
 
-        if r lt 790 then $
+        if r lt 787.5 then $
             xh = A[0] + B[0]*r + C[0]*r*r $
-        else if r le 2130 then $
+        else if r le 2137.5 then $
             xh = A[1] + B[1]*r + C[1]*r*r $
         else $
             xh = A[2] + B[2]*r + C[2]*r*r
+        
+        if (r lt 115) then xh=(r/115.0D)*112.0D
     endif else begin
         ; Standard virtual height model
         if (fh le 150) then xh=fh $
@@ -650,7 +652,7 @@ pro RadarFldPnth,gdlat,gdlon,psi,bore,fh,r,frho,flat,flon,chisham=chisham
     
         ; Need to calculate actual elevation angle for 1.5-hop propagation
         ; when using Chisham model for coning angle correction
-        if keyword_set(chisham) and r gt 2130 then begin
+        if keyword_set(chisham) and r gt 2137.5 then begin
             gamma = acos((rrad*rrad + frho*frho - r*r)/(2.0*rrad*frho))
             beta = asin(rrad*sin(gamma/3.0)/(r/3.0))
             rel_chisham = !PI/2.0 - beta - gamma/3.

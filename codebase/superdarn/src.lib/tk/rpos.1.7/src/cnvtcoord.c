@@ -197,9 +197,11 @@ void fldpnth(double gdlat, double gdlon, double psi, double bore,
         double B_const[3]={0.0191271,-0.178640,-0.354557};
         double C_const[3]={6.68283e-5,1.81405e-4,9.39961e-5};
 
-        if (r<790) xh=A_const[0]+B_const[0]*r+C_const[0]*r*r;
-        else if (r<=2130) xh=A_const[1]+B_const[1]*r+C_const[1]*r*r;
+        if (r<787.5) xh=A_const[0]+B_const[0]*r+C_const[0]*r*r;
+        else if (r<=2137.5) xh=A_const[1]+B_const[1]*r+C_const[1]*r*r;
         else xh=A_const[2]+B_const[2]*r+C_const[2]*r*r;
+        
+        if (r<115) xh=(r/115.0)*112.0;
     } else {
         /* Standard virtual height model */
         if (fh<=150) xh=fh;
@@ -232,7 +234,7 @@ void fldpnth(double gdlat, double gdlon, double psi, double bore,
 
         /* Need to calculate actual elevation angle for 1.5-hop propagation
          * when using Chisham model for coning angle correction */
-        if ((chisham) && (r>2130)) {
+        if ((chisham) && (r>2137.5)) {
             gmma = acosd((rrad*rrad + *frho**frho - r*r )/(2.0*rrad**frho));
             beta = asind(rrad*sind(gmma/3.0)/(r/3.0));
             xel = 90.0 - beta - (gmma/3.0);
