@@ -13,8 +13,8 @@ libpng12-dev | libx11-dev | libXext6 | libx11-dev
 libx11-dev | libxext-dev | libXext-devel | libxext-dev
 libxext-dev | | netcdf | netpbm
 netpbm | | netcdf-devel |
-| | ncurses-devel |
-| | zlib-devel |
+ | | ncurses-devel |
+ | | zlib-devel |
 
 You will also need the CDF (Common Data Format) library which can be downloaded from NASA.
 You can find the latest release at: http://cdf.gsfc.nasa.gov/
