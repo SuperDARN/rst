@@ -204,7 +204,7 @@ function open_istp_cdf,fname,sat=sat,dir=dir,inst=inst,datestr=datestr
     date1 = ' '
     read,date1
     if (strlen(date1) Eq 0) then begin
-      ;fname = pickfile(filter="*.cdf", path=dir)
+      ;fname = dialog_pickfile(filter="*.cdf", path=dir)
       flag = 1
     endif
   endelse
