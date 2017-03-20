@@ -69,6 +69,7 @@ int GeoLocBeam(struct RadarSite *site,int year,
   double geoazm,elv,magazm;
 
   int chisham=0;
+  int old_aacgm=0;
 
   for (n=0;n<geol->num;n++) {
     if (geol->bm[n].bm !=bm->bm) continue;
@@ -141,7 +142,7 @@ int GeoLocBeam(struct RadarSite *site,int year,
     geol->bm[n].mlon[2][rng]=mlon;
     if (rng<bm->nrang) {
       RPosInvMag(bm->bm,rng,year,site,bm->frang,bm->rsep,bm->rxrise,
-              300.0,&mlat,&mlon,&magazm,chisham);
+              300.0,&mlat,&mlon,&magazm,chisham,old_aacgm);
       geol->bm[n].mlat[1][rng]=mlat;
       geol->bm[n].mlon[1][rng]=mlon;
       geol->bm[n].mazm[rng]=magazm;

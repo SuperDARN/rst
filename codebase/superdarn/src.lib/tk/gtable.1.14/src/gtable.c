@@ -264,7 +264,7 @@ int GridTableFindPoint(struct GridTable *ptr, int ref) {
 int GridTableAddBeam(struct GridTable *ptr,
                      struct RadarSite *pos, double alt,
                      double tval, struct RadarBeam *bm,
-                     int chisham) {
+                     int chisham, int old_aacgm) {
 
     int yr,mo,dy,hr,mt;
     double sc;
@@ -333,7 +333,7 @@ int GridTableAddBeam(struct GridTable *ptr,
          * position */
         s=RPosInvMag(b->bm,r,yr,pos,
                b->frang,b->rsep,b->rxrise,
-               alt,&lat,&lon,&azm,chisham);
+               alt,&lat,&lon,&azm,chisham,old_aacgm);
 
         /* If magnetic latitude/longitude/azimuth calculation failed then 
          * break out of loop */
@@ -441,7 +441,7 @@ int GridTableFindBeam(struct GridTable *ptr, struct RadarBeam *bm) {
  **/
 int GridTableMap(struct GridTable *ptr, struct RadarScan *scan,
                  struct RadarSite *pos, int tlen, int iflg, double alt,
-                 int chisham) {
+                 int chisham, int old_aacgm) {
 
     double freq=0,noise=0;
     double variance=0;
@@ -481,7 +481,7 @@ int GridTableMap(struct GridTable *ptr, struct RadarScan *scan,
         /* If beam not found, add a new beam to GridTable structure */
         if (b==-1) {
             /* map a new beam */
-            b=GridTableAddBeam(ptr,pos,alt,tm,&scan->bm[n],chisham);
+            b=GridTableAddBeam(ptr,pos,alt,tm,&scan->bm[n],chisham,old_aacgm);
             if (b==-1) break;
         }
 
