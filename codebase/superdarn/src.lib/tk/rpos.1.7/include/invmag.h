@@ -35,6 +35,7 @@ int RPosRngBmAzmElv(int bm,int rn,int year,
 
 int RPosInvMag(int bm,int rn,int year,struct RadarSite *hdw,double frang,
                double rsep,double rx,double height,
-               double *mlat,double *mlon,double *azm,int chisham);
+               double *mlat,double *mlon,double *azm,
+               int chisham,int old_aacgm);
 
 #endif
