@@ -9,26 +9,18 @@
 
 export BUILD="${RSTPATH}/build"
 export CODEBASE="${RSTPATH}/codebase"
-export RPKG="${RSTPATH}/rpkg"
 export LOGPATH="${RSTPATH}/log"
 export DOCPATH="${RSTPATH}/doc"
 
-export GITURLBASE="http://superdarn.jhuapl.edu/git"
-
-export WWWPATH="/www/superdarn/htdocs/doc"
+export WWWPATH="${DOCPATH}/www"
 export URLBASE="/doc"
 
 export LIBPATH="${RSTPATH}/lib"
 export BINPATH="${RSTPATH}/bin"
 export IPATH="${RSTPATH}/include"
 
-export USR_CODEBASE="${RSTPATH}/usr/codebase"
-export USR_LIBPATH="${RSTPATH}/usr/lib"
-export USR_BINPATH="${RSTPATH}/usr/bin"
-export USR_IPATH="${RSTPATH}/usr/include"
-
-export PATH="${PATH}:${BUILD}/bin:${BUILD}/script:${RSTPATH}/bin:${RSTPATH}/usr/bin:${RSTPATH}/script"
-export LD_LIBRARY_PATH="${LIBPATH}:${USR_LIBPATH}:/usr/local/cdf/lib"
+export PATH="${PATH}:${BUILD}/bin:${BUILD}/script:${RSTPATH}/bin:${RSTPATH}/script"
+export LD_LIBRARY_PATH="${LIBPATH}:/usr/local/cdf/lib"
 
 #####################################################################
 #                                                                   #

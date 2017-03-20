@@ -1,4 +1,4 @@
-# idl.tcsh
+# idl.bash
 # ========
 
 # IDL header directory
@@ -13,7 +13,7 @@ export DLMPATH="${RSTPATH}/dlm"
 
 export IDL_PATH="<IDL_DEFAULT>:+/${RSTPATH}/idl/lib"
 export IDL_DLM_PATH="<IDL_DEFAULT>:${RSTPATH}/dlm"
-# export IDL_STARTUP="${RSTPATH}/idl/startup.pro"
+export IDL_STARTUP="${RSTPATH}/idl/startup.pro"
 
 # Makefile prototype for IDL DLMs
 

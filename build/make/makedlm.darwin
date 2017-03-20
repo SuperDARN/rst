@@ -15,7 +15,7 @@ SUF=so
 VSTR=$(shell get.version ${CURDIR}/..)
 
 LFLAGS= -Wl,-rpath,@loader_path/../lib/ -Wl,-rpath,@loader_path/../../lib/ \
-          -L/opt/local/lib -L$(LIBPATH) -L$(USR_LIBPATH)
+          -L/opt/local/lib -L$(LIBPATH)
 
 
 .c.o:
