@@ -280,7 +280,8 @@ int main(int argc,char *argv[])
 				errors[vbin][tbin][2][2] += pow(lambda/((double)t_d*1.e-3*2.*3.14)-fitlm->rng[i].w_l,2); /*lmfit*//*
 
 				fprintf(stderr,"%lf  %lf  %lf\n",pow((double)t_d*1.e-3-lambda/(fitacf->rng[i].w_l*2.*3.14159),2),
-								pow((double)t_d*1.e-3-lambda/(fitex->rng[i].w_l*2.*3.14159),2),pow((double)t_d*1.e-3-lambda/(fitlm->rng[i].w_l*2.*3.14159),2));*/
+								pow((double)t_d*1.e-3-lambda/(fitex->rng[i].w_l*2.*3.14159),2),pow((double)t_d*1.e-3-lambda/(fitlm->rng[i].w_l*
+.*3.14159),2));*/
 
 				/*fourth, absolute decay time*/
 				errors[vbin][tbin][0][3] += (double)t_d*1.e-3-lambda/(fitacf->rng[i].w_l*2.*3.14159); /*fitacf*/
@@ -290,7 +291,8 @@ int main(int argc,char *argv[])
 				if(vel == 550 && num[vbin][tbin] < 10)
 					fprintf(stderr,"%d-%d-%d %d:%d:%d  %lf  %lf  %lf  %lf  %lf  %lf  %lf\n",prm->time.yr,prm->time.mo,
 											prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,(double)t_d*1.e-3,
-											lambda/(fitacf->rng[i].w_l*2.*3.14159),lambda/(fitex->rng[i].w_l*2.*3.14159),lambda/(fitlm->rng[i].w_l*2.*3.14159),
+											lambda/(fitacf->rng[i].w_l*2.*3.14159),lambda/(fitex->rng[i].w_l*2.*3.14159),lambda/(fitlm->rng[i].w_l*2.*3.
+4159),
 											pow((double)t_d*1.e-3-lambda/(fitacf->rng[i].w_l*2.*3.14159),2),
 											pow((double)t_d*1.e-3-lambda/(fitex->rng[i].w_l*2.*3.14159),2),
 											pow((double)t_d*1.e-3-lambda/(fitlm->rng[i].w_l*2.*3.14159),2));
@@ -341,7 +343,8 @@ int main(int argc,char *argv[])
 			for(k=0;k<5;k++)
 				if(k % 2 == 0)
 					fprintf(stdout,"%f  %f  %lf  %lf  %lf  %lf\n",i*100.+50.,(j+1)*1.e-2,
-									sqrt(errors[i][j][0][k]/num[i][j]),sqrt(errors[i][j][1][k]/num[i][j]),sqrt(errors[i][j][2][k]/num[i][j]),num[i][j]);
+									sqrt(errors[i][j][0][k]/num[i][j]),sqrt(errors[i][j][1][k]/num[i][j]),sqrt(errors[i][j][2][k]/num[i][j]),num[i
+[j]);
 				else
 					fprintf(stdout,"%f  %f  %lf  %lf  %lf  %lf\n",i*100.+50.,(j+1)*1.e-2,
 									errors[i][j][0][k]/num[i][j],errors[i][j][1][k]/num[i][j],errors[i][j][2][k]/num[i][j],num[i][j]);

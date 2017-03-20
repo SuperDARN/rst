@@ -4,27 +4,7 @@
 */
 
 /*
- LICENSE AND DISCLAIMER
- 
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+   See license.txt
 */
 
 #include <stdio.h>
@@ -38,9 +18,11 @@
 
 
 
-#define BLOCK1 "st_id nvec freq0 major_rev minor_rev prog_id noise_mean noise_sd gsct v_min v_max p_min p_max w_min w_max ve_min ve_max"
+#define BLOCK1 "st_id nvec freq0 major_rev minor_rev prog_id noise_mean noise_sd gsct v_min v_max p_min p_max w_min w_m
+x ve_min ve_max"
 
-#define BLOCK2 "st_id chn nvec freq0 major_rev minor_rev prog_id noise_mean noise_sd gsct v_min v_max p_min p_max w_min w_max ve_min ve_max"
+#define BLOCK2 "st_id chn nvec freq0 major_rev minor_rev prog_id noise_mean noise_sd gsct v_min v_max p_min p_max w_min
+w_max ve_min ve_max"
 
 
 #define BLOCK3 "gmlong gmlat kvect st_id grid_index vlos vlos_sd"

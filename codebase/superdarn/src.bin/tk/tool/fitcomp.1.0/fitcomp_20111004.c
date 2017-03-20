@@ -396,7 +396,8 @@ int main(int argc,char *argv[])
 				errors[vbin][tbin][2][2] += pow((double)t_d*1.e-3-lambda/(fitlm->rng[i].w_l*2.*3.14159),2); /*lmfit*//*
 
 				fprintf(stderr,"%lf  %lf  %lf\n",pow((double)t_d*1.e-3-lambda/(fitacf->rng[i].w_l*2.*3.14159),2),
-								pow((double)t_d*1.e-3-lambda/(fitex->rng[i].w_l*2.*3.14159),2),pow((double)t_d*1.e-3-lambda/(fitlm->rng[i].w_l*2.*3.14159),2));*/
+								pow((double)t_d*1.e-3-lambda/(fitex->rng[i].w_l*2.*3.14159),2),pow((double)t_d*1.e-3-lambda/(fitlm->rng[i].w_l*
+.*3.14159),2));*/
 
 				/*fourth, absolute decay time*/
 				errors[vbin][tbin][0][3] += lambda/(fitacf->rng[i].w_l*2.*3.14159)-(double)t_d*1.e-3; /*fitacf*/
@@ -470,7 +471,8 @@ int main(int argc,char *argv[])
 				if(vel == 550 && num[vbin][tbin] < 10)
 					fprintf(stderr,"%d-%d-%d %d:%d:%d  %lf  %lf  %lf  %lf  %lf  %lf  %lf\n",prm1->time.yr,prm1->time.mo,
 											prm1->time.dy,prm1->time.hr,prm1->time.mt,prm1->time.sc,(double)t_d*1.e-3,
-											lambda/(fitacf->rng[i].w_l*2.*3.14159),lambda/(fitex->rng[i].w_l*2.*3.14159),lambda/(fitlm->rng[i].w_l*2.*3.14159),
+											lambda/(fitacf->rng[i].w_l*2.*3.14159),lambda/(fitex->rng[i].w_l*2.*3.14159),lambda/(fitlm->rng[i].w_l*2.*3.
+4159),
 											pow((double)t_d*1.e-3-lambda/(fitacf->rng[i].w_l*2.*3.14159),2),
 											pow((double)t_d*1.e-3-lambda/(fitex->rng[i].w_l*2.*3.14159),2),
 											pow((double)t_d*1.e-3-lambda/(fitlm->rng[i].w_l*2.*3.14159),2));*//*
@@ -478,7 +480,8 @@ int main(int argc,char *argv[])
 				if(fabs(((double)t_d*1.e-3-lambda/(fitex->rng[i].w_l*2.*3.14159))/((double)t_d*1.e-3)) > 2.)
 					fprintf(stderr,"%d-%d-%d %d:%d:%d  %lf  %lf  %lf  %lf  %lf  %lf  %lf\n",prm1->time.yr,prm1->time.mo,
 											prm1->time.dy,prm1->time.hr,prm1->time.mt,prm1->time.sc,(double)t_d*1.e-3,
-											lambda/(fitacf->rng[i].w_l*2.*3.14159),lambda/(fitex->rng[i].w_l*2.*3.14159),lambda/(fitlm->rng[i].w_l*2.*3.14159),
+											lambda/(fitacf->rng[i].w_l*2.*3.14159),lambda/(fitex->rng[i].w_l*2.*3.14159),lambda/(fitlm->rng[i].w_l*2.*3.
+4159),
 											pow((double)t_d*1.e-3-lambda/(fitacf->rng[i].w_l*2.*3.14159),2),
 											pow((double)t_d*1.e-3-lambda/(fitex->rng[i].w_l*2.*3.14159),2),
 											pow((double)t_d*1.e-3-lambda/(fitlm->rng[i].w_l*2.*3.14159),2));*//*
@@ -486,7 +489,8 @@ int main(int argc,char *argv[])
 					if(fitacf->rng[i].w_l < 0.)
 					fprintf(stderr,"%d-%d-%d %d:%d:%d  %lf  %lf  %lf  %lf  %lf  %lf  %lf\n",prm1->time.yr,prm1->time.mo,
 											prm1->time.dy,prm1->time.hr,prm1->time.mt,prm1->time.sc,(double)t_d*1.e-3,
-											lambda/(fitacf->rng[i].w_l*2.*3.14159),lambda/(fitex->rng[i].w_l*2.*3.14159),lambda/(fitlm->rng[i].w_l*2.*3.14159),
+											lambda/(fitacf->rng[i].w_l*2.*3.14159),lambda/(fitex->rng[i].w_l*2.*3.14159),lambda/(fitlm->rng[i].w_l*2.*3.
+4159),
 											pow((double)t_d*1.e-3-lambda/(fitacf->rng[i].w_l*2.*3.14159),2),
 											pow((double)t_d*1.e-3-lambda/(fitex->rng[i].w_l*2.*3.14159),2),
 											pow((double)t_d*1.e-3-lambda/(fitlm->rng[i].w_l*2.*3.14159),2));*/
@@ -541,7 +545,8 @@ int main(int argc,char *argv[])
 			for(k=0;k<5;k++)
 				if(k % 2 == 0)
 					fprintf(stdout,"%f  %f  %d  %lf  %lf  %lf  %lf\n",i*100.+50.,(j+1)*1.e-2,k,
-									sqrt(errors[i][j][0][k]/num[i][j][0]),sqrt(errors[i][j][1][k]/num[i][j][1]),sqrt(errors[i][j][2][k]/num[i][j][2]),num[i][j][2]);
+									sqrt(errors[i][j][0][k]/num[i][j][0]),sqrt(errors[i][j][1][k]/num[i][j][1]),sqrt(errors[i][j][2][k]/num[i][j][
+]),num[i][j][2]);
 				else
 					fprintf(stdout,"%f  %f  %d  %lf  %lf  %lf  %lf\n",i*100.+50.,(j+1)*1.e-2,k,
 									errors[i][j][0][k]/num[i][j][0],errors[i][j][1][k]/num[i][j][1],errors[i][j][2][k]/num[i][j][2],num[i][j][2]);

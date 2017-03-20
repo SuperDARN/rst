@@ -1005,7 +1005,8 @@ void lmfit(struct RadarParm *prm,struct RawData *raw,
         imf = lag0pwrf*(iratf*exp(-1.0*tau/t_if)*sin(tau*f_if)+
                       gratf*exp(-1.*tau/t_sf)*sin(tau*f_sf));/*
 
-				fprintf(stderr,"%d  %lf  %lf  %lf  %lf  %lf\n",L,raw->acfd[0][R*prm->mplgs+L],ref,raw->acfd[1][R*prm->mplgs+L],imf,sqrt(pow(raw->acfd[0][R*prm->mplgs+L]-ref,2) + pow(raw->acfd[1][R*prm->mplgs+L]-imf,2)));*/
+				fprintf(stderr,"%d  %lf  %lf  %lf  %lf  %lf\n",L,raw->acfd[0][R*prm->mplgs+L],ref,raw->acfd[1][R*prm->mplgs+L],imf,
+qrt(pow(raw->acfd[0][R*prm->mplgs+L]-ref,2) + pow(raw->acfd[1][R*prm->mplgs+L]-imf,2)));*/
 
         acferr += (pow(raw->acfd[0][R*prm->mplgs+L]-ref,2) + pow(raw->acfd[1][R*prm->mplgs+L]-imf,2))*lagpwr[lag]/pwr;
       }
@@ -1016,7 +1017,8 @@ void lmfit(struct RadarParm *prm,struct RawData *raw,
 
       int iflg = (result.status > 0 && fitted_power > minpwr && iratf*lag0pwrf > 2.*acferr);
 
-			fprintf(stderr,"%lf  %lf  %lf  %lf  %lf  %lf\n",w_if,v_if,fitted_power,raw->acfd[0][R*prm->mplgs],iratf*lag0pwrf,2.*acferr);
+			fprintf(stderr,"%lf  %lf  %lf  %lf  %lf  %lf\n",w_if,v_if,fitted_power,raw->acfd[0][R*prm->mplgs],iratf*lag0pwrf,2.*
+cferr);
 
 			
 			if(iflg)

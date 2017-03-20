@@ -195,7 +195,8 @@ int main(int argc,char *argv[])
 	do
 	{
 
-		fprintf(stderr,"%d  %d  %d  %d  %d  %d\n",prm->time.yr,prm->time.mo,prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc);
+		fprintf(stderr,"%d  %d  %d  %d  %d  %d\n",prm->time.yr,prm->time.mo,prm->time.dy,prm->time.hr,prm->time.mt,prm->time.
+c);
 
 		double lambda = c/(prm->tfreq*1e3);
 

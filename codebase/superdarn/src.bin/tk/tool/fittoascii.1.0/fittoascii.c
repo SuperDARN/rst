@@ -110,8 +110,10 @@ int main(int argc,char *argv[])
 	{
 		if((prm->channel == 0 || prm->channel == 1)  && prm->bmnum == 10)
 		{
-			fprintf(stdout,"%d  %d  %d  %d  %d  %d\n",prm->time.yr,prm->time.mo,prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc);
-			fprintf(stdout,"%d  %d  %d  %lf  %d  %d  %d  %d  %d  %d\n",prm->cp,prm->tfreq,prm->bmnum,prm->noise.search,prm->nave,prm->lagfr,prm->mpinc,prm->smsep,prm->rsep,prm->nrang);
+			fprintf(stdout,"%d  %d  %d  %d  %d  %d\n",prm->time.yr,prm->time.mo,prm->time.dy,prm->time.hr,prm->time.mt,prm->time
+sc);
+			fprintf(stdout,"%d  %d  %d  %lf  %d  %d  %d  %d  %d  %d\n",prm->cp,prm->tfreq,prm->bmnum,prm->noise.search,prm->nave
+prm->lagfr,prm->mpinc,prm->smsep,prm->rsep,prm->nrang);
 			fprintf(stderr,"%d\n",prm->nrang);
 			for(i=0;i<prm->nrang;i++)
 			{

@@ -945,7 +945,8 @@ void lmfit(struct RadarParm *prm,struct RawData *raw,
 
 
 			sct_flg = (result.status > 0 && fitted_power > minpwr && lag0pwrf > 1.5*acferr && mflg/* && result.npegged == 0*/);
-			fprintf(stdout,"%d  %d  %d  %d  %d  %d\n",R,sct_flg,result.status > 0, fitted_power > minpwr, lag0pwrf > 1.5*acferr, mflg);
+			fprintf(stdout,"%d  %d  %d  %d  %d  %d\n",R,sct_flg,result.status > 0, fitted_power > minpwr, lag0pwrf > 1.5*acferr,
+mflg);
 			if(print)
 				fprintf(stdout,"%d  %d  %d  %lf  %lf  %lf  %lf  %d\n",
 									sct_flg,result.status,result.npegged,t_if,f_if,lag0pwrf,acferr,result.niter);

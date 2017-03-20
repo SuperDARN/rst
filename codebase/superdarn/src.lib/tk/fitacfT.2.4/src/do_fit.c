@@ -178,7 +178,8 @@ int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
   /* 	Now do the fits for each acf */
 
 	if(print && iptr->prm.channel < 2)
-		fprintf(stdout,"%d  %d  %lf  %d  %lf  %d  %d  %d  %d  %lf\n",iptr->prm.nrang,iptr->prm.mplgs,nptr->skynoise,iptr->prm.tfreq,
+		fprintf(stdout,"%d  %d  %lf  %d  %lf  %d  %d  %d  %d  %lf\n",iptr->prm.nrang,iptr->prm.mplgs,nptr->skynoise,iptr->prm
+tfreq,
 						iptr->prm.mpinc*1.e-6,iptr->prm.lagfr,iptr->prm.smsep,iptr->prm.nave,iptr->prm.cp,iptr->prm.vdir);
 
   for (k=0, i=0; k<iptr->prm.nrang;k++)

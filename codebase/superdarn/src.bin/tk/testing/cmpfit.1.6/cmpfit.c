@@ -5,27 +5,7 @@
 
 
 /*
- LICENSE AND DISCLAIMER
- 
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+   See license.txt
 */
 
 #include <stdio.h>
@@ -116,12 +96,15 @@ int main(int argc,char *argv[]) {
 
 
 
-    if (fitA.prms.REV.MAJOR !=fitB.prms.REV.MAJOR) fprintf(stdout,"fit.prms.REV.MAJOR: %d !=%d \n",fitA.prms.REV.MAJOR,fitB.prms.REV.MAJOR);
+    if (fitA.prms.REV.MAJOR !=fitB.prms.REV.MAJOR) fprintf(stdout,"fit.prms.REV.MAJOR: %d !=%d \n",fitA.prms.REV.MAJOR,
+itB.prms.REV.MAJOR);
 
 
-    if (fitA.prms.REV.MINOR !=fitB.prms.REV.MINOR) fprintf(stdout,"fit.prms.REV.MINOR: %d !=%d \n",fitA.prms.REV.MINOR,fitB.prms.REV.MINOR);
+    if (fitA.prms.REV.MINOR !=fitB.prms.REV.MINOR) fprintf(stdout,"fit.prms.REV.MINOR: %d !=%d \n",fitA.prms.REV.MINOR,
+itB.prms.REV.MINOR);
 
-    if (fitA.prms.NPARM !=fitB.prms.NPARM) fprintf(stdout,"fit.prms.NPARM: %d !=%d \n",fitA.prms.NPARM,fitB.prms.NPARM);
+    if (fitA.prms.NPARM !=fitB.prms.NPARM) fprintf(stdout,"fit.prms.NPARM: %d !=%d \n",fitA.prms.NPARM,fitB.prms.NPARM)
+
 
    if (fitA.prms.ST_ID !=fitB.prms.ST_ID) fprintf(stdout,"fit.prms.ST_ID: %d !=%d \n",fitA.prms.ST_ID,fitB.prms.ST_ID);
 
@@ -143,27 +126,33 @@ int main(int argc,char *argv[]) {
 
    if (fitA.prms.ATTEN !=fitB.prms.ATTEN) fprintf(stdout,"fit.prms.ATTEN: %d !=%d \n",fitA.prms.ATTEN,fitB.prms.ATTEN);
 
-   if (fitA.prms.LAGFR !=fitB.prms.LAGFR) fprintf(stdout,"fit.prms.LAGFR: %d !=%d \n",fitA.prms.LAGFR,fitB.prms.LAGFR); 
+   if (fitA.prms.LAGFR !=fitB.prms.LAGFR) fprintf(stdout,"fit.prms.LAGFR: %d !=%d \n",fitA.prms.LAGFR,fitB.prms.LAGFR);
+
 
    if (fitA.prms.SMSEP !=fitB.prms.SMSEP) fprintf(stdout,"fit.prms.SMSEP: %d !=%d \n",fitA.prms.SMSEP,fitB.prms.SMSEP);
 
 
    if (fitA.prms.ERCOD !=fitB.prms.ERCOD) fprintf(stdout,"fit.prms.ERCOD: %d !=%d \n",fitA.prms.ERCOD,fitB.prms.ERCOD);
 
-   if (fitA.prms.AGC_STAT !=fitB.prms.AGC_STAT) fprintf(stdout,"fit.prms.AGC_STAT: %d !=%d \n",fitA.prms.AGC_STAT,fitB.prms.AGC_STAT);
+   if (fitA.prms.AGC_STAT !=fitB.prms.AGC_STAT) fprintf(stdout,"fit.prms.AGC_STAT: %d !=%d \n",fitA.prms.AGC_STAT,fitB.
+rms.AGC_STAT);
 
-   if (fitA.prms.LOPWR_STAT !=fitB.prms.LOPWR_STAT) fprintf(stdout,"fit.prms.LOPWR_STAT: %d !=%d \n",fitA.prms.LOPWR_STAT,fitB.prms.LOPWR_STAT);
+   if (fitA.prms.LOPWR_STAT !=fitB.prms.LOPWR_STAT) fprintf(stdout,"fit.prms.LOPWR_STAT: %d !=%d \n",fitA.prms.LOPWR_ST
+T,fitB.prms.LOPWR_STAT);
 
    if (fitA.prms.NBAUD !=fitB.prms.NBAUD) fprintf(stdout,"fit.prms.NBAUD: %d !=%d \n",fitA.prms.NBAUD,fitB.prms.NBAUD);
 
    if (fitA.prms.NOISE !=fitB.prms.NOISE) fprintf(stdout,"fit.prms.NOISE: %d !=%d \n",fitA.prms.NOISE,fitB.prms.NOISE);
 
-   if (fitA.prms.NOISE_MEAN !=fitB.prms.NOISE_MEAN) fprintf(stdout,"fit.prms.NOISE_MEAN: %d !=%d \n",fitA.prms.NOISE_MEAN,fitB.prms.NOISE_MEAN);
+   if (fitA.prms.NOISE_MEAN !=fitB.prms.NOISE_MEAN) fprintf(stdout,"fit.prms.NOISE_MEAN: %d !=%d \n",fitA.prms.NOISE_ME
+N,fitB.prms.NOISE_MEAN);
 
-   if (fitA.prms.CHANNEL !=fitB.prms.CHANNEL) fprintf(stdout,"fit.prms.CHANNEL: %d !=%d \n",fitA.prms.CHANNEL,fitB.prms.CHANNEL);
+   if (fitA.prms.CHANNEL !=fitB.prms.CHANNEL) fprintf(stdout,"fit.prms.CHANNEL: %d !=%d \n",fitA.prms.CHANNEL,fitB.prms
+CHANNEL);
 
 
-   if (fitA.prms.RXRISE !=fitB.prms.RXRISE) fprintf(stdout,"fit.prms.RXRISE: %d !=%d \n",fitA.prms.RXRISE,fitB.prms.RXRISE);
+   if (fitA.prms.RXRISE !=fitB.prms.RXRISE) fprintf(stdout,"fit.prms.RXRISE: %d !=%d \n",fitA.prms.RXRISE,fitB.prms.RXR
+SE);
 
 
    if (fitA.prms.INTT !=fitB.prms.INTT) fprintf(stdout,"fit.prms.INTT: %d !=%d \n",fitA.prms.INTT,fitB.prms.INTT);
@@ -225,7 +214,8 @@ int main(int argc,char *argv[]) {
 
    if (fitA.noise.lag0 !=fitB.noise.lag0) fprintf(stdout,"fit.noise.lag0: %g !=%g\n",fitA.noise.lag0,fitB.noise.lag0);
 
-   if (fitA.noise.skynoise !=fitB.noise.skynoise) fprintf(stdout,"fit.noise.skynoise: %g !=%g\n",fitA.noise.skynoise,fitB.noise.skynoise);
+   if (fitA.noise.skynoise !=fitB.noise.skynoise) fprintf(stdout,"fit.noise.skynoise: %g !=%g\n",fitA.noise.skynoise,fi
+B.noise.skynoise);
 
  
    for (c=0;c<fitA.prms.NRANG;c++) {

@@ -213,7 +213,8 @@ int main(int argc,char *argv[]) {
 
   fblk=FitACFMake(site,prm->time.yr);
 
-	if(prm->time.hr == tgthr && prm->time.mt == tgtmin && prm->time.sc >= tgtsec && prm->bmnum == tgtbeam && prm->channel != 2)
+	if(prm->time.hr == tgthr && prm->time.mt == tgtmin && prm->time.sc >= tgtsec && prm->bmnum == tgtbeam && prm->channel 
+= 2)
 	{
 		fprintf(stdout,"%d  %d  %d  %d  %d  %d  %d  %d\n",prm->stid,prm->time.yr,prm->time.mo,
 									prm->time.dy,prm->time.hr,prm->time.mt,(int)prm->time.sc,prm->bmnum);
