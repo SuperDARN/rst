@@ -253,6 +253,7 @@ int main(int argc,char *argv[]) {
   int chk;
 
   int chisham=0;
+  int old_aacgm=0;
 
   prm=RadarParmMake();
   fit=FitMake();
@@ -590,7 +591,7 @@ int main(int argc,char *argv[]) {
               else day_output(path,grid,xtd,stcode,channel,"grdmap");
              
            }    
-           GridTableMap(grid,out,site,avlen,iflg,alt,chisham);     
+           GridTableMap(grid,out,site,avlen,iflg,alt,chisham,old_aacgm);     
 	 }    
          if (bxcar) inx++;
          if (inx>2) inx=0;

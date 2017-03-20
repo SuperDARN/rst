@@ -89,7 +89,7 @@
 <name>RPosInvMag</name>
 <location>src.lib/tk/rpos</location>
 <header>superdarn/invmag.h</header>
-<syntax>void RPosInvMag(int bm,int rn,int year,<sn href="&root;/superdarn/src.lib/tk/radar/structRadarSite.html">struct RadarSite</sn> *hdw,double frang, double rsep,double rx,double height, double *mlat,double *mlon,double *azm,int chisham);</syntax>
+<syntax>void RPosInvMag(int bm,int rn,int year,<sn href="&root;/superdarn/src.lib/tk/radar/structRadarSite.html">struct RadarSite</sn> *hdw,double frang, double rsep,double rx,double height, double *mlat,double *mlon,double *azm,int chisham,int old_aacgm);</syntax>
 <description><p>The <fn href="RPosInvMag.html">RPosInvMag</fn> function calculates the invariant magnetic co-ordinates of a radar range-beam cell.</p>
 <p>The arguments <ar>bcrd</ar> and <ar>rcrd</ar> give the beam and range number of the cell.</p>
 <p>The argument <ar>year</ar> defines the year for which the calculatation should be performed.</p> 
@@ -99,6 +99,7 @@
 <p>If the argument <ar>height</ar> is less than or equal to 90 it corresponds to the elevation angle in degrees associated with the calculation, otherwise is corresponds to the height in kilometers.</p>
 <p>The invariant magnetic latitude, longitude and azimuth are stored stored at the locations pointed to by the arguments <ar>mlat</ar>, <ar>mlon</ar>, and <ar>azm</ar>.</p>
 <p>If the argument <ar>chisham</ar> is set to (1) then the Chisham et al. [2008] virtual height model is used instead of the standard model.</p>
+<p>If the argument <ar>old_aacgm</ar> is set to (1) then the old AACGM coefficients are used instead of the v2 coefficients [Shepherd, 2014].</p>
 </description>
 <example type="source">RPosInvMag.c</example>
 </function>

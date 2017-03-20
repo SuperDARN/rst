@@ -63,6 +63,8 @@
 #include "hlpstr.h"
 #include "errstr.h"
 
+#include "aacgm.h"
+#include "aacgmlib_v2.h"
 
 
 struct RadarParm *prm;
@@ -330,6 +332,7 @@ int main(int argc,char *argv[]) {
     int syncflg=1;
 
     int chisham=0;
+    int old_aacgm=0;
 
     unsigned char catflg=0;
 
@@ -459,6 +462,7 @@ int main(int argc,char *argv[]) {
     OptionAdd(&opt,"inertial",'x',&iflg); /* Create grid file in inertial reference frame */
 
     OptionAdd(&opt,"chisham",'x',&chisham); /* Map data using Chisham virtual height model */
+    OptionAdd(&opt,"old_aacgm",'x',&old_aacgm); /* Map data using old AACGM coefficients rather than v2 */
 
     OptionAdd(&opt,"fit",'x',&fitflg);   /* Input file is in the fit format */
     OptionAdd(&opt,"cfit",'x',&cfitflg); /* Input file is in the cfit format */
@@ -764,6 +768,14 @@ int main(int argc,char *argv[]) {
             if (tlen !=0) etime+=tlen;
             else etime+=15+src[0]->ed_time-src[0]->st_time;
         }
+            
+        /* Calculate year, month, day, hour, minute, and second of 
+         * grid start time (needed to load AACGM_v2 coefficients) */
+        TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
+
+        /* Load AACGM coefficients */
+        if (old_aacgm) AACGMInit(yr);
+        else AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
 
         /* This value tracks the number of radar scans which have been
          * loaded for gridding */
@@ -849,7 +861,7 @@ int main(int argc,char *argv[]) {
                 /* Map radar scan data in structure pointed to by 'out' to an
                  * equi-area grid in magnetic coordinates, storing the output
                  * in the grid GridTable structure */
-                s=GridTableMap(grid,out,site,avlen,iflg,alt,chisham);
+                s=GridTableMap(grid,out,site,avlen,iflg,alt,chisham,old_aacgm);
 
                 /* Return an error if mapping failed */
                 if (s !=0) {
@@ -979,6 +991,14 @@ int main(int argc,char *argv[]) {
                 }
 
             }
+        
+            /* Calculate year, month, day, hour, minute, and second of 
+             * grid start time (needed to load AACGM_v2 coefficients) */
+            TimeEpochToYMDHMS(src[index]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
+
+            /* Load AACGM coefficients */
+            if (old_aacgm) AACGMInit(yr);
+            else AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
 
             /* This value tracks the number of radar scans which have been
              * loaded for gridding */
@@ -1059,7 +1079,7 @@ int main(int argc,char *argv[]) {
                     /* Map radar scan data in structure pointed to by 'out' to an
                      * equi-area grid in magnetic coordinates, storing the output
                      * in the grid GridTable structure */
-                    s=GridTableMap(grid,out,site,avlen,iflg,alt,chisham);
+                    s=GridTableMap(grid,out,site,avlen,iflg,alt,chisham,old_aacgm);
 
                     /* Return an error if mapping failed */
                     if (s !=0) {

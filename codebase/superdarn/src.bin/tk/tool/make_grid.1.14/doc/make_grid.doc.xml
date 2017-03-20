@@ -86,6 +86,8 @@
 </option>
 <option><on>-chisham</on><od>calculate the grid file using the Chisham virtual height model.</od>
 </option>
+<option><on>-old_aacgm</on><od>calculate the grid file using old AACGM coefficients rather than v2.</od>
+</option>
 <option><on><ar>fitname</ar></on><od>filename of the <code>fit</code> format file.</od>
 </option>
 <option><on><ar>inxname</ar></on><od>filename of the index file.</od>

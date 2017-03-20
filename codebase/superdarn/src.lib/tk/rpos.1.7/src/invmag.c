@@ -32,6 +32,7 @@
 
 #include "rmath.h"
 #include "aacgm.h"
+#include "aacgmlib_v2.h"
 #include "magcmp.h"
 #include "radar.h"
 #include "rpos.h"
@@ -298,7 +299,8 @@ int RPosRngBmAzmElv(int bm, int rn, int year,
  **/
 int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
                double rsep, double rx, double height,
-               double *mlat, double *mlon, double *azm, int chisham) {
+               double *mlat, double *mlon, double *azm, 
+               int chisham, int old_aacgm) {
 
     double flat,flon,frho;
     double fx,fy,fz;
@@ -387,13 +389,12 @@ int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
     /* Calculate virtual height of range/beam position */
     tmp_ht=frho-gdrho;
 
-    /* Load AACGM coefficients for input year */
-    AACGMInit(year);
-
     /* Convert range/beam position from geocentric latitude/longitude (flat,flon)
      * at virtual height (tmp_ht) to AACGM magnetic latitude/longitude
      * coordinates (mlat,mlon) */
-    AACGMConvert(flat,flon,tmp_ht,mlat,mlon,&dummy,0);
+    if (old_aacgm) s=AACGMConvert(flat,flon,tmp_ht,mlat,mlon,&dummy,0);
+    else s=AACGM_v2_Convert(flat,flon,tmp_ht,mlat,mlon,&dummy,0);
+    if (s==-1) return -1;
 
     /* Calculate pointing direction latitude/longitude (xlat,xlon) given
      * distance (rsep) and bearing (azc) from the radar position (flat,flon)
@@ -403,7 +404,8 @@ int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
     /* Convert pointing direction position from geocentric latitude/longitude
      * (xlat,xlon) at virtual height (tmp_height) to AACGM magnetic
      * latitude/longitude coordinates (nlat,nlon) */
-    s=AACGMConvert(xlat,xlon,tmp_ht,&nlat,&nlon,&dummy,0);
+    if (old_aacgm) s=AACGMConvert(xlat,xlon,tmp_ht,&nlat,&nlon,&dummy,0);
+    else s=AACGM_v2_Convert(xlat,xlon,tmp_ht,&nlat,&nlon,&dummy,0);
     if (s==-1) return -1;
 
     /* Make sure nlon varies between +/- 180 degrees */
