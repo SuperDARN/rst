@@ -656,7 +656,7 @@ pro RadarFldPnth,gdlat,gdlon,psi,bore,fh,r,frho,flat,flon,chisham=chisham
             gamma = acos((rrad*rrad + frho*frho - r*r)/(2.0*rrad*frho))
             beta = asin(rrad*sin(gamma/3.0)/(r/3.0))
             rel_chisham = !PI/2.0 - beta - gamma/3.
-            xel = rel_chisham*!180.0/!pi
+            xel = rel_chisham*180.0/!pi
         endif else $
             xel=rel
 
