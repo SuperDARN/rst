@@ -287,6 +287,7 @@ int main(int argc,char *argv[]) {
     unsigned char vb=0;
 
     char *chnstr=NULL;
+    char *chnstr_fix=NULL;
     char *bmstr=NULL;
 
     char *stmestr=NULL;
@@ -324,6 +325,7 @@ int main(int argc,char *argv[]) {
     unsigned char gsflg=0,ionflg=0,bthflg=0;
     unsigned char nsflg=0,isflg=0;
     int channel=0;
+    int channel_fix=-1;
 
     int syncflg=1;
 
@@ -421,6 +423,7 @@ int main(int argc,char *argv[]) {
     OptionAdd(&opt,"i",'i',&avlen); /* Time interval to store in each grid record in seconds */
 
     OptionAdd(&opt,"cn",'t',&chnstr);   /* Process data from stereo channel a or b */
+    OptionAdd(&opt,"cn_fix",'t',&chnstr_fix);   /* User-defined channel number for output only */
     OptionAdd(&opt,"ebm",'t',&bmstr);   /* Comma separated list of beams to exclude */
     OptionAdd(&opt,"minrng",'i',&minrng); /* Exclude data from gates lower than minrng */
     OptionAdd(&opt,"maxrng",'i',&maxrng); /* Exclude data from gates higher than maxrng */
@@ -489,6 +492,14 @@ int main(int argc,char *argv[]) {
         if (tolower(chnstr[0])=='a') channel=1;
         if (tolower(chnstr[0])=='b') channel=2;
     }
+    
+    /* If 'cn_fix' set then determine appropriate channel for output file */
+    if (chnstr_fix !=NULL) {
+        if (tolower(chnstr_fix[0])=='a') channel_fix=1;
+        if (tolower(chnstr_fix[0])=='b') channel_fix=2;
+        if (tolower(chnstr_fix[0])=='c') channel_fix=3;
+        if (tolower(chnstr_fix[0])=='d') channel_fix=4;
+    }
 
     if (bmstr !=NULL)  parse_ebeam(bmstr);
 
@@ -515,7 +526,8 @@ int main(int argc,char *argv[]) {
     if (vb) vbuf=vstr;
 
     /* Set GridTable channel number according to command line options */
-    if (channel !=-1) grid->chn=channel;
+    if (channel_fix !=-1) grid->chn=channel_fix;
+    else if (channel !=-1) grid->chn=channel;
     else grid->chn=0;
 
     /* Store the velocity, power, width, and velocity error bounding threshold

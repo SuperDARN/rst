@@ -393,7 +393,8 @@ void sim_data(double *t_d, double *t_g, double *t_c, double *v_dop, int * qflg,
             /*calculate phase of scattered signal depending on its location*/
             phase = -4.*PI*(smptime*(v_dop[r]+range_gates[r][i].velo)+range_gates[r][i].space)/lambda;
             /*record scattered signal as a raw sample*/
-            raw_samples[smpnum] += amplitude*(cos(phase) + I*sin(phase));
+            /* raw_samples[smpnum] += amplitude*(cos(phase) + I*sin(phase)); */
+            raw_samples[smpnum] += amp0[r]*amplitude*(cos(phase) + I*sin(phase));
           }
         }
 
@@ -457,7 +458,8 @@ void sim_data(double *t_d, double *t_g, double *t_c, double *v_dop, int * qflg,
             /*calculate phase of scattered signal depending on its location*/
             phase = -4.*PI*(smptime*(v_dop[r]+range_gates[r][i].velo)+range_gates[r][i].space)/lambda;
             /*record scattered signal as a raw sample*/
-            raw_samples[smpnum] += amplitude*(cos(phase) + I*sin(phase));
+            /* raw_samples[smpnum] += amplitude*(cos(phase) + I*sin(phase)); */
+            raw_samples[smpnum] += amp0[r]*amplitude*(cos(phase) + I*sin(phase));
           }
         }
         /*calculate an ACF from the raw samples*/
@@ -541,11 +543,14 @@ void sim_data(double *t_d, double *t_g, double *t_c, double *v_dop, int * qflg,
 	{
     for(i=0;i<n_lags;i++)
     {
-      if(decayflg) out_acfs[r][i] = 1./(pow(r+1,2))*acfs[r][i]*amp0[r]/(nave*pwrtot/numtot);
-			else out_acfs[r][i] = acfs[r][i]*amp0[r]/(nave*pwrtot/numtot);
+      /* if(decayflg) out_acfs[r][i] = 1./(pow(r+1,2))*acfs[r][i]*amp0[r]/(nave*pwrtot/numtot);
+			else out_acfs[r][i] = acfs[r][i]*amp0[r]/(nave*pwrtot/numtot); */
+	if(decayflg) out_acfs[r][i] = 1./(pow(r+1,2))*acfs[r][i];
+		else out_acfs[r][i] = acfs[r][i];
       if(noise_flg)
       {
-        noise_acfs[r][i] *= noise_lev/(nave*npwrtot/nnumtot);
+        /* noise_acfs[r][i] *= noise_lev/(nave*npwrtot/nnumtot); */
+        noise_acfs[r][i] *= noise_lev;
         out_acfs[r][i] += noise_acfs[r][i];
       }
     }
