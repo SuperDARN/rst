@@ -51,17 +51,7 @@ then
   exit 1
 fi
 
-pkgdir=$(find ${RPKG}/${prj} -type d -name "${pkg}*" | sort | tail -1)
-
-if [ ! -d "${pkgdir}" ]
-then
- echo "Failed to locate package"
- exit 1
-fi
-
-ver=$(get.version ${pkgdir})
-
-log="${LOGPATH}/${prj}-${pkg}.build.${ver}"
+log="${LOGPATH}/${prj}-${pkg}.build"
 dtval=$(date +%Y%m%d.%H%M)
 
 
@@ -94,8 +84,6 @@ makeaction() {
   if [ "${module%%/*}" = "codebase" ]
   then
     src=${CODEBASE}/${module#codebase/}
-  else
-    src=${USR_CODEBASE}/${module#usr/codebase/}
   fi
 
   if [ "${mode}" = "stdin" ]
@@ -136,47 +124,61 @@ makemodule() {
 }
 
 
-if [ ! -s "${pkgdir}/build.txt" ]
+if [ ! -s "${BUILD}/script/build.txt" ]
 then
   echo "Failed to locate build table"
   exit 1
 fi
 
 
-## The mpfit seems to be an external library that was folded in during the creation of lmfit.  This
-## is the band-aid way to compile and copy this library into the appropriate directory.  A better
-## solution than this may exist.  -KTS 20150810
+# This modification allows for automatic compilation for systems without IDL
+if [ ! -r ${IDL_IPATH}/idl_export.h ]; then
+  echo "Failed to locate idl_export.h - will not compile IDL libraries or DLMs"
+  if [ -d ${RSTPATH}/codebase/superdarn/src.lib/tk/idl ]; then
+    currentdir=(`pwd`)
+    cd ${RSTPATH}/codebase/superdarn/src.lib/tk
+    tar -P -czvf idl.tar.gz idl
+    rm -R idl
+    cd ${currentdir}
+  fi
+else
+  if [ ! -d ${RSTPATH}/codebase/superdarn/src.lib/tk/idl ]; then
+    if [ -a ${RSTPATH}/codebase/superdarn/src.lib/tk/idl.tar.gz ]; then
+      currentdir=(`pwd`)
+      cd ${RSTPATH}/codebase/superdarn/src.lib/tk
+      tar -xzvf idl.tar.gz
+      rm idl.tar.gz
+      cd ${currentdir}
+    else
+      echo "Failed to locate IDL libraries for DLMs"
+      exit 1
+    fi
+  fi
+fi
 
-# Save current working directory for later
-currentdir=(`pwd`)
-echo "================================================================================"
-echo "Compiling Library:${CODEBASE}/analysis/src.lib/cmpfit-1.2"
-echo "================================================================================"
-
-cd ${CODEBASE}/analysis/src.lib/cmpfit-1.2/
-echo "make clean"
-make clean
-echo "make"
-make
-
-echo "mkdir -p ${LIBPATH}"
-mkdir -p ${LIBPATH}
-
-echo "cp -vp *.a ${LIBPATH}"
-cp -vp *.a ${LIBPATH}
-
-# Get back to the old directory that we were in before
-cd ${currentdir}
 
 mkdir -p ${LOGPATH}
-makemodule hdr ${pkgdir}/build.txt
-makemodule lib ${pkgdir}/build.txt
-makemodule bin ${pkgdir}/build.txt
-if [ -n "${DLMPATH}" ]; then makemodule dlm ${pkgdir}/build.txt; fi
+makemodule hdr ${BUILD}/script/build.txt
+makemodule lib ${BUILD}/script/build.txt
+makemodule bin ${BUILD}/script/build.txt
+if [ -r ${IDL_IPATH}/idl_export.h ]
+then 
+  makemodule dlm ${BUILD}/script/build.txt
+
+  mkdir -p ${RSTPATH}/idl
+  mkdir -p ${RSTPATH}/idl/lib
+  mkdir -p ${RSTPATH}/idl/app
+
+  cd ${RSTPATH}/idl/lib
+  if ! [ -L analysis ]; then ln -svf ../../codebase/analysis/src.idl/lib analysis; fi
+  if ! [ -L general ]; then ln -svf ../../codebase/general/src.idl/lib general; fi
+  if ! [ -L superdarn ]; then  ln -svf ../../codebase/superdarn/src.idl/lib superdarn; fi
+
+  cd ${RSTPATH}/idl/app
+  if ! [ -L superdarn ]; then ln -svf ../../codebase/superdarn/src.idl/app superdarn; fi
+
+  cd ${RSTPATH}/idl
+  if ! [ -L startup.pro ]; then ln -svf ../codebase/superdarn/src.idl/startup/startup.pro startup.pro; fi
+fi
 exit 0
-
-
-
-
-
 
