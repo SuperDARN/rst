@@ -34,7 +34,7 @@
 </option>
 <option><on>-cf <ar>cfname</ar></on><od>read command line options from the file <ar>cfname</ar>.</od>
 </option>
-<option><on>-new</on><od>the input file is a <code>cnvmap</code> format file.</od>
+<option><on>-old</on><od>the input file is a <code>map</code> format file instead of the default <code>cnvmap</code> format file.</od>
 </option>
 <option><on>-sd <ar>yyyymmdd</ar></on><od>plot starting from the date <ar>yyyymmdd</ar>.</od>
 </option>
@@ -56,7 +56,7 @@
 </option>
 <option><on>-hgt <ar>height</ar></on><od>set the height of the plot to <ar>height</ar>.</od>
 </option>
-<option><on>-pad<ar>pad</ar></on><od>set the padding around the edge of the plot to  <ar>pad</ar>.</od>
+<option><on>-pad<ar>pad</ar></on><od>set the padding around the edge of the plot to <ar>pad</ar>.</od>
 </option>
 <option><on>-sf <ar>scale</ar></on><od>set the scale factor (magnification) to <ar>scale</ar>. The default scale factor is 1.</od>
 </option>
@@ -69,6 +69,8 @@
 <option><on>-latmin <ar>latmin</ar></on><od>adjust the scale factor so that the lowest visible latitude is  <ar>latmin</ar>. Applies when the stereographic projection is used.</od>
 </option>
 <option><on>-mag</on><od>use magnetic coordinates.</od>
+</option>
+<option><on>-old_aacgm</on><od>use older AACGM magnetic coordinates instead of the default AACGM-v2 coordinates.</od>
 </option>
 <option><on>-rotate</on><od>rotate the plot so that the local noon is at the top of the plot.</od>
 </option>
