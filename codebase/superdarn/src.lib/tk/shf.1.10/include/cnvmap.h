@@ -28,9 +28,6 @@
  
 */
 
-
-
-
 #ifndef _CNVMAP_H
 #define _CNVMAP_H
 
@@ -48,17 +45,20 @@ struct CnvMapData {
   int error_wt;
   int imf_flag;
   int imf_delay;
-   
-  /* imf values */ 
 
+  /* imf values */ 
   double Bx;
   double By;
   double Bz;
-  
-  char imf_model[2][64]; /* the IMF models used */
-   
+
+  double Vx;
+  double tilt;
+
+  char imf_model[4][64]; /* the statistical model used */
+
   int hemisphere;
 
+  int noigrf;  /* set when IGRF model is _not_ used */
   int fit_order;
   double latmin;
    
@@ -92,21 +92,10 @@ struct CnvMapData {
   int num_bnd;
   double *bnd_lat;
   double *bnd_lon;
-
-
 };
 
 struct CnvMapData *CnvMapMake();
 void CnvMapFree(struct CnvMapData *ptr);
 
-
 #endif
-
-
-
-
-
-
-
-
 
