@@ -41,7 +41,7 @@
 #include "getshc.h"
 #include "shval3.h"
 
-double igrf_date=-1;
+double old_igrf_date=-1;
 
 
 char filmod[256][256];
@@ -81,12 +81,12 @@ int IGRFCall(double date, double flat, double flon,
       fclose(fp);
     }
 
-    if (igrf_date !=date) {
+    if (old_igrf_date !=date) {
       for (i=0;(dtemod[i] !=0) && (dtemod[i]<date);i++);
       if (i==0) return -1;
       i--;
 
-      igrf_date=date;
+      old_igrf_date=date;
       envstr=getenv("IGRF_PATH");
       
       sprintf(file1,"%s/%s",envstr,filmod[i]);
