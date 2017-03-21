@@ -1,7 +1,6 @@
 # Makefile for map_fit
 # ====================
-# Author: R.J.Barnes
-# by R.J.Barnes
+# Author: R.J.Barnes and others
 #
 #
 include $(MAKECFG).$(SYSTEM)
@@ -14,6 +13,8 @@ DSTPATH = $(BINPATH)
 OUTPUT = map_fit
 
 SLIB=-lm -lz
-LIBS= -lcnvmap.1 -lshf.1 -loldcnvmap.1 -lgrd.1 -loldgrd.1 -lradar.1 -laacgm.1 -ldmap.1 -lrfile.1 -lrtime.1 -lopt.1 -lrcnv.1  
+LIBS= -lcnvmap.1 -lshf.1 -loldcnvmap.1 -lgrd.1 -loldgrd.1 -lradar.1 \
+      -ldmap.1 -lrfile.1 -lrtime.1 -lopt.1 -lrcnv.1  
+#      -laacgm.1 -laacgmlib_v2.1 -ligrf_v2 -ldmap.1 -lrfile.1 -lrtime.1 \
 
 include $(MAKEBIN).$(SYSTEM)

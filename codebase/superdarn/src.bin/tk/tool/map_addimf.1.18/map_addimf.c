@@ -1,31 +1,24 @@
 /* map_addimf.c
    =========== 
-   Author: R.J.Barnes
+   Author: R.J.Barnes and others
 */
 
 /*
- LICENSE AND DISCLAIMER
- 
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+   See license.txt
 */
+
+/*
+ * SGS: the wind, ace, etc. functions should be in the respective .c files, not
+ *      in this file. I suspect they are located here to access global
+ *      variables defined in this file.
+ *
+ * SGS: this function should be renamed to reflect the fact that it adds IMF,
+ *      solar wind, tilt and (in the future) activity.
+ *
+ * SGS: add better directory specification
+ *
+ * SGS: add omni data files and functions to read them
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -56,7 +49,7 @@ char *fname=NULL;
 FILE *fp;
 
 struct GridData *grd;
-struct CnvMapData  *map;
+struct CnvMapData *map;
  
 char dpath[256]={"/data"};
 
@@ -124,8 +117,6 @@ int findvalue(int inx,int cnt,double *time,float *data,double tval,float *val) {
   }
   return sinx;
 }
-
-
 
 
 int load_text(FILE *fp,struct imfdata *ptr) {
@@ -314,18 +305,9 @@ int load_ace() {
 
 
 
-int main(int argc,char *argv[]) {
-
- /* File format transistion
-   * ------------------------
-   * 
-   * When we switch to the new file format remove any reference
-   * to "new". Change the command line option "new" to "old" and
-   * remove "old=!new".
-   */
-
+int main(int argc,char *argv[])
+{
   int old=0;
-  int new=0;
 
   int arg;
   unsigned char help=0;
@@ -339,9 +321,8 @@ int main(int argc,char *argv[]) {
   struct delaytab *dtable=NULL;
 
   char *iname=NULL;
- 
 
-  unsigned char aflg=0,wflg=0;
+  unsigned char aflg=0,wflg=0,oflg=0;
 
   int yr,mo,dy,hr,mt;
   double sc;
@@ -354,6 +335,9 @@ int main(int argc,char *argv[]) {
   float dBy=0;
   float dBz=0;
 
+  float dVx=0;
+  float dtilt=-99;
+
   char *pstr=NULL;
   char *dstr=NULL;
   char *estr=NULL;
@@ -361,6 +345,10 @@ int main(int argc,char *argv[]) {
   float tmp[3];
 
   int j,k;
+
+  /* function pointers for file reading/writing (old and new) */
+  int (*Map_Read)(FILE *, struct CnvMapData *, struct GridData *);
+  int (*Map_Write)(FILE *, struct CnvMapData *, struct GridData *);
 
   grd=GridMake();
   map=CnvMapMake(); 
@@ -371,10 +359,11 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
 
-  OptionAdd(&opt,"new",'x',&new);
+  OptionAdd(&opt,"old",'x',&old);
   OptionAdd(&opt,"vb",'x',&vb);
   OptionAdd(&opt,"ace",'x',&aflg);
   OptionAdd(&opt,"wind",'x',&wflg);
+  OptionAdd(&opt,"omni",'x',&oflg);
   OptionAdd(&opt,"if",'t',&iname);
   OptionAdd(&opt,"df",'t',&dname);
 
@@ -385,11 +374,12 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"by",'f',&dBy);
   OptionAdd(&opt,"bz",'f',&dBz);
 
+  OptionAdd(&opt,"vx",'f',&dVx);
+  OptionAdd(&opt,"tilt",'f',&dtilt);
+
   OptionAdd(&opt,"ex",'t',&estr);
 
   arg=OptionProcess(1,argc,argv,&opt,NULL);
-
-  old=!new;
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
@@ -401,13 +391,11 @@ int main(int argc,char *argv[]) {
     exit(0);
   }
 
-
   if (pstr !=NULL) strcpy(dpath,pstr);
   if (dstr !=NULL) delay=strtime(dstr);  
   if (estr !=NULL) extent=strtime(estr);
   
   if (arg !=argc) fname=argv[arg];
-
 
   if (dname !=NULL) {
     fp=fopen(dname,"r");
@@ -425,7 +413,6 @@ int main(int argc,char *argv[]) {
     }
   }
 
-
   if (fname !=NULL) {
     fp=fopen(fname,"r");
     if (fp==NULL) {
@@ -436,20 +423,25 @@ int main(int argc,char *argv[]) {
 
   if (dtable !=NULL) delay=dtable->delay[0];
 
-  if (old) s=OldCnvMapFread(fp,map,grd);
-  else s=CnvMapFread(fp,map,grd);
+  /* set function pointer to read/write old or new */
+  if (old) {
+    Map_Read  = &OldCnvMapFread;
+    Map_Write = &OldCnvMapFwrite;
+  } else {
+    Map_Read  = &CnvMapFread;
+    Map_Write = &CnvMapFwrite;
+  }
+
+  s = (*Map_Read)(fp,map,grd);
 
   st_time=map->st_time-delay;
   ed_time=map->st_time-delay+extent; 
 
   if (wflg==1) load_wind();
   else if (aflg==1) load_ace();
+  else if (oflg==1) load_omni();
     
-
- 
-
-  j=0;
-  k=0;
+  j = k = 0;
 
   do {  
 
@@ -458,46 +450,48 @@ int main(int argc,char *argv[]) {
       if (k==0) delay=dtable->delay[0];
       else delay=dtable->delay[k-1];
     }  
-    
  
-    tme=map->st_time-delay;
-    map->Bx=dBx;
-    map->By=dBy;
-    map->Bz=dBz;
-    map->imf_flag=9;
+    tme = map->st_time-delay;
+    map->Bx = dBx;
+    map->By = dBy;
+    map->Bz = dBz;
+    if (old) map->Bx = dVx;  /* SGS: consider modifying the map structure */
+    else     map->Vx = dVx;
 
-    if (imf.cnt !=0) {
+    map->imf_flag = 9;
+
+    if (imf.cnt != 0) {
       findvalue(0,imf.cnt,imf.time,imf.BGSMc,tme,tmp);
-      map->Bx=tmp[0];
-      map->By=tmp[1];
-      map->Bz=tmp[2];
+      map->Bx = tmp[0];
+      map->By = tmp[1];
+      map->Bz = tmp[2];
+      /* SGS: what about Vx? */
     }
-    map->imf_delay=delay/60;
-    if (old) OldCnvMapFwrite(stdout,map,grd);
-    else CnvMapFwrite(stdout,map,grd);
+    map->imf_delay = delay/60;
+
+    (*Map_Write)(stdout,map,grd);
 
     if (vb==1) {
        TimeEpochToYMDHMS(map->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
-       fprintf(stderr,
-               "%d-%d-%d %d:%d:%d delay=%d:%d Bx=%g By=%g Bz=%g\n",
-               yr,mo,dy,hr,mt,(int) sc,(int) (delay/3600),
-               ( (int) delay % 3600)/60,
-               map->Bx,map->By,map->Bz);
+       if (old)
+         fprintf(stderr,
+                 "%d-%d-%d %d:%d:%d delay=%d:%d Vx=%g By=%g Bz=%g\n",
+                 yr,mo,dy,hr,mt,(int) sc,(int) (delay/3600),
+                 ( (int) delay % 3600)/60, map->Bx,map->By,map->Bz);
+       else
+         fprintf(stderr,
+                 "%d-%d-%d %d:%d:%d delay=%d:%d Bx=%g By=%g Bz=%g Vx=%g\n",
+                 yr,mo,dy,hr,mt,(int) sc,(int) (delay/3600),
+                 ( (int) delay % 3600)/60, map->Bx,map->By,map->Bz,map->Vx);
     }  
 
-    if (old) s=OldCnvMapFread(fp,map,grd);
-    else s=CnvMapFread(fp,map,grd);
+    s = (*Map_Read)(fp,map,grd);
 
-  } while (s!=-1);
+  } while (s != -1);
 
 
   fclose(fp); 
+
   return 0; 
 }
-
-
-
-
-
-
 
