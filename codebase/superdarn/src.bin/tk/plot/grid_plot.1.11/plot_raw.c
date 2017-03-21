@@ -1,31 +1,11 @@
 /* plot_raw.c
    ========== 
-   Author: R.J.Barnes
+   Author: R.J.Barnes and others
 */
 
 
 /*
- LICENSE AND DISCLAIMER
- 
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+   See license.txt
 */
 
 
@@ -52,11 +32,28 @@ void plot_raw(struct Plot *plot,
               unsigned int(*cfn)(double,void *),void *cdata,
               float width) {
 
-  int i,s;
+  int i,k,j,s,nswap;
   double olon,olat,lon,lat,vazm;
   float map[2],pnt[2];
   unsigned int color=0;
   float ax,ay,bx,by;
+  struct GridGVec tmp;
+
+  /* sort by velocity so largest velocities plotted last */
+  /* SGS: I swear this was implemented 15 years ago ...  */
+  /* SGS: Yes, it's a lame bubble sort with bail option  */
+  for (j=0; j<ptr->vcnum-1; j++) {
+    nswap = 0;
+    for (k=0; k<ptr->vcnum-1-j;k++) {
+      if (ptr->data[k].vel.median > ptr->data[k+1].vel.median) {
+        tmp = ptr->data[k];
+        ptr->data[k] = ptr->data[k+1];
+        ptr->data[k+1] = tmp;
+        nswap = 1;
+      }
+    }
+    if (!nswap) break;
+  }
 
   for (i=0;i<ptr->vcnum;i++) {
     
