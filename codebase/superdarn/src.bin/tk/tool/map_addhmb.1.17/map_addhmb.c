@@ -283,7 +283,7 @@ int main(int argc,char *argv[])
 
   int cnt=0;
 
-  int yr,mo,dy,hr,mt,dyn;
+  int yr,mo,dy,hr,mt,sec,dyn;
   double sc;
 
   int cnt_req=3;
@@ -449,7 +449,7 @@ int main(int argc,char *argv[])
     make_hmb();
     (*Map_Read)(fp,map[buf],grd[buf]);
     if (!old_aacgm) { /* check to see if time is already set */
-      AACGM_v2_GetDateTime(&yr,&mo,&dy,&hr,&mt,&sc,&dyn);
+      AACGM_v2_GetDateTime(&yr,&mo,&dy,&hr,&mt,&sec,&dyn);
       if (yr < 0) {
         tme=(grd[buf]->st_time+grd[buf]->ed_time)/2.0;
         TimeEpochToYMDHMS(tme,&yr,&mo,&dy,&hr,&mt,&sc);
