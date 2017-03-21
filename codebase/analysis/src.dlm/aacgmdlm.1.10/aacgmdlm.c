@@ -36,6 +36,23 @@ static IDL_MSG_DEF msg_arr[] =
 static IDL_MSG_BLOCK msg_block;
 
 
+static IDL_VPTR IDLAACGMInit(int argc,IDL_VPTR *argv) {
+
+  int s=0;
+
+  IDL_LONG year=0;
+
+  IDL_ENSURE_SCALAR(argv[0]);
+  IDL_EXCLUDE_EXPR(argv[1]);
+
+  year=IDL_LongScalar(argv[0]);
+
+  s=AACGMInit(year);
+
+  return (IDL_GettmpLong(s));
+}
+
+
 static IDL_VPTR IDLAACGMLoadCoef(int argc,IDL_VPTR *argv) {
 
   int s=0;
@@ -213,6 +230,7 @@ static IDL_VPTR IDLAACGMConvert(int argc,IDL_VPTR *argv,char *argk) {
 int IDL_Load(void) {
 
   static IDL_SYSFUN_DEF2 fnaddr[]={
+    { IDLAACGMInit,"AACGMINIT",1,1,0,0},
     { IDLAACGMLoadCoef,"AACGMLOADCOEF",1,1,0,0},
     { IDLAACGMConvert,"AACGMCONVERT",6,6,IDL_SYSFUN_DEF_F_KEYWORDS,0},
    
