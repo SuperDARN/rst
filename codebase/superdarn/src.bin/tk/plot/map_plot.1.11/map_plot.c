@@ -1245,10 +1245,6 @@ int main(int argc,char *argv[]) {
   pkey.min=-cmax;
   pkey.defcol=fpolycol;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> licensing
   if (pwrflg) xkey.max=pmax;
   else xkey.max=wmax;
 
