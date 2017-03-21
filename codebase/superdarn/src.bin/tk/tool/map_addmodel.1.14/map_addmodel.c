@@ -292,12 +292,16 @@ return (0);
   }
 
   while ((*Map_Read)(fp,map,grd) != -1) {  
-   
+ 
     tme = (grd->st_time + grd->ed_time)/2.0;
     TimeEpochToYMDHMS(tme,&yr,&mo,&dy,&hr,&mt,&sc);
     yrsec = TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
     decyear = yr + (float)yrsec/TimeYMDHMSToYrsec(yr,12,31,23,59,59);
  
+    /* SGS: imf_flag set to 9 in map_addimf(), so not sure about this... */
+    if (old) map->imf_flag = !noigrf;
+    else     map->noigrf   = noigrf;
+
 /*    if (igrf_date.year == -1) IGRF_SetDateTime(yr,mo,dy,hr,mt,(int)sc);*/
 
 /* shite */
