@@ -30,7 +30,7 @@
 </option>
 <option><on>-cf <ar>cfname</ar></on><od>read command line options from the file <ar>cfname</ar>.</od>
 </option>
-<option><on>-new</on><od>the input file is in <code>grdmap</code> format.</od>
+<option><on>-old</on><od>the input file is in <code>grd</code> format rather than default <code>grdmap</code> format.</od>
 </option>
 <option><on>-def</on><od>plot using some sensible default options so that the user will see something plotted.</od>
 </option>
@@ -67,6 +67,8 @@
 <option><on>-latmin <ar>latmin</ar></on><od>adjust the scale factor so that the lowest visible latitude is  <ar>latmin</ar>. Applies when the stereographic projection is used.</od>
 </option>
 <option><on>-mag</on><od>use magnetic coordinates.</od>
+</option>
+<option><on>-old_aacgm</on><od>use older AACGM rather than default AACGM-v2 for magnetic coordinates.</od>
 </option>
 <option><on>-rotate</on><od>rotate the plot so that the local noon is at the top of the plot.</od>
 </option>
@@ -278,19 +280,19 @@
 
 
 
-<example><command>grid_plot -x -def -vkey superdarn.key 20040620.grd</command>
+<example><command>grid_plot -x -old -def -vkey superdarn.key 20040620.grd</command>
 <description>Plot gridded data from the file "<code>20040620.grd</code>" on the X-terminal. Use the default set of options and the color key "<code>superdarn.key</code>". 
 </description>
 </example>
 
-<example><command>grid_plot -ps -dn -st 12:00 -new -stereo -mag -rotate -fcoast -coast -fterm -tmk -vecp -vkeyp -time -raw -vkey ~/key/superdarn.key 20021219.grdmap</command>
+<example><command>grid_plot -ps -dn -st 12:00 -stereo -mag -rotate -fcoast -coast -fterm -tmk -vecp -vkeyp -time -raw -vkey ~/key/superdarn.key 20021219.grdmap</command>
 <description>Generate PostScript plots of gridded data from the file "<code>20021219.grdmap</code>". Store the plots in files named "<code><em>yyyymmdd.hrmn.sc</em>.ps</code>", starting at 12:00UTC. Use a stereographic projection in magnetic coordinates, rotated so that magnetic local noon is at the top of the plot. Plot filled coastlines, terminator, a clockdial representing time, a labelled sample velocity vector, the velocity color bar, the time, and the line of sight vel;ocities. The velocity color bar is taken from the file "<code>superdarn.key</code>". 
 </description>
 </example>
 <example type="rplot">example1</example>
 
 
-<example><command>grid_plot -stdout -t 12:00 -new -pad 0 -stereo -mag -lat 84.4 -lon 55.00 -square -sf 2.00 -fcoast -coast  -vecp -xkeyp -time -raw -max -pwr -xkey rainbow.key 20021219.grdmap &gt; grd.rp.xml
+<example><command>grid_plot -stdout -t 12:00 -pad 0 -stereo -mag -lat 84.4 -lon 55.00 -square -sf 2.00 -fcoast -coast  -vecp -xkeyp -time -raw -max -pwr -xkey rainbow.key 20021219.grdmap &gt; grd.rp.xml
 </command>
 <description>Generate a single rPlot XML plot of the gridded data at 06:00UTC from the file "<code>20021219.grdmap</code>". Use a stereographic projection in geographic coordinates and center the plot on latitude 84..4 degrees and longitude 55.00 degrees. Plot filled coastlines, filled radar fields of view, a labelled sample velocity vector, the power color bar, the time, line of sight velocity vectors, and the maximum observed power in each cell. The power color bar is taken from the file "<code>rainbowkey</code>". The plot is stored in the file "<code>grd.rp.xml</code>".
 </description>
