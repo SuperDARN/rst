@@ -29,6 +29,8 @@
 #include "aacgm.h"
 #include "aacgmlib_v2.h"
 #include "shfconst.h" /* use the same constants as in fitting procedure */
+#include "igrfcall.h"
+#include "igrflib.h"
 
 #include "hlpstr.h"
 
@@ -304,20 +306,25 @@ return (0);
 
 /*    if (igrf_date.year == -1) IGRF_SetDateTime(yr,mo,dy,hr,mt,(int)sc);*/
 
-/* shite */
+/* SGS-FIX */
 /*    if (imod == CS10 || imod == PSR10)
       tilt = IGRF_tilt(yr,mo,dy,hr,mt,(int)sc);*/
     map->tilt = tilt;
 
     /* determine the model */
-    mod = determine_model(map->Vsw, map->Bx, map->By, map->Bz,
+    mod = determine_model(map->Vx, map->Bx, map->By, map->Bz,
                           map->hemisphere, tilt, imod, nointerp);
 
-/* shite */
+/* SGS-FIX */
+/* This function should be called but is currently in map_addhmb.c
+ * copying it here is a terrible idea. Should map_addhmb.c be broken into
+ * pieces and some files put into a library?
+ *
     if (map->latmin == -1) {
       bndnp = 360/bndstep + 1;
       map_addhmb(yr,yrsec,map,bndnp,bndstep,latref,mod->latref);
     }
+*/
  
     if (order != 0)   map->fit_order    = order;
     if (doping != -1) map->doping_level = doping;
@@ -355,7 +362,7 @@ return (0);
     if (vb == 1) {
       TimeEpochToYMDHMS(grd->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
       fprintf(stderr,"%d-%d-%d %d:%d:%d %s %s\n",yr,mo,dy, hr,mt,(int) sc,
-                      model[modnum]->level, model[modnum]->angle);  
+                      mod->level, mod->angle);  
     }
 
     cnt++;
@@ -438,7 +445,7 @@ struct model *load_model(FILE *fp, int ihem, int ilev, int iang,
     for (m=-l; m<=l; m++) {
       if (fscanf(fp,"%d %d %g %g",&lx,&mx,&cr,&ci) != 4) break;
 
-      k = (m < 0) l*(ptr->ltop+1)-m : l*(ptr->ltop+1)+m;
+      k = (m < 0) ? l*(ptr->ltop+1)-m : l*(ptr->ltop+1)+m;
       ptr->aoeff_n[k].x = cr;
       ptr->aoeff_n[k].y = ci;
 
@@ -750,7 +757,7 @@ struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
 {
   int ihem,itlt, ilev,iang,i;
   float esw,bt,bazm;
-  struct model *imodel;
+  struct model *imodel = NULL;
 
   bt   = sqrt(By*By + Bz*Bz);
 
@@ -804,7 +811,7 @@ struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
       iang = i;
 
       /* magnitude */
-      for (i=0; (PSR10_mod_levi[i] !=-1) && (esw >= PSR10_mod_levi[i]); i++);
+      for (i=0; (PSR10_mod_levi[i] !=-1) && (bt >= PSR10_mod_levi[i]); i++);
       if (PSR10_mod_levi[i] == -1) i--;
       ilev = i;
 
@@ -1011,7 +1018,8 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
   struct complex Ix;
   struct complex T1,T2;
   struct complex t;
-  float Re=6362.0+300.0;
+/*  float Re=6362.0+300.0; */
+  float Rd = Radial_Dist/1000.;  /* using values in shfconst.h */
 
   int mlow,mhgh;
 
@@ -1106,7 +1114,7 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
        }
     }
 
-    ele_phi[i] = (1000.0/(Re*sin(the_col[i])))*Ix.y;
+    ele_phi[i] = (1000.0/(Rd*sin(the_col[i])))*Ix.y;
 
     Ix.x=0;
     Ix.y=0;
@@ -1157,9 +1165,9 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
       }
     }
     if (latmin > 0)
-      ele_the[i]=-1000.0*(180.0/(90.0-latmin))/Re*Ix.x;
+      ele_the[i]=-1000.0*(180.0/(90.0-latmin))/Rd*Ix.x;
     else 
-      ele_the[i]=-1000.0*(180.0/(90.0+latmin))/Re*Ix.x;
+      ele_the[i]=-1000.0*(180.0/(90.0+latmin))/Rd*Ix.x;
   }
 }
 
@@ -1186,7 +1194,10 @@ double calc_bmag(float mlat, float mlon, float date, int old_aacgm)
     /* SGS: not sure of units here... */
   }
 
-  /* fprintf(stderr,"mlat= %f, bmag=%g\n",mlat, bmag); */
+  fprintf(stderr,"mlat= %f, bmag=%g\n",mlat, bmag);
+  fprintf(stderr,"Press enter:");
+  char ch;
+  scanf("%c", &ch);
 
   return bmag;
 }
