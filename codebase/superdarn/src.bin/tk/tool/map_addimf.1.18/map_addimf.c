@@ -72,237 +72,16 @@ struct delaytab {
   float *delay;
 };
 
-
-int findvalue(int inx,int cnt,double *time,float *data,double tval,float *val) {
-  int i;
-  double stime,etime,v;
-  int sinx,einx;
-
-  val[0]=FILL_VALUE;
-  val[1]=FILL_VALUE;
-  val[2]=FILL_VALUE;
-
-  for (i=0;(i<cnt) && (time[i]<=tval);i++);
-
-  einx=i;
-  while ((einx<cnt) && (fabs(data[3*einx])>fabs(FILL_VALUE/2))) einx++;
-  sinx=i-1;
-  while ((sinx>=0) && (fabs(data[3*sinx])> fabs(FILL_VALUE/2))) sinx--;
- 
-  if (sinx<0) sinx=0;
-  if (einx>=cnt) einx=cnt-1;
-
-  etime=time[einx];
-  stime=time[sinx];
-  if (tval<stime) return -1;
-  if (tval>etime) return -1;
-
-  if (einx !=sinx) {  
-    v=(tval-stime)/(etime-stime);
-  } else v=0;
-
-  if ((fabs(data[3*sinx]) < fabs(FILL_VALUE/2)) &&
-      (fabs(data[3*einx]) < fabs(FILL_VALUE/2))) {
-    val[0]=data[3*sinx]*(1-v)+data[3*einx]*v;
-    val[1]=data[3*sinx+1]*(1-v)+data[3*einx+1]*v;
-    val[2]=data[3*sinx+2]*(1-v)+data[3*einx+2]*v;
-  } else if (fabs(data[3*sinx]) < fabs(FILL_VALUE/2)) {
-    val[0]=data[3*sinx];
-    val[1]=data[3*sinx+1];
-    val[2]=data[3*sinx+2];
-  }  else if (fabs(data[3*einx]) < fabs(FILL_VALUE/2)) {
-    val[0]=data[3*einx];
-    val[1]=data[3*einx+1];
-    val[2]=data[3*einx+2];
-  }
-  return sinx;
-}
-
-
-int load_text(FILE *fp,struct imfdata *ptr) {
-
-  int yr,mo,dy,hr,mt;
-  float sc;
-  float bx,by,bz;
-  char line[256];
-  int i;
-  int cnt=0;
-
-  ptr->time=malloc(sizeof(double)*IMFSTEP);
-  ptr->BGSMc=malloc(sizeof(float)*IMFSTEP*3);
-  ptr->BGSEc=malloc(sizeof(float)*IMFSTEP*3);
-   while(fgets(line,256,fp) !=NULL) {
-    for (i=0;(line[i] !=0) && ((line[i]==' ') || (line[i]=='\t') ||
-             (line[i] =='\n'));i++);
-    if (line[i]==0) continue;
-    if (line[i]=='#') continue;
-  
-    if (sscanf(line,"%d %d %d %d %d %g %g %g %g",&yr,&mo,&dy,&hr,&mt,&sc,
-              &bx,&by,&bz) != 9) continue;
-    ptr->time[cnt]=TimeYMDHMSToEpoch(yr,mo,dy,hr,mt,sc);
-    ptr->BGSMc[cnt*3]=bx;
-    ptr->BGSMc[cnt*3+1]=by;
-    ptr->BGSMc[cnt*3+2]=bz;
-
-    ptr->BGSEc[cnt*3]=bx;   /* fudge as we assume the file contains */
-    ptr->BGSEc[cnt*3+1]=by; /* only one set of values. */
-    ptr->BGSEc[cnt*3+2]=bz;
-
-    cnt++;
-    if ((cnt % IMFSTEP)==0) {
-        int blk;
-        blk=1+cnt/IMFSTEP;
-        ptr->time=realloc(ptr->time,sizeof(double)*IMFSTEP*blk);
-        ptr->BGSMc=realloc(ptr->BGSMc,sizeof(float)*IMFSTEP*blk*3);
-        ptr->BGSEc=realloc(ptr->BGSEc,sizeof(float)*IMFSTEP*blk*3);
-
-    }
-
-  }
-  ptr->cnt=cnt;
-  ptr->time=realloc(ptr->time,sizeof(double)*cnt);
-  ptr->BGSMc=realloc(ptr->BGSMc,sizeof(float)*cnt*3);
-  ptr->BGSMc=realloc(ptr->BGSMc,sizeof(float)*cnt*3);
-  return 0;
-}
-
-struct delaytab *load_delay(FILE *fp) {
-  struct delaytab *ptr;
-  int yr,mo,dy,hr,mt;
-  float sc;
-  int dhr,dmt;
-  char line[256];
-  int i;
-  int cnt=0;
-  ptr=malloc(sizeof(struct delaytab));
-  ptr->time=malloc(sizeof(double)*DELAYSTEP);
-  ptr->delay=malloc(sizeof(float)*DELAYSTEP);
- 
-  while(fgets(line,256,fp) !=NULL) {
-    for (i=0;(line[i] !=0) && ((line[i]==' ') || (line[i]=='\t') ||
-             (line[i] =='\n'));i++);
-    if (line[i]==0) continue;
-    if (line[i]=='#') continue;
-  
-    if (sscanf(line,"%d %d %d %d %d %g %d %d",&yr,&mo,&dy,&hr,&mt,&sc,
-              &dhr,&dmt) != 8) continue;
-
-    ptr->time[cnt]=TimeYMDHMSToEpoch(yr,mo,dy,hr,mt,sc);
-    ptr->delay[cnt]=dhr*3600+dmt*60;
-    cnt++;
-    if ((cnt % DELAYSTEP)==0) {
-        int blk;
-        blk=1+cnt/DELAYSTEP;
-        ptr->time=realloc(ptr->time,sizeof(double)*DELAYSTEP*blk);
-        ptr->delay=realloc(ptr->delay,sizeof(float)*DELAYSTEP*blk);
-    }
-
-  }
-
-  ptr->num=cnt;
-  ptr->time=realloc(ptr->time,sizeof(double)*cnt);
-  ptr->delay=realloc(ptr->delay,sizeof(float)*cnt);
- 
-  return ptr;
-}
- 
-
-
-
-double strtime(char *text) {
-  int hr,mn;
-  int i;
-  for (i=0;(text[i] !=':') && (text[i] !=0);i++);
-  if (text[i]==0) return atoi(text)*3600L;
-  text[i]=0;
-  hr=atoi(text);
-  mn=atoi(text+i+1);
-  return hr*3600L+mn*60L;
-}  
-
-
-
-int load_wind() {
-
-  int i;
-  char path[256];
-
-  CDFid id;
-  CDFstatus status;
- 
-  sprintf(path,"%s/%s",dpath,"wind");
-
-  fprintf(stderr,"%s\n",path);
-
-  fptr=locate_files(path,"mfi",st_time,ed_time);
-
-  for (i=0;i<fptr->cnt;i++) {
-    fprintf(stderr,"%s\n",fptr->fname[i]);
-
-     status=CDFopen(fptr->fname[i],&id);
-    if (status !=CDF_OK) {
-      fprintf(stderr,"Could not open cdf file.\n");
-      continue;
-    }
-  
-    status=windmfi_imf(id,&imf,st_time,ed_time);
-    
-    CDFclose(id);
-  }
-  free_locate(fptr);
-  return 0;
-}
-
-int load_ace() {
-
-  int i;
-  char path[256];
-
-  CDFid id;
-  CDFstatus status;
- 
-  sprintf(path,"%s/%s",dpath,"ace");
-  fprintf(stderr,"%s\n",path);
-
-  /* first check to see if we have the h0 files */
-
-  fptr=locate_files(path,"h0_mfi",st_time,ed_time);
-
-  if (fptr->cnt !=0) {
-    for (i=0;i<fptr->cnt;i++) {
-      fprintf(stderr,"%s\n",fptr->fname[i]);
-      status=CDFopen(fptr->fname[i],&id);
-      if (status !=CDF_OK) {
-        fprintf(stderr,"Could not open cdf file.\n");
-        continue;
-      }
-      status=acemfi_imf(id,&imf,st_time,ed_time,0);
-    
-      CDFclose(id);
-    }
-    free_locate(fptr);
-  } else {
-    free_locate(fptr);    
-    fptr=locate_files(path,"k1_mfi",st_time,ed_time);
-
-    for (i=0;i<fptr->cnt;i++) {
-      fprintf(stderr,"%s\n",fptr->fname[i]);
-
-       status=CDFopen(fptr->fname[i],&id);
-      if (status !=CDF_OK) {
-        fprintf(stderr,"Could not open cdf file.\n");
-        continue;
-      }
-    
-      status=acemfi_imf(id,&imf,st_time,ed_time,1);
-    
-      CDFclose(id);
-    }
-    free_locate(fptr);
-  }
-  return 0;
-}
-
+/*
+ * function prototypes
+ */
+int findvalue(int inx,int cnt,double *time,float *data,double tval,float *val);
+int load_text(FILE *fp,struct imfdata *ptr);
+struct delaytab *load_delay(FILE *fp);
+double strtime(char *text);
+int load_omni();
+int load_wind();
+int load_ace();
 
 
 int main(int argc,char *argv[])
@@ -344,7 +123,7 @@ int main(int argc,char *argv[])
 
   float tmp[3];
 
-  int j,k;
+  int k;
 
   /* function pointers for file reading/writing (old and new) */
   int (*Map_Read)(FILE *, struct CnvMapData *, struct GridData *);
@@ -437,11 +216,11 @@ int main(int argc,char *argv[])
   st_time=map->st_time-delay;
   ed_time=map->st_time-delay+extent; 
 
-  if (wflg==1) load_wind();
+  if (wflg==1)      load_wind();
   else if (aflg==1) load_ace();
   else if (oflg==1) load_omni();
     
-  j = k = 0;
+  k = 0;
 
   do {  
 
@@ -493,5 +272,246 @@ int main(int argc,char *argv[])
   fclose(fp); 
 
   return 0; 
+}
+
+
+int findvalue(int inx,int cnt,double *time,float *data,double tval,float *val)
+{
+  int i;
+  double stime,etime,v;
+  int sinx,einx;
+
+  val[0]=FILL_VALUE;
+  val[1]=FILL_VALUE;
+  val[2]=FILL_VALUE;
+
+  for (i=0;(i<cnt) && (time[i]<=tval);i++);
+
+  einx=i;
+  while ((einx<cnt) && (fabs(data[3*einx])>fabs(FILL_VALUE/2))) einx++;
+  sinx=i-1;
+  while ((sinx>=0) && (fabs(data[3*sinx])> fabs(FILL_VALUE/2))) sinx--;
+ 
+  if (sinx<0) sinx=0;
+  if (einx>=cnt) einx=cnt-1;
+
+  etime=time[einx];
+  stime=time[sinx];
+  if (tval<stime) return -1;
+  if (tval>etime) return -1;
+
+  if (einx !=sinx) {  
+    v=(tval-stime)/(etime-stime);
+  } else v=0;
+
+  if ((fabs(data[3*sinx]) < fabs(FILL_VALUE/2)) &&
+      (fabs(data[3*einx]) < fabs(FILL_VALUE/2))) {
+    val[0]=data[3*sinx]*(1-v)+data[3*einx]*v;
+    val[1]=data[3*sinx+1]*(1-v)+data[3*einx+1]*v;
+    val[2]=data[3*sinx+2]*(1-v)+data[3*einx+2]*v;
+  } else if (fabs(data[3*sinx]) < fabs(FILL_VALUE/2)) {
+    val[0]=data[3*sinx];
+    val[1]=data[3*sinx+1];
+    val[2]=data[3*sinx+2];
+  }  else if (fabs(data[3*einx]) < fabs(FILL_VALUE/2)) {
+    val[0]=data[3*einx];
+    val[1]=data[3*einx+1];
+    val[2]=data[3*einx+2];
+  }
+  return sinx;
+}
+
+
+int load_text(FILE *fp,struct imfdata *ptr)
+{
+  int yr,mo,dy,hr,mt;
+  float sc;
+  float bx,by,bz;
+  char line[256];
+  int i;
+  int cnt=0;
+
+  ptr->time=malloc(sizeof(double)*IMFSTEP);
+  ptr->BGSMc=malloc(sizeof(float)*IMFSTEP*3);
+  ptr->BGSEc=malloc(sizeof(float)*IMFSTEP*3);
+   while(fgets(line,256,fp) !=NULL) {
+    for (i=0;(line[i] !=0) && ((line[i]==' ') || (line[i]=='\t') ||
+             (line[i] =='\n'));i++);
+    if (line[i]==0) continue;
+    if (line[i]=='#') continue;
+  
+    if (sscanf(line,"%d %d %d %d %d %g %g %g %g",&yr,&mo,&dy,&hr,&mt,&sc,
+              &bx,&by,&bz) != 9) continue;
+    ptr->time[cnt]=TimeYMDHMSToEpoch(yr,mo,dy,hr,mt,sc);
+    ptr->BGSMc[cnt*3]=bx;
+    ptr->BGSMc[cnt*3+1]=by;
+    ptr->BGSMc[cnt*3+2]=bz;
+
+    ptr->BGSEc[cnt*3]=bx;   /* fudge as we assume the file contains */
+    ptr->BGSEc[cnt*3+1]=by; /* only one set of values. */
+    ptr->BGSEc[cnt*3+2]=bz;
+
+    cnt++;
+    if ((cnt % IMFSTEP)==0) {
+        int blk;
+        blk=1+cnt/IMFSTEP;
+        ptr->time=realloc(ptr->time,sizeof(double)*IMFSTEP*blk);
+        ptr->BGSMc=realloc(ptr->BGSMc,sizeof(float)*IMFSTEP*blk*3);
+        ptr->BGSEc=realloc(ptr->BGSEc,sizeof(float)*IMFSTEP*blk*3);
+
+    }
+
+  }
+  ptr->cnt=cnt;
+  ptr->time=realloc(ptr->time,sizeof(double)*cnt);
+  ptr->BGSMc=realloc(ptr->BGSMc,sizeof(float)*cnt*3);
+  ptr->BGSMc=realloc(ptr->BGSMc,sizeof(float)*cnt*3);
+  return 0;
+}
+
+struct delaytab *load_delay(FILE *fp)
+{
+  struct delaytab *ptr;
+  int yr,mo,dy,hr,mt;
+  float sc;
+  int dhr,dmt;
+  char line[256];
+  int i;
+  int cnt=0;
+  ptr=malloc(sizeof(struct delaytab));
+  ptr->time=malloc(sizeof(double)*DELAYSTEP);
+  ptr->delay=malloc(sizeof(float)*DELAYSTEP);
+ 
+  while(fgets(line,256,fp) !=NULL) {
+    for (i=0;(line[i] !=0) && ((line[i]==' ') || (line[i]=='\t') ||
+             (line[i] =='\n'));i++);
+    if (line[i]==0) continue;
+    if (line[i]=='#') continue;
+  
+    if (sscanf(line,"%d %d %d %d %d %g %d %d",&yr,&mo,&dy,&hr,&mt,&sc,
+              &dhr,&dmt) != 8) continue;
+
+    ptr->time[cnt]=TimeYMDHMSToEpoch(yr,mo,dy,hr,mt,sc);
+    ptr->delay[cnt]=dhr*3600+dmt*60;
+    cnt++;
+    if ((cnt % DELAYSTEP)==0) {
+        int blk;
+        blk=1+cnt/DELAYSTEP;
+        ptr->time=realloc(ptr->time,sizeof(double)*DELAYSTEP*blk);
+        ptr->delay=realloc(ptr->delay,sizeof(float)*DELAYSTEP*blk);
+    }
+
+  }
+
+  ptr->num=cnt;
+  ptr->time=realloc(ptr->time,sizeof(double)*cnt);
+  ptr->delay=realloc(ptr->delay,sizeof(float)*cnt);
+ 
+  return ptr;
+}
+ 
+
+
+
+double strtime(char *text)
+{
+  int hr,mn;
+  int i;
+  for (i=0;(text[i] !=':') && (text[i] !=0);i++);
+  if (text[i]==0) return atoi(text)*3600L;
+  text[i]=0;
+  hr=atoi(text);
+  mn=atoi(text+i+1);
+  return hr*3600L+mn*60L;
+}  
+
+
+int load_omni()
+{
+  /* SGS: this does nothing right now */
+  return (0);
+}
+
+int load_wind()
+{
+
+  int i;
+  char path[256];
+
+  CDFid id;
+  CDFstatus status;
+ 
+  sprintf(path,"%s/%s",dpath,"wind");
+
+  fprintf(stderr,"%s\n",path);
+
+  fptr=locate_files(path,"mfi",st_time,ed_time);
+
+  for (i=0;i<fptr->cnt;i++) {
+    fprintf(stderr,"%s\n",fptr->fname[i]);
+
+     status=CDFopen(fptr->fname[i],&id);
+    if (status !=CDF_OK) {
+      fprintf(stderr,"Could not open cdf file.\n");
+      continue;
+    }
+  
+    status=windmfi_imf(id,&imf,st_time,ed_time);
+    
+    CDFclose(id);
+  }
+  free_locate(fptr);
+  return 0;
+}
+
+int load_ace()
+{
+
+  int i;
+  char path[256];
+
+  CDFid id;
+  CDFstatus status;
+ 
+  sprintf(path,"%s/%s",dpath,"ace");
+  fprintf(stderr,"%s\n",path);
+
+  /* first check to see if we have the h0 files */
+
+  fptr=locate_files(path,"h0_mfi",st_time,ed_time);
+
+  if (fptr->cnt !=0) {
+    for (i=0;i<fptr->cnt;i++) {
+      fprintf(stderr,"%s\n",fptr->fname[i]);
+      status=CDFopen(fptr->fname[i],&id);
+      if (status !=CDF_OK) {
+        fprintf(stderr,"Could not open cdf file.\n");
+        continue;
+      }
+      status=acemfi_imf(id,&imf,st_time,ed_time,0);
+    
+      CDFclose(id);
+    }
+    free_locate(fptr);
+  } else {
+    free_locate(fptr);    
+    fptr=locate_files(path,"k1_mfi",st_time,ed_time);
+
+    for (i=0;i<fptr->cnt;i++) {
+      fprintf(stderr,"%s\n",fptr->fname[i]);
+
+       status=CDFopen(fptr->fname[i],&id);
+      if (status !=CDF_OK) {
+        fprintf(stderr,"Could not open cdf file.\n");
+        continue;
+      }
+    
+      status=acemfi_imf(id,&imf,st_time,ed_time,1);
+    
+      CDFclose(id);
+    }
+    free_locate(fptr);
+  }
+  return 0;
 }
 
