@@ -36,9 +36,6 @@
 #include "rconvert.h"
 #include "cnvmapindex.h"
 
-
-
-
 #define FILE_STEP 256
 
 void CnvMapIndexFree(struct CnvMapIndex *ptr) {
