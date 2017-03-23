@@ -65,6 +65,7 @@ int CnvMapWrite(int fid,struct CnvMapData *map,struct GridData *grd) {
   int16 imf_flag;
   int16 imf_delay;
   int16 hemisphere;
+  int16 noigrf;       /* SGS */
   int16 fit_order;
   float latmin;
 
@@ -72,9 +73,10 @@ int CnvMapWrite(int fid,struct CnvMapData *map,struct GridData *grd) {
   float lat_shft;
  
   char *src=NULL;
+  char *mod_name=NULL;  /* SGS */
   char *mod_ang=NULL;
   char *mod_lev=NULL;
-
+  char *mod_tilt=NULL;  /* SGS */
 
   int16 *stid=NULL;
   int16 *chn=NULL;
@@ -108,7 +110,6 @@ int CnvMapWrite(int fid,struct CnvMapData *map,struct GridData *grd) {
   float *wdt=NULL;
   float *wdt_sd=NULL;
 
-
   int32 num_coef=0;
   int32 num_model=0;
   int32 num_bnd=0;
@@ -125,7 +126,6 @@ int CnvMapWrite(int fid,struct CnvMapData *map,struct GridData *grd) {
 
   float *bnd_lat=NULL;
   float *bnd_lon=NULL;
-  
 
   int size=0;
   unsigned char *buf=NULL;
@@ -133,6 +133,7 @@ int CnvMapWrite(int fid,struct CnvMapData *map,struct GridData *grd) {
 
   int xtd=0;
   int n,p;
+
   for (n=0;n<grd->stnum;n++) if (grd->sdata[n].st_id !=-1) stnum++;
   if (stnum==0) return 0;
 
@@ -334,18 +335,19 @@ int CnvMapWrite(int fid,struct CnvMapData *map,struct GridData *grd) {
   smt=mt;
   ssc=sc;
 
-  map_major=map->major_rev;
-  map_minor=map->minor_rev;
-  doping_level=map->doping_level;
-  model_wt=map->model_wt;
-  error_wt=map->error_wt;
-  imf_flag=map->imf_flag;
-  imf_delay=map->imf_delay;
+  map_major    = map->major_rev;
+  map_minor    = map->minor_rev;
+  doping_level = map->doping_level;
+  model_wt     = map->model_wt;
+  error_wt     = map->error_wt;
+  imf_flag     = map->imf_flag;
+  imf_delay    = map->imf_delay;
  
-  latmin=map->latmin;
+  latmin       = map->latmin;
 
-  hemisphere=map->hemisphere;
-  fit_order=map->fit_order;
+  hemisphere   = map->hemisphere;
+  noigrf       = map->noigrf;
+  fit_order    = map->fit_order;
   
   lat_shft=map->lat_shft;
   lon_shft=map->lon_shft;
@@ -382,17 +384,23 @@ int CnvMapWrite(int fid,struct CnvMapData *map,struct GridData *grd) {
   DataMapAddScalar(data,"IMF.Bx",DATADOUBLE,&map->Bx);
   DataMapAddScalar(data,"IMF.By",DATADOUBLE,&map->By);
   DataMapAddScalar(data,"IMF.Bz",DATADOUBLE,&map->Bz);
-
+  DataMapAddScalar(data,"IMF.Vx",DATADOUBLE,&map->Vx);    /* SGS */
+  DataMapAddScalar(data,"IMF.tilt",DATADOUBLE,&map->tilt);/* SGS */
  
   if (strlen(map->imf_model[0]) !=0) {
-    mod_ang=map->imf_model[0];
-    mod_lev=map->imf_model[1];
+    mod_ang  = map->imf_model[0];
+    mod_lev  = map->imf_model[1];
+    mod_tilt = map->imf_model[2]; /* SGS */
+    mod_name = map->imf_model[3]; /* SGS */
     DataMapAddScalar(data,"model.angle",DATASTRING,&mod_ang);
     DataMapAddScalar(data,"model.level",DATASTRING,&mod_lev);
+    DataMapAddScalar(data,"model.tilt",DATASTRING,&mod_tilt); /* SGS */
+    DataMapAddScalar(data,"model.name",DATASTRING,&mod_name); /* SGS */
   }
     
 
   DataMapAddScalar(data,"hemisphere",DATASHORT,&hemisphere);
+  DataMapAddScalar(data,"noigrf",DATASHORT,&noigrf);/* SGS */
   DataMapAddScalar(data,"fit.order",DATASHORT,&fit_order);
   DataMapAddScalar(data,"latmin",DATAFLOAT,&latmin);
   DataMapAddScalar(data,"chi.sqr",DATADOUBLE,&map->chi_sqr);
@@ -469,28 +477,17 @@ int CnvMapWrite(int fid,struct CnvMapData *map,struct GridData *grd) {
     DataMapAddArray(data,"boundary.mlon",DATAFLOAT,1,&num_bnd,bnd_lon);
   }
 
+  if (fid !=-1) s = DataMapWrite(fid,data);
+  else          s = DataMapSize(data);
 
-  if (fid !=-1) s=DataMapWrite(fid,data);
-  else s=DataMapSize(data);
   DataMapFree(data);
   free(buf);
+
   return s;
-
 }
-
-
-
-
 
 
 int CnvMapFwrite(FILE *fp,struct CnvMapData *map,struct GridData *grd) {
   return CnvMapWrite(fileno(fp),map,grd);
 }
-
-
-
-
-
-
-
 
