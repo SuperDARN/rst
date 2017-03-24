@@ -578,9 +578,6 @@ int main(int argc,char *argv[]) {
 
   char tsfx[16];
 
-/* shite */
-int yy,mm,dd,hh,tt,ss,xx;
-
   /* function pointers for file reading (old and new) and MLT */
   int (*Grid_Read)(FILE *, struct GridData *);
   double (*MLTCnv)(int, int, double);
@@ -1309,20 +1306,20 @@ int yy,mm,dd,hh,tt,ss,xx;
     if (celflg) {
       if (avflg) 
         plot_cell(plot,rgridavg,0,magflg,pad,pad,wdt-2*pad,
-                    hgt-2*pad,tfunc,marg,mag_color,&xkey,cprm);
+                    hgt-2*pad,tfunc,marg,mag_color,&xkey,cprm,old_aacgm);
       else 
         plot_cell(plot,rgrid,0,magflg,pad,pad,wdt-2*pad,
-                    hgt-2*pad,tfunc,marg,mag_color,&xkey,cprm);
+                    hgt-2*pad,tfunc,marg,mag_color,&xkey,cprm,old_aacgm);
     }
 
     if (rawflg) 
         plot_raw(plot,rgrid,latmin,magflg,pad,pad,wdt-2*pad,hgt-2*pad,
-               vsf,vradius,tfunc,marg,mag_color,&vkey,lnewdt);
+               vsf,vradius,tfunc,marg,mag_color,&vkey,lnewdt,old_aacgm);
 
     if (mrgflg) 
         plot_raw(plot,rgridmrg,latmin,magflg,
                  pad,pad,wdt-2*pad,hgt-2*pad,
-                 vsf,vradius,tfunc,marg,mag_color,&vkey,lnewdt);
+                 vsf,vradius,tfunc,marg,mag_color,&vkey,lnewdt,old_aacgm);
 
     if (mapflg) {
        MapPlotPolygon(plot,NULL,pad,pad,wdt-2*pad,hgt-2*pad,0,cstcol,0x0f,
@@ -1412,11 +1409,11 @@ int yy,mm,dd,hh,tt,ss,xx;
       if (ortho) plot_vec(plot,px,1.8*apad,0,vmax,magflg,
                         pad,pad,wdt-2*pad,hgt-2*pad,
                         vsf,vradius,tfunc,marg,txtcol,0x0f,0.5,
-                        "Helvetica",10.0,fontdb);
+                        "Helvetica",10.0,fontdb,old_aacgm);
       else plot_vec(plot,px,1.8*apad,0,vmax,magflg,
                         pad,pad,wdt-2*pad,hgt-2*pad,
                         vsf,vradius,MapStereographic,marg,txtcol,0x0f,0.5,
-                        "Helvetica",10.0,fontdb);
+                        "Helvetica",10.0,fontdb,old_aacgm);
    }
 
   if (magflg || (!magflg && igrdflg)) {
