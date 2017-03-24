@@ -28,6 +28,12 @@
  
 */
 
+/* Notes:
+ *
+ * - using magflg = 1|2 for AACGM_v2|old AACGM
+ * - altitude is assumed to be 150 km
+ *
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,6 +42,7 @@
 #include <sys/types.h>
 #include "rtypes.h"
 #include "aacgm.h"
+#include "aacgmlib_v2.h"
 #include "rfbuffer.h"
 #include "iplot.h"
 #include "rfile.h"
@@ -56,64 +63,66 @@ void plot_raw(struct Plot *plot,
   float map[2],pnt[2];
   unsigned int color=0;
   float ax,ay,bx,by;
+  double mlat,mlon,glat,glon,r;
+
+  /* function pointer for AACGM conversion */
+  int (*AACGMCnv)(double, double, double, double *, double *, double *, int);
+
+  if (magflg == 2)      AACGMCnv = &AACGMConvert;
+  else if (magflg == 1) AACGMCnv = &AACGM_v2_Convert;
 
   for (i=0;i<ptr->vcnum;i++) {
 
+    if (!isfinite(ptr->data[i].vel.median)) continue;
+    if (fabs(ptr->data[i].vel.median) > VEL_MAX) continue;
 
-    if (! isfinite(ptr->data[i].vel.median)) continue;
-    if (fabs(ptr->data[i].vel.median)>VEL_MAX) continue;
-    
-    olon=ptr->data[i].mlon;
-    olat=ptr->data[i].mlat;
-    vazm=ptr->data[i].azm;
+    olon = ptr->data[i].mlon;
+    olat = ptr->data[i].mlat;
+    vazm = ptr->data[i].azm;
 
-    lat=olat;
-    lon=olon;
+    lat = olat;
+    lon = olon;
     if (!magflg) {
-      double mlat,mlon,glat,glon,r;
-      int s;
-      mlat=lat;
-      mlon=lon;
-      s=AACGMConvert(mlat,mlon,150,&glat,&glon,&r,1);
-      lat=glat;
-      lon=glon;
+      mlat = lat;
+      mlon = lon;
+      s = (*AACGMCnv)(mlat,mlon,150,&glat,&glon,&r,1);
+      lat = glat;
+      lon = glon;
     }
 
-    if (fabs(lat)<fabs(latmin)) continue;
-    if (cfn !=NULL) color=(*cfn)(ptr->data[i].vel.median,cdata);
-    
-    map[0]=lat;
-    map[1]=lon;
+    if (fabs(lat) < fabs(latmin)) continue;
+    if (cfn != NULL) color = (*cfn)(ptr->data[i].vel.median,cdata);
+ 
+    map[0] = lat;
+    map[1] = lon;
    
-    s=(*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
+    s = (*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
   
-    if (s==-1) continue;
-    ax=xoff+pnt[0]*wdt;
-    ay=yoff+pnt[1]*hgt;    
-    
+    if (s == -1) continue;
+    ax = xoff + pnt[0]*wdt;
+    ay = yoff + pnt[1]*hgt;    
+
+    /* need v2 here! */
     RPosCalcVector(olat,olon,ptr->data[i].vel.median*sf,vazm,&lat,&lon);
 
     if (!magflg) {
-      double mlat,mlon,glat,glon,r;
-      int s;
-      mlat=lat;
-      mlon=lon;
-      s=AACGMConvert(mlat,mlon,150,&glat,&glon,&r,1);
-      lat=glat;
-      lon=glon;
+      mlat = lat;
+      mlon = lon;
+      s = (*AACGMCnv)(mlat,mlon,150,&glat,&glon,&r,1);
+      lat = glat;
+      lon = glon;
     }
 
-    map[0]=lat;
-    map[1]=lon;
-    s=(*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
-    if (s==-1) continue;
-    bx=xoff+pnt[0]*wdt;
-    by=yoff+pnt[1]*hgt;    
+    map[0] = lat;
+    map[1] = lon;
+    s = (*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
+    if (s == -1) continue;
+    bx = xoff + pnt[0]*wdt;
+    by = yoff + pnt[1]*hgt;    
     
-    if (rad>0) PlotEllipse(plot,NULL,ax,ay,
-                 rad,rad,1,color,0x0f,0,NULL);
-    
+    if (rad > 0) PlotEllipse(plot,NULL,ax,ay, rad,rad,1,color,0x0f,0,NULL);
+
     PlotLine(plot,ax,ay,bx,by,color,0x0f,width,NULL);    
-    
   } 
 }
+
