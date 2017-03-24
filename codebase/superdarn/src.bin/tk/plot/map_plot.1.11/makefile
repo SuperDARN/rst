@@ -3,7 +3,8 @@
 # Author: R.J.Barnes
 include $(MAKECFG).$(SYSTEM)
 
-INCLUDE=-I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/analysis -I$(IPATH)/imagery -I$(IPATH)/superdarn
+INCLUDE = -I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/analysis \
+          -I$(IPATH)/imagery -I$(IPATH)/superdarn -I$(IPATH)/
 
 SRC=plot_extra.c plot_extra.h text_box.c text_box.h plot_model.c plot_model.h \
     plot_model_name.c plot_model_name.h hlpstr.h plot_time.c plot_time.h \

@@ -1299,13 +1299,11 @@ int main(int argc,char *argv[]) {
 
     if (tmkflg) MapPlotPolygon(plot,NULL,pad,pad,wdt-2*pad,hgt-2*pad,0,
                                tmkcol,0x0f,0.5,NULL, rtmk,1);
-fprintf(stderr, "START\n");
 
     if (fitflg) 
        plot_fit(plot,vgrid,rcmap->latmin,magflg,pad,pad,wdt-2*pad,hgt-2*pad,
                vsf,vradius,tfunc,marg,mag_color,&vkey,0.5,old_aacgm);
 
-fprintf(stderr, "START\n");
    if (mrgflg) plot_raw(plot,rgridmrg,rcmap->latmin,magflg,
                  pad,pad,wdt-2*pad,hgt-2*pad,
                  vsf,vradius,tfunc,marg,mag_color,&vkey,lnewdt,old_aacgm);
