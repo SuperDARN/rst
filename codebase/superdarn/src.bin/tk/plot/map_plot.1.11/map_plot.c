@@ -163,333 +163,29 @@ double cval[30]={ -3000, -9000,-15000,-21000,-27000,-33000,-39000,-45000,
 
 struct RadarNetwork *network=NULL;
 
-int circle_clip(struct Plot *plot, float xoff,float yoff,float wdt,float hgt)
-{
-  int i;
-  float sf=0.55;
-  float px[12];
-  float py[12];
-  int t[12];
+/*
+ * function prototypes
+ */
+int circle_clip(struct Plot *plot, float xoff,float yoff,float wdt,float hgt);
+int square_clip(struct Plot *plot, float xoff,float yoff,float wdt,float hgt);
+int stream(char *buf,int sze,void *data);
+int xmldecode(char *buf,int sze,void *data);
+int AACGM_v2_transform(int ssze,void *src,int dsze,void *dst,void *data);
+int AACGMtransform(int ssze,void *src,int dsze,void *dst,void *data);
+int rotate(int ssze,void *src,int dsze,void *dst,void *data);
+double strdate(char *text);
+double strtime(char *text);
+double *render_map(struct CnvGrid *ptr,int *wdt,int *hgt);
+int contour_convert(int ssze,void *src,int dsze,void *dst,void *data);
+unsigned int sgn_color(double v, void *data);
+unsigned int mag_color(double v,void *data);
+char *label_vel(double val,double min,double max,void *data);
+char *label_wdt(double val,double min,double max,void *data);
+char *label_pwr(double val,double min,double max,void *data);
+char *label_pot(double val,double min,double max,void *data);
+int calc_degfree(struct CnvMapData *mptr,struct GridData *gptr);
+int calc_degfree_model(struct CnvMapData *mptr,struct GridData *gptr);
 
-  px[0]=wdt;
-  py[0]=0;
-  px[1]=wdt;
-  py[1]=hgt*sf;
-  px[2]=wdt*sf;
-  py[2]=hgt;
-  px[3]=0;
-  py[3]=hgt;
-  px[4]=-wdt*sf;
-  py[4]=hgt;
-  px[5]=-wdt;
-  py[5]=hgt*sf;
-  px[6]=-wdt;
-  py[6]=0;
-  px[7]=-wdt;
-  py[7]=-hgt*sf;
-  px[8]=-wdt*sf;
-  py[8]=-hgt;
-  px[9]=0;
-  py[9]=-hgt;
-  px[10]=wdt*sf;
-  py[10]=-hgt;
-  px[11]=wdt;
-  py[11]=-hgt*sf;
-
-  for (i=0;i<12;i++) {
-    t[i]=1;
-    px[i]+=xoff;
-    py[i]+=yoff;
-  }
-  return PlotClip(plot,12,px,py,t);
-}
-
-int square_clip(struct Plot *plot, float xoff,float yoff,float wdt,float hgt)
-{
-  float px[4];
-  float py[4];
-  int t[4]={0,0,0,0};
-
-  px[0]=xoff;
-  py[0]=yoff;
-  px[1]=xoff+wdt;
-  py[1]=yoff;
-  px[2]=xoff+wdt;
-  py[2]=yoff+hgt;
-  px[3]=xoff;
-  py[3]=yoff+hgt;
-  return PlotClip(plot,4,px,py,t);
-}
-
-int stream(char *buf,int sze,void *data)
-{
-  FILE *fp;
-  fp=(FILE *) data;
-  fwrite(buf,sze,1,fp);
-  return 0;
-} 
-
-int xmldecode(char *buf,int sze,void *data)
-{
-  struct XMLdata *xmldata;
-  xmldata=(struct XMLdata *) data;
-  return XMLDecode(xmldata,buf,sze);
-} 
-
-int AACGM_v2_transform(int ssze,void *src,int dsze,void *dst,void *data)
-{
-  float *pnt;
-  int s;
-  double mlon,mlat;
-  double glon,glat,r;
-
-  pnt=(float *)src;
-
-  if (data==NULL) {
-    glat=pnt[0];
-    glon=pnt[1];
-    s=AACGM_v2_Convert(glat,glon,300,&mlat,&mlon,&r,0);
-    pnt=(float *)dst;
-    pnt[0]=mlat;
-    pnt[1]=mlon;
-  } else {
-    mlat=pnt[0];
-    mlon=pnt[1];
-    s=AACGM_v2_Convert(mlat,mlon,300,&glat,&glon,&r,1);
-    pnt=(float *)dst;
-    pnt[0]=glat;
-    pnt[1]=glon;
-  }
-  return s;
-}
-
-int AACGMtransform(int ssze,void *src,int dsze,void *dst,void *data)
-{
-  float *pnt;
-  int s;
-  double mlon,mlat;
-  double glon,glat,r;
-
-  pnt=(float *)src;
-
-  if (data==NULL) {
-    glat=pnt[0];
-    glon=pnt[1];
-    s=AACGMConvert(glat,glon,300,&mlat,&mlon,&r,0);
-    pnt=(float *)dst;
-    pnt[0]=mlat;
-    pnt[1]=mlon;
-  } else {
-    mlat=pnt[0];
-    mlon=pnt[1];
-    s=AACGMConvert(mlat,mlon,300,&glat,&glon,&r,1);
-    pnt=(float *)dst;
-    pnt[0]=glat;
-    pnt[1]=glon;
-  }
-  return s;
-}
-
-int rotate(int ssze,void *src,int dsze,void *dst,void *data)
-{
-  float *arg=NULL;
-  float *pnt;
-  float px,py;
-  float rad;
-  arg=(float *) data;
-  if (arg[0] > 0) rad=arg[1]*PI/180.0;
-  else rad=-arg[1]*PI/180;
- 
-  pnt=(float *) src;
-  px=pnt[0];
-  py=pnt[1];
-  pnt=(float *) dst;
-  
-  pnt[0]=0.5+(px-0.5)*cos(rad)-(py-0.5)*sin(rad);
-  pnt[1]=0.5+(px-0.5)*sin(rad)+(py-0.5)*cos(rad);
-  return 0;
-}
-
-double strdate(char *text)
-{
-  double tme;
-  int val;
-  int yr,mo,dy;
-
-  val=atoi(text);
-  dy=val % 100;
-  mo=(val / 100) % 100;
-  yr=(val / 10000);
-  if (yr<1970) yr+=1900;
-  tme=TimeYMDHMSToEpoch(yr,mo,dy,0,0,0);
-
-  return tme;
-}
-
-double strtime(char *text)
-{
-  int hr,mn;
-  int i;
-
-  for (i=0;(text[i] !=':') && (text[i] !=0);i++);
-  if (text[i]==0) return atoi(text)*3600L;
-  text[i]=0;
-  hr=atoi(text);
-  mn=atoi(text+i+1);
-
-  return (double) hr*3600L+mn*60L;
-}   
-
-double *render_map(struct CnvGrid *ptr,int *wdt,int *hgt)
-{
-  int i;
-  double *zbuffer=NULL;
-
-  zbuffer=malloc(sizeof(double)*ptr->num);
-  if (zbuffer==NULL) return NULL;
-  
-  *wdt=ptr->nlon;
-  *hgt=ptr->nlat;
-
-  for (i=0;i<ptr->num;i++) zbuffer[i]=ptr->mag[i];
-
-  return zbuffer;
-}    
-
-int contour_convert(int ssze,void *src,int dsze,void *dst,void *data)
-{
-  double latmin;
-  float lat,lon;
-  float *spnt;
-  float *dpnt;
-
-  spnt=(float *)src;
-  dpnt=(float *)dst;
-  latmin=*(double *)data;
-  
-  lon=spnt[0]*360.0;
-  if (latmin>0)  lat=spnt[1]*(90.0-latmin)+latmin;
-  else lat=-spnt[1]*(90.0+latmin)+latmin;
- 
-  dpnt[0]=lat;
-  dpnt[1]=lon;
-
-  return 0;
-}
-
-unsigned int sgn_color(double v, void *data)
-{
-  struct key *key;
-  int i;
-
-  key=(struct key *) data;
-  if (key->num==0) return key->defcol;
-
-  i=key->num*(v-key->min)/(key->max-key->min);
-  if (i<0) i=0;
-  if (i>=key->num) i=key->num-1;
-
-  return (key->a[i]<<24) | (key->r[i]<<16) | (key->g[i]<<8) | key->b[i];
-}
-
-unsigned int mag_color(double v,void *data)
-{
-  struct key *key;
-  int i;
-
-  key=(struct key *) data;
-  if (key->num==0) return key->defcol;
-  i=key->num*fabs(v)/key->max;
-  if (i>=key->num) i=key->num-1;
-
-  return (key->a[i]<<24) | (key->r[i]<<16) | (key->g[i]<<8) | key->b[i];
-}
-
-char *label_vel(double val,double min,double max,void *data)
-{
-  char *txt=NULL;
-
-  if ((val !=max) && (val !=min)) return NULL;
-  txt=malloc(32); 
-  if (val==max) sprintf(txt,"%g",val);
-  if (val==min) sprintf(txt,"%g m/s",val); 
-
-  return txt;
-}
-
-char *label_wdt(double val,double min,double max,void *data)
-{
-  char *txt=NULL;
-
-  if ((val !=max) && (val !=min)) return NULL;
-  txt=malloc(32); 
-  if (val==max) sprintf(txt,"%g",val);
-  if (val==min) sprintf(txt,"%g m/s (sw)",val); 
-
-  return txt;
-}
-
-char *label_pwr(double val,double min,double max,void *data)
-{
-  char *txt=NULL;
-
-  if ((val !=max) && (val !=min)) return NULL;
-  txt=malloc(32); 
-  if (val==max) sprintf(txt,"%g",val);
-  if (val==min) sprintf(txt,"%g dB (pwr)",val); 
-   
-  return txt;
-}
-
-char *label_pot(double val,double min,double max,void *data)
-{
-  char *txt=NULL;
-
-  if ((val !=max) && (val !=min)) return NULL;
-  txt=malloc(32);
-  if (val==max) sprintf(txt,"%g",val/1000);
-  if (val==min) sprintf(txt,"%g kV",val/1000);
-
-  return txt;
-}
-
-int calc_degfree(struct CnvMapData *mptr,struct GridData *gptr)
-{
-  int degfree=0,i;
-  double vel_max=2000;
-  double mlat,mlon,tmp; 
-
-  for (i=0;i<gptr->vcnum;i++) {
-
-    if (gptr->data[i].st_id==-1) continue;
-    mlat=gptr->data[i].mlat;
-    mlon=gptr->data[i].mlon;
-    tmp=gptr->data[i].azm;
-       
-    if ((mptr->lat_shft !=0) || (mptr->lon_shft !=0)) 
-    CnvMapCrdShft(&mlat,&mlon,&tmp,mptr->lat_shft,mptr->lon_shft);
-       
-    if (fabs(mlat) < fabs(mptr->latmin)) continue;
-    if (fabs(gptr->data[i].vel.median)>vel_max) continue;
-
-    degfree++;
-  }
-
-  return degfree;
-}
-
-int calc_degfree_model(struct CnvMapData *mptr,struct GridData *gptr)
-{
-  int degfree=0,i; 
-
-  for (i=0;i<mptr->num_model;i++) {
-    if (mptr->model[i].vel.median !=1) degfree+=2;
-    else degfree++;
-  }
-  degfree-=mptr->num_coef;
-
-  return degfree;
-}
 
 int main(int argc,char *argv[]) {
 
@@ -627,6 +323,7 @@ int main(int argc,char *argv[]) {
   unsigned int bndcol;
   unsigned int lndcol;
   unsigned int seacol;
+  unsigned int redcol;
   unsigned int trmcol;
   unsigned int ftrmcol;
   unsigned int tmkcol;
@@ -802,6 +499,7 @@ int main(int argc,char *argv[]) {
 
   bgcol=PlotColor(0xff,0xff,0xff,0xff);
   txtcol=PlotColor(0x00,0x00,0x00,0xff);
+  redcol=PlotColor(0xff,0x00,0x00,0xff);
 
   grdcol=PlotColor(0xc0,0xc0,0xc0,0xff);
   igrdcol=PlotColor(0xc0,0xc0,0xc0,0xff);
@@ -1714,15 +1412,17 @@ int main(int argc,char *argv[]) {
     }
 
     if (modnflg)
-      plot_model_name(plot, imfx-imfr*0.1, wdt-imfy,rcmap->imf_model[0],
-                      rcmap->imf_model[1], txtcol,0x0f,"Helvetica",12.0,fontdb);
+      plot_model_name(plot, imfx-imfr*0.1, wdt-imfy,
+                      rcmap->imf_model[3], rcmap->imf_model[0],
+                      rcmap->imf_model[1], rcmap->imf_model[2],
+                      txtcol,0x0f,"Helvetica",12.0,fontdb);
 
     if ((imfflg) && (rcmap->Bx !=0) && (rcmap->By !=0) && (rcmap->Bz !=0)) {
        PlotLine(plot,imfx-imfr,imfy,imfx+imfr,imfy,grdcol,0x0f,0.5,NULL);
        PlotLine(plot,imfx,imfy-imfr,imfx,imfy+imfr,grdcol,0x0f,0.5,NULL);
        PlotEllipse(plot,NULL,imfx,imfy,imfr,imfr,0,grdcol,0x0f,0.5,NULL);
-       plot_imf(plot,imfx,imfy,imfr,rcmap->Bx,rcmap->By,rcmap->Bz,imfmx,txtcol,
-              0x0f,0.5,"Helvetica",10.0,fontdb); 
+       plot_imf(plot,imfx,imfy,imfr,rcmap->Bx,rcmap->By,rcmap->Bz,imfmx,redcol,
+              0x0f,1.5,"Helvetica",10.0,fontdb); 
        if (wdt>400) {
          plot_imf_delay(plot, imfx,imfy,imfr,rcmap->imf_delay,txtcol,
                         0x0f,"Helvetica", 8.0,fontdb);
@@ -1859,4 +1559,333 @@ int main(int argc,char *argv[]) {
 
   return 0;
 }  
+/* end of main */
+
+int circle_clip(struct Plot *plot, float xoff,float yoff,float wdt,float hgt)
+{
+  int i;
+  float sf=0.55;
+  float px[12];
+  float py[12];
+  int t[12];
+
+  px[0]=wdt;
+  py[0]=0;
+  px[1]=wdt;
+  py[1]=hgt*sf;
+  px[2]=wdt*sf;
+  py[2]=hgt;
+  px[3]=0;
+  py[3]=hgt;
+  px[4]=-wdt*sf;
+  py[4]=hgt;
+  px[5]=-wdt;
+  py[5]=hgt*sf;
+  px[6]=-wdt;
+  py[6]=0;
+  px[7]=-wdt;
+  py[7]=-hgt*sf;
+  px[8]=-wdt*sf;
+  py[8]=-hgt;
+  px[9]=0;
+  py[9]=-hgt;
+  px[10]=wdt*sf;
+  py[10]=-hgt;
+  px[11]=wdt;
+  py[11]=-hgt*sf;
+
+  for (i=0;i<12;i++) {
+    t[i]=1;
+    px[i]+=xoff;
+    py[i]+=yoff;
+  }
+  return PlotClip(plot,12,px,py,t);
+}
+
+int square_clip(struct Plot *plot, float xoff,float yoff,float wdt,float hgt)
+{
+  float px[4];
+  float py[4];
+  int t[4]={0,0,0,0};
+
+  px[0]=xoff;
+  py[0]=yoff;
+  px[1]=xoff+wdt;
+  py[1]=yoff;
+  px[2]=xoff+wdt;
+  py[2]=yoff+hgt;
+  px[3]=xoff;
+  py[3]=yoff+hgt;
+  return PlotClip(plot,4,px,py,t);
+}
+
+int stream(char *buf,int sze,void *data)
+{
+  FILE *fp;
+  fp=(FILE *) data;
+  fwrite(buf,sze,1,fp);
+  return 0;
+} 
+
+int xmldecode(char *buf,int sze,void *data)
+{
+  struct XMLdata *xmldata;
+  xmldata=(struct XMLdata *) data;
+  return XMLDecode(xmldata,buf,sze);
+} 
+
+int AACGM_v2_transform(int ssze,void *src,int dsze,void *dst,void *data)
+{
+  float *pnt;
+  int s;
+  double mlon,mlat;
+  double glon,glat,r;
+
+  pnt=(float *)src;
+
+  if (data==NULL) {
+    glat=pnt[0];
+    glon=pnt[1];
+    s=AACGM_v2_Convert(glat,glon,300,&mlat,&mlon,&r,0);
+    pnt=(float *)dst;
+    pnt[0]=mlat;
+    pnt[1]=mlon;
+  } else {
+    mlat=pnt[0];
+    mlon=pnt[1];
+    s=AACGM_v2_Convert(mlat,mlon,300,&glat,&glon,&r,1);
+    pnt=(float *)dst;
+    pnt[0]=glat;
+    pnt[1]=glon;
+  }
+  return s;
+}
+
+int AACGMtransform(int ssze,void *src,int dsze,void *dst,void *data)
+{
+  float *pnt;
+  int s;
+  double mlon,mlat;
+  double glon,glat,r;
+
+  pnt=(float *)src;
+
+  if (data==NULL) {
+    glat=pnt[0];
+    glon=pnt[1];
+    s=AACGMConvert(glat,glon,300,&mlat,&mlon,&r,0);
+    pnt=(float *)dst;
+    pnt[0]=mlat;
+    pnt[1]=mlon;
+  } else {
+    mlat=pnt[0];
+    mlon=pnt[1];
+    s=AACGMConvert(mlat,mlon,300,&glat,&glon,&r,1);
+    pnt=(float *)dst;
+    pnt[0]=glat;
+    pnt[1]=glon;
+  }
+  return s;
+}
+
+int rotate(int ssze,void *src,int dsze,void *dst,void *data)
+{
+  float *arg=NULL;
+  float *pnt;
+  float px,py;
+  float rad;
+  arg=(float *) data;
+  if (arg[0] > 0) rad=arg[1]*PI/180.0;
+  else rad=-arg[1]*PI/180;
+ 
+  pnt=(float *) src;
+  px=pnt[0];
+  py=pnt[1];
+  pnt=(float *) dst;
+  
+  pnt[0]=0.5+(px-0.5)*cos(rad)-(py-0.5)*sin(rad);
+  pnt[1]=0.5+(px-0.5)*sin(rad)+(py-0.5)*cos(rad);
+  return 0;
+}
+
+double strdate(char *text)
+{
+  double tme;
+  int val;
+  int yr,mo,dy;
+
+  val=atoi(text);
+  dy=val % 100;
+  mo=(val / 100) % 100;
+  yr=(val / 10000);
+  if (yr<1970) yr+=1900;
+  tme=TimeYMDHMSToEpoch(yr,mo,dy,0,0,0);
+
+  return tme;
+}
+
+double strtime(char *text)
+{
+  int hr,mn;
+  int i;
+
+  for (i=0;(text[i] !=':') && (text[i] !=0);i++);
+  if (text[i]==0) return atoi(text)*3600L;
+  text[i]=0;
+  hr=atoi(text);
+  mn=atoi(text+i+1);
+
+  return (double) hr*3600L+mn*60L;
+}   
+
+double *render_map(struct CnvGrid *ptr,int *wdt,int *hgt)
+{
+  int i;
+  double *zbuffer=NULL;
+
+  zbuffer=malloc(sizeof(double)*ptr->num);
+  if (zbuffer==NULL) return NULL;
+  
+  *wdt=ptr->nlon;
+  *hgt=ptr->nlat;
+
+  for (i=0;i<ptr->num;i++) zbuffer[i]=ptr->mag[i];
+
+  return zbuffer;
+}    
+
+int contour_convert(int ssze,void *src,int dsze,void *dst,void *data)
+{
+  double latmin;
+  float lat,lon;
+  float *spnt;
+  float *dpnt;
+
+  spnt=(float *)src;
+  dpnt=(float *)dst;
+  latmin=*(double *)data;
+  
+  lon=spnt[0]*360.0;
+  if (latmin>0)  lat=spnt[1]*(90.0-latmin)+latmin;
+  else lat=-spnt[1]*(90.0+latmin)+latmin;
+ 
+  dpnt[0]=lat;
+  dpnt[1]=lon;
+
+  return 0;
+}
+
+unsigned int sgn_color(double v, void *data)
+{
+  struct key *key;
+  int i;
+
+  key=(struct key *) data;
+  if (key->num==0) return key->defcol;
+
+  i=key->num*(v-key->min)/(key->max-key->min);
+  if (i<0) i=0;
+  if (i>=key->num) i=key->num-1;
+
+  return (key->a[i]<<24) | (key->r[i]<<16) | (key->g[i]<<8) | key->b[i];
+}
+
+unsigned int mag_color(double v,void *data)
+{
+  struct key *key;
+  int i;
+
+  key=(struct key *) data;
+  if (key->num==0) return key->defcol;
+  i=key->num*fabs(v)/key->max;
+  if (i>=key->num) i=key->num-1;
+
+  return (key->a[i]<<24) | (key->r[i]<<16) | (key->g[i]<<8) | key->b[i];
+}
+
+char *label_vel(double val,double min,double max,void *data)
+{
+  char *txt=NULL;
+
+  if ((val !=max) && (val !=min)) return NULL;
+  txt=malloc(32); 
+  if (val==max) sprintf(txt,"%g",val);
+  if (val==min) sprintf(txt,"%g m/s",val); 
+
+  return txt;
+}
+
+char *label_wdt(double val,double min,double max,void *data)
+{
+  char *txt=NULL;
+
+  if ((val !=max) && (val !=min)) return NULL;
+  txt=malloc(32); 
+  if (val==max) sprintf(txt,"%g",val);
+  if (val==min) sprintf(txt,"%g m/s (sw)",val); 
+
+  return txt;
+}
+
+char *label_pwr(double val,double min,double max,void *data)
+{
+  char *txt=NULL;
+
+  if ((val !=max) && (val !=min)) return NULL;
+  txt=malloc(32); 
+  if (val==max) sprintf(txt,"%g",val);
+  if (val==min) sprintf(txt,"%g dB (pwr)",val); 
+   
+  return txt;
+}
+
+char *label_pot(double val,double min,double max,void *data)
+{
+  char *txt=NULL;
+
+  if ((val !=max) && (val !=min)) return NULL;
+  txt=malloc(32);
+  if (val==max) sprintf(txt,"%g",val/1000);
+  if (val==min) sprintf(txt,"%g kV",val/1000);
+
+  return txt;
+}
+
+int calc_degfree(struct CnvMapData *mptr,struct GridData *gptr)
+{
+  int degfree=0,i;
+  double vel_max=2000;
+  double mlat,mlon,tmp; 
+
+  for (i=0;i<gptr->vcnum;i++) {
+
+    if (gptr->data[i].st_id==-1) continue;
+    mlat=gptr->data[i].mlat;
+    mlon=gptr->data[i].mlon;
+    tmp=gptr->data[i].azm;
+       
+    if ((mptr->lat_shft !=0) || (mptr->lon_shft !=0)) 
+    CnvMapCrdShft(&mlat,&mlon,&tmp,mptr->lat_shft,mptr->lon_shft);
+       
+    if (fabs(mlat) < fabs(mptr->latmin)) continue;
+    if (fabs(gptr->data[i].vel.median)>vel_max) continue;
+
+    degfree++;
+  }
+
+  return degfree;
+}
+
+int calc_degfree_model(struct CnvMapData *mptr,struct GridData *gptr)
+{
+  int degfree=0,i; 
+
+  for (i=0;i<mptr->num_model;i++) {
+    if (mptr->model[i].vel.median !=1) degfree+=2;
+    else degfree++;
+  }
+  degfree-=mptr->num_coef;
+
+  return degfree;
+}
 
