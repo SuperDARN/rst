@@ -1258,10 +1258,10 @@ int main(int argc,char *argv[]) {
     if (celflg) {
       if (avflg) 
           plot_cell(plot,rgridavg,rcmap->latmin,magflg,pad,pad,wdt-2*pad,
-                    hgt-2*pad,tfunc,marg,mag_color,&xkey,cprm);
+                    hgt-2*pad,tfunc,marg,mag_color,&xkey,cprm,old_aacgm);
       else 
          plot_cell(plot,rgrid,rcmap->latmin,magflg,pad,pad,wdt-2*pad,
-                    hgt-2*pad,tfunc,marg,mag_color,&xkey,cprm);
+                    hgt-2*pad,tfunc,marg,mag_color,&xkey,cprm,old_aacgm);
     }
 
     if (mapflg) {
@@ -1299,26 +1299,29 @@ int main(int argc,char *argv[]) {
 
     if (tmkflg) MapPlotPolygon(plot,NULL,pad,pad,wdt-2*pad,hgt-2*pad,0,
                                tmkcol,0x0f,0.5,NULL, rtmk,1);
+fprintf(stderr, "START\n");
 
     if (fitflg) 
        plot_fit(plot,vgrid,rcmap->latmin,magflg,pad,pad,wdt-2*pad,hgt-2*pad,
-               vsf,vradius,tfunc,marg,mag_color,&vkey,0.5);
+               vsf,vradius,tfunc,marg,mag_color,&vkey,0.5,old_aacgm);
 
+fprintf(stderr, "START\n");
    if (mrgflg) plot_raw(plot,rgridmrg,rcmap->latmin,magflg,
                  pad,pad,wdt-2*pad,hgt-2*pad,
-                 vsf,vradius,tfunc,marg,mag_color,&vkey,lnewdt);
-    
+                 vsf,vradius,tfunc,marg,mag_color,&vkey,lnewdt,old_aacgm);
+
    if (rawflg) 
       plot_raw(plot,rgrid,rcmap->latmin,magflg,pad,pad,wdt-2*pad,hgt-2*pad,
-               vsf,vradius,tfunc,marg,mag_color,&vkey,lnewdt);
+               vsf,vradius,tfunc,marg,mag_color,&vkey,lnewdt,old_aacgm);
 
     if (modflg) 
       plot_model(plot,rcmap,rcmap->latmin,magflg,pad,pad,wdt-2*pad,
-                  hgt-2*pad,vsf,vradius,tfunc,marg,mag_color,&vkey,lnewdt);
+                  hgt-2*pad,vsf,vradius,tfunc,marg,mag_color,&vkey,lnewdt,
+                  old_aacgm);
      
     if (excflg) 
       plot_excluded(plot,vgrid,rcmap->latmin,magflg,pad,pad,wdt-2*pad,
-                   hgt-2*pad,vsf,vradius,tfunc,marg,grdcol,lnewdt);
+                   hgt-2*pad,vsf,vradius,tfunc,marg,grdcol,lnewdt,old_aacgm);
 
     if (polyflg) {
       for (i=0;i<cnum/2;i++) {
@@ -1349,7 +1352,8 @@ int main(int argc,char *argv[]) {
     }
 
     if (maxminflg) plot_maxmin(plot,pgrid,magflg, pad,pad,wdt-2*pad,
-                               hgt-2*pad,6.0, tfunc,marg,ctrcol,0x0f,2,NULL);
+                               hgt-2*pad,6.0, tfunc,marg,ctrcol,0x0f,2,NULL,
+                               old_aacgm);
 
     PlotClip(plot,0,NULL,NULL,NULL);
 
@@ -1408,7 +1412,8 @@ int main(int argc,char *argv[]) {
     if (vecflg) {
       if (px==2) px+=10;
       plot_vec(plot,px,1.8*apad,0,vmax,magflg, pad,pad,wdt-2*pad,hgt-2*pad,
-               vsf,vradius,tfunc,marg,txtcol,0x0f,0.5, "Helvetica",10.0,fontdb);
+               vsf,vradius,tfunc,marg,txtcol,0x0f,0.5, "Helvetica",10.0,fontdb,
+               old_aacgm);
     }
 
     if (modnflg)
