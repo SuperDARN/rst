@@ -31,13 +31,21 @@
 #include "shfconst.h" /* use the same constants as in fitting procedure */
 #include "igrfcall.h"
 #include "igrflib.h"
+#include "map_addmodel.h"
 
 #include "hlpstr.h"
 
-#define RG96  1
-#define PSR10 2
-#define CS10  4
-#define TS17  8
+/*-----------------------------------------------------------------------------
+ * Notes:
+ *
+ * - Why are we loading all models instead of just the one that we need?
+ *   Check first that the desired model is loaded (!=NULL) if not then load it.
+ *
+ * - Need better error checking on model selection so no NULL model is returned.
+ *
+ * - Is there a correction for most extreme Bz+ PSR10 model?
+ *
+ */
 
 /*-----------------------------------------------------------------------------
  *
@@ -46,7 +54,8 @@
  *
  */
 char *mod_hemi[6] = {"north","south",0};
-char *mod_tilt[4] = {"DP-","DP0","DP+",0};
+char *mod_tilt[] = {"DP-","DP0","DP+",0};
+char *mod_tilts[] = {"tilt<0","tilt=0","tilt>0",0};
 int   mod_tlti[]  = {0,10,20,-1};
 
 /*
@@ -54,12 +63,16 @@ int   mod_tlti[]  = {0,10,20,-1};
  * ---------------
  */
 int   RG96_nang = 8;
-char *RG96_mod_ang[]   = {"315t45", "0t90", "45t135", "90t180", "135t225",
+char *RG96_mod_ang[]   = {"315t45", "0t90"   , "45t135", "90t180" , "135t225",
                           "180t270", "225t315", "270t360", 0};
+char *RG96_mod_angs[]  = {"Bz+"   , "Bz+/By+", "By+"   , "Bz-/By+", "Bz-"    ,
+                          "Bz-/By-", "By-"    , "Bz+/By-", 0};
 float RG96_mod_angil[] = {-22.5, 22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5};
 float RG96_mod_angih[] = {22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5, 337.5};
+
 int   RG96_nlev = 5;
-char *RG96_mod_lev[]   = {"2t3","0t4","4t6","6t12","7t20", 0};
+char *RG96_mod_lev[]   = {"2t3"   ,"0t4"   ,"4t6"   ,"6t12"   ,"7t20"   , 0};
+char *RG96_mod_levs[]  = {"2<Kp<3","0<BT<4","4<BT<6","6<BT<12","7<BT<20", 0};
 float RG96_mod_levi[]  = {0,4,6,12,20,-1};
 
 /*
@@ -67,24 +80,34 @@ float RG96_mod_levi[]  = {0,4,6,12,20,-1};
  * ----------------
  */
 int   PSR10_nang = 8;
-      /* same as RG96 */
+      /* bins are same as RG96 but filenames are same as CS10 */
+
 int   PSR10_nlev = 3;
-float PSR10_mod_levi[]  = {0,3,5,10,-1};
-char *PSR10_mod_lev[]   = {"0t3","3t5","5t10",0};
+char *PSR10_mod_lev[]   = {"0t3"   ,"3t5"   ,"5t10"   ,0};
+char *PSR10_mod_levs[]  = {"0<BT<3","3<BT<5","5<BT<10",0};
+float PSR10_mod_levi[]  = {3,5,10,-1};
 
 /*
  * CS10 Model bins
  * ---------------
  */
 int   CS10_nang = 8;
-char *CS10_mod_ang[16]  = {"Bz+", "Bz+_By+", "By+", "Bz-_By+", "Bz-",
-                           "Bz-_By-", "By-", "Bz+_By-",0};
+/*char *CS10_mod_ang[16]  = {"Bz+", "Bz+_By+", "By+", "Bz-_By+", "Bz-",*/
+char *CS10_mod_ang[]   = {"Bz+", "Bz+_By+", "By+", "Bz-_By+", "Bz-",
+                          "Bz-_By-", "By-", "Bz+_By-",0};
+char *CS10_mod_angs[]  = {"Bz+", "Bz+/By+", "By+", "Bz-/By+", "Bz-",
+                          "Bz-/By-", "By-", "Bz+/By-",0};
 float CS10_mod_angil[] = {-25, 25, 70, 110, 155, 205, 250, 290};
 float CS10_mod_angih[] = {25, 70, 110, 155, 205, 250, 290, 335};
+
 int   CS10_nlev = 6;
-char *CS10_mod_lev[16]  = {"0.00t1.20","1.20t1.70","1.70t2.20","2.20t2.90",
-                           "2.90t4.10","4.10t20.00",0};
-float CS10_mod_levi[8]  = {1.2, 1.7, 2.2, 2.9, 4.1, 20, -1};
+/*char *CS10_mod_lev[16]  = {"0.00t1.20","1.20t1.70","1.70t2.20","2.20t2.90",*/
+char *CS10_mod_lev[]   = {"0.00t1.20","1.20t1.70","1.70t2.20","2.20t2.90",
+                          "2.90t4.10","4.10t20.00",0};
+/*char *CS10_mod_lev[16]  = {"0.00t1.20","1.20t1.70","1.70t2.20","2.20t2.90",*/
+char *CS10_mod_levs[]  = {"0<Esw<1.2","1.2<Esw<1.7","1.7<Esw<2.2","2.2<Esw<2.9",
+                          "2.9<Esw<4.1","4.1<Esw<20",0};
+float CS10_mod_levi[]  = {1.2, 1.7, 2.2, 2.9, 4.1, 20, -1};
 
 /*
 char *mod_lev[]={"2t3","0t4","4t6","6t12","7t20",0};
@@ -282,8 +305,6 @@ int main(int argc,char *argv[]) {
 
   load_all_models(envstr,imod);
 
-/* shite */
-return (0);
   /* set function pointer to read/write old or new */
   if (old) {
     Map_Read  = &OldCnvMapFread;
@@ -349,7 +370,7 @@ return (0);
     
     strcpy(map->imf_model[0],mod->angle);
     strcpy(map->imf_model[1],mod->level);
-    strcpy(map->imf_model[2],mod->level);
+    strcpy(map->imf_model[2],mod->tilt);
     switch (imod) {
       case RG96:  strcpy(map->imf_model[3],"RG96"); break;
       case PSR10: strcpy(map->imf_model[3],"PSR10"); break;
@@ -390,20 +411,20 @@ struct model *load_model(FILE *fp, int ihem, int ilev, int iang,
     case RG96:
       strcpy(ptr->hemi,"Null");
       strcpy(ptr->tilt,"Null");
-      strcpy(ptr->level,RG96_mod_lev[ilev]);
-      strcpy(ptr->angle,RG96_mod_ang[iang]);
+      strcpy(ptr->level,RG96_mod_levs[ilev]);
+      strcpy(ptr->angle,RG96_mod_angs[iang]);
       break;
     case PSR10:
       strcpy(ptr->hemi,mod_hemi[ihem]);
-      strcpy(ptr->tilt,mod_tilt[itlt]);
-      strcpy(ptr->level,PSR10_mod_lev[ilev]);
-      strcpy(ptr->angle,RG96_mod_ang[iang]);
+      strcpy(ptr->tilt,mod_tilts[itlt]);
+      strcpy(ptr->level,PSR10_mod_levs[ilev]);
+      strcpy(ptr->angle,RG96_mod_angs[iang]); /* same as RG96 */
       break;
     case CS10:
       strcpy(ptr->hemi,mod_hemi[ihem]);
-      strcpy(ptr->tilt,mod_tilt[itlt]);
-      strcpy(ptr->level,CS10_mod_lev[ilev]);
-      strcpy(ptr->angle,CS10_mod_ang[iang]);
+      strcpy(ptr->tilt,mod_tilts[itlt]);
+      strcpy(ptr->level,CS10_mod_levs[ilev]);
+      strcpy(ptr->angle,CS10_mod_angs[iang]);
       break;
     case TS17:
       break;
@@ -500,7 +521,7 @@ int load_all_models(char *path, int imod)
           for (j=0; j<PSR10_nang; j++) {
             for (k=0; mod_tilt[k] != NULL; k++) {
               sprintf(fname,"%s/PSR10/mod_%s_%s_%s_%s.spx",path,mod_hemi[h],
-                             PSR10_mod_lev[i],RG96_mod_ang[j],mod_tilt[k]);
+                             PSR10_mod_lev[i],CS10_mod_ang[j],mod_tilt[k]);
               fp = fopen(fname,"r");
               if (fp == NULL) continue;
               model[h][k][i][j] = load_model(fp,h,i,j,k,imod);
@@ -611,9 +632,9 @@ struct model *interp_CS10_coeffs(int ih, float tilt, float mag, float cang)
   ptr->mtop = model[0][0][0][0]->mtop;
 
   strcpy(ptr->hemi,mod_hemi[ih]);
-  sprintf(ptr->tilt, "%5.1f",tilt);
-  sprintf(ptr->level,"%5.1f",mag);
-  sprintf(ptr->angle,"%5.0f",cang);
+  sprintf(ptr->tilt, "tilt %5.1f",tilt);
+  sprintf(ptr->level,"Esw  %5.1f mV/m",mag);
+  sprintf(ptr->angle,"Bang %5.0f deg.",cang);
 
   ptr->aoeff_p=malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
   ptr->aoeff_n=malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
@@ -805,7 +826,7 @@ struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
       itlt = i;
 
       /* angle */
-      for (i=0; i < RG96_nang; i++)
+      for (i=0; i < PSR10_nang; i++)
         if ((bazm >= RG96_mod_angil[i]) && (bazm < RG96_mod_angih[i])) break;
       if (i == RG96_nang) i--;
       iang = i;
@@ -818,7 +839,7 @@ struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
       /* correct for extreme Bz- */
 /*      if ((ilev==5) && (iang>2) && (iang<6)) ilev--;*/
 /* SGS: is there a correction for PSR10??? */
-      
+
       imodel = model[ihem][itlt][ilev][iang];
 
       break;
@@ -1182,6 +1203,9 @@ double calc_bmag(float mlat, float mlon, float date, int old_aacgm)
   if (old_aacgm) {
     AACGMConvert((double)mlat,(double)mlon,1.,&glat,&glon,&r,1);
     IGRFCall(date,glat,glon,Altitude/1000.,&x,&y,&z);
+/* SGS also, do NOT call old IGRF */
+/* shite */
+/* pass in Re + 300 km */
     bmag = 1e-9*sqrt(x*x + y*y + z*z);
   } else {
     AACGM_v2_Convert((double)mlat,(double)mlon,1.,&glat,&glon,&r,1);
@@ -1194,10 +1218,9 @@ double calc_bmag(float mlat, float mlon, float date, int old_aacgm)
     /* SGS: not sure of units here... */
   }
 
-  fprintf(stderr,"mlat= %f, bmag=%g\n",mlat, bmag);
-  fprintf(stderr,"Press enter:");
-  char ch;
-  scanf("%c", &ch);
+fprintf(stderr,"mlat= %f, bmag=%g",mlat, bmag);
+  if (old_aacgm) fprintf(stderr, " old_aacgm\n");
+  else fprintf(stderr, " aacgm-v2\n");
 
   return bmag;
 }
