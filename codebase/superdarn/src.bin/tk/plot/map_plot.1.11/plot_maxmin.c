@@ -30,7 +30,7 @@
 
 /* Notes:
  *
- * - using magflg = 1|2 for AACGM_v2|old AACGM
+ * - added old_aacgm parameter
  * - altitude is assumed to be 150 km
  *
  */
@@ -52,7 +52,7 @@ void plot_maxmin(struct Plot *plot, struct CnvGrid *ptr, int magflg,
                  float xoff,float yoff,float wdt,float hgt,float sze,
                  int (*trnf)(int,void *,int,void *,void *data),void *data,
                  unsigned int color,char mask,float width,
-                 struct PlotDash *dash)
+                 struct PlotDash *dash, int old_aacgm)
 {
   int i,s;
   double min =  1e10;
@@ -79,14 +79,14 @@ void plot_maxmin(struct Plot *plot, struct CnvGrid *ptr, int magflg,
   if (!magflg) {
     mlat = max_lat;
     mlon = max_lon;
-    if (magflg == 2) s = AACGMConvert(mlat,mlon,150,&glat,&glon,&r,1);
-    else             s = AACGM_v2_Convert(mlat,mlon,150,&glat,&glon,&r,1);
+    if (old_aacgm) s = AACGMConvert(mlat,mlon,150,&glat,&glon,&r,1);
+    else           s = AACGM_v2_Convert(mlat,mlon,150,&glat,&glon,&r,1);
     max_lat = glat;
     max_lon = glon;
     mlat = min_lat;
     mlon = min_lon;
-    if (magflg == 2) s = AACGMConvert(mlat,mlon,150,&glat,&glon,&r,1);
-    else             s = AACGM_v2_Convert(mlat,mlon,150,&glat,&glon,&r,1);
+    if (old_aacgm) s = AACGMConvert(mlat,mlon,150,&glat,&glon,&r,1);
+    else           s = AACGM_v2_Convert(mlat,mlon,150,&glat,&glon,&r,1);
     min_lat = glat;
     min_lon = glon;
   }
