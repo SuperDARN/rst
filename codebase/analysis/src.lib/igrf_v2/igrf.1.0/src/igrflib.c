@@ -7,9 +7,9 @@
 #include "genmag.h"
 
 /*#define DEBUG 1*/
-/* TO DO: should these stuff go in igrflib.h? */
+/* TO DO: should these go in igrflib.h? */
 
-struct {
+static struct {
 	int year;
 	int month;
 	int day;
@@ -20,7 +20,7 @@ struct {
 	int daysinyear;
 } igrf_date = {-1,-1,-1,-1,-1,-1,-1,-1};
 
-struct {
+static struct {
 	double ctcl;
 	double ctsl;
 	double stcl;
@@ -31,10 +31,10 @@ struct {
 	double sl0;
 } geopack = {0.,0.,0.,0.,0.,0.,0.,0.};
 
-double IGRF_coef_set[MAXNYR][IGRF_MAXK];	/* all the coefficients */
-double IGRF_svs[IGRF_MAXK];							/* secular variations */
-double IGRF_coefs[IGRF_MAXK];						/* interpolated coefficients */
-int    nmx;													/* order of expansion */
+static double IGRF_coef_set[MAXNYR][IGRF_MAXK];	/* all the coefficients */
+static double IGRF_svs[IGRF_MAXK];							/* secular variations */
+static double IGRF_coefs[IGRF_MAXK];						/* interpolated coefficients */
+static int    nmx;													/* order of expansion */
 
 /*-----------------------------------------------------------------------------
 ; for debugging
