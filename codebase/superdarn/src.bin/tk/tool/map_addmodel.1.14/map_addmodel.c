@@ -155,7 +155,7 @@ struct model *model[2][3][6][8]; /* [hemi][tilt][lev][ang] */
 void add_model(struct CnvMapData *map,int num,struct GridGVec *ptr);
 double calc_bmag(float mlat, float mlon, float date, int old_aacgm);
 int solve_model(int num, struct GridGVec *ptr, float latmin, struct model *mod,
-                int hemisphere, float decyear, int igrf_flag, int old_aacgm);
+                int hemi, float decyear, int igrf_flag, int old_aacgm);
 double factorial(double n);
 void cmult(struct complex *a, struct complex *b, struct complex *c);
 void slv_ylm_mod(float theta, float phi, int order, struct complex *ylm_p,
@@ -164,7 +164,7 @@ void slv_ylm_mod(float theta, float phi, int order, struct complex *ylm_p,
 void slv_sph_kset(float latmin, int num, float *phi, float *the,
                   float *the_col, double *ele_phi, double *ele_the,
                   struct model *mod);
-struct GridGVec *get_model_pos(int Lmax, float latmin, int hemisphere,
+struct GridGVec *get_model_pos(int Lmax, float latmin, int hemi,
                                int level, int *num);
 struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
                               float tilt, int imod, int nointerp);
@@ -199,7 +199,7 @@ int main(int argc,char *argv[]) {
   char *fname=NULL; 
   int tme;
   int yrsec;
-  int i;
+  int i,first;
 
   int cnt=0;
   int modnum;
@@ -234,7 +234,6 @@ int main(int argc,char *argv[]) {
   /* function pointers for file reading/writing (old and new) */
   int (*Map_Read)(FILE *, struct CnvMapData *, struct GridData *);
   int (*Map_Write)(FILE *, struct CnvMapData *, struct GridData *);
-
 
   map = CnvMapMake();
   grd = GridMake();
@@ -314,6 +313,7 @@ int main(int argc,char *argv[]) {
     Map_Write = &CnvMapFwrite;
   }
 
+  first = 1;
   while ((*Map_Read)(fp,map,grd) != -1) {  
  
     tme = (grd->st_time + grd->ed_time)/2.0;
@@ -325,7 +325,10 @@ int main(int argc,char *argv[]) {
     if (old) map->imf_flag = !noigrf;
     else     map->noigrf   = noigrf;
 
-/*    if (igrf_date.year == -1) IGRF_SetDateTime(yr,mo,dy,hr,mt,(int)sc);*/
+    if (first) {
+      if (!noigrf)    IGRF_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
+      if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
+    }
 
 /* SGS-FIX */
 /*    if (imod == CS10 || imod == PSR10)
@@ -891,7 +894,7 @@ struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
 }     
 
 
-struct GridGVec *get_model_pos(int Lmax,float latmin,int hemisphere,
+struct GridGVec *get_model_pos(int Lmax,float latmin,int hemi,
                                int level,int *num)
 {
   struct GridGVec *ptr=NULL;
@@ -1198,35 +1201,28 @@ double calc_bmag(float mlat, float mlon, float date, int old_aacgm)
   double rtp[3], brtp[3], bxyz[3];
   double bmag;
   double glat, glon, r;
-  double x,y,z;
 
-  if (old_aacgm) {
-    AACGMConvert((double)mlat,(double)mlon,1.,&glat,&glon,&r,1);
-    IGRFCall(date,glat,glon,Altitude/1000.,&x,&y,&z);
-/* SGS also, do NOT call old IGRF */
-/* shite */
-/* pass in Re + 300 km */
-    bmag = 1e-9*sqrt(x*x + y*y + z*z);
-  } else {
-    AACGM_v2_Convert((double)mlat,(double)mlon,1.,&glat,&glon,&r,1);
-    rtp[0] = (Re + Altitude/1000.)/Re;
-    rtp[1] = (90.-glat)*PI/180.;
-    rtp[2] = glon*PI/180.;
-    IGRF_compute(rtp, brtp);            /* compute the IGRF field here */
-    bspcar(rtp[1],rtp[2], brtp, bxyz);  /* convert field to Cartesian */
-    bmag = sqrt(bxyz[0]*bxyz[0] + bxyz[1]*bxyz[1] + bxyz[2]*bxyz[2]);
-    /* SGS: not sure of units here... */
-  }
+  if (old_aacgm) AACGMConvert((double)mlat,(double)mlon,1.,&glat,&glon,&r,1);
+  else       AACGM_v2_Convert((double)mlat,(double)mlon,1.,&glat,&glon,&r,1);
 
-fprintf(stderr,"mlat= %f, bmag=%g",mlat, bmag);
-  if (old_aacgm) fprintf(stderr, " old_aacgm\n");
-  else fprintf(stderr, " aacgm-v2\n");
+  /* SGS: do NOT call old IGRF anymore
+  IGRFCall(date,glat,glon,Altitude/1000.,&x,&y,&z);
+  IGRFCall(date,glat,glon,(Re+Altitude)/1000.,&x,&y,&z);
+  bmag = 1e-9*sqrt(x*x + y*y + z*z);*/
+
+  rtp[0] = (Re + Altitude)/Re;        /* unitless */
+  rtp[1] = (90.-glat)*PI/180.;
+  rtp[2] = glon*PI/180.;
+  IGRF_compute(rtp, brtp);            /* compute the IGRF field here */
+  bspcar(rtp[1],rtp[2], brtp, bxyz);  /* convert field to Cartesian */
+  bmag = sqrt(bxyz[0]*bxyz[0] + bxyz[1]*bxyz[1] + bxyz[2]*bxyz[2]);
+  bmag *= 1e-9;   /* SGS: not sure of units here, but this seems to work... */
 
   return bmag;
 }
 
 int solve_model(int num, struct GridGVec *ptr, float latmin, struct model *mod,
-                int hemisphere, float decyear, int noigrf, int old_aacgm)
+                int hemi, float decyear, int noigrf, int old_aacgm)
 {
   int i;
   double *ele_phi=NULL,*ele_the=NULL;
@@ -1236,8 +1232,8 @@ int solve_model(int num, struct GridGVec *ptr, float latmin, struct model *mod,
 
   /* SGS: Altitude is a constant defined in shfconst.h to be 300 km */
 
-  if (hemisphere == 1) bpolar = BNorth;  /* SGS: defined in shfconst.h */
-  else bpolar = BSouth;
+  if (hemi == 1) bpolar = BNorth;  /* SGS: defined in shfconst.h */
+  else           bpolar = BSouth;
 
   if (mod==NULL) return -1; 
 
@@ -1269,15 +1265,14 @@ int solve_model(int num, struct GridGVec *ptr, float latmin, struct model *mod,
   slv_sph_kset(latmin,num,phi,the,the_col,ele_phi,ele_the,mod);
 
   for (i=0; i<num; i++) {
-    ele_phi[i] = ele_phi[i]*hemisphere;
-    ele_the[i] = ele_the[i]*hemisphere;
+    ele_phi[i] = ele_phi[i]*hemi;
+    ele_the[i] = ele_the[i]*hemi;
 
-    if (noigrf) { /* use a constant value for magnitude of B */
-      bmag = -1000 * bpolar*(1 - 3*Altitude/Re)*
+    if (noigrf) { /* use dipole value for B */
+      bmag = -1e3*bpolar*(1 - 3*Altitude/Re)*
               sqrt(3.*(cos(the_col[i])*cos(the_col[i]))+1.)/2.;
     } else {
-      bmag = 1000 *
-               calc_bmag(hemisphere*ptr[i].mlat,ptr[i].mlon,decyear,old_aacgm);
+      bmag = 1e3*calc_bmag(hemi*ptr[i].mlat,ptr[i].mlon,decyear,old_aacgm);
     }
 
     ptr[i].azm        = atan2(ele_the[i]/bmag,ele_phi[i]/bmag)*180./PI;
@@ -1324,5 +1319,4 @@ void add_model(struct CnvMapData *map,int num,struct GridGVec *ptr)
      if (map->model[i].mlon>180) map->model[i].mlon-=360;
   }
 }
-
 
