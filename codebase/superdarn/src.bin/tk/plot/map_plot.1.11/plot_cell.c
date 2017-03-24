@@ -3,7 +3,6 @@
    Author: R.J.Barnes
 */
 
-
 /*
  LICENSE AND DISCLAIMER
  
@@ -28,6 +27,12 @@
  
 */
 
+/* Notes:
+ *
+ * - using magflg = 1|2 for AACGM_v2|old AACGM
+ * - altitude is assumed to be 150 km
+ *
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,35 +42,35 @@
 #include "rmath.h"
 #include "rtypes.h"
 #include "aacgm.h"
+#include "aacgmlib_v2.h"
 #include "rfbuffer.h"
 #include "iplot.h"
 #include "rfile.h"
 #include "calcvector.h"
 #include "griddata.h"
 
-
-
 int cell_convert(float xoff,float yoff,float wdt,float hgt,
                  float lat,float lon,float *px,float *py,int magflg,
                  int (*trnf)(int,void *,int,void *,void *data),void *data) {
   int s;
   float map[2],pnt[2];
+  double mlat,mlon,glat,glon,r;
 
    if (!magflg) {
-      double mlat,mlon,glat,glon,r;
-      int s;
-      mlat=lat;
-      mlon=lon;
-      s=AACGMConvert(mlat,mlon,150,&glat,&glon,&r,1);
-      lat=glat;
-      lon=glon;
+      mlat = lat;
+      mlon = lon;
+      if (magflg == 2) s = AACGMConvert(mlat,mlon,150,&glat,&glon,&r,1);
+      else             s = AACGM_v2_Convert(mlat,mlon,150,&glat,&glon,&r,1);
+      lat = glat;
+      lon = glon;
     }
-    map[0]=lat;
-    map[1]=lon;
-    s=(*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
-    if (s !=0) return -1;
-    *px=xoff+wdt*pnt[0];
-    *py=yoff+hgt*pnt[1]; 
+    map[0] = lat;
+    map[1] = lon;
+    s = (*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
+    if (s != 0) return -1;
+    *px = xoff + wdt*pnt[0];
+    *py = yoff + hgt*pnt[1]; 
+
     return 0;
 }
 
@@ -73,16 +78,13 @@ void plot_cell(struct Plot *plot,
                struct GridData *ptr,float latmin,int magflg,
                float xoff,float yoff,float wdt,float hgt,
                int (*trnf)(int,void *,int,void *,void *data),void *data,
-               unsigned int(*cfn)(double,void *),void *cdata,
-               int cprm) {
-
-
+               unsigned int(*cfn)(double,void *),void *cdata, int cprm)
+{
   int i,s,nlon;
   double lon,lat,lstp;
   unsigned int color=0;
   float px[4],py[4];
   int t[4]={0,0,0,0};
-
 
   for (i=0;i<ptr->vcnum;i++) {
     
@@ -109,8 +111,6 @@ void plot_cell(struct Plot *plot,
                  magflg,trnf,data);
     if (s !=0) continue;   
     PlotPolygon(plot,NULL,0,0,4,px,py,t,1,color,0x0f,0,NULL);
-    
-        
-    
   } 
 }
+
