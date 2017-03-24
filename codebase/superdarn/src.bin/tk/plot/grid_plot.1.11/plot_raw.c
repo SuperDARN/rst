@@ -10,7 +10,7 @@
 /* Notes:
  *
  * - add sort by velocity so largest velocities plotted last
- * - using magflg = 1|2 for AACGM_v2|old AACGM
+ * - added old_aacgm parameter
  * - altitude is assumed to be 150 km
  *
  */
@@ -35,9 +35,9 @@ void plot_raw(struct Plot *plot,
               struct GridData *ptr,float latmin,int magflg,
               float xoff,float yoff,float wdt,float hgt,float sf,float rad,
               int (*trnf)(int,void *,int,void *,void *data),void *data,
-              unsigned int(*cfn)(double,void *),void *cdata,
-              float width) {
-
+              unsigned int(*cfn)(double,void *),void *cdata, float width,
+              int old_aacgm)
+{
   int i,k,j,s,nswap;
   double olon,olat,lon,lat,vazm;
   float map[2],pnt[2];
@@ -65,13 +65,13 @@ void plot_raw(struct Plot *plot,
     if (!nswap) break;
   }
 
-  if (magflg == 2)      AACGMCnv = &AACGMConvert;
-  else if (magflg == 1) AACGMCnv = &AACGM_v2_Convert;
+  if (old_aacgm) AACGMCnv = &AACGMConvert;
+  else           AACGMCnv = &AACGM_v2_Convert;
 
   for (i=0;i<ptr->vcnum;i++) {
 
-    if (! isfinite(ptr->data[i].vel.median)) continue;
-    if (fabs(ptr->data[i].vel.median)>VEL_MAX) continue;
+    if (!isfinite(ptr->data[i].vel.median)) continue;
+    if (fabs(ptr->data[i].vel.median) > VEL_MAX) continue;
 
     olon = ptr->data[i].mlon;
     olat = ptr->data[i].mlat;
