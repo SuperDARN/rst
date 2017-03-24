@@ -9,7 +9,7 @@ include $(MAKECFG).$(SYSTEM)
 
 INCLUDE = -I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/superdarn \
           -I$(IPATH)/analysis
-SRC = hlpstr.h map_addmodel.c errstr.h
+SRC = hlpstr.h map_addmodel.c errstr.h map_addmodel.h
 OBJS = map_addmodel.o
 
 DSTPATH = $(BINPATH)
