@@ -30,7 +30,7 @@
 
 /* Notes:
  *
- * - using magflg = 1|2 for AACGM_v2|old AACGM
+ * - added old_aacgm parameter
  * - altitude is assumed to be 150 km
  *
  */
@@ -52,7 +52,9 @@
 
 int cell_convert(float xoff,float yoff,float wdt,float hgt,
                  float lat,float lon,float *px,float *py,int magflg,
-                 int (*trnf)(int,void *,int,void *,void *data),void *data) {
+                 int (*trnf)(int,void *,int,void *,void *data),
+                 void *data, int old_aacgm)
+{
   int s;
   double mlat,mlon,glat,glon,r;
   float map[2],pnt[2];
@@ -60,8 +62,8 @@ int cell_convert(float xoff,float yoff,float wdt,float hgt,
   if (!magflg) {
     mlat = lat;
     mlon = lon;
-    if (magflg == 2) s = AACGMConvert(mlat,mlon,150,&glat,&glon,&r,1);
-    else             s = AACGM_v2_Convert(mlat,mlon,150,&glat,&glon,&r,1);
+    if (old_aacgm) s = AACGMConvert(mlat,mlon,150,&glat,&glon,&r,1);
+    else           s = AACGM_v2_Convert(mlat,mlon,150,&glat,&glon,&r,1);
     lat = glat;
     lon = glon;
   }
@@ -79,7 +81,8 @@ void plot_cell(struct Plot *plot,
                struct GridData *ptr,float latmin,int magflg,
                float xoff,float yoff,float wdt,float hgt,
                int (*trnf)(int,void *,int,void *,void *data),void *data,
-               unsigned int(*cfn)(double,void *),void *cdata, int cprm)
+               unsigned int(*cfn)(double,void *),void *cdata, int cprm,
+               int old_aacgm)
 {
   int i,s,nlon;
   double lon,lat,lstp;
@@ -99,19 +102,18 @@ void plot_cell(struct Plot *plot,
     nlon=(int) (360*cos((lat-0.5)*PI/180)+0.5);
     lstp=360.0/nlon; 
     s=cell_convert(xoff,yoff,wdt,hgt,lat-0.5,lon-lstp/2,&px[0],&py[0],
-                 magflg,trnf,data);
+                 magflg,trnf,data,old_aacgm);
     if (s !=0) continue;
     s=cell_convert(xoff,yoff,wdt,hgt,lat-0.5,lon+lstp/2,&px[1],&py[1],
-                 magflg,trnf,data);
+                 magflg,trnf,data,old_aacgm);
     if (s !=0) continue;
     s=cell_convert(xoff,yoff,wdt,hgt,lat+0.5,lon+lstp/2,&px[2],&py[2],
-                 magflg,trnf,data);
+                 magflg,trnf,data,old_aacgm);
     if (s !=0) continue;
     s=cell_convert(xoff,yoff,wdt,hgt,lat+0.5,lon-lstp/2,&px[3],&py[3],
-                 magflg,trnf,data);
+                 magflg,trnf,data,old_aacgm);
     if (s !=0) continue;   
     PlotPolygon(plot,NULL,0,0,4,px,py,t,1,color,0x0f,0,NULL);
-
   } 
 }
 
