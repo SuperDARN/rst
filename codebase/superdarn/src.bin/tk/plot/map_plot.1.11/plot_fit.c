@@ -30,7 +30,7 @@
 
 /* Notes:
  *
- * - using magflg = 1|2 for AACGM_v2|old AACGM
+ * - added old_aacgm parameter
  * - altitude is assumed to be 150 km
  *
  */
@@ -53,7 +53,7 @@ void plot_fit(struct Plot *plot,
               float xoff,float yoff,float wdt,float hgt,float sf,float rad,
               int (*trnf)(int,void *,int,void *,void *data),void *data,
               unsigned int(*cfn)(double,void *),void *cdata,
-              float width)
+              float width, int old_aacgm)
 {
   int i,s;
   double olon,olat,lon,lat,vazm;
@@ -65,8 +65,9 @@ void plot_fit(struct Plot *plot,
   /* function pointer for AACGM conversion */
   int (*AACGMCnv)(double, double, double, double *, double *, double *, int);
 
-  if (magflg == 2)      AACGMCnv = &AACGMConvert;
-  else if (magflg == 1) AACGMCnv = &AACGM_v2_Convert;
+fprintf(stderr, " magflg = %d\n", magflg);
+  if (old_aacgm) AACGMCnv = &AACGMConvert;
+  else           AACGMCnv = &AACGM_v2_Convert;
 
   for (i=0;i<ptr->num;i++) {
 
@@ -82,7 +83,9 @@ void plot_fit(struct Plot *plot,
     if (!magflg) {
       mlat = lat;
       mlon = lon;
+fprintf(stderr, " before\n");
       s =(*AACGMCnv)(mlat,mlon,150,&glat,&glon,&r,1);
+fprintf(stderr, " after\n");
       lat = glat;
       lon = glon;
     }

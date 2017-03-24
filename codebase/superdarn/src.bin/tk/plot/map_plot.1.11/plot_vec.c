@@ -29,7 +29,7 @@
 
 /* Notes:
  *
- * - using magflg = 1|2 for AACGM_v2|old AACGM
+ * - added old_aacgm parameter
  * - altitude is assumed to be 150 km
  *
  */
@@ -49,7 +49,7 @@ void plot_vec(struct Plot *plot,float px,float py,int or,double max, int magflg,
               float xoff,float yoff,float wdt,float hgt,float sf,float rad,
               int (*trnf)(int,void *,int,void *,void *data),void *data,
               unsigned int color,char mask,float width,
-              char *fontname,float fontsize, void *txtdata)
+              char *fontname,float fontsize, void *txtdata, int old_aacgm)
 {
   int s;
   char txt[256];
@@ -73,8 +73,8 @@ void plot_vec(struct Plot *plot,float px,float py,int or,double max, int magflg,
   if (!magflg) {
     mlat = lat;
     mlon = lon;
-    if (magflg == 2) s = AACGMConvert(mlat,mlon,150,&glat,&glon,&r,1);
-    else             s = AACGM_v2_Convert(mlat,mlon,150,&glat,&glon,&r,1);
+    if (old_aacgm) s = AACGMConvert(mlat,mlon,150,&glat,&glon,&r,1);
+    else           s = AACGM_v2_Convert(mlat,mlon,150,&glat,&glon,&r,1);
     lat = glat;
     lon = glon;
   }
@@ -92,8 +92,8 @@ void plot_vec(struct Plot *plot,float px,float py,int or,double max, int magflg,
   if (!magflg) {
     mlat = lat;
     mlon = lon;
-    if (magflg == 2) s = AACGMConvert(mlat,mlon,150,&glat,&glon,&r,1);
-    else             s = AACGM_v2_Convert(mlat,mlon,150,&glat,&glon,&r,1);
+    if (old_aacgm) s = AACGMConvert(mlat,mlon,150,&glat,&glon,&r,1);
+    else           s = AACGM_v2_Convert(mlat,mlon,150,&glat,&glon,&r,1);
     lat = glat;
     lon = glon;
   }

@@ -32,5 +32,5 @@ void plot_excluded(struct Plot *plot, struct CnvGrid *ptr, float latmin,
                    int magflg, float xoff, float yoff, float wdt, float hgt,
                    float sf, float rad,
                    int (*trnf)(int,void *,int,void *,void *data), void *data,
-	                 unsigned int color, float width);
+	                 unsigned int color, float width, int old_aacgm);
 

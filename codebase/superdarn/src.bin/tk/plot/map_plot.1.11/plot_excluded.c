@@ -30,7 +30,7 @@
 
 /* Notes:
  *
- * - using magflg = 1|2 for AACGM_v2|old AACGM
+ * - added old_aacgm parameter
  * - altitude is assumed to be 150 km
  *
  */
@@ -61,8 +61,8 @@ void plot_excluded(struct Plot *plot,
   /* function pointer for AACGM conversion */
   int (*AACGMCnv)(double, double, double, double *, double *, double *, int);
 
-  if (magflg == 2)      AACGMCnv = &AACGMConvert;
-  else if (magflg == 1) AACGMCnv = &AACGM_v2_Convert;
+  if (old_aacgm) AACGMCnv = &AACGMConvert;
+  else           AACGMCnv = &AACGM_v2_Convert;
 
   for (i=0;i<ptr->num;i++) {
     
