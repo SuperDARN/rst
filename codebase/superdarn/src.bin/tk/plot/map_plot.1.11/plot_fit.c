@@ -65,7 +65,6 @@ void plot_fit(struct Plot *plot,
   /* function pointer for AACGM conversion */
   int (*AACGMCnv)(double, double, double, double *, double *, double *, int);
 
-fprintf(stderr, " magflg = %d\n", magflg);
   if (old_aacgm) AACGMCnv = &AACGMConvert;
   else           AACGMCnv = &AACGM_v2_Convert;
 
@@ -83,9 +82,7 @@ fprintf(stderr, " magflg = %d\n", magflg);
     if (!magflg) {
       mlat = lat;
       mlon = lon;
-fprintf(stderr, " before\n");
       s =(*AACGMCnv)(mlat,mlon,150,&glat,&glon,&r,1);
-fprintf(stderr, " after\n");
       lat = glat;
       lon = glon;
     }
