@@ -55,7 +55,7 @@ void plot_model(struct Plot *plot, struct CnvMapData *ptr, float latmin,
                 float sf,float rad,
                 int (*trnf)(int,void *,int,void *,void *data),void *data,
                 unsigned int(*cfn)(double,void *),void *cdata, float width,
-                int old_aacgm)
+                int old_aacgm, int nopad)
 {
   int i,s;
   double olon,olat,lon,lat,vazm;
@@ -86,7 +86,10 @@ void plot_model(struct Plot *plot, struct CnvMapData *ptr, float latmin,
       lon = glon;
     }
 
-    if (fabs(lat) < fabs(latmin)) continue;
+/* SGS: turn off padding here */
+    if (nopad && ptr->model[i].vel.median == 1) continue;
+/* SGS: want to see model data, even below latmin */
+/*    if (fabs(lat) < fabs(latmin)) continue;*/
     if (cfn != NULL) color = (*cfn)(ptr->model[i].vel.median,cdata);
 
     map[0] = lat;

@@ -384,6 +384,7 @@ int main(int argc,char *argv[]) {
   unsigned char ctrflg=0;
   unsigned char hmbflg=0;
   unsigned char fovflg=0;
+  unsigned char nopad=0;
   unsigned char ffovflg=0;
 
   unsigned char polyflg=0;
@@ -626,6 +627,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"mrg",'x',&mrgflg);
   OptionAdd(&opt,"raw",'x',&rawflg);
   OptionAdd(&opt,"mod",'x',&modflg);
+  OptionAdd(&opt,"nopad",'x',&nopad);
   OptionAdd(&opt,"ctr",'x',&ctrflg);
   OptionAdd(&opt,"poly",'x',&polyflg);
   OptionAdd(&opt,"fpoly",'x',&fpolyflg);
@@ -1315,7 +1317,7 @@ int main(int argc,char *argv[]) {
     if (modflg) 
       plot_model(plot,rcmap,rcmap->latmin,magflg,pad,pad,wdt-2*pad,
                   hgt-2*pad,vsf,vradius,tfunc,marg,mag_color,&vkey,lnewdt,
-                  old_aacgm);
+                  old_aacgm, nopad);
      
     if (excflg) 
       plot_excluded(plot,vgrid,rcmap->latmin,magflg,pad,pad,wdt-2*pad,
