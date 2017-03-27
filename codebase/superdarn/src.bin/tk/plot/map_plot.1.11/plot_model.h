@@ -33,5 +33,5 @@ void plot_model(struct Plot *plot, struct CnvMapData *ptr, float latmin,
                 float sf,float rad,
                 int (*trnf)(int,void *,int,void *,void *data),void *data,
                 unsigned int(*cfn)(double,void *),void *cdata, float width,
-                int old_aacgm);
+                int old_aacgm, int nopad);
 

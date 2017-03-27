@@ -190,6 +190,8 @@
 </option>
 <option><on>-mod</on><od>plot the model vectors.</od>
 </option>
+<option><on>-nopad</on><od>combined with <ar>-mod</ar> will <b>not</b> show padding model zero vectors.</od>
+</option>
 
 <option><on>-ctr</on><od>plot potential contours.</od>
 </option>
