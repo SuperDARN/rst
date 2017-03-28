@@ -47,26 +47,33 @@ void plot_model_name(struct Plot *plot, float xoff, float yoff, char *model,
   float txbox[3];
   float lhgt;
 
-fprintf(stderr, "<%s>\n", model);
-fprintf(stderr, "<%s>\n", orient);
-fprintf(stderr, "<%s>\n", mag);
-fprintf(stderr, "<%s>\n", tilt);
   sprintf(txt,"Xy");
   txtbox(fontname,fontsize,strlen(txt),txt,txbox,txtdata);
   lhgt=4+txbox[2]-txbox[1];
 
+  /* statistical model used */
   sprintf(txt,"%s MODEL", model);
   txtbox(fontname,fontsize,strlen(txt),txt,txbox,txtdata);
  
   PlotText(plot,NULL,fontname,fontsize,xoff-txbox[0]/2,yoff,
             strlen(txt),txt,color,mask,1);
 
+  /* IMF/Esw magnitude */
   txtbox(fontname,fontsize,strlen(mag),mag,txbox,txtdata);
   PlotText(plot,NULL,fontname,fontsize,xoff-txbox[0]/2,yoff+lhgt,
             strlen(mag),mag,color,mask,1);
 
+  /* IMF orientation */
   txtbox(fontname,fontsize,strlen(orient),orient,txbox,txtdata);
   PlotText(plot,NULL,fontname,fontsize,xoff-txbox[0]/2,yoff+2*lhgt,
             strlen(orient),orient,color,mask,1);
+
+  /* Dipole tilt */
+  if (strcmp(tilt, "Null") != 0) {
+    sprintf(txt, "%s tilt", tilt);
+    txtbox(fontname,fontsize,strlen(txt),txt,txbox,txtdata);
+    PlotText(plot,NULL,fontname,fontsize,xoff-txbox[0]/2,yoff+3*lhgt,
+             strlen(txt),txt,color,mask,1);
+  }
 }
  

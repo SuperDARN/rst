@@ -73,6 +73,7 @@ void plot_vec(struct Plot *plot,float px,float py,int or,double max, int magflg,
   if (!magflg) {
     mlat = lat;
     mlon = lon;
+fprintf(stderr, "Plot_vec: %f %f\n", mlat,mlon);
     if (old_aacgm) s = AACGMConvert(mlat,mlon,150,&glat,&glon,&r,1);
     else           s = AACGM_v2_Convert(mlat,mlon,150,&glat,&glon,&r,1);
     lat = glat;
@@ -80,6 +81,7 @@ void plot_vec(struct Plot *plot,float px,float py,int or,double max, int magflg,
   }
   map[0] = lat;
   map[1] = lon;
+fprintf(stderr, "Plot_vec: %f %f\n", lat,lon);
 
   s = (*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
   if (s == -1) return;
@@ -114,6 +116,7 @@ void plot_vec(struct Plot *plot,float px,float py,int or,double max, int magflg,
   else if (or == 2) PlotLine(plot,px,py-mag,px,py,color,0x0f,width,NULL);    
   else if (or == 3) PlotLine(plot,px,py,px,py+mag,color,0x0f,width,NULL);    
 
+fprintf(stderr, "Plot_vec\n");
   sprintf(txt,"%g m/s",max);
   txtbox(fontname,fontsize,strlen(txt),txt,txbox,txtdata);
 
