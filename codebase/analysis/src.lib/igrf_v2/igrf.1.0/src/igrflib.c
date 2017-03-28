@@ -5,6 +5,7 @@
 #include <string.h>
 #include "igrflib.h"
 #include "genmag.h"
+#include "astalg.h"
 
 /*#define DEBUG 1*/
 /* TO DO: should these go in igrflib.h? */
@@ -793,6 +794,70 @@ int IGRF_SetNow(void)
 	err = IGRF_interpolate_coefs();
 
 	return (err);
+}
+
+/*-----------------------------------------------------------------------------
+;
+; NAME:
+;       IGRF_Tilt
+;
+; PURPOSE:
+;       Function to return dipole tilt angle for the given UT time.
+;
+; CALLING SEQUENCE:
+;       tilt = IGRF_Tilt(year,month,day, hour,minute,second);
+;     
+;     Return Value:
+;       dipole tilt angle in degrees
+;
+;+-----------------------------------------------------------------------------
+*/
+
+double IGRF_Tilt(int yr, int mo, int dy, int hr, int mt, int sc)
+{
+  double sps,s1,s2,s3,q;
+  double d1,d2,d3;
+  double dd,jd,dec,sras;
+  double dyn;
+  int diy;
+  double gst,cgst,sgst;
+  double fday,dj,d__1;
+  double rad = 57.295779513;
+  double dtwopi = 360.;
+
+  IGRF_SetDateTime(yr,mo,dy,hr,mt,sc);
+
+  dd   = AstAlg_dday(dy,hr,mt,sc);
+  jd   = AstAlg_jde(yr,mo,dd);
+  dec  = AstAlg_solar_declination(jd)*DTOR;
+  sras = AstAlg_solar_right_ascension(jd)*DTOR;
+
+  s1 = cos(sras) * cos(dec);
+  s2 = sin(sras) * cos(dec);
+  s3 = sin(dec);
+
+  dyn = dayno(yr,mo,dy, &diy);
+
+  /* need Greenwich Mean Sidereal Time */
+  /* SGS: seems like this should be somewhere in astalg.c, but can't find it */
+  fday = ((double)hr*3600. + mt*60.+sc)/86400.;
+  dj   = ((double)yr - 1900.)*365 + ((double)yr - 1901)/4. + dyn - .5 + fday;
+  d__1 = dj*0.9856473354 + 279.690983 + fday*360. + 180.;
+  /* SGS: double modulus */
+  q = d__1/dtwopi;
+  q = (q >= 0) ? floor(q) : -floor(-q);
+  gst  = (d__1 - dtwopi*q)/rad;
+
+  sgst = sin(gst);
+  cgst = cos(gst);
+
+  d1 = geopack.stcl * cgst - geopack.stsl * sgst;
+  d2 = geopack.stcl * sgst + geopack.stsl * cgst;
+  d3 = geopack.ct0;
+
+  sps  = d1*s1 + d2*s2 + d3*s3;
+
+  return (asin(sps)/DTOR);
 }
 
 /*-----------------------------------------------------------------------------
