@@ -55,7 +55,8 @@
  */
 char *mod_hemi[6] = {"north","south",0};
 char *mod_tilt[] = {"DP-","DP0","DP+",0};
-char *mod_tilts[] = {"tilt<0","tilt=0","tilt>0",0};
+/*char *mod_tilts[] = {"tilt<0","tilt=0","tilt>0",0};*/
+char *mod_tilts[] = {"negative","neutral","positive",0};
 int   mod_tlti[]  = {0,10,20,-1};
 
 /*

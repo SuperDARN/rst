@@ -4,12 +4,19 @@
 <name>map_addmodel</name>
 <location>src.bin/tk/tool/map_addmodel</location>
 <syntax>map_addmodel --help</syntax>
-<syntax>map_addmodel [-vb] [-new] [-o <ar>order</ar>] [-d <ar>doping</ar>] [<ar>mapname</ar>]</syntax>
+<syntax>map_addmodel [-vb] [-old] [-nointerp] [-noigrf] [-cs10|-rg96|-psr10|-ts17] [-o <ar>order</ar>] [-d <ar>doping</ar>] [<ar>mapname</ar>]</syntax>
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
-<option><on>-new</on><od>the input file is a <code>cnvmap</code> format file.</od></option>
+<option><on>-old</on><od>the input file is a <code>map</code> format file.</od></option>
+<option><on>-old_aacgm</on><od>uses the older AACGM software and coefficients. The default is to use AACGM-v2.</od></option>
+<option><on>-cs10</on><od>uses the CS10 statistical model [default].</od></option>
+<option><on>-rg96</on><od>uses the RG96 statistical model.</od></option>
+<option><on>-psr10</on><od>uses the PSR10 statistical model (equivalent to the RG05 model.)</od></option>
+<option><on>-ts17</on><od>uses the (soon to be released) TS10 statistical model.</od></option>
+<option><on>-nointerp</on><od>Do not interpolate coeffiecients, instead use discrete models.</od></option>
+<option><on>-noiigrf</on><od>Do not use IGRF model to convert potential to velocities, instead use constant values.</od></option>
 <option><on>-o <ar>order</ar></on><od>set the order of fit to be <ar>order</ar>.</od>
 </option>
 <option><on>-d <ar>doping</ar></on><od>set the doping level to <ar>dp</ar>. Possible values are low, medium, or high.</od>
