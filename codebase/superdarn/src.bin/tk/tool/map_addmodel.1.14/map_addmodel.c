@@ -331,9 +331,8 @@ int main(int argc,char *argv[]) {
       if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
     }
 
-/* SGS-FIX */
-/*    if (imod == CS10 || imod == PSR10)
-      tilt = IGRF_tilt(yr,mo,dy,hr,mt,(int)sc);*/
+    if (imod == CS10 || imod == PSR10)
+      tilt = IGRF_Tilt(yr,mo,dy,hr,mt,(int)sc);
     map->tilt = tilt;
 
     /* determine the model */
@@ -849,7 +848,7 @@ struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
       break;
 
     case CS10:
-      if (Vsw == 0) Vsw = 400.; /* not sure if this should be here: SGS */
+      if (Vsw == 0) Vsw = 450.; /* not sure if this should be here: SGS */
                                 /* Default solar wind velocity */
       esw = 1e-3*Vsw*bt;
       if (hemi < 0) tilt = -tilt;
