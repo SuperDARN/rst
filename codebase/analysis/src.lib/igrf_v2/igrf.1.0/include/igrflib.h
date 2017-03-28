@@ -37,6 +37,7 @@ int IGRF_GetDateTime(int *year, int *month, int *day,
 											int *hour, int *minute, int *second, int *dayno);
 int IGRF_SetDateTime(int year, int month, int day,
 											int hour, int minute, int second);
+double IGRF_Tilt(int yr, int mo, int dy, int hr, int mt, int sc);
 
 /* some geopack functionality */
 int geo2mag(const double xyzg[], double xyzm[]);
