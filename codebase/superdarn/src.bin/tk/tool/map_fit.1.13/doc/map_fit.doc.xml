@@ -3,23 +3,24 @@
 <project>superdarn</project>
 <name>map_fit</name>
 <location>src.bin/tk/tool/map_fit</location>
+<syntax></syntax>
 <syntax>map_fit --help</syntax>
-<syntax>map_fit [-vb] [-new] [-ew <ar>errwgt</ar>] [-mw <ar>modelwgt</ar>] [-s <ar>source</ar>] [<ar>mapname</ar>]</syntax>
+<syntax>map_fit [-vb] [-old] [-ew <ar>errwgt</ar>] [-mw <ar>modelwgt</ar>] [-s <ar>source</ar>] [<ar>mapname</ar>]</syntax>
+<syntax></syntax>
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
-<option><on>-new</on><od>the input file is a <code>cnvmap</code> format file.</od>
+<option><on>-old</on><od>the input file is a <code>map</code> format file.</od>
 </option>
 <option><on>-ew <ar>errwgt</ar></on><od>set the error weighting to <ar>errwgt</ar>, which can be either yes or no.</od>
 </option>
-<option><on>-mw <ar>modelwgt</ar></on><od>set the model weighting to <ar>errwgt</ar>, which can be either yes or no.</od>
+<option><on>-mw <ar>modelwgt</ar></on><od>set the model weighting to <ar>modelwgt</ar>, which can be either yes or no.</od>
 </option>
 <option><on>-s <ar>source</ar></on><od>set the text string indicating the data source  to <ar>source</ar>.</od>
 </option>
-<option><on><ar>mapname</ar></on><od>filename of the <code>map</code> format file. If this is omitted, the file will be read from standard input.</od>
-</option>
-</option>
+<option><on><ar>mapname</ar></on><od>filename of the <code>map</code> format file. If this is omitted, the file will</od></option>
+<option><on></on><od>  be read from standard input.</od></option>
 <synopsis><p>Perform the Spherical Harmonic Fitting on a convection map file.</p></synopsis>
 
 
