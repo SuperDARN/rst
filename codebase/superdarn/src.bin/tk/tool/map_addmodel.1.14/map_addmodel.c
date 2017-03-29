@@ -331,6 +331,7 @@ int main(int argc,char *argv[]) {
       if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
     }
 
+    /* SGS: does this overide the tilt set with flag in map_addimf()? */
     if (imod == CS10 || imod == PSR10)
       tilt = IGRF_Tilt(yr,mo,dy,hr,mt,(int)sc);
     map->tilt = tilt;
