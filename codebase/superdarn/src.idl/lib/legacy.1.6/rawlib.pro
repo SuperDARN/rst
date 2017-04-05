@@ -78,7 +78,7 @@ function rawropen, fname
                       more_badrange, lags, rd_byte
 
   common rawfp_com, rfp
-  if (n_params() EQ 0) then name = pickfile() else name = fname
+  if (n_params() EQ 0) then name = dialog_pickfile() else name = fname
 
   splitpath,fname,path,name,ext
 
