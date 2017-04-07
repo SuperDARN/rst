@@ -5,11 +5,11 @@
 
 ; for AACGM-v2
 .run genmag
+.run astalg
 .run igrflib_v2
 .run aacgmlib_v2
 .run aacgm_v2
 .run time
-.run astalg
 .run mlt_v2
 
 
