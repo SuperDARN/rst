@@ -68,7 +68,7 @@ function fitropen, fname
   common fitfp_com, ffp
 
   fileptr = long(0)
-  if (n_params() EQ 0) then name = pickfile() else name = fname
+  if (n_params() EQ 0) then name = dialog_pickfile() else name = fname
   s = strpos(name,".")
   if (s NE -1) then name = strmid(name,0,s)
 

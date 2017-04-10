@@ -16,6 +16,7 @@
 ; IGRF_SetDateTime
 ; IGRF_GetDateTime
 ; IGRF_SetNow
+; IGRF_Tilt
 ;
 ; Private Functions:
 ;
@@ -777,13 +778,74 @@ end
 ;*-----------------------------------------------------------------------------
 ;
 ; NAME:
-;       AACGM_v2_errmsg
+;       IGRF_Tilt
+;
+; PURPOSE:
+;       Compute the dipole tilt angle at the given time based on the IGRF
+;       magnetic field model.
+;
+; CALLING SEQUENCE:
+;       tilt = IGRF_Tilt(year, month, day, hour, minute, second);
+;     
+;+-----------------------------------------------------------------------------
+
+function IGRF_Tilt, yr, mo, dy, hr, mt, sc
+
+	common IGRF_v2_Com, IGRF_datetime, IGRF_coef_set, IGRF_svs, IGRF_coefs, $
+											IGRF_file, IGRF_order, IGRF_maxnyr, IGRF_maxk, $
+											RE, DTOR, geopack, IGRF_FIRST_EPOCH, IGRF_LAST_EPOCH, $
+											IGRF_nmx
+
+  IGRF_SetDateTime,yr,mo,dy,hr,mt,sc
+
+  rad    = double(57.295779513)
+  dtwopi = double(360.)
+
+  dd   = AstAlg_dday(dy,hr,mt,sc)
+  jd   = AstAlg_jde(yr,mo,dd)
+  dec  = AstAlg_solar_declination(jd)*DTOR
+  sras = AstAlg_solar_right_ascension(jd)*DTOR
+
+  s1 = cos(sras) * cos(dec)
+  s2 = sin(sras) * cos(dec)
+  s3 = sin(dec)
+
+  dayno = AACGM_v2_Dayno(yr,mo,dy)
+
+  ; need Greenwich Mean Sidereal Time
+  ; SGS: seems like this should be somewhere in astalg.c, but can't find it
+  fday = (double(hr)*3600. + double(mt)*60.+double(sc))/86400.
+  dj   = (double(yr) - 1900.)*365 + (double(yr) - 1901)/4. + double(dayno) - $
+                      .5 + double(fday)
+  d__1 = dj*0.9856473354 + 279.690983 + fday*360. + 180.
+  ; SGS: double modulus
+  q = d__1/dtwopi
+  if (q ge 0) then q =  floor(q) $
+  else             q = -floor(-q)
+  gst  = (d__1 - dtwopi*q)/rad
+
+  sgst = sin(gst)
+  cgst = cos(gst)
+
+  d1 = geopack.stcl * cgst - geopack.stsl * sgst
+  d2 = geopack.stcl * sgst + geopack.stsl * cgst
+  d3 = geopack.ct0;
+
+  sps  = d1*s1 + d2*s2 + d3*s3
+
+  return, asin(sps)/DTOR
+end
+
+;*-----------------------------------------------------------------------------
+;
+; NAME:
+;       IGRF_v2_errmsg
 ;
 ; PURPOSE:
 ;       Display error message because no date and time have been set.
 ;
 ; CALLING SEQUENCE:
-;       AACGM_v2_errmsg(code);
+;       IGRF_v2_errmsg(code);
 ;     
 ;+-----------------------------------------------------------------------------
 
