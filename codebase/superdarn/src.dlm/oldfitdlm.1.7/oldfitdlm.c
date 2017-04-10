@@ -50,7 +50,7 @@ void OldFitIDLToFitFp(struct OldFitIDLFp *ifitfp,struct OldFitFp *fitfp) {
   fitfp->etime=ifitfp->etime;
   fitfp->time=ifitfp->time;
   strncpy(fitfp->header,ifitfp->header,80);
-  strncpy(fitfp->date,ifitfp->date,80);
+  strncpy(fitfp->date,ifitfp->date,32);
   strncpy(fitfp->extra,ifitfp->extra,256);
   fitfp->major_rev=ifitfp->major_rev;
   fitfp->minor_rev=ifitfp->minor_rev;
@@ -70,7 +70,7 @@ void OldFitFitFpToIDL(struct OldFitFp *fitfp,struct OldFitIDLFp *ifitfp) {
   ifitfp->etime=fitfp->etime;
   ifitfp->time=fitfp->time;
   strncpy(ifitfp->header,fitfp->header,80);
-  strncpy(ifitfp->date,fitfp->date,80);
+  strncpy(ifitfp->date,fitfp->date,32);
   strncpy(ifitfp->extra,fitfp->extra,256);
   ifitfp->major_rev=fitfp->major_rev;
   ifitfp->minor_rev=fitfp->minor_rev;
