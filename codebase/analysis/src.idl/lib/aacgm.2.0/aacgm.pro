@@ -29,6 +29,7 @@
 ;
 ; AACGMConvert
 ; AACGMLoadCoef
+; AACGMInit
 ;
 ; Private Functions:
 ; ------------------
@@ -61,13 +62,12 @@ common AACGMCom,coef,cint,height_old,first_coeff_old
 ;-----------------------------------------------------------------
 ;
 
-
-
 function AACGMSgn,a,b
  if (a ge 0) then x=a else x=-a
  if (b ge 0) then return, x
  return, -x
 end
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;+
@@ -83,8 +83,6 @@ end
 ;     
 ;-----------------------------------------------------------------
 ;
-
-
  
 pro AACGMRylm,colat,lon,order,ylmval
 
@@ -168,6 +166,7 @@ pro AACGMRylm,colat,lon,order,ylmval
    return
 end
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;+
 ; NAME:
@@ -182,7 +181,6 @@ end
 ;     
 ;-----------------------------------------------------------------
 ;
-
 
 pro AACGMAltitudeToCGM, r_height_in, r_lat_alt, r_lat_adj
    eradius=6371.2
@@ -216,8 +214,6 @@ end
 ;-----------------------------------------------------------------
 ;
 
-
-
 pro AACGMCGMToAltitude, r_height_in,r_lat_in,  r_lat_adj, error
   eradius=6371.2
   unim=1
@@ -233,6 +229,7 @@ pro AACGMCGMToAltitude, r_height_in,r_lat_in,  r_lat_adj, error
   r_lat_adj = AACGMSgn(r1,r_lat_in)*180.0/!PI;
   return
 end
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;+
@@ -253,7 +250,6 @@ end
 ;     
 ;-----------------------------------------------------------------
 ;
-
 
 pro AACGMConvertGeoCoord, lat_in,lon_in,height_in,lat_out,lon_out, $
                        order,error, geo=geo
@@ -345,6 +341,7 @@ pro AACGMConvertGeoCoord, lat_in,lon_in,height_in,lat_out,lon_out, $
   return
 end
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;+
 ; NAME:
@@ -363,7 +360,6 @@ end
 ;     
 ;-----------------------------------------------------------------
 ;
-
 
 function AACGMConvert,in_lat,in_lon,height,out_lat,out_lon,r, geo=geo
    
@@ -413,9 +409,6 @@ end
 ;-----------------------------------------------------------------
 ;
 
-
-
-
 function AACGMLoadCoef,unit
 ON_IOERROR, iofail
 
@@ -435,4 +428,51 @@ iofail:
   return, -1
 end
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;+
+; NAME:
+;       AACGMInit
+;
+; PURPOSE:
+;       Load a set of coefficients for the input year.
+;       
+;
+; CALLING SEQUENCE:
+;       s=AACGMInit(year)
+;
+;
+;       This function calls AACGMLoadCoef to load a coefficient
+;       file for the four-digit input year.
+;
+;     
+;-----------------------------------------------------------------
+;
+
+function AACGMInit, year
+
+    prefix = GETENV('AACGM_DAT_PREFIX')
+        
+    valid_years = [1975,1980,1985,1990,1995,2000,2005,2010]
+    test = where(year eq valid_years)
+    if test[0] eq -1 then begin
+        if (year ge 2010) then year_str = '2010'
+        if (year ge 2005) and (year lt 2010) then year_str = '2005'
+        if (year ge 2000) and (year lt 2005) then year_str = '2000'
+        if (year ge 1995) and (year lt 2000) then year_str = '1995'
+        if (year ge 1990) and (year lt 1995) then year_str = '1990'
+        if (year ge 1985) and (year lt 1990) then year_str = '1985'
+        if (year ge 1980) and (year lt 1985) then year_str = '1980'
+        if (year lt 1980) then year_str = '1975'
+    endif else $
+        year_str = strtrim(year,2)
+    
+    file_str = prefix + year_str + '.asc'
+    
+    openr, unit, file_str, /get_lun, /stdio
+    c = AACGMLoadCoef(unit)
+    free_lun, unit
+
+    return, c
+end
 
