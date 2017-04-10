@@ -403,7 +403,8 @@ end
 ;
 ;------------------------------------------------------------------------------
 ;
-function GridTableAddBeam, GridTable, RadarSite, alt, tval, RadarBeam, chisham=chisham
+function GridTableAddBeam, GridTable, RadarSite, alt, tval, RadarBeam, $
+    chisham=chisham, old_aacgm=old_aacgm
     
     ; Make sure that pointer to GridTable structure exists
     if ~ptr_valid(GridTable) then $
@@ -452,7 +453,7 @@ function GridTableAddBeam, GridTable, RadarSite, alt, tval, RadarBeam, chisham=c
         ; Calculate magnetic latitude, longitude, and azimuth of range/beam position
         ret = RPosInvMag((*GridBm).bm, r, yr, RadarSite, (*GridBm).frang, $
                             (*GridBm).rsep, (*GridBm).rxrise, alt, mlat, mlon, mazm, gazm=gazm, $
-                            chisham=chisham)
+                            chisham=chisham, old_aacgm=old_aacgm)
         
         ; If magnetic latitude/longitude/azimuth calculation failed then break out of loop
         if ret eq -1 then break
@@ -596,7 +597,8 @@ end
 ;
 ;------------------------------------------------------------------------------
 ;
-function GridTableMap, GridTable, RadarScan, RadarSite, tlen, iflg, alt, chisham=chisham
+function GridTableMap, GridTable, RadarScan, RadarSite, tlen, iflg, alt, $
+    chisham=chisham, old_aacgm=old_aacgm
 
     ; Initialize some variables to zero
     freq = 0D
@@ -637,7 +639,8 @@ function GridTableMap, GridTable, RadarScan, RadarSite, tlen, iflg, alt, chisham
         
         ; If beam not found, add a new beam to GridTable structure
         if b eq -1 then begin
-            b = GridTableAddBeam(GridTable, RadarSite, alt, tm, (*RadarScan).bm[n], chisham=chisham)
+            b = GridTableAddBeam(GridTable, RadarSite, alt, tm, (*RadarScan).bm[n], $
+                chisham=chisham, old_aacgm=old_aacgm)
             
             if b eq -1 then $
                 break
