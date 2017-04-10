@@ -212,7 +212,8 @@ pro make_grid, ifilename, ofilename, sd=sd, st=st, ed=ed, et=et, ex=ex, $
     fwgt=fwgt, pmax=pmax, vmax=vmax, wmax=wmax, vemax=vemax, $
     pmin=pmin, vmin=vmin, wmin=wmin, vemin=vemin, fmax=fmax, $
     alt=alt, nav=nav, nlm=nlm, nb=nb, is=is, xtd=xtd, $
-    ion=ion, gs=gs, both=both, inertial=inertial, chisham=chisham
+    ion=ion, gs=gs, both=both, inertial=inertial, chisham=chisham, $
+    old_aacgm=old_aacgm
 
 if n_params() ne 2 then begin
     print, 'Must provide both an input fitACF and output grdmap file name. Returning.'
@@ -605,6 +606,16 @@ if (etime ne -1) and (bxcar eq 1) then begin
     else $
         etime += 15 + (*src[0]).ed_time - (*src[0]).st_time
 endif
+    
+; Calculate the year, month, day, hour, minute, and second of grid start time
+; (needed to load AACGM_v2 coefficients)
+ret = TimeEpochToYMDHMS(yr, mo, dy, hr, mt, sc, stime)
+
+; Load AACGM coefficients
+if keyword_set(old_aacgm) then $
+    ret = AACGMInit(yr) $
+else $
+    ret = AACGM_v2_SetDateTime(yr, mo, dy, hr, mt, fix(sc))
 
 ; This value tracks the number of radar scans which have been loaded for gridding
 num = 1
@@ -690,7 +701,8 @@ while s eq 0 do begin               ; changed by EGT 20160913
         ; Map radar scan data in structure pointed to by 'out' to an equi-area
         ; grid in magnetic coordinates, storing the output in the structure
         ; pointed to by 'grid'
-        s = GridTableMap(grid, out, site, avlen, iflg, alt, chisham=chisham)
+        s = GridTableMap(grid, out, site, avlen, iflg, alt, $
+            chisham=chisham, old_aacgm=old_aacgm)
         
         if s ne 0 then begin
             print, 'Error mapping beams.'

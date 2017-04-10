@@ -413,7 +413,7 @@ end
 
 
 
-function RPosInvMag, beam, range, year, site, frang, rsep, rxrise, height, mlat, mlon, mazm, gazm=gazm, chisham=chisham
+function RPosInvMag, beam, range, year, site, frang, rsep, rxrise, height, mlat, mlon, mazm, gazm=gazm, chisham=chisham, old_aacgm=old_aacgm
 
     ; Get geodetic latitude/longitude from radar hardware info [deg]
     gdlat = site.geolat
@@ -486,32 +486,12 @@ function RPosInvMag, beam, range, year, site, frang, rsep, rxrise, height, mlat,
     ; Calculate virtual height of range/beam position
     tmp_height = frho - fdrho
     
-    ; Load proper AACGM coefficients before converting to magnetic coordinates
-    prefix = GETENV('AACGM_DAT_PREFIX')
-        
-    valid_years = [1975,1980,1985,1990,1995,2000,2005,2010]
-    test = where(year eq valid_years)
-    if test[0] eq -1 then begin
-        if (year ge 2010) then year_str = '2010'
-        if (year ge 2005) and (year lt 2010) then year_str = '2005'
-        if (year ge 2000) and (year lt 2005) then year_str = '2000'
-        if (year ge 1995) and (year lt 2000) then year_str = '1995'
-        if (year ge 1990) and (year lt 1995) then year_str = '1990'
-        if (year ge 1985) and (year lt 1990) then year_str = '1985'
-        if (year ge 1980) and (year lt 1985) then year_str = '1980'
-        if (year lt 1980) then year_str = '1975'
-    endif else $
-        year_str = strtrim(year,2)
-    
-    file_str = prefix+year_str+'.asc'
-    
-    openr, unit, file_str, /get_lun, /stdio
-    c = AACGMLoadCoef(unit)
-    free_lun, unit
-
     ; Convert range/beam position from geocentric latitude/longitude (flat,flon) at virtual height
     ; (tmp_height) to AACGM magnetic latitude/longitude coordinates (mlat,mlon)
-    ret = AACGMConvert(flat, flon, tmp_height, mlat, mlon, dummy)
+    if keyword_set(old_aacgm) then $
+        ret = AACGMConvert(flat, flon, tmp_height, mlat, mlon, dummy) $
+    else $
+        ret = AACGM_v2_Convert(flat, flon, tmp_height, mlat, mlon, dummy)
     
     ; Calculate pointing direction latitude/longitude (xlat,xlon) given
     ; distance (rsep) and bearing (gazm) from the radar position (flat,flon)
@@ -521,7 +501,10 @@ function RPosInvMag, beam, range, year, site, frang, rsep, rxrise, height, mlat,
     ; Convert pointing direction position from geocentric latitude/longitude
     ; (xlat,xlon) at virtual height (tmp_height) to AACGM magnetic latitude/longitude
     ; coordinates (nlat,nlon)
-    ret = AACGMConvert(xlat, xlon, tmp_height, nlat, nlon, dummy)
+    if keyword_set(old_aacgm) then $
+        ret = AACGMConvert(xlat, xlon, tmp_height, nlat, nlon, dummy) $
+    else $
+        ret = AACGM_v2_Convert(xlat, xlon, tmp_height, nlat, nlon, dummy)
     
     ; Error check present in C RST code
     if ret eq -1 then $
