@@ -154,18 +154,21 @@ double bisect(float w_guess, float diff, struct RawData *raw, float *good_lags, 
     }
     if (fabs(w_guess-xr) < 0.01)
     {
-      fprintf(stderr, "Right Boundary %d:%d:%d Range %d Dist %e\n", prm->time.hr, prm->time.mt, prm->time.sc, R, fabs(w_guess-xr));
+      fprintf(stderr, "Right Boundary %d:%d:%d Range %d Dist %e\n", prm->time.hr, prm->time.mt, prm->time.sc, R, fabs(w
+guess-xr));
       break;
     }
     if (fabs(w_guess-xl) < 0.01)
     {
-      fprintf(stderr, "Left Boundary %d:%d:%d Range %d Dist %e\n", prm->time.hr, prm->time.mt, prm->time.sc, R, fabs(w_guess-xl));
+      fprintf(stderr, "Left Boundary %d:%d:%d Range %d Dist %e\n", prm->time.hr, prm->time.mt, prm->time.sc, R, fabs(w_
+uess-xl));
       break;
     }
     count += 1;
     if (count > maxiter)
     {
-      fprintf(stderr, "Curious, bisection method does not converge: %d:%d:%d Range %d\n", prm->time.hr, prm->time.mt, prm->time.sc, R);
+      fprintf(stderr, "Curious, bisection method does not converge: %d:%d:%d Range %d\n", prm->time.hr, prm->time.mt, p
+m->time.sc, R);
       break;
     }
   }
@@ -216,7 +219,8 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
 
   /* Find the highest lag, and allocate memory */
 
-  if(!((fabs(prm->cp) == 210 || fabs(prm->cp) == 230 || fabs(prm->cp) == 502 || fabs(prm->cp) == 503 || fabs(prm->cp) == 3310) && prm->mplgs == 18))
+  if(!((fabs(prm->cp) == 210 || fabs(prm->cp) == 230 || fabs(prm->cp) == 502 || fabs(prm->cp) == 503 || fabs(prm->cp) =
+ 3310) && prm->mplgs == 18))
   {
     lastlag = 0;
     for (j=0;j<prm->mplgs;j++)
@@ -268,7 +272,8 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
 
   /*calculate noise levels*/
   lm_noise_stat(prm,raw,&skynoise);
-  if(fabs(prm->cp) != 210 && fabs(prm->cp) != 230 && fabs(prm->cp) != 502 && fabs(prm->cp) != 503 && fabs(prm->cp) != 3310)
+  if(fabs(prm->cp) != 210 && fabs(prm->cp) != 230 && fabs(prm->cp) != 502 && fabs(prm->cp) != 503 && fabs(prm->cp) != 3
+10)
   {
     if(fblk->prm.channel==0) FitACFBadlags(&fblk->prm,&badsmp);
     else FitACFBadlagsStereo(&fblk->prm,&badsmp);
@@ -278,7 +283,8 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
 
   if(print)
   {
-    fprintf(stdout,"%d  %d  %lf  %d  %lf  %d  %lf\n",prm->nrang,prm->mplgs,skynoise,prm->tfreq,prm->mpinc*1.e-6,nslopes,diff);
+    fprintf(stdout,"%d  %d  %lf  %d  %lf  %d  %lf\n",prm->nrang,prm->mplgs,skynoise,prm->tfreq,prm->mpinc*1.e-6,nslopes
+diff);
     fprintf(stdout,"%d  %d  %d  %d  %d  %d  %d  %d  %d  %d  %d  %d  %lf\n",prm->stid,prm->time.yr,prm->time.mo,
                     prm->time.dy,prm->time.hr,prm->time.mt,(int)prm->time.sc,prm->bmnum,prm->cp,
                     prm->nave,prm->lagfr,prm->smsep,fblk->prm.vdir);
@@ -293,7 +299,8 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
        continue;
     }
 
-    if(!((fabs(prm->cp) == 210 || fabs(prm->cp) == 230 || fabs(prm->cp) == 502 || fabs(prm->cp) == 503 || fabs(prm->cp) == 3310) && prm->mplgs == 18))
+    if(!((fabs(prm->cp) == 210 || fabs(prm->cp) == 230 || fabs(prm->cp) == 502 || fabs(prm->cp) == 503 || fabs(prm->cp)
+== 3310) && prm->mplgs == 18))
       raw->acfd[0][R*prm->mplgs] -= skynoise;
 
 
@@ -327,7 +334,8 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
 
     prm->mplgexs = 0;
 
-    if((fabs(prm->cp) == 210 || fabs(prm->cp) == 230 || fabs(prm->cp) == 502 || fabs(prm->cp) == 503 || fabs(prm->cp) == 3310) && prm->mplgs == 18)
+    if((fabs(prm->cp) == 210 || fabs(prm->cp) == 230 || fabs(prm->cp) == 502 || fabs(prm->cp) == 503 || fabs(prm->cp) =
+ 3310) && prm->mplgs == 18)
     {
       for (L=0;L<prm->mplgs;L++)
       {
@@ -348,7 +356,8 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
       pwr_flg = (lag0pwr>=minpwr);
     }
     /*check for tauscan operation (lag power checking, no badlag checking, SNR checking)*/
-    else if(fabs(prm->cp) == 210 || fabs(prm->cp) == 230 || fabs(prm->cp) == 502 || fabs(prm->cp) == 503 || fabs(prm->cp) == 3310)
+    else if(fabs(prm->cp) == 210 || fabs(prm->cp) == 230 || fabs(prm->cp) == 502 || fabs(prm->cp) == 503 || fabs(prm->c
+) == 3310)
     {
       for (L=0;L<prm->mplgs;L++)
       {
@@ -442,7 +451,8 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
       for(i=0;i<goodcnt;i++)
       {
         lag = good_lags[i];
-        if((fabs(prm->cp) == 210 || fabs(prm->cp) == 230 || fabs(prm->cp) == 502 || fabs(prm->cp) == 503 || fabs(prm->cp) == 3310) && prm->mplgs == 18)
+        if((fabs(prm->cp) == 210 || fabs(prm->cp) == 230 || fabs(prm->cp) == 502 || fabs(prm->cp) == 503 || fabs(prm->c
+) == 3310) && prm->mplgs == 18)
           L = lag;
         else
           for(j=0;j<prm->mplgs;j++)
@@ -543,7 +553,8 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
         minpwr = 5.; 
 
       /*tauscan operation, check for exceptional minimum error, more SNR checking*/
-      if(fabs(prm->cp) == 210 || fabs(prm->cp) == 230 || fabs(prm->cp) == 502 || fabs(prm->cp) == 503 || fabs(prm->cp) == 3310)
+      if(fabs(prm->cp) == 210 || fabs(prm->cp) == 230 || fabs(prm->cp) == 502 || fabs(prm->cp) == 503 || fabs(prm->cp) 
+= 3310)
         sct_flg = ((model_min<(model_mean - sderr*model_sd)) &&
                   (10*log10((exp(a))/
                   prm->noise.search)> minpwr));
@@ -559,7 +570,8 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
 
       if(print)
         fprintf(stdout,"%lf  %d  %lf  %d  %d  %d\n",(model_mean - sderr*model_sd),mininx,model_vels[mininx],
-                                    (10*log10((exp(a))/skynoise) > minpwr),(model_min<(model_mean - sderr*model_sd)),sct_flg);
+                                    (10*log10((exp(a))/skynoise) > minpwr),(model_min<(model_mean - sderr*model_sd)),sc
+_flg);
 
       if(sct_flg)
       {

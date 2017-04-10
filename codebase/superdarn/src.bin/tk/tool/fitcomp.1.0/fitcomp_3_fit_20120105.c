@@ -441,7 +441,8 @@ int main(int argc,char *argv[])
 
   } while (status==0 && print==0);
 
-	fprintf(stderr,"number of times each had the best vel fit:\nfitacf: %d  fitex2: %d  lmfit: %d  total # of fits: %d\n",one, two, three, n);
+	fprintf(stderr,"number of times each had the best vel fit:\nfitacf: %d  fitex2: %d  lmfit: %d  total # of fits: %d\n",
+ne, two, three, n);
 
 	qsort(acf_v_err, n_acf, sizeof(double), lm_dbl_cmp);
 	qsort(ex_v_err, n_ex, sizeof(double), lm_dbl_cmp);
@@ -493,11 +494,14 @@ int main(int argc,char *argv[])
 
 	fprintf(stderr,"           acf        ex        lm\n");
 	fprintf(stderr,"number:    %d      %d      %d\n",n_acf,n_ex,n_lm);
-	fprintf(stderr,"v median:  %lf   %lf   %lf\n",acf_v_err[(int)(n_acf/2)],ex_v_err[(int)(n_ex/2)],lm_v_err[(int)(n_lm/2)]);
+	fprintf(stderr,"v median:  %lf   %lf   %lf\n",acf_v_err[(int)(n_acf/2)],ex_v_err[(int)(n_ex/2)],lm_v_err[(int)(n_lm/2)
+);
 	fprintf(stderr,"v mean:    %lf   %lf   %lf\n",mean_v_acf,mean_v_ex,mean_v_lm);
-	fprintf(stderr,"t median:  %lf   %lf   %lf\n",acf_t_err[(int)(n_acf/2)],ex_t_err[(int)(n_ex/2)],lm_t_err[(int)(n_lm/2)]);
+	fprintf(stderr,"t median:  %lf   %lf   %lf\n",acf_t_err[(int)(n_acf/2)],ex_t_err[(int)(n_ex/2)],lm_t_err[(int)(n_lm/2)
+);
 	fprintf(stderr,"t mean:    %lf   %lf   %lf\n",mean_t_acf,mean_t_ex,mean_t_lm);
-	fprintf(stderr,"f median:  %lf   %lf   %lf\n",acf_f_err[(int)(n_acf/2)],ex_f_err[(int)(n_ex/2)],lm_f_err[(int)(n_lm/2)]);
+	fprintf(stderr,"f median:  %lf   %lf   %lf\n",acf_f_err[(int)(n_acf/2)],ex_f_err[(int)(n_ex/2)],lm_f_err[(int)(n_lm/2)
+);
 	fprintf(stderr,"f mean:    %lf   %lf   %lf\n",mean_f_acf,mean_f_ex,mean_f_lm);
 
 	for(i=0;i<20;i++)
@@ -505,7 +509,8 @@ int main(int argc,char *argv[])
 			for(k=0;k<5;k++)
 				if(k % 2 == 0)
 					fprintf(stdout,"%f  %f  %d  %lf  %lf  %lf  %lf\n",i*100.+50.,(j+1)*1.e-2,k,
-									sqrt(errors[i][j][0][k]/num[i][j][0]),sqrt(errors[i][j][1][k]/num[i][j][1]),sqrt(errors[i][j][2][k]/num[i][j][2]),num[i][j][2]);
+									sqrt(errors[i][j][0][k]/num[i][j][0]),sqrt(errors[i][j][1][k]/num[i][j][1]),sqrt(errors[i][j][2][k]/num[i][j][
+]),num[i][j][2]);
 				else
 					fprintf(stdout,"%f  %f  %d  %lf  %lf  %lf  %lf\n",i*100.+50.,(j+1)*1.e-2,k,
 									errors[i][j][0][k]/num[i][j][0],errors[i][j][1][k]/num[i][j][1],errors[i][j][2][k]/num[i][j][2],num[i][j][2]);

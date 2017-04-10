@@ -3,8 +3,10 @@
    Author: R.J.Barnes
 */
 
-/*                                                                                                                                                    
- (c) 2011 JHU/APL & Others - Please Consult LICENSE.datamap.txt for more information.                                                                 
+/*                                                                                                                     
+                              
+ (c) 2011 JHU/APL & Others - Please Consult LICENSE.datamap.txt for more information.                                  
+                              
 */
 
 

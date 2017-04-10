@@ -355,7 +355,8 @@ float minpwr  = 3.0;
 
 	if(print)
 	{
-		fprintf(stdout,"%d  %d  %lf  %d  %lf  %d  %lf\n",prm->nrang,prm->mplgs,skynoise,prm->tfreq,prm->mpinc*1.e-6,nslopes,diff);
+		fprintf(stdout,"%d  %d  %lf  %d  %lf  %d  %lf\n",prm->nrang,prm->mplgs,skynoise,prm->tfreq,prm->mpinc*1.e-6,nslopes,d
+ff);
 		fprintf(stdout,"%d  %d  %d  %d  %d  %d  %d  %d  %d\n",prm->stid,prm->time.yr,prm->time.mo,
 										prm->time.dy,prm->time.hr,prm->time.mt,(int)prm->time.sc,prm->bmnum,prm->cp);
 	}
@@ -957,7 +958,8 @@ void lmfit(struct RadarParm *prm,struct RawData *raw,
       /*if we have a good single component fit*/
       if(sct_flg)
       {
-				fprintf(stdout,"%lf  %d  %d  %lf  %lf  %d  %d\n",model_guess,result.status,fitted_power > minpwr,lag0pwrf,1.5*acferr,result.npegged,sct_flg);
+				fprintf(stdout,"%lf  %d  %d  %lf  %lf  %d  %d\n",model_guess,result.status,fitted_power > minpwr,lag0pwrf,1.5*acfer
+,result.npegged,sct_flg);
         fit->rng[R].v     = v_if;
         fit->rng[R].v_err = lambda*result.xerror[1]/(4.*PI);
         fit->rng[R].qflg  = 1;
