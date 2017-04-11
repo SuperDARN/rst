@@ -181,7 +181,7 @@
 
     <member>
       <proto>char source[256];</proto>
-      <description>?</description>
+      <description>Source of the data file.</description>
     </member>
 
     <member>
@@ -201,42 +201,42 @@
 
     <member>
       <proto>int doping_level;</proto>
-      <description>?</description>
+      <description>Model doping level.</description>
     </member>
 
     <member>
       <proto>int model_wt;</proto>
-      <description>?</description>
+      <description>Model weighting.</description>
     </member>
 
     <member>
       <proto>int error_wt;</proto>
-      <description>?</description>
+      <description>Error weighting.</description>
     </member>
 
     <member>
       <proto>int imf_flag;</proto>
-      <description>?</description>
+      <description>IMF availability flag.</description>
     </member>
 
     <member>
       <proto>int imf_delay;</proto>
-      <description>?</description>
+      <description>IMF delay in minutes.</description>
     </member>
 
     <member>
       <proto>double Bx;</proto>
-      <description>?</description>
+      <description>IMF Bx component.</description>
     </member>
 
     <member>
       <proto>double By;</proto>
-      <description>?</description>
+      <description>IMF By component.</description>
     </member>
 
     <member>
       <proto>double Bz;</proto>
-      <description>?</description>
+      <description>IMF Bz component.</description>
     </member>
 
     <member>
@@ -246,17 +246,17 @@
 
     <member>
       <proto>int hemisphere;</proto>
-      <description>?</description>
+      <description>Hemisphere flag.</description>
     </member>
 
     <member>
       <proto>int fit_order;</proto>
-      <description>?</description>
+      <description>Order of fit.</description>
     </member>
 
     <member>
       <proto>double latmin;</proto>
-      <description>?</description>
+      <description>Lower latitude boundary.</description>
     </member>
 
     <member>
@@ -271,42 +271,42 @@
 
     <member>
       <proto>double chi_sqr;</proto>
-      <description>?</description>
+      <description>True chi-squared error.</description>
     </member>
 
     <member>
       <proto>double chi_sqr_dat;</proto>
-      <description>?</description>
+      <description>Chi-squared error for data only.</description>
     </member>
 
     <member>
       <proto>double rms_err;</proto>
-      <description>?</description>
+      <description>RMS error.</description>
     </member>
 
     <member>
       <proto>double lon_shft;</proto>
-      <description>?</description>
+      <description>Longitudinal pole shift.</description>
     </member>
 
     <member>
       <proto>double lat_shft;</proto>
-      <description>?</description>
+      <description>Latitudinal pole shift.</description>
     </member>
 
     <member>
       <struct>
         <member>
           <proto>double start;</proto>
-          <description>?</description>
+          <description>MLT at start of record.</description>
         </member>
         <member>
           <proto>double end;</proto>
-          <description>?</description>
+          <description>MLT at end of record.</description>
         </member>
         <member>
           <proto>double av;</proto>
-          <description>?</description>
+          <description>MLT at middle of record.</description>
         </member>
       </struct>
       <proto>mlt;</proto>
@@ -315,32 +315,32 @@
 
     <member>
       <proto>double pot_drop;</proto>
-      <description>?</description>
+      <description>Cross polar-cap potential drop.</description>
     </member>
 
     <member>
       <proto>double pot_drop_err;</proto>
-      <description>?</description>
+      <description>Cross polar-cap potential drop error.</description>
     </member>
 
     <member>
       <proto>double pot_max;</proto>
-      <description>?</description>
+      <description>Maximum polar-cap potential.</description>
     </member>
 
     <member>
       <proto>double pot_max_err;</proto>
-      <description>?</description>
+      <description>Maximum polar-cap potential error.</description>
     </member>
 
     <member>
       <proto>double pot_min;</proto>
-      <description>?</description>
+      <description>Minimum polar-cap potential.</description>
     </member>
 
     <member>
       <proto>double pot_min_err;</proto>
-      <description>?</description>
+      <description>Minimum polar-cap potential error.</description>
     </member>
 
     <member>
@@ -355,12 +355,12 @@
 
     <member>
       <proto>double *bnd_lat;</proto>
-      <description>?</description>
+      <description>Magnetic latitudes of the lower latitude boundary.</description>
     </member>
 
     <member>
       <proto>double *bnd_lon;</proto>
-      <description>?</description>
+      <description>Magnetic longitudes of the lower latitude boundary.</description>
     </member>
 
   </struct>
