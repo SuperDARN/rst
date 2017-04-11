@@ -48,3 +48,35 @@ You can find the latest release at: http://cdf.gsfc.nasa.gov/
    stored in ~/rst/log.  The source code for make.build and make.code can be found in
    ~/rst/build/script/
 
+
+### Historical Version Log
+
+
+- 3.3   -  Final bug fixes and updates of the 3.x series
+- 3.2   -  First release with DLM support
+- 3.1   -  First release of ROS 3
+- 2.11  -  added support for I&Q sample analysis
+- 2.10  -  bug fixes to the fitacfex library and rnk hardware.dat
+- 2.09  -  fixed known errors in the documentation - gold release
+- 2.08  -  further bug fixes, fitacfex and documentation system
+           included. 
+- 2.07  -  introduced fitacf version 2.0 and numerous bug fixes
+- 2.06  -  introduction of the origin flag and the beam azimuth parameter
+           together with numerous bug fixes
+- 2.05  -  modification to deal with arbitrary numbers of radar beams
+- 2.04  -  bug fixes from the deployment of the Radar Operating System
+- 2.03  -  added ksh enviroment as an option plus more bug fixes
+- 2.02  -  more bug fixes and more XML documentation completed.
+- 2.01  -  various bug fixes and improvements to the IDL libraries
+- 2.00  -  code adopted as official release.
+- 1.07  -  numerous bug fixes.
+- 1.06  -  completed IDL interfaces for grid and map data, incorporated help
+           and error messages derived from XML documentation.
+- 1.05  -  adopted the DataMap format for grid and map data, incorporated
+           outline documentation and fixed a lot of bugs.
+- 1.04  -  general bug fixes, addition of Mac OS X support
+- 1.03  -  implemented the legacy IDL interfaces and incorporated the
+           data tables into this release
+- 1.02  -  incorporated the IDL interfaces and fixed a lot of bugs
+- 1.01  -  initial revision of the code.
+
