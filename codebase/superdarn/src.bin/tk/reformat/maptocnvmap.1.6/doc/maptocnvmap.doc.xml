@@ -2,7 +2,7 @@
 <binary>
 <project>superdarn</project>
 <name>maptocnvmap</name>
-<location>src.bin/tk/tool/maptocnvmap</location>
+<location>src.bin/tk/reformat/maptocnvmap</location>
 <syntax>maptocnvmap --help</syntax>
 <syntax>maptocnvmap [-vb] [<ar>mapname</ar>]</syntax>
 
