@@ -22,7 +22,11 @@
 </option>
 <option><on><ar>name</ar></on><od>filename of the <code>map</code> format file to trim. If this is omitted, the file is read from standard input.</od>
 </option>
-<synopsis><p>Calculate the derived potential from a section of a <code>map</code> format file and produce a plain ASCII text file as output.</p></synopsis>
+<synopsis><p>Calculate the derived potential from a section of a <code>map</code> format file and produce a plain ASCII text file as output.&#13
+The output format header is: <code>start timestamp; end timestamp; minimum magnetic lat&#13
+Number of grid points</code>&#13
+where the timestamps have a format of: <code>year month day hour minute second</code>&#13
+The output data arrays is: <code>potential at that point; count/flag for data point; geographic lat; geographic lon; magnetic lat; magnetic lon; magnetic local time</code></p></synopsis>
 
 <description><p>Calculate the derived potential from a section of a <code>map</code> format file and produce a plain ASCII text file as output.</p>
 <p>The file is written to standard output</p>
