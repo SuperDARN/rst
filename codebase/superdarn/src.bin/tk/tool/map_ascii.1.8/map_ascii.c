@@ -1,30 +1,30 @@
 /* map_ascii.c
-   =========== 
+   ===========
    Author: R.J.Barnes
 */
 
 /*
  LICENSE AND DISCLAIMER
- 
+
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
+
  This file is part of the Radar Software Toolkit (RST).
- 
+
  RST is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
- 
+
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Lesser General Public License for more details.
- 
+
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+
+
+
 */
 
 
@@ -81,7 +81,7 @@ double strdate(char *text) {
   dy=val % 100;
   mo=(val / 100) % 100;
   yr=(val / 10000);
-  if (yr<1970) yr+=1900;  
+  if (yr<1970) yr+=1900;
   tme=TimeYMDHMSToEpoch(yr,mo,dy,0,0,0);
 
   return tme;
@@ -96,13 +96,13 @@ double strtime(char *text) {
   hr=atoi(text);
   mn=atoi(text+i+1);
   return hr*3600L+mn*60L;
-}   
+}
 
 int main(int argc,char *argv[]) {
 
  /* File format transistion
    * ------------------------
-   * 
+   *
    * When we switch to the new file format remove any reference
    * to "new". Change the command line option "new" to "old" and
    * remove "old=!new".
@@ -116,7 +116,7 @@ int main(int argc,char *argv[]) {
   int arg;
   struct RfileIndex *oinx=NULL;
   struct CnvMapIndex *inx=NULL;
- 
+
 
   int yr,mo,dy,hr,mt;
   double sc;
@@ -125,10 +125,10 @@ int main(int argc,char *argv[]) {
   int i;
 
   int status;
- 
+
   unsigned char help=0;
   unsigned char option=0;
- 
+
   float latmin=60.0;
   float mlt;
 
@@ -154,7 +154,7 @@ int main(int argc,char *argv[]) {
   int lat,lon;
 
   int *count=NULL;
-  
+
   unsigned char vb=0;
 
   int fnum=0;
@@ -163,7 +163,7 @@ int main(int argc,char *argv[]) {
   map=CnvMapMake();
 
   grid=CnvGridMake();
- 
+
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
 
@@ -173,7 +173,7 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"st",'t',&stime_txt);
   OptionAdd(&opt,"sd",'t',&sdate_txt);
- 
+
   OptionAdd(&opt,"et",'t',&etime_txt);
   OptionAdd(&opt,"ed",'t',&edate_txt);
 
@@ -196,13 +196,13 @@ int main(int argc,char *argv[]) {
     exit(0);
   }
 
- 
+
   if (stime_txt !=NULL)  stime=strtime(stime_txt);
   if (etime_txt !=NULL)  etime=strtime(etime_txt);
   if (extime_txt !=NULL) extime=strtime(extime_txt);
   if (sdate_txt !=NULL)  sdate=strdate(sdate_txt);
   if (edate_txt !=NULL)  edate=strdate(edate_txt);
- 
+
   if (old) {
     if (arg<(argc-1)) {
         FILE *fp;
@@ -246,10 +246,10 @@ int main(int argc,char *argv[]) {
   }
 
   if ((map->hemisphere==-1) && (latmin>0)) latmin=-latmin;
-  
+
  if (stime !=-1) { /* we must skip the start of the files */
     int yr,mo,dy,hr,mt;
-    double sc;  
+    double sc;
 
     if (stime==-1) stime= ( (int) grd->st_time % (24*3600));
     if (sdate==-1) stime+=grd->st_time - ( (int) grd->st_time % (24*3600));
@@ -265,14 +265,14 @@ int main(int argc,char *argv[]) {
     if (old) OldCnvMapFread(grdfp,map,grd);
     else CnvMapFread(grdfp,map,grd);
   } else stime=grd->st_time;
- 
+
   if (etime !=-1) {
     if (edate==-1) etime+=grd->st_time - ( (int) grd->st_time % (24*3600));
     else etime+=edate;
-  } 
+  }
 
   if (extime !=0) etime=stime+extime;
- 
+
   do {
 
     if (vb !=0) {
@@ -293,7 +293,7 @@ int main(int argc,char *argv[]) {
       if (fabs(grid->lat[i])<=fabs(map->latmin)) continue;
       num++;
     }
-   
+
     for (i=0;i<grd->vcnum;i++) {
       lat= (fabs(grd->data[i].mlat) - 60.0) / 1.0;
       if (lat<0) continue;
@@ -306,27 +306,27 @@ int main(int argc,char *argv[]) {
     TimeEpochToYMDHMS(grd->ed_time,&yr,&mo,&dy,&hr,&mt,&sc);
     fprintf(stdout,"%d %d %d %d %d %d %g\n",yr,mo,dy,hr,mt,(int) sc,
             map->latmin);
-        
+
     fprintf(stdout,"%d\n",num);
-    
+
     for (i=0;i<grid->num;i++) {
       if (fabs(grid->lat[i])<=fabs(map->latmin)) continue;
       fprintf(stdout,"%#10g %10d ",grid->mag[i],count[i]);
       AACGMConvert(grid->lat[i],grid->lon[i],300.0,&glat,&glon,&r,1);
       fprintf(stdout,"%#10g %#10g ",glat,glon);
       mlt=grid->lon[i]/15.0+map->mlt.av;
-      if (mlt>24.0) mlt-=24.0;  
+      if (mlt>24.0) mlt-=24.0;
       fprintf(stdout,"%#10g %#10g %#10g\n",grid->lat[i],grid->lon[i],mlt);
-    } 
-    
+    }
+
    fnum++;
    if (old) for (i=0;i<step;i++) status=OldCnvMapFread(grdfp,map,grd);
    else for (i=0;i<step;i++) status=CnvMapFread(grdfp,map,grd);
-   if ((etime !=-1) && (grd->ed_time>=etime)) break; 
+   if ((etime !=-1) && (grd->ed_time>=etime)) break;
   } while (status !=-1);
-  
+
   if (grdfp !=stdin) fclose(grdfp);
-  return 0;  
+  return 0;
 }
 
 
