@@ -265,7 +265,7 @@ int RPosRngBmAzmElv(int bm, int rn, int year,
     norm_vec(&ghx,&ghy,&ghz);
 
     /* Calculate the magnetic field vector (bx,by,bz) at the geocentric spherical
-     * range/beam position (frho,flat,flon) in global Cartesian coordinates */
+     * range/beam position (frho,flat,flon) in local south/east/vertical coordinates */
     s=IGRFMagCmp(year,frho,flat,flon,&bx,&by,&bz,&b);
     if (s==-1) return -1;
 
@@ -273,7 +273,7 @@ int RPosRngBmAzmElv(int bm, int rn, int year,
     norm_vec(&bx,&by,&bz);
 
     /* Calculate a new local vertical component such that the radar-to-range/beam
-     *  vector becomes orthogonal to the magnetic field at the range/beam position
+     * vector becomes orthogonal to the magnetic field at the range/beam position
      * (gh dot b = 0) */
     ghz=-(bx*ghx+by*ghy)/bz;
 
@@ -360,7 +360,7 @@ int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
     norm_vec(&ghx,&ghy,&ghz);
 
     /* Calculate the magnetic field vector (bx,by,bz) at the geocentric spherical
-     * range/beam position (frho,flat,flon) in global Cartesian coordinates */
+     * range/beam position (frho,flat,flon) in local south/east/vertical coordinates */
     s=IGRFMagCmp(year,frho,flat,flon,&bx,&by,&bz,&b);
     if (s==-1) return -1;
 
@@ -368,7 +368,7 @@ int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
     norm_vec(&bx,&by,&bz);
 
     /* Calculate a new local vertical component such that the radar-to-range/beam
-     *  vector becomes orthogonal to the magnetic field at the range/beam position
+     * vector becomes orthogonal to the magnetic field at the range/beam position
      * (gh dot b = 0) */
     ghz=-(bx*ghx+by*ghy)/bz;
 
