@@ -37,9 +37,9 @@
 ;   flon        - longitude in geocentric spherical coordinates [deg]
 ;
 ; OUTPUT:
-;   bx          - x component of the magnetic field vector
-;   by          - y component of the magnetic field vector
-;   bz          - z component of the magnetic field vector
+;   bx          - south component of the magnetic field vector
+;   by          - east component of the magnetic field vector
+;   bz          - vertical component of the magnetic field vector
 ;   b           - magnitude of the magnetic field vector
 ;
 ; CALLING SEQUENCE:
@@ -59,11 +59,16 @@ function IGRFMagCmp, date, frho, flat, flon, bx, by, bz, b
     ; of Earth and not altitude*
     height = frho
     
-    ; Make call to IGRF DLM to calculate magnetic field components at field line
+    ; Make call to IGRF DLM to calculate magnetic field components at field point
+    ; in local north/east/down coordinates [nT]
     ret = IGRFModelCall(date, flat, flon, height, bx, by, bz)
 
-    ; Calculate magnitude of magnetic field vector
+    ; Calculate magnitude of magnetic field vector [nT]
     b = sqrt( bx*bx + by*by + bz*bz )
+
+    ; Convert to local south/vertical coordinates (rather than north/down)
+    bx = -1.*bx
+    bz = -1.*bz
 
     return, ret
 
@@ -382,8 +387,8 @@ function RPosRngBmAzmElv, beam, range, year, site, frang, rsep, rxrise, height, 
     ; Normalize the local horizontal radar-to-range/beam cell vector (nghx,nghy,nghz)
     ret = norm_vec(ghx, ghy, ghz, nghx, nghy, nghz)
     
-    ; Calculate the magnetic field vector at the geocentric spherical range/beam position
-    ; (frho,flat,flon) in global Cartesian coordinates (bx,by,bz)
+    ; Calculate the magnetic field vector (bx,by,bz) at the geocentric spherical
+    ; range/beam position (frho,flat,flon) in local south/east/vertical coordinates
     ret = IGRFMagCmp(year, frho, flat, flon, bx, by, bz, b)
     
     ; Error check present in C RST code
@@ -455,8 +460,8 @@ function RPosInvMag, beam, range, year, site, frang, rsep, rxrise, height, mlat,
     ; Normalize the local horizontal radar-to-range/beam cell vector (nghx,nghy,nghz)
     ret = norm_vec(ghx, ghy, ghz, nghx, nghy, nghz)
     
-    ; Calculate the magnetic field vector at the geocentric spherical range/beam position
-    ; (frho,flat,flon) in global Cartesian coordinates (bx,by,bz)
+    ; Calculate the magnetic field vector (bx,by,bz) at the geocentric spherical
+    ; range/beam position (frho,flat,flon) in local south/east/vertical coordinates
     ret = IGRFMagCmp(year, frho, flat, flon, bx, by, bz, b)
     
     ; Error check present in C RST code
