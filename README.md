@@ -25,7 +25,7 @@ You can find the latest release at: http://cdf.gsfc.nasa.gov/
 
 1. Upon cloning the repository (with git clone or downloading zip file), make sure the RST
    environment variables are properly set.  In particular, make sure `CDF_PATH` in
-   ~/rst/.profile/base.bash and `IDL_IPATH` in ~/rst.profile/idl.bash are correct.
+   ~/rst/.profile/base.bash and `IDL_IPATH` in ~/rst/.profile/idl.bash are correct.
    (Note: for users without access to IDL, modifying the `IDL_IPATH` environment variable is
    not required).
 
