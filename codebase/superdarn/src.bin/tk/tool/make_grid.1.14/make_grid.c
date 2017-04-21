@@ -269,16 +269,7 @@ struct OptionData opt;
 
 int main(int argc,char *argv[]) {
 
-  /* File format transistion
-   * ------------------------
-   *
-   * When we switch to the new file format remove any reference
-   * to "new". Change the command line option "new" to "old" and
-   * remove "old=!new".
-   */
-
     int old=0;
-    int new=0;
 
     int farg=0;
     int fnum=0;
@@ -412,7 +403,7 @@ int main(int argc,char *argv[]) {
     OptionAdd(&opt,"-help",'x',&help);  /* Print the help message and exit */
     OptionAdd(&opt,"-option",'x',&option); /* Print all command line options */
 
-    OptionAdd(&opt,"new",'x',&new);     /* Input file is in fitacf format */
+    OptionAdd(&opt,"old",'x',&old);     /* Input file is in fit format */
 
     OptionAdd(&opt,"vb",'x',&vb);       /* Log information to console */
 
@@ -471,8 +462,6 @@ int main(int argc,char *argv[]) {
 
     /* Process command line options */
     farg=OptionProcess(1,argc,argv,&opt,NULL);
-
-    old=!new;
 
     /* If 'help' set then print help message */
     if (help==1) {
