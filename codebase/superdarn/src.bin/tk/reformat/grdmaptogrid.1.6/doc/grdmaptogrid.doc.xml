@@ -2,7 +2,7 @@
 <binary>
 <project>superdarn</project>
 <name>grdmaptogrid</name>
-<location>src.bin/tk/tool/grdmaptogrid</location>
+<location>src.bin/tk/reformat/grdmaptogrid</location>
 <syntax>grdmaptogrid --help</syntax>
 <syntax>grdmaptogrid [<ar>grdmapname</ar>]</syntax>
 
