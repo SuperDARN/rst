@@ -5,12 +5,10 @@
      <path>binary</path>
   </tree>
 
-
   <xmldoc>
     <tagdb type="file">bin.tagdb.xml</tagdb>
     <root type="env">URLBASE</root>
     <xml>
-
 
       <element>
       <name>project</name>
@@ -27,7 +25,6 @@
       <default type="text">None</default>
       </element>
 
-
       <element>
       <name>syntax</name>  
       <default type="text">None</default>
@@ -39,13 +36,10 @@
       <default type="text"><tr><td>None</td></tr></default>
       </element>
 
-
       <element>
       <name>synopsis</name>  
       <default type="text">None</default>
       </element>
-
-   
 
       <element>
       <name>description</name>  
@@ -63,35 +57,15 @@
          </action>
          </attr>
 
-
          <attr>
-         <name>postscript</name>
-         <type>text</type>
-         <action>&lt;br&gt;<center><a href="img/&xml;.ps.gz">Download PostScript</a></center>&lt;br&gt;
-         </action>
-         </attr>
-
-         <attr>
-         <name>svg</name>
-         <type>text</type>
-         <action>&lt;br&gt;<center><a href="img/&xml;.svg">Download SVG</a></center>
-         </action>
-         </attr>
-
-        <attr>
          <name>rplot</name>
          <type>text</type>
-         <action>&lt;br&gt;<center><img src="img/&xml;.png"></img>&lt;br&gt;<a href="img/&xml;.svg">Download SVG</a>|<a href="img/&xml;.ps.gz">Download PostScript</a>|<a href="img/&xml;.rp.xml.gz">Download rXML</a></center>
+         <action>&lt;br&gt;<center><img src="img/&xml;.png"></img>&lt;br&gt;</center>
          </action>
          </attr>
-
       </modifiers>
   
-
-
-
       </element>
-
 
     </xml>
   </xmldoc>
@@ -128,7 +102,6 @@
         <replace>option</replace>
      </entry>
 
-    
      <entry>
         <search>DESCRIPTION</search>
         <replace>description</replace>
@@ -138,7 +111,6 @@
         <search>EXAMPLE</search>
         <replace>example</replace>
      </entry>
-
 
   </map>
 
