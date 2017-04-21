@@ -3,11 +3,12 @@
 <project>superdarn</project>
 <name>fitcnx</name>
 <location>src.lib/tk/fitcnx</location>
+
 <function>
 <name>FitCnxRead</name>
 <location>src.lib/tk/fitcnx</location>
 <header>superdarn/fitcnx.h</header>
-<syntax>int FitCnxRead(int num,int *sock,<sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm, <sn href="&root;/src.lib/superdarn/atk/fit/structFitData.html">struct FitData</sn> *fit,int *flag, struct timeval *tmout);</syntax>
+<syntax>int FitCnxRead(int num,int *sock,<sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm, <sn href="&root;/superdarn/src.lib/tk/fit/structFitData.html">struct FitData</sn> *fit,int *flag, struct timeval *tmout);</syntax>
 <description><p>The <fn href="FitCnxRead.html">FitCnxRead</fn> function reads fitted ACF data from a remote server.</p>
 <p>The argument <ar>sock</ar> is a pointer to an array of file descriptors associated with a set of connections. The argument <ar>num</ar> is the number of elements in the array.</p>
 <p> When a block of data is received from one of the connections it is decoded
@@ -18,7 +19,6 @@ and used to populate the appropriate members of the array of radar parameter blo
 <returns>Returns zero on success. On error, (-1) is returned.</returns>
 <errors>On error, (-1) is returned.</errors>
 <example type="source">FitCnxRead.c</example>
-
-
 </function>
+
 </library>
