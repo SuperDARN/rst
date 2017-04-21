@@ -2,7 +2,7 @@
 <binary>
 <project>superdarn</project>
 <name>maptoefield</name>
-<location>src.bin/tk/tool/maptoefield</location>
+<location>src.bin/tk/reformat/maptoefield</location>
 <syntax>maptoefield --help</syntax>
 <syntax>maptoefield [-vb] [-new] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>] [-s <ar>step</ar>] [-l <ar>latmin</ar> [-mlt] [-p] [-v] <ar>name</ar></syntax>
 <option><on>--help</on><od>print the help message and exit.</od>
