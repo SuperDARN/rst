@@ -2,7 +2,7 @@
 <binary>
 <project>superdarn</project>
 <name>gridtogrdmap</name>
-<location>src.bin/tk/tool/gridtogrdmap</location>
+<location>src.bin/tk/reformat/gridtogrdmap</location>
 <syntax>gridtogrdmap --help</syntax>
 <syntax>gridtogrdmap [<ar>gridname</ar>]</syntax>
 
