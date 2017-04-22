@@ -48,6 +48,11 @@ You can find the latest release at: http://cdf.gsfc.nasa.gov/
    stored in ~/rst/log.  The source code for make.build and make.code can be found in
    ~/rst/build/script/
 
+5. To compile the html documentation, run `make.doc.rfc codebase superdarn` and
+   `make.doc superdarn rst` from the command line. You may need to modify the `URLBASE`
+   environment variable in ~/rst/.profile/rst.bash for the links in the html pages to
+   function correctly.
+
 
 ### Historical Version Log
 
@@ -79,4 +84,3 @@ You can find the latest release at: http://cdf.gsfc.nasa.gov/
            data tables into this release (Aug 2004)
 - 1.02  -  incorporated the IDL interfaces and fixed a lot of bugs (Aug 2004)
 - 1.01  -  initial revision of the code.
-
