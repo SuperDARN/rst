@@ -635,6 +635,9 @@ int main(int argc,char *argv[]) {
   int scan=-8000;
   int sflg=0;
 
+  int chisham=0;
+  int old_aacgm=0;
+
   prm=RadarParmMake();
   fit=FitMake();
   cfit=CFitMake();
@@ -701,15 +704,12 @@ int main(int argc,char *argv[]) {
   fancol=PlotColor(0x80,0x80,0x80,0xff);
   ffancol=PlotColor(0xe0,0xe0,0xe0,0xff);
 
-
   gscol=PlotColor(0xa0,0xa0,0xa0,0xff);
  
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
 
-
   OptionAdd(&opt,"new",'x',&new); 
-
 
   OptionAdd(&opt,"cf",'t',&cfname);
 
@@ -774,7 +774,6 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"grdontop",'x',&grdtop);
   OptionAdd(&opt,"igrdontop",'x',&igrdtop);
 
-
   OptionAdd(&opt,"tmk",'x',&tmkflg);
 
   OptionAdd(&opt,"tmtick",'i',&tmtick);
@@ -793,7 +792,6 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"trmcol",'t',&trmcol_txt);
   OptionAdd(&opt,"ftrmcol",'t',&ftrmcol_txt);
 
-
   OptionAdd(&opt,"tmkcol",'t',&tmkcol_txt);
   OptionAdd(&opt,"fovcol",'t',&fovcol_txt);
   OptionAdd(&opt,"ffovcol",'t',&ffovcol_txt);
@@ -804,10 +802,8 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"fancol",'t',&fancol_txt);
   OptionAdd(&opt,"ffancol",'t',&ffancol_txt);
 
-
   OptionAdd(&opt,"fan",'x',&fanflg);
   OptionAdd(&opt,"ffan",'x',&ffanflg);
-
 
   OptionAdd(&opt,"gscol",'t',&gscol_txt);
  
@@ -833,7 +829,6 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"vecp",'x',&refvecflg);
   OptionAdd(&opt,"vsf",'f',&vsf);
   OptionAdd(&opt,"vecr",'f',&vecr);
-
  
   OptionAdd(&opt,"tmlbl",'x',&tlblflg);
   OptionAdd(&opt,"logo",'x',&logoflg);
@@ -843,7 +838,6 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"def",'x',&defflg);
 
   OptionAdd(&opt,"over",'x',&ovrflg);
-
 
   OptionAdd(&opt,"fit",'x',&fitflg);
   OptionAdd(&opt,"cfit",'x',&cfitflg);
@@ -856,12 +850,11 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"fn",'t',&expr); /* apply function */
 
-
   OptionAdd(&opt,"s",'i',&step);
 
   OptionAdd(&opt,"r",'i',&repeat);
 
-  
+  OptionAdd(&opt,"chisham",'x',&chisham); /* use Chisham virtual height model */  
 
   farg=OptionProcess(1,argc,argv,&opt,NULL);  
   if (cfname !=NULL) { /* load the configuration file */
@@ -1085,12 +1078,12 @@ int main(int argc,char *argv[]) {
   if (!sqflg) clip=MapCircleClip(10);
   else clip=MapSquareClip();
 
-  if (lat>90) GeoLocCenter(site,magflg,&lat,&lon);
+  if (lat>90) GeoLocCenter(site,magflg,&lat,&lon,chisham,old_aacgm);
  
   if ((lat<0) && (latmin>0)) latmin=-latmin;
   if ((lat>0) && (latmin<0)) latmin=-latmin;
 
-  if (fovflg || ffovflg) fov=make_fov(scn->st_time,network,scn->stid); 
+  if (fovflg || ffovflg) fov=make_fov(scn->st_time,network,scn->stid,chisham); 
   if ((fovflg || ffovflg) && magflg) MapModify(fov,AACGMtransform,NULL);
 
  
@@ -1542,7 +1535,7 @@ int main(int argc,char *argv[]) {
         if ((sflg) && (scn->bm[c].scan !=scan)) continue;
         if ((nsflg) && (scn->bm[c].scan<0)) continue;
         if ((cpid !=-1) && (scn-> bm[c].cpid !=cpid)) continue;
-        n=GeoLocBeam(site,yr,&geol,&scn->bm[c]);
+        n=GeoLocBeam(site,yr,&geol,&scn->bm[c],chisham,old_aacgm);
         for (rng=0;rng<scn->bm[c].nrang;rng++) {
          
           if ((expr !=NULL) && (eval_expr(expr,&scn->bm[c],rng)==0))
