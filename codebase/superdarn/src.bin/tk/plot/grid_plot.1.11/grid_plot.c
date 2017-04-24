@@ -831,7 +831,10 @@ int main(int argc,char *argv[]) {
     magflg=1;
     rotflg=1;
     rawflg=1;
-    tmkflg=1;
+    fmapflg=1;
+    grdflg=1;
+    grdtop=1;
+    vkey_fname="color.key";
     vkeyflg=1;
     vecflg=1;
     tmeflg=1;
