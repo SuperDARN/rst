@@ -553,6 +553,8 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"fbeam",'i',&fbeam); /* first beam in summary file scan */
 
+  OptionAdd(&opt,"chisham",'x',&chisham); /* use Chisham virtual height model */
+
   arg=OptionProcess(1,argc,argv,&opt,NULL);  
   if (cfname !=NULL) { /* load the configuration file */
     int farg;
