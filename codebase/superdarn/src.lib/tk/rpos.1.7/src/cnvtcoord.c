@@ -369,7 +369,8 @@ void RPosGeo(int center, int bcrd, int rcrd,
 void RPosMag(int center,int bcrd,int rcrd,
              struct RadarSite *pos,
              int frang,int rsep,int rxrise,double height,
-             double *rho,double *lat,double *lng) {
+             double *rho,double *lat,double *lng,
+             int chisham) {
 
     double rx;
     double radius;
@@ -379,8 +380,6 @@ void RPosMag(int center,int bcrd,int rcrd,
     double bm_edge=0;
     double range_edge=0;
     double offset=0;
-
-    int chisham=0;
 
     if (center==0) {
         bm_edge=-pos->bmsep*0.5;
