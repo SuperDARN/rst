@@ -87,7 +87,7 @@
 <p>The number of ranges stored in the data file is dependent on the ratio of signal to noise and can vary between 0 and <code>nrng</code>. The array <code>slist</code> lists the range gate of each stored ACF. For example if the first element in <code>slist</code> is 44, then the first element in the acf array, <code>acfd[*][*][0]</code>, is from range 44.</p>
 <p>The XCF array, <code>xcfd</code>, will only be present in the record if an XCF is calculated. This is indicated if the scalar <code>xcf</code> is set to 1.</p>
 </body>
-<reference><rfc href="rfc.0006.html">RFC #0006</rfc></reference>
+<reference><rfc href="0006.html">RFC #0006</rfc></reference>
 
 <revision>2007/03/26  Revision incorporating origin and beam azimuth.</revision>
 <revision>2004/07/29  Initial Revision.</revision>
