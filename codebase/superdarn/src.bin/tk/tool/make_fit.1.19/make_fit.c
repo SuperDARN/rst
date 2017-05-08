@@ -38,7 +38,7 @@
 #include "hlpstr.h"
 
 #include "fitacftoplevel.h"
-
+#include "fit_structures.h"
 struct RadarParm *prm;
 struct RawData *raw;
 struct FitData *fit;
@@ -100,15 +100,15 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"new",'x',&new);
 
-  OptionAdd(&opt,"-fitacf-version",'f',&fitacf_version);
-
-  if (vb) {
-    fprintf(stderr, "Using fitacf version: %f\n", fitacf_version);
-  }
+  OptionAdd(&opt,"fitacf-version",'f',&fitacf_version);
 
   arg=OptionProcess(1,argc,argv,&opt,NULL);
 
   old=!new;
+
+  if (vb) {
+    fprintf(stderr, "Using fitacf version: %.1f\n", fitacf_version);
+  }
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
