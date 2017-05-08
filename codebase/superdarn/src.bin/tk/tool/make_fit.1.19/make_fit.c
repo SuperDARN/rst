@@ -209,7 +209,7 @@ int main(int argc,char *argv[]) {
   if (fitacf_version == 3.0f) {
     fit_prms = Allocate_Fit_Prm(prm);
     Copy_Fitting_Prms(site,prm,raw,fit_prms);
-    fitacf(fit_prms,fit);
+    Fitacf(fit_prms,fit);
   }
   else if (fitacf_version == 2.5f){
     fblk=FitACFMake(site,prm->time.yr);
@@ -268,7 +268,7 @@ int main(int argc,char *argv[]) {
     if (status==0){
         if (fitacf_version == 3.0f) {
           Copy_Fitting_Prms(site,prm,raw,fit_prms);
-          fitacf(fit_prms,fit);
+          Fitacf(fit_prms,fit);
         }
         else if (fitacf_version == 2.5f){
           FitACF(prm,raw,fblk,fit);
@@ -282,8 +282,9 @@ int main(int argc,char *argv[]) {
 
   } while (status==0);
   FitFree(fit);
+
   if (fitacf_version == 3.0f) {
-    FitACFFree(fit_prms);
+    FitacfFree(fit_prms);
   }
   else if (fitacf_version == 2.5f){
     FitACFFree(fblk);
