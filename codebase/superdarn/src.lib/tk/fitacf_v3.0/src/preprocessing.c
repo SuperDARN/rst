@@ -208,7 +208,7 @@ void free_range_node(llist_node range){
 /**
 Callback for comparing two doubles in qsort
 */
-int dbl_cmp(const void *x,const void *y) {
+int cmp_dbl(const void *x,const void *y) {
   double *a,*b;
   a=(double *) x;
   b=(double *) y;
@@ -706,7 +706,7 @@ double ACF_cutoff_pwr(FITPRMS *fit_prms){
         pwr_levels[i] = fit_prms->pwr0[i];
     }
 
-    qsort(pwr_levels, fit_prms->nrang, sizeof(double), dbl_cmp);
+    qsort(pwr_levels, fit_prms->nrang, sizeof(double), cmp_dbl);
     /* determine the average lag0 power of the 10 lowest power acfs */
 
 
