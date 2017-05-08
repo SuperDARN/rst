@@ -256,7 +256,7 @@ void Copy_Fitting_Prms(struct RadarSite *radar_site, struct RadarParm *radar_prm
 
 /**
 Runs the full ACF/XCF fitting procedure and adds determinations to the FitData structure*/
-int FitACF(FITPRMS *fit_prms, struct FitData *fit_data) {
+int fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
 
     llist ranges, lags;
     double noise_pwr;
