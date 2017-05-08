@@ -48,6 +48,6 @@ void FitACFFree(FITPRMS *fit_prms);
 void Copy_Fitting_Prms(struct RadarSite *radar_site,struct RadarParm *radar_prms,
 				   struct RawData *raw_data,FITPRMS *fit_prms);
 FITPRMS* Allocate_Fit_Prm(struct RadarParm *radar_prms);
-int FitACF(FITPRMS *fit_prms,struct FitData *fit_data);
+int fitacf(FITPRMS *fit_prms,struct FitData *fit_data);
 
 #endif
