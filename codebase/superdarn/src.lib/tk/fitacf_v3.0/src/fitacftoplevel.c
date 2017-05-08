@@ -38,7 +38,7 @@ July 2015
 /**
 Free a fit parameter structure
 */
-void FitACFFree(FITPRMS *fit_prms) {
+void FitacfFree(FITPRMS *fit_prms) {
     if (fit_prms->pulse !=NULL) free(fit_prms->pulse);
     if (fit_prms->lag[0] !=NULL) free(fit_prms->lag[0]);
     if (fit_prms->lag[1] !=NULL) free(fit_prms->lag[1]);
@@ -256,7 +256,7 @@ void Copy_Fitting_Prms(struct RadarSite *radar_site, struct RadarParm *radar_prm
 
 /**
 Runs the full ACF/XCF fitting procedure and adds determinations to the FitData structure*/
-int fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
+int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
 
     llist ranges, lags;
     double noise_pwr;

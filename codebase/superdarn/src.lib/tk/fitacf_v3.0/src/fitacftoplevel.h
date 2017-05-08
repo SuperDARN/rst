@@ -44,10 +44,10 @@ July 2015
 #define MAJOR 3
 #define MINOR 0
 
-void FitACFFree(FITPRMS *fit_prms);
+void FitacfFree(FITPRMS *fit_prms);
 void Copy_Fitting_Prms(struct RadarSite *radar_site,struct RadarParm *radar_prms,
 				   struct RawData *raw_data,FITPRMS *fit_prms);
 FITPRMS* Allocate_Fit_Prm(struct RadarParm *radar_prms);
-int fitacf(FITPRMS *fit_prms,struct FitData *fit_data);
+int Fitacf(FITPRMS *fit_prms,struct FitData *fit_data);
 
 #endif
