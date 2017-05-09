@@ -28,7 +28,7 @@
 64  1 20080101 25000101 "Inuvik"                  "University of Saskatchewan"          "hdw.dat.inv" "inv" "i"
 65  1 20070501 25000101 "Rankin Inlet"            "University of Saskatchewan"          "hdw.dat.rkn" "rkn" "i"
 66  1 20120806 25000101 "Clyde River"             "University of Saskatchewan"          "hdw.dat.cly" "cly" "i"
-90  1 20161016 25000101 "Longyearbyen"            "University Centre in Svalbard"       "hdw.dat.lyr" "lyr" "i"
+90  1 20161019 25000101 "Longyearbyen"            "University Centre in Svalbard"       "hdw.dat.lyr" "lyr" "i"
 96  1 20120112 25000101 "Dome C East"             "IAPS-INAF"                           "hdw.dat.dce" "dce" "i"
 128 0 20080101 25000101 "SPEAR"                   "University of Leicester"             "hdw.dat.svb" "svb" "z"
 204 1 20091120 25000101 "Fort Hays West"          "Virginia Tech"                       "hdw.dat.fhw" "fhw" "z"
