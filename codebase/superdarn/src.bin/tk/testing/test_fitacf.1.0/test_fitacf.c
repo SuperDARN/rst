@@ -206,17 +206,14 @@ int main(int argc,char *argv[]) {
     strcat(command,argv[c]);
   }
 
-
   if (vb)
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
   fblk=FitACFMake(site,prm->time.yr);
 
-	if(prm->time.hr == tgthr && prm->time.mt == tgtmin && prm->time.sc >= tgtsec && prm->bmnum == tgtbeam && prm->channel != 2)
+	if(prm->time.hr >= tgthr && prm->time.mt >= tgtmin && prm->time.sc >= tgtsec && prm->bmnum == tgtbeam && prm->channel != 2)
 	{
-		fprintf(stdout,"%d  %d  %d  %d  %d  %d  %d  %d\n",prm->stid,prm->time.yr,prm->time.mo,
-									prm->time.dy,prm->time.hr,prm->time.mt,(int)prm->time.sc,prm->bmnum);
 		FitACFT(prm,raw,fblk,fit,1);
 		done=1;
 	}
@@ -242,11 +239,9 @@ int main(int argc,char *argv[]) {
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
 
-    if(prm->time.hr == tgthr && prm->time.mt == tgtmin && prm->time.sc >= tgtsec && prm->bmnum == tgtbeam
+    if(prm->time.hr >= tgthr && prm->time.mt >= tgtmin && prm->time.sc >= tgtsec && prm->bmnum == tgtbeam
 				&& status == 0 && !done && prm->channel != 2)
 		{
-			fprintf(stdout,"%d  %d  %d  %d  %d  %d  %d  %d\n",prm->stid,prm->time.yr,prm->time.mo,
-									prm->time.dy,prm->time.hr,prm->time.mt,(int)prm->time.sc,prm->bmnum);
 			FitACFT(prm,raw,fblk,fit,1);
 			done = 1;
 		}
@@ -258,16 +253,3 @@ int main(int argc,char *argv[]) {
   if (old) OldRawClose(rawfp);
   return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
