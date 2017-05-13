@@ -208,19 +208,21 @@ int main(int argc,char *argv[]) {
 
   if (vb)
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
-	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
+        prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
   fblk=FitACFMake(site,prm->time.yr);
 
-	if(prm->time.hr >= tgthr && prm->time.mt >= tgtmin && prm->time.sc >= tgtsec && prm->bmnum == tgtbeam && prm->channel != 2)
-	{
-		FitACFT(prm,raw,fblk,fit,1);
-		done=1;
-	}
+    if(prm->time.hr >= tgthr && prm->time.mt >= tgtmin && prm->time.sc >= tgtsec && prm->bmnum == tgtbeam && prm->channel != 2)
+    {
+        fprintf(stdout,"%d  %d  %d  %d  %d  %d  %d  %d\n",prm->stid,prm->time.yr,prm->time.mo,
+            prm->time.dy,prm->time.hr,prm->time.mt,(int)prm->time.sc,prm->bmnum);
+        FitACFT(prm,raw,fblk,fit,1);
+        done=1;
+    }
 
 
   do
-	{
+    {
 
 
     ctime = time((time_t) 0);
@@ -230,21 +232,23 @@ int main(int argc,char *argv[]) {
     RadarParmSetOriginTime(prm,tmstr);
 
     if (old)
-			status=OldRawRead(rawfp,prm,raw);
+        status=OldRawRead(rawfp,prm,raw);
     else
-			status=RawFread(fp,prm,raw);
+        status=RawFread(fp,prm,raw);
 
      if (vb)
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
-	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
+         prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
 
     if(prm->time.hr >= tgthr && prm->time.mt >= tgtmin && prm->time.sc >= tgtsec && prm->bmnum == tgtbeam
-				&& status == 0 && !done && prm->channel != 2)
-		{
-			FitACFT(prm,raw,fblk,fit,1);
-			done = 1;
-		}
+        && status == 0 && !done && prm->channel != 2)
+    {
+        fprintf(stdout,"%d  %d  %d  %d  %d  %d  %d  %d\n",prm->stid,prm->time.yr,prm->time.mo,
+                prm->time.dy,prm->time.hr,prm->time.mt,(int)prm->time.sc,prm->bmnum);
+        FitACFT(prm,raw,fblk,fit,1);
+        done = 1;
+    }
 
 
   } while (status==0 && !done);
