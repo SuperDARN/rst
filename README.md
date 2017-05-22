@@ -27,8 +27,8 @@ For macOS it is also available through macports, as are all listed dependencies
 1. Upon cloning the repository (with git clone or downloading zip file), make sure the RST
    environment variables are properly set.   In `~/rst/.profile.bash`:
 
-   OSTYPE="linux" for any linux operating system or "darwin" for macOS
-   SYSTEM="linux" or "darwin" as appropriate
+       OSTYPE="linux" for any linux operating system or "darwin" for macOS
+       SYSTEM="linux" or "darwin" as appropriate
 
    In `~/rst/.profile/base.bash`, check to make sure these paths are appropriate:
 
