@@ -51,7 +51,7 @@ For macOS it is also available through macports, as are all listed dependencies
    
        source ~/.bashrc
 
-3. Change directory to `$RSTPATH/build/script` and run `make.build` from the command line.
+3. Run `make.build` from the command line.  You may need to change directory to `$RSTPATH/build/script`.
    This runs a helper script that sets up other compiling code.
 
 4. In the same directory run `make.code superdarn rst` to compile all of the code.
