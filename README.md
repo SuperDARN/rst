@@ -11,7 +11,7 @@ libnetcdf-dev | libnetcdf-dev | libpng16-devel | libnetcdf-dev | libcurses
 libncurses | libpng16-dev | libX11-devel | libpng12-dev | libpng16
 libpng12-dev | libx11-dev | libXext6 | libx11-dev | libx11
 libx11-dev | libxext-dev | libXext-devel | libxext-dev | cdf
-libxext-dev | | netcdf | netpbm | netpdm (10.77.03_2+x11)
+libxext-dev | | netcdf | netpbm | netpbm (10.77.03_2+x11)
 netpbm | | netcdf-devel | |
  | | | ncurses-devel | |
  | | | zlib-devel | |
