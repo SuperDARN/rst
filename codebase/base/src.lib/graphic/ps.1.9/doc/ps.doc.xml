@@ -123,7 +123,7 @@
 <name>PostScriptImage</name>
 <location>src.lib/graphic/ps</location>
 <header>base/rps.h</header>
-<syntax>int PostScriptImage(<sn href="structPostScript.html">struct PostScript</sn> *ptr, <sn href="structPostScriptMatrix.html">struct PostScriptMatrix</sn> *matrix,<sn href="&root;/graphic/fbuffer/structFrameBuffer.html">struct FrameBuffer</sn> *img, unsigned char mask, float x,float y, <sn href="structPostScriptClip.html">struct PostScriptClip</sn> *clip);</syntax>
+<syntax>int PostScriptImage(<sn href="structPostScript.html">struct PostScript</sn> *ptr, <sn href="structPostScriptMatrix.html">struct PostScriptMatrix</sn> *matrix,<sn href="&root;/base/src.lib/graphic/fbuffer/structFrameBuffer.html">struct FrameBuffer</sn> *img, unsigned char mask, float x,float y, <sn href="structPostScriptClip.html">struct PostScriptClip</sn> *clip);</syntax>
 <description><p>The <fn href="PostScriptImage.html">PostScriptImage</fn> function plots a bitmap image.</p>
 <p>The argument <ar>ptr</ar> is a pointer to the PostScript control structure. The argument <ar>matrix</ar> is an optional transformation matrix that can be applied to the bitmap. If this is set to a <code>NULL</code> pointer then no transformation is applied.</p>
 <p>The bitmap image is pointed to by the argument <ar>img</ar>.</p>
