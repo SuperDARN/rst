@@ -7,7 +7,7 @@
 <name>FrameBufferBezier</name>
 <location>src.lib/graphic/fbuffer</location>
 <header>base/rfbuffer.h</header>
-<syntax>int FrameBufferBezier(<sn href="structFrameBuffer.html">struct FrameBuffer</sn> *ptr, int x1,int y1,int x2,int y2, int x3,int y3,int x4,int y4,float step, unsigned int color,unsigned char m,int width, <sn href="structFrameBufferDash.html">struct FrameBufferDash</sn> *dash, <sn href="strucFrameBufferClip.html">struct FrameBufferClip</sn> *clip);</syntax>
+<syntax>int FrameBufferBezier(<sn href="structFrameBuffer.html">struct FrameBuffer</sn> *ptr, int x1,int y1,int x2,int y2, int x3,int y3,int x4,int y4,float step, unsigned int color,unsigned char m,int width, <sn href="structFrameBufferDash.html">struct FrameBufferDash</sn> *dash, <sn href="structFrameBufferClip.html">struct FrameBufferClip</sn> *clip);</syntax>
 
 
 <description><p>The <fn href="FrameBufferBezier.html">FrameBufferBezier</fn> function plots a bezier curve.</p>
@@ -76,7 +76,7 @@
 <location>src.lib/graphic/fbuffer</location>
 <header>base/rfbuffer.h</header>
 <syntax><sn href="structFrameBuffer.html">struct FrameBuffer</sn> *FrameBufferCopy(<sn href="structFrameBuffer.html">struct FrameBuffer</sn> *src);</syntax>
-<description><p>The <fn href="FrameBufferCopyr.html">FrameBufferCopy</fn> function copies a frame buffer.</p>
+<description><p>The <fn href="FrameBufferCopy.html">FrameBufferCopy</fn> function copies a frame buffer.</p>
 <p>The argument <ar>src</ar> is a pointer to the frame buffer to copy.</p> 
 </description>
 
@@ -524,9 +524,7 @@ int pixel(int wdt,int hgt,char *img,char *msk, int x,int y,int depth,int off,int
 <p>The red, green, blue and alpha components of the color to use for the point are given by the arguments <ar>r</ar>, <ar>g</ar>, <ar>b</ar> and <ar>a</ar>.
 </p>
 
-<p>The <ar>data</ar> argument of the <fn href="FrameBufferSetUser.html">FrameBufferSetUser</fn> function is passed directly as the <ar>dptr</ar> argument and allows extra parameters to be passed to the function.
-
-</description>
+<p>The <ar>data</ar> argument of the <fn href="FrameBufferSetUser.html">FrameBufferSetUser</fn> function is passed directly as the <ar>dptr</ar> argument and allows extra parameters to be passed to the function.</p>
 
 
 </description>
@@ -579,7 +577,7 @@ int pixel(int wdt,int hgt,char *img,char *msk, int x,int y,int depth,int off,int
 <header>base/rfbuffer.h</header>
 <syntax>int FrameBufferXMLEnd(char *name,char *buf,int sze,void *data);</syntax>
 <description><p>The <fn href="FrameBufferXMLEnd.html">FrameBufferXMLEnd</fn> function is a parser function that is used by the XML parser to read frame buffer images stored in XML format.</p>
-<p>The function is called by the XML parser when an end tag is encountered in the XML document. The function expects the argument <ar>data</ar> to be a pointer to a structure of type <sn href="structFrameBufferXML">struct FrameBufferXML</sn>.</p>
+<p>The function is called by the XML parser when an end tag is encountered in the XML document. The function expects the argument <ar>data</ar> to be a pointer to a structure of type <sn href="structFrameBufferXML.html">struct FrameBufferXML</sn>.</p>
 </description>
 
 <returns>Returns zero on success. On error, (-1) is returned.</returns>
@@ -594,7 +592,7 @@ int pixel(int wdt,int hgt,char *img,char *msk, int x,int y,int depth,int off,int
 
 
 <description><p>The <fn href="FrameBufferXMLStart.html">FrameBufferXMLStart</fn> function is a parser function that is used by the XML parser to read frame buffer images stored in XML format.</p>
-<p>The function is called by the XML parser when a new tag is encountered in the XML document. The function expects the argument <ar>data</ar> to be a pointer to a structure of type <sn href="structFrameBufferXML">struct FrameBufferXML</sn>.</p>
+<p>The function is called by the XML parser when a new tag is encountered in the XML document. The function expects the argument <ar>data</ar> to be a pointer to a structure of type <sn href="structFrameBufferXML.html">struct FrameBufferXML</sn>.</p>
 </description>
 
 <returns>Returns zero on success. On error, (-1) is returned.</returns>
@@ -802,7 +800,7 @@ int pixel(int wdt,int hgt,char *img,char *msk, int x,int y,int depth,int off,int
       <description>None.</description>
     </member>
     <member>
-      <proto><sn href="&root;/src.lib/xml/xml/structXMLdata.html">struct XMLdata</sn> *xml;</proto>
+      <proto><sn href="&root;/base/src.lib/xml/xml/structXMLdata.html">struct XMLdata</sn> *xml;</proto>
       <description>None.</description>
     </member>
     <member>
@@ -819,7 +817,7 @@ int pixel(int wdt,int hgt,char *img,char *msk, int x,int y,int depth,int off,int
  <header>base/rfbuffer.h</header>
  <struct>  
     <member>
-      <proto><sn href="&root;/src.lib/xml/xml/structXMLdata.html">struct XMLdata</sn> *xml;</proto>
+      <proto><sn href="&root;/base/src.lib/xml/xml/structXMLdata.html">struct XMLdata</sn> *xml;</proto>
       <description>None.</description>
     </member>
     <member>
