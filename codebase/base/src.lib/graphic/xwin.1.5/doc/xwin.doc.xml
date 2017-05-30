@@ -40,9 +40,9 @@
 <name>XwinFrameBufferToXimage</name>
 <location>src.lib/graphic/xwin</location>
 <header>base/xwin.h</header>
-<syntax>int XwinFrameBufferToXimage(<sn href="&root;/src.lib/graphic/fbuffer/structFrameBuffer.html">struct FrameBuffer *fb</sn>,XImage *xi);</syntax>
+<syntax>int XwinFrameBufferToXimage(<sn href="&root;/base/src.lib/graphic/fbuffer/structFrameBuffer.html">struct FrameBuffer *fb</sn>,XImage *xi);</syntax>
 
-<description><p>The <fn href="XwinFrameBufferRoXimage.html">XwinFrameBufferToXimage</fn> function copies a frame buffer to an Ximage structure.</p>
+<description><p>The <fn href="XwinFrameBufferToXimage.html">XwinFrameBufferToXimage</fn> function copies a frame buffer to an Ximage structure.</p>
 <p>The frame buffer structure is pointed to be the argument <ar>fb</ar> and the Ximage structure is pointed to by the argument <ar>xi</ar>.</p>
 </description>
 
@@ -54,7 +54,7 @@
 <name>XwinFrameBufferWindow</name>
 <location>src.lib/graphic/xwin</location>
 <header>base/xwin.h</header>
-<syntax>int XwinFrameBufferWindow(<sn href="&root;/src.lib/graphic/fbuffer/structFrameBuffer.html">struct FrameBuffer *fb</sn>,<sn href="structXwinWindow.html">struct XwinWindow</sn> *wp);</syntax>
+<syntax>int XwinFrameBufferWindow(<sn href="&root;/base/src.lib/graphic/fbuffer/structFrameBuffer.html">struct FrameBuffer *fb</sn>,<sn href="structXwinWindow.html">struct XwinWindow</sn> *wp);</syntax>
 
 
 <description><p>The <fn href="XwinFrameBufferWindow.html">XwinFrameBufferWindow</fn> function copies a frame buffer to an X window.</p>
@@ -193,7 +193,7 @@ On error, a <code>NULL</code> pointer is returned and the location pointed to by
       <description>Zero terminated string giving the program name.</description>
     </member>
     <member>
-      <proto><sn href="structstructXwinDisplay.html">struct XwinDisplay</sn> *dp;</proto>
+      <proto><sn href="structXwinDisplay.html">struct XwinDisplay</sn> *dp;</proto>
       <description>Control structure for the display the window is connected to.</description>
     </member>
     <member>

@@ -163,7 +163,7 @@
 <name>FitToCFit</name>
 <location>src.lib/tk/fit</location>
 <header>superdarn/fitcfit.h</header>
-<syntax>int FitToCFit(double minpwr,<sn href="&root;/superdarn/src.lib/tk/cfit/structCFitData.html">struct CFitdata</sn> *ptr, <sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm, <sn href="structFitData.html">struct FitData</sn> *fit);</syntax>
+<syntax>int FitToCFit(double minpwr,<sn href="&root;/superdarn/src.lib/tk/cfit/structCFitdata.html">struct CFitdata</sn> *ptr, <sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm, <sn href="structFitData.html">struct FitData</sn> *fit);</syntax>
 <description><p>The <fn href="FitToCFit.html">FitToCFit</fn> function encodes a <code>fitacf</code> data record into a <code>CFit</code> data record.</p>
 <p>The argument <ar>minpwr</ar> gives the minimum value of lag-zero power to store; ranges with lag-zero power below this threshold are ignored.</p>
 <p>The <code>fit</code> data is encoded into the <code>CFit</code> data structure pointed to by the argument <ar>ptr</ar>. The <code>CFit</code> structure is encoded from the parameter block pointed to by the argument <ar>prm</ar> and the <code>fit</code> data structure pointer to by the argument <ar>fit</ar>.</p>  
