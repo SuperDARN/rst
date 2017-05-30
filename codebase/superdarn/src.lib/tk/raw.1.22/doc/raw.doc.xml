@@ -86,7 +86,7 @@
 <name>RawRead</name>
 <location>src.lib/tk/raw</location>
 <header>superdarn/rawread.h</header>
-<syntax>int RawRead(int fid,<sn href="&root;/superdarn/src.lib/tk/radar/RadarParm.html">struct RadarParm</sn> *prm, <sn href="structRawData.html">struct RawData</sn> *raw);</syntax>
+<syntax>int RawRead(int fid,<sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm, <sn href="structRawData.html">struct RawData</sn> *raw);</syntax>
 <description><p>The <fn href="RawRead.html">RawRead</fn> function reads a <code>rawacf</code> data record from an open file.</p>
 <p>The data is read from the file with the descriptor given by the argument <ar>fid</ar>. The data is decoded and used to populate the radar parameter block pointed to by the argument <ar>prm</ar> and the raw data structure pointer to by the argument <ar>raw</ar>.</p>  
 </description>
