@@ -126,7 +126,7 @@
 <p>The number of ranges stored in the data file is dependent on whether the ACF can be fitted. The array <code>slist</code> lists the range gate of each set of fitted parameters. For example if the first element in <code>slist</code> is 44, then the first element in the velocity array, <code>v[0]</code>, is from range 44.</p>
 <p>The arrays for the XCF fit, will only be present in the record if an XCF is calculated. This is indicated if the scalar <code>xcf</code> is set to 1.</p>
 </body>
-<reference><rfc href="rfc.0006.html">RFC #0006</rfc></reference>
+<reference><rfc href="0006.html">RFC #0006</rfc></reference>
 <revision>2007/03/26  Revision incorporating origin and beam azimuth.</revision>
 <revision>2004/07/29  Initial Revision.</revision>
 </rfc>

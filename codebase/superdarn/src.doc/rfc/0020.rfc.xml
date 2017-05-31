@@ -75,7 +75,7 @@ MAX_RANGE=300
 </pre></td></tr></table>
 </center>
 </body>
-<reference><rfc href="rfc.0012.html">RFC #0012</rfc></reference>
+<reference><rfc href="0012.html">RFC #0012</rfc></reference>
 <revision>2007/03/26  Revision to include origin and beam azimuth.</revision>
 <revision>2004/11/22  Initial Revision.</revision>
 

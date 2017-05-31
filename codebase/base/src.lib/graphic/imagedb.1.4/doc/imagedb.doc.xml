@@ -7,7 +7,7 @@
 <name>FrameBufferDBAdd</name>
 <location>src.lib/graphic/imagedb</location>
 <header>base/imagedb.h</header>
-<syntax>int FrameBufferDBAdd(<sn href="structFrameBufferDB.html">struct FrameBufferDB</sn> *ptr,<sn href="&root;/src.lib/graphic/fbuffer/structFrameBuffer.html">struct FrameBuffer</sn> *img);</syntax>
+<syntax>int FrameBufferDBAdd(<sn href="structFrameBufferDB.html">struct FrameBufferDB</sn> *ptr,<sn href="&root;/base/src.lib/graphic/fbuffer/structFrameBuffer.html">struct FrameBuffer</sn> *img);</syntax>
 
 <description><p>The <fn href="FrameBufferDBAdd.html">FrameBufferDBAdd</fn> function addd a frame buffer or bitmap to a frame buffer database.</p>
 <p>The structure containing the frame buffer database is pointed to by the argument <ar>ptr</ar>.</p>
@@ -24,7 +24,7 @@
 <name>FrameBufferDBFind</name>
 <location>src.lib/graphic/imagedb</location>
 <header>base/imagedb.h</header>
-<syntax><sn href="&root;/src.lib/graphic/fbuffer/structFrameBuffer.html">struct FrameBuffer</sn> *FrameBufferDBFind(<sn href="structFrameBufferDB.html">struct FrameBufferDB</sn> *ptr,char *name);</syntax>
+<syntax><sn href="&root;/base/src.lib/graphic/fbuffer/structFrameBuffer.html">struct FrameBuffer</sn> *FrameBufferDBFind(<sn href="structFrameBufferDB.html">struct FrameBufferDB</sn> *ptr,char *name);</syntax>
 
 <description><p>The <fn href="FrameBufferDBFind.html">FrameBufferDBFind</fn> function attempts to locate a frame buffer or bitmap in a frame buffer database.</p>
 <p>The structure containing the frame buffer database is pointed to by the argument <ar>ptr</ar>.</p>

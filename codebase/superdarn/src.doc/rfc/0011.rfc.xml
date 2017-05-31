@@ -400,7 +400,7 @@ int main(int argc,char *argv[]) {
 
 </body> 
 
-<reference><rfc href="rfc.0010.html">RFC #0010</rfc></reference>
+<reference><rfc href="0010.html">RFC #0010</rfc></reference>
 <revision>2004/11/05  Initial Revision.</revision>
 </rfc>
 
