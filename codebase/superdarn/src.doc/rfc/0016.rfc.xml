@@ -68,7 +68,7 @@
 <p>A grdmap file consists a number of vectors, <em>vcnum</em>, the vectors come from a number of individual staitons, <em>stnum</em>. The file contains arrays containing the operating and processing parameters of each station and arrays that containing data for each vector.</p>
 <p>The arrays <code>vector.pwr.median,vector.pwr.sd,vector.wdt.median</code> and <code>vector.wdt.sd</code> are only included in extended format grdmap files</p>
 </body>
-<reference><rfc href="rfc.0006.html">RFC #0006</rfc></reference>
+<reference><rfc href="0006.html">RFC #0006</rfc></reference>
 <revision>2004/07/29  Initial Revision.</revision>
 </rfc>
 
