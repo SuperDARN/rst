@@ -134,7 +134,7 @@ void FitACFBadlagsStereo(struct FitPrm *ptr, struct FitACFBadSample *bptr) {
     offset=ptr->offset;
     if (ptr->channel==1) offset=-offset;
 
-    if (offset==0) return;
+   /* if (offset==0) return; */
 
 
     while ( offset != 0 && i < (ptr->mppul - 1) && k < maxbad ) {
