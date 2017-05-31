@@ -1173,8 +1173,8 @@ int AACGM_v2_SetNow(void)
   time(&now);
   tm_now = gmtime(&now);    /* right now in UT */
 
-  doy = dayno(tm_now->tm_year,tm_now->tm_mon,tm_now->tm_mday,&ndays);
-  fyear = tm_now->tm_year + ((doy-1) + (tm_now->tm_hour +
+  doy = dayno(1900 + tm_now->tm_year,tm_now->tm_mon,tm_now->tm_mday,&ndays);
+  fyear = 1900 + tm_now->tm_year + ((doy-1) + (tm_now->tm_hour +
                 (tm_now->tm_min + tm_now->tm_sec/60.)/60.)/24.) / ndays;
 
   if ((fyear < IGRF_FIRST_EPOCH) || (fyear >= IGRF_LAST_EPOCH + 5.)) {
