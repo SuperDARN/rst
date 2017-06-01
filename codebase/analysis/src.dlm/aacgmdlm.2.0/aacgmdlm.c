@@ -359,17 +359,11 @@ static IDL_VPTR IDLAACGM_v2_Convert(int argc,IDL_VPTR *argv,char *argk) {
     IDL_EXCLUDE_EXPR(outargv[4]);
     IDL_EXCLUDE_EXPR(outargv[5]);
 
-    if (geo) {
-        code=1;
-    }
-
-    if (trace) {
-        code=2;
-    }
-
-    if (gcentric) {
-        code=16;
-    }
+    if (geo) code|=1;
+    if (trace) code|=2;
+    if (allowtrace) code|=4;
+    if (badidea) code|=8;
+    if (gcentric) code|=16;
 
     if (argv[1]->flags & IDL_V_ARR) {
         int nval;
