@@ -21,6 +21,14 @@
 ;   Differences with values determined at 0 km altitude (where defined) are
 ;   typically <1 minute and always <5 minutes (in MLT).
 ;
+; 20170601 SGS v1.2  MLTConvert_v2 now calls AACGM_v2_SetDateTime() if the
+;                    AACGM-v2 date/time is not currently set OR if the
+;                    date/time passed into one of the public functions differs
+;                    from the AACGM-v2 date/time by more than 30 days. In each
+;                    case the AACGM-v2 coefficients are loaded and interpolated
+;                    which could impact other calls to AACGM_v2_Convert() if
+;                    the date/time is not reset.
+;
 ; 20160811 SGS v1.1  Added keyword MLT2MLON to allow for inverse calculation,
 ;                    i.e., mlon argument is actually MLT and mlon is computed
 ;                    and returned.
@@ -36,15 +44,15 @@
 ;
 ; mlt = mlt_v2(mlon, year=yr, month=mo, day=dy, hour=hr, minute=mt, second=sc,$
 ;                    sstrace=sstrace, ssheight=ssheight, err=err, /MLT2mlon)
-; mlt = MLTConvertYMDHMS(yr,mo,dy,hr,mt,sc, mlon, $
-;                        sstrace=sstrace, ssheight=ssheight, anti=anti, $
-;                        err=err, dday_bug=dday_bug, /MLT2mlon)
-; mlt = MLTConvertEpoch(epoch, mlon, $
-;                        sstrace=sstrace, ssheight=ssheight, anti=anti, $
-;                        err=err, dday_bug=dday_bug, /MLT2mlon)
-; mlt = MLTConvertYrsec(yr,yrsec, mlon, $
-;                        sstrace=sstrace, ssheight=ssheight, anti=anti, $
-;                        err=err, dday_bug=dday_bug, /MLT2mlon)
+; mlt = MLTConvertYMDHMS_v2(yr,mo,dy,hr,mt,sc, mlon, $
+;                           sstrace=sstrace, ssheight=ssheight, anti=anti, $
+;                           err=err, dday_bug=dday_bug, /MLT2mlon)
+; mlt = MLTConvertEpoch_v2(epoch, mlon, $
+;                          sstrace=sstrace, ssheight=ssheight, anti=anti, $
+;                          err=err, dday_bug=dday_bug, /MLT2mlon)
+; mlt = MLTConvertYrsec_v2(yr,yrsec, mlon, $
+;                          sstrace=sstrace, ssheight=ssheight, anti=anti, $
+;                          err=err, dday_bug=dday_bug, /MLT2mlon)
 ;
 ; Private Functions:
 ; ------------------
@@ -87,6 +95,26 @@
 function MLTConvert_v2, yr,mo,dy,hr,mt,sc,mlon, sstrace=sstrace, $
                         ssheight=ssheight, anti=anti, err=err, $
                         dday_bug=dday_bug, MLT2mlon=MLT2mlon
+
+  common AACGM_v2_Com
+
+  if (n_elements(aacgm_v2_datetime) eq 0) then begin
+    ; AACGM date/time not set so set it to the date/time passed in
+    e = AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,sc)
+    if e ne 0 then return, e
+  endif else begin
+    ; If date/time passed into function differs from AACGM data/time by more
+    ; than 30 days, recompute the AACGM-v2 coefficients
+    e = AACGM_v2_GetDateTime(ayr,month=amo,day=ady,hour=ahr, $
+                                 minute=amt,second=asc)
+    ajd = TimeYMDHMSToJulian(ayr,amo,ady,ahr,amt,asc)
+    tyr = yr    ; arguments are passed by reference and yr is modified
+    jd =  TimeYMDHMSToJulian(tyr,mo,dy,hr,mt,sc)
+    if abs(jd-ajd) gt 30 then begin
+      e = AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,sc)
+    endif
+    if e ne 0 then return, e
+  endelse
 
   ierr = 0
   mlon = reform(mlon)
@@ -136,6 +164,7 @@ function MLTConvert_v2, yr,mo,dy,hr,mt,sc,mlon, sstrace=sstrace, $
     p = cnvcoord_v2(-dec, slon, hgt, trace=sstrace) $ ; anti solar point
   else $
     p = cnvcoord_v2(dec, slon, hgt, trace=sstrace)      ; subsolar point
+  if (size(p))[0] eq 0 then return, !values.f_nan       ; date/time not set?
   mlon_ref = p[1]   ; AACGM-v2 longitude of reference point
 
   ; check for error: if not sstrace then this should NOT happen...
