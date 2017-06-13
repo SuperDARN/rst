@@ -1,5 +1,5 @@
-/* grddlm.c
-   ========== 
+/* oldgrddlm.c
+   ===========
    Author R.J.Barnes
 */
 
