@@ -3,7 +3,8 @@
 
 export OSTYPE="linux"
 export SYSTEM="linux"
-export EDITOR="emacs -nw"
+export VISUAL="vim"
+export EDITOR="$VISUAL"
 export PATH="${PATH}:/opt/local/bin:/usr/bin/:${HOME}/bin:${HOME}/script"
 
 . $RSTPATH/.profile/rst.bash
