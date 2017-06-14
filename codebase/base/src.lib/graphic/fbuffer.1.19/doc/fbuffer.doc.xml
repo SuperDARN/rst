@@ -1,0 +1,849 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>base</project>
+<name>rfbuf</name>
+<location>src.lib/graphic/fbuffer</location>
+<function>
+<name>FrameBufferBezier</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>int FrameBufferBezier(<sn href="structFrameBuffer.html">struct FrameBuffer</sn> *ptr, int x1,int y1,int x2,int y2, int x3,int y3,int x4,int y4,float step, unsigned int color,unsigned char m,int width, <sn href="structFrameBufferDash.html">struct FrameBufferDash</sn> *dash, <sn href="structFrameBufferClip.html">struct FrameBufferClip</sn> *clip);</syntax>
+
+
+<description><p>The <fn href="FrameBufferBezier.html">FrameBufferBezier</fn> function plots a bezier curve.</p>
+<p>The argument <ar>ptr</ar> is a pointer to the frame buffer.</p> 
+<p>The coordinates of the four points that define the bezier curve are given by the arguments
+<ar>x1</ar>, <ar>y1</ar>,<ar>x2</ar>, <ar>y2</ar>,<ar>x2</ar>, <ar>y3</ar>, and <ar>x4</ar>, <ar>y4</ar>. The two end points are defined by <ar>x1</ar>, <ar>y1</ar> and <ar>x4</ar>,<ar>y4</ar>. The other two coordinates are the control points.</p>
+
+<p>The color used to plot the curve is given by the <ar>color</ar> which is a 32-bit number that represents the alpha,red,green and blue components of the color as 8-bit numbers. The alpha channel occupies the most significant bits and the blue channel occupies the least significant bits. The argument <ar>mask</ar> defines which color channels are active. Setting this argument to (0x0f) will output the color to all four channels. The most significant bit controls the alpha channel and the least significant bit controls the blue channel.</p>
+<p>The width of the line used to plot the curve is controlled using the argument <ar>width</ar>, a value of zero will plot a hairline. The dot-dash pattern is given by <ar>dash</ar>. If this is set to a <code>NULL</code> pointer, a solid line is plotted.</p>
+<p>The clipping polygon is given by the argument <ar>clip</ar>. If this is set to a <code>NULL</code> pointer, no clipping is performed.</p>
+
+
+
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+
+
+</function>
+<function>
+<name>FrameBufferClear</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>int FrameBufferClear(<sn href="structFrameBuffer.html">struct FrameBuffer</sn> *ptr,unsigned int color, unsigned char m);</syntax>
+<description><p>The <fn href="FrameBufferClear.html">FrameBufferClear</fn> function sets all the pixels in the frame buffer to the same color.</p>
+<p>The argument <ar>ptr</ar> is a pointer to the frame buffer.</p> 
+<p>The color used to clear the frame buffer is given by the <ar>color</ar> which is a 32-bit number that represents the alpha,red,green and blue components of the color as 8-bit numbers. The alpha channel occupies the most significant bits and the blue channel occupies the least significant bits. The argument <ar>m</ar> defines which color channels are active. Setting this argument to (0x0f) will output the color to all four channels. The most significant bit controls the alpha channel and the least significant bit controls the blue channel.</p>
+
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+
+
+
+</function>
+<function>
+<name>FrameBufferClip</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>int FrameBufferClip(<sn href="structFrameBufferClip.html">struct FrameBufferClip</sn> *ptr,int x,int y);</syntax>
+
+<description><p>The <fn href="FrameBufferClip.html">FrameBufferClip</fn> function tests whether a pixel is inside or outside the clipping polygon.</p>
+<p>The argument <ar>ptr</ar> points to the structure containing the clipping polygon and the arguments <ar>x</ar> and <ar>y</ar> give the coordinates of the point to test.</p>
+</description>
+ <returns>Returns zero if the pixel lies within the clipping polygon or (1) if it does not. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+
+
+
+</function>
+<function>
+<name>FrameBufferColor</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>unsigned int FrameBufferColor(unsigned int r,unsigned int g,unsigned int b, unsigned int a);</syntax>
+
+<description><p>The <fn href="FrameBufferColor.html">FrameBufferColor</fn> function creates an integer representation of a color.</p>
+<p>The red, green, blue and alpha component of the color are given by the arguments <ar>r</ar>, <ar>g</ar>, <ar>b</ar> and <ar>a</ar>. The values of these arguments range from zero to (255).</p>
+</description>
+<returns>Returns an integer representation of the color on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+
+</function>
+<function>
+<name>FrameBufferCopy</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax><sn href="structFrameBuffer.html">struct FrameBuffer</sn> *FrameBufferCopy(<sn href="structFrameBuffer.html">struct FrameBuffer</sn> *src);</syntax>
+<description><p>The <fn href="FrameBufferCopy.html">FrameBufferCopy</fn> function copies a frame buffer.</p>
+<p>The argument <ar>src</ar> is a pointer to the frame buffer to copy.</p> 
+</description>
+
+<returns>Returns a pointer to a new frame buffer structure. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>n error, a <code>NULL</code> pointer is returned.</errors>
+
+
+</function>
+
+<function>
+<name>FrameBufferDashState</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>int FrameBufferDashState(<sn href="structFrameBufferDash.html">struct FrameBufferDash</sn> *ptr);</syntax>
+
+
+<description><p>The <fn href="FrameBufferDashState.html">FrameBufferDashState</fn> function determines whether a pixel should be plotted for the given dash pattern.</p>
+<p>The argument <ar>ptr</ar> points to the structure containing the dash pattern.</p>
+<p>Each time the function is called an internal counter is incremented indicating that one more pixel on the current path has been plotted.</p>
+</description>
+ <returns>Returns zero if the pixel should not be plotted or (1) if it should. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+
+
+</function>
+<function>
+<name>FrameBufferEllipse</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>int FrameBufferEllipse(<sn href="structFrameBuffer.html">struct FrameBuffer</sn> *ptr, <sn href="structFrameBufferMatrix.html">struct FrameBufferMatrix</sn> *matrix, int x,int y,int w,int h, int fill,unsigned int color,unsigned char m, int width, <sn href="structFrameBufferDash.html">struct FrameBufferDash</sn> *dash, <sn href="structFrameBufferClip.html">struct FrameBufferClip</sn> *clip);</syntax>
+<description><p>The <fn href="FrameBufferEllipse.html">FrameBufferEllipse</fn> function plots an ellipse.</p>
+<p>The argument <ar>ptr</ar> is a pointer to the frame buffer. The argument <ar>matrix</ar> is an optional transformation matrix that can be applied to the ellipse. If this is set to a <code>NULL</code> pointer then no transformation is applied. The position of the center of the ellipse is given by the arguments <ar>x</ar>, and <ar>y</ar>. The horizontal and vertical radii are given by the arguments <ar>w</ar> and <ar>h</ar>.</p>
+<p>If the argument <ar>fill</ar> is set to a non-zero value then the ellipse will be plotted as a solid shape, not an outline.</p>
+<p>The color used to plot the rectangle is given by the <ar>color</ar> which is a 32-bit number that represents the alpha,red,green and blue components of the color as 8-bit number. The alpha channel occupies the most significant bits and the blue channel occupies the least significant bits. The argument <ar>m</ar> defines which color channels are active. Setting this argument to (0x0f) will output the color to all four channels. The most significant bit controls the alpha channel and the least significant bit controls the blue channel.</p>
+<p>The width of the line used to plot the ellipse is controlled using the argument <ar>width</ar>, a value of zero will plot a hairline. The dot-dash pattern used to plot the ellipse is given by <ar>dash</ar>. If this is set to a <code>NULL</code> pointer, a solid line is plotted.</p>
+<p>The clipping polygon is given by the argument <ar>clip</ar>. If this is set to a <code>NULL</code> pointer, no clipping is performed.</p>
+</description>
+
+
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+ 
+
+
+
+
+</function>
+<function>
+<name>FrameBufferFree</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>void FrameBufferFree(<sn href="structFrameBuffer.html">struct FrameBuffer</sn> *ptr);</syntax>
+<description><p>The <fn href="FrameBufferFree.html">FrameBufferFree</fn> function releases memory allocated for a frame buffer.</p>
+<p>The argument ptr is a pointer to the frame buffer.</p>
+</description>
+
+</function>
+<function>
+<name>FrameBufferFreeClip</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>void FrameBufferFreeClip(<sn href="structFrameBufferClip.html">struct FrameBufferClip</sn> *ptr);</syntax>
+
+<description><p>The <fn href="FrameBufferFreeClip.html">FrameBufferFreeClip</fn> function releases memory allocated for an frame buffer clipping polygon.</p>
+<p>The argument <ar>ptr</ar> is a pointer to the frame buffer clipping polygon.</p>
+</description>
+
+
+
+</function>
+<function>
+<name>FrameBufferFreeDash</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>void FrameBufferFreeDash(<sn href="structFrameBufferDash.html">struct FrameBufferDash</sn> *ptr);</syntax>
+
+
+
+<description><p>The <fn href="FrameBufferFreeDash.html">FrameBufferFreeDash</fn> function releases memory allocated for an frame buffer dash pattern.</p>
+<p>The argument <ar>ptr</ar> is a pointer to the frame buffer dash pattern.</p>
+</description>
+
+</function>
+<function>
+<name>FrameBufferFreeFont</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>void FrameBufferFreeFont(<sn href="structFrameBufferFont.html">struct FrameBufferFont</sn> *ptr);</syntax>
+
+<description><p>The <fn href="FrameBufferFreeFont.html">FrameBufferFreeFont</fn> function releases memory allocated for a frame buffer font.</p>
+<p>The argument <ar>ptr</ar> is a pointer to the font.</p>
+</description>
+
+
+</function>
+<function>
+<name>FrameBufferImage</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>int FrameBufferImage(<sn href="structFrameBuffer.html">struct FrameBuffer</sn> *ptr, <sn href="structFrameBufferMatrix.html">struct FrameBufferMatrix</sn> *matrix, <sn href="structFrameBuffer.html">struct FrameBuffer</sn> *img, unsigned char m, int x,int y,int sflg, <sn href="structFrameBufferClip.html">struct FrameBufferClip</sn> *clip);</syntax>
+
+<description><p>The <fn href="FrameBufferImage.html">FrameBufferImage</fn> function plots a bitmap image.</p>
+<p>The argument <ar>rplot</ar> is a pointer to the frame buffer.</p>
+<p>The argument <ar>matrix</ar> is an optional transformation matrix that can be applied to the bitmap. If this is set to a <code>NULL</code> pointer then no transformation is applied.</p>
+<p>The bitmap image is pointed to by the argument <ar>img</ar>.</p>
+<p>The argument <ar>m</ar> defines which color channels are active. Setting this argument to (0x0f) will output the color to all four channels. The most significant bit controls the alpha channel and the least significant bit controls the blue channel.</p>
+<p>The position of the top-left hand corner of the bitmap is given by the arguments <ar>x</ar>, and <ar>y</ar>.</p>
+<p>The argument <ar>sflg</ar> is a flag that determines whether interpolation is used to smooth the image; if this argument is set to a non-zero value then interpolation is used.</p>
+<p>The clipping polygon is given by the argument <ar>clip</ar>. If this is set to a <code>NULL</code> pointer, no clipping is performed.</p>
+</description>
+
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+ 
+</function>
+<function>
+<name>FrameBufferLine</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>int FrameBufferLine(<sn href="structFrameBuffer.html">struct FrameBuffer</sn> *ptr, int ax,int ay,int bx,int by, unsigned int color,unsigned char m,int width, <sn href="structFrameBufferDash.html">struct FrameBufferDash</sn> *dash, <sn href="structFrameBufferClip.html">struct FrameBufferClip</sn> *clip);</syntax>
+
+<description><p>The <fn href="FrameBufferLine.html">FrameBufferLine</fn> function plots a straight line segment.</p>
+<p>The argument <ar>rplot</ar> is a pointer to the frame buffer.</p>
+
+
+<p>The coordinates of the two points that define the line are given by the arguments <ar>ax</ar>, <ar>ay</ar>, and <ar>bx</ar>, <ar>by</ar>.</p>
+<p>The color used to plot the line is given by the <ar>color</ar> which is a 32-bit number that represents the alpha,red,green and blue components of the color as 8-bit numbers. The alpha channel occupies the most significant bits and the blue channel occupies the least significant bits. The argument <ar>m</ar> defines which color channels are active. Setting this argument to 0x0f will output the color to all four channels. The most significant bit controls the alpha channel and the least significant bit controls the blue channel.</p>
+<p>The width of the line is controlled using the argument <ar>width</ar>, a value of zero will plot a hairline. The dot-dash pattern is given by <ar>dash</ar>. If this is set to a <code>NULL</code> pointer, a solid line is plotted.</p>
+<p>The clipping polygon is given by the argument <ar>clip</ar>. If this is set to a <code>NULL</code> pointer, no clipping is performed.</p>
+
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+
+
+</function>
+<function>
+<name>FrameBufferLoadFont</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax><sn href="structFrameBufferFont.html">struct FrameBufferFont</sn> *FrameBufferLoadFont(FILE *fp);</syntax>
+
+
+<description><p>The <fn href="FrameBufferLoadFont.html">FrameBufferLoadFont</fn> function loads a frame buffer font from an open stream.</p>
+<p>The font is read from the open stream pointed to by the argument <ar>fp</ar></p>
+</description>
+
+
+<returns>Returns a pointer to a structure containing the font. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>n error, a <code>NULL</code> pointer is returned.</errors>
+
+
+</function>
+<function>
+<name>FrameBufferLoadPPM</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax><sn href="structFrameBuffer.html">struct FrameBuffer</sn> *FrameBufferLoadPPM(FILE *fp,char *name);</syntax>
+
+
+<description><p>The <fn href="FrameBufferLoadPPM.html">FrameBufferLoadPPM</fn> function loads a Portable PixMap (PPM) from an open stream.</p>
+<p>The image is read from the open stream pointed to by the argument <ar>fp</ar></p>
+<p>The argument <ar>name</ar> is a zero terminated string that gives the name to associate with the frame buffer containing the image.</p>
+</description>
+
+<returns>Returns a pointer to a frame buffer structure containing the image. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>n error, a <code>NULL</code> pointer is returned.</errors>
+
+
+</function>
+<function>
+<name>FrameBufferLoadPPMX</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax><sn href="structFrameBuffer.html">struct FrameBuffer</sn> *FrameBufferLoadPPMX(FILE *fp);</syntax>
+
+<description><p>The <fn href="FrameBufferLoadPPMX.html">FrameBufferLoadPPMX</fn> function loads a Portable PixMap eXtended (PPMX) from an open stream.</p>
+<p>The image is read from the open stream pointed to by the argument <ar>fp</ar></p>
+<p>The argument <ar>name</ar> is a zero terminated string that gives the name to associate with the frame buffer containing the image.</p>
+</description>
+
+<returns>Returns a pointer to a frame buffer structure containing the image. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>n error, a <code>NULL</code> pointer is returned.</errors>
+
+
+</function>
+<function>
+<name>FrameBufferMake</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax><sn href="structFrameBuffer.html">struct FrameBuffer</sn> *FrameBufferMake(char *name, int wdt,int hgt,int depth);</syntax>
+
+
+<description><p>The <fn href="FrameBufferMake.html">FrameBufferMake</fn> function creates a new frame buffer.</p>
+<p>The argument <ar>name</ar> is a zero terminated string that gives the name to associate with the frame buffer containing the image.</p>
+<p>The size of the frame buffer is given by the arguments <ar>wdt</ar> and <ar>hgt</ar>. The bit-depth of the image is given by the argument <ar>depth</ar>.</p>
+</description>
+
+<returns>Returns a pointer to a frame buffer structure. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>n error, a <code>NULL</code> pointer is returned.</errors>
+
+
+
+</function>
+<function>
+<name>FrameBufferMakeClip</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax><sn href="structFrameBufferClip.html">struct FrameBufferClip</sn> *FrameBufferMakeClip(int wdt,int hgt,int num, int *px, int *py,int *t);</syntax>
+
+<description><p>The <fn href="FrameBufferMakeClip.html">FrameBufferMakeClip</fn> function creates a clipping polygon.</p>
+<p>The arguments <ar>x</ar> and <ar>y</ar> are applied as an offset to each vertex in the clipping polygon. The polygon is expected to lie with the rectangle whose size is given by the arguments <ar>wdt</ar> and <ar>hgt</ar>.</p>
+<p>The number of vertices of the clipping polygon is given by the argument <ar>num</ar>. The arrays containing the X and Y coordinates of each vertex are pointed to by the arguments <ar>px</ar> and <ar>y</ar>.</p>
+<p>A polygon can be constructed from straight line segments or bezier curves. The array pointed to by the argument <ar>t</ar> determines what kind of line segment is used to join to a vertex. If the corresponding entry in the array equals zero, then the segment between the current point and the next point is a straight line; if the entry is (1) then the connecting segment is a bezier curve and the next two vertices are the control points, the curve connects to the third point.</p> 
+</description>
+
+<returns>Returns a pointer to the structure containing the clipping polygon on success. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
+
+
+
+</function>
+<function>
+<name>FrameBufferMakeDash</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax><sn href="structFrameBufferDash.html">struct FrameBufferDash</sn> *FrameBufferMakeDash(int *p,int phase,int sze);</syntax>
+
+<description><p>The <fn href="FrameBufferMakeDash.html">FrameBufferMakeDash</fn> function makes a dash pattern for a frame buffer.</p>
+<p>The array pointed to by the argument <ar>p</ar> is interpreted as distances along the line that alternately specify dashes and gaps. The argument <ar>sze</ar> give the number of elements in the array.</p>
+<p>When a dashed line is plotted an element is read from the array and a dash of length equal to that value is drawn. A gap equal to the value of the next element is then left and the process is repeated until the end of the line is reached, cycling through the array as necessary.</p>
+<p>The argument <ar>phase</ar> specifies the initial element to use from the array.</p>
+</description>
+<returns>Returns a pointer to the dash structure on success. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
+
+
+</function>
+<function>
+<name>FrameBufferMakeDashString</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax><sn href="structFrameBufferDash.html">struct FrameBufferDash</sn> *FrameBufferMakeDashString(char *str);</syntax>
+
+<description><p>The <fn href="FrameBufferMakeDashString.html">FrameBufferMakeDashString</fn> function makes a dash pattern for an frame buffer from a text string.</p>
+<p>The argument <ar>str</ar> is the zero terminated string of space separated numbers that defines the dash pattern.</p>
+<p>The first number in the string is a phase offset. The subsequent numbers are interpreted as distances along the line that alternately specify dashes and gaps.</p>
+<p>When a dashed line is plotted an element is read from the array and a dash of length equal to that value is drawn. A gap equal to the value of the next element is then left and the process is repeated until the end of the line is reached, cycling through the array as necessary.</p>
+<p>The phase specifies the initial element to use from the array.</p>
+</description>
+
+<returns>Returns a pointer to the dash structure on success. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
+
+
+</function>
+<function>
+<name>FrameBufferMatrixString</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax><sn href="structFrameBufferMatrix.html">struct FrameBufferMatrix</sn> *FrameBufferMatrixString(char *str);</syntax>
+
+
+<description><p>The <fn href="FrameBufferMatrixString.html">FrameBufferMatrixString</fn> function creates a transformation matrix from a text string.</p>
+<p>The argument <ar>str</ar> is the zero terminated string of space separated numbers that defines the matrix. The first number gives the top-left value, the second, the top-right value, the third, the bottom-left value, and the fourth gives the bottom right value.</p>
+</description>
+<returns>Returns a pointer to the matrix structure on success. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
+
+
+</function>
+<function>
+<name>FrameBufferPolygon</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>int FrameBufferPolygon(<sn href="structFrameBuffer.html">struct FrameBuffer</sn> *ptr, <sn href="structFrameBufferMatrix.html">struct FrameBufferMatrix</sn> *matrix, int x,int y, int num,int *px,int *py,int *t, int fill,unsigned int color, unsigned char m,int width, <sn href="structFrameBufferDash.html">struct FrameBufferDash</sn> *dash, <sn href="structFrameBufferClip.html">struct FrameBufferClip</sn> *clip);</syntax>
+
+
+<description><p>The <fn href="FrameBufferPolygon.html">FrameBufferPolygon</fn> function plots a polygon.</p>
+<p>The argument <ar>ptr</ar> is a pointer to the frame buffer. The argument <ar>matrix</ar> is an optional transformation matrix that can be applied to the polygon. If this is set to a <code>NULL</code> pointer then no transformation is applied. The position at which the polygon is plotted is given by the arguments <ar>x</ar>, and <ar>y</ar>.</p>
+<p>The number of vertices of the polygon is given by the argument <ar>num</ar>. The arrays containing the X and Y coordinates of each vertex are pointed to by the arguments <ar>x</ar> and <ar>y</ar>.</p>
+<p>A polygon can be constructed from straight line segments or bezier curves. The array pointed to by the argument <ar>t</ar> determines what kind of line segment is used to join to a vertex. If the corresponding entry in the array equals zero, then the segment between the current point and the next point is a straight line; if the entry is (1) then the connecting segment is a bezier curve and the next two vertices are the control points, the curve connects to the third point.</p> 
+<p>If the argument <ar>fill</ar> is set to a non-zero value then the polygon will be plotted as solid shape, not an outline.</p>
+<p>The color used to plot the polygon is given by the <ar>color</ar> which is a 32-bit number that represents the alpha,red,green and blue components of the color as 8-bit number. The alpha channel occupies the most significant bits and the blue channel occupies the least significant bits. The argument <ar>m</ar> defines which color channels are active. Setting this argument to (0x0f) will output the color to all four channels. The most significant bit controls the alpha channel and the least significant bit controls the blue channel.</p>
+<p>The width of the line used to plot the polygon is controlled using the argument <ar>width</ar>, a value of zero will plot a hairline. The dot-dash pattern used to plot the polygon is given by <ar>dash</ar>. If this is set to a <code>NULL</code> pointer, a solid line is plotted.</p>
+<p>The clipping polygon is given by the argument <ar>clip</ar>. If this is set to a <code>NULL</code> pointer, no clipping is performed.</p>
+
+
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>Returns zero on success. On error, (-1) is returned.</errors>
+</function>
+
+<function>
+<name>FrameBufferRectangle</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>int FrameBufferRectangle(<sn href="structFrameBuffer.html">struct FrameBuffer</sn> *ptr,  <sn href="structFrameBufferMatrix.html">struct FrameBufferMatrix</sn> *matrix, int x,int y,int w,int h, int fill,unsigned int color,unsigned char m, int width, <sn href="structFrameBufferDash.html">struct FrameBufferDash</sn> *dash, <sn href="structFrameBufferClip.html">struct FrameBufferClip</sn> *clip);</syntax>
+
+<description><p>The <fn href="FrameBufferRectangle.html">FrameBufferRectangle</fn> function plots a rectangle.</p>
+<p>The argument <ar>ptr</ar> is a pointer to the frame buffer. The argument <ar>matrix</ar> is an optional transformation matrix that can be applied to the rectangle. If this is set to a <code>NULL</code> pointer then no transformation is applied. The position at which the rectangle is plotted is given by the arguments <ar>x</ar>, and <ar>y</ar>. The width and height of the rectangle are given by the arguments <ar>w</ar> and <ar>h</ar>.</p>
+<p>If the argument <ar>fill</ar> is set to a non-zero value then the rectangle will be plotted as a solid shape, not an outline.</p>
+<p>The color used to plot the rectangle is given by the <ar>color</ar> which is a 32-bit number that represents the alpha,red,green and blue components of the color as 8-bit number. The alpha channel occupies the most significant bits and the blue channel occupies the least significant bits. The argument <ar>mask</ar> defines which color channels are active. Setting this argument to (0x0f) will output the color to all four channels. The most significant bit controls the alpha channel and the least significant bit controls the blue channel.</p>
+<p>The width of the line used to plot the rectangle is controlled using the argument <ar>width</ar>, a value of zero will plot a hairline. The dot-dash pattern used to plot the rectangle is given by <ar>dash</ar>. If this is set to a <code>NULL</code> pointer, a solid line is plotted.</p>
+<p>The clipping polygon is given by the argument <ar>clip</ar>. If this is set to a <code>NULL</code> pointer, no clipping is performed.</p>
+
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>Returns zero on success. On error, (-1) is returned.</errors>
+
+
+</function>
+<function>
+<name>FrameBufferRotateMatrix</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>int FrameBufferRotateMatrix(<sn href="structFrameBufferMatrix.html">struct FrameBufferMatrix</sn> *ptr, float angle);</syntax>
+
+<description><p>The <fn href="FrameBufferRotateMatrix.html">FrameBufferRotateMatrix</fn> function rotates a transformation matrix.</p>
+<p>The matrix to rotate is pointed to by the argument  <ar>ptr</ar>. The angle in degrees to rotate the matrix is given by the argument <ar>angle</ar>.</p>
+</description>
+
+
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+
+
+
+</function>
+<function>
+<name>FrameBufferSaveFont</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>int FrameBufferSaveFont(FILE *fp, <sn href="structFrameBufferFont.html">struct FrameBufferFont</sn> *ptr);</syntax>
+
+<description><p>The <fn href="FrameBufferSaveFont.html">FrameBufferSaveFont</fn> function saves a frame buffer font to an open stream.</p>
+<p>The font is written to the open stream pointed to by the argument <ar>fp</ar>. The argument <ar>ptr</ar> points the structure containing the font.</p>
+</description>
+
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+
+
+
+
+</function>
+<function>
+<name>FrameBufferSavePPM</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>int FrameBufferSavePPM(<sn href="structFrameBuffer.html">struct FrameBuffer</sn> *ptr,FILE *fp);</syntax>
+
+
+
+<description><p>The <fn href="FrameBufferSavePPM.html">FrameBufferSavePPM</fn> function saves a frame buffer as a Portable PixMap (PPM) to an open stream.</p>
+<p>The argument <ar>ptr</ar> points to the structure containing the frame buffer. The Portable PixMap  is written to the open stream pointed to by the argument <ar>fp</ar>.</p>
+</description>
+
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+
+
+</function>
+<function>
+<name>FrameBufferSavePPMAlpha</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>int FrameBufferSavePPMAlpha(<sn href="structFrameBuffer.html">struct FrameBuffer</sn> *ptr,FILE *fp);</syntax>
+
+
+
+<description><p>The <fn href="FrameBufferSavePPMAlpha.html">FrameBufferSavePPMAlpha</fn> function saves the alpha channel of a frame buffer as a Portable PixMap (PPM) to an open stream.</p>
+<p>The argument <ar>ptr</ar> points to the structure containing the frame buffer. The Portable PixMap  is written to the open stream pointed to by the argument <ar>fp</ar>.</p>
+</description>
+
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+
+
+</function>
+<function>
+<name>FrameBufferSavePPMX</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>int FrameBufferSavePPMX(<sn href="structFrameBuffer.html">struct FrameBuffer</sn> *ptr,FILE *fp);</syntax>
+
+
+
+<description><p>The <fn href="FrameBufferSavePPMX.html">FrameBufferSavePPMX</fn> function saves a frame buffer as an extended Portable PixMap (PPMX) to an open stream.</p>
+<p>The argument <ar>ptr</ar> points to the structure containing the frame buffer. The extended Portable PixMap  is written to the open stream pointed to by the argument <ar>fp</ar>.</p>
+</description>
+
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+
+
+</function>
+<function>
+<name>FrameBufferSaveXML</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>int FrameBufferSaveXML(<sn href="structFrameBuffer.html">struct FrameBuffer</sn> *ptr, int (*text)(char *,int,void *),void *data );</syntax>
+
+<description><p>The <fn href="FrameBufferSaveXML.html">FrameBufferSaveXML</fn> function saves a frame buffer as an XML representation to an open stream.</p>
+<p>The argument <ar>ptr</ar> points to the structure containing the frame buffer. The XML representation is written to the open stream pointed to by the argument <ar>fp</ar>.</p>
+</description>
+
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+
+
+</function>
+<function>
+<name>FrameBufferScaleMatrix</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>int FrameBufferScaleMatrix(<sn href="structFrameBufferMatrix.html">struct FrameBufferMatrix</sn> *ptr, float xscale,float yscale);</syntax>
+
+
+<description><p>The <fn href="FrameBufferScaleMatrix.html">FrameBufferScaleMatrix</fn> function scales a transformation matrix.</p>
+<p>The matrix to scale is pointed to by the argument  <ar>ptr</ar>. The X and Y scale factors are given by the arguments <ar>xscale</ar> and <ar>yscale</ar>.</p>
+</description>
+
+
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+
+
+</function>
+<function>
+<name>FrameBufferSetUser</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>int FrameBufferSetUser(<sn href="structFrameBuffer.html">struct FrameBuffer</sn> *ptr, int (*pixel)(int wdt,int hgt,char *img,char *msk, int x,int y,int depth,int off,int sze, unsigned char r,unsigned char g,unsigned char b, unsigned char a,void *data),void *data);</syntax>
+
+
+<description><p>The <fn href="FrameBufferSetUser.html">FrameBufferSetUser</fn> function sets the pixel renderer of a frame buffer to a user supplied function.</p>
+<p>The argument <ar>ptr</ar> is a pointer to the frame buffer. The argument <ar>pixel</ar> is a pointer to a function of the form:</p>
+<fd>
+int pixel(int wdt,int hgt,char *img,char *msk, int x,int y,int depth,int off,int sze, unsigned char r,unsigned char g,unsigned char b, unsigned char a,void *dptr);
+</fd>
+<p>The arguments <ar>wdt</ar> and <ar>hgt</ar> give the size of the frame buffer. The arguments <ar>img</ar> and <ar>msk</ar> point to the image data and the alpha channel mask.</p>
+<p>The coordinates of the point to render are given by the arguments <ar>x</ar> and <ar>y</ar>. The bit depth of the frame buffer is given by the argument <ar>depth</ar>.</p>
+<p>The offset into the image data of the point to render is given by the argument <ar>off</ar> and the size in bytes of one channel in the frame buffer is given by the argument <ar>sze</ar>.</p>
+<p>The red, green, blue and alpha components of the color to use for the point are given by the arguments <ar>r</ar>, <ar>g</ar>, <ar>b</ar> and <ar>a</ar>.
+</p>
+
+<p>The <ar>data</ar> argument of the <fn href="FrameBufferSetUser.html">FrameBufferSetUser</fn> function is passed directly as the <ar>dptr</ar> argument and allows extra parameters to be passed to the function.</p>
+
+
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+
+
+</function>
+<function>
+<name>FrameBufferText</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>int FrameBufferText(<sn href="structFrameBuffer.html">struct FrameBuffer</sn> *ptr,<sn href="structFrameBufferMatrix.html">struct FrameBufferMatrix</sn> *matrix, <sn href="structFrameBufferFont.html">struct FrameBufferFont</sn> *fnt,int x,int y, int num,char *txt,unsigned int color, unsigned char m,int sflg, <sn href="structFrameBufferClip.html">struct FrameBufferClip</sn> *clip);</syntax>
+<description><p>The <fn href="FrameBufferText.html">FrameBufferText</fn> function plots text.</p>
+<p>The argument <ar>ptr</ar> is a pointer to the frame buffer. The argument <ar>matrix</ar> is an optional transformation matrix that can be applied to the rectangle. If this is set to a <code>NULL</code> pointer then no transformation is applied.</p>
+<p>The argument <ar>fnt</ar> is a pointer to the structure containing the frame buffer font.</p>
+<p>The position at which the text is plotted is given by the arguments <ar>x</ar>, and <ar>y</ar>.</p>
+<p>The number of character to plot is given by the argument <ar>num</ar>, and the characters are taken from the array pointed to by the argument <ar>txt</ar>.</p>
+<p>The color used to plot the text is given by the <ar>color</ar> which is a 32-bit number that represents the alpha,red,green and blue components of the color as 8-bit number. The alpha channel occupies the most significant bits and the blue channel occupies the least significant bits. The argument <ar>mask</ar> defines which color channels are active. Setting this argument to (0x0f) will output the color to all four channels. The most significant bit controls the alpha channel and the least significant bit controls the blue channel.</p>
+<p>The argument <ar>sflg</ar> determines whether interpolation is used to smooth the image; if this argument is set to a non-zero value then interpolation is used.</p>
+<p>The clipping polygon is given by the argument <ar>clip</ar>. If this is set to a <code>NULL</code> pointer, no clipping is performed.</p>
+
+
+</description>
+
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+
+
+
+</function>
+<function>
+<name>FrameBufferTextBox</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>int FrameBufferTextBox(<sn href="structFrameBufferFont.html">struct FrameBufferFont</sn> *fnt, int num,char *txt,int *box);</syntax>
+<description><p>The <fn href="FrameBufferTextBox.html">FrameBufferTextbox</fn> function calculates the bounding box of text plotted to a frame buffer.</p>
+<p>The argument <ar>fnt</ar> is a pointer to the structure containing the frame buffer font.</p>
+<p>The number of character to plot is given by the argument <ar>num</ar>, and the characters are taken from the array pointed to by the argument <ar>txt</ar>.</p>
+<p>The calculated width, total height, and ascent are stored in the array pointed to by the argument <ar>box</ar>.</p>
+</description>
+ 
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+</function>
+
+<function>
+<name>FrameBufferXMLEnd</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>int FrameBufferXMLEnd(char *name,char *buf,int sze,void *data);</syntax>
+<description><p>The <fn href="FrameBufferXMLEnd.html">FrameBufferXMLEnd</fn> function is a parser function that is used by the XML parser to read frame buffer images stored in XML format.</p>
+<p>The function is called by the XML parser when an end tag is encountered in the XML document. The function expects the argument <ar>data</ar> to be a pointer to a structure of type <sn href="structFrameBufferXML.html">struct FrameBufferXML</sn>.</p>
+</description>
+
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+
+</function>
+<function>
+<name>FrameBufferXMLStart</name>
+<location>src.lib/graphic/fbuffer</location>
+<header>base/rfbuffer.h</header>
+<syntax>int FrameBufferXMLStart(char *name,int atnum,char **atname,char **atval,char *buf,int sze,void *data);</syntax>
+
+
+<description><p>The <fn href="FrameBufferXMLStart.html">FrameBufferXMLStart</fn> function is a parser function that is used by the XML parser to read frame buffer images stored in XML format.</p>
+<p>The function is called by the XML parser when a new tag is encountered in the XML document. The function expects the argument <ar>data</ar> to be a pointer to a structure of type <sn href="structFrameBufferXML.html">struct FrameBufferXML</sn>.</p>
+</description>
+
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+
+</function>
+
+
+<structure>
+ <name>FrameBuffer</name>
+ <location>src.lib/graphic/fbuffer</location>
+ <header>base/rfbuffer.h</header>
+ <struct>
+    <member>
+      <proto>char *name;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int wdt;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int hgt;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int depth;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>unsigned char *img;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>unsigned char *msk;</proto>
+      <description>None.</description>
+    </member>
+   <member>
+      <struct>
+         <member>
+           <proto>int (*pixel)(int wdt,int hgt,char *img,char *msk,int x,int y,int depth,int off,int sze,unsigned char r,unsigned char g,unsigned char b,unsigned char a,void *data);</proto>
+           <description>None.</description>
+         </member>
+         <member>
+           <proto>void *data;</proto>
+           <description>None.</description>
+         </member>
+       </struct>
+       <proto>user;</proto>
+       <description>None.</description>
+    </member>
+  </struct>
+</structure>
+
+
+<structure>
+ <name>FrameBufferChar</name>
+ <location>src.lib/graphic/fbuffer</location>
+ <header>base/rfbuffer.h</header>
+ <struct>
+    <member>
+      <proto>int w;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int h;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int l;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int r;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int b;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int t;</proto>
+      <description>None.</description>
+    </member>
+   <member>
+      <proto>int sze;</proto>
+      <description>None.</description>
+    </member>
+   <member>
+      <proto>unsigned char *data;</proto>
+      <description>None.</description>
+    </member>
+  </struct>
+</structure>
+
+<structure>
+ <name>FrameBufferClip</name>
+ <location>src.lib/graphic/fbuffer</location>
+ <header>base/rfbuffer.h</header>
+ <struct>
+    <member>
+      <proto>int wdt;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int hgt;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>unsigned char *clp;</proto>
+      <description>None.</description>
+    </member>
+ </struct>
+</structure>
+
+<structure>
+ <name>FrameBufferDash</name>
+ <location>src.lib/graphic/fbuffer</location>
+ <header>base/rfbuffer.h</header>
+ <struct>
+    <member>
+      <proto>int *p;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int sze;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int c;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int i;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>unsigned char state;</proto>
+      <description>None.</description>
+    </member>
+ </struct>
+</structure>
+
+
+
+<structure>
+ <name>FrameBufferFont</name>
+ <location>src.lib/graphic/fbuffer</location>
+ <header>base/rfbuffer.h</header>
+ <struct>
+    <member>
+      <proto>int num;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int sze;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>char *name;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto><sn href="structFrameBufferChar.html">struct FrameBufferChar</sn> *chr;</proto>
+      <description>None.</description>
+    </member>
+ </struct>
+</structure>
+
+
+
+<structure>
+ <name>FrameBufferMatrix</name>
+ <location>src.lib/graphic/fbuffer</location>
+ <header>base/rfbuffer.h</header>
+ <struct>
+    <member>
+      <proto>float a;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>float b;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>float c;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>float d;</proto>
+      <description>None.</description>
+    </member>
+  </struct>
+</structure>
+
+
+
+<structure>
+ <name>FrameBufferXML</name>
+ <location>src.lib/graphic/fbuffer</location>
+ <header>base/rfbuffer.h</header>
+ <struct>  
+    <member>
+      <proto>int state;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto><sn href="&root;/base/src.lib/xml/xml/structXMLdata.html">struct XMLdata</sn> *xml;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto><sn href="structFrameBuffer.html">struct FrameBuffer</sn> **img;</proto>
+      <description>None.</description>
+    </member>
+ </struct>
+</structure>
+
+
+<structure>
+ <name>FrameBufferXMLBuffer</name>
+ <location>src.lib/graphic/fbuffer</location>
+ <header>base/rfbuffer.h</header>
+ <struct>  
+    <member>
+      <proto><sn href="&root;/base/src.lib/xml/xml/structXMLdata.html">struct XMLdata</sn> *xml;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>void *data;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int sze;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int off;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>unsigned char *ptr;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>char num[5];</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int c;</proto>
+      <description>None.</description>
+    </member>
+ </struct>
+</structure>
+</library>
