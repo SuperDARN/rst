@@ -26,7 +26,6 @@
 ; IGRF_interpolate_coefs
 ; IGRF_msg_notime
 ;
-; AACGM_v2_errmsg
 ; AACGM_v2_Newval
 ; AACGM_v2_RK45
 ;

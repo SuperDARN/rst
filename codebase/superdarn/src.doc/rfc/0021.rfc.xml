@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<rfc>
+<id>0021</id>
+<title>IDL Data Structure for Raw ACF data</title>
+<author>R.J.Barnes</author>
+<summary><p>A description of the IDL data structure used to store Raw ACF data.</p></summary>
+<body>
+<h4>1. Introduction</h4>
+<p>The raw ACF data is the primary (first order) data product from the SuperDARN radars. Within IDL a structure is used to store the ACF data.</p>
+
+<h4>2. Constants</h4>
+<p>A number of constants are used to define array limits</p>
+<center>
+<table cellspacing="3" bgcolor="e0e0e0" width="100%">
+<tr><td><pre>LAG_SIZE=96
+MAX_RANGE=300
+</pre></td></tr></table>
+</center>
+<h4>3. Raw ACF data structure <code>RawData</code></h4>
+
+<center>
+<table cellspacing="3" bgcolor="e0e0e0" width="100%">
+<tr><td><pre>raw={RawData, $
+       revision: {rlstr, major: 0L, $        ; major revision 
+                            minor: 0L}, $    ; minor revision
+       thr: 0.0, $                           ; lag-zero power threshold level
+       pwr0: fltarr(MAX_RANGE), $            ; lag zero powers
+       acfd: fltarr(MAX_RANGE,LAG_SIZE,2), $ ; ACF data
+       xcfd: fltarr(MAX_RANGE,LAG_SIZE,2) $  ; XCF data
+    }
+</pre></td></tr></table>
+</center>
+</body>
+<reference><rfc href="0013.html">RFC #0013</rfc></reference>
+<revision>2007/03/26  Change in array sizes.</revision>
+<revision>2004/11/22  Initial Revision.</revision>
+</rfc>
