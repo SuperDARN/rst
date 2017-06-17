@@ -1,4 +1,4 @@
-#  Hardware parameters for Clyde River radar.
+#  Hardware parameters for Longyearbyen, Svalbard, radar
 #
 # Each radar has a distinct set of hardware parameters that are used
 # by the radar control software and the analysis software. These
@@ -90,12 +90,16 @@
 #
 # **********************************************************************
 # ==Notes==
+# April 2015: The contents of this file should be checked once the antenna array has been constructed
 #
+# 2016-06-29, Mikko Syrjasuo/UNIS:
+#  - the location, boresight and IF offset were updated based on DGPS measurements at site
+#  - the radar location is defined as the midpoint of the main array
 #
 # **********************************************************************
 #
-#  1   2      3        4         5       6      7      8    9   10   11   12  13(1)  13(2)  13(3)  14   15  16 17
+#  1   2      3        4      5       6      7      8    9    10  11  12  13(1)  13(2)  13(3)  14   15  16 17
 #
 # UNTIL 01/Jan/3000 05:45:36.0
-   66 2999 31556736   70.487  -68.504    28.0  -55.62 3.24  1   10  0.000  1.0  0.0  100.0    0.0 0.0  0 100 16
-# EOF 
+   90 2999 31556736  78.153  16.074  471.8  +23.7  3.24  1    10 0.0  1    0.0  -100.1   8.1  100.0  7 110 16
+# EOF
