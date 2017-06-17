@@ -60,8 +60,7 @@
 #
 # 11) Tdiff (Propagation time from interferometer array antenna to
 #     phasing matrix input minus propagation time from main array antenna
-#     through transmitter to phasing matrix input. If the signal from the
-#     interferometer comes first, then tdiff < 0. Units are in decimal
+#     through transmitter to phasing matrix input. Units are decimal
 #     microseconds)
 # 12) Phase sign (Cabling errors can lead to a 180 degree shift of the
 #     interferometry phase measurement. +1 indicates that the sign is
@@ -98,8 +97,8 @@
 #  1   2      3        4         5       6      7      8    9   10   11   12  13(1)  13(2)  13(3)  14   15  16 17
 #
 # UNTIL 10/Dec/1996 17:00:00.0
-    5 1996 29782800   52.160 -106.530  1000.0   23.1  3.24  1   10 -0.158  1    0.0 -100.0    0.0 100.0  2  75 16
+    5 1996 29782800   52.160 -106.530  494.0   23.1  3.24  1   10 -0.158  1    0.0 -100.0    0.0 100.0  2  75 16
 #
 # UNTIL 01/Jan/3000 05:45:36.0
-    5 2999 31556736   52.160 -106.530  1000.0   23.1  3.24  1   10  0.000  1    0.0 -100.0    0.0 100.0  2  75 16
-# EOF 
+    5 2999 31556736   52.160 -106.530  494.0   23.1  3.24  1   10  0.000  1    0.0 -100.0    0.0 0.0  0  225 16
+# EOF
