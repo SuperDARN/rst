@@ -43,7 +43,7 @@ int main(int argc,char *argv[]) {
 
     date=asctime(time_of_day);  
 
-    fprintf(stdout,date);
+    fprintf(stdout,"%s",date);
     
     strcpy( (char *) shm,date);
     
