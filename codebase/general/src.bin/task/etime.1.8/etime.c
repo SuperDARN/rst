@@ -174,7 +174,7 @@ int main(int argc,char *argv[]) {
     if (day==0) fprintf(stdout,"%d",(int) tval);
     else fprintf(stdout,"%d",(int) tval % (24*3600));
 
-    fprintf(stdout,buffer);
+    fprintf(stdout,"%s",buffer);
   }
   if (fp !=stdin) fclose(fp);
   return 0;
