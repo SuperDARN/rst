@@ -157,12 +157,10 @@
 </option>
 
 
-<option><on>-polycol <ar>aarrggbb</ar></on><od>set the color of contour polygons to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green\
- and blue component color.</od>
+<option><on>-polycol <ar>aarrggbb</ar></on><od>set the color of contour polygons to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
 </option>
 
-<option><on>-fpolycol <ar>aarrggbb</ar></on><od>set the color of filled contour polygons to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,r\
-ed,green and blue component color.</od>
+<option><on>-fpolycol <ar>aarrggbb</ar></on><od>set the color of filled contour polygons to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
 </option>
 
 <option><on>-hmbcol <ar>aarrggbb</ar></on><od>set the color of the Heppner-Maynard boundary  to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
