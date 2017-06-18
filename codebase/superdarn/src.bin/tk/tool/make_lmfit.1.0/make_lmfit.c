@@ -229,7 +229,6 @@ int main(int argc,char *argv[])
     sprintf(vstr,"%d.%d",fit->revision.major,fit->revision.minor);
     OldFitHeaderFwrite(fitfp,"make_fit","fitacf",vstr);
   }
- int i;
 
   do
   {
@@ -239,7 +238,7 @@ int main(int argc,char *argv[])
     tmstr[24]=0;
     RadarParmSetOriginTime(prm,tmstr);
 /*
-
+ int i;
 		for(i=10;i<prm->nrang;i++)
 			if(fit->rng[i].qflg)
 				fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
