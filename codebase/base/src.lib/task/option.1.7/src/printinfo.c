@@ -51,15 +51,15 @@ void OptionPrintInfo(FILE *fp,char *str[]) {
   for (i=0;str[i] !=NULL;i++) {
     for (j=0;str[i][j] !=0;j++) if (str[i][j]=='\t') break;
     if (str[i][j]==0) {
-      fprintf(fp,str[i]);
+      fprintf(fp,"%s",str[i]);
       continue;
     }
     strncpy(buffer,str[i],4095);
     buffer[j]=0;
-    fprintf(fp,buffer);
+    fprintf(fp,"%s",buffer);
     for (k=0;k<(maxtab-j);k++) buffer[k]=' ';
     buffer[k]=0;
-    fprintf(fp,buffer);
+    fprintf(fp,"%s",buffer);
     j++;
     /* chop the rest of the buffer up into 80 character long lines */
     m=0;
@@ -73,11 +73,11 @@ void OptionPrintInfo(FILE *fp,char *str[]) {
           fprintf(fp,"\n");
           for (n=0;n<maxtab;n++) buffer[m+n]=' ';
 	  buffer[m+n]=0;
-          fprintf(fp,buffer+m);
+          fprintf(fp,"%s",buffer+m);
           l=maxtab;
         }
         buffer[m]=0; 
-        fprintf(fp,buffer);
+        fprintf(fp,"%s",buffer);
         l+=m-1;
         m=0;
       }     
@@ -88,7 +88,7 @@ void OptionPrintInfo(FILE *fp,char *str[]) {
       l=maxtab;
     }
     buffer[m]=0;
-    fprintf(fp,buffer);
+    fprintf(fp,"%s",buffer);
   }
 }
 
