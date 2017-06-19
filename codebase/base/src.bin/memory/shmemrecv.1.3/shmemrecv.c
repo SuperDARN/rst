@@ -29,7 +29,7 @@ int main(int argc,char *argv[]) {
 
     ShMemFree(shm,memory,256,0,shmemfd);
 
-    fprintf(stdout,date);
+    fprintf(stdout,"%s",date);
     
     sleep(1);
 
