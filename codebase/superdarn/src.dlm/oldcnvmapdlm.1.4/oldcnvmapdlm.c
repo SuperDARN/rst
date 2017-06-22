@@ -50,7 +50,7 @@ struct OldCnvMapIDLInx *IDLMakeOldCnvMapInx(int num,IDL_VPTR *vptr) {
     {"ST_TIME",0,(void *) IDL_TYP_DOUBLE},
     {"ED_TIME",0,(void *) IDL_TYP_DOUBLE},
     {"OFFSET",0,(void *) IDL_TYP_LONG},
-    0};
+    {0}};
 
    s=IDL_MakeStruct("OLDCNVMAPINX",mapinx);  
    idim[0]=num;
@@ -541,12 +541,12 @@ static IDL_VPTR IDLOldCnvMapClose(int argc,IDL_VPTR *argv) {
 int IDL_Load(void) {
 
   static IDL_SYSFUN_DEF2 fnaddr[]={
-    { IDLOldCnvMapRead,"OLDCNVMAPREAD",7,7,0,0},
-    { IDLOldCnvMapWrite,"OLDCNVMAPWRITE",7,7,0,0},
-    { IDLOldCnvMapLoadInx,"OLDCNVMAPLOADINX",2,2,0,0},
-    { IDLOldCnvMapSeek,"OLDCNVMAPSEEK",7,8,IDL_SYSFUN_DEF_F_KEYWORDS,0},
-    { IDLOldCnvMapOpen,"OLDCNVMAPOPEN",1,1,IDL_SYSFUN_DEF_F_KEYWORDS,0},
-    { IDLOldCnvMapClose,"OLDCNVMAPCLOSE",1,1,0,0},
+    { {IDLOldCnvMapRead},"OLDCNVMAPREAD",7,7,0,0},
+    { {IDLOldCnvMapWrite},"OLDCNVMAPWRITE",7,7,0,0},
+    { {IDLOldCnvMapLoadInx},"OLDCNVMAPLOADINX",2,2,0,0},
+    { {IDLOldCnvMapSeek},"OLDCNVMAPSEEK",7,8,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+    { {IDLOldCnvMapOpen},"OLDCNVMAPOPEN",1,1,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+    { {IDLOldCnvMapClose},"OLDCNVMAPCLOSE",1,1,0,0},
   };
 
 
