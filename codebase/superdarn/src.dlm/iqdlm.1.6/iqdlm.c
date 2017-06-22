@@ -471,12 +471,12 @@ static IDL_VPTR IDLIQClose(int argc,IDL_VPTR *argv) {
 int IDL_Load(void) {
 
   static IDL_SYSFUN_DEF2 fnaddr[]={
-    { IDLIQRead,"IQREAD",5,5,0,0},
-    { IDLIQWrite,"IQWRITE",5,5,0,0},
-    { IDLIQLoadInx,"IQLOADINX",2,2,0,0},
-    { IDLIQSeek,"IQSEEK",7,8,IDL_SYSFUN_DEF_F_KEYWORDS,0},
-    { IDLIQOpen,"IQOPEN",1,1,IDL_SYSFUN_DEF_F_KEYWORDS,0},
-    { IDLIQClose,"IQCLOSE",1,1,0,0},
+    { {IDLIQRead},"IQREAD",5,5,0,0},
+    { {IDLIQWrite},"IQWRITE",5,5,0,0},
+    { {IDLIQLoadInx},"IQLOADINX",2,2,0,0},
+    { {IDLIQSeek},"IQSEEK",7,8,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+    { {IDLIQOpen},"IQOPEN",1,1,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+    { {IDLIQClose},"IQCLOSE",1,1,0,0},
   };
 
 
