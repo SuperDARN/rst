@@ -35,52 +35,52 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;+
 ; NAME:
-;	rbpos
+;       rbpos
 ;
 ; PURPOSE:
 ;
-;	Calculate the geographic or geomagnetic position of radar range/beam
-;	cells.
+;       Calculate the geographic or geomagnetic position of radar range/beam
+;       cells.
 ;
 ; CALLING SEQUENCE:
 ;
-;	  pos = rbpos(range,[height=height],[station=station_id],
-;		[beam=beam_number],[lagfr=lag_to_first_range],
-;		[smsep=sample_separation],[data=data_ptr],[/CENTER],[/GEO],
-;       [/CHISHAM])
+;       pos = rbpos(range,[height=height],[station=station_id],
+;           [beam=beam_number],[lagfr=lag_to_first_range],
+;           [smsep=sample_separation],[data=data_ptr],[/CENTER],[/GEO],
+;           [/CHISHAM])
 ;
-;		inputs:  the range number (first range =1).  This may be
-;				a vector containing a list of ranges.
-;			 if the height is not specified a value of 300 km is
-;				used.
-;			 the following keywords specify the station id, 
-;				beam number, lag to the first range, 
-;				and lag separation:  "station",
-;				"beam", "lagfr", "smsep".  If these keywords 
-;				are not specified, their values are taken from
-;				the data structure pointed to by the
-;				keyword "data" or from "fit_data" if no
-;				data structure is specified.
-;			 if the keyword data is given a value, the information
-;				on the bmnum, smsep, etc. is taken from the
-;				structure pointed to by that keyword.
-;				Otherwise, the data structure "fit_data"
-;				is assummed.
-;			 if the keyword CENTER is set, only the position of
-;			    the center of the cell is return
-;			 if the keyword GEO is set, the coordinates are
-;			    returned in geographic, otherwise PACE geomagnetic
-;			    coordinates are used.
-;           if the keyword CHISHAM is set, the Chisham virtual height
-;               model is used, otherwise the standard virtual
-;               height model is used.
+;           inputs:  the range number (first range =1).  This may be
+;                   a vector containing a list of ranges.
+;               if the height is not specified a value of 300 km is
+;                   used.
+;               the following keywords specify the station id,
+;                   beam number, lag to the first range,
+;                   and lag separation:  "station",
+;                   "beam", "lagfr", "smsep".  If these keywords
+;                   are not specified, their values are taken from
+;                   the data structure pointed to by the
+;                   keyword "data" or from "fit_data" if no
+;                   data structure is specified.
+;               if the keyword data is given a value, the information
+;                   on the bmnum, smsep, etc. is taken from the
+;                   structure pointed to by that keyword.
+;                   Otherwise, the data structure "fit_data"
+;                   is assummed.
+;               if the keyword CENTER is set, only the position of
+;                   the center of the cell is return
+;               if the keyword GEO is set, the coordinates are
+;                   returned in geographic, otherwise PACE geomagnetic
+;                   coordinates are used.
+;               if the keyword CHISHAM is set, the Chisham virtual height
+;                   model is used, otherwise the standard virtual
+;                   height model is used.
 ;
 ;------------------------------------------------------------------------------
 ;
 
 function rbpos,range,height=height,beam=beam,lagfr=first_lag,smsep=smsp, $
-	rxrise=rxrs,station=station,data=dptr,center=center,geo=geo, $
-        year=yr,yrsec=yrs,chisham=chisham
+            rxrise=rxrs,station=station,data=dptr,center=center,geo=geo, $
+            year=yr,yrsec=yrs,chisham=chisham
 
   common fitdata_com, fitfileptr, fit_data
   common radarinfo, network
@@ -105,7 +105,7 @@ function rbpos,range,height=height,beam=beam,lagfr=first_lag,smsep=smsp, $
     endif
     s=RadarLoadHardware(network,path=getenv('SD_HDWPATH'))
 ;    if (s ne 0) then begin
-    if (s le 0) then begin		; SGS for DLM
+    if (s le 0) then begin          ; SGS for DLM
       print, 'Could not load hardware information'
       stop
     endif
@@ -122,7 +122,7 @@ function rbpos,range,height=height,beam=beam,lagfr=first_lag,smsep=smsp, $
   if (keyword_set(beam)) then bmnum = beam else bmnum=dp.p.bmnum
   if (keyword_set(first_lag)) then lagfr=first_lag else lagfr=dp.p.lagfr
   if (keyword_set(smsp)) then smsep = smsp else smsep=dp.p.smsep
-	
+
   if (keyword_set(rxrs)) then rxrise = rxrs else rxrise=dp.p.rxrise
 
   if (keyword_set(station)) then st_id = station else st_id = dp.p.st_id
@@ -143,8 +143,8 @@ function rbpos,range,height=height,beam=beam,lagfr=first_lag,smsep=smsp, $
   rsep=smsep*0.15
 
 ;
-;	if the center keyword is set then we return a 3 element array,
-;	otherwise we return an array of 3,2,2
+;       if the center keyword is set then we return a 3 element array,
+;       otherwise we return an array of 3,2,2
 ;
 
   if (keyword_set(center)) then pos=fltarr(3,n_elements(range)) else $
@@ -154,11 +154,11 @@ function rbpos,range,height=height,beam=beam,lagfr=first_lag,smsep=smsp, $
   if (keyword_set(center)) then cflag = 1 else cflag = 0
   pos1 = fltarr(3,2,2)
 
-        
+
 
   for i=0, n_elements(range)-1 do begin
     if n_elements(range) EQ 1 then r = fix(range) else r=fix(range(i))
-    if (cflag eq 1) then begin         
+    if (cflag eq 1) then begin
       s=RadarPos(1,bmnum,r-1,site,frang,rsep,rxrise,h,rho,lat,lon,chisham=chisham)
       if (mgflag eq 1) then begin
         s=AACGMConvert(lat,lon,h,mlat,mlon,rad)
@@ -179,7 +179,7 @@ function rbpos,range,height=height,beam=beam,lagfr=first_lag,smsep=smsp, $
       pos1[1,0,0]=lon
       pos1[2,0,0]=rho
       s=RadarPos(0,bmnum+1,r-1,site,frang,rsep,rxrise,h,rho,lat,lon,chisham=chisham)
-      if (mgflag eq 1) then begin 
+      if (mgflag eq 1) then begin
         s=AACGMConvert(lat,lon,h,mlat,mlon,rad)
         lat=mlat
         lon=mlon
@@ -214,5 +214,5 @@ function rbpos,range,height=height,beam=beam,lagfr=first_lag,smsep=smsp, $
   endfor
   pos=reform(pos)
   return,pos
-end	
+end
 
