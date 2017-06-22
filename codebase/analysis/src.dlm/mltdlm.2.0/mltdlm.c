@@ -1009,12 +1009,12 @@ static IDL_VPTR IDLMLTConvertEpoch_v2(int argc,IDL_VPTR *argv) {
 int IDL_Load(void) {
 
     static IDL_SYSFUN_DEF2 fnaddr[]={
-        { IDLMLTConvertEpoch,"MLTCONVERTEPOCH",2,2,0,0},
-        { IDLMLTConvertYrsec,"MLTCONVERTYRSEC",3,3,0,0},
-        { IDLMLTConvertYMDHMS,"MLTCONVERTYMDHMS",7,7,0,0},
-        { IDLMLTConvertEpoch_v2,"MLTCONVERTEPOCH_V2",2,2,0,0},
-        { IDLMLTConvertYrsec_v2,"MLTCONVERTYRSEC_V2",3,3,0,0},
-        { IDLMLTConvertYMDHMS_v2,"MLTCONVERTYMDHMS_V2",7,7,0,0},
+        { {IDLMLTConvertEpoch},"MLTCONVERTEPOCH",2,2,0,0},
+        { {IDLMLTConvertYrsec},"MLTCONVERTYRSEC",3,3,0,0},
+        { {IDLMLTConvertYMDHMS},"MLTCONVERTYMDHMS",7,7,0,0},
+        { {IDLMLTConvertEpoch_v2},"MLTCONVERTEPOCH_V2",2,2,0,0},
+        { {IDLMLTConvertYrsec_v2},"MLTCONVERTYRSEC_V2",3,3,0,0},
+        { {IDLMLTConvertYMDHMS_v2},"MLTCONVERTYMDHMS_V2",7,7,0,0},
     };
 
     if (!(msg_block = IDL_MessageDefineBlock("mlt",
