@@ -157,7 +157,7 @@ function rbpos,range,height=height,beam=beam,lagfr=first_lag,smsep=smsp, $
 
 
   for i=0, n_elements(range)-1 do begin
-    if n_elements(range) EQ 1 then r = fix(range) else r=fix(range(i))
+    if n_elements(range) EQ 1 then r = fix(range) else r=fix(range[i])
     if (cflag eq 1) then begin
       s=RadarPos(1,bmnum,r-1,site,frang,rsep,rxrise,h,rho,lat,lon,chisham=chisham)
       if (mgflag eq 1) then begin
@@ -207,9 +207,9 @@ function rbpos,range,height=height,beam=beam,lagfr=first_lag,smsep=smsp, $
         pos1[2,1,1]=rho
       endelse
     if (n_elements(range) GT 1) then $
-      if (keyword_set(center)) then pos(*,i)=pos1(*,0,0) else $
-      pos(*,*,*,i)=pos1 else $
-      if (keyword_set(center)) then pos=pos1(*,0,0) else $
+      if (keyword_set(center)) then pos[*,i]=pos1[*,0,0] else $
+      pos[*,*,*,i]=pos1 else $
+      if (keyword_set(center)) then pos=pos1[*,0,0] else $
       pos = pos1
   endfor
   pos=reform(pos)
