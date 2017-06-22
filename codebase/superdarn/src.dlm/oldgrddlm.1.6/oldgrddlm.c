@@ -47,7 +47,7 @@ struct OldGridIDLInx *IDLMakeOldGridInx(int num,IDL_VPTR *vptr) {
     {"ST_TIME",0,(void *) IDL_TYP_DOUBLE},
     {"ED_TIME",0,(void *) IDL_TYP_DOUBLE},
     {"OFFSET",0,(void *) IDL_TYP_LONG},
-    0};
+    {0}};
 
    s=IDL_MakeStruct("OLDGRIDINX",grdinx);  
    idim[0]=num;
@@ -475,12 +475,12 @@ static IDL_VPTR IDLOldGridClose(int argc,IDL_VPTR *argv) {
 int IDL_Load(void) {
 
   static IDL_SYSFUN_DEF2 fnaddr[]={
-    { IDLOldGridRead,"OLDGRIDREAD",4,4,0,0},
-    { IDLOldGridWrite,"OLDGRIDWRITE",4,4,0,0},
-    { IDLOldGridLoadInx,"OLDGRIDLOADINX",2,2,0,0},
-    { IDLOldGridSeek,"OLDGRIDSEEK",7,8,IDL_SYSFUN_DEF_F_KEYWORDS,0},
-    { IDLOldGridOpen,"OLDGRIDOPEN",1,1,IDL_SYSFUN_DEF_F_KEYWORDS,0},
-    { IDLOldGridClose,"OLDGRIDCLOSE",1,1,0,0},
+    { {IDLOldGridRead},"OLDGRIDREAD",4,4,0,0},
+    { {IDLOldGridWrite},"OLDGRIDWRITE",4,4,0,0},
+    { {IDLOldGridLoadInx},"OLDGRIDLOADINX",2,2,0,0},
+    { {IDLOldGridSeek},"OLDGRIDSEEK",7,8,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+    { {IDLOldGridOpen},"OLDGRIDOPEN",1,1,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+    { {IDLOldGridClose},"OLDGRIDCLOSE",1,1,0,0},
   };
 
 
