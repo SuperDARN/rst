@@ -46,7 +46,8 @@
 ;
 ;	  pos = rbpos(range,[height=height],[station=station_id],
 ;		[beam=beam_number],[lagfr=lag_to_first_range],
-;		[smsep=sample_separation],[data=data_ptr],[/CENTER],[/GEO])
+;		[smsep=sample_separation],[data=data_ptr],[/CENTER],[/GEO],
+;       [/CHISHAM])
 ;
 ;		inputs:  the range number (first range =1).  This may be
 ;				a vector containing a list of ranges.
@@ -70,13 +71,16 @@
 ;			 if the keyword GEO is set, the coordinates are
 ;			    returned in geographic, otherwise PACE geomagnetic
 ;			    coordinates are used.
+;           if the keyword CHISHAM is set, the Chisham virtual height
+;               model is used, otherwise the standard virtual
+;               height model is used.
 ;
 ;------------------------------------------------------------------------------
 ;
 
 function rbpos,range,height=height,beam=beam,lagfr=first_lag,smsep=smsp, $
 	rxrise=rxrs,station=station,data=dptr,center=center,geo=geo, $
-        year=yr,yrsec=yrs
+        year=yr,yrsec=yrs,chisham=chisham
 
   common fitdata_com, fitfileptr, fit_data
   common radarinfo, network
@@ -155,7 +159,7 @@ function rbpos,range,height=height,beam=beam,lagfr=first_lag,smsep=smsp, $
   for i=0, n_elements(range)-1 do begin
     if n_elements(range) EQ 1 then r = fix(range) else r=fix(range(i))
     if (cflag eq 1) then begin         
-      s=RadarPos(1,bmnum,r-1,site,frang,rsep,rxrise,h,rho,lat,lon)
+      s=RadarPos(1,bmnum,r-1,site,frang,rsep,rxrise,h,rho,lat,lon,chisham=chisham)
       if (mgflag eq 1) then begin
         s=AACGMConvert(lat,lon,h,mlat,mlon,rad)
         lat=mlat
@@ -165,7 +169,7 @@ function rbpos,range,height=height,beam=beam,lagfr=first_lag,smsep=smsp, $
       pos1[1,0,0]=lon
       pos1[2,0,0]=rho
     endif else begin
-      s=RadarPos(0,bmnum,r-1,site,frang,rsep,rxrise,h,rho,lat,lon)
+      s=RadarPos(0,bmnum,r-1,site,frang,rsep,rxrise,h,rho,lat,lon,chisham=chisham)
       if (mgflag eq 1) then begin
         s=AACGMConvert(lat,lon,h,mlat,mlon,rad)
         lat=mlat
@@ -174,7 +178,7 @@ function rbpos,range,height=height,beam=beam,lagfr=first_lag,smsep=smsp, $
       pos1[0,0,0]=lat
       pos1[1,0,0]=lon
       pos1[2,0,0]=rho
-      s=RadarPos(0,bmnum+1,r-1,site,frang,rsep,rxrise,h,rho,lat,lon)
+      s=RadarPos(0,bmnum+1,r-1,site,frang,rsep,rxrise,h,rho,lat,lon,chisham=chisham)
       if (mgflag eq 1) then begin 
         s=AACGMConvert(lat,lon,h,mlat,mlon,rad)
         lat=mlat
@@ -183,7 +187,7 @@ function rbpos,range,height=height,beam=beam,lagfr=first_lag,smsep=smsp, $
         pos1[0,1,0]=lat
         pos1[1,1,0]=lon
         pos1[2,1,0]=rho
-        s=RadarPos(0,bmnum,r,site,frang,rsep,rxrise,h,rho,lat,lon)
+        s=RadarPos(0,bmnum,r,site,frang,rsep,rxrise,h,rho,lat,lon,chisham=chisham)
       if (mgflag eq 1) then begin
         s=AACGMConvert(lat,lon,h,mlat,mlon,rad)
         lat=mlat
@@ -192,7 +196,7 @@ function rbpos,range,height=height,beam=beam,lagfr=first_lag,smsep=smsp, $
         pos1[0,0,1]=lat
         pos1[1,0,1]=lon
         pos1[2,0,1]=rho
-        s=RadarPos(0,bmnum+1,r,site,frang,rsep,rxrise,h,rho,lat,lon)
+        s=RadarPos(0,bmnum+1,r,site,frang,rsep,rxrise,h,rho,lat,lon,chisham=chisham)
         if (mgflag eq 1) then begin
           s=AACGMConvert(lat,lon,h,mlat,mlon,rad)
           lat=mlat
