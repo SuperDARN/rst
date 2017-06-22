@@ -502,12 +502,12 @@ static IDL_VPTR IDLCnvMapClose(int argc,IDL_VPTR *argv) {
 int IDL_Load(void) {
 
   static IDL_SYSFUN_DEF2 fnaddr[]={
-    { IDLCnvMapRead,"CNVMAPREAD",7,7,0,0},
-    { IDLCnvMapWrite,"CNVMAPWRITE",7,7,0,0},
-    { IDLCnvMapLoadInx,"CNVMAPLOADINX",2,2,0,0},
-    { IDLCnvMapSeek,"CNVMAPSEEK",7,8,IDL_SYSFUN_DEF_F_KEYWORDS,0},
-    { IDLCnvMapOpen,"CNVMAPOPEN",1,1,IDL_SYSFUN_DEF_F_KEYWORDS,0},
-    { IDLCnvMapClose,"CNVMAPCLOSE",1,1,0,0},
+    { {IDLCnvMapRead},"CNVMAPREAD",7,7,0,0},
+    { {IDLCnvMapWrite},"CNVMAPWRITE",7,7,0,0},
+    { {IDLCnvMapLoadInx},"CNVMAPLOADINX",2,2,0,0},
+    { {IDLCnvMapSeek},"CNVMAPSEEK",7,8,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+    { {IDLCnvMapOpen},"CNVMAPOPEN",1,1,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+    { {IDLCnvMapClose},"CNVMAPCLOSE",1,1,0,0},
   };
 
 
