@@ -261,7 +261,7 @@ static IDL_VPTR IDLIGRFModelCall(int argc,IDL_VPTR *argv) {
 int IDL_Load(void) {
 
   static IDL_SYSFUN_DEF2 fnaddr[]={
-    { IDLIGRFModelCall,"IGRFMODELCALL",7,7,0,0},
+    { {IDLIGRFModelCall},"IGRFMODELCALL",7,7,0,0},
    
   };
 
