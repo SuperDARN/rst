@@ -6,6 +6,7 @@
 <syntax>make_fit --help</syntax>
 <syntax>make_fit -fitacf-version [<ar>version number</ar>]</syntax>
 <syntax>make_fit <ar>rawname</ar> <ar>fitname</ar> [<ar>inxname</ar>]</syntax>
+<syntax>make_fit -fitacf-version [<ar>version number</ar>]</syntax>
 <syntax>make_fit -new [<ar>rawacfname</ar>]</syntax>
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
@@ -22,12 +23,10 @@
 <option><on>[<ar>version number</ar>]</on><od>Valid choices are 3.0 or 2.5.</od>
 </option>
 
-
 <option><on>-new</on><od>input file is in  <code>rawacf</code> file format and the output should be in <code>fitacf</code> file format.</od>
 </option>
 <option><on><ar>rawacfname</ar></on><od>filename of the <code>rawacf</code> format file. If this is omitted the file is read from standard input.</od>
 </option>
-
 <synopsis><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>radwacf</code> format file.</p></synopsis>
 
 <description><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>radwacf</code> format file.</p>
