@@ -27,9 +27,9 @@
 </option>
 <option><on><ar>rawacfname</ar></on><od>filename of the <code>rawacf</code> format file. If this is omitted the file is read from standard input.</od>
 </option>
-<synopsis><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>radwacf</code> format file.</p></synopsis>
+<synopsis><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file.</p></synopsis>
 
-<description><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>radwacf</code> format file.</p>
+<description><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file.</p>
 <p>If the "<code>-new</code>" option is specified then the <code>fitacf</code> format file is written to standard output.</p>
 </description>
 
