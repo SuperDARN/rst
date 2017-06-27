@@ -39,6 +39,7 @@
 
 #include "fitacftoplevel.h"
 #include "fit_structures.h"
+
 struct RadarParm *prm;
 struct RawData *raw;
 struct FitData *fit;
@@ -86,7 +87,8 @@ int main(int argc,char *argv[]) {
   char command[128];
   char tmstr[40];
 
-  float fitacf_version = 3.0f;
+  char* fitacf_version_s = NULL;
+  int fitacf_version;
   FITPRMS *fit_prms = NULL;
 
   prm=RadarParmMake();
@@ -100,15 +102,33 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"new",'x',&new);
 
-  OptionAdd(&opt,"fitacf-version",'f',&fitacf_version);
+  OptionAdd(&opt,"fitacf-version",'t',&fitacf_version_s);
 
   arg=OptionProcess(1,argc,argv,&opt,NULL);
 
   old=!new;
 
-  if (vb) {
-    fprintf(stderr, "Using fitacf version: %.1f\n", fitacf_version);
+  if (fitacf_version_s != NULL) {
+    if (strcmp(fitacf_version_s, "3.0") == 0){
+      fitacf_version = 30;
+    }
+    else if (strcmp(fitacf_version_s, "2.5") == 0) {
+      fitacf_version = 25;
+    }
+    else {
+      fprintf(stderr, "The requested fitacf version does not exist\n");
+      exit(-1);
+    }
   }
+  else {
+    fitacf_version = 30;
+  }
+
+  if (vb) {
+    fprintf(stderr, "Using fitacf version: %0.1f\n", (float)fitacf_version/10);
+  }
+
+
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
@@ -206,12 +226,12 @@ int main(int argc,char *argv[]) {
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
-  if (fitacf_version == 3.0f) {
+  if (fitacf_version == 30) {
     fit_prms = Allocate_Fit_Prm(prm);
     Copy_Fitting_Prms(site,prm,raw,fit_prms);
     Fitacf(fit_prms,fit);
   }
-  else if (fitacf_version == 2.5f){
+  else if (fitacf_version == 25) {
     fblk=FitACFMake(site,prm->time.yr);
     FitACF(prm,raw,fblk,fit);
   }
@@ -266,11 +286,11 @@ int main(int argc,char *argv[]) {
 
 
     if (status==0){
-        if (fitacf_version == 3.0f) {
+        if (fitacf_version == 30) {
           Copy_Fitting_Prms(site,prm,raw,fit_prms);
           Fitacf(fit_prms,fit);
         }
-        else if (fitacf_version == 2.5f){
+        else if (fitacf_version == 25) {
           FitACF(prm,raw,fblk,fit);
         }
         else {
@@ -283,15 +303,14 @@ int main(int argc,char *argv[]) {
   } while (status==0);
   FitFree(fit);
 
-  if (fitacf_version == 3.0f) {
+  if (fitacf_version == 30) {
     FitacfFree(fit_prms);
   }
-  else if (fitacf_version == 2.5f){
+  else if (fitacf_version == 25) {
     FitACFFree(fblk);
   }
   else {
-    fprintf(stderr, "The requested fitacf version does not exist\n");
-    exit(-1);
+
   }
 
   if (old) OldRawClose(rawfp);
