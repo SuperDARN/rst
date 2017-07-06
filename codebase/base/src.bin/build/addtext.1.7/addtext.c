@@ -39,7 +39,7 @@ char *rtext={"text"};
 
 void print_info(FILE *fp,char *str[]) {
   int i;
-  for (i=0;str[i] !=NULL;i++) fprintf(fp,str[i]);
+  for (i=0;str[i] !=NULL;i++) fprintf(fp,"%s",str[i]);
 }
 
 
