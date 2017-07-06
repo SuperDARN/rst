@@ -335,7 +335,7 @@ int main(int argc,char *argv[]) {
     fprintf(fp,"! --------          ----     --------  --------  ---------\n");
     fprintf(fp,"\n");
     sprintf(buf,"  %c%s%c",'"',cdfsname[n],'"');
-    fprintf(fp,buf);
+    fprintf(fp,"%s",buf);
     tab=18-strlen(buf);
     if (tab>0) for (c=0;c<tab;c++) fprintf(fp," ");
     else fprintf(fp," ");
@@ -385,7 +385,7 @@ int main(int argc,char *argv[]) {
     fprintf(fp,"  -----  --------  ---------\n");
     fprintf(fp,"\n");
     sprintf(buf,"  %c%s%c",'"',cdfaname[n],'"');
-    fprintf(fp,buf);
+    fprintf(fp,"%s",buf);
     tab=18-strlen(buf);
     if (tab>0) for (c=0;c<tab;c++) fprintf(fp," ");
     else fprintf(fp," ");
