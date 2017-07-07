@@ -306,7 +306,7 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
 
     /*Criterion is applied to filter ranges that hold no merit*/
     Filter_Bad_ACFs(fit_prms,ranges,noise_pwr);
-    llist_for_each_arg(ranges,(node_func_arg)print_range_node,fit_prms,NULL);
+    /*llist_for_each_arg(ranges,(node_func_arg)print_range_node,fit_prms,NULL);*/
 
     /*At this point all data is now processed and valuable so we perform power fits.
     The phase fitting stage is dependant on fitted power and must be done first*/

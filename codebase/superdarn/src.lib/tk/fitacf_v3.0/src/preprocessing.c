@@ -970,13 +970,13 @@ void ACF_Phase_Unwrap(llist_node range, FITPRMS* fit_prms){
 	double slope_est = 0.0 ,slope_denom = 0.0,slope_num = 0.0, slope_err = 0.0;
 	double uncorr_slope_est = 0.0, uncorr_slope_err= 0.0;
 	double piecewise_slope_est = 0.0;
-	int total_2pi_corrections = 0;
+	int *total_2pi_corrections;
 	double S_xy = 0.0, S_xx = 0.0;
 	int i = 0, num_local_phases=0;;
 
 	range_node = (RANGENODE*) range;
 
-
+	total_2pi_corrections = malloc(sizeof(*total_2pi_corrections));
 	/*Because our list of phases has been filtered, we can use a local copy in an array
 	 for simple sequential access. The list is used in the first place for easy removal
 	 without the need of array masking. This local copy will be used to test if unwrap is
@@ -1009,12 +1009,12 @@ void ACF_Phase_Unwrap(llist_node range, FITPRMS* fit_prms){
 
 
 	for (i=0; i<num_local_phases; i++) {
-		phase_correction(&local_copy[i], &piecewise_slope_est, &total_2pi_corrections);
+		phase_correction(&local_copy[i], &piecewise_slope_est, total_2pi_corrections);
 	}
 
 	/*We determine whether wrapped or unwrapped phase has better error on fit. Select
 	 the lower of two.*/
-	if (total_2pi_corrections > 0){
+	if (*total_2pi_corrections > 0){
 
 		/*Quickly fit unwrapped phase for slope and err. Needed to compare error*/
 		S_xx = 0.0;
@@ -1072,7 +1072,7 @@ void ACF_Phase_Unwrap(llist_node range, FITPRMS* fit_prms){
 													fit_prms->time.us/1.0e6);
 		fprintf(stderr,"BEAM %02d\n",fit_prms->bmnum);
 		fprintf(stderr,"RANGE %02d\n",range_node->range);
-		fprintf(stderr,"2PI_CORRECTIONS %d\n",total_2pi_corrections);
+		fprintf(stderr,"2PI_CORRECTIONS %d\n",*total_2pi_corrections);
 		fprintf(stderr,"INITIAL_SLOPE_EST %f\n",piecewise_slope_est);
 		fprintf(stderr,"CORRECTED_SLOPE_ERR %f\n", slope_err);
 		fprintf(stderr,"CORRECTED_SLOPE %f\n", slope_est);
@@ -1094,6 +1094,7 @@ void ACF_Phase_Unwrap(llist_node range, FITPRMS* fit_prms){
 
 	}
 
+	free(total_2pi_corrections);
 
 }
 
@@ -1135,6 +1136,8 @@ void XCF_Phase_Unwrap(llist_node range){
 	slope_est = S_xy / S_xx;
 
 	llist_for_each_arg(range_node->elev,(node_func_arg)phase_correction,&slope_est, total_2pi_corrections);
+
+	free(total_2pi_corrections);
 }
 
 
