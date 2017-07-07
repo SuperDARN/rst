@@ -66,7 +66,7 @@ void mark_bad_samples(FITPRMS *fit_prms, llist bad_samples);
 void filter_tx_overlapped_lags(llist_node range, llist lags, llist bad_samples);
 double ACF_cutoff_pwr(FITPRMS *fit_prms);
 double cutoff_power_correction(FITPRMS *fit_prms);
-void phase_correction(PHASENODE* phase, double slope_est, int* total_2pi_corrections);
+void phase_correction(PHASENODE* phase, double* slope_est, int* total_2pi_corrections);
 
 
 void Determine_Lags(llist lags,FITPRMS *fit_prms);
