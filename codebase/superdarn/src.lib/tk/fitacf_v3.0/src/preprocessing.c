@@ -634,14 +634,14 @@ Helper callback function which performs the phase correction by determining
 how many 2*PI corrections need to be added to each phase value using the
 slope estimate.
 */
-void phase_correction(PHASENODE* phase, double slope_est, int* total_2pi_corrections ){
+void phase_correction(PHASENODE* phase, double* slope_est, int* total_2pi_corrections ){
 	PHASENODE* phase_node;
 	double phi_pred;
 	double phi_corr;
 
 	phase_node = (PHASENODE*) phase;
 
-	phi_pred = slope_est * phase_node->t;
+	phi_pred = *slope_est * phase_node->t;
 
 	phi_corr = round((phi_pred - phase_node->phi)/(2 * M_PI));
 
@@ -746,15 +746,17 @@ Removes ACFs entirely from analysis if they are deemed to be pure noise
 */
 void Filter_Bad_ACFs(FITPRMS *fit_prms, llist ranges, double noise_pwr){
 	int i=0;
-	RANGENODE* range_node;
+	RANGENODE* range_node = NULL;
 	double cutoff_pwr;
+	llist bad_ranges;
+	int *bad_range = NULL;
 
 	/*Nothing to filter here*/
 	if ((llist_size(ranges) == 0) || (fit_prms->nave <= 0)){
 		return;
 	}
 
-
+	bad_ranges = llist_create(NULL,NULL,0);
 	/* cutoff_pwr = noise_pwr * (1. + NOISE_SIGMA_THRESHOLD/sqrt(fit_prms->nave)); */
 	cutoff_pwr = noise_pwr *2.;
 
@@ -762,23 +764,46 @@ void Filter_Bad_ACFs(FITPRMS *fit_prms, llist ranges, double noise_pwr){
 	llist_reset_iter(ranges);
 
 
-	for(i=0;i<fit_prms->nrang;i++){
+	/*for(i=0;i<fit_prms->nrang;i++){*/
+	do{
 		llist_get_iter(ranges,(void**)&range_node);
-		if((fit_prms->pwr0[i] <= cutoff_pwr) || (llist_size(range_node->pwrs) < MIN_LAGS)){
+		if((fit_prms->pwr0[range_node->range] <= cutoff_pwr) || (llist_size(range_node->pwrs) < MIN_LAGS)){
+			bad_range = malloc(sizeof(*bad_range));
+			*bad_range = range_node->range;
+			llist_add_node(bad_ranges,(llist_node)bad_range,0);
+		}
 		   	/*We check to see if we remove the head of the list. If we do,
 		   	  we do not want to move the cursor as it will already be placed on
 		   	  the correct node after the head of the list is deleted*/
-		   	if(range_node == llist_peek(ranges)){
+/*		   	if(range_node == llist_peek(ranges)){
 				llist_delete_node(ranges,&range_node->range,TRUE,free_range_node);
 				continue;
 			}
 			else{
 				llist_delete_node(ranges,&range_node->range,TRUE,free_range_node);
 			}
+			llist_delete_node(ranges,&range_node->range,TRUE,free_range_node);
 		}
-		llist_go_next(ranges);
+		if (llist_iter_not_at_end(ranges) == LLIST_END_OF_LIST) {
+			break;
+		}
 
-	}
+		if(llist_size(ranges) == 0){
+			break;
+		}
+		else{
+			llist_go_next(ranges);
+		}*/
+
+	}while(llist_go_next(ranges) != LLIST_END_OF_LIST);
+
+	llist_reset_iter(bad_ranges);
+	do{
+		llist_get_iter(bad_ranges,(void**)&bad_range);
+		llist_delete_node(ranges,(llist_node)bad_range,TRUE,free_range_node);
+	}while(llist_go_next(bad_ranges) != LLIST_END_OF_LIST);
+
+	llist_destroy(bad_ranges,TRUE,free);
 
 }
 
@@ -808,6 +833,8 @@ void Filter_Low_Pwr_Lags(llist_node range, FITPRMS* fit_prms){
 	PWRNODE* pwr_node = NULL;
 	RANGENODE* range_node = NULL;
 	int cutoff_lag = 0;
+	llist bad_pwr_indices;
+	int *bad_pwr_idx;
 
 	range_node = (RANGENODE*) range;
 
@@ -815,7 +842,7 @@ void Filter_Low_Pwr_Lags(llist_node range, FITPRMS* fit_prms){
 	if ((llist_size(range_node->pwrs) == 0) || (fit_prms->nave <= 0)){
 		return;
 	}
-
+	bad_pwr_indices = llist_create(NULL,NULL,0);
 	cutoff_lag = fit_prms->mplgs + 1;
 
 
@@ -834,19 +861,32 @@ void Filter_Low_Pwr_Lags(llist_node range, FITPRMS* fit_prms){
 		llist_get_iter(range_node->alpha_2,(void**)&alpha_2);
 
 		if(pwr_node->lag_idx > cutoff_lag){
-			llist_delete_node(range_node->pwrs,&pwr_node->lag_idx,TRUE,free);
+			/*llist_delete_node(range_node->pwrs,&pwr_node->lag_idx,TRUE,free);*/
+			bad_pwr_idx = malloc(sizeof(*bad_pwr_idx));
+			*bad_pwr_idx = pwr_node->lag_idx;
+			llist_add_node(bad_pwr_indices,(llist_node)bad_pwr_idx,0);
 		}
 		else{
 			/*Full cutoff criteria for lag filtering*/
-
 			if((1/ sqrt(alpha_2->alpha_2) <= ALPHA_CUTOFF) && (pwr_node->ln_pwr <= log_sigma_fluc)){
 				cutoff_lag = pwr_node->lag_idx;
-				llist_delete_node(range_node->pwrs,&pwr_node->lag_idx,TRUE,free);
+				/*llist_delete_node(range_node->pwrs,&pwr_node->lag_idx,TRUE,free);*/
+				bad_pwr_idx = malloc(sizeof(*bad_pwr_idx));
+				*bad_pwr_idx = pwr_node->lag_idx;
+				llist_add_node(bad_pwr_indices,(llist_node)bad_pwr_idx,0);
 			}
 		}
 
 		llist_go_next(range_node->alpha_2);
 	}while(llist_go_next(range_node->pwrs) != LLIST_END_OF_LIST);
+
+	llist_reset_iter(bad_pwr_indices);
+	do{
+		llist_get_iter(bad_pwr_indices,(void**)&bad_pwr_idx);
+		llist_delete_node(range_node->pwrs,(llist_node)bad_pwr_idx,TRUE,free);
+	}while(llist_go_next(bad_pwr_indices) != LLIST_END_OF_LIST);
+
+	llist_destroy(bad_pwr_indices,TRUE,free);
 
 
 }
@@ -969,7 +1009,7 @@ void ACF_Phase_Unwrap(llist_node range, FITPRMS* fit_prms){
 
 
 	for (i=0; i<num_local_phases; i++) {
-		phase_correction(&local_copy[i], piecewise_slope_est, &total_2pi_corrections);
+		phase_correction(&local_copy[i], &piecewise_slope_est, &total_2pi_corrections);
 	}
 
 	/*We determine whether wrapped or unwrapped phase has better error on fit. Select
@@ -995,7 +1035,7 @@ void ACF_Phase_Unwrap(llist_node range, FITPRMS* fit_prms){
 					(slope_est * local_copy[i].t - local_copy[i].phi)) /
 					(local_copy[i].sigma * local_copy[i].sigma);
                     }
-                    
+
                 }
 
 		/*Quick fit of original phase*/
@@ -1026,7 +1066,7 @@ void ACF_Phase_Unwrap(llist_node range, FITPRMS* fit_prms){
 
 		}while(llist_go_next(range_node->phases) != LLIST_END_OF_LIST);
 
-		/* fprintf(stderr,"TIME %d-%02d-%02dT%02d:%02d:%f\n",fit_prms->time.yr, fit_prms->time.mo,
+/*		 fprintf(stderr,"TIME %d-%02d-%02dT%02d:%02d:%f\n",fit_prms->time.yr, fit_prms->time.mo,
 													fit_prms->time.dy, fit_prms->time.hr,
 													fit_prms->time.mt, fit_prms->time.sc +
 													fit_prms->time.us/1.0e6);
@@ -1037,10 +1077,10 @@ void ACF_Phase_Unwrap(llist_node range, FITPRMS* fit_prms){
 		fprintf(stderr,"CORRECTED_SLOPE_ERR %f\n", slope_err);
 		fprintf(stderr,"CORRECTED_SLOPE %f\n", slope_est);
 		fprintf(stderr,"UNCORRECTED_SLOPE_ERR %f\n",uncorr_slope_err);
-		fprintf(stderr,"UNCORRECTED_SLOPE %f\n",uncorr_slope_est); */
+		fprintf(stderr,"UNCORRECTED_SLOPE %f\n",uncorr_slope_est);*/
 
 		/*If the error on the original phase is worse, copy over local copy*/
-		if (uncorr_slope_err > slope_err) {	
+		if (uncorr_slope_err > slope_err) {
 			i=0;
 			llist_reset_iter(range_node->phases);
 			do{
@@ -1066,11 +1106,13 @@ void XCF_Phase_Unwrap(llist_node range){
 	RANGENODE* range_node;
 	PHASENODE* phase_curr;
 	double S_xy, S_xx,slope_est;
-	int total_2pi_corrections = 0;
+	int *total_2pi_corrections = NULL;
 	range_node = (RANGENODE*) range;
 
+	total_2pi_corrections = malloc(sizeof(*total_2pi_corrections));
+	*total_2pi_corrections = 0;
 	llist_for_each_arg(range_node->elev,(node_func_arg)phase_correction,&range_node->phase_fit->b,
-						&total_2pi_corrections);
+						total_2pi_corrections);
 
 	llist_reset_iter(range_node->elev);
 	S_xx = 0;
@@ -1081,7 +1123,7 @@ void XCF_Phase_Unwrap(llist_node range){
 
 		llist_get_iter(range_node->elev, (void**)&phase_curr);
 
-		if(phase_curr->sigma > 0){
+		if(phase_curr->sigma > 0.0){
 			S_xy += (phase_curr->phi * phase_curr->t)/(phase_curr->sigma * phase_curr->sigma);
 
 			S_xx += (phase_curr->t * phase_curr->t)/(phase_curr->sigma * phase_curr->sigma);
@@ -1092,7 +1134,7 @@ void XCF_Phase_Unwrap(llist_node range){
 
 	slope_est = S_xy / S_xx;
 
-	llist_for_each_arg(range_node->elev,(node_func_arg)phase_correction,&slope_est,&total_2pi_corrections);
+	llist_for_each_arg(range_node->elev,(node_func_arg)phase_correction,&slope_est, total_2pi_corrections);
 }
 
 
