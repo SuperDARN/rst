@@ -207,7 +207,7 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;+
 ; NAME:
-;       MLTConvertYMDHMS
+;       MLTConvertYrsec
 ;
 ; PURPOSE:
 ;       Calculate Magnetic Local Time
@@ -256,14 +256,14 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;+
 ; NAME:
-;       MLTConvertYMDHMS
+;       MLTConvertEpoch
 ;
 ; PURPOSE:
 ;       Calculate Magnetic Local Time
 ;       
 ;
 ; CALLING SEQUENCE:
-;       mlt=MLTConvertYrsec(epoch,mlon)
+;       mlt=MLTConvertEpoch(epoch,mlon)
 ;
 ;
 ;       This function calculates magnetic local time.
