@@ -94,6 +94,7 @@ double MLTConvert_v2(int yr, int mo, int dy, int hr, int mt ,int sc,
   double hgt,aacgm_mlt;
   double ajd;
 
+  err = 0;
   AACGM_v2_GetDateTime(&ayr, &amo, &ady, &ahr, &amt, &asc, &adyn);
   if (ayr < 0) { 
     /* AACGM date/time not set so set it to the date/time passed in */
