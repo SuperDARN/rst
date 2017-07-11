@@ -34,6 +34,9 @@ For macOS it is also available through macports, as are all listed dependencies
 
    `XPATH, NETCDF_PATH, CDF_PATH`
 
+   If you are running macOS and run into issues with the X11 libraries, you may
+   need to add a symbolic link.
+
    If you have IDL, check to see that `IDL_IPATH` in `~/rst/.profile/idl.bash` is correct.
    (Note: for users without access to IDL, modifying the `IDL_IPATH` environment variable is
    not required).
@@ -53,6 +56,11 @@ For macOS it is also available through macports, as are all listed dependencies
 
 3. Run `make.build` from the command line.  You may need to change directory to `$RSTPATH/build/script`.
    This runs a helper script that sets up other compiling code.
+
+   If you are running macOS Sierra or later, you may have trouble for this step
+   and step 4 if you run the commands in iTerm.app, due to a non-standard bash
+   implimentation.  These can be avoided by running the installation in a
+   xterm terminal like XQuartz.
 
 4. In the same directory run `make.code superdarn rst` to compile all of the code.
    This runs a script to find all of the source codes and compile them into binaries.
