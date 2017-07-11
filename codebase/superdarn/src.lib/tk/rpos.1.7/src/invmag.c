@@ -1,7 +1,7 @@
 /* invmag.c
    ========
    Author: R.J.Barnes
-   Comemnts: E.G.Thomas (2016)
+   Comments: E.G.Thomas (2016)
 */
 
 /*
@@ -126,11 +126,9 @@ void fldpnt_sph(double frho, double flat, double flon, double az,
  **/
 void fldpnt_azm(double mlat, double mlon, double nlat, double nlon, double *az) {
 
-    double api;
     double aside,bside,cside;
     double Aangl,Bangl,arg;
 
-    api=4*atan(1.0);
     aside=90-nlat;
     cside=90-mlat;
 
