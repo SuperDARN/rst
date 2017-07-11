@@ -222,6 +222,10 @@ void fldpnth(double gdlat, double gdlon, double psi, double bore,
     /* Radius of the Earth beneath the field point (updates) */
     frad=rrad;
 
+    /* Check for zero slant range which will cause an error in the
+     * elevation angle calculation below, leading to a NAN result */
+    if (r==0) r=0.1;
+
     /* Iterate until the altitude corresponding to the calculated elevation
      * matches the desired altitude (within 0.5 km) */
     do {
