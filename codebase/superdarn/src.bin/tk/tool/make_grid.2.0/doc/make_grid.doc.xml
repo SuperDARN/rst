@@ -42,31 +42,31 @@
 </option>
 <option><on>-maxrng <ar>maxrange</ar></on><od>exclude data from range gates higher than <ar>maxrange</ar>.</od>
 </option>
-<option><on>-minsrng <ar>minsrange</ar></on><od>exclude data from slant ranges lower than <ar>minsrange</ar> (this takes precedence over minrng/maxrng).</od>
+<option><on>-minsrng <ar>minsrange</ar></on><od>exclude data from slant ranges lower than <ar>minsrange</ar> km (this takes precedence over minrng/maxrng).</od>
 </option>
-<option><on>-maxsrng <ar>maxsrange</ar></on><od>exclude data from slant ranges higher than <ar>maxsrange</ar> (this takes precedence over minrng/maxrng).</od>
+<option><on>-maxsrng <ar>maxsrange</ar></on><od>exclude data from slant ranges higher than <ar>maxsrange</ar> km (this takes precedence over minrng/maxrng).</od>
 </option>
 <option><on>-fwgt <ar>mode</ar></on><od>set the filter weighting mode to <ar>mode</ar>.</od>
 </option>
-<option><on>-pmax <ar>pmax</ar></on><od>exclude data with a power greater than <ar>pmax</ar>.</od>
+<option><on>-pmax <ar>pmax</ar></on><od>exclude data with a power greater than <ar>pmax</ar> dB.</od>
 </option>
-<option><on>-vmax <ar>vmax</ar></on><od>exclude data with an absolute velocity greater than <ar>vmax</ar>.</od>
+<option><on>-vmax <ar>vmax</ar></on><od>exclude data with an absolute velocity greater than <ar>vmax</ar> m/s.</od>
 </option>
-<option><on>-wmax <ar>wmax</ar></on><od>exclude data with a spectral width greater than <ar>wmax</ar>.</od>
+<option><on>-wmax <ar>wmax</ar></on><od>exclude data with a spectral width greater than <ar>wmax</ar> m/s.</od>
 </option>
-<option><on>-vemax <ar>vemax</ar></on><od>exclude data with a velocity error greater than <ar>vemax</ar>.</od>
+<option><on>-vemax <ar>vemax</ar></on><od>exclude data with a velocity error greater than <ar>vemax</ar> m/s.</od>
 </option>
-<option><on>-pmin <ar>pmin</ar></on><od>exclude data with a power less than <ar>pmin</ar>.</od>
+<option><on>-pmin <ar>pmin</ar></on><od>exclude data with a power less than <ar>pmin</ar> dB.</od>
 </option>
-<option><on>-vmin <ar>vmin</ar></on><od>exclude data with an absolute velocity less than <ar>vmin</ar>.</od>
+<option><on>-vmin <ar>vmin</ar></on><od>exclude data with an absolute velocity less than <ar>vmin</ar> m/s.</od>
 </option>
-<option><on>-wmin <ar>wmin</ar></on><od>exclude data with a spectral width less than <ar>wmin</ar>.</od>
+<option><on>-wmin <ar>wmin</ar></on><od>exclude data with a spectral width less than <ar>wmin</ar> m/s.</od>
 </option>
-<option><on>-vemin <ar>vemin</ar></on><od>exclude data with a velocity error less than <ar>vemin</ar>.</od>
+<option><on>-vemin <ar>vemin</ar></on><od>exclude data with a velocity error less than <ar>vemin</ar> m/s.</od>
 </option>
-<option><on>-fmax <ar>fmax</ar></on><od>set the maximum allowed variation in frequency to be <ar>fmax</ar> Hertz.</od>
+<option><on>-fmax <ar>fmax</ar></on><od>set the maximum allowed variation in frequency to be <ar>fmax</ar> Hz.</od>
 </option>
-<option><on>-alt <ar>alt</ar></on><od>set the altitude at which the mapping is done to be <ar>alt</ar> kilometers.</od>
+<option><on>-alt <ar>alt</ar></on><od>set the altitude at which the mapping is done to be <ar>alt</ar> km.</od>
 </option>
 <option><on>-nav</on><od>do not perform temporal averaging.</od>
 </option>
