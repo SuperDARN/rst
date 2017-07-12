@@ -74,6 +74,7 @@ static IDL_VPTR IDLMLTConvertYMDHMS(int argc,IDL_VPTR *argv) {
 
         for (n=0;n<6;n++) {
             if ((argv[n]->type !=IDL_TYP_INT) &&
+                (argv[n]->type !=IDL_TYP_LONG) &&
                 (argv[n]->type !=IDL_TYP_FLOAT) &&
                 (argv[n]->type !=IDL_TYP_DOUBLE)) {
 
@@ -312,22 +313,21 @@ static IDL_VPTR IDLMLTConvertYrsec(int argc,IDL_VPTR *argv) {
         yrs.vptr=(void *) argv[1]->value.arr->data;
         yrstyp=argv[1]->type;
 
-        if ((argv[1]->type !=IDL_TYP_INT) &&
+        if ((argv[1]->type !=IDL_TYP_LONG) &&
             (argv[1]->type !=IDL_TYP_FLOAT) &&
             (argv[1]->type !=IDL_TYP_DOUBLE)) {
 
             /* bad type */
             IDL_MessageFromBlock(msg_block,MLT_BADTYPE,IDL_MSG_LONGJMP,
-                                    "of lon in MLTConvertYrsec()");
+                                    "of yrsec in MLTConvertYrsec()");
         }
 
-        if ((argv[2]->type !=IDL_TYP_LONG) &&
-            (argv[2]->type !=IDL_TYP_FLOAT) &&
+        if ((argv[2]->type !=IDL_TYP_FLOAT) &&
             (argv[2]->type !=IDL_TYP_DOUBLE)) {
 
             /* bad type */
             IDL_MessageFromBlock(msg_block,MLT_BADTYPE,IDL_MSG_LONGJMP,
-                                    "of yrsec in MLTConvertYrsec()");
+                                    "of lon in MLTConvertYrsec()");
         }
 
         if (argv[0]->flags & IDL_V_ARR) {
@@ -368,7 +368,7 @@ static IDL_VPTR IDLMLTConvertYrsec(int argc,IDL_VPTR *argv) {
                     yrsec=yrs.dptr[n];
                     break;
                 default:
-                    yrsec=1970;
+                    yrsec=0;
             }
 
             if (yr.vptr !=NULL) {
@@ -458,10 +458,10 @@ static IDL_VPTR IDLMLTConvertEpoch(int argc,IDL_VPTR *argv) {
 
             /* bad type */
             IDL_MessageFromBlock(msg_block,MLT_BADTYPE,IDL_MSG_LONGJMP,
-                                    "of lon in MLTConvertEpoch()");
+                                    "of epoch in MLTConvertEpoch()");
         }
 
-        if ((argv[1]->type !=IDL_TYP_FLOAT) && 
+        if ((argv[1]->type !=IDL_TYP_FLOAT) &&
             (argv[1]->type !=IDL_TYP_DOUBLE)) {
 
             /* bad type */
@@ -553,6 +553,7 @@ static IDL_VPTR IDLMLTConvertYMDHMS_v2(int argc,IDL_VPTR *argv) {
 
         for (n=0;n<6;n++) {
             if ((argv[n]->type !=IDL_TYP_INT) &&
+                (argv[n]->type !=IDL_TYP_LONG) &&
                 (argv[n]->type !=IDL_TYP_FLOAT) &&
                 (argv[n]->type !=IDL_TYP_DOUBLE)) {
 
@@ -790,22 +791,21 @@ static IDL_VPTR IDLMLTConvertYrsec_v2(int argc,IDL_VPTR *argv) {
         yrs.vptr=(void *) argv[1]->value.arr->data;
         yrstyp=argv[1]->type;
 
-        if ((argv[1]->type !=IDL_TYP_INT) &&
+        if ((argv[1]->type !=IDL_TYP_LONG) &&
             (argv[1]->type !=IDL_TYP_FLOAT) &&
             (argv[1]->type !=IDL_TYP_DOUBLE)) {
 
             /* bad type */
             IDL_MessageFromBlock(msg_block,MLT_BADTYPE,IDL_MSG_LONGJMP,
-                                    "of lon in MLTConvertYrsec_v2()");
+                                    "of yrsec in MLTConvertYrsec_v2()");
         }
 
-        if ((argv[2]->type !=IDL_TYP_LONG) &&
-            (argv[2]->type !=IDL_TYP_FLOAT) &&
+        if ((argv[2]->type !=IDL_TYP_FLOAT) &&
             (argv[2]->type !=IDL_TYP_DOUBLE)) {
 
             /* bad type */
             IDL_MessageFromBlock(msg_block,MLT_BADTYPE,IDL_MSG_LONGJMP,
-                                    "of yrsec in MLTConvertYrsec_v2()");
+                                    "of lon in MLTConvertYrsec_v2()");
         }
 
         if (argv[0]->flags & IDL_V_ARR) {
@@ -846,7 +846,7 @@ static IDL_VPTR IDLMLTConvertYrsec_v2(int argc,IDL_VPTR *argv) {
                     yrsec=yrs.dptr[n];
                     break;
                 default:
-                    yrsec=1970;
+                    yrsec=0;
             }
 
             if (yr.vptr !=NULL) {
@@ -935,7 +935,7 @@ static IDL_VPTR IDLMLTConvertEpoch_v2(int argc,IDL_VPTR *argv) {
 
             /* bad type */
             IDL_MessageFromBlock(msg_block,MLT_BADTYPE,IDL_MSG_LONGJMP,
-                                    "of lon in MLTConvertEpoch_v2()");
+                                    "of epoch in MLTConvertEpoch_v2()");
         }
 
         if ((argv[1]->type !=IDL_TYP_FLOAT) && 
