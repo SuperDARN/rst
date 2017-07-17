@@ -300,11 +300,14 @@ int GridTableAddBeam(struct GridTable *ptr,
     /* Update the total number of beams in the GridTable structure */
     ptr->bnum++;
 
-    /* Populate GridBm structure with info from RadarBeam structure */
+    /* Populate GridBm structure with info from RadarBeam structure 
+     * (except rxrise - that we get from the hdw.dat file because
+     * nearly all radars write a default value of 100 microseconds
+     * hardcoded in default.h and set by global.c in QNX4 systems) */
     b->bm=bm->bm;
     b->frang=bm->frang;
     b->rsep=bm->rsep;
-    b->rxrise=bm->rxrise;
+    b->rxrise=pos->recrise;
     b->nrang=bm->nrang;
 
     b->azm=malloc(sizeof(double)*b->nrang);
@@ -416,7 +419,6 @@ int GridTableFindBeam(struct GridTable *ptr, struct RadarBeam *bm) {
         if (ptr->bm[n].bm !=bm->bm) continue;
         if (ptr->bm[n].frang !=bm->frang) continue;
         if (ptr->bm[n].rsep !=bm->rsep) continue;
-        if (ptr->bm[n].rxrise !=bm->rxrise) continue;
         if (ptr->bm[n].nrang !=bm->nrang) continue;
 
         /* Break out of loop if GridBm parameters match RadarBeam parameters
