@@ -764,7 +764,7 @@ int main(int argc,char *argv[]) {
 
         /* Load AACGM coefficients */
         if (old_aacgm) AACGMInit(yr);
-        else AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
+        else AACGM_v2_SetDateTime(yr,mo,dy,0,0,0);
 
         /* This value tracks the number of radar scans which have been
          * loaded for gridding */
@@ -987,7 +987,7 @@ int main(int argc,char *argv[]) {
 
             /* Load AACGM coefficients */
             if (old_aacgm) AACGMInit(yr);
-            else AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
+            else AACGM_v2_SetDateTime(yr,mo,dy,0,0,0);
 
             /* This value tracks the number of radar scans which have been
              * loaded for gridding */
