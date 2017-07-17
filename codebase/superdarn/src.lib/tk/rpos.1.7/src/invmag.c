@@ -145,6 +145,9 @@ void fldpnt_azm(double mlat, double mlon, double nlat, double nlon, double *az) 
     if (Bangl<0) Aangl=-Aangl;
     *az=Aangl;
 
+    /* Check for case when *az=nan rather than zero */
+    if (*az!=*az) *az=0.0;
+
 }
 
 
