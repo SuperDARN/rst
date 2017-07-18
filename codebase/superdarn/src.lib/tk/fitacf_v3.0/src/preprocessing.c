@@ -977,6 +977,7 @@ void ACF_Phase_Unwrap(llist_node range, FITPRMS* fit_prms){
 	range_node = (RANGENODE*) range;
 
 	total_2pi_corrections = malloc(sizeof(*total_2pi_corrections));
+	*total_2pi_corrections = 0;
 	/*Because our list of phases has been filtered, we can use a local copy in an array
 	 for simple sequential access. The list is used in the first place for easy removal
 	 without the need of array masking. This local copy will be used to test if unwrap is
@@ -1095,6 +1096,7 @@ void ACF_Phase_Unwrap(llist_node range, FITPRMS* fit_prms){
 	}
 
 	free(total_2pi_corrections);
+	free(local_copy);
 
 }
 
