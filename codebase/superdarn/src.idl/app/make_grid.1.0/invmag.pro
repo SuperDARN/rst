@@ -337,7 +337,10 @@ function fldpnt_azm, mlat, mlon, nlat, nlon, az
         Aangle = -Aangle
 
     az = Aangle
-    
+
+    ; Check for cases when az = NAN rather than zero
+    if ~finite(az) then az = 0.0
+
     ; Return zero if successful
     return, 0
 

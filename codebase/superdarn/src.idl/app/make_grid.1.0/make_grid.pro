@@ -17,7 +17,8 @@
 
 
 
-; *** This function doesn't actually do anything!!! see comment below ***
+; *** This function should remove data with scan flags < 0, ***
+; *** but has not been fully implemented yet. ***
 function exclude_outofscan, RadarScan
 
     num = 0L
@@ -32,7 +33,7 @@ function exclude_outofscan, RadarScan
 
     ; Loop over number of beams in RadarScan structure
     for n=0, (*RadarScan).num-1 do begin
-        if (*(*RadarScan).bm[n]).scan lt 0 then $       ; *** should be 'scan lt 1' ???
+        if (*(*RadarScan).bm[n]).scan lt 0 then $
             continue
 
         num += 1L
@@ -384,8 +385,8 @@ if ~keyword_set(nb) then $
 else $
     bflg = 0
 
-; Do not apply a scan flag limit (?)
-if ~keyword_set(is) then $
+; Apply a scan flag limit
+if keyword_set(ns) then $
     nsflg = 1 $
 else $
     nsflg = 0
@@ -615,7 +616,7 @@ ret = TimeEpochToYMDHMS(yr, mo, dy, hr, mt, sc, stime)
 if keyword_set(old_aacgm) then $
     ret = AACGMInit(yr) $
 else $
-    ret = AACGM_v2_SetDateTime(yr, mo, dy, hr, mt, fix(sc))
+    ret = AACGM_v2_SetDateTime(yr, mo, dy, 0, 0, 0)
 
 ; This value tracks the number of radar scans which have been loaded for gridding
 num = 1
