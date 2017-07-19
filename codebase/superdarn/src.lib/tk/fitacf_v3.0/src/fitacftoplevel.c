@@ -56,76 +56,105 @@ void FitacfFree(FITPRMS *fit_prms) {
 /**
 Allocates a new data structure for fit parameters.
 */
-FITPRMS* Allocate_Fit_Prm(struct RadarParm *radar_prms){
-
-    FITPRMS *fit_prms;
-    int columns,n;
+void Allocate_Fit_Prm(struct RadarParm *radar_prms, FITPRMS *fit_prms)
+{
+    int columns, n;
     size_t is, rows;
 
+    /* If the fit parameter structure is not initiased, do so here */
+    if(fit_prms == NULL)
+      {
+	fit_prms = malloc(sizeof(FITPRMS));
+	memset(fit_prms, 0, sizeof(FITPRMS));
+      }
 
-    fit_prms=malloc(sizeof(FITPRMS));
-
-    if (fit_prms==NULL){
+    if(fit_prms == NULL)
+      {
         fprintf(stderr, "COULD NOT ALLOCATE fit_prms\n");
-        return NULL;
-    }
+        return;
+      }
 
-    fit_prms->pulse=malloc(sizeof(*fit_prms->pulse)*radar_prms->mppul);
+    /* Allocate space for an integer pointer */
+    fit_prms->pulse = malloc(sizeof(*fit_prms->pulse) * radar_prms->mppul);
+    memset(fit_prms->pulse, 0, sizeof(*fit_prms->pulse));
 
-    if (fit_prms->pulse==NULL){
+    if(fit_prms->pulse == NULL)
+      {
         fprintf(stderr, "COULD NOT ALLOCATE fit_prms->pulse\n");
-        return NULL;
-    }
+	FitacfFree(fit_prms);
+	fit_prms = NULL;
+        return;
+      }
 
-    for (n=0;n<2;n++) {
+    /* Allocate space for the integer pointer holding the lag data */
+    for(n=0; n<2; n++)
+      {
+        fit_prms->lag[n] = malloc(sizeof(*fit_prms->lag[n]) *
+				  (radar_prms->mplgs+1));
+	memset(fit_prms->lag[n], 0, sizeof(*fit_prms->lag[n]));
 
-        fit_prms->lag[n]=malloc(sizeof(*fit_prms->lag[n])*(radar_prms->mplgs+1));
-
-        if (fit_prms->lag[n]==NULL){
+        if(fit_prms->lag[n] == NULL)
+	  {
             fprintf(stderr, "COULD NOT ALLOCATE fit_prms->lag[%d]\n",n);
-            return NULL;
-        }
-    }
+	    FitacfFree(fit_prms);
+	    fit_prms = NULL;
+            return;
+	  }
+      }
 
-
-    fit_prms->pwr0=malloc(sizeof(*fit_prms->pwr0)*radar_prms->nrang);
-
-    if (fit_prms->pwr0==NULL){
+    /* Allocate space for the double pointer holding the zero-lag power */
+    fit_prms->pwr0 = malloc(sizeof(*fit_prms->pwr0) * radar_prms->nrang);
+    memset(fit_prms->pwr0, 0, sizeof(*fit_prms->pwr0));
+    
+    if(fit_prms->pwr0 == NULL)
+      {
         fprintf(stderr, "COULD NOT ALLOCATE fit_prms->pwr0\n");
-        return NULL;
-    }
-
+	FitacfFree(fit_prms);
+	fit_prms = NULL;
+        return;
+      }
     rows = radar_prms->nrang * radar_prms->mplgs;
     columns = 2;
 
-    fit_prms->acfd = malloc(rows * sizeof(*fit_prms->acfd) + (rows * (columns * sizeof(**fit_prms->acfd))));
+    /* Allocate space for the double pointer of pointers holding the ACF data */
+    fit_prms->acfd = malloc((sizeof(*fit_prms->acfd) + columns *
+			     sizeof(**fit_prms->acfd)) * rows);
+    memset(fit_prms->acfd, 0, (sizeof(*fit_prms->acfd) + columns *
+			       sizeof(**fit_prms->acfd)) * rows);
 
-    if (fit_prms->acfd==NULL){
+    if(fit_prms->acfd == NULL)
+      {
         fprintf(stderr, "COULD NOT ALLOCATE fit_prms->acfd\n");
-        return NULL;
-    }
+	FitacfFree(fit_prms);
+	fit_prms = NULL;
+        return;
+      }
 
-    fit_prms->acfd[0] = (double*)(fit_prms->acfd + rows);
-    for(is=0;is<rows;is++){
-        fit_prms->acfd[is] = (double*)(fit_prms->acfd[0] + (is * columns));
-    }
+    fit_prms->acfd[0] = (double *)(fit_prms->acfd + rows);
+    for(is=0; is<rows; is++)
+	fit_prms->acfd[is] = (double *)(fit_prms->acfd[0] + (is * columns));
 
+    /* Allocate space for the doubple pointer of pointers holding XCF data */
+    fit_prms->xcfd = malloc((sizeof(*fit_prms->xcfd) + columns *
+			       sizeof(**fit_prms->xcfd)) * rows);
+    memset(fit_prms->xcfd, 0, (sizeof(*fit_prms->xcfd) + columns *
+			       sizeof(**fit_prms->xcfd)) * rows);
 
-    fit_prms->xcfd = malloc(rows * sizeof(*fit_prms->xcfd) + (rows * (columns * sizeof(**fit_prms->xcfd))));
-
-    if (fit_prms->xcfd==NULL){
+    if(fit_prms->xcfd == NULL)
+      {
         fprintf(stderr, "COULD NOT ALLOCATE fit_prms->xcfd\n");
-        return NULL;
-    }
+	FitacfFree(fit_prms);
+	fit_prms = NULL;
+        return;
+      }
 
+    fit_prms->xcfd[0] = (double *)(fit_prms->xcfd + rows);
+    for(is=0; is<rows; is++)
+	fit_prms->xcfd[is] = (double *)(fit_prms->xcfd[0] + (is * columns));
 
-    fit_prms->xcfd[0] = (double*)(fit_prms->xcfd + rows);
-    for(is=0;is<rows;is++){
-        fit_prms->xcfd[is] = (double*)(fit_prms->xcfd[0] + (is * columns));
-    }
-
-    return fit_prms;
-
+    /* All the Fitacf parameter pointers were successfully allocated */
+    /* and initialised to zero                                       */
+    return;
 }
 
 /**
@@ -137,15 +166,11 @@ void Copy_Fitting_Prms(struct RadarSite *radar_site, struct RadarParm *radar_prm
 
     int i, j, n;
 
+    /* Use the year (1993) to determine whether this data follows the old */
+    /* format or the current format                                       */
+    fit_prms->old = 1 ? (radar_prms->time.yr < 1993) : 0;
 
-    if (radar_prms->time.yr < 1993){
-        fit_prms->old=1;
-    }
-    else
-    {
-        fit_prms->old=0;
-    }
-
+    /* Initialise the radar parameters in the FitACF parameter structure */
     fit_prms->interfer_x=radar_site->interfer[0];
     fit_prms->interfer_y=radar_site->interfer[1];
     fit_prms->interfer_z=radar_site->interfer[2];
@@ -177,9 +202,6 @@ void Copy_Fitting_Prms(struct RadarSite *radar_site, struct RadarParm *radar_prm
     fit_prms->time.sc = radar_prms->time.sc;
     fit_prms->time.us = radar_prms->time.us;
 
-
-
-
     for (i=0;i<fit_prms->mppul;i++){
         fit_prms->pulse[i]=radar_prms->pulse[i];
     }
@@ -190,13 +212,9 @@ void Copy_Fitting_Prms(struct RadarSite *radar_site, struct RadarParm *radar_prm
         }
     }
 
-
     for (i=0;i<fit_prms->nrang;i++) {
         fit_prms->pwr0[i]=raw_data->pwr0[i];
     }
-
-
-
 
     if (raw_data->acfd != NULL){
         if (*(raw_data->acfd) != NULL){
@@ -264,14 +282,14 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
     fit_data->revision.major=MAJOR;
     fit_data->revision.minor=MINOR;
 
-
     ranges = llist_create(NULL,range_node_eq,0);
     lags = llist_create(compare_lags,NULL,0);
 
-    /*Create a list of lag information. More informative and reliable than the lag array
-    in the raw data
+    /* Create a list of lag information. More informative and reliable than the
+       lag arrayin the raw data
     */
     Determine_Lags(lags,fit_prms);
+
     /*llist_for_each_arg(lags,(node_func_arg)print_lag_node, fit_prms, NULL);*/
 
     /*Here we determine the fluctuation level for which ACFs are pure noise*/
@@ -299,6 +317,7 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
 
     /*Tx overlapped data is removed from consideration*/
     Filter_TX_Overlap(ranges, lags, fit_prms); 	/*Comment this out for simulted data without TX overlap*/
+    
     /*llist_for_each_arg(ranges,(node_func_arg)print_range_node,fit_prms,NULL);*/
     /*Criterion is applied to filter low power lags that are considered too close to
     statistical fluctuations*/
@@ -325,8 +344,6 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
 
     llist_destroy(lags,TRUE,free);
     llist_destroy(ranges,TRUE,free_range_node);
-
-
 
     return 0;
 }
