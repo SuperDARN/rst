@@ -165,19 +165,19 @@ end
 ;------------------------------------------------------------------------------
 ;
 function RadarScanReset, RadarScan
-    
+
     ; Make sure that pointer to the RadarScan structure exists
     if ~ptr_valid(RadarScan) then $
         return, -1
-    
+
     ; If beam structures already exist in RadarScan then free them
     if (*(*RadarScan).bm[0]) ne !NULL then begin
-        
+
         ; Loop over number of beams in RadarScan structure
         for n=0, (*RadarScan).num-1 do begin
             ; Free pointer to the RadarCell structure
             ptr_free, (*(*RadarScan).bm[n]).rng
-            
+
             ; Set pointer to the beam structure to a null
             (*(*RadarScan).bm[n]) = !NULL
         endfor
@@ -238,10 +238,10 @@ function RadarScanResetBeam, RadarScan, bmnum, bm
     ; Check whether a beam has been added to the RadarScan structure
     if (*RadarScan).num eq 0 then $
         return, -1
-    
+
     ; Loop over number of beams loaded in RadarScan structure
     for n=0, (*RadarScan).num-1 do begin
-        
+
         ; Loop over number of beams to exclude from each radar scan
         for c=0, bmnum-1 do begin
             ; If beams match then break out of loop
@@ -257,20 +257,20 @@ function RadarScanResetBeam, RadarScan, bmnum, bm
 
             ; Set pointer to the beam structure to a null
             (*(*RadarScan).bm[n]) = !NULL
-            
+
             ; Continue to next beam in RadarScan structure
             continue
-            
+
         endif
-        
+
         ; Place current beam in next available available index
         (*(*RadarScan).bm[num]) = (*(*RadarScan).bm[n])
-        
+
         ; Update count of number of beams that have not been excluded
         num += 1L
 
     endfor
-    
+
     ; If beams were removed then set extra beam pointers at end of arrays
     ; to nulls
     if num gt 0 then begin
@@ -280,7 +280,7 @@ function RadarScanResetBeam, RadarScan, bmnum, bm
 
     ; Update number of beams remaining in RadarScan structure
     (*RadarScan).num = num
-    
+
     ; Return zero if successful
     return, 0
 
@@ -316,27 +316,27 @@ function RadarScanAddBeam, RadarScan, nrang
     ; Make sure that pointer to the RadarScan structure exists
     if ~ptr_valid(RadarScan) then $
         return, !NULL
-    
+
     ; Get pointer to current beam from the RadarScan structure
     bm = (*RadarScan).bm[(*RadarScan).num]
-    
+
     ; If the beam structure doesn't exist, create one
     if (*bm) eq !NULL then begin
         RadarBeamMake, tmp, nrang
         (*bm) = (*tmp)
     endif
-    
+
     ; Set the number of ranges in the beam structure
     if nrang ne 0 then begin
         (*bm).nrang = nrang
     endif
-    
+
     ; Set the current beam number in the beam structure
     (*RadarScan).bm[(*RadarScan).num] = bm
-    
+
     ; Update the total number of beams in the RadarScan structure
     (*RadarScan).num += 1
-    
+
     ; Return the pointer to the current beam structure
     return, bm
 

@@ -58,7 +58,7 @@ function IGRFMagCmp, date, frho, flat, flon, bx, by, bz, b
     ; *Note: height in IGRFModelCall is treated as radial distance from center
     ; of Earth and not altitude*
     height = frho
-    
+
     ; Make call to IGRF DLM to calculate magnetic field components at field point
     ; in local north/east/down coordinates [nT]
     ret = IGRFModelCall(date, flat, flon, height, bx, by, bz)
@@ -222,7 +222,7 @@ function glbthor, lat, lon, rx, ry, rz, tx, ty, tz, inverse=inverse
         ; Convert the input vector from local south/east/vertical to Cartesian XYZ
         ; Calculate the co-latitude
         lax = 90. - lat
-        
+
         ; Rotate the input vector about the east-axis by the latitude
         sx = tx*cos(lax*!pi/180.) + tz*sin(lax*!pi/180.)
         sy = ty
@@ -267,33 +267,33 @@ function fldpnt_sph, frho, flat, flon, az, r, xlat, xlon
 
     if Aangle gt 180 then $
         Aangle = Aangle - 360
-    
+
     bside = r/frho*(180.0/api)
 
     arg = cos(bside*api/180.0)*cos(cside*api/180.0) + $
         sin(bside*api/180.0)*sin(cside*api/180.0)*cos(Aangle*api/180.0)
-    
+
     if arg le -1.0 then $
         arg = -1.0
 
     if arg ge 1.0 then $
         arg = 1.0
-    
+
     aside = acos(arg) * 180.0/api
 
     arg2 = (cos(bside*api/180.0)-cos(aside*api/180.)*cos(cside*api/180.))/(sin(aside*api/180.0)*sin(cside*api/180.0))
-    
+
     if arg2 le -1.0 then $
         arg2 = -1.0
 
     if arg2 ge 1.0 then $
         arg2 = 1.0
-    
+
     Bangle = acos(arg2) * 180.0/api
 
     if Aangle lt 0 then $
         Bangle = -Bangle
-    
+
     xlat = 90 - aside
     xlon = flon + Bangle
 
@@ -303,7 +303,7 @@ function fldpnt_sph, frho, flat, flon, az, r, xlat, xlon
     if xlon gt 360 then $
         xlon = xlon - 360
 
-    ; Return zero if successful    
+    ; Return zero if successful
     return, 0
 
 end
@@ -311,7 +311,7 @@ end
 
 
 function fldpnt_azm, mlat, mlon, nlat, nlon, az
-    
+
     ; This function uses the Haversine formula to calculate bearing (az)
     ; from a start point (mlat,mlon) to an end point (nlat,nlon) assuming
     ; a spherical Earth
@@ -323,7 +323,7 @@ function fldpnt_azm, mlat, mlon, nlat, nlon, az
     cside = 90 - mlat
 
     Bangle = nlon - mlon
-    
+
     arg = cos(aside*api/180.0)*cos(cside*api/180.0) + $
         sin(aside*api/180.0)*sin(cside*api/180.0)*cos(Bangle*api/180.0)
 
@@ -332,7 +332,7 @@ function fldpnt_azm, mlat, mlon, nlat, nlon, az
     arg2 = (cos(aside*api/180.0)-cos(bside*api/180.0)*cos(cside*api/180.0))/(sin(bside*api/180.0)*sin(cside*api/180.0))
 
     Aangle = acos(arg2) * 180.0/api
-    
+
     if Bangle lt 0 then $
         Aangle = -Aangle
 
@@ -353,7 +353,7 @@ function RPosRngBmAzmElv, beam, range, year, site, frang, rsep, rxrise, height, 
     ; Get geodetic latitude/longitude from radar hardware info [deg]
     gdlat = site.geolat
     gdlon = site.geolon
-    
+
     ; Get receiver rise time from site information if not provided
     if rxrise eq 0 then $
         rxrise = site.recrise
@@ -362,58 +362,58 @@ function RPosRngBmAzmElv, beam, range, year, site, frang, rsep, rxrise, height, 
     ; the center to the surface of the oblate spheroid (ie not constant w/latitude) plus virtual height (frho)
     center = 1
     ret = RadarPos(center, beam, range, site, frang, rsep, rxrise, height, frho, flat, flon, chisham=chisham)
-    
+
     ; Convert range/beam position from geocentric spherical coordinates (frho,flat,flon) to global
     ; Cartesian coordinates (fx,fy,fz)
     ret = sphtocar(frho, flat, flon, fx, fy, fz)
-    
+
     ; Convert radar site geodetic latitude and longitude (gdlat,gdlon) to geocentric spherical
     ; coordinates (glat,glon) and distance from the center to the surface of the oblate spheroid (gdrho)
     ret = RadarGeoTGC(gdlat, gdlon, gdrho, glat, glon, del)
-    
+
     ; Convert radar geocentric spherical coordinates (gdrho,glat,glon) to global Cartesian
     ; coordinates (gbx,gby,gbz)
     ret  = sphtocar(gdrho, glat, glon, gbx, gby, gbz)
-    
+
     ; Calculate vector from the radar to center of range/beam cell (gx,gy,gz)
     gx = fx - gbx
     gy = fy - gby
     gz = fz - gbz
-    
+
     ; Normalize the vector from the radar to center of range/beam cell (ngx,ngy,ngz)
     ret = norm_vec(gx, gy, gz, ngx, ngy, ngz)
-    
+
     ; Convert the normalized vector from the radar-to-range/beam cell (ngx,ngy,ngz) into
     ; local south/east/vertical (horizontal) coordinates (ghx,ghy,ghz)
     ret = glbthor(flat, flon, ngx, ngy, ngz, ghx, ghy, ghz)
-    
+
     ; Normalize the local horizontal radar-to-range/beam cell vector (nghx,nghy,nghz)
     ret = norm_vec(ghx, ghy, ghz, nghx, nghy, nghz)
-    
+
     ; Calculate the magnetic field vector (bx,by,bz) at the geocentric spherical
     ; range/beam position (frho,flat,flon) in local south/east/vertical coordinates
     ret = IGRFMagCmp(year, frho, flat, flon, bx, by, bz, b)
-    
+
     ; Error check present in C RST code
     if ret eq -1 then $
         return, -1
 
     ; Normalize the magnetic field vector (nbx,nby,bz)
     ret = norm_vec(bx, by, bz, nbx, nby, nbz)
-    
+
     ; Calculate a new local vertical component such that the radar-to-range/beam vector
     ; becomes orthogonal to the magnetic field at the range/beam position (ngh dot nb = 0)
     nghz_perp = -1.*(nbx*nghx + nby*nghy)/nbz
-    
+
     ; Normalize the new radar-to-range/beam vector (which is now orthogonal to B)
     ret = norm_vec(nghx, nghy, nghz_perp, nnghx, nnghy, nnghz)
-    
+
     ; Calculate the elevation angle of the orthogonal radar-to-range/beam vector
     elv = atan( nnghz, sqrt(nnghx*nnghx + nnghy*nnghy) )*180./!pi
-    
+
     ; Calculate the azimuth of the orthogonal radar-to-range/beam vector
     azm = atan( nnghy, -1.*nnghx)*180./!pi
-    
+
     ; Return zero if successful
     return, 0
 
@@ -426,7 +426,7 @@ function RPosInvMag, beam, range, year, site, frang, rsep, rxrise, height, mlat,
     ; Get geodetic latitude/longitude from radar hardware info [deg]
     gdlat = site.geolat
     gdlon = site.geolon
-    
+
     ; Get receiver rise time from site information if not provided
     if rxrise eq 0 then $
         rxrise = site.recrise
@@ -435,11 +435,11 @@ function RPosInvMag, beam, range, year, site, frang, rsep, rxrise, height, mlat,
     ; the center to the surface of the oblate spheroid (ie not constant w/latitude) plus virtual height (frho)
     center = 1
     ret = RadarPos(center, beam, range, site, frang, rsep, rxrise, height, frho, flat, flon, chisham=chisham)
-    
+
     ; Convert range/beam position from geocentric spherical coordinates (frho,flat,flon) to global
     ; Cartesian coordinates (fx,fy,fz)
     ret = sphtocar(frho, flat, flon, fx, fy, fz)
-    
+
     ; Convert radar site geodetic latitude and longitude (gdlat,gdlon) to geocentric spherical
     ; coordinates (glat,glon) and distance from the center to the surface of the oblate spheroid (gdrho)
     ret = RadarGeoTGC(gdlat, gdlon, gdrho, glat, glon, del)
@@ -447,65 +447,65 @@ function RPosInvMag, beam, range, year, site, frang, rsep, rxrise, height, mlat,
     ; Convert radar geocentric spherical coordinates (gdrho,glat,glon) to global Cartesian
     ; coordinates (gbx,gby,gbz)
     ret  = sphtocar(gdrho, glat, glon, gbx, gby, gbz)
-    
+
     ; Calculate vector from the radar to center of range/beam cell (gx,gy,gz)
     gx = fx - gbx
     gy = fy - gby
     gz = fz - gbz
-    
+
     ; Normalize the vector from the radar to center of range/beam cell (ngx,ngy,ngz)
     ret = norm_vec(gx, gy, gz, ngx, ngy, ngz)
-    
+
     ; Convert the normalized vector from the radar-to-range/beam cell (ngx,ngy,ngz) into
     ; local south/east/vertical (horizontal) coordinates (ghx,ghy,ghz)
     ret = glbthor(flat, flon, ngx, ngy, ngz, ghx, ghy, ghz)
-    
+
     ; Normalize the local horizontal radar-to-range/beam cell vector (nghx,nghy,nghz)
     ret = norm_vec(ghx, ghy, ghz, nghx, nghy, nghz)
-    
+
     ; Calculate the magnetic field vector (bx,by,bz) at the geocentric spherical
     ; range/beam position (frho,flat,flon) in local south/east/vertical coordinates
     ret = IGRFMagCmp(year, frho, flat, flon, bx, by, bz, b)
-    
+
     ; Error check present in C RST code
     if ret eq -1 then $
         return, -1
 
     ; Normalize the magnetic field vector (nbx,nby,bz)
     ret = norm_vec(bx, by, bz, nbx, nby, nbz)
-    
+
     ; Calculate a new local vertical component such that the radar-to-range/beam vector
     ; becomes orthogonal to the magnetic field at the range/beam position (ngh dot nb = 0)
     nghz_perp = -1.*(nbx*nghx + nby*nghy)/nbz
-    
+
     ; Normalize the new radar-to-range/beam vector which is now orthogonal to B
     ret = norm_vec(nghx, nghy, nghz_perp, nnghx, nnghy, nnghz)
-    
+
     ; Calculate the elevation angle of the orthogonal radar-to-range/beam vector (***NOT USED***)
     elv = atan( nnghz, sqrt(nnghx*nnghx + nnghy*nnghy) )*180./!pi
-    
+
     ; Calculate the (geographic) azimuth of the orthogonal radar-to-range/beam vector
     gazm = atan( nnghy, -1.*nnghx)*180./!pi
-    
+
     ; Convert range/beam position from geocentric (flat,flon) to geodetic latitude/longitude 
     ; (gdlat,gdlon) and calculate distance from center to surface of oblate spheroid (fdrho)
     ret = RadarGeoTGC(fdlat, fdlon, fdrho, flat, flon, dummy, /inverse)
-    
+
     ; Calculate virtual height of range/beam position
     tmp_height = frho - fdrho
-    
+
     ; Convert range/beam position from geocentric latitude/longitude (flat,flon) at virtual height
     ; (tmp_height) to AACGM magnetic latitude/longitude coordinates (mlat,mlon)
     if keyword_set(old_aacgm) then $
         ret = AACGMConvert(flat, flon, tmp_height, mlat, mlon, dummy) $
     else $
         ret = AACGM_v2_Convert(flat, flon, tmp_height, mlat, mlon, dummy)
-    
+
     ; Calculate pointing direction latitude/longitude (xlat,xlon) given
     ; distance (rsep) and bearing (gazm) from the radar position (flat,flon)
     ; at the field point radius (frho)
     ret = fldpnt_sph(frho, flat, flon, gazm, rsep, xlat, xlon)
-    
+
     ; Convert pointing direction position from geocentric latitude/longitude
     ; (xlat,xlon) at virtual height (tmp_height) to AACGM magnetic latitude/longitude
     ; coordinates (nlat,nlon)
@@ -513,7 +513,7 @@ function RPosInvMag, beam, range, year, site, frang, rsep, rxrise, height, mlat,
         ret = AACGMConvert(xlat, xlon, tmp_height, nlat, nlon, dummy) $
     else $
         ret = AACGM_v2_Convert(xlat, xlon, tmp_height, nlat, nlon, dummy)
-    
+
     ; Error check present in C RST code
     if ret eq -1 then $
         return, -1
@@ -521,15 +521,15 @@ function RPosInvMag, beam, range, year, site, frang, rsep, rxrise, height, mlat,
     ; Make sure nlon varies between +/-180 degrees
     if (nlon - mlon) gt 180 then $
         nlon = nlon - 360
-    
+
     ; Make sure nlon varies between +/-180 degrees
     if (nlon-mlon) lt -180 then $
         nlon = nlon + 360
-    
+
     ; Calculate bearing (mazm) to pointing direction latitude/longitude
     ; (nlat,nlon) from the radar position (mlat,mlon) in magnetic coordinates
     ret = fldpnt_azm(mlat, mlon, nlat, nlon, mazm)
-    
+
     ; Return zero if successful
     return, 0
 

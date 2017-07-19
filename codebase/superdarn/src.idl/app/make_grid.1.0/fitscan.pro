@@ -84,12 +84,12 @@ function FitReadRadarScan, unit, state, RadarScan, prm, fit, tlen, lock, channel
         (*RadarScan).st_time = TimeYMDHMSToEpoch(prm.time.yr, prm.time.mo, $
                                         prm.time.dy, prm.time.hr, $
                                         prm.time.mt, prm.time.sc+prm.time.us/1.0e6)
-        
+
         ; If scan flag is being ignored and assuming scan boundaries are fixed
         ; relative to start of day, then recalculate scan start time        
         if ((tlen ne 0) and (lock ne 0)) then $
             (*RadarScan).st_time = tlen*floor((*RadarScan).st_time/tlen)
-    
+
         ; Reset number of beams in RadarScan structure to zero, set pointers
         ; to RadarBeam structures to !NULL, and free memroy reserved to store
         ; radar scan data in RadarCell structures
@@ -104,15 +104,15 @@ function FitReadRadarScan, unit, state, RadarScan, prm, fit, tlen, lock, channel
     ; flag is found or the data duration exceeds tlen, depending on function 
     ; inputs
     repeat begin
-   
+
         ; Add a new beam to the RadarScan structure
         bm = RadarScanAddBeam(RadarScan, prm.nrang)
-    
+
         ; Calculate time of radar beam sounding 
         (*bm).time = TimeYMDHMSToEpoch(prm.time.yr, prm.time.mo, $
                                     prm.time.dy, prm.time.hr, $
                                     prm.time.mt, prm.time.sc+prm.time.us/1.0e6)
-    
+
         ; Load radar operating parameters into RadarBeam structure
         (*bm).scan = prm.scan
         (*bm).bm = prm.bmnum
@@ -129,7 +129,7 @@ function FitReadRadarScan, unit, state, RadarScan, prm, fit, tlen, lock, channel
         (*bm).atten = prm.atten
         (*bm).channel = prm.channel
         (*bm).nrang = prm.nrang
-    
+
         ; Set flags indicating scatter in each range gate to zero
         for r=0, (*bm).nrang-1 do $
             (*bm).sct[r] = 0
@@ -151,13 +151,13 @@ function FitReadRadarScan, unit, state, RadarScan, prm, fit, tlen, lock, channel
         (*RadarScan).ed_time = TimeYMDHMSToEpoch(prm.time.yr, prm.time.mo, $
                                         prm.time.dy, prm.time.hr, $
                                         prm.time.mt, prm.time.sc+prm.time.us/1.0e6)
-    
+
         ; Error check if too many beams were included in RadarScan structure
         if (*RadarScan).num gt 1000 then begin
             flg = -1
             break
         endif
-   
+
         ; Read the next record into the prm and fit structures
         if channel eq 0 then $
             fstatus = FitRead(unit, prm, fit) $
@@ -173,7 +173,7 @@ function FitReadRadarScan, unit, state, RadarScan, prm, fit, tlen, lock, channel
             endrep until ( ((channel eq 2) and (prm.channel ne 2)) or $
                            ((channel eq 1) and (prm.channel eq 2)))
         endelse
-   
+
         ; If end of file was reached by FitRead then set flg equal to two
         if fstatus eq -1 then $
             flg = 2 $
