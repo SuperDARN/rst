@@ -86,7 +86,7 @@ typedef struct fit_prms {
   int cp;
   int xcf;
   int tfreq;
-  int noise;
+  float noise;
   int nrang;
   int smsep;
   int nave;
