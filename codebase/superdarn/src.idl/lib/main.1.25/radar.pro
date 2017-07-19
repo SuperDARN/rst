@@ -637,6 +637,10 @@ pro RadarFldPnth,gdlat,gdlon,psi,bore,fh,r,frho,flat,flon,chisham=chisham
     ; (this is updated in the loop below)
     frad=rrad
 
+    ; Check for zero slant range which will cause an error in the
+    ; elevation angle calculation below, leading to a NAN result
+    if (r eq 0.) then r=0.1
+
     ; Iterate until the altitude corresponding to the calculated elevation
     ; matches the desired altitude
     repeat begin 

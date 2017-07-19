@@ -430,10 +430,13 @@ function GridTableAddBeam, GridTable, RadarSite, alt, tval, RadarBeam, $
     (*GridTable).bnum += 1
 
     ; Populate GridBm structure with info from RadarBeam structure
+    ; (except rxrise - that we get from the hdw.dat file because
+    ; nearly all radars write a default value of 100 microseconds
+    ; hardcoded in default.h and set by global.c in QNX4 systems)
     (*GridBm).bm = (*RadarBeam).bm
     (*GridBm).frang = (*RadarBeam).frang
     (*GridBm).rsep = (*RadarBeam).rsep
-    (*GridBm).rxrise = (*RadarBeam).rxrise
+    (*GridBm).rxrise = (*RadarSite).recrise
     (*GridBm).nrang = (*RadarBeam).nrang 
     
     ; Convert input tval to year, month, day, hour, minutes, seconds
@@ -553,7 +556,6 @@ function GridTableFindBeam, GridTable, RadarBeam
         if (*(*GridTable).bm[n]).bm ne (*RadarBeam).bm then continue
         if (*(*GridTable).bm[n]).frang ne (*RadarBeam).frang then continue
         if (*(*GridTable).bm[n]).rsep ne (*RadarBeam).rsep then continue
-        if (*(*GridTable).bm[n]).rxrise ne (*RadarBeam).rxrise then continue
         if (*(*GridTable).bm[n]).nrang ne (*RadarBeam).nrang then continue
         
         ; Break out of loop if GridBm parameters match RadarBeam parameters
