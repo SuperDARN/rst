@@ -40,7 +40,7 @@
 ;------------------------------------------------------------------------------
 ;
 pro GridTableMake, GridTable
-   
+
     MAX_BEAMS = 50                          ; hardcoded for IDL (couldn't reallocate arrays like C)
     MAX_PTS = 1000                          ; hardcoded for IDL (couldn't reallocate arrays like C)
 
@@ -94,7 +94,7 @@ end
 ;
 pro GridPntMake, GridPnt
     
-    GridPnt = { $           
+    GridPnt = { $
         max: 0L, $                          ; number of range points that map to this cell (?)
         cnt: 0L, $                          ; number of data points that map to this cell (?)
         ref: 0L, $                          ; grid cell reference number
@@ -175,7 +175,7 @@ end
 ;------------------------------------------------------------------------------
 ;
 pro GridTableZero, pnum, GridPnt
-    
+
     ; Zero out all of the values at each grid cell in the GridPnt structure
     for i=0, pnum-1 do begin
         (*GridPnt[i]).azm = 0.D
@@ -214,18 +214,18 @@ end
 ;------------------------------------------------------------------------------
 ;
 function GridTableTest, GridTable, RadarScan
-   
+
     ; Calculate time at center of radar scan
     tm = ((*RadarScan).st_time + (*RadarScan).ed_time)/2.0
 
     ; If this is the first iteration in make_grid then return
     if (*GridTable).st_time eq -1 then $
         return, 0
-    
+
     ; If the currently loaded RadarScan occurred after the end of the GridTable
     ; structure then begin with the function
     if tm gt (*GridTable).ed_time then begin
-       
+
         ; Initialize the number of grid points in the GridTable structure to zero
         (*GridTable).npnt = 0
 
@@ -237,11 +237,11 @@ function GridTableTest, GridTable, RadarScan
 
         ; Loop over number of points in GridTable structure
         for i=0, (*GridTable).pnum-1 do begin
-            
+
             ; If no velocity measurements in GridPnt then continue
             if (*(*GridTable).pnt[i]).cnt eq 0 then $
                 continue
-            
+
             ; If at least 25% of the possible GridPnt cells don't have velocity
             ; measurements then continue
             if (*(*GridTable).pnt[i]).cnt le (0.25*(*GridTable).nscan*(*(*GridTable).pnt[i]).max) then begin
@@ -255,14 +255,14 @@ function GridTableTest, GridTable, RadarScan
             ; Calculate weighted mean of north/east velocity components 
             (*(*GridTable).pnt[i]).vel.median_n = (*(*GridTable).pnt[i]).vel.median_n / (*(*GridTable).pnt[i]).vel.sd
             (*(*GridTable).pnt[i]).vel.median_e = (*(*GridTable).pnt[i]).vel.median_e / (*(*GridTable).pnt[i]).vel.sd
-            
+
             ; Calculate magnitude of weighted mean velocity vector
             (*(*GridTable).pnt[i]).vel.median = sqrt((*(*GridTable).pnt[i]).vel.median_n*(*(*GridTable).pnt[i]).vel.median_n + $
                                               (*(*GridTable).pnt[i]).vel.median_e*(*(*GridTable).pnt[i]).vel.median_e)
-            
+
             ; Calculate azimuth of weighted mean velocity vector                              
             (*(*GridTable).pnt[i]).azm = atan((*(*GridTable).pnt[i]).vel.median_e, (*(*GridTable).pnt[i]).vel.median_n) * 180./!pi
-            
+
             ; Calculate weighted mean of spectral width and power
             (*(*GridTable).pnt[i]).wdt.median = (*(*GridTable).pnt[i]).wdt.median / (*(*GridTable).pnt[i]).wdt.sd
             (*(*GridTable).pnt[i]).pwr.median = (*(*GridTable).pnt[i]).pwr.median / (*(*GridTable).pnt[i]).pwr.sd
@@ -275,7 +275,7 @@ function GridTableTest, GridTable, RadarScan
 
         ; Reset status of GridTable structure to zero
         (*GridTable).status = 0
-        
+
         ; GridTable structure ready to write to file
         return, 1
     endif
@@ -309,11 +309,11 @@ end
 ;------------------------------------------------------------------------------
 ;
 function GridTableAddPoint, GridTable
-  
+
     ; Make sure that pointer to the GridTable structure exists
     if ~ptr_valid(GridTable) then $
         return, -1
-    
+
     ; Get current point from the GridTable structure
     pnt = (*GridTable).pnt[(*GridTable).pnum]
 
@@ -357,14 +357,14 @@ end
 ;------------------------------------------------------------------------------
 ;
 function GridTableFindPoint, GridTable, ref
-    
+
     ; Loop over all points in GridTable structure
     for n=0, (*GridTable).pnum-1 do begin
         ; If point ref matches input then break
         if ref eq (*(*GridTable).pnt[n]).ref then $
             break
     endfor
-    
+
     ; Return error flag if point not found
     if n eq (*GridTable).pnum then $
         return, -1
@@ -405,7 +405,7 @@ end
 ;
 function GridTableAddBeam, GridTable, RadarSite, alt, tval, RadarBeam, $
     chisham=chisham, old_aacgm=old_aacgm
-    
+
     ; Make sure that pointer to GridTable structure exists
     if ~ptr_valid(GridTable) then $
         return, -1
@@ -416,7 +416,7 @@ function GridTableAddBeam, GridTable, RadarSite, alt, tval, RadarBeam, $
 
     ; Velocity correction as a function of radar geodetic latitude [m/s]
     velco = (2*!pi/86400.0)*6356.779*1000*cos(RadarSite.geolat*!pi/180.0)
-    
+
     ; Get current beam from the GridTable structure
     GridBm = (*GridTable).bm[(*GridTable).bnum]
 
@@ -425,7 +425,7 @@ function GridTableAddBeam, GridTable, RadarSite, alt, tval, RadarBeam, $
         GridBmMake, tmp, (*RadarBeam).nrang
         (*GridBm) = (*tmp)
     endif
-  
+
     ; Update the total number of beams in the GridTable structure 
     (*GridTable).bnum += 1
 
@@ -438,7 +438,7 @@ function GridTableAddBeam, GridTable, RadarSite, alt, tval, RadarBeam, $
     (*GridBm).rsep = (*RadarBeam).rsep
     (*GridBm).rxrise = (*RadarSite).recrise
     (*GridBm).nrang = (*RadarBeam).nrang 
-    
+
     ; Convert input tval to year, month, day, hour, minutes, seconds
     ret = TimeEpochToYMDHMS(yr, mo, dy, hr, mt, sc, tval)
 
@@ -449,15 +449,15 @@ function GridTableAddBeam, GridTable, RadarSite, alt, tval, RadarBeam, $
         ret = RPosRngBmAzmElv((*GridBm).bm, r, yr, RadarSite, (*GridBm).frang, $
                                  (*GridBm).rsep, (*GridBm).rxrise, alt, geoazm, elv, $
                                  chisham=chisham)
-        
+
         ; If geographic azimuth/elevation calculation failed then break out of loop
         if ret eq -1 then break
-        
+
         ; Calculate magnetic latitude, longitude, and azimuth of range/beam position
         ret = RPosInvMag((*GridBm).bm, r, yr, RadarSite, (*GridBm).frang, $
                             (*GridBm).rsep, (*GridBm).rxrise, alt, mlat, mlon, mazm, gazm=gazm, $
                             chisham=chisham, old_aacgm=old_aacgm)
-        
+
         ; If magnetic latitude/longitude/azimuth calculation failed then break out of loop
         if ret eq -1 then break
 
@@ -474,32 +474,32 @@ function GridTableAddBeam, GridTable, RadarSite, alt, tval, RadarBeam, $
             grdlat = floor(mlat) + 0.5 $
         else $
             grdlat = floor(mlat) - 0.5
-        
+
         ; Calculate magnetic grid longitude spacing at grid latitude
         lspc = (floor(360*cos(abs(grdlat)*!pi/180.0)+0.5))/360.0
-        
+
         ; Calculate magnetic grid longitude cell
         grdlon = (floor(mlon*lspc)+0.5)/lspc
-        
+
         ; Calculate reference number to grid latitude/longitude cell
         if mlat gt 0 then $
             ref = 1000*( floor(mlat) ) + ( floor(mlon*lspc) ) $
         else $
             ref = -1000*( floor(-mlat) ) - ( floor(mlon*lspc) )
-        
+
         ; Find index of GridPnt structure corresponding to reference number
         inx = GridTableFindPoint(GridTable, ref)
-        
+
         ; If matching GridPnt structure not found then create a new one
         if inx eq -1 then $
             inx = GridTableAddPoint(GridTable)
-        
+
         ; Get pointer to the GridPnt structure
         GridPnt = (*GridTable).pnt[inx]
-        
+
         ; Set the reference number of the GridPnt structure
         (*GridPnt).ref = ref
-        
+
         ; Update the total number of range gates that map to the GridPnt structure
         (*GridPnt).max += 1
 
@@ -513,7 +513,7 @@ function GridTableAddBeam, GridTable, RadarSite, alt, tval, RadarBeam, $
         (*GridBm).azm[r] = mazm
         (*GridBm).ival[r] = velco*cos((geoazm+90)*!pi/180.0)
     endfor
-    
+
     ; Return error if didn't finish looping through all gates
     if r ne (*GridBm).nrang then $
         return, -1
@@ -550,20 +550,20 @@ end
 ;------------------------------------------------------------------------------
 ;
 function GridTableFindBeam, GridTable, RadarBeam
-    
+
     ; Loop over number of beams in GridTable structure
     for n=0, (*GridTable).bnum-1 do begin
         if (*(*GridTable).bm[n]).bm ne (*RadarBeam).bm then continue
         if (*(*GridTable).bm[n]).frang ne (*RadarBeam).frang then continue
         if (*(*GridTable).bm[n]).rsep ne (*RadarBeam).rsep then continue
         if (*(*GridTable).bm[n]).nrang ne (*RadarBeam).nrang then continue
-        
+
         ; Break out of loop if GridBm parameters match RadarBeam parameters
         ; including beam number, distance to first range, range separation,
         ; receiver rise time, and number of range gates
         break
     endfor
-    
+
     ; If beam not found then return error
     if n eq (*GridTable).bnum then $
         return, -1
@@ -615,7 +615,7 @@ function GridTableMap, GridTable, RadarScan, RadarSite, tlen, iflg, alt, $
 
     ; Calculate center time of radar scan
     tm = ((*RadarScan).st_time + (*RadarScan).ed_time)/2.0
-   
+
     ; If starting a new grid structure then initialize some values
     if (*GridTable).status eq 0 then begin
         (*GridTable).status = 1
@@ -638,12 +638,12 @@ function GridTableMap, GridTable, RadarScan, RadarSite, tlen, iflg, alt, $
 
         ; Look for beam index in current GridTable structure
         b = GridTableFindBeam(GridTable, (*RadarScan).bm[n])
-        
+
         ; If beam not found, add a new beam to GridTable structure
         if b eq -1 then begin
             b = GridTableAddBeam(GridTable, RadarSite, alt, tm, (*RadarScan).bm[n], $
                 chisham=chisham, old_aacgm=old_aacgm)
-            
+
             if b eq -1 then $
                 break
         endif
@@ -663,7 +663,7 @@ function GridTableMap, GridTable, RadarScan, RadarSite, tlen, iflg, alt, $
             v_e = (*(*(*RadarScan).bm[n]).rng).v_e[r]
             p_l_e = (*(*(*RadarScan).bm[n]).rng).p_l_e[r]
             w_l_e = (*(*(*RadarScan).bm[n]).rng).w_l_e[r]
-            
+
             ; If velocity error is less than 100 m/s then set it to 100 m/s ???
             if v_e lt v_e_min then $
                 v_e = v_e_min
@@ -678,10 +678,10 @@ function GridTableMap, GridTable, RadarScan, RadarSite, tlen, iflg, alt, $
 
             ; Get grid cell index of radar beam / gate measurement
             inx = (*bm).inx[r]
-            
+
             ; Add magnetic azimuth of radar beam to GridPnt structure value
             (*(*GridTable).pnt[inx]).azm += (*bm).azm[r]
-            
+
             if iflg ne 0 then begin
                 ; If gridding in inertial frame then add north/east velocities to GridPnt structure including ival correction
                 (*(*GridTable).pnt[inx]).vel.median_n += -((*(*(*RadarScan).bm[n]).rng).v[r] + (*bm).ival[r])*1./(v_e*v_e)*cos((*bm).azm[r]*!pi/180.0)
@@ -701,7 +701,7 @@ function GridTableMap, GridTable, RadarScan, RadarSite, tlen, iflg, alt, $
             (*(*GridTable).pnt[inx]).vel.sd += 1./(v_e*v_e)
             (*(*GridTable).pnt[inx]).pwr.sd += 1./(p_l_e*p_l_e)
             (*(*GridTable).pnt[inx]).wdt.sd += 1./(w_l_e*w_l_e)
-            
+
             ; Update the total number of measurements contained in GridPnt structure
             (*(*GridTable).pnt[inx]).cnt += 1L
         endfor
@@ -725,7 +725,7 @@ function GridTableMap, GridTable, RadarScan, RadarSite, tlen, iflg, alt, $
         cnt += 1L
 
     endfor
-   
+
     ; Calculate average frequency and noise of all beams in RadarScan structure
     freq = freq/cnt
     noise = noise/cnt
@@ -748,7 +748,7 @@ function GridTableMap, GridTable, RadarScan, RadarSite, tlen, iflg, alt, $
     (*GridTable).freq += freq
     (*GridTable).nscan += 1
 
-    ; Return zero if successful    
+    ; Return zero if successful
     return, 0
 
 end
