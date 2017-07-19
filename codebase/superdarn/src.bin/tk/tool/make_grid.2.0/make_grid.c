@@ -316,7 +316,7 @@ int main(int argc,char *argv[]) {
     int bflg=0;
 
     unsigned char gsflg=0,ionflg=0,bthflg=0;
-    unsigned char nsflg=0,isflg=0;
+    unsigned char nsflg=0;
     int channel=0;
     int channel_fix=-1;
 
@@ -400,7 +400,7 @@ int main(int argc,char *argv[]) {
     RadarLoadHardware(envstr,network);
 
     /* Set up command line options */
-    OptionAdd(&opt,"-help",'x',&help);  /* Print the help message and exit */
+    OptionAdd(&opt,"-help",'x',&help);     /* Print the help message and exit */
     OptionAdd(&opt,"-option",'x',&option); /* Print all command line options */
 
     OptionAdd(&opt,"old",'x',&old);     /* Input file is in fit format */
@@ -416,43 +416,43 @@ int main(int argc,char *argv[]) {
     OptionAdd(&opt,"tl",'i',&tlen); /* Ignore scan flag, use scan length of tl seconds */
     OptionAdd(&opt,"i",'i',&avlen); /* Time interval to store in each grid record in seconds */
 
-    OptionAdd(&opt,"cn",'t',&chnstr);   /* Process data from stereo channel a or b */
+    OptionAdd(&opt,"cn",'t',&chnstr);           /* Process data from stereo channel a or b */
     OptionAdd(&opt,"cn_fix",'t',&chnstr_fix);   /* User-defined channel number for output only */
-    OptionAdd(&opt,"ebm",'t',&bmstr);   /* Comma separated list of beams to exclude */
-    OptionAdd(&opt,"minrng",'i',&minrng); /* Exclude data from gates lower than minrng */
-    OptionAdd(&opt,"maxrng",'i',&maxrng); /* Exclude data from gates higher than maxrng */
-    OptionAdd(&opt,"minsrng",'d',&minsrng); /* Exclude data from slant ranges lower than minsrng */
-    OptionAdd(&opt,"maxsrng",'d',&maxsrng); /* Exclude data from slant ranges higher than maxsrng */
+    OptionAdd(&opt,"ebm",'t',&bmstr);           /* Comma separated list of beams to exclude */
+    OptionAdd(&opt,"minrng",'i',&minrng);       /* Exclude data from gates lower than minrng */
+    OptionAdd(&opt,"maxrng",'i',&maxrng);       /* Exclude data from gates higher than maxrng */
+    OptionAdd(&opt,"minsrng",'d',&minsrng);     /* Exclude data from slant ranges lower than minsrng */
+    OptionAdd(&opt,"maxsrng",'d',&maxsrng);     /* Exclude data from slant ranges higher than maxsrng */
 
     OptionAdd(&opt,"fwgt",'i',&mode);   /* Filter weighting mode */
 
-    OptionAdd(&opt,"pmax",'d',&max[1]); /* Exclude data with power greater than pmax */
-    OptionAdd(&opt,"vmax",'d',&max[0]); /* Exclude data with vel greater than vmax */
-    OptionAdd(&opt,"wmax",'d',&max[2]); /* Exclude data with width greater than wmax */
+    OptionAdd(&opt,"pmax",'d',&max[1]);  /* Exclude data with power greater than pmax */
+    OptionAdd(&opt,"vmax",'d',&max[0]);  /* Exclude data with velocity greater than vmax */
+    OptionAdd(&opt,"wmax",'d',&max[2]);  /* Exclude data with width greater than wmax */
     OptionAdd(&opt,"vemax",'d',&max[3]); /* Exclude data with verror greater than vemax */
 
-    OptionAdd(&opt,"pmin",'d',&min[1]); /* Exclude data with power less than pmin */
-    OptionAdd(&opt,"vmin",'d',&min[0]); /* Exclude data with velocity less than vmin */
-    OptionAdd(&opt,"wmin",'d',&min[2]); /* Exclude data with width less than wmin */
+    OptionAdd(&opt,"pmin",'d',&min[1]);  /* Exclude data with power less than pmin */
+    OptionAdd(&opt,"vmin",'d',&min[0]);  /* Exclude data with velocity less than vmin */
+    OptionAdd(&opt,"wmin",'d',&min[2]);  /* Exclude data with width less than wmin */
     OptionAdd(&opt,"vemin",'d',&min[3]); /* Exclude data with verror less than vemin */
 
     OptionAdd(&opt,"alt",'d',&alt);     /* Altitude at which mapping is done [km] */
 
-    OptionAdd(&opt,"fmax",'i',&fmax);   /* maximum allowed frequency variation [Hz] */
+    OptionAdd(&opt,"fmax",'i',&fmax);   /* Maximum allowed frequency variation [Hz] */
 
     OptionAdd(&opt,"nav",'x',&bxcar); /* Do not perform boxcar median filtering */
     OptionAdd(&opt,"nlm",'x',&limit); /* Do not exclude data because it exceeds limits */
-    OptionAdd(&opt,"nb",'x',&bflg);  /* Do not exclude data based on operating parameters */
-    OptionAdd(&opt,"is",'x',&isflg); /* Do not apply scan flag limit */
-    OptionAdd(&opt,"xtd",'x',&xtd);  /* Write extended output that includes power and width */
+    OptionAdd(&opt,"nb",'x',&bflg);   /* Do not exclude data based on operating parameters */
+    OptionAdd(&opt,"ns",'x',&nsflg);  /* Apply scan flag limit (ie exclude data with scan flag = -1) */
+    OptionAdd(&opt,"xtd",'x',&xtd);   /* Write extended output that includes power and width */
 
-    OptionAdd(&opt,"ion",'x',&ionflg); /* Exclude data marked as ground scatter */
-    OptionAdd(&opt,"gs",'x',&gsflg);   /* Exclude data marked as iono scatter */
+    OptionAdd(&opt,"ion",'x',&ionflg);  /* Exclude data marked as ground scatter */
+    OptionAdd(&opt,"gs",'x',&gsflg);    /* Exclude data marked as iono scatter */
     OptionAdd(&opt,"both",'x',&bthflg); /* Do not exclude data based on scatter flag */
 
     OptionAdd(&opt,"inertial",'x',&iflg); /* Create grid file in inertial reference frame */
 
-    OptionAdd(&opt,"chisham",'x',&chisham); /* Map data using Chisham virtual height model */
+    OptionAdd(&opt,"chisham",'x',&chisham);     /* Map data using Chisham virtual height model */
     OptionAdd(&opt,"old_aacgm",'x',&old_aacgm); /* Map data using old AACGM coefficients rather than v2 */
 
     OptionAdd(&opt,"fit",'x',&fitflg);   /* Input file is in the fit format */
@@ -508,7 +508,6 @@ int main(int argc,char *argv[]) {
     bxcar=!bxcar;
     bflg=!bflg;
     limit=!limit;
-    nsflg=!isflg;
 
     /* Set GridTable ground scatter flag according to command line options */
     grid->gsct=1;
@@ -782,7 +781,7 @@ int main(int argc,char *argv[]) {
             /* Exclude scatter in beams listed in ebm */
             RadarScanResetBeam(src[index],ebmno,ebm);
 
-            /* If 'is' option not set then */
+            /* If 'ns' option set then exclude data where scan flag = -1 */
             if (nsflg) exclude_outofscan(src[index]);
 
             /* Exclude scatter in range gates below minrng or beyond maxrng,
@@ -1000,7 +999,7 @@ int main(int argc,char *argv[]) {
                 /* Exclude scatter in beams listed in ebm */
                 RadarScanResetBeam(src[index],ebmno,ebm);
 
-                /* If 'is' option not set then */
+                /* If 'ns' option set then exclude data where scan flag = -1 */
                 if (nsflg) exclude_outofscan(src[index]);
 
                 /* Exclude scatter in range gates below minrng or beyond maxrng,
