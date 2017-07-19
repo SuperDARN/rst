@@ -62,8 +62,8 @@ char *patn=NULL;
 
 
 void log_info(char *text) {
-  if (vbflg==1) fprintf(stderr,text);
-  fprintf(stdout,text);
+  if (vbflg==1) fprintf(stderr, text);
+  fprintf(stdout, text);
   fflush(stdout);
 }
 
@@ -256,7 +256,7 @@ int dsort(const void *a,const void *b) {
 
 void print_info(FILE *fp,char *str[]) {
   int i;
-  for (i=0;str[i] !=NULL;i++) fprintf(fp,str[i]);
+  for (i=0;str[i] !=NULL;i++) fprintf(fp, str[i]);
 }
 
 

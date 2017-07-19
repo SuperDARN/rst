@@ -107,7 +107,7 @@ int main(int argc,char *argv[]) {
   arg=OptionProcess(1,argc,argv,&opt,NULL);
 
   old=!new;
-
+  
   if (fitacf_version_s != NULL) {
     if (strcmp(fitacf_version_s, "3.0") == 0){
       fitacf_version = 30;
@@ -176,7 +176,6 @@ int main(int argc,char *argv[]) {
 
   RadarLoadHardware(envstr,network);
 
-
   if (old) {
      rawfp=OldRawOpen(argv[arg],NULL);
      if (rawfp==NULL) {
@@ -226,11 +225,22 @@ int main(int argc,char *argv[]) {
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
-  if (fitacf_version == 30) {
-    fit_prms = Allocate_Fit_Prm(prm);
-    Copy_Fitting_Prms(site,prm,raw,fit_prms);
-    Fitacf(fit_prms,fit);
-  }
+  if (fitacf_version == 30)
+    {
+      /* Allocate the memory for the FIT parameter structure */
+      /* and initialise the values to zero.                  */
+      fit_prms = malloc(sizeof(FITPRMS));
+      memset(fit_prms, 0, sizeof(FITPRMS));
+      Allocate_Fit_Prm(prm, fit_prms);
+
+      /* If the allocation was successful, copy the parameters and */
+      /* load the data into the FitACF structure.                  */
+      if(fit_prms != NULL)
+	{
+	  Copy_Fitting_Prms(site,prm,raw,fit_prms);
+	  Fitacf(fit_prms,fit);
+	}
+    }
   else if (fitacf_version == 25) {
     fblk=FitACFMake(site,prm->time.yr);
     FitACF(prm,raw,fblk,fit);
