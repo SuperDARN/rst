@@ -74,7 +74,9 @@
 </option>
 <option><on>-nb</on><od>do not exclude data based on the operating parameters.</od>
 </option>
-<option><on>-xtd</on><od>create extended output that includes both the power and spectral width measurements.</od>
+<option><on>-ns</on><od>exclude data with scan flags less than zero.</od>
+</option>
+<option><on>-xtd</on><od>create extended output that includes both the power and spectral width measurements and their errors.</od>
 </option>
 <option><on>-ion</on><od>exclude data marked as ground scatter.</od>
 </option>
