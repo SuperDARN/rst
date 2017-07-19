@@ -22,7 +22,7 @@
 function exclude_outofscan, RadarScan
 
     num = 0L
-    
+
     ; Make sure that pointer to the RadarScan structure exists
     if ~ptr_valid(RadarScan) then $
         return, -1
@@ -69,10 +69,10 @@ end
 ;------------------------------------------------------------------------------
 ;
 pro exclude_range, RadarScan, minrng, maxrng, minsrng, maxsrng
-    
+
     ; Loop over number of beams in RadarScan structure
     for bm=0, (*RadarScan).num-1 do begin
-        
+
         ; If RadarBeam structure not set then continue
         if (*(*RadarScan).bm[bm]).bm eq -1 then $
             continue
@@ -80,13 +80,13 @@ pro exclude_range, RadarScan, minrng, maxrng, minsrng, maxsrng
         ; If minsrng or maxsrng option set then exclude data using slant range
         ; instead of range gate
         if (minsrng ne -1) or (maxsrng ne -1) then begin
-            
+
             ; Get radar operating parameters from RadarBeam structure
             frang = (*(*RadarScan).bm[bm]).frang
             rsep = (*(*RadarScan).bm[bm]).rsep
             rxrise = (*(*RadarScan).bm[bm]).rxrise
             nrang = (*(*RadarScan).bm[bm]).nrang
-            
+
             ; Calculate slant range to each range gate and compare to thresholds
             for rng=0, nrang-1 do begin
                 r = RadarSlantRange(frang, rsep, rxrise, 0., rng+1)
@@ -96,7 +96,7 @@ pro exclude_range, RadarScan, minrng, maxrng, minsrng, maxsrng
                 if r gt maxsrng then $
                     (*(*RadarScan).bm[bm]).sct[rng] = 0
             endfor
-        
+
         endif else begin
 
             ; If minrng keyword set then mark all scatter in range gates
@@ -104,7 +104,7 @@ pro exclude_range, RadarScan, minrng, maxrng, minsrng, maxsrng
             if minrng ne -1 then $
                 for rng=0, minrng-1 do $
                     (*(*RadarScan).bm[bm]).sct[rng] = 0
-        
+
             ; If maxrng keyword set then mark all scatter in range gates
             ; greater than maxrng as being empty
             if maxrng ne -1 then $
@@ -535,7 +535,7 @@ endif
 
 ; If either start time or date not provided as input then determine it
 if ( (stime ne -1) or (sdate ne -1) ) then begin
-    
+
     ; If start time not provided then use time of first record in fit file
     if stime eq -1 then $
         stime = (*src[0]).st_time MOD (24*3600.)
@@ -553,7 +553,7 @@ if ( (stime ne -1) or (sdate ne -1) ) then begin
             stime -= tlen $
         else $
             stime -= 15 + (*src[0]).ed_time - (*src[0]).st_time
-    endif    
+    endif
 
     ; Calculate the year, month, day, hour, minute, and second of grid start time
     ret = TimeEpochToYMDHMS(yr, mo, dy, hr, mt, sc, stime)
@@ -607,7 +607,7 @@ if (etime ne -1) and (bxcar eq 1) then begin
     else $
         etime += 15 + (*src[0]).ed_time - (*src[0]).st_time
 endif
-    
+
 ; Calculate the year, month, day, hour, minute, and second of grid start time
 ; (needed to load AACGM_v2 coefficients)
 ret = TimeEpochToYMDHMS(yr, mo, dy, hr, mt, sc, stime)
@@ -632,25 +632,25 @@ new_file = 1
 ;while s ne -1 do begin
 while s eq 0 do begin               ; changed by EGT 20160913
                                     ; (problem with end of fit file)
-    
+
     ; Exclude scatter in beams listed in ebm
     ret = RadarScanResetBeam(src[index], ebmn, ebm)
-    
-    ; If 'is' keyword not set then  
+
+    ; If 'ns' keyword set then discard data with scan flag < 0
     if (nsflg) then $
         ret = exclude_outofscan(src[index])
 
     ; Exclude scatter in range gates below minrng or beyond maxrng
     exclude_range, src[index], minrng, maxrng, minsrng, maxsrng
 
-    ; Exclude either ground or ionospheric scatter based on gsct flag 
+    ; Exclude either ground or ionospheric scatter based on gsct flag
     FilterBoundType, src[index], (*grid).gsct
 
     ; Exclude scatter outside velocity, power, spectral width, and
     ; velocity error boundaries 
     if (bflg) then $
         FilterBound, src[index], min, max
-   
+
     ; If enough radar scans have been loaded and the 'nlm' (no limit)
     ; keyword has not been set, then check to make sure there has not been
     ; a change in distance to first range, range separation, or transmit
@@ -679,7 +679,7 @@ while s eq 0 do begin               ; changed by EGT 20160913
         ; and time of the radar scan (this is only done once)
         if ~keyword_set(site) then begin
             radar = RadarGetRadar(network, (*out).stid)
-        
+
             site = RadarYMDHMSGetSite(radar, yr, mo, dy, hr, mt, sc)
         endif
 
@@ -691,7 +691,7 @@ while s eq 0 do begin               ; changed by EGT 20160913
         ; is after stime then write the grid data to a grdmap file
         if (s eq 1) and ((*grid).st_time ge stime) then begin
             GridTableWrite, ofilename, grid, xtd=xtd, new_file=new_file, grdfp=grdfp
-            
+
             ; Update the new_file keyword after first iteration so that
             ; GridTableWrite knows to add subsequent records to an already open
             ; grid file
@@ -704,7 +704,7 @@ while s eq 0 do begin               ; changed by EGT 20160913
         ; pointed to by 'grid'
         s = GridTableMap(grid, out, site, avlen, iflg, alt, $
             chisham=chisham, old_aacgm=old_aacgm)
-        
+
         if s ne 0 then begin
             print, 'Error mapping beams.'
             break
@@ -721,7 +721,7 @@ while s eq 0 do begin               ; changed by EGT 20160913
 
     ; Read next radar scan from fit file
     s = FitReadRadarScan(fitfp, state, src[index], prm, fit, tlen, syncflg, channel)
-    
+
     ; If scan data is beyond end of gridding time then break out of loop
     if (etime ne -1) and ((*src[index]).st_time gt etime) then $
         break

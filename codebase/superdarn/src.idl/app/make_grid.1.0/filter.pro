@@ -43,7 +43,7 @@ pro FilterBoundType, RadarScan, type
     for bm=0, (*RadarScan).num-1 do begin
         ; Loop over all range gates in beam
         for rng=0, (*(*RadarScan).bm[bm]).nrang-1 do begin
-            
+
             ; If no scatter in that range gate then continue
             if (*(*RadarScan).bm[bm]).sct[rng] eq 0 then $
                 continue
@@ -96,7 +96,7 @@ pro FilterBound, RadarScan, min, max
             ; If measured velocity magnitude less than vmin then mark gate as empty
             if abs((*(*(*RadarScan).bm[bm]).rng).v[rng]) lt min[0] then $
                 (*(*RadarScan).bm[bm]).sct[rng] = 0
-            
+
             ; If measured velocity magnitude greater than vmax then mark gate as empty
             if abs((*(*(*RadarScan).bm[bm]).rng).v[rng]) gt max[0] then $
                 (*(*RadarScan).bm[bm]).sct[rng] = 0
@@ -104,7 +104,7 @@ pro FilterBound, RadarScan, min, max
             ; If measured lambda power less than pmin then mark gate as empty
             if (*(*(*RadarScan).bm[bm]).rng).p_l[rng] lt min[1] then $
                 (*(*RadarScan).bm[bm]).sct[rng] = 0
-            
+
             ; If measured lambda power greater than pmax then mark gate as empty
             if (*(*(*RadarScan).bm[bm]).rng).p_l[rng] gt max[1] then $
                 (*(*RadarScan).bm[bm]).sct[rng] = 0
@@ -112,7 +112,7 @@ pro FilterBound, RadarScan, min, max
             ; If measured spectral width less than wmin then mark gate as empty
             if (*(*(*RadarScan).bm[bm]).rng).w_l[rng] lt min[2] then $
                 (*(*RadarScan).bm[bm]).sct[rng] = 0
-            
+
             ; If measured spectral width greater than wmax then mark gate as empty
             if (*(*(*RadarScan).bm[bm]).rng).w_l[rng] gt max[2] then $
                 (*(*RadarScan).bm[bm]).sct[rng] = 0
@@ -120,7 +120,7 @@ pro FilterBound, RadarScan, min, max
             ; If measured velocity error less than vemin then mark gate as empty
             if (*(*(*RadarScan).bm[bm]).rng).v_e[rng] lt min[3] then $
                 (*(*RadarScan).bm[bm]).sct[rng] = 0
-            
+
             ; If measured velocity error greater than vemax then mark gate as empty
             if (*(*(*RadarScan).bm[bm]).rng).v_e[rng] gt max[3] then $
                 (*(*RadarScan).bm[bm]).sct[rng] = 0
@@ -277,7 +277,7 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
             ; Update largest beam number if necessary
             if bm gt maxbeam then $
                 maxbeam = bm
-            
+
             ; Get number of range gates from RadarBeam structure
             rng = (*(*src[i]).bm[n]).nrang
 
@@ -313,7 +313,7 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
     for bm=0, maxbeam-1 do begin
         ; Add a new beam to the RadarScan structure
         b = RadarScanAddBeam(dst, maxrange)
-        
+
         ; Initialize the beam number of each beam to -1
         (*b).bm = -1
     endfor
@@ -322,7 +322,7 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
     for z=0, depth-1 do begin
         ; Figure out if scan corresponds to previous, center, or next scan in filter
         i = (inx - (depth-1) + z)
-        
+
         if i lt 0 then $
             i += depth
 
@@ -345,12 +345,12 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
             if bmcnt[bm,z] gt mxbm then $
                 mxbm = bmcnt[bm,z]
         endfor
-        
+
         ; Break out of temporal loop if something went wrong     
         if n ne (*src[i]).num then $
             break
     endfor
-    
+
     ; Error check to make sure previous loop worked
     if (z ne depth) then begin
         ; Return error
@@ -368,7 +368,7 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
     (*dst).version.minor = (*src[i]).version.minor
     (*dst).st_time = (*src[i]).st_time
     (*dst).ed_time = (*src[i]).ed_time
-    
+
     ; If 4-bit is set then use operating parameters from first
     ; beam found on "center" scan for the output RadarScan structure
     if (mode AND 4) eq 4 then begin
@@ -415,7 +415,7 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
             (*(*dst).bm[n]).channel = -1
             (*(*dst).bm[n]).nrang = -1
         endfor
-        
+
         ; Loop over temporal dimension of median filter
         for z=0, depth-1 do begin
             ; Loop over maximum number of beams in median filter
@@ -443,7 +443,7 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
                     (*(*dst).bm[bm]).time += (*b).time
                     (*(*dst).bm[bm]).intt.sc += (*b).intt.sc
                     (*(*dst).bm[bm]).intt.us += (*b).intt.us
-                    
+
                     if (*(*dst).bm[bm]).intt.us gt 1e6 then begin
                         (*(*dst).bm[bm]).intt.sc += 1
                         (*(*dst).bm[bm]).intt.us -= 1e6
@@ -471,12 +471,12 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
         ; Loop over maximum number of beams in median filter
         for n=0, maxbeam-1 do begin
             cnt = 0L
-            
+
             ; Loop over temporal dimension and count the total number of times
             ; each beam was sounded
             for z=0, depth-1 do $
                 cnt += bmcnt[n,z]
-            
+
             ; If no beams were found then continue
             if cnt eq 0L then $
                 continue
@@ -501,11 +501,11 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
     ; Create empty RadarCell structure to store all velocity/power/width values
     ; of data in 3x3x3 median filter dimension 
     RadarCellMake, cell, FILTER_WIDTH*FILTER_HEIGHT*depth*mxbm
-    
+
     ; Create empty RadarCell structure to store velocity/power/width values
     ; which meet the 2 sigma criteria for each parameter
     RadarCellMake, median, FILTER_WIDTH*FILTER_HEIGHT*depth*mxbm
-    
+
     ; Loop over maximum number of beams in median filter
     for bm=0, maxbeam-1 do begin
         ; Loop over maximum number of range gates in median filter
@@ -552,7 +552,7 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
 
                             ; Add weight of current cell if scatter is present
                             w += weight[x-bbox,y-rbox,z]*(*b).sct[y]
-                            
+
                             ; Make sure we haven't exceeded the number of range
                             ; gates (this seems unnecessary given above check)
                             if y ge (*b).nrang then $
@@ -589,7 +589,7 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
             ; cells on those beams? what about near/far range edges?)
             if (bm eq 0) or (bm eq maxbeam-1) then $
                 w = fix(w*1.5)
-            
+
             ; If the sum of the weights of the cells containing scatter don't
             ; exceed the threshold (12 or 24) then continue
             if w le thresh[mode MOD 2] then $
@@ -615,16 +615,16 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
                 for c=0, cnum-1 do $
                     mean += cell.v[c]
                 mean = mean/cnum
-                
+
                 ; Calculate the variance of the velocity values
                 for c=0, cnum-1 do $
                     variance += (cell.v[c]-mean)*(cell.v[c]-mean)
                 variance = variance/cnum
-                
+
                 ; Calculate the standard deviation of the velocity values
                 if variance gt 0 then $
                     sigma = sqrt(variance)
-                
+
                 ; Loop over number of median filter cells for beam/gate
                 for c=0, cnum-1 do begin
                     ; If the velocity deviation from the mean is greater
@@ -649,11 +649,11 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
                     ; difference of less than 2 sigma
                     cnt += 1L
                 endfor
-                
+
                 ; Sort velocity values in median RadarCell structure
                 ; from most negative to most positive velocity
                 vsort = median.v[sort(median.v[0:cnt-1])]
-                
+
                 ; Set current beam/gate velocity to the center of the above
                 ; array sorted by velocity (ie the median)
                 (*(*(*dst).bm[bm]).rng).v[rng] = vsort[cnt/2]
@@ -677,7 +677,7 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
                     sigma = sqrt(variance) $
                 else $
                     sigma = 0D
-                
+
                 ; Set the velocity error to the calculated standard deviation
                 (*(*(*dst).bm[bm]).rng).v_e[rng] = sigma
             endif
@@ -731,11 +731,11 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
                 ; Sort velocity values in median RadarCell structure
                 ; from most negative to most positive velocity
                 plsort = median.p_l[sort(median.v[0:cnt-1])]
-            
+
                 ; Set current beam/gate power to the center of the above
                 ; array sorted by velocity (ie the median)
                 (*(*(*dst).bm[bm]).rng).p_l[rng] = plsort[cnt/2]
-                
+
                 ; Reset the mean and variance to zero
                 mean = 0D
                 variance = 0D
@@ -755,7 +755,7 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
                     sigma = sqrt(variance) $
                 else $
                     sigma = 0D
-                
+
                 ; Set the power error to the calculated standard deviation
                 (*(*(*dst).bm[bm]).rng).p_l_e[rng] = sigma
             endif
@@ -809,11 +809,11 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
                 ; Sort velocity values in median RadarCell structure
                 ; from most negative to most positive velocity
                 wsort = median.w_l[sort(median.v[0:cnt-1])]
-                
+
                 ; Set current beam/gate width to the center of the above
                 ; array sorted by velocity (ie the median)
                 (*(*(*dst).bm[bm]).rng).w_l[rng] = wsort[cnt/2]
-                
+
                 ; Reset the mean and variance to zero
                 mean = 0D
                 variance = 0D
@@ -833,7 +833,7 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
                     sigma = sqrt(variance) $
                 else $
                     sigma = 0D
-                
+
                 ; Set the width error to the calculated standard deviation
                 (*(*(*dst).bm[bm]).rng).w_l_e[rng] = sigma
             endif
@@ -849,7 +849,7 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
                 for c=0, cnum-1 do $
                     mean += cell.p_0[c]
                 mean = mean/cnum
-                
+
                 ; Calculate the variance of the lag0 power values
                 for c=0, cnum-1 do $
                     variance += (cell.p_0[c]-mean)*(cell.p_0[c]-mean)
@@ -887,7 +887,7 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
                 ; Sort velocity values in median RadarCell structure
                 ; from most negative to most positive velocity
                 p0sort = median.p_0[sort(median.v[0:cnt-1])]
-            
+
                 ; Set current beam/gate lag0 power to the center of the above
                 ; array sorted by velocity (ie the median)
                 (*(*(*dst).bm[bm]).rng).p_0[rng] = p0sort[cnt/2]
@@ -911,7 +911,7 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
                     sigma = sqrt(variance) $
                 else $
                     sigma = 0D
-                
+
                 ; Set the lag0 power error to the calculated standard deviation
                 (*(*(*dst).bm[bm]).rng).p_0_e[rng] = sigma
             endif

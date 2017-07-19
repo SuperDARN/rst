@@ -100,7 +100,7 @@ pro GridTableWrite, fname, GridTable, xtd=xtd, new_file=new_file, grdfp=grdfp
     stvec.wdt.max = (*GridTable).max[2]
     stvec.verr.min = (*GridTable).min[3]
     stvec.verr.max = (*GridTable).max[3]
-   
+
     ; If new_file keyword is set then open a new grdmap file, otherwise
     ; data will be written to open file with logical unit number grdfp
     if keyword_set(new_file) then begin
@@ -123,7 +123,7 @@ pro GridTableWrite, fname, GridTable, xtd=xtd, new_file=new_file, grdfp=grdfp
         ; If no velocity measurements in GridPnt then continue
         if (*(*GridTable).pnt[n]).cnt eq 0 then $
             continue
-        
+
         ; Populate grdmap data vector structure with values from
         ; GridPnt structures
         gvec[cnt].mlat = (*(*GridTable).pnt[n]).mlat
@@ -145,7 +145,7 @@ pro GridTableWrite, fname, GridTable, xtd=xtd, new_file=new_file, grdfp=grdfp
 
     endfor
 
-    ; Write the current grid record to a grdmap file    
+    ; Write the current grid record to a grdmap file
     s = GridWrite(unit, prm, stvec, gvec)
 
 end
