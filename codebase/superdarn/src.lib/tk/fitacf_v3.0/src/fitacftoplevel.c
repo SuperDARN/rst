@@ -56,7 +56,7 @@ void FitacfFree(FITPRMS *fit_prms) {
 /**
 Allocates a new data structure for fit parameters.
 */
-void Allocate_Fit_Prm(struct RadarParm *radar_prms, FITPRMS *fit_prms)
+int Allocate_Fit_Prm(struct RadarParm *radar_prms, FITPRMS *fit_prms)
 {
   int columns, n;
   size_t is, rows;
