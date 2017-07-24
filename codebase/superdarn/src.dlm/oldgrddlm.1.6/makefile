@@ -1,5 +1,5 @@
-# Makefile for grddlm DLM
-# =======================
+# Makefile for oldgrddlm DLM
+# ==========================
 # by R.J.Barnes
 #
 #
