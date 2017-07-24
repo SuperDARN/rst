@@ -23,6 +23,7 @@ Keith Kotyk
 2015
  */
 
+#include "rtypes.h"
 #include "llist.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -219,6 +220,18 @@ int llist_go_next(llist list)
     return LLIST_SUCCESS;
 }
 
+int llist_iter_not_at_end(llist list)
+{
+    if(( ( _llist * ) list )->iter == NULL){
+        return LLIST_END_OF_LIST;
+    }
+    else if(( ( _llist * ) list )->iter->next == NULL){
+        return LLIST_END_OF_LIST;
+    }
+    else{
+        return LLIST_SUCCESS;
+    }
+}
 int llist_reset_iter(llist list){
 
     if ( list == NULL )
@@ -227,7 +240,7 @@ int llist_reset_iter(llist list){
     }
 
     ( ( _llist * ) list )->iter = ( ( _llist * ) list )->head;
-    
+
     return LLIST_SUCCESS;
 }
 
@@ -346,7 +359,7 @@ int llist_delete_node ( llist list, llist_node node,
             ( ( _llist * ) list )->head = ( ( _llist * ) list )->head->next;
             if (( ( _llist * ) list )->iter == iterator){
                 ( ( _llist * ) list )->iter = ( ( _llist * ) list )->head;
-            } 
+            }
 
             free ( iterator );
             ( ( _llist * ) list )->count--;
@@ -749,7 +762,7 @@ int llist_sort ( llist list, int flags )
         return LLIST_NULL_ARGUMENT;
     }
 
- 	
+
 
     cmp =  thelist->comp_func;
 
@@ -886,7 +899,7 @@ static int llist_get_min_max(llist list, llist_node * output, bool max)
         return LLIST_COMPERATOR_MISSING;
     }
 
-	
+
 	*output = iterator->node;
 	iterator = iterator->next;
 	while (iterator)

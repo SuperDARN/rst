@@ -21,6 +21,7 @@ July 2015
 
 */
 
+#include "rtypes.h"
 #include "preprocessing.h"
 #include "fitting.h"
 #include "fitacftoplevel.h"
@@ -39,14 +40,14 @@ July 2015
 Free a fit parameter structure
 */
 void FitacfFree(FITPRMS *fit_prms) {
-  if (fit_prms->pulse !=NULL) free(fit_prms->pulse);
-  if (fit_prms->lag[0] !=NULL) free(fit_prms->lag[0]);
-  if (fit_prms->lag[1] !=NULL) free(fit_prms->lag[1]);
-  if (fit_prms->pwr0 !=NULL) free(fit_prms->pwr0);
-  if (fit_prms->acfd !=NULL){
+  if (fit_prms->pulse != NULL) free(fit_prms->pulse);
+  if (fit_prms->lag[0] != NULL) free(fit_prms->lag[0]);
+  if (fit_prms->lag[1] != NULL) free(fit_prms->lag[1]);
+  if (fit_prms->pwr0 != NULL) free(fit_prms->pwr0);
+  if (fit_prms->acfd != NULL){
     free(fit_prms->acfd);
   }
-  if (fit_prms->xcfd !=NULL){
+  if (fit_prms->xcfd != NULL){
     free(fit_prms->xcfd);
   }
   free(fit_prms);
@@ -67,7 +68,7 @@ int Allocate_Fit_Prm(struct RadarParm *radar_prms, FITPRMS *fit_prms)
   }
 
   /* Allocate space for an integer pointer */
-  fit_prms->pulse = malloc(sizeof(*fit_prms->pulse) * radar_prms->mppul);
+  fit_prms->pulse = realloc(fit_prms->pulse, sizeof(*fit_prms->pulse) * radar_prms->mppul);
   memset(fit_prms->pulse, 0, sizeof(*fit_prms->pulse));
 
   if(fit_prms->pulse == NULL){
@@ -77,7 +78,7 @@ int Allocate_Fit_Prm(struct RadarParm *radar_prms, FITPRMS *fit_prms)
 
   /* Allocate space for the integer pointer holding the lag data */
   for(n=0; n<2; n++){
-    fit_prms->lag[n] = malloc(sizeof(*fit_prms->lag[n]) * (radar_prms->mplgs+1));
+    fit_prms->lag[n] = realloc(fit_prms->lag[n], sizeof(*fit_prms->lag[n]) * (radar_prms->mplgs+1));
     memset(fit_prms->lag[n], 0, sizeof(*fit_prms->lag[n]));
 
     if(fit_prms->lag[n] == NULL){
@@ -87,7 +88,7 @@ int Allocate_Fit_Prm(struct RadarParm *radar_prms, FITPRMS *fit_prms)
   }
 
   /* Allocate space for the double pointer holding the zero-lag power */
-  fit_prms->pwr0 = malloc(sizeof(*fit_prms->pwr0) * radar_prms->nrang);
+  fit_prms->pwr0 = realloc(fit_prms->pwr0, sizeof(*fit_prms->pwr0) * radar_prms->nrang);
   memset(fit_prms->pwr0, 0, sizeof(*fit_prms->pwr0));
 
   if(fit_prms->pwr0 == NULL){
@@ -99,7 +100,7 @@ int Allocate_Fit_Prm(struct RadarParm *radar_prms, FITPRMS *fit_prms)
   columns = 2;
 
   /* Allocate space for the double pointer of pointers holding the ACF data */
-  fit_prms->acfd = malloc((sizeof(*fit_prms->acfd) + columns * sizeof(**fit_prms->acfd)) * rows);
+  fit_prms->acfd = realloc(fit_prms->acfd, (sizeof(*fit_prms->acfd) + columns * sizeof(**fit_prms->acfd)) * rows);
   memset(fit_prms->acfd, 0, (sizeof(*fit_prms->acfd) + columns * sizeof(**fit_prms->acfd)) * rows);
 
   if(fit_prms->acfd == NULL){
@@ -113,7 +114,7 @@ int Allocate_Fit_Prm(struct RadarParm *radar_prms, FITPRMS *fit_prms)
   }
 
   /* Allocate space for the doubple pointer of pointers holding XCF data */
-  fit_prms->xcfd = malloc((sizeof(*fit_prms->xcfd) + columns * sizeof(**fit_prms->xcfd)) * rows);
+  fit_prms->xcfd = realloc(fit_prms->xcfd, (sizeof(*fit_prms->xcfd) + columns * sizeof(**fit_prms->xcfd)) * rows);
   memset(fit_prms->xcfd, 0, (sizeof(*fit_prms->xcfd) + columns * sizeof(**fit_prms->xcfd)) * rows);
 
   if(fit_prms->xcfd == NULL){
