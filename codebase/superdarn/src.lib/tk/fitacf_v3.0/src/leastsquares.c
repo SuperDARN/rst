@@ -26,12 +26,13 @@ pages 661-663
 */
 
 #include "leastsquares.h"
+#include "rtypes.h"
 #include <string.h>
 #include <math.h>
 #include <stdio.h>
 
-#define ITMAX 100 
-#define EPS 3.0e-7 
+#define ITMAX 100
+#define EPS 3.0e-7
 #define FPMIN 1.0e-30
 
 typedef struct data{
@@ -63,7 +64,7 @@ FITDATA *new_fit_data(){
 	new_fit_data->sigma_2_a = 0.0;
 	new_fit_data->sigma_2_b = 0.0;
 	new_fit_data->delta_a = 0.0;
-	new_fit_data->delta_b = 0.0;	
+	new_fit_data->delta_b = 0.0;
 	new_fit_data->cov_ab = 0.0;
 	new_fit_data->r_ab = 0.0;
 	new_fit_data->Q = 0.0;
@@ -121,14 +122,14 @@ void calculate_sums(llist_node data,FITDATA *fit_data,FIT_TYPE* fit_type){
 
 	switch(*fit_type){
 		case LINEAR:
-			fit_data->sums->S += 1/(sigma * sigma); 
+			fit_data->sums->S += 1/(sigma * sigma);
 			fit_data->sums->S_x += x/(sigma * sigma);
 			fit_data->sums->S_y += y/(sigma * sigma);
 			fit_data->sums->S_xx += (x * x)/(sigma * sigma);
 			fit_data->sums->S_xy += (x * y)/(sigma * sigma);
 			break;
 		case QUADRATIC:
-			fit_data->sums->S += 1/(sigma * sigma); 
+			fit_data->sums->S += 1/(sigma * sigma);
 			fit_data->sums->S_x += x * x/(sigma * sigma);
 			fit_data->sums->S_y += y/(sigma * sigma);
 			fit_data->sums->S_xx += (x * x * x *x)/(sigma * sigma);
@@ -219,11 +220,11 @@ void gamma_continued_frac(double *gammcf, double a, double x, double *gln)
 	int i;
 	double an,b,c,d,del,h;
 	*gln=gammln(a);
-	b=x+1.0-a; 
+	b=x+1.0-a;
 	c=1.0/FPMIN;
 	d=1.0/b;
 	h=d;
-	for (i=1;i<=ITMAX;i++) { 
+	for (i=1;i<=ITMAX;i++) {
 		an = -i*(i-a);
 		b += 2.0;
 		d=an*d+b;
@@ -235,12 +236,12 @@ void gamma_continued_frac(double *gammcf, double a, double x, double *gln)
 		h *= del;
 		if (fabs(del-1.0) < EPS) break;
 	}
-	if (i > ITMAX) 
-	*gammcf=exp(-x+a*log(x)-(*gln))*h; 
+	if (i > ITMAX)
+	*gammcf=exp(-x+a*log(x)-(*gln))*h;
 }
 
 /**
-Computes the incomplete upper gamma function using either 
+Computes the incomplete upper gamma function using either
 series representation or continued fractions, depending on
 which will be faster
 */
@@ -248,10 +249,10 @@ double gammaq(double a, double x){
 
 	double gamser = 0.0,gammcf = 0.0,gln = 0.0;
 	if (x < 0.0 || a <= 0.0) return -1.0;
-	if (x < (a+1.0)) { 
+	if (x < (a+1.0)) {
 		gamma_series_rep(&gamser,a,x,&gln);
 		return 1.0-gamser;
-	} else { 
+	} else {
 		gamma_continued_frac(&gammcf,a,x,&gln);
 		return gammcf;
 	}

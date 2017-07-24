@@ -22,6 +22,7 @@ July 2015
 
 */
 
+#include "rtypes.h"
 #include <math.h>
 #include "fitting.h"
 #include "preprocessing.h"

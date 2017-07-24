@@ -22,6 +22,7 @@ July 2015
 
 */
 
+#include "rtypes.h"
 #include "preprocessing.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -35,7 +36,7 @@ Initializes a new range node and returns a pointer to it.
 */
 RANGENODE* new_range_node(int range, FITPRMS *fit_prms){
 	RANGENODE* new_node;
-	new_node = malloc(sizeof(RANGENODE));
+	new_node = malloc(sizeof(*new_node));
 	new_node->range = range;
 	new_node->CRI = calloc(fit_prms->mppul,sizeof(*new_node->CRI));
 	new_node->refrc_idx = 1;
@@ -58,7 +59,7 @@ Initializes a new pwr node and returns a pointer to it. Returns a null
 pointer if the power at this node is below the fluctuation level.
 */
 PWRNODE* new_pwr_node(int range, double alpha_2, LAGNODE* lag, FITPRMS *fit_prms){
-	PWRNODE* new_pwr_node;
+	PWRNODE* new_pwr_node = NULL;
 	double R,R_norm,R_norm_2,real,imag,inverse_alpha_2;
 
 
@@ -497,7 +498,8 @@ void mark_bad_samples(FITPRMS *fit_prms, llist bad_samples){
 	pulses_stereo = llist_create(compare_ints,sample_node_eq,0);
 
 	for(j=0; j<fit_prms->mppul; j++){
-		pulse_us = malloc(sizeof(int));
+		pulse_us = malloc(sizeof(*pulse_us));
+		memset(pulse_us, 0, sizeof(*pulse_us));
 		*pulse_us = fit_prms->pulse[j] * fit_prms->mpinc;
 		if(llist_add_node(pulses_in_us,(llist_node)pulse_us,0) != LLIST_SUCCESS){
 			fprintf(stderr,"pulses_in_us list node failed to add in mark_bad_samples\n");
@@ -507,7 +509,8 @@ void mark_bad_samples(FITPRMS *fit_prms, llist bad_samples){
 	if((offset != 0) && ((channel == 1) || (channel == 2))) {
 
 		for(j=0; j< fit_prms->mppul;j++){
-			pulse_us = malloc(sizeof(int));
+			pulse_us = malloc(sizeof(*pulse_us));
+			memset(pulse_us, 0, sizeof(*pulse_us));
 			if (channel == 1) {
 				*pulse_us = fit_prms->pulse[j] * fit_prms->mpinc - offset;
 			}
@@ -541,7 +544,8 @@ void mark_bad_samples(FITPRMS *fit_prms, llist bad_samples){
 		}
 
 		while ((ts >= t1) && (ts <= t2)) {
-			bad_sample = malloc(sizeof(int));
+			bad_sample = malloc(sizeof(*bad_sample));
+			memset(bad_sample, 0, sizeof(*bad_sample));
 			*bad_sample = sample;
 			if(llist_add_node(bad_samples,(llist_node)bad_sample,0) != LLIST_SUCCESS){
 				fprintf(stderr,"list node failed to add in Mark_Bad_Samples\n");
@@ -691,8 +695,8 @@ double ACF_cutoff_pwr(FITPRMS *fit_prms){
     double *pwr_levels;
     int ni = 0;
 
-    pwr_levels = malloc(fit_prms->nrang * sizeof(double));
-
+    pwr_levels = malloc(fit_prms->nrang * sizeof(*pwr_levels));
+    memset(pwr_levels, 0, sizeof(*pwr_levels));
     if(pwr_levels == NULL){
         return -1.0;
     }
@@ -769,6 +773,7 @@ void Filter_Bad_ACFs(FITPRMS *fit_prms, llist ranges, double noise_pwr){
 		llist_get_iter(ranges,(void**)&range_node);
 		if((fit_prms->pwr0[range_node->range] <= cutoff_pwr) || (llist_size(range_node->pwrs) < MIN_LAGS)){
 			bad_range = malloc(sizeof(*bad_range));
+			memset(bad_range, 0, sizeof(*bad_range));
 			*bad_range = range_node->range;
 			llist_add_node(bad_ranges,(llist_node)bad_range,0);
 		}
@@ -834,7 +839,7 @@ void Filter_Low_Pwr_Lags(llist_node range, FITPRMS* fit_prms){
 	RANGENODE* range_node = NULL;
 	int cutoff_lag = 0;
 	llist bad_pwr_indices;
-	int *bad_pwr_idx;
+	int *bad_pwr_idx = NULL;
 
 	range_node = (RANGENODE*) range;
 
@@ -863,6 +868,7 @@ void Filter_Low_Pwr_Lags(llist_node range, FITPRMS* fit_prms){
 		if(pwr_node->lag_idx > cutoff_lag){
 			/*llist_delete_node(range_node->pwrs,&pwr_node->lag_idx,TRUE,free);*/
 			bad_pwr_idx = malloc(sizeof(*bad_pwr_idx));
+			memset(bad_pwr_idx, 0, sizeof(*bad_pwr_idx));
 			*bad_pwr_idx = pwr_node->lag_idx;
 			llist_add_node(bad_pwr_indices,(llist_node)bad_pwr_idx,0);
 		}
@@ -872,6 +878,7 @@ void Filter_Low_Pwr_Lags(llist_node range, FITPRMS* fit_prms){
 				cutoff_lag = pwr_node->lag_idx;
 				/*llist_delete_node(range_node->pwrs,&pwr_node->lag_idx,TRUE,free);*/
 				bad_pwr_idx = malloc(sizeof(*bad_pwr_idx));
+				memset(bad_pwr_idx, 0, sizeof(*bad_pwr_idx));
 				*bad_pwr_idx = pwr_node->lag_idx;
 				llist_add_node(bad_pwr_indices,(llist_node)bad_pwr_idx,0);
 			}
@@ -880,11 +887,13 @@ void Filter_Low_Pwr_Lags(llist_node range, FITPRMS* fit_prms){
 		llist_go_next(range_node->alpha_2);
 	}while(llist_go_next(range_node->pwrs) != LLIST_END_OF_LIST);
 
-	llist_reset_iter(bad_pwr_indices);
-	do{
-		llist_get_iter(bad_pwr_indices,(void**)&bad_pwr_idx);
-		llist_delete_node(range_node->pwrs,(llist_node)bad_pwr_idx,TRUE,free);
-	}while(llist_go_next(bad_pwr_indices) != LLIST_END_OF_LIST);
+	if (llist_size(bad_pwr_indices) != 0) {
+		llist_reset_iter(bad_pwr_indices);
+		do{
+			llist_get_iter(bad_pwr_indices,(void**)&bad_pwr_idx);
+			llist_delete_node(range_node->pwrs,(llist_node)bad_pwr_idx,TRUE,free);
+		}while(llist_go_next(bad_pwr_indices) != LLIST_END_OF_LIST);
+	}
 
 	llist_destroy(bad_pwr_indices,TRUE,free);
 
@@ -977,12 +986,14 @@ void ACF_Phase_Unwrap(llist_node range, FITPRMS* fit_prms){
 	range_node = (RANGENODE*) range;
 
 	total_2pi_corrections = malloc(sizeof(*total_2pi_corrections));
+	memset(total_2pi_corrections, 0, sizeof(*total_2pi_corrections));
 	*total_2pi_corrections = 0;
 	/*Because our list of phases has been filtered, we can use a local copy in an array
 	 for simple sequential access. The list is used in the first place for easy removal
 	 without the need of array masking. This local copy will be used to test if unwrap is
 	 needed in the first place*/
 	local_copy = malloc(sizeof(PHASENODE) * llist_size(range_node->phases));
+	memset(local_copy, 0, sizeof(*local_copy));
 
 	/*Copy phase into local copy*/
 	llist_reset_iter(range_node->phases);
@@ -1113,6 +1124,7 @@ void XCF_Phase_Unwrap(llist_node range){
 	range_node = (RANGENODE*) range;
 
 	total_2pi_corrections = malloc(sizeof(*total_2pi_corrections));
+	memset(total_2pi_corrections, 0, sizeof(*total_2pi_corrections));
 	*total_2pi_corrections = 0;
 	llist_for_each_arg(range_node->elev,(node_func_arg)phase_correction,&range_node->phase_fit->b,
 						total_2pi_corrections);
@@ -1208,7 +1220,8 @@ void Determine_Lags(llist lags,FITPRMS *fit_prms){
 
 	/***Find lags from the lag table****/
 	for(i=0;i<fit_prms->mplgs;i++){
-		temp = malloc(sizeof(LAGNODE));
+		temp = malloc(sizeof(*temp));
+		memset(temp, 0, sizeof(*temp));
 		temp->lag_num = fit_prms->lag[1][i] - fit_prms->lag[0][i];
 		for(j=0;j<fit_prms->mppul;j++){
 			if(fit_prms->pulse[j] == fit_prms->lag[1][i]){
@@ -1249,9 +1262,9 @@ void Fill_Data_Lists_For_Range(llist_node range,llist lags,FITPRMS *fit_prms){
 
 	range_node = (RANGENODE*) range;
 
-	range_node->pwrs = llist_create(compare_doubles,pwr_node_eq,0);;
-	range_node->phases = llist_create(compare_doubles,phase_node_eq,0);
-	range_node->elev = llist_create(compare_doubles,phase_node_eq,0);
+	range_node->pwrs = llist_create(NULL,pwr_node_eq,0);;
+	range_node->phases = llist_create(NULL,phase_node_eq,0);
+	range_node->elev = llist_create(NULL,phase_node_eq,0);
 
 	llist_reset_iter(range_node->alpha_2);
 	llist_reset_iter(lags);
