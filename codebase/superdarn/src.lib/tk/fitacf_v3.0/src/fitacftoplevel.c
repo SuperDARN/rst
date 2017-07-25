@@ -69,7 +69,7 @@ int Allocate_Fit_Prm(struct RadarParm *radar_prms, FITPRMS *fit_prms)
 
   /* Allocate space for an integer pointer */
   fit_prms->pulse = realloc(fit_prms->pulse, sizeof(*fit_prms->pulse) * radar_prms->mppul);
-  memset(fit_prms->pulse, 0, sizeof(*fit_prms->pulse));
+  memset(fit_prms->pulse, 0, sizeof(*fit_prms->pulse) * radar_prms->mppul);
 
   if(fit_prms->pulse == NULL){
     fprintf(stderr, "COULD NOT ALLOCATE fit_prms->pulse\n");
@@ -79,7 +79,7 @@ int Allocate_Fit_Prm(struct RadarParm *radar_prms, FITPRMS *fit_prms)
   /* Allocate space for the integer pointer holding the lag data */
   for(n=0; n<2; n++){
     fit_prms->lag[n] = realloc(fit_prms->lag[n], sizeof(*fit_prms->lag[n]) * (radar_prms->mplgs+1));
-    memset(fit_prms->lag[n], 0, sizeof(*fit_prms->lag[n]));
+    memset(fit_prms->lag[n], 0, sizeof(*fit_prms->lag[n]) * (radar_prms->mplgs+1));
 
     if(fit_prms->lag[n] == NULL){
       fprintf(stderr, "COULD NOT ALLOCATE fit_prms->lag[%d]\n",n);
@@ -89,7 +89,7 @@ int Allocate_Fit_Prm(struct RadarParm *radar_prms, FITPRMS *fit_prms)
 
   /* Allocate space for the double pointer holding the zero-lag power */
   fit_prms->pwr0 = realloc(fit_prms->pwr0, sizeof(*fit_prms->pwr0) * radar_prms->nrang);
-  memset(fit_prms->pwr0, 0, sizeof(*fit_prms->pwr0));
+  memset(fit_prms->pwr0, 0, sizeof(*fit_prms->pwr0) * radar_prms->nrang);
 
   if(fit_prms->pwr0 == NULL){
     fprintf(stderr, "COULD NOT ALLOCATE fit_prms->pwr0\n");
