@@ -13,6 +13,6 @@ INC=$(IPATH)/analysis
 DSTPATH=${DLMPATH}
 LINK="1"
 OUTPUT = mltdlm
-SLIB= -lmlt.1 -lastalg.1 -laacgm.1 -lrtime.1
+SLIB= -lmlt_v2.1 -laacgm_v2.1 -ligrf_v2.1 -lmlt.1 -lastalg.1 -laacgm.1 -lrtime.1
 
 include $(MAKEDLM).$(SYSTEM)
