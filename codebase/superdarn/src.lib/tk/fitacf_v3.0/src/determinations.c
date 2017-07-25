@@ -37,7 +37,7 @@ Returns a newly allocated array of FitRanges to fill
 */
 struct FitRange* new_range_array(FITPRMS* fit_prms){
     struct FitRange* new_range_array;
-    new_range_array = calloc(fit_prms->nrang, sizeof(*new_range_array) * fit_prms->nrang);
+    new_range_array = realloc(fit_prms->nrang, sizeof(*new_range_array));
     if(new_range_array == NULL) return NULL;
 
     return new_range_array;
@@ -45,28 +45,28 @@ struct FitRange* new_range_array(FITPRMS* fit_prms){
 }
 
 void allocate_fit_data(struct FitData* fit_data, FITPRMS* fit_prms){
-    if(fit_data->rng == NULL) fit_data->rng = new_range_array(fit_prms);
+    fit_data->rng = realloc(fit_data->rng,fit_prms->nrang * sizeof(*fit_data->rng));
     if(fit_data->rng == NULL){
         fprintf(stderr,"COULD NOT ALLOCATE fit_data->rng\n");
     }
     else{
-        /*memset(fit_data->rng,0,sizeof(*fit_data->rng) * fit_prms->nrang);*/
+        memset(fit_data->rng,0,sizeof(*fit_data->rng) * fit_prms->nrang);
     }
 
-    if(fit_data->xrng == NULL) fit_data->xrng = new_range_array(fit_prms);
+    fit_data->xrng = realloc(fit_data->xrng,fit_prms->nrang * sizeof(*fit_data->xrng));
     if(fit_data->xrng == NULL){
         fprintf(stderr,"COULD NOT ALLOCATE fit_data->xrng\n");
     }
     else{
-        /*memset(fit_data->xrng,0,sizeof(*fit_data->xrng) * fit_prms->nrang);*/
+        memset(fit_data->xrng,0,sizeof(*fit_data->xrng) * fit_prms->nrang);
     }
 
-    if(fit_data->elv == NULL) fit_data->elv = calloc(fit_prms->nrang,sizeof(*fit_data->elv) * fit_prms->nrang);
+    fit_data->elv = realloc(fit_data->elv,fit_prms->nrang * sizeof(*fit_data->elv));
     if (fit_data->elv == NULL){
         fprintf(stderr,"COULD NOT ALLOCATE fit_data->xrng\n");
     }
     else{
-        /*memset(fit_data->elv,0,sizeof(*fit_data->elv) * fit_prms->nrang);*/
+        memset(fit_data->elv,0,sizeof(*fit_data->elv) * fit_prms->nrang);
     }
 
 }
