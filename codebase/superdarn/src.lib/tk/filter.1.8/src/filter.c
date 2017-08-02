@@ -94,7 +94,7 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
     struct RadarCell **median=NULL;
     int cnum=0,cnt=0;
     int maxbeam=0;
-    int maxrange=0;
+    int maxrange=1000;
     double variance,mean,sigma;  
 
     /* If input filter depth greater than FILTER_DEPTH then set to 
@@ -117,7 +117,7 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
             rng=src[i]->bm[n].nrang;
 
             /* Update largest number of range gates if necessary */
-            if (rng>maxrange) maxrange=rng;
+            if (rng<maxrange) maxrange=rng;
 
         }
 
@@ -249,7 +249,7 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
             dst->bm[bm].noise=b->noise;
             dst->bm[bm].atten=b->atten;
             dst->bm[bm].channel=b->channel;
-            dst->bm[bm].nrang=b->nrang;    
+            dst->bm[bm].nrang=maxrange;
 
         }
 
@@ -314,9 +314,9 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
                     dst->bm[bm].atten+=b->atten;
                     if (dst->bm[bm].channel==0) dst->bm[bm].channel=b->channel;
 
-                    /* If this is the first beam in time/beam cell then use it
+                    /* If this is the first beam in time/beam cell then use maxrange
                      * to set the number of range gates for RadarBeam structure */
-                    if (dst->bm[bm].nrang==-1) dst->bm[bm].nrang=b->nrang;
+                    if (dst->bm[bm].nrang==-1) dst->bm[bm].nrang=maxrange;
 
                 }
 
