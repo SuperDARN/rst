@@ -261,7 +261,7 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
 
     mxbm = 1L
     maxbeam = 0L
-    maxrange = 0L
+    maxrange = 1000L
 
     ; If input filter depth greater than FILTER_DEPTH then set to FILTER_DEPTH
     if depth gt FILTER_DEPTH then $
@@ -282,7 +282,7 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
             rng = (*(*src[i]).bm[n]).nrang
 
             ; Update largest number of range gates if necessary
-            if rng gt maxrange then $
+            if rng lt maxrange then $
                 maxrange = rng
         endfor
     endfor
@@ -395,7 +395,7 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
             (*(*dst).bm[bm]).noise = (*b).noise
             (*(*dst).bm[bm]).atten = (*b).atten
             (*(*dst).bm[bm]).channel = (*b).channel
-            (*(*dst).bm[bm]).nrang = (*b).nrang
+            (*(*dst).bm[bm]).nrang = maxrange
         endfor
     endif else begin
         ; Loop over maximum number of beams in median filter
@@ -460,10 +460,10 @@ function FilterRadarScan, mode, depth, inx, src, dst, prm
                     if (*(*dst).bm[bm]).channel eq 0 then $
                         (*(*dst).bm[bm]).channel = (*b).channel
 
-                    ; If this is the first beam in time/beam cell then use it
+                    ; If this is the first beam in time/beam cell then use maxrange
                     ; to set the number of range gates for RadarBeam structure
                     if (*(*dst).bm[bm]).nrang eq -1 then $
-                        (*(*dst).bm[bm]).nrang = (*b).nrang
+                        (*(*dst).bm[bm]).nrang = maxrange
                 endfor
             endfor
         endfor
