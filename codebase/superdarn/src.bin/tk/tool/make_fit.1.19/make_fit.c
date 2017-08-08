@@ -239,6 +239,7 @@ int main(int argc,char *argv[]) {
       if(fit_prms != NULL) {
     	  Copy_Fitting_Prms(site,prm,raw,fit_prms);
     	  Fitacf(fit_prms,fit);
+        /*FitacfFree(fit_prms);*/
     	}
       else {
         fprintf(stderr, "Unable to allocate fit_prms!\n");
@@ -301,8 +302,22 @@ int main(int argc,char *argv[]) {
 
     if (status==0){
       if (fitacf_version == 30) {
-        Copy_Fitting_Prms(site,prm,raw,fit_prms);
-        Fitacf(fit_prms,fit);
+
+        if (Allocate_Fit_Prm(prm, fit_prms) == -1) {
+          exit(-1);
+        }
+
+        /* If the allocation was successful, copy the parameters and */
+        /* load the data into the FitACF structure.                  */
+        if(fit_prms != NULL) {
+          Copy_Fitting_Prms(site,prm,raw,fit_prms);
+          Fitacf(fit_prms,fit);
+          /*FitacfFree(fit_prms);*/
+        }
+        else {
+          fprintf(stderr, "Unable to allocate fit_prms!\n");
+          exit(-1);
+        }
       }
       else if (fitacf_version == 25) {
         FitACF(prm,raw,fblk,fit);
