@@ -108,7 +108,7 @@
 <p>The arrays <code>vector.pwr.median,vector.pwr.sd,vector.wdt.median</code> and <code>vector.wdt.sd</code> are only included in extended format grdmap files</p>
 <p>A cnvmap does not necessarily contain a complete all of the variables listed above. The processing is divided up into stages with variables added to the file as needed. If the statistical model has been calculated the file will contain the arrays <code>model.mlat,model.mlon,model.kvect</code> and <code>model.vel.median</code> each with <em>mdnum</em> members. If the lower latitude boundary has been found then the file will contain the arrays <code>boundary.mlat</code> and <code>boundary.mlon</code> each with <em>bdnum</em> members. If the spherical harmonic analysis has been performed then the file will contain the arrays <code>N,N+1,N+2 and N+3</code> each with <em>ftnum</em> members.</p>
 </body>
-<reference><rfc href="rfc.0006.html">RFC #0006</rfc></reference>
-<reference><rfc href="rfc.0016.html">RFC #0016</rfc></reference>
+<reference><rfc href="0006.html">RFC #0006</rfc></reference>
+<reference><rfc href="0016.html">RFC #0016</rfc></reference>
 <revision>2004/11/19  Initial Revision.</revision>
 </rfc>

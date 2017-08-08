@@ -1,5 +1,5 @@
-/* aacgmdlm.c
-   =========== 
+/* igrfdlm.c
+   =========
    Author R.J.Barnes
 */
 

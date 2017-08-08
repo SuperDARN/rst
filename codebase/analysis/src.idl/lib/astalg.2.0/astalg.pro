@@ -46,13 +46,13 @@
 
 function AstAlg_dday,day,hour,minute,second, dday_bug=dday_bug
 
-	if keyword_set(dday_bug) then $
-		return, double(day+hour/24.0D + minute/60.0D +second/3600.0D)
+  if keyword_set(dday_bug) then $
+    return, double(day+hour/24.0D + minute/60.0D +second/3600.0D)
 
-	; 20150204 SGS : this is an error found by Nathaniel Frissel
-	;                which introduces up to one hour of error in
-	;                the actual time.
-	return, double(day + (hour + minute/60.d +second/3600.d)/24.d)
+  ; 20150204 SGS : this is an error found by Nathaniel Frissel
+  ;                which introduces up to one hour of error in
+  ;                the actual time.
+  return, double(day + (hour + minute/60.d +second/3600.d)/24.d)
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -75,13 +75,13 @@ end
 
 function AstAlg_jde,year,month,day
 
-	; 20150209 SGS : use local variables for year and month to prevent
-	;                modification
+  ; 20150209 SGS : use local variables for year and month to prevent
+  ;                modification
 
-	yr = year
-	mo = month
+  yr = year
+  mo = month
   if (mo le 2) then begin
-		yr = year-1
+    yr = year-1
     mo=mo+12
   endif
 
@@ -362,9 +362,9 @@ end
 ;-----------------------------------------------------------------
 
 function AstAlg_apparent_obliquity,jd
-	AstAlg_DTOR = !dpi/180.d
-	eps = AstAlg_mean_obliquity(jd)+ $
-						0.00256D*cos(AstAlg_DTOR*AstAlg_lunar_ascending_node(jd))
+  AstAlg_DTOR = !dpi/180.d
+  eps = AstAlg_mean_obliquity(jd)+ $
+            0.00256D*cos(AstAlg_DTOR*AstAlg_lunar_ascending_node(jd))
    return, eps
 end
 
@@ -390,24 +390,24 @@ end
 
 function AstAlg_geometric_solar_longitude,jd
 
-	AstAlg_DTOR = !dpi/180.d
+  AstAlg_DTOR = !dpi/180.d
 
-	J2000 = 2451545.0D
+  J2000 = 2451545.0D
 
-	tau = (jd-J2000)/36525.0D
-	sml = AstAlg_mean_solar_longitude(jd)
+  tau = (jd-J2000)/36525.0D
+  sml = AstAlg_mean_solar_longitude(jd)
    
-	sma = AstAlg_DTOR*AstAlg_mean_solar_anomaly(jd)
+  sma = AstAlg_DTOR*AstAlg_mean_solar_anomaly(jd)
    
-	gc = (1.914602D - 0.004817D*tau - 0.000014D*(tau*tau)) * sin(sma) $
+  gc = (1.914602D - 0.004817D*tau - 0.000014D*(tau*tau)) * sin(sma) $
         + (0.019993D - 0.000101D*tau) * sin(2.0D*sma) $
         + 0.000289D * sin(3.0D*sma)
 
-	sml += gc
+  sml += gc
 
-	sml = sml mod 360.0D
+  sml = sml mod 360.0D
 
-	if (sml lt 0.0) then sml += 360.0
+  if (sml lt 0.0) then sml += 360.0
 
    return, sml
 end
@@ -433,9 +433,9 @@ end
 
 function AstAlg_apparent_solar_longitude,jd
 
-	AstAlg_DTOR = !dpi/180.d
+  AstAlg_DTOR = !dpi/180.d
 
-	asl = AstAlg_geometric_solar_longitude(jd) - 0.00569D - $
+  asl = AstAlg_geometric_solar_longitude(jd) - 0.00569D - $
             0.00478D*sin(AstAlg_DTOR*AstAlg_lunar_ascending_node(jd));
 
    return, asl
@@ -463,7 +463,7 @@ end
 
 function AstAlg_nutation_corr,jd,slong_corr,obliq_corr
 
-	AstAlg_DTOR = !dpi/180.d
+  AstAlg_DTOR = !dpi/180.d
 
   slong = AstAlg_DTOR * AstAlg_mean_solar_longitude(jd)
   lunlong = AstAlg_DTOR * AstAlg_mean_lunar_longitude(jd)
@@ -505,14 +505,14 @@ end
 
 function AstAlg_solar_declination,jd
  
-	AstAlg_DTOR = !dpi/180.d
+  AstAlg_DTOR = !dpi/180.d
 
-	sindec = sin(AstAlg_DTOR * AstAlg_apparent_obliquity(jd)) * $
-					sin(AstAlg_DTOR * AstAlg_apparent_solar_longitude(jd))
+  sindec = sin(AstAlg_DTOR * AstAlg_apparent_obliquity(jd)) * $
+          sin(AstAlg_DTOR * AstAlg_apparent_solar_longitude(jd))
 
-	sdec = asin(sindec)/AstAlg_DTOR
+  sdec = asin(sindec)/AstAlg_DTOR
 
-	return, sdec
+  return, sdec
 
 end
 
@@ -538,17 +538,17 @@ end
 
 function AstAlg_solar_right_ascension,jd
  
-	AstAlg_DTOR = !dpi/180.d
+  AstAlg_DTOR = !dpi/180.d
 
-	slong = AstAlg_DTOR * AstAlg_apparent_solar_longitude(jd)
+  slong = AstAlg_DTOR * AstAlg_apparent_solar_longitude(jd)
    
-	eps = AstAlg_DTOR * AstAlg_apparent_obliquity(jd)
+  eps = AstAlg_DTOR * AstAlg_apparent_obliquity(jd)
 
-	alpha = atan(cos(eps)*sin(slong),cos(slong))
+  alpha = atan(cos(eps)*sin(slong),cos(slong))
 
-	ra = alpha/AstAlg_DTOR
+  ra = alpha/AstAlg_DTOR
    
-	return, ra
+  return, ra
 
 end
 
@@ -573,23 +573,23 @@ end
 
 function AstAlg_equation_of_time,jd
 
-	AstAlg_DTOR = !dpi/180.d
+  AstAlg_DTOR = !dpi/180.d
 
-	sml   = AstAlg_mean_solar_longitude(jd)
-	sra   = AstAlg_solar_right_ascension(jd)
-	obliq = AstAlg_mean_obliquity(jd)
-	s     = AstAlg_nutation_corr(jd, dpsi, deps)
+  sml   = AstAlg_mean_solar_longitude(jd)
+  sra   = AstAlg_solar_right_ascension(jd)
+  obliq = AstAlg_mean_obliquity(jd)
+  s     = AstAlg_nutation_corr(jd, dpsi, deps)
 
-	eqt = sml - 0.0057183D - sra + dpsi*cos(AstAlg_DTOR*(obliq + deps))
+  eqt = sml - 0.0057183D - sra + dpsi*cos(AstAlg_DTOR*(obliq + deps))
 
-	eqt = eqt mod 360.0D
+  eqt = eqt mod 360.0D
 
-	eqt = 4.0D * eqt
+  eqt = 4.0D * eqt
 
-	if (eqt gt 20.0D) then eqt = eqt - 24.0D*60.0D
-	if (eqt lt -20.0D) then eqt = 24.0D*60.0D + eqt
+  if (eqt gt 20.0D) then eqt = eqt - 24.0D*60.0D
+  if (eqt lt -20.0D) then eqt = 24.0D*60.0D + eqt
 
-	return, eqt
+  return, eqt
 
 end
 
