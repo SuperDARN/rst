@@ -12,7 +12,7 @@ CFLAGS = -Wall -O3 -ansi -D_GNU_SOURCE -D_DARWIN -I/opt/local/include
 ifdef XPATH
   ifdef XLIB
     CFLAGS += -D_XLIB_
-    XLIBS=-L/usr/X11R6/lib -lX11 -lXext
+    XLIBS=-L$(XPATH)/lib -lX11 -lXext
   endif
 else 
    XLIB=

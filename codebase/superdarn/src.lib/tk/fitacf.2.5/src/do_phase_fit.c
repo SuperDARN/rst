@@ -241,8 +241,8 @@ int do_phase_fit (double omega_guess,
         }
     }
     wbar = wbar/nphi;
-    if (xflag) *sdev = sqrt(e2/(sum_w)/(nphi-2));
-    else *sdev = sqrt(e2/sum_w/(nphi-1));
+    if (xflag) *sdev = sqrt(e2/(sum_w) * nphi/(nphi-2));
+    else *sdev = sqrt(e2/sum_w * nphi/(nphi-1));
 
     if (xflag) {
         *phi0_err =  *sdev * wbar * sqrt(sum_wk2*t2/d);

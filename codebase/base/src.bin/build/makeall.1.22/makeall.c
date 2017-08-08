@@ -62,8 +62,13 @@ char *patn=NULL;
 
 
 void log_info(char *text) {
+<<<<<<< HEAD:codebase/base/src.bin/build/makeall.1.21/makeall.c
   if (vbflg==1) fprintf(stderr, text);
   fprintf(stdout, text);
+=======
+  if (vbflg==1) fprintf(stderr,"%s",text);
+  fprintf(stdout,"%s",text);
+>>>>>>> origin/develop:codebase/base/src.bin/build/makeall.1.22/makeall.c
   fflush(stdout);
 }
 
@@ -256,7 +261,11 @@ int dsort(const void *a,const void *b) {
 
 void print_info(FILE *fp,char *str[]) {
   int i;
+<<<<<<< HEAD:codebase/base/src.bin/build/makeall.1.21/makeall.c
   for (i=0;str[i] !=NULL;i++) fprintf(fp, str[i]);
+=======
+  for (i=0;str[i] !=NULL;i++) fprintf(fp,"%s",str[i]);
+>>>>>>> origin/develop:codebase/base/src.bin/build/makeall.1.22/makeall.c
 }
 
 

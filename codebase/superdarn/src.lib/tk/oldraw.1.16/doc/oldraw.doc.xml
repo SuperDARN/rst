@@ -178,7 +178,7 @@
     </member>
 
     <member>
-      <proto>int (*rawread)(<sn href="structOldRawFp.html">struct OldRawFp</sn> *fp,<sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>, <sn href="&root;/src.lib/superdarn/atk/raw/structRawData.html">struct RawData</sn> *raw);</proto>
+        <proto>int (*rawread)(<sn href="structOldRawFp.html">struct OldRawFp</sn> *fp,<sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>, <sn href="&root;/superdarn/src.lib/tk/raw/structRawData.html">struct RawData</sn> *raw);</proto>
       <description>Pointer to the function that reads records from the file.</description>
     </member>
 

@@ -19,7 +19,7 @@
 <h5>2.1 Aliases</h5>
 <p>Radar identifiers will be allowed to have aliases. For existing radars, the principal alias will be the existing single character identifier code. This approach will allow backwards compatibility as a radar can be referenced either by the new identifier or the old.</p>
 </body>
-<reference><rfc href="rfc.0002.html">RFC #0002</rfc></reference>
+<reference><rfc href="0002.html">RFC #0002</rfc></reference>
 <revision>2004/06/02  Initial Revision.</revision>
 </rfc>
 

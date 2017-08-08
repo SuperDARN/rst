@@ -95,7 +95,7 @@
 <p>The extent of each dimension is determined by the radar operating parameters. For example a value of <code>mppul</code> of 7 would result in the array <code>ptab[7]</code>.</p>
 <p>The raw sample data is arranged in multiplexed I and Q sample order; so the first <em>smpnum*2</em> samples are the interleaved I and Q values for the first pulse sequence. If more than one channel is samples, the next <em>smpnum*2</em> samples represent the next channel. The total number of samples,<em>totnum</em>, is equal to <em>2*seqnum*chnnum*smpnum</em>.</p>
 </body>
-<reference><rfc href="rfc.0006.html">RFC #0006</rfc></reference>
+<reference><rfc href="0006.html">RFC #0006</rfc></reference>
 <revision>2008/03/25 Initial Revision.</revision>
 </rfc>
 
