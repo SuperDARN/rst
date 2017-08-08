@@ -31,7 +31,7 @@ MAX_RANGE=300
 </pre></td></tr></table>
 </center>
 </body>
-<reference><rfc href="rfc.0013.html">RFC #0013</rfc></reference>
+<reference><rfc href="0013.html">RFC #0013</rfc></reference>
 <revision>2007/03/26  Change in array sizes.</revision>
 <revision>2004/11/22  Initial Revision.</revision>
 </rfc>

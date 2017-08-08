@@ -51,15 +51,15 @@ void log_info(char *str) {
 
   date[strlen(date)-1]=':';
   
-  fprintf(stderr,date);
-  fprintf(stderr,str);
+  fprintf(stderr,"%s",date);
+  fprintf(stderr,"%s",str);
   fprintf(stderr,"\n");
 
 
   sprintf(logpath,"%s.%.3d",logfname,time_of_day->tm_yday);
   fp=fopen(logpath,"a");
-  fprintf(fp,date);
-  fprintf(fp,str);
+  fprintf(fp,"%s",date);
+  fprintf(fp,"%s",str);
   fprintf(fp,"\n");
   fclose(fp);
 }

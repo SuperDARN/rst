@@ -123,13 +123,14 @@ int GridSeek(int fid,
       if (tfile>tval) fptr=lseek(fid,0,SEEK_SET);
     } else fptr=lseek(fid,0,SEEK_SET);
     if (atme!=NULL) *atme=tfile;
-    while (tval>=tfile) {
+    while (tval>tfile) {
       tptr=lseek(fid,0,SEEK_CUR);
       ptr=DataMapRead(fid);
       if (ptr==NULL) break;
       tfile=GridGetTime(ptr);
       DataMapFree(ptr);
-      if (tval>=tfile) fptr=tptr;
+      /*if (tval>=tfile) fptr=tptr;*/
+      fptr=tptr;
       if (atme !=NULL) *atme=tfile;
     }
     if (tval>tfile) return -1;
