@@ -508,7 +508,7 @@ int load_all_models(char *path, int imod)
     case RG96:  /***********************************************************/
       for (i=0; i<RG96_nlev; i++) {
         for (j=0; j<RG96_nang; j++) {
-          sprintf(fname,"%s/RG96/mod_%s_%s.spx",path,RG96_mod_lev[i],
+          sprintf(fname,"%s/rg96/mod_%s_%s.spx",path,RG96_mod_lev[i],
                          RG96_mod_ang[j]);
           fp = fopen(fname,"r");
           if (fp == NULL) continue;
@@ -524,7 +524,7 @@ int load_all_models(char *path, int imod)
         for (i=0; i<PSR10_nlev; i++) {
           for (j=0; j<PSR10_nang; j++) {
             for (k=0; mod_tilt[k] != NULL; k++) {
-              sprintf(fname,"%s/PSR10/mod_%s_%s_%s_%s.spx",path,mod_hemi[h],
+              sprintf(fname,"%s/psr10/mod_%s_%s_%s_%s.spx",path,mod_hemi[h],
                              PSR10_mod_lev[i],CS10_mod_ang[j],mod_tilt[k]);
               fp = fopen(fname,"r");
               if (fp == NULL) continue;
@@ -544,7 +544,7 @@ int load_all_models(char *path, int imod)
             for (k=0; mod_tilt[k] != NULL; k++) {
               if ((i==5) && (j>2) && (j<6)) continue;   /* skip extreme Bz- */
 
-              sprintf(fname,"%s/CS10/mod_%s_%s_%s_%s.spx",path,mod_hemi[h],
+              sprintf(fname,"%s/cs10/mod_%s_%s_%s_%s.spx",path,mod_hemi[h],
                              CS10_mod_lev[i],CS10_mod_ang[j],mod_tilt[k]);
               fp = fopen(fname,"r");
               if (fp == NULL) continue;
