@@ -18,7 +18,7 @@
 <option><on>-cs10</on><od>uses the CS10 statistical model [default].</od></option>
 <option><on>-rg96</on><od>uses the RG96 statistical model.</od></option>
 <option><on>-psr10</on><od>uses the PSR10 statistical model (equivalent to the RG05 model.)</od></option>
-<option><on>-ts17</on><od>uses the TS10 statistical model.</od></option>
+<option><on>-ts17</on><od>uses the TS17 statistical model.</od></option>
 <option><on>-nointerp</on><od>Do not interpolate coeffiecients, instead use discrete models.</od></option>
 <option><on>-noigrf</on><od>Do not use IGRF model to convert potential to velocities,</od></option>
 <option><on></on><od> instead use constant values.</od></option>
