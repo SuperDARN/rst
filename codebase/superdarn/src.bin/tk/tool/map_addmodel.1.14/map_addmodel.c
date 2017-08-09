@@ -111,6 +111,25 @@ char *CS10_mod_levs[]  = {"0<Esw<1.2","1.2<Esw<1.7","1.7<Esw<2.2","2.2<Esw<2.9",
 float CS10_mod_levi[]  = {1.2, 1.7, 2.2, 2.9, 4.1, 20, -1};
 
 /*
+ * TS17 Model bins
+ * ---------------
+ */
+int   TS17_nang = 8;
+char *TS17_mod_ang[]   = {"Bz+", "Bz+_By+", "By+", "Bz-_By+", "Bz-",
+                          "Bz-_By-", "By-", "Bz+_By-",0};
+char *TS17_mod_angs[]  = {"Bz+", "Bz+/By+", "By+", "Bz-/By+", "Bz-",
+                          "Bz-/By-", "By-", "Bz+/By-",0};
+float TS17_mod_angil[] = {-25, 25, 70, 110, 155, 205, 250, 290};
+float TS17_mod_angih[] = {25, 70, 110, 155, 205, 250, 290, 335};
+
+int   TS17_nlev = 5;
+char *TS17_mod_lev[]   = {"0.00t1.20","1.20t1.60","1.60t2.10","2.10t3.00",
+                          "3.00t20.00",0};
+char *TS17_mod_levs[]  = {"0<Esw<1.2","1.2<Esw<1.6","1.6<Esw<2.1","2.1<Esw<3.0",
+                          "3.0<Esw<20",0};
+float TS17_mod_levi[]  = {1.2, 1.6, 2.1, 3.0, 20, -1};
+
+/*
 char *mod_lev[]={"2t3","0t4","4t6","6t12","7t20",0};
 char *mod_ang[]={"315t45", "0t90", "45t135", "90t180", 
 		 "135t225", "180t270", "225t315", "270t360",0};
@@ -431,6 +450,10 @@ struct model *load_model(FILE *fp, int ihem, int ilev, int iang,
       strcpy(ptr->angle,CS10_mod_angs[iang]);
       break;
     case TS17:
+      strcpy(ptr->hemi,"Null");
+      strcpy(ptr->tilt,"Null");
+      strcpy(ptr->level,TS17_mod_levs[ilev]);
+      strcpy(ptr->angle,TS17_mod_angs[iang]); /* same as CS10 */
       break;
   }
 
@@ -560,6 +583,18 @@ int load_all_models(char *path, int imod)
     case TS17:  /***********************************************************/
       fprintf(stderr, "TS17 Statistical Model not yet implemented\n");
       return (-1);
+      for (i=0; i<TS17_nlev; i++) {
+        for (j=0; j<TS17_nang; j++) {
+          sprintf(fname,"%s/ts17/mod_%s_%s.spx",path,TS17_mod_lev[i],
+                         TS17_mod_ang[j]);
+          fp = fopen(fname,"r");
+          if (fp == NULL) continue;
+          model[0][0][i][j] = load_model(fp,-1,i,j,-1,imod);
+          fclose(fp);
+          if (model[0][0][i][j] == NULL) continue;
+          mnum++;
+        }
+      }
       break;
     default:
       fprintf(stderr, "Statistical Model %d not defined.\n", imod);
@@ -888,6 +923,28 @@ struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
       break;
 
     case TS17:
+      if (Vsw == 0) Vsw = 450.; /* not sure if this should be here: SGS */
+                                /* Default solar wind velocity */
+      esw = 1e-3*Vsw*bt;
+
+      ihem = 0; /* no bins for these in TS17 */
+      itlt = 0;
+
+      if (bazm >= TS17_mod_angih[TS17_nang-1]) bazm -= 360.;
+      if (bazm <  TS17_mod_angil[0])           bazm += 360.;
+
+      /* angle */
+      for (i=0; i < TS17_nang; i++)
+        if ((bazm >= TS17_mod_angil[i]) && (bazm < TS17_mod_angih[i])) break;
+      if (i == TS17_nang) i--;
+      iang = i;
+
+      /* magnitude */
+      for (i=0; (TS17_mod_levi[i] !=-1) && (esw >= TS17_mod_levi[i]); i++);
+      if (TS17_mod_levi[i] == -1) i--;
+      ilev = i;
+
+      imodel = model[ihem][itlt][ilev][iang];
       break;
   }
 
