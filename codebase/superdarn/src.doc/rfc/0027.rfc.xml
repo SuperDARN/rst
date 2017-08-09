@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<rfc>
+<id>0027</id>
+<title>iqdat DataMap variables definitions</title>
+<author>R.J.Barnes</author>
+<summary><p>A description of the variables stored in a iqdat DataMap file.</p></summary>
+<body>
+<h4>1. Introduction</h4>
+<p>The iqdat files are stored using the DataMap self-describing file format. Listed here are the variable names and definitions.</p>
+<h4>2. Scalars</h4>
+<p>The scalar components of the iqdat file format are listed below:</p> 
+<center>
+<table cellspacing="3" bgcolor="e0e0e0">
+<tr><td><b>Variable Name</b></td><td><b>Data Type</b></td><td><b>Description</b></td></tr>
+<tr><td>radar.revision.major</td><td>char</td><td>Major version number of the radar operating system.</td></tr>
+
+<tr><td>radar.revision.minor</td><td>char</td><td>Minor version number of the radar operating system.</td></tr>
+
+
+<tr><td>origin.code</td><td>char</td><td>Code indicating origin of the data.</td></tr>
+
+<tr><td>origin.time</td><td>string</td><td>ASCII representation of when the data was generated.</td></tr>
+
+<tr><td>origin.command</td><td>string</td><td>The command line or control program used to generate the data.</td></tr>
+
+
+
+<tr><td>cp</td><td>short</td><td>Control program identifier.</td></tr>
+<tr><td>stid</td><td>short</td><td>Station identifier.</td></tr>
+<tr><td>time.yr</td><td>short</td><td>Year.</td></tr>
+<tr><td>time.mo</td><td>short</td><td>Month.</td></tr>
+<tr><td>time.dy</td><td>short</td><td>Day.</td></tr>
+<tr><td>time.hr</td><td>short</td><td>Hour.</td></tr>
+<tr><td>time.mt</td><td>short</td><td>Minute.</td></tr>
+<tr><td>time.sc</td><td>short</td><td>Second.</td></tr>
+<tr><td>time.us</td><td>short</td><td>Micro-Second.</td></tr>
+<tr><td>txpow</td><td>short</td><td>Transmitted power (kW).</td></tr>
+<tr><td>nave</td><td>short</td><td>Number of pulse sequences transmitted.</td></tr>
+<tr><td>atten</td><td>short</td><td>Attenuation level.</td></tr>
+<tr><td>lagfr</td><td>short</td><td>Lag to first range (microseconds).</td></tr>
+<tr><td>smsep</td><td>short</td><td>Sample separation (microseconds).</td></tr>
+<tr><td>ercod</td><td>short</td><td>Error code.</td></tr>
+<tr><td>stat.agc</td><td>short</td><td>AGC status word.</td></tr>
+<tr><td>stat.lopwr</td><td>short</td><td>LOPWR status word.</td></tr>
+<tr><td>noise.search</td><td>float</td><td>Calculated noise from clear frequency search.</td></tr>
+<tr><td>noise.mean</td><td>float</td><td>Average noise across frequency band.</td></tr>
+<tr><td>channel</td><td>short</td><td>Channel number for a stereo radar (zero for all others).</td></tr>
+<tr><td>bmnum</td><td>short</td><td>Beam number.</td></tr>
+<tr><td>bmazm</td><td>float</td><td>Beam azimuth.</td></tr>
+
+
+<tr><td>scan</td><td>short</td><td>Scan flag.</td></tr>
+<tr><td>offset</td><td>short</td><td>Offset between channels for a stereo radar (zero for all others).</td></tr>
+<tr><td>rxrise</td><td>short</td><td>Receiver rise time (microseconds).</td></tr>
+<tr><td>intt.sc</td><td>short</td><td>Whole number of seconds of integration time.</td></tr>
+<tr><td>intt.us</td><td>short</td><td>Fractional number of microseconds of integration time.</td></tr>
+<tr><td>txpl</td><td>short</td><td>Transmit pulse length (microseconds).</td></tr>
+<tr><td>mpinc</td><td>short</td><td>Multi-pulse increment (microseconds).</td></tr>
+<tr><td>mppul</td><td>short</td><td>Number of pulses in sequence.</td></tr>
+<tr><td>mplgs</td><td>short</td><td>Number of lags in sequence.</td></tr>
+<tr><td>nrang</td><td>short</td><td>Number of ranges.</td></tr>
+<tr><td>frang</td><td>short</td><td>Distance to first range (kilometers).</td></tr>
+<tr><td>rsep</td><td>short</td><td>Range separation (kilometers).</td></tr>
+<tr><td>xcf</td><td>short</td><td>XCF flag.</td></tr>
+<tr><td>tfreq</td><td>short</td><td>Transmitted frequency.</td></tr>
+<tr><td>mxpwr</td><td>int</td><td>Maximum power (kHz).</td></tr>
+<tr><td>lvmax</td><td>int</td><td>Maximum noise level allowed.</td></tr>
+<tr><td>iqdata.revision.major</td><td>int</td><td>Major version number of the iqdata library.</td></tr>
+<tr><td>iqdata.revision.minor</td><td>int</td><td>Minor version number of the iqdata library.</td></tr>
+<tr><td>combf</td><td>string</td><td>Comment buffer.</td></tr>
+<tr><td>seqnum</td><td>int</td><td>Number of pulse sequences transmitted.</td></tr>
+<tr><td>chnnum</td><td>int</td><td>Number of channels sampled (both I and Q quadrature samples).</td></tr>
+<tr><td>smpnum</td><td>int</td><td>Number of samples taken per sequence.</td></tr>
+<tr><td>skpnum</td><td>int</td><td>Number of samples to skip before the first valid sample.</td></tr>
+</table>
+</center>
+<h4>2. Arrays</h4>
+<p>The Array components of the iqdat file format are listed below:</p> 
+<center>
+<table cellspacing="3" bgcolor="e0e0e0">
+<tr><td><b>Variable Name</b></td><td><b>Data Type</b></td><td><b>Dimensions</b></td><td><b>Description</b></td></tr>
+<tr><td>ptab[<em>mppul</em>]</td><td>short</td><td><em>mppul</em></td><td>Pulse table.</td></tr>
+<tr><td>ltab[2][<em>mplgs</em>]</td><td>short</td><td>2,<em>mplgs</em></td><td>Lag table.</td></tr>
+
+
+<tr><td>tsc[<em>seqnum</em>]</td><td>int</td><td><em>seqnum</em></td><td>Seconds component of time past epoch of pulse sequence.</td></tr>
+<tr><td>tus[<em>seqnum</em>]</td><td>int</td><td><em>seqnum</em></td><td>Microsecond component of time past epoch of pulse sequence.</td></tr>
+<tr><td>tatten[<em>seqnum</em>]</td><td>short</td><td><em>seqnum</em></td><td>Attenuator setting for each pulse sequence.</td></tr>
+<tr><td>tnoise[<em>seqnum</em>]</td><td>float</td><td><em>seqnum</em></td><td>Noise value for each pulse sequence.</td></tr>
+<tr><td>toff[<em>seqnum</em>]</td><td>int</td><td><em>seqnum</em></td><td>Offset into the sample buffer for each pulse sequence.</td></tr>
+<tr><td>tsze[<em>seqnum</em>]</td><td>int</td><td><em>seqnum</em></td><td>Number of words stored for this pulse sequence.</td></tr>
+<tr><td>data[<em>totnum</em>]</td><td>int</td><td><em>totnum</em></td><td>Array of raw I and Q samples.</td></tr>
+</table>
+</center>
+<p>The extent of each dimension is determined by the radar operating parameters. For example a value of <code>mppul</code> of 7 would result in the array <code>ptab[7]</code>.</p>
+<p>The raw sample data is arranged in multiplexed I and Q sample order; so the first <em>smpnum*2</em> samples are the interleaved I and Q values for the first pulse sequence. If more than one channel is samples, the next <em>smpnum*2</em> samples represent the next channel. The total number of samples,<em>totnum</em>, is equal to <em>2*seqnum*chnnum*smpnum</em>.</p>
+</body>
+<reference><rfc href="0006.html">RFC #0006</rfc></reference>
+<revision>2008/03/25 Initial Revision.</revision>
+</rfc>
+
+
