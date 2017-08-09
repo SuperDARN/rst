@@ -3,40 +3,39 @@
 <project>superdarn</project>
 <name>fit</name>
 <location>src.lib/tk/fit</location>
+
 <function>
 <name>FitDecode</name>
 <location>src.lib/tk/fit</location>
 <header>superdarn/fitread.h</header>
-<syntax>int FitDecode(<sn href="&root;/src.lib/general/dmap/structDataMap.html">struct DataMap</sn> *ptr,<sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>, <sn href="structFitData.html">struct FitData</sn> *fit);</syntax>
+<syntax>int FitDecode(<sn href="&root;/general/src.lib/dmap/structDataMap.html">struct DataMap</sn> *ptr,<sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>, <sn href="structFitData.html">struct FitData</sn> *fit);</syntax>
 <description><p>The <fn href="FitDecode.html">FitDecode</fn> function decodes a <code>fitacf</code> data record from a <code>DataMap</code> structure.</p>
 <p>The <code>DataMap</code> structure is pointed to by the argument <ar>ptr</ar>. The data is decoded and used to populate the radar parameter block pointed to by the argument <ar>prm</ar> and the <code>fit</code> data structure pointed to by the argument <ar>fit</ar>.</p>  
 </description>
 <returns>Returns zero on success. On error, (-1) is returned.</returns>
 <errors>On error, (-1) is returned.</errors>
 <example type="source">FitDecode.c</example>
-
 </function>
+
 <function>
 <name>FitFread</name>
 <location>src.lib/tk/fit</location>
 <header>superdarn/fitread.h</header>
-<syntax>int FitFread(FILE *fp, <sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm, <sn href="structFitData.html">struct FitData</sn> *fit);</syntax>
+<syntax>int FitFread(FILE *fp, <sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm, <sn href="structFitData.html">struct FitData</sn> *fit);</syntax>
 <description><p>The <fn href="FitFread.html">FitFread</fn> function reads a <code>fitacf</code> data record from an open stream.</p>
 <p>The data is read from the open stream pointed to by the argument <ar>fp</ar>. The data is decoded and used to populate the radar parameter block pointed to by the argument <ar>prm</ar> and the <code>fit</code> data structure pointed to by the argument <ar>fit</ar>.</p>  
 </description>
 <returns>Returns zero on success. On error, (-1) is returned.</returns>
 <errors>On error, (-1) is returned.</errors>
 <example type="source">FitFread.c</example>
-
-
 </function>
+
 <function>
 <name>FitFreadRadarScan</name>
 <location>src.lib/tk/fit</location>
 <header>superdarn/fitscan.h</header>
-<syntax>int FitFreadRadarScan(FILE *fp,int *state, <sn href="&root;/src.lib/tk/scan/structRadarScan.html">struct RadarScan *</sn>ptr, <sn href="&root;/src.lib/superdarn/atk/radar/structRadarParm.html">struct RadarParm</sn> *prm, <sn href="&root;/src.lib/superdarn/atk/fit/structFitData.html">struct FitData</sn> *fit, int tlen, int lock,int chn);</syntax>
-
-<description><p>The <fn href="FitReadRadarScan.html">FitReadRadarScan</fn> function reads one full scan of data from a <code>fitacf</code> data file.</p>
+<syntax>int FitFreadRadarScan(FILE *fp,int *state, <sn href="&root;/superdarn/src.lib/tk/scan/structRadarScan.html">struct RadarScan</sn> *ptr, <sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm, <sn href="&root;/superdarn/src.lib/tk/fit/structFitData.html">struct FitData</sn> *fit, int tlen, int lock,int chn);</syntax>
+<description><p>The <fn href="FitFReadRadarScan.html">FitFReadRadarScan</fn> function reads one full scan of data from a <code>fitacf</code> data file.</p>
 <p>The data is read from the stream pointed to by the argument <ar>fp</ar>.</p>
 <p>The argument <ar>state</ar> is a pointer to an integer that is used internally by the function to track progress through the <code>fit</code> file. Initially this integer should be set to zero, indicating that no data has been read from the file yet. The other possible value of <ar>state</ar> are (1), indicating that a complete scan was read from the file and data from the next scan is pending, or (2) indicating that a file error occurred.</p>
 <p>The scan data is written to the structure pointed to by the argument <ar>ptr</ar>. Memory is automatically allocated within this structure to store the beam data.</p>
@@ -47,15 +46,13 @@
 <returns>Returns zero on success, or (1) if the end of file was reached. On error, (-1) is returned.</returns>
 <errors>On error, (-1) is returned.</errors>
 <example type="source">FitFreadRadarScan.c</example>
-
-
 </function>
+
 <function>
 <name>FitFseek</name>
 <location>src.lib/tk/fit</location>
 <header>superdarn/fitseek.h</header>
 <syntax>int FitFseek(FILE *fp, int yr,int mo,int dy,int hr,int mt,int sc,double *atme, <sn href="structFitIndex.html">struct FitIndex</sn> *inx);</syntax>
-
 <description><p>The <fn href="FitFseek.html">FitFseek</fn> function searches for a <code>fitacf</code> data record for a specific time.</p>
 <p>The search is performed on the open stream pointed to by the argument <ar>fp</ar>. The time to search for is specified by the arguments <ar>yr</ar>, <ar>mo</ar>,<ar>dy</ar>,<ar>hr</ar>,<ar>mt</ar>,<ar>sc</ar> giving the year, month, day, hour, minute and second.</p>
 <p>The argument <ar>atme</ar> is a pointer to a double precision floating point number that is used to store the time of the closest record to the time requested expressed in seconds from 0:00UT January 1, 1970. If this argument is set to a <code>NULL</code> pointer then the time is not returned.</p>  
@@ -64,20 +61,19 @@
 <returns>Returns zero on success. On error, (-1) is returned.</returns>
 <errors>On error, (-1) is returned.</errors>
 <example type="source">FitFseek.c</example>
-
 </function>
+
 <function>
 <name>FitFwrite</name>
 <location>src.lib/tk/fit</location>
 <header>superdarn/fitwrite.h</header>
-<syntax>int FitFwrite(FILE *fp,<sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>, <sn href="structFitData.html">struct FitData</sn> *fit);</syntax>
+<syntax>int FitFwrite(FILE *fp,<sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm, <sn href="structFitData.html">struct FitData</sn> *fit);</syntax>
 <description><p>The <fn href="FitFwrite.html">FitFwrite</fn> function writes a <code>fitacf</code> data record to an open stream.</p>
 <p>The data is written to the open stream pointed to by the argument <ar>fp</ar>. The data record is contructed the radar parameter block pointed to by the argument <ar>prm</ar> and the <code>fit</code> data structure pointer to by the argument <ar>fit</ar>.</p>  
 </description>
 <returns>Returns the number of bytes written on success. On error, (-1) is returned.</returns>
 <errors>On error, (-1) is returned.</errors>
 <example type="source">FitFwrite.c</example>
-
 </function>
 
 <function>
@@ -91,21 +87,19 @@
 <returns>Returns a pointer to a structure containing the index on success. On error, a <code>NULL</code> pointer is returned.</returns>
 <errors>On error, a <code>NULL</code> pointer is returned.</errors>
 <example type="source">FitIndexFload.c</example>
-
 </function>
+
 <function>
 <name>FitIndexFree</name>
 <location>src.lib/tk/fit</location>
 <header>superdarn/fitindex.h</header>
 <syntax>void FitIndexFree(<sn href="structFitIndex.html">struct FitIndex</sn> *ptr);</syntax>
-
 <description><p>The <fn href="FitIndexFree.html">FitIndexFree</fn> function frees memory allocated to store an index to a <code>fitacf</code> file.</p>
 <p>The index structure is pointed to by the argument <ar>ptr</ar>.</p>
 </description>
 <example type="source">FitIndexFree.c</example>
-
-
 </function>
+
 <function>
 <name>FitIndexLoad</name>
 <location>src.lib/tk/fit</location>
@@ -117,30 +111,26 @@
 <returns>Returns a pointer to a structure containing the index on success. On error, a <code>NULL</code> pointer is returned.</returns>
 <errors>On error, a <code>NULL</code> pointer is returned.</errors>
 <example type="source">FitIndexLoad.c</example>
-
-
 </function>
+
 <function>
 <name>FitRead</name>
 <location>src.lib/tk/fit</location>
 <header>superdarn/fitread.h</header>
-<syntax>int FitRead(int fid,<sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>, <sn href="structFitData.html">struct FitData</sn> *fit);</syntax>
+<syntax>int FitRead(int fid,<sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm, <sn href="structFitData.html">struct FitData</sn> *fit);</syntax>
 <description><p>The <fn href="FitRead.html">FitRead</fn> function reads a <code>fitacf</code> data record from an open file.</p>
 <p>The data is read from the file with the descriptor given by the argument <ar>fid</ar>. The data is decoded and used to populate the radar parameter block pointed to by the argument <ar>prm</ar> and the <code>fit</code> data structure pointer to by the argument <ar>fit</ar>.</p>  
 </description>
 <returns>Returns zero on success. On error, (-1) is returned.</returns>
 <errors>On error, (-1) is returned.</errors>
 <example type="source">FitRead.c</example>
-
-
 </function>
+
 <function>
 <name>FitReadRadarScan</name>
 <location>src.lib/tk/fit</location>
 <header>superdarn/fitcfit.h</header>
-<syntax>int FitReadRadarScan(int fid,int *state, <sn href="&root;/src.lib/tk/scan/structRadarScan.html">struct RadarScan</sn> *ptr, <sn href="&root;/src.lib/superdarn/atk/radar/structRadarParm.html">struct RadarParm *prm</sn>, <sn href="structFitData.html">struct FitData</sn> *fit, int tlen, int lock,int chn);</syntax>
-
-
+<syntax>int FitReadRadarScan(int fid,int *state, <sn href="&root;/superdarn/src.lib/tk/scan/structRadarScan.html">struct RadarScan</sn> *ptr, <sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm, <sn href="structFitData.html">struct FitData</sn> *fit, int tlen, int lock,int chn);</syntax>
 <description><p>The <fn href="FitReadRadarScan.html">FitReadRadarScan</fn> function reads one full scan of data from a <code>fitacf</code> data file.</p>
 <p>The data is read from the file with the descriptor given by the argument <ar>fid</ar>.</p>
 <p>The argument <ar>state</ar> is a pointer to an integer that is used internally by the function to track progress through the <code>fit</code> file. Initially this integer should be set to zero, indicating that no data has been read from the file yet. The other possible value of <ar>state</ar> are (1), indicating that a complete scan was read from the file and data from the next scan is pending, or (2) indicating that a file error occurred.</p>
@@ -152,14 +142,13 @@
 <returns>Returns zero on success, or (1) if the end of file was reached. On error, (-1) is returned.</returns>
 <errors>On error, (-1) is returned.</errors>
 <example type="source">FitReadRadarScan.c</example>
-
 </function>
+
 <function>
 <name>FitSeek</name>
 <location>src.lib/tk/fit</location>
 <header>superdarn/fitseek.h</header>
 <syntax>int FitSeek(int fid, int yr,int mo,int dy,int hr,int mt,int sc,double *atme, <sn href="structFitIndex.html">struct FitIndex</sn> *inx);</syntax>
-
 <description><p>The <fn href="FitSeek.html">FitSeek</fn> function searches for a <code>fitacf</code> data record for a specific time.</p>
 <p>The search is performed on the file with the descriptor given by the argument <ar>fid</ar>. The time to search for is specified by the arguments <ar>yr</ar>, <ar>mo</ar>,<ar>dy</ar>,<ar>hr</ar>,<ar>mt</ar>,<ar>sc</ar> giving the year, month, day, hour, minute and second.</p>
 <p>The argument <ar>atme</ar> is a pointer to a double precision floating point number that is used to store the time of the closest record to the time requested expressed in seconds from 0:00UT January 1, 1970. If this argument is set to a <code>NULL</code> pointer then the time is not returned.</p>  
@@ -168,16 +157,13 @@
 <returns>Returns zero on success. On error, (-1) is returned.</returns>
 <errors>On error, (-1) is returned.</errors>
 <example type="source">FitSeek.c</example>
-
-
-
 </function>
+
 <function>
 <name>FitToCFit</name>
 <location>src.lib/tk/fit</location>
 <header>superdarn/fitcfit.h</header>
-<syntax>int FitToCFit(double minpwr,<sn href="&root;/src.lib/tk/cfit/structCFitData.html">struct CFitdata *ptr</sn>, <sn href="&root;/src.lib/superdarn/atk/radar/structRadarParm.html">struct RadarParm *prm</sn>, <sn href="structFitData.html">struct FitData</sn> *fit);</syntax>
-
+<syntax>int FitToCFit(double minpwr,<sn href="&root;/superdarn/src.lib/tk/cfit/structCFitdata.html">struct CFitdata</sn> *ptr, <sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm, <sn href="structFitData.html">struct FitData</sn> *fit);</syntax>
 <description><p>The <fn href="FitToCFit.html">FitToCFit</fn> function encodes a <code>fitacf</code> data record into a <code>CFit</code> data record.</p>
 <p>The argument <ar>minpwr</ar> gives the minimum value of lag-zero power to store; ranges with lag-zero power below this threshold are ignored.</p>
 <p>The <code>fit</code> data is encoded into the <code>CFit</code> data structure pointed to by the argument <ar>ptr</ar>. The <code>CFit</code> structure is encoded from the parameter block pointed to by the argument <ar>prm</ar> and the <code>fit</code> data structure pointer to by the argument <ar>fit</ar>.</p>  
@@ -185,111 +171,94 @@
 <returns>Returns zero on success. On error, (-1) is returned.</returns>
 <errors>On error, (-1) is returned.</errors>
 <example type="source">FitToCFit.c</example>
-
-</function>
-<function>
-<name>FitToCSD</name>
-<location>src.lib/tk/fit</location>
-<header>superdarn/fitcsd.h</header>
-<syntax>int FitToCSD(int store,double min_pwr, double pmax,double vmax,double wmax,<sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>, <sn href="structFitData.html">struct FitData</sn> *fit,<sn href="&root;/src.lib/superdarn/atk/csd/structCSDdata.html">struct CSDdata</sn> *ptr);</syntax>
-<description><p>The <fn href="FitToCSD.html">FitToCSD</fn> function encodes a <code>fitacf</code> data record into a <code>CSD</code> data record.</p>
-<p>The argument <ar>store</ar> gives the parameters that should be stored; if bit zero is set then power is stored, if bit (1) is set then velocity is stored and if bit (2) is set then spectral width is stored. The arguments <ar>pmax</ar>, <ar>vmax</ar>, and <ar>wmax</ar>, give the absolute maximum values for power, velocity and spectral width. These values are used to scale the data when it is converted to a color value.</p>
-<p> The <code>CSD</code> structure is encoded from the parameter block pointed to by the argument <ar>prm</ar> and the <code>fit</code> data structure pointer to by the argument <ar>fit</ar>. The <code>fit</code> data is encoded into the <code>CSD</code> data structure pointed to by the argument <ar>ptr</ar>.</p>
-</description>
-<returns>Returns zero on success. On error, (-1) is returned.</returns>
-<errors>On error, (-1) is returned.</errors>
-<example type="source">FitToCSD.c</example>
-
-
 </function>
 
 <function>
 <name>FitToRadarScan</name>
 <location>src.lib/tk/fit</location>
 <header>superdarn/fitscan.h</header>
-<syntax>int FitToRadarScan(<sn href="&root;/src.lib/tk/scan/structRadarScan.html">struct RadarScan</sn> *ptr,<sn href="&root;/src.lib/superdarn/atk/radar/structRadarParm.html">struct RadarParm *prm</sn>, <sn href="structFitData.html">struct FitData</sn> *fit);</syntax>
+<syntax>int FitToRadarScan(<sn href="&root;/superdarn/src.lib/tk/scan/structRadarScan.html">struct RadarScan</sn> *ptr,<sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm, <sn href="structFitData.html">struct FitData</sn> *fit);</syntax>
 <description><p>The <fn href="FitToRadarScan.html">FitToRadarScan</fn> function adds a <code>fitacf</code> data record to a structure containing radar scan data.</p>
 <p>The radar scan data is pointed to by the argument <ar>ptr</ar>.The scan data is encoded from the parameter block pointed to by the argument <ar>prm</ar> and the <code>fit</code> data structure pointer to by the argument <ar>fit</ar>.</p>
 </description>
 <returns>Returns zero on success. On error, (-1) is returned.</returns>
 <errors>On error, (-1) is returned.</errors>
 <example type="source">FitToRadarScan.c</example>
-
-
 </function>
-
 
 <function>
 <name>FitWrite</name>
 <location>src.lib/tk/fit</location>
 <header>superdarn/fitcfit.h</header>
-<syntax>int FitWrite(int fid,<sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>, <sn href="structFitData.html">struct FitData</sn> *fit);</syntax>
+<syntax>int FitWrite(int fid,<sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm, <sn href="structFitData.html">struct FitData</sn> *fit);</syntax>
 <description><p>The <fn href="FitWrite.html">FitWrite</fn> function writes a <code>fitacf</code> data record to an open file.</p>
 <p>The data is written to the file with the descriptor given by the argument <ar>fid</ar>. If <ar>fid</ar> is set to (-1) then the function will just calculate the number of bytes required to store the data. The data record is contructed the radar parameter block pointed to by the argument <ar>prm</ar> and the <code>fit</code> data structure pointer to by the argument <ar>fit</ar>.</p>  
 </description>
 <returns>Returns the number of bytes written on success. On error, (-1) is returned.</returns>
 <errors>On error, (-1) is returned.</errors>
 <example type="source">FitWrite.c</example>
-
 </function>
 
 
-
 <structure>
- <name>FitData</name>
- <location>src.lib/tk/fit</location>
- <header>superdarn/fitdata.h</header>
- <struct>
+  <name>FitData</name>
+  <location>src.lib/tk/fit</location>
+  <header>superdarn/fitdata.h</header>
+  <struct>
 
-  <member>
-     <struct>
-       <member>
+    <member>
+      <struct>
+        <member>
           <proto>char major;</proto>
           <description>Major revision number.</description>
-       </member>
-       <member>
+        </member>
+        <member>
           <proto>char minor;</proto>
           <description>Minor revision number.</description>
-       </member>
+        </member>
       </struct>
       <proto>revision;</proto>
       <description>Revision number.</description>
-   </member>
-   <member>
-      <proto><sn href="&root;/src.lib/tk/fitacf/structFitNoise.html">struct FitNoise</sn> noise;</proto>
+    </member>
+
+    <member>
+        <proto><sn href="&root;/superdarn/src.lib/tk/fitacf/structFitNoise.html">struct FitNoise</sn> noise;</proto>
       <description>Noise Statistics.</description>
     </member>
+
     <member>
-      <proto><sn href="&root;/src.lib/tk/fitacf/structFitRange.html">struct FitRange</sn> rng[MAX_RANGE];</proto>
+        <proto><sn href="&root;/superdarn/src.lib/tk/fitacf/structFitRange.html">struct FitRange</sn> rng[MAX_RANGE];</proto>
       <description>Fitted ACF parameters.</description>
     </member>
+
     <member>
-      <proto><sn href="&root;/src.lib/tk/fitacf/structFitRange.html">struct FitRange</sn> xrng[MAX_RANGE];</proto>
+        <proto><sn href="&root;/superdarn/src.lib/tk/fitacf/structFitRange.html">struct FitRange</sn> xrng[MAX_RANGE];</proto>
       <description>Fitted XCF parameters.</description>
     </member>
+
     <member>
-      <proto><sn href="&root;/src.lib/tk/fitacf/structFitElv.html">struct FitElv</sn> elv[MAX_RANGE];</proto>
+        <proto><sn href="&root;/superdarn/src.lib/tk/fitacf/structFitElv.html">struct FitElv</sn> elv[MAX_RANGE];</proto>
       <description>Elevation angle.</description>
     </member>
+
   </struct>
-<description>
-<p>The <sn href="structFitData.html">struct FitData</sn> structure stores the fitted ACF data.</p>
-</description>
+
+  <description>
+  <p>The <sn href="structFitData.html">struct FitData</sn> structure stores the fitted ACF data.</p>
+  </description>
 </structure>
 
 
 
-
-
 <structure>
- <name>FitIndex</name>
- <location>src.lib/tk/fit</location>
- <header>superdarn/fitindex.h</header>
- <struct>
+  <name>FitIndex</name>
+  <location>src.lib/tk/fit</location>
+  <header>superdarn/fitindex.h</header>
+  <struct>
 
     <member>
-      <proto>int num;</proto>
-      <description>Number of records in the data file.</description>
+       <proto>int num;</proto>
+       <description>Number of records in the data file.</description>
     </member>
 
     <member>
@@ -297,17 +266,16 @@
       <description>Pointer to an array of record times, specified as seconds from 0:00UT January 1, 1970.</description>
     </member>
 
-   <member>
+    <member>
       <proto>int *inx;</proto>
       <description>Pointer to an array of byte offsets into the file marking the start of a record.</description>
     </member>
-</struct>
 
-<description>
-<p>The <sn href="structFitIndex.html">struct FitIndex</sn> structure stores an index of a <proto>fitacf</proto> data file.</p>
-</description>
+  </struct>
+
+  <description>
+  <p>The <sn href="structFitIndex.html">struct FitIndex</sn> structure stores an index of a <proto>fitacf</proto> data file.</p>
+  </description>
 </structure>
-
-
 
 </library>

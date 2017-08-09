@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>test_fitacf</name>
+<location>src.bin/tk/testing/test_fitacf</location>
+<syntax>test_fitacf --help</syntax>
+<syntax>test_fitacf -new  [<ar>options</ar>] <ar>rawacfname</ar> </syntax>
+
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--option</on><od>print the options exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-new </on><od>use dmap format.</od>
+</option>
+<option><on>-hr <ar>hr</ar></on><od>hour to search for.</od>
+</option>
+<option><on>-min <ar>mn</ar></on><od>minute to search for.</od>
+</option>
+<option><on>-sec <ar>sc</ar></on><od>second to search for.</od>
+</option>
+<option><on>-beam <ar>bm</ar></on><od>beam to search for.</od>
+</option>
+
+
+<synopsis><p>Searches for a record in a rawacf file and tests if it can be processed into fitacf.</p></synopsis>
+
+<description><p>Returns zero if the record can be processed into fitacf data.  Returns</p>
+<p>Returns EOF if no record is found</p>
+<p>Returns -1 for various other errors</p>
+</description>
+
+
+<example>
+<command>test_fitacf -new -hr 10 -min 15 -sec 45 -beam 8 20150103.1000.02.bks.rawacf </command>
+<description>This will search for a record in the <code>20150103.1000.02.bks.rawacf</code> file that has an hour of 10, minute of 15, second of 45 and beam number of 8</description>
+</example>
+
+
+</binary>

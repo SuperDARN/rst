@@ -54,9 +54,9 @@
 
 ; define this common block right here
 common AACGM_v2_Com, coef_v2,coefs_v2, cint_v2, $
-											height_old_v2, order_v2,kmax_v2, $
-											myear_v2, fyear_v2, myear_old_v2, fyear_old_v2, $
-											aacgm_v2_datetime
+                      height_old_v2, order_v2,kmax_v2, $
+                      myear_v2, fyear_v2, myear_old_v2, fyear_old_v2, $
+                      aacgm_v2_datetime
 
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
@@ -104,40 +104,40 @@ common AACGM_v2_Com, coef_v2,coefs_v2, cint_v2, $
 ;
 
 function AACGM_v2_LoadCoef, units, order=ord
-	common AACGM_v2_Com
+  common AACGM_v2_Com
 
-	on_ioerror, iofail
+  on_ioerror, iofail
 
-	if keyword_set(ord) then order_v2 = ord else order_v2 = 10	; default order
-	kmax_v2 = (order_v2+1)*(order_v2+1)
+  if keyword_set(ord) then order_v2 = ord else order_v2 = 10  ; default order
+  kmax_v2 = (order_v2+1)*(order_v2+1)
 
-	ncoord = 3		; xyz
-	nquart = 5		; quartic altitude fit coefficients
-	nflag  = 2		; 0: GEO->AACGM; 1: AACGM->GEO
+  ncoord = 3    ; xyz
+  nquart = 5    ; quartic altitude fit coefficients
+  nflag  = 2    ; 0: GEO->AACGM; 1: AACGM->GEO
 
-	; interpolation in time, so need two sets of coefficients....
-	coefs_v2 = dblarr(2,kmax_v2,ncoord,nquart,nflag)
+  ; interpolation in time, so need two sets of coefficients....
+  coefs_v2 = dblarr(2,kmax_v2,ncoord,nquart,nflag)
 
-	temp_coef = dblarr(kmax_v2,ncoord,nquart,nflag)
-	readf, units[0],temp_coef
-	coefs_v2[0,*,*,*,*] = temp_coef
+  temp_coef = dblarr(kmax_v2,ncoord,nquart,nflag)
+  readf, units[0],temp_coef
+  coefs_v2[0,*,*,*,*] = temp_coef
 
-	readf, units[1],temp_coef
-	coefs_v2[1,*,*,*,*] = temp_coef
+  readf, units[1],temp_coef
+  coefs_v2[1,*,*,*,*] = temp_coef
 
-	coef_v2 = dblarr(kmax_v2,ncoord,nquart,nflag)
-	cint_v2 = dblarr(kmax_v2,ncoord,nflag)
-;	leo_first_coeff_old = -1.
+  coef_v2 = dblarr(kmax_v2,ncoord,nquart,nflag)
+  cint_v2 = dblarr(kmax_v2,ncoord,nflag)
+; leo_first_coeff_old = -1.
 
-;	sol_dec_old = 0				; what the hell are these used for?!
-;	told = 1e12
-;	mslon1=0
-;	mslon2=0
+; sol_dec_old = 0       ; what the hell are these used for?!
+; told = 1e12
+; mslon1=0
+; mslon2=0
 
-	return, 0
+  return, 0
 
 iofail:
-	return, -1
+  return, -1
 
 end
 
@@ -164,9 +164,9 @@ end
 ;
 
 function AACGM_v2_Sgn, a, b
-	if (a ge 0) then x = a else x = -a
-	if (b ge 0) then return, x
-	return, -x
+  if (a ge 0) then x = a else x = -a
+  if (b ge 0) then return, x
+  return, -x
 end
 
 ;------------------------------------------------------------------------------
@@ -230,144 +230,144 @@ end
 
 pro AACGM_v2_Rylm, colat,lon,order, ylmval
 
-	; Note: the recurrence relations are for the associated legendre polynomials.
-	;       SGS has added the normalization factor for the spherical harmonic
-	;       functions given by (6.8.2). See note about this above.
+  ; Note: the recurrence relations are for the associated legendre polynomials.
+  ;       SGS has added the normalization factor for the spherical harmonic
+  ;       functions given by (6.8.2). See note about this above.
 
-	cos_theta = cos(colat)
-	sin_theta = sin(colat)
+  cos_theta = cos(colat)
+  sin_theta = sin(colat)
 
-	cos_lon = cos(lon)
-	sin_lon = sin(lon)
+  cos_lon = cos(lon)
+  sin_lon = sin(lon)
 
-	d1    = -sin_theta
-	z2    = dcomplex(cos_lon,sin_lon)
-	z1    = d1*z2
-	q_fac = z1
+  d1    = -sin_theta
+  z2    = dcomplex(cos_lon,sin_lon)
+  z1    = d1*z2
+  q_fac = z1
 
-	; Generate Zonal Harmonics (P_l^(m=0) for l = 1,order) using recursion
-	; relation (6.8.7), p. 252, Numerical Recipes in C, 2nd. ed., Press. W.
-	; et al. Cambridge University Press, 1992) for case where m = 0.
-	;
-	; l Pl = cos(theta) (2l-1) Pl-1 - (l-1) Pl-2          (6.8.7)
-	;
-	; where Pl = P_l^(m=0) are the associated Legendre polynomials
+  ; Generate Zonal Harmonics (P_l^(m=0) for l = 1,order) using recursion
+  ; relation (6.8.7), p. 252, Numerical Recipes in C, 2nd. ed., Press. W.
+  ; et al. Cambridge University Press, 1992) for case where m = 0.
+  ;
+  ; l Pl = cos(theta) (2l-1) Pl-1 - (l-1) Pl-2          (6.8.7)
+  ;
+  ; where Pl = P_l^(m=0) are the associated Legendre polynomials
 
-	ylmval[0] = 1.d					; l = 0, m = 0
-	ylmval[2] = cos_theta		; l = 1, m = 0
+  ylmval[0] = 1.d         ; l = 0, m = 0
+  ylmval[2] = cos_theta   ; l = 1, m = 0
 
-	for l=2,order do begin
-		; indices for previous two values: k = l * (l+1) + m with m=0
-		ia = (l-2)*(l-1)
-		ib = (l-1)*l
-		ic = l * (l+1)
+  for l=2,order do begin
+    ; indices for previous two values: k = l * (l+1) + m with m=0
+    ia = (l-2)*(l-1)
+    ib = (l-1)*l
+    ic = l * (l+1)
 
-		ylmval[ic] = (cos_theta * (2*l-1) * ylmval[ib] - (l-1)*ylmval[ia])/l
-	endfor
+    ylmval[ic] = (cos_theta * (2*l-1) * ylmval[ib] - (l-1)*ylmval[ia])/l
+  endfor
 
-	; Generate P_l^l for l = 1 to (order+1)^2 using algorithm based upon (6.8.8)
-	; in Press et al., but incorporate longitude dependence, i.e., sin/cos (phi)
-	;
-	; Pll = (-1)^l (2l-1)!! (sin^2(theta))^(l/2)
-	;
-	; where Plm = P_l^m are the associated Legendre polynomials
+  ; Generate P_l^l for l = 1 to (order+1)^2 using algorithm based upon (6.8.8)
+  ; in Press et al., but incorporate longitude dependence, i.e., sin/cos (phi)
+  ;
+  ; Pll = (-1)^l (2l-1)!! (sin^2(theta))^(l/2)
+  ;
+  ; where Plm = P_l^m are the associated Legendre polynomials
 
-	q_val = q_fac
-	ylmval[3] = double(q_val)				; l = 1, m = +1
-	ylmval[1] = -imaginary(q_val)		; l = 1, m = -1
-	for l=2,order do begin
-		d1    = l*2 - 1.
-		z2    = d1*q_fac
-		z1    = z2*q_val
-		q_val = z1
+  q_val = q_fac
+  ylmval[3] = double(q_val)       ; l = 1, m = +1
+  ylmval[1] = -imaginary(q_val)   ; l = 1, m = -1
+  for l=2,order do begin
+    d1    = l*2 - 1.
+    z2    = d1*q_fac
+    z1    = z2*q_val
+    q_val = z1
 
-		; indices for previous two values: k = l * (l+1) + m
-		ia = l*(l+2)		; m = +l
-		ib = l*l				; m = -l
+    ; indices for previous two values: k = l * (l+1) + m
+    ia = l*(l+2)    ; m = +l
+    ib = l*l        ; m = -l
 
-		ylmval[ia] = double(q_val)
-		ylmval[ib] = -imaginary(q_val)
-	endfor
+    ylmval[ia] = double(q_val)
+    ylmval[ib] = -imaginary(q_val)
+  endfor
 
-	; Generate P_l,l-1 to P_(order+1)^2,l-1 using algorithm based upon (6.8.9)
-	; in Press et al., but incorporate longitude dependence, i.e., sin/cos (phi)
-	;
-	; Pl,l-1 = cos(theta) (2l-1) Pl-1,l-1
+  ; Generate P_l,l-1 to P_(order+1)^2,l-1 using algorithm based upon (6.8.9)
+  ; in Press et al., but incorporate longitude dependence, i.e., sin/cos (phi)
+  ;
+  ; Pl,l-1 = cos(theta) (2l-1) Pl-1,l-1
 
-	for l=2,order do begin
-		l2 = l*l
-		tl = 2*l
-		; indices for Pl,l-1; Pl-1,l-1; Pl,-(l-1); Pl-1,-(l-1)
-		ia = l2 - 1
-		ib = l2 - tl + 1
-		ic = l2 + tl - 1
-		id = l2 + 1
+  for l=2,order do begin
+    l2 = l*l
+    tl = 2*l
+    ; indices for Pl,l-1; Pl-1,l-1; Pl,-(l-1); Pl-1,-(l-1)
+    ia = l2 - 1
+    ib = l2 - tl + 1
+    ic = l2 + tl - 1
+    id = l2 + 1
 
-		fac = tl - 1
-		ylmval[ic] = fac * cos_theta * ylmval[ia]			; Pl,l-1
-		ylmval[id] = fac * cos_theta * ylmval[ib]			; Pl,-(l-1)
-	endfor
+    fac = tl - 1
+    ylmval[ic] = fac * cos_theta * ylmval[ia]     ; Pl,l-1
+    ylmval[id] = fac * cos_theta * ylmval[ib]     ; Pl,-(l-1)
+  endfor
 
-	; Generate remaining P_l+2,m to P_(order+1)^2,m for each m = 1 to order-2
-	; using algorithm based upon (6.8.7) in Press et al., but incorporate
-	; longitude dependence, i.e., sin/cos (phi).
-	;
-	; for each m value 1 to order-2 we have P_mm and P_m+1,m so we can compute
-	; P_m+2,m; P_m+3,m; etc.
+  ; Generate remaining P_l+2,m to P_(order+1)^2,m for each m = 1 to order-2
+  ; using algorithm based upon (6.8.7) in Press et al., but incorporate
+  ; longitude dependence, i.e., sin/cos (phi).
+  ;
+  ; for each m value 1 to order-2 we have P_mm and P_m+1,m so we can compute
+  ; P_m+2,m; P_m+3,m; etc.
 
-	for m=1,order-2 do begin
-		for l=m+2,order do begin
-			ca = double(2.*l-1)/(l-m)
-			cb = double(l+m-1.)/(l-m)
+  for m=1,order-2 do begin
+    for l=m+2,order do begin
+      ca = double(2.*l-1)/(l-m)
+      cb = double(l+m-1.)/(l-m)
 
-			l2 = l*l
-			ic = l2 + l + m
-			ib = l2 - l + m
-			ia = l2 - l - l - l + 2 + m
-			; positive m
-			ylmval[ic] = ca * cos_theta * ylmval[ib] - cb * ylmval[ia]
+      l2 = l*l
+      ic = l2 + l + m
+      ib = l2 - l + m
+      ia = l2 - l - l - l + 2 + m
+      ; positive m
+      ylmval[ic] = ca * cos_theta * ylmval[ib] - cb * ylmval[ia]
 
-			ic -= (m+m)
-			ib -= (m+m)
-			ia -= (m+m)
-			; negative m
-			ylmval[ic] = ca * cos_theta * ylmval[ib] - cb * ylmval[ia]
-		endfor
-	endfor
+      ic -= (m+m)
+      ib -= (m+m)
+      ia -= (m+m)
+      ; negative m
+      ylmval[ic] = ca * cos_theta * ylmval[ib] - cb * ylmval[ia]
+    endfor
+  endfor
 
-	; Normalization added here (SGS)
-	;
-	; Note that this is NOT the standard spherical harmonic normalization factors
-	;
-	; The recursive algorithms above treat positive and negative values of m in
-	; the same manner. In order to use these algorithms the normalization must
-	; also be modified to reflect the symmetry.
-	;
-	; Output values have been checked against those obtained using the internal
-	; IDL legendre() function to obtain the various associated legendre
-	; polynomials.
-	;
-	; As stated above, I think that this normalization may be unnecessary. The
-	; important thing is that the various spherical harmonics are orthogonal,
-	; rather than orthonormal.
+  ; Normalization added here (SGS)
+  ;
+  ; Note that this is NOT the standard spherical harmonic normalization factors
+  ;
+  ; The recursive algorithms above treat positive and negative values of m in
+  ; the same manner. In order to use these algorithms the normalization must
+  ; also be modified to reflect the symmetry.
+  ;
+  ; Output values have been checked against those obtained using the internal
+  ; IDL legendre() function to obtain the various associated legendre
+  ; polynomials.
+  ;
+  ; As stated above, I think that this normalization may be unnecessary. The
+  ; important thing is that the various spherical harmonics are orthogonal,
+  ; rather than orthonormal.
 
-	fact = factorial(indgen(2*order+1))
-	ffff = dblarr((order+1)*(order+1))
-	for l=0,order do begin
-		for m=0,l do begin
-			k = l * (l+1) + m					; 1D index for l,m
-			ffff[k] = sqrt((2*l+1)/(4*!dpi) * fact[l-m]/fact[l+m])
-		endfor
-		for m=-l,-1 do begin
-			k = l * (l+1) + m					; 1D index for l,m
-			kk = l * (l+1) - m
-			ffff[k] = ffff[kk] * (-1)^(-m mod 2)
-		endfor
-	endfor
+  fact = factorial(indgen(2*order+1))
+  ffff = dblarr((order+1)*(order+1))
+  for l=0,order do begin
+    for m=0,l do begin
+      k = l * (l+1) + m         ; 1D index for l,m
+      ffff[k] = sqrt((2*l+1)/(4*!dpi) * fact[l-m]/fact[l+m])
+    endfor
+    for m=-l,-1 do begin
+      k = l * (l+1) + m         ; 1D index for l,m
+      kk = l * (l+1) - m
+      ffff[k] = ffff[kk] * (-1)^(-m mod 2)
+    endfor
+  endfor
 
-	ylmval *= ffff
+  ylmval *= ffff
 
-	return
+  return
 end
 
 ;------------------------------------------------------------------------------
@@ -404,22 +404,22 @@ end
 ;
 
 pro AACGM_v2_Alt2CGM, r_height_in, r_lat_alt, r_lat_adj
-	common IGRF_v2_Com
+  common IGRF_v2_Com
 
-	; convert from at-altitude to AACGM coordinates
-;	eradius = 6371.2
-	eps     = 1e-9
-	unim    = 0.9999999
+  ; convert from at-altitude to AACGM coordinates
+; eradius = 6371.2
+  eps     = 1e-9
+  unim    = 0.9999999
 
-	r1 = cos(!pi*r_lat_alt/180.)
-	ra = r1*r1
-	if (ra lt eps) then ra = eps
+  r1 = cos(!pi*r_lat_alt/180.)
+  ra = r1*r1
+  if (ra lt eps) then ra = eps
 
-	r0 = (r_height_in/RE + 1.) / ra
-	if (r0 lt unim) then r0 = unim
+  r0 = (r_height_in/RE + 1.) / ra
+  if (r0 lt unim) then r0 = unim
   
-	r1 = acos(sqrt(1./r0))
-	r_lat_adj= AACGM_v2_Sgn(r1, r_lat_alt)*180.0/!pi
+  r1 = acos(sqrt(1./r0))
+  r_lat_adj= AACGM_v2_Sgn(r1, r_lat_alt)*180.0/!pi
 
   return
 end
@@ -460,24 +460,24 @@ end
 ;
 
 pro AACGM_v2_CGM2Alt, r_height_in,r_lat_in, r_lat_adj, error
-	common IGRF_v2_Com
+  common IGRF_v2_Com
 
-	; convert from AACGM to at-altitude coordinates
-	;eradius = 6371.2
-	unim    = 1
-	error   = 0
+  ; convert from AACGM to at-altitude coordinates
+  ;eradius = 6371.2
+  unim    = 1
+  error   = 0
 
-	r1 = cos(!pi*r_lat_in/180.0)
-	ra = (r_height_in/RE+ 1)*(r1*r1)
-	if (ra gt unim) then begin
-		ra = unim
-		error = 1
-	endif
+  r1 = cos(!pi*r_lat_in/180.0)
+  ra = (r_height_in/RE+ 1)*(r1*r1)
+  if (ra gt unim) then begin
+    ra = unim
+    error = 1
+  endif
 
-	r1 = acos(sqrt(ra))
-	r_lat_adj = AACGM_v2_Sgn(r1,r_lat_in)*180.0/!pi
+  r1 = acos(sqrt(ra))
+  r_lat_adj = AACGM_v2_Sgn(r1,r_lat_in)*180.0/!pi
 
-	return
+  return
 end
 
 ;------------------------------------------------------------------------------
@@ -494,8 +494,8 @@ end
 ;       coefficients. Several keywords can be used to modify the behavior.
 ;
 ; CALLING SEQUENCE:
-;				AACGM_v2_ConvertGeoCoord, lat_in,lon_in,height_in, lat_out,lon_out, $
-;																	error, geo=geo, trace=trace, $
+;       AACGM_v2_ConvertGeoCoord, lat_in,lon_in,height_in, lat_out,lon_out, $
+;                                 error, geo=geo, trace=trace, $
 ;                                 allow_trace=allow_trace, bad_idea=bad_idea, $
 ;                                 at_alt=at_alt, verbose=verbose, debug=debug
 ;
@@ -537,253 +537,253 @@ end
 ;
 
 pro AACGM_v2_ConvertGeoCoord, lat_in,lon_in,height_in, lat_out,lon_out, $
-																error, geo=geo, trace=trace, $
-																bad_idea=bad_idea, allow_trace=allow_trace, $
-																eps=eps, at_alt=at_alt, verbose=verbose, $
-																debug=debug
-	common AACGM_v2_Com
-	common IGRF_v2_Com
+                                error, geo=geo, trace=trace, $
+                                bad_idea=bad_idea, allow_trace=allow_trace, $
+                                eps=eps, at_alt=at_alt, verbose=verbose, $
+                                debug=debug
+  common AACGM_v2_Com
+  common IGRF_v2_Com
 
-	; need RE later on
-	if (n_elements(RE) eq 0) then init_common
+  ; need RE later on
+  if (n_elements(RE) eq 0) then init_common
 
-	if (height_in lt 0) then begin
-		if ~keyword_set(verbose) || verbose ge 0 then $
-			print, $
-			'WARNING: coordinate transformations are not intended for altitudes < 0 km : ', $
-			height_in
-		error = -2
-	endif
+  if (height_in lt 0) then begin
+    if ~keyword_set(verbose) || verbose ge 0 then $
+      print, $
+      'WARNING: coordinate transformations are not intended for altitudes < 0 km : ', $
+      height_in
+    error = -2
+  endif
 
-	if height_in gt 2000 and $
-			not keyword_set(trace) and not keyword_set(bad_idea) and $
-			not keyword_set(allow_trace) then begin
-		; the user is not using fieldline tracing or indicated that they know
-		; what they are doing by setting the 'bad_idea' keyword.
-		print, 'ERROR: coefficients are not valid for altitudes above 2000 km.'
-		print, '       Use fieldline tracing option [/trace] to perform fieldline'
-		print, '       tracing at all altitudes, [/allow_trace] to perform'
-		print, '       fieldline tracing only above 2000 km or indicate that you'
-		print, '       want to use the coefficients for extrapolation and are aware'
-		print, '       that the results can be nonsensical by setting the bad_idea'
-		print, '       keyword.'
-		error = -4
-		return
-	endif
+  if height_in gt 2000 and $
+      not keyword_set(trace) and not keyword_set(bad_idea) and $
+      not keyword_set(allow_trace) then begin
+    ; the user is not using fieldline tracing or indicated that they know
+    ; what they are doing by setting the 'bad_idea' keyword.
+    print, 'ERROR: coefficients are not valid for altitudes above 2000 km.'
+    print, '       Use fieldline tracing option [/trace] to perform fieldline'
+    print, '       tracing at all altitudes, [/allow_trace] to perform'
+    print, '       fieldline tracing only above 2000 km or indicate that you'
+    print, '       want to use the coefficients for extrapolation and are aware'
+    print, '       that the results can be nonsensical by setting the bad_idea'
+    print, '       keyword.'
+    error = -4
+    return
+  endif
 
-	if (abs(lat_in) gt 90.) then begin
-		print, 'ERROR: latitudes must be in the range -90 to +90 degrees'
-		error = -8
-		return
-	endif
+  if (abs(lat_in) gt 90.) then begin
+    print, 'ERROR: latitudes must be in the range -90 to +90 degrees'
+    error = -8
+    return
+  endif
 
 ; SGS v2.3 removing requirement that longitude be 0 to 360. Does not seems to
 ;          matter and is inconsistent with C version: -180 to 180.
 ;
-;	; SGS - better checking of inputs needed here
-;	if lon_in lt 0 then lon_in += 360
-;	if ((lon_in lt 0) or (lon_in gt 360)) then begin
-;		print, 'ERROR: longitudes must be in the range 0 to 360 degrees'
-;		print, lon_in
-;		error = -16
-;		return
-;	endif
+; ; SGS - better checking of inputs needed here
+; if lon_in lt 0 then lon_in += 360
+; if ((lon_in lt 0) or (lon_in gt 360)) then begin
+;   print, 'ERROR: longitudes must be in the range 0 to 360 degrees'
+;   print, lon_in
+;   error = -16
+;   return
+; endif
 
 ; SGS v2.3 geodetic to geocentric (and back) are done in AACGM_v2_Convert()
 
-	; field line tracing
-	if keyword_set(trace) or (height_in gt 2000 and keyword_set(allow_trace)) $
-	then begin
-		if keyword_set(geo) then begin
-			AACGM_v2_Trace_inv, lat_in,lon_in,height_in, tmp_lat,tmp_lon, error, $
-										fixed=fixed, ds=ds, eps=eps, max_ds=max_ds, $
-										verbose=verbose
-				lat_out = tmp_lat
-				lon_out = tmp_lon
+  ; field line tracing
+  if keyword_set(trace) or (height_in gt 2000 and keyword_set(allow_trace)) $
+  then begin
+    if keyword_set(geo) then begin
+      AACGM_v2_Trace_inv, lat_in,lon_in,height_in, tmp_lat,tmp_lon, error, $
+                    fixed=fixed, ds=ds, eps=eps, max_ds=max_ds, $
+                    verbose=verbose
+        lat_out = tmp_lat
+        lon_out = tmp_lon
 
-		endif else begin
-			AACGM_v2_Trace, lat_in,lon_in,height_in, tmp_lat,tmp_lon, error, $
-										fixed=fixed, ds=ds, eps=eps, max_ds=max_ds
-			lat_out = tmp_lat
-			lon_out = tmp_lon
-		endelse
-		return
-	endif
+    endif else begin
+      AACGM_v2_Trace, lat_in,lon_in,height_in, tmp_lat,tmp_lon, error, $
+                    fixed=fixed, ds=ds, eps=eps, max_ds=max_ds
+      lat_out = tmp_lat
+      lon_out = tmp_lon
+    endelse
+    return
+  endif
 
-	; 20140827 SGS moved coefficient loading to Date/Time setting functions
-	; 20140827 SGS moved time interpolation to Date/Time setting functions
+  ; 20140827 SGS moved coefficient loading to Date/Time setting functions
+  ; 20140827 SGS moved time interpolation to Date/Time setting functions
 
-	flag = keyword_set(geo)
+  flag = keyword_set(geo)
 
-	; determine the altitude dependence of the coefficients
-	if (height_in ne height_old_v2[flag]) then begin
-;		print, '*** HEIGHT INTERPOLATION ***'
-		alt_var    = height_in/2000.0		; make this scaling height a variable?
-		alt_var_sq = alt_var*alt_var
-		alt_var_cu = alt_var*alt_var_sq
-		alt_var_qu = alt_var*alt_var_cu
+  ; determine the altitude dependence of the coefficients
+  if (height_in ne height_old_v2[flag]) then begin
+;   print, '*** HEIGHT INTERPOLATION ***'
+    alt_var    = height_in/2000.0   ; make this scaling height a variable?
+    alt_var_sq = alt_var*alt_var
+    alt_var_cu = alt_var*alt_var_sq
+    alt_var_qu = alt_var*alt_var_cu
 
-		for i=0,2 do begin		; should this be variable, i.e. we only use x and y
-			for j=0,kmax_v2-1 do begin 
-				cint_v2[j,i,flag] =	coef_v2[j,i,0,flag] + $
-													coef_v2[j,i,1,flag] * alt_var + $
-													coef_v2[j,i,2,flag] * alt_var_sq + $
-													coef_v2[j,i,3,flag] * alt_var_cu + $
-													coef_v2[j,i,4,flag] * alt_var_qu 
-			endfor
-		endfor
-		height_old_v2[flag] = height_in
-	endif
+    for i=0,2 do begin    ; should this be variable, i.e. we only use x and y
+      for j=0,kmax_v2-1 do begin 
+        cint_v2[j,i,flag] = coef_v2[j,i,0,flag] + $
+                          coef_v2[j,i,1,flag] * alt_var + $
+                          coef_v2[j,i,2,flag] * alt_var_sq + $
+                          coef_v2[j,i,3,flag] * alt_var_cu + $
+                          coef_v2[j,i,4,flag] * alt_var_qu 
+      endfor
+    endfor
+    height_old_v2[flag] = height_in
+  endif
 
-	x = double(0)
-	y = double(0)
-	z = double(0)
+  x = double(0)
+  y = double(0)
+  z = double(0)
 
-;	lon_input = lon_in*!pi/180.0 
-	lon_input = lon_in*DTOR
+; lon_input = lon_in*!pi/180.0 
+  lon_input = lon_in*DTOR
 
-	; Intermediate coordinate. Only used for inverse transmformation
-;	if not keyword_set(at_alt) or (flag eq 0) then begin
-	if not keyword_set(at_alt) and (flag eq 0) then begin
-		colat_input = (90.-lat_in)*DTOR
-	endif else begin
-		; convert from AACGM to at-altitude coordinates
-		error = -64
-		AACGM_v2_CGM2Alt, height_in,lat_in, lat_adj, errflg
-		if (errflg ne 0) then return
-		colat_input = (90. - lat_adj)*DTOR
-	endelse
+  ; Intermediate coordinate. Only used for inverse transmformation
+; if not keyword_set(at_alt) or (flag eq 0) then begin
+  if not keyword_set(at_alt) and (flag eq 0) then begin
+    colat_input = (90.-lat_in)*DTOR
+  endif else begin
+    ; convert from AACGM to at-altitude coordinates
+    error = -64
+    AACGM_v2_CGM2Alt, height_in,lat_in, lat_adj, errflg
+    if (errflg ne 0) then return
+    colat_input = (90. - lat_adj)*DTOR
+  endelse
 
-	; SGS - remove this feature after timing tests
-	if keyword_set(debug) then begin
-		; use the built-in legendre function to compute values of the spherical
-		; harmonic functions
-		fact = factorial(indgen(2*order_v2+1))
+  ; SGS - remove this feature after timing tests
+  if keyword_set(debug) then begin
+    ; use the built-in legendre function to compute values of the spherical
+    ; harmonic functions
+    fact = factorial(indgen(2*order_v2+1))
 
-		ylmval = dblarr(kmax_v2)
-		for l=0,order_v2 do begin
+    ylmval = dblarr(kmax_v2)
+    for l=0,order_v2 do begin
 
-			; m < 0 terms
-			for m=-l,-1 do begin
-				plm = legendre(cos(colat_input), l, m, /double)
-				ylm = sqrt((2*l+1)/(4*!dpi) * fact[l-m]/fact[l+m])*plm*sin(m*lon_input)
-				k = l * (l+1) + m					; 1D index for l,m
-				ylmval[k] = ylm
-				x += cint_v2[k,0,flag] * ylm
-				y += cint_v2[k,1,flag] * ylm
-				z += cint_v2[k,2,flag] * ylm
-			endfor
+      ; m < 0 terms
+      for m=-l,-1 do begin
+        plm = legendre(cos(colat_input), l, m, /double)
+        ylm = sqrt((2*l+1)/(4*!dpi) * fact[l-m]/fact[l+m])*plm*sin(m*lon_input)
+        k = l * (l+1) + m         ; 1D index for l,m
+        ylmval[k] = ylm
+        x += cint_v2[k,0,flag] * ylm
+        y += cint_v2[k,1,flag] * ylm
+        z += cint_v2[k,2,flag] * ylm
+      endfor
 
-			; m = 0 term
-			plm = legendre(cos(colat_input), l, 0, /double)
-			ylm = sqrt((2*l+1)/(4*!dpi)) * plm
-			k = l * (l+1)								; 1D index for l,m
-			ylmval[k] = ylm
-			x += cint_v2[k,0,flag] * ylm
-			y += cint_v2[k,1,flag] * ylm
-			z += cint_v2[k,2,flag] * ylm
+      ; m = 0 term
+      plm = legendre(cos(colat_input), l, 0, /double)
+      ylm = sqrt((2*l+1)/(4*!dpi)) * plm
+      k = l * (l+1)               ; 1D index for l,m
+      ylmval[k] = ylm
+      x += cint_v2[k,0,flag] * ylm
+      y += cint_v2[k,1,flag] * ylm
+      z += cint_v2[k,2,flag] * ylm
 
-			; m > 0 terms
-			for m=1,l do begin
-				plm = legendre(cos(colat_input), l, m, /double)
-				ylm = sqrt((2*l+1)/(4*!dpi) * fact[l-m]/fact[l+m])*plm*cos(m*lon_input)
-				k = l * (l+1) + m					; 1D index for l,m
-				ylmval[k] = ylm
-				x += cint_v2[k,0,flag] * ylm
-				y += cint_v2[k,1,flag] * ylm
-				z += cint_v2[k,2,flag] * ylm
-			endfor
+      ; m > 0 terms
+      for m=1,l do begin
+        plm = legendre(cos(colat_input), l, m, /double)
+        ylm = sqrt((2*l+1)/(4*!dpi) * fact[l-m]/fact[l+m])*plm*cos(m*lon_input)
+        k = l * (l+1) + m         ; 1D index for l,m
+        ylmval[k] = ylm
+        x += cint_v2[k,0,flag] * ylm
+        y += cint_v2[k,1,flag] * ylm
+        z += cint_v2[k,2,flag] * ylm
+      endfor
 
-		endfor
-		;print, 'legendre()'
-		;print, ylmval
-	endif else begin
-		; use the Rylm function (adapted to orthonormal functions; SGS) to compute
-		; values of the spherical harmonic functions
+    endfor
+    ;print, 'legendre()'
+    ;print, ylmval
+  endif else begin
+    ; use the Rylm function (adapted to orthonormal functions; SGS) to compute
+    ; values of the spherical harmonic functions
 
-		ylmval = dblarr(kmax_v2)
-		AACGM_v2_Rylm, colat_input,lon_input, order_v2,ylmval
+    ylmval = dblarr(kmax_v2)
+    AACGM_v2_Rylm, colat_input,lon_input, order_v2,ylmval
 
-		for l = 0,order_v2 do begin
-			for m = -l,l do begin
-				k = l * (l+1) + m
+    for l = 0,order_v2 do begin
+      for m = -l,l do begin
+        k = l * (l+1) + m
 
-				x += cint_v2[k,0,flag]*ylmval[k]
-				y += cint_v2[k,1,flag]*ylmval[k]
-				z += cint_v2[k,2,flag]*ylmval[k]		; SGS - need this for sign...
-			endfor
-		endfor
-	;print, 'Rylm'
-	;print, ylmval
-	endelse
+        x += cint_v2[k,0,flag]*ylmval[k]
+        y += cint_v2[k,1,flag]*ylmval[k]
+        z += cint_v2[k,2,flag]*ylmval[k]    ; SGS - need this for sign...
+      endfor
+    endfor
+  ;print, 'Rylm'
+  ;print, ylmval
+  endelse
 
-	; COMMENT: SGS
-	; 
-	; This answers one of my questions about how the coordinates for AACGM are
-	; guaranteed to be on the unit sphere. Here they compute xyz indpendently
-	; using the SH coefficients for each coordinate. They reject anything that
-	; is +/- .1 Re from the surface of the Earth. They then scale each xyz
-	; coordinate by the computed radial distance. This is a TERRIBLE way to do
-	; things... but necessary for the inverse transformation.
+  ; COMMENT: SGS
+  ; 
+  ; This answers one of my questions about how the coordinates for AACGM are
+  ; guaranteed to be on the unit sphere. Here they compute xyz indpendently
+  ; using the SH coefficients for each coordinate. They reject anything that
+  ; is +/- .1 Re from the surface of the Earth. They then scale each xyz
+  ; coordinate by the computed radial distance. This is a TERRIBLE way to do
+  ; things... but necessary for the inverse transformation.
 
-	; SGS - new method that ensures position is on unit sphere and results in a
-	;       much better fit. Uses z coordinate only for sign, i.e., hemisphere.
-	if (flag eq 0) then begin
-		fac = x*x + y*y
-		if fac gt 1. then begin
-			; we are in the forbidden region and the solution is undefined
-			lat_out = !values.f_nan
-			lon_out = !values.f_nan
-			error = -64
-			return
-		endif
+  ; SGS - new method that ensures position is on unit sphere and results in a
+  ;       much better fit. Uses z coordinate only for sign, i.e., hemisphere.
+  if (flag eq 0) then begin
+    fac = x*x + y*y
+    if fac gt 1. then begin
+      ; we are in the forbidden region and the solution is undefined
+      lat_out = !values.f_nan
+      lon_out = !values.f_nan
+      error = -64
+      return
+    endif
 
-		ztmp = sqrt(1. - fac)
-		if z lt 0 then z = -ztmp else z = ztmp
+    ztmp = sqrt(1. - fac)
+    if z lt 0 then z = -ztmp else z = ztmp
 
-		colat_temp = acos(z)
+    colat_temp = acos(z)
 
-	endif else begin
-	; SGS - for inverse the old normalization produces lower overall errors...
-		r = sqrt(x*x + y*y + z*z)
-		if ((r lt 0.9) or (r gt 1.1)) then begin
-			; too much variation in the radial component
-			lat_out = !values.f_nan
-			lon_out = !values.f_nan
-			error = -32
-			return
-		endif
+  endif else begin
+  ; SGS - for inverse the old normalization produces lower overall errors...
+    r = sqrt(x*x + y*y + z*z)
+    if ((r lt 0.9) or (r gt 1.1)) then begin
+      ; too much variation in the radial component
+      lat_out = !values.f_nan
+      lon_out = !values.f_nan
+      error = -32
+      return
+    endif
  
-		z /= r
-		x /= r
-		y /= r
+    z /= r
+    x /= r
+    y /= r
 
-		; SGS - this is for cases where abs(z) > 1.
-		if (z ge 1.) then colat_temp = 0 $ 
-		else if (z lt -1.) then colat_temp = !dpi $
-		else colat_temp = acos(z)
- 	endelse 
+    ; SGS - this is for cases where abs(z) > 1.
+    if (z ge 1.) then colat_temp = 0 $ 
+    else if (z lt -1.) then colat_temp = !dpi $
+    else colat_temp = acos(z)
+  endelse 
 
-	; SGS - check these values
-	if ((abs(x) lt 1e-8) and (abs(y) lt 1e-8)) then $
-		lon_temp = 0 $
-	else $
-		lon_temp = atan(y,x)
+  ; SGS - check these values
+  if ((abs(x) lt 1e-8) and (abs(y) lt 1e-8)) then $
+    lon_temp = 0 $
+  else $
+    lon_temp = atan(y,x)
 
-	lon_output = lon_temp
+  lon_output = lon_temp
 
-	if keyword_set(at_alt) and (flag eq 0) then begin
-		lat_alt = 90 - colat_temp/DTOR
-		AACGM_v2_Alt2CGM, height_in,lat_alt, lat_adj
-		colat_output = (90. - lat_adj) * DTOR; * !pi/180.0
-	endif else $
-		colat_output = colat_temp
+  if keyword_set(at_alt) and (flag eq 0) then begin
+    lat_alt = 90 - colat_temp/DTOR
+    AACGM_v2_Alt2CGM, height_in,lat_alt, lat_adj
+    colat_output = (90. - lat_adj) * DTOR; * !pi/180.0
+  endif else $
+    colat_output = colat_temp
 
-	lat_out = 90. - colat_output/DTOR	;*180.0/!pi
-	lon_out = lon_output/DTOR	;*180.0/!pi
+  lat_out = 90. - colat_output/DTOR ;*180.0/!pi
+  lon_out = lon_output/DTOR ;*180.0/!pi
 
-	error = 0  
-	return
+  error = 0  
+  return
 end
 
 ;------------------------------------------------------------------------------
@@ -852,87 +852,87 @@ end
 ;
 
 function AACGM_v2_Convert, in_lat,in_lon,height, out_lat,out_lon,r, geo=geo, $
-														trace=trace, bad_idea=bad_idea, $
-														eps=eps, allow_trace=allow_trace, $
-														gcentric=gcentric, $
-														verbose=verbose, debug=debug
+                            trace=trace, bad_idea=bad_idea, $
+                            eps=eps, allow_trace=allow_trace, $
+                            gcentric=gcentric, $
+                            verbose=verbose, debug=debug
 
-	common IGRF_v2_Com
+  common IGRF_v2_Com
 
-	geo = keyword_set(geo)
-	if n_elements(in_lat) ne 1 then begin
-		n       = n_elements(in_lat)
-		sze     = size(in_lat)
-		out_lat = dblarr(sze[1:sze[0]])
-		out_lon = dblarr(sze[1:sze[0]])
-		r       = dblarr(sze[1:sze[0]])
-		tmp_lat = 0.d
-		tmp_lon = 0.d
-		for i=0, n-1 do begin 
+  geo = keyword_set(geo)
+  if n_elements(in_lat) ne 1 then begin
+    n       = n_elements(in_lat)
+    sze     = size(in_lat)
+    out_lat = dblarr(sze[1:sze[0]])
+    out_lon = dblarr(sze[1:sze[0]])
+    r       = dblarr(sze[1:sze[0]])
+    tmp_lat = 0.d
+    tmp_lon = 0.d
+    for i=0, n-1 do begin 
 
-			; convert geodetic to geocentric
-			if not keyword_set(gcentric) and not keyword_set(geo) then begin
-				rtp = geod2geoc(in_lat[i], in_lon[i], height[i])
+      ; convert geodetic to geocentric
+      if not keyword_set(gcentric) and not keyword_set(geo) then begin
+        rtp = geod2geoc(in_lat[i], in_lon[i], height[i])
 
-				;* modify lat/lon/alt to geocentric values */
-				in_lat[i] = 90.d - rtp[1]/DTOR
-				in_lon[i] = rtp[2]/DTOR
-				height[i] = (rtp[0]-1.d)*RE
-			endif
+        ;* modify lat/lon/alt to geocentric values */
+        in_lat[i] = 90.d - rtp[1]/DTOR
+        in_lon[i] = rtp[2]/DTOR
+        height[i] = (rtp[0]-1.d)*RE
+      endif
 
-			AACGM_v2_ConvertGeoCoord, in_lat[i],in_lon[i],height[i], $
-																tmp_lat,tmp_lon, error, geo=geo, $
-																trace=trace, bad_idea=bad_idea, $
-																allow_trace=allow_trace, eps=eps, $
-																verbose=verbose, debug=debug
-			out_lat[i] = tmp_lat
-			out_lon[i] = tmp_lon
+      AACGM_v2_ConvertGeoCoord, in_lat[i],in_lon[i],height[i], $
+                                tmp_lat,tmp_lon, error, geo=geo, $
+                                trace=trace, bad_idea=bad_idea, $
+                                allow_trace=allow_trace, eps=eps, $
+                                verbose=verbose, debug=debug
+      out_lat[i] = tmp_lat
+      out_lon[i] = tmp_lon
 
-			if not keyword_set(geo) then begin
-				r[i] = (height[i] + RE)/RE		; geocentric radial distance in RE
-			endif else begin
-				if not keyword_set(gcentric) then begin
-					p = geoc2geod(out_lat[i],out_lon[i],(RE+height[i])/RE)
-					out_lat[i] = p[0]
-					height[i] = p[2]
-				endif
-				r[i] = height[i]
-			endelse
-		endfor
-	endif else begin
-		out_lat = 0.d
-		out_lon = 0.d
+      if not keyword_set(geo) then begin
+        r[i] = (height[i] + RE)/RE    ; geocentric radial distance in RE
+      endif else begin
+        if not keyword_set(gcentric) then begin
+          p = geoc2geod(out_lat[i],out_lon[i],(RE+height[i])/RE)
+          out_lat[i] = p[0]
+          height[i] = p[2]
+        endif
+        r[i] = height[i]
+      endelse
+    endfor
+  endif else begin
+    out_lat = 0.d
+    out_lon = 0.d
 
-		; convert geodetic to geocentric
-		if not keyword_set(gcentric) and not keyword_set(geo) then begin
-			rtp = geod2geoc(in_lat, in_lon, height)
+    ; convert geodetic to geocentric
+    if not keyword_set(gcentric) and not keyword_set(geo) then begin
+      rtp = geod2geoc(in_lat, in_lon, height)
 
-			;* modify lat/lon/alt to geocentric values */
-			in_lat = 90.d - rtp[1]/DTOR
-			in_lon = rtp[2]/DTOR
-			height = (rtp[0]-1.d)*RE
-		endif
+      ;* modify lat/lon/alt to geocentric values */
+      in_lat = 90.d - rtp[1]/DTOR
+      in_lon = rtp[2]/DTOR
+      height = (rtp[0]-1.d)*RE
+    endif
 
-		AACGM_v2_ConvertGeoCoord, in_lat,in_lon,height, $
-															out_lat,out_lon, error, geo=geo, $
-															trace=trace, bad_idea=bad_idea, $
-															allow_trace=allow_trace, eps=eps, $
-															verbose=verbose, debug=debug
+    AACGM_v2_ConvertGeoCoord, in_lat,in_lon,height, $
+                              out_lat,out_lon, error, geo=geo, $
+                              trace=trace, bad_idea=bad_idea, $
+                              allow_trace=allow_trace, eps=eps, $
+                              verbose=verbose, debug=debug
 
-		if not keyword_set(geo) then begin
-			r = (height + RE)/RE		; geocentric radial distance in RE
-		endif else begin
-			if not keyword_set(gcentric) then begin
-				p = geoc2geod(out_lat,out_lon,(RE+height)/RE)
+    if not keyword_set(geo) then begin
+      r = (height + RE)/RE    ; geocentric radial distance in RE
+    endif else begin
+      if not keyword_set(gcentric) then begin
+        p = geoc2geod(out_lat,out_lon,(RE+height)/RE)
 
-				out_lat = p[0]
-				height = p[2]
-			endif
-			r = height
-		endelse
-	endelse
+        out_lat = p[0]
+        height = p[2]
+      endif
+      r = height
+    endelse
+  endelse
 
-	return, error
+  return, error
 end
 
 ;------------------------------------------------------------------------------
@@ -977,102 +977,102 @@ end
 ;
 
 pro AACGM_v2_Trace, lat_in,lon_in,height_in, lat_out,lon_out, error, $
-										fixed=fixed, ds=ds, eps=eps, max_ds=max_ds
-	common AACGM_v2_Com
-	common IGRF_v2_Com
+                    fixed=fixed, ds=ds, eps=eps, max_ds=max_ds
+  common AACGM_v2_Com
+  common IGRF_v2_Com
 
-	IGRF_SetDateTime, aacgm_v2_datetime.year, aacgm_v2_datetime.month, $
-										aacgm_v2_datetime.day,  aacgm_v2_datetime.hour,  $
-										aacgm_v2_datetime.minute, aacgm_v2_datetime.second, $
-										err=error
-	if (error ne 0) then return
+  IGRF_SetDateTime, aacgm_v2_datetime.year, aacgm_v2_datetime.month, $
+                    aacgm_v2_datetime.day,  aacgm_v2_datetime.hour,  $
+                    aacgm_v2_datetime.minute, aacgm_v2_datetime.second, $
+                    err=error
+  if (error ne 0) then return
 
-	if not keyword_set(ds) then $
-		ds  = 1.									; 1 km default starting stepsize
-	dsRE  = ds/RE
-	dsRE0 = dsRE
-	if not keyword_set(eps) then $
-		eps = 1e-3/RE							; global error (RE)
+  if not keyword_set(ds) then $
+    ds  = 1.                  ; 1 km default starting stepsize
+  dsRE  = ds/RE
+  dsRE0 = dsRE
+  if not keyword_set(eps) then $
+    eps = 1e-3/RE             ; global error (RE)
 
-	; if user wants to fix maximum step size then let them by turning off
-	; radial step size dependence that is default
-	if keyword_set(max_ds) then RRds = 0 else RRds = 1
+  ; if user wants to fix maximum step size then let them by turning off
+  ; radial step size dependence that is default
+  if keyword_set(max_ds) then RRds = 0 else RRds = 1
 
-	rtp = dblarr(3)
-	rtp[0] = (RE + height_in)/RE	; 1.0 is surface of Earth
-	rtp[1] = (90.-lat_in)*DTOR		; colatitude in radians
-	rtp[2] = lon_in*DTOR					; longitude  in radians
+  rtp = dblarr(3)
+  rtp[0] = (RE + height_in)/RE  ; 1.0 is surface of Earth
+  rtp[1] = (90.-lat_in)*DTOR    ; colatitude in radians
+  rtp[2] = lon_in*DTOR          ; longitude  in radians
 
-	; convert position to Cartesian coords
-	;//geopack_sphcar, r,theta,phi, x,y,z, /to_rect
-	xyzg = sph2car(rtp)
+  ; convert position to Cartesian coords
+  ;//geopack_sphcar, r,theta,phi, x,y,z, /to_rect
+  xyzg = sph2car(rtp)
 
-	; convert to magnetic Dipole coordinates
-	;//geopack_conv_coord, x,y,z, xx,yy,zz, /from_geo, /to_mag
-	xyzm = geo2mag(xyzg)
+  ; convert to magnetic Dipole coordinates
+  ;//geopack_conv_coord, x,y,z, xx,yy,zz, /from_geo, /to_mag
+  xyzm = geo2mag(xyzg)
 
-	if xyzm[2] gt 0 then idir = -1 else idir = 1		; N or S hemisphere
+  if xyzm[2] gt 0 then idir = -1 else idir = 1    ; N or S hemisphere
 
-	dsRE = dsRE0
+  dsRE = dsRE0
 
-	; trace to magnetic equator
-	;
-	; Note that there is the possibility that the magnetic equator lies
-	; at an altitude above the surface of the Earth but below the starting
-	; altitude. I am not certain of the definition of CGM, but these
-	; fieldlines map to very different locations than the solutions that
-	; lie above the starting altitude. I am considering the solution for
-	; this set of fieldlines as undefined; just like those that lie below
-	; the surface of the Earth.
+  ; trace to magnetic equator
+  ;
+  ; Note that there is the possibility that the magnetic equator lies
+  ; at an altitude above the surface of the Earth but below the starting
+  ; altitude. I am not certain of the definition of CGM, but these
+  ; fieldlines map to very different locations than the solutions that
+  ; lie above the starting altitude. I am considering the solution for
+  ; this set of fieldlines as undefined; just like those that lie below
+  ; the surface of the Earth.
 
-	while idir * xyzm[2] lt 0 do begin
+  while idir * xyzm[2] lt 0 do begin
 
-		xyzp = xyzg
+    xyzp = xyzg
 
-;//		AACGM_v2_RK45(x,y,z, idir, dsRE, eps, $
-;//																	fixed=fixed, max_ds=max_ds, RRds=RRds)
-		; x,y,z are passed by reference and modified here...
-		AACGM_v2_RK45, xyzg, idir, dsRE, eps
+;//   AACGM_v2_RK45(x,y,z, idir, dsRE, eps, $
+;//                                 fixed=fixed, max_ds=max_ds, RRds=RRds)
+    ; x,y,z are passed by reference and modified here...
+    AACGM_v2_RK45, xyzg, idir, dsRE, eps
 
-		; convert to magnetic Dipole coordinates
-		;//geopack_conv_coord, x,y,z, xx,yy,zz, /from_geo, /to_mag
-		xyzm = geo2mag(xyzg)
+    ; convert to magnetic Dipole coordinates
+    ;//geopack_conv_coord, x,y,z, xx,yy,zz, /from_geo, /to_mag
+    xyzm = geo2mag(xyzg)
 
-	endwhile
+  endwhile
 
-	; now bisect stepsize (fixed) to land on magnetic equator w/in 1 meter
-	xyzc = xyzp
+  ; now bisect stepsize (fixed) to land on magnetic equator w/in 1 meter
+  xyzc = xyzp
 
-	while dsRE gt 1e-3/RE do begin
-		dsRE *= .5
-		xyzp = xyzc
-		AACGM_v2_RK45, xyzc, idir, dsRE, eps, /fixed
-;//		geopack_conv_coord, xc,yc,zc, xx,yy,zz, /from_geo, /to_mag
-		xyzm = geo2mag(xyzc)
+  while dsRE gt 1e-3/RE do begin
+    dsRE *= .5
+    xyzp = xyzc
+    AACGM_v2_RK45, xyzc, idir, dsRE, eps, /fixed
+;//   geopack_conv_coord, xc,yc,zc, xx,yy,zz, /from_geo, /to_mag
+    xyzm = geo2mag(xyzc)
 
-		; Is it possible that resetting here causes a doubling of the tol?
-		if idir * xyzm[2] gt 0 then xyzc = xyzp
-	endwhile
+    ; Is it possible that resetting here causes a doubling of the tol?
+    if idir * xyzm[2] gt 0 then xyzc = xyzp
+  endwhile
 
-	; 'trace' back to surface along Dipole field lines
-	Lshell = sqrt(total(xyzc*xyzc))
-	if Lshell lt (RE+height_in)/RE then begin
-		; Magnetic equator is below your...
-		lat_out = !values.f_nan
-		lon_out = !values.f_nan
-		error   = 1
-	endif else begin
-		;//geopack_conv_coord, xc,yc,zc, xx,yy,zz, /from_geo, /to_mag
-		;//geopack_sphcar, xx,yy,zz, mr,mtheta,mphi, /to_sphere
-		xyzm = geo2mag(xyzc)
-		rtp  = car2sph(xyzm)
+  ; 'trace' back to surface along Dipole field lines
+  Lshell = sqrt(total(xyzc*xyzc))
+  if Lshell lt (RE+height_in)/RE then begin
+    ; Magnetic equator is below your...
+    lat_out = !values.f_nan
+    lon_out = !values.f_nan
+    error   = 1
+  endif else begin
+    ;//geopack_conv_coord, xc,yc,zc, xx,yy,zz, /from_geo, /to_mag
+    ;//geopack_sphcar, xx,yy,zz, mr,mtheta,mphi, /to_sphere
+    xyzm = geo2mag(xyzc)
+    rtp  = car2sph(xyzm)
 
-		lat_out = -idir*acos(sqrt(1./Lshell))/DTOR
-		lon_out = rtp[2]/DTOR
-		if lon_out gt 180 then lon_out -= 360		; SGS - make consistent with output
-																						; from coefficient functions
-		error   = 0
-	endelse
+    lat_out = -idir*acos(sqrt(1./Lshell))/DTOR
+    lon_out = rtp[2]/DTOR
+    if lon_out gt 180 then lon_out -= 360   ; SGS - make consistent with output
+                                            ; from coefficient functions
+    error   = 0
+  endelse
 
 end
 
@@ -1113,100 +1113,100 @@ end
 ;
 
 pro AACGM_v2_Trace_inv, lat_in,lon_in,height_in, lat_out,lon_out, error, $
-										fixed=fixed, ds=ds, eps=eps, max_ds=max_ds, verbose=verbose
-	common AACGM_v2_Com
-	common IGRF_v2_Com
+                    fixed=fixed, ds=ds, eps=eps, max_ds=max_ds, verbose=verbose
+  common AACGM_v2_Com
+  common IGRF_v2_Com
 
-	IGRF_SetDateTime, aacgm_v2_datetime.year, aacgm_v2_datetime.month, $
-										aacgm_v2_datetime.day,  aacgm_v2_datetime.hour,  $
-										aacgm_v2_datetime.minute, aacgm_v2_datetime.second, $
-										err=error
-	if (error ne 0) then return
+  IGRF_SetDateTime, aacgm_v2_datetime.year, aacgm_v2_datetime.month, $
+                    aacgm_v2_datetime.day,  aacgm_v2_datetime.hour,  $
+                    aacgm_v2_datetime.minute, aacgm_v2_datetime.second, $
+                    err=error
+  if (error ne 0) then return
 
-	if not keyword_set(ds) then $
-		ds  = 1.									; 1 km default starting stepsize
-	dsRE  = ds/RE
-	dsRE0 = dsRE
-	if not keyword_set(eps) then $
-;		eps   = 1e-2/RE						; global error (RE)
-		eps   = 1e-4/RE						; global error (RE)
+  if not keyword_set(ds) then $
+    ds  = 1.                  ; 1 km default starting stepsize
+  dsRE  = ds/RE
+  dsRE0 = dsRE
+  if not keyword_set(eps) then $
+;   eps   = 1e-2/RE           ; global error (RE)
+    eps   = 1e-4/RE           ; global error (RE)
 
-	; if user wants to fix maximum step size then let them by turning off
-	; radial step size dependence that is default
-	if keyword_set(max_ds) then RRds = 0 else RRds = 1
+  ; if user wants to fix maximum step size then let them by turning off
+  ; radial step size dependence that is default
+  if keyword_set(max_ds) then RRds = 0 else RRds = 1
 
-	; INV: for inverse we must first map AACGM to magnetic equator along
-	;      the dipole field line that passes through the Earth at lat/lon
-	if (abs(lat_in - 90.d) lt 1e-6) then lat_in = 90-1e-6
-	Lshell = 1.d/(cos(lat_in*DTOR)*cos(lat_in*DTOR))
+  ; INV: for inverse we must first map AACGM to magnetic equator along
+  ;      the dipole field line that passes through the Earth at lat/lon
+  if (abs(lat_in - 90.d) lt 1e-6) then lat_in = 90-1e-6
+  Lshell = 1.d/(cos(lat_in*DTOR)*cos(lat_in*DTOR))
 
-	if keyword_set(verbose) then print, Lshell
+  if keyword_set(verbose) then print, Lshell
 
-	if Lshell lt (RE + height_in)/RE then begin
-		; solution does not exist, the starting position at the magnetic
-		; equator is below the altitude of interest
-		lat_out = !values.f_nan
-		lon_out = !values.f_nan
-		error   = 1
-	endif else begin
-		phim = lon_in
+  if Lshell lt (RE + height_in)/RE then begin
+    ; solution does not exist, the starting position at the magnetic
+    ; equator is below the altitude of interest
+    lat_out = !values.f_nan
+    lon_out = !values.f_nan
+    error   = 1
+  endif else begin
+    phim = lon_in
 
-		; magnetic Cartesian coordinates of fieldline trace starting point
-		xyzm = dblarr(3)
-		xyzm[0] = Lshell*cos(phim*DTOR)
-		xyzm[1] = Lshell*sin(phim*DTOR)
-		xyzm[2] = 0.d
+    ; magnetic Cartesian coordinates of fieldline trace starting point
+    xyzm = dblarr(3)
+    xyzm[0] = Lshell*cos(phim*DTOR)
+    xyzm[1] = Lshell*sin(phim*DTOR)
+    xyzm[2] = 0.d
 
-		; geographic Cartesian coordinates of starting point
-		;//geopack_conv_coord, xm,ym,zm, x,y,z, /from_mag, /to_geo
-		xyzg = mag2geo(xyzm)
+    ; geographic Cartesian coordinates of starting point
+    ;//geopack_conv_coord, xm,ym,zm, x,y,z, /from_mag, /to_geo
+    xyzg = mag2geo(xyzm)
 
-		; geographic spherical coordinates of starting point
-		;//geopack_sphcar, x,y,z, r,theta,phi, /to_sphere
-		rtp = car2sph(xyzg)
+    ; geographic spherical coordinates of starting point
+    ;//geopack_sphcar, x,y,z, r,theta,phi, /to_sphere
+    rtp = car2sph(xyzg)
 
-		; direction of trace is determined by the starting hemisphere?
-		if lat_in gt 0 then idir = 1 else idir = -1   ; N or S hemisphere
+    ; direction of trace is determined by the starting hemisphere?
+    if lat_in gt 0 then idir = 1 else idir = -1   ; N or S hemisphere
 
-		dsRE = dsRE0
+    dsRE = dsRE0
 
-		; trace back to altitude above Earth
-		while rtp[0] gt (RE + height_in)/RE do begin
+    ; trace back to altitude above Earth
+    while rtp[0] gt (RE + height_in)/RE do begin
 
-			xyzp = xyzg
-			if keyword_set(verbose) then print, 'xyz: ', xyzg, dsRE
-			AACGM_v2_RK45, xyzg, idir, dsRE, eps, $
-															fixed=fixed, max_ds=max_ds, RRds=RRds, $
-															verbose=verbose
-			if keyword_set(verbose) then print, 'xyz: ', xyzg, dsRE
+      xyzp = xyzg
+      if keyword_set(verbose) then print, 'xyz: ', xyzg, dsRE
+      AACGM_v2_RK45, xyzg, idir, dsRE, eps, $
+                              fixed=fixed, max_ds=max_ds, RRds=RRds, $
+                              verbose=verbose
+      if keyword_set(verbose) then print, 'xyz: ', xyzg, dsRE
 
-			;//geopack_sphcar, x,y,z, r,theta,phi, /to_sphere
-			rtp = car2sph(xyzg)
+      ;//geopack_sphcar, x,y,z, r,theta,phi, /to_sphere
+      rtp = car2sph(xyzg)
 
-;			if keyword_set(verbose) then stop
-		endwhile
+;     if keyword_set(verbose) then stop
+    endwhile
 
-		; now bisect stepsize (fixed) to land on magnetic equator w/in 1 meter
-		xyzc = xyzp
+    ; now bisect stepsize (fixed) to land on magnetic equator w/in 1 meter
+    xyzc = xyzp
 
-		while dsRE gt 1e-3/RE do begin
-			dsRE *= .5
-			xyzp = xyzc
-			AACGM_v2_RK45, xyzc, idir, dsRE, eps, /fixed
+    while dsRE gt 1e-3/RE do begin
+      dsRE *= .5
+      xyzp = xyzc
+      AACGM_v2_RK45, xyzc, idir, dsRE, eps, /fixed
 
-			;//geopack_sphcar, xc,yc,zc, r,theta,phi, /to_sphere
-			rtp = car2sph(xyzc)
+      ;//geopack_sphcar, xc,yc,zc, r,theta,phi, /to_sphere
+      rtp = car2sph(xyzc)
 
-			if rtp[0] lt (RE + height_in)/RE then xyzc = xyzp
-		endwhile
+      if rtp[0] lt (RE + height_in)/RE then xyzc = xyzp
+    endwhile
 
-		; record lat/lon and xyz
-		lat_out = 90. - rtp[1]/DTOR
-		lon_out = rtp[2]/DTOR
-		if lon_out gt 180 then lon_out -= 360		; SGS - make consistent with output
-																						; from coefficient functions
-		error   = 0
-	endelse
+    ; record lat/lon and xyz
+    lat_out = 90. - rtp[1]/DTOR
+    lon_out = rtp[2]/DTOR
+    if lon_out gt 180 then lon_out -= 360   ; SGS - make consistent with output
+                                            ; from coefficient functions
+    error   = 0
+  endelse
 
 end
 
@@ -1231,63 +1231,63 @@ end
 ;
 function AACGM_v2_TimeInterp
 
-	common AACGM_v2_Com
+  common AACGM_v2_Com
 
-	; set 5-year epoch based on the current year
-	myear_v2 = fix(aacgm_v2_datetime.year/5)*5
-	; set the floating-point year based on the current date and time
-	fyear_v2 = aacgm_v2_datetime.year + ((aacgm_v2_datetime.dayno-1) + $ 
-					(aacgm_v2_datetime.hour + (aacgm_v2_datetime.minute + $
-					aacgm_v2_datetime.second/60.d)/60.d)/24.d) / $
-					aacgm_v2_datetime.daysinyear
+  ; set 5-year epoch based on the current year
+  myear_v2 = fix(aacgm_v2_datetime.year/5)*5
+  ; set the floating-point year based on the current date and time
+  fyear_v2 = aacgm_v2_datetime.year + ((aacgm_v2_datetime.dayno-1) + $ 
+          (aacgm_v2_datetime.hour + (aacgm_v2_datetime.minute + $
+          aacgm_v2_datetime.second/60.d)/60.d)/24.d) / $
+          aacgm_v2_datetime.daysinyear
 
-	must_load = 0
-	if (n_elements(myear_v2_old) eq 0) then begin
-		; first time, so need to load new coefficients
-		must_load = 1
-	endif else if (myear_v2_old ne myear_v2) then begin
-		; 5-year epoch year has changed, so need to load new coefficients
-		must_load = 1
-	endif
+  must_load = 0
+  if (n_elements(myear_v2_old) eq 0) then begin
+    ; first time, so need to load new coefficients
+    must_load = 1
+  endif else if (myear_v2_old ne myear_v2) then begin
+    ; 5-year epoch year has changed, so need to load new coefficients
+    must_load = 1
+  endif
 
-	; load the sets of coefficients
-	if (must_load ne 0) then begin
-		modyr  = myear_v2
-		prefix = getenv('AACGM_v2_DAT_PREFIX')
-		if (strlen(prefix) eq 0) then begin
-			; prefix does not exist...
-			print, 'Environment variable AACGM_v2_DAT_PREFIX is not set.'
-			print, 'You must set this variable to the location and prefix, e.g., '
-			print, "'aacgm_coeffs-11-', of the coefficient files on your system."
-			return, -1
-		endif
+  ; load the sets of coefficients
+  if (must_load ne 0) then begin
+    modyr  = myear_v2
+    prefix = getenv('AACGM_v2_DAT_PREFIX')
+    if (strlen(prefix) eq 0) then begin
+      ; prefix does not exist...
+      print, 'Environment variable AACGM_v2_DAT_PREFIX is not set.'
+      print, 'You must set this variable to the location and prefix, e.g., '
+      print, "'aacgm_coeffs-11-', of the coefficient files on your system."
+      return, -1
+    endif
 
-		;   prefix = 'aacgm_coeffs-leo-11-'
-		;print, 'Loading new coefficients: ', modyr, modyr+5
-		fnamea = prefix+string(format='(i4.4)',modyr)+'.asc'
-		fnameb = prefix+string(format='(i4.4)',modyr+5)+'.asc'
-		openr, ua, fnamea, /get_lun,/stdio
-		openr, ub, fnameb, /get_lun,/stdio
-		s      = AACGM_v2_LoadCoef([ua,ub])
-		free_lun, ua,ub
+    ;   prefix = 'aacgm_coeffs-leo-11-'
+    ;print, 'Loading new coefficients: ', modyr, modyr+5
+    fnamea = prefix+string(format='(i4.4)',modyr)+'.asc'
+    fnameb = prefix+string(format='(i4.4)',modyr+5)+'.asc'
+    openr, ua, fnamea, /get_lun,/stdio
+    openr, ub, fnameb, /get_lun,/stdio
+    s      = AACGM_v2_LoadCoef([ua,ub])
+    free_lun, ua,ub
 
-		; new coefficients so force both interpolations
-		myear_v2_old = myear_v2
-		fyear_v2_old = -1					; force time interpolation
-		height_old_v2 = [-1.,-1.]	; force height interpolation
-	endif
+    ; new coefficients so force both interpolations
+    myear_v2_old = myear_v2
+    fyear_v2_old = -1         ; force time interpolation
+    height_old_v2 = [-1.,-1.] ; force height interpolation
+  endif
 
-	if (fyear_v2 ne fyear_v2_old) then begin
-		; here is the linear interpolation of the two bounding sets of coefficients
-		coef_v2 = reform(coefs_v2[0,*,*,*,*]) + (fyear_v2 - myear_v2) * $
-								reform(coefs_v2[1,*,*,*,*]-coefs_v2[0,*,*,*,*])/5
+  if (fyear_v2 ne fyear_v2_old) then begin
+    ; here is the linear interpolation of the two bounding sets of coefficients
+    coef_v2 = reform(coefs_v2[0,*,*,*,*]) + (fyear_v2 - myear_v2) * $
+                reform(coefs_v2[1,*,*,*,*]-coefs_v2[0,*,*,*,*])/5
 
-		height_old_v2[0] = -1.				; force height interpolation because coeffs
-		height_old_v2[1] = -1.				; have changed
+    height_old_v2[0] = -1.        ; force height interpolation because coeffs
+    height_old_v2[1] = -1.        ; have changed
 
-		fyear_v2_old = fyear_v2
-	endif
+    fyear_v2_old = fyear_v2
+  endif
 
-	return, 0
+  return, 0
 end
 
