@@ -106,9 +106,8 @@ void lag_overlap(int range,int *badlag,struct FitPrm *ptr) {
         if(min_pwr < tot_cri)    /* Comparing lag 0 power of the checked sample (pulse) with cumulative lag 0 power from all interfering ranges */
         bad_pulse[ck_pulse] = 1;
       }
-     
-            
-  
+               
+
   /* mark the bad lag */
 
   for (pulse = 0 ; pulse < ptr->mppul; ++pulse) {

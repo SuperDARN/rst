@@ -3,40 +3,34 @@
 <project>superdarn</project>
 <name>smr</name>
 <location>src.lib/tk/smr</location>
+
 <function>
 <name>SmrFread</name>
 <location>src.lib/tk/smr</location>
 <header>superdarn/smrread.h</header>
-<syntax>int SmrFread(FILE *fp,<sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>, <sn href="&root;/src.lib/superdarn/atk/fit/structFitData.html">struct FitData</sn>,int beam);</syntax>
+<syntax>int SmrFread(FILE *fp,<sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm, <sn href="&root;/superdarn/src.lib/tk/fit/structFitData.html">struct FitData</sn>,int beam);</syntax>
 <description><p>The <fn href="SmrFread.html">SmrFread</fn> function reads a summary data record from an open stream.</p>
 <p>The data is read from the open stream pointed to by the argument <ar>fp</ar>. The data is decoded and used to populate the radar parameter block pointed to by the argument <ar>prm</ar> and the <code>fit</code> data structure pointer to by the argument <ar>fit</ar>.</p>
 <p>As summary files contain only a few beams from a scan, the function requires the first beam stored in the summary file so that it can detect the start of a scan. The first beam is given by the argument <ar>beam</ar>.</p> 
 </description>
 <returns>Returns the number of bytes read on success. On error, (-1) is returned.</returns>
 <errors>On error, (-1) is returned.</errors>
-
 <example type="source">SmrFread.c</example>
-
-
 </function>
 
 <function>
 <name>SmrFwrite</name>
 <location>src.lib/tk/smr</location>
 <header>superdarn/smrwrite.h</header>
-<syntax>int SmrFwrite(FILE *fp,<sn href="&root;/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>, <sn href="&root;/src.lib/superdarn/atk/fit/structFitData.html">struct FitData</sn>,int pwr);</syntax>
-
+<syntax>int SmrFwrite(FILE *fp,<sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm, <sn href="&root;/superdarn/src.lib/tk/fit/structFitData.html">struct FitData</sn>,int pwr);</syntax>
 <description><p>The <fn href="SmrFwrite.html">SmrFwrite</fn> function writes a summary data record to an open stream.</p>
 <p>The data is written to the open stream pointed to by the argument <ar>fp</ar>. The data record is contructed the radar parameter block pointed to by the argument <ar>prm</ar> and the <code>fit</code> data structure pointer to by the argument <ar>fit</ar>.</p>  
 </description>
 <returns>Returns zero on success. On error, (-1) is returned.</returns>
 <errors>On error, (-1) is returned.</errors>
-
-
 <example type="source">SmrFwrite.c</example>
-
-
 </function>
+
 <function>
 <name>SmrHeaderFwrite</name>
 <location>src.lib/tk/smr</location>
@@ -47,16 +41,14 @@
 </description>
 <returns>Returns zero on success. On error, (-1) is returned.</returns>
 <errors>On error, (-1) is returned.</errors>
-
 <example type="source">SmrHeaderFwrite.c</example>
-
-
 </function>
+
 <function>
 <name>SmrRadarScan</name>
 <location>src.lib/tk/smr</location>
 <header>superdarn/smrscan.h</header>
-<syntax>int SmrRadarScan(FILE *fp,int *state,<sn href="&root;/src.lib/tk/scan/structRadarScan.html">struct RadarScan</sn> *ptr, <sn href="&root;/src.lib/superdarn/atk/radar/structRadarParm.html">struct RadarParm *prm</sn>, <sn href="&root;/src.lib/superdarn/atk/fit/structFitData.html">struct FitData</sn> *fit,int fbeam, int tlen, int lock,int chn);</syntax>
+<syntax>int SmrRadarScan(FILE *fp,int *state,<sn href="&root;/superdarn/src.lib/tk/scan/structRadarScan.html">struct RadarScan</sn> *ptr, <sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm, <sn href="&root;/superdarn/src.lib/tk/fit/structFitData.html">struct FitData</sn> *fit,int fbeam, int tlen, int lock,int chn);</syntax>
 <description><p>The <fn href="SmrRadarScan.html">SmrRadarScan</fn> function reads one full scan of data from a summary data file.</p>
 <p>The data is read from the open stream pointed to by the argument <ar>fp</ar>.</p>
 <p>The argument <ar>state</ar> is a pointer to an integer that is used internally by the function to track progress through the <code>fit</code> file. Initially this integer should be set to zero, indicating that no data has been read from the file yet. The other possible value of <ar>state</ar> are (1), indicating that a complete scan was read from the file and data from the next scan is pending, or (2) indicating that a file error occurred.</p>
@@ -68,17 +60,14 @@
 </description> 
 <returns>Returns zero on success, or (1) if the end of file was reached. On error, (-1) is returned.</returns>
 <errors>On error, (-1) is returned.</errors>
-
 <example type="source">SmrRadarScan.c</example>
-
-
 </function>
+
 <function>
 <name>SmrSeek</name>
 <location>src.lib/tk/smr</location>
 <header>superdarn/smrseek.h</header>
 <syntax>int SmrSeek(FILE *fp, int yr,int mo,int dy,int hr,int mt,int sc,double *atme);</syntax>
-
 <description><p>The <fn href="SmrSeek.html">SmrSeek</fn> function searches for a summary data record for a specific time.</p>
 <p>The search is performed on the open stream pointed to by the argument <ar>fp</ar>. The time to search for is specified by the arguments <ar>yr</ar>, <ar>mo</ar>,<ar>dy</ar>,<ar>hr</ar>,<ar>mt</ar>,<ar>sc</ar> giving the year, month, day, hour, minute and second.</p>
 <p>The argument <ar>atme</ar> is a pointer to a double precision floating point number that is used to store the time of the closest record to the time requested expressed in seconds from 0:00UT January 1, 1970. If this argument is set to a <code>NULL</code> pointer then the time is not returned.</p>  
@@ -86,9 +75,7 @@
 </description>
 <returns>Returns zero on success. On error, (-1) is returned.</returns>
 <errors>On error, (-1) is returned.</errors>
-
 <example type="source">SmrSeek.c</example>
-
-
 </function>
+
 </library>
