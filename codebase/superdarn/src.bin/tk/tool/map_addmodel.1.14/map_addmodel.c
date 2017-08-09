@@ -252,10 +252,10 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"old",'x',&old);
   OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);
-  OptionAdd(&opt,"CS10",'x',&cs10);
-  OptionAdd(&opt,"RG96",'x',&rg96);
-  OptionAdd(&opt,"TS17",'x',&ts17);
-  OptionAdd(&opt,"PSR10",'x',&psr10);
+  OptionAdd(&opt,"cs10",'x',&cs10);
+  OptionAdd(&opt,"rg96",'x',&rg96);
+  OptionAdd(&opt,"ts17",'x',&ts17);
+  OptionAdd(&opt,"psr10",'x',&psr10);
   OptionAdd(&opt,"nointerp",'x',&nointerp);
   OptionAdd(&opt,"noigrf",'x',&noigrf);        /* SGS: default is to use IGRF
                                                        to compute model vecs  */
