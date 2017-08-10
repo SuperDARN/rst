@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>meteor_proc</name>
+<location>src.bin/tk/tool/meteor_proc</location>
+<syntax>meteor_proc --help</syntax>
+<syntax>meteor_proc [-vb] [-hr <ar>hr</ar>] [-mv <ar>maxvel</ar>] [-mw <ar>maxwidth</ar>] [-ms <ar>minsn</ar>] [-me <ar>maxerr</ar>] [-mr <ar>maxrange</ar>] [-bm <ar>vmbeam</ar>] [-mb <ar>minbeam</ar>] [-mz <ar>meridional/zonal</ar>] <ar>fitnames</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-hr <ar>hr</ar></on><od>hour to process.</od>
+</option>
+<option><on>-mv <ar>maxvel</ar></on><od>maximum velocity threshold.</od>
+</option>
+<option><on>-mw <ar>maxwidth</ar></on><od>maximum spectral width threshold.</od>
+</option>
+<option><on>-ms <ar>minsn</ar></on><od>minimum signal to noise ratio (power).</od>
+</option>
+<option><on>-me <ar>maxerr</ar></on><od>maximum velocity error threshold.</od>
+</option>
+<option><on>-mr <ar>maxrange</ar></on><od>maximum range in kilometers threshold.</od>
+</option>
+<option><on>-bm <ar>vmbeam</ar></on><od>beam number for the meridional wind velocity.</od>
+</option>
+<option><on>-mb <ar>minbeam</ar></on><od>minimum number of beams to accept during fitting.</od>
+</option>
+<option><on>-mz <ar>meridional/zonal</ar></on><od>wind component to record meridional or zonal.</od>
+</option>
+<option><on><ar>fitnames</ar></on><od>filenames of the <code>fit</code> format files.</od>
+</option>
+<option><on>-cfit</on><od>the input file is in the <code>cfit</code> format.</od>
+</option>
+<option><on><ar>cfitnames</ar></on><od>filenames of the <code>cfit</code> format files.</od>
+</option>
+<synopsis><p>Meteor winds processing software.</p></synopsis>
+<description><p>Meteor winds processing software.</p>
+<p>The result is written to standard output.</p>
+</description>
+
+
+</binary>
