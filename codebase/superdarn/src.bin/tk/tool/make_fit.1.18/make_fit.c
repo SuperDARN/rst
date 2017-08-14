@@ -72,6 +72,7 @@ int main(int argc,char *argv[]) {
   unsigned char option=0;
 
   unsigned char vb=0;
+  unsigned char old_elev=0;
 
   FILE *fp=NULL;
   struct OldRawFp *rawfp=NULL;
@@ -94,6 +95,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-option",'x',&option);
 
   OptionAdd(&opt,"vb",'x',&vb);
+  OptionAdd(&opt,"old_elev",'x',&old_elev);   /* set to use old elev ang alg */
 
   OptionAdd(&opt,"new",'x',&new);
 
@@ -110,9 +112,6 @@ int main(int argc,char *argv[]) {
     OptionDump(stdout,&opt);
     exit(0);
   }
-
-
-
 
   if ((old) && (argc-arg<2)) {
     OptionPrintInfo(stdout,hlpstr);
@@ -192,12 +191,12 @@ int main(int argc,char *argv[]) {
   }
 
 
-
   if (vb)
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
-  fblk=FitACFMake(site,prm->time.yr);
+  fblk = FitACFMake(site,prm->time.yr);
+  fblk->prm.old_elev = old_elev;          /* passing in old_elev flag */
 
   FitACF(prm,raw,fblk,fit);
 
