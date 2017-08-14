@@ -17,7 +17,9 @@
 
 
 
-<option><on>-new</on><od>input file is in  <code>rawacf</code> file format and the output should be in <code>fitacf</code> file format.</od>
+<option><on>-new</on><od>input file is in <code>rawacf</code> file format and the output should be in <code>fitacf</code> file format.</od>
+</option>
+<option><on>-old_elev</on><od>use old elevation angle algorithm(s).</od>
 </option>
 <option><on><ar>rawacfname</ar></on><od>filename of the <code>rawacf</code> format file. If this is omitted the file is read from standard input.</od>
 </option>
