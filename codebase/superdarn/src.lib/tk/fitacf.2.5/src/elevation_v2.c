@@ -20,7 +20,7 @@
 
 double elevation_v2(struct FitPrm *prm, double range, double psi_obs)
 {
-  double X,Y,Z;             /* interferometer offsets [m]                    */
+  static double X,Y,Z;      /* interferometer offsets [m]                    */
   double boff;              /* offset in beam widths to edge of FOV          */
   double phi0;              /* beam direction off boresight [rad]            */
   double cp0,sp0;           /* cosine and sine of phi0                       */
