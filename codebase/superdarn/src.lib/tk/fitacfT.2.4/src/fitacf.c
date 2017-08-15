@@ -27,7 +27,7 @@
 #include "rawdata.h"
 #include "fitdata.h"
 #include "fitblk.h"
-#include "dofit.h"
+#include "dofitT.h"
 #include "fitacfversion.h"
 
 #define GOOSEBAY 1
