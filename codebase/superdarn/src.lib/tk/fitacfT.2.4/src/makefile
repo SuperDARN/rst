@@ -5,7 +5,7 @@ include $(MAKECFG).$(SYSTEM)
 
 
 
-INCLUDE= -I$(IPATH)/base -I$(IPATH)/general  -I$(IPATH)/superdarn/fit -I$(IPATH)/superdarn
+INCLUDE= -I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/superdarn
 SRC = acf_preproc.c acf_preproc.h dbl_cmp.c dbl_cmp.h elevation.c elevation.h \
       elev_goose.c elev_goose.h \
       omega_guess.c omega_guess.h ground_scatter.c ground_scatter.h \
