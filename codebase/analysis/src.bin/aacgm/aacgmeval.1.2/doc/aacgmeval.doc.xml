@@ -26,7 +26,7 @@
 </option>
 <option><on>-fmt <ar>format</ar></on><od>use the string <ar>fmt</ar>, to format the output.</od>
 </option>
-<option><on>-f <ar>filename</ar></on><od>read a sequence of dates, times and longitudes from the ASCII file, <ar>filename</ar>.</od>
+<option><on>-f <ar>filename</ar></on><od>read a sequence of latitudes, longitudes and altitudes from the ASCII file, <ar>filename</ar>.</od>
 </option>
 <option><on>-old_aacgm</on><od>use old AACGM coordinates rather than v2.</od>
 </option>
