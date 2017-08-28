@@ -17,6 +17,8 @@
 </option>
 <option><on>-mw <ar>modelwgt</ar></on><od>set the model weighting to <ar>modelwgt</ar>, which can be either yes or no.</od>
 </option>
+<option><on>-o <ar>order</ar></on><od>set the order of the fit to be <ar>order</ar>.</od>
+</option>
 <option><on>-s <ar>source</ar></on><od>set the text string indicating the data source  to <ar>source</ar>.</od>
 </option>
 <option><on><ar>mapname</ar></on><od>filename of the <code>map</code> format file. If this is omitted, the file will</od></option>
