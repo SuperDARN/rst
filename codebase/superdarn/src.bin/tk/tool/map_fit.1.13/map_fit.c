@@ -59,6 +59,7 @@ int main(int argc,char *argv[]) {
   int model_wt=-1;
   int major=-1;
   int minor=-1;
+  int order=0;
 
   /* function pointers for file reading/writing (old and new) */
   int (*Map_Read)(FILE *, struct CnvMapData *, struct GridData *);
@@ -76,7 +77,8 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"ew",'t',&ewstr);  /* error weight */
   OptionAdd(&opt,"mw",'t',&mwstr);  /* model weight */
- 
+  OptionAdd(&opt,"o",'i',&order);
+
   OptionAdd(&opt,"s",'t',&source);
   OptionAdd(&opt,"major",'i',&major);
   OptionAdd(&opt,"minor",'i',&minor);
@@ -135,6 +137,8 @@ int main(int argc,char *argv[]) {
     else map->major_rev=atoi(MAJOR_VERSION);
     if (minor !=-1) map->minor_rev=minor;
     else map->minor_rev=atoi(MINOR_VERSION);
+
+    if (order !=0) map->fit_order=order;
 
     CnvMapFitMap(map,grd);
     (*Map_Write)(stdout,map,grd);
