@@ -28,7 +28,7 @@
 <option><on><ar>mapname</ar></on><od>filename of the <code>map</code> format file. If this is omitted, the file will</od></option>
 <option><on></on><od>  be read from standard input.</od></option>
 <option><on>-t</on><od>instead of adding the calculated boundary to the map file,</od></option>
-<options><on></on><od>  write the record time and the calculated location as ASCII text to standard output.</od></option>
+<option><on></on><od>  write the record time and the calculated location as ASCII text to standard output.</od></option>
 <option><on>-lf <ar>latname</ar></on><od>do not calculate the boundary, instead read it from the ASCII</od></option>
 <option><on></on><od>  text file <ar>latname</ar>.</od></option>
 <option><on>-lat <ar>latmin</ar></on><od>do not calculate the boundary, instead set the lower latitude</od></option>
