@@ -27,12 +27,14 @@
 #include "cnvmapwrite.h"
 #include "oldcnvmapwrite.h"
 #include "aacgm.h"
+#include "mlt.h"
 #include "aacgmlib_v2.h"
+#include "mlt_v2.h"
 #include "shfconst.h" /* use the same constants as in fitting procedure */
 #include "igrfcall.h"
 #include "igrflib.h"
 #include "map_addmodel.h"
-
+#include "map_addhmb.h"
 #include "hlpstr.h"
 
 /*-----------------------------------------------------------------------------
@@ -247,6 +249,7 @@ int main(int argc,char *argv[]) {
   int imod = 0;
 
   float bndstep = 5.; /* HMB parameters */
+  float latref = 59;
   int bndnp;
 
   struct GridGVec *mdata=NULL;
@@ -359,16 +362,12 @@ int main(int argc,char *argv[]) {
     mod = determine_model(map->Vx, map->Bx, map->By, map->Bz,
                           map->hemisphere, tilt, imod, nointerp);
 
-/* SGS-FIX */
-/* This function should be called but is currently in map_addhmb.c
- * copying it here is a terrible idea. Should map_addhmb.c be broken into
- * pieces and some files put into a library?
- *
+    /* Add lower latitude limit (HMB) from model if not found from data */
     if (map->latmin == -1) {
       bndnp = 360/bndstep + 1;
-      map_addhmb(yr,yrsec,map,bndnp,bndstep,latref,mod->latref);
+      map_addhmb(yr,yrsec,map,bndnp,bndstep,latref,mod->latref,old_aacgm);
     }
-*/
+
  
     if (order != 0)   map->fit_order    = order;
     if (doping != -1) map->doping_level = doping;
