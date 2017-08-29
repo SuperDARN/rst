@@ -340,7 +340,11 @@ int main(int argc,char *argv[]) {
   unsigned int gscolor=0;
   char *gsctxt=NULL;
 
-  char *key_path=NULL;
+  char *pkey_path=NULL;
+  char *vkey_path=NULL;
+  char *wkey_path=NULL;
+  char *fkey_path=NULL;
+  char *nkey_path=NULL;
   char kname[256];
   char *pkey_fname=NULL;
   char *vkey_fname=NULL;
@@ -477,11 +481,16 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"gscol",'t',&gsctxt); /* ground scatter color */
 
-  OptionAdd(&opt,"pkey",'t',&pkey_fname); /* power key */
-  OptionAdd(&opt,"vkey",'t',&vkey_fname); /* velocity key */
-  OptionAdd(&opt,"wkey",'t',&wkey_fname); /* spectral width key */
-  OptionAdd(&opt,"fkey",'t',&fkey_fname); /* frequency key */
-  OptionAdd(&opt,"nkey",'t',&nkey_fname); /* noise key */
+  OptionAdd(&opt,"pkey",'t',&pkey_fname);     /* power key */
+  OptionAdd(&opt,"pkey_path",'t',&pkey_path); /* power key path */
+  OptionAdd(&opt,"vkey",'t',&vkey_fname);     /* velocity key */
+  OptionAdd(&opt,"vkey_path",'t',&vkey_path); /* velocity key path */
+  OptionAdd(&opt,"wkey",'t',&wkey_fname);     /* spectral width key */
+  OptionAdd(&opt,"wkey_path",'t',&wkey_path); /* spectral width key path */
+  OptionAdd(&opt,"fkey",'t',&fkey_fname);     /* frequency key */
+  OptionAdd(&opt,"fkey_path",'t',&fkey_path); /* frequency key path */
+  OptionAdd(&opt,"nkey",'t',&nkey_fname);     /* noise key */
+  OptionAdd(&opt,"nkey_path",'t',&nkey_path); /* noise key path */
 
   OptionAdd(&opt,"fontname",'t',&fontname); /* main font name */
   OptionAdd(&opt,"fontsize",'f',&fontsize); /* main font size */
@@ -625,9 +634,9 @@ int main(int argc,char *argv[]) {
   if (txttxt !=NULL)  sscanf(txttxt,"%x",&txtcolor);
 
   if (pkey_fname !=NULL) {
-    key_path = getenv("COLOR_TABLE_PATH");
-    if (key_path != NULL) {
-      strcpy(kname, key_path);
+    if (pkey_path == NULL) pkey_path = getenv("COLOR_TABLE_PATH");
+    if (pkey_path != NULL) {
+      strcpy(kname, pkey_path);
       strcat(kname, pkey_fname);
     } else {
       fprintf(stderr, "No COLOR_TABLE_PATH set\n");
@@ -640,9 +649,9 @@ int main(int argc,char *argv[]) {
   }
 
   if (vkey_fname !=NULL) {
-    if (key_path == NULL) key_path = getenv("COLOR_TABLE_PATH");
-    if (key_path != NULL) {
-      strcpy(kname, key_path);
+    if (vkey_path == NULL) vkey_path = getenv("COLOR_TABLE_PATH");
+    if (vkey_path != NULL) {
+      strcpy(kname, vkey_path);
       strcat(kname, vkey_fname);
     } else {
       fprintf(stderr, "No COLOR_TABLE_PATH set\n");
@@ -655,9 +664,9 @@ int main(int argc,char *argv[]) {
   }
 
   if (wkey_fname !=NULL) {
-    if (key_path == NULL) key_path = getenv("COLOR_TABLE_PATH");
-    if (key_path != NULL) {
-      strcpy(kname, key_path);
+    if (wkey_path == NULL) wkey_path = getenv("COLOR_TABLE_PATH");
+    if (wkey_path != NULL) {
+      strcpy(kname, wkey_path);
       strcat(kname, wkey_fname);
     } else {
       fprintf(stderr, "No COLOR_TABLE_PATH set\n");
@@ -670,9 +679,9 @@ int main(int argc,char *argv[]) {
   }
 
   if (fkey_fname !=NULL) {
-    if (key_path == NULL) key_path = getenv("COLOR_TABLE_PATH");
-    if (key_path != NULL) {
-      strcpy(kname, key_path);
+    if (fkey_path == NULL) fkey_path = getenv("COLOR_TABLE_PATH");
+    if (fkey_path != NULL) {
+      strcpy(kname, fkey_path);
       strcat(kname, fkey_fname);
     } else {
       fprintf(stderr, "No COLOR_TABLE_PATH set\n");
@@ -685,9 +694,9 @@ int main(int argc,char *argv[]) {
   }
 
   if (nkey_fname !=NULL) {
-    if (key_path == NULL) key_path = getenv("COLOR_TABLE_PATH");
-    if (key_path != NULL) {
-      strcpy(kname, key_path);
+    if (nkey_path == NULL) nkey_path = getenv("COLOR_TABLE_PATH");
+    if (nkey_path != NULL) {
+      strcpy(kname, nkey_path);
       strcat(kname, nkey_fname);
     } else {
       fprintf(stderr, "No COLOR_TABLE_PATH set\n");
