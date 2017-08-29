@@ -437,7 +437,8 @@ int main(int argc,char *argv[]) {
 
   char *bgcol_txt=NULL;
   char *txtcol_txt=NULL;
-  char *key_path=NULL;
+  char *vkey_path=NULL;
+  char *xkey_path=NULL;
   char kname[256];
   char *vkey_fname=NULL;
   char *xkey_fname=NULL;
@@ -693,7 +694,9 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"bgcol",'t',&bgcol_txt);
   OptionAdd(&opt,"txtcol",'t',&txtcol_txt);
   OptionAdd(&opt,"vkey",'t',&vkey_fname);
+  OptionAdd(&opt,"vkey_path",'t',&vkey_path);
   OptionAdd(&opt,"xkey",'t',&xkey_fname);
+  OptionAdd(&opt,"xkey_path",'t',&xkey_path);
 
   OptionAdd(&opt,"square",'x',&sqflg);
 
@@ -997,9 +1000,9 @@ int main(int argc,char *argv[]) {
   if (ffovcol_txt !=NULL) ffovcol=PlotColorStringRGBA(ffovcol_txt);
 
   if (vkey_fname !=NULL) {
-    key_path = getenv("COLOR_TABLE_PATH");
-    if (key_path != NULL) {
-      strcpy(kname, key_path);
+    if (vkey_path == NULL) vkey_path = getenv("COLOR_TABLE_PATH");
+    if (vkey_path != NULL) {
+      strcpy(kname, vkey_path);
       strcat(kname, vkey_fname);
     } else {
       fprintf(stderr, "No COLOR_TABLE_PATH set\n");
@@ -1016,9 +1019,9 @@ int main(int argc,char *argv[]) {
   vkey.defcol=veccol;
 
   if (xkey_fname !=NULL) {
-    if (key_path == NULL) key_path = getenv("COLOR_TABLE_PATH");
-    if (key_path != NULL) {
-      strcpy(kname, key_path);
+    if (xkey_path == NULL) xkey_path = getenv("COLOR_TABLE_PATH");
+    if (xkey_path != NULL) {
+      strcpy(kname, xkey_path);
       strcat(kname, xkey_fname);
     } else {
       fprintf(stderr, "No COLOR_TABLE_PATH set\n");
