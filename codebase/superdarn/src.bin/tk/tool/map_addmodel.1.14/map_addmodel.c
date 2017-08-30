@@ -492,20 +492,16 @@ struct model *load_model(FILE *fp, int ihem, int ilev, int iang,
     for (m=-l; m<=l; m++) {
       if (fscanf(fp,"%d %d %g %g",&lx,&mx,&cr,&ci) != 4) break;
 
-      k = (m < 0) ? l*(ptr->ltop+1)-m : l*(ptr->ltop+1)+m;
-      ptr->aoeff_n[k].x = cr;
-      ptr->aoeff_n[k].y = ci;
-
-/*
       if (m < 0) {
-        ptr->aoeff_n[l*(ptr->ltop+1)-m].x = cr;
-        ptr->aoeff_n[l*(ptr->ltop+1)-m].y = ci;
+        k = l*(ptr->ltop+1)-m;
+        ptr->aoeff_n[k].x = cr;
+        ptr->aoeff_n[k].y = ci;
+      } else {
+        k = l*(ptr->ltop+1)+m;
+        ptr->aoeff_p[k].x = cr;
+        ptr->aoeff_p[k].y = ci;
       }
-      if (m >= 0)
-        ptr->aoeff_p[l*(ptr->ltop+1)+m].x = cr;
-        ptr->aoeff_p[l*(ptr->ltop+1)+m].y = ci;
-      }
-*/
+
     }
     if (m <= l) break;
   }
@@ -740,7 +736,7 @@ struct model *interp_CS10_coeffs(int ih, float tilt, float mag, float cang)
         Hn[k].x = model[ih][it2][im2][ia2]->aoeff_n[k].x/denom;
         Hn[k].y = model[ih][it2][im2][ia2]->aoeff_n[k].y/denom;
       } else {
-        k = l*(ptr->ltop+1)-m;
+        k = l*(ptr->ltop+1)+m;
         Ap[k].x = model[ih][it1][im1][ia1]->aoeff_p[k].x/denom;
         Ap[k].y = model[ih][it1][im1][ia1]->aoeff_p[k].y/denom;
         Bp[k].x = model[ih][it1][im1][ia2]->aoeff_p[k].x/denom;
@@ -776,14 +772,14 @@ struct model *interp_CS10_coeffs(int ih, float tilt, float mag, float cang)
                             En[k].y*afp*mgp*dtn + Fn[k].y*afn*mgp*dtn +
                             Gn[k].y*afp*mgn*dtn + Hn[k].y*afn*mgn*dtn;
       } else {
-        k = l*(ptr->ltop+1)-m;
+        k = l*(ptr->ltop+1)+m;
 
-        ptr->aoeff_n[k].x = Ap[k].x*afp*mgp*dtp + Bp[k].x*afn*mgp*dtp +
+        ptr->aoeff_p[k].x = Ap[k].x*afp*mgp*dtp + Bp[k].x*afn*mgp*dtp +
                             Cp[k].x*afp*mgn*dtp + Dp[k].x*afn*mgn*dtp +
                             Ep[k].x*afp*mgp*dtn + Fp[k].x*afn*mgp*dtn +
                             Gp[k].x*afp*mgn*dtn + Hp[k].x*afn*mgn*dtn;
 
-        ptr->aoeff_n[k].y = Ap[k].y*afp*mgp*dtp + Bp[k].y*afn*mgp*dtp +
+        ptr->aoeff_p[k].y = Ap[k].y*afp*mgp*dtp + Bp[k].y*afn*mgp*dtp +
                             Cp[k].y*afp*mgn*dtp + Dp[k].y*afn*mgn*dtp +
                             Ep[k].y*afp*mgp*dtn + Fp[k].y*afn*mgp*dtn +
                             Gp[k].y*afp*mgn*dtn + Hp[k].y*afn*mgn*dtn;
