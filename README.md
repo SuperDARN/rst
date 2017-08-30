@@ -24,20 +24,20 @@ For macOS it is also available through macports, as are all listed dependencies
 ## Install notes:
 
 
-1. Upon cloning the repository (with git clone or downloading zip file), make sure the RST
-   environment variables are properly set.   In `~/rst/.profile.bash`:
+1. Upon obtaining the software (with git clone or downloading a zip file), make sure the RST
+   environment variables are properly set.   In `rst/.profile.bash`:
 
        OSTYPE="linux" for any linux operating system or "darwin" for macOS
        SYSTEM="linux" or "darwin" as appropriate
 
-   In `~/rst/.profile/base.bash`, check to make sure these paths are appropriate:
+   In `rst/.profile/base.bash`, check to make sure these paths are appropriate:
 
    `XPATH, NETCDF_PATH, CDF_PATH`
 
    If you are running macOS and run into issues with the X11 libraries, you may
    need to add a symbolic link.
 
-   If you have IDL, check to see that `IDL_IPATH` in `~/rst/.profile/idl.bash` is correct.
+   If you have IDL, check to see that `IDL_IPATH` in `rst/.profile/idl.bash` is correct.
    (Note: for users without access to IDL, modifying the `IDL_IPATH` environment variable is
    not required).
 
