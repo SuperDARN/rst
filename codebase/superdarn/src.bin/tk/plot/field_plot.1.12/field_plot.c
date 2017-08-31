@@ -456,6 +456,7 @@ int main(int argc,char *argv[]) {
   char *key_fname=NULL;
   char *vkey_fname=NULL;
   FILE *keyfp=NULL;
+  size_t len;
 
   MapTFunction  tfunc;
 
@@ -1204,6 +1205,8 @@ int main(int argc,char *argv[]) {
     if (key_path == NULL) key_path = getenv("COLOR_TABLE_PATH");
     if (key_path != NULL) {
       strcpy(kname, key_path);
+      len = strlen(key_path);
+      if (key_path[len-1] != '/') strcat(kname, "/");
       strcat(kname, key_fname);
     } else {
       fprintf(stderr, "No COLOR_TABLE_PATH set\n");
@@ -1212,6 +1215,8 @@ int main(int argc,char *argv[]) {
     if (keyfp !=NULL) {
       load_key(keyfp,&key);
       fclose(keyfp);
+    } else {
+      fprintf(stderr, "Color table %s not found\n", kname);
     }
   }
 
@@ -1219,6 +1224,8 @@ int main(int argc,char *argv[]) {
     if (vkey_path == NULL) vkey_path = getenv("COLOR_TABLE_PATH");
     if (vkey_path != NULL) {
       strcpy(kname, vkey_path);
+      len = strlen(vkey_path);
+      if (vkey_path[len-1] != '/') strcat(kname, "/");
       strcat(kname, vkey_fname);
     } else {
       fprintf(stderr, "No COLOR_TABLE_PATH set\n");
@@ -1227,6 +1234,8 @@ int main(int argc,char *argv[]) {
     if (keyfp !=NULL) {
       load_key(keyfp,&vkey);
       fclose(keyfp);
+    } else {
+      fprintf(stderr, "Velocity color table %s not found\n", kname);
     }
   }
 
