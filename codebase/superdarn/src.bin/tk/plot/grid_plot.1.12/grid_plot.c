@@ -1015,7 +1015,7 @@ int main(int argc,char *argv[]) {
       load_key(keyfp,&vkey);
       fclose(keyfp);
     } else {
-      fprintf(stderr, "Velocity color table %s not found\n", vkey_fname);
+      fprintf(stderr, "Velocity color table %s not found\n", kname);
     }
   }
   vkey.max=vmax;
@@ -1036,7 +1036,7 @@ int main(int argc,char *argv[]) {
       load_key(keyfp,&xkey);
       fclose(keyfp);
     } else {
-      fprintf(stderr, "Extra color table %s not found\n", xkey_fname);
+      fprintf(stderr, "Extra color table %s not found\n", kname);
     }
   }
 
