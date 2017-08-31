@@ -351,6 +351,7 @@ int main(int argc,char *argv[]) {
   char *wkey_fname=NULL;
   char *fkey_fname=NULL;
   char *nkey_fname=NULL;
+  size_t len;
 
 
   struct FrameBuffer *img=NULL;
@@ -637,6 +638,8 @@ int main(int argc,char *argv[]) {
     if (pkey_path == NULL) pkey_path = getenv("COLOR_TABLE_PATH");
     if (pkey_path != NULL) {
       strcpy(kname, pkey_path);
+      len = strlen(pkey_path);
+      if (pkey_path[len-1] != '/') strcat(kname, "/");
       strcat(kname, pkey_fname);
     } else {
       fprintf(stderr, "No COLOR_TABLE_PATH set\n");
@@ -645,6 +648,8 @@ int main(int argc,char *argv[]) {
     if (fp !=NULL) {
       load_key(fp,&pkey);
       fclose(fp);
+    } else {
+      fprintf(stderr, "Power color table %s not found\n", kname);
     }
   }
 
@@ -652,6 +657,8 @@ int main(int argc,char *argv[]) {
     if (vkey_path == NULL) vkey_path = getenv("COLOR_TABLE_PATH");
     if (vkey_path != NULL) {
       strcpy(kname, vkey_path);
+      len = strlen(vkey_path);
+      if (vkey_path[len-1] != '/') strcat(kname, "/");
       strcat(kname, vkey_fname);
     } else {
       fprintf(stderr, "No COLOR_TABLE_PATH set\n");
@@ -660,6 +667,8 @@ int main(int argc,char *argv[]) {
     if (fp !=NULL) {
       load_key(fp,&vkey);
       fclose(fp);
+    } else {
+      fprintf(stderr, "Velocity color table %s not found\n", kname);
     }
   }
 
@@ -667,6 +676,8 @@ int main(int argc,char *argv[]) {
     if (wkey_path == NULL) wkey_path = getenv("COLOR_TABLE_PATH");
     if (wkey_path != NULL) {
       strcpy(kname, wkey_path);
+      len = strlen(wkey_path);
+      if (wkey_path[len-1] != '/') strcat(kname, "/");
       strcat(kname, wkey_fname);
     } else {
       fprintf(stderr, "No COLOR_TABLE_PATH set\n");
@@ -675,6 +686,8 @@ int main(int argc,char *argv[]) {
     if (fp !=NULL) {
       load_key(fp,&wkey);
       fclose(fp);
+    } else {
+      fprintf(stderr, "Spectral width color table %s not found\n", kname);
     }
   }
 
@@ -682,6 +695,8 @@ int main(int argc,char *argv[]) {
     if (fkey_path == NULL) fkey_path = getenv("COLOR_TABLE_PATH");
     if (fkey_path != NULL) {
       strcpy(kname, fkey_path);
+      len = strlen(fkey_path);
+      if (fkey_path[len-1] != '/') strcat(kname, "/");
       strcat(kname, fkey_fname);
     } else {
       fprintf(stderr, "No COLOR_TABLE_PATH set\n");
@@ -690,6 +705,8 @@ int main(int argc,char *argv[]) {
     if (fp !=NULL) {
       load_key(fp,&fkey);
       fclose(fp);
+    } else {
+      fprintf(stderr, "Frequency color table %s not found\n", kname);
     }
   }
 
@@ -697,6 +714,8 @@ int main(int argc,char *argv[]) {
     if (nkey_path == NULL) nkey_path = getenv("COLOR_TABLE_PATH");
     if (nkey_path != NULL) {
       strcpy(kname, nkey_path);
+      len = strlen(nkey_path);
+      if (nkey_path[len-1] != '/') strcat(kname, "/");
       strcat(kname, nkey_fname);
     } else {
       fprintf(stderr, "No COLOR_TABLE_PATH set\n");
@@ -705,6 +724,8 @@ int main(int argc,char *argv[]) {
     if (fp !=NULL) {
       load_key(fp,&nkey);
       fclose(fp);
+    } else {
+      fprintf(stderr, "Noise color table %s not found\n", kname);
     }
   }
 
