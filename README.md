@@ -24,17 +24,20 @@ For macOS it is also available through macports, as are all listed dependencies
 ## Install notes:
 
 
-1. Upon cloning the repository (with git clone or downloading zip file), make sure the RST
-   environment variables are properly set.   In `~/rst/.profile.bash`:
+1. Upon obtaining the software (with git clone or downloading a zip file), make sure the RST
+   environment variables are properly set.   In `rst/.profile.bash`:
 
        OSTYPE="linux" for any linux operating system or "darwin" for macOS
        SYSTEM="linux" or "darwin" as appropriate
 
-   In `~/rst/.profile/base.bash`, check to make sure these paths are appropriate:
+   In `rst/.profile/base.bash`, check to make sure these paths are appropriate:
 
    `XPATH, NETCDF_PATH, CDF_PATH`
 
-   If you have IDL, check to see that `IDL_IPATH` in `~/rst/.profile/idl.bash` is correct.
+   If you are running macOS and run into issues with the X11 libraries, you may
+   need to add a symbolic link.
+
+   If you have IDL, check to see that `IDL_IPATH` in `rst/.profile/idl.bash` is correct.
    (Note: for users without access to IDL, modifying the `IDL_IPATH` environment variable is
    not required).
 
@@ -53,6 +56,11 @@ For macOS it is also available through macports, as are all listed dependencies
 
 3. Run `make.build` from the command line.  You may need to change directory to `$RSTPATH/build/script`.
    This runs a helper script that sets up other compiling code.
+
+   If you are running macOS Sierra or later, you may have trouble for this step
+   and step 4 if you run the commands in iTerm.app, due to a non-standard bash
+   implimentation.  These can be avoided by running the installation in a
+   xterm terminal like XQuartz.
 
 4. In the same directory run `make.code` to compile all of the code.
    This runs a script to find all of the source codes and compile them into binaries.
@@ -80,13 +88,12 @@ For macOS it is also available through macports, as are all listed dependencies
 	 make clean
 	 make
 	 cd $RSTPATH/build/script
-	 make.code superdarn rst
+	 make.code
 	 ```
 
-5. To compile the html documentation, run `make.doc.rfc codebase superdarn` and
-   `make.doc` from the command line. You may need to modify the `URLBASE`
-   environment variable in `$RSTPATH/.profile/rst.bash` for the links in the html pages to
-   function correctly.  Temporary documentation is available at:
+5. To compile the html documentation, run `make.doc` from the command line. You may need
+   to modify the `URLBASE` environment variable in `$RSTPATH/.profile/rst.bash` for the
+   links in the html pages to function correctly.  Temporary documentation is available at:
 
    http://superdarn.thayer.dartmouth.edu/documentation/index.html
 
