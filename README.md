@@ -54,7 +54,7 @@ For macOS it is also available through macports, as are all listed dependencies
 3. Run `make.build` from the command line.  You may need to change directory to `$RSTPATH/build/script`.
    This runs a helper script that sets up other compiling code.
 
-4. In the same directory run `make.code superdarn rst` to compile all of the code.
+4. In the same directory run `make.code` to compile all of the code.
    This runs a script to find all of the source codes and compile them into binaries.
    A log of this compilation is stored in `$RSTPATH/log`.
 
@@ -66,7 +66,7 @@ For macOS it is also available through macports, as are all listed dependencies
 	 tar -P -czuf idl.tar.gz idl
 	 rm -rf idl
 	 cd $RSTPATH/build/script
-	 make.code superdarn rst
+	 make.code
 	 ```
 
    4b.	 If the order of make.code is executed incorrectly, you will see an error upon
