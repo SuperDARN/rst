@@ -45,11 +45,11 @@ make.code
 
 Syntax:
 
-make.code project package type [pattern]
+make.code type [pattern]
 
 Description:
 
-Compiles source code in an RST package according to the package build rules. The project and the associated package are given by "project" and "package" respectively. The script compiles the software in the package according to the ordering rules given by the package "build.txt" file. A time-stamped log is generated and stored in the log directory.  At the end the cmpfit-1.2 library is compile through some hardcoded values.  This is to fix the code not compiling on a fresh install.
+Compiles source code in an RST package according to the package build rules. The script compiles the software in the package according to the ordering rules given by the package "build.txt" file. A time-stamped log is generated and stored in the log directory.  At the end the cmpfit-1.2 library is compile through some hardcoded values.  This is to fix the code not compiling on a fresh install.
 
 The "type" option will compile only code of a given type, either "bin" or "lib". The optional "pattern" can be used to compile only a sub-set of code whose module pathnames contain the given string. 
 
@@ -94,11 +94,11 @@ make.doc
 
 Syntax:
 
-make.doc [-w] project package
+make.doc [-w]
 
 Description:
 
-Make the documentation for a package. The project and package name are given by "project" and "package" respectively. If the "-w" option is given, then the documuntation is created for the web; otherwise a local version is created.
+Make the documentation for a package. If the "-w" option is given, then the documuntation is created for the web; otherwise a local version is created.
 
 make.doc.bin
 ------------
