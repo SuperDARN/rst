@@ -1,5 +1,5 @@
 /* map_addmodel.c
-   =============== 
+   ==============
    Author: R.J.Barnes and others
 */
 
@@ -134,7 +134,7 @@ float TS17_mod_levi[]  = {1.2, 1.6, 2.1, 3.0, 20, -1};
 /*
 char *mod_lev[]={"2t3","0t4","4t6","6t12","7t20",0};
 char *mod_ang[]={"315t45", "0t90", "45t135", "90t180", 
-		 "135t225", "180t270", "225t315", "270t360",0};
+                 "135t225", "180t270", "225t315", "270t360",0};
 
 char *mod_levn[]={"2<Kp<3", "0<BT<4", "4<BT<6", "6<BT<12", "7<BT<20",0};
 char *mod_angn[]={"Bz+", "Bz+/By+", "By+", 
@@ -207,7 +207,7 @@ int main(int argc,char *argv[]) {
 
   int old=0;
   int old_aacgm=0;
-  
+
   int arg;
   unsigned char help=0;
   unsigned char option=0;
@@ -218,7 +218,7 @@ int main(int argc,char *argv[]) {
   char *envstr;
   int num=0;
   int status;
-  char *fname=NULL; 
+  char *fname=NULL;
   int tme;
   int yrsec;
   int i,first;
@@ -233,7 +233,7 @@ int main(int argc,char *argv[]) {
   int doping=-1;
 
   char *dstr="lmh";
- 
+
   struct model *mod = NULL;
   struct model *oldmod = NULL;
   float oldlatmin=-1;
@@ -261,14 +261,14 @@ int main(int argc,char *argv[]) {
   map = CnvMapMake();
   grd = GridMake();
 
-  /* setup clock angles */  
-/* these are different for different models and defined at top.
+  /* setup clock angles */
+  /* these are different for different models and defined at top.
   for (i=0;i<8;i++) {
     mod_angil[i]=i*45-22.5;
     mod_angih[i]=i*45+22.5;
   }
 */
- 
+
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
 
@@ -337,13 +337,13 @@ int main(int argc,char *argv[]) {
   }
 
   first = 1;
-  while ((*Map_Read)(fp,map,grd) != -1) {  
- 
+  while ((*Map_Read)(fp,map,grd) != -1) {
+
     tme = (grd->st_time + grd->ed_time)/2.0;
     TimeEpochToYMDHMS(tme,&yr,&mo,&dy,&hr,&mt,&sc);
     yrsec = TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
     decyear = yr + (float)yrsec/TimeYMDHMSToYrsec(yr,12,31,23,59,59);
- 
+
     /* SGS: imf_flag set to 9 in map_addimf(), so not sure about this... */
     if (old) map->imf_flag = !noigrf;
     else     map->noigrf   = noigrf;
@@ -368,7 +368,6 @@ int main(int argc,char *argv[]) {
       map_addhmb(yr,yrsec,map,bndnp,bndstep,latref,mod->latref,old_aacgm);
     }
 
- 
     if (order != 0)   map->fit_order    = order;
     if (doping != -1) map->doping_level = doping;
 
@@ -378,8 +377,8 @@ int main(int argc,char *argv[]) {
       if (mdata != NULL) free(mdata);
 
       mdata = get_model_pos(map->fit_order,fabs(map->latmin),map->hemisphere,
-                            map->doping_level,&num);    
-    
+                            map->doping_level,&num);
+
       /* solve for the model */
       status = solve_model(num, mdata,fabs(map->latmin), mod, map->hemisphere,
                            decyear, noigrf, old_aacgm);
@@ -389,7 +388,7 @@ int main(int argc,char *argv[]) {
 
     /* now transform the model vectors and add them to the map file */
     add_model(map,num,mdata);
-    
+
     strcpy(map->imf_model[0],mod->angle);
     strcpy(map->imf_model[1],mod->level);
     strcpy(map->imf_model[2],mod->tilt);
@@ -884,7 +883,7 @@ struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
       esw = 1e-3*Vsw*bt;
       if (hemi < 0) tilt = -tilt;
 
-      /* hemisphere */ 
+      /* hemisphere */
       ihem = (hemi < 0) ? 1 : 0;
 
       if (nointerp) {
@@ -892,7 +891,7 @@ struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
         if (bazm >= CS10_mod_angih[CS10_nang-1]) bazm -= 360.;
         if (bazm <  CS10_mod_angil[0])           bazm += 360.;
 
-        /* tilt */ 
+        /* tilt */
         for (i=0; (mod_tlti[i] !=-1) && (tilt > mod_tlti[i]); i++);
         if (mod_tlti[i] == -1) i--;
         itlt = i;
@@ -910,7 +909,7 @@ struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
 
         /* correct for extreme Bz- */
         if ((ilev==5) && (iang>2) && (iang<6)) ilev--;
-      
+
         imodel = model[ihem][itlt][ilev][iang];
 
       } else imodel = interp_CS10_coeffs(ihem,tilt,esw,bazm);
@@ -958,12 +957,12 @@ struct GridGVec *get_model_pos(int Lmax,float latmin,int hemi,
   float alpha;
   float lat1,lat2,lon,phi,dphi;
 
-  if ((Lmax % 2) != 0) LL = Lmax+1; 
+  if ((Lmax % 2) != 0) LL = Lmax+1;
   else                 LL = Lmax;
 
   dt = PI/(LL+2);
   fact = (level-1)/2+1;
-  
+
   mpmax = Lmax*2*fact;
   imax  = LL/2+1;
 
@@ -978,7 +977,7 @@ struct GridGVec *get_model_pos(int Lmax,float latmin,int hemi,
      for (n=0; n<mp; n++) {
        phi = n*dphi;
        lon = phi*180/PI;
-    
+
        if (ptr == NULL) ptr = malloc(sizeof(struct GridGVec));
        else             ptr = realloc(ptr,sizeof(struct GridGVec)*(cnt+1));
        ptr[cnt].mlon       = lon;
@@ -997,7 +996,7 @@ struct GridGVec *get_model_pos(int Lmax,float latmin,int hemi,
        }
      }
   }
- 
+
   *num = cnt;
 
   return ptr;
@@ -1030,10 +1029,10 @@ void slv_ylm_mod(float theta, float phi, int order, struct complex *ylm_p,
     for (m=0;m<=l;m++) {
        num=l-m;
        den=l+m;
-       
+
        numf=factorial(num);
        denf=factorial(den);
-      
+
        anorm[l*(order+1)+m]=sqrt((2*l+1)/(4*PI)*numf/denf);
        apcnv[l*(order+1)+m]=pow(-1,m)*numf/denf;
     }
@@ -1042,7 +1041,7 @@ void slv_ylm_mod(float theta, float phi, int order, struct complex *ylm_p,
   for (l=0;l<=order;l++) {
     for (m=0;m<=l;m++) {
       x=cos(theta);
-    
+
       Pmm=1.0;
 
       if (m>0) {
@@ -1052,11 +1051,11 @@ void slv_ylm_mod(float theta, float phi, int order, struct complex *ylm_p,
         fct=1;
         for (i=1;i<=m;i++) {
           Pmm=-Pmm*fct*sx2;
-          fct=fct+2;     
+          fct=fct+2;
         }
       }
       if (l !=m) {
-         double pnmp1;      
+         double pnmp1;
          pnmp1=x*(2*m+1)*Pmm;
          if (l != (m+1)) {
            double Pll=0;
@@ -1075,7 +1074,7 @@ void slv_ylm_mod(float theta, float phi, int order, struct complex *ylm_p,
       ylm_p[l*(order+1)+m].y=Pmm*anorm[l*(order+1)+m]*sin(m*phi);
       ylm_n[l*(order+1)+m].x=pow(-1,m)*ylm_p[l*(order+1)+m].x;
       ylm_n[l*(order+1)+m].y=-pow(-1,m)*ylm_p[l*(order+1)+m].y;
-     
+
     }
   }
 }
@@ -1090,7 +1089,7 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
   struct complex *ylm_nx=NULL;
   double *plm_px=NULL;
   struct complex *xot_arr=NULL;
- 
+
   double *pot_arr=NULL;
   struct complex Ix;
   struct complex T1,T2;
@@ -1112,7 +1111,7 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
   anorm=malloc(sizeof(double)*(ltop+1)*(ltop+1));
   apcnv=malloc(sizeof(double)*(ltop+1)*(ltop+1));
 
- 
+
   if ((ylm_px==NULL) || (ylm_nx==NULL) || (plm_px==NULL) ||
       (pot_arr==NULL) || (xot_arr==NULL) || (anorm==NULL) ||
       (apcnv==NULL)) {
@@ -1120,7 +1119,7 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
     if (ylm_nx !=NULL) free(ylm_nx);
     if (plm_px !=NULL) free(plm_px);
     if (pot_arr !=NULL) free(pot_arr);
-    if (xot_arr !=NULL) free(xot_arr);   
+    if (xot_arr !=NULL) free(xot_arr);
     if (anorm !=NULL) free(anorm);
     if (apcnv !=NULL) free(apcnv);
 
@@ -1140,22 +1139,22 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
       mlow=-l;
       if (mtop<l) mlow=-mtop;
       mhgh=-mlow;
-      
+
       for (m=mlow;m<0;m++) {
 
         cmult(&t,&mod->aoeff_n[l*(ltop+1)-m],
               &ylm_nx[i*(ltop+1)*(ltop+1)+l*(ltop+1)-m]);
-        
+
         Ix.x += t.x;
         Ix.y += t.y;
       }
 
       for (m=0;m<=mhgh;m++) {
-   
+
         cmult(&t,&mod->aoeff_p[l*(ltop+1)+m],
               &ylm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+m]);
          Ix.x += t.x;
-         Ix.y += t.y;      
+         Ix.y += t.y;
        }
     }
 
@@ -1173,12 +1172,12 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
       mlow=-l;
       if (mtop<l) mlow=-mtop;
       mhgh=-mlow;
-      
+
       for (m=mlow;m<0;m++) {
         cmult(&t,&mod->aoeff_n[l*(ltop+1)-m],
               &ylm_nx[i*(ltop+1)*(ltop+1)+l*(ltop+1)-m]);
         Ix.x += m*t.x;
-        Ix.y += m*t.y;   
+        Ix.y += m*t.y;
 
       }
 
@@ -1199,7 +1198,7 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
       mlow=-l;
       if (mtop<l) mlow=-mtop;
       mhgh=-mlow;
- 
+
       for (m=mlow;m<0;m++) {
         n=-m;
         T1.x=n*cos(the[i])/sin(the[i])*
@@ -1296,7 +1295,7 @@ int solve_model(int num, struct GridGVec *ptr, float latmin, struct model *mod,
   ele_the = malloc(sizeof(double)*num);
   ele_phi = malloc(sizeof(double)*num);
 
-  if ( (phi==NULL) || (the==NULL) || (the_col==NULL) || 
+  if ( (phi==NULL) || (the==NULL) || (the_col==NULL) ||
        (ele_the==NULL) ||(ele_phi==NULL) ) {
     if (phi !=NULL) free(phi);
     if (the !=NULL) free(the);
@@ -1312,7 +1311,7 @@ int solve_model(int num, struct GridGVec *ptr, float latmin, struct model *mod,
     the[i]     = (90-ptr[i].mlat)*(1.0/(90-latmin))*PI;
     the_col[i] = (90-ptr[i].mlat)*PI/180.0;
     ele_phi[i] = 0;
-    ele_the[i] = 0;   
+    ele_the[i] = 0;
   }
 
   slv_sph_kset(latmin,num,phi,the,the_col,ele_phi,ele_the,mod);
@@ -1331,7 +1330,7 @@ int solve_model(int num, struct GridGVec *ptr, float latmin, struct model *mod,
     ptr[i].azm        = atan2(ele_the[i]/bmag,ele_phi[i]/bmag)*180./PI;
     ptr[i].vel.median = sqrt( ele_the[i]*ele_the[i] +
                               ele_phi[i]*ele_phi[i] )/bmag;
-  }     
+  }
 
   free(the);
   free(the_col);
@@ -1351,9 +1350,9 @@ void add_model(struct CnvMapData *map,int num,struct GridGVec *ptr)
   map->num_model+=num;
 
   if (map->model==NULL) map->model=malloc(sizeof(struct GridGVec)*
-					  map->num_model);
+                                            map->num_model);
   else map->model=realloc(map->model,sizeof(struct GridGVec)*map->num_model);
- 
+
   /* move the existing vectors down - the model always comes first
      in the model vector list */
   memmove(&map->model[num],map->model, off*sizeof(struct GridGVec));
@@ -1363,10 +1362,10 @@ void add_model(struct CnvMapData *map,int num,struct GridGVec *ptr)
 
   /* now correct for MLT offset */
   for (i=0;i<num;i++) {
-    
+
     if (map->hemisphere==-1) map->model[i].mlat=-map->model[i].mlat;
     if (map->hemisphere==-1) map->model[i].azm=-map->model[i].azm;
-    
+
      map->model[i].mlon-=map->mlt.av*15.0;
      if (map->model[i].mlon<-180) map->model[i].mlon+=360;
      if (map->model[i].mlon>180) map->model[i].mlon-=360;
