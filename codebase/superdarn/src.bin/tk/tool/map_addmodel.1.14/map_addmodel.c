@@ -880,7 +880,7 @@ struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
     case CS10:
       if (Vsw == 0) Vsw = 450.; /* not sure if this should be here: SGS */
                                 /* Default solar wind velocity */
-      esw = 1e-3*Vsw*bt;
+      esw = 1e-3*abs(Vsw*bt);
       if (hemi < 0) tilt = -tilt;
 
       /* hemisphere */
