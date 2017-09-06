@@ -52,8 +52,8 @@ void loginfo(char *fname,char *str) {
   date[strlen(date)-1]=':';
   
   if (dotflag==1) fprintf(stderr,"\n");
-  fprintf(stderr,date);
-  fprintf(stderr,str);
+  fprintf(stderr,"%s",date);
+  fprintf(stderr,"%s",str);
   fprintf(stderr,"\n");
   dotflag=0;
 
@@ -61,8 +61,8 @@ void loginfo(char *fname,char *str) {
           time_of_day->tm_year,time_of_day->tm_mon+1,
           time_of_day->tm_mday);
   fp=fopen(logpath,"a");
-  fprintf(fp,date);
-  fprintf(fp,str);
+  fprintf(fp,"%s",date);
+  fprintf(fp,"%s",str);
   fprintf(fp,"\n");
   fclose(fp);
 }

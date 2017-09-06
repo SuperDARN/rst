@@ -32,37 +32,37 @@
 ;
 
 function AACGM_v2_Dayno, yr,mo,dy, days=days
-	; works on an array. assume that all from same day
+  ; works on an array. assume that all from same day
 ; WHAT IS THE POINT OF AN ARRAY OF THE SAME DAY?!
 
-	mdays=[0,31,28,31,30,31,30,31,31,30,31,30,31]
+  mdays=[0,31,28,31,30,31,30,31,31,30,31,30,31]
 
-	nelem = n_elements(yr)
-	if (yr[0] ne yr[nelem-1]) or $
-		(mo[0] ne mo[nelem-1]) or $
-		(dy[0] ne dy[nelem-1]) then begin
-			print, ''
-			print, 'Not same day in AACGM_v2_Dayno'
-			print, ''
-			exit
-	endif
+  nelem = n_elements(yr)
+  if (yr[0] ne yr[nelem-1]) or $
+    (mo[0] ne mo[nelem-1]) or $
+    (dy[0] ne dy[nelem-1]) then begin
+      print, ''
+      print, 'Not same day in AACGM_v2_Dayno'
+      print, ''
+      exit
+  endif
 
-	tyr = yr[0]
-	; leap year calculation
-	if tyr mod 4 ne 0 then inc=0 $
-	else if tyr mod 400 eq 0 then inc=1 $
-	else if tyr mod 100 eq 0 then inc=0 $
-	else inc=1
-	mdays[2]=mdays[2]+inc
+  tyr = yr[0]
+  ; leap year calculation
+  if tyr mod 4 ne 0 then inc=0 $
+  else if tyr mod 400 eq 0 then inc=1 $
+  else if tyr mod 100 eq 0 then inc=0 $
+  else inc=1
+  mdays[2]=mdays[2]+inc
 
-	if keyword_set(days) then days = fix(total(mdays))
+  if keyword_set(days) then days = fix(total(mdays))
 
-	if nelem eq 1 then $
-		doy = total(mdays[0:mo[0]-1])+dy[0] $
-	else $
-		doy = intarr(nelem) + total(mdays[0:mo[0]-1])+dy[0]
+  if nelem eq 1 then $
+    doy = total(mdays[0:mo[0]-1])+dy[0] $
+  else $
+    doy = intarr(nelem) + total(mdays[0:mo[0]-1])+dy[0]
 
-	return, fix(doy)
+  return, fix(doy)
 end
 
 ;------------------------------------------------------------------------------
@@ -93,23 +93,23 @@ end
 
 pro AACGM_v2_Date, yr,dayno, mo,dy
 
-	err = 0
+  err = 0
 
-	mdays=[0,31,28,31,30,31,30,31,31,30,31,30,31]
+  mdays=[0,31,28,31,30,31,30,31,31,30,31,30,31]
 
-	; leap year calculation
-	if yr mod 4 ne 0 then inc=0 $
-	else if yr mod 400 eq 0 then inc=1 $
-	else if yr mod 100 eq 0 then inc=0 $
-	else inc=1
-	mdays[2]=mdays[2]+inc
+  ; leap year calculation
+  if yr mod 4 ne 0 then inc=0 $
+  else if yr mod 400 eq 0 then inc=1 $
+  else if yr mod 100 eq 0 then inc=0 $
+  else inc=1
+  mdays[2]=mdays[2]+inc
 
-	tots = intarr(13)
-	for k=0,12 do tots[k] = total(mdays[0:k])
+  tots = intarr(13)
+  for k=0,12 do tots[k] = total(mdays[0:k])
 
-	q = where(tots ge dayno, nq)
-	mo = q[0]
-	dy = dayno - tots[q[0]-1]
+  q = where(tots ge dayno, nq)
+  mo = q[0]
+  dy = dayno - tots[q[0]-1]
 
 end
 
