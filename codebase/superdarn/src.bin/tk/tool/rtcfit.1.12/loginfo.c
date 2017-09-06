@@ -51,8 +51,8 @@ void loginfo(char *fname,char *str) {
   date[strlen(date)-1]=':';
   
   if (dotflag==1) fprintf(stderr,"\n");
-  fprintf(stderr,date);
-  fprintf(stderr,str);
+  fprintf(stderr,"%s",date);
+  fprintf(stderr,"%s",str);
   fprintf(stderr,"\n");
   dotflag=0;
   sprintf(logpath,"%s.%.4d%.2d%.2d",fname,1900+
@@ -63,8 +63,8 @@ void loginfo(char *fname,char *str) {
     fprintf(stderr,"WARNING:Log failed.\n");
     return;
   }
-  fprintf(fp,date);
-  fprintf(fp,str);
+  fprintf(fp,"%s",date);
+  fprintf(fp,"%s",str);
   fprintf(fp,"\n");
   fclose(fp);
 }

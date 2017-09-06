@@ -66,13 +66,23 @@
 </option>
 <option><on>-pkey <ar>pkeyname</ar></on><od>load the power colorkey from the file <ar>pkeyname</ar>.</od>
 </option>
+<option><on>-pkey_path <ar>pkey_path</ar></on><od>load the power colorkey from the custom path <ar>pkey_path</ar>.</od>
+</option>
 <option><on>-vkey <ar>vkeyname</ar></on><od>load the velocity colorkey from the file <ar>vkeyname</ar>.</od>
+</option>
+<option><on>-vkey_path <ar>vkey_path</ar></on><od>load the velocity colorkey from the custom path <ar>vkey_path</ar>.</od>
 </option>
 <option><on>-wkey <ar>wkeyname</ar></on><od>load the spectral width colorkey from the file <ar>wkeyname</ar>.</od>
 </option>
-<option><on>-fkey <ar>vkeyname</ar></on><od>load the frequency colorkey from the file <ar>fkeyname</ar>.</od>
+<option><on>-wkey_path <ar>wkey_path</ar></on><od>load the spectral width colorkey from the custom path <ar>wkey_path</ar>.</od>
 </option>
-<option><on>-nkey <ar>vkeyname</ar></on><od>load the noise colorkey from the file <ar>nkeyname</ar>.</od>
+<option><on>-fkey <ar>fkeyname</ar></on><od>load the frequency colorkey from the file <ar>fkeyname</ar>.</od>
+</option>
+<option><on>-fkey_path <ar>fkey_path</ar></on><od>load the frequency colorkey from the custom path <ar>fkey_path</ar>.</od>
+</option>
+<option><on>-nkey <ar>nkeyname</ar></on><od>load the noise colorkey from the file <ar>nkeyname</ar>.</od>
+</option>
+<option><on>-nkey_path <ar>nkey_path</ar></on><od>load the noise colorkey from the custom path <ar>nkey_path</ar>.</od>
 </option>
 <option><on>-fontname <ar>fontname</ar></on><od>plot any labels using the font <ar>fontname</ar>.</od>
 </option>
