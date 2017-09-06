@@ -224,7 +224,6 @@ int main(int argc,char *argv[]) {
   int i,first;
 
   int cnt=0;
-  int modnum;
 
   int yr,mo,dy,hr,mt;
   double sc;
@@ -382,6 +381,10 @@ int main(int argc,char *argv[]) {
       /* solve for the model */
       status = solve_model(num, mdata,fabs(map->latmin), mod, map->hemisphere,
                            decyear, noigrf, old_aacgm);
+      if (status != 0) {
+        fprintf(stderr,"Failed to solve statistical model.\n");
+        exit(-1);
+      }
       oldmod = mod;
       oldlatmin = map->latmin;
     }
@@ -607,7 +610,7 @@ int load_all_models(char *path, int imod)
 struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
 {
   struct model *ptr=NULL;
-  int nang=0,nlev;
+  int nang=0,nlev=0;
   float tlow[2] = {-20, 0};
   float thgh[2] = {  0,20};
   int i,it1,it2,im1,im2,ia1,ia2,l,m,k;
