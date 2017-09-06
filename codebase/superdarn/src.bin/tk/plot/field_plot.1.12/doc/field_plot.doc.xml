@@ -209,8 +209,12 @@
 
 <option><on>-vkey <ar>vkeyname</ar></on><od>load the colorkey used to plot velocity vectors from the file <ar>vkeyname</ar>.</od>
 </option>
+<option><on>-vkey_path <ar>vkey_path</ar></on><od>load the colorkey used to plot velocity vectors from the custom path <ar>vkey_path</ar>.</od>
+</option>
 
-<option><on>-key <ar>keyname</ar></on><od>load the colorkey from the file <ar>xkeyname</ar>.</od>
+<option><on>-key <ar>keyname</ar></on><od>load the colorkey from the file <ar>keyname</ar>.</od>
+</option>
+<option><on>-key_path <ar>key_path</ar></on><od>load the colorkey from the custom path <ar>key_path</ar>.</od>
 </option>
 
 <option><on>-p</on><od>plot power.</od>
