@@ -121,7 +121,7 @@ int FrameBufferFontDBEnd(char *name,char *buf,int sze,void *data) {
   fname=malloc(s);
   if (fname==NULL) return -1;
   if (ptr->path !=NULL) sprintf(fname,"%s/%s",ptr->path,ptr->buf);
-  else sprintf(fname,ptr->buf);
+  else sprintf(fname,"%s",ptr->buf);
  
   fp=fopen(fname,"r");
   free(fname);

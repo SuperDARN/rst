@@ -49,8 +49,8 @@ void log_info(char *fname,char *str) {
 
   date[strlen(date)-1]=':';
   
-  fprintf(stderr,date);
-  fprintf(stderr,str);
+  fprintf(stderr,"%s",date);
+  fprintf(stderr,"%s",str);
   fprintf(stderr,"\n");
 
   sprintf(logpath,"%s.%.4d%.2d%.2d",fname,1900+
@@ -58,8 +58,8 @@ void log_info(char *fname,char *str) {
           time_of_day->tm_mday);
 
   fp=fopen(logpath,"a");
-  fprintf(fp,date);
-  fprintf(fp,str);
+  fprintf(fp,"%s",date);
+  fprintf(fp,"%s",str);
   fprintf(fp,"\n");
   fclose(fp);
 }
