@@ -190,7 +190,7 @@ struct GridGVec *get_model_pos(int Lmax, float latmin, int hemi,
                                int level, int *num);
 struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
                               float tilt, int imod, int nointerp);
-struct model *interp_CS10_coeffs(int ih, float tilt, float mag, float cang);
+struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod);
 struct model *load_model(FILE *fp, int ihem, int ilev, int iang, int itlt,
                                    int imod);
 int load_all_models(char *path, int imod);
@@ -354,7 +354,7 @@ int main(int argc,char *argv[]) {
     }
 
     /* SGS: does this overide the tilt set with flag in map_addimf()? */
-    if (imod == CS10 || imod == PSR10)
+    if (imod == TS17 || imod == CS10 || imod == PSR10)
       tilt = IGRF_Tilt(yr,mo,dy,hr,mt,(int)sc);
     map->tilt = tilt;
 
@@ -449,7 +449,7 @@ struct model *load_model(FILE *fp, int ihem, int ilev, int iang,
       break;
     case TS17:
       strcpy(ptr->hemi,"Null");
-      strcpy(ptr->tilt,"Null");
+      strcpy(ptr->tilt,mod_tilts[itlt]);
       strcpy(ptr->level,TS17_mod_levs[ilev]);
       strcpy(ptr->angle,TS17_mod_angs[iang]); /* same as CS10 */
       break;
@@ -579,14 +579,16 @@ int load_all_models(char *path, int imod)
       return (-1);
       for (i=0; i<TS17_nlev; i++) {
         for (j=0; j<TS17_nang; j++) {
-          sprintf(fname,"%s/ts17/mod_%s_%s.spx",path,TS17_mod_lev[i],
-                         TS17_mod_ang[j]);
-          fp = fopen(fname,"r");
-          if (fp == NULL) continue;
-          model[0][0][i][j] = load_model(fp,-1,i,j,-1,imod);
-          fclose(fp);
-          if (model[0][0][i][j] == NULL) continue;
-          mnum++;
+          for (k=0; mod_tilt[k] != NULL; k++) {
+            sprintf(fname,"%s/ts17/mod_%s_%s_%s.spx",path,TS17_mod_lev[i],
+                           TS17_mod_ang[j],mod_tilt[k]);
+            fp = fopen(fname,"r");
+            if (fp == NULL) continue;
+            model[0][k][i][j] = load_model(fp,-1,i,j,k,imod);
+            fclose(fp);
+            if (model[0][k][i][j] == NULL) continue;
+            mnum++;
+          }
         }
       }
       break;
@@ -602,11 +604,10 @@ int load_all_models(char *path, int imod)
    to also be interpolated. Each model may have a different number of
    parameters to consider.
  */
-struct model *interp_CS10_coeffs(int ih, float tilt, float mag, float cang)
+struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
 {
   struct model *ptr=NULL;
-  float alow[8], ahgh[8];
-  float mlow[5], mhgh[5];
+  int nang=0,nlev;
   float tlow[2] = {-20, 0};
   float thgh[2] = {  0,20};
   int i,it1,it2,im1,im2,ia1,ia2,l,m,k;
@@ -616,35 +617,72 @@ struct model *interp_CS10_coeffs(int ih, float tilt, float mag, float cang)
   struct complex *Ap,*Bp,*Cp,*Dp,*Ep,*Fp,*Gp,*Hp;
   struct complex *An,*Bn,*Cn,*Dn,*En,*Fn,*Gn,*Hn;
 
-  /* setup reference point arrays */
-  mlow[0] = .5*CS10_mod_levi[0];
-  mhgh[0] = .5*(CS10_mod_levi[0]+CS10_mod_levi[1]);
-  for (i=1; i<CS10_nlev-1; i++) {
-    mlow[i] = .5*(CS10_mod_levi[i-1]+CS10_mod_levi[i]);
-    mhgh[i] = .5*(CS10_mod_levi[i]+CS10_mod_levi[i+1]);
+  switch (imod) {
+    case CS10:
+      nang = CS10_nang;
+      nlev = CS10_nlev;
+      break;
+    case TS17:
+      nang = TS17_nang;
+      nlev = TS17_nlev;
+    break;
   }
-  mhgh[CS10_nlev-2] = 7.5;
 
-  for (i=0; i<CS10_nang-1; i++) {
-    alow[i] = .5*(CS10_mod_angil[i]+CS10_mod_angih[i]);
-    ahgh[i] = .5*(CS10_mod_angil[i+1]+CS10_mod_angih[i+1]);
+  float alow[nang],ahgh[nang];
+  float mlow[nlev],mhgh[nlev];
+  float mod_angil[nang],mod_angih[nang];
+  float mod_levi[nlev];
+
+  switch (imod) {
+    case CS10:
+      for(i=0; i<nang; i++) {
+        mod_angil[i] = CS10_mod_angil[i];
+        mod_angih[i] = CS10_mod_angih[i];
+      }
+      for(i=0; i<nlev-1; i++)
+        mod_levi[i] = CS10_mod_levi[i];
+      break;
+    case TS17:
+      for(i=0; i<nang; i++) {
+        mod_angil[i] = TS17_mod_angil[i];
+        mod_angih[i] = TS17_mod_angih[i];
+      }
+      for(i=0; i<nlev-1; i++)
+        mod_levi[i] = TS17_mod_levi[i];
+    break;
   }
-  alow[i] = .5*(CS10_mod_angil[i]+CS10_mod_angih[i]);
+
+  /* setup reference point arrays */
+  mlow[0] = .5*mod_levi[0];
+  mhgh[0] = .5*(mod_levi[0]+mod_levi[1]);
+  for (i=1; i<nlev-1; i++) {
+    mlow[i] = .5*(mod_levi[i-1]+mod_levi[i]);
+    mhgh[i] = .5*(mod_levi[i]+mod_levi[i+1]);
+  }
+  mhgh[nlev-2] = 7.5;
+
+  for (i=0; i<nang-1; i++) {
+    alow[i] = .5*(mod_angil[i]+mod_angih[i]);
+    ahgh[i] = .5*(mod_angil[i+1]+mod_angih[i+1]);
+  }
+  alow[i] = .5*(mod_angil[i]+mod_angih[i]);
   ahgh[i] = alow[0]+360;
 
   /* restrict parameter values to within valid range */
-  if (cang >= ahgh[CS10_nang-1]) cang -= 360.;
-  if (cang < alow[0])            cang += 360.;
+  if (cang >= ahgh[nang-1]) cang -= 360.;
+  if (cang < alow[0])       cang += 360.;
 
-  if (mag > mhgh[CS10_nlev-2]) mag = mhgh[CS10_nlev-2];
-  if (mag < mlow[0])           mag = mlow[0];
+  if (mag > mhgh[nlev-2]) mag = mhgh[nlev-2];
+  if (mag < mlow[0])      mag = mlow[0];
 
   if (tilt > thgh[1]) tilt = thgh[1];
   if (tilt < tlow[0]) tilt = tlow[0];
 
   /* check for Bz<0 saturation */
-  if ((mag>mhgh[CS10_nlev-3]) && (cang>alow[2]) && (cang<ahgh[5]))
-    mag = mhgh[CS10_nlev-3];
+  if (imod == CS10) {
+    if ((mag>mhgh[CS10_nlev-3]) && (cang>alow[2]) && (cang<ahgh[5]))
+      mag = mhgh[CS10_nlev-3];
+  }
 
   /* find nearest neighbors */
   it1 = (tilt < 0) ? 0 : 1;  /* dipole tilt */
@@ -653,7 +691,7 @@ struct model *interp_CS10_coeffs(int ih, float tilt, float mag, float cang)
   for (im1=0; (mag > mhgh[im1]); im1++);  /* Magnitude */
   im2 = im1+1;
 
-  for (ia1=0; ia1 < CS10_nang; ia1++)   /* Angle */
+  for (ia1=0; ia1 < nang; ia1++)   /* Angle */
     if ((cang >= alow[ia1]) && (cang < ahgh[ia1])) break;
 
   /* set up new model structure */
@@ -680,7 +718,7 @@ struct model *interp_CS10_coeffs(int ih, float tilt, float mag, float cang)
   ptr->itlt = it1;
 
   /* do tri-linear interpolation of coeffs */
-  if (ia1 == CS10_nang-1) ia2 = 0;
+  if (ia1 == nang-1) ia2 = 0;
   else ia2 = ia1+1;
 
   afac_h = fabs(sin(.5*ahgh[ia1]*PI/180.));
@@ -912,33 +950,43 @@ struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
 
         imodel = model[ihem][itlt][ilev][iang];
 
-      } else imodel = interp_CS10_coeffs(ihem,tilt,esw,bazm);
+      } else imodel = interp_coeffs(ihem,tilt,esw,bazm,imod);
 
       break;
 
     case TS17:
       if (Vsw == 0) Vsw = 450.; /* not sure if this should be here: SGS */
                                 /* Default solar wind velocity */
-      esw = 1e-3*Vsw*bt;
+      esw = 1e-3*abs(Vsw*bt);
+      if (hemi < 0) tilt = -tilt;
 
-      ihem = 0; /* no bins for these in TS17 */
-      itlt = 0;
+      ihem = 0; /* no hemisphere bins for TS17 */
 
-      if (bazm >= TS17_mod_angih[TS17_nang-1]) bazm -= 360.;
-      if (bazm <  TS17_mod_angil[0])           bazm += 360.;
+      if (nointerp) {
 
-      /* angle */
-      for (i=0; i < TS17_nang; i++)
-        if ((bazm >= TS17_mod_angil[i]) && (bazm < TS17_mod_angih[i])) break;
-      if (i == TS17_nang) i--;
-      iang = i;
+        if (bazm >= TS17_mod_angih[TS17_nang-1]) bazm -= 360.;
+        if (bazm <  TS17_mod_angil[0])           bazm += 360.;
 
-      /* magnitude */
-      for (i=0; (TS17_mod_levi[i] !=-1) && (esw >= TS17_mod_levi[i]); i++);
-      if (TS17_mod_levi[i] == -1) i--;
-      ilev = i;
+        /* tilt */
+        for (i=0; (mod_tlti[i] !=-1) && (tilt > mod_tlti[i]); i++);
+        if (mod_tlti[i] == -1) i--;
+        itlt = i;
 
-      imodel = model[ihem][itlt][ilev][iang];
+        /* angle */
+        for (i=0; i < TS17_nang; i++)
+          if ((bazm >= TS17_mod_angil[i]) && (bazm < TS17_mod_angih[i])) break;
+        if (i == TS17_nang) i--;
+        iang = i;
+
+        /* magnitude */
+        for (i=0; (TS17_mod_levi[i] !=-1) && (esw >= TS17_mod_levi[i]); i++);
+        if (TS17_mod_levi[i] == -1) i--;
+        ilev = i;
+
+        imodel = model[ihem][itlt][ilev][iang];
+
+      } else imodel = interp_coeffs(ihem,tilt,esw,bazm,imod);
+
       break;
   }
 
