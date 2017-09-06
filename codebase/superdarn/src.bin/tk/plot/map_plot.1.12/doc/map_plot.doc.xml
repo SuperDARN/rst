@@ -176,11 +176,17 @@
 
 <option><on>-vkey <ar>vkeyname</ar></on><od>load the velocity colorkey from the file <ar>vkeyname</ar>.</od>
 </option>
+<option><on>-vkey_path <ar>vkey_path</ar></on><od>load the velocity colorkey from the custom path <ar>vkey_path</ar>.</od>
+</option>
 
 <option><on>-pkey <ar>pkeyname</ar></on><od>load the colorkey used to contour polygons from the file <ar>pkeyname</ar>.</od>
 </option>
+<option><on>-pkey_path <ar>pkey_path</ar></on><od>load the colorkey used to contour polygons from the custom path <ar>pkey_path</ar>.</od>
+</option>
 
 <option><on>-xkey <ar>xkeyname</ar></on><od>load the extra colorkey (used to plot power or spectral width) from the file <ar>xkeyname</ar>.</od>
+</option>
+<option><on>-xkey_path <ar>xkey_path</ar></on><od>load the extra colorkey from the custom path <ar>xkey_path</ar>.</od>
 </option>
 <option><on>-fit</on><od>plot the fitted two-dimensional velocity vectors.</od>
 </option>
