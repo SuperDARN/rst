@@ -628,17 +628,6 @@ struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
   float mod_levi[6];
 
   switch (imod) {
-    case PSR10:
-      nang = PSR10_nang;
-      for (i=0; i<nang; i++) {
-        mod_angil[i] = RG96_mod_angil[i];
-        mod_angih[i] = RG96_mod_angih[i];
-      }
-      nlev = PSR10_nlev;
-      for (i=0; i<nlev-1; i++)
-        mod_levi[i] = PSR10_mod_levi[i];
-      break;
-
     case CS10:
       nang = CS10_nang;
       for (i=0; i<nang; i++) {
@@ -718,12 +707,8 @@ struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
 
   strcpy(ptr->hemi,mod_hemi[ih]);
   sprintf(ptr->tilt, "tilt %5.1f",tilt);
+  sprintf(ptr->level,"Esw  %5.1f mV/m",mag);
   sprintf(ptr->angle,"Bang %5.0f deg.",cang);
-  if (imod == PSR10) {
-    sprintf(ptr->level,"Btot %5.1f nT",mag);
-  } else {
-    sprintf(ptr->level,"Esw  %5.1f mV/m",mag);
-  }
 
   ptr->aoeff_p=malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
   ptr->aoeff_n=malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
@@ -906,34 +891,30 @@ struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
       /* hemisphere */ 
       ihem = (hemi < 0) ? 1 : 0;
 
-      if (nointerp) {
+      if (bazm >= RG96_mod_angih[RG96_nang-1]) bazm -= 360.;
+      if (bazm <  RG96_mod_angil[0])           bazm += 360.;
 
-        if (bazm >= RG96_mod_angih[RG96_nang-1]) bazm -= 360.;
-        if (bazm <  RG96_mod_angil[0])           bazm += 360.;
+      /* tilt */
+      for (i=0; (mod_tlti[i] !=-1) && (tilt > mod_tlti[i]); i++);
+      if (mod_tlti[i] == -1) i--;
+      itlt = i;
 
-        /* tilt */
-        for (i=0; (mod_tlti[i] !=-1) && (tilt > mod_tlti[i]); i++);
-        if (mod_tlti[i] == -1) i--;
-        itlt = i;
+      /* angle */
+      for (i=0; i < PSR10_nang; i++)
+        if ((bazm >= RG96_mod_angil[i]) && (bazm < RG96_mod_angih[i])) break;
+      if (i == RG96_nang) i--;
+      iang = i;
 
-        /* angle */
-        for (i=0; i < PSR10_nang; i++)
-          if ((bazm >= RG96_mod_angil[i]) && (bazm < RG96_mod_angih[i])) break;
-        if (i == RG96_nang) i--;
-        iang = i;
+      /* magnitude */
+      for (i=0; (PSR10_mod_levi[i] !=-1) && (bt >= PSR10_mod_levi[i]); i++);
+      if (PSR10_mod_levi[i] == -1) i--;
+      ilev = i;
 
-        /* magnitude */
-        for (i=0; (PSR10_mod_levi[i] !=-1) && (bt >= PSR10_mod_levi[i]); i++);
-        if (PSR10_mod_levi[i] == -1) i--;
-        ilev = i;
-
-        /* correct for extreme Bz- */
-/*      if ((ilev==5) && (iang>2) && (iang<6)) ilev--;*/
+      /* correct for extreme Bz- */
+/*    if ((ilev==5) && (iang>2) && (iang<6)) ilev--;*/
 /* SGS: is there a correction for PSR10??? */
 
-        imodel = model[ihem][itlt][ilev][iang];
-
-      } else imodel = interp_coeffs(ihem,tilt,bt,bazm,imod);
+      imodel = model[ihem][itlt][ilev][iang];
 
       break;
 
