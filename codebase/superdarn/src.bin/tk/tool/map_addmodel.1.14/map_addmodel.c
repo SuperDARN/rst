@@ -610,7 +610,6 @@ int load_all_models(char *path, int imod)
 struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
 {
   struct model *ptr=NULL;
-  int nang=0,nlev=0;
   float tlow[2] = {-20, 0};
   float thgh[2] = {  0,20};
   int i,it1,it2,im1,im2,ia1,ia2,l,m,k;
@@ -620,39 +619,47 @@ struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
   struct complex *Ap,*Bp,*Cp,*Dp,*Ep,*Fp,*Gp,*Hp;
   struct complex *An,*Bn,*Cn,*Dn,*En,*Fn,*Gn,*Hn;
 
+  /* These are hardcoded to the largest possible number of
+   * model bins (currently CS10) - EGT */
+  int nang=0,nlev=0;
+  float alow[8],ahgh[8];
+  float mlow[6],mhgh[6];
+  float mod_angil[8],mod_angih[8];
+  float mod_levi[6];
+
   switch (imod) {
+    case PSR10:
+      nang = PSR10_nang;
+      for (i=0; i<nang; i++) {
+        mod_angil[i] = RG96_mod_angil[i];
+        mod_angih[i] = RG96_mod_angih[i];
+      }
+      nlev = PSR10_nlev;
+      for (i=0; i<nlev-1; i++)
+        mod_levi[i] = PSR10_mod_levi[i];
+      break;
+
     case CS10:
       nang = CS10_nang;
-      nlev = CS10_nlev;
-      break;
-    case TS17:
-      nang = TS17_nang;
-      nlev = TS17_nlev;
-    break;
-  }
-
-  float alow[nang],ahgh[nang];
-  float mlow[nlev],mhgh[nlev];
-  float mod_angil[nang],mod_angih[nang];
-  float mod_levi[nlev];
-
-  switch (imod) {
-    case CS10:
-      for(i=0; i<nang; i++) {
+      for (i=0; i<nang; i++) {
         mod_angil[i] = CS10_mod_angil[i];
         mod_angih[i] = CS10_mod_angih[i];
       }
-      for(i=0; i<nlev-1; i++)
+      nlev = CS10_nlev;
+      for (i=0; i<nlev-1; i++)
         mod_levi[i] = CS10_mod_levi[i];
       break;
+
     case TS17:
-      for(i=0; i<nang; i++) {
+      nang = TS17_nang;
+      for (i=0; i<nang; i++) {
         mod_angil[i] = TS17_mod_angil[i];
         mod_angih[i] = TS17_mod_angih[i];
       }
-      for(i=0; i<nlev-1; i++)
+      nlev = TS17_nlev;
+      for (i=0; i<nlev-1; i++)
         mod_levi[i] = TS17_mod_levi[i];
-    break;
+      break;
   }
 
   /* setup reference point arrays */
@@ -662,7 +669,11 @@ struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
     mlow[i] = .5*(mod_levi[i-1]+mod_levi[i]);
     mhgh[i] = .5*(mod_levi[i]+mod_levi[i+1]);
   }
-  mhgh[nlev-2] = 7.5;
+  if (imod == TS17) {
+    mhgh[nlev-2] = 5.0;
+  } else {
+    mhgh[nlev-2] = 7.5;
+  }
 
   for (i=0; i<nang-1; i++) {
     alow[i] = .5*(mod_angil[i]+mod_angih[i]);
@@ -707,8 +718,12 @@ struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
 
   strcpy(ptr->hemi,mod_hemi[ih]);
   sprintf(ptr->tilt, "tilt %5.1f",tilt);
-  sprintf(ptr->level,"Esw  %5.1f mV/m",mag);
   sprintf(ptr->angle,"Bang %5.0f deg.",cang);
+  if (imod == PSR10) {
+    sprintf(ptr->level,"Btot %5.1f nT",mag);
+  } else {
+    sprintf(ptr->level,"Esw  %5.1f mV/m",mag);
+  }
 
   ptr->aoeff_p=malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
   ptr->aoeff_n=malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
@@ -891,30 +906,34 @@ struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
       /* hemisphere */ 
       ihem = (hemi < 0) ? 1 : 0;
 
-      if (bazm >= RG96_mod_angih[RG96_nang-1]) bazm -= 360.;
-      if (bazm <  RG96_mod_angil[0])           bazm += 360.;
+      if (nointerp) {
 
-      /* tilt */ 
-      for (i=0; (mod_tlti[i] !=-1) && (tilt > mod_tlti[i]); i++);
-      if (mod_tlti[i] == -1) i--;
-      itlt = i;
+        if (bazm >= RG96_mod_angih[RG96_nang-1]) bazm -= 360.;
+        if (bazm <  RG96_mod_angil[0])           bazm += 360.;
 
-      /* angle */
-      for (i=0; i < PSR10_nang; i++)
-        if ((bazm >= RG96_mod_angil[i]) && (bazm < RG96_mod_angih[i])) break;
-      if (i == RG96_nang) i--;
-      iang = i;
+        /* tilt */
+        for (i=0; (mod_tlti[i] !=-1) && (tilt > mod_tlti[i]); i++);
+        if (mod_tlti[i] == -1) i--;
+        itlt = i;
 
-      /* magnitude */
-      for (i=0; (PSR10_mod_levi[i] !=-1) && (bt >= PSR10_mod_levi[i]); i++);
-      if (PSR10_mod_levi[i] == -1) i--;
-      ilev = i;
+        /* angle */
+        for (i=0; i < PSR10_nang; i++)
+          if ((bazm >= RG96_mod_angil[i]) && (bazm < RG96_mod_angih[i])) break;
+        if (i == RG96_nang) i--;
+        iang = i;
 
-      /* correct for extreme Bz- */
+        /* magnitude */
+        for (i=0; (PSR10_mod_levi[i] !=-1) && (bt >= PSR10_mod_levi[i]); i++);
+        if (PSR10_mod_levi[i] == -1) i--;
+        ilev = i;
+
+        /* correct for extreme Bz- */
 /*      if ((ilev==5) && (iang>2) && (iang<6)) ilev--;*/
 /* SGS: is there a correction for PSR10??? */
 
-      imodel = model[ihem][itlt][ilev][iang];
+        imodel = model[ihem][itlt][ilev][iang];
+
+      } else imodel = interp_coeffs(ihem,tilt,bt,bazm,imod);
 
       break;
 
