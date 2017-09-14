@@ -39,13 +39,12 @@ int FilterCmpVel(const void *x,const void *y) {
   struct RadarCell *a,*b;
   a=*((struct RadarCell **) x);
   b=*((struct RadarCell **) y);
-
   if (a->v<b->v) return -1;
   if (a->v>b->v) return 1;
   return 0;
 }
 
-int FilterCmpPwr(const void *x,const void *y) {
+int FilterCmpPwrL(const void *x,const void *y) {
   struct RadarCell *a,*b;
   a=*((struct RadarCell **) x);
   b=*((struct RadarCell **) y);
@@ -60,6 +59,15 @@ int FilterCmpWdt(const void *x,const void *y) {
   b=*((struct RadarCell **) y);
   if (a->w_l<b->w_l) return -1;
   if (a->w_l>b->w_l) return 1;
+  return 0;
+}
+
+int FilterCmpPwr0(const void *x,const void *y) {
+  struct RadarCell *a,*b;
+  a=*((struct RadarCell **) x);
+  b=*((struct RadarCell **) y);
+  if (a->p_0<b->p_0) return -1;
+  if (a->p_0>b->p_0) return 1;
   return 0;
 }
 
@@ -78,7 +86,7 @@ int FilterCmpWdt(const void *x,const void *y) {
  * standard deviation of the input parameters. Returns zero if successful.
  **/
 int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
-                    struct RadarScan *dst, int prm) {
+                    struct RadarScan *dst, int prm, int isort) {
 
     int thresh[2] = {12,24};
     double us;
@@ -561,12 +569,14 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
 
                 }
 
-                /* Sort velocity values in median RadarCell structure
-                 * from most negative to most positive velocity */
-                qsort(median,cnt,sizeof(struct RadarCell *), FilterCmpVel);
+                /* Sort velocity values in median Radarcell structure
+                 * from most negative to most positive (isort=0), or sort
+                 * lambda power values from smallest to largest (isort=1) */
+                if (isort) qsort(median,cnt,sizeof(struct RadarCell *), FilterCmpPwrL);
+                else qsort(median,cnt,sizeof(struct RadarCell *), FilterCmpVel);
 
                 /* Set current beam/gate power to the center of the above
-                 * array sorted by velocity (ie the median) */
+                 * array sorted by velocity or lambda power (ie the median) */
                 dst->bm[bm].rng[rng].p_l=median[cnt/2]->p_l;
 
                 /* Reset the mean and variance to zero */
@@ -630,11 +640,13 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
                 }
 
                 /* Sort velocity values in median Radarcell structure
-                 * from most negative to most positive */
-                qsort(median,cnt,sizeof(struct RadarCell *), FilterCmpVel);
+                 * from most negative to most positive (isort=0), or sort
+                 * spectral width values from smallest to largest (isort=1) */
+                if (isort) qsort(median,cnt,sizeof(struct RadarCell *), FilterCmpWdt);
+                else qsort(median,cnt,sizeof(struct RadarCell *), FilterCmpVel);
 
                 /* Set current beam/gate width to the center of the above
-                 * array sorted by velocity (ie the median) */
+                 * array sorted by velocity or spectral width (ie the median) */
                 dst->bm[bm].rng[rng].w_l=median[cnt/2]->w_l;
 
                 /* Reset the mean and variance to zero */
@@ -697,12 +709,14 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
 
                 }
 
-                /* Sort velocity values in median RadarCell structure
-                 * from most negative to most positive velocity */
-                qsort(median,cnt,sizeof(struct RadarCell *), FilterCmpVel);
+                /* Sort velocity values in median Radarcell structure
+                 * from most negative to most positive (isort=0), or sort
+                 * lag0 power values from smallest to largest (isort=1) */
+                if (isort) qsort(median,cnt,sizeof(struct RadarCell *), FilterCmpPwr0);
+                else qsort(median,cnt,sizeof(struct RadarCell *), FilterCmpVel);
 
                 /* Set current beam/gate lag0 power to the center of the above
-                 * array sorted by velocity (ie the median) */
+                 * array sorted by velocity or lag0 power (ie the median) */
                 dst->bm[bm].rng[rng].p_0=median[cnt/2]->p_0;
 
                 /* Reset the mean and variance to zero */
