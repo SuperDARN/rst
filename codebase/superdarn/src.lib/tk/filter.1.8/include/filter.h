@@ -34,6 +34,6 @@
 #define FILTER_DEPTH 3
 
 int FilterRadarScan(int mode,int depth,int inx,struct RadarScan **src,
-                    struct RadarScan *dst,int prm);
+                    struct RadarScan *dst,int prm,int isort);
 
 #endif

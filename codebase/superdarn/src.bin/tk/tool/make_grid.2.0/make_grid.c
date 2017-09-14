@@ -314,6 +314,7 @@ int main(int argc,char *argv[]) {
     int bxcar=0;
     int limit=0;
     int bflg=0;
+    int isort=0;
 
     unsigned char gsflg=0,ionflg=0,bthflg=0;
     unsigned char nsflg=0;
@@ -445,6 +446,7 @@ int main(int argc,char *argv[]) {
     OptionAdd(&opt,"nb",'x',&bflg);   /* Do not exclude data based on operating parameters */
     OptionAdd(&opt,"ns",'x',&nsflg);  /* Apply scan flag limit (ie exclude data with scan flag = -1) */
     OptionAdd(&opt,"xtd",'x',&xtd);   /* Write extended output that includes power and width */
+    OptionAdd(&opt,"isort",'x',&isort); /* If median filtering, sort parameters independent of velocity */
 
     OptionAdd(&opt,"ion",'x',&ionflg);  /* Exclude data marked as ground scatter */
     OptionAdd(&opt,"gs",'x',&gsflg);    /* Exclude data marked as iono scatter */
@@ -810,7 +812,7 @@ int main(int argc,char *argv[]) {
 
                 /* Apply the boxcar median filter to the radar scans included
                  * in the src array */
-                if (mode !=-1) FilterRadarScan(mode,nbox,index,src,dst,15);
+                if (mode !=-1) FilterRadarScan(mode,nbox,index,src,dst,15,isort);
                 else out=src[index];
 
                 /* Calculate year, month, day, hour, minute and second of
@@ -1028,7 +1030,7 @@ int main(int argc,char *argv[]) {
 
                     /* Apply the boxcar median filter to the radar scans included
                      * in the src array */
-                    if (mode !=-1) FilterRadarScan(mode,nbox,index,src,dst,15);
+                    if (mode !=-1) FilterRadarScan(mode,nbox,index,src,dst,15,isort);
                     else out=src[index];
 
                     /* Calculate year, month, day, hour, minute and second of
