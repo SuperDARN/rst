@@ -293,7 +293,7 @@ int main(int argc,char *argv[]) {
     double min[4]={35,3,10,0};
 
     /* Default upper limits for velocity, power, spectral width, and velocity error */
-    double max[4]={2000,50,1000,200};
+    double max[4]={2500,60,1000,200};
 
     /* Default maximum allowable frequency variation [Hz] */
     int fmax=500*1000;
