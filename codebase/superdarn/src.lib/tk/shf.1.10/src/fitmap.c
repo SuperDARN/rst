@@ -77,7 +77,6 @@ int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd) {
 
   double vel_max=2000;
   double verr_min=100; /* used to be 50 for original map_potential */
-  int ewt=1,mwt=1;
 
   fitvel=malloc(sizeof(struct CnvMapSHFVec)*(grd->vcnum+2*map->num_model));
   if (fitvel==NULL) return -1;
@@ -115,13 +114,13 @@ int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd) {
   if (num !=0) merr=sqrt(num/terr);
   else merr=verr_min;
   
-  /* if the ewt==0 then substitute the averaged error */
+  /* if the error_wt==0 then substitute the averaged error (not default) */
   
-  if (ewt==0) for (i=0;i<num;i++) data[i].verr=merr;
+  if (map->error_wt==0) for (i=0;i<num;i++) data[i].verr=merr;
 
-  /* if mwt==1 then adjust the error according to order */
+  /* if model_wt==1 then adjust the error according to order (default) */
   
-  if (mwt==1) merr=sqrt( (map->fit_order/4.0)*(map->fit_order/4.0) )*merr;
+  if (map->model_wt==1) merr=sqrt( (map->fit_order/4.0)*(map->fit_order/4.0) )*merr;
 
   for (i=0;i<map->num_model;i++) {
     if (map->model[i].vel.median==1) continue; /* screen out boundary vecs */
