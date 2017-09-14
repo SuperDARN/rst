@@ -263,12 +263,15 @@ int main(int argc,char *argv[]) {
 
   char *bgcol_txt=NULL;
   char *txtcol_txt=NULL;
-  char *key_path=NULL;
+  char *vkey_path=NULL;
+  char *pkey_path=NULL;
+  char *xkey_path=NULL;
   char kname[256];
   char *vkey_fname=NULL;
   char *pkey_fname=NULL;
   char *xkey_fname=NULL;
   FILE *keyfp=NULL;
+  size_t len;
 
   MapTFunction  tfunc;
 
