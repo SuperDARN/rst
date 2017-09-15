@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/74060190.svg)](https://zenodo.org/badge/latestdoi/74060190)
+
 Radar Software Toolkit
 ========
 
@@ -62,7 +64,7 @@ For macOS it is also available through macports, as are all listed dependencies
    implimentation.  These can be avoided by running the installation in a
    xterm terminal like XQuartz.
 
-4. In the same directory run `make.code superdarn rst` to compile all of the code.
+4. In the same directory run `make.code` to compile all of the code.
    This runs a script to find all of the source codes and compile them into binaries.
    A log of this compilation is stored in `$RSTPATH/log`.
 
@@ -74,7 +76,7 @@ For macOS it is also available through macports, as are all listed dependencies
 	 tar -P -czuf idl.tar.gz idl
 	 rm -rf idl
 	 cd $RSTPATH/build/script
-	 make.code superdarn rst
+	 make.code
 	 ```
 
    4b.	 If the order of make.code is executed incorrectly, you will see an error upon
@@ -88,13 +90,12 @@ For macOS it is also available through macports, as are all listed dependencies
 	 make clean
 	 make
 	 cd $RSTPATH/build/script
-	 make.code superdarn rst
+	 make.code
 	 ```
 
-5. To compile the html documentation, run `make.doc superdarn rst` from the command line.
-   You may need to modify the `URLBASE` environment variable in `$RSTPATH/.profile/rst.bash`
-   for the links in the html pages to function correctly.  Temporary documentation is
-   available at:
+5. To compile the html documentation, run `make.doc` from the command line. You may need
+   to modify the `URLBASE` environment variable in `$RSTPATH/.profile/rst.bash` for the
+   links in the html pages to function correctly.  Temporary documentation is available at:
 
    http://superdarn.thayer.dartmouth.edu/documentation/index.html
 
