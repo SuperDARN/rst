@@ -35,6 +35,7 @@
 #include "igrflib.h"
 #include "map_addmodel.h"
 #include "map_addhmb.h"
+#include "calc_bmag.h"
 #include "hlpstr.h"
 
 /*-----------------------------------------------------------------------------
@@ -175,7 +176,6 @@ struct model *model[2][3][6][8]; /* [hemi][tilt][lev][ang] */
  *
  */
 void add_model(struct CnvMapData *map,int num,struct GridGVec *ptr);
-double calc_bmag(float mlat, float mlon, float date, int old_aacgm);
 int solve_model(int num, struct GridGVec *ptr, float latmin, struct model *mod,
                 int hemi, float decyear, int igrf_flag, int old_aacgm);
 double factorial(double n);
@@ -1298,31 +1298,6 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
   }
 }
 
-
-double calc_bmag(float mlat, float mlon, float date, int old_aacgm)
-{
-  double rtp[3], brtp[3], bxyz[3];
-  double bmag;
-  double glat, glon, r;
-
-  if (old_aacgm) AACGMConvert((double)mlat,(double)mlon,1.,&glat,&glon,&r,1);
-  else       AACGM_v2_Convert((double)mlat,(double)mlon,1.,&glat,&glon,&r,1);
-
-  /* SGS: do NOT call old IGRF anymore
-  IGRFCall(date,glat,glon,Altitude/1000.,&x,&y,&z);
-  IGRFCall(date,glat,glon,(Re+Altitude)/1000.,&x,&y,&z);
-  bmag = 1e-9*sqrt(x*x + y*y + z*z);*/
-
-  rtp[0] = (Re + Altitude)/Re;        /* unitless */
-  rtp[1] = (90.-glat)*PI/180.;
-  rtp[2] = glon*PI/180.;
-  IGRF_compute(rtp, brtp);            /* compute the IGRF field here */
-  bspcar(rtp[1],rtp[2], brtp, bxyz);  /* convert field to Cartesian */
-  bmag = sqrt(bxyz[0]*bxyz[0] + bxyz[1]*bxyz[1] + bxyz[2]*bxyz[2]);
-  bmag *= 1e-9;   /* SGS: not sure of units here, but this seems to work... */
-
-  return bmag;
-}
 
 int solve_model(int num, struct GridGVec *ptr, float latmin, struct model *mod,
                 int hemi, float decyear, int noigrf, int old_aacgm)
