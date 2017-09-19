@@ -153,7 +153,7 @@ void calculate_phase_sigma(llist_node phase, llist_node range, FITPRMS *fit_prms
 	/*at this point sigma is holding its value of alpha to make
 	  list traversal easier at this point. This value gets set in
 	  new_phase_node()*/
-	inverse_alpha_2 = 1/phase_node->sigma;
+	inverse_alpha_2 = 1/phase_node->alpha_2;
 	pwr = exp(-1 * fabs(range_node->l_pwr_fit->b) * phase_node->t);
 
 	inverse_pwr_2 = 1/(pwr * pwr);

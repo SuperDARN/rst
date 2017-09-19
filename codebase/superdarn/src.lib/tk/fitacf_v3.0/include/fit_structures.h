@@ -53,6 +53,7 @@ typedef struct phasenode{
 	double t;
 	double sigma;
   int lag_idx;
+  double alpha_2;
 }PHASENODE;
 
 typedef struct pwrnode{
@@ -60,6 +61,8 @@ typedef struct pwrnode{
 	double t;
 	double sigma;
   int lag_idx;
+  double alpha_2;
+
 }PWRNODE;
 
 typedef struct lag_node{

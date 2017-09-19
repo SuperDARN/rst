@@ -79,6 +79,7 @@ void ACF_Phase_Unwrap(llist_node range, FITPRMS* fit_prms);
 void XCF_Phase_Unwrap(llist_node range);
 void Filter_Low_Pwr_Lags(llist_node range, FITPRMS* fit_prms);
 void Filter_TX_Overlap(llist ranges, llist lags, FITPRMS *fit_prms);
+void Filter_Bad_Fits(llist ranges);
 
 
 
