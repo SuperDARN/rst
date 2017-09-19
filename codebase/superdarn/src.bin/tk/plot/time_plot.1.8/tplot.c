@@ -94,6 +94,14 @@ int tplotset(struct tplot *ptr,int nrang) {
   if (tmp==NULL) return -1;
   memset(tmp,0,sizeof(double)*nrang);
   ptr->w_l_e=tmp;
+
+
+  if (ptr->elv==NULL) tmp=malloc(sizeof(double)*nrang);
+  else tmp=realloc(ptr->elv,sizeof(double)*nrang);
+  if (tmp==NULL) return -1;
+  memset(tmp,0,sizeof(double)*nrang);
+  ptr->elv=tmp;
+
   return 0;
 
 }
