@@ -569,12 +569,15 @@ int main(int argc,char *argv[]) {
 
   char *bgcol_txt=NULL;
   char *txtcol_txt=NULL;
-  char *key_path=NULL;
+  char *vkey_path=NULL;
+  char *pkey_path=NULL;
+  char *xkey_path=NULL;
   char kname[256];
   char *vkey_fname=NULL;
   char *pkey_fname=NULL;
   char *xkey_fname=NULL;
   FILE *keyfp=NULL;
+  size_t len;
 
   MapTFunction  tfunc;
 
@@ -876,8 +879,11 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"bgcol",'t',&bgcol_txt);
   OptionAdd(&opt,"txtcol",'t',&txtcol_txt);
   OptionAdd(&opt,"vkey",'t',&vkey_fname);
+  OptionAdd(&opt,"vkey_path",'t',&vkey_path);
   OptionAdd(&opt,"xkey",'t',&xkey_fname);
+  OptionAdd(&opt,"xkey_path",'t',&xkey_path);
   OptionAdd(&opt,"pkey",'t',&pkey_fname);
+  OptionAdd(&opt,"pkey_path",'t',&pkey_path);
 
    OptionAdd(&opt,"square",'x',&sqflg);
 
@@ -1207,9 +1213,11 @@ int main(int argc,char *argv[]) {
   if (ffovcol_txt !=NULL) ffovcol=PlotColorStringRGBA(ffovcol_txt);
 
   if (vkey_fname !=NULL) {
-    key_path = getenv("COLOR_TABLE_PATH");
-    if (key_path != NULL) {
-      strcpy(kname, key_path);
+    if (vkey_path == NULL) vkey_path = getenv("COLOR_TABLE_PATH");
+    if (vkey_path != NULL) {
+      strcpy(kname, vkey_path);
+      len = strlen(vkey_path);
+      if (vkey_path[len-1] != '/') strcat(kname, "/");
       strcat(kname, vkey_fname);
     } else {
       fprintf(stderr, "No COLOR_TABLE_PATH set\n");
@@ -1218,15 +1226,19 @@ int main(int argc,char *argv[]) {
     if (keyfp !=NULL) {
       load_key(keyfp,&vkey);
       fclose(keyfp);
+    } else {
+      fprintf(stderr, "Velocity color table %s not found\n", kname);
     }
   }
   vkey.max=vmax;
   vkey.defcol=veccol;
 
   if (pkey_fname !=NULL) {
-    if (key_path == NULL) key_path = getenv("COLOR_TABLE_PATH");
-    if (key_path != NULL) {
-      strcpy(kname, key_path);
+    if (pkey_path == NULL) pkey_path = getenv("COLOR_TABLE_PATH");
+    if (pkey_path != NULL) {
+      strcpy(kname, pkey_path);
+      len = strlen(pkey_path);
+      if (pkey_path[len-1] != '/') strcat(kname, "/");
       strcat(kname, pkey_fname);
     } else {
       fprintf(stderr, "No COLOR_TABLE_PATH set\n");
@@ -1235,13 +1247,17 @@ int main(int argc,char *argv[]) {
     if (keyfp !=NULL) {
       load_key(keyfp,&pkey);
       fclose(keyfp);
+    } else {
+      fprintf(stderr, "Polygon color table %s not found\n", kname);
     }
   }
 
   if (xkey_fname !=NULL) {
-    if (key_path == NULL) key_path = getenv("COLOR_TABLE_PATH");
-    if (key_path != NULL) {
-      strcpy(kname, key_path);
+    if (xkey_path == NULL) xkey_path = getenv("COLOR_TABLE_PATH");
+    if (xkey_path != NULL) {
+      strcpy(kname, xkey_path);
+      len = strlen(xkey_path);
+      if (xkey_path[len-1] != '/') strcat(kname, "/");
       strcat(kname, xkey_fname);
     } else {
       fprintf(stderr, "No COLOR_TABLE_PATH set\n");
@@ -1250,6 +1266,8 @@ int main(int argc,char *argv[]) {
     if (keyfp !=NULL) {
       load_key(keyfp,&xkey);
       fclose(keyfp);
+    } else {
+      fprintf(stderr, "Extra color table %s not found\n", kname);
     }
   }
 
