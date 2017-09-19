@@ -492,16 +492,16 @@ static IDL_VPTR IDLOldCnvMapOpen(int argc,IDL_VPTR *argv,char *argk) {
   int access=0;
 
   static IDL_KW_PAR kw_pars[]={IDL_KW_FAST_SCAN,
-			       {"READ",IDL_TYP_LONG,1,
+                               {"READ",IDL_TYP_LONG,1,
                                 IDL_KW_ZERO,0,
                                 IDL_CHARA(iread)},
-			       {"WRITE",IDL_TYP_LONG,1,
+                               {"UPDATE",IDL_TYP_LONG,1,
+                                IDL_KW_ZERO,0,
+                                IDL_CHARA(iupdate)},
+                               {"WRITE",IDL_TYP_LONG,1,
                                 IDL_KW_ZERO,0,
                                 IDL_CHARA(iwrite)},
-         	               {"UPDATE",IDL_TYP_LONG,1,
-                                IDL_KW_ZERO,0,
-                                IDL_CHARA(iwrite)},
-				 {NULL}};
+                                 {NULL}};
 
   IDL_KWCleanup(IDL_KW_MARK);
   IDL_KWGetParams(argc,argv,argk,kw_pars,outargv,1);
