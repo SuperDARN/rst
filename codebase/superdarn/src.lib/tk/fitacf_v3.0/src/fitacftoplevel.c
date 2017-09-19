@@ -287,7 +287,8 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
   llist_for_each_arg(ranges,(node_func_arg)Fill_Data_Lists_For_Range,lags,fit_prms);
 
   /*llist_for_each_arg(ranges,(node_func_arg)print_uncorrected_phase,fit_prms, NULL);*/
-  /* llist_for_each(ranges,print_range_node);*/
+  /*llist_for_each_arg(ranges,(node_func_arg)print_range_node,fit_prms,NULL);*/
+
 
   /*Tx overlapped data is removed from consideration*/
   Filter_TX_Overlap(ranges, lags, fit_prms);  /*Comment this out for simulted data without TX overlap*/
@@ -309,9 +310,12 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
   fit of the XCF phase fit and must be done first*/
   ACF_Phase_Fit(ranges,fit_prms);
 
+  llist_for_each_arg(ranges,(node_func_arg)print_range_node,fit_prms,NULL);
+
+  Filter_Bad_Fits(ranges);
+
   XCF_Phase_Fit(ranges,fit_prms);
 
-  /*llist_for_each_arg(ranges,(node_func_arg)print_range_node,fit_prms,NULL);*/
 
   /*Now the fits are completed, we can make our final determinations from those fits*/
   ACF_Determinations(ranges, fit_prms, fit_data, noise_pwr);
