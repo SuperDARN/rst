@@ -27,7 +27,7 @@
 /* private functions */
 int IGRF_loadcoeffs(void);
 int IGRF_interpolate_coefs(void);
-void pause(void);
+void igrf_pause(void);
 void IGRF_msg_notime(void);
 
 /* public functions */
