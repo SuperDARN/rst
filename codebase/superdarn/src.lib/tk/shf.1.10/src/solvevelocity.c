@@ -46,7 +46,8 @@
 
 
 
-int CnvMapSolveVelocity(struct CnvMapData *ptr,struct CnvGrid *vptr) {
+int CnvMapSolveVelocity(struct CnvMapData *ptr,struct CnvGrid *vptr,
+                        float decyear,int old_aacgm) {
   
   int i;
  
@@ -76,19 +77,9 @@ int CnvMapSolveVelocity(struct CnvMapData *ptr,struct CnvGrid *vptr) {
   plm=malloc(sizeof(double)*(ptr->fit_order+1)*(ptr->fit_order+1)*vptr->num);
 
   CnvMapEvalLegendre(ptr->fit_order,x,vptr->num,plm);
-  CnvMapEvalVelocity(ptr->fit_order,ptr->coef,plm,vptr,ptr->latmin,ptr);
+  CnvMapEvalVelocity(ptr->fit_order,ptr->coef,plm,vptr,ptr->latmin,ptr,decyear,old_aacgm);
   free(plm);
   free(x);
   return 0;
 }
-
-
-
-
-
-
-
-
-
-
 

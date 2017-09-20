@@ -51,7 +51,9 @@
 #include "crdshft.h"
 
 
-int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd) {
+int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd,
+                 float decyear,int old_aacgm) {
+
   double terr=0,merr=0;
   double mlat,mlon,tmp;
   double pot_max=-1e6;
@@ -71,6 +73,9 @@ int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd) {
   int max_sub=0,min_sub=10000;
   int dnum;
   double asum=0;
+
+  int noigrf=0;
+  noigrf = map->noigrf;
 
   double vel_max=2000;
   double verr_min=100; /* used to be 50 for original map_potential */
@@ -110,7 +115,7 @@ int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd) {
   if (num !=0) merr=sqrt(num/terr);
   else merr=verr_min;
 
-  /* if the error_wt==0 then substitute the averaged error (not default) */
+  /* if error_wt==0 then substitute the averaged error (not default) */
 
   if (map->error_wt==0) for (i=0;i<num;i++) data[i].verr=merr;
 
@@ -161,7 +166,7 @@ int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd) {
   }
 
   map->chi_sqr=CnvMapFitVector(num,data,map->coef,fitvel,map->fit_order,
-                               fabs(map->latmin));
+                               map->latmin,decyear,noigrf,old_aacgm);
 
   /* calculate chi_sqr associated with the data values */
 

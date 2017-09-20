@@ -53,7 +53,7 @@ void plot_excluded(struct Plot *plot,
                    unsigned int color,float width, int old_aacgm)
 {
   int i,s;
-  double olon,olat,lon,lat,vazm;
+  double olon,olat,lon,lat;
   float map[2],pnt[2];
   float ax,ay;
   double mlat,mlon,glat,glon,r;
@@ -68,7 +68,6 @@ void plot_excluded(struct Plot *plot,
     
     olon = ptr->lon[i];
     olat = ptr->lat[i];
-    vazm = ptr->azm[i];
 
     lat = olat;
     lon = olon;

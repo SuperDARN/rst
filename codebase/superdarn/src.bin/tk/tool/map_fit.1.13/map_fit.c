@@ -26,6 +26,8 @@
 #include "cnvmapwrite.h"
 #include "oldcnvmapwrite.h"
 #include "fitmap.h"
+#include "aacgmlib_v2.h"
+#include "igrflib.h"
 
 #include "hlpstr.h"
 #include "version.h"
@@ -38,6 +40,7 @@ struct OptionData opt;
 int main(int argc,char *argv[]) {
 
   int old=0;
+  int old_aacgm=0;
  
   int arg;
   unsigned char help=0;
@@ -51,6 +54,11 @@ int main(int argc,char *argv[]) {
   int yr,mo,dy,hr,mt;
   double sc;
   char *source=NULL;
+  int tme;
+  int yrsec;
+  int first;
+  int noigrf=0;
+  float decyear;
 
   char *ewstr=NULL;
   char *mwstr=NULL;
@@ -68,11 +76,11 @@ int main(int argc,char *argv[]) {
   grd=GridMake();
   map=CnvMapMake();
 
-
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
 
   OptionAdd(&opt,"old",'x',&old);
+  OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);
   OptionAdd(&opt,"vb",'x',&vb);
 
   OptionAdd(&opt,"ew",'t',&ewstr);  /* error weight */
@@ -94,7 +102,6 @@ int main(int argc,char *argv[]) {
     OptionDump(stdout,&opt);
     exit(0);
   }
-
 
   if (arg !=argc) fname=argv[arg];
 
@@ -124,9 +131,21 @@ int main(int argc,char *argv[]) {
     Map_Write = &CnvMapFwrite;
   }
 
+  first = 1;
   while ((*Map_Read)(fp,map,grd) !=-1) {
-          
-    TimeEpochToYMDHMS(map->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
+
+    tme = (map->st_time + map->ed_time)/2.0;
+    TimeEpochToYMDHMS(tme,&yr,&mo,&dy,&hr,&mt,&sc);
+    yrsec = TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int)sc);
+    decyear = yr + (float)yrsec/TimeYMDHMSToYrsec(yr,12,31,23,59,59);
+
+    noigrf = map->noigrf;
+
+    if (first) {
+      if (!noigrf)    IGRF_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
+      if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
+      first = 0;
+    }
 
     if (error_wt !=-1) map->error_wt=error_wt;
     if (model_wt !=-1) map->model_wt=model_wt;
@@ -140,13 +159,16 @@ int main(int argc,char *argv[]) {
 
     if (order !=0) map->fit_order=order;
 
-    CnvMapFitMap(map,grd);
+    CnvMapFitMap(map,grd,decyear,old_aacgm);
     (*Map_Write)(stdout,map,grd);
-    if (vb==1) 
-      fprintf(stderr,
-              "%d-%d-%d %d:%d:%d dp=%g error=%g chi_sqr=%g rms_err=%g\n",
-               yr,mo,dy,hr,mt,(int) sc, map->pot_drop/1000,
-               map->pot_drop_err/1000,map->chi_sqr,map->rms_err);
+
+    if (vb==1) {
+      TimeEpochToYMDHMS(map->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
+      fprintf(stderr,"%d-%d-%d %d:%d:%d dp=%g error=%g chi_sqr=%g rms_err=%g\n",
+                     yr,mo,dy,hr,mt,(int) sc, map->pot_drop/1000,
+                     map->pot_drop_err/1000,map->chi_sqr,map->rms_err);
+    }
+
   }
 
   return 0;
