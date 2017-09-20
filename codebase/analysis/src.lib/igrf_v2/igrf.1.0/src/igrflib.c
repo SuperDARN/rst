@@ -41,7 +41,7 @@ static int    nmx;                          /* order of expansion */
 ; for debugging
 ;+-----------------------------------------------------------------------------
 */
-void pause(void)
+void igrf_pause(void)
 {
   char ch;
 
@@ -279,7 +279,7 @@ int IGRF_loadcoeffs(void)
     }
 
     #if DEBUG > 2
-    pause();
+    igrf_pause();
     #endif
   }
   fclose(fp);
@@ -287,7 +287,7 @@ int IGRF_loadcoeffs(void)
   #if DEBUG > 1
   for (n=0; n<nyear; n++)
     fprintf(stderr, "%04d %f\n", epoch[n], IGRF_coef_set[n][0]);
-  pause();
+  igrf_pause();
   #endif
 
   #if DEBUG > 1
@@ -300,7 +300,7 @@ int IGRF_loadcoeffs(void)
                       IGRF_coef_set[(1980-1900)/5][k]);
     }
   }
-  pause();
+  igrf_pause();
   #endif
 
   return (0);
