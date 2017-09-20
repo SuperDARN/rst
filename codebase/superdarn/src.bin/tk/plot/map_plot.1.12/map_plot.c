@@ -45,6 +45,7 @@
 #include "mlt.h"
 #include "aacgmlib_v2.h"
 #include "mlt_v2.h"
+#include "igrflib.h"
 
 #include "rfile.h"
 #include "radar.h" 
@@ -364,6 +365,9 @@ int main(int argc,char *argv[]) {
   int yrsec;
   double tval=0;
   float tme_shft;
+  int noigrf=0;
+  double tme;
+  float decyear;
 
   float grdlat=10;
   float grdlon=15;
@@ -780,6 +784,8 @@ int main(int argc,char *argv[]) {
     s = (*Map_Read)(fp,rcmap,rgrid);
   }
 
+  noigrf = rcmap->noigrf;
+  if (!noigrf)    IGRF_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
   if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc); /* required */
 
   if (!sqflg) clip=MapCircleClip(10);
@@ -1069,6 +1075,11 @@ int main(int argc,char *argv[]) {
   if (fpath==NULL) fpath=dfpath;
 
   do {
+    tme = (rcmap->st_time + rcmap->ed_time)/2.;
+    TimeEpochToYMDHMS(tme,&yr,&mo,&dy,&hr,&mt,&sc);
+    yrsec = TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int)sc);
+    decyear = yr + (float)yrsec/TimeYMDHMSToYrsec(yr,12,31,23,59,59);
+
     if (mnflg) tval=(rcmap->st_time+rcmap->ed_time)/2;
     else tval=rcmap->st_time;
     TimeEpochToYMDHMS(tval,&yr,&mo,&dy,&hr,&mt,&sc);
@@ -1099,8 +1110,8 @@ int main(int argc,char *argv[]) {
     if (rcmap->num_coef !=0) {
       make_pgrid(rcmap->latmin,pgrid);
       make_vgrid(rgrid,vgrid); 
-      CnvMapSolve(rcmap,pgrid);
-      CnvMapSolve(rcmap,vgrid);
+      CnvMapSolve(rcmap,pgrid,decyear,old_aacgm);
+      CnvMapSolve(rcmap,vgrid,decyear,old_aacgm);
       zbuffer=render_map(pgrid,&zwdt,&zhgt);
       ctr=Contour(zbuffer,contour_DOUBLE,zwdt,zhgt,cnum,cval,3,1,1,0x04);
       free(zbuffer);
@@ -1118,9 +1129,9 @@ int main(int argc,char *argv[]) {
 
     if (magflg) tme_shft=-(*MLTCnv)(yr,yrsec,0.0)*15.0; 
     else {
-      double dec,eqt,LsoT,LT,Hangle;
+      double eqt,LsoT,LT,Hangle;
       if (lstflg) {
-        dec=SZASolarDec(yr,mo,dy,hr,mt,sc);
+        /*dec=SZASolarDec(yr,mo,dy,hr,mt,sc);*/
         eqt=SZAEqOfTime(yr,mo,dy,hr,mt,sc);
         LsoT=(hr*3600+mt*60+sc)+eqt;
         Hangle=15*(LsoT/3600);
