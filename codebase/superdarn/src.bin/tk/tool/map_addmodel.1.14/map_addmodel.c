@@ -350,6 +350,7 @@ int main(int argc,char *argv[]) {
     if (first) {
       if (!noigrf)    IGRF_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
       if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
+      first = 0;
     }
 
     /* SGS: does this overide the tilt set with flag in map_addimf()? */
