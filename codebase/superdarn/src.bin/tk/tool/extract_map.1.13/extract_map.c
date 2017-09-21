@@ -68,16 +68,7 @@ struct OptionData opt;
 
 int main(int argc,char *argv[]) {
 
- /* File format transistion
-   * ------------------------
-   * 
-   * When we switch to the new file format remove any reference
-   * to "new". Change the command line option "new" to "old" and
-   * remove "old=!new".
-   */
-
   int old=0;
-  int new=0;
 
   int arg;
   unsigned char help=0;
@@ -105,7 +96,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
 
-  OptionAdd(&opt,"new",'x',&new);
+  OptionAdd(&opt,"old",'x',&old);
   OptionAdd(&opt,"vb",'x',&vb);
 
   OptionAdd(&opt,"mid",'x',&rflg);
@@ -114,8 +105,6 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"l",'x',&lflg);
 
   arg=OptionProcess(1,argc,argv,&opt,NULL);
-
-  old=!new;
 
 
   if (help==1) {
