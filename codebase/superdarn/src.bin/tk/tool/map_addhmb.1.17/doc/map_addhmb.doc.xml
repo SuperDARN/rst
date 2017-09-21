@@ -23,16 +23,19 @@
 </option>
 <option><on>-vel <ar>vmin</ar></on><od>set the minimum velocity to <ar>vmin</ar>.</od>
 </option>
-<option><on>-ex <ar>exlist</ar></on><od>exclude data from the stations listed in  <ar>exlist</ar>, which is a</od></option>
+<option><on>-ex <ar>exlist</ar></on><od>exclude data from the stations listed in <ar>exlist</ar>, which is a</od></option>
 <option><on></on><od>  comma separated list of radar station numbers.</od></option>
 <option><on><ar>mapname</ar></on><od>filename of the <code>map</code> format file. If this is omitted, the file will</od></option>
 <option><on></on><od>  be read from standard input.</od></option>
 <option><on>-t</on><od>instead of adding the calculated boundary to the map file,</od></option>
-<option><on></on><od>  write the record time and the calculated location as ASCII text to standard output.</od></option>
+<option><on></on><od>  write the record time and the calculated location as ASCII text to standard</od></option>
+<option><on></on><od>  output.</od></option>
 <option><on>-lf <ar>latname</ar></on><od>do not calculate the boundary, instead read it from the ASCII</od></option>
 <option><on></on><od>  text file <ar>latname</ar>.</od></option>
 <option><on>-lat <ar>latmin</ar></on><od>do not calculate the boundary, instead set the lower latitude</od></option>
 <option><on></on><od>  boundary to <ar>latmin</ar> degrees.</od></option>
+<option><on>-nodef</on><od>do not use the default latmin if no data is available (ie use latmin from the statistical model).</od>
+</option>
 
 <synopsis><p>Calculates the position of the Heppner Maynard Boundary and adds it to a <code>map</code> format file.</p></synopsis>
 
