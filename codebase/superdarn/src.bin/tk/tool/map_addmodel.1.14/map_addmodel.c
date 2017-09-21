@@ -58,7 +58,6 @@
  */
 char *mod_hemi[6] = {"north","south",0};
 char *mod_tilt[] = {"DP-","DP0","DP+",0};
-/*char *mod_tilts[] = {"tilt<0","tilt=0","tilt>0",0};*/
 char *mod_tilts[] = {"negative","neutral","positive",0};
 int   mod_tlti[]  = {0,10,20,-1};
 
@@ -96,7 +95,6 @@ float PSR10_mod_levi[]  = {3,5,10,-1};
  * ---------------
  */
 int   CS10_nang = 8;
-/*char *CS10_mod_ang[16]  = {"Bz+", "Bz+_By+", "By+", "Bz-_By+", "Bz-",*/
 char *CS10_mod_ang[]   = {"Bz+", "Bz+_By+", "By+", "Bz-_By+", "Bz-",
                           "Bz-_By-", "By-", "Bz+_By-",0};
 char *CS10_mod_angs[]  = {"Bz+", "Bz+/By+", "By+", "Bz-/By+", "Bz-",
@@ -105,10 +103,8 @@ float CS10_mod_angil[] = {-25, 25, 70, 110, 155, 205, 250, 290};
 float CS10_mod_angih[] = {25, 70, 110, 155, 205, 250, 290, 335};
 
 int   CS10_nlev = 6;
-/*char *CS10_mod_lev[16]  = {"0.00t1.20","1.20t1.70","1.70t2.20","2.20t2.90",*/
 char *CS10_mod_lev[]   = {"0.00t1.20","1.20t1.70","1.70t2.20","2.20t2.90",
                           "2.90t4.10","4.10t20.00",0};
-/*char *CS10_mod_lev[16]  = {"0.00t1.20","1.20t1.70","1.70t2.20","2.20t2.90",*/
 char *CS10_mod_levs[]  = {"0<Esw<1.2","1.2<Esw<1.7","1.7<Esw<2.2","2.2<Esw<2.9",
                           "2.9<Esw<4.1","4.1<Esw<20",0};
 float CS10_mod_levi[]  = {1.2, 1.7, 2.2, 2.9, 4.1, 20, -1};
@@ -132,19 +128,6 @@ char *TS17_mod_levs[]  = {"0<Esw<1.2","1.2<Esw<1.6","1.6<Esw<2.1","2.1<Esw<3.0",
                           "3.0<Esw<20",0};
 float TS17_mod_levi[]  = {1.2, 1.6, 2.1, 3.0, 20, -1};
 
-/*
-char *mod_lev[]={"2t3","0t4","4t6","6t12","7t20",0};
-char *mod_ang[]={"315t45", "0t90", "45t135", "90t180", 
-                 "135t225", "180t270", "225t315", "270t360",0};
-
-char *mod_levn[]={"2<Kp<3", "0<BT<4", "4<BT<6", "6<BT<12", "7<BT<20",0};
-char *mod_angn[]={"Bz+", "Bz+/By+", "By+", 
-                  "Bz-/By+", "Bz-", "Bz-/By-", "By-", "Bz+/By-",0};
-
-int mod_levi[8]={0,4,6,12,20,-1};
-float mod_angil[8];
-float mod_angih[8];
-*/
 
 struct CnvMapData *map;
 struct GridData *grd;
@@ -165,7 +148,6 @@ struct model {
 };
 
 int mnum = 0;
-/*struct model *model[60];*/
 struct model *model[2][3][6][8]; /* [hemi][tilt][lev][ang] */
 
 
@@ -260,14 +242,6 @@ int main(int argc,char *argv[]) {
   map = CnvMapMake();
   grd = GridMake();
 
-  /* setup clock angles */
-  /* these are different for different models and defined at top.
-  for (i=0;i<8;i++) {
-    mod_angil[i]=i*45-22.5;
-    mod_angih[i]=i*45+22.5;
-  }
-*/
-
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
 
@@ -324,7 +298,11 @@ int main(int argc,char *argv[]) {
     exit(-1);
   }
 
-  load_all_models(envstr,imod);
+  status = load_all_models(envstr,imod);
+  if (status != 0) {
+    fprintf(stderr,"Failed to load statistical model.\n");
+    exit(-1);
+  }
 
   /* set function pointer to read/write old or new */
   if (old) {
@@ -601,7 +579,7 @@ int load_all_models(char *path, int imod)
       return (-1);
   }
 
-	return (0);
+  return (0);
 }  
 
 /* Ideally this should be a more generalized function that allows other models
