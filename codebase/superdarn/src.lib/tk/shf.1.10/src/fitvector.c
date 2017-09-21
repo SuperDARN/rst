@@ -150,9 +150,14 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
         etheta=etheta*alpha/Radial_Dist;
         ephi=m*PLM(L,m,i)*sin(m*phi[i])/sin(theta[i]);
         ephi=ephi/Radial_Dist;
+
+        /* need to flip sign for southern hemisphere */
+        etheta=etheta*hemi;
+        ephi=ephi*hemi;
+
         vtheta=ephi/bmag[i];
         vphi=-etheta/bmag[i];
-        
+
         vlos=vtheta*data[i].cos+vphi*data[i].sin;
         a[k*num+i]=vlos;                    
         etheta=-(sin(m*phi[i])/y[i]*(-((L+m)*PLM(L-1,m,i))+
@@ -160,13 +165,18 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
         etheta=etheta*alpha/Radial_Dist;
         ephi=-m*(cos(m*phi[i])/sin(theta[i])*PLM(L,m,i));
         ephi=ephi/Radial_Dist;
+
+        /* need to flip sign for southern hemisphere */
+        etheta=etheta*hemi;
+        ephi=ephi*hemi;
+
         vtheta=ephi/bmag[i];
         vphi=-etheta/bmag[i];
-        
+
         vlos=vtheta*data[i].cos+vphi*data[i].sin;
-     
+
         a[num*(k+1)+i]=vlos;  
-       
+
       }
     }
   }
