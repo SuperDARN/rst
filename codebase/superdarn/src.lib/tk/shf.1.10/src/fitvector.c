@@ -50,6 +50,10 @@ void CnvMapLegendreIndex(int,int *,int *);
  
 #define PLM(L,m,i) *(plm+(m)*num+(L)*(order+1)*num+(i))
 
+/*
+ * This routine creates a potential matrix given in terms
+ * of Legendre polynomials at a set of points.
+ */
 double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
                          int order,double latmin,float decyear,
                          int noigrf,int old_aacgm) {
@@ -116,8 +120,25 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
     }
   }
 
+  /* We have now defined all the latitude points in terms of
+   * the theta prime value, which is the stretched version of
+   * the theta angle - i.e. theta_prime goes to pi/2 at latmin
+   *
+   * Now compute all the Legendre polynomials at the theta prime points */
+
   CnvMapEvalLegendre(order,x,num,plm);
-  
+
+  /* Now evaulate the electric field and then the velocity
+   * in terms of the Plm's (which will eventually be multiplied
+   * by the coefficients of the best fit).
+   *
+   * Note: in the calculation of the derivative of the Plms,
+   *       you have to use theta prime in the theta derivatives
+   *       and multiply the whole thing by the stretching coefficient
+   *       alpha.  However, for the phi derivatives, the 1/sin(theta)
+   *       term comes from the gradient = 1/(r*sin(theta)) coefficient
+   *       of the partial of phi */
+
   a=malloc(sizeof(double)*num*(kmax+1)); 
   memset(a,0,sizeof(double)*num*(kmax+1));
   if (a==NULL) {
@@ -128,6 +149,8 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
     free(theta);
     return NULL;
   }
+
+  /* First do the m=0 case */
 
   m=0;
   for (L=1;L<=order;L++) {
@@ -140,10 +163,16 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
     }
   }
 
+  /* Now do the rest of the m's */
+
   for (m=1;m<=order;m++) {
     for (L=m;L<=order;L++) {
       k=CnvMapIndexLegendre(L,m);
       for (i=0;i<num;i++) {
+
+        /* Here the etheta/ephi variables give the electric
+         * field for the cos(phi) term in the expansion of
+         * the potential */
 
         etheta=-(cos(m*phi[i])/y[i]*(-((L+m)*PLM(L-1,m,i))+
 			             L*x[i]*PLM(L,m,i)));
@@ -159,7 +188,12 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
         vphi=-etheta/bmag[i];
 
         vlos=vtheta*data[i].cos+vphi*data[i].sin;
-        a[k*num+i]=vlos;                    
+        a[k*num+i]=vlos;
+
+        /* Here the etheta/ephi variables give the electric
+         * field for the sin(phi) term in the expansion of
+         * the potential */
+
         etheta=-(sin(m*phi[i])/y[i]*(-((L+m)*PLM(L-1,m,i))+
 			             L*x[i]*PLM(L,m,i)));
         etheta=etheta*alpha/Radial_Dist;
@@ -231,6 +265,8 @@ double CnvMapFitVector(int num,struct CnvMapSHFVec *data,
   var=malloc(sizeof(double)*(kmax+1)*(kmax+1));
   a=malloc(sizeof(double)*num*(kmax+1)); 
 
+  /* Compute the matrix describing the line-of-sight velocities */
+
   amat=CnvMapVlosMatrix(num,data,order,latmin,decyear,noigrf,old_aacgm);
   if (amat==NULL) { 
     free(result);
@@ -238,7 +274,10 @@ double CnvMapFitVector(int num,struct CnvMapSHFVec *data,
     free(plm);
     return -1;
   }
-  
+
+  /* Now compute the velocity matrix adjusted for the error bars on
+   * the line-of-sight velocity measurements. */
+
   for (i=0;i<num;i++) {
     result[i]=data[i].vlos/data[i].verr;
     for (k=0;k<=kmax;k++) {
@@ -272,7 +311,10 @@ double CnvMapFitVector(int num,struct CnvMapSHFVec *data,
   }
   x=-1;
   CnvMapEvalLegendre(order,&x,1,plm); 
-   
+
+  /* Now pull the solution vector apart and make it into the
+   * matrix "coeffs" */
+
   for (k=0;k<=kmax;k++) {
     CnvMapLegendreIndex(k,&L,&m);
     coef[4*k]=L;
