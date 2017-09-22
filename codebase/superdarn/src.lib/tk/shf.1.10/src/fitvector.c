@@ -313,7 +313,7 @@ double CnvMapFitVector(int num,struct CnvMapSHFVec *data,
   CnvMapEvalLegendre(order,&x,1,plm); 
 
   /* Now pull the solution vector apart and make it into the
-   * matrix "coeffs" */
+   * matrix "coef" */
 
   for (k=0;k<=kmax;k++) {
     CnvMapLegendreIndex(k,&L,&m);
