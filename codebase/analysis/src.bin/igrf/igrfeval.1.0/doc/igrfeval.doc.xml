@@ -40,7 +40,7 @@
 
 <example>
 <command>igrfeval -lat 85.4 -lon 32.4 -alt 300.0</command>
-<description>Calculate the IGRF magnetic field components at the coordinate given by latitude of 85.4 degrees, longitude 32.4 degrees and altitude of 300 kilometers to AACGM.</description>
+<description>Calculate the IGRF magnetic field components at the coordinate given by latitude of 85.4 degrees, longitude 32.4 degrees and altitude of 300 kilometers.</description>
 </example>
 
 <example>
