@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  */
 
 /**
@@ -27,7 +27,7 @@ Keith Kotyk
 #define LLIST_H_
 
 #include <stdbool.h>
-
+#include "rtypes.h"
 
 /** E_LLIST
 * This is the return values most of the llist API return,
@@ -180,7 +180,7 @@ int llist_sort ( llist list, int flags );
 
 /**
  * @brief Returns the head node of the list
- * @param[in] list the list to operate on 
+ * @param[in] list the list to operate on
  * @return the head node, NULL on error
  */
 llist_node llist_get_head ( llist list );
@@ -203,28 +203,28 @@ int llist_push ( llist list, llist_node node );
 
 /**
  * @brief peek at the head of the list
- * @param[in] list the list to operate on 
+ * @param[in] list the list to operate on
  * @return llist_node the head node
  */
 llist_node llist_peek( llist list );
 
 /**
  * @brief pop the head of the list
- * @param[in] list the list to operate on 
+ * @param[in] list the list to operate on
  * @return llist_node the head node
  */
 llist_node llist_pop( llist list );
 
 /**
  * @brief return the number of elements in the list
- * @param[in] list the list to operate on 
+ * @param[in] list the list to operate on
  * @return int  number of elements in the list or -1 if error
  */
 int llist_size( llist list );
 
 /**
  * @brief concatenate the second list to the first list
- * @param[in] first the list to operate on 
+ * @param[in] first the list to operate on
  * @param[in] second the list to operate on.
  * @warning The nodes from the second list will be deleted and concatenated to the first list
  *          Remember to call llist_destroy() on  the second list (if it was created by llist_create())
@@ -234,7 +234,7 @@ int llist_concat( llist first, llist second );
 
 /**
  * @brief merge the second list to the first list
- * @param[in] first the list to operate on 
+ * @param[in] first the list to operate on
  * @param[in] second the list to operate on
  * @warning The nodes from the second list will be deleted and merged to the first list
  *          Remember to call llist_destroy() on  the second list (if it was created by llist_create())

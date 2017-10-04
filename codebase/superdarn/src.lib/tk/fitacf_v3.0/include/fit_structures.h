@@ -31,7 +31,7 @@ July 2015
 #define _FITSTRUCT_H
 
 #include "leastsquares.h"
-
+#include "rtypes.h"
 typedef struct rangenode{
 	int range;
 	double* CRI;
