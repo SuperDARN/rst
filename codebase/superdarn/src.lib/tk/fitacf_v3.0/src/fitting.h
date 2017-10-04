@@ -25,6 +25,7 @@ July 2015
 #ifndef _ACFFIT_H
 #define _ACFFIT_H
 
+#include "rtypes.h"
 #include "llist.h"
 #include "fit_structures.h"
 

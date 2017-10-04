@@ -252,6 +252,7 @@ int llist_get_iter(llist list,void** item){
     }
 
     if(( ( _llist * ) list )->iter == NULL){
+        *item = NULL;
         return LLIST_NODE_NOT_FOUND;
     }
 

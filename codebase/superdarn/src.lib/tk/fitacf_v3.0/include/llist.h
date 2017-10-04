@@ -25,7 +25,7 @@ Keith Kotyk
 
 #ifndef LLIST_H_
 #define LLIST_H_
-
+#include "rtypes.h"
 #include <stdbool.h>
 
 
