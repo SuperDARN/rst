@@ -27,6 +27,7 @@ July 2015
 #ifndef _ACFDETERMINATIONS_H
 #define _ACFDETERMINATIONS_H
 
+#include "rtypes.h"
 #include "fit_structures.h"
 #include "fitdata.h"
 #include "fitblk.h"

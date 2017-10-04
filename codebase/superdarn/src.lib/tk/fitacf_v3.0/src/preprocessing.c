@@ -751,42 +751,43 @@ void Filter_Bad_ACFs(FITPRMS *fit_prms, llist ranges, double noise_pwr){
 	llist_reset_iter(bad_ranges_1);
 	do{
 		llist_get_iter(bad_ranges_1,(void**)&bad_range);
-		llist_delete_node(ranges,(llist_node)bad_range,TRUE,free_range_node);
+		llist_delete_node(ranges,bad_range,TRUE,free_range_node);
 	}while(llist_go_next(bad_ranges_1) != LLIST_END_OF_LIST);
 
 
 	/*Removing ACFs with constant power levels*/
-	llist_reset_iter(ranges);
-	do{
-		llist_get_iter(ranges,(void**)&range_node);
-		llist_reset_iter(range_node->pwrs);
-		llist_get_iter(range_node->pwrs,(void**)&pwr_node);
-		tmp_pwr = pwr_node->ln_pwr;
-		llist_go_next(range_node->pwrs);
+	if (llist_size(ranges) != 0){
+		llist_reset_iter(ranges);
 		do{
+			llist_get_iter(ranges,(void**)&range_node);
+			llist_reset_iter(range_node->pwrs);
 			llist_get_iter(range_node->pwrs,(void**)&pwr_node);
-			if (pwr_node->ln_pwr != tmp_pwr) {
-				bad_pwrs_flag = 0;
-				break;
+			tmp_pwr = pwr_node->ln_pwr;
+			llist_go_next(range_node->pwrs);
+			do{
+				llist_get_iter(range_node->pwrs,(void**)&pwr_node);
+				if (pwr_node->ln_pwr != tmp_pwr) {
+					bad_pwrs_flag = 0;
+					break;
+				}
+			}while(llist_go_next(range_node->pwrs) != LLIST_END_OF_LIST);
+			if(bad_pwrs_flag == 1){
+				bad_range = malloc(sizeof(*bad_range));
+				memset(bad_range, 0, sizeof(*bad_range));
+				*bad_range = range_node->range;
+				llist_add_node(bad_ranges_2,(llist_node)bad_range,0);
 			}
-		}while(llist_go_next(range_node->pwrs) != LLIST_END_OF_LIST);
-		if(bad_pwrs_flag == 1){
-			bad_range = malloc(sizeof(*bad_range));
-			memset(bad_range, 0, sizeof(*bad_range));
-			*bad_range = range_node->range;
-			llist_add_node(bad_ranges_2,(llist_node)bad_range,0);
-		}
-		else {
-			bad_pwrs_flag = 1;
-		}
-	}while(llist_go_next(ranges) != LLIST_END_OF_LIST);
+			else {
+				bad_pwrs_flag = 1;
+			}
+		}while(llist_go_next(ranges) != LLIST_END_OF_LIST);
 
-	llist_reset_iter(bad_ranges_2);
-	do{
-		llist_get_iter(bad_ranges_2,(void**)&bad_range);
-		llist_delete_node(ranges,(llist_node)bad_range,TRUE,free_range_node);
-	}while(llist_go_next(bad_ranges_2) != LLIST_END_OF_LIST);
-
+		llist_reset_iter(bad_ranges_2);
+		do{
+			llist_get_iter(bad_ranges_2,(void**)&bad_range);
+			llist_delete_node(ranges,(llist_node)bad_range,TRUE,free_range_node);
+		}while(llist_go_next(bad_ranges_2) != LLIST_END_OF_LIST);
+	}
 
 	llist_destroy(bad_ranges_1,TRUE,free);
 	llist_destroy(bad_ranges_2,TRUE,free);

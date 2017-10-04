@@ -24,7 +24,7 @@ July 2015
 
 #ifndef _ACFPROC_H
 #define _ACFPROC_H
-
+#include "rtypes.h"
 #include "llist.h"
 #include "leastsquares.h"
 #include "fit_structures.h"
