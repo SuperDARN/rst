@@ -155,7 +155,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"vb",'x',&vb);
   OptionAdd(&opt,"sh",'x',&sh);
   OptionAdd(&opt,"l",'f',&latmin);
-  OptionAdd(&opt,"s",'f',&latshft);
+  /*OptionAdd(&opt,"s",'f',&latshft);*/ /* latshft option removed at suggestion of JMR */
   OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);
 
   OptionAdd(&opt,"empty",'x',&empty);   /* Create empty map file without real data */
