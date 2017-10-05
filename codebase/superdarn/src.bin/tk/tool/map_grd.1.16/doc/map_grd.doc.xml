@@ -5,7 +5,7 @@
 <location>src.bin/tk/tool/map_grd</location>
 <syntax></syntax>
 <syntax>map_grd --help</syntax>
-<syntax>map_grd [-vb] [-old] [-old_aacmg] [-sh] [-l <ar>latmin</ar>] [-s <ar>latshft</ar>] [<ar>gridname</ar>]</syntax>
+<syntax>map_grd [-vb] [-old] [-old_aacgm] [-sh] [-l <ar>latmin</ar>] [<ar>gridname</ar>]</syntax>
 <syntax></syntax>
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
@@ -18,8 +18,6 @@
 <option><on>-sh</on><od>the map file is for southern hemisphere data.</od>
 </option>
 <option><on>-l <ar>latmin</ar></on><od>set the lower latitude boundary to <ar>latmin</ar>.</od>
-</option>
-<option><on>-s <ar>latshft</ar></on><od>set the pole shift to <ar>latshft</ar>.</od>
 </option>
 <option><on>-empty</on><od>create an empty map file without any input grid data.</od>
 </option>
