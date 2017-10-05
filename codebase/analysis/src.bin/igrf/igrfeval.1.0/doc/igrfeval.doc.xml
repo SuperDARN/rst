@@ -8,7 +8,7 @@
 <syntax>igrfeval [-m] [-lat <ar>lat</ar>] [-lon <ar>lon</ar>] [-alt <ar>alt</ar>] [-fmt <ar>format</ar>]</syntax>
 <syntax>igrfeval [-m] [-f <ar>filename</ar>] [-fmt <ar>format</ar>]</syntax>
 
-<synopsis><p>Calculate IGRF Bx, By, and Bz magnetic field components and magnitude.</p></synopsis>
+<synopsis><p>Calculate IGRF magnetic field components and magnitude [nT].</p></synopsis>
 
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
@@ -28,13 +28,15 @@
 </option>
 <option><on>-fmt <ar>format</ar></on><od>use the string <ar>fmt</ar>, to format the output.</od>
 </option>
+<option><on>-xyz</on><od>Output should be in Cartesian rather than North/East/Down coordinates.</od>
+</option>
 <option><on>-f <ar>filename</ar></on><od>read a sequence of latitudes, longitudes and altitudes from the ASCII file, <ar>filename</ar>.</od>
 </option>
 <option><on>-old_aacgm</on><od>use old AACGM coordinates rather than v2.</od>
 </option>
 
 <description>
-<p>Calculates IGRF Bx, By, and Bz magnetic field components and magnitude. The output is written to standard output using the formatting string given by the "<code>-fmt</code>" option. The format string should be in the same format as that used by the <code>printf</code> function and will take two double precision floating point numbers as arguments.</p>
+<p>Calculates IGRF magnetic field components and magnitude in units of nanotesla [nT]. The output is written to standard output using the formatting string given by the "<code>-fmt</code>" option. The format string should be in the same format as that used by the <code>printf</code> function and will take two double precision floating point numbers as arguments.</p>
 <p>If the "<code>-f</code>" option is given, the latitude,longitude and altitude are read from a space separated ASCII file. If the filename is "<code>-</code>" input is read from standard input.</p>
 </description>
 
