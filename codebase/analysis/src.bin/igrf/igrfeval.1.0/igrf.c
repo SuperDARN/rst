@@ -103,6 +103,7 @@ int main(int argc,char *argv[]) {
   unsigned char option=0;
   unsigned char help=0;
   unsigned char mag=0;
+  unsigned char xyz=0;
   int c;
 
   int old_aacgm=0;
@@ -123,6 +124,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"lat",'d',&ilat);              /* Latitude [deg] */
   OptionAdd(&opt,"alt",'d',&alt);               /* Altitude [km] */
   OptionAdd(&opt,"re",'d',&Re);                 /* Earth radius [km] */
+  OptionAdd(&opt,"xyz",'x',&xyz);                /* Output in Cartesian rather than North/East/Down coords */
   OptionAdd(&opt,"fmt",'t',&fmt);
   OptionAdd(&opt,"f",'t',&fname);
   OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);   /* Use old AACGM coefficicents rather than v2 */
@@ -183,7 +185,8 @@ int main(int argc,char *argv[]) {
     IGRF_compute(rtp,brtp);
     bspcar(rtp[1],rtp[2],brtp,bxyz);
     bmag = sqrt(bxyz[0]*bxyz[0]+bxyz[1]*bxyz[1]+bxyz[2]*bxyz[2]);
-    fprintf(stdout,fmt,bxyz[0],bxyz[1],bxyz[2],bmag);
+    if (xyz) fprintf(stdout,fmt,bxyz[0],bxyz[1],bxyz[2],bmag);
+    else fprintf(stdout,fmt,-brtp[1],brtp[2],-brtp[0],bmag);
   } else {
     if (strcmp(fname,"-")==0) fp=stdin;
     else fp=fopen(fname,"r");
@@ -207,7 +210,9 @@ int main(int argc,char *argv[]) {
       IGRF_compute(rtp,brtp);
       bspcar(rtp[1],rtp[2],brtp,bxyz);
       bmag = sqrt(bxyz[0]*bxyz[0]+bxyz[1]*bxyz[1]+bxyz[2]*bxyz[2]);
-      fprintf(stdout,fmt,bxyz[0],bxyz[1],bxyz[2],bmag);
+      if (xyz) fprintf(stdout,fmt,bxyz[0],bxyz[1],bxyz[2],bmag);
+      else fprintf(stdout,fmt,-brtp[1],brtp[2],-brtp[0],bmag);
+      fprintf(stdout,fmt,-brtp[1],brtp[2],-brtp[0],bmag);
     }
   }
   return 0;
