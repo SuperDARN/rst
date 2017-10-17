@@ -70,10 +70,9 @@ void plot_model_name(struct Plot *plot, float xoff, float yoff, char *model,
 
   /* Dipole tilt */
   if (strcmp(tilt, "Null") != 0) {
-    sprintf(txt, "%s tilt", tilt);
-    txtbox(fontname,fontsize,strlen(txt),txt,txbox,txtdata);
+    txtbox(fontname,fontsize,strlen(tilt),tilt,txbox,txtdata);
     PlotText(plot,NULL,fontname,fontsize,xoff-txbox[0]/2,yoff+3*lhgt,
-             strlen(txt),txt,color,mask,1);
+             strlen(tilt),tilt,color,mask,1);
   }
 }
  
