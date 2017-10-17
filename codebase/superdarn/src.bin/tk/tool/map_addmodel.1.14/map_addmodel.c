@@ -685,7 +685,7 @@ struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
   ptr->mtop = model[0][0][0][0]->mtop;
 
   strcpy(ptr->hemi,mod_hemi[ih]);
-  sprintf(ptr->tilt, "tilt %5.1f",tilt);
+  sprintf(ptr->tilt, "tilt %5.1f deg.",tilt);
   sprintf(ptr->level,"Esw  %5.1f mV/m",mag);
   sprintf(ptr->angle,"Bang %5.0f deg.",cang);
 
