@@ -91,14 +91,14 @@ int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd,
 
   for (j=0;j<grd->vcnum;j++) {
     if (grd->data[j].st_id==-1) continue;
-    mlat=fabs(grd->data[j].mlat);
+    mlat=grd->data[j].mlat;
     mlon=grd->data[j].mlon;
     tmp=grd->data[j].azm;
 
     if ((map->lat_shft !=0) || (map->lon_shft !=0))
     CnvMapCrdShft(&mlat,&mlon,&tmp,map->lat_shft,map->lon_shft);
 
-    if (mlat < fabs(map->latmin)) continue;
+    if (fabs(mlat) < fabs(map->latmin)) continue;
     if (fabs(grd->data[j].vel.median)>vel_max) continue;
     data[num].lat=mlat;
     data[num].lon=mlon;
@@ -125,7 +125,7 @@ int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd,
 
   for (i=0;i<map->num_model;i++) {
     if (map->model[i].vel.median==1) continue; /* screen out boundary vecs */
-    mlat=fabs(map->model[i].mlat);
+    mlat=map->model[i].mlat;
     mlon=map->model[i].mlon;
     vx=map->model[i].vel.median*cos(map->model[i].azm*PI/180);
     vy=map->model[i].vel.median*sin(map->model[i].azm*PI/180);
@@ -151,7 +151,7 @@ int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd,
 
   for (i=0;i<map->num_model;i++) {
     if (map->model[i].vel.median !=1) continue;
-    mlat=fabs(map->model[i].mlat);
+    mlat=map->model[i].mlat;
     mlon=map->model[i].mlon;
     tmp=map->model[i].azm;
 
