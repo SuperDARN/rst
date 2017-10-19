@@ -43,6 +43,11 @@
 
 struct OptionData opt;
 
+int opterr(char *txt) {
+    fprintf(stderr,"Option not recognized: %s\n",txt);
+    return(-1);
+}
+
 /**
  * Converts an input date from YYYYMMDD format to an epoch time in number of
  * seconds since 00:00 UT on January 1, 1970.
@@ -131,7 +136,11 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"t",'t',&tmetxt);              /* Time for IGRF calculation */
   OptionAdd(&opt,"d",'t',&dtetxt);              /* Date for IGRF calculation */
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);
+  arg=OptionProcess(1,argc,argv,&opt,opterr);
+
+  if (arg==-1) {
+    exit(0);
+  }
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
