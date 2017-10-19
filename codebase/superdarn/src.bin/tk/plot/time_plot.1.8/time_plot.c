@@ -117,6 +117,7 @@ struct key nkey;
 struct key pkey;
 struct key vkey;
 struct key wkey;
+struct key ekey;
 
 char *mstr[]={"January","February","March","April","May","June","July",
               "August","September","October","November","December",0};
@@ -174,6 +175,14 @@ char *label_wdt(double val,double min,double max,void *data) {
   if ((val !=min) && (val !=max)) return NULL;
   txt=malloc(32);
   sprintf(txt,"%d m/s",(int) val);
+  return txt;
+}
+
+char *label_elv(double val,double min,double max,void *data) {
+  char *txt=NULL;
+  if ((val !=min) && (val !=max)) return NULL;
+  txt=malloc(32);
+  sprintf(txt,"%d deg",(int) val);
   return txt;
 }
 
@@ -293,6 +302,7 @@ int main(int argc,char *argv[]) {
   unsigned char velflg=0;
   unsigned char pwrflg=0;
   unsigned char wdtflg=0;
+  unsigned char elvflg=0;
 
   unsigned char gsflg=0;
   unsigned char gmflg=0;
@@ -306,6 +316,9 @@ int main(int argc,char *argv[]) {
  
   double wmin=0;
   double wmax=500;
+
+  double emin=0;
+  double emax=50;
   
   double fmin=0.9;
   double fmax=1.9;
@@ -340,13 +353,20 @@ int main(int argc,char *argv[]) {
   unsigned int gscolor=0;
   char *gsctxt=NULL;
 
-  char *key_path=NULL;
+  char *pkey_path=NULL;
+  char *vkey_path=NULL;
+  char *wkey_path=NULL;
+  char *ekey_path=NULL;
+  char *fkey_path=NULL;
+  char *nkey_path=NULL;
   char kname[256];
   char *pkey_fname=NULL;
   char *vkey_fname=NULL;
   char *wkey_fname=NULL;
+  char *ekey_fname=NULL;
   char *fkey_fname=NULL;
   char *nkey_fname=NULL;
+  size_t len;
 
 
   struct FrameBuffer *img=NULL;
@@ -425,8 +445,8 @@ int main(int argc,char *argv[]) {
   int yr,mo,dy,hr,mt;
   double sc;
 
-  int type[3];
-  struct FrameBuffer *blk[3]={NULL,NULL,NULL};
+  int type[4];
+  struct FrameBuffer *blk[4]={NULL,NULL,NULL,NULL};
   struct FrameBuffer *fblk;
   struct FrameBuffer *nblk;
 
@@ -477,11 +497,18 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"gscol",'t',&gsctxt); /* ground scatter color */
 
-  OptionAdd(&opt,"pkey",'t',&pkey_fname); /* power key */
-  OptionAdd(&opt,"vkey",'t',&vkey_fname); /* velocity key */
-  OptionAdd(&opt,"wkey",'t',&wkey_fname); /* spectral width key */
-  OptionAdd(&opt,"fkey",'t',&fkey_fname); /* frequency key */
-  OptionAdd(&opt,"nkey",'t',&nkey_fname); /* noise key */
+  OptionAdd(&opt,"pkey",'t',&pkey_fname);     /* power key */
+  OptionAdd(&opt,"pkey_path",'t',&pkey_path); /* power key path */
+  OptionAdd(&opt,"vkey",'t',&vkey_fname);     /* velocity key */
+  OptionAdd(&opt,"vkey_path",'t',&vkey_path); /* velocity key path */
+  OptionAdd(&opt,"wkey",'t',&wkey_fname);     /* spectral width key */
+  OptionAdd(&opt,"wkey_path",'t',&wkey_path); /* spectral width key path */
+  OptionAdd(&opt,"ekey",'t',&ekey_fname);     /* elevation angle key */
+  OptionAdd(&opt,"ekey_path",'t',&ekey_path); /* elevation angle key path */
+  OptionAdd(&opt,"fkey",'t',&fkey_fname);     /* frequency key */
+  OptionAdd(&opt,"fkey_path",'t',&fkey_path); /* frequency key path */
+  OptionAdd(&opt,"nkey",'t',&nkey_fname);     /* noise key */
+  OptionAdd(&opt,"nkey_path",'t',&nkey_path); /* noise key path */
 
   OptionAdd(&opt,"fontname",'t',&fontname); /* main font name */
   OptionAdd(&opt,"fontsize",'f',&fontsize); /* main font size */
@@ -511,6 +538,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"p",'x',&pwrflg); /* plot power */
   OptionAdd(&opt,"v",'x',&velflg); /* plot velocity */
   OptionAdd(&opt,"w",'x',&wdtflg); /* plot spectral width */
+  OptionAdd(&opt,"e",'x',&elvflg); /* plot elevation angle */
 
   OptionAdd(&opt,"pmin",'d',&pmin); /* power minimum */
   OptionAdd(&opt,"pmax",'d',&pmax); /* power maximum */
@@ -520,6 +548,9 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"wmin",'d',&wmin); /* spectral width minimum */
   OptionAdd(&opt,"wmax",'d',&wmax); /* spectral width maximum */
+
+  OptionAdd(&opt,"emin",'d',&emin); /* elevation angle minimum */
+  OptionAdd(&opt,"emax",'d',&emax); /* elevation angle maximum */
 
   OptionAdd(&opt,"gs",'x',&gsflg); /* shade ground scatter */
   OptionAdd(&opt,"gm",'x',&gmflg); /* mask ground scatter */
@@ -625,9 +656,11 @@ int main(int argc,char *argv[]) {
   if (txttxt !=NULL)  sscanf(txttxt,"%x",&txtcolor);
 
   if (pkey_fname !=NULL) {
-    key_path = getenv("COLOR_TABLE_PATH");
-    if (key_path != NULL) {
-      strcpy(kname, key_path);
+    if (pkey_path == NULL) pkey_path = getenv("COLOR_TABLE_PATH");
+    if (pkey_path != NULL) {
+      strcpy(kname, pkey_path);
+      len = strlen(pkey_path);
+      if (pkey_path[len-1] != '/') strcat(kname, "/");
       strcat(kname, pkey_fname);
     } else {
       fprintf(stderr, "No COLOR_TABLE_PATH set\n");
@@ -636,13 +669,17 @@ int main(int argc,char *argv[]) {
     if (fp !=NULL) {
       load_key(fp,&pkey);
       fclose(fp);
+    } else {
+      fprintf(stderr, "Power color table %s not found\n", kname);
     }
   }
 
   if (vkey_fname !=NULL) {
-    if (key_path == NULL) key_path = getenv("COLOR_TABLE_PATH");
-    if (key_path != NULL) {
-      strcpy(kname, key_path);
+    if (vkey_path == NULL) vkey_path = getenv("COLOR_TABLE_PATH");
+    if (vkey_path != NULL) {
+      strcpy(kname, vkey_path);
+      len = strlen(vkey_path);
+      if (vkey_path[len-1] != '/') strcat(kname, "/");
       strcat(kname, vkey_fname);
     } else {
       fprintf(stderr, "No COLOR_TABLE_PATH set\n");
@@ -651,13 +688,17 @@ int main(int argc,char *argv[]) {
     if (fp !=NULL) {
       load_key(fp,&vkey);
       fclose(fp);
+    } else {
+      fprintf(stderr, "Velocity color table %s not found\n", kname);
     }
   }
 
   if (wkey_fname !=NULL) {
-    if (key_path == NULL) key_path = getenv("COLOR_TABLE_PATH");
-    if (key_path != NULL) {
-      strcpy(kname, key_path);
+    if (wkey_path == NULL) wkey_path = getenv("COLOR_TABLE_PATH");
+    if (wkey_path != NULL) {
+      strcpy(kname, wkey_path);
+      len = strlen(wkey_path);
+      if (wkey_path[len-1] != '/') strcat(kname, "/");
       strcat(kname, wkey_fname);
     } else {
       fprintf(stderr, "No COLOR_TABLE_PATH set\n");
@@ -666,13 +707,36 @@ int main(int argc,char *argv[]) {
     if (fp !=NULL) {
       load_key(fp,&wkey);
       fclose(fp);
+    } else {
+      fprintf(stderr, "Spectral width color table %s not found\n", kname);
+    }
+  }
+
+  if (ekey_fname !=NULL) {
+    if (ekey_path == NULL) ekey_path = getenv("COLOR_TABLE_PATH");
+    if (ekey_path != NULL) {
+      strcpy(kname, ekey_path);
+      len = strlen(ekey_path);
+      if (ekey_path[len-1] != '/') strcat(kname, "/");
+      strcat(kname, ekey_fname);
+    } else {
+      fprintf(stderr, "No COLOR_TABLE_PATH set\n");
+    }
+    fp=fopen(kname,"r");
+    if (fp !=NULL) {
+      load_key(fp,&ekey);
+      fclose(fp);
+    } else {
+      fprintf(stderr, "Elevation angle color table %s not found\n", kname);
     }
   }
 
   if (fkey_fname !=NULL) {
-    if (key_path == NULL) key_path = getenv("COLOR_TABLE_PATH");
-    if (key_path != NULL) {
-      strcpy(kname, key_path);
+    if (fkey_path == NULL) fkey_path = getenv("COLOR_TABLE_PATH");
+    if (fkey_path != NULL) {
+      strcpy(kname, fkey_path);
+      len = strlen(fkey_path);
+      if (fkey_path[len-1] != '/') strcat(kname, "/");
       strcat(kname, fkey_fname);
     } else {
       fprintf(stderr, "No COLOR_TABLE_PATH set\n");
@@ -681,13 +745,17 @@ int main(int argc,char *argv[]) {
     if (fp !=NULL) {
       load_key(fp,&fkey);
       fclose(fp);
+    } else {
+      fprintf(stderr, "Frequency color table %s not found\n", kname);
     }
   }
 
   if (nkey_fname !=NULL) {
-    if (key_path == NULL) key_path = getenv("COLOR_TABLE_PATH");
-    if (key_path != NULL) {
-      strcpy(kname, key_path);
+    if (nkey_path == NULL) nkey_path = getenv("COLOR_TABLE_PATH");
+    if (nkey_path != NULL) {
+      strcpy(kname, nkey_path);
+      len = strlen(nkey_path);
+      if (nkey_path[len-1] != '/') strcat(kname, "/");
       strcat(kname, nkey_fname);
     } else {
       fprintf(stderr, "No COLOR_TABLE_PATH set\n");
@@ -696,6 +764,8 @@ int main(int argc,char *argv[]) {
     if (fp !=NULL) {
       load_key(fp,&nkey);
       fclose(fp);
+    } else {
+      fprintf(stderr, "Noise color table %s not found\n", kname);
     }
   }
 
@@ -762,6 +832,14 @@ int main(int argc,char *argv[]) {
       wkey.r=KeyLinearR[0];
       wkey.g=KeyLinearG[0];
       wkey.b=KeyLinearB[0];
+  }
+
+  if (ekey.max==0) {
+      ekey.max=KeyLinearMax;
+      ekey.a=KeyLinearA[0];
+      ekey.r=KeyLinearR[0];
+      ekey.g=KeyLinearG[0];
+      ekey.b=KeyLinearB[0];
   }
  
   if (nkey.max==0) {
@@ -967,7 +1045,10 @@ int main(int argc,char *argv[]) {
     type[cnt]=2;
     cnt++;
   }
-
+  if (elvflg) {
+    type[cnt]=3;
+    cnt++;
+  }
   plt=GrplotMake(wdt,hgt-150,1,cnt,60,80,0,25,0,120);
   GrplotSetPlot(plt,plot);
   GrplotSetTextBox(plt,txtbox,fontdb);  
@@ -985,11 +1066,12 @@ int main(int argc,char *argv[]) {
   if (pwrflg) blk[0]=FrameBufferMake("power",bwdt,bhgt,24);
   if (velflg) blk[1]=FrameBufferMake("velocity",bwdt,bhgt,24);
   if (wdtflg) blk[2]=FrameBufferMake("width",bwdt,bhgt,24);
+  if (elvflg) blk[3]=FrameBufferMake("elevation",bwdt,bhgt,24);
 
   FrameBufferClear(fblk,0x0f,bgcolor);
   FrameBufferClear(nblk,0x0f,bgcolor);
   
-  for (n=0;n<3;n++) if (blk[n] !=NULL) FrameBufferClear(blk[n],0x0f,bgcolor);
+  for (n=0;n<4;n++) if (blk[n] !=NULL) FrameBufferClear(blk[n],0x0f,bgcolor);
 
   do {   
 
@@ -1030,7 +1112,7 @@ int main(int argc,char *argv[]) {
     if (lft>=bwdt) lft=bwdt-1;
     if (rgt<0) rgt=0;
     if (rgt>=bwdt) rgt=bwdt-1;
-    for (n=0;n<3;n++) {
+    for (n=0;n<4;n++) {
       if (blk[n]==NULL) continue;
       if (lrngflg==0) {
         sprng=1;
@@ -1101,6 +1183,7 @@ int main(int argc,char *argv[]) {
           if (n==0) val=tplot.p_l[rng];
           if (n==1) val=tplot.v[rng];
           if (n==2) val=tplot.w_l[rng];
+          if (n==3) val=tplot.elv[rng];
           
           if (c<0) c=0;
           if (n==0) {
@@ -1123,7 +1206,7 @@ int main(int argc,char *argv[]) {
             rv=vkey.r[c];
             gv=vkey.g[c];
             bv=vkey.b[c];
-	  } else {
+	  } else if (n==2) {
             val=(val-wmin)/(wmax-wmin);
             c=val*wkey.max;
             if (c<0) c=0;
@@ -1133,7 +1216,23 @@ int main(int argc,char *argv[]) {
             rv=wkey.r[c];
             gv=wkey.g[c];
             bv=wkey.b[c];
-	  }
+	  } else if (n==3) {
+            val=(val-emin)/(emax-emin);
+            c=val*ekey.max;
+            if (c<=0) {
+              av=0;
+              rv=0;
+              gv=0;
+              bv=0;
+            } else {
+            if (c>=ekey.max) c=ekey.max-1; 
+            if (ekey.a !=NULL) av=ekey.a[c];
+		else av=255;
+            rv=ekey.r[c];
+            gv=ekey.g[c];
+            bv=ekey.b[c];
+            }
+          }
         }  
 	  
 	for (x=lft;x<=rgt;x++) {
@@ -1203,7 +1302,10 @@ int main(int argc,char *argv[]) {
     GrplotFitImage(plt,i,blk[2],0x0f);
     i++;
   }
-
+  if (elvflg) {
+    GrplotFitImage(plt,i,blk[3],0x0f);
+    i++;
+  }
   if (xmajor==0) {
     xmajor=3*3600;    
     if ((etime-stime)<8*3600) xmajor=3600;
@@ -1289,6 +1391,14 @@ int main(int argc,char *argv[]) {
               label_wdt,NULL,fontname,fontsize,txtcolor,0x0f,
               width,wkey.max,wkey.a,wkey.r,wkey.g,wkey.b);
       GrplotXaxisTitle(plt,i,0x02,strlen("Spectral Width"),"Spectral Width",
+                     fontname,fontsize,txtcolor,0x0f);
+    }
+    if (type[i]==3) {
+
+      GrplotKey(plt,i,10,0,8,bhgt,emin,emax,(emax-emin)/10,0x02,0x00,NULL,
+              label_elv,NULL,fontname,fontsize,txtcolor,0x0f,
+              width,ekey.max,ekey.a,ekey.r,ekey.g,ekey.b);
+      GrplotXaxisTitle(plt,i,0x02,strlen("Elevation Angle"),"Elevation Angle",
                      fontname,fontsize,txtcolor,0x0f);
     }
     if (i==cnt-1) {

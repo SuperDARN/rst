@@ -36,10 +36,55 @@
 #include "errstr.h"
 #include "hlpstr.h"
 #include "aacgm.h"
-
+#include "aacgmlib_v2.h"
 
 
 struct OptionData opt;
+
+/**
+ * Converts an input date from YYYYMMDD format to an epoch time in number of
+ * seconds since 00:00 UT on January 1, 1970.
+ **/
+double strdate(char *text) {
+
+    double tme;
+    int val;
+    int yr,mo,dy;
+
+    /* Calculate day, month, and year from YYYYMMDD format date */
+    val=atoi(text);
+    dy=val % 100;
+    mo=(val / 100) % 100;
+    yr=(val / 10000);
+
+    /* If only 2-digit year provided then assume it was pre-2000 */
+    if (yr<1970) yr+=1900;
+
+    /* Calculate epoch time of input year, month, and day */
+    tme=TimeYMDHMSToEpoch(yr,mo,dy,0,0,0);
+
+    /* Return epoch time in number of seconds since 00:00UT on January 1, 1970 */
+    return tme;
+
+}
+
+
+/**
+ * Converts an input time from HHMM format to number of seconds.
+ **/
+double strtime(char *text) {
+
+    int hr,mn;
+    int i;
+
+    for (i=0;(text[i] !=':') && (text[i] !=0);i++);
+    if (text[i]==0) return atoi(text)*3600L;
+    text[i]=0;
+    hr=atoi(text);
+    mn=atoi(text+i+1);
+    return hr*3600L+mn*60L;
+
+}
 
 int main(int argc,char *argv[]) {
   int arg;
@@ -56,6 +101,14 @@ int main(int argc,char *argv[]) {
   unsigned char flag=0;
   int c;
 
+  int old_aacgm=0;
+  char *tmetxt=NULL;
+  char *dtetxt=NULL;
+  double dval=-1;
+  double tval=-1;
+  int yr,mo,dy,hr,mt,sc,dno;
+  double sec;
+
   char txt[256];
   
   OptionAdd(&opt,"-help",'x',&help);
@@ -66,6 +119,9 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"alt",'d',&alt);
   OptionAdd(&opt,"fmt",'t',&fmt);
   OptionAdd(&opt,"f",'t',&fname);
+  OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);   /* Use old AACGM coefficicents rather than v2 */
+  OptionAdd(&opt,"t",'t',&tmetxt);              /* Time for AACGM_v2 transformation */
+  OptionAdd(&opt,"d",'t',&dtetxt);              /* Date for AACGM_v2 transformation */
 
   arg=OptionProcess(1,argc,argv,&opt,NULL);
 
@@ -81,8 +137,31 @@ int main(int argc,char *argv[]) {
 
   if (fmt==NULL) fmt=dfmt;
 
+  if (old_aacgm==0) {
+    if (tmetxt !=NULL) tval=strtime(tmetxt);
+    if (dtetxt !=NULL) dval=strdate(dtetxt);
+
+    if (dval !=-1) {
+      if (tval !=-1) {
+        tval+=dval;
+        TimeEpochToYMDHMS(tval,&yr,&mo,&dy,&hr,&mt,&sec);
+        AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,0);
+      } else {
+        tval=dval;
+        TimeEpochToYMDHMS(tval,&yr,&mo,&dy,&hr,&mt,&sec);
+        AACGM_v2_SetDateTime(yr,mo,dy,0,0,0);
+      }
+    } else {
+      fprintf(stderr,"\nDate must be set for AACGM_v2, using today's date\n\n");
+      AACGM_v2_SetNow();
+      AACGM_v2_GetDateTime(&yr,&mo,&dy,&hr,&mt,&sc,&dno);
+      AACGM_v2_SetDateTime(yr,mo,dy,0,0,0);
+    }
+  }
+
   if (fname==NULL) {
-    AACGMConvert(ilat,ilon,alt,&olat,&olon,&r,flag);
+    if (old_aacgm) AACGMConvert(ilat,ilon,alt,&olat,&olon,&r,flag);
+    else AACGM_v2_Convert(ilat,ilon,alt,&olat,&olon,&r,flag);
     fprintf(stdout,fmt,olat,olon);    
   } else {
     if (strcmp(fname,"-")==0) fp=stdin;
@@ -94,7 +173,8 @@ int main(int argc,char *argv[]) {
       if (txt[c]=='#') continue;
       if (sscanf(txt,"%lf %lf %lf\n",
           &ilat,&ilon,&alt) !=3) continue;
-      AACGMConvert(ilat,ilon,alt,&olat,&olon,&r,flag);
+      if (old_aacgm) AACGMConvert(ilat,ilon,alt,&olat,&olon,&r,flag);
+      else AACGM_v2_Convert(ilat,ilon,alt,&olat,&olon,&r,flag);
       fprintf(stdout,fmt,olat,olon);    
     }
   }
