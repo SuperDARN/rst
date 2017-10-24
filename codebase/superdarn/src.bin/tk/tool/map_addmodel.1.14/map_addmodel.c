@@ -185,7 +185,7 @@ int load_all_models(char *path, int imod);
  *
  */
 
-int opterr(char *txt) {
+int rst_opterr(char *txt) {
   fprintf(stderr,"Option not recognized: %s\n",txt);
   fprintf(stderr,"Please try: map_addmodel --help\n");
   return(-1);
@@ -265,7 +265,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"d",'t',&dpstr);
 
 
-  arg=OptionProcess(1,argc,argv,&opt,opterr);
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
   if (arg==-1) {
     exit(0);
