@@ -135,18 +135,7 @@ char *ylabel(double val,double min,double max,void *data) {
 
 int main(int argc,char *argv[]) {
 
-
- /* File format transistion
-   * ------------------------
-   * 
-   * When we switch to the new file format remove any reference
-   * to "new". Change the command line option "new" to "old" and
-   * remove "old=!new".
-   */
-
   int old=0;
-  int new=0;
-
 
 #ifdef _XLIB_
   int xdf=0;
@@ -239,7 +228,7 @@ int main(int argc,char *argv[]) {
  OptionAdd(&opt,"-help",'x',&help);
  OptionAdd(&opt,"-option",'x',&option);
 
- OptionAdd(&opt,"new",'x',&new);
+ OptionAdd(&opt,"old",'x',&old);
  OptionAdd(&opt,"vb",'x',&vb);
 
 #ifdef _XLIB_ 
@@ -270,8 +259,6 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"cf",'t',&cfname);
 
   arg=OptionProcess(1,argc,argv,&opt,NULL);  
-
-  old=!new;
 
   if (arg<argc) fname=argv[arg];
   if (cfname !=NULL) { /* load the configuration file */
