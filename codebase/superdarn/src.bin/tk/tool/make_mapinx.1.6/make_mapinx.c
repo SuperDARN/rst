@@ -55,6 +55,11 @@ struct OptionData opt;
 struct GridData grd;
 struct CnvMapData map;
 
+int opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: make_mapinx --help\n");
+  return(-1);
+}
 
 int main (int argc,char *argv[]) {
 
@@ -78,7 +83,11 @@ int main (int argc,char *argv[]) {
   OptionAdd(&opt,"old",'x',&old);
   OptionAdd(&opt,"vb",'x',&vb);
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);
+  arg=OptionProcess(1,argc,argv,&opt,opterr);
+
+  if (arg==-1) {
+    exit(0);
+  }
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
