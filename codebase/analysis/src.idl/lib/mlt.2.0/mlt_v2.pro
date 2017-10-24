@@ -248,7 +248,7 @@ end
 ;-----------------------------------------------------------------------------
 ;
   
-;function MLTConvertYMDHMS,yr,mo,dy,hr,mt,sc,mlon, height=height, order=order
+;function MLTConvertYMDHMS_v2,yr,mo,dy,hr,mt,sc,mlon, height=height, order=order
 function MLTConvertYMDHMS_v2, yr,mo,dy,hr,mt,sc, mlon, $
                            sstrace=sstrace, ssheight=ssheight, anti=anti, $
                            err=err, dday_bug=dday_bug, MLT2mlon=MLT2mlon
@@ -293,7 +293,7 @@ end
 ;-----------------------------------------------------------------------------
 ;
 
-;function MLTConvertYrsec,yr,yrsec,mlon, height=height, order=order
+;function MLTConvertYrsec_v2,yr,yrsec,mlon, height=height, order=order
 function MLTConvertYrsec_v2, yr,yrsec, mlon, $
                            sstrace=sstrace, ssheight=ssheight, anti=anti, $
                            err=err, dday_bug=dday_bug, MLT2mlon=MLT2mlon
@@ -343,7 +343,7 @@ end
 ;-----------------------------------------------------------------------------
 ;
 
-;function MLTConvertEpoch,epoch,mlon, height=height, order=order
+;function MLTConvertEpoch_v2,epoch,mlon, height=height, order=order
 
 function MLTConvertEpoch_v2, epoch, mlon, $
                            sstrace=sstrace, ssheight=ssheight, anti=anti, $
