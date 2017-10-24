@@ -80,6 +80,12 @@ struct CnvMapData  *map;
 struct OptionData opt;
 struct OptionFile *optf=NULL;
 
+int opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: hmb_plot --help\n");
+  return(-1);
+}
+
 int txtbox(char *fntname,float sze,int num,char *txt,float *box,void *data) {
  
   struct FrameBufferFontDB *fontdb;
@@ -258,7 +264,11 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"cf",'t',&cfname);
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);  
+  arg=OptionProcess(1,argc,argv,&opt,opterr);
+
+  if (arg==-1) {
+    exit(0);
+  }
 
   if (arg<argc) fname=argv[arg];
   if (cfname !=NULL) { /* load the configuration file */

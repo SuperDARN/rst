@@ -69,8 +69,10 @@ double *zbuffer=NULL;
 int zwdt,zhgt;
 struct polydata *ctr;
 
-void opterr(char *txt) {
-  fprintf(stderr,"Option not recognized:%s\n",txt);
+int opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: map_ascii --help\n");
+  return(-1);
 }
 
 double strdate(char *text) {
@@ -169,7 +171,11 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"ex",'t',&extime_txt);
   OptionAdd(&opt,"latmin",'f',&latmin);
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);
+  arg=OptionProcess(1,argc,argv,&opt,opterr);
+
+  if (arg==-1) {
+    exit(0);
+  }
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);

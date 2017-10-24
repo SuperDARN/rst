@@ -187,6 +187,11 @@ char *label_pot(double val,double min,double max,void *data);
 int calc_degfree(struct CnvMapData *mptr,struct GridData *gptr);
 int calc_degfree_model(struct CnvMapData *mptr,struct GridData *gptr);
 
+int opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: map_plot --help\n");
+  return(-1);
+}
 
 int main(int argc,char *argv[]) {
 
@@ -681,7 +686,11 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"def",'x',&defflg);
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);  
+  arg=OptionProcess(1,argc,argv,&opt,opterr);
+
+  if (arg==-1) {
+    exit(0);
+  }
 
   if (cfname !=NULL) { /* load the configuration file */
     do {
