@@ -44,6 +44,12 @@ struct GridData *grd;
 
 struct OptionData opt;
 
+int opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: map_grd --help\n");
+  return(-1);
+}
+
 /* Convert input date from YYYMMDD format to epoch time */
 double strdate(char *text) {
   double tme;
@@ -166,7 +172,11 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"ex",'t',&exstr);      /* Use interval with extent HH:MM */
   OptionAdd(&opt,"tl",'i',&tlen);       /* Time interval of records in seconds */
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);
+  arg=OptionProcess(1,argc,argv,&opt,opterr);
+
+  if (arg==-1) {
+    exit(0);
+  }
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);

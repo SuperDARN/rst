@@ -61,7 +61,13 @@ struct GridData *grd;
 struct CnvMapData  *map;
 
 struct OptionData opt;
- 
+
+int opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: trim_map --help\n");
+  return(-1);
+}
+
 double strdate(char *text) {
   double tme;
   int val;
@@ -145,8 +151,11 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"major",'i',&major);
   OptionAdd(&opt,"minor",'i',&minor);
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);
+  arg=OptionProcess(1,argc,argv,&opt,opterr);
 
+  if (arg==-1) {
+    exit(0);
+  }
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);

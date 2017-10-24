@@ -37,6 +37,12 @@ struct GridData *grd;
 
 struct OptionData opt;
 
+int opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: map_fit --help\n");
+  return(-1);
+}
+
 int main(int argc,char *argv[]) {
 
   int old=0;
@@ -91,7 +97,11 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"major",'i',&major);
   OptionAdd(&opt,"minor",'i',&minor);
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);
+  arg=OptionProcess(1,argc,argv,&opt,opterr);
+
+  if (arg==-1) {
+    exit(0);
+  }
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
