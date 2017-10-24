@@ -66,7 +66,7 @@ char *model_mag[]={"0<BT<4","4<BT<6","6<BT<12",0};
 
 struct OptionData opt;
 
-int opterr(char *txt) {
+int rst_opterr(char *txt) {
   fprintf(stderr,"Option not recognized: %s\n",txt);
   fprintf(stderr,"Please try: extract_map --help\n");
   return(-1);
@@ -110,7 +110,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"p",'x',&pflg);
   OptionAdd(&opt,"l",'x',&lflg);
 
-  arg=OptionProcess(1,argc,argv,&opt,opterr);
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
   if (arg==-1) {
     exit(0);
