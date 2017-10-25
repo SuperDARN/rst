@@ -262,6 +262,12 @@ double strtime(char *text) {
 
 }
 
+int rst_opterr(char *txt) {
+    fprintf(stderr,"Option not recognized: %s\n",txt);
+    fprintf(stderr,"Please try: make_grid --help\n");
+    return(-1);
+}
+
 /**
  * Creates a grd or grdmap format file from a fit, fitacf, or cfit format file.
  **/
@@ -463,7 +469,12 @@ int main(int argc,char *argv[]) {
     OptionAdd(&opt,"c",'x',&catflg);  /* Concatenate multiple input files */
 
     /* Process command line options */
-    farg=OptionProcess(1,argc,argv,&opt,NULL);
+    farg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+
+    /* If command line option not recognized then print error and exit */
+    if (farg==-1) {
+        exit(-1);
+    }
 
     /* If 'help' set then print help message */
     if (help==1) {
