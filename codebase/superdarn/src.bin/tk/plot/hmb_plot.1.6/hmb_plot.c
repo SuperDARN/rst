@@ -267,7 +267,7 @@ int main(int argc,char *argv[]) {
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
   if (arg==-1) {
-    exit(0);
+    exit(-1);
   }
 
   if (arg<argc) fname=argv[arg];
@@ -279,7 +279,12 @@ int main(int argc,char *argv[]) {
       cfname=NULL;
       optf=OptionProcessFile(fp);
       if (optf !=NULL) {
-        arg=OptionProcess(0,optf->argc,optf->argv,&opt,NULL);
+        arg=OptionProcess(0,optf->argc,optf->argv,&opt,rst_opterr);
+        if (arg==-1) {
+          fclose(fp);
+          OptionFreeFile(optf);
+          exit(-1);
+        }
         if (arg<optf->argc) {
 	  fname=malloc(strlen(optf->argv[arg]+1));
 	  strcpy(fname,optf->argv[arg]);
