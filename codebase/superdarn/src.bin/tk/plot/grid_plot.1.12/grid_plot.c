@@ -340,6 +340,11 @@ float find_hemisphere(struct GridData *ptr) {
   return h;
 }
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: grid_plot --help\n");
+  return(-1);
+}
 
 int main(int argc,char *argv[]) {
 
@@ -755,7 +760,11 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"chisham",'x',&chisham); /* Data mapped using Chisham virtual height model */
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);  
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+
+  if (arg==-1) {
+    exit(-1);
+  }
 
   if (cfname !=NULL) { /* load the configuration file */
     int farg;
@@ -766,7 +775,12 @@ int main(int argc,char *argv[]) {
       cfname=NULL;
       optf=OptionProcessFile(fp);
       if (optf !=NULL) {
-        farg=OptionProcess(0,optf->argc,optf->argv,&opt,NULL);
+        farg=OptionProcess(0,optf->argc,optf->argv,&opt,rst_opterr);
+        if (farg==-1) {
+          fclose(fp);
+          OptionFreeFile(optf);
+          exit(-1);
+        }
         OptionFreeFile(optf);
        }   
        fclose(fp);
