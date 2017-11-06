@@ -39,6 +39,7 @@
 
 #include "fitacftoplevel.h"
 #include "fit_structures.h"
+#include <fenv.h>
 
 struct RadarParm *prm;
 struct RawData *raw;
@@ -95,6 +96,8 @@ int main(int argc,char *argv[]) {
   raw=RawMake();
   fit=FitMake();
 
+  /*feenableexcept(FE_INVALID | FE_OVERFLOW);*/
+
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
 
@@ -121,7 +124,7 @@ int main(int argc,char *argv[]) {
     }
   }
   else {
-    fitacf_version = 30;
+    fitacf_version = 25;
   }
 
   if (vb) {
