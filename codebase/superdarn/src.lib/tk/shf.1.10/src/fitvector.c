@@ -98,19 +98,18 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
   if (latmin>0) {
     bpolar = BNorth;
     hemi = 1;
-    thetamax=(90-latmin)*PI/180;
   } else {
     bpolar = BSouth;
     hemi = -1;
-    thetamax=(90+latmin)*PI/180;
   }
-    
+
+  thetamax=(90-hemi*latmin)*PI/180;
   alpha=PI/thetamax;
   for (i=0;i<num;i++) {
-    x[i]=cos(alpha*(90.0-hemi*data[i].lat)*PI/180);
-    y[i]=sin(alpha*(90.0-hemi*data[i].lat)*PI/180);
+    x[i]=cos(alpha*(90.0-data[i].lat)*PI/180);
+    y[i]=sin(alpha*(90.0-data[i].lat)*PI/180);
     phi[i]=data[i].lon*PI/180.0;
-    theta[i]=(90.0-hemi*data[i].lat)*PI/180.0;
+    theta[i]=(90.0-data[i].lat)*PI/180.0;
     phi[i]=(phi[i]>PI) ? (phi[i]-2.0*PI) : phi[i];
     if (noigrf) { /* use dipole value for B */
       bmag[i] = bpolar*(1.0 - 3.0 * Altitude/Re)*
@@ -180,10 +179,6 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
         ephi=m*PLM(L,m,i)*sin(m*phi[i])/sin(theta[i]);
         ephi=ephi/Radial_Dist;
 
-        /* need to flip sign for southern hemisphere */
-        etheta=etheta*hemi;
-        ephi=ephi*hemi;
-
         vtheta=ephi/bmag[i];
         vphi=-etheta/bmag[i];
 
@@ -199,10 +194,6 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
         etheta=etheta*alpha/Radial_Dist;
         ephi=-m*(cos(m*phi[i])/sin(theta[i])*PLM(L,m,i));
         ephi=ephi/Radial_Dist;
-
-        /* need to flip sign for southern hemisphere */
-        etheta=etheta*hemi;
-        ephi=ephi*hemi;
 
         vtheta=ephi/bmag[i];
         vphi=-etheta/bmag[i];
