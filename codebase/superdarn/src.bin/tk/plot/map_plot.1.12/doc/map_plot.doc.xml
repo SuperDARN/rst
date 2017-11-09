@@ -273,13 +273,16 @@
 <option><on>-time</on><od>plot the time of the plotted data.</od>
 </option>
 
+<option><on>-cmax <ar>cmax</ar></on><od>set the potential scale maximum to <ar>cmax</ar> (in units of Volts, not kV).</od>
+</option>
+
 <option><on>-vmax <ar>vmax</ar></on><od>set the absolute velocity scale maximum to <ar>vmax</ar>.</od>
 </option>
 
 <option><on>-pmax <ar>pmax</ar></on><od>set the power scale maximum to <ar>pmax</ar>.</od>
 </option>
 
-<option><on>-wmax <ar>vmax</ar></on><od>set the spectral width scale maximum to <ar>wmax</ar>.</od>
+<option><on>-wmax <ar>wmax</ar></on><od>set the spectral width scale maximum to <ar>wmax</ar>.</od>
 </option>
 
 <option><on>-frame</on><od>add a frame around the borders of the plot.</od>
