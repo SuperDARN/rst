@@ -734,7 +734,7 @@ void Filter_Bad_ACFs(FITPRMS *fit_prms, llist ranges, double noise_pwr){
 	bad_ranges_2 = llist_create(NULL,NULL,0);
 	cutoff_pwr = noise_pwr * 2.;
 
-	/*Removing low-power ACFs from the analysis by using an upper three-sigma level of the model noise distribution*/
+	/*Removing low-power ACFs from the analysis whose lag 0 power lies below 0 dB (doubled mean) threshold of the model noise distribution*/
 	llist_reset_iter(ranges);
 
 	do{
