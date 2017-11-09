@@ -161,8 +161,6 @@ void calculate_phase_sigma(llist_node phase, llist_node range, FITPRMS *fit_prms
 	if(isnan(phase_node->sigma)){
 	  fprintf(stderr,"range: %d, inverse_alpha: %f, pwr slope: %f, pwr: %f, inverse pwr: %f\n",range_node->range,inverse_alpha_2, range_node->l_pwr_fit->b,pwr,inverse_pwr_2);
 	}
-	/*Sigma values larger than PI make no physical sense so anything larger is set to PI*/
-	if (phase_node->sigma > M_PI) phase_node->sigma = M_PI;
 
 }
 
