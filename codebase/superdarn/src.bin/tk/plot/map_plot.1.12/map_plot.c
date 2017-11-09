@@ -680,6 +680,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"frame",'x',&frmflg);
   OptionAdd(&opt,"over",'x',&ovrflg);
 
+  OptionAdd(&opt,"cmax",'d',&cmax);
   OptionAdd(&opt,"vmax",'d',&vmax);
   OptionAdd(&opt,"pmax",'d',&pmax);
   OptionAdd(&opt,"wmax",'d',&wmax);
