@@ -460,6 +460,8 @@ int main(int argc,char *argv[]) {
   int cpnum=0;
   int cptab[256];
 
+  int chisham=0;
+
   prm=RadarParmMake();
   fit=FitMake();
   cfit=CFitMake();
@@ -581,6 +583,8 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"fn",'t',&expr); /* apply function */
 
   OptionAdd(&opt,"fbeam",'i',&fbeam); /* first beam in summary file scan */
+
+  OptionAdd(&opt,"chisham",'x',&chisham); /* use Chisham virtual height model */
 
   arg=OptionProcess(1,argc,argv,&opt,NULL);  
   if (cfname !=NULL) { /* load the configuration file */
@@ -1149,14 +1153,14 @@ int main(int argc,char *argv[]) {
           double rho,blat,tlat,lon,tmp;
           if (magflg) RPosMag(0,tplot.bmnum,rng-1,site,tplot.frang,
                                  tplot.rsep,tplot.rxrise,300,&rho,
-                                 &blat,&lon);   
+                                 &blat,&lon,chisham);
           else RPosGeo(0,tplot.bmnum,rng-1,site,tplot.frang,tplot.rsep,
-                        tplot.rxrise,300,&rho,&blat,&lon);   
+                        tplot.rxrise,300,&rho,&blat,&lon,chisham);   
    
           if (magflg) RPosMag(0,tplot.bmnum,rng,site,tplot.frang,tplot.rsep,
-                               tplot.rxrise,300,&rho,&tlat,&lon);   
+                               tplot.rxrise,300,&rho,&tlat,&lon,chisham);   
           else RPosGeo(0,tplot.bmnum,rng,site,tplot.frang,tplot.rsep,
-                        tplot.rxrise,300,&rho,&tlat,&lon);   
+                        tplot.rxrise,300,&rho,&tlat,&lon,chisham);   
 
           
 
