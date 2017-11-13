@@ -35,16 +35,18 @@
 #include "rtypes.h"
 #include "rmath.h"
 #include "rfile.h"
+#include "rtime.h"
 #include "griddata.h"
 #include "cnvmap.h"
 #include "cnvgrid.h"
 #include "evallegendre.h"
 #include "crdshft.h"
 #include "shfconst.h"
+#include "calc_bmag.h"
 
 
 double *CnvMapEvalThetaCoef(int Lmax,double *coef,double *theta,int n,
-		            double latmin) {
+                            double latmin) {
 
   int k1,k2,k3,k4,kmax;
   int i,m,L;
@@ -99,10 +101,10 @@ double *CnvMapEvalThetaCoef(int Lmax,double *coef,double *theta,int n,
 
      
 double *CnvMapEvalPhiCoef(int Lmax,double *coef,double *theta,int n) { 
+
   int kmax,i,m,L;
   int k3,k4;
   double *ecoef;
-
 
   kmax=CnvMapIndexLegendre(Lmax,Lmax);
   ecoef=malloc(sizeof(double)*(kmax+2)*n);
@@ -113,19 +115,20 @@ double *CnvMapEvalPhiCoef(int Lmax,double *coef,double *theta,int n) {
       k3=CnvMapIndexLegendre(L,m);
       k4=CnvMapIndexLegendre(L,m);
       if (k3 >=0) {
-	for (i=0;i<n;i++) if (theta[i] !=0.0) {
+	    for (i=0;i<n;i++) if (theta[i] !=0.0) {
           ecoef[k4*n+i]=ecoef[k4*n+i]-a(k3+1)*m/sin(theta[i])/Radial_Dist;
           ecoef[(k4+1)*n+i]=ecoef[(k4+1)*n+i]+a(k3)*m/sin(theta[i])/
                             Radial_Dist;
-	}
+        }
       }
     }
   }
   return ecoef;
 }      
 
+
 void CnvMapEvalComponent(int Lmax,double *ecoef,double *plm,
-                      double *phi,int n,double *ecomp) {
+                         double *phi,int n,double *ecomp) {
 
   int i,m,L,k; 
   for (i=0;i<n;i++) ecomp[i]=0.0;
@@ -142,10 +145,10 @@ void CnvMapEvalComponent(int Lmax,double *ecoef,double *plm,
 }
 
 
-
 void CnvMapEvalVelocity(int Lmax,double *coef,double *plm,
-			struct CnvGrid *vptr,
-		        double latmin,struct CnvMapData *ptr) {
+                        struct CnvGrid *vptr,double latmin,
+                        struct CnvMapData *ptr,float decyear,
+                        int old_aacgm) {
 
   int i;
   double *theta,*phi;
@@ -183,14 +186,16 @@ void CnvMapEvalVelocity(int Lmax,double *coef,double *plm,
     if (ptr->hemisphere == -1) bpolar = BNorth;
     else bpolar = BSouth;
 
-    bmag = bpolar*(1.0 - 3.0 * Altitude/Re)*
-           sqrt(3.0*(cos(theta[i])*cos(theta[i])) + 1.0)/2.0;
-
+    if (ptr->noigrf) { /* use dipole value for B */
+      bmag = bpolar*(1.0 - 3.0 * Altitude/Re)*
+             sqrt(3.0*(cos(theta[i])*cos(theta[i])) + 1.0)/2.0;
+    } else {
+      bmag = -calc_bmag(vptr->lat[i],vptr->lon[i],decyear,old_aacgm);
+    }
 
     vx=ey[i]/bmag;
     vy=-ex[i]/bmag;
 
-  
     vptr->mag[i]=sqrt(vx*vx+vy*vy);
     vptr->azm[i]=atan2(vy,-vx)*180.0/PI;
     
@@ -205,17 +210,4 @@ void CnvMapEvalVelocity(int Lmax,double *coef,double *plm,
   free(etc);
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 

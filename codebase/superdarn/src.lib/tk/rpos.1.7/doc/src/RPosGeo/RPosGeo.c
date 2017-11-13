@@ -1,4 +1,4 @@
-/* RposGeo
+/* RPosGeo
    =======
    Author: R.J.Barnes */
 

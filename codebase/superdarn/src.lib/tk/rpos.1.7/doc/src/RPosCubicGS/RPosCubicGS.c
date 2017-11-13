@@ -1,4 +1,4 @@
-/* RposCubicGS.c
+/* RPosCubicGS.c
    =============
    Author: R.J.Barnes */
 
