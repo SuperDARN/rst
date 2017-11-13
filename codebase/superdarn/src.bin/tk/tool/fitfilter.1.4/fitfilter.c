@@ -187,6 +187,7 @@ int main(int argc,char *argv[]) {
   int bxcar=0;
   int limit=0;
   int bflg=0;
+  int isort=0;
 
   unsigned char gsflg=0,ionflg=0,bthflg=0;
   int channel=0;
@@ -257,6 +258,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"nav",'x',&bxcar);
   OptionAdd(&opt,"nlm",'x',&limit);
   OptionAdd(&opt,"nb",'x',&bflg);
+  OptionAdd(&opt,"isort",'x',&isort);
 
   OptionAdd(&opt,"ion",'x',&ionflg);
   OptionAdd(&opt,"gs",'x',&gsflg);
@@ -462,7 +464,7 @@ int main(int argc,char *argv[]) {
       else chk=0;
       if ((chk==0) && (num>=nbox)) {
 
-          if (mode !=-1) FilterRadarScan(mode,nbox,index,src,dst,15);
+          if (mode !=-1) FilterRadarScan(mode,nbox,index,src,dst,15,isort);
           else out=src[index];
 
           TimeEpochToYMDHMS(out->st_time,&yr,&mo,&dy,&hr,&mt,&sc);   
@@ -595,7 +597,7 @@ int main(int argc,char *argv[]) {
    
          if ((chk==0) && (num>=nbox)) {
 	
-           if (mode !=-1) FilterRadarScan(mode,nbox,index,src,dst,15);
+           if (mode !=-1) FilterRadarScan(mode,nbox,index,src,dst,15,isort);
            else out=src[index];
          
            TimeEpochToYMDHMS(out->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
