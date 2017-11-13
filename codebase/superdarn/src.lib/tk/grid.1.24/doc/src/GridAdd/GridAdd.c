@@ -1,4 +1,4 @@
-/* GridIntegrate.c
+/* GridAdd.c
    ===============
    Author: R.J.Barnes */
 
