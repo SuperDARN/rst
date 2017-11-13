@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>superdarn</project>
+<name>gtable</name>
+<location>src.lib/tk/gtable</location>
+
+<function>
+<name>GridTableMap</name>
+<location>src.lib/tk/gtable</location>
+<header>superdarn/gtable.h</header>
+<syntax>void GridTableMap(<sn href="structGridTable.html">struct GridTable</sn> *ptr,<sn href="&root;/superdarn/src.lib/tk/scan/structRadarScan.html">struct RadarScan</sn> *scan,<sn href="&root;/superdarn/src.lib/tk/radar/structRadarSite.html">struct RadarSite</sn> *pos,int tlen,int iflg,double alt,int chisham,int old_aacgm);</syntax>
+<description><p>The <fn href="GridTableMap.html">GridTableMap</fn> function maps radar scan data to an equi-area grid in geomagnetic coordinates.</p>
+<p>The gridded data stored in the structure pointed to by the argument <ar>ptr</ar>.</p>
+<p>The structure containing the radar scan data to map is pointed to by the argument <ar>scan</ar>. The hardware information for the radar is pointed to by the argument <ar>pos</ar>.</p>
+<p>The argument <ar>tlen</ar> is the integration time for each set of gridded data.</p>
+<p>If the argument <ar>iflg</ar> has a non-zero value then the mapping will be performed using an inertial reference frame; the component of the line of sight velocities due to the Earth's rotation is subtracted.</p>
+<p>The argument <ar>alt</ar> sets the altitude at which the mapping is performed</p>
+<p>If the argument <ar>chisham</ar> is set to (1) then the Chisham et al. [2008] virtual height model is used instead of the standard model.</p>
+<p>If the argument <ar>old_aacgm</ar> is set to (1) then the old AACGM coefficients are used instead of the v2 coefficients [Shepherd, 2014].</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<example type="source">GridTableMap.c</example>
+</function>
+
+<function>
+<name>GridTableTest</name>
+<location>src.lib/tk/gtable</location>
+<header>superdarn/gtable.h</header>
+<syntax>int GridTableTest(<sn href="structGridTable.html">struct GridTable</sn> *ptr,<sn href="&root;/superdarn/src.lib/tk/scan/structRadarScan.html">struct RadarScan</sn> *scan);</syntax>
+<description><p>The <fn href="GridTableTest.html">GridTableTest</fn> function tests whether gridded data should be written to a file. The argument <ar>ptr</ar> is a pointer to the structure containing the gridded data.</p>
+<p>The argument <ar>scan</ar> points to the next setof radar scan data to be fitted to the grid.</p>
+</description>
+<returns>Returns a non-zero value if the data should be written.</returns>
+<example type="source">GridTableTest.c</example>
+</function>
+
+
+<structure>
+  <name>GridBm</name>
+  <location>src.lib/tk/gtable</location>
+  <header>superdarn/gtable.h</header>
+  <struct>
+
+    <member>
+      <proto>int bm;</proto>
+      <description>Beam number.</description>
+    </member>
+
+    <member>
+      <proto>int frang;</proto>
+      <description>Distance to first range (kilometers).</description>
+    </member>
+
+    <member>
+      <proto>int rsep;</proto>
+      <description>Range separation (kilometers).</description>
+    </member>
+
+    <member>
+      <proto>int rxrise;</proto>
+      <description>Receiver rise time (microseconds).</description>
+    </member>
+
+    <member>
+      <proto>int nrang;</proto>
+      <description>Number of ranges.</description>
+    </member>
+
+    <member>
+      <proto>double azm[nrang];</proto>
+      <description>Calculated azimuth for each range cell.</description>
+    </member>
+
+    <member>
+      <proto>double ival[nrang];</proto>
+      <description>Calculated velocity component to subtract for the inertial reference frame.</description>
+    </member>
+
+    <member>
+      <proto>int inx[nrang];</proto>
+      <description>Look up table that relates beam and range to the grid cell table.</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structGridBm.html">struct GridBm</sn> structure stores information about a single radar beam in a set of gridded data.</p>
+  </description>
+</structure>
+
+
+<structure>
+  <name>GridPnt</name>
+  <location>src.lib/tk/gtable</location>
+  <header>superdarn/gtable.h</header>
+  <struct>
+
+    <member>
+      <proto>int max;</proto>
+      <description>Number of range points that map to this cell.</description>
+    </member>
+
+    <member>
+      <proto>int cnt;</proto>
+      <description>Number of data points that map to this cell.</description>
+    </member>
+
+    <member>
+      <proto>int ref;</proto>
+      <description>Grid cell reference number.</description>
+    </member>
+
+    <member>
+      <proto>double mlat;</proto>
+      <description>Magnetic latitude of data point.</description>
+    </member>
+
+    <member>
+      <proto>double mlon;</proto>
+      <description>Magnetic longitude of data point.</description>
+    </member>
+
+    <member>
+      <proto>double azimuth;</proto>
+      <description>Magnetic azimuth of data point.</description>
+    </member>
+
+    <member>
+      <struct>
+        <member>
+          <proto>double median;</proto>
+          <description>Median value.</description>
+        </member>
+        <member>
+          <proto>double median_n;</proto>
+          <description>Northward component median value.</description>
+        </member>
+        <member>
+          <proto>double median_e;</proto>
+          <description>Eastward component median value.</description>
+        </member>
+        <member>
+          <proto>double sd;</proto>
+          <description>Standard deviation.</description>
+        </member>
+      </struct>
+      <proto>vel;</proto>
+      <description>Velocity data.</description>
+    </member>
+
+    <member>
+      <struct>
+        <member>
+          <proto>double median;</proto>
+          <description>Median value.</description>
+        </member>
+        <member>
+          <proto>double sd;</proto>
+          <description>Standard deviation.</description>
+        </member>
+      </struct>
+      <proto>vel;</proto>
+      <description>Power data.</description>
+    </member>
+
+    <member>
+      <struct>
+        <member>
+          <proto>double median;</proto>
+          <description>Median value.</description>
+        </member>
+        <member>
+          <proto>double sd;</proto>
+          <description>Standard deviation.</description>
+        </member>
+      </struct>
+      <proto>vel;</proto>
+      <description>Spectral width data.</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structGridPnt.html">struct GridPnt</sn> structure stores information about a single data point in a set of gridded data.</p>
+  </description>
+</structure>
+
+
+<structure>
+  <name>GridTable</name>
+  <location>src.lib/tk/gtable</location>
+  <header>superdarn/gtable.h</header>
+  <struct>
+
+    <member>
+      <proto>double st_time;</proto>
+      <description>Start time of the data, specified as seconds from 0:00UT January 1, 1970.</description>
+    </member>
+
+    <member>
+      <proto>double ed_time;</proto>
+      <description>End time of the data, specified as seconds from 0:00UT January 1, 1970.</description>
+    </member>
+
+    <member>
+      <proto>int chn;</proto>
+      <description>Channel number for a stereo radar.</description>
+    </member>
+
+    <member>
+      <proto>int status;</proto>
+      <description>Indicates whether beginning a new grid (0) or populating an existing one (1).</description>
+    </member>
+
+    <member>
+      <proto>int st_id;</proto>
+      <description>Station identifier number.</description>
+    </member>
+
+    <member>
+      <proto>int prog_id;</proto>
+      <description>Control program identifier number.</description>
+    </member>
+
+    <member>
+      <proto>int nscan;</proto>
+      <description>Number of scans included in the analysis.</description>
+    </member>
+
+    <member>
+      <proto>int npnt;</proto>
+      <description>Number of grid points produces by the analysis.</description>
+    </member>
+
+    <member>
+      <proto>double freq;</proto>
+      <description>Frequency that the radar was using for this period.</description>
+    </member>
+
+    <member>
+      <struct>
+        <member>
+          <proto>double mean;</proto>
+          <description>Mean noise value for this period.</description>
+        </member>
+        <member>
+          <proto>double sd;</proto>
+          <description>Standard deviation of the noise for this period.</description>
+        </member>
+      </struct>
+      <proto>noise;</proto>
+      <description>Noise statistics.</description>
+    </member>
+
+    <member>
+      <proto>int gsct;</proto>
+      <description>Ground scatter flag.</description>
+    </member>
+
+    <member>
+      <proto>double min[4];</proto>
+      <description>Filter lower thresholds (velocity, power, spectral width, velocity error).</description>
+    </member>
+
+    <member>
+      <proto>double max[4];</proto>
+      <description>Filter upper thresholds (velocity, power, spectral width, velocity error).</description>
+    </member>
+
+    <member>
+      <proto>int bnum;</proto>
+      <description>Number of beams included in the analysis.</description>
+    </member>
+
+    <member>
+      <proto><sn href="structGridBm.html">struct GridBm</sn> *bm;</proto>
+      <description>Pointer to an array of structures containing the beam data.</description>
+    </member>
+
+    <member>
+      <proto>int pnum;</proto>
+      <description>Number of grid cells in the radar field of view.</description>
+    </member>
+
+    <member>
+      <proto><sn href="structGridPnt.html">struct GridPnt</sn> *pnt;</proto>
+      <description>Pointer to an array of structures containing the grid cells in the radar field of view.</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structGridTable.html">struct GridTable</sn> structure stores information used to grid radar scan data.</p>
+  </description>
+</structure>
+
+</library>

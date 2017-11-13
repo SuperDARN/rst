@@ -751,6 +751,8 @@ int main(int argc,char *argv[]) {
   char *fpath=NULL;
   char *postp=NULL;
 
+  int chisham=0;
+
   rgrid=GridMake();
   rgridavg=GridMake();
   rgridmrg=GridMake();
@@ -1104,7 +1106,7 @@ int main(int argc,char *argv[]) {
   else clip=MapSquareClip();
 
   if (lat>90) lat=90*rcmap->hemisphere;
-  if (fovflg || ffovflg) fov=make_fov(rgrid->st_time,network); 
+  if (fovflg || ffovflg) fov=make_fov(rgrid->st_time,network,chisham);
   if ((fovflg || ffovflg) && !magflg) MapModify(fov,AACGMtransform,&flg);
 
   if (grdflg) grd=make_grid(grdlon,grdlat);   
