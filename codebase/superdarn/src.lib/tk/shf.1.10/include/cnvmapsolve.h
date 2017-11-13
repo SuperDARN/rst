@@ -28,21 +28,10 @@
  
 */
 
-
-
-
 #ifndef _CNVMAPSOLVE_H
 #define _CNVMAPSOLVE_H
 
-int CnvMapSolve(struct CnvMapData *ptr,struct CnvGrid *gptr);
+int CnvMapSolve(struct CnvMapData *ptr,struct CnvGrid *gptr,
+                float decyear,int old_aacgm);
 
 #endif
-
-
-
-
-
-
-
-
-

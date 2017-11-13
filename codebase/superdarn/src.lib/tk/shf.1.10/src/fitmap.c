@@ -51,10 +51,9 @@
 #include "crdshft.h"
 
 
+int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd,
+                 float decyear,int old_aacgm) {
 
-
-
-int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd) {
   double terr=0,merr=0;
   double mlat,mlon,tmp;
   double pot_max=-1e6;
@@ -75,9 +74,11 @@ int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd) {
   int dnum;
   double asum=0;
 
+  int noigrf=0;
+  noigrf = map->noigrf;
+
   double vel_max=2000;
   double verr_min=100; /* used to be 50 for original map_potential */
-  int ewt=1,mwt=1;
 
   fitvel=malloc(sizeof(struct CnvMapSHFVec)*(grd->vcnum+2*map->num_model));
   if (fitvel==NULL) return -1;
@@ -87,17 +88,16 @@ int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd) {
   if (map->coef !=NULL) free(map->coef);
   map->num_coef=CnvMapIndexLegendre(map->fit_order,map->fit_order)+2;
   map->coef=malloc(4*map->num_coef*sizeof(double));
-     
-  
+
   for (j=0;j<grd->vcnum;j++) {
     if (grd->data[j].st_id==-1) continue;
     mlat=fabs(grd->data[j].mlat);
     mlon=grd->data[j].mlon;
     tmp=grd->data[j].azm;
-       
-    if ((map->lat_shft !=0) || (map->lon_shft !=0)) 
+
+    if ((map->lat_shft !=0) || (map->lon_shft !=0))
     CnvMapCrdShft(&mlat,&mlon,&tmp,map->lat_shft,map->lon_shft);
-       
+
     if (mlat < fabs(map->latmin)) continue;
     if (fabs(grd->data[j].vel.median)>vel_max) continue;
     data[num].lat=mlat;
@@ -107,21 +107,21 @@ int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd) {
     if (data[num].verr<=verr_min) data[num].verr=verr_min;
     data[num].cos=-cos(tmp*PI/180)*map->hemisphere;
     data[num].sin=sin(tmp*PI/180);
-       
+
     terr+=1/(data[num].verr*data[num].verr);
     num++;
-  }   
+  }
   dnum=num; 
   if (num !=0) merr=sqrt(num/terr);
   else merr=verr_min;
-  
-  /* if the ewt==0 then substitute the averaged error */
-  
-  if (ewt==0) for (i=0;i<num;i++) data[i].verr=merr;
 
-  /* if mwt==1 then adjust the error according to order */
-  
-  if (mwt==1) merr=sqrt( (map->fit_order/4.0)*(map->fit_order/4.0) )*merr;
+  /* if error_wt==0 then substitute the averaged error (not default) */
+
+  if (map->error_wt==0) for (i=0;i<num;i++) data[i].verr=merr;
+
+  /* if model_wt==1 then adjust the error according to order (default) */
+
+  if (map->model_wt==1) merr=sqrt( (map->fit_order/4.0)*(map->fit_order/4.0) )*merr;
 
   for (i=0;i<map->num_model;i++) {
     if (map->model[i].vel.median==1) continue; /* screen out boundary vecs */
@@ -129,24 +129,14 @@ int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd) {
     mlon=map->model[i].mlon;
     vx=map->model[i].vel.median*cos(map->model[i].azm*PI/180);
     vy=map->model[i].vel.median*sin(map->model[i].azm*PI/180);
-  
+
     data[num].lat=mlat;
     data[num].lon=mlon;
     data[num].vlos=vx*map->hemisphere;
     data[num].verr=merr;
     data[num].cos=-1;
     data[num].sin=0;
-
-   
     num++;
-  }
-
-  for (i=0;i<map->num_model;i++) {
-    if (map->model[i].vel.median==1) continue; /* screen out boundary vecs */
-    mlat=fabs(map->model[i].mlat);
-    mlon=map->model[i].mlon;
-    vx=map->model[i].vel.median*cos(map->model[i].azm*PI/180);
-    vy=map->model[i].vel.median*sin(map->model[i].azm*PI/180);
 
     data[num].lat=mlat;
     data[num].lon=mlon;
@@ -154,9 +144,6 @@ int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd) {
     data[num].verr=merr;
     data[num].cos=0;
     data[num].sin=1;
-
- 
-
     num++;
   }
 
@@ -167,24 +154,19 @@ int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd) {
     mlat=fabs(map->model[i].mlat);
     mlon=map->model[i].mlon;
     tmp=map->model[i].azm;
-     
+
     data[num].lat=mlat;
     data[num].lon=mlon;
     data[num].vlos=map->model[i].vel.median;
     data[num].verr=2*verr_min;
     data[num].cos=-cos(tmp*PI/180);
     data[num].sin=sin(tmp*PI/180);
-   
+
     num++;
   }
 
-  
-   
-
   map->chi_sqr=CnvMapFitVector(num,data,map->coef,fitvel,map->fit_order,
-			  fabs(map->latmin));
-
- 
+                               map->latmin,decyear,noigrf,old_aacgm);
 
   /* calculate chi_sqr associated with the data values */
 
@@ -193,7 +175,7 @@ int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd) {
           ((fitvel[i]-data[i].vlos)/data[i].verr);
   }
   map->chi_sqr_dat=asum;
-  
+
   rms=0;
   for (i=0;i<dnum;i++) {
      rms+=(fitvel[i]-data[i].vlos)*(fitvel[i]-data[i].vlos);
@@ -202,19 +184,18 @@ int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd) {
     map->rms_err=sqrt(rms/dnum);
   else map->rms_err=1e32;
 
-  /* having done the fit we now need to calculate potential 
+  /* having done the fit we now need to calculate potential
      limits and errors */
 
   lat_step=2.0;
   lon_step=5.0;
   n=0;
-  
 
-  Lmax=map->fit_order;  
+  Lmax=map->fit_order;
   nlat=(int) (90.0+fabs(map->latmin))/lat_step;
   nlon=(int) (360.0/lon_step);
-  alpha=tlimit/((90.0+fabs(map->latmin))/180.0*PI);  
-   
+  alpha=tlimit/((90.0+fabs(map->latmin))/180.0*PI);
+
   x=malloc(sizeof(double)*nlat*nlon);
   ph=malloc(sizeof(double)*nlat*nlon);
   mag=malloc(sizeof(double)*nlat*nlon); 
@@ -236,7 +217,7 @@ int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd) {
 
   CnvMapEvalLegendre(Lmax,x,n,plm);
   CnvMapEvalPotential(Lmax,n,map->coef,plm,ph,mag);
- 
+
   for (i=0;i<n;i++) {
     if (mag[i]>pot_max) {
       pot_max=mag[i];
@@ -253,7 +234,7 @@ int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd) {
   var_min=0;
   for (m=0;m<=Lmax;m++) {
     for(L=m;L<=Lmax;L++) {
-      k=CnvMapIndexLegendre(L,m); 
+      k=CnvMapIndexLegendre(L,m);
       if (m==0) {
         a=map->coef[k*4+3];
         var_max+=(a*PLM(L,0,max_sub))*(a*PLM(L,0,max_sub));
@@ -262,13 +243,13 @@ int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd) {
         a=map->coef[k*4+3];
         b=map->coef[(k+1)*4+3];
         var_max+=(a*PLM(L,m,max_sub)*cos(m*ph[max_sub]))*
-		 (a*PLM(L,m,max_sub)*cos(m*ph[max_sub]))+
-		 (b*PLM(L,m,max_sub)*sin(m*ph[max_sub]))*
-		 (b*PLM(L,m,max_sub)*sin(m*ph[max_sub]));
+                 (a*PLM(L,m,max_sub)*cos(m*ph[max_sub]))+
+                 (b*PLM(L,m,max_sub)*sin(m*ph[max_sub]))*
+                 (b*PLM(L,m,max_sub)*sin(m*ph[max_sub]));
         var_min+=(a*PLM(L,m,min_sub)*cos(m*ph[min_sub]))*
- 		 (a*PLM(L,m,min_sub)*cos(m*ph[min_sub]))+
-		 (b*PLM(L,m,min_sub)*sin(m*ph[min_sub]))*
-		 (b*PLM(L,m,min_sub)*sin(m*ph[min_sub]));
+                 (a*PLM(L,m,min_sub)*cos(m*ph[min_sub]))+
+                 (b*PLM(L,m,min_sub)*sin(m*ph[min_sub]))*
+                 (b*PLM(L,m,min_sub)*sin(m*ph[min_sub]));
       }
     }
   }
@@ -288,18 +269,4 @@ int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd) {
   free(data);
   return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

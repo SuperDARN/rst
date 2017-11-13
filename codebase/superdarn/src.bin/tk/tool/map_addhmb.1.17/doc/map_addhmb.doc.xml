@@ -3,30 +3,38 @@
 <project>superdarn</project>
 <name>map_addhmb</name>
 <location>src.bin/tk/tool/map_addhmb</location>
+<syntax></syntax>
 <syntax>map_addhmb --help</syntax>
-<syntax>map_addhmb [-vb] [-new] [-cnt <ar>count</ar>] [-vel <ar>vmin</ar>] [-ex exlist] [<ar>mapname</ar>]</syntax>
-<syntax>map_addhmb -t [-vb] [-new] [-cnt <ar>count</ar>] [-vel <ar>vmin</ar>] [-ex exlist] [<ar>mapname</ar>]</syntax>
-<syntax>map_addhmb -lf <ar>latname</ar> [-vb] [-new] [<ar>mapname</ar>]</syntax>
-<syntax>map_addhmb -lat <ar>latmin</ar> [-vb] [-new] [<ar>mapname</ar>]</syntax>
+<syntax>map_addhmb [-vb] [-old] [-old_aacgm] [-cnt <ar>count</ar>] [-vel <ar>vmin</ar>] [-ex exlist]</syntax>
+<syntax>           [<ar>mapname</ar>]</syntax>
+<syntax>map_addhmb -t [-vb] [-old] [-cnt <ar>count</ar>] [-vel <ar>vmin</ar>] [-ex exlist] [<ar>mapname</ar>]</syntax>
+<syntax>map_addhmb -lf <ar>latname</ar> [-vb] [-old] [<ar>mapname</ar>]</syntax>
+<syntax>map_addhmb -lat <ar>latmin</ar> [-vb] [-old] [<ar>mapname</ar>]</syntax>
+<syntax></syntax>
 
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
-<option><on>-new</on><od>the input file is a <code>cnvmap</code> format file.</od></option>
+<option><on>-old</on><od>the input file is a <code>map</code> format file.</od></option>
+<option><on>-old_aacgm</on><od>uses the older AACGM software and coefficients. The default</od></option>
+<option><on></on><od>  is to use AACGM-v2.</od></option>
 <option><on>-cnt <ar>count</ar></on><od>set the number of scatter points to get a match to be <ar>count</ar>.</od>
 </option>
-<option><on>-vel <ar>vmin</ar></on><od>set the minimum velocity to  <ar>vmin</ar>.</od>
+<option><on>-vel <ar>vmin</ar></on><od>set the minimum velocity to <ar>vmin</ar>.</od>
 </option>
-<option><on>-ex <ar>exlist</ar></on><od>exclude data from the stations listed in  <ar>exlist</ar>, which is a comma separated list of radar station numbers.</od>
-</option>
-<option><on><ar>mapname</ar></on><od>filename of the <code>map</code> format file. If this is omitted, the file will be read from standard input.</od>
-</option>
-<option><on>-t</on><od>instead of adding the calculated boundary to the map file, write the record time and the calculated location as ASCII text to standard output.</od>
-</option>
-<option><on>-lf <ar>latname</ar></on><od>do not calculate the boundary, instead read it from the ASCII text file <ar>latname</ar>.</od>
-</option>
-<option><on>-lat <ar>latmin</ar></on><od>do not calculate the boundary, instead set the lower latitude boundary to <ar>latmin</ar> degrees.</od>
+<option><on>-ex <ar>exlist</ar></on><od>exclude data from the stations listed in <ar>exlist</ar>, which is a</od></option>
+<option><on></on><od>  comma separated list of radar station numbers.</od></option>
+<option><on><ar>mapname</ar></on><od>filename of the <code>map</code> format file. If this is omitted, the file will</od></option>
+<option><on></on><od>  be read from standard input.</od></option>
+<option><on>-t</on><od>instead of adding the calculated boundary to the map file,</od></option>
+<option><on></on><od>  write the record time and the calculated location as ASCII text to standard</od></option>
+<option><on></on><od>  output.</od></option>
+<option><on>-lf <ar>latname</ar></on><od>do not calculate the boundary, instead read it from the ASCII</od></option>
+<option><on></on><od>  text file <ar>latname</ar>.</od></option>
+<option><on>-lat <ar>latmin</ar></on><od>do not calculate the boundary, instead set the lower latitude</od></option>
+<option><on></on><od>  boundary to <ar>latmin</ar> degrees.</od></option>
+<option><on>-nodef</on><od>do not use the default latmin if no data is available (ie use latmin from the statistical model).</od>
 </option>
 
 <synopsis><p>Calculates the position of the Heppner Maynard Boundary and adds it to a <code>map</code> format file.</p></synopsis>
