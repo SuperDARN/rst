@@ -25,6 +25,7 @@
 #define AACGM_MISMATCHDIMS -1
 #define AACGM_MISMATCHELMS -2
 #define AACGM_BADTYPE -3
+#define AACGM_DATENOTSET -4
 
 static IDL_MSG_DEF msg_arr[] =
   {
@@ -32,6 +33,7 @@ static IDL_MSG_DEF msg_arr[] =
     {  "AACGM_MISMATCHDIMS","%NMismatched array dimensions %s"},
     {  "AACGM_MISMATCHELMS","%NNumber of array elements do not match %s"},
     {  "AACGM_BADTYPE","%NArrays of floating point type are allowed %s"},
+    {  "AACGM_DATENOTSET","%NDate and Time are not currently set"},
   };
 
 static IDL_MSG_BLOCK msg_block;
@@ -255,6 +257,13 @@ static IDL_VPTR IDLAACGM_v2_GetDateTime(int argc,IDL_VPTR *argv,char *argk) {
     outargc=IDL_KWGetParams(argc,argv,argk,kw_pars,outargv,1);
 
     s=AACGM_v2_GetDateTime(&yr,&mo,&dy,&hr,&mt,&sc,&dayno);
+
+    if (yr==-1) {
+        IDL_MessageFromBlock(msg_block,AACGM_DATENOTSET,IDL_MSG_RET);
+        s=-1;
+        IDL_KWCleanup(IDL_KW_CLEAN);
+        return (IDL_GettmpLong(s));
+    }
 
     IDL_StoreScalar(outargv[0],IDL_TYP_LONG,(IDL_ALLTYPES *) &yr);
     if (month) IDL_StoreScalar(month,IDL_TYP_LONG,(IDL_ALLTYPES *) &mo);

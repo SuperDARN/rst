@@ -453,6 +453,8 @@ int main(int argc,char *argv[]) {
   char *fpath=NULL;
   char *postp=NULL;
 
+  int chisham=0;
+
   int farg;
 
   /* function pointers for file reading/writing (old and new) */
