@@ -6,21 +6,21 @@
 
 /*
  LICENSE AND DISCLAIMER
- 
+
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
+
  This file is part of the Radar Software Toolkit (RST).
- 
+
  RST is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
- 
+
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Lesser General Public License for more details.
- 
+
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -124,7 +124,7 @@ int GridTableZero(int pnum, struct GridPnt *ptr) {
  * Tests whether gridded data should be written to a file. Returns a non-zero
  * value if the data should be written.
  **/
-int GridTableTest(struct GridTable *ptr, struct RadarScan *scan, int tlen) {
+int GridTableTest(struct GridTable *ptr, struct RadarScan *scan) {
 
     double tm;
     int i;
@@ -263,7 +263,8 @@ int GridTableFindPoint(struct GridTable *ptr, int ref) {
  **/
 int GridTableAddBeam(struct GridTable *ptr,
                      struct RadarSite *pos, double alt,
-                     double tval, struct RadarBeam *bm) {
+                     double tval, struct RadarBeam *bm,
+                     int chisham, int old_aacgm) {
 
     int yr,mo,dy,hr,mt;
     double sc;
@@ -299,11 +300,14 @@ int GridTableAddBeam(struct GridTable *ptr,
     /* Update the total number of beams in the GridTable structure */
     ptr->bnum++;
 
-    /* Populate GridBm structure with info from RadarBeam structure */
+    /* Populate GridBm structure with info from RadarBeam structure 
+     * (except rxrise - that we get from the hdw.dat file because
+     * nearly all radars write a default value of 100 microseconds
+     * hardcoded in default.h and set by global.c in QNX4 systems) */
     b->bm=bm->bm;
     b->frang=bm->frang;
     b->rsep=bm->rsep;
-    b->rxrise=bm->rxrise;
+    b->rxrise=pos->recrise;
     b->nrang=bm->nrang;
 
     b->azm=malloc(sizeof(double)*b->nrang);
@@ -322,7 +326,7 @@ int GridTableAddBeam(struct GridTable *ptr,
         /* Calculate geographic azimuth and elevation to range/beam position */
         s=RPosRngBmAzmElv(b->bm,r,yr,pos,
                     b->frang,b->rsep,b->rxrise,
-                    alt,&geoazm,&elv);
+                    alt,&geoazm,&elv,chisham);
 
         /* If geographic azimuth/elevation calculation failed then
          * break out of loop */
@@ -332,7 +336,7 @@ int GridTableAddBeam(struct GridTable *ptr,
          * position */
         s=RPosInvMag(b->bm,r,yr,pos,
                b->frang,b->rsep,b->rxrise,
-               alt,&lat,&lon,&azm);
+               alt,&lat,&lon,&azm,chisham,old_aacgm);
 
         /* If magnetic latitude/longitude/azimuth calculation failed then 
          * break out of loop */
@@ -343,12 +347,6 @@ int GridTableAddBeam(struct GridTable *ptr,
 
         /* Make sure magnetic longitude varies between 0-360 degrees */
         if (lon<0) lon+=360;
-
-        /* If northern hemi point is below 50N then shift its latitude to 50N */
-        if ((lat>0) && (lat<50)) lat=50;
-
-        /* If southern hemi point is below 50S then shift its latitude to 50S */
-        if ((lat<0) && (lat>-50)) lat=-50;
 
         /* Calculate magnetic grid cell latitude
          * (eg, 72.1->72.5, 57.8->57.5, etc) */
@@ -363,8 +361,8 @@ int GridTableAddBeam(struct GridTable *ptr,
 
         /* Calculate reference number to grid latitude/longitude cell */
         if (lat>0)
-            ref=1000*( (int) lat-50)+( (int) (lon*lspc) );
-        else ref=-1000*( (int) -lat-50)-( (int) (lon*lspc) );
+            ref=1000*( (int) lat ) + ( (int) (lon*lspc) );
+        else ref=-1000*( (int) -lat ) - ( (int) (lon*lspc) );
 
         /* Find index of GridPnt structure corresponding to reference number */
         inx=GridTableFindPoint(ptr,ref);
@@ -421,7 +419,6 @@ int GridTableFindBeam(struct GridTable *ptr, struct RadarBeam *bm) {
         if (ptr->bm[n].bm !=bm->bm) continue;
         if (ptr->bm[n].frang !=bm->frang) continue;
         if (ptr->bm[n].rsep !=bm->rsep) continue;
-        if (ptr->bm[n].rxrise !=bm->rxrise) continue;
         if (ptr->bm[n].nrang !=bm->nrang) continue;
 
         /* Break out of loop if GridBm parameters match RadarBeam parameters
@@ -445,7 +442,8 @@ int GridTableFindBeam(struct GridTable *ptr, struct RadarBeam *bm) {
  * Maps radar scan data to an equi-area grid in magnetic coordinates.
  **/
 int GridTableMap(struct GridTable *ptr, struct RadarScan *scan,
-                 struct RadarSite *pos, int tlen, int iflg, double alt) {
+                 struct RadarSite *pos, int tlen, int iflg, double alt,
+                 int chisham, int old_aacgm) {
 
     double freq=0,noise=0;
     double variance=0;
@@ -485,7 +483,7 @@ int GridTableMap(struct GridTable *ptr, struct RadarScan *scan,
         /* If beam not found, add a new beam to GridTable structure */
         if (b==-1) {
             /* map a new beam */
-            b=GridTableAddBeam(ptr,pos,alt,tm,&scan->bm[n]);
+            b=GridTableAddBeam(ptr,pos,alt,tm,&scan->bm[n],chisham,old_aacgm);
             if (b==-1) break;
         }
 

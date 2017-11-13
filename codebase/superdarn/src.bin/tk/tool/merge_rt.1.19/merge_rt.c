@@ -139,28 +139,16 @@ int make_grid(struct GridData *out,
 
   return l;
 }
+
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: merge_rt --help\n");
+  return(-1);
+}
     
-    
-
-
-
-
-    
-
 int main(int argc,char *argv[]) {
 
-/* File format transistion
-   * ------------------------
-   * 
-   * When we switch to the new file format remove any reference
-   * to "new". Change the command line option "new" to "old" and
-   * remove "old=!new".
-   */
-
-
-
   int old=0;
-  int new=0;
 
   int arg;
   unsigned char help=0;
@@ -197,7 +185,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
 
-  OptionAdd(&opt,"new",'x',&new);
+  OptionAdd(&opt,"old",'x',&old);
   OptionAdd(&opt,"i",'i',&repeat);
   OptionAdd(&opt,"o",'i',&offset);
   OptionAdd(&opt,"r",'x',&mxflg);
@@ -206,10 +194,11 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"if",'t',&pidstr);
   OptionAdd(&opt,"fl",'t',&flist);
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);   
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
-  old=!new;
-
+  if (arg==-1) {
+    exit(-1);
+  }  
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);

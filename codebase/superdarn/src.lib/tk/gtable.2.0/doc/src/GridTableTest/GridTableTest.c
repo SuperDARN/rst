@@ -1,5 +1,5 @@
-/* GridTableMap.c
-   ==============
+/* GridTableTest.c
+   ===============
    Author: R.J.Barnes */
 
 
@@ -16,11 +16,13 @@
 #include "fitread.h"
 #include "scandata.h"
 #include "fitscan.h"
+#include "filter.h"
 #include "bound.h"
 #include "gtable.h"
 #include "gtablewrite.h"
 
-struct RadarScan scn;
+struct RadarScan src[3];
+struct RadarScan dst;
 
 struct RadarNetwork *network;  
 struct Radar *radar;
@@ -47,10 +49,8 @@ int main(int argc,char *argv[]) {
   unsigned char xtd=0;
   char wrtlog[256];
 
-  int pval=0;
-  double min[4]={35,3,10,0};
-  double max[4]={2000,50,1000,200};
-  int tflg=0;
+  int index=0,num=0;
+  int mode=0,nbox=3;
 
   double alt=300.0;
 
@@ -91,43 +91,51 @@ int main(int argc,char *argv[]) {
 
 
   fp=fopen(argv[1],"r");
-
+ 
   if (fp==NULL) {
     fprintf(stderr,"File not found.\n");
     exit(-1);
   }
 
-  while(FitFreadRadarScan(fp,&state,&scn,&prm,&fit,0,0,0) !=-1) {
-    TimeEpochToYMDHMS(scn.st_time,&yr,&mo,&dy,&hr,&mt,&sc);
+  while(FitFreadRadarScan(fp,&state,&src[index],&prm,&fit,avlen,0,0) !=-1) {
+    TimeEpochToYMDHMS(src[index].st_time,&yr,&mo,&dy,&hr,&mt,&sc);
 
     fprintf(stderr,"%.4d-%.2d-%.2d %.2d:%.2d:%.2d\n",
             yr,mo,dy,hr,mt,(int) sc);
 
-    FilterBoundType(&scn,tflg);
-    FilterBound(pval,&scn,min,max);
+   
+
+    if (num>2) {
+
+      FilterRadarScan(mode,nbox,index,src,&dst,15);     
  
+      if (site==NULL) {
+         radar=RadarGetRadar(network,dst.stid);
+         if (radar==NULL) {
+           fprintf(stderr,"Failed to get radar information.\n");
+           exit(-1);
+         }
 
-    if (site==NULL) {
-       radar=RadarGetRadar(network,scn.stid);
-       if (radar==NULL) {
-         fprintf(stderr,"Failed to get radar information.\n");
-         exit(-1);
-       }
-
-       site=RadarYMDHMSGetSite(radar,prm.time.yr,prm.time.mo,
+         site=RadarYMDHMSGetSite(radar,prm.time.yr,prm.time.mo,
 		          prm.time.dy,prm.time.hr,prm.time.mt,
                           prm.time.sc);
      
-    }
+      }
 
-    s=GridTableTest(&grid,&scn,avlen);
+      s=GridTableTest(&grid,&dst);
     
-    if (s==1) {
-      GridTableFwrite(stdout,&grid,wrtlog,xtd);
+      if (s==1) {
+        GridTableFwrite(stdout,&grid,wrtlog,xtd);
 
+      }
+      
+      if (dst.num>=16) GridTableMap(&grid,&dst,site,avlen,iflg,alt);  
     }
-    
-    if (scn.num>=16) GridTableMap(&grid,&scn,site,avlen,iflg,alt);     
+   
+    index++;
+    if (index>2) index=0;
+    num++;
+
   
   }
 

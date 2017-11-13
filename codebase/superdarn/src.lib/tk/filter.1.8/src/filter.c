@@ -1,26 +1,26 @@
 /* filter.c
-   ======== 
+   ========
    Author: R.J.Barnes
    Comments: E.G.Thomas (2016)
 */
 
 /*
  LICENSE AND DISCLAIMER
- 
+
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
+
  This file is part of the Radar Software Toolkit (RST).
- 
+
  RST is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
- 
+
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Lesser General Public License for more details.
- 
+
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -39,13 +39,12 @@ int FilterCmpVel(const void *x,const void *y) {
   struct RadarCell *a,*b;
   a=*((struct RadarCell **) x);
   b=*((struct RadarCell **) y);
-
   if (a->v<b->v) return -1;
   if (a->v>b->v) return 1;
   return 0;
 }
 
-int FilterCmpPwr(const void *x,const void *y) {
+int FilterCmpPwrL(const void *x,const void *y) {
   struct RadarCell *a,*b;
   a=*((struct RadarCell **) x);
   b=*((struct RadarCell **) y);
@@ -60,6 +59,15 @@ int FilterCmpWdt(const void *x,const void *y) {
   b=*((struct RadarCell **) y);
   if (a->w_l<b->w_l) return -1;
   if (a->w_l>b->w_l) return 1;
+  return 0;
+}
+
+int FilterCmpPwr0(const void *x,const void *y) {
+  struct RadarCell *a,*b;
+  a=*((struct RadarCell **) x);
+  b=*((struct RadarCell **) y);
+  if (a->p_0<b->p_0) return -1;
+  if (a->p_0>b->p_0) return 1;
   return 0;
 }
 
@@ -78,7 +86,7 @@ int FilterCmpWdt(const void *x,const void *y) {
  * standard deviation of the input parameters. Returns zero if successful.
  **/
 int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
-                    struct RadarScan *dst, int prm) {
+                    struct RadarScan *dst, int prm, int isort) {
 
     int thresh[2] = {12,24};
     double us;
@@ -94,7 +102,7 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
     struct RadarCell **median=NULL;
     int cnum=0,cnt=0;
     int maxbeam=0;
-    int maxrange=0;
+    int maxrange=1000;
     double variance,mean,sigma;  
 
     /* If input filter depth greater than FILTER_DEPTH then set to 
@@ -117,7 +125,7 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
             rng=src[i]->bm[n].nrang;
 
             /* Update largest number of range gates if necessary */
-            if (rng>maxrange) maxrange=rng;
+            if (rng<maxrange) maxrange=rng;
 
         }
 
@@ -249,7 +257,7 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
             dst->bm[bm].noise=b->noise;
             dst->bm[bm].atten=b->atten;
             dst->bm[bm].channel=b->channel;
-            dst->bm[bm].nrang=b->nrang;    
+            dst->bm[bm].nrang=maxrange;
 
         }
 
@@ -314,9 +322,9 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
                     dst->bm[bm].atten+=b->atten;
                     if (dst->bm[bm].channel==0) dst->bm[bm].channel=b->channel;
 
-                    /* If this is the first beam in time/beam cell then use it
+                    /* If this is the first beam in time/beam cell then use maxrange
                      * to set the number of range gates for RadarBeam structure */
-                    if (dst->bm[bm].nrang==-1) dst->bm[bm].nrang=b->nrang;
+                    if (dst->bm[bm].nrang==-1) dst->bm[bm].nrang=maxrange;
 
                 }
 
@@ -561,12 +569,14 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
 
                 }
 
-                /* Sort velocity values in median RadarCell structure
-                 * from most negative to most positive velocity */
-                qsort(median,cnt,sizeof(struct RadarCell *), FilterCmpVel);
+                /* Sort velocity values in median Radarcell structure
+                 * from most negative to most positive (isort=0), or sort
+                 * lambda power values from smallest to largest (isort=1) */
+                if (isort) qsort(median,cnt,sizeof(struct RadarCell *), FilterCmpPwrL);
+                else qsort(median,cnt,sizeof(struct RadarCell *), FilterCmpVel);
 
                 /* Set current beam/gate power to the center of the above
-                 * array sorted by velocity (ie the median) */
+                 * array sorted by velocity or lambda power (ie the median) */
                 dst->bm[bm].rng[rng].p_l=median[cnt/2]->p_l;
 
                 /* Reset the mean and variance to zero */
@@ -630,11 +640,13 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
                 }
 
                 /* Sort velocity values in median Radarcell structure
-                 * from most negative to most positive */
-                qsort(median,cnt,sizeof(struct RadarCell *), FilterCmpVel);
+                 * from most negative to most positive (isort=0), or sort
+                 * spectral width values from smallest to largest (isort=1) */
+                if (isort) qsort(median,cnt,sizeof(struct RadarCell *), FilterCmpWdt);
+                else qsort(median,cnt,sizeof(struct RadarCell *), FilterCmpVel);
 
                 /* Set current beam/gate width to the center of the above
-                 * array sorted by velocity (ie the median) */
+                 * array sorted by velocity or spectral width (ie the median) */
                 dst->bm[bm].rng[rng].w_l=median[cnt/2]->w_l;
 
                 /* Reset the mean and variance to zero */
@@ -697,12 +709,14 @@ int FilterRadarScan(int mode, int depth, int inx, struct RadarScan **src,
 
                 }
 
-                /* Sort velocity values in median RadarCell structure
-                 * from most negative to most positive velocity */
-                qsort(median,cnt,sizeof(struct RadarCell *), FilterCmpVel);
+                /* Sort velocity values in median Radarcell structure
+                 * from most negative to most positive (isort=0), or sort
+                 * lag0 power values from smallest to largest (isort=1) */
+                if (isort) qsort(median,cnt,sizeof(struct RadarCell *), FilterCmpPwr0);
+                else qsort(median,cnt,sizeof(struct RadarCell *), FilterCmpVel);
 
                 /* Set current beam/gate lag0 power to the center of the above
-                 * array sorted by velocity (ie the median) */
+                 * array sorted by velocity or lag0 power (ie the median) */
                 dst->bm[bm].rng[rng].p_0=median[cnt/2]->p_0;
 
                 /* Reset the mean and variance to zero */

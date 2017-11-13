@@ -1,5 +1,6 @@
 /* make_grid.c
-   =========== */
+   ===========
+*/
 
 /*
  LICENSE AND DISCLAIMER
@@ -53,6 +54,7 @@
 #include "filter.h"
 #include "bound.h"
 #include "checkops.h"
+#include "rpos.h"
 
 #include "gtable.h"
 #include "gtablewrite.h"
@@ -61,6 +63,8 @@
 #include "hlpstr.h"
 #include "errstr.h"
 
+#include "aacgm.h"
+#include "aacgmlib_v2.h"
 
 
 struct RadarParm *prm;
@@ -82,6 +86,8 @@ int ebmno=0;
 int ebm[32*3];
 int minrng=-1;
 int maxrng=-1;
+double minsrng=-1;
+double maxsrng=-1;
 
 struct GridTable *grid;
 
@@ -131,11 +137,18 @@ int exclude_outofscan(struct RadarScan *ptr) {
 
 
 /**
- * Exclude scatter in range gates below minrng or beyond maxrng.
+ * Exclude scatter in range gates below minrng or beyond maxrng,
+ * or from slant ranges below minsrng or beyond maxsrng. If range
+ * gate and slant range thresholds are both provided, only the
+ * slant range thresholds are considered.
  **/
-void exclude_range(struct RadarScan *ptr,int minrng,int maxrng) {
+void exclude_range(struct RadarScan *ptr,int minrng,int maxrng,
+                   double minsrng,double maxsrng) {
 
     int bm,rng;
+    int frang,rsep,rxrise,nrang;
+    double r;
+    double range_edge=0;
 
     /* Loop over number of beams in RadarScan structure */
     for (bm=0;bm<ptr->num;bm++) {
@@ -143,14 +156,33 @@ void exclude_range(struct RadarScan *ptr,int minrng,int maxrng) {
         /* If RadarBeam structure not set then continue */
         if (ptr->bm[bm].bm==-1) continue;
 
-        /* If minrng option set then mark all scatter in range gates
-         * less than minrng as being empty */
-        if (minrng !=-1) for (rng=0;rng<minrng;rng++) ptr->bm[bm].sct[rng]=0;
+        /* If minsrng or maxsrng option set then exclude data using
+         * slant range instead of range gate */
+        if ((minsrng !=-1) || (maxsrng !=-1)) {
 
-        /* If maxrng option set then mark all scatter in range gates
-         * greater than maxrng as being empty */
-        if (maxrng !=-1) for (rng=maxrng;rng<ptr->bm[bm].nrang;rng++)
-            ptr->bm[bm].sct[rng]=0;
+            /* Get radar operating parameters from RadarBeam structure */
+            frang=ptr->bm[bm].frang;
+            rsep=ptr->bm[bm].rsep;
+            rxrise=ptr->bm[bm].rxrise;
+            nrang=ptr->bm[bm].nrang;
+
+            /* Calculate slant range to each range gate and compare to thresholds */
+            for (rng=0;rng<nrang;rng++) {
+                r=slant_range(frang,rsep,rxrise,range_edge,rng+1);
+                if ((minsrng !=-1) && (r<minsrng)) ptr->bm[bm].sct[rng]=0;
+                if ((maxsrng !=-1) && (r>maxsrng)) ptr->bm[bm].sct[rng]=0;
+            }
+
+        } else {
+            /* If minrng option set then mark all scatter in range gates
+             * less than minrng as being empty */
+            if (minrng !=-1) for (rng=0;rng<minrng;rng++) ptr->bm[bm].sct[rng]=0;
+
+            /* If maxrng option set then mark all scatter in range gates
+             * greater than maxrng as being empty */
+            if (maxrng !=-1) for (rng=maxrng;rng<ptr->bm[bm].nrang;rng++)
+                ptr->bm[bm].sct[rng]=0;
+        }
 
     }
 
@@ -230,6 +262,12 @@ double strtime(char *text) {
 
 }
 
+int rst_opterr(char *txt) {
+    fprintf(stderr,"Option not recognized: %s\n",txt);
+    fprintf(stderr,"Please try: make_grid --help\n");
+    return(-1);
+}
+
 /**
  * Creates a grd or grdmap format file from a fit, fitacf, or cfit format file.
  **/
@@ -237,16 +275,7 @@ struct OptionData opt;
 
 int main(int argc,char *argv[]) {
 
-  /* File format transistion
-   * ------------------------
-   *
-   * When we switch to the new file format remove any reference
-   * to "new". Change the command line option "new" to "old" and
-   * remove "old=!new".
-   */
-
     int old=0;
-    int new=0;
 
     int farg=0;
     int fnum=0;
@@ -270,7 +299,7 @@ int main(int argc,char *argv[]) {
     double min[4]={35,3,10,0};
 
     /* Default upper limits for velocity, power, spectral width, and velocity error */
-    double max[4]={2000,50,1000,200};
+    double max[4]={2500,60,1000,200};
 
     /* Default maximum allowable frequency variation [Hz] */
     int fmax=500*1000;
@@ -291,13 +320,17 @@ int main(int argc,char *argv[]) {
     int bxcar=0;
     int limit=0;
     int bflg=0;
+    int isort=0;
 
     unsigned char gsflg=0,ionflg=0,bthflg=0;
-    unsigned char nsflg=0,isflg=0;
+    unsigned char nsflg=0;
     int channel=0;
     int channel_fix=-1;
 
     int syncflg=1;
+
+    int chisham=0;
+    int old_aacgm=0;
 
     unsigned char catflg=0;
 
@@ -374,10 +407,10 @@ int main(int argc,char *argv[]) {
     RadarLoadHardware(envstr,network);
 
     /* Set up command line options */
-    OptionAdd(&opt,"-help",'x',&help);  /* Print the help message and exit */
+    OptionAdd(&opt,"-help",'x',&help);     /* Print the help message and exit */
     OptionAdd(&opt,"-option",'x',&option); /* Print all command line options */
 
-    OptionAdd(&opt,"new",'x',&new);     /* Input file is in fitacf format */
+    OptionAdd(&opt,"old",'x',&old);     /* Input file is in fit format */
 
     OptionAdd(&opt,"vb",'x',&vb);       /* Log information to console */
 
@@ -390,39 +423,45 @@ int main(int argc,char *argv[]) {
     OptionAdd(&opt,"tl",'i',&tlen); /* Ignore scan flag, use scan length of tl seconds */
     OptionAdd(&opt,"i",'i',&avlen); /* Time interval to store in each grid record in seconds */
 
-    OptionAdd(&opt,"cn",'t',&chnstr);   /* Process data from stereo channel a or b */
+    OptionAdd(&opt,"cn",'t',&chnstr);           /* Process data from stereo channel a or b */
     OptionAdd(&opt,"cn_fix",'t',&chnstr_fix);   /* User-defined channel number for output only */
-    OptionAdd(&opt,"ebm",'t',&bmstr);   /* Comma separated list of beams to exclude */
-    OptionAdd(&opt,"minrng",'i',&minrng); /* Exclude data from gates lower than minrng */
-    OptionAdd(&opt,"maxrng",'i',&minrng); /* Exclude data from gates higher than maxrng */
+    OptionAdd(&opt,"ebm",'t',&bmstr);           /* Comma separated list of beams to exclude */
+    OptionAdd(&opt,"minrng",'i',&minrng);       /* Exclude data from gates lower than minrng */
+    OptionAdd(&opt,"maxrng",'i',&maxrng);       /* Exclude data from gates higher than maxrng */
+    OptionAdd(&opt,"minsrng",'d',&minsrng);     /* Exclude data from slant ranges lower than minsrng */
+    OptionAdd(&opt,"maxsrng",'d',&maxsrng);     /* Exclude data from slant ranges higher than maxsrng */
 
     OptionAdd(&opt,"fwgt",'i',&mode);   /* Filter weighting mode */
 
-    OptionAdd(&opt,"pmax",'d',&max[1]); /* Exclude data with power greater than pmax */
-    OptionAdd(&opt,"vmax",'d',&max[0]); /* Exclude data with vel greater than vmax */
-    OptionAdd(&opt,"wmax",'d',&max[2]); /* Exclude data with width greater than wmax */
+    OptionAdd(&opt,"pmax",'d',&max[1]);  /* Exclude data with power greater than pmax */
+    OptionAdd(&opt,"vmax",'d',&max[0]);  /* Exclude data with velocity greater than vmax */
+    OptionAdd(&opt,"wmax",'d',&max[2]);  /* Exclude data with width greater than wmax */
     OptionAdd(&opt,"vemax",'d',&max[3]); /* Exclude data with verror greater than vemax */
 
-    OptionAdd(&opt,"pmin",'d',&min[1]); /* Exclude data with power less than pmin */
-    OptionAdd(&opt,"vmin",'d',&min[0]); /* Exclude data with velocity less than vmax */
-    OptionAdd(&opt,"wmin",'d',&min[2]); /* Exclude data with width less than wmin */
+    OptionAdd(&opt,"pmin",'d',&min[1]);  /* Exclude data with power less than pmin */
+    OptionAdd(&opt,"vmin",'d',&min[0]);  /* Exclude data with velocity less than vmin */
+    OptionAdd(&opt,"wmin",'d',&min[2]);  /* Exclude data with width less than wmin */
     OptionAdd(&opt,"vemin",'d',&min[3]); /* Exclude data with verror less than vemin */
 
     OptionAdd(&opt,"alt",'d',&alt);     /* Altitude at which mapping is done [km] */
 
-    OptionAdd(&opt,"fmax",'i',&fmax);   /* maximum allowed frequency variation [Hz] */
+    OptionAdd(&opt,"fmax",'i',&fmax);   /* Maximum allowed frequency variation [Hz] */
 
     OptionAdd(&opt,"nav",'x',&bxcar); /* Do not perform boxcar median filtering */
     OptionAdd(&opt,"nlm",'x',&limit); /* Do not exclude data because it exceeds limits */
-    OptionAdd(&opt,"nb",'x',&bflg);  /* Do not exclude data based on operating parameters */
-    OptionAdd(&opt,"is",'x',&isflg); /* Do not apply scan flag limit */
-    OptionAdd(&opt,"xtd",'x',&xtd);  /* Write extended output that includes power and width */
+    OptionAdd(&opt,"nb",'x',&bflg);   /* Do not exclude data based on operating parameters */
+    OptionAdd(&opt,"ns",'x',&nsflg);  /* Apply scan flag limit (ie exclude data with scan flag = -1) */
+    OptionAdd(&opt,"xtd",'x',&xtd);   /* Write extended output that includes power and width */
+    OptionAdd(&opt,"isort",'x',&isort); /* If median filtering, sort parameters independent of velocity */
 
-    OptionAdd(&opt,"ion",'x',&ionflg); /* Exclude data marked as ground scatter */
-    OptionAdd(&opt,"gs",'x',&gsflg);   /* Exclude data marked as iono scatter */
+    OptionAdd(&opt,"ion",'x',&ionflg);  /* Exclude data marked as ground scatter */
+    OptionAdd(&opt,"gs",'x',&gsflg);    /* Exclude data marked as iono scatter */
     OptionAdd(&opt,"both",'x',&bthflg); /* Do not exclude data based on scatter flag */
 
     OptionAdd(&opt,"inertial",'x',&iflg); /* Create grid file in inertial reference frame */
+
+    OptionAdd(&opt,"chisham",'x',&chisham);     /* Map data using Chisham virtual height model */
+    OptionAdd(&opt,"old_aacgm",'x',&old_aacgm); /* Map data using old AACGM coefficients rather than v2 */
 
     OptionAdd(&opt,"fit",'x',&fitflg);   /* Input file is in the fit format */
     OptionAdd(&opt,"cfit",'x',&cfitflg); /* Input file is in the cfit format */
@@ -430,9 +469,12 @@ int main(int argc,char *argv[]) {
     OptionAdd(&opt,"c",'x',&catflg);  /* Concatenate multiple input files */
 
     /* Process command line options */
-    farg=OptionProcess(1,argc,argv,&opt,NULL);
+    farg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
-    old=!new;
+    /* If command line option not recognized then print error and exit */
+    if (farg==-1) {
+        exit(-1);
+    }
 
     /* If 'help' set then print help message */
     if (help==1) {
@@ -479,7 +521,6 @@ int main(int argc,char *argv[]) {
     bxcar=!bxcar;
     bflg=!bflg;
     limit=!limit;
-    nsflg=!isflg;
 
     /* Set GridTable ground scatter flag according to command line options */
     grid->gsct=1;
@@ -495,11 +536,12 @@ int main(int argc,char *argv[]) {
     else grid->chn=0;
 
     /* Store the velocity, power, width, and velocity error bounding threshold
-     * values in GridTable (whether or not they are actually applied by 
-     * FilterBound!) */
-    for (i=0;i<4;i++) {
-        grid->min[i]=min[i];
-        grid->max[i]=max[i];
+     * values in GridTable only if they are applied by FilterBound */ 
+    if (bflg) {
+        for (i=0;i<4;i++) {
+            grid->min[i]=min[i];
+            grid->max[i]=max[i];
+        }
     }
 
     /* If median filtering is going to be applied the initialize nbox so that 3
@@ -528,13 +570,13 @@ int main(int argc,char *argv[]) {
         /* Open the fit, fitacf, or cfit file and read the first scan */
         if (fitflg) {
             /* Input file is in fit or fitacf format */
-            
+
             if (old) {
                 /* Input file is in fit format */
-                
+
                 /* Open the fit file for reading */
                 oldfitfp=OldFitOpen(dname,iname);
-                
+
                 /* Verify that the fit file was properly opened */
                 if (oldfitfp==NULL) {
                     fprintf(stderr,"File not found.\n");
@@ -727,6 +769,14 @@ int main(int argc,char *argv[]) {
             if (tlen !=0) etime+=tlen;
             else etime+=15+src[0]->ed_time-src[0]->st_time;
         }
+            
+        /* Calculate year, month, day, hour, minute, and second of 
+         * grid start time (needed to load AACGM_v2 coefficients) */
+        TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
+
+        /* Load AACGM coefficients */
+        if (old_aacgm) AACGMInit(yr);
+        else AACGM_v2_SetDateTime(yr,mo,dy,0,0,0);
 
         /* This value tracks the number of radar scans which have been
          * loaded for gridding */
@@ -744,11 +794,12 @@ int main(int argc,char *argv[]) {
             /* Exclude scatter in beams listed in ebm */
             RadarScanResetBeam(src[index],ebmno,ebm);
 
-            /* If 'is' option not set then */
+            /* If 'ns' option set then exclude data where scan flag = -1 */
             if (nsflg) exclude_outofscan(src[index]);
 
-            /* Exclude scatter in range gates below minrng or beyond maxrng */
-            exclude_range(src[index],minrng,maxrng);
+            /* Exclude scatter in range gates below minrng or beyond maxrng,
+             * or below minsrng or beyond maxsrng */
+            exclude_range(src[index],minrng,maxrng,minsrng,maxsrng);
 
             /* Exclude either ground or ionospheric scatter based on gsct flag */
             FilterBoundType(src[index],grid->gsct);
@@ -772,7 +823,7 @@ int main(int argc,char *argv[]) {
 
                 /* Apply the boxcar median filter to the radar scans included
                  * in the src array */
-                if (mode !=-1) FilterRadarScan(mode,nbox,index,src,dst,15);
+                if (mode !=-1) FilterRadarScan(mode,nbox,index,src,dst,15,isort);
                 else out=src[index];
 
                 /* Calculate year, month, day, hour, minute and second of
@@ -792,8 +843,8 @@ int main(int argc,char *argv[]) {
 
                 /* Test whether gridded data should be written to a file; if so
                  * returns weighted average velocity, power, and width values
-                 * for each grid cell (Note: avlen not actually used) */
-                s=GridTableTest(grid,out,avlen);
+                 * for each grid cell */
+                s=GridTableTest(grid,out);
 
                 /* If no errors were returned by GridTableTest and the beginning
                  * of the grid record is equal to or after stime then write
@@ -811,7 +862,7 @@ int main(int argc,char *argv[]) {
                 /* Map radar scan data in structure pointed to by 'out' to an
                  * equi-area grid in magnetic coordinates, storing the output
                  * in the grid GridTable structure */
-                s=GridTableMap(grid,out,site,avlen,iflg,alt);
+                s=GridTableMap(grid,out,site,avlen,iflg,alt,chisham,old_aacgm);
 
                 /* Return an error if mapping failed */
                 if (s !=0) {
@@ -941,6 +992,14 @@ int main(int argc,char *argv[]) {
                 }
 
             }
+        
+            /* Calculate year, month, day, hour, minute, and second of 
+             * grid start time (needed to load AACGM_v2 coefficients) */
+            TimeEpochToYMDHMS(src[index]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
+
+            /* Load AACGM coefficients */
+            if (old_aacgm) AACGMInit(yr);
+            else AACGM_v2_SetDateTime(yr,mo,dy,0,0,0);
 
             /* This value tracks the number of radar scans which have been
              * loaded for gridding */
@@ -953,11 +1012,12 @@ int main(int argc,char *argv[]) {
                 /* Exclude scatter in beams listed in ebm */
                 RadarScanResetBeam(src[index],ebmno,ebm);
 
-                /* If 'is' option not set then */
+                /* If 'ns' option set then exclude data where scan flag = -1 */
                 if (nsflg) exclude_outofscan(src[index]);
 
-                /* Exclude scatter in range gates below minrng or beyond maxrng */
-                exclude_range(src[index],minrng,maxrng);
+                /* Exclude scatter in range gates below minrng or beyond maxrng,
+                 * or below minsrng or beyond maxsrng */
+                exclude_range(src[index],minrng,maxrng,minsrng,maxsrng);
 
                 /* Exclude either ground or ionospheric scatter based on gsct flag */
                 FilterBoundType(src[index],grid->gsct);
@@ -981,7 +1041,7 @@ int main(int argc,char *argv[]) {
 
                     /* Apply the boxcar median filter to the radar scans included
                      * in the src array */
-                    if (mode !=-1) FilterRadarScan(mode,nbox,index,src,dst,15);
+                    if (mode !=-1) FilterRadarScan(mode,nbox,index,src,dst,15,isort);
                     else out=src[index];
 
                     /* Calculate year, month, day, hour, minute and second of
@@ -1001,8 +1061,8 @@ int main(int argc,char *argv[]) {
 
                     /* Test whether gridded data should be written to a file; if so
                      * returns weighted average velocity, power, and width values
-                     * for each grid cell (Note: avlen not actually used) */
-                    s=GridTableTest(grid,out,avlen);
+                     * for each grid cell */
+                    s=GridTableTest(grid,out);
 
                     /* If no errors were returned by GridTableTest and the beginning
                      * of the grid record is equal to or after stime then write
@@ -1020,7 +1080,7 @@ int main(int argc,char *argv[]) {
                     /* Map radar scan data in structure pointed to by 'out' to an
                      * equi-area grid in magnetic coordinates, storing the output
                      * in the grid GridTable structure */
-                    s=GridTableMap(grid,out,site,avlen,iflg,alt);
+                    s=GridTableMap(grid,out,site,avlen,iflg,alt,chisham,old_aacgm);
 
                     /* Return an error if mapping failed */
                     if (s !=0) {

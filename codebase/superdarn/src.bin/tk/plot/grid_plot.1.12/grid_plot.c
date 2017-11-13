@@ -3,7 +3,6 @@
    Author: R.J.Barnes
 */
 
-
 /*
  LICENSE AND DISCLAIMER
  
@@ -23,9 +22,6 @@
  
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
 */
 
 #include <stdio.h>
@@ -52,9 +48,7 @@
 #include "iplot.h"
 #include "splot.h"
 
-
 #include "polygon.h"
-
 
 #ifdef _XLIB_
 #include "xwin.h"
@@ -116,7 +110,6 @@ struct PolygonData *bnd;
 struct PolygonData *nbnd;
 struct PolygonData *pbnd;
 struct PolygonData *rbnd;
-
 
 struct PolygonData *grd;
 struct PolygonData *ngrd;
@@ -193,7 +186,6 @@ int circle_clip(struct Plot *plot,
 
 int square_clip(struct Plot *plot,
                 float xoff,float yoff,float wdt,float hgt) {
-
 
   float px[4];
   float py[4];
@@ -348,20 +340,15 @@ float find_hemisphere(struct GridData *ptr) {
   return h;
 }
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: grid_plot --help\n");
+  return(-1);
+}
 
 int main(int argc,char *argv[]) {
 
-/* File format transistion
-   * ------------------------
-   * 
-   * When we switch to the new file format remove any reference
-   * to "new". Change the command line option "new" to "old" and
-   * remove "old=!new".
-   */
-
-
   int old=0;
-  int new=0;
 
   char filename[256];
   FILE *outfp=NULL;
@@ -387,7 +374,6 @@ int main(int argc,char *argv[]) {
   struct timeval tmout;
   float delay=0.1;
   int xstat=0;
-
 #endif
 
   struct RfileIndex *oinx=NULL;
@@ -406,11 +392,8 @@ int main(int argc,char *argv[]) {
   char *cfname=NULL;
   FILE *fp;
 
-
-
   float wdt=540,hgt=540;
   float pad=-1;
-
 
   float khgt=80;
   float kwdt=44;
@@ -430,10 +413,8 @@ int main(int argc,char *argv[]) {
   unsigned char gflg=0;
   unsigned char pflg=0;
 
-
   unsigned char help=0; 
   unsigned char option=0; 
-
 
   char *bgcol_txt=NULL;
   char *txtcol_txt=NULL;
@@ -570,7 +551,6 @@ int main(int argc,char *argv[]) {
   float vsf=2.0;
   float vradius=2.0;
 
-
   unsigned char poleflg=0;
  
   unsigned char frmflg=0; 
@@ -579,6 +559,8 @@ int main(int argc,char *argv[]) {
   float lnewdt=0.5;
 
   char tsfx[16];
+
+  int chisham=0;
 
   rgrid=GridMake();
   rgridmrg=GridMake();
@@ -646,10 +628,9 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
 
-  OptionAdd(&opt,"new",'x',&new);
+  OptionAdd(&opt,"old",'x',&old);
 
   OptionAdd(&opt,"cf",'t',&cfname);
-
 
 #ifdef _XLIB_ 
   OptionAdd(&opt,"x",'x',&xd);
@@ -657,7 +638,6 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"xoff",'i',&xdoff);
   OptionAdd(&opt,"yoff",'i',&ydoff);
   OptionAdd(&opt,"delay",'f',&delay);
-
 #endif
 
   OptionAdd(&opt,"ppm",'x',&ppmflg);
@@ -673,14 +653,12 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"stdout",'x',&stdioflg); 
 
-
   OptionAdd(&opt,"xp",'f',&xpoff);
   OptionAdd(&opt,"yp",'f',&ypoff);
   OptionAdd(&opt,"wdt",'f',&wdt);
   OptionAdd(&opt,"hgt",'f',&hgt);
   OptionAdd(&opt,"pad",'f',&pad);
   OptionAdd(&opt,"lnewdt",'f',&lnewdt);
-
 
   OptionAdd(&opt,"st",'t',&stmestr);
   OptionAdd(&opt,"et",'t',&etmestr);
@@ -690,7 +668,6 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"t",'t',&stmestr);
   OptionAdd(&opt,"d",'t',&sdtestr);
-
 
   OptionAdd(&opt,"bgcol",'t',&bgcol_txt);
   OptionAdd(&opt,"txtcol",'t',&txtcol_txt);
@@ -724,7 +701,6 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"grdontop",'x',&grdtop);
   OptionAdd(&opt,"igrdontop",'x',&igrdtop);
 
-
   OptionAdd(&opt,"tmk",'x',&tmkflg);
 
   OptionAdd(&opt,"tmtick",'i',&tmtick);
@@ -742,7 +718,6 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"seacol",'t',&seacol_txt);
   OptionAdd(&opt,"trmcol",'t',&trmcol_txt);
   OptionAdd(&opt,"ftrmcol",'t',&ftrmcol_txt);
-
 
   OptionAdd(&opt,"tmkcol",'t',&tmkcol_txt);
 
@@ -769,7 +744,6 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"vecp",'x',&vecflg);
   OptionAdd(&opt,"vsf",'f',&vsf);
   OptionAdd(&opt,"vrad",'f',&vradius);
-
  
   OptionAdd(&opt,"tmlbl",'x',&tlblflg);
   OptionAdd(&opt,"logo",'x',&logoflg);
@@ -782,13 +756,15 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"frame",'x',&frmflg);
   OptionAdd(&opt,"over",'x',&ovrflg);
 
-
-
   OptionAdd(&opt,"def",'x',&defflg);
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);  
+  OptionAdd(&opt,"chisham",'x',&chisham); /* Data mapped using Chisham virtual height model */
 
-  old=!new;
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+
+  if (arg==-1) {
+    exit(-1);
+  }
 
   if (cfname !=NULL) { /* load the configuration file */
     int farg;
@@ -799,7 +775,12 @@ int main(int argc,char *argv[]) {
       cfname=NULL;
       optf=OptionProcessFile(fp);
       if (optf !=NULL) {
-        farg=OptionProcess(0,optf->argc,optf->argv,&opt,NULL);
+        farg=OptionProcess(0,optf->argc,optf->argv,&opt,rst_opterr);
+        if (farg==-1) {
+          fclose(fp);
+          OptionFreeFile(optf);
+          exit(-1);
+        }
         OptionFreeFile(optf);
        }   
        fclose(fp);
@@ -847,7 +828,10 @@ int main(int argc,char *argv[]) {
     magflg=1;
     rotflg=1;
     rawflg=1;
-    tmkflg=1;
+    fmapflg=1;
+    grdflg=1;
+    grdtop=1;
+    vkey_fname="color.key";
     vkeyflg=1;
     vecflg=1;
     tmeflg=1;
@@ -898,7 +882,7 @@ int main(int argc,char *argv[]) {
 
 
 
-  if (fovflg || ffovflg) fov=make_fov(rgrid->st_time,network); 
+  if (fovflg || ffovflg) fov=make_fov(rgrid->st_time,network,chisham); 
   if ((fovflg || ffovflg) && !magflg) MapModify(fov,AACGMtransform,&flg);
 
   if (tmtick<1) tmtick=1;
