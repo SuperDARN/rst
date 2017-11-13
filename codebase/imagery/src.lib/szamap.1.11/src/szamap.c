@@ -1,30 +1,10 @@
 /* szamap.c
    ========
-   Author: R.J.Barnes
+   Author: R.J.Barnes and others
 */
 
 /*
- LICENSE AND DISCLAIMER
- 
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+   See license.txt
 */
 
 #include <stdio.h>
@@ -33,11 +13,11 @@
 #include <math.h> 
 #include "rtime.h"
 #include "aacgm.h"
+#include "aacgmlib_v2.h"
 #include "polygon.h"
 #include "raster.h"
 #include "contour.h"
 #include "sza.h"
-
 
 
 double SZARound(double x) {
@@ -49,7 +29,6 @@ double SZARound(double x) {
   val=(x<0) ? -val : val;
   return val;
 }
-
 
 
 int SZATransform(int ssze,void *src,int dsze,void *dst,void *data) {
@@ -71,8 +50,9 @@ int SZATransform(int ssze,void *src,int dsze,void *dst,void *data) {
 }
 
 struct PolygonData **SZAContour(int yr,int mo,int dy,int hr,int mt,int sc,
-                                 int flg,int mode,float step,int znum,
-                                double *zenith) {
+                                int flg,int mode,float step,int znum,
+                                double *zenith)
+{
   int s;
   float arg[2];
   int c=0;
@@ -86,13 +66,16 @@ struct PolygonData **SZAContour(int yr,int mo,int dy,int hr,int mt,int sc,
 
   struct PolygonData **ctr=NULL;
 
+  int (*AACGM_Cnv)(double,double,double,double*,double*,double*,int);
  
   /* if mode !=0 then we are working in geomagnetic co-ordinates
    * and must transform to geographic when calculating zenith angle */
+  /* if mode == 1 then default AACGM_v2 == 2 then old AACGM */
+  if (mode == 1) AACGM_Cnv = &AACGM_v2_Convert;
+  else           AACGM_Cnv = &AACGMConvert;
 
   arg[0]=step;
   arg[1]=flg;
-
 
   dec=SZASolarDec(yr,mo,dy,hr,mt,sc);
   eqt=SZAEqOfTime(yr,mo,dy,hr,mt,sc);
@@ -107,8 +90,8 @@ struct PolygonData **SZAContour(int yr,int mo,int dy,int hr,int mt,int sc,
         if (mode==0) {
            tlat=lat;
            tlon=lon;
-        } else s=AACGMConvert(lat,lon,0,&tlat,&tlon,&r,1);
-        
+        } else s = (*AACGM_Cnv)(lat,lon,0,&tlat,&tlon,&r,1);
+
         LsoT=(hr*3600+mt*60)+(tlon*4*60)+eqt;
         Hangle=15*((LsoT/3600)-12);
         Z=SZAAngle(tlon,tlat,dec,Hangle);
@@ -127,7 +110,7 @@ struct PolygonData **SZAContour(int yr,int mo,int dy,int hr,int mt,int sc,
         if (mode==0) {
            tlat=lat;
            tlon=lon;
-        } else s=AACGMConvert(lat,lon,0,&tlat,&tlon,&r,1);
+        } else s = (*AACGM_Cnv)(lat,lon,0,&tlat,&tlon,&r,1);
         
         LsoT=(hr*3600+mt*60)+(tlon*4*60)+eqt;
         Hangle=15*((LsoT/3600)-12);
@@ -143,7 +126,7 @@ struct PolygonData **SZAContour(int yr,int mo,int dy,int hr,int mt,int sc,
         if (mode==0) {
            tlat=lat;
            tlon=lon;
-        } else s=AACGMConvert(lat,lon,0,&tlat,&tlon,&r,1);
+        } else s = (*AACGM_Cnv)(lat,lon,0,&tlat,&tlon,&r,1);
         
         LsoT=(hr*3600+mt*60)+(tlon*4*60)+eqt;
         Hangle=15*((LsoT/3600)-12);
@@ -206,7 +189,6 @@ struct PolygonData *SZATerminator(int yr,int mo,int dy,int hr,int mt,int sc,
       p=PolygonRead(ptr,0,n);
       PolygonAdd(trm,p);
 
-
       if ((o[0]<0) && (p[0]>0)) asc=n;    
       if ((o[0]>0) && (p[0]<0)) dsc=n;    
     }
@@ -234,7 +216,7 @@ struct PolygonData *SZATerminator(int yr,int mo,int dy,int hr,int mt,int sc,
        PolygonAdd(trm,pp);
        pp[1]--;
        if (pp[1]<-180) pp[1]+=360;
-    }  while (pp[1] != lon);
+    } while (pp[1] != lon);
 
     p=PolygonRead(ptr,0,n);   
     lon=SZARound(p[1]);
@@ -255,8 +237,7 @@ struct PolygonData *SZATerminator(int yr,int mo,int dy,int hr,int mt,int sc,
        pp[1]++;
        if (pp[1]>=180) pp[1]-=360;
 
-    }   while (pp[1] != lon);
-
+    } while (pp[1] != lon);
 
     ContourFree(1,ctr);
   } else {
@@ -281,23 +262,18 @@ struct PolygonData *SZATerminator(int yr,int mo,int dy,int hr,int mt,int sc,
       PolygonAdd(trm,p);
     }
 
-
     ContourFree(1,ctr);
-
-
   }
-
-
  
     return trm;
 }
 
 
 float *SZAMap(int yr,int mo,int dy,int hr,int mt,int sc,float latmin,
-               int wdt,int hgt,int mode,
-	       int (*trf)(int ssze,void *src,int dsze, void *dst,void *data),
-                 void *data) {
-
+              int wdt,int hgt,int mode,
+              int (*trf)(int ssze,void *src,int dsze, void *dst,void *data),
+              void *data)
+{
   float lat,lon;
   float xstep=1.0;
   float ystep=1.0;
@@ -320,6 +296,12 @@ float *SZAMap(int yr,int mo,int dy,int hr,int mt,int sc,float latmin,
 
   double tlon,tlat,r;
 
+  int (*AACGM_Cnv)(double,double,double,double*,double*,double*,int);
+
+  /* if mode > 0 then default AACGM_v2 else AACGM */
+  if (mode > 0) AACGM_Cnv = &AACGM_v2_Convert;
+  else          AACGM_Cnv = &AACGMConvert;
+
   dec=SZASolarDec(yr,mo,dy,hr,mt,sc);
   eqt=SZAEqOfTime(yr,mo,dy,hr,mt,sc);
 
@@ -336,24 +318,21 @@ float *SZAMap(int yr,int mo,int dy,int hr,int mt,int sc,float latmin,
       lon=x*xstep;
       lat=-90+y*ystep;
 
-
       if (mode==0) {
-	tlat=lat;
-	tlon=lon;
-      } else {
-	s=AACGMConvert(lat,lon,0,&tlat,&tlon,&r,1);
-      }
+        tlat=lat;
+        tlon=lon;
+      } else s = (*AACGM_Cnv)(lat,lon,0,&tlat,&tlon,&r,1);
 
       LsoT=(hr*3600+mt*60+sc)+(tlon*4*60)+eqt;
       Hangle=15*((LsoT/3600)-12);
       Z=SZAAngle(tlon,tlat,dec,Hangle);
       
       if ((y !=ynum-1) && (x !=xnum-1)) {
-	vertex[4*poly]=num;
-	vertex[4*poly+1]=num+1;
-	vertex[4*poly+2]=vertex[4*poly+1]+xnum;
-	vertex[4*poly+3]=num+xnum;
-	poly++;
+        vertex[4*poly]=num;
+        vertex[4*poly+1]=num+1;
+        vertex[4*poly+2]=vertex[4*poly+1]+xnum;
+        vertex[4*poly+3]=num+xnum;
+        poly++;
       }
 
       zbuf[num]=Z;
@@ -386,9 +365,7 @@ float *SZAMap(int yr,int mo,int dy,int hr,int mt,int sc,float latmin,
     tpoly++;
   }
 
-  
-  image=Raster(wdt,hgt,0,raster_FLOAT,&zeroval,tpoly,pnt,vertex,
-               zbuf);
+  image=Raster(wdt,hgt,0,raster_FLOAT,&zeroval,tpoly,pnt,vertex, zbuf);
   
   free(pnt);
   free(vertex);

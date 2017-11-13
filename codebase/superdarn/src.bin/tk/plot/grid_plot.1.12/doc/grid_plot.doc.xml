@@ -69,6 +69,8 @@
 </option>
 <option><on>-mag</on><od>use magnetic coordinates.</od>
 </option>
+<option><on>-old_aacgm</on><od>use older AACGM rather than default AACGM-v2 for magnetic coordinates.</od>
+</option>
 <option><on>-rotate</on><od>rotate the plot so that the local noon is at the top of the plot.</od>
 </option>
 <option><on>-flip</on><od>flip the direction of the X-axis.</od>

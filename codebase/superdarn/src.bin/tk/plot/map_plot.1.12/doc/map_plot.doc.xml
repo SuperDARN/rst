@@ -34,7 +34,7 @@
 </option>
 <option><on>-cf <ar>cfname</ar></on><od>read command line options from the file <ar>cfname</ar>.</od>
 </option>
-<option><on>-new</on><od>the input file is a <code>cnvmap</code> format file.</od>
+<option><on>-old</on><od>the input file is a <code>map</code> format file instead of the default <code>cnvmap</code> format file.</od>
 </option>
 <option><on>-sd <ar>yyyymmdd</ar></on><od>plot starting from the date <ar>yyyymmdd</ar>.</od>
 </option>
@@ -56,7 +56,7 @@
 </option>
 <option><on>-hgt <ar>height</ar></on><od>set the height of the plot to <ar>height</ar>.</od>
 </option>
-<option><on>-pad<ar>pad</ar></on><od>set the padding around the edge of the plot to  <ar>pad</ar>.</od>
+<option><on>-pad<ar>pad</ar></on><od>set the padding around the edge of the plot to <ar>pad</ar>.</od>
 </option>
 <option><on>-sf <ar>scale</ar></on><od>set the scale factor (magnification) to <ar>scale</ar>. The default scale factor is 1.</od>
 </option>
@@ -69,6 +69,8 @@
 <option><on>-latmin <ar>latmin</ar></on><od>adjust the scale factor so that the lowest visible latitude is  <ar>latmin</ar>. Applies when the stereographic projection is used.</od>
 </option>
 <option><on>-mag</on><od>use magnetic coordinates.</od>
+</option>
+<option><on>-old_aacgm</on><od>use older AACGM magnetic coordinates instead of the default AACGM-v2 coordinates.</od>
 </option>
 <option><on>-rotate</on><od>rotate the plot so that the local noon is at the top of the plot.</od>
 </option>
@@ -157,12 +159,10 @@
 </option>
 
 
-<option><on>-polycol <ar>aarrggbb</ar></on><od>set the color of contour polygons to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green\
- and blue component color.</od>
+<option><on>-polycol <ar>aarrggbb</ar></on><od>set the color of contour polygons to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
 </option>
 
-<option><on>-fpolycol <ar>aarrggbb</ar></on><od>set the color of filled contour polygons to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,r\
-ed,green and blue component color.</od>
+<option><on>-fpolycol <ar>aarrggbb</ar></on><od>set the color of filled contour polygons to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
 </option>
 
 <option><on>-hmbcol <ar>aarrggbb</ar></on><od>set the color of the Heppner-Maynard boundary  to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
@@ -195,6 +195,8 @@ ed,green and blue component color.</od>
 <option><on>-mrg</on><od>plot merged two-dimensional vectors.</od>
 </option>
 <option><on>-mod</on><od>plot the model vectors.</od>
+</option>
+<option><on>-nopad</on><od>combined with <ar>-mod</ar> will <b>not</b> show padding model zero vectors.</od>
 </option>
 
 <option><on>-ctr</on><od>plot potential contours.</od>
@@ -271,13 +273,16 @@ ed,green and blue component color.</od>
 <option><on>-time</on><od>plot the time of the plotted data.</od>
 </option>
 
+<option><on>-cmax <ar>cmax</ar></on><od>set the potential scale maximum to <ar>cmax</ar> (in units of Volts, not kV).</od>
+</option>
+
 <option><on>-vmax <ar>vmax</ar></on><od>set the absolute velocity scale maximum to <ar>vmax</ar>.</od>
 </option>
 
 <option><on>-pmax <ar>pmax</ar></on><od>set the power scale maximum to <ar>pmax</ar>.</od>
 </option>
 
-<option><on>-wmax <ar>vmax</ar></on><od>set the spectral width scale maximum to <ar>wmax</ar>.</od>
+<option><on>-wmax <ar>wmax</ar></on><od>set the spectral width scale maximum to <ar>wmax</ar>.</od>
 </option>
 
 <option><on>-frame</on><od>add a frame around the borders of the plot.</od>

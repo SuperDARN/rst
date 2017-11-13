@@ -36,6 +36,7 @@
 #include "shfvector.h"
 #include "fitvector.h"
 
+#include "calc_bmag.h"
 #include "svdcmp.h"
 #include "svdbksb.h"
 #include "shfconst.h"
@@ -49,12 +50,17 @@ void CnvMapLegendreIndex(int,int *,int *);
  
 #define PLM(L,m,i) *(plm+(m)*num+(L)*(order+1)*num+(i))
 
+/*
+ * This routine creates a potential matrix given in terms
+ * of Legendre polynomials at a set of points.
+ */
 double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
-			 int order,double latmin) {
+                         int order,double latmin,float decyear,
+                         int noigrf,int old_aacgm) {
   int kmax;
   int i,m,L,k;
 
-  double bpolar,bmag=-0.5e-4;
+  double bpolar;
   double thetamax;
   double alpha;
   double etheta,ephi;
@@ -67,6 +73,8 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
   double *a=NULL;
   double *phi=NULL;
   double *theta=NULL;
+  double *bmag=NULL;
+  int hemi=1;
 
   x=malloc(sizeof(double)*num);
   if (x==NULL) return NULL;
@@ -76,6 +84,8 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
   if (phi==NULL) return NULL;
   theta=malloc(sizeof(double)*num);
   if (theta==NULL) return NULL;
+  bmag=malloc(sizeof(double)*num);
+  if (bmag==NULL) return NULL;
 
   plm=malloc(sizeof(double)*(order+1)*(order+1)*num);
   if (plm==NULL) {
@@ -86,36 +96,48 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
   kmax=CnvMapIndexLegendre(order,order)+1;
 
   if (latmin>0) {
-
     bpolar = BNorth;
-
-    thetamax=(90-latmin)*PI/180;
-    alpha=PI/thetamax;
-    for (i=0;i<num;i++) {
-      x[i]=cos(alpha*(90.0-data[i].lat)*PI/180);
-      y[i]=sin(alpha*(90.0-data[i].lat)*PI/180);
-      phi[i]=data[i].lon*PI/180.0;
-      theta[i]=(90.0-data[i].lat)*PI/180.0;
-      phi[i]=(phi[i]>PI) ? (phi[i]-2.0*PI) : phi[i];
-    }
+    hemi = 1;
   } else {
-
     bpolar = BSouth;
+    hemi = -1;
+  }
 
-    thetamax=(90+latmin)*PI/180;
-    alpha=PI/thetamax;
-    for (i=0;i<num;i++) {
-      x[i]=cos(alpha*(90.0+data[i].lat)*PI/180);
-      y[i]=sin(alpha*(90.0+data[i].lat)*PI/180);
-      phi[i]=data[i].lon*PI/180.0;
-      theta[i]=(90.0+data[i].lat)*PI/180.0;
-      phi[i]=(phi[i]>PI) ? (phi[i]-2.0*PI) : phi[i];
+  thetamax=(90-hemi*latmin)*PI/180;
+  alpha=PI/thetamax;
+  for (i=0;i<num;i++) {
+    x[i]=cos(alpha*(90.0-data[i].lat)*PI/180);
+    y[i]=sin(alpha*(90.0-data[i].lat)*PI/180);
+    phi[i]=data[i].lon*PI/180.0;
+    theta[i]=(90.0-data[i].lat)*PI/180.0;
+    phi[i]=(phi[i]>PI) ? (phi[i]-2.0*PI) : phi[i];
+    if (noigrf) { /* use dipole value for B */
+      bmag[i] = bpolar*(1.0 - 3.0 * Altitude/Re)*
+                sqrt(3.0*(cos(theta[i])*cos(theta[i]))+1.0)/2.0;
+    } else {
+      bmag[i] = -calc_bmag(hemi*data[i].lat,data[i].lon,decyear,old_aacgm);
     }
   }
 
+  /* We have now defined all the latitude points in terms of
+   * the theta prime value, which is the stretched version of
+   * the theta angle - i.e. theta_prime goes to pi/2 at latmin
+   *
+   * Now compute all the Legendre polynomials at the theta prime points */
 
   CnvMapEvalLegendre(order,x,num,plm);
-  
+
+  /* Now evaulate the electric field and then the velocity
+   * in terms of the Plm's (which will eventually be multiplied
+   * by the coefficients of the best fit).
+   *
+   * Note: in the calculation of the derivative of the Plms,
+   *       you have to use theta prime in the theta derivatives
+   *       and multiply the whole thing by the stretching coefficient
+   *       alpha.  However, for the phi derivatives, the 1/sin(theta)
+   *       term comes from the gradient = 1/(r*sin(theta)) coefficient
+   *       of the partial of phi */
+
   a=malloc(sizeof(double)*num*(kmax+1)); 
   memset(a,0,sizeof(double)*num*(kmax+1));
   if (a==NULL) {
@@ -125,53 +147,61 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
     free(phi);
     free(theta);
     return NULL;
-  } 
+  }
+
+  /* First do the m=0 case */
+
   m=0;
   for (L=1;L<=order;L++) {
     k=CnvMapIndexLegendre(L,m);
     for (i=0;i<num;i++) {
-
-      bmag = bpolar*(1.0 - 3.0 * Altitude/Re)*
-             sqrt(3.0*(cos(theta[i])*cos(theta[i]))
-	          + 1.0)/2.0;
-
       etheta=alpha/Radial_Dist*L*(PLM(L-1,0,i)-x[i]*PLM(L,0,i))/y[i];
-      vphi=-etheta/(bmag);  
+      vphi=-etheta/(bmag[i]);  
       vlos=vphi*data[i].sin;
       a[k*num+i]=vlos;
     }
   }
+
+  /* Now do the rest of the m's */
+
   for (m=1;m<=order;m++) {
     for (L=m;L<=order;L++) {
       k=CnvMapIndexLegendre(L,m);
       for (i=0;i<num;i++) {
 
-        bmag = bpolar*(1.0 - 3.0 * Altitude/Re)*
-                       sqrt(3.0*(cos(theta[i])*cos(theta[i]))+ 1.0)/2.0;
+        /* Here the etheta/ephi variables give the electric
+         * field for the cos(phi) term in the expansion of
+         * the potential */
 
         etheta=-(cos(m*phi[i])/y[i]*(-((L+m)*PLM(L-1,m,i))+
 			             L*x[i]*PLM(L,m,i)));
         etheta=etheta*alpha/Radial_Dist;
         ephi=m*PLM(L,m,i)*sin(m*phi[i])/sin(theta[i]);
         ephi=ephi/Radial_Dist;
-        vtheta=ephi/bmag;
-        vphi=-etheta/bmag;
-        
+
+        vtheta=ephi/bmag[i];
+        vphi=-etheta/bmag[i];
+
         vlos=vtheta*data[i].cos+vphi*data[i].sin;
-        a[k*num+i]=vlos;                    
+        a[k*num+i]=vlos;
+
+        /* Here the etheta/ephi variables give the electric
+         * field for the sin(phi) term in the expansion of
+         * the potential */
+
         etheta=-(sin(m*phi[i])/y[i]*(-((L+m)*PLM(L-1,m,i))+
 			             L*x[i]*PLM(L,m,i)));
         etheta=etheta*alpha/Radial_Dist;
         ephi=-m*(cos(m*phi[i])/sin(theta[i])*PLM(L,m,i));
         ephi=ephi/Radial_Dist;
-        vtheta=ephi/bmag;
-        vphi=-etheta/bmag;
-        
+
+        vtheta=ephi/bmag[i];
+        vphi=-etheta/bmag[i];
+
         vlos=vtheta*data[i].cos+vphi*data[i].sin;
-     
+
         a[num*(k+1)+i]=vlos;  
-       
-     
+
       }
     }
   }
@@ -180,12 +210,15 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
   free(y);
   free(theta);
   free(phi);
+  free(bmag);
   return a;
 }
 
+
 double CnvMapFitVector(int num,struct CnvMapSHFVec *data,
-		       double *coef,double *fitvel,
-		        int order,double latmin) {
+                       double *coef,double *fitvel,int order,
+                       double latmin,float decyear,int noigrf,
+                       int old_aacgm) {
 
   int kmax;
   int i,k,n,L,m;
@@ -223,14 +256,19 @@ double CnvMapFitVector(int num,struct CnvMapSHFVec *data,
   var=malloc(sizeof(double)*(kmax+1)*(kmax+1));
   a=malloc(sizeof(double)*num*(kmax+1)); 
 
-  amat=CnvMapVlosMatrix(num,data,order,latmin);
+  /* Compute the matrix describing the line-of-sight velocities */
+
+  amat=CnvMapVlosMatrix(num,data,order,latmin,decyear,noigrf,old_aacgm);
   if (amat==NULL) { 
     free(result);
     free(soltn);
     free(plm);
     return -1;
   }
-  
+
+  /* Now compute the velocity matrix adjusted for the error bars on
+   * the line-of-sight velocity measurements. */
+
   for (i=0;i<num;i++) {
     result[i]=data[i].vlos/data[i].verr;
     for (k=0;k<=kmax;k++) {
@@ -264,7 +302,10 @@ double CnvMapFitVector(int num,struct CnvMapSHFVec *data,
   }
   x=-1;
   CnvMapEvalLegendre(order,&x,1,plm); 
-   
+
+  /* Now pull the solution vector apart and make it into the
+   * matrix "coef" */
+
   for (k=0;k<=kmax;k++) {
     CnvMapLegendreIndex(k,&L,&m);
     coef[4*k]=L;
@@ -283,25 +324,4 @@ double CnvMapFitVector(int num,struct CnvMapSHFVec *data,
   free(plm);
   return chi_sqr;
 }  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

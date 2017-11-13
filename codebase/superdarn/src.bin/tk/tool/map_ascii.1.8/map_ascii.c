@@ -54,8 +54,8 @@
 #include "oldcnvmapread.h"
 #include "cnvmapsolve.h"
 #include "make_pgrid.h"
-
-
+#include "aacgmlib_v2.h"
+#include "igrflib.h"
 
 
 struct OptionData opt;
@@ -69,8 +69,10 @@ double *zbuffer=NULL;
 int zwdt,zhgt;
 struct polydata *ctr;
 
-void opterr(char *txt) {
-  fprintf(stderr,"Option not recognized:%s\n",txt);
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: map_ascii --help\n");
+  return(-1);
 }
 
 double strdate(char *text) {
@@ -100,26 +102,20 @@ double strtime(char *text) {
 
 int main(int argc,char *argv[]) {
 
- /* File format transistion
-   * ------------------------
-   *
-   * When we switch to the new file format remove any reference
-   * to "new". Change the command line option "new" to "old" and
-   * remove "old=!new".
-   */
-
   int old=0;
-  int new=0;
-
-
+  int old_aacgm=0;
 
   int arg;
   struct RfileIndex *oinx=NULL;
   struct CnvMapIndex *inx=NULL;
 
-
   int yr,mo,dy,hr,mt;
   double sc;
+  int tme;
+  int yrsec;
+  int first;
+  int noigrf=0;
+  float decyear;
 
   FILE *grdfp;
   int i;
@@ -138,7 +134,6 @@ int main(int argc,char *argv[]) {
   char *extime_txt=NULL;
   char *etime_txt=NULL;
   char *edate_txt=NULL;
-
 
   double stime=-1;
   double etime=-1;
@@ -166,25 +161,21 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
-
-  OptionAdd(&opt,"new",'x',&new);
-
+  OptionAdd(&opt,"old",'x',&old);
+  OptionAdd(&opt,"old_aacgm",'x',&old);
   OptionAdd(&opt,"vb",'x',&vb);
-
   OptionAdd(&opt,"st",'t',&stime_txt);
   OptionAdd(&opt,"sd",'t',&sdate_txt);
-
   OptionAdd(&opt,"et",'t',&etime_txt);
   OptionAdd(&opt,"ed",'t',&edate_txt);
-
   OptionAdd(&opt,"ex",'t',&extime_txt);
-
   OptionAdd(&opt,"latmin",'f',&latmin);
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
-  old=!new;
-
+  if (arg==-1) {
+    exit(-1);
+  }
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
@@ -195,7 +186,6 @@ int main(int argc,char *argv[]) {
     OptionDump(stdout,&opt);
     exit(0);
   }
-
 
   if (stime_txt !=NULL)  stime=strtime(stime_txt);
   if (etime_txt !=NULL)  etime=strtime(etime_txt);
@@ -225,7 +215,6 @@ int main(int argc,char *argv[]) {
     }
   }
 
-
   if (arg !=argc) grdfp=fopen(argv[arg],"r");
   else grdfp=stdin;
   if (grdfp==NULL) {
@@ -247,7 +236,7 @@ int main(int argc,char *argv[]) {
 
   if ((map->hemisphere==-1) && (latmin>0)) latmin=-latmin;
 
- if (stime !=-1) { /* we must skip the start of the files */
+  if (stime !=-1) { /* we must skip the start of the files */
     int yr,mo,dy,hr,mt;
     double sc;
 
@@ -273,11 +262,25 @@ int main(int argc,char *argv[]) {
 
   if (extime !=0) etime=stime+extime;
 
+  first = 1;
   do {
 
     if (vb !=0) {
       TimeEpochToYMDHMS(grd->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
       fprintf(stderr,"%d-%d-%d %d:%d:%d\n",dy,mo,yr,hr,mt,(int) sc);
+    }
+
+    tme = (grd->st_time + grd->ed_time)/2.0;
+    TimeEpochToYMDHMS(tme,&yr,&mo,&dy,&hr,&mt,&sc);
+    yrsec = TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int)sc);
+    decyear = yr + (float)yrsec/TimeYMDHMSToYrsec(yr,12,31,23,59,59);
+
+    noigrf = map->noigrf;
+
+    if (first) {
+      if (!noigrf)    IGRF_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
+      if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
+      first = 0;
     }
 
     if (fnum==0)  {
@@ -286,7 +289,7 @@ int main(int argc,char *argv[]) {
     }
     memset(count,0,grid->num*sizeof(int));
     grid->type=0;
-    CnvMapSolve(map,grid);
+    CnvMapSolve(map,grid,decyear,old_aacgm);
 
     num=0;
     for (i=0;i<grid->num;i++) {
@@ -312,7 +315,8 @@ int main(int argc,char *argv[]) {
     for (i=0;i<grid->num;i++) {
       if (fabs(grid->lat[i])<=fabs(map->latmin)) continue;
       fprintf(stdout,"%#10g %10d ",grid->mag[i],count[i]);
-      AACGMConvert(grid->lat[i],grid->lon[i],300.0,&glat,&glon,&r,1);
+      if (old_aacgm) AACGMConvert(grid->lat[i],grid->lon[i],300.0,&glat,&glon,&r,1);
+      else AACGM_v2_Convert(grid->lat[i],grid->lon[i],300.0,&glat,&glon,&r,1);
       fprintf(stdout,"%#10g %#10g ",glat,glon);
       mlt=grid->lon[i]/15.0+map->mlt.av;
       if (mlt>24.0) mlt-=24.0;
@@ -328,15 +332,4 @@ int main(int argc,char *argv[]) {
   if (grdfp !=stdin) fclose(grdfp);
   return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
 
