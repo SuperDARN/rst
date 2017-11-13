@@ -3,17 +3,24 @@
 <project>superdarn</project>
 <name>map_addimf</name>
 <location>src.bin/tk/tool/map_addimf</location>
+<syntax></syntax>
 <syntax>map_addimf --help</syntax>
-<syntax>map_addimf [-vb] [-new] [-ace] [-wind] [-p <ar>path</ar>] [-d <ar>hr:mn</ar>] [-ex hr:mn] [<ar>mapname</ar>]</syntax>
-<syntax>map_addimf [-vb] [-new] [-ace] [-wind] [-p <ar>path</ar>] [-df <ar>delayname</ar>] [-ex hr:mn] [<ar>mapname</ar>]</syntax>
-<syntax>map_addimf [-vb] [-new] [-ace] [-if <ar>imfname</ar>] [-d <ar>hr:mn</ar>] [<ar>mapname</ar>]</syntax>
-<syntax>map_addimf [-vb] [-new] [-ace] [-if <ar>imfname</ar>] [-df <ar>delayname</ar>] [<ar>mapname</ar>]</syntax>
-<syntax>map_addimf [-vb] [-new] [-ace] [-bx <ar>bx</ar>] [-by <ar>by</ar>] [-bz <ar>bz</bz>] [<ar>mapname</ar>]</syntax>
+<syntax>map_addimf [-vb] [-old] [-ace|-wind|-omni] [-p <ar>path</ar>] [-d <ar>hr:mn</ar>] [-ex hr:mn]</syntax>
+<syntax>           [<ar>mapname</ar>]</syntax>
+<syntax>map_addimf [-vb] [-old] [-ace|-wind|-omni] [-p <ar>path</ar>] [-df <ar>delayname</ar>] [-ex hr:mn]</syntax>
+<syntax>           [<ar>mapname</ar>]</syntax>
+<syntax>map_addimf [-vb] [-old] [-if <ar>imfname</ar>] [-d <ar>hr:mn</ar>] [<ar>mapname</ar>]</syntax>
+<syntax>map_addimf [-vb] [-old] [-if <ar>imfname</ar>] [-df <ar>delayname</ar>] [<ar>mapname</ar>]</syntax>
+<syntax>map_addimf [-vb] [-old] [-bx <ar>bx</ar>] [-by <ar>by</ar>] [-bz <ar>bz</ar>] [-vx <ar>vx</ar>] [-tilt <ar>tilt</ar>]</syntax>
+<syntax>           [<ar>mapname</ar>]</syntax>
+<syntax></syntax>
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
-<option><on>-new</on><od>the input file is a <code>cnvmap</code> format file.</od></option>
+<option><on>-old</on><od>the input file is a <code>map</code> format file.</od></option>
+<option><on>-omni</on><od>use data from OMNI.</od>
+</option>
 <option><on>-ace</on><od>use IMF data from ACE.</od>
 </option>
 <option><on>-wind</on><od>use IMF data from wind.</od>
@@ -22,10 +29,10 @@
 </option>
 <option><on>-d <ar>hr:mn</ar></on><od>set the IMF delay time to  <ar>hr:mn</ar>.</od>
 </option>
-<option><on>-ex <ar>hr:mn</ar></on><od>read <ar>hr</ar> hours and <ar>mn</ar> minutes of IMF data. By default, 24 hours of data is read.</od>
-</option>
-<option><on><ar>mapname</ar></on><od>filename of the <code>map</code> format file. If this is omitted, the file will be read from standard input.</od>
-</option>
+<option><on>-ex <ar>hr:mn</ar></on><od>read <ar>hr</ar> hours and <ar>mn</ar> minutes of IMF data. By default, 24 hours</od></option>
+<option><on></on><od>  of data is read.</od></option>
+<option><on><ar>mapname</ar></on><od>filename of the <code>map</code> format file. If this is omitted, the file will</od></option>
+<option><on></on><od>  be read from standard input.</od></option>
 <option><on>-df <ar>delayname</ar></on><od>read the delay times from the ASCII text file <ar>delayname</ar>.</od>
 </option>
 <option><on>-if <ar>imfname</ar></on><od>read the IMF data from the ASCII text file <ar>imfname</ar>.</od>
@@ -36,11 +43,14 @@
 </option>
 <option><on>-bz <ar>bx</ar></on><od>set the Z component of the magnetic field to <ar>bz</ar>.</od>
 </option>
-<synopsis><p>Adds IMF data to a convection map file.</p></synopsis>
+<option><on>-vx <ar>vx</ar></on><od>set the solar wind velocity to <ar>vx</ar> [km/s].</od>
+</option>
+<option><on>-tilt <ar>tilt</ar></on><od>set the dipole tilt angle to <ar>tilt</ar> [degrees].</od>
+</option>
+<synopsis><p>Adds IMF and solar wind data to a convection map file.</p></synopsis>
 
 
-
-<description><p>Adds IMF data to a convection map file.</p>
+<description><p>Adds IMF and solar wind data to a convection map file.</p>
 <p>The IMF applied to the map file can be fixed, taken from the ACE or Wind spacecraft, or read from a plain text file. The processed file is written to standard output.</p>
 <p>If the "<code>-ace</code>" or "<code>-wind</code>" options are specified, the IMF data is taken from the appropriate CDF files for each spacecraft. The files are read from the "ace" and "wind" sub-directories of the path given by given by the "-path" option or by the environment variable "<code>ISTP_PATH</code>".  The argument "<code>-ex</code>" is used to specify how much IMF data should be loaded. By default only 24 hours of data is read.</p>
 <p>The IMF delay can either be fixed using the "<code>-d</code>" option or read from a text file using the "<code>-df</code>" option.  Any lines in the file beginning the character "<code>#</code>" are treated as comments and ignored. Any other lines are expected to contain a time followed by the delay in hours and minutes:</p>

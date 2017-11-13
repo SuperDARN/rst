@@ -28,12 +28,10 @@
  
 */
 
-
-
-
 #ifndef _FITMAP_H
 #define _FITMAP_H
 
-int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd);
+int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd,
+                 float decyear,int old_aacgm);
 
 #endif

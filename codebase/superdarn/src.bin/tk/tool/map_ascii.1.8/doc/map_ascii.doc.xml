@@ -4,12 +4,15 @@
 <name>map_ascii</name>
 <location>src.bin/tk/tool/map_ascii</location>
 <syntax>map_ascii --help</syntax>
-<syntax>map_ascii [-vb] [-new] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>] <ar>name</ar></syntax>
+<syntax>map_ascii [-vb] [-old] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>] <ar>name</ar></syntax>
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
-<option><on>-new</on><od>the input file is a <code>cnvmap</code> format file.</od></option>
+<option><on>-old</on><od>the input file is a <code>map</code> format file.</od>
+</option>
+<option><on>-old_aacgm</on><od>uses the older AACGM software and coefficients. The default is to use AACGM-v2.</od>
+</option>
 <option><on>-sd <ar>yyyymmdd</ar></on><od>extract starting from the date <ar>yyyymmdd</ar>.</od>
 </option>
 <option><on>-st <ar>hr:mn</ar></on><od>extract starting from the time <ar>hr:mn</ar>.</od>
@@ -33,7 +36,7 @@
 </description>
 
 <example>
-<command>map_ascii 20030405.map &gt; 20030405.txt</command>
+<command>map_ascii -old 20030405.map &gt; 20030405.txt</command>
 <description>Generate a plain ASCII, derived potential file from the file "<code>20030405.map</code>". The potentials are stored in the file "<code>20030405.txt</code>".</description>
 </description>
 

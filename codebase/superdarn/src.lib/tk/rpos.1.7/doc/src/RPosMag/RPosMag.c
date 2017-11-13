@@ -1,4 +1,4 @@
-/* RposMag
+/* RPosMag
    =======
    Author: R.J.Barnes */
 
