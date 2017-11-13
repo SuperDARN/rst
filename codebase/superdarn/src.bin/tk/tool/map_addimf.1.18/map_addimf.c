@@ -1,31 +1,25 @@
 /* map_addimf.c
    =========== 
-   Author: R.J.Barnes
+   Author: R.J.Barnes and others
 */
 
 /*
- LICENSE AND DISCLAIMER
- 
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+   See license.txt
 */
+
+/*
+ * SGS: the wind, ace, etc. functions should be in the respective .c files,
+ *      not in this file. I suspect they are located here to access global
+ *      variables defined in this file.
+ *
+ * SGS: this function should be renamed to reflect the fact that it adds IMF,
+ *      solar wind, tilt and (in the future) activity.
+ *
+ * SGS: add better directory specification
+ *
+ * SGS: add omni data files and functions to read them
+ *
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -56,7 +50,7 @@ char *fname=NULL;
 FILE *fp;
 
 struct GridData *grd;
-struct CnvMapData  *map;
+struct CnvMapData *map;
  
 char dpath[256]={"/data"};
 
@@ -64,7 +58,7 @@ double st_time;
 double ed_time;
 
 struct file_list *fptr;
-struct imfdata imf;
+struct swdata sw;
 
 struct RCDFData data[10];
 
@@ -79,103 +73,349 @@ struct delaytab {
   float *delay;
 };
 
+/*
+ * function prototypes
+ */
+/*int findvalue(int inx,int cnt,double *time,float *data,double tval,float *val);*/
+int findvalue(struct swdata *ptr, double tme, float *val);
+int load_text(FILE *fp, struct swdata *ptr);
+struct delaytab *load_delay(FILE *fp);
+double strtime(char *text);
+int load_omni();
+int load_wind();
+int load_ace();
 
-int findvalue(int inx,int cnt,double *time,float *data,double tval,float *val) {
-  int i;
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: map_addimf --help\n");
+  return(-1);
+}
+
+int main(int argc,char *argv[])
+{
+  int old=0;
+
+  int arg;
+  unsigned char help=0;
+  unsigned char option=0;
+
+  unsigned char vb=0;
+
+  char *envstr;
+ 
+  char *dname=NULL;
+  struct delaytab *dtable=NULL;
+
+  char *iname=NULL;
+
+  unsigned char aflg=0,wflg=0,oflg=0;
+
+  int yr,mo,dy,hr,mt;
+  double sc;
+  double tme;
+
+  int s;
+  float extent=24*3600;
+  float delay=1800;
+  float dBx=0;
+  float dBy=0;
+  float dBz=0;
+
+  float dVx=0;
+  float dtilt=-99;
+
+  char *pstr=NULL;
+  char *dstr=NULL;
+  char *estr=NULL;
+
+  float tmp[4];
+
+  int k;
+
+  /* function pointers for file reading/writing (old and new) */
+  int (*Map_Read)(FILE *, struct CnvMapData *, struct GridData *);
+  int (*Map_Write)(FILE *, struct CnvMapData *, struct GridData *);
+
+  grd = GridMake();
+  map = CnvMapMake(); 
+ 
+  envstr = getenv("ISTP_PATH");
+  if (envstr != NULL) strcpy(dpath,envstr);
+
+  OptionAdd(&opt,"-help",'x',&help);
+  OptionAdd(&opt,"-option",'x',&option);
+
+  OptionAdd(&opt,"old",'x',&old);
+  OptionAdd(&opt,"vb",'x',&vb);
+  OptionAdd(&opt,"ace",'x',&aflg);
+  OptionAdd(&opt,"wind",'x',&wflg);
+  OptionAdd(&opt,"omni",'x',&oflg);
+  OptionAdd(&opt,"if",'t',&iname);
+  OptionAdd(&opt,"df",'t',&dname);
+
+  OptionAdd(&opt,"p",'t',&pstr);
+  OptionAdd(&opt,"d",'t',&dstr);
+
+  OptionAdd(&opt,"bx",'f',&dBx);
+  OptionAdd(&opt,"by",'f',&dBy);
+  OptionAdd(&opt,"bz",'f',&dBz);
+
+  OptionAdd(&opt,"vx",'f',&dVx);
+  OptionAdd(&opt,"tilt",'f',&dtilt);
+
+  OptionAdd(&opt,"ex",'t',&estr);
+
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+
+  if (arg==-1) {
+    exit(-1);
+  }
+
+  if (help==1) {
+    OptionPrintInfo(stdout,hlpstr);
+    exit(0);
+  }
+
+  if (option==1) {
+    OptionDump(stdout,&opt);
+    exit(0);
+  }
+
+  if (pstr !=NULL) strcpy(dpath,pstr);
+  if (dstr !=NULL) delay=strtime(dstr);  
+  if (estr !=NULL) extent=strtime(estr);
+  
+  if (arg !=argc) fname=argv[arg];
+
+  if (dname !=NULL) {
+    fp=fopen(dname,"r");
+    if (fp !=NULL) {
+     dtable=load_delay(fp);
+     fclose(fp);
+    }
+  }  
+
+  if (iname != NULL) {
+    fp = fopen(iname,"r");
+    if (fp !=NULL) {
+     load_text(fp,&sw);
+     fclose(fp);
+    }
+  }
+
+  if (fname !=NULL) {
+    fp=fopen(fname,"r");
+    if (fp==NULL) {
+      fprintf(stderr,"File not found.\n");
+      exit(-1);
+    }
+  } else fp=stdin;
+
+  if (dtable !=NULL) delay = dtable->delay[0];
+
+  /* set function pointer to read/write old or new */
+  if (old) {
+    Map_Read  = &OldCnvMapFread;
+    Map_Write = &OldCnvMapFwrite;
+  } else {
+    Map_Read  = &CnvMapFread;
+    Map_Write = &CnvMapFwrite;
+  }
+
+  s = (*Map_Read)(fp,map,grd);
+
+  st_time = map->st_time - delay;
+  ed_time = map->st_time - delay + extent; 
+
+  if (wflg == 1)      load_wind();
+  else if (aflg == 1) load_ace();
+  else if (oflg == 1) load_omni();
+
+  k = 0;
+
+  do {  
+
+    if (dtable != NULL) {
+      while ((k < dtable->num) && (dtable->time[k] <= map->st_time)) k++;
+      if (k == 0) delay = dtable->delay[0];
+      else        delay = dtable->delay[k-1];
+    }  
+
+    tme = map->st_time - delay;
+    map->Bx = dBx;
+    map->By = dBy;
+    map->Bz = dBz;
+    if (old) map->Bx = dVx;  /* SGS: consider modifying the map structure */
+    else     map->Vx = dVx;
+
+    map->imf_flag = 9;
+
+    if (sw.cnt != 0) {
+/*      findvalue(0,sw.cnt,sw.time,sw.BGSMc,tme,tmp);*/
+      findvalue(&sw,tme,tmp);
+      map->Bx = tmp[0];
+      map->By = tmp[1];
+      map->Bz = tmp[2];
+      if (old) map->Bx = tmp[3];
+      else     map->Vx = tmp[3];
+    }
+    map->imf_delay = delay/60;
+
+    (*Map_Write)(stdout,map,grd);
+
+    if (vb==1) {
+       TimeEpochToYMDHMS(map->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
+       if (old)
+         fprintf(stderr,
+                 "%d-%d-%d %d:%d:%d delay=%d:%d Vx=%g By=%g Bz=%g\n",
+                 yr,mo,dy,hr,mt,(int) sc,(int) (delay/3600),
+                 ( (int) delay % 3600)/60, map->Bx,map->By,map->Bz);
+       else
+         fprintf(stderr,
+                 "%d-%d-%d %d:%d:%d delay=%d:%d Bx=%g By=%g Bz=%g Vx=%g\n",
+                 yr,mo,dy,hr,mt,(int) sc,(int) (delay/3600),
+                 ( (int) delay % 3600)/60, map->Bx,map->By,map->Bz,map->Vx);
+    }  
+
+    s = (*Map_Read)(fp,map,grd);
+
+  } while (s != -1);
+
+  fclose(fp); 
+
+  return 0; 
+}
+
+
+/*int findvalue(int inx, int cnt, double *time, float *data, double tval,
+              float *val)*/
+int findvalue(struct swdata *ptr, double tme, float *val)
+{
+  int i,cnt;
   double stime,etime,v;
+  float *imf, *sw;
   int sinx,einx;
 
-  val[0]=FILL_VALUE;
-  val[1]=FILL_VALUE;
-  val[2]=FILL_VALUE;
+  imf = ptr->BGSMc;
+  sw  = ptr->Vx;
+  cnt = ptr->cnt;
 
-  for (i=0;(i<cnt) && (time[i]<=tval);i++);
+  for (i=0; i<4; i++) val[i] = FILL_VALUE;
 
-  einx=i;
-  while ((einx<cnt) && (fabs(data[3*einx])>fabs(FILL_VALUE/2))) einx++;
-  sinx=i-1;
-  while ((sinx>=0) && (fabs(data[3*sinx])> fabs(FILL_VALUE/2))) sinx--;
+  for (i=0; (i < cnt) && (ptr->time[i] <= tme); i++);
+
+  einx = i;
+  while ((einx < cnt) && (fabs(imf[3*einx]) > fabs(FILL_VALUE/2))) einx++;
+  sinx = i-1;
+  while ((sinx >= 0)  && (fabs(imf[3*sinx]) > fabs(FILL_VALUE/2))) sinx--;
  
-  if (sinx<0) sinx=0;
-  if (einx>=cnt) einx=cnt-1;
+  if (sinx < 0)    sinx = 0;      /* start index */
+  if (einx >= cnt) einx = cnt-1;  /* end   index */
 
-  etime=time[einx];
-  stime=time[sinx];
-  if (tval<stime) return -1;
-  if (tval>etime) return -1;
+  etime = ptr->time[einx];
+  stime = ptr->time[sinx];
+  if (tme < stime) return -1;
+  if (tme > etime) return -1;
 
-  if (einx !=sinx) {  
-    v=(tval-stime)/(etime-stime);
-  } else v=0;
+  if (einx != sinx) v = (tme - stime)/(etime - stime);
+  else              v = 0;
 
-  if ((fabs(data[3*sinx]) < fabs(FILL_VALUE/2)) &&
-      (fabs(data[3*einx]) < fabs(FILL_VALUE/2))) {
-    val[0]=data[3*sinx]*(1-v)+data[3*einx]*v;
-    val[1]=data[3*sinx+1]*(1-v)+data[3*einx+1]*v;
-    val[2]=data[3*sinx+2]*(1-v)+data[3*einx+2]*v;
-  } else if (fabs(data[3*sinx]) < fabs(FILL_VALUE/2)) {
-    val[0]=data[3*sinx];
-    val[1]=data[3*sinx+1];
-    val[2]=data[3*sinx+2];
-  }  else if (fabs(data[3*einx]) < fabs(FILL_VALUE/2)) {
-    val[0]=data[3*einx];
-    val[1]=data[3*einx+1];
-    val[2]=data[3*einx+2];
+  if ((fabs(imf[3*sinx]) < fabs(FILL_VALUE/2)) &&
+      (fabs(imf[3*einx]) < fabs(FILL_VALUE/2))) {
+    val[0] = imf[3*sinx]*(1-v)   + imf[3*einx]*v;
+    val[1] = imf[3*sinx+1]*(1-v) + imf[3*einx+1]*v;
+    val[2] = imf[3*sinx+2]*(1-v) + imf[3*einx+2]*v;
+    val[3] = sw[sinx]*(1-v)      + sw[einx]*v;
+  } else if (fabs(imf[3*sinx]) < fabs(FILL_VALUE/2)) {
+    val[0] = imf[3*sinx];
+    val[1] = imf[3*sinx+1];
+    val[2] = imf[3*sinx+2];
+    val[3] = sw[sinx];
+  }  else if (fabs(imf[3*einx]) < fabs(FILL_VALUE/2)) {
+    val[0] = imf[3*einx];
+    val[1] = imf[3*einx+1];
+    val[2] = imf[3*einx+2];
+    val[3] = sw[einx];
   }
+
+  if (val[3] == FILL_VALUE) val[3] = 0; /* set Vx to zero for default */
+
   return sinx;
 }
 
 
-
-
-int load_text(FILE *fp,struct imfdata *ptr) {
-
+int load_text(FILE *fp, struct swdata *ptr)
+{
   int yr,mo,dy,hr,mt;
   float sc;
-  float bx,by,bz;
-  char line[256];
-  int i;
+  float bx,by,bz,vx;
+  char line[256],save[256];
+  char *tok;
+  int i,blk,ntok;
   int cnt=0;
 
-  ptr->time=malloc(sizeof(double)*IMFSTEP);
-  ptr->BGSMc=malloc(sizeof(float)*IMFSTEP*3);
-  ptr->BGSEc=malloc(sizeof(float)*IMFSTEP*3);
-   while(fgets(line,256,fp) !=NULL) {
-    for (i=0;(line[i] !=0) && ((line[i]==' ') || (line[i]=='\t') ||
-             (line[i] =='\n'));i++);
-    if (line[i]==0) continue;
-    if (line[i]=='#') continue;
-  
-    if (sscanf(line,"%d %d %d %d %d %g %g %g %g",&yr,&mo,&dy,&hr,&mt,&sc,
-              &bx,&by,&bz) != 9) continue;
-    ptr->time[cnt]=TimeYMDHMSToEpoch(yr,mo,dy,hr,mt,sc);
-    ptr->BGSMc[cnt*3]=bx;
-    ptr->BGSMc[cnt*3+1]=by;
-    ptr->BGSMc[cnt*3+2]=bz;
+  ptr->time  = malloc(sizeof(double)*IMFSTEP);
+  ptr->BGSMc = malloc(sizeof(float)*IMFSTEP*3);
+  ptr->BGSEc = malloc(sizeof(float)*IMFSTEP*3);
+  ptr->Vx    = malloc(sizeof(float)*IMFSTEP);
 
-    ptr->BGSEc[cnt*3]=bx;   /* fudge as we assume the file contains */
-    ptr->BGSEc[cnt*3+1]=by; /* only one set of values. */
-    ptr->BGSEc[cnt*3+2]=bz;
+  while(fgets(line,256,fp) != NULL) {
 
-    cnt++;
-    if ((cnt % IMFSTEP)==0) {
-        int blk;
-        blk=1+cnt/IMFSTEP;
-        ptr->time=realloc(ptr->time,sizeof(double)*IMFSTEP*blk);
-        ptr->BGSMc=realloc(ptr->BGSMc,sizeof(float)*IMFSTEP*blk*3);
-        ptr->BGSEc=realloc(ptr->BGSEc,sizeof(float)*IMFSTEP*blk*3);
+    for (i=0; (line[i] != 0) && ((line[i] == ' ') || (line[i] == '\t') ||
+             (line[i] == '\n')); i++);
+    if (line[i] == 0) continue;
+    if (line[i] == '#') continue;
 
+    /* count the number of tokens */
+    strcpy(save,line);
+    ntok = 0;
+    tok = strtok(save, " ");
+    while (tok != NULL) {
+      ntok++;
+      tok = strtok(NULL, " ");
     }
 
+    if (ntok == 9)
+      sscanf(line,"%d%d%d%d%d%f%f%f%f",&yr,&mo,&dy, &hr,&mt,&sc,
+                  &bx,&by,&bz);
+    else if (ntok == 10)
+      sscanf(line,"%d%d%d%d%d%f%f%f%f%f",&yr,&mo,&dy, &hr,&mt,&sc,
+                  &bx,&by,&bz, &vx);
+    else continue;
+
+    ptr->time[cnt]      = TimeYMDHMSToEpoch(yr,mo,dy,hr,mt,sc);
+    ptr->BGSMc[cnt*3]   = bx;
+    ptr->BGSMc[cnt*3+1] = by;
+    ptr->BGSMc[cnt*3+2] = bz;
+
+    ptr->BGSEc[cnt*3]   = bx;   /* fudge as we assume the file contains */
+    ptr->BGSEc[cnt*3+1] = by;   /* only one set of values. */
+    ptr->BGSEc[cnt*3+2] = bz;
+
+    if (ntok == 10) ptr->Vx[cnt] = vx;
+    else            ptr->Vx[cnt] = FILL_VALUE;
+
+    cnt++;
+    if ((cnt % IMFSTEP) == 0) {
+        blk = 1 + cnt/IMFSTEP;
+        ptr->time  = realloc(ptr->time,sizeof(double)*IMFSTEP*blk);
+        ptr->BGSMc = realloc(ptr->BGSMc,sizeof(float)*IMFSTEP*blk*3);
+        ptr->BGSEc = realloc(ptr->BGSEc,sizeof(float)*IMFSTEP*blk*3);
+        ptr->Vx    = realloc(ptr->Vx,sizeof(float)*IMFSTEP*blk);
+    }
   }
-  ptr->cnt=cnt;
-  ptr->time=realloc(ptr->time,sizeof(double)*cnt);
-  ptr->BGSMc=realloc(ptr->BGSMc,sizeof(float)*cnt*3);
-  ptr->BGSMc=realloc(ptr->BGSMc,sizeof(float)*cnt*3);
+
+  ptr->cnt   = cnt;
+  ptr->time  = realloc(ptr->time,sizeof(double)*cnt);
+  ptr->BGSMc = realloc(ptr->BGSMc,sizeof(float)*cnt*3);
+  ptr->BGSMc = realloc(ptr->BGSMc,sizeof(float)*cnt*3);
+  ptr->Vx    = realloc(ptr->Vx,sizeof(double)*cnt);
+
   return 0;
 }
 
-struct delaytab *load_delay(FILE *fp) {
+struct delaytab *load_delay(FILE *fp)
+{
   struct delaytab *ptr;
   int yr,mo,dy,hr,mt;
   float sc;
@@ -216,9 +456,8 @@ struct delaytab *load_delay(FILE *fp) {
 }
  
 
-
-
-double strtime(char *text) {
+double strtime(char *text)
+{
   int hr,mn;
   int i;
   for (i=0;(text[i] !=':') && (text[i] !=0);i++);
@@ -230,8 +469,14 @@ double strtime(char *text) {
 }  
 
 
+int load_omni()
+{
+  /* SGS: this does nothing right now */
+  return (0);
+}
 
-int load_wind() {
+int load_wind()
+{
 
   int i;
   char path[256];
@@ -254,7 +499,7 @@ int load_wind() {
       continue;
     }
   
-    status=windmfi_imf(id,&imf,st_time,ed_time);
+    status=windmfi_imf(id,&sw,st_time,ed_time);
     
     CDFclose(id);
   }
@@ -262,7 +507,8 @@ int load_wind() {
   return 0;
 }
 
-int load_ace() {
+int load_ace()
+{
 
   int i;
   char path[256];
@@ -285,7 +531,7 @@ int load_ace() {
         fprintf(stderr,"Could not open cdf file.\n");
         continue;
       }
-      status=acemfi_imf(id,&imf,st_time,ed_time,0);
+      status=acemfi_imf(id,&sw,st_time,ed_time,0);
     
       CDFclose(id);
     }
@@ -303,7 +549,7 @@ int load_ace() {
         continue;
       }
     
-      status=acemfi_imf(id,&imf,st_time,ed_time,1);
+      status=acemfi_imf(id,&sw,st_time,ed_time,1);
     
       CDFclose(id);
     }
@@ -311,193 +557,4 @@ int load_ace() {
   }
   return 0;
 }
-
-
-
-int main(int argc,char *argv[]) {
-
- /* File format transistion
-   * ------------------------
-   * 
-   * When we switch to the new file format remove any reference
-   * to "new". Change the command line option "new" to "old" and
-   * remove "old=!new".
-   */
-
-  int old=0;
-  int new=0;
-
-  int arg;
-  unsigned char help=0;
-  unsigned char option=0;
-
-  unsigned char vb=0;
-
-  char *envstr;
- 
-  char *dname=NULL;
-  struct delaytab *dtable=NULL;
-
-  char *iname=NULL;
- 
-
-  unsigned char aflg=0,wflg=0;
-
-  int yr,mo,dy,hr,mt;
-  double sc;
-  double tme;
-
-  int s;
-  float extent=24*3600;
-  float delay=1800;
-  float dBx=0;
-  float dBy=0;
-  float dBz=0;
-
-  char *pstr=NULL;
-  char *dstr=NULL;
-  char *estr=NULL;
-
-  float tmp[3];
-
-  int j,k;
-
-  grd=GridMake();
-  map=CnvMapMake(); 
- 
-  envstr=getenv("ISTP_PATH");
-  if (envstr !=NULL) strcpy(dpath,envstr);
-
-  OptionAdd(&opt,"-help",'x',&help);
-  OptionAdd(&opt,"-option",'x',&option);
-
-  OptionAdd(&opt,"new",'x',&new);
-  OptionAdd(&opt,"vb",'x',&vb);
-  OptionAdd(&opt,"ace",'x',&aflg);
-  OptionAdd(&opt,"wind",'x',&wflg);
-  OptionAdd(&opt,"if",'t',&iname);
-  OptionAdd(&opt,"df",'t',&dname);
-
-  OptionAdd(&opt,"p",'t',&pstr);
-  OptionAdd(&opt,"d",'t',&dstr);
-
-  OptionAdd(&opt,"bx",'f',&dBx);
-  OptionAdd(&opt,"by",'f',&dBy);
-  OptionAdd(&opt,"bz",'f',&dBz);
-
-  OptionAdd(&opt,"ex",'t',&estr);
-
-  arg=OptionProcess(1,argc,argv,&opt,NULL);
-
-  old=!new;
-
-  if (help==1) {
-    OptionPrintInfo(stdout,hlpstr);
-    exit(0);
-  }
-
-  if (option==1) {
-    OptionDump(stdout,&opt);
-    exit(0);
-  }
-
-
-  if (pstr !=NULL) strcpy(dpath,pstr);
-  if (dstr !=NULL) delay=strtime(dstr);  
-  if (estr !=NULL) extent=strtime(estr);
-  
-  if (arg !=argc) fname=argv[arg];
-
-
-  if (dname !=NULL) {
-    fp=fopen(dname,"r");
-    if (fp !=NULL) {
-     dtable=load_delay(fp);
-     fclose(fp);
-    }
-  }  
-
-  if (iname !=NULL) {
-    fp=fopen(iname,"r");
-    if (fp !=NULL) {
-     load_text(fp,&imf);
-     fclose(fp);
-    }
-  }
-
-
-  if (fname !=NULL) {
-    fp=fopen(fname,"r");
-    if (fp==NULL) {
-      fprintf(stderr,"File not found.\n");
-      exit(-1);
-    }
-  } else fp=stdin;
-
-  if (dtable !=NULL) delay=dtable->delay[0];
-
-  if (old) s=OldCnvMapFread(fp,map,grd);
-  else s=CnvMapFread(fp,map,grd);
-
-  st_time=map->st_time-delay;
-  ed_time=map->st_time-delay+extent; 
-
-  if (wflg==1) load_wind();
-  else if (aflg==1) load_ace();
-    
-
- 
-
-  j=0;
-  k=0;
-
-  do {  
-
-    if (dtable !=NULL) {
-      while ((k<dtable->num) && (dtable->time[k]<=map->st_time)) k++;
-      if (k==0) delay=dtable->delay[0];
-      else delay=dtable->delay[k-1];
-    }  
-    
- 
-    tme=map->st_time-delay;
-    map->Bx=dBx;
-    map->By=dBy;
-    map->Bz=dBz;
-    map->imf_flag=9;
-
-    if (imf.cnt !=0) {
-      findvalue(0,imf.cnt,imf.time,imf.BGSMc,tme,tmp);
-      map->Bx=tmp[0];
-      map->By=tmp[1];
-      map->Bz=tmp[2];
-    }
-    map->imf_delay=delay/60;
-    if (old) OldCnvMapFwrite(stdout,map,grd);
-    else CnvMapFwrite(stdout,map,grd);
-
-    if (vb==1) {
-       TimeEpochToYMDHMS(map->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
-       fprintf(stderr,
-               "%d-%d-%d %d:%d:%d delay=%d:%d Bx=%g By=%g Bz=%g\n",
-               yr,mo,dy,hr,mt,(int) sc,(int) (delay/3600),
-               ( (int) delay % 3600)/60,
-               map->Bx,map->By,map->Bz);
-    }  
-
-    if (old) s=OldCnvMapFread(fp,map,grd);
-    else s=CnvMapFread(fp,map,grd);
-
-  } while (s!=-1);
-
-
-  fclose(fp); 
-  return 0; 
-}
-
-
-
-
-
-
 

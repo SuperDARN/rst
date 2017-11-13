@@ -28,24 +28,20 @@
  
 */
 
-
-
-
 #ifndef _EVALVELOCITY_H
 #define _EVALVELOCITY_H
 
-
 double *CnvMapEvalThetaCoef(int Lmax,double *coef,double *theta,int n,
-		    double latmin);
+                            double latmin);
 
 double *CnvMapEvalPhiCoef(int Lmax,double *coef,double *theta,int n);
 
 void CnvMapEvalComponent(int Lmax,double *ecoef,double *plm,
-                      double *phi,int n,double *ecomp);
-
+                         double *phi,int n,double *ecomp);
 
 void CnvMapEvalVelocity(int Lmax,double *coef,double *plm,
-		       struct CnvGrid *vptr,double latmin,
-                       struct CnvMapData *ptr);
+                        struct CnvGrid *vptr,double latmin,
+                        struct CnvMapData *ptr,float decyear,
+                        int old_aacgm);
 
 #endif

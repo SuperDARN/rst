@@ -46,9 +46,12 @@
 
 
 
-int CnvMapSolve(struct CnvMapData *ptr,struct CnvGrid *gptr) {
+int CnvMapSolve(struct CnvMapData *ptr,struct CnvGrid *gptr,
+                float decyear,int old_aacgm) {
+
   if (gptr->type==0) return CnvMapSolvePotential(ptr,gptr);
   else if (gptr->type==2) return CnvMapSolveEfield(ptr,gptr);
-  else return CnvMapSolveVelocity(ptr,gptr);
+  else return CnvMapSolveVelocity(ptr,gptr,decyear,old_aacgm);
+
 }
 

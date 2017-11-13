@@ -40,7 +40,7 @@
 #include "rcdf.h"
 #include "istp.h"
 
-int acemfi_imf(CDFid id,struct imfdata *ptr,double stime,double etime,
+int acemfi_imf(CDFid id,struct swdata *ptr,double stime,double etime,
                int cnv) {
   long  yr,mo,dy,hr,mt,sc,ms;
   double rtime;

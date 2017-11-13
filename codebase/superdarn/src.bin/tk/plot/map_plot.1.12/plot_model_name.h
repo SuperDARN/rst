@@ -27,11 +27,8 @@
  
 */
 
+void plot_model_name(struct Plot *plot, float xoff, float yoff, char *model,
+                     char *orient, char *mag, char *tilt, unsigned int color,
+                     unsigned char mask, char *fontname, float fontsize,
+                     void *txtdata);
 
-
-void plot_model_name(struct Plot *plot,
-                    float xoff,float yoff,
-	            char *dir,char *mag,
-                    unsigned int color,unsigned char mask,
-                    char *fontname,float fontsize,
-		    void *txtdata);
