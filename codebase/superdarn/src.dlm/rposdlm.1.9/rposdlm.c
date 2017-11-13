@@ -582,7 +582,7 @@ static IDL_VPTR IDLRadarGetRadar(int argc,IDL_VPTR *argv) {
   return (vradar);
 }
 
-static IDL_VPTR IDLRadarConvert(int type,int argc,IDL_VPTR *argv) {
+static IDL_VPTR IDLRadarConvert(int type,int argc,IDL_VPTR *argv,char *argk) {
   int s=0,n=0;
   int center=0;
   int bcrd=0,rcrd=0;
@@ -591,6 +591,17 @@ static IDL_VPTR IDLRadarConvert(int type,int argc,IDL_VPTR *argv) {
   int frang=180,rsep=45,rxrise=0;
   double height=300;
   double rho,lat,lng;
+
+  int outargc;
+  IDL_VPTR outargv[11];
+  static IDL_LONG chisham;
+
+  static IDL_KW_PAR kw_pars[]={IDL_KW_FAST_SCAN,
+      {"CHISHAM",IDL_TYP_LONG,1,IDL_KW_ZERO,0,IDL_CHARA(chisham)},
+      {NULL}};
+
+  IDL_KWCleanup(IDL_KW_MARK);
+  outargc=IDL_KWGetParams(argc,argv,argk,kw_pars,outargv,1);
 
   IDL_ENSURE_SCALAR(argv[0]);
   IDL_ENSURE_STRUCTURE(argv[3]);
@@ -836,7 +847,7 @@ static IDL_VPTR IDLRadarConvert(int type,int argc,IDL_VPTR *argv) {
     if (type !=0) RPosGeoGS(center,bcrd,rcrd,&site,frang,rsep,rxrise,height,
          &rho,&lat,&lng);
     else RPosGeo(center,bcrd,rcrd,&site,frang,rsep,rxrise,height,
-         &rho,&lat,&lng);
+         &rho,&lat,&lng,chisham);
 
      rptr[n]=rho;
      latptr[n]=lat;
@@ -868,7 +879,7 @@ static IDL_VPTR IDLRadarConvert(int type,int argc,IDL_VPTR *argv) {
     if (type !=0) RPosGeoGS(center,bcrd,rcrd,&site,frang,rsep,rxrise,height,
          &rho,&lat,&lng);
     else RPosGeo(center,bcrd,rcrd,&site,frang,rsep,rxrise,height,
-         &rho,&lat,&lng);
+         &rho,&lat,&lng,chisham);
 
     IDL_StoreScalar(argv[8],IDL_TYP_DOUBLE,(IDL_ALLTYPES *) &rho);
     IDL_StoreScalar(argv[9],IDL_TYP_DOUBLE,(IDL_ALLTYPES *) &lat);
@@ -878,15 +889,15 @@ static IDL_VPTR IDLRadarConvert(int type,int argc,IDL_VPTR *argv) {
   }
   
 
-
+  IDL_KWCleanup(IDL_KW_CLEAN);
   return (IDL_GettmpLong(s));
 
 }
 
 
-static IDL_VPTR IDLRadarPos(int argc,IDL_VPTR *argv) {
+static IDL_VPTR IDLRadarPos(int argc,IDL_VPTR *argv,char *argk) {
 
-  return IDLRadarConvert(0,argc,argv);
+  return IDLRadarConvert(0,argc,argv,argk);
 
 
 }
@@ -896,7 +907,9 @@ static IDL_VPTR IDLRadarPos(int argc,IDL_VPTR *argv) {
 
 static IDL_VPTR IDLRadarPosGS(int argc,IDL_VPTR *argv) {
 
-    return IDLRadarConvert(1,argc,argv);
+    char *argk;
+
+    return IDLRadarConvert(1,argc,argv,argk);
 
 }
 
@@ -910,7 +923,7 @@ int IDL_Load(void) {
     { IDLRadarEpochGetSite,"RADAREPOCHGETSITE",2,2,0,0},
     { IDLRadarYMDHMSGetSite,"RADARYMDHMSGETSITE",7,7,0,0},
     { IDLRadarGetRadar,"RADARGETRADAR",2,2,0,0},
-    { IDLRadarPos,"RADARPOS",11,11,0,0},
+    { IDLRadarPos,"RADARPOS",11,11,IDL_SYSFUN_DEF_F_KEYWORDS,0},
     { IDLRadarPosGS,"RADARPOSGS",11,11,0,0},
   };
 

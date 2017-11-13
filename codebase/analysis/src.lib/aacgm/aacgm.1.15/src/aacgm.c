@@ -82,6 +82,7 @@ int AACGMInit(int year) {
   char yrstr[32];  
   if (year==0) year=DEFAULT_YEAR;
   year=(year/5)*5;
+  if (year>2010) year=2010;
   sprintf(yrstr,"%4.4d",year);  
   strcpy(fname,getenv("AACGM_DAT_PREFIX"));  
   if (strlen(fname)==0) return -1;

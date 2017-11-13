@@ -1,4 +1,4 @@
-/* RposRngBmAzmElv
+/* RPosRngBmAzmElv
    ===============
    Author: R.J.Barnes */
 
