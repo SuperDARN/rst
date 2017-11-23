@@ -91,6 +91,11 @@ double bx[10000];
 double by[10000];
 double bz[10000];
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: pc_plot --help\n");
+  return(-1);
+}
 
 int txtbox(char *fntname,float sze,int num,char *txt,float *box,void *data) {
  
@@ -161,17 +166,7 @@ char *ylabel(double val,double min,double max,void *data) {
 
 int main(int argc,char *argv[]) {
 
-
- /* File format transistion
-   * ------------------------
-   * 
-   * When we switch to the new file format remove any reference
-   * to "new". Change the command line option "new" to "old" and
-   * remove "old=!new".
-   */
-
   int old=0;
-  int new=0;
 
 #ifdef _XLIB_
   int xdf=0;
@@ -292,7 +287,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
 
-  OptionAdd(&opt,"new",'x',&new);
+  OptionAdd(&opt,"old",'x',&old);
   OptionAdd(&opt,"vb",'x',&vb);
  
 #ifdef _XLIB_ 
@@ -342,9 +337,11 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"cf",'t',&cfname);
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL); 
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr); 
 
-  old=!new;
+  if (arg==-1) {
+    exit(-1);
+  }
   
   if (arg<argc) fname=argv[arg];
 
@@ -356,10 +353,15 @@ int main(int argc,char *argv[]) {
       cfname=NULL;
       optf=OptionProcessFile(fp);
       if (optf !=NULL) {
-        arg=OptionProcess(0,optf->argc,optf->argv,&opt,NULL);
+        arg=OptionProcess(0,optf->argc,optf->argv,&opt,rst_opterr);
+        if (arg==-1) {
+          fclose(fp);
+          OptionFreeFile(optf);
+          exit(-1);
+        }
         if (arg<optf->argc) {
-	  fname=malloc(strlen(optf->argv[arg]+1));
-	  strcpy(fname,optf->argv[arg]);
+	      fname=malloc(strlen(optf->argv[arg]+1));
+	      strcpy(fname,optf->argv[arg]);
         }
         OptionFreeFile(optf);
       }   
