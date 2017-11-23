@@ -598,7 +598,7 @@ int main(int argc,char *argv[]) {
       optf=OptionProcessFile(fp);
       if (optf !=NULL) {
         farg=OptionProcess(0,optf->argc,optf->argv,&opt,rst_opterr);
-        if (arg==-1) {
+        if (farg==-1) {
           fclose(fp);
           OptionFreeFile(optf);
           exit(-1);
