@@ -5,54 +5,55 @@
 <location>src.bin/tk/plot/field_plot</location>
 
 <syntax>field_plot --help</syntax>
-<syntax>field_plot [<ar>options</ar>] <ar>fitname</ar> [<ar>inxname</ar>]
+<syntax>field_plot [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]
 </syntax>
-<syntax>field_plot -new [<ar>options</ar>] [<ar>fitacfname</ar>] [<ar>inxname</ar>]
+<syntax>field_plot -old [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]
 </syntax>
 <syntax>field_plot -cfit [<ar>options</ar>] [<ar>cfitname</ar>]
 </syntax>
 <syntax>field_plot -csd [<ar>options</ar>] [<ar>csdname</ar>]
 </syntax>
-<syntax>field_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] <ar>fitname</ar> [<ar>inxname</ar>]
+<syntax>field_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]
 </syntax>
-<syntax>field_plot -new -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] [<ar>fitacfname</ar>] [<ar>inxname</ar>]
+<syntax>field_plot -old -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]
 </syntax>
 <syntax>field_plot -cfit -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] [<ar>cfitname</ar>]
 </syntax>
 <syntax>field_plot -csd -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] [<ar>csdname</ar>] [<ar>csdname</ar>]
 </syntax>
-<syntax>field_plot -ppm [<ar>options</ar>] <ar>fitname</ar> [<ar>inxname</ar>]
+<syntax>field_plot -ppm [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]
 </syntax>
-<syntax>field_plot -new -ppm [<ar>options</ar>] [<ar>fitacfname</ar>] [<ar>inxname</ar>]
+<syntax>field_plot -old -ppm [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]
 </syntax>
 <syntax>field_plot -cfit -ppm [<ar>options</ar>] [<ar>cfitname</ar>]
 </syntax>
 <syntax>field_plot -csd -ppm [<ar>options</ar>] [<ar>csdname</ar>] 
 </syntax>
-<syntax>field_plot -ppmx [<ar>options</ar>] <ar>fitname</ar> [<ar>inxname</ar>]
+<syntax>field_plot -ppmx [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]
 </syntax>
-<syntax>field_plot -new -ppmx [<ar>options</ar>] [<ar>fitacfname</ar>] [<ar>inxname</ar>]
+<syntax>field_plot -old -ppmx [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]
 </syntax>
 <syntax>field_plot -cfit -ppmx [<ar>options</ar>] [<ar>cfitname</ar>]
 </syntax>
 <syntax>field_plot -csd -ppmx [<ar>options</ar>] [<ar>csdname</ar>]
 </syntax>
-<syntax>field_plot -xml [<ar>options</ar>] <ar>fitname</ar> [<ar>inxname</ar>]
+<syntax>field_plot -xml [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]
 </syntax>
-<syntax>field_plot -new -xml [<ar>options</ar>] [<ar>fitacfname</ar>] [<ar>inxname</ar>]
+<syntax>field_plot -old -xml [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]
 </syntax>
 <syntax>field_plot -cfit -xml [<ar>options</ar>] [<ar>cfitname</ar>]
 </syntax>
 <syntax>field_plot -csd -xml [<ar>options</ar>] [<ar>csdname</ar>]
 </syntax>
-<syntax>field_plot -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [-delay <ar>delay</ar>] [<ar>options</ar>] <ar>fitname</ar> [<ar>inxname</ar>]
+<syntax>field_plot -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [-delay <ar>delay</ar>] [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]
 </syntax>
-<syntax>field_plot -new -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [-delay <ar>delay</ar>] [<ar>options</ar>] [<ar>fitacfname</ar>] [<ar>inxname</ar>]
+<syntax>field_plot -old -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [-delay <ar>delay</ar>] [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]
 </syntax>
 <syntax>field_plot -cfit -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [-delay <ar>delay</ar>] [<ar>options</ar>] [<ar>cfitname</ar>]
 </syntax>
 <syntax>field_plot -csd -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [-delay <ar>delay</ar>] [<ar>options</ar>] [<ar>csdname</ar>]
 </syntax>
+
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
 <option><on>-cf <ar>cfname</ar></on><od>read command line options from the file <ar>cfname</ar>.</od>
@@ -235,13 +236,13 @@
 </option>
 <option><on>-s <ar>step</ar></on><od>set the number of scans  skipped between plots to <ar>step</ar>.</od>
 </option>
-<option><on><ar>fitname</ar></on><od>filename of the <code>fit</code> format file to plot.</od>
+<option><on><ar>fitacfname</ar></on><od>filename of the <code>fitacf</code> format file to plot.</od>
 </option>
 <option><on><ar>inxname</ar></on><od>filename of the index file.</od>
 </option>
-<option><on>-new</on><od>file is in the <code>fitacf</code> format.</od>
+<option><on>-old</on><od>file is in the <code>fit</code> format.</od>
 </option>
-<option><on><ar>fitacfname</ar></on><od>filename of the <code>fitacf</code> format file to plot.</od>
+<option><on><ar>fitname</ar></on><od>filename of the <code>fit</code> format file to plot.</od>
 </option>
 <option><on>-cfit</on><od>file is in the <code>cfit</code> format.</od>
 </option>
@@ -290,12 +291,12 @@
 </description>
 
 <example>
-<command>field_plot -wdt 540 -hgt 540 -ffov -fov -fan -v -def -r 0 -delay 0 -x 20041020.kap.fit</command>
+<command>field_plot -wdt 540 -hgt 540 -ffov -fov -fan -v -def -r 0 -delay 0 -old -x 20041020.kap.fit</command>
 <description>Plot the velocity data from the file "<code>20041020.fit</code>" on the  Xterminal. Use the default set of options and plot the fields of view the other radars.</description> 
 </example>
 
 <example>
-<command>field_plot -ps -st 1:30 -square -grd -fcoast -coast -ffov -fov -fan -sf 2 -p -time -keyp 20021219.han.fit &gt; han.ps</command>
+<command>field_plot -ps -st 1:30 -square -grd -fcoast -coast -ffov -fov -fan -sf 2 -p -time -keyp -old 20021219.han.fit &gt; han.ps</command>
 <description>Generate a PostScript plot the power data from the file "<code>20021219.han.fit</code>". Plot the data using magnetic coordinates. Plot the coastlines, and radar fields of view. The plot is written to the file "<code>han.ps</code>".
 </description>
 </example>
