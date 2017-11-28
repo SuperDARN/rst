@@ -22,8 +22,8 @@ July 2015
 
 */
 
-#ifndef _FITACF_H
-#define _FITACF_H
+#ifndef _FITACFTOPLEVEL_H
+#define _FITACFTOPLEVEL_H
 
 #include <stdio.h>
 #include <stdlib.h>
