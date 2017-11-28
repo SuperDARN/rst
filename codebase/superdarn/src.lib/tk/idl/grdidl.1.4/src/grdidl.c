@@ -215,7 +215,7 @@ struct GridIDLPrm *IDLMakeGridPrm(IDL_VPTR *vptr) {
     {"HR",0,(void *) IDL_TYP_INT},
     {"MT",0,(void *) IDL_TYP_INT},
     {"SC",0,(void *) IDL_TYP_DOUBLE},
-    0};
+    {0}};
 
   
   static IDL_STRUCT_TAG_DEF gridprm[]={    
@@ -224,7 +224,7 @@ struct GridIDLPrm *IDLMakeGridPrm(IDL_VPTR *vptr) {
     {"STNUM",0,(void *) IDL_TYP_LONG}, /* 2 */
     {"VCNUM",0,(void *) IDL_TYP_LONG}, /* 3 */
     {"XTD",0,(void *) IDL_TYP_INT}, /* 4 */ 
-    0};
+    {0}};
 
   static IDL_MEMINT ilDims[IDL_MAX_ARRAY_DIM];
  
@@ -247,12 +247,12 @@ struct GridIDLStVec *IDLMakeGridStVec(int nvec,IDL_VPTR *vptr) {
   static IDL_STRUCT_TAG_DEF noise[]={
     {"MEAN",0,(void *) IDL_TYP_FLOAT},
     {"SD",0,(void *) IDL_TYP_FLOAT},
-    0};
+    {0}};
 
   static IDL_STRUCT_TAG_DEF limit[]={
     {"MIN",0,(void *) IDL_TYP_FLOAT},
     {"MAX",0,(void *) IDL_TYP_FLOAT},
-    0};
+    {0}};
 
   static IDL_STRUCT_TAG_DEF gridstvec[]={    
     {"ST_ID",0, (void *) IDL_TYP_INT},   /* 0 */
@@ -268,7 +268,7 @@ struct GridIDLStVec *IDLMakeGridStVec(int nvec,IDL_VPTR *vptr) {
     {"PWR",0,NULL}, /* 10 */
     {"WDT",0,NULL}, /* 11 */
     {"VERR",0,NULL}, /* 12 */
-    0};
+    {0}};
 
   static IDL_MEMINT ilDims[IDL_MAX_ARRAY_DIM];
  
@@ -294,7 +294,7 @@ struct GridIDLGVec *IDLMakeGridGVec(int nvec,IDL_VPTR *vptr) {
  static IDL_STRUCT_TAG_DEF value[]={
     {"MEDIAN",0,(void *) IDL_TYP_FLOAT},
     {"SD",0,(void *) IDL_TYP_FLOAT},
-    0};
+    {0}};
 
   static IDL_STRUCT_TAG_DEF gridgvec[]={    
     {"MLAT",0, (void *) IDL_TYP_FLOAT},   /* 0 */
@@ -308,7 +308,7 @@ struct GridIDLGVec *IDLMakeGridGVec(int nvec,IDL_VPTR *vptr) {
     {"INDEX",0,(void *) IDL_TYP_LONG}, /* 8 */ 
 
 
-    0};
+    {0}};
 
   static IDL_MEMINT ilDims[IDL_MAX_ARRAY_DIM];
 
@@ -336,7 +336,7 @@ struct GridIDLInx *IDLMakeGridInx(int num,IDL_VPTR *vptr) {
   static IDL_STRUCT_TAG_DEF grdinx[]={
     {"TIME",0,(void *) IDL_TYP_DOUBLE},
     {"OFFSET",0,(void *) IDL_TYP_LONG},
-    0};
+    {0}};
 
    s=IDL_MakeStruct("GRDINX",grdinx);  
    idim[0]=num;
