@@ -167,7 +167,7 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
   ptr=DataMapReadBlock(fid,&size);
 
   if (ptr==NULL){
-    fprintf(stderr, "pointer f rom DataMapReadBlock null\n");
+    fprintf(stderr, "pointer from DataMapReadBlock in CnvMapRead null\n");
     return -1;
   }
   for (c=0;sname[c] !=0;c++) sdata[c]=NULL;
@@ -201,8 +201,6 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
     if (x==27) continue;
     if (x==28) continue;  /* SGS */
     if (x==30) continue;
-/*    fprintf(stdout, "%d\n",x);
-    fprintf(stdout, "sname[x]: %s\n", sname[x]); */
     if (sdata[x]==NULL) break;
   }
 
