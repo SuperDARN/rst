@@ -313,14 +313,14 @@ struct CnvMapIDLPrm *IDLMakeCnvMapPrm(IDL_VPTR *vptr) {
     {"HR",0,(void *) IDL_TYP_INT},
     {"MT",0,(void *) IDL_TYP_INT},
     {"SC",0,(void *) IDL_TYP_DOUBLE},
-    0};
+    {0}};
 
   
   static IDL_STRUCT_TAG_DEF tmlt[]={
     {"ST",0,(void *) IDL_TYP_DOUBLE},
     {"ED",0,(void *) IDL_TYP_DOUBLE},
     {"AV",0,(void *) IDL_TYP_DOUBLE},
-    0};
+    {0}};
 
   static IDL_STRUCT_TAG_DEF cnvmapprm[]={    
     {"STME",0,NULL},   /* 0 */
@@ -359,7 +359,7 @@ struct CnvMapIDLPrm *IDLMakeCnvMapPrm(IDL_VPTR *vptr) {
     {"POT_MIN_ERR",0,(void *) IDL_TYP_DOUBLE}, /* 33 */ 
     {"BNDNUM",0,(void *) IDL_TYP_LONG}, /* 34 */ 
     
-    0};
+    {0}};
 
   static IDL_MEMINT ilDims[IDL_MAX_ARRAY_DIM];
  
@@ -385,7 +385,7 @@ struct CnvMapIDLBnd *IDLMakeCnvMapBnd(int num,IDL_VPTR *vptr) {
   static IDL_STRUCT_TAG_DEF cnvmapbnd[]={
     {"LAT",0,(void *) IDL_TYP_FLOAT},
     {"LON",0,(void *) IDL_TYP_FLOAT},
-    0};
+    {0}};
 
    s=IDL_MakeStruct("CNVMAPBND",cnvmapbnd);  
    idim[0]=num;
@@ -405,7 +405,7 @@ struct CnvMapIDLInx *IDLMakeCnvMapInx(int num,IDL_VPTR *vptr) {
   static IDL_STRUCT_TAG_DEF grdinx[]={
     {"TIME",0,(void *) IDL_TYP_DOUBLE},
     {"OFFSET",0,(void *) IDL_TYP_LONG},
-    0};
+    {0}};
 
    s=IDL_MakeStruct("CNVMAPINX",grdinx);  
    idim[0]=num;
