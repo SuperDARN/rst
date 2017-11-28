@@ -51,7 +51,7 @@ static IDL_VPTR IDLIGRFModelCall(int argc,IDL_VPTR *argv) {
   int s=0,n;
   IDL_VPTR vox,voy,voz;
 
-  double dtval,flat,flon,elev;
+  double dtval=2000,flat,flon,elev=180;
   double x,y,z;
   double *xptr,*yptr,*zptr;
  
