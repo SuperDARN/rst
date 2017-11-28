@@ -163,7 +163,7 @@ int main(int argc,char *argv[]) {
 
   int i,k,t;
   time_t stme;
-  struct tm *gtme;
+  /*struct tm *gtme;*/
   time_t utc;
   int tmax,tval;
   double st_max;
@@ -300,7 +300,7 @@ int main(int argc,char *argv[]) {
   while(1) {
     do {
       utc=time(NULL);
-      gtme=gmtime(&utc);
+      /*gtme=gmtime(&utc);*/
       utc=utc-stme;
       sleep(1);
     } while (utc<repeat);    
