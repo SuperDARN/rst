@@ -109,7 +109,7 @@ int main (int argc,char *argv[]) {
 
   int i,j,n;
   int badrng=0;
-  int aflg,abflg;
+  int abflg;
   int thr=0,lmt=0;
   int atstp=0;
 
@@ -289,7 +289,7 @@ int main (int argc,char *argv[]) {
 
       ptr=samples+iq->offset[n];
 
-      aflg=ACFSumPower(&tprm,mplgs,lag,pwr0,
+      ACFSumPower(&tprm,mplgs,lag,pwr0,
 		       ptr,2*iq->chnnum,skpval !=0,
                        roff,ioff,badrng,
                        iq->noise[n],prm->mxpwr,prm->atten*atstp,
@@ -331,25 +331,4 @@ int main (int argc,char *argv[]) {
   }
   return 0;
 } 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
