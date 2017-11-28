@@ -172,6 +172,9 @@ int main(int argc,char *argv[]) {
     exit(-1);
   }
   fmax=c;
+  if (vb) {
+    fprintf(stderr,"Processing %d files\n",fmax);
+  }
 
   while ((opfp=read_set(old)) !=0)  {
 
@@ -218,10 +221,4 @@ int main(int argc,char *argv[]) {
 
   return 0;
 }
-
-
-
-
-
-
 
