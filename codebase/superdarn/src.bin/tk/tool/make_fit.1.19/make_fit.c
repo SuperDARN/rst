@@ -37,7 +37,9 @@
 #include "errstr.h"
 #include "hlpstr.h"
 
-
+#include "fitacftoplevel.h"
+#include "fit_structures.h"
+#include <fenv.h>
 
 struct RadarParm *prm;
 struct RawData *raw;
@@ -86,9 +88,15 @@ int main(int argc,char *argv[]) {
   char command[128];
   char tmstr[40];
 
+  char* fitacf_version_s = NULL;
+  int fitacf_version;
+  FITPRMS *fit_prms = NULL;
+
   prm=RadarParmMake();
   raw=RawMake();
   fit=FitMake();
+
+  /*feenableexcept(FE_INVALID | FE_OVERFLOW);*/
 
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
@@ -97,9 +105,33 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"new",'x',&new);
 
+  OptionAdd(&opt,"fitacf-version",'t',&fitacf_version_s);
+
   arg=OptionProcess(1,argc,argv,&opt,NULL);
 
   old=!new;
+
+  if (fitacf_version_s != NULL) {
+    if (strcmp(fitacf_version_s, "3.0") == 0){
+      fitacf_version = 30;
+    }
+    else if (strcmp(fitacf_version_s, "2.5") == 0) {
+      fitacf_version = 25;
+    }
+    else {
+      fprintf(stderr, "The requested fitacf version does not exist\n");
+      exit(-1);
+    }
+  }
+  else {
+    fitacf_version = 25;
+  }
+
+  if (vb) {
+    fprintf(stderr, "Using fitacf version: %0.1f\n", (float)fitacf_version/10);
+  }
+
+
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
@@ -146,7 +178,6 @@ int main(int argc,char *argv[]) {
   }
 
   RadarLoadHardware(envstr,network);
-
 
   if (old) {
      rawfp=OldRawOpen(argv[arg],NULL);
@@ -197,9 +228,35 @@ int main(int argc,char *argv[]) {
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
-  fblk=FitACFMake(site,prm->time.yr);
+  if (fitacf_version == 30){
+      /* Allocate the memory for the FIT parameter structure */
+      /* and initialise the values to zero.                  */
+      fit_prms = malloc(sizeof(*fit_prms));
+      memset(fit_prms, 0, sizeof(*fit_prms));
+      if (Allocate_Fit_Prm(prm, fit_prms) == -1) {
+        exit(-1);
+      }
 
-  FitACF(prm,raw,fblk,fit);
+      /* If the allocation was successful, copy the parameters and */
+      /* load the data into the FitACF structure.                  */
+      if(fit_prms != NULL) {
+    	  Copy_Fitting_Prms(site,prm,raw,fit_prms);
+    	  Fitacf(fit_prms,fit);
+        /*FitacfFree(fit_prms);*/
+    	}
+      else {
+        fprintf(stderr, "Unable to allocate fit_prms!\n");
+        exit(-1);
+      }
+  }
+  else if (fitacf_version == 25) {
+    fblk=FitACFMake(site,prm->time.yr);
+    FitACF(prm,raw,fblk,fit);
+  }
+  else {
+    fprintf(stderr, "The requested fitacf version does not exist\n");
+    exit(-1);
+  }
 
   if (old) {
     char vstr[256];
@@ -246,12 +303,48 @@ int main(int argc,char *argv[]) {
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
 
-    if (status==0) FitACF(prm,raw,fblk,fit);
+    if (status==0){
+      if (fitacf_version == 30) {
+
+        if (Allocate_Fit_Prm(prm, fit_prms) == -1) {
+          exit(-1);
+        }
+
+        /* If the allocation was successful, copy the parameters and */
+        /* load the data into the FitACF structure.                  */
+        if(fit_prms != NULL) {
+          Copy_Fitting_Prms(site,prm,raw,fit_prms);
+          Fitacf(fit_prms,fit);
+          /*FitacfFree(fit_prms);*/
+        }
+        else {
+          fprintf(stderr, "Unable to allocate fit_prms!\n");
+          exit(-1);
+        }
+      }
+      else if (fitacf_version == 25) {
+        FitACF(prm,raw,fblk,fit);
+      }
+      else {
+        fprintf(stderr, "The requested fitacf version does not exist\n");
+        exit(-1);
+      }
+    }
 
 
   } while (status==0);
+  FitFree(fit);
 
-  FitACFFree(fblk);
+  if (fitacf_version == 30) {
+    FitacfFree(fit_prms);
+  }
+  else if (fitacf_version == 25) {
+    FitACFFree(fblk);
+  }
+  else {
+
+  }
+
   if (old) OldRawClose(rawfp);
   return 0;
 }
