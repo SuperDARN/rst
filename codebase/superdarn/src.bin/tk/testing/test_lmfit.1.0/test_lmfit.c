@@ -26,6 +26,7 @@
 #include "fitblk.h"
 #include "fitdata.h"
 #include "radar.h"
+#include "lmfit.h"
 
 #include "fitacf.h"
 #include "rawread.h"
@@ -76,10 +77,10 @@ int main(int argc,char *argv[])
 
   FILE *fp=NULL;
   struct OldRawFp *rawfp=NULL;
-  FILE *fitfp=NULL;
+  /*FILE *fitfp=NULL;
   int irec=1;
   int drec=2;
-  int dnum=0;
+  int dnum=0;*/
 
   time_t ctime;
   int c,n;
