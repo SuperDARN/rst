@@ -256,7 +256,10 @@ int main(int argc,char *argv[]) {
     if (port_flag==1) {
       fp=fopen(port_fname,"r");
       if (fp !=NULL) {
-        fscanf(fp,"%d",&remote_port);
+        if (fscanf(fp,"%d",&remote_port) !=1) {
+          fclose(fp);
+          exit(-1);
+        }
         fclose(fp);
       } else remote_port=1024;
     }
