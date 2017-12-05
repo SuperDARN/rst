@@ -102,17 +102,7 @@ double calc_acf_err(struct RawData * raw, struct FitData * fit, struct RadarParm
 int main(int argc,char *argv[]) 
 {
 
-  /* File format transistion
-   * ------------------------
-   *
-   * When we switch to the new file format remove any reference
-   * to "new". Change the command line option "new" to "old" and
-   * remove "old=!new".
-   */
-
-
   unsigned char old=0;
-  unsigned char new=0;
 
   char *envstr;
   int status;
