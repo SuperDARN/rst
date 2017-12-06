@@ -37,11 +37,11 @@
 </option>
 <option><on>-if <ar>imfname</ar></on><od>read the IMF data from the ASCII text file <ar>imfname</ar>.</od>
 </option>
-<option><on>-bx <ar>bx</ar></on><od>set the X component of the magnetic field to <ar>bx</ar>.</od>
+<option><on>-bx <ar>bx</ar></on><od>set the X component of the magnetic field to <ar>bx</ar> [nT].</od>
 </option>
-<option><on>-by <ar>bx</ar></on><od>set the Y component of the magnetic field to <ar>by</ar>.</od>
+<option><on>-by <ar>by</ar></on><od>set the Y component of the magnetic field to <ar>by</ar> [nT].</od>
 </option>
-<option><on>-bz <ar>bx</ar></on><od>set the Z component of the magnetic field to <ar>bz</ar>.</od>
+<option><on>-bz <ar>bz</ar></on><od>set the Z component of the magnetic field to <ar>bz</ar> [nT].</od>
 </option>
 <option><on>-vx <ar>vx</ar></on><od>set the solar wind velocity to <ar>vx</ar> [km/s].</od>
 </option>
