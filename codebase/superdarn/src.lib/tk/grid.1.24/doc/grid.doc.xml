@@ -149,7 +149,7 @@
 <header>superdarn/griddata.h</header>
 <syntax>void GridMerge(<sn href="structGridData.html">struct GridData</sn>  *a,<sn href="structGridData.html">struct GridData</sn> *b);</syntax>
 <description><p>The <fn href="GridMerge.html">GridMerge</fn> function merges line of sight velocities in gridded data to produce two-dimensional vectors.</p>
-<p>he gridded data to integrate is taken from the structure pointed to by the argument <ar>a</ar>.The merged grid data is stored in the structure pointed to by the argument <ar>b</ar>.</p>
+<p>The gridded data to integrate is taken from the structure pointed to by the argument <ar>a</ar>.The merged grid data is stored in the structure pointed to by the argument <ar>b</ar>.</p>
 </description>
 <example type="source">GridMerge.c</example>
 </function>
@@ -241,12 +241,12 @@
 
     <member>
       <proto><sn href="structGridSVec.html">struct GridSVec</sn> *sdata;</proto>
-      <description>Pointer to an array of structures contianing the status information.</description>
+      <description>Pointer to an array of structures containing the status information.</description>
     </member>
 
     <member>
       <proto><sn href="structGridGVec.html">struct GridGVec</sn> *data;</proto>
-      <description>Pointer to an array of structures contianing the data points.</description>
+      <description>Pointer to an array of structures containing the data points.</description>
     </member>
 
   </struct>
