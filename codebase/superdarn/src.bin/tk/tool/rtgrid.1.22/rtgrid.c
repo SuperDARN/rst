@@ -105,11 +105,10 @@ void day_output(char *path,struct GridTable *ptr,int xtd,
   char fname[256];
 
 
-  int syr,smo,sdy,shr,smt,ssc;
+  int syr,smo,sdy,shr,smt;
   double sec;
 
   TimeEpochToYMDHMS(ptr->st_time,&syr,&smo,&sdy,&shr,&smt,&sec);
-  ssc=(int) sec;
   
   if (channel==-1) 
     sprintf(fname,"%s/%.2d%.2d%.2d.%s.%s",path,
@@ -202,7 +201,7 @@ int main(int argc,char *argv[]) {
 
 
   time_t stme;
-  struct tm *gtme;
+  /*struct tm *gtme;*/
   time_t utc;
   struct timeval tv;
   int timeout;
@@ -451,7 +450,10 @@ int main(int argc,char *argv[]) {
     if (port_flag==1) {
       fp=fopen(port_fname,"r");
       if (fp !=NULL) {
-        fscanf(fp,"%d",&remote_port);
+        if(fscanf(fp,"%d",&remote_port) !=1) {
+          fclose(fp);
+          exit(-1);
+        }
         fclose(fp);
       } else remote_port=1024;
     }
@@ -481,7 +483,7 @@ int main(int argc,char *argv[]) {
 
     do {
        utc=time(NULL);
-       gtme=gmtime(&utc);
+       /*gtme=gmtime(&utc);*/
        timeout=tlen-(utc-stme);
     
        tv.tv_sec=timeout;

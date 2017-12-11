@@ -46,6 +46,10 @@ void TimeReadClock(int *yr,int *month,int *day,int *hour,int *min,int *sec,
 
 
   s=gettimeofday(&tv,NULL);
+  if (s !=0) {
+    fprintf(stderr,"gettimeofday failed.\n");
+    exit(-1);
+  }
 
   tm=tv.tv_sec;
   gmt_time = gmtime(&tm);

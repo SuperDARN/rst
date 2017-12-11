@@ -385,7 +385,7 @@ static IDL_VPTR IDLOldRawOpen(int argc,IDL_VPTR *argv) {
     {"MINOR_REV",0,(void *) IDL_TYP_BYTE},
     {"RAWREAD",0,(void *) IDL_TYP_LONG},
     {"BNUM",0,(void *) IDL_TYP_LONG},
-    0};
+    {0}};
 
   static IDL_MEMINT ilDims[IDL_MAX_ARRAY_DIM];
 
@@ -480,12 +480,12 @@ static IDL_VPTR IDLOldRawClose(int argc,IDL_VPTR *argv) {
 int IDL_Load(void) {
 
   static IDL_SYSFUN_DEF2 fnaddr[]={
-    { IDLOldRawRead,"OLDRAWREAD",3,3,0,0},
-    { IDLOldRawSeek,"OLDRAWSEEK",7,7,IDL_SYSFUN_DEF_F_KEYWORDS,0},
-    { IDLOldRawWrite,"OLDRAWWRITE",4,4,0,0},
-    { IDLOldRawOpen,"OLDRAWOPEN",1,2,0,0},
-    { IDLOldRawClose,"OLDRAWCLOSE",1,1,0,0},
-    { IDLOldRawWriteHeader,"OLDRAWWRITEHEADER",3,3,0,0},
+    { {IDLOldRawRead},"OLDRAWREAD",3,3,0,0},
+    { {IDLOldRawSeek},"OLDRAWSEEK",7,7,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+    { {IDLOldRawWrite},"OLDRAWWRITE",4,4,0,0},
+    { {IDLOldRawOpen},"OLDRAWOPEN",1,2,0,0},
+    { {IDLOldRawClose},"OLDRAWCLOSE",1,1,0,0},
+    { {IDLOldRawWriteHeader},"OLDRAWWRITEHEADER",3,3,0,0},
   };
 
 
