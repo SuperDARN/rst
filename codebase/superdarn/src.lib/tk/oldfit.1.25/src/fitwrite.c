@@ -95,7 +95,6 @@ int16 OldFitCMP16(int cmp, double val) {
 int OldFitHeaderWrite(int fitfp, char *text, char *name, char *version) {
 
   char head_buf[1024];
-  int n;
 
   char hstring[80];
   time_t ctime;
@@ -105,7 +104,7 @@ int OldFitHeaderWrite(int fitfp, char *text, char *name, char *version) {
   ConvertFromShort(FIT_RECL,(unsigned char *) head_buf);
   ConvertFromShort(INX_RECL,(unsigned char *) (head_buf+sizeof(int16)));
  
-  n = sprintf(hstring, HSTRING ,name,version);
+  sprintf(hstring, HSTRING ,name,version);
 
   strcpy(head_buf+2*sizeof(int16), hstring);
   ctime = time((time_t) 0);

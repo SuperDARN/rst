@@ -91,7 +91,7 @@ struct RawIDLData *IDLMakeRawData(IDL_VPTR *vptr) {
   static IDL_STRUCT_TAG_DEF revision[]={
     {"MAJOR",0,(void *) IDL_TYP_LONG},
     {"MINOR",0,(void *) IDL_TYP_LONG},
-    0};
+    {0}};
   
   static IDL_STRUCT_TAG_DEF rawdata[]={    
     {"REVISION",0,NULL},   /* 0 */
@@ -124,7 +124,7 @@ struct RawIDLInx *IDLMakeRawInx(int num,IDL_VPTR *vptr) {
   static IDL_STRUCT_TAG_DEF rawinx[]={
     {"TIME",0,(void *) IDL_TYP_DOUBLE},
     {"OFFSET",0,(void *) IDL_TYP_LONG},
-    0};
+    {0}};
 
    s=IDL_MakeStruct("RAWINX",rawinx);  
    idim[0]=num;

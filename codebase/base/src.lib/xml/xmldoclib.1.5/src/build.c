@@ -110,7 +110,8 @@ int XMLdocGetConfigSection(struct XMLDBbuffer *ptr,char *root,char *path,
   s=XMLDecode(xmldata,start,strlen(start));
   s=XMLDecode(xmldata,ptr->buf,ptr->sze);
   s=XMLDecode(xmldata,end,strlen(end));
-  
+  if (s !=0) return -1;
+
   XMLFree(xmldata);
   XMLDBFree(xmldbdata);
   XMLDBFreeTree(tree);
