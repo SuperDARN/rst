@@ -220,7 +220,7 @@ struct RadarIDLSite *IDLRadarMakeSite(IDL_VPTR *vptr) {
     {"MAXATTEN",0,(void *) IDL_TYP_LONG},
     {"MAXRANGE",0,(void *) IDL_TYP_LONG},
     {"MAXBEAM",0,(void *) IDL_TYP_LONG},
-    0
+    {0}
   };
   
   static IDL_MEMINT ilDims[IDL_MAX_ARRAY_DIM];
@@ -256,7 +256,7 @@ struct RadarIDLRadar *IDLRadarMakeRadar(int num,IDL_VPTR *vptr) {
     {"MAXATTEN",0,(void *) IDL_TYP_LONG},
     {"MAXRANGE",0,(void *) IDL_TYP_LONG},
     {"MAXBEAM",0,(void *) IDL_TYP_LONG},
-    0
+    {0}
   };
   
 
@@ -272,7 +272,7 @@ struct RadarIDLRadar *IDLRadarMakeRadar(int num,IDL_VPTR *vptr) {
     {"ED_TIME",0,(void *) IDL_TYP_DOUBLE}, /* 8 */
     {"SNUM",0,(void *) IDL_TYP_LONG}, /* 9 */
     {"SITE",sdim,NULL}, /* 10 */
-    0};
+    {0}};
 
     static IDL_MEMINT ilDims[IDL_MAX_ARRAY_DIM];
  
@@ -347,7 +347,7 @@ static IDL_VPTR IDLRadarLoadHardware(int argc,IDL_VPTR *argv,char *argk) {
   char *iradar=NULL;
   struct RadarNetwork *network=NULL;
 
-  int outargc,num=0,sze;
+  int num=0,sze;
   IDL_VPTR outargv[8];
   static IDL_KW_PAR kw_pars[]={IDL_KW_FAST_SCAN,
 			       {"PATH",IDL_TYP_STRING,1,
@@ -358,7 +358,7 @@ static IDL_VPTR IDLRadarLoadHardware(int argc,IDL_VPTR *argv,char *argk) {
   char *path=NULL;
   
   IDL_KWCleanup(IDL_KW_MARK);
-  outargc=IDL_KWGetParams(argc,argv,argk,kw_pars,outargv,1);
+  IDL_KWGetParams(argc,argv,argk,kw_pars,outargv,1);
 
   IDL_ENSURE_ARRAY(outargv[0]);
 
@@ -592,7 +592,6 @@ static IDL_VPTR IDLRadarConvert(int type,int argc,IDL_VPTR *argv,char *argk) {
   double height=300;
   double rho,lat,lng;
 
-  int outargc;
   IDL_VPTR outargv[11];
   static IDL_LONG chisham;
 
@@ -601,7 +600,7 @@ static IDL_VPTR IDLRadarConvert(int type,int argc,IDL_VPTR *argv,char *argk) {
       {NULL}};
 
   IDL_KWCleanup(IDL_KW_MARK);
-  outargc=IDL_KWGetParams(argc,argv,argk,kw_pars,outargv,1);
+  IDL_KWGetParams(argc,argv,argk,kw_pars,outargv,1);
 
   IDL_ENSURE_SCALAR(argv[0]);
   IDL_ENSURE_STRUCTURE(argv[3]);
@@ -905,9 +904,7 @@ static IDL_VPTR IDLRadarPos(int argc,IDL_VPTR *argv,char *argk) {
 
 
 
-static IDL_VPTR IDLRadarPosGS(int argc,IDL_VPTR *argv) {
-
-    char *argk;
+static IDL_VPTR IDLRadarPosGS(int argc,IDL_VPTR *argv,char *argk) {
 
     return IDLRadarConvert(1,argc,argv,argk);
 
@@ -918,13 +915,13 @@ static IDL_VPTR IDLRadarPosGS(int argc,IDL_VPTR *argv) {
 int IDL_Load(void) {
 
   static IDL_SYSFUN_DEF2 fnaddr[]={
-    { IDLRadarLoad,"RADARLOAD",1,1,0,0},
-    { IDLRadarLoadHardware,"RADARLOADHARDWARE",1,1,IDL_SYSFUN_DEF_F_KEYWORDS,0},
-    { IDLRadarEpochGetSite,"RADAREPOCHGETSITE",2,2,0,0},
-    { IDLRadarYMDHMSGetSite,"RADARYMDHMSGETSITE",7,7,0,0},
-    { IDLRadarGetRadar,"RADARGETRADAR",2,2,0,0},
-    { IDLRadarPos,"RADARPOS",11,11,IDL_SYSFUN_DEF_F_KEYWORDS,0},
-    { IDLRadarPosGS,"RADARPOSGS",11,11,0,0},
+    { {IDLRadarLoad},"RADARLOAD",1,1,0,0},
+    { {IDLRadarLoadHardware},"RADARLOADHARDWARE",1,1,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+    { {IDLRadarEpochGetSite},"RADAREPOCHGETSITE",2,2,0,0},
+    { {IDLRadarYMDHMSGetSite},"RADARYMDHMSGETSITE",7,7,0,0},
+    { {IDLRadarGetRadar},"RADARGETRADAR",2,2,0,0},
+    { {IDLRadarPos},"RADARPOS",11,11,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+    { {IDLRadarPosGS},"RADARPOSGS",11,11,IDL_SYSFUN_DEF_F_KEYWORDS,0},
   };
 
 

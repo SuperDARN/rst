@@ -62,7 +62,7 @@ unsigned char *ShMemAlloc(char *memname,int size,int flags,int unlink,
   }
 
   p=mmap(0,size,PROT_READ | PROT_WRITE,MAP_SHARED,fd,0);
-  if ((int) p==-1) {
+  if (p==MAP_FAILED) {
     close(fd);
     return NULL;
   }

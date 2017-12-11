@@ -101,7 +101,6 @@ static IDL_VPTR IDLAACGMLoadCoef(int argc,IDL_VPTR *argv) {
 static IDL_VPTR IDLAACGMConvert(int argc,IDL_VPTR *argv,char *argk) {
   
   int s=0,n;
-  int outargc;
   IDL_VPTR outargv[6];
   IDL_VPTR volat,volon,vr;
 
@@ -118,7 +117,7 @@ static IDL_VPTR IDLAACGMConvert(int argc,IDL_VPTR *argv,char *argk) {
 				 {NULL}};
 
   IDL_KWCleanup(IDL_KW_MARK);
-  outargc=IDL_KWGetParams(argc,argv,argk,kw_pars,outargv,1);
+  IDL_KWGetParams(argc,argv,argk,kw_pars,outargv,1);
  
   IDL_EXCLUDE_EXPR(outargv[3]);
   IDL_EXCLUDE_EXPR(outargv[4]);
@@ -234,7 +233,6 @@ static IDL_VPTR IDLAACGM_v2_GetDateTime(int argc,IDL_VPTR *argv,char *argk) {
 
     int s=0;
     int yr,mo,dy,hr,mt,sc,dayno;
-    int outargc;
     IDL_VPTR outargv[0];
 
     static IDL_VPTR month;
@@ -254,7 +252,7 @@ static IDL_VPTR IDLAACGM_v2_GetDateTime(int argc,IDL_VPTR *argv,char *argk) {
         {NULL}};
 
     IDL_KWCleanup(IDL_KW_MARK);
-    outargc=IDL_KWGetParams(argc,argv,argk,kw_pars,outargv,1);
+    IDL_KWGetParams(argc,argv,argk,kw_pars,outargv,1);
 
     s=AACGM_v2_GetDateTime(&yr,&mo,&dy,&hr,&mt,&sc,&dayno);
 
@@ -337,7 +335,6 @@ static IDL_VPTR IDLAACGM_v2_SetNow(int argc,IDL_VPTR *argv) {
 static IDL_VPTR IDLAACGM_v2_Convert(int argc,IDL_VPTR *argv,char *argk) {
 
     int s=0,n;
-    int outargc;
     IDL_VPTR outargv[6];
     IDL_VPTR volat,volon,vr;
 
@@ -362,7 +359,7 @@ static IDL_VPTR IDLAACGM_v2_Convert(int argc,IDL_VPTR *argv,char *argk) {
         {NULL}};
 
     IDL_KWCleanup(IDL_KW_MARK);
-    outargc=IDL_KWGetParams(argc,argv,argk,kw_pars,outargv,1);
+    IDL_KWGetParams(argc,argv,argk,kw_pars,outargv,1);
 
     IDL_EXCLUDE_EXPR(outargv[3]);
     IDL_EXCLUDE_EXPR(outargv[4]);
