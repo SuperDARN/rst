@@ -1,0 +1,91 @@
+<head>
+<title>IDL Data Structure for Raw ACF data</title>
+<link rel=stylesheet href=../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table class="location"><tr>
+<td><a href="../../../index.html">Home</a><td>|</td>
+<td><a href=../../../superdarn/index.html>superdarn</a></td><td>|</td>
+<td><a href=../../../superdarn/src.doc/rfc/index.html>rfc</a></td><td>|</td>
+<td>RFC0021</td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">RFC: 0021</h2>
+<table>
+<tr><td class="docsubtitle" valign=top><h3>Title</h3></td></tr>
+<tr><td></td><td>
+<b>IDL Data Structure for Raw ACF data</b>
+</td></tr>
+
+<tr><td class="docsubtitle" valign=top><h3>Author</h3></td></tr>
+<tr><td></td><td>
+<b>R.J.Barnes</b>
+</td></tr>
+
+
+<tr><td class="docsubtitle"><h3>Summary</h3></td></tr>
+<tr><td></td><td>
+<p>A description of the IDL data structure used to store Raw ACF data.</p>
+</td></tr>
+<tr><td class="docsubtitle"><h3>Description</h3></td></tr>
+<tr><td></td><td>
+
+<h4>1. Introduction</h4>
+<p>The raw ACF data is the primary (first order) data product from the SuperDARN radars. Within IDL a structure is used to store the ACF data.</p>
+
+<h4>2. Constants</h4>
+<p>A number of constants are used to define array limits</p>
+<center>
+<table cellspacing="3" bgcolor="e0e0e0" width="100%">
+<tr><td><pre>LAG_SIZE=96
+MAX_RANGE=300
+</pre></td></tr></table>
+</center>
+<h4>3. Raw ACF data structure <code>RawData</code></h4>
+
+<center>
+<table cellspacing="3" bgcolor="e0e0e0" width="100%">
+<tr><td><pre>raw={RawData, $
+       revision: {rlstr, major: 0L, $        ; major revision 
+                            minor: 0L}, $    ; minor revision
+       thr: 0.0, $                           ; lag-zero power threshold level
+       pwr0: fltarr(MAX_RANGE), $            ; lag zero powers
+       acfd: fltarr(MAX_RANGE,LAG_SIZE,2), $ ; ACF data
+       xcfd: fltarr(MAX_RANGE,LAG_SIZE,2) $  ; XCF data
+    }
+</pre></td></tr></table>
+</center>
+
+</td></tr>
+<tr><td class="docsubtitle"><h3>References</h3></td></tr>
+<tr><td></td><td>
+<a href="0013.html">RFC #0013</a><br>
+</td></tr>
+<tr><td class="docsubtitle"><h3>History</h3></td></tr>
+<tr><td></td><td>
+2007/03/26  Change in array sizes.<br>2004/11/22  Initial Revision.<br>
+</td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+
+</body>
+
+
+

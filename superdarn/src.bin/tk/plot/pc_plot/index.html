@@ -1,0 +1,106 @@
+<head>
+<title>pc_plot</title>
+<link rel=stylesheet href="../../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../../superdarn/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/plot/index.html>plot</a></td><td>|</td>
+<td>pc_plot</td>
+<td width=100% align=right><a href=../../../../../superdarn/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">pc_plot</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+pc_plot --help<br>pc_plot [<em>options</em>] <em>name</em>
+<br>pc_plot -ps [-l] [-xp <em>xoff</em>] [-yp <em>yoff</em>] [<em>options</em>] <em>name</em>
+<br>pc_plot -ppm [<em>options</em>] <em>name</em>
+<br>pc_plot -ppmx [<em>options</em>] <em>name</em>
+<br>pc_plot -xml [<em>options</em>] <em>name</em>
+<br>pc_plot -x [-display <em>display</em>] [-xoff <em>xoff</em>] [-yoff <em>yoff</em>] [<em>options</em>] <em>name</em><br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Plot the cross polar cap potential, scatter statistics or IMF conditions from a convection map file.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-cf <em>cfname</em></code></td><td valign="top">read command line options from the file <em>cfname</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-old</code></td><td valign="top">the input file is a <code>map</code> format file.</td></tr>
+<tr><td width="150" valign="top"><code>-vb</code></td><td valign="top">verbose. Log information to the console.</td></tr>
+<tr><td width="150" valign="top"><code>-w <em>width</em></code></td><td valign="top">set the width of the plot to <em>width</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-h <em>height</em></code></td><td valign="top">set the height of the plot to <em>height</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-sd <em>yyyymmdd</em></code></td><td valign="top">plot starting from the date <em>yyyymmdd</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-st <em>hr:mn</em></code></td><td valign="top">plot starting from the time <em>hr:mn</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-ed <em>yyyymmdd</em></code></td><td valign="top">stop plotting at the date <em>yyyymmdd</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-et <em>hr:mn</em></code></td><td valign="top">stop plotting at the time <em>hr:mn</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-ex <em>hr:mn</em></code></td><td valign="top">plot an interval whose extent is <em>hr:mn</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-s</code></td><td valign="top">include the scatter statistics in the plot.</td></tr>
+<tr><td width="150" valign="top"><code>-b</code></td><td valign="top">include the IMF in the plot.</td></tr>
+<tr><td width="150" valign="top"><code>-nodelay</code></td><td valign="top">do not use the IMF delay when plotting the IMF.</td></tr>
+<tr><td width="150" valign="top"><code>-pmin <em>pmin</em></code></td><td valign="top">set the minimum of the potential scale to be <em>pmin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-pmax <em>pmax</em></code></td><td valign="top">set the maximum of the potential scale to be <em>pmax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-smin <em>smin</em></code></td><td valign="top">set the minimum of the scatter scale to be <em>smin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-smax <em>smax</em></code></td><td valign="top">set the maximum of the scatter scale to be <em>smax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-bxmin <em>bxmin</em></code></td><td valign="top">set the minimum of the X component of the IMF  scale to be <em>bxmin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-bxmax <em>bxmax</em></code></td><td valign="top">set the maximum of the X component of the IMF scale to be <em>bxmax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-bymin <em>bymin</em></code></td><td valign="top">set the minimum of the Y component of the IMF  scale to be <em>bymin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-bymax <em>bymax</em></code></td><td valign="top">set the maximum of the Y component of the IMF scale to be <em>bymax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-bzmin <em>bzmin</em></code></td><td valign="top">set the minimum of the Z component of the IMF  scale to be <em>bzmin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-bzmax <em>bzmax</em></code></td><td valign="top">set the maximum of the Z component of the IMF scale to be <em>bzmax</em>.</td></tr>
+<tr><td width="150" valign="top"><code><em>name</em></code></td><td valign="top">the filename of the <code>cnvmap</code> format file to plot.</td></tr>
+<tr><td width="150" valign="top"><code>-ps</code></td><td valign="top">produce a PostScript plot as the output.</td></tr>
+<tr><td width="150" valign="top"><code>-xp <em>xoff</em></code></td><td valign="top">set the X offset of the PostScript plot to <em>xoff</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-yp <em>xoff</em></code></td><td valign="top">set the Y offset of the PostScript plot to <em>yoff</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-l</code></td><td valign="top">set the orientation of the PostScript plot to landscape,</td></tr>
+<tr><td width="150" valign="top"><code>-ppm</code></td><td valign="top">produce a Portable PixMap (PPM) image as the output.</td></tr>
+<tr><td width="150" valign="top"><code>-ppmx</code></td><td valign="top">produce an extended Portable PixMap (PPMX) image as the output.</td></tr>
+<tr><td width="150" valign="top"><code>-xml</code></td><td valign="top">produce an XML image representation as the output.</td></tr><tr><td width="150" valign="top"><code>-x</code></td><td valign="top">plot the data on an X-terminal.</td></tr>
+<tr><td width="150" valign="top"><code>-display <em>display</em></code></td><td valign="top">connect to the xterminal named <em>display</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-xoff <em>xoff</em></code></td><td valign="top">open the window, <em>xoff</em> pixels from the left edge of the screen.</td></tr>
+<tr><td width="150" valign="top"><code>-yoff <em>yoff</em></code></td><td valign="top">open the window <em>ypad</em> pixels from the top edge of the screen.</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Plot the cross polar cap potential, scatter statistics or IMF conditions from a convection map file.</p>
+<p>The output can be to an X terminal, Portable PixMap (PPM) files, extended Portable PixMap (PPMX), <code>rPlot</code> XML document,or PostScript file. The default output is <code>rPlot</code> XML.</p>
+<p>If the "<code>-x</code>" option is specified the program will display plots in an X terminal window in all other cases the output is written to standard out.</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">pc_plot -x -old 20040830.map</pre></td></tr></table>
+<p>Plot the cross polar cap potential from the file "<code>20040830.map</code>" on the X terminal.</p>
+
+<table ><tr><td class="docbox" ><pre width="80">pc_plot -smax 1400.0 -s 20021219.cnvmap &gt; pc.rp.xml</pre></td></tr></table>
+<p>Generate an rPlot XML plot of the cross polar cap potential and scatter statistics from the file "<code>20021219.map</code>". The plot is stored in the file "<code>pc.rp.xml</code>".</p>
+<br><center><img src="img/example1.png"></img><br></center>
+         </td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

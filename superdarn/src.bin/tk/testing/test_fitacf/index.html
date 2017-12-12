@@ -1,0 +1,70 @@
+<head>
+<title>test_fitacf</title>
+<link rel=stylesheet href="../../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../../superdarn/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/testing/index.html>testing</a></td><td>|</td>
+<td>test_fitacf</td>
+<td width=100% align=right><a href=../../../../../superdarn/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">test_fitacf</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+test_fitacf --help<br>test_fitacf -old  [<em>options</em>] <em>datname</em> <br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Searches for a record in a rawacf file and tests if it can be processed into fitacf.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--option</code></td><td valign="top">print the options exit.</td></tr>
+<tr><td width="150" valign="top"><code>-vb</code></td><td valign="top">verbose. Log information to the console.</td></tr>
+<tr><td width="150" valign="top"><code>-old </code></td><td valign="top">use dat format.</td></tr>
+<tr><td width="150" valign="top"><code>-hr <em>hr</em></code></td><td valign="top">hour to search for.</td></tr>
+<tr><td width="150" valign="top"><code>-min <em>mn</em></code></td><td valign="top">minute to search for.</td></tr>
+<tr><td width="150" valign="top"><code>-sec <em>sc</em></code></td><td valign="top">second to search for.</td></tr>
+<tr><td width="150" valign="top"><code>-beam <em>bm</em></code></td><td valign="top">beam to search for.</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Returns zero if the record can be processed into fitacf data.  Returns</p>
+<p>Returns EOF if no record is found</p>
+<p>Returns -1 for various other errors</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">test_fitacf -hr 10 -min 15 -sec 45 -beam 8 20150103.1000.02.bks.rawacf </pre></td></tr></table>
+<p>This will search for a record in the <code>20150103.1000.02.bks.rawacf</code> file that has an hour of 10, minute of 15, second of 45 and beam number of 8</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

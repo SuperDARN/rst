@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>base</project>
+<name>ppmxtoppm</name>
+<location>src.bin/graphic/ppmxtoppm</location>
+<syntax>ppmxtoppm --help</syntax>
+<syntax>ppmxtoppm [-bgcol <ar>rrggbb</ar>] [-a <ar>alphaname</ar>] [<ar>name</ar>]</syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+
+<option><on>-bgcol <ar>rrggbb</ar></on><od>set the background color of the output image to <ar>rrggbb</ar>, specified as the  hexadecimal value for the 24-bit red,green and blue component color.</od>
+</option>
+
+<option><on>-alpha <ar>alphaname</ar></on><od>save the alpha channel of the file as the file <ar>alphaname</ar>.</od>
+</option>
+
+
+
+<option><on><ar>name</ar></on><od>input image filename. If this is omitted the image  will be read from standard input.</od>
+</option>
+<synopsis><p>Convert an extended Portable PixMap (PPMX) image to Portable PixMap (PPM).</p></synopsis>
+
+
+<description><p>Convert an extended Portable PixMap (PPMX) image to Portable PixMap (PPM).</p>
+<p>The PPM image file is written to standard output.</p>
+</description>
+
+
+<example>
+<command>ppmxtoppm inp.ppmx &gt; out.ppm</command>
+<description>Convert PPMX file <code>inp.ppmx</code> to the PPM file <code>out.ppm</code>.
+</description>
+</example>
+
+
+<example>
+<command>ppmxtoppm -bgcol ff0000 inp.ppmx &gt; out.ppm</command>
+<description>Convert PPMX file <code>inp.ppmx</code> to the PPM file <code>out.ppm</code>. Set the background color to <code>ff0000</code> (Red).
+</description>
+</example>
+
+
+
+
+</binary>

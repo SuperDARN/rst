@@ -1,0 +1,121 @@
+<head>
+<title>SuperDARN Request for Comments Document Specification</title>
+<link rel=stylesheet href=../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table class="location"><tr>
+<td><a href="../../../index.html">Home</a><td>|</td>
+<td><a href=../../../superdarn/index.html>superdarn</a></td><td>|</td>
+<td><a href=../../../superdarn/src.doc/rfc/index.html>rfc</a></td><td>|</td>
+<td>RFC0001</td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">RFC: 0001</h2>
+<table>
+<tr><td class="docsubtitle" valign=top><h3>Title</h3></td></tr>
+<tr><td></td><td>
+<b>SuperDARN Request for Comments Document Specification</b>
+</td></tr>
+
+<tr><td class="docsubtitle" valign=top><h3>Author</h3></td></tr>
+<tr><td></td><td>
+<b>R.J.Barnes</b>
+</td></tr>
+
+
+<tr><td class="docsubtitle"><h3>Summary</h3></td></tr>
+<tr><td></td><td>
+<p>To further the discussion of software issues within the SuperDARN community, it has been decided to adopt an approach similar to the "Request For Comments" documents that define the Internet. A document describing proposed software changes will be posted for review and comment prior to implementation.This document describes the proposed format of SuperDARN Request for Comments.</p>
+</td></tr>
+<tr><td class="docsubtitle"><h3>Description</h3></td></tr>
+<tr><td></td><td>
+
+<h4>1. Introduction</h4>
+<p>The SuperDARN Request for Comments documents are modeled after the widely known Internet Request for Comments (RFCs). The purpose of the documents is to discuss any aspect of the software that may be of interest to the wider SuperDARN community.</p>
+<p>The purpose of this document is to define the format of SuperDARN RFCs and a mechanism for maintaining and distributing them.</p>
+<h4>2. Document Format</h4> 
+<p>SuperDARN RFCs will be stored using the XML format already used by the rest of the SuperDARN documentation. There are several principal benefits to this:</p>
+<ul>
+<li>Sections of the document can be easily marked out making searching and databasing easy.</li>
+<li>The extensible nature of XML means that new features can be added to the format as they become necessary.</li>
+<li>The presentation of the document is independent of its content, ie. The XML document can be used to produce plain ASCII text, HTML or even PostScript.</li>
+</ul>
+<h5>2.1 Rules for Constructing an RFC Document</h4>
+<p>For convenience, each RFC will reside in a separate XML file. The root element of an RFC is marked using the  <code>&lt;rfc&gt;</code> tag. The child elements delineate the various sections of the RFC. In addition to the body of the text the RFC must have an identifier (number), author, title, summary, and revision history.</p>
+<p>The elements of the the RFC are defined below:</p>
+<center>   
+<table bgcolor="e0e0e0" width="80%">
+<tr><td><code>&lt;rfc&gt;</code></td><td>Root element of the RFC.</td></tr>
+<tr><td><code>&lt;id&gt;</code></td><td>RFC numerical identifier.</td></tr>
+<tr><td><code>&lt;title&gt;</code></td><td>Title of the RFC.</td></tr>
+<tr><td><code>&lt;author&gt;</code></td><td>Author of the RFC.</td></tr>
+<tr><td><code>&lt;summary&gt;</code></td><td>A brief summary of the RFC topic.</td></tr>
+<tr><td><code>&lt;body&gt;</code></td><td>The main body of the RFC text.</td></tr>
+<tr><td><code>&lt;revision&gt;</code></td><td>Revision history. (one element per revision).</td></tr>
+</table>
+</center>
+<p>The body text and summary of an RFC can include HTML tags for markup, but the author must ensure that these tags do not violate any XML grammar rules, so all tags must have an accompanying closing tag.</p>
+<h5>2.2 The Revision History</h5>
+<p>The RFC must include a revision history in the form of one or more <code>&lt;revision&gt;</code> elements. Each revision should have a separate element pair. The text should list the date of the revision and a brief statement as to the reason for the revision:</p> 
+<table width="80%" bgcolor="e0e0e0"><tr><td><pre>&lt;revision&gt;2004/06/01 Initial revision.&lt;/revision&gt;
+&lt;revision&gt;2004/06/02 Addded specifications for author name.&lt;/revision&gt;
+</pre>
+</td></tr></table>
+<h4>3. Managing the Documents</h4>
+<p>RFCs are stored in the <code>${CODEBASE)/rfc</code> directory and are maintained under RCS. The RFCs are distributed either as a self-contained package or as part of a larger software set.</p>
+<h4>4. Producing HTML versions of RFCs</h4>
+<p>Scripts within the <code>${CODEBASE}/doc</code> directory convert the XML RFCs to an HTML web page. The process involves extracting the elements from the XML document and substituting them into an HTML outline script to produce the final static web page.</p>
+<p>An automated script called <code>${CODEBASE}/doc/script/mkrfc</code> will convert all the RFC documents to web pages and build a simple index page. The pages are installed in the directory <code>${WWWPATH)/rfc</code>.</p>
+<h4>5. An Example RFC document</h4>
+
+<table width="80%" bgcolor="e0e0e0">
+<tr><td><pre>&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
+&lt;rfc&gt;
+&lt;id&gt;0001&lt;/id&gt;
+&lt;title&gt;An Example RFC&lt;/title&gt;
+&lt;author&gt;J.Smith&lt;/author&gt;
+&lt;summary&gt;&lt;p&gt;A simple example of an RFC document.
+&lt;/p&gt;&lt;/summary&gt;
+&lt;body&gt;&lt;p&gt;The body text of the RFC goes here and can include HTML tags.
+&lt;/p&gt;&lt;/body&gt;
+&lt;revision&gt;2004/06/01 Initial Revision&lt;/revision&gt;
+&lt;/rfc&gt;
+</pre></td></tr></table>
+
+
+
+
+
+</td></tr>
+<tr><td class="docsubtitle"><h3>References</h3></td></tr>
+<tr><td></td><td>
+None<br>
+</td></tr>
+<tr><td class="docsubtitle"><h3>History</h3></td></tr>
+<tr><td></td><td>
+2004/06/01  Initial Revision.<br>
+</td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+
+</body>
+
+
+

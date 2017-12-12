@@ -1,0 +1,77 @@
+<head>
+<title>igrfeval</title>
+<link rel=stylesheet href="../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../analysis/index.html>analysis</a></td>
+<td>|</td><td><a href=../../../../analysis/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../analysis/src.bin/igrf/index.html>igrf</a></td><td>|</td>
+<td>igrfeval</td>
+<td width=100% align=right><a href=../../../../analysis/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">igrfeval</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+igrfeval --help<br>igrfeval [-m] [-lat <em>lat</em>] [-lon <em>lon</em>] [-alt <em>alt</em>] [-fmt <em>format</em>]<br>igrfeval [-m] [-f <em>filename</em>] [-fmt <em>format</em>]<br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Calculate IGRF magnetic field components and magnitude [nT].</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-m</code></td><td valign="top">location is in geomagnetic rather than geographic coordinates.</td></tr>
+<tr><td width="150" valign="top"><code>-lat <em>lat</em></code></td><td valign="top">calculate for the latitude <em>lat</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-lon <em>lon</em></code></td><td valign="top">calculate for the longitude <em>lon</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-alt <em>alt</em></code></td><td valign="top">calculate for the altitude in kilometers, <em>alt</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-re <em>Re</em></code></td><td valign="top">calculate for the Earth radius in kilometers, <em>Re</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-d <em>yyyymmdd</em></code></td><td valign="top">calculate for the date <em>yyyymmdd</em> (v2 only).</td></tr>
+<tr><td width="150" valign="top"><code>-t <em>hr:mn</em></code></td><td valign="top">calculate for the time <em>hr:mn</em> (v2 only).</td></tr>
+<tr><td width="150" valign="top"><code>-fmt <em>format</em></code></td><td valign="top">use the string <em>fmt</em>, to format the output.</td></tr>
+<tr><td width="150" valign="top"><code>-xyz</code></td><td valign="top">Output should be in Cartesian rather than North/East/Down coordinates.</td></tr>
+<tr><td width="150" valign="top"><code>-f <em>filename</em></code></td><td valign="top">read a sequence of latitudes, longitudes and altitudes from the ASCII file, <em>filename</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-old_aacgm</code></td><td valign="top">use old AACGM coordinates rather than v2.</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td>
+<p>Calculates IGRF magnetic field components and magnitude in units of nanotesla [nT]. The output is written to standard output using the formatting string given by the "<code>-fmt</code>" option. The format string should be in the same format as that used by the <code>printf</code> function and will take two double precision floating point numbers as arguments.</p>
+<p>If the "<code>-f</code>" option is given, the latitude,longitude and altitude are read from a space separated ASCII file. If the filename is "<code>-</code>" input is read from standard input.</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">igrfeval -lat 85.4 -lon 32.4 -alt 300.0</pre></td></tr></table>
+<p>Calculate the IGRF magnetic field components at the coordinate given by latitude of 85.4 degrees, longitude 32.4 degrees and altitude of 300 kilometers.</p>
+
+<table ><tr><td class="docbox" ><pre width="80">igrfeval -m -f aacgm.txt</pre></td></tr></table>
+<p>Calculate the IGRF magnetic field components for the geomagnetic coordinates in the file "<code>aacgm.txt</code>".</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

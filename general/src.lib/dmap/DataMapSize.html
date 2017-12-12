@@ -1,0 +1,100 @@
+
+<head>
+<title>DataMapSize</title>
+<link rel=stylesheet href=../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../index.html">Home</a><td>|</td>
+<td><a href=../../../general/index.html>general</a></td>
+<td>|</td><td><a href=../../../general/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../general/src.lib/dmap/index.html>dmap</a></td><td>|</td>
+<td>DataMapSize</td>
+<td width=100% align=right><a href=../../../general/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">DataMapSize</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">int DataMapSize(<a href="structDataMap.html"><code>struct DataMap</code></a> *ptr);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">general/dmap.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">dmap</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="DataMapSize.html"><code>DataMapSize</code></a> function calculates the number of bytes required to store a <code>DataMap</code> data structure.</p>
+<p>The structure is pointed to by the argument <em>ptr</em>.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns the size in bytes of bytes required to encode the data structure. On error, (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/DataMapSize.c">DataMapSize.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* DataMapSize.c
+   =============
+   Author: R.J.Barnes */
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#include &quot;rtypes.h&quot;
+#include &quot;dmap.h&quot;
+
+
+
+int main(int argc,char *argv[]) {
+
+  int t,n;
+
+  float set[3]={2.1,2.2,12.2};
+  int value;
+
+  int32 dim=1;
+  int32 rng[1]={3};
+
+  struct DataMap *dmap;
+  int size;
+
+  dmap=DataMapMake();
+
+  DataMapAddArray(dmap,&quot;set&quot;,DATAFLOAT,dim,rng,&amp;set);
+  DataMapAddScalar(dmap,&quot;value&quot;,DATAINT,&amp;value);
+
+  for (t=0;t&lt;100;t++) {
+    for (n=0;n&lt;3;n++) set[n]=set[n]+0.6;
+    size=DataMapSize(dmap);
+    fprintf(stdout,&quot;Size of data block:%d&apos;n&quot;,size);
+  }
+  DataMapFree(dmap);
+  return 0;
+
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

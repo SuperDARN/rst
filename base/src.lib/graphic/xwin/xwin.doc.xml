@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>base</project>
+<name>xwin</name>
+<location>src.lib/graphic/xwin</location>
+<function>
+<name>XwinCloseDisplay</name>
+<location>src.lib/graphic/xwin</location>
+<header>base/xwin.h</header>
+<syntax>int XwinCloseDisplay(<sn href="structXwinDisplay.html">struct XwinDisplay</sn> *dp);</syntax>
+
+<description><p>The <fn href="XwinCloseDisplay.html">XwinCloseDisplay</fn> function closes a connection to an X terminal display.</p>
+<p>The connection to close is pointed to by the argument <ar>dp</ar>.</p>
+</description>
+
+<returns>Returns zero on success.</returns>
+<example type="source">XwinCloseDisplay.c</example>
+</function>
+<function>
+<name>XwinDisplayEvent</name>
+<location>src.lib/graphic/xwin</location>
+<header>base/xwin.h</header>
+<syntax>int XwinDisplayEvent(<sn href="structXwinDisplay.html">struct XwinDisplay</sn> *dp,int wnum, <sn href="structXwinWindow.html">struct XwinWindow</sn> **win,int mode,struct timeval *tmout);</syntax>
+
+<description><p>The <fn href="XwinDisplayEvent.html">XwinDisplayEvent</fn> function processes events associated with an X terminal.</p>
+<p>The argument <ar>dp</ar> points the control structure of the X terminal display to process events from.</p>
+<p>The function will process events directed to a list of X windows. The argument <ar>win</ar> is an array containing the window pointer and the argument <ar>wnum</ar> is the number of window pointers contained in the array.</p> 
+<p>The function will block waiting for certain X events to occur. The type of events accepted is controlled by the argument mode. A value of zero will block until a close window or terminate event occurs. A non-zero value will block until a close window, terminate or button press event occurs.</p>
+<p>The final argument <ar>tout</ar> defines the length of time that the function should block waiting for an event. If this is a <code>NULL</code> pointer the function will block indefinitely until an event occurs. Otherwise the function will wait the specified length of time for an event.</p>
+</description>
+
+<returns>Returns zero if the function timed out, (1) if a close window or terminate event occurs and (2) if a button is pressed. On error, (-1) is returned.
+</returns>
+
+<errors>On error, (-1) is returned.</errors>
+<example type="source">XwinDisplayEvent.c</example>
+
+</function>
+<function>
+<name>XwinFrameBufferToXimage</name>
+<location>src.lib/graphic/xwin</location>
+<header>base/xwin.h</header>
+<syntax>int XwinFrameBufferToXimage(<sn href="&root;/base/src.lib/graphic/fbuffer/structFrameBuffer.html">struct FrameBuffer *fb</sn>,XImage *xi);</syntax>
+
+<description><p>The <fn href="XwinFrameBufferToXimage.html">XwinFrameBufferToXimage</fn> function copies a frame buffer to an Ximage structure.</p>
+<p>The frame buffer structure is pointed to be the argument <ar>fb</ar> and the Ximage structure is pointed to by the argument <ar>xi</ar>.</p>
+</description>
+
+<returns>Returns zero on success.</returns>
+<example type="source">XwinFrameBufferToXimage.c</example>
+
+</function>
+<function>
+<name>XwinFrameBufferWindow</name>
+<location>src.lib/graphic/xwin</location>
+<header>base/xwin.h</header>
+<syntax>int XwinFrameBufferWindow(<sn href="&root;/base/src.lib/graphic/fbuffer/structFrameBuffer.html">struct FrameBuffer *fb</sn>,<sn href="structXwinWindow.html">struct XwinWindow</sn> *wp);</syntax>
+
+
+<description><p>The <fn href="XwinFrameBufferWindow.html">XwinFrameBufferWindow</fn> function copies a frame buffer to an X window.</p>
+<p>The frame buffer structure is pointed to be the argument <ar>fb</ar> and the window control structure is pointed to by the argument <ar>wp</ar>.</p>
+</description>
+
+
+<returns>Returns zero on success.</returns>
+<example type="source">XwinFrameBufferWindow.c</example>
+
+
+</function>
+<function>
+<name>XwinFreeWindow</name>
+<location>src.lib/graphic/xwin</location>
+<header>base/xwin.h</header>
+<syntax>int XwinFreeWindow(<sn href="structXwinWindow.html">struct XwinWindow</sn> *wp);</syntax>
+
+<description><p>The <fn href="XwinFreeWindow.html">XwinFreeWindow</fn> function releases memory allocated to store a control structure for  a window on an X terminal.</p>
+<p>The control structure of the window is pointed to by the argument <ar>wp</ar>.</p>
+</description>
+
+<example type="source">XwinFreeWindow.c</example>
+
+</function>
+<function>
+<name>XwinMakeWindow</name>
+<location>src.lib/graphic/xwin</location>
+<header>base/xwin.h</header>
+<syntax><sn href="structXwinWindow.html">struct XwinWindow</sn> *XwinMakeWindow(int x,int y,int wdt,int hgt,int border, <sn href="structXwinDisplay.html">struct XwinDisplay</sn> *display, char *wname,char *iname, char *rname,char *rclass,int argc, char *argv[], int *flg);</syntax>
+
+<description><p>The <fn href="XwinMakeWindow.html">XwinMakeWindow</fn> creates an X window.</p>
+<p>The initial x and y position, width and height of the window are 
+given by the arguments <ar>x</ar>, <ar>y</ar>, <ar>wdt</ar> and <ar>hgt</ar>. The argument <ar>border</ar> defines the width of the window border in pixels.</p>
+<p>The argument <ar>display</ar> points to a zero terminated string that defines the X terminal display to create the window on.</p>
+<p>The arguments <ar>wname</ar>, <ar>iname</ar>, <ar>rname</ar> and <ar>rclass</ar> point to zero terminated strings the  define the window name, the icon name, the resource name and the resource class respectively.</p>
+<p>The argument <ar>argv</ar> is the array of zero-terminated, command line strings passed to the calling program and the argument <ar>argc</ar> is the number of strings in the array.</p>
+<p>If an error occurs the location pointed to by the argument <ar>flg</ar> is set to an error value.</p>
+<returns>Returns a pointer to the X window. On error, a <code>NULL</code> pointer is returned and the location pointed to by the argument <ar>flg</ar> is set to an error value.</returns>
+<errors>
+On error, a <code>NULL</code> pointer is returned and the location pointed to by the argument <ar>flg</ar> is set to an error value.</returns>
+</errors>
+
+<example type="source">XwinFreeWindow.c</example>
+
+
+</function>
+<function>
+<name>XwinOpenDisplay</name>
+<location>src.lib/graphic/xwin</location>
+<header>base/xwin.h</header>
+<syntax><sn href="structXwinDisplay.html">struct XwinDisplay</sn> *XwinOpenDisplay(char *display,int *flg);</syntax>
+<description><p>The <fn href="XwinOpenDisplay.html">XwinOpenDisplay</fn> function opens a connection to an X terminal window.</p>
+<p>The full name of the X terminal to connect to is given by the zero terminated string pointed to by the argument <ar>display</ar>.</p>
+<p> If an error occurs the location pointed to by the argument <ar>flg</ar> is set to an error value.</p>
+</description>
+
+<returns>Returns a pointer to the display control structure. On error, a <code>NULL</code> pointer is returned and the location pointed to by the argument <ar>flg</ar> is set to an error value.</returns>
+<errors>
+On error, a <code>NULL</code> pointer is returned and the location pointed to by the argument <ar>flg</ar> is set to an error value.</returns>
+
+
+<example type="source">XwinOpenDisplay.c</example>
+
+</function>
+<function>
+<name>XwinShowWindow</name>
+<location>src.lib/graphic/xwin</location>
+<header>base/xwin.h</header>
+<syntax>int XwinShowWindow(<sn href="structXwinWindow.html">struct XwinWindow</sn> *wp);</syntax>
+
+<description><p>The <fn href="XwinShowWindow.html">XwinShowWindow</fn> function displays a window on an X terminal.</p>
+<p>The control structure of the window to display is pointed to by the argument <ar>wp</ar>.</p>
+</description>
+
+<example type="source">XwinShowWindow.c</example>
+
+
+</function>
+
+
+<structure>
+ <name>XwinDisplay</name>
+ <location>src.lib/graphic/xwin</location>
+ <header>base/xwin.h</header>
+ <struct>
+    <member>
+      <proto>Display *display</proto>
+      <description>X terminal display connection.</description>
+    </member>
+    <member>
+      <proto>int screen_num;</proto>
+      <description>Screen number on the terminal.</description>
+    </member>
+    <member>
+      <proto>Visual *default_visual;</proto>
+      <description>Zero terminated string giving the default visual class for the display.</description>
+    </member>
+    <member>
+      <proto>int default_depth;</proto>
+      <description>Default color depth for the display.</description>
+    </member>
+    <member>
+      <proto>int wdt;</proto>
+      <description>Screen width.</description>
+    </member>
+    <member>
+      <proto>int hgt;</proto>
+      <description>Screen height.</description>
+    </member>
+  </struct>
+
+<description>
+<p>The <sn href="structXwinDisplay.html">struct XwinDisplay</sn> structure stores control information for a single Xterminal display.</p>
+</description>
+
+
+
+</structure>
+
+<structure>
+ <name>XwinWindow</name>
+ <location>src.lib/graphic/xwin</location>
+ <header>base/xwin.h</header>
+ <struct>
+    <member>
+      <proto>int wdt;</proto>
+      <description>Window width.</description>
+    </member>
+    <member>
+      <proto>int hgt;</proto>
+      <description>Window height.</description>
+    </member>
+    <member>
+      <proto>char *progname;</proto>
+      <description>Zero terminated string giving the program name.</description>
+    </member>
+    <member>
+      <proto><sn href="structXwinDisplay.html">struct XwinDisplay</sn> *dp;</proto>
+      <description>Control structure for the display the window is connected to.</description>
+    </member>
+    <member>
+      <proto>Window win;</proto>
+      <description>Window identifier.</description>
+    </member>
+    <member>
+      <proto>XTextProperty windowName;</proto>
+      <description>Window name.</description>
+    </member>
+    <member>
+      <proto>XTextProperty iconName;</proto>
+      <description>Icon name.</description>
+    </member>
+    <member>
+      <proto>XSizeHints *size_hints;</proto>
+      <description>Size hints.</description>
+    </member>
+    <member>
+      <proto>XWMHints *wm_hints;</proto>
+      <description>Window manager hints.</description>
+    </member>
+    <member>
+      <proto>XClassHints *class_hints;</proto>
+      <description>Class hints.</description>
+    </member>
+    <member>
+      <proto>char *buffer;</proto>
+      <description>Buffer for the graphics image.</description>
+    </member>
+    <member>
+      <proto>XImage *xi;</proto>
+      <description>pointer to the associated Ximage structure.</description>
+    </member>
+    <member>
+      <proto>GC gc;</proto>
+      <description>Graphics context.</description>
+    </member>
+    <member>
+      <struct>
+        <member>
+          <proto>Atom proto;</proto>
+          <description>Window prototype attributes.</description>
+        </member>
+        <member>
+          <proto>Atom delete;</proto>
+          <description>Window delete.</description>
+        </member>
+      </struct>
+      <proto>atom;</proto>
+      <description>Propert atoms.</description>
+    </member>
+  </struct>
+
+<description>
+<p>The <sn href="structXwinWindow.html">struct XwinWindow</sn> structure stores control information for a single Xterminal window.</p>
+</description>
+
+</structure>
+</library>

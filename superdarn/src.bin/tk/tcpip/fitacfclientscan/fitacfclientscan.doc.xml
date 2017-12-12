@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>fitacfclientscan</name>
+<location>src.bin/tk/tcpip/fitacfclientscan</location>
+<syntax>fitacfclientscan --help</syntax>
+<syntax>fitacfclientscan [-s <ar>stream</ar>] <ar>host</ar> <ar>port</ar></syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>-s <ar>stream</ar></on><od>for a multiplexed stream, read the stream number given by <ar>stream</ar>. A value of 255 will read all streams</od>
+</option>
+<option><on><ar>host</ar></on><od>hostname or IP address of the system to connect to.</od>
+</option>
+<option><on><ar>port</ar></on><od>port number to connect to on  the system.</od></option>
+<synopsis><p>Simple client program for reading complete scans from a  <code>fitacf</code> TCP/IP data stream.</p></synopsis>
+
+<description><p>Simple client program for reading complete scans from a  <code>fitacf</code> TCP/IP data stream.</p>
+<p>This task is for demonstration purposes.</p>
+</description>
+
+
+<example>
+<command>fitacfclientscan peanut.jhuapl.edu 1024</command>
+<description>Connect to the host <code>peanut.jhuapl.edu</code> at port 1024 and download complete scans.</description>
+</example>
+ 
+<example>
+<command>fitacfclientscan -s 2 peanut.jhuapl.edu 1024</command>
+<description>Connect to the host <code>peanut.jhuapl.edu</code> at port 1024 and download complete scans from stream number 2.</description>
+</example>
+
+
+
+
+</binary>

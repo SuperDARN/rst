@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>rtgrid</name>
+<location>src.bin/tk/tool/rtgrid</location>
+
+<syntax>rtgrid --help</syntax>
+<syntax>rtgrid [<ar>options</ar>] <ar>host</ar> <ar>port</ar></syntax>
+<syntax>rtgrid -old [<ar>options</ar>] <ar>host</ar> <ar>port</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>-tl <ar>tlen</ar></on><od>ignore the scan flag and instead use a fixed length scan of  <ar>tlen</ar> seconds.</od>
+</option>
+<option><on>-i <ar>intt</ar></on><od>integrate the grid data into records of length <ar>intt</ar> seconds.</od>
+</option>
+<option><on>-cn <ar>channel</ar></on><od>process data from channel <ar>channel</ar> for stereo mode data.</od>
+</option>
+<option><on>-ebm <ar>ebeams</ar></on><od>exclude the beams listed in <ar>ebeams</ar>, which is a comma separated list of beam numbers.</od>
+</option>
+<option><on>-minrng <ar>minrange</ar></on><od>exclude data from range gates lower than <ar>minrange</ar>.</od>
+</option>
+<option><on>-maxrng <ar>maxrange</ar></on><od>exclude data from range gates higher than <ar>maxrange</ar>.</od>
+</option>
+<option><on>-fwgt <ar>mode</ar></on><od>set the filter weighting mode to <ar>mode</ar>.</od>
+</option>
+<option><on>-pmax <ar>pmax</ar></on><od>exclude data with a power greater than <ar>pmax</ar>.</od>
+</option>
+<option><on>-vmax <ar>vmax</ar></on><od>exclude data with an absolute velocity greater than <ar>vmax</ar>.</od>
+</option>
+<option><on>-wmax <ar>wmax</ar></on><od>exclude data with a spectral width greater than <ar>wmax</ar>.</od>
+</option>
+<option><on>-vemax <ar>vemax</ar></on><od>exclude data with a velocity error greater than <ar>vemax</ar>.</od>
+</option>
+<option><on>-pmin <ar>pmin</ar></on><od>exclude data with a power less than <ar>pmin</ar>.</od>
+</option>
+<option><on>-vmin <ar>vmin</ar></on><od>exclude data with an absolute velocity less than <ar>vmin</ar>.</od>
+</option>
+<option><on>-wmin <ar>wmin</ar></on><od>exclude data with a spectral width less than <ar>wmin</ar>.</od>
+</option>
+<option><on>-vemin <ar>vemin</ar></on><od>exclude data with a velocity error less than <ar>vemin</ar>.</od>
+</option>
+<option><on>-fmax <ar>fmax</ar></on><od>set the maximum allowed variation in frequency to be <ar>fmax</ar> Hertz.</od>
+</option>
+<option><on>-alt <ar>alt</ar></on><od>set the altitude at which the mapping is done to be <ar>alt</ar> kilometers.</od>
+</option>
+<option><on>-nav</on><od>do not perform temporal averaging.</od>
+</option>
+<option><on>-nlm</on><od>do not exclude data because it exceeds the data limits.</od>
+</option>
+<option><on>-nb</on><od>do not exclude data based on the operating parameters.</od>
+</option>
+<option><on>-xtd</on><od>create extended output that includes both the power and spectral width measurements.</od>
+</option>
+<option><on>-isort</on><od>calculate the median power and spectral width independently of the velocity distribution.</od>
+</option>
+<option><on>-ion</on><od>exclude data marked as ground scatter.</od>
+</option>
+<option><on>-gs</on><od>exclude data marked as ionospheric scatter.</od>
+</option>
+<option><on>-both</on><od>do not exclude data based on the type flag.</od>
+</option>
+<option><on>-inertial</on><od>calculate the grid file in the inertial reference frame.</od>
+</option>
+<option><on>-L <ar>logname</ar></on><od>log connections and information in the file <ar>logname</ar>. By default, connections are recorded in <code>log.rt</code>.</od>
+</option>
+<option><on>-p <ar>pathname</ar></on><od>store the daily files in the directory <ar>pathname</ar>.</od>
+</option>
+<option><on>-f <ar>filename</ar></on><od>store the grid data in the file <ar>filename</ar>.</od>
+</option>
+<option><on>-if <ar>pidname</ar></on><od>record the process Identifier (PID) of the server in the file <ar>pidname</ar>. By default, the PID is  recorded in <code>pid.id</code>.</od>
+</option>
+<option><on>-s <ar>stream</ar></on><od>for a multiplexed stream, read the stream number given by <ar>stream</ar>. A value of 255 will read all streams</od>
+</option>
+<option><on><ar>host</ar></on><od>hostname or IP number of the system to connect to.</od>
+</option>
+<option><on><ar>rport</ar></on><od>port number to connect to on the server.</od>
+</option>
+<option><on>-rpf</on><od>The remote port number is stored in a text file.</od>
+</option>
+<option><on><ar>rportname</ar></on><od>filename of the text file containing the remote port number.</od>
+</option>
+<option><on>-old</on><od>produce <code>grd</code> format output files.</od>
+</option>
+<synopsis><p>Creates a <code>grd</code> or <code>grdmap</code> format file from a <code>fitacf</code> TCP/IP data stream.</p></synopsis>
+<description><p>Creates a <code>grd</code> or <code>grdmap</code> format file from a <code>fitacf</code> TCP/IP data stream.</p>
+<p>A grid file is a highly processed data product consisting of geo-magnetically located line of sight velocity vectors.</p>  
+<p>The algorithm optionally applies a median filter to the scan data to remove noise. Each range-beam cell together with its immediate neighbors in the current, preceding and following scans is examined. A weighted sum of all the cells containing scatter is calculated and if this sum exceeds a certain threshold, the median data value of the cells is substituted for the central cell. Various command line options control how the filter is applied.</p> 
+<p>Once the data has been filtered, the geo-magnetic location of each line of sight velocity measurement is calculated.  The vectors are then fixed to an equi-area grid to ensure that the data is not biased according to its location in the radar field of view.</p>
+<p>The vectors in each cell are averaged together over a fixed period of time to generate an output record, which is then stored in the specified output file. An additional file containing all of the records for a given day is also created. The name of this file takes the form "<code><em>yyyymmdd.iii</em>.grd</code>", where <em>yyyy</em> is the year, <em>mm</em> the month, <em>dd</em> the day, and <em>iii</em> the station identifier code.</p> 
+</description>
+
+<example>
+<command>rtgrid -L log -tl 120 -i 120 -if pid.id kapqnx.jhuapl.edu 1024</command>
+<description>Generate a grdmap file using the real-time data stream from the host "<code>kapqnx.jhuapl.edu</code>", served at port 1024. Ignore the scan flag and use a scan length of two minutes. Generate a record every two minutes.  The process identifier is recorded in the file "<code>pid.id</code>", logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyy</em> is the year, <em>mm</em> is the month, and <em>dd</em> is the day.
+</description>
+</example>
+
+<example>
+<command>rtgrid -rpf port.gbr -L log -pf port.id -if pid.id -p /data/rt/grd gbayqnx.jhuapl.edu</command>
+<description>
+Generate a grdmap file using the real-time data stream from the host "<code>gbayqnx.jhuapl.edu</code>", served at port contained in the file "<code>port.gbr</code>". The process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyy</em> is the year, <em>mm</em> is the month, and <em>dd</em> is the day.
+The daily files are stored in the directory "<code>/data/rt/grd</code>".
+</description>
+</example>
+
+</binary>

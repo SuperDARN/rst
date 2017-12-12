@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>general</project>
+<name>grplot</name>
+<location>src.lib/grplotlib</location>
+<function>
+<name>GrplotBar</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotBar(struct Grplot *plt,int num, double ax,double ay,double w,double o, double xmin,double xmax, double ymin,double ymax,int or,int fill, unsigned int color,unsigned char mask,float width, struct RplotDash *dash);</syntax>
+</function>
+<function>
+<name>GrplotBezier</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotBezier(struct Grplot *plt,int num, double ax,double ay,double bx,double by, double cx,double cy,double dx,double dy, double xmin,double xmax, double ymin,double ymax, unsigned int color,unsigned char mask,float width, struct RplotDash *dash);</syntax>
+</function>
+<function>
+<name>GrplotClipPanel</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotClipPanel(struct Grplot *plt,int num);</syntax>
+</function>
+<function>
+<name>GrplotEllipse</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotEllipse(struct Grplot *plt,int num, struct RplotMatrix *matrix, double x,double y,double w,double h, double xmin,double xmax, double ymin,double ymax, int fill,unsigned int color,unsigned char mask,float width, struct RplotDash *dash);</syntax>
+</function>
+<function>
+<name>GrplotFill</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotFill(struct Grplot *plt,int num, double ax,double ay,double bx,double by, double xmin,double xmax, double ymin,double ymax,int or, unsigned int color,unsigned char mask);</syntax>
+</function>
+<function>
+<name>GrplotFitImage</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotFitImage(struct Grplot *plt,int num, struct FrameBuffer *img, unsigned char mask);</syntax>
+</function>
+<function>
+<name>GrplotFitImageName</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotFitImageName(struct Grplot *plt,int num, char *name,int iwdt,int ihgt, unsigned char mask);</syntax>
+</function>
+<function>
+<name>GrplotFree</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>void GrplotFree(struct Grplot *ptr);</syntax>
+</function>
+<function>
+<name>GgrplotetPoint</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GgrplotetPoint(struct Grplot *plt,int num, double x,double y, double xmin,double xmax, double ymin,double ymax,float *px,float *py);</syntax>
+</function>
+<function>
+<name>GrplotImage</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotImage(struct Grplot *plt,int num, struct PlotMatrix *matrix, struct FrameBuffer *img,float dx,float dy, double x,double y, double xmin,double xmax, double ymin,double ymax, unsigned char mask);</syntax>
+</function>
+<function>
+<name>GrplotImageName</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotImageName(struct Grplot *plt,int num, struct PlotMatrix *matrix, char *name,float dx,float dy, double x,double y, double xmin,double xmax, double ymin,double ymax, unsigned char mask);</syntax>
+</function>
+<function>
+<name>GrplotKey</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotKey(struct Grplot *plt,int num, float xoff,float yoff, float wdt,float hgt, double xmin,double xmax,double step, int key_flg,int ttl_num,char *ttl_txt, char * (*make_text)(double,double,double,void *), void *textdata, char *fntname,float fntsze,unsigned int color,unsigned char mask,float width,int ksze,unsigned char *a,unsigned char *r,unsigned char *g,unsigned char *b);</syntax>
+</function>
+<function>
+<name>GrplotKeyLog</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotKeyLog(struct Grplot *plt,int num, float xoff,float yoff, float wdt,float hgt, double xmin,double xmax,double tick_major,double tick_minor, int key_flg,int ttl_num,char *ttl_txt, char * (*make_text)(double,double,double,void *), void *textdata,char *fntname,float fntsze,unsigned int color,unsigned char mask,float width,int ksze,unsigned char *a,unsigned char *r,unsigned char *g,unsigned char *b);</syntax>
+</function>
+<function>
+<name>GrplotLine</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotLine(struct Grplot *plt,int num, double ax,double ay,double bx,double by, double xmin,double xmax, double ymin,double ymax, unsigned int color,unsigned char mask,float width, struct PlotDash *dash);</syntax>
+</function>
+<function>
+<name>GrplotMake</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>struct Grplot *GrplotMake(float wdt,float hgt, int xnum,int ynum,float lpad,float rpad, float bpad,float tpad,float xoff,float yoff);</syntax>
+</function>
+<function>
+<name>GrplotPanel</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotPanel(struct Grplot *plt,int num,unsigned int color, unsigned char mask,float width);</syntax>
+</function>
+<function>
+<name>GrplotPolygon</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotPolygon(struct Grplot *plt,int num,struct PlotMatrix *matrix,double x,double y,int n,double *px,double *py,int *t, double xmin,double xmax, double ymin,double ymax, int fill,unsigned int color,unsigned char mask,float width, struct PlotDash *daGrplotRawBar</syntax>
+</function>
+<function>
+<name>GrplotRawBar</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawBar(struct Plot *ptr, float ox,float oy,float wdt,float hgt, double ax,double ay,double w,double o,double xmin,double xmax, double ymin,double ymax,int or,int fill, unsigned int color,unsigned char mask,float width, struct PlotDash *dash);</syntax>
+</function>
+<function>
+<name>GrplotRawBezier</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawBezier(struct Plot *ptr, float ox,float oy,float wdt,float hgt, double ax,double ay,double bx,double by, double cx,double cy,double dx,double dy, double xmin,double xmax, double ymin,double ymax, unsigned int color,unsigned char mask,float widtGrplotRawClipPanel</syntax>
+</function>
+<function>
+<name>GrplotRawClipPanel</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawClipPanel(struct Plot *ptr,float x,float y,float wdt,float hgt);</syntax>
+</function>
+<function>
+<name>GrplotRawContour</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawContour(struct Plot *rplot,struct PolygonData *ptr, float xoff,float yoff,float wdt,float hgt, float step,float smooth,float lwdt, int lstart,int lstep, int sze,char *text, unsigned int color,char mask,float width, struct PlotDash *dash);</syntax>
+</function>
+
+<function>
+<name>GrplotRawContourPolygon</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawContourPolygon(struct Plot *rplot,struct PolygonData *ptr,float xoff,float yoff,float wdt,float hgt,float step,float smooth,unsigned int color,char mask,int fill,float width,struct PlotDash *dash);</syntax>
+</function>
+
+
+
+
+<function>
+<name>GrplotRawEllipse</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawEllipse(struct Plot *ptr, struct PlotMatrix *matrix, float ox,float oy,float wdt,float hgt, double x,double y,double w,double h,double xmin,double xmax, double ymin,double ymax, int fill,unsigned int color,unsigned char mask,float width, strucGrplotRawFill</syntax>
+</function>
+<function>
+<name>GrplotRawFill</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawFill(struct Plot *ptr, float ox,float oy,float wdt,float hgt, double ax,double ay,double bx,double by,double xmin,double xmax, double ymin,double ymax,int or, unsigned int color,unsigned char mask);</syntax>
+</function>
+<function>
+<name>GrplotRawFitImage</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawFitImage(struct Plot *ptr, float ox,float oy,float wdt,float hgt, struct FrameBuffer *img, unsigned char mask);</syntax>
+</function>
+<function>
+<name>GrplotRawFitImageName</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawFitImageName(struct Plot *ptr, float ox,float oy,float wdt,float hgt, char *name,int iwdt,int ihgt, unsigned char mask);</syntax>
+</function>
+<function>
+<name>GrplotRawGetPoint</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawGetPoint(float ox,float oy,float wdt,float hgt, double x,double y,double xmin,double xmax,double ymin, double ymax,float *px,float *py);</syntax>
+</function>
+<function>
+<name>GrplotRawImage</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawImage(struct Plot *ptr, struct PlotMatrix *matrix, float ox,float oy,float wdt,float hgt, struct FrameBuffer *img,float dx,float dy, double x,double y,double xmin,double xmax, double ymin,double ymax, unsigned char mask);</syntax>
+</function>
+<function>
+<name>GrplotRawImageName</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawImageName(struct Plot *ptr, struct PlotMatrix *matrix, float ox,float oy,float wdt,float hgt, char *name,float dx,float dy, double x,double y, double xmin,double xmax, double ymin,double ymax, unsigned char mask);</syntax>
+</function>
+<function>
+<name>GrplotRawKey</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawKey(struct Plot *ptr, float ox,float oy,float wdt,float hgt, double min,double max,  double tick_major,double tick_minor, float major_size,float minor_size, float txt_off,float ttl_off, int tick_flg,int txt_flg,int ttl_flg,int txt_or,int ttl_or,int or,int ttl_num,char *ttl_text,int (*text_box)(char *,float,int,char *,float *,void *),void *boxdata,char * (*make_text)(double,double,double,void *),void *textdata,char *fntname,float fntsze,unsigned int color,unsigned char mask,float width,int ksze,unsigned char *a,unsigned char *r,unsigned char *g,unsigned char *b);</syntax>
+</function>
+<function>
+<name>GrplotRawKeyLog</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawKeyLog(struct Plot *ptr, float ox,float oy,float wdt,float hgt, double min,double max, double tick_major,double tick_minor, float major_size,float minor_size, float txt_off,float ttl_off, int tick_flg,int txt_flg,int ttl_flg, int txt_or,int ttl_or,int or,int ttl_num,char *ttl_text,int  (*text_box)(char *,float,int,char *,float *,void *),void *boxdata,char * (*make_text)(double,double,double,void *),void *textdata,char *fntname,float fntsze,unsigned int color,unsigned char mask,float width,int ksze,unsigned char *a,unsigned char *r,unsigned char *g,unsigned char *b);
+
+
+
+GrplotRawLine</syntax>
+</function>
+<function>
+<name>GrplotRawLine</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawLine(struct Plot *ptr, float ox,float oy,float wdt,float hgt, double ax,double ay,double bx,double by,double xmin,double xmax, double ymin,double ymax, unsigned int color,unsigned char mask,float width, struct PlotDash *dash);</syntax>
+</function>
+<function>
+<name>GrplotRawPanel</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawPanel(struct Plot *ptr,float x,float y,float wdt,float hgt, unsigned int color,unsigned char mask, float width);</syntax>
+</function>
+<function>
+<name>GrplotRawPolygon</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawPolygon(struct Plot *ptr, struct PlotMatrix *matrix, float ox,float oy,float wdt,float hgt, double x,double y,int num,double *px,double *py, int *t,double xmin,double xmax, double ymin,double ymax, int fill,unsigned int color,unsigned char masGrplotRawRectangle</syntax>
+</function>
+<function>
+<name>GrplotRawRectangle</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawRectangle(struct Plot *ptr, struct PlotMatrix *matrix, float ox,float oy,float wdt,float hgt, double x,double y,double w,double h,double xmin,double xmax, double ymin,double ymax, int fill,unsigned int color,unsigned char mask,float width, strGrplotRawText</syntax>
+</function>
+<function>
+<name>GrplotRawText</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawText(struct Plot *ptr, struct PlotMatrix *matrix, float ox,float oy,float wdt,float hgt, char *fontname,float fontsize, double x,double y,int num,char *txt, float dx,float dy,double xmin,double xmax, double ymin,double ymax, unsigned int colorGrplotRawXaxis</syntax>
+</function>
+<function>
+<name>GrplotRawXaxis</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawXaxis(struct Plot *ptr, float ox,float oy,float wdt,float hgt, double xmin,double xmax, double tick_major,double tick_minor, float major_hgt,float minor_hgt,int tick_flg, unsigned int color,unsigned char mask,float width);</syntax>
+</function>
+<function>
+<name>GrplotRawXaxisLabel</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawXaxisLabel(struct Plot *ptr, float ox,float oy,float wdt,float hgt, double xmin,double xmax,double step, float offset,int txt_flg,int or, int (*text_box)(char *,float,int,char *,float *,void *), void *boxdata, char * (*make_text)(double,double,GrplotRawXaxisLabelValue</syntax>
+</function>
+<function>
+<name>GrplotRawXaxisLabelValue</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawXaxisLabelValue(struct Plot *ptr, float ox,float oy,float wdt,float hgt, double xmin,double xmax,double value, float offset,int txt_flg,int or, int (*text_box)(char *,float,int,char *,float *,void *), void *boxdata, int sze,char *text, char *fnGrplotRawXaxisLog</syntax>
+</function>
+<function>
+<name>GrplotRawXaxisLog</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawXaxisLog(struct Plot *ptr, float ox,float oy,float wdt,float hgt, double xmin,double xmax, double tick_major,double tick_minor, float major_hgt,float minor_hgt,int tick_flg, unsigned int color,unsigned char mask,float width);</syntax>
+</function>
+<function>
+<name>GrplotRawXaxisTitle</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawXaxisTitle(struct Plot *ptr, float ox,float oy,float wdt,float hgt, float offset,int txt_flg,int or, int (*text_box)(char *,float,int,char *,float *,void *), void *boxdata, int sze,char *text, char *fntname,float fntsze, unsigned int color,unsiGrplotRawXaxisValue</syntax>
+</function>
+<function>
+<name>GrplotRawXaxisValue</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawXaxisValue(struct Plot *ptr, float ox,float oy,float wdt,float hgt, double xmin,double xmax,double value, float tick_hgt,int tick_flg, unsigned int color,unsigned char mask,float width);</syntax>
+</function>
+<function>
+<name>GrplotRawXzero</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawXzero(struct Plot *ptr, float ox,float oy,float wdt,float hgt, double xmin,double xmax, unsigned int color,unsigned char mask,float width, struct PlotDash *dash);</syntax>
+</function>
+<function>
+<name>GrplotRawYaxis</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawYaxis(struct Plot *ptr, float ox,float oy,float wdt,float hgt, double ymin,double ymax, double tick_major,double tick_minor, float major_wdt,float minor_wdt,int tick_flg, unsigned int color,unsigned char mask,float width);</syntax>
+</function>
+<function>
+<name>GrplotRawYaxisLabel</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawYaxisLabel(struct Plot *ptr, float ox,float oy,float wdt,float hgt, double ymin,double ymax,double step, float offset,int txt_flg,int or, int (*text_box)(char *,float,int,char *,float *,void *), void *boxdata, char * (*make_text)(double,double,GrplotRawYaxisLabelValue</syntax>
+</function>
+<function>
+<name>GrplotRawYaxisLabelValue</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawYaxisLabelValue(struct Plot *ptr, float ox,float oy,float wdt,float hgt, double ymin,double ymax,double value, float offset,int txt_flg,int or, int (*text_box)(char *,float,int,char *,float *,void *), void *boxdata, int sze,char *text, char *fnGrplotRawYaxisLog</syntax>
+</function>
+<function>
+<name>GrplotRawYaxisLog</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawYaxisLog(struct Plot *ptr, float ox,float oy,float wdt,float hgt, double ymin,double ymax, double tick_major,double tick_minor, float major_wdt,float minor_wdt,int tick_flg, unsigned int color,unsigned char mask,float width);</syntax>
+</function>
+<function>
+<name>GrplotRawYaxisTitle</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawYaxisTitle(struct Plot *ptr, float ox,float oy,float wdt,float hgt, float offset,int txt_flg,int or, int (*text_box)(char *,float,int,char *,float *,void *), void *boxdata, int sze,char *text, char *fntname,float fntsze, unsigned int color,unsiGrplotRawYaxisValue</syntax>
+</function>
+<function>
+<name>GrplotRawYaxisValue</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawYaxisValue(struct Plot *ptr, float ox,float oy,float wdt,float hgt, double ymin,double ymax,double value, float tick_wdt,int tick_flg, unsigned int color,unsigned char mask,float width);</syntax>
+</function>
+<function>
+<name>GrplotRawYzero</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRawYzero(struct Plot *ptr, float ox,float oy,float wdt,float hgt, double ymin,double ymax, unsigned int color,unsigned char mask,float width, struct PlotDash *dash);</syntax>
+</function>
+<function>
+<name>GrplotRectangle</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotRectangle(struct Grplot *plt,int num, struct PlotMatrix *matrix, double x,double y,double w,double h, double xmin,double xmax, double ymin,double ymax, int fill,unsigned int color,unsigned char mask,float width, struct PlotDash *dash);</syntax>
+</function>
+<function>
+<name>GrplotSetPlot</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotSetPlot(struct Grplot *plt,struct Plot *rplot);</syntax>
+</function>
+<function>
+<name>GrplotSetTextBox</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotSetTextBox(struct Grplot *plt, int (*text)(char *,float,int,char *,float *,void *), void *data);</syntax>
+</function>
+<function>
+<name>GrplotStdKey</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotStdKey(struct Plot *ptr, float ox,float oy,float wdt,float hgt, double min,double max,double step, int or,int txt_or,int tflg,  int ttl_num,char *ttl_text, int (*text_box)(char *,float,int,char *,float *,void *), void *boxdata,char * (*make_text)(double,double,double,void *),void *textdata,char *fntname,float fntsze,unsigned int color,unsigned char mask,float width,int ksze,unsigned char *a,unsigned char *r,unsigned char *g,unsigned char *b);
+</syntax>
+</function>
+<function>
+<name>GrplotStdKeyLog</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotStdKeyLog(struct Plot *ptr, float ox,float oy,float wdt,float hgt, double min,double max,double tick_major,double tick_minor, int or,int txt_or,int tflg,  int ttl_num,char *ttl_text,int (*text_box)(char *,float,int,char *,float *,void *),void *boxdata,char * (*make_text)(double,double,double,void *),void *textdata,char *fntname,float fntsze,unsigned int color,unsigned char mask,float width,int ksze,unsigned char *a,unsigned char *r,unsigned char *g,unsigned char *b);</syntax>
+</function>
+<function>
+<name>GrplotText</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotText(struct Grplot *plt,int num, struct PlotMatrix *matrix,char *fontname, float fontsize,double x,double y, int n,char *txt,float dx,float dy, double xmin,double xmax, double ymin,double ymax, unsigned int color,unsigned char mask);</syntax>
+</function>
+<function>
+<name>GrplotXaxis</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotXaxis(struct Grplot *plt,int num, double xmin,double xmax, double tick_major,double tick_minor, int tick_flg, unsigned int color,unsigned char mask,float width);</syntax>
+</function>
+<function>
+<name>GrplotXaxisLabel</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotXaxisLabel(struct Grplot *plt,int num, double xmin,double xmax,double step, int txt_flg, char * (*make_text)(double,double,double,void *), void *textdata, char *fntname,float fntsze, unsigned int color,unsigned char mask);</syntax>
+</function>
+<function>
+<name>GrplotXaxisLabelValue</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotXaxisLabelValue(struct Grplot *plt,int num, double xmin,double xmax,double value,int txt_flg, int sze,char *text, char *fntname,float fntsze, unsigned int color,unsigned char mask);</syntax>
+</function>
+<function>
+<name>GrplotXaxisLog</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotXaxisLog(struct Grplot *plt,int num, double xmin,double xmax, double tick_major,double tick_minor, int tick_flg, unsigned int color,unsigned char mask,float width);</syntax>
+</function>
+<function>
+<name>GrplotXaxisTitle</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotXaxisTitle(struct Grplot *plt,int num, int txt_flg, int sze,char *text, char *fntname,float fntsze, unsigned int color,unsigned char mask);</syntax>
+</function>
+<function>
+<name>GrplotXaxisTitleOffset</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotXaxisTitleOffset(struct Grplot *plt,int num, int txt_flg, int sze,char *text,float offset,char *fntname,float fntsze, unsigned int color,unsigned char mask);</syntax>
+</function>
+
+<function>
+<name>GrplotXaxisValue</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotXaxisValue(struct Grplot *plt,int num, double xmin,double xmax,double value, float tick_hgt,int tick_flg, unsigned int color,unsigned char mask,float width);</syntax>
+</function>
+<function>
+<name>GrplotXzero</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotXzero(struct Grplot *plt,int num, double xmin,double xmax, unsigned int color,unsigned char mask,float width, struct PlotDash *dash);</syntax>
+</function>
+<function>
+<name>GrplotYaxis</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotYaxis(struct Grplot *plt,int num, double ymin,double ymax, double tick_major,double tick_minor, int tick_flg, unsigned int color,unsigned char mask,float width);</syntax>
+</function>
+<function>
+<name>GrplotYaxisLabel</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotYaxisLabel(struct Grplot *plt,int num, double ymin,double ymax,double step, int txt_flg, char * (*make_text)(double,double,double,void *), void *textdata, char *fntname,float fntsze, unsigned int color,unsigned char mask);</syntax>
+</function>
+<function>
+<name>GrplotYaxisLabelValue</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotYaxisLabelValue(struct Grplot *plt,int num, double ymin,double ymax,double value, int txt_flg, int sze,char *text, char *fntname,float fntsze, unsigned int color,unsigned char mask);</syntax>
+</function>
+<function>
+<name>GrplotYaxisLog</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotYaxisLog(struct Grplot *plt,int num, double ymin,double ymax, double tick_major,double tick_minor, int tick_flg, unsigned int color,unsigned char mask,float width);</syntax>
+</function>
+<function>
+<name>GrplotYaxisTitle</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotYaxisTitle(struct Grplot *plt,int num, int txt_flg, int sze,char *text, char *fntname,float fntsze, unsigned int color,unsigned char mask);</syntax>
+</function>
+<function>
+<name>GrplotYaxisTitleOffset</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotYaxisTitleOffset(struct Grplot *plt,int num, int txt_flg, int sze,char *text,float offset, char *fntname,float fntsze, unsigned int color,unsigned char mask);</syntax>
+</function>
+
+<function>
+<name>GrplotYaxisValue</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotYaxisValue(struct Grplot *plt,int num, double ymin,double ymax,double value, float tick_hgt,int tick_flg, unsigned int color,unsigned char mask,float width);</syntax>
+</function>
+<function>
+<name>GrplotYzero</name>
+<location>src.lib/grplotlib</location>
+<header>general/grplot.h</header>
+<syntax>int GrplotYzero(struct Grplot *plt,int num, double ymin,double ymax, unsigned int color,unsigned char mask,float width, struct PlotDash *dash);</syntax>
+</function>
+</library>

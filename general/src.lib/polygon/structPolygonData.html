@@ -1,0 +1,88 @@
+
+
+<head>
+<title>struct PolygonData</title>
+<link rel=stylesheet href=../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href=../../../general/index.html>general</a></td>
+<td>|</td><td><a href=../../../general/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../general/src.lib/polygon/index.html>polygon</a></td><td>|</td>
+<td>PolygonData</td>
+<td width=100% align=right><a href=../../../general/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">PolygonData</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">general/polygon.h</td></tr>
+<tr><td class="docsubtitle">Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">poly</a></tr>
+<tr><td class="docsubtitle" valign=top>Members</td></tr>
+<tr><td></td><td width=80% class="docbox"><table>
+
+   <tr>
+     <td valign="top"><font size=-1 face="courier">int polnum;</font></td>
+     <td valign="top">Number of polygons in the group.</td>
+   </tr>
+   <tr>
+     <td valign="top"><font size=-1 face="courier">int pntnum;</font></td>
+     <td valign="top">Number of points (vertices) in the group.</td>
+   </tr>
+   <tr>
+     <td valign="top"><font size=-1 face="courier">int *num;</font></td>
+     <td valign="top">Number of vertices for each individual polygon.</td>
+   </tr>
+   <tr>
+     <td valign="top"><font size=-1 face="courier">int *off;</font></td>
+     <td valign="top">Offsets into the point table for the start of each polygon.</td>
+   </tr>
+   <tr>
+     <td valign="top"><font size=-1 face="courier">int *type;</font></td>
+     <td valign="top">Type protos for each polygon.</td>
+   </tr>
+   <tr>
+     <td valign="top"><font size=-1 face="courier">int sze;</font></td>
+     <td valign="top">Number of bytes required to store a single point in a polygon.</td>
+   </tr>
+   <tr>
+     <td valign="top"><font size=-1 face="courier">int *op;</font></td>
+     <td valign="top">Plot operations table for each point.</td>
+   </tr>
+   <tr>
+     <td valign="top"><font size=-1 face="courier">void *data;</font></td>
+     <td valign="top">Point table.</td>
+   </tr>
+   <tr>
+     <td valign="top"><font size=-1 face="courier">int *box;</font></td>
+     <td valign="top">Bounding box for each polygon.</td>
+   </tr>
+   <tr>
+     <td valign="top"><font size=-1 face="courier">int *(bbox)(void *a,void *b,int s);</font></td>
+     <td valign="top">Function called to evaluate the bounding box for each polygon.</td>
+   </tr>
+ </table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td>None</tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+</div>
+
+</body>
+
+
+

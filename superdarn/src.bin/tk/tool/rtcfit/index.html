@@ -1,0 +1,72 @@
+<head>
+<title>rtcfit</title>
+<link rel=stylesheet href="../../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../../superdarn/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/tool/index.html>tool</a></td><td>|</td>
+<td>rtcfit</td>
+<td width=100% align=right><a href=../../../../../superdarn/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">rtcfit</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+rtcfit --help<br>rtcfit [-vb] [-mp <em>minpwr</em>]  [-L <em>logname</em>] [-p <em>pathname</em>] [-if <em>pidname</em>] [-s <em>stream</em>] <em>host</em> <em>port</em><br>rtcfit -rpf [-vb] [-mp <em>minpwr</em>] [-L <em>logname</em>] [-p <em>pathname</em>] [-if <em>pidname</em>] [-s <em>stream</em>] <em>host</em> <em>portname</em><br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Creates a <code>cFit</code> format file from a <code>fitacf</code> TCP/IP data stream.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-vb</code></td><td valign="top">verbose. Log information to the console.</td></tr>
+<tr><td width="150" valign="top"><code>-mp <em>minpwr</em></code></td><td valign="top">filter out data with values of lag-zero power less than <em>minpwr</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-L <em>logname</em></code></td><td valign="top">log connections and information in the file <em>logname</em>. By default, connections are recorded in <code>log.rt</code>.</td></tr>
+<tr><td width="150" valign="top"><code>-p <em>pathname</em></code></td><td valign="top">store the daily files in the directory <em>pathname</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-if <em>pidname</em></code></td><td valign="top">record the process Identifier (PID) of the server in the file <em>pidname</em>. By default, the PID is  recorded in <code>pid.id</code>.</td></tr>
+<tr><td width="150" valign="top"><code>-s <em>stream</em></code></td><td valign="top">for a multiplexed stream, read the stream number given by <em>stream</em>. A value of 255 will read all streams</td></tr>
+<tr><td width="150" valign="top"><code><em>host</em></code></td><td valign="top">hostname or IP number of the system to connect to.</td></tr><tr><td width="150" valign="top"><code><em>rport</em></code></td><td valign="top">port number to connect to on the server.</td></tr><tr><td width="150" valign="top"><code>-rpf</code></td><td valign="top">The remote port number is stored in a text file.</td></tr>
+<tr><td width="150" valign="top"><code><em>rportname</em></code></td><td valign="top">filename of the text file containing the remote port number.</td></tr></table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Creates a <code>cFit</code> format file from a <code>fitacf</code> TCP/IP data stream.</p>
+<p>The data is written to a file called "<code><em>yyyymmdd.iii</em>.cfit</code>" where <em>yyyy</em> is the year, <em>mm</em> is the month, <em>dd</em> is the day, and <em>iii</em> is the radar identifier code.</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">make_cfit -L log -if pid.id kapqnx.jhuapl.edu 1024</pre></td></tr></table>
+<p>Generates <code>cfit</code> files from the host "<code>kapqnx.jhuapl.edu</code>", served at port 1024. The process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyy</em> is the year, <em>mm</em> is the month, and <em>dd</em> is the day.</p>
+
+<table ><tr><td class="docbox" ><pre width="80">make_cfit -L log -if pid.id -rpf port.kap kapqnx.jhuapl.edu</pre></td></tr></table>
+<p>Generates <code>cfit</code> files from the host "<code>kapqnx.jhuapl.edu</code>", served at port contained in the file "<code>port.kap</code>". The process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyy</em> is the year, <em>mm</em> is the month, and <em>dd</em> is the day.</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

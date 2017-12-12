@@ -1,0 +1,108 @@
+<head>
+<title>rtgrid</title>
+<link rel=stylesheet href="../../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../../superdarn/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/tool/index.html>tool</a></td><td>|</td>
+<td>rtgrid</td>
+<td width=100% align=right><a href=../../../../../superdarn/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">rtgrid</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+rtgrid --help<br>rtgrid [<em>options</em>] <em>host</em> <em>port</em><br>rtgrid -old [<em>options</em>] <em>host</em> <em>port</em><br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Creates a <code>grd</code> or <code>grdmap</code> format file from a <code>fitacf</code> TCP/IP data stream.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-tl <em>tlen</em></code></td><td valign="top">ignore the scan flag and instead use a fixed length scan of  <em>tlen</em> seconds.</td></tr>
+<tr><td width="150" valign="top"><code>-i <em>intt</em></code></td><td valign="top">integrate the grid data into records of length <em>intt</em> seconds.</td></tr>
+<tr><td width="150" valign="top"><code>-cn <em>channel</em></code></td><td valign="top">process data from channel <em>channel</em> for stereo mode data.</td></tr>
+<tr><td width="150" valign="top"><code>-ebm <em>ebeams</em></code></td><td valign="top">exclude the beams listed in <em>ebeams</em>, which is a comma separated list of beam numbers.</td></tr>
+<tr><td width="150" valign="top"><code>-minrng <em>minrange</em></code></td><td valign="top">exclude data from range gates lower than <em>minrange</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-maxrng <em>maxrange</em></code></td><td valign="top">exclude data from range gates higher than <em>maxrange</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-fwgt <em>mode</em></code></td><td valign="top">set the filter weighting mode to <em>mode</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-pmax <em>pmax</em></code></td><td valign="top">exclude data with a power greater than <em>pmax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-vmax <em>vmax</em></code></td><td valign="top">exclude data with an absolute velocity greater than <em>vmax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-wmax <em>wmax</em></code></td><td valign="top">exclude data with a spectral width greater than <em>wmax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-vemax <em>vemax</em></code></td><td valign="top">exclude data with a velocity error greater than <em>vemax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-pmin <em>pmin</em></code></td><td valign="top">exclude data with a power less than <em>pmin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-vmin <em>vmin</em></code></td><td valign="top">exclude data with an absolute velocity less than <em>vmin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-wmin <em>wmin</em></code></td><td valign="top">exclude data with a spectral width less than <em>wmin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-vemin <em>vemin</em></code></td><td valign="top">exclude data with a velocity error less than <em>vemin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-fmax <em>fmax</em></code></td><td valign="top">set the maximum allowed variation in frequency to be <em>fmax</em> Hertz.</td></tr>
+<tr><td width="150" valign="top"><code>-alt <em>alt</em></code></td><td valign="top">set the altitude at which the mapping is done to be <em>alt</em> kilometers.</td></tr>
+<tr><td width="150" valign="top"><code>-nav</code></td><td valign="top">do not perform temporal averaging.</td></tr>
+<tr><td width="150" valign="top"><code>-nlm</code></td><td valign="top">do not exclude data because it exceeds the data limits.</td></tr>
+<tr><td width="150" valign="top"><code>-nb</code></td><td valign="top">do not exclude data based on the operating parameters.</td></tr>
+<tr><td width="150" valign="top"><code>-xtd</code></td><td valign="top">create extended output that includes both the power and spectral width measurements.</td></tr>
+<tr><td width="150" valign="top"><code>-isort</code></td><td valign="top">calculate the median power and spectral width independently of the velocity distribution.</td></tr>
+<tr><td width="150" valign="top"><code>-ion</code></td><td valign="top">exclude data marked as ground scatter.</td></tr>
+<tr><td width="150" valign="top"><code>-gs</code></td><td valign="top">exclude data marked as ionospheric scatter.</td></tr>
+<tr><td width="150" valign="top"><code>-both</code></td><td valign="top">do not exclude data based on the type flag.</td></tr>
+<tr><td width="150" valign="top"><code>-inertial</code></td><td valign="top">calculate the grid file in the inertial reference frame.</td></tr>
+<tr><td width="150" valign="top"><code>-L <em>logname</em></code></td><td valign="top">log connections and information in the file <em>logname</em>. By default, connections are recorded in <code>log.rt</code>.</td></tr>
+<tr><td width="150" valign="top"><code>-p <em>pathname</em></code></td><td valign="top">store the daily files in the directory <em>pathname</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-f <em>filename</em></code></td><td valign="top">store the grid data in the file <em>filename</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-if <em>pidname</em></code></td><td valign="top">record the process Identifier (PID) of the server in the file <em>pidname</em>. By default, the PID is  recorded in <code>pid.id</code>.</td></tr>
+<tr><td width="150" valign="top"><code>-s <em>stream</em></code></td><td valign="top">for a multiplexed stream, read the stream number given by <em>stream</em>. A value of 255 will read all streams</td></tr>
+<tr><td width="150" valign="top"><code><em>host</em></code></td><td valign="top">hostname or IP number of the system to connect to.</td></tr>
+<tr><td width="150" valign="top"><code><em>rport</em></code></td><td valign="top">port number to connect to on the server.</td></tr>
+<tr><td width="150" valign="top"><code>-rpf</code></td><td valign="top">The remote port number is stored in a text file.</td></tr>
+<tr><td width="150" valign="top"><code><em>rportname</em></code></td><td valign="top">filename of the text file containing the remote port number.</td></tr>
+<tr><td width="150" valign="top"><code>-old</code></td><td valign="top">produce <code>grd</code> format output files.</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Creates a <code>grd</code> or <code>grdmap</code> format file from a <code>fitacf</code> TCP/IP data stream.</p>
+<p>A grid file is a highly processed data product consisting of geo-magnetically located line of sight velocity vectors.</p>  
+<p>The algorithm optionally applies a median filter to the scan data to remove noise. Each range-beam cell together with its immediate neighbors in the current, preceding and following scans is examined. A weighted sum of all the cells containing scatter is calculated and if this sum exceeds a certain threshold, the median data value of the cells is substituted for the central cell. Various command line options control how the filter is applied.</p> 
+<p>Once the data has been filtered, the geo-magnetic location of each line of sight velocity measurement is calculated.  The vectors are then fixed to an equi-area grid to ensure that the data is not biased according to its location in the radar field of view.</p>
+<p>The vectors in each cell are averaged together over a fixed period of time to generate an output record, which is then stored in the specified output file. An additional file containing all of the records for a given day is also created. The name of this file takes the form "<code><em>yyyymmdd.iii</em>.grd</code>", where <em>yyyy</em> is the year, <em>mm</em> the month, <em>dd</em> the day, and <em>iii</em> the station identifier code.</p> 
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">rtgrid -L log -tl 120 -i 120 -if pid.id kapqnx.jhuapl.edu 1024</pre></td></tr></table>
+<p>Generate a grdmap file using the real-time data stream from the host "<code>kapqnx.jhuapl.edu</code>", served at port 1024. Ignore the scan flag and use a scan length of two minutes. Generate a record every two minutes.  The process identifier is recorded in the file "<code>pid.id</code>", logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyy</em> is the year, <em>mm</em> is the month, and <em>dd</em> is the day.
+</p>
+
+<table ><tr><td class="docbox" ><pre width="80">rtgrid -rpf port.gbr -L log -pf port.id -if pid.id -p /data/rt/grd gbayqnx.jhuapl.edu</pre></td></tr></table>
+<p>
+Generate a grdmap file using the real-time data stream from the host "<code>gbayqnx.jhuapl.edu</code>", served at port contained in the file "<code>port.gbr</code>". The process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyy</em> is the year, <em>mm</em> is the month, and <em>dd</em> is the day.
+The daily files are stored in the directory "<code>/data/rt/grd</code>".
+</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

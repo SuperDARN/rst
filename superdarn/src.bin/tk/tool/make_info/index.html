@@ -1,0 +1,71 @@
+<head>
+<title>make_info</title>
+<link rel=stylesheet href="../../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../../superdarn/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/tool/index.html>tool</a></td><td>|</td>
+<td>make_info</td>
+<td width=100% align=right><a href=../../../../../superdarn/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">make_info</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+make_info --help<br>make_info <em>fitacfnames...</em><br>make_info -old [<em>fitname</em>]<br>make_info -cfit <em>cfitnames...</em><br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Extract information (metadata) from <code>fit</code>, <code>fitacf</code> or <code>cfit</code> format files.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code><em>fitacfnames</em></code></td><td valign="top">filenames of the <code>fitacf</code> format files.</td></tr>
+<tr><td width="150" valign="top"><code>-old</code></td><td valign="top">files are in the <code>fit</code> format.</td></tr>
+<tr><td width="150" valign="top"><code><em>fitname</em></code></td><td valign="top">filename of the <code>fit</code> format file. If this is omitted the file is read from standard input.</td></tr>
+<tr><td width="150" valign="top"><code>-cfit</code></td><td valign="top">files are in the <code>cfit</code> format.</td></tr>
+<tr><td width="150" valign="top"><code><em>cfitnames</em></code></td><td valign="top">filenames of the <code>cfit</code> format files.</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Extract information (metadata) from <code>fit</code>, <code>fitacf</code> or <code>cfit</code> format files.</p>
+<p>The extracted information is written to standard output.</p></td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">make_info -old 20040830.gbr.fit &gt; 20040830.gbr.info</pre></td></tr></table>
+<p>Extract information from the <code>fit</code> file "<code>20040830.gbr.fit</code>" and store it in the file "<code>20040830.gbr.info</code>".
+</p>
+
+<table ><tr><td class="docbox" ><pre width="80">make_info 20040830.gbr.fitacf &gt; 20040830.gbr.info</pre></td></tr></table>
+<p>Extract information from the <code>fitacf</code> file "<code>20040830.gbr.fitacf</code>" and store it in the file "<code>20040830.gbr.info</code>".
+</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

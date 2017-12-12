@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>map_plot</name>
+<location>src.bin/tk/plot/map_plot</location>
+
+<syntax>map_plot --help</syntax>
+<syntax>map_plot [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
+</syntax>
+<syntax>map_plot -stdout [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
+</syntax>
+<syntax>map_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
+</syntax>
+<syntax>map_plot -stdout -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
+</syntax>
+<syntax>map_plot -ppm [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
+</syntax>
+<syntax>map_plot -ppm -stdout [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
+</syntax>
+<syntax>map_plot -ppmx [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
+</syntax>
+<syntax>map_plot -ppmx -stdout [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
+</syntax>
+<syntax>map_plot -xml [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
+</syntax>
+<syntax>map_plot -xml -stdout [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
+</syntax>
+<syntax>map_plot -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [-delay <ar>delay</ar>] [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
+</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>-path <ar>pathname</ar></on><od>write the plots to the directory given by <ar>pathname</ar>.</od>
+</option>
+<option><on>-post <ar>post</ar></on><od>post process the plots using the command <ar>post</ar>.</od>
+</option>
+<option><on>-cf <ar>cfname</ar></on><od>read command line options from the file <ar>cfname</ar>.</od>
+</option>
+<option><on>-old</on><od>the input file is a <code>map</code> format file instead of the default <code>cnvmap</code> format file.</od>
+</option>
+<option><on>-sd <ar>yyyymmdd</ar></on><od>plot starting from the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-st <ar>hr:mn</ar></on><od>plot starting from the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ed <ar>yyyymmdd</ar></on><od>stop plotting at the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-et <ar>hr:mn</ar></on><od>stop plotting at the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ex <ar>hr:mn</ar></on><od>plot an interval whose extent is <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-tn</on><od>generate filenames of the form <code><em>hrmn.sc.xxx</em></code>.</od>
+</option>
+<option><on>-dn</on><od>generate filenames of the form <code><em>yyyymmdd.hrmn.sc.xxx</em></code>.</od>
+</option>
+<option><on>-mn</on><od>use the time of the midpoint of each record to generate the filename.</od>
+</option>
+<option><on>-wdt <ar>width</ar></on><od>set the width of the plot to <ar>width</ar>.</od>
+</option>
+<option><on>-hgt <ar>height</ar></on><od>set the height of the plot to <ar>height</ar>.</od>
+</option>
+<option><on>-pad<ar>pad</ar></on><od>set the padding around the edge of the plot to <ar>pad</ar>.</od>
+</option>
+<option><on>-sf <ar>scale</ar></on><od>set the scale factor (magnification) to <ar>scale</ar>. The default scale factor is 1.</od>
+</option>
+<option><on>-ortho</on><od>use an orthographic projection.</od>
+</option>
+<option><on>-lat <ar>lat</ar></on><od>center the plot on the latitude given by <ar>lat</ar>.</od>
+</option>
+<option><on>-lon <ar>lon</ar></on><od>center the plot on the longitude given by <ar>lon</ar>.</od>
+</option>
+<option><on>-latmin <ar>latmin</ar></on><od>adjust the scale factor so that the lowest visible latitude is  <ar>latmin</ar>. Applies when the stereographic projection is used.</od>
+</option>
+<option><on>-mag</on><od>use magnetic coordinates.</od>
+</option>
+<option><on>-old_aacgm</on><od>use older AACGM magnetic coordinates instead of the default AACGM-v2 coordinates.</od>
+</option>
+<option><on>-rotate</on><od>rotate the plot so that the local noon is at the top of the plot.</od>
+</option>
+<option><on>-flip</on><od>flip the direction of the X-axis.</od>
+</option>
+<option><on>-square</on><od>force the use of a square bounding box around the plot.</od>
+</option>
+<option><on>-coast</on><od>plot coastlines.</od>
+</option>
+<option><on>-fcoast</on><od>plot filled coastlines.</od>
+</option>
+<option><on>-bnd</on><od>plot state boundaries.</od>
+</option>
+<option><on>-grd</on><od>plot a grid.</od>
+</option>
+<option><on>-grdlat <ar>grdlat</ar></on><od>set the latitude spacing of the grid to <ar>grdlat</ar> degrees.</od>
+</option>
+<option><on>-grdlon <ar>grdlon</ar></on><od>set the longitude spacing of the grid to <ar>grdlon</ar> degrees.</od>
+</option>
+<option><on>-igrd</on><od>plot the inverse grid, if the plot is in geographic coordinates, a geomagnetic grid is plotted, if the plot is in geomagnetic coordinates, a geographic grid is plotted.</od>
+</option>
+<option><on>-igrdlat <ar>igrdlat</ar></on><od>set the latitude spacing of the inverse grid to <ar>grdlat</ar> degrees.</od>
+</option>
+<option><on>-igrdlon <ar>igrdlon</ar></on><od>set the longitude spacing of the inverse grid to <ar>grdlon</ar> degrees.</od>
+</option>
+<option><on>-igrdontop</on><od>plot the inverse grid on top.</od>
+</option>
+<option><on>-grdontop</on><od>plot the grid on top.</od>
+</option>
+<option><on>-tmk</on><od>plot a clock-dial grid showing the time.</od>
+</option>
+<option><on>-fov</on><od>plot the radar field of view.</od>
+</option>
+<option><on>-ffov</on><od>plot the filled radar field of view.</od>
+</option>
+<option><on>-tmtick <ar>tick</ar></on><od>set the grid interval for the time clock-dial to <ar>tick</ar> hours.</od>
+</option>
+<option><on>-lst</on><od>use local solar time rather than local time.</od>
+</option>
+<option><on>-term</on><od>plot the terminator.</od>
+</option>
+<option><on>-fterm</on><od>plot a filled terminator.</od>
+</option>
+<option><on>-tmlbl</on><od>Label the time clock-dial.</od>
+</option>
+<option><on>-lnewdt <ar>lnewdt</ar></on><od>set the line width to <ar>lnewdt</ar>.</od>
+</option>
+<option><on>-bgcol <ar>aarrggbb</ar></on><od>set the background color to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+<option><on>-txtcol <ar>aarrggbb</ar></on><od>set the color of the text to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+<option><on>-grdcol <ar>aarrggbb</ar></on><od>set the color of the grid to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+<option><on>-igrdcol <ar>aarrggbb</ar></on><od>set the color of the inverse grid to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+<option><on>-cstcol <ar>aarrggbb</ar></on><od>set the color of the coastline to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+<option><on>-bndcol <ar>aarrggbb</ar></on><od>set the color of the state boundaries to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+<option><on>-lndcol <ar>aarrggbb</ar></on><od>set the color of the land to <ar>aarrggbb</ar>, specified as the  hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+<option><on>-seacol <ar>aarrggbb</ar></on><od>set the color of the sea to <ar>aarrggbb</ar>, specified as the  hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+<option><on>-tmkcol <ar>aarrggbb</ar></on><od>set the color of the time clock-dial to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+<option><on>-fovcol <ar>aarrggbb</ar></on><od>set the color of the field of view outline to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+<option><on>-ffovcol <ar>aarrggbb</ar></on><od>set the color of the filled field of view to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+<option><on>-vecccol <ar>aarrggbb</ar></on><od>if a colorkey is not used then set the color of vectors to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+<option><on>-ctrcol <ar>aarrggbb</ar></on><od>set the color of contours to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+<option><on>-polycol <ar>aarrggbb</ar></on><od>set the color of contour polygons to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+<option><on>-fpolycol <ar>aarrggbb</ar></on><od>set the color of filled contour polygons to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+<option><on>-hmbcol <ar>aarrggbb</ar></on><od>set the color of the Heppner-Maynard boundary  to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+<option><on>-trmcol <ar>aarrggbb</ar></on><od>set the color of the terminator outline to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+<option><on>-ftrmcol <ar>aarrggbb</ar></on><od>set the color of the filled terminator outline to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+<option><on>-vkey <ar>vkeyname</ar></on><od>load the velocity colorkey from the file <ar>vkeyname</ar>.</od>
+</option>
+<option><on>-vkey_path <ar>vkey_path</ar></on><od>load the velocity colorkey from the custom path <ar>vkey_path</ar>.</od>
+</option>
+<option><on>-pkey <ar>pkeyname</ar></on><od>load the colorkey used to contour polygons from the file <ar>pkeyname</ar>.</od>
+</option>
+<option><on>-pkey_path <ar>pkey_path</ar></on><od>load the colorkey used to contour polygons from the custom path <ar>pkey_path</ar>.</od>
+</option>
+<option><on>-xkey <ar>xkeyname</ar></on><od>load the extra colorkey (used to plot power or spectral width) from the file <ar>xkeyname</ar>.</od>
+</option>
+<option><on>-xkey_path <ar>xkey_path</ar></on><od>load the extra colorkey from the custom path <ar>xkey_path</ar>.</od>
+</option>
+<option><on>-fit</on><od>plot the fitted two-dimensional velocity vectors.</od>
+</option>
+<option><on>-raw</on><od>plot raw line of sight velocity vectors.</od>
+</option>
+<option><on>-mrg</on><od>plot merged two-dimensional vectors.</od>
+</option>
+<option><on>-mod</on><od>plot the model vectors.</od>
+</option>
+<option><on>-nopad</on><od>combined with <ar>-mod</ar> will <b>not</b> show padding model zero vectors.</od>
+</option>
+<option><on>-ctr</on><od>plot potential contours.</od>
+</option>
+<option><on>-poly</on><od>plot contours as simple polygons.</od>
+</option>
+<option><on>-fpoly</on><od>plot contours as simple filled polygons.</od>
+</option>
+<option><on>-maxmin</on><od>plot the points of maximum and minimum potential.</od>
+</option>
+<option><on>-hmb</on><od>plot Heppner-Maynard boundary.</od>
+</option>
+<option><on>-exc</on><od>plot velocity vectors excluded from the fit.</od>
+</option>
+<option><on>-pwr</on><od>plot power.</od>
+</option>
+<option><on>-swd</on><od>plot spectral width.</od>
+</option>
+<option><on>-avg</on><od>if a cell contains more than one data point, plot the average power or spectral width.</od>
+</option>
+<option><on>-max</on><od>if a cell contains more than one data point, plot the maximum power or spectral width.</od>
+</option>
+<option><on>-min</on><od>if a cell contains more than one data point, plot the minimum power or spectral width.</od>
+</option>
+<option><on>-modn</on><od>plot the name of the statistical model.</od>
+</option>
+<option><on>-imf</on><od>plot the IMF clock-dial.</od>
+</option>
+<option><on>-pot</on><od>plot the cross polar cap potential.</od>
+</option>
+<option><on>-extra</on><od>plot extra diagnostic information.</od>
+</option>
+<option><on>-source</on><od>plot the source string.</od>
+</option>
+<option><on>-vkeyp</on><od>plot the color key for the velocity scale.</od>
+</option>
+<option><on>-pkeyp</on><od>plot the color key for the potential scale.</od>
+</option>
+<option><on>-xkeyp</on><od>plot the extra color key for the power or spectrral width scale.</od>
+</option>
+<option><on>-vecp</on><od>plot the example vector.</od>
+</option>
+<option><on>-vsf <ar>vsf</ar></on><od>set the vector scale factor to <ar>vsf</ar>.</od>
+</option>
+<option><on>-vrad <ar>vrad</ar></on><od>set the radius of the dot a the vector root to <ar>vrad</ar>.</od>
+</option>
+<option><on>-logo</on><od>plot the logo and credits.</od>
+</option>
+<option><on>-time</on><od>plot the time of the plotted data.</od>
+</option>
+<option><on>-cmax <ar>cmax</ar></on><od>set the potential scale maximum to <ar>cmax</ar> (in units of Volts, not kV).</od>
+</option>
+<option><on>-vmax <ar>vmax</ar></on><od>set the absolute velocity scale maximum to <ar>vmax</ar>.</od>
+</option>
+<option><on>-pmax <ar>pmax</ar></on><od>set the power scale maximum to <ar>pmax</ar>.</od>
+</option>
+<option><on>-wmax <ar>wmax</ar></on><od>set the spectral width scale maximum to <ar>wmax</ar>.</od>
+</option>
+<option><on>-frame</on><od>add a frame around the borders of the plot.</od>
+</option>
+<option><on>-over</on><od>the output plot will be overlaid on another plot, do not paint the background with the bacground color.</od>
+</option>
+<option><on><ar>mapname</ar></on><od>filename of the <code>map</code> or <code>cnvmap</code> format file to plot.</od>
+</option>
+<option><on><ar>inxname</ar></on><od>filename of the index file associated with the  grid format file to plot.</od>
+</option>
+<option><on>-stdout</on><od>plot a single data record and write the plot to standard output.</od>
+</option>
+<option><on>-d <ar>yyyymmdd</ar></on><od>plot the data on date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-t <ar>hr:mn</ar></on><od>plot the data at the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ps</on><od>produce a PostScript plot as the output.</od>
+</option>
+<option><on>-xp <ar>xoff</ar></on><od>set the X offset of the PostScript plot to <ar>xoff</ar>.</od>
+</option>
+<option><on>-yp <ar>xoff</ar></on><od>set the Y offset of the PostScript plot to <ar>yoff</ar>.</od>
+</option>
+<option><on>-ppm</on><od>produce a Portable PixMap (PPM) image as the output.</od>
+</option>
+<option><on>-ppmx</on><od>produce an extended Portable PixMap (PPMX) image as the output.</od>
+</option>
+<option><on>-xml</on><od>produce an XML image representation as the output.</od>
+</option>
+<option><on>-x</on><od>plot the data on an X-terminal.</od>
+</option>
+<option><on>-display <ar>display</ar></on><od>connect to the xterminal named <ar>display</ar>.</od>
+</option>
+<option><on>-xoff <ar>xoff</ar></on><od>open the window, <ar>xoff</ar> pixels from the left edge of the screen.</od>
+</option>
+<option><on>-yoff <ar>yoff</ar></on><od>open the window <ar>ypad</ar> pixels from the top edge of the screen.</od>
+</option>
+<option><on>-delay <ar>delay</ar></on><od>set the delay between frames to <ar>delay</ar> milliseconds, a value of 0 will pause the frame until a mouse button is pressed.</od>
+</option>
+<option><on>-chisham</on><od>draw radar fields of view using the Chisham virtual height model.</od>
+</option>
+<synopsis><p>Plot <code>map</code> and <code>cnvmap</code> format files.</p></synopsis>
+<description><p>Plot the <code>map</code> and <code>cnvmap</code>format files.</p>
+<p>The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, or PostScript file. The default output is XML.</p>
+<p>The program usually steps through the convection map data and writes each plot to a file. The output filenames are of the form "<code><em>nnnn.xxx</em></code>", where <em>nnnn</em> is the frame number starting at 0000 and <em>xxx</em> is the suffix "<code>xml</code>","<code>ps</code>","<code>ppm</code>", or "<code>ppmx</code>". The options "<code>-tn</code>" and "<code>-dn</code>" can be used to change this format to one based on the time of each plot.</p>
+<p>If the "<code>-stdout</code>" option is used then the program will just plot a single record from the file and the plot is written to standard output. The "<code>-d</code>" and "<code>-t</code>" options are used to select the time to plot.</p>
+<p>The task only plots what it is instructed to plot on the command line which means that at least some of the options must be included if the plot is to show anything.</p>
+<p>The default map projection is a simple cylindrical projection, the most useful projection is the stereographic projection invoked using the "<code>-stereo</code>" option.</p>
+<p>A sensible set of default plot options can be invoked using the "<code>-def</code>" option. This will plot a stereographic projection of the fitted velocity vectors, equipotential contours and Hepner-Maynard boundary in geomagnetic coordinates. The plot is rotated so that magnetic noon is at the top.</p>
+<p>The program usually plots the line of sight or fitted velocity vectors contained in the file. However the options "-pwr" and "-wdt" can be used to plot the power and spectral width information stored in extended grid files as an extra parameter.</p> 
+<p>The options "-vkey" and "-xkey" allows a user defined color key to be used to plot the velocity vectors or the extra parameters.</p>
+<p>The color key file is a plain text file that defines the red green and blue components for each index in the color bar. Any line in the file beginning with a "<code>#</code>" is treated as a comment and ignored. The first line that is not a comment defines the number of entries in the table. The remaining lines in the file contain color values for each index, one value per line. The values are hexadecimal numbers of the form <em>aarrggbb</em>, where <em>aa</em> is the alpha component, <em>rr</em> is the red component, <em>gg</em> is the blue component and <em>bb</em> is the blue component.</p>
+<p>The number and complexity of the command line options makes typing them a laborious process, especially when producing multiple plots. To solve this problem, command line options can be placed in plain text file that can be parsed by the program using the " <code>-cf</code>" option. This allows the user to create a set of configuration files for producing different plots.</p> 
+</description>
+
+<example>
+<command>map_plot -x -def -vkey superdarn.key -old 20040620.map</command>
+<description>Plot convections maps from the file "<code>20040620.map</code>" on the X-terminal. Use the default set of options and the color key "<code>superdarn.key</code>". 
+</description>
+</example>
+
+<example>
+<command>map_plot -ps -dn -st 12:00 -stereo -mag -rotate -fcoast -coast -fterm -tmk -vecp -vkeyp -time -imf -modn -pot -fit -ctr -vkey superdarn.key 20021219.cnvmap</command>
+<description>Generate PostScript plots of convections maps from the file "<code>20021219.cnvmap</code>". Store the plots in files named "<code><em>yyyymmdd.hrmn.sc</em>.ps</code>", starting at 12:00UTC. Use a stereographic projection in magnetic coordinates, rotated so that magnetic local noon is at the top of the plot. Plot filled coastlines, terminator, a clockdial representing time, a labelled sample velocity vector, the velocity color bar, the time, IMF conditions, model used, Potential, fitted vectors and the potential contours. The velocity color bar is taken from the file "<code>superdarn.key</code>". 
+</description>
+</example>
+
+<example type="rplot">example1</example>
+
+<example>
+<command>map_plot -stdout -t 6:00 -stereo -pad 0 -mag -lat 78.4 -lon 16.00 -square -sf 2.00 -fcoast -coast -vecp -vkeyp -grd -time -hmb -fit -ctr -vkey ~/key/superdarn.key 20021219.cnvmap &gt; map.rp.xml</command>
+<description>Generate a single rPlot XML plot of the convections map at 06:00UTC from the file "<code>20021219.cnvmap</code>". Use a stereographic projection in geographic coordinates and center the plot on latitude 78.4 degrees and longitude 16.00 degrees. Plot filled coastlines, a labelled sample velocity vector, the velocity color bar, the time, fitted vectors, Heppner-Maynard boundary and the potential contours.The velocity color bar is taken from the file "<code>superdarn.key</code>". The plot is stored in the file "<code>map.rp.xml</code>".
+</description>
+</example>
+
+<example type="rplot">example2</example>
+
+</binary>

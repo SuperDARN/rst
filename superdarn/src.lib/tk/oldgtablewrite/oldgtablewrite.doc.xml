@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>superdarn</project>
+<name>oldgtablewrite</name>
+<location>src.lib/tk/oldgtablewrite</location>
+
+<function>
+<name>OldGridTableFwrite</name>
+<location>src.lib/tk/oldgtablewrite</location>
+<header>superdarn/oldgtablewrite.h</header>
+<syntax>int OldGridTableFwrite(FILE *fp,<sn href="&root;/superdarn/src.lib/tk/gtable/structGridTable.html">struct GridTable</sn> *ptr,char *log,int xtd);</syntax>
+<description><p>The <fn href="OldGridTableFwrite.html">OldGridTableFwrite</fn> function writes old formatted gridded data to an open stream.</p>
+<p>The data is written to the stream pointed to by the argument <ar>fp</ar>.If <ar>fid</ar> is set to (-1) then the function will just calculate the number of bytes required to store the data.</p>
+<p>The gridded data is taken from the structure pointed to by the argument <ar>ptr</ar>.</p>
+<p>If the argument <ar>log</ar> is not a <code>NULL</code> pointer, the a log of the number grid points written is stored as a zero terminated string at this address.</p>
+<p>If the argument <ar>xtd</ar> is set to a non-zero value, then extended information including the power and spectral width is recorded in addition to the velocity data.</p>
+</description>
+<returns>Returns the number of bytes written on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldGridTableFwrite.c</example>
+</function>
+
+<function>
+<name>OldGridTableWrite</name>
+<location>src.lib/tk/oldgtablewrite</location>
+<header>superdarn/oldgtablewrite.h</header>
+<syntax>int OldGridTableWrite(int fid,<sn href="&root;/superdarn/src.lib/tk/gtable/structGridTable.html">struct GridTable</sn> *ptr,char *log,int xtd);</syntax>
+<description><p>The <fn href="OldGridTableWrite.html">OldGridTableWrite</fn> function writes old format gridded data to an open file.</p>
+<p>The data is written to the file with the descriptor given by the argument <ar>fid</ar>.If <ar>fid</ar> is set to (-1) then the function will just calculate the number of bytes required to store the data.</p>
+<p>The gridded data is taken from the structure pointed to by the argument <ar>ptr</ar>.</p>
+<p>If the argument <ar>log</ar> is not a <code>NULL</code> pointer, the a log of the number grid points written is stored as a zero terminated string at this address.</p>
+<p>If the argument <ar>xtd</ar> is set to a non-zero value, then extended information including the power and spectral width is recorded in addition to the velocity data.</p>
+</description>
+<returns>Returns the number of bytes written on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldGridTableWrite.c</example>
+</function>
+
+</library>

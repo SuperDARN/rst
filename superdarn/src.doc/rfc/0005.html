@@ -1,0 +1,100 @@
+<head>
+<title>Radar Identification Table</title>
+<link rel=stylesheet href=../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table class="location"><tr>
+<td><a href="../../../index.html">Home</a><td>|</td>
+<td><a href=../../../superdarn/index.html>superdarn</a></td><td>|</td>
+<td><a href=../../../superdarn/src.doc/rfc/index.html>rfc</a></td><td>|</td>
+<td>RFC0005</td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">RFC: 0005</h2>
+<table>
+<tr><td class="docsubtitle" valign=top><h3>Title</h3></td></tr>
+<tr><td></td><td>
+<b>Radar Identification Table</b>
+</td></tr>
+
+<tr><td class="docsubtitle" valign=top><h3>Author</h3></td></tr>
+<tr><td></td><td>
+<b>R.J.Barnes</b>
+</td></tr>
+
+
+<tr><td class="docsubtitle"><h3>Summary</h3></td></tr>
+<tr><td></td><td>
+<p>Format of the Radar Identity Table ("radar.dat")</p>
+</td></tr>
+<tr><td class="docsubtitle"><h3>Description</h3></td></tr>
+<tr><td></td><td>
+
+<h4>1. Introduction</h4>
+<p>The Radar Identification Table is a plain ASCII text file that lists the station identifiers for each radar in the network. The file is usually called "radar.dat" and is located in the the "superdarn" sub-directory of the data tables.</p>
+<p>Originally this file was just a simple table listing the station number and its associated identifier letter. Over the years more information has been added to the table and this RFC will document the format now in use.</p>
+<h4>2. The Radar Identification Table Format</h4>
+<p>Lines beginning with the '#' character are treated as comments and ignored. All other lines represent an entry for a single radar.</p>
+<p>The format of each line is as follows:</p>
+
+<center>
+<table cellspacing="6" bgcolor="e0e0e0"><tr><td colspan="2"><code><em>num status</em> "<em>name</em>" "<em>operator</em>" "<em>hardware</em>" "<em>id</em>"....</code></td></tr>
+<tr><td><code><em>num</em></code></td>
+<td>Radar Station Number.</td></tr>
+
+<tr><td><code><em>status</em></code></td>
+<td>Status of radar: 0 under construction, 1 operational, -1 disused.</td></tr>
+
+<tr><td><code>"<em>name</em>"</code></td>
+<td>Full name of the radar site.</td></tr>
+
+<tr><td><code>"<em>operator</em>"</code></td>
+<td>Major operator of the facility.</td></tr>
+
+<tr><td><code>"<em>hardware</em>"</code></td>
+<td>Filename of the hardware configuration file.</td></tr>
+
+<tr><td><code>"<em>id</em>"...</code></td>
+<td>One or more text strings used to identify the radar.</td></tr>
+</table>
+</center>
+<p>An entry in the table looks like this:</p>
+<center>
+<table cellspacing="6" bgcolor="e0e0e0"><tr><td><code>1 1 "Goose Bay" "JHU/APL" "hdw.dat.gbr" "gbr" "g"</code></td></tr>
+<tr><td><code>3 1 "Kapuskasing" "JHU/APL" "hdw.dat.kap" "kap" "k"</code></td></tr>
+</table>
+</center>
+
+</td></tr>
+<tr><td class="docsubtitle"><h3>References</h3></td></tr>
+<tr><td></td><td>
+<a href="0003.html">RFC #0003</a><br>
+</td></tr>
+<tr><td class="docsubtitle"><h3>History</h3></td></tr>
+<tr><td></td><td>
+2004/06/14  Initial Revision.<br>
+</td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+
+</body>
+
+
+
