@@ -64,10 +64,14 @@ struct CnvMapIDLPrm {
   double Bx;
   double By;
   double Bz;
-  
-  IDL_STRING model[2];
+
+  double Vx;
+  double tilt;
+
+  IDL_STRING model[4];
 
   int16 hemisphere;
+  int16 noigrf;
   int16 fit_order;
   float latmin;
   int16 coefnum;
