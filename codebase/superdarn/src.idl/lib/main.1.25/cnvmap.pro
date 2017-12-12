@@ -303,8 +303,8 @@ function CnvMapRead,unit,prm,stvec,gvec,mvec,coef,bvec
       
   if (sclid[25] ne -1) then prm.imf_model[0]=*(sclvec[sclid[25]].ptr)
   if (sclid[26] ne -1) then prm.imf_model[1]=*(sclvec[sclid[26]].ptr)
-  if (sclid[27] ne -1) then prm.imf_model[1]=*(sclvec[sclid[27]].ptr)
-  if (sclid[28] ne -1) then prm.imf_model[1]=*(sclvec[sclid[28]].ptr)
+  if (sclid[27] ne -1) then prm.imf_model[2]=*(sclvec[sclid[27]].ptr)
+  if (sclid[28] ne -1) then prm.imf_model[3]=*(sclvec[sclid[28]].ptr)
 
   prm.hemisphere=*(sclvec[sclid[29]].ptr)
   if (sclid[30] ne -1) then prm.noigrf=*(sclvec[sclid[30]].ptr)
