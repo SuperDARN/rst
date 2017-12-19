@@ -95,9 +95,9 @@ For macOS it is also available through macports, as are all listed dependencies
 
 5. To compile the html documentation, run `make.doc` from the command line. You may need
    to modify the `URLBASE` environment variable in `$RSTPATH/.profile/rst.bash` for the
-   links in the html pages to function correctly.  Temporary documentation is available at:
+   links in the html pages to function correctly.  Online documentation is available at:
 
-   http://superdarn.thayer.dartmouth.edu/documentation/index.html
+   https://superdarn.github.io/rst/index.html
 
 
 ### Historical Version Log
