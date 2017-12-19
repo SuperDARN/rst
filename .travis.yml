@@ -14,10 +14,10 @@ before_install:
   - sudo apt-get -y install libpng12-dev
   - wget https://spdf.sci.gsfc.nasa.gov/pub/software/cdf/dist/cdf36_3_1/linux/cdf36_3_1-dist-all.tar.gz
   - tar -xf cdf36_3_1-dist-all.tar.gz
-  - cd cdf36_3-dist && make clean && make OS=linux ENV=gnu all && make INSTALLDIR=/home/travis/build/superdarn/cdf install
-  - export RSTPATH=/home/travis/build/superdarn/rst
+  - cd cdf36_3-dist && make clean && make OS=linux ENV=gnu all && make INSTALLDIR=/home/travis/build/SuperDARN/cdf install
+  - export RSTPATH=/home/travis/build/SuperDARN/rst
   - . $RSTPATH/.profile.bash
-  - export CDF_PATH=/home/travis/build/superdarn/cdf
+  - export CDF_PATH=/home/travis/build/SuperDARN/cdf
 install:
   - make.build
 script:
