@@ -1,0 +1,28 @@
+language: C
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get -y install wget
+  - sudo apt-get -y install make
+  - sudo apt-get -y install vim
+  - sudo apt-get -y install git
+  - sudo apt-get -y install libx11-dev
+  - sudo apt-get -y install libxext-dev
+  - sudo apt-get -y install libhdf5-serial-dev
+  - sudo apt-get -y install libnetcdf-dev
+  - sudo apt-get -y install libncurses-dev
+  - sudo apt-get -y install netpbm
+  - sudo apt-get -y install libpng12-dev
+  - wget https://spdf.sci.gsfc.nasa.gov/pub/software/cdf/dist/cdf36_3_1/linux/cdf36_3_1-dist-all.tar.gz
+  - tar -xf cdf36_3_1-dist-all.tar.gz
+  - cd cdf36_3-dist && make clean && make OS=linux ENV=gnu all && make INSTALLDIR=/home/travis/build/SuperDARN/cdf install
+  - export RSTPATH=/home/travis/build/SuperDARN/rst
+  - . $RSTPATH/.profile.bash
+  - export CDF_PATH=/home/travis/build/SuperDARN/cdf
+install:
+  - make.build
+script:
+  - make.code
+after_script:
+  - make.doc
+notifications:
+  email: false
