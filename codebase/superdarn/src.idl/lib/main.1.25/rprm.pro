@@ -253,20 +253,20 @@ function RadarDecodeRadarPrm,prm,sclvec,arrvec
   if (sclid[33] ne -1) then prm.mpinc=*(sclvec[sclid[33]].ptr)
   if (sclid[34] ne -1) then prm.mppul=*(sclvec[sclid[34]].ptr)
   if (sclid[35] ne -1) then prm.mplgs=*(sclvec[sclid[35]].ptr)
-  if (sclid[35] ne -1) then prm.mplgexs=*(sclvec[sclid[36]].ptr)
-  if (sclid[36] ne -1) then prm.ifmode=*(sclvec[sclid[37]].ptr)
-  if (sclid[37] ne -1) then prm.nrang=*(sclvec[sclid[38]].ptr)
-  if (sclid[38] ne -1) then prm.frang=*(sclvec[sclid[39]].ptr)
-  if (sclid[39] ne -1) then prm.rsep=*(sclvec[sclid[40]].ptr)
-  if (sclid[40] ne -1) then prm.xcf=*(sclvec[sclid[41]].ptr)
-  if (sclid[41] ne -1) then prm.tfreq=*(sclvec[sclid[42]].ptr)
-  if (sclid[42] ne -1) then prm.mxpwr=*(sclvec[sclid[43]].ptr)
-  if (sclid[43] ne -1) then prm.lvmax=*(sclvec[sclid[44]].ptr)
+  if (sclid[36] ne -1) then prm.mplgexs=*(sclvec[sclid[36]].ptr)
+  if (sclid[37] ne -1) then prm.ifmode=*(sclvec[sclid[37]].ptr)
+  if (sclid[38] ne -1) then prm.nrang=*(sclvec[sclid[38]].ptr)
+  if (sclid[39] ne -1) then prm.frang=*(sclvec[sclid[39]].ptr)
+  if (sclid[40] ne -1) then prm.rsep=*(sclvec[sclid[40]].ptr)
+  if (sclid[41] ne -1) then prm.xcf=*(sclvec[sclid[41]].ptr)
+  if (sclid[42] ne -1) then prm.tfreq=*(sclvec[sclid[42]].ptr)
+  if (sclid[43] ne -1) then prm.mxpwr=*(sclvec[sclid[43]].ptr)
+  if (sclid[44] ne -1) then prm.lvmax=*(sclvec[sclid[44]].ptr)
   if (prm.mppul gt 0) && (arrid[0] ne -1) then $
      prm.pulse[0:prm.mppul-1]=*(arrvec[arrid[0]].ptr)
   if (prm.mplgs gt 0) && (arrid[1] ne -1) then $
      prm.lag[0:prm.mplgs,*]=(*(arrvec[arrid[1]].ptr))[*,*]
-  if (sclid[0] ne -1) then prm.combf=*(sclvec[sclid[44]].ptr)
+  if (sclid[45] ne -1) then prm.combf=*(sclvec[sclid[45]].ptr)
 
   return,0
 end
