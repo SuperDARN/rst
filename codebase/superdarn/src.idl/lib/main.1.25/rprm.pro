@@ -173,6 +173,7 @@ end
 
 function RadarDecodeRadarPrm,prm,sclvec,arrvec
 
+  ; Possible scalar values in a rawacf dmap record
   sclname=['radar.revision.major','radar.revision.minor', $
            'origin.code','origin.time','origin.command','cp','stid', $
            'time.yr','time.mo','time.dy','time.hr','time.mt','time.sc', $
@@ -188,17 +189,22 @@ function RadarDecodeRadarPrm,prm,sclvec,arrvec
   sclid=intarr(n_elements(sclname))
   sclid[*]=-1
 
+  ; Possible array values in a rawacf dmap record
   arrname=['ptab','ltab']
 
   arrtype=[2,2]
   arrid=intarr(n_elements(arrname))  
   arrid[*]=-1
   
+  ; Look for scalar variables in sclname in the data record and
+  ; populate the result in sclid array
   if (n_elements(sclvec) ne 0) then begin
     for n=0,n_elements(sclname)-1 do $
       sclid[n]=DataMapFindScalar(sclname[n],scltype[n],sclvec)
   endif
 
+  ; Look for array variables in arrname in the data record and
+  ; populate the result in arrid array
   if (n_elements(arrvec) ne 0) then begin
     for n=0,n_elements(arrname)-1 do $
       arrid[n]=DataMapFindArray(arrname[n],arrtype[n],arrvec)
@@ -217,6 +223,8 @@ function RadarDecodeRadarPrm,prm,sclvec,arrvec
     return, -2  
   endif
 
+  ; If the sclid is not -1, then the variable exists in the record, so
+  ; populate the prm pointer with the appropriate value.
   if (sclid[0] ne -1) then prm.revision.major=*(sclvec[sclid[0]].ptr)
   if (sclid[1] ne -1) then prm.revision.minor=*(sclvec[sclid[1]].ptr)
   if (sclid[2] ne -1) then prm.origin.code=*(sclvec[sclid[2]].ptr)
