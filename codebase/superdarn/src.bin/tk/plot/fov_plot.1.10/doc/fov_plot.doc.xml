@@ -3,6 +3,7 @@
 <project>superdarn</project>
 <name>fov_plot</name>
 <location>src.bin/tk/plot/fov_plot</location>
+
 <syntax>fov_plot --help</syntax>
 <syntax>fov_plot [<ar>options</ar>]
 </syntax>
@@ -13,18 +14,14 @@
 <syntax>fov_plot -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [<ar>options</ar>]</syntax>
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
-
 <option><on>-cf <ar>cfname</ar></on><od>read command line options from the file <ar>cfname</ar>.</od>
 </option>
 <option><on>-wdt <ar>width</ar></on><od>set the width of the plot to <ar>width</ar>.</od>
 </option>
 <option><on>-hgt <ar>height</ar></on><od>set the height of the plot to <ar>height</ar>.</od>
 </option>
-
 <option><on>-pad <ar>pad</ar></on><od>set the paddding around the edges of the plot to <ar>pad</ar>.</od>
 </option>
-
-
 <option><on>-sf <ar>scale</ar></on><od>set the scale factor (magnification) to <ar>scale</ar>. The default scale factor is 1.</od>
 </option>
 <option><on>-ortho</on><od>use an orthographic projection.</od>
@@ -57,11 +54,8 @@
 </option>
 <option><on>-tmk</on><od>plot a clock-dial grid showing the time.</od>
 </option>
-
 <option><on>-grdontop</on><od>plot the grid on top of the image.</od>
 </option>
-
-
 <option><on>-fov</on><od>plot the radar field of view.</od>
 </option>
 <option><on>-ffov</on><od>plot the filled radar field of view.</od>
@@ -74,15 +68,10 @@
 </option>
 <option><on>-fcfov</on><od>plot the filled field of view of radars under construction.</od>
 </option>
-
 <option><on>-dot</on><od>Mark the location of the radar site with a dot.</od>
 </option>
-
 <option><on>-dotr <ar>radius</ar></on><od>set the radius of the dot used to mark the station.</od>
 </option>
-
-
-
 <option><on>-tmtick <ar>tick</ar></on><od>set the grid interval for the time clock-dial to <ar>tick</ar> hours.</od>
 </option>
 <option><on>-lst</on><od>use local solar time rather than local time.</od>
@@ -101,53 +90,36 @@
 </option>
 <option><on>-bgcol <ar>rrggbb</ar></on><od>set the background color to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
 </option>
-
 <option><on>-txtcol <ar>rrggbb</ar></on><od>set the color of the text to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
 </option>
-
 <option><on>-grdcol <ar>rrggbb</ar></on><od>set the color of the grid to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
 </option>
-
 <option><on>-cstcol <ar>rrggbb</ar></on><od>set the color of the coastline to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
 </option>
-
 <option><on>-bndcol <ar>rrggbb</ar></on><od>set the color of the state boundaries to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
 </option>
-
 <option><on>-lndcol <ar>rrggbb</ar></on><od>set the color of the land to <ar>rrggbb</ar>, specified as the  hexadecimal value for the 24-bit red,green and blue component color.</od>
 </option>
-
 <option><on>-seacol <ar>rrggbb</ar></on><od>set the color of the sea to <ar>rrggbb</ar>, specified as the  hexadecimal value for the 24-bit red,green and blue component color.</od>
 </option>
-
 <option><on>-trmcol <ar>rrggbb</ar></on><od>set the color of the terminator outline to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
 </option>
-
 <option><on>-ftrmcol <ar>rrggbb</ar></on><od>set the color of the filled terminator to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
 </option>
-
 <option><on>-tmkcol <ar>rrggbb</ar></on><od>set the color of the time clock-dial to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
 </option>
-
 <option><on>-fovcol <ar>rrggbb</ar></on><od>set the color of the field of view outline to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
 </option>
-
 <option><on>-ffovcol <ar>rrggbb</ar></on><od>set the color of the filled field of view to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
 </option>
-
-
 <option><on>-ofovcol <ar>rrggbb</ar></on><od>set the color of the field of view outline of other radars to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
 </option>
-
 <option><on>-fofovcol <ar>rrggbb</ar></on><od>set the color of the filled field of view of other radars to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
 </option>
-
 <option><on>-cfovcol <ar>rrggbb</ar></on><od>set the color of the field of view outline of radars under construction to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
 </option>
-
 <option><on>-fcfovcol <ar>rrggbb</ar></on><od>set the color of the filled field of view of radars under construction to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
 </option>
-
 <option><on>-d <ar>yyyymmdd</ar></on><od>plot for the date <ar>yyyymmdd</ar>.</od>
 </option>
 <option><on>-t <ar>hr:mn</ar></on><od>plot for the time <ar>hr:mn</ar>.</od>
@@ -166,34 +138,23 @@
 </option>
 <option><on>-xml</on><od>produce an XML image representation as the output.</od>
 </option>
-
 <option><on>-x</on><od>plot on an X-terminal.</od></option>
-
-
 <option><on>-display <ar>display</ar></on><od>connect to the xterminal named <ar>display</ar>.</od>
 </option>
-
 <option><on>-xoff <ar>xoff</ar></on><od>open the window, <ar>xoff</ar> pixels from the left edge of the screen.</od>
 </option>
-
 <option><on>-yoff <ar>yoff</ar></on><od>open the window <ar>ypad</ar> pixels from the top edge of the screen.</od>
 </option>
-
+<option><on>-chisham</on><od>use the Chisham virtual height model.</od>
+</option>
 <synopsis><p>Plot the radar fields of view.</p></synopsis>
-
 <description><p>Plot the radar fields of view.</p>
-
-
 <p>The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, or PostScript file. The default output is XML. The output file is written to standard output.</p>
 <p>The task only plots what it is instructed to plot on the command line which means that at least some of the options must be included if the plot is to show anything.</p>
 <p>The default map projection is a simple cylindrical projection, the most useful projection is the stereographic projection invoked using the "<code>-stereo</code>" option.</p>
 <p>The date and time options allow a plot for a specific time to be generated this is most useful when used in conjunction with the "<code>-rotate</code>" option or the "<code>-term</code>" and "<code>-fterm</code>" options.</p>
 <p>The number and complexity of the command line options makes typing them a laborious process, especially when producing multiple plots. To solve this problem, command line options can be placed in plain text file that can be parsed by the program using the " <code>-cf</code>" option. This allows the user to create a set of configuration files for producing different plots.</p> 
-
-
 </description>
-
-
 
 <example>
 <command>fov_plot -grd -fov -ffov -stereo -mag -x kod </command>
@@ -207,7 +168,6 @@
 
 <example type="rplot">example1</example>
 
-
 <example>
 <command>fov_plot -grd -fov -ffov-ortho -fterm -d 20040312 -t 12:00 -fcoast -coast -ofov -fofov -fov -ffov sas &gt sas.rp.xml
 </command>
@@ -215,6 +175,5 @@
 </example>
 
 <example type="rplot">example2</example>
-
 
 </binary>

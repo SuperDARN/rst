@@ -45,17 +45,14 @@ struct RadarSite *site;
 
 struct OptionData opt;
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: lagfr_fix --help\n");
+  return(-1);
+}
+
 int main(int argc,char *argv[])
 {
-
-  /* File format transistion
-   * ------------------------
-   *
-   * When we switch to the new file format remove any reference
-   * to "new". Change the command line option "new" to "old" and
-   * remove "old=!new".
-   */
-
 
   char *envstr;
   int status;
@@ -83,9 +80,13 @@ int main(int argc,char *argv[])
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
   OptionAdd(&opt,"vb",'x',&vb);
-	OptionAdd(&opt,"samps",'i',&samps);
+  OptionAdd(&opt,"samps",'i',&samps);
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+
+  if (arg==-1) {
+    exit(-1);
+  }
 
   if (help==1)
 	{

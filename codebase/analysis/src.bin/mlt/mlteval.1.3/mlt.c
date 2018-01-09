@@ -36,6 +36,8 @@
 #include "errstr.h"
 #include "hlpstr.h"
 #include "mlt.h"
+#include "mlt_v2.h"
+#include "aacgmlib_v2.h"
 
 
 
@@ -74,6 +76,11 @@ double strtime(char *text) {
   return (double) hr*3600L+mn*60L+sc;
 }
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: mlteval --help\n");
+  return(-1);
+}
 
 int main(int argc,char *argv[]) {
   int arg;
@@ -94,6 +101,8 @@ int main(int argc,char *argv[]) {
   double dval=0,tval=0;
   int c;
 
+  int old_mlt=0;
+
   char txt[256];
   
   OptionAdd(&opt,"-help",'x',&help);
@@ -103,8 +112,13 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"l",'d',&mlon);
   OptionAdd(&opt,"fmt",'t',&fmt);
   OptionAdd(&opt,"f",'t',&fname);
+  OptionAdd(&opt,"old_mlt",'x',&old_mlt);   /* Use old MLT procedure rather than v2 */
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+
+  if (arg==-1) {
+    exit(-1);
+  }
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
@@ -126,7 +140,8 @@ int main(int argc,char *argv[]) {
       TimeEpochToYMDHMS(tval,&yr,&mo,&dy,&hr,&mt,&sc);
       isc=sc;
     } else TimeReadClock(&yr,&mo,&dy,&hr,&mt,&isc,&usc);
-    mlt=MLTConvertYMDHMS(yr,mo,dy,hr,mt,isc,mlon);
+    if (old_mlt) mlt=MLTConvertYMDHMS(yr,mo,dy,hr,mt,isc,mlon);
+    else mlt=MLTConvertYMDHMS_v2(yr,mo,dy,hr,mt,isc,mlon);
     fprintf(stdout,fmt,mlt);    
   } else {
     if (strcmp(fname,"-")==0) fp=stdin;
@@ -139,7 +154,8 @@ int main(int argc,char *argv[]) {
       if (sscanf(txt,"%d %d %d %d %d %lf %lf\n",
           &yr,&mo,&dy,&hr,&mt,&sc,&mlon) !=7) continue;
       isc=sc;
-      mlt=MLTConvertYMDHMS(yr,mo,dy,hr,mt,isc,mlon);
+      if (old_mlt) mlt=MLTConvertYMDHMS(yr,mo,dy,hr,mt,isc,mlon);
+      else mlt=MLTConvertYMDHMS_v2(yr,mo,dy,hr,mt,isc,mlon);
       fprintf(stdout,fmt,mlt);  
     }
   }

@@ -1,5 +1,5 @@
-/* grddlm.c
-   ========== 
+/* oldgrddlm.c
+   ===========
    Author R.J.Barnes
 */
 
@@ -47,7 +47,7 @@ struct OldGridIDLInx *IDLMakeOldGridInx(int num,IDL_VPTR *vptr) {
     {"ST_TIME",0,(void *) IDL_TYP_DOUBLE},
     {"ED_TIME",0,(void *) IDL_TYP_DOUBLE},
     {"OFFSET",0,(void *) IDL_TYP_LONG},
-    0};
+    {0}};
 
    s=IDL_MakeStruct("OLDGRIDINX",grdinx);  
    idim[0]=num;
@@ -426,16 +426,16 @@ static IDL_VPTR IDLOldGridOpen(int argc,IDL_VPTR *argv,char *argk) {
   int access=0;
 
   static IDL_KW_PAR kw_pars[]={IDL_KW_FAST_SCAN,
-			       {"READ",IDL_TYP_LONG,1,
+                               {"READ",IDL_TYP_LONG,1,
                                 IDL_KW_ZERO,0,
                                 IDL_CHARA(iread)},
-			       {"WRITE",IDL_TYP_LONG,1,
+                               {"UPDATE",IDL_TYP_LONG,1,
+                                IDL_KW_ZERO,0,
+                                IDL_CHARA(iupdate)},
+                               {"WRITE",IDL_TYP_LONG,1,
                                 IDL_KW_ZERO,0,
                                 IDL_CHARA(iwrite)},
-         	               {"UPDATE",IDL_TYP_LONG,1,
-                                IDL_KW_ZERO,0,
-                                IDL_CHARA(iwrite)},
-				 {NULL}};
+                                 {NULL}};
 
   IDL_KWCleanup(IDL_KW_MARK);
   IDL_KWGetParams(argc,argv,argk,kw_pars,outargv,1);
@@ -475,12 +475,12 @@ static IDL_VPTR IDLOldGridClose(int argc,IDL_VPTR *argv) {
 int IDL_Load(void) {
 
   static IDL_SYSFUN_DEF2 fnaddr[]={
-    { IDLOldGridRead,"OLDGRIDREAD",4,4,0,0},
-    { IDLOldGridWrite,"OLDGRIDWRITE",4,4,0,0},
-    { IDLOldGridLoadInx,"OLDGRIDLOADINX",2,2,0,0},
-    { IDLOldGridSeek,"OLDGRIDSEEK",7,8,IDL_SYSFUN_DEF_F_KEYWORDS,0},
-    { IDLOldGridOpen,"OLDGRIDOPEN",1,1,IDL_SYSFUN_DEF_F_KEYWORDS,0},
-    { IDLOldGridClose,"OLDGRIDCLOSE",1,1,0,0},
+    { {IDLOldGridRead},"OLDGRIDREAD",4,4,0,0},
+    { {IDLOldGridWrite},"OLDGRIDWRITE",4,4,0,0},
+    { {IDLOldGridLoadInx},"OLDGRIDLOADINX",2,2,0,0},
+    { {IDLOldGridSeek},"OLDGRIDSEEK",7,8,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+    { {IDLOldGridOpen},"OLDGRIDOPEN",1,1,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+    { {IDLOldGridClose},"OLDGRIDCLOSE",1,1,0,0},
   };
 
 
