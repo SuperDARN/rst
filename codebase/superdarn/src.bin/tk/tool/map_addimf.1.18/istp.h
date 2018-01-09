@@ -1,6 +1,6 @@
 /* istp.h
    ====== 
-   Author: R.J.Barnes
+   Author: R.J.Barnes and others
 */
 
 /*
@@ -27,17 +27,15 @@
  
 */
 
-
 #define FILL_VALUE 9999.0
 
-struct imfdata {
+struct swdata {
   char sat[8];
   char ins[8];
   int cnt;
   double *time;
   float *BGSMc;
   float *BGSEc;
+  float *Vx;
 };
 
-
-  

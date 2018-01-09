@@ -1,5 +1,5 @@
-/* aacgmdlm.c
-   =========== 
+/* igrfdlm.c
+   =========
    Author R.J.Barnes
 */
 
@@ -51,7 +51,7 @@ static IDL_VPTR IDLIGRFModelCall(int argc,IDL_VPTR *argv) {
   int s=0,n;
   IDL_VPTR vox,voy,voz;
 
-  double dtval,flat,flon,elev;
+  double dtval=2000,flat,flon,elev=180;
   double x,y,z;
   double *xptr,*yptr,*zptr;
  
@@ -261,7 +261,7 @@ static IDL_VPTR IDLIGRFModelCall(int argc,IDL_VPTR *argv) {
 int IDL_Load(void) {
 
   static IDL_SYSFUN_DEF2 fnaddr[]={
-    { IDLIGRFModelCall,"IGRFMODELCALL",7,7,0,0},
+    { {IDLIGRFModelCall},"IGRFMODELCALL",7,7,0,0},
    
   };
 

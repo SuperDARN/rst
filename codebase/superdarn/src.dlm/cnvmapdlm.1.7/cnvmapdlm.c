@@ -453,16 +453,16 @@ static IDL_VPTR IDLCnvMapOpen(int argc,IDL_VPTR *argv,char *argk) {
   int access=0;
 
   static IDL_KW_PAR kw_pars[]={IDL_KW_FAST_SCAN,
-			       {"READ",IDL_TYP_LONG,1,
+                               {"READ",IDL_TYP_LONG,1,
                                 IDL_KW_ZERO,0,
                                 IDL_CHARA(iread)},
-			       {"WRITE",IDL_TYP_LONG,1,
+                               {"UPDATE",IDL_TYP_LONG,1,
+                                IDL_KW_ZERO,0,
+                                IDL_CHARA(iupdate)},
+                               {"WRITE",IDL_TYP_LONG,1,
                                 IDL_KW_ZERO,0,
                                 IDL_CHARA(iwrite)},
-         	               {"UPDATE",IDL_TYP_LONG,1,
-                                IDL_KW_ZERO,0,
-                                IDL_CHARA(iwrite)},
-				 {NULL}};
+                                 {NULL}};
 
   IDL_KWCleanup(IDL_KW_MARK);
   IDL_KWGetParams(argc,argv,argk,kw_pars,outargv,1);
@@ -502,12 +502,12 @@ static IDL_VPTR IDLCnvMapClose(int argc,IDL_VPTR *argv) {
 int IDL_Load(void) {
 
   static IDL_SYSFUN_DEF2 fnaddr[]={
-    { IDLCnvMapRead,"CNVMAPREAD",7,7,0,0},
-    { IDLCnvMapWrite,"CNVMAPWRITE",7,7,0,0},
-    { IDLCnvMapLoadInx,"CNVMAPLOADINX",2,2,0,0},
-    { IDLCnvMapSeek,"CNVMAPSEEK",7,8,IDL_SYSFUN_DEF_F_KEYWORDS,0},
-    { IDLCnvMapOpen,"CNVMAPOPEN",1,1,IDL_SYSFUN_DEF_F_KEYWORDS,0},
-    { IDLCnvMapClose,"CNVMAPCLOSE",1,1,0,0},
+    { {IDLCnvMapRead},"CNVMAPREAD",7,7,0,0},
+    { {IDLCnvMapWrite},"CNVMAPWRITE",7,7,0,0},
+    { {IDLCnvMapLoadInx},"CNVMAPLOADINX",2,2,0,0},
+    { {IDLCnvMapSeek},"CNVMAPSEEK",7,8,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+    { {IDLCnvMapOpen},"CNVMAPOPEN",1,1,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+    { {IDLCnvMapClose},"CNVMAPCLOSE",1,1,0,0},
   };
 
 

@@ -3,15 +3,17 @@
 <project>superdarn</project>
 <name>fitfilter</name>
 <location>src.bin/tk/tool/fitfilter</location>
+
 <syntax>fitfilter --help</syntax>
-<syntax>fitfilter [<ar>options</ar>] <ar>fitname</ar> [<ar>inxname</ar>]</syntax>
-<syntax>fitfilter -new [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]</syntax>
+<syntax>fitfilter [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]</syntax>
+<syntax>fitfilter -old [<ar>options</ar>] <ar>fitname</ar> [<ar>inxname</ar>]</syntax>
 <syntax>fitfilter -cfit [<ar>options</ar>] <ar>cfitname</ar></syntax>
-<syntax>fitfilter -new -cfit [<ar>options</ar>] <ar>cfitname</ar></syntax>
-<syntax>fitfilter -c [<ar>options</ar>] <ar>fitnames...</ar></syntax>
-<syntax>fitfilter -c -new [<ar>options</ar>] <ar>fitacfnames...</ar></syntax>
+<syntax>fitfilter -old -cfit [<ar>options</ar>] <ar>cfitname</ar></syntax>
+<syntax>fitfilter -c [<ar>options</ar>] <ar>fitacfnames...</ar></syntax>
+<syntax>fitfilter -c -old [<ar>options</ar>] <ar>fitnames...</ar></syntax>
 <syntax>fitfilter -c -cfit [<ar>options</ar>] <ar>cfitnames...</ar></syntax>
-<syntax>fitfilter -c -new -cfit [<ar>options</ar>] <ar>cfitnames...</ar></syntax>
+<syntax>fitfilter -c -old -cfit [<ar>options</ar>] <ar>cfitnames...</ar></syntax>
+
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
@@ -65,20 +67,21 @@
 </option>
 <option><on>-nb</on><od>do not exclude data based on the operating parameters.</od>
 </option>
+<option><on>-isort</on><od>calculate the median power and spectral width independently of the velocity distribution.</od>
+</option>
 <option><on>-ion</on><od>exclude data marked as ground scatter.</od>
 </option>
 <option><on>-gs</on><od>exclude data marked as ionospheric scatter.</od>
 </option>
 <option><on>-both</on><od>do not exclude data based on the type flag.</od>
 </option>
-<option><on><ar>fitname</ar></on><od>filename of the <code>fit</code> format file.</od>
+<option><on><ar>fitacfname</ar></on><od>filename of the <code>fitacf</code> format file.</od>
 </option>
 <option><on><ar>inxname</ar></on><od>filename of the index file.</od>
-
 </option>
-<option><on>-new</on><od>the input file is in the <code>fitacf</code> format.</od>
+<option><on>-old</on><od>the input file is in the <code>fit</code> format.</od>
 </option>
-<option><on><ar>fitacfname</ar></on><od>filename of the <code>fitacf</code> format file.</od>
+<option><on><ar>fitname</ar></on><od>filename of the <code>fit</code> format file.</od>
 </option>
 <option><on>-cfit</on><od>the input file is in the <code>cfit</code> format.</od>
 </option>
@@ -86,33 +89,26 @@
 </option>
 <option><on>-c</on><od>concatenate multiple input files.</od>
 </option>
-
-<option><on><ar>fitnames</ar></on><od>filenames of the <code>fit</code> format files.</od>
-</option>
-
 <option><on><ar>fitacfnames</ar></on><od>filenames of the <code>fitacf</code> format files.</od>
 </option>
-
+<option><on><ar>fitnames</ar></on><od>filenames of the <code>fit</code> format files.</od>
+</option>
 <option><on><ar>cfitnames</ar></on><od>filenames of the <code>cfit</code> format files.</od>
 </option>
-
 <synopsis><p>Median filters data to produce a <code>cfit</code> format file from either a <code>fit</code>, <code>fitacf</code> or <code>cfit</code> format file.</p></synopsis>
-
 <description><p>Median filters data to produce a <code>cfit</code> format file from either a <code>fit</code>, <code>fitacf</code> or <code>cfit</code> format file.</p>
 <p>The task applies a median filter to the radar data to remove noise. Each range-beam cell together with its immediate neighbors in the current, preceding and following scans is examined. A weighted sum of all the cells containing scatter is calculated and if this sum exceeds a certain threshold, the median data value of the cells is substituted for the central cell. Various command line options control how the filter is applied.</p> 
 <p>The filtered data is stored in a <code>cfit</code> format file written to standard output.</p>
 </description>
 
-
 <example>
-<command>fitfilter -vb 19991120.kap.fit &gt; 19991120.kap.cfit</command>
+<command>fitfilter -vb -old 19991120.kap.fit &gt; 19991120.kap.cfit</command>
 <description>Generate a <code>cfit</code> file from the fit file "<code>19991120.kap.fit</code>" and store it in the file "<code>19991120.kap.cfit</code>". Report the status on standard error.</description>
 </example>
 
 <example>
-<command>fitfilter -c -cfit 20000510.*.kod.cfit &gt; 20000510.kod.cfit.filtered</command>
+<command>fitfilter -c -old -cfit 20000510.*.kod.cfit &gt; 20000510.kod.cfit.filtered</command>
 <description>Concatenate all the <code>cfit</code> files in the current directory to create a filtered <code>cfit</code> file. Store the output in the file "<code>20000510.kod.cfit.filtered</code>".</description>
 </example>
-
 
 </binary>

@@ -1,4 +1,4 @@
-/* RposInvMag
+/* RPosInvMag
    ==========
    Author: R.J.Barnes */
 

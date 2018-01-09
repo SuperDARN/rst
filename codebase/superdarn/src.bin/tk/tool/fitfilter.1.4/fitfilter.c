@@ -136,20 +136,15 @@ double strtime(char *text) {
 
 struct OptionData opt;
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: fitfilter --help\n");
+  return(-1);
+}
+
 int main(int argc,char *argv[]) {
 
- /* File format transistion
-   * ------------------------
-   * 
-   * When we switch to the new file format remove any reference
-   * to "new". Change the command line option "new" to "old" and
-   * remove "old=!new".
-   */
-
-
   int old=0;
-  int new=0;
-
 
   int farg=0;
   int fnum=0;
@@ -187,6 +182,7 @@ int main(int argc,char *argv[]) {
   int bxcar=0;
   int limit=0;
   int bflg=0;
+  int isort=0;
 
   unsigned char gsflg=0,ionflg=0,bthflg=0;
   int channel=0;
@@ -224,7 +220,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
 
-  OptionAdd(&opt,"new",'x',&new); 
+  OptionAdd(&opt,"old",'x',&old); 
   OptionAdd(&opt,"vb",'x',&vb);
 
   OptionAdd(&opt,"st",'t',&stmestr);
@@ -257,6 +253,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"nav",'x',&bxcar);
   OptionAdd(&opt,"nlm",'x',&limit);
   OptionAdd(&opt,"nb",'x',&bflg);
+  OptionAdd(&opt,"isort",'x',&isort);
 
   OptionAdd(&opt,"ion",'x',&ionflg);
   OptionAdd(&opt,"gs",'x',&gsflg);
@@ -267,9 +264,11 @@ int main(int argc,char *argv[]) {
  
   OptionAdd(&opt,"c",'x',&catflg);
 
-  farg=OptionProcess(1,argc,argv,&opt,NULL);
+  farg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
-  old=!new;
+  if (farg==-1) {
+    exit(-1);
+  }
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
@@ -462,7 +461,7 @@ int main(int argc,char *argv[]) {
       else chk=0;
       if ((chk==0) && (num>=nbox)) {
 
-          if (mode !=-1) FilterRadarScan(mode,nbox,index,src,dst,15);
+          if (mode !=-1) FilterRadarScan(mode,nbox,index,src,dst,15,isort);
           else out=src[index];
 
           TimeEpochToYMDHMS(out->st_time,&yr,&mo,&dy,&hr,&mt,&sc);   
@@ -595,7 +594,7 @@ int main(int argc,char *argv[]) {
    
          if ((chk==0) && (num>=nbox)) {
 	
-           if (mode !=-1) FilterRadarScan(mode,nbox,index,src,dst,15);
+           if (mode !=-1) FilterRadarScan(mode,nbox,index,src,dst,15,isort);
            else out=src[index];
          
            TimeEpochToYMDHMS(out->st_time,&yr,&mo,&dy,&hr,&mt,&sc);

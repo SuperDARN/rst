@@ -106,7 +106,7 @@ makesection() {
 
     echo '<?xml version="1.0" encoding="ISO-8859-1"?>' > ${secxml}
     echo "<index>" >> ${secxml}
-    dlist=`find $dir -maxdepth 1 -mindepth 1 -type d`
+    dlist=`find $dir -maxdepth 1 -mindepth 1 -type d | sort`
     for dname in $dlist
       do
         dleaf=${dname##*/}

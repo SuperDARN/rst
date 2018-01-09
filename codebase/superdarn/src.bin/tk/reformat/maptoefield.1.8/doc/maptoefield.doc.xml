@@ -4,12 +4,15 @@
 <name>maptoefield</name>
 <location>src.bin/tk/reformat/maptoefield</location>
 <syntax>maptoefield --help</syntax>
-<syntax>maptoefield [-vb] [-new] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>] [-s <ar>step</ar>] [-l <ar>latmin</ar> [-mlt] [-p] [-v] <ar>name</ar></syntax>
+<syntax>maptoefield [-vb] [-old] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>] [-s <ar>step</ar>] [-l <ar>latmin</ar> [-mlt] [-p] [-v] <ar>name</ar></syntax>
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
-<option><on>-new</on><od>the input file is a <code>cnvmap</code> format file.</od></option>
+<option><on>-old</on><od>the input file is a <code>map</code> format file.</od>
+</option>
+<option><on>-old_aacgm</on><od>uses the older AACGM software and coefficients. The default is to use AACGM-v2.</od>
+</option>
 <option><on>-sd <ar>yyyymmdd</ar></on><od>extract starting from the date <ar>yyyymmdd</ar>.</od>
 </option>
 <option><on>-st <ar>hr:mn</ar></on><od>extract starting from the time <ar>hr:mn</ar>.</od>
@@ -41,12 +44,12 @@
 </description>
 
 <example>
-<command>maptoefield -l 50 20050830.map &gt; 20050830.efield</command>
+<command>maptoefield -old -l 50 20050830.map &gt; 20050830.efield</command>
 <description>Calculate the electric field down to a latitude of 50 degrees from the file "<code>20050830.map</code>". The electric field data is stored in the file "<code>20050830.efield</code>".</description>
 </example>
 
 <example>
-<command>maptoefield -new -p 20040830.cnvmap &gt; 20040830.efield</command>
+<command>maptoefield -p 20040830.cnvmap &gt; 20040830.efield</command>
 <description>Calculate the electric field and potential from the file "<code>20040830.cnvmapmap</code>". The electric field data is stored in the file "<code>20040830.efield</code>".</description>
 </example>
 

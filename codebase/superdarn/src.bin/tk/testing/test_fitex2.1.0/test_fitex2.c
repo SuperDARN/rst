@@ -52,20 +52,16 @@ struct RadarSite *site;
 
 struct OptionData opt;
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: test_fitex2 --help\n");
+  return(-1);
+}
+
 int main(int argc,char *argv[])
 {
 
-  /* File format transistion
-   * ------------------------
-   *
-   * When we switch to the new file format remove any reference
-   * to "new". Change the command line option "new" to "old" and
-   * remove "old=!new".
-   */
-
-
   unsigned char old=0;
-  unsigned char new=0;
 
   char *envstr;
   int status; 
@@ -79,10 +75,10 @@ int main(int argc,char *argv[])
 
   FILE *fp=NULL;
   struct OldRawFp *rawfp=NULL;
-  FILE *fitfp=NULL;
+  /*FILE *fitfp=NULL;
   int irec=1;
   int drec=2;
-  int dnum=0;
+  int dnum=0;*/
 
   time_t ctime;
   int c,n;
@@ -96,15 +92,17 @@ int main(int argc,char *argv[])
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
   OptionAdd(&opt,"vb",'x',&vb);
-  OptionAdd(&opt,"new",'x',&new);
+  OptionAdd(&opt,"old",'x',&old);
 	OptionAdd(&opt,"hr",'i',&tgthr);
   OptionAdd(&opt,"min",'i',&tgtmin);
   OptionAdd(&opt,"sec",'i',&tgtsec);
 	OptionAdd(&opt,"beam",'i',&tgtbeam);
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
-  old=!new;
+  if (arg==-1) {
+    exit(-1);
+  }
 
   if (help==1)
 	{

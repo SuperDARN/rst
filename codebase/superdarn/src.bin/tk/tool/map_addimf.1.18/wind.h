@@ -27,8 +27,5 @@
  
 */
 
+int windmfi_imf(CDFid id,struct swdata *ptr,double stime,double etime);
 
-
-
-int windmfi_imf(CDFid id,struct imfdata *ptr,double stime,double etime);
-  

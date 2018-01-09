@@ -64,7 +64,7 @@ struct PolygonData **Contour(void *zbuffer,int type,
   int tick=0;
 
   float p[2];
-  float px=0,py=0,sx,sy;
+  float px=0,py=0;
   double ipnt=0;
   int cx=0,cy=0,dx=0,dy=0,vx=0,vy=0;
   int isrch,icept,icalt;
@@ -251,8 +251,6 @@ struct PolygonData **Contour(void *zbuffer,int type,
           ContourPoint(x+dx,y+dy,isrch,ipnt,&px,&py);
           if (tick==0) {
 	   /* first point in a contour so start the point table */    
-            sx=px;
-            sy=py;
             icalt=isrch;
             p[0]=px/wdt;
             p[1]=py/hgt;

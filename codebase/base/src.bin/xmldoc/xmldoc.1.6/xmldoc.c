@@ -134,14 +134,12 @@ int render(struct XMLDBtable *ptr,struct XMLDBtable *tree,void *data) {
   int i,j;
   int c=0,s=0;
   struct xmldoc *xmldoc; 
-  struct XMLdocdata *doc;
   struct XMLDBelement *e;
   char lbuf[255];
   FILE *fp;
 
 
   xmldoc=(struct xmldoc *) data; 
-  doc=xmldoc->doc;
   
   if ((xmldoc->compare.data !=NULL) && (xmldoc->match.txt !=NULL)) {
     
@@ -361,7 +359,10 @@ int main(int argc,char *argv[]) {
     exit(-1);
   }
 
-  chdir(argv[arg]);
+  s=chdir(argv[arg]);
+  if (s !=0) {
+    /*exit(-1);*/
+  }
 
   fp=fopen(argv[arg+1],"r");
   loadconfig(fp,&xmldoc);
