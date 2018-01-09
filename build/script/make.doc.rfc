@@ -207,7 +207,6 @@ scdoc ${removeinx} ${tail} ${nmexml} ${rfcinxsc} >> \
                ${wwwpath}/${project}/src.doc/rfc/index.html
 
 chmod a+x ${wwwpath}/${project}/src.doc/rfc/index.html
-date > ${wwwpath}/${project}/src.doc/rfc/.ignore
 
 
 ############################################################################

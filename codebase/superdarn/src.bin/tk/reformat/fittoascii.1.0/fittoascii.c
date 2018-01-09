@@ -29,15 +29,13 @@ int main(int argc,char *argv[])
 {
   /*declarations*/
   int arg = 0;
-  int i, r;
+  int i;
   FILE *fp;
   FILE *fitfp = NULL;
-	FILE *corrfp = NULL;
   char *envstr;
   unsigned char help = 0;
   unsigned char option = 0;
   int s = 0, vb = 0;
-	double epoch;
 
   struct FitData *fit = FitMake();
   struct RadarParm *prm = RadarParmMake();

@@ -30,20 +30,6 @@ July 2015
 #include <stdlib.h>
 #include <string.h>
 
-
-
-/**
-Returns a newly allocated array of FitRanges to fill
-*/
-struct FitRange* new_range_array(FITPRMS* fit_prms){
-    struct FitRange* new_range_array;
-    new_range_array = realloc(fit_prms->nrang, sizeof(*new_range_array));
-    if(new_range_array == NULL) return NULL;
-
-    return new_range_array;
-
-}
-
 void allocate_fit_data(struct FitData* fit_data, FITPRMS* fit_prms){
     fit_data->rng = realloc(fit_data->rng,fit_prms->nrang * sizeof(*fit_data->rng));
     if(fit_data->rng == NULL){

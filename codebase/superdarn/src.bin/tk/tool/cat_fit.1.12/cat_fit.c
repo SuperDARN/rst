@@ -57,12 +57,18 @@ int fnum=0;
 
 struct OptionData opt;
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: cat_fit --help\n");
+  return(-1);
+}
+
 int main (int argc,char *argv[]) {
   int arg;
   unsigned char help=0;
   unsigned char option=0;
 
-  unsigned char new=0;
+  int old=0;
 
   int i;
   
@@ -83,10 +89,14 @@ int main (int argc,char *argv[]) {
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
 
-  OptionAdd(&opt,"new",'x',&new);
+  OptionAdd(&opt,"old",'x',&old);
   OptionAdd(&opt,"i",'x',&inx);
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+
+  if (arg==-1) {
+    exit(-1);
+  }
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
@@ -98,7 +108,7 @@ int main (int argc,char *argv[]) {
     exit(0);
   }
 
-  if (new==1) {
+  if (old==0) {
     fprintf(stderr,
 	    "New format files can be concatenated using the cat command\n");
     exit(-1);

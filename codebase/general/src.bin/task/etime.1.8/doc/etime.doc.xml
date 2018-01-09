@@ -2,7 +2,7 @@
 <binary>
 <project>general</project>
 <name>etime</name>
-<location>src.bin/text/etime</location>
+<location>src.bin/task/etime</location>
 <syntax>etime --help</syntax>
 <syntax>etime [-day] [-year] [<ar>name</ar>]</syntax>
 <option><on>--help</on><od>print the help message and exit.</od>

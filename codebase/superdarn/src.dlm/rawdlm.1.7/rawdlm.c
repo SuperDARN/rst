@@ -421,12 +421,12 @@ static IDL_VPTR IDLRawClose(int argc,IDL_VPTR *argv) {
 int IDL_Load(void) {
 
   static IDL_SYSFUN_DEF2 fnaddr[]={
-    { IDLRawRead,"RAWREAD",3,3,0,0},
-    { IDLRawWrite,"RAWWRITE",3,3,0,0},
-    { IDLRawLoadInx,"RAWLOADINX",2,2,0,0},
-    { IDLRawSeek,"RAWSEEK",7,8,IDL_SYSFUN_DEF_F_KEYWORDS,0},
-    { IDLRawOpen,"RAWOPEN",1,1,IDL_SYSFUN_DEF_F_KEYWORDS,0},
-    { IDLRawClose,"RAWCLOSE",1,1,0,0},
+    { {IDLRawRead},"RAWREAD",3,3,0,0},
+    { {IDLRawWrite},"RAWWRITE",3,3,0,0},
+    { {IDLRawLoadInx},"RAWLOADINX",2,2,0,0},
+    { {IDLRawSeek},"RAWSEEK",7,8,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+    { {IDLRawOpen},"RAWOPEN",1,1,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+    { {IDLRawClose},"RAWCLOSE",1,1,0,0},
   };
 
 
