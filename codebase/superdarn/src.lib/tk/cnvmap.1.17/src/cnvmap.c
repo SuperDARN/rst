@@ -38,9 +38,6 @@
 #include "griddata.h"
 #include "cnvmap.h"
 
-
-
-
 struct CnvMapData *CnvMapMake() {
   struct CnvMapData *ptr=NULL;
   ptr=malloc(sizeof(struct CnvMapData));

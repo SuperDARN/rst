@@ -104,29 +104,13 @@ int main (int argc,char *argv[]) {
               yr,mo,dy,hr,mt,(int) sc);
     }
     s=CnvMapFwrite(stdout,map,grd);
+    if (s !=0) {
+        fprintf(stderr,"CnvMapFwrite failed.\n");
+        if (fp !=stdin) fclose(fp);
+        exit(-1);
+    }
   }
   if (fp !=stdin) fclose(fp);
   return 0;
 } 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

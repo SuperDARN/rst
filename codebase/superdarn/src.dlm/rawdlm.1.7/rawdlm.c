@@ -372,16 +372,16 @@ static IDL_VPTR IDLRawOpen(int argc,IDL_VPTR *argv,char *argk) {
   int access=0;
 
   static IDL_KW_PAR kw_pars[]={IDL_KW_FAST_SCAN,
-			       {"READ",IDL_TYP_LONG,1,
+                               {"READ",IDL_TYP_LONG,1,
                                 IDL_KW_ZERO,0,
                                 IDL_CHARA(iread)},
-			       {"WRITE",IDL_TYP_LONG,1,
+                               {"UPDATE",IDL_TYP_LONG,1,
+                                IDL_KW_ZERO,0,
+                                IDL_CHARA(iupdate)},
+                               {"WRITE",IDL_TYP_LONG,1,
                                 IDL_KW_ZERO,0,
                                 IDL_CHARA(iwrite)},
-         	               {"UPDATE",IDL_TYP_LONG,1,
-                                IDL_KW_ZERO,0,
-                                IDL_CHARA(iwrite)},
-				 {NULL}};
+                                 {NULL}};
 
   IDL_KWCleanup(IDL_KW_MARK);
   IDL_KWGetParams(argc,argv,argk,kw_pars,outargv,1);
@@ -421,12 +421,12 @@ static IDL_VPTR IDLRawClose(int argc,IDL_VPTR *argv) {
 int IDL_Load(void) {
 
   static IDL_SYSFUN_DEF2 fnaddr[]={
-    { IDLRawRead,"RAWREAD",3,3,0,0},
-    { IDLRawWrite,"RAWWRITE",3,3,0,0},
-    { IDLRawLoadInx,"RAWLOADINX",2,2,0,0},
-    { IDLRawSeek,"RAWSEEK",7,8,IDL_SYSFUN_DEF_F_KEYWORDS,0},
-    { IDLRawOpen,"RAWOPEN",1,1,IDL_SYSFUN_DEF_F_KEYWORDS,0},
-    { IDLRawClose,"RAWCLOSE",1,1,0,0},
+    { {IDLRawRead},"RAWREAD",3,3,0,0},
+    { {IDLRawWrite},"RAWWRITE",3,3,0,0},
+    { {IDLRawLoadInx},"RAWLOADINX",2,2,0,0},
+    { {IDLRawSeek},"RAWSEEK",7,8,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+    { {IDLRawOpen},"RAWOPEN",1,1,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+    { {IDLRawClose},"RAWCLOSE",1,1,0,0},
   };
 
 

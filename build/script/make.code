@@ -22,36 +22,25 @@ set -e
 
 ############################################################################
 
-prj=${1}
-pkg=${2}
-
-############################################################################
-
 # Command line options
 
 ############################################################################
 
-if [ ${#} -gt 2 ]
+if [ ${#} -ge 1 ]
 then
-  mtype=${3}
+  mtype=${1}
 else
   mtype=""
 fi
 
-if [ ${#} -gt 3 ]
+if [ ${#} -gt 1 ]
 then
-  patn="-p "${4}
+  patn="-p "${2}
 else
   patn=""
 fi
 
-if [ -z "${pkg}" ]
-then
-  echo "make.code project package"
-  exit 1
-fi
-
-log="${LOGPATH}/${prj}-${pkg}.build"
+log="${LOGPATH}/superdarn-rst.build"
 dtval=$(date +%Y%m%d.%H%M)
 
 

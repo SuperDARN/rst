@@ -21,14 +21,11 @@ set -e
 
 ############################################################################
 
-############################################################################
-
 # Command line options
 
 ############################################################################
 
 option=""
-c=0
 
 for arg in ${*}
  do
@@ -36,27 +33,13 @@ for arg in ${*}
    if test "${arg}" = "-w"
    then
       option="-w"
-   else
-      if test ${c} -eq 0
-      then 
-         prj=${arg}
-      else
-         pkg=${arg}
-      fi
-      let c=c+1
    fi
  done
-
-if test -z "${pkg}"
-then
-  echo "make.doc [-w] project package"
-  exit
-fi
 
 
 build=${BUILD}
 
-log="${LOGPATH}/${prj}-${pkg}.doc"
+log="${LOGPATH}/superdarn-rst.doc"
 dtval=`date +%Y%m%d.%H%M`
 
 

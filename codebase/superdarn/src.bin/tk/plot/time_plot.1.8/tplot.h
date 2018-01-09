@@ -55,6 +55,7 @@ struct tplot {
   double *v_e;
   double *w_l;
   double *w_l_e;
+  double *elv;
 }; 
 
 int tplotset(struct tplot *ptr,int nrang);

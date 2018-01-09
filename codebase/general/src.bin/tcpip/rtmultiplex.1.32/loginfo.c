@@ -53,9 +53,9 @@ void loginfo(char *fname,char *str) {
   date[strlen(date)-1]=':';
   
   sprintf(pid,"(%d):",getpid());
-  fprintf(stderr,date);
-  fprintf(stderr,pid);
-  fprintf(stderr,str);
+  fprintf(stderr,"%s",date);
+  fprintf(stderr,"%s",pid);
+  fprintf(stderr,"%s",str);
   fprintf(stderr,"\n");
 
   sprintf(logpath,"%s.%.4d%.2d%.2d",fname,1900+
@@ -68,9 +68,9 @@ void loginfo(char *fname,char *str) {
     return;
   }
 
-  fprintf(fp,date);
-  fprintf(fp,pid);
-  fprintf(fp,str);
+  fprintf(fp,"%s",date);
+  fprintf(fp,"%s",pid);
+  fprintf(fp,"%s",str);
   fprintf(fp,"\n");
   fclose(fp);
 }

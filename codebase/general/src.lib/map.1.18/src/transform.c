@@ -191,7 +191,6 @@ void MapModify(struct PolygonData *src,
                    int (*trf)(int ssze,void *src,int dsze,
                               void *dst,void *data),void *data) {
 
-  int flg;
   void *pnt;
   int n,s;
   int i,j;
@@ -199,11 +198,13 @@ void MapModify(struct PolygonData *src,
   if (trf==NULL) return;
  
   for (i=0;i<src->polnum;i++) {    
-    flg=1;
     n=src->num[i];       
     for (j=0;j<n;j++) {
       pnt=PolygonRead(src,i,j);
       s=(*trf)(src->sze,pnt,src->sze,pnt,data);
+      if (s !=0) {
+        continue;
+      }
     }
   }
 }
