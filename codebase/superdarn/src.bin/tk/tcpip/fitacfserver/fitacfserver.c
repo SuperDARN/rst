@@ -72,6 +72,12 @@ struct OptionData opt;
 
 char logfname[256];
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try again: fitacfserver --help\n");
+  return(-1);
+}
+
 void trap_pipe(int signal) {
   close(outpipe);
   outpipe=-1;
@@ -101,18 +107,7 @@ void wait_boundary(float bnd) {
 
 int main(int argc,char *argv[]) {
 
-
-  /* File format transistion
-   * ------------------------
-   * 
-   * When we switch to the new file format remove any reference
-   * to "new". Change the command line option "new" to "old" and
-   * remove "old=!new".
-   */
-
-
   unsigned char old=0;
-  unsigned char new=0;
 
   int arg;
   unsigned char help=0;
@@ -196,12 +191,13 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"d",'x',&sync);
   OptionAdd(&opt,"r",'x',&repflg);
 
-  OptionAdd(&opt,"new",'x',&new);
+  OptionAdd(&opt,"old",'x',&old);
 
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);   
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);   
-
-  old=!new;
+  if (arg==-1) {
+    exit(-1);
+  }
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);

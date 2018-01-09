@@ -153,13 +153,13 @@ struct FitIDLData *IDLMakeFitData(IDL_VPTR *vptr) {
   static IDL_STRUCT_TAG_DEF revision[]={
     {"MAJOR",0,(void *) IDL_TYP_LONG},
     {"MINOR",0,(void *) IDL_TYP_LONG},
-    0};
+    {0}};
 
   static IDL_STRUCT_TAG_DEF noise[]={
     {"SKY",0,(void *) IDL_TYP_FLOAT},
     {"LAG0",0,(void *) IDL_TYP_FLOAT},
     {"VEL",0,(void *) IDL_TYP_FLOAT},
-    0};
+    {0}};
 
   
   static IDL_STRUCT_TAG_DEF fitdata[]={    
@@ -203,7 +203,7 @@ struct FitIDLData *IDLMakeFitData(IDL_VPTR *vptr) {
     {"X_SD_S",rdim,(void *) IDL_TYP_FLOAT}, /* 37 */
     {"X_SD_PHI",rdim,(void *) IDL_TYP_FLOAT}, /* 38 */
  
-    0};
+    {0}};
 
   static IDL_MEMINT ilDims[IDL_MAX_ARRAY_DIM];
  
@@ -229,7 +229,7 @@ struct FitIDLInx *IDLMakeFitInx(int num,IDL_VPTR *vptr) {
   static IDL_STRUCT_TAG_DEF fitinx[]={
     {"TIME",0,(void *) IDL_TYP_DOUBLE},
     {"OFFSET",0,(void *) IDL_TYP_LONG},
-    0};
+    {0}};
 
    s=IDL_MakeStruct("FITINX",fitinx);  
    idim[0]=num;

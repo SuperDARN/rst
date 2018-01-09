@@ -110,23 +110,23 @@ char *CS10_mod_levs[]  = {"0<Esw<1.2","1.2<Esw<1.7","1.7<Esw<2.2","2.2<Esw<2.9",
 float CS10_mod_levi[]  = {1.2, 1.7, 2.2, 2.9, 4.1, 20, -1};
 
 /*
- * TS17 Model bins
+ * TS18 Model bins
  * ---------------
  */
-int   TS17_nang = 8;
-char *TS17_mod_ang[]   = {"Bz+", "Bz+_By+", "By+", "Bz-_By+", "Bz-",
+int   TS18_nang = 8;
+char *TS18_mod_ang[]   = {"Bz+", "Bz+_By+", "By+", "Bz-_By+", "Bz-",
                           "Bz-_By-", "By-", "Bz+_By-",0};
-char *TS17_mod_angs[]  = {"Bz+", "Bz+/By+", "By+", "Bz-/By+", "Bz-",
+char *TS18_mod_angs[]  = {"Bz+", "Bz+/By+", "By+", "Bz-/By+", "Bz-",
                           "Bz-/By-", "By-", "Bz+/By-",0};
-float TS17_mod_angil[] = {-25, 25, 70, 110, 155, 205, 250, 290};
-float TS17_mod_angih[] = {25, 70, 110, 155, 205, 250, 290, 335};
+float TS18_mod_angil[] = {-25, 25, 70, 110, 155, 205, 250, 290};
+float TS18_mod_angih[] = {25, 70, 110, 155, 205, 250, 290, 335};
 
-int   TS17_nlev = 5;
-char *TS17_mod_lev[]   = {"0.00t1.20","1.20t1.60","1.60t2.10","2.10t3.00",
+int   TS18_nlev = 5;
+char *TS18_mod_lev[]   = {"0.00t1.20","1.20t1.60","1.60t2.10","2.10t3.00",
                           "3.00t20.00",0};
-char *TS17_mod_levs[]  = {"0<Esw<1.2","1.2<Esw<1.6","1.6<Esw<2.1","2.1<Esw<3.0",
+char *TS18_mod_levs[]  = {"0<Esw<1.2","1.2<Esw<1.6","1.6<Esw<2.1","2.1<Esw<3.0",
                           "3.0<Esw<20",0};
-float TS17_mod_levi[]  = {1.2, 1.6, 2.1, 3.0, 20, -1};
+float TS18_mod_levi[]  = {1.2, 1.6, 2.1, 3.0, 20, -1};
 
 
 struct CnvMapData *map;
@@ -231,7 +231,7 @@ int main(int argc,char *argv[]) {
   int nointerp = 0;
   int cs10 = 0;
   int rg96 = 0;
-  int ts17 = 0;
+  int ts18 = 0;
   int psr10 = 0;
   int imod = 0;
 
@@ -253,10 +253,10 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"old",'x',&old);
   OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);
-  OptionAdd(&opt,"cs10",'x',&cs10);
   OptionAdd(&opt,"rg96",'x',&rg96);
-  OptionAdd(&opt,"ts17",'x',&ts17);
   OptionAdd(&opt,"psr10",'x',&psr10);
+  OptionAdd(&opt,"cs10",'x',&cs10);
+  OptionAdd(&opt,"ts18",'x',&ts18);
   OptionAdd(&opt,"nointerp",'x',&nointerp);
   OptionAdd(&opt,"noigrf",'x',&noigrf);        /* SGS: default is to use IGRF
                                                        to compute model vecs  */
@@ -296,11 +296,11 @@ int main(int argc,char *argv[]) {
   }
 
   /* SGS: 201703 default is CS10 */
-  if (!cs10 && !psr10 && !rg96 && !ts17) cs10 = 1;
+  if (!cs10 && !psr10 && !rg96 && !ts18) cs10 = 1;
   if (rg96)  imod = RG96;
   if (psr10) imod = PSR10;
   if (cs10)  imod = CS10;
-  if (ts17)  imod = TS17;
+  if (ts18)  imod = TS18;
 
   envstr=getenv("SD_MODEL_TABLE");
   if (envstr==NULL) {
@@ -342,7 +342,7 @@ int main(int argc,char *argv[]) {
     }
 
     /* SGS: does this overide the tilt set with flag in map_addimf()? */
-    if (imod == TS17 || imod == CS10 || imod == PSR10)
+    if (imod == TS18 || imod == CS10 || imod == PSR10)
       tilt = IGRF_Tilt(yr,mo,dy,hr,mt,(int)sc);
     map->tilt = tilt;
 
@@ -388,7 +388,7 @@ int main(int argc,char *argv[]) {
       case RG96:  strcpy(map->imf_model[3],"RG96"); break;
       case PSR10: strcpy(map->imf_model[3],"PSR10"); break;
       case CS10:  strcpy(map->imf_model[3],"CS10"); break;
-      case TS17:  strcpy(map->imf_model[3],"TS17"); break;
+      case TS18:  strcpy(map->imf_model[3],"TS18"); break;
     }
 
     (*Map_Write)(stdout,map,grd);
@@ -439,11 +439,11 @@ struct model *load_model(FILE *fp, int ihem, int ilev, int iang,
       strcpy(ptr->level,CS10_mod_levs[ilev]);
       strcpy(ptr->angle,CS10_mod_angs[iang]);
       break;
-    case TS17:
+    case TS18:
       strcpy(ptr->hemi,"Null");
       strcpy(ptr->tilt,mod_tilts[itlt]);
-      strcpy(ptr->level,TS17_mod_levs[ilev]);
-      strcpy(ptr->angle,TS17_mod_angs[iang]); /* same as CS10 */
+      strcpy(ptr->level,TS18_mod_levs[ilev]);
+      strcpy(ptr->angle,TS18_mod_angs[iang]); /* same as CS10 */
       break;
   }
 
@@ -566,14 +566,14 @@ int load_all_models(char *path, int imod)
         }
       }
       break;
-    case TS17:  /***********************************************************/
-      fprintf(stderr, "TS17 Statistical Model not yet implemented\n");
+    case TS18:  /***********************************************************/
+      fprintf(stderr, "TS18 Statistical Model not yet implemented\n");
       return (-1);
-      for (i=0; i<TS17_nlev; i++) {
-        for (j=0; j<TS17_nang; j++) {
+      for (i=0; i<TS18_nlev; i++) {
+        for (j=0; j<TS18_nang; j++) {
           for (k=0; mod_tilt[k] != NULL; k++) {
-            sprintf(fname,"%s/ts17/mod_%s_%s_%s.spx",path,TS17_mod_lev[i],
-                           TS17_mod_ang[j],mod_tilt[k]);
+            sprintf(fname,"%s/ts18/mod_%s_%s_%s.spx",path,TS18_mod_lev[i],
+                           TS18_mod_ang[j],mod_tilt[k]);
             fp = fopen(fname,"r");
             if (fp == NULL) continue;
             model[0][k][i][j] = load_model(fp,-1,i,j,k,imod);
@@ -628,15 +628,15 @@ struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
         mod_levi[i] = CS10_mod_levi[i];
       break;
 
-    case TS17:
-      nang = TS17_nang;
+    case TS18:
+      nang = TS18_nang;
       for (i=0; i<nang; i++) {
-        mod_angil[i] = TS17_mod_angil[i];
-        mod_angih[i] = TS17_mod_angih[i];
+        mod_angil[i] = TS18_mod_angil[i];
+        mod_angih[i] = TS18_mod_angih[i];
       }
-      nlev = TS17_nlev;
+      nlev = TS18_nlev;
       for (i=0; i<nlev-1; i++)
-        mod_levi[i] = TS17_mod_levi[i];
+        mod_levi[i] = TS18_mod_levi[i];
       break;
   }
 
@@ -647,7 +647,7 @@ struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
     mlow[i] = .5*(mod_levi[i-1]+mod_levi[i]);
     mhgh[i] = .5*(mod_levi[i]+mod_levi[i+1]);
   }
-  if (imod == TS17) {
+  if (imod == TS18) {
     mhgh[nlev-2] = 5.0;
   } else {
     mhgh[nlev-2] = 7.5;
@@ -846,7 +846,7 @@ struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
   bt   = sqrt(By*By + Bz*Bz);
 
   /* flip sign of By for shemi in models w/o shemi patterns */
-  if (hemi < 0 && (imod == RG96 || imod == TS17)) By = -By;
+  if (hemi < 0 && (imod == RG96 || imod == TS18)) By = -By;
   bazm = atan2(By,Bz)*180/PI;
 
   switch (imod) {
@@ -946,18 +946,18 @@ struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
 
       break;
 
-    case TS17:
+    case TS18:
       if (Vsw == 0) Vsw = 450.; /* not sure if this should be here: SGS */
                                 /* Default solar wind velocity */
       esw = 1e-3*abs(Vsw*bt);
       if (hemi < 0) tilt = -tilt;
 
-      ihem = 0; /* no hemisphere bins for TS17 */
+      ihem = 0; /* no hemisphere bins for TS18 */
 
       if (nointerp) {
 
-        if (bazm >= TS17_mod_angih[TS17_nang-1]) bazm -= 360.;
-        if (bazm <  TS17_mod_angil[0])           bazm += 360.;
+        if (bazm >= TS18_mod_angih[TS18_nang-1]) bazm -= 360.;
+        if (bazm <  TS18_mod_angil[0])           bazm += 360.;
 
         /* tilt */
         for (i=0; (mod_tlti[i] !=-1) && (tilt > mod_tlti[i]); i++);
@@ -965,14 +965,14 @@ struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
         itlt = i;
 
         /* angle */
-        for (i=0; i < TS17_nang; i++)
-          if ((bazm >= TS17_mod_angil[i]) && (bazm < TS17_mod_angih[i])) break;
-        if (i == TS17_nang) i--;
+        for (i=0; i < TS18_nang; i++)
+          if ((bazm >= TS18_mod_angil[i]) && (bazm < TS18_mod_angih[i])) break;
+        if (i == TS18_nang) i--;
         iang = i;
 
         /* magnitude */
-        for (i=0; (TS17_mod_levi[i] !=-1) && (esw >= TS17_mod_levi[i]); i++);
-        if (TS17_mod_levi[i] == -1) i--;
+        for (i=0; (TS18_mod_levi[i] !=-1) && (esw >= TS18_mod_levi[i]); i++);
+        if (TS18_mod_levi[i] == -1) i--;
         ilev = i;
 
         imodel = model[ihem][itlt][ilev][iang];

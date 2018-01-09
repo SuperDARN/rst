@@ -145,8 +145,6 @@ int main(int argc,char *argv[]) {
 
   int fnum=0;
 
-  int s;
-
   struct DataMap *data=NULL;
 
   int16 syr,smo,sdy,shr,smt;
@@ -448,7 +446,7 @@ int main(int argc,char *argv[]) {
     if (Vazm !=NULL) 
       DataMapAddArray(data,"vector.V.azm",DATAFLOAT,2,npnt,Vazm);
     DataMapAddArray(data,"vector.data",DATAINT,2,npnt,count);
-    s=DataMapFwrite(stdout,data);
+    DataMapFwrite(stdout,data);
     
     DataMapFree(data);
     free(buf);

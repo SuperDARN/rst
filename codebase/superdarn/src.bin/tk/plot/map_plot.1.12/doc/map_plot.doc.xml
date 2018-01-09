@@ -5,27 +5,27 @@
 <location>src.bin/tk/plot/map_plot</location>
 
 <syntax>map_plot --help</syntax>
-<syntax>map_plot [<ar>options</ar>] <ar>mapname</ar> [<ar>inxname</ar>]
+<syntax>map_plot [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
 </syntax>
-<syntax>map_plot -stdout [<ar>options</ar>] <ar>mapname</ar> [<ar>inxname</ar>]
+<syntax>map_plot -stdout [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
 </syntax>
-<syntax>map_plot -ps  [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] <ar>mapname</ar> [<ar>inxname</ar>]
+<syntax>map_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
 </syntax>
-<syntax>map_plot -stdout -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] <ar>mapname</ar> [<ar>inxname</ar>]
+<syntax>map_plot -stdout -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
 </syntax>
-<syntax>map_plot -ppm [<ar>options</ar>] <ar>mapname</ar> [<ar>inxname</ar>]
+<syntax>map_plot -ppm [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
 </syntax>
-<syntax>map_plot -ppm -stdout [<ar>options</ar>] <ar>mapname</ar> [<ar>inxname</ar>]
+<syntax>map_plot -ppm -stdout [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
 </syntax>
-<syntax>map_plot -ppmx [<ar>options</ar>] <ar>mapname</ar> [<ar>inxname</ar>]
+<syntax>map_plot -ppmx [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
 </syntax>
-<syntax>map_plot -ppmx -stdout [<ar>options</ar>] <ar>mapname</ar> [<ar>inxname</ar>]
+<syntax>map_plot -ppmx -stdout [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
 </syntax>
-<syntax>map_plot -xml [<ar>options</ar>] <ar>mapname</ar> [<ar>inxname</ar>]
+<syntax>map_plot -xml [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
 </syntax>
-<syntax>map_plot -xml -stdout [<ar>options</ar>] <ar>mapname</ar> [<ar>inxname</ar>]
+<syntax>map_plot -xml -stdout [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
 </syntax>
-<syntax>map_plot -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [-delay <ar>delay</ar>] [<ar>options</ar>] <ar>mapname</ar> [<ar>inxname</ar>]
+<syntax>map_plot -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [-delay <ar>delay</ar>] [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
 </syntax>
 
 <option><on>--help</on><od>print the help message and exit.</od>
@@ -287,13 +287,13 @@
 </description>
 
 <example>
-<command>map_plot -x -def -vkey superdarn.key 20040620.map</command>
+<command>map_plot -x -def -vkey superdarn.key -old 20040620.map</command>
 <description>Plot convections maps from the file "<code>20040620.map</code>" on the X-terminal. Use the default set of options and the color key "<code>superdarn.key</code>". 
 </description>
 </example>
 
 <example>
-<command>map_plot -ps -dn -st 12:00 -new -stereo -mag -rotate -fcoast -coast -fterm -tmk -vecp -vkeyp -time -imf -modn -pot -fit -ctr -vkey superdarn.key 20021219.cnvmap</command>
+<command>map_plot -ps -dn -st 12:00 -stereo -mag -rotate -fcoast -coast -fterm -tmk -vecp -vkeyp -time -imf -modn -pot -fit -ctr -vkey superdarn.key 20021219.cnvmap</command>
 <description>Generate PostScript plots of convections maps from the file "<code>20021219.cnvmap</code>". Store the plots in files named "<code><em>yyyymmdd.hrmn.sc</em>.ps</code>", starting at 12:00UTC. Use a stereographic projection in magnetic coordinates, rotated so that magnetic local noon is at the top of the plot. Plot filled coastlines, terminator, a clockdial representing time, a labelled sample velocity vector, the velocity color bar, the time, IMF conditions, model used, Potential, fitted vectors and the potential contours. The velocity color bar is taken from the file "<code>superdarn.key</code>". 
 </description>
 </example>
@@ -301,7 +301,7 @@
 <example type="rplot">example1</example>
 
 <example>
-<command>map_plot -stdout -t 6:00 -new -stereo -pad 0 -mag -lat 78.4 -lon 16.00 -square -sf 2.00 -fcoast -coast -vecp -vkeyp -grd -time -hmb -fit -ctr -vkey ~/key/superdarn.key 20021219.cnvmap &gt; map.rp.xml</command>
+<command>map_plot -stdout -t 6:00 -stereo -pad 0 -mag -lat 78.4 -lon 16.00 -square -sf 2.00 -fcoast -coast -vecp -vkeyp -grd -time -hmb -fit -ctr -vkey ~/key/superdarn.key 20021219.cnvmap &gt; map.rp.xml</command>
 <description>Generate a single rPlot XML plot of the convections map at 06:00UTC from the file "<code>20021219.cnvmap</code>". Use a stereographic projection in geographic coordinates and center the plot on latitude 78.4 degrees and longitude 16.00 degrees. Plot filled coastlines, a labelled sample velocity vector, the velocity color bar, the time, fitted vectors, Heppner-Maynard boundary and the potential contours.The velocity color bar is taken from the file "<code>superdarn.key</code>". The plot is stored in the file "<code>map.rp.xml</code>".
 </description>
 </example>
