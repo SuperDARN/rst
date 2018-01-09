@@ -102,29 +102,13 @@ int main (int argc,char *argv[]) {
               yr,mo,dy,hr,mt,(int) sc,grd->vcnum);
     }
     s=OldGridFwrite(stdout,grd);
+    if (s !=0) {
+        fprintf(stderr,"OldGridFwrite failed.\n");
+        if (fp !=stdin) fclose(fp);
+        exit(-1);
+    }
   }
   if (fp !=stdin) fclose(fp);
   return 0;
 } 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

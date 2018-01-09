@@ -52,11 +52,17 @@ struct RawData *raw;
 
 struct OptionData opt;
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: cat_raw --help\n");
+  return(-1);
+}
+
 int main (int argc,char *argv[]) {
   int arg;
   unsigned char help=0;
   unsigned char option=0;
-  unsigned char new=0;
+  int old=0;
   float thr=-1;
   int hflg=1;
   int i;
@@ -74,9 +80,13 @@ int main (int argc,char *argv[]) {
   OptionAdd(&opt,"-option",'x',&option);
   OptionAdd(&opt,"t",'f',&thr);
 
-  OptionAdd(&opt,"new",'x',&new);
+  OptionAdd(&opt,"old",'x',&old);
  
-  arg=OptionProcess(1,argc,argv,&opt,NULL);
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+
+  if (arg==-1) {
+    exit(-1);
+  }
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
@@ -87,8 +97,7 @@ int main (int argc,char *argv[]) {
     exit(0);
   }
 
-
-  if (new==1) {
+  if (old==0) {
     fprintf(stderr,
     "New format files can be concatenated with the cat command.\n");
     exit(-1);

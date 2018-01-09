@@ -307,7 +307,7 @@ int GeoPackGeiGeo(double xgei,double ygei,double zgei,
   fygei=ygei;
   fzgei=zgei;
   
-  s=geigeo_(&fxgei,&fygei,&fzgeo,&fxgeo,&fygeo,&fzgeo,&fj);
+  s=geigeo_(&fxgei,&fygei,&fzgei,&fxgeo,&fygeo,&fzgeo,&fj);
 
   *xgeo=fxgeo;
   *ygeo=fygeo;

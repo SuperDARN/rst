@@ -74,6 +74,7 @@ int GrplotKey(struct Grplot *plt,int num,
                       xmin,xmax,step,0,0,1,ttl_num,ttl_txt,
                       plt->text.box,plt->text.data,make_text,textdata,
                       fntname,fntsze,color,mask,width,ksze,a,r,g,b);
+    if (s !=0) return -1;
   }
 
   if (key_flg & 0x02) {
@@ -82,7 +83,7 @@ int GrplotKey(struct Grplot *plt,int num,
                       xmin,xmax,step,0,0,0,ttl_num,ttl_txt,
                       plt->text.box,plt->text.data,make_text,textdata,
                       fntname,fntsze,color,mask,width,ksze,a,r,g,b);
-
+    if (s !=0) return -1;
   }
 
   if (key_flg & 0x04) {
@@ -91,6 +92,7 @@ int GrplotKey(struct Grplot *plt,int num,
                       xmin,xmax,step,1,0,0,ttl_num,ttl_txt,
                       plt->text.box,plt->text.data,make_text,textdata,
                       fntname,fntsze,color,mask,width,ksze,a,r,g,b);
+    if (s !=0) return -1;
   }
 
   if (key_flg & 0x08) {
@@ -99,6 +101,7 @@ int GrplotKey(struct Grplot *plt,int num,
                       xmin,xmax,step,1,0,1,ttl_num,ttl_txt,
                       plt->text.box,plt->text.data,make_text,textdata,
                       fntname,fntsze,color,mask,width,ksze,a,r,g,b);
+    if (s !=0) return -1;
   }
 
   return 0;
@@ -136,6 +139,7 @@ int GrplotKeyLog(struct Grplot *plt,int num,
                       xmin,xmax,tick_major,tick_minor,0,0,1,ttl_num,ttl_txt,
                       plt->text.box,plt->text.data,make_text,textdata,
                       fntname,fntsze,color,mask,width,ksze,a,r,g,b);
+    if (s !=0) return -1;
   }
 
   if (key_flg & 0x02) {
@@ -144,7 +148,7 @@ int GrplotKeyLog(struct Grplot *plt,int num,
                       xmin,xmax,tick_major,tick_minor,0,0,0,ttl_num,ttl_txt,
                       plt->text.box,plt->text.data,make_text,textdata,
                       fntname,fntsze,color,mask,width,ksze,a,r,g,b);
-
+    if (s !=0) return -1;
   }
 
   if (key_flg & 0x04) {
@@ -153,6 +157,7 @@ int GrplotKeyLog(struct Grplot *plt,int num,
                       xmin,xmax,tick_major,tick_minor,1,0,0,ttl_num,ttl_txt,
                       plt->text.box,plt->text.data,make_text,textdata,
                       fntname,fntsze,color,mask,width,ksze,a,r,g,b);
+    if (s !=0) return -1;
   }
 
   if (key_flg & 0x08) {
@@ -161,6 +166,7 @@ int GrplotKeyLog(struct Grplot *plt,int num,
                       xmin,xmax,tick_major,tick_minor,1,0,1,ttl_num,ttl_txt,
                       plt->text.box,plt->text.data,make_text,textdata,
                       fntname,fntsze,color,mask,width,ksze,a,r,g,b);
+    if (s !=0) return -1;
   }
 
   return 0;

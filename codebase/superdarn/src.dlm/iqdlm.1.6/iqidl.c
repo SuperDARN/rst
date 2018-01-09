@@ -94,12 +94,12 @@ struct IQIDL *IDLMakeIQ(IDL_VPTR *vptr) {
   static IDL_STRUCT_TAG_DEF revision[]={
     {"MAJOR",0,(void *) IDL_TYP_LONG},
     {"MINOR",0,(void *) IDL_TYP_LONG},
-    0};
+    {0}};
 
   static IDL_STRUCT_TAG_DEF ttime[]={
     {"SEC",0,(void *) IDL_TYP_LONG},
     {"NSEC",0,(void *) IDL_TYP_LONG},
-    0};
+    {0}};
   
   static IDL_STRUCT_TAG_DEF iqdata[]={    
     {"REVISION",0,NULL},   /* 0 */
@@ -142,7 +142,7 @@ struct IQIDLInx *IDLMakeIQInx(int num,IDL_VPTR *vptr) {
   static IDL_STRUCT_TAG_DEF iqinx[]={
     {"TIME",0,(void *) IDL_TYP_DOUBLE},
     {"OFFSET",0,(void *) IDL_TYP_LONG},
-    0};
+    {0}};
 
    s=IDL_MakeStruct("IQINX",iqinx);  
    idim[0]=num;
