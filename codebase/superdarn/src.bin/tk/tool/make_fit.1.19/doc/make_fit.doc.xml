@@ -7,7 +7,6 @@
 <syntax>make_fit --help</syntax>
 <syntax>make_fit -fitacf-version [<ar>version number</ar>]</syntax>
 <syntax>make_fit <ar>rawname</ar> <ar>fitname</ar> [<ar>inxname</ar>]</syntax>
-<syntax>make_fit -fitacf-version [<ar>version number</ar>]</syntax>
 <syntax>make_fit -old [<ar>rawname</ar>]</syntax>
 
 <option><on>--help</on><od>print the help message and exit.</od>
