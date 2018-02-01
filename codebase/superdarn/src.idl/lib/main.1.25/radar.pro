@@ -36,7 +36,6 @@
 ;  RadarGetRadar
 ;  RadarPos
 ;  RadarPosGS
-;  RadarGeochrt
 ;
 ; Private Functions:
 ; ------------------
