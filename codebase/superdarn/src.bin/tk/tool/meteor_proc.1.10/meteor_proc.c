@@ -145,8 +145,8 @@ double calc_azi(int bmnum) {
 };
 
 void cosfunc(double x, double afunc[], int ma) {
-	afunc[1] = -cos(x);
-	afunc[2] = sin(x);
+  afunc[1] = -cos(x);
+  afunc[2] = sin(x);
 };
 
 
@@ -175,18 +175,18 @@ int main (int argc,char *argv[]) {
   int yr,mo,dy,hr,mt;
   double sc;
   int year,month,day;
-  
+
   int frang,rsep,rxrise=0;
-  
+
   unsigned char cfitflg=0;
- 
+
 
 
   int bc=0;
 
   char *envstr;
 
- envstr=getenv("SD_RADAR");
+  envstr=getenv("SD_RADAR");
   if (envstr==NULL) {
     fprintf(stderr,"Environment variable 'SD_RADAR' must be defined.\n");
     exit(-1);
@@ -232,10 +232,9 @@ int main (int argc,char *argv[]) {
 
   OptionAdd(&opt,"hr",'i',&req_hr);
 
-
   OptionAdd(&opt,"cfit",'x',&cfitflg);
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);   
+  arg=OptionProcess(1,argc,argv,&opt,NULL);
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
@@ -246,12 +245,12 @@ int main (int argc,char *argv[]) {
      if (tolower(mz_str[0])=='m') bm_type=0;
      else bm_type=1;
   }
-  
+
   if (arg==argc) {
     OptionPrintInfo(stdout,errstr);
     exit(-1);
   }
-    
+
   for (c=arg;c<argc;c++) {
 
     if (cfitflg==0) {
@@ -261,7 +260,7 @@ int main (int argc,char *argv[]) {
         fprintf(stderr,"file %s not found\n",argv[c]);
         continue;
       }
- 
+
       while (OldFitRead(ffp,&prm,&fit) !=-1) {
 
         if (site==NULL) {
@@ -278,13 +277,13 @@ int main (int argc,char *argv[]) {
           if (rxrise==0) rxrise=site->recrise;
           rxrise=site->recrise;
           if (vm_beam==-1) {
-	    for (i=0;(merid[i] !=st_id) && (merid[i] !=0);i++);
-	    vm_beam=merbm[i];
- 	  }
+            for (i=0;(merid[i] !=st_id) && (merid[i] !=0);i++);
+            vm_beam=merbm[i];
+          }
         }
         /* select the data */
 
-   
+
         hr=prm.time.hr;
         cnt=num[hr];
         if ((req_hr !=-1) && (hr !=req_hr)) continue;
@@ -293,8 +292,8 @@ int main (int argc,char *argv[]) {
         if (prm.rsep==0) continue;
         if (met[hr]==NULL) met[hr]=malloc(sizeof(struct metdata));
         else met[hr]=realloc(met[hr],sizeof(struct metdata)*(cnt+1));
-     
-      
+
+
         met[hr][cnt].yr=prm.time.yr;
         met[hr][cnt].mo=prm.time.mo;
         met[hr][cnt].dy=prm.time.dy;
@@ -305,7 +304,7 @@ int main (int argc,char *argv[]) {
         met[hr][cnt].frang=prm.frang;
         met[hr][cnt].rsep=prm.rsep;
         met[hr][cnt].rxrise=rxrise;
-     
+
         max_gate=(max_range-prm.frang)/prm.rsep;
         met[hr][cnt].max_gate=max_gate;
         for (i=0;i<max_gate;i++) {
@@ -319,7 +318,7 @@ int main (int argc,char *argv[]) {
           met[hr][cnt].vlos[i]=fit.rng[i].v;
         }
         num[hr]++;
-      } 
+      }
       OldFitClose(ffp);
     } else {
       cfp=CFitOpen(argv[c]); 
@@ -328,7 +327,7 @@ int main (int argc,char *argv[]) {
         fprintf(stderr,"file %s not found\n",argv[c]);
         continue;
       }
- 
+
       while (CFitRead(cfp,&cfit) !=-1) {
         TimeEpochToYMDHMS(cfit.time,&yr,&mo,&dy,&hr,&mt,&sc);
         if (site==NULL) {
@@ -343,12 +342,12 @@ int main (int argc,char *argv[]) {
           if (rxrise==0) rxrise=site->recrise;
           rxrise=site->recrise;
           if (vm_beam==-1) {
-	    for (i=0;(merid[i] !=st_id) && (merid[i] !=0);i++);
-	    vm_beam=merbm[i];
- 	  }
+            for (i=0;(merid[i] !=st_id) && (merid[i] !=0);i++);
+            vm_beam=merbm[i];
+          }
         }
         /* select the data */
-        
+
         cnt=num[hr];
         if ((req_hr !=-1) && (hr !=req_hr)) continue;
         if (cfit.scan <0) continue;
@@ -356,8 +355,8 @@ int main (int argc,char *argv[]) {
         if (cfit.rsep==0) continue;
         if (met[hr]==NULL) met[hr]=malloc(sizeof(struct metdata));
         else met[hr]=realloc(met[hr],sizeof(struct metdata)*(cnt+1));
-     
-      
+
+
         met[hr][cnt].yr=yr;
         met[hr][cnt].mo=mo;
         met[hr][cnt].dy=dy;
@@ -368,7 +367,7 @@ int main (int argc,char *argv[]) {
         met[hr][cnt].frang=cfit.frang;
         met[hr][cnt].rsep=cfit.rsep;
         met[hr][cnt].rxrise=rxrise;
-     
+
         max_gate=(max_range-cfit.frang)/cfit.rsep;
         met[hr][cnt].max_gate=max_gate;
         for (j=0;j<cfit.num;j++) {
@@ -383,7 +382,7 @@ int main (int argc,char *argv[]) {
           met[hr][cnt].vlos[i]=cfit.data[j].v;
         }
         num[hr]++;
-      } 
+      }
       CFitClose(cfp);
     }
   }
@@ -399,20 +398,20 @@ int main (int argc,char *argv[]) {
 
   cvm=dmatrix(1,2,1,2);
 
-  fprintf(stdout,"# Vlos(max)=%.2f\n# S/N(min)=%.2f\n# range(max)=%d\n", 
+  fprintf(stdout,"# Vlos(max)=%.2f\n# S/N(min)=%.2f\n# range(max)=%d\n",
                       max_vel, min_sn, max_range);
-  fprintf(stdout, "# Verr(max)=%.2f\n# num_beams(min)=%d\n", max_v_err, 
+  fprintf(stdout, "# Verr(max)=%.2f\n# num_beams(min)=%d\n", max_v_err,
                    min_beams);
   fprintf(stdout, "# w_l(max)=%.2f\n", max_w_l);
   if (bm_type == 0) fprintf(stdout,
     "# beam_num=%d\n# wind=meridional\n",vm_beam);
-  else fprintf(stdout, 
+  else fprintf(stdout,
     "# beam_num=%d\n# wind=zonal\n",vm_beam);
   fprintf(stdout, "# stid=%d\n", st_id);
- 
+
   if (bm_type == 0) fprintf(stdout,
      "# year month day hour num_avgs frang rsep Vx Vy lat long Vm Vm_lat Vm_long sdev_Vx sdev_Vy\n");
-  else fprintf(stdout, 
+  else fprintf(stdout,
      "# year month day hour num_avgs frang rsep Vx Vy lat long Vz Vz_lat Vz_long sdev_Vx sdev_Vy\n");
 
   /* now do the fitting */
@@ -437,7 +436,7 @@ int main (int argc,char *argv[]) {
       bm_count[i]=0;
       bm_sdtmp[i]=0;
     }
-    num_avgs=0; 
+    num_avgs=0;
     beams=0;
 
     for (i=0;i<cnt;i++) {
@@ -448,7 +447,7 @@ int main (int argc,char *argv[]) {
         num_avgs++;
       }
     }
- 
+
     for (i=0;i<16;i++) {
       if (bm_count[i] > 0) {
         beams++;
@@ -461,19 +460,19 @@ int main (int argc,char *argv[]) {
         if (met[hr][i].flg[j]==0) continue;
         bm_sdtmp[met[hr][i].bmnum]+=(met[hr][i].vlos[j]-
                                      vlos[met[hr][i].bmnum])*
-	         (met[hr][i].vlos[j]-vlos[met[hr][i].bmnum]);
-      
+                 (met[hr][i].vlos[j]-vlos[met[hr][i].bmnum]);
+
       }
     }
     for (i=0;i<16;i++) {
       if (bm_count[i] > 1) {
         sdev[i] =sqrt(bm_sdtmp[i]/(bm_count[i]-1));
-       } else {
+      } else {
         sdev[i]=1;
         vlos[i]=0;
       }
     }
-   
+
 
     if (beams<min_beams) {
       fprintf(stderr,
@@ -482,38 +481,38 @@ int main (int argc,char *argv[]) {
       hr++;
       continue;
     }
- 
-  
+
+
     bc=0;
     for (i=0;i<16;i++) {
       if (bm_count[i]>1) {
-        x[++bc]=calc_azi(i);   
+        x[++bc]=calc_azi(i);
         y[bc] =vlos[i]/coseps; /* mean velocity */
-        sig[bc] = sdev[i];	
+        sig[bc] = sdev[i];
       }
     }
 
- 
- 
+
+
     fprintf(stderr,"Fitting %d of 16 beams\n",bc);
- 
+
 
     dsvdfit(x, y, sig, bc, a, 2, u, v, w, &chisq, &cosfunc);
 
-  
+
     vx=a[1];
     vy=a[2];
-  
+
     dsvdvar(v, 2, w, cvm);
 
     sdvx = sqrt(cvm[1][1]);
     sdvy = sqrt(cvm[2][2]);
-  
+
     vm=vlos[vm_beam]/coseps;
 
     frang=met[hr][0].frang;
     rsep=met[hr][0].rsep;
-    rxrise=met[hr][0].rxrise;  
+    rxrise=met[hr][0].rxrise;
     RPosGeo(0,7,3,site,frang,rsep,rxrise,METEOR_HEIGHT,&rho,
              &lat,&lon);
 
@@ -522,28 +521,11 @@ int main (int argc,char *argv[]) {
 
 
     fprintf(stdout, "%4d %02d %02d %02d %d %d %d %.0f %.0f %.1f %.1f %.0f %.1f %.1f %.2f %.2f\n",
-	  year,month,day,hr,num_avgs,frang,rsep,vx,vy,lat,lon,vm,vmlat,vmlon,sdvx,sdvy);
+            year,month,day,hr,num_avgs,frang,rsep,vx,vy,lat,lon,vm,vmlat,vmlon,sdvx,sdvy);
 
     if (req_hr !=-1) break;
     hr++;
   } while (hr<24);
   return 0;
-} 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
