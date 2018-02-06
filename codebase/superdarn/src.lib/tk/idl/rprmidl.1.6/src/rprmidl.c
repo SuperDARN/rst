@@ -186,13 +186,13 @@ struct RadarIDLParm *IDLMakeRadarParm(IDL_VPTR *vptr) {
   static IDL_STRUCT_TAG_DEF revision[]={
     {"MAJOR",0,(void *) IDL_TYP_BYTE},
     {"MINOR",0,(void *) IDL_TYP_BYTE},
-    0};
+    {0}};
 
   static IDL_STRUCT_TAG_DEF origin[]={
     {"CODE",0,(void *) IDL_TYP_BYTE},
     {"TIME",0,(void *) IDL_TYP_STRING},
     {"COMMAND",0,(void *) IDL_TYP_STRING},
-    0};
+    {0}};
 
   static IDL_STRUCT_TAG_DEF time[]={
     {"YR",0,(void *) IDL_TYP_INT},
@@ -202,22 +202,22 @@ struct RadarIDLParm *IDLMakeRadarParm(IDL_VPTR *vptr) {
     {"MT",0,(void *) IDL_TYP_INT},
     {"SC",0,(void *) IDL_TYP_INT},
     {"US",0,(void *) IDL_TYP_LONG},
-    0};  
+    {0}};  
 
  
   static IDL_STRUCT_TAG_DEF stat[]={
     {"AGC",0,(void *) IDL_TYP_INT},
-    {"LOPWR",0,(void *) IDL_TYP_INT},0};
+    {"LOPWR",0,(void *) IDL_TYP_INT},{0}};
  
   static IDL_STRUCT_TAG_DEF noise[]={
       {"SEARCH",0,(void *) IDL_TYP_FLOAT},
       {"MEAN",0,(void *) IDL_TYP_FLOAT},
-      0};
+      {0}};
 
   static IDL_STRUCT_TAG_DEF intt[]={
     {"SC",0,(void *) IDL_TYP_INT},
     {"US",0,(void *) IDL_TYP_LONG},
-    0};
+    {0}};
   
   static IDL_STRUCT_TAG_DEF rprm[]={    
     {"REVISION",0,NULL},   /* 0 */
@@ -257,7 +257,7 @@ struct RadarIDLParm *IDLMakeRadarParm(IDL_VPTR *vptr) {
     {"PULSE",pdim,(void *) IDL_TYP_INT}, /* 33 */
     {"LAG",ldim,(void *) IDL_TYP_INT}, /* 34 */
     {"COMBF",0,(void *) IDL_TYP_STRING}, /* 35 */   
-    0};
+    {0}};
 
   static IDL_MEMINT ilDims[IDL_MAX_ARRAY_DIM];
  

@@ -21,7 +21,7 @@
 <option><on>-cf <ar>cfname</ar></on><od>read command line options from the file <ar>cfname</ar>.</od>
 </option>
 
-<option><on>-new</on><od>the input file is a <code>cnvmap</code> format file.</od></option>
+<option><on>-old</on><od>the input file is a <code>map</code> format file.</od></option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od></option>
 
 <option><on>-w <ar>width</ar></on><od>set the width of the plot to <ar>width</ar>.</od>
@@ -54,21 +54,21 @@
 <option><on>-yoff <ar>yoff</ar></on><od>open the window <ar>ypad</ar> pixels from the top edge of the screen.</od>
 </option>
 
-<synopsis><p>Plot the Heppner-Maynard boundary from a <code>map</code> format files.</p></synopsis>
+<synopsis><p>Plot the Heppner-Maynard boundary from a <code>cnvmap</code> format files.</p></synopsis>
 
 
-<description><p>Plot the Heppner-Maynard boundary from a <code>map</code> format files.</p>
+<description><p>Plot the Heppner-Maynard boundary from a <code>cnvmap</code> format files.</p>
 <p>The output can be to an X terminal, Portable PixMap (PPM) files, extended Portable PixMap (PPMX), <code>rPlot</code> XML document,or PostScript file. The default output is <code>rPlot</code> XML.</p>
 <p>If the "<code>-x</code>" option is specified the program will display plots in an X terminal window in all other cases the output is written to standard out.</p>
 </description>
 <example>
-<command>hmb_plot -x 20030407.map</command>
+<command>hmb_plot -x -old 20030407.map</command>
 <description>Plot the Heppner-Maynard boundary from the <code>map</code> file called "<code>20030407.map</code>" on the X terminal.</description>
 </example>
 
 <example>
-<command>hmb_plot -new 20021219.cnvmap</command>
-<description>Generate an rPlot XML plot of the Heppner-Maynard boundary from the <code>map</code> file called "<code>20021219.map</code>". The plot is stored in the file "<code>pc.rp.xml</code>".</description>
+<command>hmb_plot 20021219.cnvmap</command>
+<description>Generate an rPlot XML plot of the Heppner-Maynard boundary from the <code>cnvmap</code> file called "<code>20021219.cnvmap</code>". The plot is stored in the file "<code>pc.rp.xml</code>".</description>
 </example>
 <example type="rplot">example1</example>
 

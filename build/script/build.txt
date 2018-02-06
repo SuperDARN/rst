@@ -2,11 +2,9 @@
 
 base codebase/base/src.lib lib
 base codebase/base/src.bin bin 
-base codebase/base/src.doc doc
 
 general codebase/general/src.lib lib 
 general codebase/general/src.bin bin 
-general codebase/general/src.doc doc
 
 analysis codebase/analysis/src.lib lib
 analysis codebase/analysis/src.bin bin

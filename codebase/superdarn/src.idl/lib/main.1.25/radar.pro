@@ -436,7 +436,7 @@ end
 ;       Internal function for RPos
 ; 			Converts from geodetic coordinates (gdlat,gdlon) to geocentric spherical
 ; 			coordinates (glat,glon). The radius of the Earth (grho) and the deviation
-; 			off the vertical (del) are calculated. The IAU 1964 oblate spheroid model
+; 			off the vertical (del) are calculated. The WGS 84 oblate spheroid model
 ; 			of the Earth is adopted.
 ;       
 ;
@@ -449,8 +449,8 @@ end
 
 pro RadarGeoTGC,iopt,gdlat,gdlon,grho,glat,glon,del
 
-   a=6378.16D
-   f=1.0D/298.25D
+   a=6378.137D
+   f=1.0D/298.257223563D
   
 
    b=a*(1.0-f)
@@ -591,66 +591,106 @@ end
 ;-----------------------------------------------------------------
 ;
 
-pro RadarFldPnth,gdlat,gdlon,psi,bore,fh,r,frho,flat,flon
+pro RadarFldPnth,gdlat,gdlon,psi,bore,fh,r,frho,flat,flon,chisham=chisham
  
-  rrad=0.0D
-  rlat=0.0D
-  rlon=0.0D
-  del=0.0D 
-  dum1=0.0D
-  dum2=0.0D
-  dum3=0.0D
+    rrad=0.0D
+    rlat=0.0D
+    rlon=0.0D
+    del=0.0D 
+    dum1=0.0D
+    dum2=0.0D
+    dum3=0.0D
 
-  if (fh le 150) then xh=fh $
-  else begin
-    if (r le 600) then xh=115 $
-    else if ((r gt 600) and (r lt 800)) then $
-      xh=(r-600.0D)/200.0D*(fh-115.0D)+115.0D $
-    else xh=fh
-  endelse
+    if keyword_set(chisham) then begin
+        ; Chisham virtual height model
+        A = [108.974, 384.416, 1098.28]
+        B = [0.0191271, -0.178640, -0.354557]
+        C = [6.68283e-5, 1.81405e-4, 9.39961e-5]
 
-  if (r lt 150) then xh=(r/150.0D)*115.0D;
-  RadarGeoTGC,1,gdlat,gdlon,rrad,rlat,rlon,del
+        if r lt 787.5 then $
+            xh = A[0] + B[0]*r + C[0]*r*r $
+        else if r le 2137.5 then $
+            xh = A[1] + B[1]*r + C[1]*r*r $
+        else $
+            xh = A[2] + B[2]*r + C[2]*r*r
+        
+        if (r lt 115) then xh=(r/115.0D)*112.0D
+    endif else begin
+        ; Standard virtual height model
+        if (fh le 150) then xh=fh $
+        else begin
+            if (r le 600) then xh=115 $
+            else if ((r gt 600) and (r lt 800)) then $
+                xh=(r-600.0D)/200.0D*(fh-115.0D)+115.0D $
+            else xh=fh
+        endelse
 
-  rrho=rrad
-; Radius of the Earth beneath the field point
-  frad=rrad
+        if (r lt 150) then xh=(r/150.0D)*115.0D
+    endelse
 
-; Iterate until the altitude corresponding to the calculated elevation
-; matches the desired altitude
-  repeat begin 
-    frho=frad+xh
+    RadarGeoTGC,1,gdlat,gdlon,rrad,rlat,rlon,del
+
+    ; Radius of the Earth beneath the radar site
+    rrho=rrad
+
+    ; Radius of the Earth beneath the field point
+    ; (this is updated in the loop below)
+    frad=rrad
+
+    ; Check for zero slant range which will cause an error in the
+    ; elevation angle calculation below, leading to a NAN result
+    if (r eq 0.) then r=0.1
+
+    ; Iterate until the altitude corresponding to the calculated elevation
+    ; matches the desired altitude
+    repeat begin 
+    
+        ; Distance from center of Earth fo field point location
+        frho=frad+xh
  
-    ; Pointing elevation (spherical Earth value)
-    if r gt 2*rrad then r = 2*rrad  ; This was a problem with p-code when an incorrect number of gates was passed
+        ; Pointing elevation (spherical Earth value)
+        if r gt 2*rrad then r = 2*rrad  ; This was a problem with p-code when an incorrect number of gates was passed
 
-    rel=asin(((frho*frho)-(rrad*rrad)-(r*r))/(2*rrad*r))*180.0/!PI
-    xel=rel
+        ; Elevation angle relative to local horizon [deg]
+        rel=asin(((frho*frho)-(rrad*rrad)-(r*r))/(2*rrad*r))*180.0/!PI
+    
+        ; Need to calculate actual elevation angle for 1.5-hop propagation
+        ; when using Chisham model for coning angle correction
+        if keyword_set(chisham) and r gt 2137.5 then begin
+            gamma = acos((rrad*rrad + frho*frho - r*r)/(2.0*rrad*frho))
+            beta = asin(rrad*sin(gamma/3.0)/(r/3.0))
+            rel_chisham = !PI/2.0 - beta - gamma/3.
+            xel = rel_chisham*180.0/!pi
+        endif else $
+            xel=rel
 
-    ; Estimate the off-array-normal azimuth
-    if (((cos(!PI*psi/180.0)*cos(!PI*psi/180.0))- $
-         (sin(!PI*xel/180.0)*sin(!PI*xel/180.0))) lt 0) then tan_azi=1e32 $
-      else tan_azi=sqrt( (sin(!PI*psi/180.0)*sin(!PI*psi/180.0))/ $
+        ; Estimate the off-array-normal azimuth
+        if (((cos(!PI*psi/180.0)*cos(!PI*psi/180.0))- $
+            (sin(!PI*xel/180.0)*sin(!PI*xel/180.0))) lt 0) then tan_azi=1e32 $
+        else tan_azi=sqrt( (sin(!PI*psi/180.0)*sin(!PI*psi/180.0))/ $
                 ((cos(!PI*psi/180.0)*cos(!PI*psi/180.0))- $ 
                 (sin(!PI*xel/180.0)*sin(!PI*xel/180.0))))
-    if (psi gt 0) then azi=atan(tan_azi)*180.0/!PI $
-    else azi=-atan(tan_azi)*180.0/!PI
-
-    ; Obtain the corresponding value of pointing azimuth
-    xal=azi+bore
-
-    ; Adjust azimuth and elevation for the oblateness of the Earth
-    RadarGeoCnvrt,gdlat,gdlon,xal,xel,ral,dum
     
-    ; Obtain the global spherical coordinates of the field point
-    RadarFldPnt,rrho,rlat,rlon,ral,rel,r,frho,flat,flon
+        if (psi gt 0) then azi=atan(tan_azi)*180.0/!PI $
+        else azi=-atan(tan_azi)*180.0/!PI
 
-    ; Recomputes the radius of the Earth beneath the field point
-    RadarGeoTGC,-1,dum1,dum2,frad,flat,flon,dum3
+        ; Obtain the corresponding value of pointing azimuth
+        xal=azi+bore
 
-    ; Check altitude
-    fhx=frho-frad    
-  endrep until (abs(fhx-xh) le 0.5) 
+        ; Adjust azimuth and elevation for the oblateness of the Earth
+        RadarGeoCnvrt,gdlat,gdlon,xal,xel,ral,dum
+    
+        ; Obtain the global spherical coordinates of the field point
+        RadarFldPnt,rrho,rlat,rlon,ral,rel,r,frho,flat,flon
+
+        ; Recomputes the radius of the Earth beneath the field point
+        RadarGeoTGC,-1,dum1,dum2,frad,flat,flon,dum3
+
+        ; Check altitude
+        fhx=frho-frad    
+  
+    endrep until (abs(fhx-xh) le 0.5)
+
 end
  
 
@@ -757,7 +797,7 @@ end
 
  
 function RadarPos,center,bcrd,rcrd,site,frang,rsep,rxrise,$
-                        height,rho,lat,lng
+                        height,rho,lat,lng,chisham=chisham
 
 
                 
@@ -828,7 +868,7 @@ function RadarPos,center,bcrd,rcrd,site,frang,rsep,rxrise,$
          hgt=-re+sqrt((re*re)+2*d*re*sin(!PI*hgt/180.0)+(d*d));
 
        RadarFldPnth,site.geolat,site.geolon,psi,site.boresite,hgt,$ 
-                    d,r,la,ln 
+                    d,r,la,ln,chisham=chisham 
 
 
        rho[i]=r

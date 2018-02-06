@@ -368,6 +368,7 @@ int main(int argc,char *argv[]) {
 
   char tsfx[16];
 
+  int chisham=0;
 
   envstr=getenv("MAPDATA");
 
@@ -524,6 +525,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"dotr",'f',&dotr);
   OptionAdd(&opt,"dot",'x',&dotflg);
 
+  OptionAdd(&opt,"chisham",'x',&chisham); /* use Chisham virtual height model */
 
   arg=OptionProcess(1,argc,argv,&opt,NULL);  
 
@@ -566,7 +568,7 @@ int main(int argc,char *argv[]) {
     MapModify(bnd,AACGMtransform,NULL);
   }
 
-  fov=make_fov(tval,network,alt); 
+  fov=make_fov(tval,network,alt,chisham); 
 
   if (magflg) MapModify(fov,AACGMtransform,NULL);
 

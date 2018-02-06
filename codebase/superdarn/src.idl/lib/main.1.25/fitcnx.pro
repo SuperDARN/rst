@@ -195,7 +195,7 @@ function FitCnxRead,unit,prm,fit
   else fit.qflg[slist]=1
   if (arrid[6] ne -1) then fit.gflg[slist]= (*(arrvec[arrid[6]].ptr))[*]
   if (arrid[7] ne -1) then fit.p_l[slist]= (*(arrvec[arrid[7]].ptr))[*]
-  if (arrid[9] ne -1) then fit.p_l_e[slist]= (*(arrvec[arrid[8]].ptr))[*]
+  if (arrid[8] ne -1) then fit.p_l_e[slist]= (*(arrvec[arrid[8]].ptr))[*]
   if (arrid[9] ne -1) then fit.p_s[slist]= (*(arrvec[arrid[9]].ptr))[*]
   if (arrid[10] ne -1) then fit.p_s_e[slist]= (*(arrvec[arrid[10]].ptr))[*]
   if (arrid[11] ne -1) then fit.v[slist]= (*(arrvec[arrid[11]].ptr))[*]

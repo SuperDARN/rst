@@ -1,26 +1,26 @@
 /* invmag.c
    ========
    Author: R.J.Barnes
-   Comemnts: E.G.Thomas (2016)
+   Comments: E.G.Thomas (2016)
 */
 
 /*
  LICENSE AND DISCLAIMER
- 
+
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
+
  This file is part of the Radar Software Toolkit (RST).
- 
+
  RST is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
- 
+
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Lesser General Public License for more details.
- 
+
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -32,6 +32,7 @@
 
 #include "rmath.h"
 #include "aacgm.h"
+#include "aacgmlib_v2.h"
 #include "magcmp.h"
 #include "radar.h"
 #include "rpos.h"
@@ -64,7 +65,7 @@ void norm_vec(double *x, double *y, double *z) {
  * Converts from global geocentric spherical coordinates (r,theta,phi) to
  * global Cartesian coordinates (x,y,z), with input values in degrees.
  **/
-void sphtocar(double r, double theta, double phi, 
+void sphtocar(double r, double theta, double phi,
               double *x, double *y, double *z) {
 
     *x=r*sind(90.0-theta)*cosd(phi);
@@ -125,11 +126,9 @@ void fldpnt_sph(double frho, double flat, double flon, double az,
  **/
 void fldpnt_azm(double mlat, double mlon, double nlat, double nlon, double *az) {
 
-    double api;
     double aside,bside,cside;
     double Aangl,Bangl,arg;
 
-    api=4*atan(1.0);
     aside=90-nlat;
     cside=90-mlat;
 
@@ -146,7 +145,10 @@ void fldpnt_azm(double mlat, double mlon, double nlat, double nlon, double *az) 
     if (Bangl<0) Aangl=-Aangl;
     *az=Aangl;
 
-} 
+    /* Check for case when *az=nan rather than zero */
+    if (*az!=*az) *az=0.0;
+
+}
 
 
 
@@ -179,7 +181,7 @@ void glbthor(int iopt, double lat, double lon,
 
     } else {
         /* Convert the input vector from local south/east/vertical to Cartesian XYZ */
-        
+
         /* Calculate the colatitude */
         lax=90-lat;
 
@@ -207,7 +209,7 @@ void glbthor(int iopt, double lat, double lon,
 int RPosRngBmAzmElv(int bm, int rn, int year,
                     struct RadarSite *hdw, double frang,
                     double rsep, double rx, double height,
-                    double *azm, double *elv) {
+                    double *azm, double *elv, int chisham) {
 
     double flat,flon,frho;
     double fx,fy,fz;
@@ -233,7 +235,7 @@ int RPosRngBmAzmElv(int bm, int rn, int year,
      * surface of the oblate spheroid (ie not constant with latitude) plus
      * virtual height (frho) */
     RPosGeo(1,bm,rn,hdw,frang,rsep,rx,
-             height,&frho,&flat,&flon);
+            height,&frho,&flat,&flon,chisham);
 
     /* Convert range/beam position from geocentric spherical coordinates
      * (frho,flat,flon) to global Cartesian coordinates (fx,fy,fz) */
@@ -264,7 +266,7 @@ int RPosRngBmAzmElv(int bm, int rn, int year,
     norm_vec(&ghx,&ghy,&ghz);
 
     /* Calculate the magnetic field vector (bx,by,bz) at the geocentric spherical
-     * range/beam position (frho,flat,flon) in global Cartesian coordinates */
+     * range/beam position (frho,flat,flon) in local south/east/vertical coordinates */
     s=IGRFMagCmp(year,frho,flat,flon,&bx,&by,&bz,&b);
     if (s==-1) return -1;
 
@@ -272,7 +274,7 @@ int RPosRngBmAzmElv(int bm, int rn, int year,
     norm_vec(&bx,&by,&bz);
 
     /* Calculate a new local vertical component such that the radar-to-range/beam
-     *  vector becomes orthogonal to the magnetic field at the range/beam position
+     * vector becomes orthogonal to the magnetic field at the range/beam position
      * (gh dot b = 0) */
     ghz=-(bx*ghx+by*ghy)/bz;
 
@@ -298,7 +300,8 @@ int RPosRngBmAzmElv(int bm, int rn, int year,
  **/
 int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
                double rsep, double rx, double height,
-               double *mlat, double *mlon, double *azm) {
+               double *mlat, double *mlon, double *azm, 
+               int chisham, int old_aacgm) {
 
     double flat,flon,frho;
     double fx,fy,fz;
@@ -327,11 +330,11 @@ int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
      * surface of the oblate spheroid (ie not constant with latitude) plus
      * virtual height (frho) */
     RPosGeo(1,bm,rn,hdw,frang,rsep,rx,
-             height,&frho,&flat,&flon);
+            height,&frho,&flat,&flon,chisham);
 
     /* Convert range/beam position from geocentric spherical coordinates
      * (frho,flat,flon) to global Cartesian coordinates (fx,fy,fz) */
-    sphtocar(frho,flat,flon,&fx,&fy,&fz);       
+    sphtocar(frho,flat,flon,&fx,&fy,&fz);
 
     /* Convert radar site geodetic latitude/longitude (gdlat,gdlon) to
      * geocentric spherical coordinates (glat,glon) and distance from the
@@ -358,7 +361,7 @@ int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
     norm_vec(&ghx,&ghy,&ghz);
 
     /* Calculate the magnetic field vector (bx,by,bz) at the geocentric spherical
-     * range/beam position (frho,flat,flon) in global Cartesian coordinates */
+     * range/beam position (frho,flat,flon) in local south/east/vertical coordinates */
     s=IGRFMagCmp(year,frho,flat,flon,&bx,&by,&bz,&b);
     if (s==-1) return -1;
 
@@ -366,7 +369,7 @@ int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
     norm_vec(&bx,&by,&bz);
 
     /* Calculate a new local vertical component such that the radar-to-range/beam
-     *  vector becomes orthogonal to the magnetic field at the range/beam position
+     * vector becomes orthogonal to the magnetic field at the range/beam position
      * (gh dot b = 0) */
     ghz=-(bx*ghx+by*ghy)/bz;
 
@@ -387,13 +390,12 @@ int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
     /* Calculate virtual height of range/beam position */
     tmp_ht=frho-gdrho;
 
-    /* Load AACGM coefficients for input year - EGT */
-    /*AACGMInit(year);*/
-
     /* Convert range/beam position from geocentric latitude/longitude (flat,flon)
      * at virtual height (tmp_ht) to AACGM magnetic latitude/longitude
      * coordinates (mlat,mlon) */
-    AACGMConvert(flat,flon,tmp_ht,mlat,mlon,&dummy,0);
+    if (old_aacgm) s=AACGMConvert(flat,flon,tmp_ht,mlat,mlon,&dummy,0);
+    else s=AACGM_v2_Convert(flat,flon,tmp_ht,mlat,mlon,&dummy,0);
+    if (s==-1) return -1;
 
     /* Calculate pointing direction latitude/longitude (xlat,xlon) given
      * distance (rsep) and bearing (azc) from the radar position (flat,flon)
@@ -403,7 +405,8 @@ int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
     /* Convert pointing direction position from geocentric latitude/longitude
      * (xlat,xlon) at virtual height (tmp_height) to AACGM magnetic
      * latitude/longitude coordinates (nlat,nlon) */
-    s=AACGMConvert(xlat,xlon,tmp_ht,&nlat,&nlon,&dummy,0);
+    if (old_aacgm) s=AACGMConvert(xlat,xlon,tmp_ht,&nlat,&nlon,&dummy,0);
+    else s=AACGM_v2_Convert(xlat,xlon,tmp_ht,&nlat,&nlon,&dummy,0);
     if (s==-1) return -1;
 
     /* Make sure nlon varies between +/- 180 degrees */

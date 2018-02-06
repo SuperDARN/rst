@@ -54,7 +54,10 @@
 #include "oldcnvmapread.h"
 #include "cnvmapsolve.h"
 #include "make_pgrid.h"
-
+#include "aacgmlib_v2.h"
+#include "igrflib.h"
+#include "shfconst.h"
+#include "calc_bmag.h"
 
 
 struct OptionData opt;
@@ -91,17 +94,8 @@ double strtime(char *text) {
 
 int main(int argc,char *argv[]) {
 
- /* File format transistion
-   * ------------------------
-   * 
-   * When we switch to the new file format remove any reference
-   * to "new". Change the command line option "new" to "old" and
-   * remove "old=!new".
-   */
-
   int old=0;
-  int new=0;
-
+  int old_aacgm=0;
 
   int arg;
   struct RfileIndex *oinx=NULL;
@@ -127,7 +121,7 @@ int main(int argc,char *argv[]) {
   float latmin=60.0;
  
   float vx,vy;
-  float bmag=-0.5e-4;
+  double bpolar,bmag;
 
   char *stime_txt=NULL;
   char *sdate_txt=NULL;
@@ -135,7 +129,6 @@ int main(int argc,char *argv[]) {
   char *extime_txt=NULL;
   char *etime_txt=NULL;
   char *edate_txt=NULL;
-
 
   double stime=-1;
   double etime=-1;
@@ -145,15 +138,12 @@ int main(int argc,char *argv[]) {
 
   int step=1;
   
-
   int lat,lon;
   int32 *count=NULL;
   
   unsigned char vb=0;
 
   int fnum=0;
-
-  int s;
 
   struct DataMap *data=NULL;
 
@@ -177,6 +167,14 @@ int main(int argc,char *argv[]) {
   unsigned char *buf=NULL;
   unsigned char *bptr=NULL;
 
+  int tme;
+  int yrsec;
+  int first;
+  int noigrf=0;
+  float decyear;
+  double theta;
+  int hemi=1;
+
   grd=GridMake();
   map=CnvMapMake();
 
@@ -184,31 +182,21 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
-
-  OptionAdd(&opt,"new",'x',&new);
-
+  OptionAdd(&opt,"old",'x',&old);
+  OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);
   OptionAdd(&opt,"vb",'x',&vb);
-
   OptionAdd(&opt,"st",'t',&stime_txt);
   OptionAdd(&opt,"sd",'t',&sdate_txt);
- 
   OptionAdd(&opt,"et",'t',&etime_txt);
   OptionAdd(&opt,"ed",'t',&edate_txt);
-
   OptionAdd(&opt,"ex",'t',&extime_txt);
-
   OptionAdd(&opt,"s",'i',&step);
-
   OptionAdd(&opt,"l",'f',&latmin);
-
   OptionAdd(&opt,"mlt",'x',&mlt_flg);
-
   OptionAdd(&opt,"p",'x',&pot_flg);
   OptionAdd(&opt,"v",'x',&vel_flg);  
 
   arg=OptionProcess(1,argc,argv,&opt,NULL);
-
-  old=!new;
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
@@ -228,7 +216,7 @@ int main(int argc,char *argv[]) {
  
   if (old) {
     if (arg<(argc-1)) {
-        FILE *fp;
+       FILE *fp;
        fprintf(stderr,"Loading index.\n");
        fp=fopen(argv[argc-1],"r");
        if (fp !=NULL) {
@@ -238,7 +226,7 @@ int main(int argc,char *argv[]) {
     }
   } else {
     if (arg<(argc-1)) {
-        FILE *fp;
+       FILE *fp;
        fprintf(stderr,"Loading index.\n");
        fp=fopen(argv[argc-1],"r");
        if (fp !=NULL) {
@@ -270,8 +258,14 @@ int main(int argc,char *argv[]) {
   }
 
   if ((map->hemisphere==-1) && (latmin>0)) latmin=-latmin;
-  
 
+  if (map->hemisphere==1) {
+    bpolar = BNorth;
+    hemi = 1;
+  } else {
+    bpolar = BSouth;
+    hemi = -1;
+  }
 
   if (stime !=-1) { /* we must skip the start of the files */
     int yr,mo,dy,hr,mt;
@@ -292,22 +286,32 @@ int main(int argc,char *argv[]) {
     else CnvMapFread(grdfp,map,grd);
   } else stime=grd->st_time;
 
-
-
- 
   if (etime !=-1) {
     if (edate==-1) etime+=grd->st_time - ( (int) grd->st_time % (24*3600));
     else etime+=edate;
   } 
 
   if (extime !=0) etime=stime+extime;
- 
-  do {
 
+  first = 1;
+  do {
 
     if (vb !=0) {
       TimeEpochToYMDHMS(grd->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
       fprintf(stderr,"%d-%d-%d %d:%d:%d\n",dy,mo,yr,hr,mt,(int) sc);
+    }
+
+    tme = (grd->st_time + grd->ed_time)/2.0;
+    TimeEpochToYMDHMS(tme,&yr,&mo,&dy,&hr,&mt,&sc);
+    yrsec = TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int)sc);
+    decyear = yr + (float)yrsec/TimeYMDHMSToYrsec(yr,12,31,23,59,59);
+
+    noigrf = map->noigrf;
+
+    if (first) {
+      if (!noigrf)    IGRF_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
+      if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
+      first = 0;
     }
 
     if (fnum==0)  {
@@ -317,16 +321,15 @@ int main(int argc,char *argv[]) {
     memset(count,0,grid->num*sizeof(int));
    
     grid->type=2;
-    CnvMapSolve(map,grid);
+    CnvMapSolve(map,grid,decyear,old_aacgm);
 
     if (pot_flg !=0) {
       grid->type=0;
-      CnvMapSolve(map,grid);
+      CnvMapSolve(map,grid,decyear,old_aacgm);
       for (i=0;i<grid->num;i++) if (fabs(grid->lat[i])<fabs(map->latmin)) 
         grid->mag[i]=0;
     }
 
-   
     for (i=0;i<grd->vcnum;i++) {
       lat= (fabs(grd->data[i].mlat) - 60.0) / 1.0;
       if (lat<0) continue;
@@ -375,6 +378,14 @@ int main(int argc,char *argv[]) {
 
       if (pot_flg) pot[i]=grid->mag[i];
       if (vel_flg) {
+        if (noigrf) { /* use diople value for B */
+          theta = (90.-hemi*grid->lat[i])*PI/180.0;
+          bmag = bpolar*(1.0 - 3.0 * Altitude/Re)*
+                 sqrt(3.0*(cos(theta)*cos(theta))+1.0)/2.0;
+        } else {
+          bmag = -calc_bmag(hemi*grid->lat[i],grid->lon[i],decyear,old_aacgm);
+        }
+          
         vx=grid->ey[i]/bmag;
         vy=-grid->ex[i]/bmag;
         Vmag[i]=sqrt(vx*vx+vy*vy);
@@ -406,7 +417,7 @@ int main(int argc,char *argv[]) {
 
     DataMapAddScalar(data,"start.year",DATASHORT,&syr);
     DataMapAddScalar(data,"start.month",DATASHORT,&smo);
-    DataMapAddScalar(data,"start.day",DATASHORT,&dy);
+    DataMapAddScalar(data,"start.day",DATASHORT,&sdy);
     DataMapAddScalar(data,"start.hour",DATASHORT,&shr);
     DataMapAddScalar(data,"start.minute",DATASHORT,&smt);
     DataMapAddScalar(data,"start.second",DATADOUBLE,&ssc);
@@ -435,7 +446,7 @@ int main(int argc,char *argv[]) {
     if (Vazm !=NULL) 
       DataMapAddArray(data,"vector.V.azm",DATAFLOAT,2,npnt,Vazm);
     DataMapAddArray(data,"vector.data",DATAINT,2,npnt,count);
-    s=DataMapFwrite(stdout,data);
+    DataMapFwrite(stdout,data);
     
     DataMapFree(data);
     free(buf);
@@ -449,15 +460,4 @@ int main(int argc,char *argv[]) {
   if (grdfp !=stdin) fclose(grdfp);
   return 0;  
 }
-
-
-
-
-
-
-
-
-
-
-
 

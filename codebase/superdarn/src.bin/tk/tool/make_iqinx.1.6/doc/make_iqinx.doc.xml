@@ -4,7 +4,7 @@
 <name>make_iqinx</name>
 <location>src.bin/tk/tool/make_iqinx</location>
 <syntax>make_iqinx --help</syntax>
-<syntax>make_iqinx -new [-vb] [<ar>iqdatname</ar>]</syntax>
+<syntax>make_iqinx [-vb] [<ar>iqdatname</ar>]</syntax>
 
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
@@ -21,7 +21,7 @@
 <p>The index is written to standard output.</p>
 </description>
 <example>
-<command>make_iqinx -new 20040830.gbr.iqdat &gt; 20040830.gbr.iqinx</command>
+<command>make_iqinx 20040830.gbr.iqdat &gt; 20040830.gbr.iqinx</command>
 <description>Create an index file for the <code>iqdat</code> format file "<code>20040830.gbr.iqdat</code>". The index is writen to the file "<code>20040830.gbr.iqinx</code>".</description>
 </example>
 

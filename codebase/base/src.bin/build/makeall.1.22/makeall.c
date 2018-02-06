@@ -82,8 +82,11 @@ int do_make(char *target,char *path) {
   if (pid==-1) return -1;
   if (pid==0) { /* execute the make command here */
     int s;
-    freopen(tmpname,"a+",stderr);
-    freopen(tmpname,"a+",stdout);
+    FILE *ret;
+    ret=freopen(tmpname,"a+",stderr);
+    if (ret == NULL) return -1;
+    ret=freopen(tmpname,"a+",stdout);
+    if (ret == NULL) return -1;
 
     if (target !=NULL) s=execlp("make","make",target,NULL);
     else s=execlp("make","make",NULL);
@@ -267,7 +270,7 @@ int main(int argc,char *argv[]) {
   char path[4096];
 
   char sep[256];
-  int i,j,status;
+  int i,j,status,s;
   int aflg=1;
   char *target=NULL;
 
@@ -377,7 +380,11 @@ int main(int argc,char *argv[]) {
 
     if (maketype[j]=='b') sprintf(path,"%s",makename[j]);
     else sprintf(path,"%s/src",makename[j]);
-    chdir(path);
+    s=chdir(path);
+    if (s !=0) {
+      fprintf(stderr,"chdir failed.\n");
+      exit(-1);
+    }
 
 
     if (target==NULL) {

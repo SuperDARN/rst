@@ -39,7 +39,7 @@
 #include "rcdf.h"
 #include "istp.h"
 
-int windmfi_imf(CDFid id,struct imfdata *ptr,double stime,double etime) {
+int windmfi_imf(CDFid id,struct swdata *ptr,double stime,double etime) {
   long yr,mo,dy,hr,mt,sc,ms;
   double rtime;
   int i,cnt=0;
