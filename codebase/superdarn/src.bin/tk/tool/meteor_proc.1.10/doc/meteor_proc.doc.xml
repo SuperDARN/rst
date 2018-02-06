@@ -4,7 +4,8 @@
 <name>meteor_proc</name>
 <location>src.bin/tk/tool/meteor_proc</location>
 <syntax>meteor_proc --help</syntax>
-<syntax>meteor_proc [-vb] [-hr <ar>hr</ar>] [-mv <ar>maxvel</ar>] [-mw <ar>maxwidth</ar>] [-ms <ar>minsn</ar>] [-me <ar>maxerr</ar>] [-mr <ar>maxrange</ar>] [-bm <ar>vmbeam</ar>] [-mb <ar>minbeam</ar>] [-mz <ar>meridional/zonal</ar>] <ar>fitnames</ar></syntax>
+<syntax>meteor_proc <ar>fitacfnames</ar></syntax>
+<syntax>meteor_proc -old [-vb] [-hr <ar>hr</ar>] [-mv <ar>maxvel</ar>] [-mw <ar>maxwidth</ar>] [-ms <ar>minsn</ar>] [-me <ar>maxerr</ar>] [-mr <ar>maxrange</ar>] [-bm <ar>vmbeam</ar>] [-mb <ar>minbeam</ar>] [-mz <ar>meridional/zonal</ar>] <ar>fitnames</ar></syntax>
 
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
@@ -27,6 +28,10 @@
 <option><on>-mb <ar>minbeam</ar></on><od>minimum number of beams to accept during fitting.</od>
 </option>
 <option><on>-mz <ar>meridional/zonal</ar></on><od>wind component to record meridional or zonal.</od>
+</option>
+<option><on><ar>fitacfnames</ar></on><od>filenames of the <code>fitacf</code> format files.</od>
+</option>
+<option><on>-old</on><od>the input file is in the <code>fit</code> format.</od>
 </option>
 <option><on><ar>fitnames</ar></on><od>filenames of the <code>fit</code> format files.</od>
 </option>

@@ -63,6 +63,7 @@
 #include "radar.h" 
 #include "rprm.h"
 #include "fitdata.h"
+#include "fitread.h"
 #include "oldfitread.h"
 #include "cfitdata.h"
 #include "cfitread.h"
@@ -149,13 +150,23 @@ void cosfunc(double x, double afunc[], int ma) {
   afunc[2] = sin(x);
 };
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: meteor_proc --help\n");
+  return(-1);
+}
+
 
 int main (int argc,char *argv[]) {
+
+  int old;
+
   int arg;
   unsigned char vb=0;
   unsigned char help=0;
 
   int i,j;
+  FILE *fitfp=NULL;
   struct OldFitFp *ffp=NULL;
   struct CFitfp *cfp=NULL;
   FILE *fp;
@@ -216,6 +227,9 @@ int main (int argc,char *argv[]) {
 
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"vb",'x',&vb);
+
+  OptionAdd(&opt,"old",'x',&old);
+
   OptionAdd(&opt,"mv",'d',&max_vel);
   OptionAdd(&opt,"ms",'d',&min_sn);
   OptionAdd(&opt,"me",'d',&max_v_err);
@@ -233,7 +247,11 @@ int main (int argc,char *argv[]) {
 
   OptionAdd(&opt,"cfit",'x',&cfitflg);
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+
+  if (arg==-1) {
+    exit(-1);
+  }
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
@@ -253,72 +271,135 @@ int main (int argc,char *argv[]) {
   for (c=arg;c<argc;c++) {
 
     if (cfitflg==0) {
-      ffp=OldFitOpen(argv[c],NULL); 
-      fprintf(stderr,"Opening file %s\n",argv[c]);
-      if (ffp==NULL) {
-        fprintf(stderr,"file %s not found\n",argv[c]);
-        continue;
-      }
+      if (old) {
+        ffp=OldFitOpen(argv[c],NULL); 
+        fprintf(stderr,"Opening file %s\n",argv[c]);
+        if (ffp==NULL) {
+          fprintf(stderr,"file %s not found\n",argv[c]);
+          continue;
+        }
 
-      while (OldFitRead(ffp,&prm,&fit) !=-1) {
+        while (OldFitRead(ffp,&prm,&fit) !=-1) {
 
-        if (site==NULL) {
+          if (site==NULL) {
             radar=RadarGetRadar(network,prm.stid);
             site=RadarYMDHMSGetSite(radar,prm.time.yr,prm.time.mo,
                                     prm.time.dy,prm.time.hr,
                                     prm.time.mt,(int) prm.time.sc);
 
-
-          st_id=prm.stid;
-          frang=prm.frang;
-          rsep=prm.rsep;
-          rxrise=prm.rxrise;
-          if (rxrise==0) rxrise=site->recrise;
-          rxrise=site->recrise;
-          if (vm_beam==-1) {
-            for (i=0;(merid[i] !=st_id) && (merid[i] !=0);i++);
-            vm_beam=merbm[i];
+            st_id=prm.stid;
+            frang=prm.frang;
+            rsep=prm.rsep;
+            rxrise=prm.rxrise;
+            if (rxrise==0) rxrise=site->recrise;
+            rxrise=site->recrise;
+            if (vm_beam==-1) {
+              for (i=0;(merid[i] !=st_id) && (merid[i] !=0);i++);
+              vm_beam=merbm[i];
+            }
           }
+          /* select the data */
+
+          hr=prm.time.hr;
+          cnt=num[hr];
+          if ((req_hr !=-1) && (hr !=req_hr)) continue;
+          if (prm.scan <0) continue;
+          if (prm.frang==0) continue;
+          if (prm.rsep==0) continue;
+          if (met[hr]==NULL) met[hr]=malloc(sizeof(struct metdata));
+          else met[hr]=realloc(met[hr],sizeof(struct metdata)*(cnt+1));
+
+          met[hr][cnt].yr=prm.time.yr;
+          met[hr][cnt].mo=prm.time.mo;
+          met[hr][cnt].dy=prm.time.dy;
+          met[hr][cnt].hr=prm.time.hr;
+          met[hr][cnt].mt=prm.time.mt;
+          met[hr][cnt].sc=prm.time.sc;
+          met[hr][cnt].bmnum=prm.bmnum;
+          met[hr][cnt].frang=prm.frang;
+          met[hr][cnt].rsep=prm.rsep;
+          met[hr][cnt].rxrise=rxrise;
+
+          max_gate=(max_range-prm.frang)/prm.rsep;
+          met[hr][cnt].max_gate=max_gate;
+          for (i=0;i<max_gate;i++) {
+            met[hr][cnt].flg[i]=0;
+            if (fit.rng[i].qflg==0) continue;
+            if (fabs(fit.rng[i].v) > max_vel) continue;
+            if (fit.rng[i].p_l < min_sn) continue;
+            if (fit.rng[i].v_err >= max_v_err) continue;
+            if (fit.rng[i].w_l > max_w_l) continue;
+            met[hr][cnt].flg[i]=1;
+            met[hr][cnt].vlos[i]=fit.rng[i].v;
+          }
+          num[hr]++;
         }
-        /* select the data */
-
-
-        hr=prm.time.hr;
-        cnt=num[hr];
-        if ((req_hr !=-1) && (hr !=req_hr)) continue;
-        if (prm.scan <0) continue;
-        if (prm.frang==0) continue;
-        if (prm.rsep==0) continue;
-        if (met[hr]==NULL) met[hr]=malloc(sizeof(struct metdata));
-        else met[hr]=realloc(met[hr],sizeof(struct metdata)*(cnt+1));
-
-
-        met[hr][cnt].yr=prm.time.yr;
-        met[hr][cnt].mo=prm.time.mo;
-        met[hr][cnt].dy=prm.time.dy;
-        met[hr][cnt].hr=prm.time.hr;
-        met[hr][cnt].mt=prm.time.mt;
-        met[hr][cnt].sc=prm.time.sc;
-        met[hr][cnt].bmnum=prm.bmnum;
-        met[hr][cnt].frang=prm.frang;
-        met[hr][cnt].rsep=prm.rsep;
-        met[hr][cnt].rxrise=rxrise;
-
-        max_gate=(max_range-prm.frang)/prm.rsep;
-        met[hr][cnt].max_gate=max_gate;
-        for (i=0;i<max_gate;i++) {
-          met[hr][cnt].flg[i]=0;
-          if (fit.rng[i].qflg==0) continue;
-          if (fabs(fit.rng[i].v) > max_vel) continue;
-          if (fit.rng[i].p_l < min_sn) continue;
-          if (fit.rng[i].v_err >= max_v_err) continue;
-          if (fit.rng[i].w_l > max_w_l) continue;
-          met[hr][cnt].flg[i]=1;
-          met[hr][cnt].vlos[i]=fit.rng[i].v;
+        OldFitClose(ffp);
+      } else {
+        fitfp=fopen(argv[c],"r");
+        fprintf(stderr,"Opening file %s\n",argv[c]);
+        if (fitfp==NULL) {
+          fprintf(stderr,"file %s not found\n",argv[c]);
+          continue;
         }
-        num[hr]++;
+
+        while (FitFread(fitfp,&prm,&fit) !=-1) {
+
+          if (site==NULL) {
+            radar=RadarGetRadar(network,prm.stid);
+            site=RadarYMDHMSGetSite(radar,prm.time.yr,prm.time.mo,
+                                    prm.time.dy,prm.time.hr,
+                                    prm.time.mt,(int) prm.time.sc);
+
+            st_id=prm.stid;
+            frang=prm.frang;
+            rsep=prm.rsep;
+            rxrise=prm.rxrise;
+            if (rxrise==0) rxrise=site->recrise;
+            rxrise=site->recrise;
+            if (vm_beam==-1) {
+              for (i=0;(merid[i] !=st_id) && (merid[i] !=0);i++);
+              vm_beam=merbm[i];
+            }
+          }
+          /* select the data */
+
+          hr=prm.time.hr;
+          cnt=num[hr];
+          if ((req_hr !=-1) && (hr !=req_hr)) continue;
+          if (prm.scan <0) continue;
+          if (prm.frang==0) continue;
+          if (prm.rsep==0) continue;
+          if (met[hr]==NULL) met[hr]=malloc(sizeof(struct metdata));
+          else met[hr]=realloc(met[hr],sizeof(struct metdata)*(cnt+1));
+
+          met[hr][cnt].yr=prm.time.yr;
+          met[hr][cnt].mo=prm.time.mo;
+          met[hr][cnt].dy=prm.time.dy;
+          met[hr][cnt].hr=prm.time.hr;
+          met[hr][cnt].mt=prm.time.mt;
+          met[hr][cnt].sc=prm.time.sc;
+          met[hr][cnt].bmnum=prm.bmnum;
+          met[hr][cnt].frang=prm.frang;
+          met[hr][cnt].rsep=prm.rsep;
+          met[hr][cnt].rxrise=rxrise;
+
+          max_gate=(max_range-prm.frang)/prm.rsep;
+          met[hr][cnt].max_gate=max_gate;
+          for (i=0;i<max_gate;i++) {
+            met[hr][cnt].flg[i]=0;
+            if (fit.rng[i].qflg==0) continue;
+            if (fabs(fit.rng[i].v) > max_vel) continue;
+            if (fit.rng[i].p_l < min_sn) continue;
+            if (fit.rng[i].v_err >= max_v_err) continue;
+            if (fit.rng[i].w_l > max_w_l) continue;
+            met[hr][cnt].flg[i]=1;
+            met[hr][cnt].vlos[i]=fit.rng[i].v;
+          }
+          num[hr]++;
+        }
+        fclose(fitfp);
       }
-      OldFitClose(ffp);
     } else {
       cfp=CFitOpen(argv[c]); 
       fprintf(stderr,"Opening file %s\n",argv[c]);
@@ -330,9 +411,9 @@ int main (int argc,char *argv[]) {
       while (CFitRead(cfp,&cfit) !=-1) {
         TimeEpochToYMDHMS(cfit.time,&yr,&mo,&dy,&hr,&mt,&sc);
         if (site==NULL) {
-            radar=RadarGetRadar(network,cfit.stid);
-            site=RadarYMDHMSGetSite(radar,yr,mo,dy,hr,mt,
-                                    (int) sc);
+          radar=RadarGetRadar(network,cfit.stid);
+          site=RadarYMDHMSGetSite(radar,yr,mo,dy,hr,mt,
+                                  (int) sc);
 
           st_id=cfit.stid;
           frang=cfit.frang;
@@ -354,7 +435,6 @@ int main (int argc,char *argv[]) {
         if (cfit.rsep==0) continue;
         if (met[hr]==NULL) met[hr]=malloc(sizeof(struct metdata));
         else met[hr]=realloc(met[hr],sizeof(struct metdata)*(cnt+1));
-
 
         met[hr][cnt].yr=yr;
         met[hr][cnt].mo=mo;
@@ -450,7 +530,7 @@ int main (int argc,char *argv[]) {
     for (i=0;i<16;i++) {
       if (bm_count[i] > 0) {
         beams++;
-        vlos[i] =bm_total[i]/bm_count[i];
+        vlos[i] = bm_total[i]/bm_count[i];
        } else vlos[i]=0;
     };
 
@@ -465,13 +545,12 @@ int main (int argc,char *argv[]) {
     }
     for (i=0;i<16;i++) {
       if (bm_count[i] > 1) {
-        sdev[i] =sqrt(bm_sdtmp[i]/(bm_count[i]-1));
+        sdev[i]=sqrt(bm_sdtmp[i]/(bm_count[i]-1));
       } else {
         sdev[i]=1;
         vlos[i]=0;
       }
     }
-
 
     if (beams<min_beams) {
       fprintf(stderr,
@@ -481,23 +560,18 @@ int main (int argc,char *argv[]) {
       continue;
     }
 
-
     bc=0;
     for (i=0;i<16;i++) {
       if (bm_count[i]>1) {
-        x[++bc]=calc_azi(i);
-        y[bc] =vlos[i]/coseps; /* mean velocity */
+        x[++bc] = calc_azi(i);
+        y[bc] = vlos[i]/coseps; /* mean velocity */
         sig[bc] = sdev[i];
       }
     }
 
-
-
     fprintf(stderr,"Fitting %d of 16 beams\n",bc);
 
-
     dsvdfit(x, y, sig, bc, a, 2, u, v, w, &chisq, &cosfunc);
-
 
     vx=a[1];
     vy=a[2];
@@ -517,7 +591,6 @@ int main (int argc,char *argv[]) {
 
     RPosGeo(0,vm_beam,3,site,frang,rsep,rxrise,METEOR_HEIGHT,&rho,
              &vmlat,&vmlon);
-
 
     fprintf(stdout, "%4d %02d %02d %02d %d %d %d %.0f %.0f %.1f %.1f %.0f %.1f %.1f %.2f %.2f\n",
             year,month,day,hr,num_avgs,frang,rsep,vx,vy,lat,lon,vm,vmlat,vmlon,sdvx,sdvy);
