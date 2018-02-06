@@ -226,7 +226,6 @@ int main (int argc,char *argv[]) {
   OptionAdd(&opt,"mr",'i',&max_range);
 
   OptionAdd(&opt,"mb",'i',&min_beams);
-  OptionAdd(&opt,"bm",'i',&vm_beam);
 
   OptionAdd(&opt,"mz",'t',&mz_str);
 
