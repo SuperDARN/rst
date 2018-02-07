@@ -191,7 +191,7 @@ int main (int argc,char *argv[]) {
 
   unsigned char cfitflg=0;
 
-
+  int chisham=0;
 
   int bc=0;
 
@@ -246,6 +246,8 @@ int main (int argc,char *argv[]) {
   OptionAdd(&opt,"hr",'i',&req_hr);
 
   OptionAdd(&opt,"cfit",'x',&cfitflg);
+
+  OptionAdd(&opt,"chisham",'x',&chisham);
 
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
@@ -587,10 +589,10 @@ int main (int argc,char *argv[]) {
     rsep=met[hr][0].rsep;
     rxrise=met[hr][0].rxrise;
     RPosGeo(0,7,3,site,frang,rsep,rxrise,METEOR_HEIGHT,&rho,
-             &lat,&lon);
+             &lat,&lon,chisham);
 
     RPosGeo(0,vm_beam,3,site,frang,rsep,rxrise,METEOR_HEIGHT,&rho,
-             &vmlat,&vmlon);
+             &vmlat,&vmlon,chisham);
 
     fprintf(stdout, "%4d %02d %02d %02d %d %d %d %.0f %.0f %.1f %.1f %.0f %.1f %.1f %.2f %.2f\n",
             year,month,day,hr,num_avgs,frang,rsep,vx,vy,lat,lon,vm,vmlat,vmlon,sdvx,sdvy);

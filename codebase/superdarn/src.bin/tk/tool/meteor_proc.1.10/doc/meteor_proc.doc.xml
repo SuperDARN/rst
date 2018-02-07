@@ -29,6 +29,8 @@
 </option>
 <option><on>-mz <ar>meridional/zonal</ar></on><od>wind component to record meridional or zonal.</od>
 </option>
+<option><on>-chisham</on><od>use the Chisham virtual height model.</od>
+</option>
 <option><on><ar>fitacfnames</ar></on><od>filenames of the <code>fitacf</code> format files.</od>
 </option>
 <option><on>-old</on><od>the input file is in the <code>fit</code> format.</od>
