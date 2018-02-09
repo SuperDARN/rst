@@ -104,15 +104,15 @@ struct metdata {
 int num[24];
 struct metdata *met[24];
 
-
-double bm_total[16];
-double bm_sdtmp[16];
-int bm_count[16];
+int max_beam=0;
+double bm_total[24];
+double bm_sdtmp[24];
+int bm_count[24];
 int num_avgs=0;
 
 int beams=0;
-double vlos[16];
-double sdev[16];
+double vlos[24];
+double sdev[24];
 
 double vx,vy;
 double vm;
@@ -310,6 +310,7 @@ int main (int argc,char *argv[]) {
           if (prm.rsep==0) continue;
           if (met[hr]==NULL) met[hr]=malloc(sizeof(struct metdata));
           else met[hr]=realloc(met[hr],sizeof(struct metdata)*(cnt+1));
+          if (prm.bmnum > max_beam) max_beam=prm.bmnum;
 
           met[hr][cnt].yr=prm.time.yr;
           met[hr][cnt].mo=prm.time.mo;
@@ -374,6 +375,7 @@ int main (int argc,char *argv[]) {
           if (prm.rsep==0) continue;
           if (met[hr]==NULL) met[hr]=malloc(sizeof(struct metdata));
           else met[hr]=realloc(met[hr],sizeof(struct metdata)*(cnt+1));
+          if (prm.bmnum > max_beam) max_beam=prm.bmnum;
 
           met[hr][cnt].yr=prm.time.yr;
           met[hr][cnt].mo=prm.time.mo;
@@ -437,6 +439,7 @@ int main (int argc,char *argv[]) {
         if (cfit.rsep==0) continue;
         if (met[hr]==NULL) met[hr]=malloc(sizeof(struct metdata));
         else met[hr]=realloc(met[hr],sizeof(struct metdata)*(cnt+1));
+        if (prm.bmnum > max_beam) max_beam=prm.bmnum;
 
         met[hr][cnt].yr=yr;
         met[hr][cnt].mo=mo;
@@ -467,11 +470,11 @@ int main (int argc,char *argv[]) {
       CFitClose(cfp);
     }
   }
-  x = dvector(1,16);
-  y = dvector(1,16);
-  sig = dvector(1,16);
+  x = dvector(1,max_beam+1);
+  y = dvector(1,max_beam+1);
+  sig = dvector(1,max_beam+1);
   a = dvector(1,2);
-  u = dmatrix(1,16,1,2);
+  u = dmatrix(1,max_beam+1,1,2);
   v = dmatrix(1,2,1,2);
   w = dvector(1,2);
 
@@ -512,7 +515,7 @@ int main (int argc,char *argv[]) {
     month=met[hr][0].mo;
     day=met[hr][0].dy;
 
-    for (i=0;i<16;i++) {
+    for (i=0;i<max_beam+1;i++) {
       bm_total[i]=0;
       bm_count[i]=0;
       bm_sdtmp[i]=0;
@@ -529,7 +532,7 @@ int main (int argc,char *argv[]) {
       }
     }
 
-    for (i=0;i<16;i++) {
+    for (i=0;i<max_beam+1;i++) {
       if (bm_count[i] > 0) {
         beams++;
         vlos[i] = bm_total[i]/bm_count[i];
@@ -545,7 +548,7 @@ int main (int argc,char *argv[]) {
 
       }
     }
-    for (i=0;i<16;i++) {
+    for (i=0;i<max_beam+1;i++) {
       if (bm_count[i] > 1) {
         sdev[i]=sqrt(bm_sdtmp[i]/(bm_count[i]-1));
       } else {
@@ -563,7 +566,7 @@ int main (int argc,char *argv[]) {
     }
 
     bc=0;
-    for (i=0;i<16;i++) {
+    for (i=0;i<max_beam+1;i++) {
       if (bm_count[i]>1) {
         x[++bc] = calc_azi(i);
         y[bc] = vlos[i]/coseps; /* mean velocity */
@@ -571,7 +574,7 @@ int main (int argc,char *argv[]) {
       }
     }
 
-    fprintf(stderr,"Fitting %d of 16 beams\n",bc);
+    fprintf(stderr,"Fitting %d of %d beams\n",bc,max_beam+1);
 
     dsvdfit(x, y, sig, bc, a, 2, u, v, w, &chisq, &cosfunc);
 
