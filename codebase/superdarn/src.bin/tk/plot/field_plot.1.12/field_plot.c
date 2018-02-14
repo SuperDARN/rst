@@ -1016,7 +1016,7 @@ int main(int argc,char *argv[]) {
         }
         if (tlen==0) {
           while ((s=OldFitRead(oldfitfp,prm,fit)) !=-1) {
-            if (prm->scan==1) break;
+            if (abs(prm->scan)==1) break;
           }
         } else state=0;
         s=OldFitReadRadarScan(oldfitfp,&state,scn,prm,
@@ -1029,7 +1029,7 @@ int main(int argc,char *argv[]) {
 	}
         if (tlen==0) {
           while ((s=FitFread(fitfp,prm,fit)) !=-1) {
-            if (prm->scan==1) break;
+            if (abs(prm->scan)==1) break;
           }
         } else state=0;
         s=FitFreadRadarScan(fitfp,&state,scn,prm,
@@ -1045,7 +1045,7 @@ int main(int argc,char *argv[]) {
       }
       if (tlen==0) {
         while ((s=CFitRead(cfitfp,cfit)) !=-1) {
-          if (cfit->scan==1) break;
+          if (abs(cfit->scan)==1) break;
         }
       } else state=0;
       s=CFitReadRadarScan(cfitfp,&state,scn,cfit,tlen,syncflg,channel);
