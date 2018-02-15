@@ -80,9 +80,9 @@
 </option>
 <option><on>-isort</on><od>calculate the median power and spectral width independently of the velocity distribution.</od>
 </option>
-<option><on>-ion</on><od>exclude data marked as ground scatter.</od>
+<option><on>-ion</on><od>exclude data marked as ionospheric scatter.</od>
 </option>
-<option><on>-gs</on><od>exclude data marked as ionospheric scatter.</od>
+<option><on>-gs</on><od>exclude data marked as ground scatter.</od>
 </option>
 <option><on>-both</on><od>do not exclude data based on the type flag.</od>
 </option>
