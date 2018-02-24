@@ -436,7 +436,7 @@ function GridTableAddBeam, GridTable, RadarSite, alt, tval, RadarBeam, $
     (*GridBm).bm = (*RadarBeam).bm
     (*GridBm).frang = (*RadarBeam).frang
     (*GridBm).rsep = (*RadarBeam).rsep
-    (*GridBm).rxrise = (*RadarSite).recrise
+    (*GridBm).rxrise = RadarSite.recrise
     (*GridBm).nrang = (*RadarBeam).nrang 
 
     ; Convert input tval to year, month, day, hour, minutes, seconds
