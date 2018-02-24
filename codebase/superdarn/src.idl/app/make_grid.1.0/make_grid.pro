@@ -572,7 +572,7 @@ if ( (stime ne -1) or (sdate ne -1) ) then begin
     if tlen eq 0 then begin
         while (s ne -1) do begin
             s = FitRead(fitfp, prm, fit)
-                if prm.scan eq 1 then $
+                if abs(prm.scan) eq 1 then $
                     break
         endwhile
     endif else $
