@@ -585,7 +585,7 @@ static IDL_VPTR IDLOldFitOpen(int argc,IDL_VPTR *argv) {
     {"MINOR_REV",0,(void *) IDL_TYP_BYTE},
     {"FITREAD",0,(void *) IDL_TYP_LONG},
     {"BNUM",0,(void *) IDL_TYP_LONG},
-    0};
+    {0}};
 
   static IDL_MEMINT ilDims[IDL_MAX_ARRAY_DIM];
 
@@ -680,16 +680,16 @@ static IDL_VPTR IDLOldFitClose(int argc,IDL_VPTR *argv) {
 int IDL_Load(void) {
 
   static IDL_SYSFUN_DEF2 fnaddr[]={
-    { IDLOldFitRead,"OLDFITREAD",3,3,0,0},
-    { IDLOldFitSeek,"OLDFITSEEK",7,7,IDL_SYSFUN_DEF_F_KEYWORDS,0},
-    { IDLOldFitWrite,"OLDFITWRITE",3,3,0,0},
-    { IDLOldFitOpen,"OLDFITOPEN",1,2,0,0},
-    { IDLOldFitClose,"OLDFITCLOSE",1,1,0,0},
-    { IDLOldFitWriteHeader,"OLDFITWRITEHEADER",3,3,0,0},
-    { IDLOldFitInxWrite,"OLDFITINXWRITE",4,4,0,0},
-    { IDLOldFitInxWriteHeader,"OLDFITINXWRITEHEADER",2,2,0,0},
-    { IDLOldFitInxOpen,"OLDFITINXOPEN",1,1,0,0},
-    { IDLOldFitInxClose,"OLDFITINXCLOSE",3,3,0,0},
+    { {IDLOldFitRead},"OLDFITREAD",3,3,0,0},
+    { {IDLOldFitSeek},"OLDFITSEEK",7,7,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+    { {IDLOldFitWrite},"OLDFITWRITE",3,3,0,0},
+    { {IDLOldFitOpen},"OLDFITOPEN",1,2,0,0},
+    { {IDLOldFitClose},"OLDFITCLOSE",1,1,0,0},
+    { {IDLOldFitWriteHeader},"OLDFITWRITEHEADER",3,3,0,0},
+    { {IDLOldFitInxWrite},"OLDFITINXWRITE",4,4,0,0},
+    { {IDLOldFitInxWriteHeader},"OLDFITINXWRITEHEADER",2,2,0,0},
+    { {IDLOldFitInxOpen},"OLDFITINXOPEN",1,1,0,0},
+    { {IDLOldFitInxClose},"OLDFITINXCLOSE",3,3,0,0},
   };
 
 

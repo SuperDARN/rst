@@ -14,13 +14,4 @@ LINK="1"
 DSTPATH=$(LIBPATH)
 OUTPUT = szamap
 
-
- 
-
- 
-
-
-
-
-
 include $(MAKELIB).$(SYSTEM)

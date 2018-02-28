@@ -432,12 +432,12 @@ static IDL_VPTR IDLGridClose(int argc,IDL_VPTR *argv) {
 int IDL_Load(void) {
 
   static IDL_SYSFUN_DEF2 fnaddr[]={
-    { IDLGridRead,"GRIDREAD",4,4,0,0},
-    { IDLGridWrite,"GRIDWRITE",4,4,0,0},
-    { IDLGridLoadInx,"GRIDLOADINX",2,2,0,0},
-    { IDLGridSeek,"GRIDSEEK",7,8,IDL_SYSFUN_DEF_F_KEYWORDS,0},
-    { IDLGridOpen,"GRIDOPEN",1,1,IDL_SYSFUN_DEF_F_KEYWORDS,0},
-    { IDLGridClose,"GRIDCLOSE",1,1,0,0},
+    { {IDLGridRead},"GRIDREAD",4,4,0,0},
+    { {IDLGridWrite},"GRIDWRITE",4,4,0,0},
+    { {IDLGridLoadInx},"GRIDLOADINX",2,2,0,0},
+    { {IDLGridSeek},"GRIDSEEK",7,8,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+    { {IDLGridOpen},"GRIDOPEN",1,1,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+    { {IDLGridClose},"GRIDCLOSE",1,1,0,0},
   };
 
 

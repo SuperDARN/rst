@@ -105,11 +105,10 @@ void day_output(char *path,struct GridTable *ptr,int xtd,
   char fname[256];
 
 
-  int syr,smo,sdy,shr,smt,ssc;
+  int syr,smo,sdy,shr,smt;
   double sec;
 
   TimeEpochToYMDHMS(ptr->st_time,&syr,&smo,&sdy,&shr,&smt,&sec);
-  ssc=(int) sec;
   
   if (channel==-1) 
     sprintf(fname,"%s/%.2d%.2d%.2d.%s.%s",path,
@@ -161,19 +160,15 @@ void process_beam(struct RadarScan *ptr,struct RadarParm *prm,
   if (ptr->st_time==-1) ptr->st_time=ptr->ed_time;
 }
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: rtgrid --help\n");
+  return(-1);
+}
+
 int main(int argc,char *argv[]) {
 
-  /* File format transistion
-   * ------------------------
-   * 
-   * When we switch to the new file format remove any reference
-   * to "new". Change the command line option "new" to "old" and
-   * remove "old=!new".
-   */
-
-
   int old=0;
-  int new=0;
 
   int arg;
   unsigned char help=0;
@@ -206,7 +201,7 @@ int main(int argc,char *argv[]) {
 
 
   time_t stme;
-  struct tm *gtme;
+  /*struct tm *gtme;*/
   time_t utc;
   struct timeval tv;
   int timeout;
@@ -230,6 +225,7 @@ int main(int argc,char *argv[]) {
   unsigned char xtd=0;
   unsigned char iflg=0;
   unsigned char bflg=0;
+  int isort=0;
  
   unsigned char gsflg=0,ionflg=0,bthflg=0;
 
@@ -251,6 +247,9 @@ int main(int argc,char *argv[]) {
   int nbox;
   int s;
   int chk;
+
+  int chisham=0;
+  int old_aacgm=0;
 
   prm=RadarParmMake();
   fit=FitMake();
@@ -299,7 +298,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
 
-  OptionAdd(&opt,"new",'x',&new); 
+  OptionAdd(&opt,"old",'x',&old); 
  
   OptionAdd(&opt,"xtd",'x',&xtd);
 
@@ -332,6 +331,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"nav",'x',&bxcar);
   OptionAdd(&opt,"nlm",'x',&limit);
   OptionAdd(&opt,"nb",'x',&bflg);
+  OptionAdd(&opt,"isort",'x',&isort);
 
   OptionAdd(&opt,"ion",'x',&ionflg);
   OptionAdd(&opt,"gs",'x',&gsflg);
@@ -346,9 +346,11 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"f",'t',&fnamestr);
   OptionAdd(&opt,"if",'t',&pidstr);
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
-  old=!new;
+  if (arg==-1) {
+    exit(-1);
+  }
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
@@ -448,7 +450,10 @@ int main(int argc,char *argv[]) {
     if (port_flag==1) {
       fp=fopen(port_fname,"r");
       if (fp !=NULL) {
-        fscanf(fp,"%d",&remote_port);
+        if(fscanf(fp,"%d",&remote_port) !=1) {
+          fclose(fp);
+          exit(-1);
+        }
         fclose(fp);
       } else remote_port=1024;
     }
@@ -478,7 +483,7 @@ int main(int argc,char *argv[]) {
 
     do {
        utc=time(NULL);
-       gtme=gmtime(&utc);
+       /*gtme=gmtime(&utc);*/
        timeout=tlen-(utc-stme);
     
        tv.tv_sec=timeout;
@@ -550,7 +555,7 @@ int main(int argc,char *argv[]) {
         
          if ((chk==0) && (num>=nbox)) {
 	
-           if (mode !=-1) FilterRadarScan(mode,nbox,inx,src,dst,15);
+           if (mode !=-1) FilterRadarScan(mode,nbox,inx,src,dst,15,isort);
            else out=src[inx];
 
            TimeEpochToYMDHMS(out->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
@@ -571,7 +576,7 @@ int main(int argc,char *argv[]) {
             else strcat(fname,".grdmap");
 	  }
        
-           s=GridTableTest(grid,out,avlen);
+           s=GridTableTest(grid,out);
            
          
            if (s==1) {
@@ -588,7 +593,7 @@ int main(int argc,char *argv[]) {
               else day_output(path,grid,xtd,stcode,channel,"grdmap");
              
            }    
-           GridTableMap(grid,out,site,avlen,iflg,alt);     
+           GridTableMap(grid,out,site,avlen,iflg,alt,chisham,old_aacgm);     
 	 }    
          if (bxcar) inx++;
          if (inx>2) inx=0;

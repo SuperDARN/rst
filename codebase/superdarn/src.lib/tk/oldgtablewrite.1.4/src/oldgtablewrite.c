@@ -51,7 +51,7 @@
 #define NPARM3 12
 
 int OldGridTableWrite(int fid,struct GridTable *ptr,char *logbuf,int xtd) {
-  int i;
+  int i,s;
  
   int syr,smo,sdy,shr,smt,ssc;
   int eyr,emo,edy,ehr,emt,esc;
@@ -101,36 +101,36 @@ int OldGridTableWrite(int fid,struct GridTable *ptr,char *logbuf,int xtd) {
           syr,smo,sdy,shr,smt,ssc,ehr,emt,esc,ptr->npnt,ptr->st_id);
 
   sprintf(buf,"%d %d %d %d %d %d ", syr,smo,sdy,shr,smt,ssc);
-  write(fid,buf,strlen(buf));
+  s=write(fid,buf,strlen(buf));
 
   sprintf(buf,"%d %d %d %d %d %d\n",eyr,emo,edy,ehr,emt,esc);
-  write(fid,buf,strlen(buf));
+  s=write(fid,buf,strlen(buf));
   sprintf(buf,"%d\n",NBLOCKS);
-  write(fid,buf,strlen(buf));
+  s=write(fid,buf,strlen(buf));
 
   sprintf(buf,"%d %d\n",1,NPARM1);
-  write(fid,buf,strlen(buf));
+  s=write(fid,buf,strlen(buf));
 
   for (i=0;name_blk1[i] !=0;i++) {
     sprintf(buf,"%10s ",name_blk1[i]);
-    write(fid,buf,strlen(buf));
+    s=write(fid,buf,strlen(buf));
   }
   sprintf(buf,"\n");
-  write(fid,buf,strlen(buf));
+  s=write(fid,buf,strlen(buf));
 
  for (i=0;unit_blk1[i] !=0;i++) {
     sprintf(buf,"%10s ",unit_blk1[i]);
-    write(fid,buf,strlen(buf));
+    s=write(fid,buf,strlen(buf));
   }
   sprintf(buf,"\n");
-  write(fid,buf,strlen(buf));
+  s=write(fid,buf,strlen(buf));
 
  for (i=0;type_blk1[i] !=0;i++) {
     sprintf(buf,"%10s ",type_blk1[i]);
-    write(fid,buf,strlen(buf));
+    s=write(fid,buf,strlen(buf));
   }
   sprintf(buf,"\n");
-  write(fid,buf,strlen(buf));
+  s=write(fid,buf,strlen(buf));
 
  
 
@@ -138,68 +138,68 @@ int OldGridTableWrite(int fid,struct GridTable *ptr,char *logbuf,int xtd) {
 	  ptr->npnt,(double)
           ptr->freq,
           MAJOR_REVISION,MINOR_REVISION);
-  write(fid,buf,strlen(buf));
+  s=write(fid,buf,strlen(buf));
   sprintf(buf,"%10d %#10g %#10g %10d ",ptr->prog_id,ptr->noise.mean,
           ptr->noise.sd,ptr->gsct);
-  write(fid,buf,strlen(buf));
+  s=write(fid,buf,strlen(buf));
   sprintf(buf,"%#10g %#10g %#10g %#10g %#10g %#10g %#10g %#10g\n",
           ptr->min[0],ptr->max[0],
           ptr->min[1],ptr->max[1],
           ptr->min[2],ptr->max[2],
           ptr->min[3],ptr->max[3]);
-  write(fid,buf,strlen(buf));
+  s=write(fid,buf,strlen(buf));
 
   if (xtd==0) {
 
     sprintf(buf,"%d %d\n",ptr->npnt,NPARM2);
-    write(fid,buf,strlen(buf));
+    s=write(fid,buf,strlen(buf));
  
     for (i=0;name_blk2[i] !=0;i++) {
       sprintf(buf,"%10s ",name_blk2[i]);
-      write(fid,buf,strlen(buf));
+      s=write(fid,buf,strlen(buf));
     }
     sprintf(buf,"\n");
-    write(fid,buf,strlen(buf));
+    s=write(fid,buf,strlen(buf));
 
    for (i=0;unit_blk2[i] !=0;i++) {
       sprintf(buf,"%10s ",unit_blk2[i]);
-      write(fid,buf,strlen(buf));
+      s=write(fid,buf,strlen(buf));
     }
     sprintf(buf,"\n");
-    write(fid,buf,strlen(buf));
+    s=write(fid,buf,strlen(buf));
 
    for (i=0;type_blk2[i] !=0;i++) {
       sprintf(buf,"%10s ",type_blk2[i]);
-      write(fid,buf,strlen(buf));
+      s=write(fid,buf,strlen(buf));
     }
     sprintf(buf,"\n");
-    write(fid,buf,strlen(buf));
+    s=write(fid,buf,strlen(buf));
   } else {
 
 
     sprintf(buf,"%d %d\n",ptr->npnt,NPARM3);
-    write(fid,buf,strlen(buf));
+    s=write(fid,buf,strlen(buf));
  
     for (i=0;name_blk3[i] !=0;i++) {
       sprintf(buf,"%10s ",name_blk3[i]);
-      write(fid,buf,strlen(buf));
+      s=write(fid,buf,strlen(buf));
     }
     sprintf(buf,"\n");
-    write(fid,buf,strlen(buf));
+    s=write(fid,buf,strlen(buf));
 
    for (i=0;unit_blk3[i] !=0;i++) {
       sprintf(buf,"%10s ",unit_blk3[i]);
-      write(fid,buf,strlen(buf));
+      s=write(fid,buf,strlen(buf));
     }
     sprintf(buf,"\n");
-    write(fid,buf,strlen(buf));
+    s=write(fid,buf,strlen(buf));
 
    for (i=0;type_blk3[i] !=0;i++) {
       sprintf(buf,"%10s ",type_blk3[i]);
-      write(fid,buf,strlen(buf));
+      s=write(fid,buf,strlen(buf));
     }
     sprintf(buf,"\n");
-    write(fid,buf,strlen(buf));
+    s=write(fid,buf,strlen(buf));
   }
 
 
@@ -218,9 +218,15 @@ int OldGridTableWrite(int fid,struct GridTable *ptr,char *logbuf,int xtd) {
             ptr->pnt[i].pwr.median,ptr->pnt[i].pwr.sd,
             ptr->pnt[i].wdt.median,ptr->pnt[i].wdt.sd);
 
-    write(fid,buf,strlen(buf));
+    s=write(fid,buf,strlen(buf));
  
   }
+
+  if (s == -1) {
+    fprintf(stderr,"write failed.\n");
+    return -1;
+  }
+
   return 0;
 } 
 
