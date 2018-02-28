@@ -1,6 +1,6 @@
 /* geobeam.h
-   ========= */
-
+   =========
+*/
 
 struct GeoLocBeam {
   int bm;
@@ -21,6 +21,8 @@ struct GeoLocScan {
   struct GeoLocBeam *bm;
 };
   
-int GeoLocCenter(struct RadarSite *site,int mag,float *lat,float *lon);
+int GeoLocCenter(struct RadarSite *site,int mag,float *lat,float *lon,
+                 int chisham,int old_aacgm);
 int GeoLocBeam(struct RadarSite *site,int year,
-               struct GeoLocScan *geol,struct RadarBeam *bm);
+               struct GeoLocScan *geol,struct RadarBeam *bm,
+               int chisham,int old_aacgm);

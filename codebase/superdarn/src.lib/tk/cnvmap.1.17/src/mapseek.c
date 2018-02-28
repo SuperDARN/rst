@@ -27,7 +27,6 @@
  
 */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -38,9 +37,6 @@
 #include "rtime.h"
 #include "dmap.h"
 #include "cnvmapindex.h"
-
-
-
 
 double CnvMapGetTime(struct DataMap *ptr) {
   struct DataMapScalar *s;
@@ -139,9 +135,8 @@ int CnvMapSeek(int fid,
 }
 
 
-
-int CnvMapFseek(FILE *fp,
-	    int yr,int mo,int dy,int hr,int mt,int sc,double *atme,
-            struct CnvMapIndex *inx) {
+int CnvMapFseek(FILE *fp, int yr,int mo,int dy,int hr,int mt,int sc,
+                          double *atme, struct CnvMapIndex *inx) {
   return CnvMapSeek(fileno(fp),yr,mo,dy,hr,mt,sc,atme,inx);
 }
+

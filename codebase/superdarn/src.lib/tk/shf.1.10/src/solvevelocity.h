@@ -27,9 +27,6 @@
  
 */
 
-
-
-
-int CnvMapSolveVelocity(struct CnvMapData *ptr,struct CnvGrid *vptr);
-
+int CnvMapSolveVelocity(struct CnvMapData *ptr,struct CnvGrid *vptr,
+                        float decyear,int old_aacgm);
 

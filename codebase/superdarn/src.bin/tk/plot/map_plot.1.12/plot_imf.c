@@ -41,14 +41,11 @@
 #include "text_box.h"
 
 
-
-void plot_imf(struct Plot *plot,
-	      float xoff,float yoff,float rad,
-	      float bx,float by,float bz,float mxval,
-  	      unsigned int color,unsigned char mask,float width,
-              char *fontname,float fontsize,
-              void *txtdata) {
-
+void plot_imf(struct Plot *plot, float xoff,float yoff,float rad,
+              float bx,float by,float bz,float mxval,
+              unsigned int color,unsigned char mask,float width,
+              char *fontname,float fontsize, void *txtdata)
+{
   char txt[256];
   float txbox[3];
 
@@ -74,4 +71,4 @@ void plot_imf(struct Plot *plot,
   PlotLine(plot,xoff,yoff,px,py,color,0x0f,width,NULL);
 
 }
-  
+
