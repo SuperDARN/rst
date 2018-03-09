@@ -58,7 +58,7 @@ struct DataMapFp {
   int size;
   union {
     FILE *f;
-    gzFile *z;
+    gzFile z;
   } fp;
 };
 
