@@ -450,7 +450,7 @@ int main(int argc,char *argv[])
 				}
 			}
 
-			int * badtr = malloc(nave*n_pul*2*sizeof(int));
+			unsigned int * badtr = malloc(nave*n_pul*2*sizeof(int));
 
 			IQFwrite(stdout,prm,iq,badtr,samples);
 			free(samples);
