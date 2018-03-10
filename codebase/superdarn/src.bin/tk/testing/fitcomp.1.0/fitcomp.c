@@ -500,7 +500,7 @@ int main(int argc,char *argv[])
 	mean_f_lm /= (double)n_lm;
 
 	fprintf(stderr,"           acf        ex        lm\n");
-	fprintf(stderr,"number:    %d      %d      %d\n",n_acf,n_ex,n_lm);
+	fprintf(stderr,"number:    %ld      %ld      %ld\n",n_acf,n_ex,n_lm);
 	fprintf(stderr,"v median:  %lf   %lf   %lf\n",acf_v_err[(int)(n_acf/2)],ex_v_err[(int)(n_ex/2)],lm_v_err[(int)(n_lm/2)]);
 	fprintf(stderr,"v mean:    %lf   %lf   %lf\n",mean_v_acf,mean_v_ex,mean_v_lm);
 	fprintf(stderr,"t median:  %lf   %lf   %lf\n",acf_t_err[(int)(n_acf/2)],ex_t_err[(int)(n_ex/2)],lm_t_err[(int)(n_lm/2)]);
