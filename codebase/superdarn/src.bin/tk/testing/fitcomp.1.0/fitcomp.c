@@ -252,13 +252,13 @@ int main(int argc,char *argv[])
 
   double lm_v_err[100000],ex_v_err[100000],acf_v_err[100000];
   long n_acf=0, n_lm=0,n_ex=0;
-  double mean_v_acf,mean_v_lm,mean_v_ex;
+  double mean_v_acf=0.0,mean_v_lm=0.0,mean_v_ex=0.0;
 
   double lm_t_err[100000],ex_t_err[100000],acf_t_err[100000];
-  double mean_t_acf,mean_t_lm,mean_t_ex;
+  double mean_t_acf=0.0,mean_t_lm=0.0,mean_t_ex=0.0;
 
   double lm_f_err[100000],ex_f_err[100000],acf_f_err[100000];
-  double mean_f_acf,mean_f_lm,mean_f_ex;
+  double mean_f_acf=0.0,mean_f_lm=0.0,mean_f_ex=0.0;
 
   if (vb)
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm1->time.yr,prm1->time.mo,
