@@ -13,8 +13,6 @@
 
 <synopsis><p>Creates an index of a electric field data.</p></synopsis>
 
-
-
 <description><p>Creates an index of eletric field data.</p>
 <p>The index is written to standard output.</p>
 </description>
@@ -23,6 +21,5 @@
 <command>make_efieldinx 20040830.efield &gt; 20040830.efieldinx</command>
 <description>Create an index file for the electric field data file "<code>20040830.efield</code>". The index is writen to the file "<code>20040830.efieldinx</code>".</description>
 </example>
-
 
 </binary>

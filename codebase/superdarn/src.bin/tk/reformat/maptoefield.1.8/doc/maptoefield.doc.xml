@@ -3,8 +3,10 @@
 <project>superdarn</project>
 <name>maptoefield</name>
 <location>src.bin/tk/reformat/maptoefield</location>
+
 <syntax>maptoefield --help</syntax>
-<syntax>maptoefield [-vb] [-old] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>] [-s <ar>step</ar>] [-l <ar>latmin</ar> [-mlt] [-p] [-v] <ar>name</ar></syntax>
+<syntax>maptoefield [-vb] [-old] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>] [-s <ar>step</ar>] [-l <ar>latmin</ar> [-mlt] [-p] [-v] [<ar>name</ar>]</syntax>
+
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
@@ -33,7 +35,7 @@
 </option>
 <option><on>-v</on><od>include the derived velocity int the output.</od>
 </option>
-<option><on><ar>name</ar></on><od>filename of the convection map file to process. If this is omitted, the file is read from standard input.</od>
+<option><on><ar>name</ar></on><od>filename of the <code>cnvmap</code> format file to process. If this is omitted, the file is read from standard input.</od>
 </option>
 <synopsis><p>Calculate the electric field and other parameters from convection map data.</p></synopsis>
 
@@ -52,9 +54,5 @@
 <command>maptoefield -p 20040830.cnvmap &gt; 20040830.efield</command>
 <description>Calculate the electric field and potential from the file "<code>20040830.cnvmapmap</code>". The electric field data is stored in the file "<code>20040830.efield</code>".</description>
 </example>
-
-
-
-
 
 </binary>
