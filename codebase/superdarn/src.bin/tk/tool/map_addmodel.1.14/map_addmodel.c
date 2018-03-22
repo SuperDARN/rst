@@ -229,10 +229,10 @@ int main(int argc,char *argv[]) {
   float tilt = 0.;
   int noigrf = 0;
   int nointerp = 0;
-  int cs10 = 0;
   int rg96 = 0;
-  int ts18 = 0;
   int psr10 = 0;
+  int cs10 = 0;
+  int ts18 = 0;
   int imod = 0;
 
   float bndstep = 5.; /* HMB parameters */
@@ -295,8 +295,7 @@ int main(int argc,char *argv[]) {
     exit(-1);
   }
 
-  /* SGS: 201703 default is CS10 */
-  if (!cs10 && !psr10 && !rg96 && !ts18) cs10 = 1;
+  if (!ts18 && !cs10 && !psr10 && !rg96) ts18 = 1;
   if (rg96)  imod = RG96;
   if (psr10) imod = PSR10;
   if (cs10)  imod = CS10;
@@ -567,8 +566,6 @@ int load_all_models(char *path, int imod)
       }
       break;
     case TS18:  /***********************************************************/
-      fprintf(stderr, "TS18 Statistical Model not yet implemented\n");
-      return (-1);
       for (i=0; i<TS18_nlev; i++) {
         for (j=0; j<TS18_nang; j++) {
           for (k=0; mod_tilt[k] != NULL; k++) {
