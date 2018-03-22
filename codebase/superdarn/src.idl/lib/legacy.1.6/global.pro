@@ -1,5 +1,5 @@
-; aacgmlib.pro
-; ============
+; global.pro
+; ==========
 ; Author: K.Baker & R.J.Barnes
 ; 
 ; LICENSE AND DISCLAIMER

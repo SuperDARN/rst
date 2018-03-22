@@ -12,13 +12,9 @@
 .run time
 .run mlt_v2
 
-
 .run datamap.pro
-;.run time.pro
-;.run astalg.pro
 .run aacgmdefault.pro
 .run aacgm.pro
-;.run igrf.pro
 .run radar.pro
 .run rprm.pro
 .run iq.pro
@@ -33,11 +29,7 @@
 .run oldgrd.pro
 .run oldcnvmap.pro
 .run fitacf.pro
-
 .run efield.pro
-
-; stuff needed for terminator (VT-specific)
-;.r calculate_sunset
 
 ; Legacy interfaces
 .run genlib.pro
@@ -52,5 +44,4 @@
 .run rbposlib.pro
 .run istplib.pro
 .run global.pro
-
 
