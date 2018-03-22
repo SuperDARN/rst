@@ -159,7 +159,7 @@ int OldFitReadRadarScan(struct OldFitFp *fp,int *state,
     if (fstatus==-1) flg=2;
     else {
       if (tlen==0) {
-        if (prm->scan==1) flg=1;
+        if (abs(prm->scan)==1) flg=1;
       } else if (ptr->ed_time-ptr->st_time>=tlen) flg=1;
     }
   } while (flg==0);
