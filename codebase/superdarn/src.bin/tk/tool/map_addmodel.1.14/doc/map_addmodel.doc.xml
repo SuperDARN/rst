@@ -6,7 +6,7 @@
 
 <syntax></syntax>
 <syntax>map_addmodel --help</syntax>
-<syntax>map_addmodel [-vb] [-old] [-nointerp] [-noigrf] [-rg96|-psr10|-cs10|-ts18]</syntax>
+<syntax>map_addmodel [-vb] [-old] [-nointerp] [-noigrf] [-rg96|-psr10|-cs10|-ts18|-ts18_kp]</syntax>
 <syntax>             [-o <ar>order</ar>] [-d <ar>doping</ar>] [<ar>mapname</ar>]</syntax>
 <syntax></syntax>
 
@@ -25,6 +25,8 @@
 <option><on>-cs10</on><od>uses the CS10 statistical model.</od>
 </option>
 <option><on>-ts18</on><od>uses the TS18 statistical model [default].</od>
+</option>
+<option><on>-ts18_kp</on><od>uses the TS18-Kp statistical model.</od>
 </option>
 <option><on>-nointerp</on><od>Do not interpolate coeffiecients, instead use discrete models.</od>
 </option>

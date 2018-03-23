@@ -128,6 +128,25 @@ char *TS18_mod_levs[]  = {"0<Esw<1.2","1.2<Esw<1.6","1.6<Esw<2.1","2.1<Esw<3.0",
                           "3.0<Esw<20",0};
 float TS18_mod_levi[]  = {1.2, 1.6, 2.1, 3.0, 20, -1};
 
+/*
+ * TS18-Kp Model bins
+ * ---------------
+ */
+int   TS18_Kp_nang = 8;
+char *TS18_Kp_mod_ang[]   = {"Bz+", "Bz+_By+", "By+", "Bz-_By+", "Bz-",
+                             "Bz-_By-", "By-", "Bz+_By-",0};
+char *TS18_Kp_mod_angs[]  = {"Bz+", "Bz+/By+", "By+", "Bz-/By+", "Bz-",
+                             "Bz-/By-", "By-", "Bz+/By-",0};
+float TS18_Kp_mod_angil[] = {-25, 25, 70, 110, 155, 205, 250, 290};
+float TS18_Kp_mod_angih[] = {25, 70, 110, 155, 205, 250, 290, 335};
+
+int   TS18_Kp_nlev = 6;
+char *TS18_Kp_mod_lev[]   = {"0t1","1t2","2t3","3t4",
+                             "4t6","6t8",0};
+char *TS18_Kp_mod_levs[]  = {"0<Kp<1","1<Kp<2","2<Kp<3","3<Kp<4",
+                             "4<Kp<6","6<Kp<8",0};
+float TS18_Kp_mod_levi[]  = {1, 2, 3, 4, 6, 8, -1};
+
 
 struct CnvMapData *map;
 struct GridData *grd;
@@ -171,7 +190,7 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
 struct GridGVec *get_model_pos(int Lmax, float latmin, int hemi,
                                int level, int *num);
 struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
-                              float tilt, int imod, int nointerp);
+                              float tilt, float kp, int imod, int nointerp);
 struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod);
 struct model *load_model(FILE *fp, int ihem, int ilev, int iang, int itlt,
                                    int imod);
@@ -233,6 +252,7 @@ int main(int argc,char *argv[]) {
   int psr10 = 0;
   int cs10 = 0;
   int ts18 = 0;
+  int ts18_kp = 0;
   int imod = 0;
 
   float bndstep = 5.; /* HMB parameters */
@@ -257,6 +277,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"psr10",'x',&psr10);
   OptionAdd(&opt,"cs10",'x',&cs10);
   OptionAdd(&opt,"ts18",'x',&ts18);
+  OptionAdd(&opt,"ts18_kp",'x',&ts18_kp);
   OptionAdd(&opt,"nointerp",'x',&nointerp);
   OptionAdd(&opt,"noigrf",'x',&noigrf);        /* SGS: default is to use IGRF
                                                        to compute model vecs  */
@@ -295,11 +316,12 @@ int main(int argc,char *argv[]) {
     exit(-1);
   }
 
-  if (!ts18 && !cs10 && !psr10 && !rg96) ts18 = 1;
-  if (rg96)  imod = RG96;
-  if (psr10) imod = PSR10;
-  if (cs10)  imod = CS10;
-  if (ts18)  imod = TS18;
+  if (!ts18 && !ts18_kp && !cs10 && !psr10 && !rg96) ts18 = 1;
+  if (rg96)    imod = RG96;
+  if (psr10)   imod = PSR10;
+  if (cs10)    imod = CS10;
+  if (ts18_kp) imod = TS18_Kp;
+  if (ts18)    imod = TS18;
 
   envstr=getenv("SD_MODEL_TABLE");
   if (envstr==NULL) {
@@ -347,7 +369,7 @@ int main(int argc,char *argv[]) {
 
     /* determine the model */
     mod = determine_model(map->Vx, map->Bx, map->By, map->Bz,
-                          map->hemisphere, tilt, imod, nointerp);
+                          map->hemisphere, tilt, map->Kp, imod, nointerp);
 
     /* Add lower latitude limit (HMB) from model if not found from data */
     if (map->latmin == -1) {
@@ -384,10 +406,11 @@ int main(int argc,char *argv[]) {
     strcpy(map->imf_model[1],mod->level);
     strcpy(map->imf_model[2],mod->tilt);
     switch (imod) {
-      case RG96:  strcpy(map->imf_model[3],"RG96"); break;
-      case PSR10: strcpy(map->imf_model[3],"PSR10"); break;
-      case CS10:  strcpy(map->imf_model[3],"CS10"); break;
-      case TS18:  strcpy(map->imf_model[3],"TS18"); break;
+      case RG96:    strcpy(map->imf_model[3],"RG96"); break;
+      case PSR10:   strcpy(map->imf_model[3],"PSR10"); break;
+      case CS10:    strcpy(map->imf_model[3],"CS10"); break;
+      case TS18:    strcpy(map->imf_model[3],"TS18"); break;
+      case TS18_Kp: strcpy(map->imf_model[3],"TS18-Kp"); break;
     }
 
     (*Map_Write)(stdout,map,grd);
@@ -443,6 +466,12 @@ struct model *load_model(FILE *fp, int ihem, int ilev, int iang,
       strcpy(ptr->tilt,mod_tilts[itlt]);
       strcpy(ptr->level,TS18_mod_levs[ilev]);
       strcpy(ptr->angle,TS18_mod_angs[iang]); /* same as CS10 */
+      break;
+    case TS18_Kp:
+      strcpy(ptr->hemi,"Null");
+      strcpy(ptr->tilt,"Null");
+      strcpy(ptr->level,TS18_Kp_mod_levs[ilev]);
+      strcpy(ptr->angle,TS18_Kp_mod_angs[iang]); /* same as CS10 */
       break;
   }
 
@@ -578,6 +607,20 @@ int load_all_models(char *path, int imod)
             if (model[0][k][i][j] == NULL) continue;
             mnum++;
           }
+        }
+      }
+      break;
+    case TS18_Kp:  /********************************************************/
+      for (i=0; i<TS18_Kp_nlev; i++) {
+        for (j=0; j<TS18_Kp_nang; j++) {
+          sprintf(fname,"%s/ts18_kp/mod_%s_%s.spx",path,TS18_Kp_mod_lev[i],
+                         TS18_Kp_mod_ang[j]);
+          fp = fopen(fname,"r");
+          if (fp == NULL) continue;
+          model[0][0][i][j] = load_model(fp,-1,i,j,-1,imod);
+          fclose(fp);
+          if (model[0][0][i][j] == NULL) continue;
+          mnum++;
         }
       }
       break;
@@ -834,7 +877,7 @@ struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
 
 
 struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
-                              float tilt, int imod, int nointerp)
+                              float tilt, float kp, int imod, int nointerp)
 {
   int ihem,itlt, ilev,iang,i;
   float esw,bt,bazm;
@@ -843,7 +886,7 @@ struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
   bt   = sqrt(By*By + Bz*Bz);
 
   /* flip sign of By for shemi in models w/o shemi patterns */
-  if (hemi < 0 && (imod == RG96 || imod == TS18)) By = -By;
+  if (hemi < 0 && (imod == RG96 || imod == TS18 || imod == TS18_Kp)) By = -By;
   bazm = atan2(By,Bz)*180/PI;
 
   switch (imod) {
@@ -976,6 +1019,30 @@ struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
 
       } else imodel = interp_coeffs(ihem,tilt,esw,bazm,imod);
 
+      break;
+
+    case TS18_Kp:
+      ihem = 0; /* no bins for these in TS18-Kp */
+      itlt = 0;
+
+      if (bazm >= TS18_Kp_mod_angih[TS18_Kp_nang-1]) bazm -= 360.;
+      if (bazm <  TS18_Kp_mod_angil[0])              bazm += 360.;
+
+      /* magnitude */
+      for (i=0; (TS18_Kp_mod_levi[i] !=-1) && (kp >= TS18_Kp_mod_levi[i]); i++);
+      if (TS18_Kp_mod_levi[i] == -1) i--;
+      ilev = i;
+
+      /* angle */
+      for (i=0; i < TS18_Kp_nang; i++)
+        if ((bazm >= TS18_Kp_mod_angil[i]) && (bazm < TS18_Kp_mod_angih[i])) break;
+      if (i == TS18_Kp_nang) i--;
+      iang = i;
+  
+      /* correct for extreme Kp */
+      if ((ilev==5) && (iang!=4)) ilev--;
+
+      imodel = model[ihem][itlt][ilev][iang];
       break;
   }
 

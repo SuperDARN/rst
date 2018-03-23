@@ -12,7 +12,7 @@
 <syntax>           [<ar>mapname</ar>]</syntax>
 <syntax>map_addimf [-vb] [-old] [-if <ar>imfname</ar>] [-d <ar>hr:mn</ar>] [<ar>mapname</ar>]</syntax>
 <syntax>map_addimf [-vb] [-old] [-if <ar>imfname</ar>] [-df <ar>delayname</ar>] [<ar>mapname</ar>]</syntax>
-<syntax>map_addimf [-vb] [-old] [-bx <ar>bx</ar>] [-by <ar>by</ar>] [-bz <ar>bz</ar>] [-vx <ar>vx</ar>] [-tilt <ar>tilt</ar>]</syntax>
+<syntax>map_addimf [-vb] [-old] [-bx <ar>bx</ar>] [-by <ar>by</ar>] [-bz <ar>bz</ar>] [-vx <ar>vx</ar>] [-tilt <ar>tilt</ar>] [-kp <ar>kp</ar>]</syntax>
 <syntax>           [<ar>mapname</ar>]</syntax>
 <syntax></syntax>
 
@@ -48,6 +48,8 @@
 <option><on>-vx <ar>vx</ar></on><od>set the solar wind velocity to <ar>vx</ar> [km/s].</od>
 </option>
 <option><on>-tilt <ar>tilt</ar></on><od>set the dipole tilt angle to <ar>tilt</ar> [degrees].</od>
+</option>
+<option><on>-kp <ar>kp</ar></on><od>set the Kp magnetic index to <ar>kp</ar>.</od>
 </option>
 <synopsis><p>Adds IMF and solar wind data to a convection map file.</p></synopsis>
 
