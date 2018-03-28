@@ -75,7 +75,7 @@ struct rawfp *raw_open(char *rawfile,char *inxfile) {
   }
   fstat(ptr->rawfp,&ptr->rstat);
 
-  if (ConvertReadShort(ptr->rawfp,&num_byte) !=0) {
+  if (ConvertReadShort(ptr->rawfp,&num_byte) !=0 || num_byte <= 0) {
     close(ptr->rawfp);
     free(ptr);
     free(inbuf);
@@ -105,7 +105,7 @@ struct rawfp *raw_open(char *rawfile,char *inxfile) {
      the file */
 
   
- if (ConvertReadShort(ptr->rawfp,&num_byte) !=0) {
+ if (ConvertReadShort(ptr->rawfp,&num_byte) !=0 || num_byte <= 0) {
     close(ptr->rawfp);
     free(ptr);
     free(inbuf);
