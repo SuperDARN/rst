@@ -100,7 +100,8 @@ int OldRawReadCurrent(struct OldRawFp *fp,struct RadarParm *prm,
    memset(rptr,0,sizeof(struct rawdata));
    fp->rlen=0;
    do {
-     if (ConvertReadShort(fp->rawfp,&num_byte) !=0) {
+     stat = ConvertReadShort(fp->rawfp,&num_byte);
+     if (stat != 0 || num_byte == 0) {
        free(inbuf);
        return -1;
      }
