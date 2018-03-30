@@ -704,11 +704,11 @@ int main(int argc,char *argv[]) {
                 if (tlen==0) {
                     if (old) {
                         while ((s=OldFitRead(oldfitfp,prm,fit)) !=-1) {
-                            if (prm->scan==1) break;
+                            if (abs(prm->scan)==1) break;
                         }
                     } else {
                         while ((s=FitFread(fitfp,prm,fit)) !=-1) {
-                            if (prm->scan==1) break;
+                            if (abs(prm->scan)==1) break;
                         }
                     }
                 } else state=0;

@@ -18,7 +18,7 @@
 18  1 20041101 25000101 "Unwin"                   "La Trobe University"                 "hdw.dat.unw" "unw" "u"
 19  1 20100401 25000101 "Zhongshan Station"       "Polar Research Institute of China"   "hdw.dat.zho" "zho" "z"
 20  1 20100122 25000101 "McMurdo"                 "University of Alaska Fairbanks"      "hdw.dat.mcm" "mcm" "m"
-21 -1 20100214 25000101 "Falkland Islands"        "British Antarctic Survey"            "hdw.dat.fir" "fir" "q"
+21  1 20100214 25000101 "Falkland Islands"        "British Antarctic Survey"            "hdw.dat.fir" "fir" "q"
 22  1 20130122 25000101 "South Pole Station"      "University of Alaska Fairbanks"      "hdw.dat.sps" "sps" "z"
 24  1 20141201 25000101 "Buckland Park"           "La Trobe University"                 "hdw.dat.bpk" "bpk" "i"
 32  1 20050610 25000101 "Wallops Island"          "JHU/APL"                             "hdw.dat.wal" "wal" "i"
