@@ -22,7 +22,7 @@ You will also need the CDF (Common Data Format) library which can be downloaded 
 You can find the latest release at: http://cdf.gsfc.nasa.gov/  
 For macOS it is also available through macports, as are all listed dependencies  
 For Opensuse you will need to make a symlink lcurses library to libncuses (recommended) or modify the CDF Makefile. 
-* (Recommenede) To make a symlink from lncurses library to lcurses; run the following commands in the terminal:
+* (Recommened) To make a symlink from lncurses library to lcurses; run the following commands in the terminal:
 
         ln -s /usr/lib64/libncurses.so /usr/lib64/libcurses.so
         ln -s /usr/lib64/libncurses.a /usr/lib64/libcurses.a
