@@ -26,9 +26,9 @@ For Opensuse you will need to modify the Makefile or symlink lcurses library to 
 `CURSESLIB_linux_gnu=-lcurses` to `CURSESLIB_linux_gnu=-lncurses`  
 `CURSESLIB_linux_gnu32=-lcurses` to `CURSESLIB_linux_gnu32=-lncurses`  
 `CURSESLIB_linux_gnu64=-lcurses` to `CURSESLIB_linux_gnu64=-lncurses`  
-* Or to make a symlink from lncurses library to lcurses, run the following commands:
-    ln -s /usr/lib64/libncurses.so /usr/lib64/libcurses.so
-    ln -s /usr/lib64/libncurses.a /usr/lib64/libcurses.a
+* Or to make a symlink from lncurses library to lcurses, run the following commands:  
+        ln -s /usr/lib64/libncurses.so /usr/lib64/libcurses.so
+        ln -s /usr/lib64/libncurses.a /usr/lib64/libcurses.a
 
 ## Install notes:
 
