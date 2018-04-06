@@ -74,7 +74,7 @@ char logfname[256];
 
 int rst_opterr(char *txt) {
   fprintf(stderr,"Option not recognized: %s\n",txt);
-  fprintf(stderr,"Please try again: fitacfserver --help\n");
+  fprintf(stderr,"Please try: fitacfserver --help\n");
   return(-1);
 }
 
