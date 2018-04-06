@@ -92,6 +92,12 @@ double strtime(char *text) {
   return hr*3600L+mn*60L;
 }   
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: maptoefield --help\n");
+  return(-1);
+}
+
 int main(int argc,char *argv[]) {
 
   int old=0;
@@ -196,7 +202,11 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"p",'x',&pot_flg);
   OptionAdd(&opt,"v",'x',&vel_flg);  
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+
+  if (arg==-1) {
+    exit(-1);
+  }
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
