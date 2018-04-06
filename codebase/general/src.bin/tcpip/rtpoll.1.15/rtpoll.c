@@ -55,6 +55,12 @@ char pidname[256]={"pid.id"};
 
 struct OptionData opt;
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: rtpoll --help\n");
+  return(-1);
+}
+
 int main(int argc,char *argv[]) {
   FILE *fp;
   unsigned char help=0;  
@@ -93,8 +99,11 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"if",'t',&pidstr);
   OptionAdd(&opt,"f",'t',&outfnamestr);
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);   
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
+  if (arg==-1) {
+    exit(-1);
+  }
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
