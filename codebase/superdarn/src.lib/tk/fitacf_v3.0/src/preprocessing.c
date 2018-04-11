@@ -716,7 +716,7 @@ double ACF_cutoff_pwr(FITPRMS *fit_prms){
 Removes ACFs entirely from analysis if they are deemed to be pure noise
 */
 void Filter_Bad_ACFs(FITPRMS *fit_prms, llist ranges, double noise_pwr){
-	int i=0;
+/*	int i=0;*/
 	RANGENODE* range_node = NULL;
 	PWRNODE* pwr_node = NULL;
 	double tmp_pwr = 0.0;
@@ -995,7 +995,7 @@ the phase for fitting.
 void ACF_Phase_Unwrap(llist_node range, FITPRMS* fit_prms){
 	RANGENODE* range_node;
 	PHASENODE* phase_curr;
-	PHASENODE* phase_prev;
+/*	PHASENODE* phase_prev;*/
 	PHASENODE* local_copy;
 
 	double d_phi,sigma_bar,d_tau;
