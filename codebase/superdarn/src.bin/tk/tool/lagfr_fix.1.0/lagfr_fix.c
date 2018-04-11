@@ -64,10 +64,10 @@ int main(int argc,char *argv[])
   unsigned char vb=0;
 
   FILE *fp=NULL;
-  struct OldRawFp *rawfp=NULL;
+/*  struct OldRawFp *rawfp=NULL;
   int irec=1;
   int drec=2;
-  int dnum=0;
+  int dnum=0; */
 
   time_t ctime;
   int c,n,samps=0;
