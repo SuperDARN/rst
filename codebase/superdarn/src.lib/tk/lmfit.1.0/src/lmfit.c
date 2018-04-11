@@ -224,7 +224,7 @@ int singlefit(int m, int n, double *p, double *deviates,
 {
 
   int i;
-  double tau,re,im,sig,wi,ti;
+  double tau,re,sig,wi,ti;
 
   struct datapoints *v = (struct datapoints *) private;
   double lag0mag = v->mag;
