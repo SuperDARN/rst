@@ -102,15 +102,10 @@ double calc_acf_err(struct RawData * raw, struct FitData * fit, struct RadarParm
 int main(int argc,char *argv[])
 {
 
-  unsigned char old=0;
-
   char *envstr;
   int status;
-  int arg,i,vel,t_d,amp;
+  int i,vel,t_d,amp;
   int j,k,l,vbin,tbin;
-
-  unsigned char help=0;
-  unsigned char option=0;
 
   unsigned char vb=0;
 
