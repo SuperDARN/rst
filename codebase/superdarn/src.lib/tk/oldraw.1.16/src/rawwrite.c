@@ -243,7 +243,8 @@ int OldRawWrite(int fid,char *name,struct RadarParm *prm,
   OldRawCmpRawBit(buf+ptr, &rptr->pwr0[0], rptr->PARMS.NRANG);
   ptr += sizeof(int16)*rptr->PARMS.NRANG;
 			
-  threshold = (raw->thr*rptr->PARMS.NOISE)/2;
+  /*threshold = (raw->thr*rptr->PARMS.NOISE)/2;*/
+  threshold=0;
 
   for (i=0; i<rptr->PARMS.NRANG; i++) {
     if (rptr -> pwr0[i] < threshold) continue;
