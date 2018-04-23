@@ -87,6 +87,13 @@ typedef struct
 /* Helper functions - not to be exported */
 static _list_node *listsort ( _list_node *list, _list_node ** updated_tail, comperator cmp, int flags );
 
+/**
+ * @brief Create a list
+ * @param[in] compare_func a function used to compare elements in the list
+ * @param[in] equal_func a function used to check if two elements are equal
+ * @param[in] flags used to identify whether we create a thread safe linked-list
+ * @return new list if success, NULL on error
+ */
 llist llist_create ( comperator compare_func, equal equal_func, unsigned flags)
 {
     _llist *new_list;
@@ -130,6 +137,15 @@ llist llist_create ( comperator compare_func, equal equal_func, unsigned flags)
     return new_list;
 }
 
+/**
+ * @brief Destroys a list
+ * @warning Call this function only if the list was created with llist_create
+ *          Static initializer created list cannot be destroyed using this function
+ * @param[in] list The list to destroy
+ * @param[in] destroy_nodes true if the nodes should be destroyed, false if not
+ * @param[in] destructor alternative destructor, if the previous param is true,
+ *            if NULL is provided standard library c free() will be used
+ */
 void llist_destroy ( llist list, bool destroy_nodes, node_func destructor )
 {
     _list_node *iterator;
@@ -180,6 +196,11 @@ void llist_destroy ( llist list, bool destroy_nodes, node_func destructor )
 
 }
 
+/**
+ * @brief return the number of elements in the list
+ * @param[in] list the list to operate on
+ * @return int  number of elements in the list or -1 if error
+ */
 int llist_size ( llist list )
 {
     unsigned int retval = 0;
@@ -199,6 +220,13 @@ int llist_size ( llist list )
     return retval;
 }
 
+/**
+ * @brief      Moves the iterator down the list by one.
+ *
+ * @param[in]  list  The list to operate on.
+ *
+ * @return     LLIST_SUCCESS if successful.
+ */
 int llist_go_next(llist list)
 {
 
@@ -220,7 +248,7 @@ int llist_go_next(llist list)
     return LLIST_SUCCESS;
 }
 
-int llist_iter_not_at_end(llist list)
+/*int llist_iter_not_at_end(llist list)
 {
     if(( ( _llist * ) list )->iter == NULL){
         return LLIST_END_OF_LIST;
@@ -232,6 +260,14 @@ int llist_iter_not_at_end(llist list)
         return LLIST_SUCCESS;
     }
 }
+*/
+/**
+ * @brief      Resets iterator to head of the list
+ *
+ * @param[in]  list  The list to operate on.
+ *
+ * @return     LLIST_SUCCESS if successful.
+ */
 int llist_reset_iter(llist list){
 
     if ( list == NULL )
@@ -244,6 +280,14 @@ int llist_reset_iter(llist list){
     return LLIST_SUCCESS;
 }
 
+/**
+ * @brief      Gets a pointer to the item at the iterator in the output parameter.
+ *
+ * @param[in]  list  The list to operate on.
+ * @param[out] item  A pointer to a pointer to put the list iterator into.
+ *
+ * @return     LLIST_SUCCESS if successful.
+ */
 int llist_get_iter(llist list,void** item){
 
     if ( list == NULL )
@@ -261,6 +305,13 @@ int llist_get_iter(llist list,void** item){
 
 }
 
+/**
+ * @brief Add a node to a list
+ * @param[in] list the list to operator upon
+ * @param[in] node the node to add
+ * @param[in] flags flags
+ * @return int LLIST_SUCCESS if success
+ */
 int llist_add_node ( llist list, llist_node node, int flags )
 {
     _list_node *node_wrapper = NULL;
@@ -308,6 +359,14 @@ int llist_add_node ( llist list, llist_node node, int flags )
     return LLIST_SUCCESS;
 }
 
+/**
+ * @brief Delete a node from a list
+ * @param[in] list the list to operator upon
+ * @param[in] node the node to delete
+ * @param[in] destroy_node Should we run a destructor
+ * @param[in] destructor function, if NULL is provided, free() will be used
+ * @return int LLIST_SUCCESS if success
+ */
 int llist_delete_node ( llist list, llist_node node,
 		bool destroy_node, node_func destructor )
 {
@@ -428,6 +487,12 @@ int llist_delete_node ( llist list, llist_node node,
     return LLIST_ERROR;
 }
 
+/**
+ * @brief operate on each element of the list
+ * @param[in] list the list to operator upon
+ * @param[in] func the function to perform
+ * @return int LLIST_SUCCESS if success
+ */
 int llist_for_each ( llist list, node_func func )
 {
     _list_node *iterator;
@@ -448,6 +513,13 @@ int llist_for_each ( llist list, node_func func )
     return LLIST_SUCCESS;
 }
 
+/**
+ * @brief operate on each element of the list
+ * @param[in] list the list to operator upon
+ * @param[in] func the function to perform
+ * @param[in] arg passed to func
+ * @return int LLIST_SUCCESS if success
+ */
 int llist_for_each_arg ( llist list, node_func_arg func, void * arg1, void * arg2 )
 {
     _list_node *iterator;
@@ -475,6 +547,14 @@ int llist_for_each_arg ( llist list, node_func_arg func, void * arg1, void * arg
     return LLIST_SUCCESS;
 }
 
+/**
+ * @brief Insert a node at a specific location
+ * @param[in] list the list to operator upon
+ * @param[in] new_node the node to add
+ * @param[in] pos_node a position reference node
+ * @param[in] flags flags
+ * @return int LLIST_SUCCESS if success
+ */
 int llist_insert_node ( llist list, llist_node new_node, llist_node pos_node,
                         int flags )
 {
@@ -553,6 +633,14 @@ int llist_insert_node ( llist list, llist_node new_node, llist_node pos_node,
 
 }
 
+/**
+ * @brief Finds a node in a list
+ * @param[in]  list the list to operator upon
+ * @param[in]  data the data to find
+ * @param[out] found a pointer for found node.
+ *              this pointer can be used only if llist_find_node returned LLIST_SUCCESS
+ * @return LLIST_SUCCESS if success
+ */
 int llist_find_node ( llist list, void *data, llist_node *found)
 {
     _list_node *iterator;
@@ -596,6 +684,11 @@ int llist_find_node ( llist list, void *data, llist_node *found)
 
 }
 
+/**
+ * @brief Returns the head node of the list
+ * @param[in] list the list to operate on
+ * @return the head node, NULL on error
+ */
 llist_node llist_get_head ( llist list )
 {
     READ_LOCK( list, NULL )
@@ -616,6 +709,11 @@ llist_node llist_get_head ( llist list )
     return NULL;
 }
 
+/**
+ * @brief Returns the tail node of the list
+ * @param[in] list the list to operate on
+ * @return the tail node, NULL on error
+ */
 llist_node llist_get_tail ( llist list )
 {
     READ_LOCK( list, NULL )
@@ -636,16 +734,32 @@ llist_node llist_get_tail ( llist list )
     return NULL;
 }
 
+/**
+ * @brief push a node to the head of the list
+ * @param[in] list the list to operate on
+ * @param[in] node the node to push
+ * @return int LLIST_SUCCESS if success
+ */
 int llist_push ( llist list, llist_node node )
 {
     return llist_add_node ( list, node, ADD_NODE_FRONT );
 }
 
+/**
+ * @brief peek at the head of the list
+ * @param[in] list the list to operate on
+ * @return llist_node the head node
+ */
 llist_node llist_peek ( llist list )
 {
     return llist_get_head ( list );
 }
 
+/**
+ * @brief pop the head of the list
+ * @param[in] list the list to operate on
+ * @return llist_node the head node
+ */
 llist_node llist_pop ( llist list )
 {
     llist_node tempnode = NULL;
@@ -674,6 +788,14 @@ llist_node llist_pop ( llist list )
     return tempnode;
 }
 
+/**
+ * @brief concatenate the second list to the first list
+ * @param[in] first the list to operate on
+ * @param[in] second the list to operate on.
+ * @warning The nodes from the second list will be deleted and concatenated to the first list
+ *          Remember to call llist_destroy() on  the second list (if it was created by llist_create())
+ * @return int LLIST_SUCCESS if success
+ */
 int llist_concat ( llist first, llist second )
 {
     _list_node *end_node;
@@ -713,6 +835,11 @@ int llist_concat ( llist first, llist second )
     return LLIST_SUCCESS;
 }
 
+/**
+ * @brief Reverse a list
+ * @param[in] list the list to operate upon
+ * @return int LLIST_SUCCESS if success
+ */
 int llist_reverse ( llist list )
 {
     if ( list == NULL )
@@ -753,6 +880,12 @@ int llist_reverse ( llist list )
     return LLIST_SUCCESS;
 }
 
+/**
+ * @brief sort a lists
+ * @param[in] list the list to operator upon
+ * @param[in] flags
+ * @return int LLIST_SUCCESS if success
+ */
 int llist_sort ( llist list, int flags )
 {
 
@@ -780,6 +913,7 @@ int llist_sort ( llist list, int flags )
     return LLIST_SUCCESS;
 }
 
+/*Helper function for sorting*/
 static _list_node *listsort ( _list_node *list, _list_node ** updated_tail, comperator cmp , int flags)
 {
     _list_node *p, *q, *e, *tail;
@@ -883,6 +1017,7 @@ static _list_node *listsort ( _list_node *list, _list_node ** updated_tail, comp
     return list;
 }
 
+/*helper function to return both min or max*/
 static int llist_get_min_max(llist list, llist_node * output, bool max)
 {
     comperator cmp;
@@ -925,28 +1060,34 @@ static int llist_get_min_max(llist list, llist_node * output, bool max)
 	return LLIST_SUCCESS;
 }
 
+/**
+ * @brief get the maximum node in a given list
+ * @param[in] list the list to operate upon
+ * @param[out] maximum node
+ * @return int LLIST_SUCCESS if success
+ */
 int llist_get_max(llist list, llist_node * max)
 {
 	return llist_get_min_max(list,max,true);
 }
 
+/**
+ * @brief get the minimum node in a given list
+ * @param[in] list the list to operate upon
+ * @param[out] minumum node
+ * @return int LLIST_SUCCESS if success
+ */
 int llist_get_min(llist list, llist_node * min)
 {
 	return llist_get_min_max(list,min,false);
 }
 
+/**
+ * @brief check if list is empty
+ * @param[in] list the list to operate upon
+ * @return bool True if list is empty
+ */
 bool llist_is_empty(llist list)
 {
     return ( ! llist_size ( list ) ) ;
-}
-
-
-/*
- * TODO: Implement the below functions
- */
-
-int llist_merge ( llist first, llist second)
-{
-	assert (1 == 0); /* Fail, function not implemented yet.*/
-	return LLIST_NOT_IMPLEMENTED;
 }
