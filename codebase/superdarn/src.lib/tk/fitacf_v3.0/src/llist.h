@@ -233,17 +233,6 @@ int llist_size( llist list );
 int llist_concat( llist first, llist second );
 
 /**
- * @brief merge the second list to the first list
- * @param[in] first the list to operate on
- * @param[in] second the list to operate on
- * @warning The nodes from the second list will be deleted and merged to the first list
- *          Remember to call llist_destroy() on  the second list (if it was created by llist_create())
- * @return int LLIST_SUCCESS if success
- */
-int llist_merge( llist first, llist second );
-
-
-/**
  * @brief get the maximum node in a given list
  * @param[in] list the list to operate upon
  * @param[out] maximum node
@@ -273,8 +262,32 @@ int llist_reverse( llist list );
  */
 bool llist_is_empty( llist list );
 
+/**
+ * @brief      Resets iterator to head of the list
+ *
+ * @param[in]  list  The list to operate on.
+ *
+ * @return     LLIST_SUCCESS if successful.
+ */
 int llist_reset_iter(llist list);
+
+/**
+ * @brief      Moves the iterator down the list by one.
+ *
+ * @param[in]  list  The list to operate on.
+ *
+ * @return     LLIST_SUCCESS if successful.
+ */
 int llist_go_next(llist list);
+
+/**
+ * @brief      Gets a pointer to the item at the iterator in the output parameter.
+ *
+ * @param[in]  list  The list to operate on.
+ * @param[out] item  A pointer to a pointer to put the list iterator into.
+ *
+ * @return     LLIST_SUCCESS if successful.
+ */
 int llist_get_iter(llist list,void** item);
 
 #endif /* LLIST_H_ */

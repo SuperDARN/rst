@@ -37,8 +37,10 @@ July 2015
 #include <math.h>
 
 /**
-Free a fit parameter structure
-*/
+ * @brief      Frees raw record data.
+ *
+ * @param      fit_prms  The FITPRM struct holding rawacf record info.
+ */
 void FitacfFree(FITPRMS *fit_prms) {
   if (fit_prms->pulse != NULL) free(fit_prms->pulse);
   if (fit_prms->lag[0] != NULL) free(fit_prms->lag[0]);
@@ -55,8 +57,13 @@ void FitacfFree(FITPRMS *fit_prms) {
 }
 
 /**
-Allocates a new data structure for fit parameters.
-*/
+ * @brief      Allocates space for the FITPRMS struct pointers.
+ *
+ * @param      radar_prms  All raw data radar parameters.
+ * @param      fit_prms    The FITPRM struct holding rawacf record info.
+ *
+ * @return     0 on success, -1 on error.
+ */
 int Allocate_Fit_Prm(struct RadarParm *radar_prms, FITPRMS *fit_prms)
 {
   int columns, n;
@@ -99,7 +106,8 @@ int Allocate_Fit_Prm(struct RadarParm *radar_prms, FITPRMS *fit_prms)
   rows = radar_prms->nrang * radar_prms->mplgs;
   columns = 2;
 
-  /* Allocate space for the double pointer of pointers holding the ACF data */
+  /* Allocate space for the acfd double pointer using a contiguous set memory. Space for all row
+   pointers as well as data are allocated all at once and the row pointers are assigned. */
   fit_prms->acfd = realloc(fit_prms->acfd, (sizeof(*fit_prms->acfd) + columns * sizeof(**fit_prms->acfd)) * rows);
   memset(fit_prms->acfd, 0, (sizeof(*fit_prms->acfd) + columns * sizeof(**fit_prms->acfd)) * rows);
 
@@ -113,7 +121,8 @@ int Allocate_Fit_Prm(struct RadarParm *radar_prms, FITPRMS *fit_prms)
     fit_prms->acfd[is] = (double *)(fit_prms->acfd[0] + (is * columns));
   }
 
-  /* Allocate space for the doubple pointer of pointers holding XCF data */
+  /* Allocate space for the xcfd double pointer using a contiguous set memory. Space for all row
+   pointers as well as data are allocated all at once and the row pointers are assigned. */
   fit_prms->xcfd = realloc(fit_prms->xcfd, (sizeof(*fit_prms->xcfd) + columns * sizeof(**fit_prms->xcfd)) * rows);
   memset(fit_prms->xcfd, 0, (sizeof(*fit_prms->xcfd) + columns * sizeof(**fit_prms->xcfd)) * rows);
 
@@ -132,9 +141,17 @@ int Allocate_Fit_Prm(struct RadarParm *radar_prms, FITPRMS *fit_prms)
 }
 
 /**
-Copies fitting parameters from raw data and radar sites into the data structure
-used in the ACF fitting procedure.
-*/
+ * @brief      Copies fitting parameters from raw data and radar sites into the FITPRMS struct.
+ *
+ * @param      radar_site  The radar site info struct.
+ * @param      radar_prms  The radar raw data parameters struct.
+ * @param      raw_data    The raw record data.
+ * @param      fit_prms    The FITPRM struct holding rawacf record info.
+ *
+ * This function copies the info needed in the fitting process into a common struct. Parameters
+ * from the radar site info, raw record, and raw data are copied into a common fit parameters
+ * struct.
+ */
 void Copy_Fitting_Prms(struct RadarSite *radar_site, struct RadarParm *radar_prms,
            struct RawData *raw_data,FITPRMS *fit_prms){
 
@@ -246,8 +263,16 @@ void Copy_Fitting_Prms(struct RadarSite *radar_site, struct RadarParm *radar_prm
   }
 }
 
+
 /**
-Runs the full ACF/XCF fitting procedure and adds determinations to the FitData structure*/
+ * @brief      Calls the overall stack of fitting operations for a set of raw data.
+ *
+ * @param      fit_prms  The FITPRM struct holding rawacf record info.
+ * @param      fit_data  A pointer to a struct that holds parameters that have been extracted from
+ *                       fitted data.
+ *
+ * @return     0 on success.
+ */
 int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
 
   llist ranges, lags;
@@ -260,7 +285,7 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
   lags = llist_create(compare_lags,NULL,0);
 
   /* Create a list of lag information. More informative and reliable than the
-     lag arrayin the raw data
+     lag array in the raw data
   */
   Determine_Lags(lags,fit_prms);
 
@@ -278,7 +303,8 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
   Fill_Range_List(fit_prms, ranges);
 
   /*For each range we find the CRI of each pulse*/
-  llist_for_each_arg(ranges,(node_func_arg)Find_CRI,fit_prms,NULL);   /*Comment this out for simulted data without CRI*/
+  /*Comment this out for simulated data without CRI*/
+  llist_for_each_arg(ranges,(node_func_arg)Find_CRI,fit_prms,NULL);
 
   /*Now that we have CRI, we find alpha for each range*/
   llist_for_each_arg(ranges,(node_func_arg)Find_Alpha,lags,fit_prms);
@@ -291,7 +317,8 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
 
 
   /*Tx overlapped data is removed from consideration*/
-  Filter_TX_Overlap(ranges, lags, fit_prms);  /*Comment this out for simulted data without TX overlap*/
+  /*Comment this out for simulated data without TX overlap*/
+  Filter_TX_Overlap(ranges, lags, fit_prms);
 
   /*llist_for_each_arg(ranges,(node_func_arg)print_range_node,fit_prms,NULL);*/
   /*Criterion is applied to filter low power lags that are considered too close to
@@ -303,7 +330,7 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
   /*llist_for_each_arg(ranges,(node_func_arg)print_range_node,fit_prms,NULL);*/
 
   /*At this point all data is now processed and valuable so we perform power fits.
-  The phase fitting stage is dependant on fitted power and must be done first*/
+  The phase fitting stage is dependent on fitted power and must be done first*/
   llist_for_each(ranges,(node_func)Power_Fits);
 
   /*We perform the phase fits for velocity and elevation. The ACF phase fit improves the
