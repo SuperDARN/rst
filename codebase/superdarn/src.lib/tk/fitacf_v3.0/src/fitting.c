@@ -98,8 +98,17 @@ void ACF_Phase_Fit(llist ranges,FITPRMS *fit_prms){
  * @param      fit_prms    A pointer to a fitting parameters struct.
  *
  * For each range, all XCF phase lags have their sigma values calculated from fitted ACF power
- * and then the phase is unwrapped. The two parameter linear fit is performed
+ * and then the phase is unwrapped. 
+ * The two parameter linear fit is performed
  * to unwrapped phase.
+ * A correct procedure requires knowledge of the cross-correlation coefficient
+ * |Rx(tau)|=XCF(tau)/sqrt(ACF(0)*ACF_I(0))
+ * where ACF_I(0) if the lag 0 power of the signal received by the interfrometer antenna alone.
+ * Currently this parameter is not stored in the raw structure so we have to use the normalised 
+ * ACF power of the signal received by the main antenna, |R(tau)|, as a substitute for |Rx(tau)|.
+ * It is necessary to mention that this substitution affects the elevation errors only 
+ * but has no effect on the elevation itself because the latter is calulated directly from 
+ * lag 0 XCF phase, i.e. bypassing any fitting.
  */
 void XCF_Phase_Fit(llist ranges,FITPRMS *fit_prms){
     PHASETYPE xcf = XCF;
@@ -162,8 +171,9 @@ void calculate_phase_sigma_for_range(llist_node range,FITPRMS *fit_prms,PHASETYP
                 (void*)fit_prms);
             llist_reset_iter(range_node->elev);
 
-            /*Since lag 0 phase is included for elevation fit, we set lag 0 sigma the
-            same as lag 1 sigma*/
+            /*Since lag 0 phase is included in the elevation fit but for ACF its variance is 0, 
+            we have to set lag 0 phase sigma to its closest neighbour's value, i.e. the same as lag 1 sigma.*/
+            
             llist_get_iter(range_node->elev,(void**)&xcf0);
             llist_go_next(range_node->elev);
             llist_get_iter(range_node->elev,(void**)&xcf1);
