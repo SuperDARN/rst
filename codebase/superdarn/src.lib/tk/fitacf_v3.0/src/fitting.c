@@ -38,9 +38,9 @@ July 2015
  * The data for logarithm of ACF power are fitted using linear least squares for a two parameter straight line
  * fit (exponential decay) and a quadratic fit (Gaussian decay). 
  * Formally, weighting coefficients in the least square fit (variance) should have the 
- * same units as the fitted data (in our case it is log power) otherwise the fitting erros will be determined incorrectly.
+ * same units as the fitted data (in our case it is log power) otherwise the fitting errors will be determined incorrectly.
  * However, fitting simulated ACFs showed that more accurate parameter estimates are obtained if the weights expressed 
- * in linear power units (not log power!). Therfore, we run the fitting pocedure twise: 
+ * in linear power units (not log power!). Therfore, we run the fitting pocedure twice: 
  * (1) with linear power weights to get lag 0 power and spectral width
  * and
  * (2) with log power weights to get correct error estimates.
