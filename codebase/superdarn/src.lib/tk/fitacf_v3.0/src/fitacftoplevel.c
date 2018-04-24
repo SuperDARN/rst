@@ -329,8 +329,13 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
   Filter_Bad_ACFs(fit_prms,ranges,noise_pwr);
   /*llist_for_each_arg(ranges,(node_func_arg)print_range_node,fit_prms,NULL);*/
 
-  /*At this point all data is now processed and valuable so we perform power fits.
-  The phase fitting stage is dependent on fitted power and must be done first*/
+  /*At this point all remaining data are meaningful so we perform power fits.
+  The phase fitting stage is dependent on fitted power so that the power fits must be done first.
+  This is happening because the phase variance used as weighting coefficients depends on
+  correlation coefficient at a given lag, |R(tau)|, as sqrt((R^(-2)-1)/N_ave). 
+  While the theoretical value of |R(tau)| never exceeds unity, its experimetnal estimate 
+  can be larger than 1 due to either statistical fluctuations or contribution from 
+  cros-range interference so that the variance estimate becomes imaginary, i.e. meaningless.*/
   llist_for_each(ranges,(node_func)Power_Fits);
 
   /*We perform the phase fits for velocity and elevation. The ACF phase fit improves the
