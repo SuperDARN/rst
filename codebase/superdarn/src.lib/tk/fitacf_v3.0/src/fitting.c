@@ -35,9 +35,16 @@ July 2015
  * @param[in]  range    A range node(RANGENODE struct) stored in the list.
  *
  * The function is meant to be mapped to every range node via the list method llist_for_each.
- * The data for ACF power is fitted using linear least squares for a two parameter straight line
- * fit and a quadratic fit. Once the initial fit is done, the errors are fit seperately using a
- * log corrected version of the power.
+ * The data for logarithm of ACF power are fitted using linear least squares for a two parameter straight line
+ * fit (exponential decay) and a quadratic fit (Gaussian decay). 
+ * Formally, weighting coefficients in the least square fit (variance) should have the 
+ * same units as the fitted data (in our case it is log power) otherwise the fitting erros will be determined incorrectly.
+ * However, fitting simulated ACFs showed that more accurate parameter estimates are obtained if the weights expressed 
+ * in linear power units (not log power!). Therfore, we run the fitting pocedure twise: 
+ * (1) with linear power weights to get lag 0 power and spectral width
+ * and
+ * (2) with log power weights to get correct error estimates.
+ * 
  */
 void Power_Fits(llist_node range){
     RANGENODE* range_node;
