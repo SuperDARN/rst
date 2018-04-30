@@ -12,7 +12,7 @@
 </option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
-<option><on>-t <ar>thr</ar></on><od>use the threshold factor <ar>thr</ar> to detemine whether data is saved or not.</od>
+<option><on>-t <ar>thr</ar></on><od>use the threshold factor <ar>thr</ar> to detemine whether data is saved or not (note: this option is deprecated).</od>
 </option>
 <option><on>-sd <ar>yyyymmdd</ar></on><od>extract starting from the date <ar>yyyymmdd</ar>.</od>
 </option>
