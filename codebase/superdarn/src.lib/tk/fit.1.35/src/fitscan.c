@@ -215,7 +215,7 @@ int FitReadRadarScan(int fid, int *state,
 
                 /* Set flg equal to 1 if scan data according to scan flag
                  * was successfully stored in RadarScan structure */
-                if (prm->scan==1) flg=1;
+                if (abs(prm->scan)==1) flg=1;
 
                 /* Set flg equal to 1 if scan data of length tlen was
                  * successfully stored in RadarScan structure */
