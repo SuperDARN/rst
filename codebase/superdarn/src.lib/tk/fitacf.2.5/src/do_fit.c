@@ -39,9 +39,7 @@
 #include "badlags.h"
 #include "fit_acf.h"
 #include "noise_stat.h"
-#include "elevation_v2.h"
 #include "elevation.h"
-#include "elev_goose.h"
 #include "ground_scatter.h"
 
 int calc_skynoise(struct FitBlock *iptr, struct FitNoise *nptr, double *mnpwr,
