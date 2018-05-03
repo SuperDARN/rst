@@ -36,7 +36,7 @@ int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
   int i=0,k;
 
   double *pwrd=NULL,*pwrt=NULL;
-  double mnpwr, skylog, freq_to_vel, range;
+  double mnpwr, skylog, freq_to_vel;
   double xomega=0.0;
 
   double noise_pwr=0.0; 
@@ -343,19 +343,19 @@ int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
  
       /* changes which array is first */
 		
-      range = 0.15*(iptr->prm.lagfr + iptr->prm.smsep*(k-1));
+      /* range = 0.15*(iptr->prm.lagfr + iptr->prm.smsep*(k-1)); */
       if (goose==0) {
-        elv[k].normal = elevation(&iptr->prm,range, xptr[k].phi0);
+        elv[k].normal = elevation(&iptr->prm, xptr[k].phi0);
 	elv[k].low = 
-        elevation(&iptr->prm,range, xptr[k].phi0+xptr[k].phi0_err);
+        elevation(&iptr->prm, xptr[k].phi0+xptr[k].phi0_err);
 	elv[k].high = 
-        elevation(&iptr->prm,range,xptr[k].phi0-xptr[k].phi0_err);
+        elevation(&iptr->prm, xptr[k].phi0-xptr[k].phi0_err);
       } else {
-  	elv[k].normal = elev_goose(&iptr->prm,range, xptr[k].phi0);
+  	elv[k].normal = elev_goose(&iptr->prm, xptr[k].phi0);
 	elv[k].low = 
-        elev_goose(&iptr->prm,range, xptr[k].phi0+xptr[k].phi0_err);
+        elev_goose(&iptr->prm, xptr[k].phi0+xptr[k].phi0_err);
         elv[k].high = 
-        elev_goose(&iptr->prm,range, xptr[k].phi0-xptr[k].phi0_err);
+        elev_goose(&iptr->prm, xptr[k].phi0-xptr[k].phi0_err);
       }
     }
     if( (ptr[k].qflg == 1)) i++;
