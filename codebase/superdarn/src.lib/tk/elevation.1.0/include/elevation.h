@@ -30,7 +30,7 @@
 
 
 
-double elevation_v2(struct FitPrm *prm, double range, double psi_obs);
-double elevation(struct FitPrm *prm, double range, double phi0);
-double elev_goose(struct FitPrm *prm, double range, double phi0);
+double elevation_v2(struct FitPrm *prm, double psi_obs);
+double elevation(struct FitPrm *prm, double phi0);
+double elev_goose(struct FitPrm *prm, double phi0);
 
