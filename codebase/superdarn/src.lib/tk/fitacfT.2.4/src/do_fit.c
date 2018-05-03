@@ -23,7 +23,6 @@
 #include "fit_acf.h"
 #include "noise_stat.h"
 #include "elevation.h"
-#include "elev_goose.h"
 #include "ground_scatter.h"
 
 int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
