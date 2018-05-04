@@ -100,7 +100,7 @@ struct FrameBuffer *FrameBufferLoadPNG(FILE *fp,char *name) {
     png_set_strip_16(pngptr);
   }
 
-  if (png_get_bit_depth(pngptr, infoptr) <= 8) {
+  if (png_get_bit_depth(pngptr, infoptr) < 8) {
     png_destroy_read_struct(&pngptr,&infoptr,NULL);
     return NULL;
   }
