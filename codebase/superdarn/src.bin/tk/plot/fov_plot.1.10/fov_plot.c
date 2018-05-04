@@ -65,6 +65,8 @@
 
 #include "aacgm.h"
 #include "mlt.h"
+#include "aacgmlib_v2.h"
+#include "mlt_v2.h"
 
 #include "radar.h" 
 
@@ -133,6 +135,34 @@ int xmldecode(char *buf,int sze,void *data) {
   xmldata=(struct XMLdata *) data;
   return XMLDecode(xmldata,buf,sze);
 } 
+
+int AACGM_v2_transform(int ssze,void *src,int dsze,void *dst,void *data) {
+
+  float *pnt;
+  int s;
+  double mlon,mlat;
+  double glon,glat,r;
+
+  pnt=(float *)src;
+
+  if (data==NULL) {
+    glat=pnt[0];
+    glon=pnt[1];
+    s=AACGM_v2_Convert(glat,glon,300,&mlat,&mlon,&r,0);
+    pnt=(float *)dst;
+    pnt[0]=mlat;
+    pnt[1]=mlon;
+  } else {
+    mlat=pnt[0];
+    mlon=pnt[1];
+    s=AACGM_v2_Convert(mlat,mlon,300,&glat,&glon,&r,1);
+    pnt=(float *)dst;
+    pnt[0]=glat;
+    pnt[1]=glon;
+  }
+  return s;
+
+}
 
 int AACGMtransform(int ssze,void *src,int dsze,void *dst,void *data) {
 
@@ -369,6 +399,10 @@ int main(int argc,char *argv[]) {
   char tsfx[16];
 
   int chisham=0;
+  int old_aacgm=0;
+
+  /* function pointer for MLT */
+  double (*MLTCnv)(int, int, double);
 
   envstr=getenv("MAPDATA");
 
@@ -525,6 +559,8 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"dotr",'f',&dotr);
   OptionAdd(&opt,"dot",'x',&dotflg);
 
+  OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);
+
   OptionAdd(&opt,"chisham",'x',&chisham); /* use Chisham virtual height model */
 
   arg=OptionProcess(1,argc,argv,&opt,NULL);  
@@ -559,18 +595,34 @@ int main(int argc,char *argv[]) {
   if (tmetxt !=NULL) tval=strtime(tmetxt);
   if (dtetxt !=NULL) dval=strdate(dtetxt);
 
+  if (magflg && old_aacgm) magflg = 2; /* set to 2 for old AACGM */
+
+  /* set function pointer to compute MLT or MLT_v2 */
+  if (old_aacgm) MLTCnv = &MLTConvertYrsec;
+  else           MLTCnv = &MLTConvertYrsec_v2;
+
   tval+=dval;
   TimeEpochToYMDHMS(tval,&yr,&mo,&dy,&hr,&mt,&sc);
   yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,sc);
 
+  if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc); /* required */
+
   if (magflg) {
-    MapModify(map,AACGMtransform,NULL);
-    MapModify(bnd,AACGMtransform,NULL);
+    if (old_aacgm) {
+      MapModify(map,AACGMtransform,NULL);
+      MapModify(bnd,AACGMtransform,NULL);
+    } else {
+      MapModify(map,AACGM_v2_transform,NULL);
+      MapModify(bnd,AACGM_v2_transform,NULL);
+    }
   }
 
   fov=make_fov(tval,network,alt,chisham); 
 
-  if (magflg) MapModify(fov,AACGMtransform,NULL);
+  if (magflg) {
+    if (old_aacgm) MapModify(fov,AACGMtransform,NULL);
+    else           MapModify(fov,AACGM_v2_transform,NULL);
+  }
 
 
   if (tmtick<1) tmtick=1;
@@ -614,7 +666,7 @@ int main(int argc,char *argv[]) {
   dec=SZASolarDec(yr,mo,dy,hr,mt,sc);
   eqt=SZAEqOfTime(yr,mo,dy,hr,mt,sc);
 
-  if (magflg) tme_shft=-MLTConvertYrsec(yr,yrsec,0.0)*15.0; 
+  if (magflg) tme_shft=-(*MLTCnv)(yr,yrsec,0.0)*15.0;
     else {
       if (lstflg) {
         LsoT=(hr*3600+mt*60+sc)+eqt;
