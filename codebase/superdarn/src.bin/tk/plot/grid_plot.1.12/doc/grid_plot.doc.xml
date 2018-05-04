@@ -7,12 +7,15 @@
 <syntax>grid_plot --help</syntax>
 <syntax>grid_plot [<ar>options</ar>] <ar>gridname</ar> [<ar>inxname</ar>]
 </syntax>
+<syntax>grid_plot -stdout [<ar>options</ar>] <ar>gridname</ar> [<ar>inxname</ar>]
+</syntax>
 <syntax>grid_plot -png [<ar>options</ar>] <ar>gridname</ar> [<ar>inxname</ar>]
 </syntax>
-<syntax>grid_plot -stdout [<ar>options</ar>] <ar>gridname</ar> [<ar>inxname</ar>]</syntax>
+<syntax>grid_plot -png -stdout [<ar>options</ar>] <ar>gridname</ar> [<ar>inxname</ar>]
+</syntax>
 <syntax>grid_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] <ar>gridname</ar> [<ar>inxname</ar>]
 </syntax>
-<syntax>grid_plot -stdout -ps [-land] [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] <ar>gridname</ar> [<ar>inxname</ar>]
+<syntax>grid_plot -ps -stdout [-land] [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] <ar>gridname</ar> [<ar>inxname</ar>]
 </syntax>
 <syntax>grid_plot -ppm [<ar>options</ar>] <ar>gridname</ar> [<ar>inxname</ar>]
 </syntax>
