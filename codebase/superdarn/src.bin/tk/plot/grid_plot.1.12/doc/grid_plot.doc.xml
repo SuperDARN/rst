@@ -7,6 +7,8 @@
 <syntax>grid_plot --help</syntax>
 <syntax>grid_plot [<ar>options</ar>] <ar>gridname</ar> [<ar>inxname</ar>]
 </syntax>
+<syntax>grid_plot -png [<ar>options</ar>] <ar>gridname</ar> [<ar>inxname</ar>]
+</syntax>
 <syntax>grid_plot -stdout [<ar>options</ar>] <ar>gridname</ar> [<ar>inxname</ar>]</syntax>
 <syntax>grid_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] <ar>gridname</ar> [<ar>inxname</ar>]
 </syntax>
@@ -201,6 +203,8 @@
 </option>
 <option><on>-t <ar>hr:mn</ar></on><od>plot the data at the time <ar>hr:mn</ar>.</od>
 </option>
+<option><on>-png</on><od>produce a Portable Network Graphics (PNG) image as the output.</od>
+</option>
 <option><on>-ps</on><od>produce a PostScript plot as the output.</od>
 </option>
 <option><on>-xp <ar>xoff</ar></on><od>set the X offset of the PostScript plot to <ar>xoff</ar>.</od>
@@ -226,7 +230,7 @@
 </option>
 <synopsis><p>Plot the <code>grd</code> and <code>grdmap</code>format files.</p></synopsis>
 <description><p>Plot the <code>grd</code> and <code>grdmap</code>format files.</p>
-<p>The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, or PostScript file. The default output is XML.</p>
+<p>The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, Portable Network Graphics (PNG), or PostScript file. The default output is XML.</p>
 <p>The program usually steps through the gridded data and writes each plot to a file. The output filenames are of the form "<code><em>nnnn.xxx</em></code>", where <em>nnnn</em> is the frame number starting at 0000 and <em>xxx</em> is the suffix "<code>xml</code>","<code>ps</code>","<code>ppm</code>", or "<code>ppmx</code>". The options "<code>-tn</code>" and "<code>-dn</code>" can be used to change this format to one based on the time of each plot.</p>
 <p>If the "<code>-stdout</code>" option is used then the program will just plot a single record from the file and the plot is written to standard output. The "<code>-d</code>" and "<code>-t</code>" options are used to select the time to plot.</p>
 <p>The task only plots what it is instructed to plot on the command line which means that at least some of the options must be included if the plot is to show anything.</p>
