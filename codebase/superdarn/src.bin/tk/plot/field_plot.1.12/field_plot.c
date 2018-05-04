@@ -941,9 +941,13 @@ int main(int argc,char *argv[]) {
   } else dname=argv[argc-1];
 
   if (defflg) { /* set default plot */
-    keyflg=1;
-    tmeflg=1;
-    sqflg=1;    
+    keyflg=1;   /* plot the color key (-keyp) */
+    tmeflg=1;   /* plot the time of the plotted data (-time) */
+    sqflg=1;    /* force the use of a square bounding box (-square) */
+    mapflg=1;   /* plot coastlines (-coast) */
+    fmapflg=1;  /* plot filled coastlines (-fcoast) */
+    fanflg=1;   /* plot the radar field of view (-fan) */
+    sf=1.5;     /* increase the scale factor (-sf 1.5) */
   }
 
   if (repeat==0) {
