@@ -13,7 +13,7 @@
 </syntax>
 <syntax>field_plot -csd [<ar>options</ar>] [<ar>csdname</ar>]
 </syntax>
-<syntax>field_plot -png [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]
+<syntax>field_plot -png [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]
 </syntax>
 <syntax>field_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]
 </syntax>
