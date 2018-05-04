@@ -215,7 +215,7 @@ int main(int argc,char *argv[]) {
   struct XwinDisplay *dp=NULL;
   struct XwinWindow *win=NULL;
   char *display_name=NULL;
-  char *wname="map_plotxt";
+  char *wname="map_plot";
   int xdoff=-1;
   int ydoff=-1;
   struct timeval tmout;

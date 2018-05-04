@@ -149,7 +149,7 @@ int main(int argc,char *argv[]) {
   struct XwinDisplay *dp;
   struct XwinWindow *win;
   char *display_name=NULL;
-  char *wname="istp_plot";
+  char *wname="hmb_plot";
   int xdoff=-1;
   int ydoff=-1;
 #endif
