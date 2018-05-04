@@ -901,7 +901,7 @@ int main(int argc,char *argv[]) {
   if ((lat<0) && (latmin>0)) latmin=-latmin;
   if ((lat>0) && (latmin<0)) latmin=-latmin;
 
-  if (fovflg || ffovflg) fov=make_fov(rgrid->st_time,network,chisham); 
+  if (fovflg || ffovflg) fov=make_fov(rgrid->st_time,network,chisham,old_aacgm); 
   if ((fovflg || ffovflg) && !magflg) {
     if (old_aacgm) MapModify(fov,AACGMtransform,&flg);
     else           MapModify(fov,AACGM_v2_transform,&flg);
