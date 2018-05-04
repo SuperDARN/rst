@@ -34,6 +34,7 @@
 #include <string.h>
 #include <math.h>
 #include "aacgm.h"
+#include "aacgmlib_v2.h"
 #include "rfbuffer.h"
 #include "iplot.h"
 #include "calcvector.h"
@@ -48,7 +49,7 @@ void plot_refvec(struct Plot *plot,float px,float py,int or,double max,
               int (*trnf)(int,void *,int,void *,void *data),void *data,
               unsigned int color,char mask,float width,
               char *fontname,float fontsize,
-              void *txtdata,float rad) {
+              void *txtdata,float rad,int old_aacgm) {
 
   int s;
   char txt[256];
@@ -65,7 +66,8 @@ void plot_refvec(struct Plot *plot,float px,float py,int or,double max,
     int s;
     mlat=lat;
     mlon=lon;
-    s=AACGMConvert(mlat,mlon,150,&glat,&glon,&r,1);
+    if (old_aacgm) s=AACGMConvert(mlat,mlon,150,&glat,&glon,&r,1);
+    else           s=AACGM_v2_Convert(mlat,mlon,150,&glat,&glon,&r,1);
     lat=glat;
     lon=glon;
   }
@@ -84,7 +86,8 @@ void plot_refvec(struct Plot *plot,float px,float py,int or,double max,
     int s;
     mlat=lat;
     mlon=lon;
-    s=AACGMConvert(mlat,mlon,150,&glat,&glon,&r,1);
+    if (old_aacgm) s=AACGMConvert(mlat,mlon,150,&glat,&glon,&r,1);
+    else           s=AACGM_v2_Convert(mlat,mlon,150,&glat,&glon,&r,1);
     lat=glat;
     lon=glon;
   }

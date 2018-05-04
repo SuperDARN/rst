@@ -71,6 +71,8 @@
 #include "grplotstd.h"
 #include "aacgm.h"
 #include "mlt.h"
+#include "aacgmlib_v2.h"
+#include "mlt_v2.h"
 #include "dmap.h"
 #include "stdkey.h"
 #include "radar.h" 
@@ -242,6 +244,34 @@ int stream(char *buf,int sze,void *data) {
   fwrite(buf,sze,1,fp);
   return 0;
 } 
+
+int AACGM_v2_transform(int ssze,void *src,int dsze,void *dst,void *data) {
+
+  float *pnt;
+  int s;
+  double mlon,mlat;
+  double glon,glat,r;
+
+  pnt=(float *)src;
+
+  if (data==NULL) {
+    glat=pnt[0];
+    glon=pnt[1];
+    s=AACGM_v2_Convert(glat,glon,300,&mlat,&mlon,&r,0);
+    pnt=(float *)dst;
+    pnt[0]=mlat;
+    pnt[1]=mlon;
+  } else {
+    mlat=pnt[0];
+    mlon=pnt[1];
+    s=AACGM_v2_Convert(mlat,mlon,300,&glat,&glon,&r,1);
+    pnt=(float *)dst;
+    pnt[0]=glat;
+    pnt[1]=glon;
+  }
+  return s;
+
+}
 
 int AACGMtransform(int ssze,void *src,int dsze,void *dst,void *data) {
 
@@ -636,6 +666,9 @@ int main(int argc,char *argv[]) {
   int chisham=0;
   int old_aacgm=0;
 
+  /* function pointer for MLT */
+  double (*MLTCnv)(int, int, double);
+
   prm=RadarParmMake();
   fit=FitMake();
   cfit=CFitMake();
@@ -708,6 +741,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-option",'x',&option);
 
   OptionAdd(&opt,"old",'x',&old); 
+  OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);
 
   OptionAdd(&opt,"cf",'t',&cfname);
 
@@ -1074,11 +1108,18 @@ int main(int argc,char *argv[]) {
     sprintf(revtxt,"Revision:%d.%d",cfit->version.major,
             cfit->version.minor);
   }
- 
+
+  if (magflg && old_aacgm) magflg = 2; /* set to 2 for old AACGM */
+
+  /* set function pointer to compute MLT or MLT_v2 */
+  if (old_aacgm) MLTCnv = &MLTConvertYrsec;
+  else           MLTCnv = &MLTConvertYrsec_v2;
  
   TimeEpochToYMDHMS(scn->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
   radar=RadarGetRadar(network,scn->stid);
   site=RadarYMDHMSGetSite(radar,yr,mo,dy,hr,mt,(int) sc);
+
+  if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc); /* required */
 
   if (site->geolat>0) hemisphere=1;
   else hemisphere=-1;
@@ -1092,7 +1133,10 @@ int main(int argc,char *argv[]) {
   if ((lat>0) && (latmin<0)) latmin=-latmin;
 
   if (fovflg || ffovflg) fov=make_fov(scn->st_time,network,scn->stid,chisham); 
-  if ((fovflg || ffovflg) && magflg) MapModify(fov,AACGMtransform,NULL);
+  if ((fovflg || ffovflg) && magflg) {
+    if (old_aacgm) MapModify(fov,AACGMtransform,NULL);
+    else           MapModify(fov,AACGM_v2_transform,NULL);
+  }
 
  
 
@@ -1105,11 +1149,22 @@ int main(int argc,char *argv[]) {
   if (tmkflg) tmk=make_grid(30*tmtick,10);
 
   if (magflg) {
-    MapModify(map,AACGMtransform,NULL);
-    MapModify(bnd,AACGMtransform,NULL);
-    if (igrdflg) MapModify(igrd,AACGMtransform,NULL);
+    if (old_aacgm) {
+      MapModify(map,AACGMtransform,NULL);
+      MapModify(bnd,AACGMtransform,NULL);
+    } else {
+      MapModify(map,AACGM_v2_transform,NULL);
+      MapModify(bnd,AACGM_v2_transform,NULL);
+    }
+    if (igrdflg) {
+      if (old_aacgm) MapModify(igrd,AACGMtransform,NULL);
+      else           MapModify(igrd,AACGM_v2_transform,NULL);
+    }
   } else {
-    if (igrdflg) MapModify(igrd,AACGMtransform,marg);
+    if (igrdflg) {
+      if (old_aacgm) MapModify(igrd,AACGMtransform,marg);
+      else           MapModify(igrd,AACGM_v2_transform,marg);
+    }
   }
  
   marg[0]=lat;
@@ -1402,7 +1457,7 @@ int main(int argc,char *argv[]) {
       }
 
 
-      if (magflg) tme_shft=-MLTConvertYrsec(yr,yrsec,0.0)*15.0; 
+      if (magflg) tme_shft=-(*MLTCnv)(yr,yrsec,0.0)*15.0;
       else {
         double dec,eqt,LsoT,LT,Hangle;
         if (lstflg) {
@@ -1703,11 +1758,11 @@ int main(int argc,char *argv[]) {
           if (ortho) plot_refvec(plot,px,1.8*apad,0,vmax,magflg,
                           xbox+pad,ybox+pad,wdt-2*pad,hgt-2*pad,
                           vsf,tfunc,marg,txtcol,0x0f,0.5,
-                          "Helvetica",10.0,fontdb,vecr);
+                          "Helvetica",10.0,fontdb,vecr,old_aacgm);
           else plot_refvec(plot,px,1.8*apad,0,vmax,magflg,
                           xbox+pad,ybox+pad,wdt-2*pad,hgt-2*pad,
 		    vsf,MapStereographic,marg,txtcol,0x0f,0.5,
-                          "Helvetica",10.0,fontdb,vecr);
+                          "Helvetica",10.0,fontdb,vecr,old_aacgm);
         
         }
       }
