@@ -162,19 +162,19 @@
 </description>
 
 <example>
-<command>fov_plot -grd -fov -ffov -stereo -mag -x kod </command>
+<command>fov_plot -grd -fov -ffov -stereo -mag -x -st kod </command>
 <description> Plot a stereographic projection in magnetic coordinates of the Kodiak field of view on an X terminal. Show a grid of latitude and longitude.</description>
 </example>
 
 <example>
-<command>fov_plot -ps -grd -fov -ffov -stereo -coast gbr &gt; gbr.ps</command>
-<description>Generate a PostScript  plot of the Goose Bay field of view using a stereographic projection. Show coastlines and a grid of longitude and latitude. The plot is stored in the file "<code>gbr.ps</code>".</description>
+<command>fov_plot -ps -grd -fov -ffov -stereo -coast -st gbr &gt; gbr.ps</command>
+<description>Generate a PostScript plot of the Goose Bay field of view using a stereographic projection. Show coastlines and a grid of longitude and latitude. The plot is stored in the file "<code>gbr.ps</code>".</description>
 </example>
 
 <example type="rplot">example1</example>
 
 <example>
-<command>fov_plot -grd -fov -ffov-ortho -fterm -d 20040312 -t 12:00 -fcoast -coast -ofov -fofov -fov -ffov sas &gt sas.rp.xml
+<command>fov_plot -grd -fov -ffov -ortho -fterm -d 20040312 -t 12:00 -fcoast -coast -ofov -fofov -st sas &gt sas.rp.xml
 </command>
 <description>Generate an rXML  plot of the Saskatoon field of view using an orthographic projection. Show coastlines, shade land and sea, overlay a grid of longitude and latitude. Show the fields of view of the other radars. Shade the image to show the terminator for a  time of March 12, 2004 at 12:00 UTC. The plot is stored in the file "<code>sas.rp.xml</code>".</description>
 </example>
