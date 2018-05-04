@@ -811,7 +811,7 @@ int main(int argc,char *argv[]) {
   else clip=MapSquareClip();
 
   if (lat>90) lat=90*rcmap->hemisphere;
-  if (fovflg || ffovflg) fov=make_fov(rgrid->st_time,network,chisham); 
+  if (fovflg || ffovflg) fov=make_fov(rgrid->st_time,network,chisham,old_aacgm);
   if ((fovflg || ffovflg) && !magflg) {
     if (old_aacgm) MapModify(fov,AACGMtransform,&flg);
     else           MapModify(fov,AACGM_v2_transform,&flg);

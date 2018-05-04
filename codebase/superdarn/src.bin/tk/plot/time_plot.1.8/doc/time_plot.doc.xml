@@ -158,6 +158,8 @@
 </option>
 <option><on>-mag</on><od>plot in terms of geomagnetic latitude.</od>
 </option>
+<option><on>-old_aacgm</on><od>user older AACGM rather than AACGM-v2 for magnetic coordinates.</od>
+</option>
 <option><on>-latmin <ar>latmin</ar></on><od>force the lower latitude limit to be <ar>latmin</ar> degrees.</od>
 </option>
 <option><on>-latmax <ar>latmax</ar></on><od>force the upper latitude limit to be <ar>latmax</ar> degrees.</od>

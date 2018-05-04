@@ -39,7 +39,6 @@
 #include <ctype.h>
 #include <zlib.h>
 
-
 #ifdef _XLIB_
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -62,7 +61,6 @@
 #endif
 
 #include "grplot.h"
-
 #include "rtime.h"
 #include "radar.h"
 #include "rpos.h"
@@ -72,11 +70,8 @@
 #include "cfitread.h"
 #include "fitread.h"
 #include "fitindex.h"
-
 #include "oldfitread.h"
-
 #include "stdkey.h"
-
 #include "tplot.h"
 #include "fit.h"
 #include "oldfit.h"
@@ -85,12 +80,10 @@
 #include "expr.h"
 #include "hlpstr.h"
 #include "errstr.h"
-
 #include "graphics.h"
 #include "key.h"
-
 #include "version.h"
-
+#include "aacgmlib_v2.h"
 
 
 
@@ -457,6 +450,7 @@ int main(int argc,char *argv[]) {
   int cptab[256];
 
   int chisham=0;
+  int old_aacgm=0;
 
   prm=RadarParmMake();
   fit=FitMake();
@@ -581,6 +575,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"fbeam",'i',&fbeam); /* first beam in summary file scan */
 
   OptionAdd(&opt,"chisham",'x',&chisham); /* use Chisham virtual height model */
+  OptionAdd(&opt,"old_aacgm",'x',&old_aacgm); /* use older AACGM coefficients rather than AACGM-v2 */
 
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
@@ -999,7 +994,10 @@ int main(int argc,char *argv[]) {
     exit(-1);
   }
  
-
+  if (!old_aacgm) {
+    TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
+    AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc); /* required */
+  }
 
   if (geoflg || magflg) { 
     envstr=getenv("SD_HDWPATH");
@@ -1021,7 +1019,6 @@ int main(int argc,char *argv[]) {
       radar=RadarGetRadar(network,cfit->stid);
       site=RadarYMDHMSGetSite(radar,yr,mo,dy,hr,mt,sc);
     }
-
 
     if (site==NULL) { 
       fprintf(stderr,"Station not found.\n");
@@ -1156,12 +1153,12 @@ int main(int argc,char *argv[]) {
           double rho,blat,tlat,lon,tmp;
           if (magflg) RPosMag(0,tplot.bmnum,rng-1,site,tplot.frang,
                                  tplot.rsep,tplot.rxrise,300,&rho,
-                                 &blat,&lon,chisham);
+                                 &blat,&lon,chisham,old_aacgm);
           else RPosGeo(0,tplot.bmnum,rng-1,site,tplot.frang,tplot.rsep,
                         tplot.rxrise,300,&rho,&blat,&lon,chisham);   
    
           if (magflg) RPosMag(0,tplot.bmnum,rng,site,tplot.frang,tplot.rsep,
-                               tplot.rxrise,300,&rho,&tlat,&lon,chisham);   
+                               tplot.rxrise,300,&rho,&tlat,&lon,chisham,old_aacgm);
           else RPosGeo(0,tplot.bmnum,rng,site,tplot.frang,tplot.rsep,
                         tplot.rxrise,300,&rho,&tlat,&lon,chisham);   
 
