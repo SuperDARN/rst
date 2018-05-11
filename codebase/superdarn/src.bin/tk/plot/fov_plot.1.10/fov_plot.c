@@ -381,7 +381,7 @@ int main(int argc,char *argv[]) {
   double tval=-1;
   double dval=-1;
 
-  int yr,mo,dy,hr,mt,dno;
+  int yr,mo,dy,hr,mt,sec,dno;
   double sc;
   int yrsec;
   float tme_shft;
@@ -610,7 +610,7 @@ int main(int argc,char *argv[]) {
   } else {
     fprintf(stderr,"\nDate must be set for fov_plot, using today's date.\n");
     AACGM_v2_SetNow();
-    AACGM_v2_GetDateTime(&yr,&mo,&dy,&hr,&mt,&sc,&dno);
+    AACGM_v2_GetDateTime(&yr,&mo,&dy,&hr,&mt,&sec,&dno);
     if (tval !=-1) {
       dval=TimeYMDHMSToEpoch(yr,mo,dy,0,0,0);
       tval+=dval;
