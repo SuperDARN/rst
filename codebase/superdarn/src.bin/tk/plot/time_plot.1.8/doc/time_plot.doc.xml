@@ -5,37 +5,37 @@
 <location>src.bin/tk/plot/time_plot</location>
 
 <syntax>time_plot --help</syntax>
-<syntax>time_plot [<ar>options</ar>] <ar>fitname</ar> [<ar>inxname</ar>]</syntax>
-<syntax>time_plot -new [<ar>options</ar>] [<ar>fitacfname</ar>] [<ar>inxname</ar>]</syntax>
+<syntax>time_plot [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]</syntax>
+<syntax>time_plot -old [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]</syntax>
 <syntax>time_plot -cfit [<ar>options</ar>] <ar>cfitname</ar></syntax>
 <syntax>time_plot -csd [<ar>options</ar>] <ar>csdname</ar></syntax>
 <syntax>time_plot -smr [<ar>options</ar>] <ar>smrname</ar></syntax>
-
-<syntax>time_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] <ar>fitname</ar> [<ar>inxname</ar>]</syntax>
-<syntax>time_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] -new [<ar>fitacfname</ar>] [<ar>inxname</ar>]</syntax>
+<syntax>time_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]</syntax>
+<syntax>time_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] -old [<ar>fitname</ar>] [<ar>inxname</ar>]</syntax>
 <syntax>time_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] -cfit <ar>cfitname</ar></syntax>
 <syntax>time_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] -csd <ar>csdname</ar></syntax>
 <syntax>time_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] -smr <ar>smrname</ar></syntax>
-<syntax>time_plot -ppm  [<ar>options</ar>] <ar>fitname</ar> [<ar>inxname</ar>]</syntax>
-<syntax>time_plot -ppm -new [<ar>options</ar>] [<ar>fitacfname</ar>] [<ar>inxname</ar>]</syntax>
+<syntax>time_plot -ppm [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]</syntax>
+<syntax>time_plot -ppm -old [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]</syntax>
 <syntax>time_plot -ppm -cfit [<ar>options</ar>] <ar>cfitname</ar></syntax>
 <syntax>time_plot -ppm -csd [<ar>options</ar>] <ar>csdname</ar></syntax>
 <syntax>time_plot -ppm -smr [<ar>options</ar>] <ar>smrname</ar></syntax>
-<syntax>time_plot -ppmx  [<ar>options</ar>] <ar>fitname</ar> [<ar>inxname</ar>]</syntax>
-<syntax>time_plot -ppmx -new [<ar>options</ar>] [<ar>fitacfname</ar>] [<ar>inxname</ar>]</syntax>
+<syntax>time_plot -ppmx [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]</syntax>
+<syntax>time_plot -ppmx -old [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]</syntax>
 <syntax>time_plot -ppmx -cfit [<ar>options</ar>] <ar>cfitname</ar></syntax>
 <syntax>time_plot -ppmx -csd [<ar>options</ar>] <ar>csdname</ar></syntax>
 <syntax>time_plot -ppmx -smr [<ar>options</ar>] <ar>smrname</ar></syntax>
-<syntax>time_plot -xml [<ar>options</ar>] <ar>fitname</ar> [<ar>inxname</ar>]</syntax>
-<syntax>time_plot -xml -new [<ar>options</ar>] [<ar>fitacfname</ar>] [<ar>inxname</ar>]</syntax>
+<syntax>time_plot -xml [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]</syntax>
+<syntax>time_plot -xml -old [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]</syntax>
 <syntax>time_plot -xml -cfit [<ar>options</ar>] <ar>cfitname</ar></syntax>
 <syntax>time_plot -xml -csd [<ar>options</ar>] <ar>csdname</ar></syntax>
 <syntax>time_plot -xml -smr [<ar>options</ar>] <ar>smrname</ar></syntax>
-<syntax>time_plot -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [<ar>options</ar>] <ar>fitname</ar> [<ar>inxname</ar>]</syntax>
-<syntax>time_plot -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] -new [<ar>options</ar>] [<ar>fitacfname</ar>] [<ar>inxname</ar>]</syntax>
+<syntax>time_plot -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]</syntax>
+<syntax>time_plot -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] -old [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]</syntax>
 <syntax>time_plot  -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] -cfit [<ar>options</ar>] <ar>cfitname</ar></syntax>
 <syntax>time_plot -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] -csd [<ar>options</ar>] <ar>csdname</ar></syntax>
 <syntax>time_plot -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] -smr [<ar>options</ar>] <ar>smrname</ar></syntax>
+
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
 <option><on>-cf <ar>cfname</ar></on><od>read command line options from the file <ar>cfname</ar>.</od>
@@ -170,13 +170,13 @@
 </option>
 <option><on>-fn <ar>expr</ar></on><od>apply the mathematic expression <ar>expr</ar> to the data before it is plotted.</od>
 </option>
-<option><on><ar>fitname</ar></on><od>filename of the <code>fit</code> format file to plot.</od>
+<option><on><ar>fitacfname</ar></on><od>filename of the <code>fitacf</code> format file to plot.</od>
 </option>
 <option><on><ar>inxname</ar></on><od>filename of the index file.</od>
 </option>
-<option><on>-new</on><od>file is in the <code>fitacf</code> format.</od>
+<option><on>-old</on><od>file is in the <code>fit</code> format.</od>
 </option>
-<option><on><ar>fitacfname</ar></on><od>filename of the <code>fitacf</code> format file to plot.</od>
+<option><on><ar>fitname</ar></on><od>filename of the <code>fit</code> format file to plot.</od>
 </option>
 <option><on>-cfit</on><od>file is in the <code>cfit</code> format.</od>
 </option>
@@ -223,7 +223,7 @@
 </description>
 
 <example>
-<command>time_plot -x -gs -a -b 5 20041230.kod.fit</command>
+<command>time_plot -x -old -gs -a -b 5 20041230.kod.fit</command>
 <description>Plot a time series of power,velocity and spectral width from the file "<code>20041230.kod.fit</code>". Mark ground scatter in grey. Display the plot on the X terminal.</description>
 </example>
 

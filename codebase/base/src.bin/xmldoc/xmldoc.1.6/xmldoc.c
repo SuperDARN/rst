@@ -361,8 +361,7 @@ int main(int argc,char *argv[]) {
 
   s=chdir(argv[arg]);
   if (s !=0) {
-    fprintf(stderr,"chdir failed.\n");
-    exit(-1);
+    /*exit(-1);*/
   }
 
   fp=fopen(argv[arg+1],"r");

@@ -52,19 +52,15 @@ struct RadarSite *site;
 
 struct OptionData opt;
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: make_fit --help\n");
+  return(-1);
+}
+
 int main(int argc,char *argv[]) {
 
-  /* File format transistion
-   * ------------------------
-   *
-   * When we switch to the new file format remove any reference
-   * to "new". Change the command line option "new" to "old" and
-   * remove "old=!new".
-   */
-
-
   unsigned char old=0;
-  unsigned char new=0;
 
   char *envstr;
   int status;
@@ -103,13 +99,15 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"vb",'x',&vb);
 
-  OptionAdd(&opt,"new",'x',&new);
+  OptionAdd(&opt,"old",'x',&old);
 
   OptionAdd(&opt,"fitacf-version",'t',&fitacf_version_s);
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
-  old=!new;
+  if (arg==-1) {
+    exit(-1);
+  }
 
   if (fitacf_version_s != NULL) {
     if (strcmp(fitacf_version_s, "3.0") == 0){
