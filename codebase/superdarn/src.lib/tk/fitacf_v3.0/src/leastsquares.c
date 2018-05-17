@@ -41,10 +41,12 @@ typedef struct data{
 	double sigma;
 }DATA;
 
-
 /**
-Returns a pointer to a new FITDATA structure
-*/
+ * @brief      Allocates a new FITDATA struct pointer.
+ *
+ * @return     Pointer to a new FITDATA struct.
+ *
+ */
 FITDATA *new_fit_data(){
 	FITDATA *new_fit_data;
 	SUMS *new_sums;
@@ -74,6 +76,11 @@ FITDATA *new_fit_data(){
 
 }
 
+/**
+ * @brief      Frees allocated FITDATA struct.
+ *
+ * @param      fit_data  A pointer to a FITDATA struct.
+ */
 void free_fit_data(FITDATA *fit_data){
 	if(fit_data->sums != NULL){
 		free(fit_data->sums);
@@ -84,9 +91,13 @@ void free_fit_data(FITDATA *fit_data){
 	}
 }
 
+
 /**
-prints the contents of a FITDATA structure
-*/
+ * @brief      Prints the contents of a FITDATA struct to file.
+ *
+ * @param      fit_data  A pointer to a FITDATA struct.
+ * @param      fp        File pointer for which to print contents.
+ */
 void print_fit_data(FITDATA *fit_data, FILE* fp){
 	fprintf(fp,"S: %e\n",fit_data->sums->S);
 	fprintf(fp,"S_x: %e\n",fit_data->sums->S_x);
@@ -107,8 +118,15 @@ void print_fit_data(FITDATA *fit_data, FILE* fp){
 }
 
 /**
-Calculates the sums used in least squares fitting
-*/
+ * @brief      Calculates the sums used in least squares fitting.
+ *
+ * @param[in]  data      A data node(DATA struct)
+ * @param      fit_data  The fit data
+ * @param      fit_type  The fit type
+ *
+ * The function is meant to be mapped to every data node via the list method llist_for_each. This
+ * function computes all the sums needed to directly calculate the linear least squares fit.
+ */
 void calculate_sums(llist_node data,FITDATA *fit_data,FIT_TYPE* fit_type){
 	DATA* data_node;
 	double x,y,sigma;
@@ -140,6 +158,16 @@ void calculate_sums(llist_node data,FITDATA *fit_data,FIT_TYPE* fit_type){
 }
 
 
+/**
+ * @brief      Calculates the chi square value for goodness of fit
+ *
+ * @param[in]  data      A DATA point.
+ * @param      fit_data  A FITDATA struct for which to add to.
+ * @param      fit_type  The fit type, linear or quadratic.
+ *
+ * The function is meant to be mapped to every data node via the list method llist_for_each. This
+ * function computes the chi square value of a data set for least squares.
+ */
 void find_chi_2(llist_node data,FITDATA *fit_data, FIT_TYPE* fit_type){
 	DATA* data_node;
 	double x,y,sigma;
@@ -164,9 +192,11 @@ void find_chi_2(llist_node data,FITDATA *fit_data, FIT_TYPE* fit_type){
 }
 
 /**
-Computes the log of a gamma function to prevent overflows
-Taken from NUMERICAL RECIPES IN C: THE ART OF SCIENTIFIC COMPUTING
-*/
+ * @brief      Computes log of gamma function.
+ *
+ * Computes the log of a gamma function to prevent overflows. Directely taken from
+ * NUMERICAL RECIPES IN C: THE ART OF SCIENTIFIC COMPUTING. Refer to text for descriptions.
+ */
 double gammln(double xx)
 {
 	double x,y,tmp,ser;
@@ -183,9 +213,11 @@ double gammln(double xx)
 }
 
 /**
-Computes the gamma function as a series representation
-Taken from NUMERICAL RECIPES IN C: THE ART OF SCIENTIFIC COMPUTING
-*/
+ * @brief      Computes the gamma function as a series representation
+ *
+ * Computes the gamma function as a series representation. Directly taken from
+ * NUMERICAL RECIPES IN C: THE ART OF SCIENTIFIC COMPUTING. Refer to text for more description.
+ */
 void gamma_series_rep(double *gamser, double a, double x, double *gln)
 {
 	int n;
@@ -211,10 +243,13 @@ void gamma_series_rep(double *gamser, double a, double x, double *gln)
 	}
 }
 
+
 /**
-Computes the gamma function as continued fractions
-Taken from NUMERICAL RECIPES IN C: THE ART OF SCIENTIFIC COMPUTING
-*/
+ * @brief      Computes the gamma function as continued fractions
+ *
+ * Computes the gamma function as continued fractions. Directly taken from
+ * NUMERICAL RECIPES IN C: THE ART OF SCIENTIFIC COMPUTING. Refer to text for more description.
+ */
 void gamma_continued_frac(double *gammcf, double a, double x, double *gln)
 {
 	int i;
@@ -241,10 +276,13 @@ void gamma_continued_frac(double *gammcf, double a, double x, double *gln)
 }
 
 /**
-Computes the incomplete upper gamma function using either
-series representation or continued fractions, depending on
-which will be faster
-*/
+ * @brief      Computes the incomplete upper gamma function.
+ *
+ * Computes the incomplete upper gamma function using eitherseries representation or continued
+ * fractions, depending on which will be faster. Directly taken from
+ * NUMERICAL RECIPES IN C: THE ART OF SCIENTIFIC COMPUTING. Refer to text for more description.
+ *
+ */
 double gammaq(double a, double x){
 
 	double gamser = 0.0,gammcf = 0.0,gln = 0.0;
@@ -259,8 +297,15 @@ double gammaq(double a, double x){
 }
 
 /**
-Fits data to a two parameter straight line model and provides uncertainty in that fit
-*/
+ * @brief      Performs a two parameter straight line fit.
+ *
+ * @param      fit_data    a FITDATA struct to hold fitting values.
+ * @param[in]  data        A list of DATA points.
+ * @param[in]  confidence  The confidence interval level.
+ * @param[in]  DoF         Number of degrees of freedom.
+ *
+ * Fits data to a two parameter straight line model and provides uncertainty in that fit.
+ */
 void two_param_straight_line_fit(FITDATA *fit_data,llist data,int confidence, int DoF){
 
 	double S,S_x,S_y,S_xx,S_xy;
@@ -303,8 +348,15 @@ void two_param_straight_line_fit(FITDATA *fit_data,llist data,int confidence, in
 }
 
 /**
-Fits data to a one parameter straight line model and provides uncertainty in that fit
-*/
+ * @brief      Performs a one parameter straight line fit.
+ *
+ * @param      fit_data    a FITDATA struct to hold fitting values.
+ * @param[in]  data        A list of DATA points.
+ * @param[in]  confidence  The confidence interval level.
+ * @param[in]  DoF         Number of degrees of freedom.
+ *
+ * Fits data to a one parameter straight line model and provides uncertainty in that fit.
+ */
 void one_param_straight_line_fit(FITDATA *fit_data,llist data,int confidence, int DoF){
 
 	double S_xx,S_xy;
@@ -344,8 +396,15 @@ void one_param_straight_line_fit(FITDATA *fit_data,llist data,int confidence, in
 }
 
 /**
-Fits data to a quadratic model and provides uncertainty in that fit
-*/
+ * @brief      Performs a two parameter quadratic fit.
+ *
+ * @param      fit_data    a FITDATA struct to hold fitting values.
+ * @param[in]  data        A list of DATA points.
+ * @param[in]  confidence  The confidence interval level.
+ * @param[in]  DoF         Number of degrees of freedom.
+ *
+ * Fits data to a two parameter quadratic model and provides uncertainty in that fit.
+ */
 void quadratic_fit(FITDATA *fit_data,llist data,int confidence, int DoF){
 
 	double S,S_x,S_y,S_xx,S_xy;
@@ -360,7 +419,6 @@ void quadratic_fit(FITDATA *fit_data,llist data,int confidence, int DoF){
 	confidence -= 1;
 	DoF -= 1;
 
-	/*calculate_sums(fit_data,sigma,x_2,y,lag,pwr_level,length);*/
 	llist_for_each_arg(data,(node_func_arg)calculate_sums,fit_data,&quadratic);
 
 	S = fit_data->sums->S;
