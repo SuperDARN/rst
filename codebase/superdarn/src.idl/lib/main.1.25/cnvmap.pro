@@ -85,8 +85,11 @@ pro CnvMapMakePrm,prm
                   Bx: 0.0D, $
                   By: 0.0D, $
                   Bz: 0.0D, $
-                  imf_model: strarr(2), $
+                  Vx: 0.0D, $
+                  tilt: 0.0D, $
+                  imf_model: strarr(4), $
                   hemisphere: 0, $
+                  noigrf: 0, $
                   fit_order: 0, $
                   latmin: 0.0, $
                   coefnum: 0L, $
@@ -178,9 +181,14 @@ function CnvMapRead,unit,prm,stvec,gvec,mvec,coef,bvec
           'IMF.Bx', $
           'IMF.By', $
           'IMF.Bz', $
+          'IMF.Vx', $
+          'IMF.tilt', $
           'model.angle', $
           'model.level', $
+          'model.tilt', $
+          'model.name', $
           'hemisphere', $
+          'noigrf', $
           'fit.order', $
           'latmin', $
           'chi.sqr', $ 
@@ -201,7 +209,7 @@ function CnvMapRead,unit,prm,stvec,gvec,mvec,coef,bvec
 
   scltype=[2,2,2,2,2,8, $
            2,2,2,2,2,8, $
-           2,2,9,2,2,2,2,2,8,8,8,9,9,2,2,4,8,8,8,4,4,8,8, $
+           2,2,9,2,2,2,2,2,8,8,8,8,8,9,9,9,9,2,2,2,4,8,8,8,4,4,8,8, $
            8,8,8,8,8,8,8]
 
 
@@ -244,6 +252,11 @@ function CnvMapRead,unit,prm,stvec,gvec,mvec,coef,bvec
   if (sclid[14] eq -1) then count=count-1
   if (sclid[23] eq -1) then count=count-1
   if (sclid[24] eq -1) then count=count-1
+  if (sclid[25] eq -1) then count=count-1
+  if (sclid[26] eq -1) then count=count-1
+  if (sclid[27] eq -1) then count=count-1
+  if (sclid[28] eq -1) then count=count-1
+  if (sclid[30] eq -1) then count=count-1
 
   if (count ne 0) then begin
     print,'File is in the wrong format!'
@@ -285,27 +298,32 @@ function CnvMapRead,unit,prm,stvec,gvec,mvec,coef,bvec
   prm.Bx=*(sclvec[sclid[20]].ptr)
   prm.By=*(sclvec[sclid[21]].ptr)
   prm.Bz=*(sclvec[sclid[22]].ptr)
+  if (sclid[23] ne -1) then prm.Vx=*(sclvec[sclid[23]].ptr)
+  if (sclid[24] ne -1) then prm.tilt=*(sclvec[sclid[24]].ptr)
       
-  if (sclid[23] ne -1) then prm.imf_model[0]=*(sclvec[sclid[23]].ptr)
-  if (sclid[24] ne -1) then prm.imf_model[1]=*(sclvec[sclid[24]].ptr)
+  if (sclid[25] ne -1) then prm.imf_model[0]=*(sclvec[sclid[25]].ptr)
+  if (sclid[26] ne -1) then prm.imf_model[1]=*(sclvec[sclid[26]].ptr)
+  if (sclid[27] ne -1) then prm.imf_model[2]=*(sclvec[sclid[27]].ptr)
+  if (sclid[28] ne -1) then prm.imf_model[3]=*(sclvec[sclid[28]].ptr)
 
-  prm.hemisphere=*(sclvec[sclid[25]].ptr)
-  prm.fit_order=*(sclvec[sclid[26]].ptr)
-  prm.latmin=*(sclvec[sclid[27]].ptr)
-  prm.chi_sqr=*(sclvec[sclid[28]].ptr)
-  prm.chi_sqr_dat=*(sclvec[sclid[29]].ptr)
-  prm.rms_err=*(sclvec[sclid[30]].ptr)
-  prm.lon_shft=*(sclvec[sclid[31]].ptr)
-  prm.lat_shft=*(sclvec[sclid[32]].ptr)
-  prm.mlt.st=*(sclvec[sclid[33]].ptr)
-  prm.mlt.ed=*(sclvec[sclid[34]].ptr)
-  prm.mlt.av=*(sclvec[sclid[35]].ptr)
-  prm.pot_drop=*(sclvec[sclid[36]].ptr)
-  prm.pot_drop_err=*(sclvec[sclid[37]].ptr)
-  prm.pot_max=*(sclvec[sclid[38]].ptr)
-  prm.pot_max_err=*(sclvec[sclid[39]].ptr)
-  prm.pot_min=*(sclvec[sclid[40]].ptr)
-  prm.pot_min_err=*(sclvec[sclid[41]].ptr)
+  prm.hemisphere=*(sclvec[sclid[29]].ptr)
+  if (sclid[30] ne -1) then prm.noigrf=*(sclvec[sclid[30]].ptr)
+  prm.fit_order=*(sclvec[sclid[31]].ptr)
+  prm.latmin=*(sclvec[sclid[32]].ptr)
+  prm.chi_sqr=*(sclvec[sclid[33]].ptr)
+  prm.chi_sqr_dat=*(sclvec[sclid[34]].ptr)
+  prm.rms_err=*(sclvec[sclid[35]].ptr)
+  prm.lon_shft=*(sclvec[sclid[36]].ptr)
+  prm.lat_shft=*(sclvec[sclid[37]].ptr)
+  prm.mlt.st=*(sclvec[sclid[38]].ptr)
+  prm.mlt.ed=*(sclvec[sclid[39]].ptr)
+  prm.mlt.av=*(sclvec[sclid[40]].ptr)
+  prm.pot_drop=*(sclvec[sclid[41]].ptr)
+  prm.pot_drop_err=*(sclvec[sclid[42]].ptr)
+  prm.pot_max=*(sclvec[sclid[43]].ptr)
+  prm.pot_max_err=*(sclvec[sclid[44]].ptr)
+  prm.pot_min=*(sclvec[sclid[45]].ptr)
+  prm.pot_min_err=*(sclvec[sclid[46]].ptr)
                 
   prm.stnum=N_ELEMENTS(*(arrvec[arrid[0]].ptr))
   stvec=replicate(stvec,prm.stnum)

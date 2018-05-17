@@ -2,7 +2,7 @@
 <binary>
 <project>general</project>
 <name>invtime</name>
-<location>src.bin/text/invtime</location>
+<location>src.bin/task/invtime</location>
 <syntax>invtime --help</syntax>
 <syntax>invtime [-c <ar>columns...</ar>] [<ar>name</ar>]</syntax>
 <syntax>invtime -d -sd <ar>yyyymmdd</ar> [-c <ar>columns...</ar>] [<ar>name</ar>]</syntax>

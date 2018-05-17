@@ -866,7 +866,7 @@ double ACF_cutoff_pwr(FITPRMS *fit_prms){
  * Iterates over the ranges and prunes any range that has a lag 0 power lower than the noise power.
  */
 void Filter_Bad_ACFs(FITPRMS *fit_prms, llist ranges, double noise_pwr){
-  int i=0;
+/*int i=0;*/
   RANGENODE* range_node = NULL;
   PWRNODE* pwr_node = NULL;
   double tmp_pwr = 0.0;
@@ -1180,7 +1180,7 @@ void Find_Alpha(llist_node range,llist lags, FITPRMS *fit_prms){
 void ACF_Phase_Unwrap(llist_node range, FITPRMS* fit_prms){
   RANGENODE* range_node;
   PHASENODE* phase_curr;
-  PHASENODE* phase_prev;
+/*PHASENODE* phase_prev;*/
   PHASENODE* local_copy;
 
   double d_phi,sigma_bar,d_tau;
@@ -1472,7 +1472,6 @@ void Fill_Data_Lists_For_Range(llist_node range,llist lags,FITPRMS *fit_prms){
 
 
 }
-
 
 
 

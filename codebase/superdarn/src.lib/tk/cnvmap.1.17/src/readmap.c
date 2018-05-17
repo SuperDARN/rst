@@ -166,10 +166,8 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
 
   ptr=DataMapReadBlock(fid,&size);
 
-  if (ptr==NULL){
-    fprintf(stderr, "pointer from DataMapReadBlock in CnvMapRead null\n");
-    return -1;
-  }
+  if (ptr==NULL) return -1;
+
   for (c=0;sname[c] !=0;c++) sdata[c]=NULL;
   for (c=0;aname[c] !=0;c++) adata[c]=NULL;
 
