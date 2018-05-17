@@ -72,6 +72,12 @@ struct OptionData opt;
 
 char logfname[256];
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try again: fitacfserver --help\n");
+  return(-1);
+}
+
 void trap_pipe(int signal) {
   close(outpipe);
   outpipe=-1;
@@ -101,18 +107,7 @@ void wait_boundary(float bnd) {
 
 int main(int argc,char *argv[]) {
 
-
-  /* File format transistion
-   * ------------------------
-   * 
-   * When we switch to the new file format remove any reference
-   * to "new". Change the command line option "new" to "old" and
-   * remove "old=!new".
-   */
-
-
   unsigned char old=0;
-  unsigned char new=0;
 
   int arg;
   unsigned char help=0;
@@ -196,12 +191,13 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"d",'x',&sync);
   OptionAdd(&opt,"r",'x',&repflg);
 
-  OptionAdd(&opt,"new",'x',&new);
+  OptionAdd(&opt,"old",'x',&old);
 
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);   
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);   
-
-  old=!new;
+  if (arg==-1) {
+    exit(-1);
+  }
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
@@ -272,7 +268,7 @@ int main(int argc,char *argv[]) {
   if (old) status=OldFitRead(fitfp,prm,fit);
   else status=FitFread(fp,prm,fit);
 
-  if ((aflg==1) && (prm->scan==1)) wait_boundary(bnd);
+  if ((aflg==1) && (abs(prm->scan)==1)) wait_boundary(bnd);
   if (sync==1) {
     TimeReadClock(&yr,&mo,&dy,&hr,&mt,&sc,&us);
     if (old) {
@@ -338,7 +334,7 @@ int main(int argc,char *argv[]) {
     else status=FitFread(fp,prm,fit);
 
     if ((status==0) && (aflg==1)) {
-      if (prm->scan==1) wait_boundary(bnd);
+      if (abs(prm->scan)==1) wait_boundary(bnd);
       TimeReadClock(&yr,&mo,&dy,&hr,&mt,&sc,&us);
       prm->time.yr=yr;
       prm->time.mo=mo;
@@ -361,7 +357,7 @@ int main(int argc,char *argv[]) {
         else fitfp=OldFitOpen(argv[arg],NULL);
         status=OldFitRead(fitfp,prm,fit);
         
-        if ((aflg==1) && (prm->scan==1)) wait_boundary(bnd);
+        if ((aflg==1) && (abs(prm->scan)==1)) wait_boundary(bnd);
         if (sync==1) {
           TimeReadClock(&yr,&mo,&dy,&hr,&mt,&sc,&us);
           status=OldFitSeek(fitfp,prm->time.yr,prm->time.mo,prm->time.dy,
@@ -376,7 +372,7 @@ int main(int argc,char *argv[]) {
       } else {
         fclose(fp);
         fp=fopen(argv[arg],"r");
-        if ((aflg==1) && (prm->scan==1)) wait_boundary(bnd);
+        if ((aflg==1) && (abs(prm->scan)==1)) wait_boundary(bnd);
         if (sync==1) {
           TimeReadClock(&yr,&mo,&dy,&hr,&mt,&sc,&us);
           status=FitFseek(fp,prm->time.yr,prm->time.mo,prm->time.dy,

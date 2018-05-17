@@ -242,19 +242,15 @@ double strtime(char *text) {
   return (double) hr*3600L+mn*60L;
 }   
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: time_plot --help\n");
+  return(-1);
+}
+
 int main(int argc,char *argv[]) {
 
- /* File format transistion
-   * ------------------------
-   * 
-   * When we switch to the new file format remove any reference
-   * to "new". Change the command line option "new" to "old" and
-   * remove "old=!new".
-   */
-
-
   int old=0;
-  int new=0;
 
   char *envstr;
 
@@ -469,7 +465,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
 
-  OptionAdd(&opt,"new",'x',&new); /* new format switch */
+  OptionAdd(&opt,"old",'x',&old); /* old format switch */
 
   OptionAdd(&opt,"cf",'t',&cfname); /* config file */
 
@@ -586,7 +582,12 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"chisham",'x',&chisham); /* use Chisham virtual height model */
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);  
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+
+  if (arg==-1) {
+    exit(-1);
+  }
+
   if (cfname !=NULL) { /* load the configuration file */
     int farg;
     do {
@@ -596,15 +597,17 @@ int main(int argc,char *argv[]) {
       cfname=NULL;
       optf=OptionProcessFile(fp);
       if (optf !=NULL) {
-        farg=OptionProcess(0,optf->argc,optf->argv,&opt,NULL);
+        farg=OptionProcess(0,optf->argc,optf->argv,&opt,rst_opterr);
+        if (farg==-1) {
+          fclose(fp);
+          OptionFreeFile(optf);
+          exit(-1);
+        }
         OptionFreeFile(optf);
       }   
       fclose(fp);
     } while (cfname !=NULL);
   } 
-
-
-  old=!new;
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);

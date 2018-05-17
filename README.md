@@ -19,9 +19,18 @@ netpbm | | netcdf-devel | |
  | | | zlib-devel | |
 
 You will also need the CDF (Common Data Format) library which can be downloaded from NASA.
-You can find the latest release at: http://cdf.gsfc.nasa.gov/
-For macOS it is also available through macports, as are all listed dependencies
+You can find the latest release at: http://cdf.gsfc.nasa.gov/  
+For macOS it is also available through macports, as are all listed dependencies  
+For Opensuse you will need to make a symlink lcurses library to libncuses (recommended) or modify the CDF Makefile. 
+* (Recommended) To make a symlink from lncurses library to lcurses; run the following commands in the terminal:
 
+        ln -s /usr/lib64/libncurses.so /usr/lib64/libcurses.so
+        ln -s /usr/lib64/libncurses.a /usr/lib64/libcurses.a
+
+* To modify the Makefile change the following:  
+`CURSESLIB_linux_gnu=-lcurses` to `CURSESLIB_linux_gnu=-lncurses`  
+`CURSESLIB_linux_gnu32=-lcurses` to `CURSESLIB_linux_gnu32=-lncurses`  
+`CURSESLIB_linux_gnu64=-lcurses` to `CURSESLIB_linux_gnu64=-lncurses`  
 
 ## Install notes:
 
@@ -95,9 +104,9 @@ For macOS it is also available through macports, as are all listed dependencies
 
 5. To compile the html documentation, run `make.doc` from the command line. You may need
    to modify the `URLBASE` environment variable in `$RSTPATH/.profile/rst.bash` for the
-   links in the html pages to function correctly.  Temporary documentation is available at:
+   links in the html pages to function correctly.  Online documentation is available at:
 
-   http://superdarn.thayer.dartmouth.edu/documentation/index.html
+   https://superdarn.github.io/rst/index.html
 
 
 ### Historical Version Log
@@ -107,26 +116,26 @@ For macOS it is also available through macports, as are all listed dependencies
 - 3.2   -  First release with DLM support (Nov 2010)
 - 3.1   -  First release of ROS 3 (Jun 2010)
 - 2.11  -  added support for I&Q sample analysis (Mar 2008)
-- 2.10  -  bug fixes to the fitacfex library and rnk hardware.dat (Jun 2007)
+- 2.10  -  bug fixes to the fitacfex library and rnk hardware.dat (May 2007)
 - 2.09  -  fixed known errors in the documentation - gold release (Mar 2007)
 - 2.08  -  further bug fixes, fitacfex and documentation system
-           included. 
-- 2.07  -  introduced fitacf version 2.0 and numerous bug fixes
+           included. (Mar 2007)
+- 2.07  -  introduced fitacf version 2.0 and numerous bug fixes (Feb 2007)
 - 2.06  -  introduction of the origin flag and the beam azimuth parameter
-           together with numerous bug fixes
-- 2.05  -  modification to deal with arbitrary numbers of radar beams (Apr 2006)
+           together with numerous bug fixes (Aug 2006)
+- 2.05  -  modification to deal with arbitrary numbers of radar beams (Mar 2006)
 - 2.04  -  bug fixes from the deployment of the Radar Operating System (Feb 2006)
-- 2.03  -  added ksh enviroment as an option plus more bug fixes
-- 2.02  -  more bug fixes and more XML documentation completed.
+- 2.03  -  added ksh enviroment as an option plus more bug fixes (Sep 2005)
+- 2.02  -  more bug fixes and more XML documentation completed. (Aug 2005)
 - 2.01  -  various bug fixes and improvements to the IDL libraries (Jul 2005)
 - 2.00  -  code adopted as official release. (Apr 2005)
-- 1.07  -  numerous bug fixes.
+- 1.07  -  numerous bug fixes. (Apr 2005)
 - 1.06  -  completed IDL interfaces for grid and map data, incorporated help
            and error messages derived from XML documentation. (Nov 2004)
 - 1.05  -  adopted the DataMap format for grid and map data, incorporated
            outline documentation and fixed a lot of bugs. (Oct 2004)
-- 1.04  -  general bug fixes, addition of Mac OS X support (Sep 2004)
+- 1.04  -  general bug fixes, addition of Mac OS X support (Aug 2004)
 - 1.03  -  implemented the legacy IDL interfaces and incorporated the
            data tables into this release (Aug 2004)
 - 1.02  -  incorporated the IDL interfaces and fixed a lot of bugs (Aug 2004)
-- 1.01  -  initial revision of the code.
+- 1.01  -  initial revision of the code. (Jul 2004)
