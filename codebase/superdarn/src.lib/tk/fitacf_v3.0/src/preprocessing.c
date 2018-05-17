@@ -757,7 +757,8 @@ void phase_correction(PHASENODE* phase, double* slope_est, int* total_2pi_correc
  * @return     The cutoff power correction.
  *
  * Using the 10 lowest values of lag 0 power underestimates the noise level. This function
- * calculates a correction to properly estimate the noise.
+ * calculates a correction to properly estimate the noise. The correction is based on the normalised Gaussian
+ * model of the noise distribution with unit mean and standard deviation of 1/sqrt(Nave).
  */
 double cutoff_power_correction(FITPRMS *fit_prms){
   double i=0;       /* Counter */
@@ -784,14 +785,18 @@ double cutoff_power_correction(FITPRMS *fit_prms){
 }
 
 /**
- * @brief      Determines the minimum power level for which an ACF is pure noise.
+ * @brief      Determines the average power level for which an ACF is pure noise.
  *
  * @param      fit_prms  The FITPRM struct holding rawacf record info.
  *
- * @return     Cutoff ACF power level.
+ * @return     ACF Lag 0 noise.
  *
  * This function determines the minimum power level for which an ACF is pure
- * noise. This is used to filter bad ACFs.
+ * noise. This is used to filter bad ACFs. 
+ * IMPORTANT: The noise determination procedure in FITACF1-2 avaraged 10 lowest
+ * values of the lag 0 power. It overestimated the noise level because these 
+ * power values represent the low-power "tail" of the entire noise distribution. 
+ * In FITACF3 we compenseate for this effect by using cutoff_power_correction function (above).
  */
 double ACF_cutoff_pwr(FITPRMS *fit_prms){
 
