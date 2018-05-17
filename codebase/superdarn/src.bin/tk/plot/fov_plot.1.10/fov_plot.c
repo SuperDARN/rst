@@ -654,7 +654,7 @@ int main(int argc,char *argv[]) {
   if ((lat>0) && (latmin<0)) latmin=-latmin;
 
   if (trmflg || ftrmflg) {
-    if ((cylind) || (ortho) | (gvp))
+    if ((cylind) || (ortho) || (gvp))
        trm=SZATerminator(yr,mo,dy,hr,mt,sc,0,magflg,
                            1.0,90.0);
      else if (lat>0) trm=SZATerminator(yr,mo,dy,hr,mt,sc,1,magflg,
@@ -922,15 +922,28 @@ int main(int argc,char *argv[]) {
 
  if (dotflg) {
    int s=0;
-   struct RadarSite *site; 
-   float pnt[2]; 
+   struct RadarSite *site;
+   float pnt[2];
+   double mlat,mlon,r;
    if (cfovflg | fcfovflg)  {
      for (i=0;i<network->rnum;i++) {
        if (network->radar[i].id==stid) continue;
        if (network->radar[i].status !=0) continue;
        site=RadarYMDHMSGetSite(&(network->radar[i]),yr,mo,dy,hr,mt,sc);
-       pnt[0]=site->geolat;
-       pnt[1]=site->geolon; 
+       if (magflg) {
+         if (old_aacgm) {
+           s=AACGMConvert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
+           pnt[0]=mlat;
+           pnt[1]=mlon;
+         } else {
+           s=AACGM_v2_Convert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
+           pnt[0]=mlat;
+           pnt[1]=mlon;
+         }
+       } else {
+         pnt[0]=site->geolat;
+         pnt[1]=site->geolon;
+       }
        s=(*tfunc)(sizeof(float)*2,pnt,2*sizeof(float),pnt,marg);
        if (s==0) PlotEllipse(plot,NULL,pad+pnt[0]*(wdt-2*pad),
                     pad+pnt[1]*(hgt-2*pad),dotr,dotr,
@@ -943,8 +956,20 @@ int main(int argc,char *argv[]) {
        if (network->radar[i].id==stid) continue;
        if (network->radar[i].status !=1) continue;
        site=RadarYMDHMSGetSite(&(network->radar[i]),yr,mo,dy,hr,mt,sc);
-       pnt[0]=site->geolat;
-       pnt[1]=site->geolon; 
+       if (magflg) {
+         if (old_aacgm) {
+           s=AACGMConvert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
+           pnt[0]=mlat;
+           pnt[1]=mlon;
+         } else {
+           s=AACGM_v2_Convert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
+           pnt[0]=mlat;
+           pnt[1]=mlon;
+         }
+       } else {
+         pnt[0]=site->geolat;
+         pnt[1]=site->geolon;
+       }
        s=(*tfunc)(sizeof(float)*2,pnt,2*sizeof(float),pnt,marg);
        if (s==0) PlotEllipse(plot,NULL,pad+pnt[0]*(wdt-2*pad),
                     pad+pnt[1]*(hgt-2*pad),dotr,dotr,
@@ -956,8 +981,20 @@ int main(int argc,char *argv[]) {
    if (fovflg) {
      
      site=RadarYMDHMSGetSite(&(network->radar[stnum]),yr,mo,dy,hr,mt,sc);
-     pnt[0]=site->geolat;
-     pnt[1]=site->geolon; 
+     if (magflg) {
+       if (old_aacgm) {
+         s=AACGMConvert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
+         pnt[0]=mlat;
+         pnt[1]=mlon;
+       } else {
+         s=AACGM_v2_Convert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
+         pnt[0]=mlat;
+         pnt[1]=mlon;
+       }
+     } else {
+       pnt[0]=site->geolat;
+       pnt[1]=site->geolon;
+     }
      s=(*tfunc)(sizeof(float)*2,pnt,2*sizeof(float),pnt,marg);
      if (s==0) PlotEllipse(plot,NULL,pad+pnt[0]*(wdt-2*pad),
                     pad+pnt[1]*(hgt-2*pad),dotr,dotr,
