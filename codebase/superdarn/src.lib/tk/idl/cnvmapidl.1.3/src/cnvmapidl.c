@@ -419,7 +419,7 @@ struct CnvMapIDLBnd *IDLMakeCnvMapBnd(int num,IDL_VPTR *vptr) {
    s=IDL_MakeStruct("CNVMAPBND",cnvmapbnd);  
    idim[0]=num;
 
-   return (struct CnvMapyIDLBnd *) IDL_MakeTempStruct(s,1,idim,vptr,TRUE);
+   return (struct CnvMapIDLBnd *) IDL_MakeTempStruct(s,1,idim,vptr,TRUE);
 }
   
 
