@@ -41,7 +41,7 @@
 #include "cfitdata.h"
 #include "cfitread.h"
 
-int CFitWrite(gzFile *fp,struct CFitdata *ptr) {
+int CFitWrite(gzFile fp,struct CFitdata *ptr) {
   int i=0;
   unsigned char gsct;
   if (ConvertWriteIntZ(fp,ptr->version.major) !=0) return -1;
