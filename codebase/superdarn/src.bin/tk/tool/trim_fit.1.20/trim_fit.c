@@ -361,6 +361,9 @@ int main (int argc,char *argv[]) {
                             prm->time.sc+prm->time.us/1.0e6);
 
 
+    /* rewind file pointer in case we want to trim first record */
+    rewind(fp);
+
     /* skip here */
 
     if ((stime !=-1) || (sdate !=-1)) { 

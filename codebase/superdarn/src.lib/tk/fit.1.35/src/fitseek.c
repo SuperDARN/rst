@@ -130,7 +130,8 @@ int FitSeek(int fid,
       if (ptr==NULL) break;
       tfile=FitGetTime(ptr);
       DataMapFree(ptr);
-      if (tval>=tfile) fptr=tptr;
+      /*if (tval>=tfile) fptr=tptr;*/
+      fptr=tptr;
       if (atme !=NULL) *atme=tfile;
     } 
     if (tval>tfile) return -1;
