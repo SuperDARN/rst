@@ -58,8 +58,8 @@
  */
 char *mod_hemi[6] = {"north","south",0};
 char *mod_tilt[] = {"DP-","DP0","DP+",0};
-char *mod_tilts[] = {"negative","neutral","positive",0};
-int   mod_tlti[]  = {0,10,20,-1};
+char *mod_tilts[] = {"negative","neutral","positive"};
+int   mod_tlti[]  = {-10,10,-1};
 
 /*
  * RG96 Model bins
@@ -925,7 +925,6 @@ struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
 
       /* tilt */
       for (i=0; (mod_tlti[i] !=-1) && (tilt > mod_tlti[i]); i++);
-      if (mod_tlti[i] == -1) i--;
       itlt = i;
 
       /* angle */
@@ -963,7 +962,6 @@ struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
 
         /* tilt */
         for (i=0; (mod_tlti[i] !=-1) && (tilt > mod_tlti[i]); i++);
-        if (mod_tlti[i] == -1) i--;
         itlt = i;
 
         /* angle */
@@ -1001,7 +999,6 @@ struct model *determine_model(float Vsw, float Bx, float By, float Bz, int hemi,
 
         /* tilt */
         for (i=0; (mod_tlti[i] !=-1) && (tilt > mod_tlti[i]); i++);
-        if (mod_tlti[i] == -1) i--;
         itlt = i;
 
         /* angle */
