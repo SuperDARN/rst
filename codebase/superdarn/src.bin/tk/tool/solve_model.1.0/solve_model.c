@@ -718,6 +718,11 @@ struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
   if (ia1 == nang-1) ia2 = 0;
   else ia2 = ia1+1;
 
+  /* check for Bz- saturation */
+  if ((imod == CS10) && (im2 == 5) && ((ia2>2) && (ia2<6))) {
+    ia2 = ia1;
+  }
+
   afac_h = fabs(sin(.5*ahgh[ia1]*PI/180.));
   afac_l = fabs(sin(.5*alow[ia1]*PI/180.));
   afac   = fabs(sin(.5*cang*PI/180.));
