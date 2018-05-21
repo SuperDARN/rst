@@ -44,11 +44,11 @@
 <option><on></on><od> instead use constant values.</od></option>
 <option><on>-old_aacgm</on><od>uses the older AACGM software and coefficients. The default</od></option>
 <option><on></on><od>  is to use AACGM-v2.</od></option>
-<option><on>-lat_step <ar>dlat</ar></on><od>set the latitudinal step size of the grid to <ar>dlat</ar> [degrees].</od>
+<option><on>-lat_step <ar>dlat</ar></on><od>set the latitudinal step size of the grid to <ar>dlat</ar> [degrees]. Default is 1 degree.</od>
 </option>
-<option><on>-lon_step <ar>dlon</ar></on><od>set the longitudinal step size of the grid to <ar>dlon</ar> [degrees].</od>
+<option><on>-lon_step <ar>dlon</ar></on><od>set the longitudinal step size of the grid to <ar>dlon</ar> [degrees]. Default is 2 degrees.</od>
 </option>
-<option><on>-equal</on><od>use an equal-area grid with cell sizes defined by <ar>dlat</ar> [degrees].</od>
+<option><on>-equal</on><od>use an equal-area grid with cell sizes defined by <ar>dlat</ar> [degrees]. Default is 1 degree in latitude.</od>
 </option>
 
 <synopsis><p>Calculates the statistical model and writes it to standard output.</p></synopsis>

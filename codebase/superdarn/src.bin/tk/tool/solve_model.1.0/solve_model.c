@@ -240,7 +240,7 @@ int main(int argc,char *argv[]) {
 
   float lat_step=1.0;
   float lon_step=2.0;
-  int equal = 0;
+  int equal=0;
 
   struct mdata *mdata=NULL;
 
@@ -333,6 +333,9 @@ int main(int argc,char *argv[]) {
 
   if (sh==1) hemisphere = -1;
 
+  if (lat_step < 0.5) lat_step=0.5;
+  if (lon_step < 0.5) lon_step=0.5;
+
   /* determine the model */
   mod = determine_model(dVx, dBy, dBz, hemisphere, tilt, dKp, imod, nointerp);
 
@@ -375,6 +378,8 @@ int main(int argc,char *argv[]) {
       fprintf(stdout,"Bin:   %s, %s\n",mod->level,mod->angle);
       break;
   }
+  if (equal) fprintf(stdout,"Grid: Equal-area (lat_step: %4.2f [deg])\n",lat_step);
+  else       fprintf(stdout,"Grid: Uniform (lat_step: %4.2f, lon_step: %4.2f [deg])\n",lat_step,lon_step);
   fprintf(stdout,"\n");
   fprintf(stdout,"MLAT [deg]   MLT [hr]   Pot [kV] Vazm [deg] Vmag [m/s]\n");
   fprintf(stdout,"---------- ---------- ---------- ---------- ----------\n");
@@ -1016,9 +1021,6 @@ struct mdata *get_model_pos(float latmin,int hemi,int *num,
   double lspc;
   int i,j;
   int cnt=0;
-
-  if (lat_step < 0.5) lat_step=0.5;
-  if (lon_step < 0.5) lon_step=0.5;
 
   nlat=(int)(90.0-latmin)/lat_step;
 
