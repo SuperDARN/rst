@@ -40,15 +40,15 @@
 </option>
 <option><on>-nointerp</on><od>Do not interpolate coeffiecients, instead use discrete models.</od>
 </option>
-<option><on>-noigrf</on><od>Do not use IGRF model to convert potential to velocities,</od></option>
-<option><on></on><od> instead use constant values.</od></option>
-<option><on>-old_aacgm</on><od>uses the older AACGM software and coefficients. The default</od></option>
-<option><on></on><od>  is to use AACGM-v2.</od></option>
-<option><on>-lat_step <ar>dlat</ar></on><od>set the latitudinal step size of the grid to <ar>dlat</ar> [degrees]. Default is 1 degree.</od>
+<option><on>-noigrf</on><od>Do not use IGRF model to convert potential to velocities, instead use constant values.</od>
 </option>
-<option><on>-lon_step <ar>dlon</ar></on><od>set the longitudinal step size of the grid to <ar>dlon</ar> [degrees]. Default is 2 degrees.</od>
+<option><on>-old_aacgm</on><od>uses the older AACGM software and coefficients. The default is to use AACGM-v2 coefficients.</od>
 </option>
-<option><on>-equal</on><od>use an equal-area grid with cell sizes defined by <ar>dlat</ar> [degrees]. Default is 1 degree in latitude.</od>
+<option><on>-lat_step <ar>dlat</ar></on><od>set the latitudinal step size of the grid to <ar>dlat</ar> [degrees]. The default value is 1 degree.</od>
+</option>
+<option><on>-lon_step <ar>dlon</ar></on><od>set the longitudinal step size of the grid to <ar>dlon</ar> [degrees]. The default value is 2 degrees.</od>
+</option>
+<option><on>-equal</on><od>use an equal-area grid with cell sizes defined by <ar>dlat</ar> [degrees]. The default value is 1 degree in latitude.</od>
 </option>
 
 <synopsis><p>Calculates the statistical model and writes it to standard output.</p></synopsis>
