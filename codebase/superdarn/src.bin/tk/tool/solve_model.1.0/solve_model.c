@@ -378,8 +378,8 @@ int main(int argc,char *argv[]) {
       fprintf(stdout,"Bin:   %s, %s\n",mod->level,mod->angle);
       break;
   }
-  if (equal) fprintf(stdout,"Grid: Equal-area (lat_step: %4.2f [deg])\n",lat_step);
-  else       fprintf(stdout,"Grid: Uniform (lat_step: %4.2f, lon_step: %4.2f [deg])\n",lat_step,lon_step);
+  if (equal) fprintf(stdout,"Grid:  Equal-area (lat_step: %4.2f [deg])\n",lat_step);
+  else       fprintf(stdout,"Grid:  Uniform (lat_step: %4.2f, lon_step: %4.2f [deg])\n",lat_step,lon_step);
   fprintf(stdout,"\n");
   fprintf(stdout,"MLAT [deg]   MLT [hr]   Pot [kV] Vazm [deg] Vmag [m/s]\n");
   fprintf(stdout,"---------- ---------- ---------- ---------- ----------\n");
@@ -1022,7 +1022,7 @@ struct mdata *get_model_pos(float latmin,int hemi,int *num,
   int i,j;
   int cnt=0;
 
-  nlat=(int)(90.0-latmin)/lat_step;
+  nlat=(int)((90.0-latmin)/lat_step);
 
   if (equal) {
 
@@ -1053,7 +1053,7 @@ struct mdata *get_model_pos(float latmin,int hemi,int *num,
 
     for (i=0;i<nlat;i++) {
       for (j=0;j<nlon;j++) {
-        ptr[cnt].mlat=i*lat_step+latmin;
+        ptr[cnt].mlat=i*lat_step+latmin+lat_step/2.0;
         ptr[cnt].mlon=j*lon_step;
         ptr[cnt].pot=0;
         ptr[cnt].azm=0;
