@@ -169,7 +169,7 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
                   float *the_col, double *ele_phi, double *ele_the,
                   struct model *mod, double *pot);
 struct mdata *get_model_pos(float latmin, int hemi, int *num,
-                            float lat_step, float lon_step);
+                            float lat_step, float lon_step, int equal);
 struct model *determine_model(float Vsw, float By, float Bz, int hemi,
                               float tilt, float kp, int imod, int nointerp);
 struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod);
@@ -240,14 +240,15 @@ int main(int argc,char *argv[]) {
 
   float lat_step=1.0;
   float lon_step=2.0;
+  int equal = 0;
 
   struct mdata *mdata=NULL;
 
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
 
-  OptionAdd(&opt,"t",'t',&tmetxt);
   OptionAdd(&opt,"d",'d',&dtetxt);
+  OptionAdd(&opt,"t",'t',&tmetxt);
 
   OptionAdd(&opt,"sh",'x',&sh);
 
@@ -257,18 +258,19 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"tilt",'f',&dtilt);
   OptionAdd(&opt,"kp",'f',&dKp);
 
-  OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);
   OptionAdd(&opt,"rg96",'x',&rg96);
   OptionAdd(&opt,"psr10",'x',&psr10);
   OptionAdd(&opt,"cs10",'x',&cs10);
   OptionAdd(&opt,"ts18",'x',&ts18);
   OptionAdd(&opt,"ts18_kp",'x',&ts18_kp);
   OptionAdd(&opt,"nointerp",'x',&nointerp);
+  OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);
   OptionAdd(&opt,"noigrf",'x',&noigrf);        /* SGS: default is to use IGRF
                                                        to compute model vecs  */
 
   OptionAdd(&opt,"lat_step",'f',&lat_step);
   OptionAdd(&opt,"lon_step",'f',&lon_step);
+  OptionAdd(&opt,"equal",'x',&equal);
 
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
@@ -333,9 +335,9 @@ int main(int argc,char *argv[]) {
 
   /* determine the model */
   mod = determine_model(dVx, dBy, dBz, hemisphere, tilt, dKp, imod, nointerp);
-fprintf(stderr,"tilt: %f, dtilt: %f, model: %s\n",tilt,dtilt,mod->tilt);
+
   /* create model grid */
-  mdata = get_model_pos(mod->latref,hemisphere,&num,lat_step,lon_step);
+  mdata = get_model_pos(mod->latref,hemisphere,&num,lat_step,lon_step,equal);
 
   /* solve for the model */
   status = solve_model(num, mdata, mod->latref, mod, hemisphere,
@@ -1005,27 +1007,59 @@ struct model *determine_model(float Vsw, float By, float Bz, int hemi,
 }     
 
 
-struct mdata *get_model_pos(float latmin,int hemi,int *num,float lat_step,float lon_step)
+struct mdata *get_model_pos(float latmin,int hemi,int *num,
+                            float lat_step,float lon_step,int equal)
 {
   struct mdata *ptr=NULL;
-  int nlat,nlon;
+  float nlat,nlon;
+  float grdlat;
+  double lspc;
   int i,j;
   int cnt=0;
 
+  if (lat_step < 0.5) lat_step=0.5;
+  if (lon_step < 0.5) lon_step=0.5;
+
   nlat=(int)(90.0-latmin)/lat_step;
-  nlon=(int)(360.0/lon_step);
 
-  if (ptr == NULL) ptr = malloc(sizeof(struct mdata)*nlat*nlon);
+  if (equal) {
 
-  for (i=0;i<nlat;i++) {
-    for (j=0;j<nlon;j++) {
-      ptr[cnt].mlat=i*lat_step+latmin;
-      ptr[cnt].mlon=j*lon_step;
-      ptr[cnt].pot=0;
-      ptr[cnt].azm=0;
-      ptr[cnt].vel=0;
-      cnt++;
+    for (i=0;i<nlat;i++) {
+
+      grdlat=i*lat_step+latmin+lat_step/2.0;
+      lspc=((int) (360*cos(fabs(grdlat)*PI/180)+0.5))/(360.0);
+      nlon=lspc*360.0;
+
+      for (j=0;j<nlon;j++) {
+        if (ptr == NULL) ptr = malloc(sizeof(struct mdata));
+        else             ptr = realloc(ptr,sizeof(struct mdata)*(cnt+1));
+
+        ptr[cnt].mlat=grdlat;
+        ptr[cnt].mlon=(j*360.0/nlon)+(360.0/nlon/2.0);
+        ptr[cnt].pot=0;
+        ptr[cnt].azm=0;
+        ptr[cnt].vel=0;
+        cnt++;
+      }
     }
+
+  } else {
+
+    nlon=(int)(360.0/lon_step);
+
+    if (ptr == NULL) ptr = malloc(sizeof(struct mdata)*nlat*nlon);
+
+    for (i=0;i<nlat;i++) {
+      for (j=0;j<nlon;j++) {
+        ptr[cnt].mlat=i*lat_step+latmin;
+        ptr[cnt].mlon=j*lon_step;
+        ptr[cnt].pot=0;
+        ptr[cnt].azm=0;
+        ptr[cnt].vel=0;
+        cnt++;
+      }
+    }
+
   }
 
   *num = cnt;
@@ -1339,7 +1373,7 @@ int solve_model(int num, struct mdata *ptr, float latmin, struct model *mod,
     ptr[i].vel        = sqrt( ele_the[i]*ele_the[i] +
                               ele_phi[i]*ele_phi[i] )/bmag;
 
-    if (fabs(pot[i]) > 0.001) ptr[i].pot = pot[i];
+    if (fabs(pot[i]) > 0.01) ptr[i].pot = pot[i];
     if (hemi==-1) ptr[i].mlat = -ptr[i].mlat;
     ptr[i].mlon = ptr[i].mlon*24.0/360.0;
   }
