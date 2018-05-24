@@ -64,7 +64,7 @@
 
 <synopsis><p>Plot <code>vec</code> format files.</p></synopsis>
 <description><p>Plot <code>vec</code> format files.</p>
-<p>The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, Portable Network Graphics (PNG), or PostScript file. The default output is XML. The output file is written to standard output.</p>
+<p>The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, Portable Network Graphics (PNG), or PostScript file. The default output is PostScript. The output file is written to standard output.</p>
 <p>The program will attempt to calculate the number of panels to include in the plot based on the number of input files. However this behavior can be overridden using the "<code>-p</code>" option.</p>
 <p>The number and complexity of the command line options makes typing them a laborious process, especially when producing multiple plots. To solve this problem, command line options can be placed in plain text file that can be parsed by the program using the " <code>-cf</code>" option. This allows the user to create a set of configuration files for producing different plots.</p> 
 </description>

@@ -94,7 +94,7 @@
 </option>
 <synopsis><p>Plot the cross polar cap potential, scatter statistics or IMF conditions from a convection map file.</p></synopsis>
 <description><p>Plot the cross polar cap potential, scatter statistics or IMF conditions from a convection map file.</p>
-<p>The output can be to an X terminal, Portable PixMap (PPM) files, extended Portable PixMap (PPMX), <code>rPlot</code> XML document, Portable Network Graphics (PNG), or PostScript file. The default output is <code>rPlot</code> XML.</p>
+<p>The output can be to an X terminal, Portable PixMap (PPM) files, extended Portable PixMap (PPMX), <code>rPlot</code> XML document, Portable Network Graphics (PNG), or PostScript file. The default output is PostScript.</p>
 <p>If the "<code>-x</code>" option is specified the program will display plots in an X terminal window in all other cases the output is written to standard out.</p>
 </description>
 

@@ -268,7 +268,7 @@
 </option>
 <synopsis><p>Plot <code>fit</code>, <code>fitacf</code>, and <code>cfit</code> format files.</p></synopsis>
 <description><p>Plot <code>fit</code>, <code>fitacf</code>, and <code>cfit</code> format files.</p>
-<p>The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, Portable Network Graphics (PNG), or PostScript file. The default output is XML.</p>
+<p>The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, Portable Network Graphics (PNG), or PostScript file. The default output is PostScript.</p>
 <p>The program produces either a multi-panel plot showing a sequence of up to 16 images, or a single-panel plot that can be used to produce movies. Multi-panel plots are written to standard output, while the single panel plots are written to individual files.</p>
 <p>The number of panels contained in the plot is controlled by the "<code>-r</code>" option. If this is set to zero then single panel plots are produced.</p>
 <p>The task only plots what it is instructed to plot on the command line which means that at least some of the options must be included if the plot is to show anything.</p>
