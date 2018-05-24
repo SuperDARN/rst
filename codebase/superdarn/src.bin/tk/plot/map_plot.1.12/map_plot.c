@@ -1289,7 +1289,7 @@ int main(int argc,char *argv[]) {
     if (ffovflg) MapPlotPolygon(plot,NULL,pad,pad,wdt-2*pad,hgt-2*pad,1,
 			       ffovcol,0x0f,0.5,NULL, rfov,1);
 
-    if (fpolyflg) {
+    if ((fpolyflg) && (rcmap->num_coef !=0)) {
       for (i=0;i<cnum/2;i++) {
         fpolycol=sgn_color(cval[i],&pkey);
 
@@ -1371,7 +1371,7 @@ int main(int argc,char *argv[]) {
       plot_excluded(plot,vgrid,rcmap->latmin,magflg,pad,pad,wdt-2*pad,
                    hgt-2*pad,vsf,vradius,tfunc,marg,grdcol,lnewdt,old_aacgm);
 
-    if (polyflg) {
+    if ((polyflg) && (rcmap->num_coef !=0)) {
       for (i=0;i<cnum/2;i++) {
         GrplotRawContourPolygon(plot,nctr[i],pad,pad, wdt-2*pad,hgt-2*pad,
                                 0.1,0.5, polycol,0x0f,0,0,NULL);
@@ -1383,7 +1383,7 @@ int main(int argc,char *argv[]) {
       }
     }
    
-    if (ctrflg) {
+    if ((ctrflg) && (rcmap->num_coef !=0)) {
       for (i=0;i<cnum/2;i++) {
         sprintf(txt,"%.2d",(int) cval[i]/1000);
         GrplotRawContour(plot,nctr[i],pad,pad,wdt-2*pad,hgt-2*pad,0.1,0.5,
