@@ -1475,7 +1475,7 @@ int main(int argc,char *argv[]) {
            if (xmlflg) FrameBufferSaveXML(img,stream,outfp);
            else if (ppmflg) FrameBufferSavePPM(img,outfp);
            else if (ppmxflg) FrameBufferSavePPMX(img,outfp);
-           else FrameBufferSavePNG(img,stdout);
+           else FrameBufferSavePNG(img,outfp);
            fclose(outfp);
 	 }
        }
