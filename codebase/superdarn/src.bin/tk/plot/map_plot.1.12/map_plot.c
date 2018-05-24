@@ -762,6 +762,7 @@ int main(int argc,char *argv[]) {
     hmbflg=1;
     modnflg=1;
     tmkflg=1;
+    tlblflg=1;
     vkeyflg=1;
     vecflg=1;
     tmeflg=1;
@@ -846,6 +847,8 @@ int main(int argc,char *argv[]) {
 
   if ((lat<0) && (latmin>0)) latmin=-latmin;
   if ((lat>0) && (latmin<0)) latmin=-latmin;
+
+  if ((defflg) && (rcmap->hemisphere==-1)) flip=1;
 
   marg[0]=lat;
   marg[1]=0;
