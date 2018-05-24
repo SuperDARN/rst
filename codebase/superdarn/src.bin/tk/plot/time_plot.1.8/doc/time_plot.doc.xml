@@ -214,7 +214,7 @@
 </option>
 <synopsis><p>Generate a time series plot of data.</p></synopsis>
 <description><p>Generate a time series plot of data.</p>
-<p>The output can be to an XML representation of an image, a Portable PixMap (PPM) files, extended Portable PixMap (PPMX) file, Portable Network Graphics (PNG), or PostScript plot. The default output is XML. The plot is written to standard output.</p>
+<p>The output can be to an XML representation of an image, a Portable PixMap (PPM) files, extended Portable PixMap (PPMX) file, Portable Network Graphics (PNG), or PostScript plot. The default output is PostScript. The plot is written to standard output.</p>
 <p>The options "<code>-pkey</code>", "<code>-vkey</code>", "<code>-wkey</code>", "<code>-fkey</code>" "<code>-nkey</code>" allow user defined color keys to be used.</p>
 <p>The color key file is a plain text file that defines the red green and blue components for each index in the color bar. Any line in the file beginning with a "<code>#</code>" is treated as a comment and ignored. The first line that is not a comment defines the number of entries in the table. The remaining lines in the file contain color values for each index, one value per line. The values are hexadecimal numbers of the form <em>rrggbb</em>, where <em>rr</em> is the red component, <em>gg</em> is the blue component and <em>bb</em> is the blue component.</p>
 <p>The number and complexity of the command line options makes typing them a laborious process, especially when producing multiple plots. To solve this problem, command line options can be placed in plain text file that can be parsed by the program using the " <code>-cf</code>" option. This allows the user to create a set of configuration files for producing different plots.</p> 

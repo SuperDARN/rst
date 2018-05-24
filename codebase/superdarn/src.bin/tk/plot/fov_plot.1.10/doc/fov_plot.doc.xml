@@ -154,7 +154,7 @@
 </option>
 <synopsis><p>Plot the radar fields of view.</p></synopsis>
 <description><p>Plot the radar fields of view.</p>
-<p>The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, Portable Network Graphics (PNG), or PostScript file. The default output is XML. The output file is written to standard output.</p>
+<p>The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, Portable Network Graphics (PNG), or PostScript file. The default output is PostScript. The output file is written to standard output.</p>
 <p>The task only plots what it is instructed to plot on the command line which means that at least some of the options must be included if the plot is to show anything.</p>
 <p>The default map projection is a simple cylindrical projection, the most useful projection is the stereographic projection invoked using the "<code>-stereo</code>" option.</p>
 <p>The date and time options allow a plot for a specific time to be generated this is most useful when used in conjunction with the "<code>-rotate</code>" option or the "<code>-term</code>" and "<code>-fterm</code>" options.</p>
