@@ -36,8 +36,6 @@
 </option>
 <option><on>-path <ar>pathname</ar></on><od>write the plots to the directory given by <ar>pathname</ar>.</od>
 </option>
-<option><on>-post <ar>post</ar></on><od>post process the plots using the command <ar>post</ar>.</od>
-</option>
 <option><on>-cf <ar>cfname</ar></on><od>read command line options from the file <ar>cfname</ar>.</od>
 </option>
 <option><on>-old</on><od>the input file is a <code>map</code> format file instead of the default <code>cnvmap</code> format file.</od>

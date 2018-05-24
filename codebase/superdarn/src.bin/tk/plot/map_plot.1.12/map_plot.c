@@ -451,7 +451,6 @@ int main(int argc,char *argv[]) {
 
   char *dfpath=".";
   char *fpath=NULL;
-  char *postp=NULL;
 
   int chisham=0;
 
@@ -557,7 +556,6 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"ps",'x',&psflg); 
 
   OptionAdd(&opt,"path",'t',&fpath);
-  OptionAdd(&opt,"post",'t',&postp);
   OptionAdd(&opt,"tn",'x',&tnflg);
   OptionAdd(&opt,"dn",'x',&dnflg); 
   OptionAdd(&opt,"mn",'x',&mnflg); 
