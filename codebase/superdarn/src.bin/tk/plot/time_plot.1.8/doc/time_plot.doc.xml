@@ -8,37 +8,30 @@
 <syntax>time_plot [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]</syntax>
 <syntax>time_plot -old [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]</syntax>
 <syntax>time_plot -cfit [<ar>options</ar>] <ar>cfitname</ar></syntax>
-<syntax>time_plot -csd [<ar>options</ar>] <ar>csdname</ar></syntax>
 <syntax>time_plot -smr [<ar>options</ar>] <ar>smrname</ar></syntax>
 <syntax>time_plot -png [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]</syntax>
 <syntax>time_plot -png -old [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]</syntax>
 <syntax>time_plot -png -cfit [<ar>options</ar>] <ar>cfitname</ar></syntax>
-<syntax>time_plot -png -csd [<ar>options</ar>] <ar>csdname</ar></syntax>
 <syntax>time_plot -png -smr [<ar>options</ar>] <ar>smrname</ar></syntax>
 <syntax>time_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]</syntax>
 <syntax>time_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] -old [<ar>fitname</ar>] [<ar>inxname</ar>]</syntax>
 <syntax>time_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] -cfit <ar>cfitname</ar></syntax>
-<syntax>time_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] -csd <ar>csdname</ar></syntax>
 <syntax>time_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] -smr <ar>smrname</ar></syntax>
 <syntax>time_plot -ppm [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]</syntax>
 <syntax>time_plot -ppm -old [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]</syntax>
 <syntax>time_plot -ppm -cfit [<ar>options</ar>] <ar>cfitname</ar></syntax>
-<syntax>time_plot -ppm -csd [<ar>options</ar>] <ar>csdname</ar></syntax>
 <syntax>time_plot -ppm -smr [<ar>options</ar>] <ar>smrname</ar></syntax>
 <syntax>time_plot -ppmx [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]</syntax>
 <syntax>time_plot -ppmx -old [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]</syntax>
 <syntax>time_plot -ppmx -cfit [<ar>options</ar>] <ar>cfitname</ar></syntax>
-<syntax>time_plot -ppmx -csd [<ar>options</ar>] <ar>csdname</ar></syntax>
 <syntax>time_plot -ppmx -smr [<ar>options</ar>] <ar>smrname</ar></syntax>
 <syntax>time_plot -xml [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]</syntax>
 <syntax>time_plot -xml -old [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]</syntax>
 <syntax>time_plot -xml -cfit [<ar>options</ar>] <ar>cfitname</ar></syntax>
-<syntax>time_plot -xml -csd [<ar>options</ar>] <ar>csdname</ar></syntax>
 <syntax>time_plot -xml -smr [<ar>options</ar>] <ar>smrname</ar></syntax>
 <syntax>time_plot -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]</syntax>
 <syntax>time_plot -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] -old [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]</syntax>
 <syntax>time_plot  -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] -cfit [<ar>options</ar>] <ar>cfitname</ar></syntax>
-<syntax>time_plot -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] -csd [<ar>options</ar>] <ar>csdname</ar></syntax>
 <syntax>time_plot -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] -smr [<ar>options</ar>] <ar>smrname</ar></syntax>
 
 <option><on>--help</on><od>print the help message and exit.</od>
@@ -189,15 +182,11 @@
 </option>
 <option><on><ar>cfitname</ar></on><od>filename of the <code>cfit</code> format file to plot.</od>
 </option>
-<option><on>-csd</on><od>file is in the <code>csd</code> format.</od>
-</option>
-<option><on><ar>csd</ar></on><od>filename of the <code>csd</code> format file to plot.</od>
-</option>
 <option><on>-smr</on><od>file is in the <code>smr</code> format.</od>
 </option>
-<option><on>-fbeam <ar>fbeam</ar></on><od>assume that the first beam in a scan in the summary file is  <ar>fbeam</ar>.</od>
+<option><on>-fbeam <ar>fbeam</ar></on><od>assume that the first beam in a scan in the summary file is <ar>fbeam</ar>.</od>
 </option>
-<option><on><ar>smr</ar></on><od>filename of the <code>smr</code> format file to plot.</od>
+<option><on><ar>smrname</ar></on><od>filename of the <code>smr</code> format file to plot.</od>
 </option>
 <option><on>-png</on><od>produce a Portable Network Graphics (PNG) image as the output.</od>
 </option>
