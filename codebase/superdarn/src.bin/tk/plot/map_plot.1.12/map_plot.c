@@ -91,7 +91,7 @@
 #include "errstr.h"
 #include "version.h"
 
-char *fsfx[]={"xml","ppm","ps",0};
+char *fsfx[]={"xml","ppm","ppmx","png","ps",0};
 
 unsigned char gry[256];
 
@@ -1067,8 +1067,13 @@ int main(int argc,char *argv[]) {
   }
 
   sfx=fsfx[0];
-  if (gflg) sfx=fsfx[1];
-  if (pflg) sfx=fsfx[2];
+  if (gflg) {
+    if (xmlflg) sfx=fsfx[0];
+    else if (ppmflg) sfx=fsfx[1];
+    else if (ppmxflg) sfx=fsfx[2];
+    else sfx=fsfx[3];
+  }
+  if (pflg) sfx=fsfx[4];
   
 #ifdef _XLIB_
   if (xd !=0) {
