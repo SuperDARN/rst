@@ -66,7 +66,7 @@ void plot_vec(struct Plot *plot,float px,float py,int or,double max, int magflg,
 
   if (data !=NULL) {
     arg = (float *) data;
-    if (arg[0] > 90) lat = 90.0;
+    if (arg[0] >= 90) lat = 90.0;
     else lat = -90.0;
   }
 
