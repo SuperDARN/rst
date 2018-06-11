@@ -97,6 +97,12 @@ void FitACFex(struct RadarParm *prm,struct RawData *raw,
       model_vels[nslopes+i] =  model_vel_pos;
    }
 
+   FitSetRng(fit,prm->nrang);
+   if (prm->xcf) {
+     FitSetXrng(fit,prm->nrang);
+     FitSetElv(fit,prm->nrang);
+   }
+
 /* Loop every range gate and calculate parameters */
 
    for (R=0;R<prm->nrang;R++) {
@@ -222,6 +228,12 @@ void FitACFex(struct RadarParm *prm,struct RawData *raw,
                   fit->rng[R].gsct = 1;
          }
       }
+      if (prm->xcf) {
+        fit->xrng[R].phi0 = 0.0;
+        fit->elv[R].normal = 0.0;
+        fit->elv[R].high = 0.0;
+        fit->elv[R].low = 0.0;
+      }
    }
    free(model_phi);
    free(model_vels);
@@ -232,4 +244,6 @@ void FitACFex(struct RadarParm *prm,struct RawData *raw,
    free(data_phi_neg);
    free(lag_avail);
    free(good_lags);
+
+   return;
 }
