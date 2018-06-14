@@ -175,9 +175,28 @@ double inv_MLTConvert_v2(int yr, int mo, int dy, int hr, int mt ,int sc,
                       double mlt)
 {
   int err;
+  int ayr,amo,ady,ahr,amt,asc,adyn;
   double dd,jd,eqt,dec,ut,at;
   double slon,mlat,r;
   double hgt,aacgm_mlon;
+  double ajd;
+
+  err = 0;
+  AACGM_v2_GetDateTime(&ayr, &amo, &ady, &ahr, &amt, &asc, &adyn);
+  if (ayr < 0) {
+    /* AACGM date/time not set so set it to the date/time passed in */
+    err = AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,sc);
+    if (err != 0) return (err);
+  } else {
+    /* If date/time passed into function differs from AACGM data/time by more
+     * than 30 days, recompute the AACGM-v2 coefficients */
+    ajd = TimeYMDHMSToJulian(ayr,amo,ady,ahr,amt,asc);
+    jd =  TimeYMDHMSToJulian(yr,mo,dy,hr,mt,sc);
+    if (abs(jd-ajd) > 30) {
+      err = AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,sc);
+    }
+    if (err != 0) return (err);
+  }
 
 /* check for bad input, which should not happen for MLT, and return NAN */
   if (!isfinite(mlt)) {

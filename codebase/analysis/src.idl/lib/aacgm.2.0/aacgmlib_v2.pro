@@ -972,6 +972,11 @@ end
 ; HISTORY:
 ;
 ; new function
+;
+; 20180511 Added a check for when tracing goes below altitude so as not to
+;          contiue tracing beyond what is necessary.
+;
+;          Also making sure that stepsize does not go to zero
 ;     
 ;+-----------------------------------------------------------------------------
 ;
@@ -1025,7 +1030,14 @@ pro AACGM_v2_Trace, lat_in,lon_in,height_in, lat_out,lon_out, error, $
   ; this set of fieldlines as undefined; just like those that lie below
   ; the surface of the Earth.
 
-  while idir * xyzm[2] lt 0 do begin
+  ; Added a check for when tracing goes below altitude so as not to contiue
+  ; tracing beyond what is necessary.
+  ;
+  ; Also making sure that stepsize does not go to zero
+
+  below = 0
+  niter = 0
+  while (~below && (idir*xyzm[2] lt 0)) do begin
 
     xyzp = xyzg
 
@@ -1034,25 +1046,32 @@ pro AACGM_v2_Trace, lat_in,lon_in,height_in, lat_out,lon_out, error, $
     ; x,y,z are passed by reference and modified here...
     AACGM_v2_RK45, xyzg, idir, dsRE, eps
 
+    ; make sure that stepsize does not go to zero
+    if (dsRE*RE < 1e-2) then dsRE = 1e-2/RE
+
     ; convert to magnetic Dipole coordinates
     ;//geopack_conv_coord, x,y,z, xx,yy,zz, /from_geo, /to_mag
     xyzm = geo2mag(xyzg)
 
+    below = (total(xyzg*xyzg) < (RE+height_in)*(RE+height_in)/(RE*RE))
+    niter++
   endwhile
 
-  ; now bisect stepsize (fixed) to land on magnetic equator w/in 1 meter
   xyzc = xyzp
+  if (~below && niter > 1) then begin
+    ; now bisect stepsize (fixed) to land on magnetic equator w/in 1 meter
 
-  while dsRE gt 1e-3/RE do begin
-    dsRE *= .5
-    xyzp = xyzc
-    AACGM_v2_RK45, xyzc, idir, dsRE, eps, /fixed
+    while dsRE gt 1e-3/RE do begin
+      dsRE *= .5
+      xyzp = xyzc
+      AACGM_v2_RK45, xyzc, idir, dsRE, eps, /fixed
 ;//   geopack_conv_coord, xc,yc,zc, xx,yy,zz, /from_geo, /to_mag
-    xyzm = geo2mag(xyzc)
+      xyzm = geo2mag(xyzc)
 
-    ; Is it possible that resetting here causes a doubling of the tol?
-    if idir * xyzm[2] gt 0 then xyzc = xyzp
-  endwhile
+      ; Is it possible that resetting here causes a doubling of the tol?
+      if idir * xyzm[2] gt 0 then xyzc = xyzp
+    endwhile
+  endif
 
   ; 'trace' back to surface along Dipole field lines
   Lshell = sqrt(total(xyzc*xyzc))
@@ -1108,6 +1127,11 @@ end
 ; HISTORY:
 ;
 ; new function
+;
+; 20180511 Added a check for when tracing goes below altitude so as not to
+;          contiue tracing beyond what is necessary.
+;
+;          Also making sure that stepsize does not go to zero
 ;     
 ;+-----------------------------------------------------------------------------
 ;
@@ -1171,6 +1195,7 @@ pro AACGM_v2_Trace_inv, lat_in,lon_in,height_in, lat_out,lon_out, error, $
     dsRE = dsRE0
 
     ; trace back to altitude above Earth
+    niter = 0
     while rtp[0] gt (RE + height_in)/RE do begin
 
       xyzp = xyzg
@@ -1180,25 +1205,29 @@ pro AACGM_v2_Trace_inv, lat_in,lon_in,height_in, lat_out,lon_out, error, $
                               verbose=verbose
       if keyword_set(verbose) then print, 'xyz: ', xyzg, dsRE
 
-      ;//geopack_sphcar, x,y,z, r,theta,phi, /to_sphere
+      ; make sure that stepsize does not go to zero
+      if (dsRE*RE < 5e-1) then dsRE = 5e-1/RE
+
       rtp = car2sph(xyzg)
 
+      niter++
 ;     if keyword_set(verbose) then stop
     endwhile
 
     ; now bisect stepsize (fixed) to land on magnetic equator w/in 1 meter
     xyzc = xyzp
 
-    while dsRE gt 1e-3/RE do begin
-      dsRE *= .5
-      xyzp = xyzc
-      AACGM_v2_RK45, xyzc, idir, dsRE, eps, /fixed
+    if niter gt 1 then begin
+      while dsRE gt 1e-3/RE do begin
+        dsRE *= .5
+        xyzp = xyzc
+        AACGM_v2_RK45, xyzc, idir, dsRE, eps, /fixed
 
-      ;//geopack_sphcar, xc,yc,zc, r,theta,phi, /to_sphere
-      rtp = car2sph(xyzc)
+        rtp = car2sph(xyzc)
 
-      if rtp[0] lt (RE + height_in)/RE then xyzc = xyzp
-    endwhile
+        if rtp[0] lt (RE + height_in)/RE then xyzc = xyzp
+      endwhile
+    endif
 
     ; record lat/lon and xyz
     lat_out = 90. - rtp[1]/DTOR

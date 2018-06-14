@@ -77,8 +77,8 @@ pro init_common, err=err
 ; DTOR        = !const.pi/180.d
   DTOR        = !dpi/180.d
   RE          = 6371.2d     ; magnetic reference spherical radius from IGRF
-  IGRF_FIRST_EPOCH = 1900
-  IGRF_LAST_EPOCH  = 2015
+;  IGRF_FIRST_EPOCH = 1900  ; these get set in IGRF_loadcoeffs
+;  IGRF_LAST_EPOCH  = 2015
 
   IGRF_coef_set = dblarr(IGRF_maxnyr,IGRF_maxk) ; all the coefficients
   IGRF_svs      = dblarr(IGRF_maxk)             ; secular variations
@@ -209,10 +209,13 @@ pro IGRF_loadcoeffs, file=file, debug=debug, err=err
   i = 0
   ; count how many D/IGRF years
   while (1) do begin
-    ipos = strpos(line, 'GRF')
+;    ipos = strpos(line, 'GRF')
+    ipos = strpos(line, 'G')
     if ipos ge 0 then begin
       if strmid(line,ipos-1,1) eq 'D' then dgrf[i] = 1
-      line = strtrim(strmid(line, ipos+3),2)
+;      line = strtrim(strmid(line, ipos+3),2)
+      ipos = strpos(line, ' ')
+      line = strtrim(strmid(line, ipos+1),2)
       i++
     endif else break
   endwhile
@@ -240,9 +243,18 @@ pro IGRF_loadcoeffs, file=file, debug=debug, err=err
   ; get the years, which should be 5-year integer epochs...
   for m=0, nyear-1 do begin
     ipos = strpos(line, ' ')
-    epoch[m] = fix(strmid(line,0,ipos))
-    line = strtrim(strmid(line, ipos+1),2)
+    if ipos lt 0 then begin
+      epoch[m] = fix(line)
+    endif else begin
+      epoch[m] = fix(strmid(line,0,ipos))
+      line = strtrim(strmid(line, ipos+1),2)
+    endelse
   endfor
+
+  ; set epoch range based on what is in the file
+  q = where(epoch ne 0, nq)
+  IGRF_FIRST_EPOCH = fix(epoch[q[0]])
+  IGRF_LAST_EPOCH  = fix(epoch[q[nq-1]])
 
 ;  /*
 ;   *==========================================================================
@@ -550,7 +562,7 @@ pro IGRF_interpolate_coefs, debug=debug, err=err
 
   i = (myear - IGRF_FIRST_EPOCH)/5;       /* index of first set of coefs */
 
-  if (IGRF_datetime.fyear lt IGRF_LAST_EPOCH) then begin
+  if (IGRF_datetime.fyear lt IGRF_LAST_EPOCH+5) then begin
     ;* interpolate bounding coefficients */
     for l=1, IGRF_nmx do begin    ;/* no l = 0 term in IGRF */
       for m=-l, l do begin
@@ -661,9 +673,10 @@ pro IGRF_SetDateTime, year, month, day, hour, minute, second, err=err
   fyear = year + ((doy-1) + $
             (hour + (minute + second/60.)/60.)/24.) / days
 
-  if (fyear lt 1900. or fyear ge 2020.) then begin
+  if (fyear lt IGRF_FIRST_EPOCH or fyear gt IGRF_LAST_EPOCH+5) then begin
     print, ''
-    print, 'Date range for IGRF12 is 1900-2020'
+    print, 'Date range for IGRF12 is '+strtrim(IGRF_FIRST_EPOCH,2)+'-'+$
+                                       strtrim(IGRF_LAST_EPOCH+5,2)
     print, ''
     err = -1
     return
