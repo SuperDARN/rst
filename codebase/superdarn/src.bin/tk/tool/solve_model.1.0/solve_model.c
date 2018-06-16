@@ -247,7 +247,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
 
-  OptionAdd(&opt,"d",'d',&dtetxt);
+  OptionAdd(&opt,"d",'t',&dtetxt);
   OptionAdd(&opt,"t",'t',&tmetxt);
 
   OptionAdd(&opt,"sh",'x',&sh);
