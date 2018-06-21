@@ -1421,7 +1421,10 @@ double strtime(char *text) {
   int i;
 
   for (i=0;(text[i] !=':') && (text[i] !=0);i++);
-  if (text[i]==0) return atoi(text)*3600L;
+  if (text[i]==0) {
+    fprintf(stderr,"Warning: must include ':' in '-t hr:mn' input - your date/time is probably incorrect!\n");
+    return atoi(text)*3600L;
+  }
   text[i]=0;
   hr=atoi(text);
   mn=atoi(text+i+1);
