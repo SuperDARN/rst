@@ -371,6 +371,11 @@ int main(int argc,char *argv[]) {
     mod = determine_model(map->Vx, map->Bx, map->By, map->Bz,
                           map->hemisphere, tilt, map->Kp, imod, nointerp);
 
+    if (mod == NULL) {
+      fprintf(stderr,"PSR10 model not defined for input conditions.\n");
+      exit(-1);
+    }
+
     /* Add lower latitude limit (HMB) from model if not found from data */
     if (map->latmin == -1) {
       bndnp = 360/bndstep + 1;
