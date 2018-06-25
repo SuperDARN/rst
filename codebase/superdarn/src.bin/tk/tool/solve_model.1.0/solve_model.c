@@ -339,6 +339,11 @@ int main(int argc,char *argv[]) {
   /* determine the model */
   mod = determine_model(dVx, dBy, dBz, hemisphere, tilt, dKp, imod, nointerp);
 
+  if (mod == NULL) {
+    fprintf(stderr,"PSR10 model not defined for input conditions.\n");
+    exit(-1);
+  }
+
   /* create model grid */
   mdata = get_model_pos(mod->latref,hemisphere,&num,lat_step,lon_step,equal);
 
