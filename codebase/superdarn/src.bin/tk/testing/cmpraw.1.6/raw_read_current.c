@@ -85,7 +85,7 @@ int raw_read_current(struct rawfp *fp,struct rawdata *raw_data) {
    memset(raw_data,0,sizeof(struct rawdata));
    fp->rlen=0;
    do {
-     if (ConvertReadShort(fp->rawfp,&num_byte) !=0) {
+     if (ConvertReadShort(fp->rawfp,&num_byte) !=0 || num_byte <= 0) {
        free(inbuf);
        return -1;
      }
