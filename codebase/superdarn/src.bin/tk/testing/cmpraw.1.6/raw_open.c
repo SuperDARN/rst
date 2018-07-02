@@ -76,7 +76,9 @@ struct rawfp *raw_open(char *rawfile,char *inxfile) {
   fstat(ptr->rawfp,&ptr->rstat);
 
   if (ConvertReadShort(ptr->rawfp,&num_byte) !=0 || num_byte <= 0) {
-    fprintf(stderr,"WARNING:raw_open:*raw_open:Issue with converting to short or reading num_byte.\n");
+    if (num_byte < 0){
+        fprintf(stderr,"WARNING:raw_open:*raw_open:Issue reading num_byte.\n");
+    }
     close(ptr->rawfp);
     free(ptr);
     free(inbuf);
