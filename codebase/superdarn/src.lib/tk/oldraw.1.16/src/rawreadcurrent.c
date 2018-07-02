@@ -101,6 +101,7 @@ int OldRawReadCurrent(struct OldRawFp *fp,struct RadarParm *prm,
    fp->rlen=0;
    do {
      if (ConvertReadShort(fp->rawfp,&num_byte) != 0 || num_byte <= 0) {
+       fprintf(stderr,"WARNING:rawreadcurrent:Issue with converting to short or reading num_byte.\n");
        free(inbuf);
        return -1;
      }
