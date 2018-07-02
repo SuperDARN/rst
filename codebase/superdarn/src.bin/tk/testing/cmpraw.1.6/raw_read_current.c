@@ -86,6 +86,7 @@ int raw_read_current(struct rawfp *fp,struct rawdata *raw_data) {
    fp->rlen=0;
    do {
      if (ConvertReadShort(fp->rawfp,&num_byte) !=0 || num_byte <= 0) {
+       fprintf(stderr,"WARNING:raw_read_current:raw_read_current:Issue with converting to short or reading num_byte.\n");
        free(inbuf);
        return -1;
      }
