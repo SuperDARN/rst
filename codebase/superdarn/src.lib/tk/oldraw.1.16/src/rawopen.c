@@ -85,6 +85,7 @@ struct OldRawFp *OldRawOpenFd(int rawfd,int inxfd) {
   fstat(ptr->rawfp,&ptr->rstat);
 
   if (ConvertReadShort(ptr->rawfp,&num_byte) !=0 || num_byte <= 0) {
+    fprintf(stderr,"WARNING:rawopen:OldRawOpenFd:Issue with converting to short or reading num_byte.\n");
     close(ptr->rawfp);
     free(ptr);
     free(inbuf);
