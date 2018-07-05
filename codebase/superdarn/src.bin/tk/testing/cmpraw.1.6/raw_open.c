@@ -77,7 +77,7 @@ struct rawfp *raw_open(char *rawfile,char *inxfile) {
 
   if (ConvertReadShort(ptr->rawfp,&num_byte) !=0 || num_byte <= 0) {
     if (num_byte < 0){
-        fprintf(stderr,"WARNING:raw_open:*raw_open:Issue reading num_byte.\n");
+        fprintf(stderr,"WARNING:raw_open:*raw_open:num_byte < 0 in record header, potentially corrupted file.\n");
     }
     close(ptr->rawfp);
     free(ptr);
