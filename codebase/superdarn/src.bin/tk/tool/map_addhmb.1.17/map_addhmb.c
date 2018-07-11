@@ -239,7 +239,7 @@ int main(int argc,char *argv[])
           fprintf(stderr,"%d-%d-%d %d:%d:%d latmin: median=%g actual=%g\n",
                 yr,mo,dy,hr,mt,(int) sc,latmed,latmin[0]);  
       }
-      (*Map_Read)(fp,map[0],grd[0]);
+      s = (*Map_Read)(fp,map[0],grd[0]);
     }
 
   } else {
