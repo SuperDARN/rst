@@ -243,11 +243,10 @@ static IDL_VPTR IDLAACGM_v2_GetDateTime(int argc,IDL_VPTR *argv,char *argk) {
     IDL_KWCleanup(IDL_KW_MARK);
     IDL_KWGetParams(argc,argv,argk,kw_pars,outargv,1);
 
-    /* ignoring silent keyword */
     s=AACGM_v2_GetDateTime(&yr,&mo,&dy,&hr,&mt,&sc,&dayno);
 
     if (yr==-1) {
-        IDL_MessageFromBlock(msg_block,AACGM_DATENOTSET,IDL_MSG_RET);
+        if (!silent) IDL_MessageFromBlock(msg_block,AACGM_DATENOTSET,IDL_MSG_RET);
         s=-1;
         IDL_KWCleanup(IDL_KW_CLEAN);
         return (IDL_GettmpLong(s));
