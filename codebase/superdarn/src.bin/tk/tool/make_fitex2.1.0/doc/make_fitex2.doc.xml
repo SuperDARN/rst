@@ -21,7 +21,7 @@
 <option><on>[<ar>inxname</ar>]</on><od>filename of the associated index file to create.</od>
 </option>
 <synopsis><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file.</p></synopsis>
-<synopsis><p>\nUses the same 120 phase variation models from fitex(1) as an initial guess for a bisection method.</p></synopsis>
+<synopsis><p>Uses the same 120 phase variation models from fitex(1) as an initial guess for a bisection method.</p></synopsis>
 <description><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file.</p>
 <p>If the "<code>-old</code>" option is not specified then the <code>fitacf</code> format file is written to standard output.</p>
 </description>
