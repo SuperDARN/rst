@@ -7,6 +7,8 @@
 <syntax>rawacftodat [-vb] [<ar>rawacfname</ar>]</syntax>
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
 <option><on><ar>rawacfname</ar></on><od>filename of the <code>rawacf</code> format file to convert.</od>
