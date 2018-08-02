@@ -9,6 +9,8 @@
 
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
 
 <option><on>-t <ar>timeout</ar></on><od>set the time to wait before resetting the connection to <ar>timeout</ar> seconds</od></option>
 

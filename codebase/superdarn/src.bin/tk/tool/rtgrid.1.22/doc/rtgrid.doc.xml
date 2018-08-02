@@ -10,6 +10,8 @@
 
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
 <option><on>-tl <ar>tlen</ar></on><od>ignore the scan flag and instead use a fixed length scan of  <ar>tlen</ar> seconds.</od>
 </option>
 <option><on>-i <ar>intt</ar></on><od>integrate the grid data into records of length <ar>intt</ar> seconds.</od>
