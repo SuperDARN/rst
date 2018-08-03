@@ -54,9 +54,9 @@
 #include "errstr.h"
 #include "hlpstr.h"
 
-struct RadarParm prm;
-struct RawData raw;
-struct FitData fit;
+struct RadarParm *prm;
+struct RawData *raw;
+struct FitData *fit;
 
 struct OptionData opt;
 
@@ -89,7 +89,11 @@ int main(int argc,char *argv[]) {
   time_t ctime;
   int c,n;
   char command[128];
- 
+  char tmstr[40];
+
+  prm=RadarParmMake();
+  raw=RawMake();
+  fit=FitMake();
 
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
@@ -128,7 +132,7 @@ int main(int argc,char *argv[]) {
        fprintf(stderr,"File not found.\n");
        exit(-1);
      }
-     status=OldRawRead(rawfp,&prm,&raw);  
+     status=OldRawRead(rawfp,prm,raw);
   } else { 
     if (arg==argc) fp=stdin;
     else fp=fopen(argv[arg],"r");
@@ -137,7 +141,7 @@ int main(int argc,char *argv[]) {
       fprintf(stderr,"File not found.\n");
       exit(-1);
     }
-    status=RawFread(fp,&prm,&raw);
+    status=RawFread(fp,prm,raw);
   }
 
   command[0]=0;
@@ -152,12 +156,12 @@ int main(int argc,char *argv[]) {
 
 
   if (vb) 
-      fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm.time.yr,prm.time.mo,
-	     prm.time.dy,prm.time.hr,prm.time.mt,prm.time.sc,prm.bmnum);
+      fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
+	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
 
 
-  FitACFex(&prm,&raw,&fit);
+  FitACFex(prm,raw,fit);
     
   if (old) {
     char vstr[256];
@@ -173,9 +177,9 @@ int main(int argc,char *argv[]) {
         exit(-1);
       }
     }
-    sprintf(vstr,"%d.%d",fit.revision.major,fit.revision.minor);
+    sprintf(vstr,"%d.%d",fit->revision.major,fit->revision.minor);
     OldFitHeaderFwrite(fitfp,"make_fit","fitacf",vstr);
-    if (inxfp !=NULL) OldFitInxHeaderFwrite(inxfp,&prm);
+    if (inxfp !=NULL) OldFitInxHeaderFwrite(inxfp,prm);
   }
 
 
@@ -184,25 +188,26 @@ int main(int argc,char *argv[]) {
 
 
     ctime = time((time_t) 0);
-    strcpy(prm.origin.command,command);
-    strcpy(prm.origin.time,asctime(gmtime(&ctime)));
-    prm.origin.time[24]=0;
+    RadarParmSetOriginCommand(prm,command);
+    strcpy(tmstr,asctime(gmtime(&ctime)));
+    tmstr[24]=0;
+    RadarParmSetOriginTime(prm,tmstr);
   
     if (old) {
-       dnum=OldFitFwrite(fitfp,&prm,&fit,NULL);
-       if (inxfp !=NULL) OldFitInxFwrite(inxfp,drec,dnum,&prm);
+       dnum=OldFitFwrite(fitfp,prm,fit,NULL);
+       if (inxfp !=NULL) OldFitInxFwrite(inxfp,drec,dnum,prm);
        drec+=dnum;
        irec++;
-    } else status=FitFwrite(stdout,&prm,&fit);
+    } else status=FitFwrite(stdout,prm,fit);
     
-    if (old) status=OldRawRead(rawfp,&prm,&raw);
-    else status=RawFread(fp,&prm,&raw);
+    if (old) status=OldRawRead(rawfp,prm,raw);
+    else status=RawFread(fp,prm,raw);
 
      if (vb) 
-      fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm.time.yr,prm.time.mo,
-	     prm.time.dy,prm.time.hr,prm.time.mt,prm.time.sc,prm.bmnum);
+      fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
+	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
-    FitACFex(&prm,&raw,&fit);
+    FitACFex(prm,raw,fit);
     
   
   } while (status==0);

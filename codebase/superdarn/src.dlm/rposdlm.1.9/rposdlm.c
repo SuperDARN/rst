@@ -400,7 +400,7 @@ static IDL_VPTR IDLRadarLoadHardware(int argc,IDL_VPTR *argv,char *argk) {
 
   IDL_KWCleanup(IDL_KW_CLEAN);
 
-  return (IDL_GettmpLong(s));
+  return (IDL_GettmpLong(0));
 
 }
 
