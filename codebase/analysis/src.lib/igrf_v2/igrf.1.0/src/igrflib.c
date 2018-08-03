@@ -1510,17 +1510,17 @@ int AACGM_v2_RK45(double xyz[], int idir, double *ds, double eps, int code) {
         /*if keyword_set(RRds) then   ds = min([50*r*r*r/RE, ds])*/
         *ds = MIN(50*rtp[0]*rtp[0]*rtp[0]/RE, *ds);
       } /* otherwise leave the stepsize alone */
-    }
 
-    /* we use the RK4 solution */
-    for (k=0;k<3;k++) xyz[k] = w1[k];
-    /*
-    ; I would assume that using the higher order RK5 method is better, but
-    ; there is the suggestion that using the RK4 solution guarantees accuracy
-    ; while the RK5 does not. Apparently some texts are now suggesting using
-    ; the RK5 solution...
-    for (k=0;k<3;k++) xyz[k] = w2[k];
-    */
+      /* we use the RK4 solution */
+      for (k=0;k<3;k++) xyz[k] = w1[k];
+      /*
+      ; I would assume that using the higher order RK5 method is better, but
+      ; there is the suggestion that using the RK4 solution guarantees accuracy
+      ; while the RK5 does not. Apparently some texts are now suggesting using
+      ; the RK5 solution...
+      for (k=0;k<3;k++) xyz[k] = w2[k];
+      */
+    }
   }
 
   return (0);

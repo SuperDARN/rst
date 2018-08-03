@@ -436,7 +436,10 @@ ON_IOERROR,iofail
   OldRawMakeOldRawRadarParm,rparm
 
   readu,rawfp.rawunit,rechdr
- 
+
+  ; Make sure the record size is non-zero
+  if rechdr.size le 0 then return,-1
+
   num_byte=rechdr.size
   rawfp.rlen=rechdr.size
   rawfp.ptr+=rechdr.size
