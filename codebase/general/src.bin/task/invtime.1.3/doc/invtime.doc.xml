@@ -38,7 +38,7 @@
 <description>Convert the times in the file "<code>data.txt</code>" to a full reprentation of year, month, day, hour, minute and second. The output is written to the file "<code>data.2.txt</code>".</description>
 </example>
 <example>
-<command>etime -d -sd 20040830 data.txt &gt; data.2.txt</command>
+<command>invtime -d -sd 20040830 data.txt &gt; data.2.txt</command>
 <description>Convert the times in the file "<code>data.txt</code>" to a full representation of year, month, day, hour, minute, and seconds. The input file is assumed to contain seconds from the start of the day and the date is set to 30th August, 2004.  The output is written to the file "<code>data.2.txt</code>".</description>
 </example>
 
