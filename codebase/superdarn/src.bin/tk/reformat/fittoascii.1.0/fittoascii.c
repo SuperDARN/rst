@@ -19,11 +19,20 @@
 #include "fitdata.h"
 #include "fitread.h"
 
+#include "hlpstr.h"
+#include "errstr.h"
+#include "version.h"
+
 struct RadarNetwork *network;
 struct Radar *radar;
 struct RadarSite *site;
 struct OptionData opt;
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: fittoascii --help\n");
+  return(-1);
+}
 
 int main(int argc,char *argv[])
 {
@@ -80,7 +89,17 @@ int main(int argc,char *argv[])
   OptionAdd(&opt,"vb",'x',&vb);
 
   /*process the options*/
-  arg=OptionProcess(1,argc,argv,&opt,NULL);
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+
+  if (arg==-1) {
+    exit(-1);
+  }
+
+  if (help==1) {
+    OptionPrintInfo(stdout,hlpstr);
+    exit(0);
+  }
+
   if(option == 1)
   {
     OptionDump(stdout,&opt);
