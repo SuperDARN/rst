@@ -8,6 +8,8 @@
 <syntax>merge_rt -old [-vb] [-r]  [-L <ar>logname</ar>] [-if <ar>pidname</ar>] <ar>gridnames...</ar></syntax>
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
 <option><on>-i <ar>interval</ar></on><od>divide the day into <ar>interval</ar> second intervals.</od>
 </option>
 

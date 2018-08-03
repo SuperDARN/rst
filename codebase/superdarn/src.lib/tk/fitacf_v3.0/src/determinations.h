@@ -33,14 +33,14 @@ July 2015
 #include "fitblk.h"
 #include "llist.h"
 
-#define LN_TO_LOG 1/log(10)
-#define V_max 30.0
-#define W_max 90.0
-#define C 299792458 
-#define CLOSE_GATE_HEIGHT 120.0
-#define FAR_GATE_HEIGHT 250.0
-#define EARTH_RADIUS 6371.0
-#define MAGNETIC_DIP_ANGLE 1.0
+#define LN_TO_LOG 1/log(10) /*natural log to log conversion*/
+#define V_max 30.0 /*velocity in m/s, upper limit used in gsct determination*/
+#define W_max 90.0 /*spectral width in m/s, upper limit used in gsct determination*/
+#define C 299792458 /*speed of light in m/s*/
+#define CLOSE_GATE_HEIGHT 120.0 /*height of close range gates in km*/
+#define FAR_GATE_HEIGHT 250.0 /*height of far range gates in km*/
+#define EARTH_RADIUS 6371.0 /*Earth's radius in km*/
+#define MAGNETIC_DIP_ANGLE 1.0 /* Magnetic dip angle in degrees used for refractive index*/
 
 
 struct FitRange* new_range_array(FITPRMS* fit_prms);

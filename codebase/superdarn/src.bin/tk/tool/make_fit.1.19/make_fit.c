@@ -68,6 +68,7 @@ int main(int argc,char *argv[]) {
 
   unsigned char help=0;
   unsigned char option=0;
+  unsigned char version=0;
 
   unsigned char vb=0;
   unsigned char old_elev=0;
@@ -97,6 +98,7 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
+  OptionAdd(&opt,"-version",'x',&version);
 
   OptionAdd(&opt,"vb",'x',&vb);
   OptionAdd(&opt,"old_elev",'x',&old_elev);   /* set to use old elev ang alg */
@@ -142,6 +144,12 @@ int main(int argc,char *argv[]) {
     OptionDump(stdout,&opt);
     exit(0);
   }
+
+  if (version==1) {
+    OptionVersion(stdout);
+    exit(0);
+  }
+
 
   if ((old) && (argc-arg<2)) {
     OptionPrintInfo(stdout,hlpstr);

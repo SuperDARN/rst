@@ -12,6 +12,8 @@
 
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
 <option><on>-old</on><od>the input file is a <code>map</code> format file.</od>
 </option>
 <option><on>-mid</on><od>record the time in the middle of the map data, not the start and end times.</od>
