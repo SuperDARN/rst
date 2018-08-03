@@ -1316,11 +1316,14 @@ int main(int argc,char *argv[]) {
  
   vkey.min=0;
   vkey.max=vmax;
-  vkey.num=KeyLinearMax;
-  vkey.a=KeyLinearA[0];
-  vkey.r=KeyLinearR[0];
-  vkey.g=KeyLinearG[0];
-  vkey.b=KeyLinearB[0];
+
+  if (vkey.num==0) {
+    vkey.num=KeyLinearMax;
+    vkey.a=KeyLinearA[0];
+    vkey.r=KeyLinearR[0];
+    vkey.g=KeyLinearG[0];
+    vkey.b=KeyLinearB[0];
+  }
 
   if (key.num==0) {
     if (pprm==2) {
