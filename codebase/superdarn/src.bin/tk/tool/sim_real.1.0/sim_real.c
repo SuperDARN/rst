@@ -260,9 +260,9 @@ int main(int argc,char *argv[])
 	do
 	{
 
-		rt = fscanf(fitfp,"%d  %d  %d  %d  %d  %d\n",&prm->time.yr,&prm->time.mo,&prm->time.dy,&prm->time.hr,&prm->time.mt,&prm->time.sc);
+		rt = fscanf(fitfp,"%hd  %hd  %hd  %hd  %hd  %hd\n",&prm->time.yr,&prm->time.mo,&prm->time.dy,&prm->time.hr,&prm->time.mt,&prm->time.sc);
 		fprintf(stderr,"%d  %d  %d  %d  %d  %d\n",prm->time.yr,prm->time.mo,prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc);
-		rt = fscanf(fitfp,"%d  %lf  %d  %lf  %d  %d  %lf  %lf  %lf  %d\n",&cpid,&freq,&prm->bmnum,&noise_lev,&nave,&lagfr,&dt,&smsep,&rngsep,&nrang);
+		rt = fscanf(fitfp,"%d  %lf  %hd  %lf  %d  %d  %lf  %lf  %lf  %d\n",&cpid,&freq,&prm->bmnum,&noise_lev,&nave,&lagfr,&dt,&smsep,&rngsep,&nrang);
 		lagfr /= smsep;
 		rngsep *= 1.e3;
 		smsep *= 1.e-6;
@@ -450,7 +450,7 @@ int main(int argc,char *argv[])
 				}
 			}
 
-			int * badtr = malloc(nave*n_pul*2*sizeof(int));
+			unsigned int * badtr = malloc(nave*n_pul*2*sizeof(int));
 
 			IQFwrite(stdout,prm,iq,badtr,samples);
 			free(samples);

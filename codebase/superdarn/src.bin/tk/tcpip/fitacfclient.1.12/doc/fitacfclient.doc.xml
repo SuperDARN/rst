@@ -7,6 +7,8 @@
 <syntax>fitacfclient [-s <ar>stream</ar>] <ar>host</ar> <ar>port</ar></syntax>
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
 <option><on>-s <ar>stream</ar></on><od>for a multiplexed stream, read the stream number given by <ar>stream</ar>. A value of 255 will read all streams</od>
 </option>
 <option><on><ar>host</ar></on><od>hostname or IP address of the system to connect to.</od>

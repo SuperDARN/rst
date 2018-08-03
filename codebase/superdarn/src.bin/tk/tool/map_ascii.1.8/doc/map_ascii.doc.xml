@@ -7,6 +7,8 @@
 <syntax>map_ascii [-vb] [-old] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>] <ar>name</ar></syntax>
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
 <option><on>-old</on><od>the input file is a <code>map</code> format file.</od>
@@ -23,7 +25,7 @@
 </option>
 <option><on>-ex <ar>hr:mn</ar></on><od>extract an interval whose extent is <ar>hr:mn</ar>.</od>
 </option>
-<option><on><ar>name</ar></on><od>filename of the <code>map</code> format file to trim. If this is omitted, the file is read from standard input.</od>
+<option><on><ar>name</ar></on><od>filename of the <code>cnvmap</code> format file to trim. If this is omitted, the file is read from standard input.</od>
 </option>
 <synopsis><p>Calculate the derived potential from a section of a <code>map</code> format file and produce a plain ASCII text file as output.\n</p>
 <p>The output format header is: <code>(start timestamp) (end timestamp) (minimum magnetic lat)\n</p>

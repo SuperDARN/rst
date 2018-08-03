@@ -30,6 +30,14 @@ July 2015
 #include <stdlib.h>
 #include <string.h>
 
+
+/**
+ * @brief      Allocates space needed for final data parameters.
+ *
+ * @param      fit_data  The FitData struct that holds parameters that have been extracted from
+ *                       fitted data.
+ * @param      fit_prms  The FITPRM struct holding rawacf record info.
+ */
 void allocate_fit_data(struct FitData* fit_data, FITPRMS* fit_prms){
     fit_data->rng = realloc(fit_data->rng,fit_prms->nrang * sizeof(*fit_data->rng));
     if(fit_data->rng == NULL){
@@ -58,8 +66,15 @@ void allocate_fit_data(struct FitData* fit_data, FITPRMS* fit_prms){
 }
 
 /**
-Performs all the determinations for parameters from the fitted data for all good ranges
-*/
+ * @brief      Calls the overall set of functions that extract final data parameters from the
+ *             fitted data.
+ *
+ * @param[in]  ranges     The list of RANGENODE structs.
+ * @param      fit_prms   The FITPRM struct holding rawacf record info.
+ * @param      fit_data   The FitData struct that holds parameters that have been extracted from
+ *                        fitted data.
+ * @param[in]  noise_pwr  The noise power.
+ */
 void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data,double noise_pwr){
 
     fit_data->revision.major=3;
@@ -80,7 +95,6 @@ void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data
 
 
 #ifdef _RFC_IDX
-
     llist_for_each_arg(ranges,(node_func_arg)refractive_index,fit_data->elv,NULL);
 #endif
 
@@ -104,8 +118,13 @@ void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data
 }
 
 /**
-Finds the refractive index for a particular range.
-*/
+ * @brief      Calculates refractive index for a given range.
+ *
+ * @param[in]  range           A RANGENODE struct.
+ * @param      fit_elev_array  A FitElv array that holds calculated elevation.
+ *
+ * This function is meant to be mapped to a list of ranges using llist_for_each.
+ */
 void refractive_index(llist_node range, struct FitElv* fit_elev_array){
     double height;
     RANGENODE *range_node;
@@ -126,8 +145,16 @@ void refractive_index(llist_node range, struct FitElv* fit_elev_array){
 }
 
 /**
-Converts lag 0 powers to dB
-*/
+ * @brief      Converts lag 0 power to dB.
+ *
+ * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
+ *                              final results.
+ * @param      fit_prms         The FITPRM struct holding rawacf record info.
+ * @param[in]  noise_pwr        The noise power
+ *
+ * An arbitrary value of -50 is assigned in the case that the lag 0 power minus the noise is below
+ * 0.0.
+ */
 void lag_0_pwr_in_dB(struct FitRange* fit_range_array,FITPRMS* fit_prms,double noise_pwr){
     int i;
 
@@ -142,8 +169,14 @@ void lag_0_pwr_in_dB(struct FitRange* fit_range_array,FITPRMS* fit_prms,double n
 }
 
 /**
-Sets a flag showing that data is valid
-*/
+ * @brief      Sets a flag showing that data for a range is valid.
+ *
+ * @param[in]  range            A RANGENODE struct.
+ * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
+ *                              final results.
+ *
+ * This function is meant to be mapped to a list of ranges using llist_for_each.
+ */
 void set_qflg(llist_node range,struct FitRange* fit_range_array){
     RANGENODE* range_node;
 
@@ -154,8 +187,15 @@ void set_qflg(llist_node range,struct FitRange* fit_range_array){
 }
 
 /**
-Sets the value of the linear fitted lag 0 power in dB
-*/
+ * @brief      Sets the value of the linear fitted lag 0 power in dB
+ *
+ * @param[in]  range            The FITPRM struct holding rawacf record info.
+ * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
+ *                              final results.
+ * @param      noise_pwr        The noise power.
+ *
+ * This function is meant to be mapped to a list of ranges using llist_for_each.
+ */
 void set_p_l(llist_node range, struct FitRange* fit_range_array, double* noise_pwr){
     RANGENODE* range_node;
     double noise_dB;
@@ -168,8 +208,14 @@ void set_p_l(llist_node range, struct FitRange* fit_range_array, double* noise_p
 }
 
 /**
-Sets the value of the linear fitted lag 0 power error in dB
-*/
+ * @brief      Sets the value of the linear fitted lag 0 power error in dB
+ *
+ * @param[in]  range            A RANGENODE struct.
+ * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
+ *                              final results.
+ *
+ * This function is meant to be mapped to a list of ranges using llist_for_each.
+ */
 void set_p_l_err(llist_node range, struct FitRange* fit_range_array){
     RANGENODE* range_node;
 
@@ -180,8 +226,15 @@ void set_p_l_err(llist_node range, struct FitRange* fit_range_array){
 }
 
 /**
-Sets the value of the quadratic fitted lag 0 power in dB
-*/
+ * @brief      Sets the value of the quadratic fitted lag 0 power in dB.
+ *
+ * @param[in]  range            A RANGENODE struct.
+ * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
+ *                              final results.
+ * @param      noise_pwr        The noise power.
+ *
+ * This function is meant to be mapped to a list of ranges using llist_for_each.
+ */
 void set_p_s(llist_node range, struct FitRange* fit_range_array, double* noise_pwr){
     RANGENODE* range_node;
     double noise_dB;
@@ -194,8 +247,14 @@ void set_p_s(llist_node range, struct FitRange* fit_range_array, double* noise_p
 }
 
 /**
-Sets the value of the quadratic fitted lag 0 power error in dB
-*/
+ * @brief      Sets the value of the quadratic fitted lag 0 power error in dB.
+ *
+ * @param[in]  range            A RANGENODE struct.
+ * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
+ *                              final results.
+ *
+ * This function is meant to be mapped to a list of ranges using llist_for_each.
+ */
 void set_p_s_err(llist_node range, struct FitRange* fit_range_array){
     RANGENODE* range_node;
 
@@ -206,8 +265,15 @@ void set_p_s_err(llist_node range, struct FitRange* fit_range_array){
 }
 
 /**
-Sets the value of the determined velocity from the phase fit
-*/
+ * @brief      Sets the value of the determined velocity from the phase fit.
+ *
+ * @param[in]  range            A RANGENODE struct.
+ * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
+ *                              final results.
+ * @param      fit_prms         The FITPRM struct holding rawacf record info.
+ *
+ * This function is meant to be mapped to a list of ranges using llist_for_each.
+ */
 void set_v(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_prms){
     RANGENODE* range_node;
     double conversion_factor,velocity;
@@ -222,8 +288,15 @@ void set_v(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_prms
 }
 
 /**
-Sets the value of the determined velocity error from the phase fit
-*/
+ * @brief      Sets the value of the determined velocity error from the phase fit.
+ *
+ * @param[in]  range            A RANGENODE struct.
+ * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
+ *                              final results.
+ * @param      fit_prms         The FITPRM struct holding rawacf record info.
+ *
+ * This function is meant to be mapped to a list of ranges using llist_for_each.
+ */
 void set_v_err(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_prms){
     RANGENODE* range_node;
     double conversion_factor,velocity_err;
@@ -237,8 +310,15 @@ void set_v_err(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_
 }
 
 /**
-Sets the value of the determined spectral width from the linear power fit
-*/
+ * @brief      Sets the value of the determined spectral width from the linear power fit.
+ *
+ * @param[in]  range            A RANGENODE struct.
+ * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
+ *                              final results.
+ * @param      fit_prms         The FITPRM struct holding rawacf record info.
+ *
+ * This function is meant to be mapped to a list of ranges using llist_for_each.
+ */
 void set_w_l(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_prms){
     RANGENODE* range_node;
     double conversion_factor;
@@ -250,8 +330,15 @@ void set_w_l(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_pr
 }
 
 /**
-Sets the value of the determined spectral width error from the linear power fit
-*/
+ * @brief      Sets the value of the determined spectral width error from the linear power fit.
+ *
+ * @param[in]  range            A RANGENODE struct.
+ * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
+ *                              final results.
+ * @param      fit_prms         The FITPRM struct holding rawacf record info.
+ *
+ * This function is meant to be mapped to a list of ranges using llist_for_each.
+ */
 void set_w_l_err(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_prms){
     RANGENODE* range_node;
     double conversion_factor;
@@ -263,8 +350,15 @@ void set_w_l_err(llist_node range, struct FitRange* fit_range_array, FITPRMS* fi
 }
 
 /**
-Sets the value of the determined spectral width from the quadratic power fit
-*/
+ * @brief       Sets the value of the determined spectral width from the quadratic power fit.
+ *
+ * @param[in]  range            A RANGENODE struct.
+ * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
+ *                              final results.
+ * @param      fit_prms         The FITPRM struct holding rawacf record info.
+ *
+ * This function is meant to be mapped to a list of ranges using llist_for_each.
+ */
 void set_w_s(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_prms){
     RANGENODE* range_node;
     double conversion_factor;
@@ -278,8 +372,15 @@ void set_w_s(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_pr
 }
 
 /**
-Sets the value of the determined spectral width error from the quadratic power fit
-*/
+ * @brief      Sets the value of the determined spectral width error from the quadratic power fit.
+ *
+ * @param[in]  range            A RANGENODE struct.
+ * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
+ *                              final results.
+ * @param      fit_prms         The FITPRM struct holding rawacf record info.
+ *
+ * This function is meant to be mapped to a list of ranges using llist_for_each.
+ */
 void set_w_s_err(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_prms){
     RANGENODE* range_node;
     double conversion_factor;
@@ -294,8 +395,15 @@ void set_w_s_err(llist_node range, struct FitRange* fit_range_array, FITPRMS* fi
 }
 
 /**
-Sets the value of chi squared from the linear power fit
-*/
+ * @brief      Sets the value of chi squared from the linear power fit.
+ *
+ * @param[in]  range            A RANGENODE struct.
+ * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
+ *                              final results.
+ * @param      fit_prms         The FITPRM struct holding rawacf record info.
+ *
+ * This function is meant to be mapped to a list of ranges using llist_for_each.
+ */
 void set_sdev_l(llist_node range, struct FitRange* fit_range_array){
     RANGENODE* range_node;
 
@@ -305,8 +413,15 @@ void set_sdev_l(llist_node range, struct FitRange* fit_range_array){
 }
 
 /**
-Sets the value of chi squared from the quadratic power fit
-*/
+ * @brief      Sets the value of chi squared from the quadratic power fit.
+ *
+ * @param[in]  range            A RANGENODE struct.
+ * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
+ *                              final results.
+ * @param      fit_prms         The FITPRM struct holding rawacf record info.
+ *
+ * This function is meant to be mapped to a list of ranges using llist_for_each.
+ */
 void set_sdev_s(llist_node range, struct FitRange* fit_range_array){
     RANGENODE* range_node;
 
@@ -316,8 +431,15 @@ void set_sdev_s(llist_node range, struct FitRange* fit_range_array){
 }
 
 /**
-Sets the value of chi squared from the phase fit
-*/
+ * @brief      Sets the value of chi squared from the phase fit.
+ *
+ * @param[in]  range            A RANGENODE struct.
+ * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
+ *                              final results.
+ * @param      fit_prms         The FITPRM struct holding rawacf record info.
+ *
+ * This function is meant to be mapped to a list of ranges using llist_for_each.
+ */
 void set_sdev_phi(llist_node range, struct FitRange* fit_range_array){
     RANGENODE* range_node;
 
@@ -327,8 +449,15 @@ void set_sdev_phi(llist_node range, struct FitRange* fit_range_array){
 }
 
 /**
-Sets the flag of whether a range is ground scatter
-*/
+ * @brief      Sets the flag of whether a range is ground scatter.
+ *
+ * @param[in]  range            A RANGENODE struct.
+ * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
+ *                              final results.
+ * @param      fit_prms         The FITPRM struct holding rawacf record info.
+ *
+ * This function is meant to be mapped to a list of ranges using llist_for_each.
+ */
 void set_gsct(llist_node range, struct FitRange* fit_range_array){
     RANGENODE* range_node;
     double v_abs,w;
@@ -341,8 +470,15 @@ void set_gsct(llist_node range, struct FitRange* fit_range_array){
 }
 
 /**
-Sets the number of good points used in the power fitting
-*/
+ * @brief      Sets the number of good points used in the power fitting.
+ *
+ * @param[in]  range            A RANGENODE struct.
+ * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
+ *                              final results.
+ * @param      fit_prms         The FITPRM struct holding rawacf record info.
+ *
+ * This function is meant to be mapped to a list of ranges using llist_for_each.
+ */
 void set_nump(llist_node range, struct FitRange* fit_range_array){
     RANGENODE* range_node;
 
@@ -352,8 +488,15 @@ void set_nump(llist_node range, struct FitRange* fit_range_array){
 }
 
 /**
-Determines the elevation angle from the fitted XCF phase
-*/
+ * @brief      Determines the elevation angle from the fitted XCF phase.
+ *
+ * @param[in]  range            A RANGENODE struct.
+ * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
+ *                              final results.
+ * @param      fit_prms         The FITPRM struct holding rawacf record info.
+ *
+ * This function is meant to be mapped to a list of ranges using llist_for_each.
+ */
 void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fit_prms){
     double x,y,z;
     double antenna_sep,elev_corr;
@@ -446,39 +589,56 @@ void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fi
 }
 
 /**
-Sets the fitted phase offset for the XCF
-*/
+ * @brief      Sets the phase offset for the XCF from raw data.
+ *
+ * @param[in]  range            A RANGENODE struct.
+ * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
+ *                              final results.
+ * @param      fit_prms         The FITPRM struct holding rawacf record info.
+ *
+ * This function is meant to be mapped to a list of ranges using llist_for_each.
+ */
 void set_xcf_phi0(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_prms){
     RANGENODE* range_node;
     double real, imag;
 
     range_node = (RANGENODE*) range;
 
-    /*fit_range_array[range_node->range].phi0 = range_node->elev_fit->a;*/
-
     real = fit_prms->xcfd[range_node->range * fit_prms->mplgs][0];
     imag = fit_prms->xcfd[range_node->range * fit_prms->mplgs][1];
 
     fit_range_array[range_node->range].phi0 = atan2(imag,real);
 
-
-
 }
 
+
 /**
-Sets the fitted phase offset error for the XCF
-*/
+ * @brief      Sets the phase offset error for the XCF from the XCF fit.
+ *
+ * @param[in]  range            A RANGENODE struct.
+ * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
+ *                              final results.
+ *
+ * This function is meant to be mapped to a list of ranges using llist_for_each.
+ */
 void set_xcf_phi0_err(llist_node range, struct FitRange* fit_range_array){
     RANGENODE* range_node;
 
     range_node = (RANGENODE*) range;
 
     fit_range_array[range_node->range].phi0_err = sqrt(range_node->elev_fit->sigma_2_a);
+
 }
 
 /**
-Sets the fitted phase chi squared value for the XCF
-*/
+ * @brief      Sets the fitted phase chi squared value for the XCF.
+ *
+ * @param[in]  range            A RANGENODE struct.
+ * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
+ *                              final results.
+ *
+ * This function is meant to be mapped to a list of ranges using llist_for_each.
+ */
 void set_xcf_sdev_phi(llist_node range, struct FitRange* fit_range_array){
     RANGENODE* range_node;
 

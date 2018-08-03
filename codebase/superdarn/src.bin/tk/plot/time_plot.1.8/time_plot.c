@@ -410,6 +410,7 @@ int main(int argc,char *argv[]) {
 
   unsigned char help=0;
   unsigned char option=0;
+  unsigned char version=0;
 
   char *cfname=NULL;
   FILE *fp;
@@ -464,6 +465,7 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
+  OptionAdd(&opt,"-version",'x',&version);
 
   OptionAdd(&opt,"old",'x',&old); /* old format switch */
 
@@ -616,6 +618,11 @@ int main(int argc,char *argv[]) {
 
   if (option==1) {
     OptionDump(stdout,&opt);
+    exit(0);
+  }
+
+  if (version==1) {
+    OptionVersion(stdout);
     exit(0);
   }
 

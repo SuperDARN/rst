@@ -46,7 +46,8 @@
 double RawGetTime(struct DataMap *ptr) {
   struct DataMapScalar *s;
   int c;
-  int yr=0,mo=0,dy=0,hr=0,mt=0,sc=0,us=0;  
+  int yr=0,mo=0,dy=0,hr=0,mt=0,sc=0;
+  int32 us=0;
   for (c=0;c<ptr->snum;c++) {
     s=ptr->scl[c];
     if ((strcmp(s->name,"time.yr")==0) && (s->type==DATASHORT)) 
@@ -61,8 +62,8 @@ double RawGetTime(struct DataMap *ptr) {
       mt=*(s->data.sptr);
     if ((strcmp(s->name,"time.sc")==0) && (s->type==DATASHORT))
       sc=*(s->data.sptr);
-    if ((strcmp(s->name,"time.us")==0) && (s->type==DATASHORT))
-      us=*(s->data.sptr);
+    if ((strcmp(s->name,"time.us")==0) && (s->type==DATAINT))
+      us=*(s->data.iptr);
    }
    if (yr==0) return -1;
    return TimeYMDHMSToEpoch(yr,mo,dy,hr,mt,sc+us/1.0e6); 

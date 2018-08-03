@@ -62,13 +62,10 @@ void OptionFreeFile(struct OptionFile *ptr);
 int OptionProcess(int offset,int argc,char *argv[], struct OptionData *opt,
 		  int (*opterr)(char *));
 int OptionAdd(struct OptionData *opt,char *name,char type,void *data);
-
 int OptionDump(FILE *fp,struct OptionData *opt);
 void OptionFree(struct OptionData *opt);
-
-
-
 void OptionPrintInfo(FILE *fp,char *str[]);
+int OptionVersion(FILE *fp);
 
 #endif
 

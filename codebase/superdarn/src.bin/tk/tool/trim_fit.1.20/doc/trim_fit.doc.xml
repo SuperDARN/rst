@@ -5,12 +5,14 @@
 <location>src.bin/tk/tool/trim_fit</location>
 
 <syntax>trim_fit --help</syntax>
-<syntax>trim_fit [-vb] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>]  [-cp <ar>cpid</ar>] [-cn <ar>channel</ar>] <ar>fitacfinput</ar> <ar>fitacfoutput</ar></syntax>
-<syntax>trim_fit -i [-vb] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>]  [-cp <ar>cpid</ar>] [-cn <ar>channel</ar>] <ar>fitacfinput</ar> <ar>inxinput</ar> <ar>fitacfoutput</ar> <ar>inxoutput</ar></syntax>
-<syntax>trim_fit -old [-vb] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>]  [-cp <ar>cpid</ar>] [-cn <ar>channel</ar>] [<ar>fitname</ar>]</syntax>
-<syntax>trim_fit -i -old [-vb] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>]  [-cp <ar>cpid</ar>] [-cn <ar>channel</ar>] <ar>fitname</ar> <ar>inxname</ar> </syntax>
+<syntax>trim_fit [-vb] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>]  [-cp <ar>cpid</ar>] [-cn <ar>channel</ar>] [<ar>fitacfname</ar>]</syntax>
+<syntax>trim_fit -i [-vb] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>]  [-cp <ar>cpid</ar>] [-cn <ar>channel</ar>] <ar>fitacfname</ar> <ar>inxinput</ar></syntax>
+<syntax>trim_fit -old [-vb] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>]  [-cp <ar>cpid</ar>] [-cn <ar>channel</ar>] <ar>fitinput</ar> <ar>fitoutput</ar></syntax>
+<syntax>trim_fit -i -old [-vb] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>]  [-cp <ar>cpid</ar>] [-cn <ar>channel</ar>] <ar>fitinput</ar> <ar>fitoutput</ar> <ar>inxinput</ar> <ar>inxoutput</ar></syntax>
 
 <option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
 </option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
@@ -28,9 +30,7 @@
 </option>
 <option><on>-cn <ar>channel</ar></on><od>extract only those records from channel <ar>channel</ar>.</od>
 </option>
-<option><on><ar>fitacfinput</ar></on><od>filename of the <code>fitacf</code> format file to trim.</od>
-</option>
-<option><on><ar>fitacfoutput</ar></on><od>filename of the <code>fitacf</code> format file to create.</od>
+<option><on><ar>fitacfname</ar></on><od>filename of the <code>fitacf</code> format file to trim. If this is omitted, the file will be read from standard input</od>
 </option>
 <option><on>-i</on><od>index files are available, for <code>fit</code> format files, an index file is created for the ouput file.</od>
 </option>
@@ -40,7 +40,9 @@
 </option>
 <option><on>-old</on><od>the input file is a <code>fit</code> format file.</od>
 </option>
-<option><on><ar>fitname</ar></on><od>filename of the <code>fit</code> (<code>dat</code>) format file to trim. If this is omitted, the file will be read from standard input</od>
+<option><on><ar>fitinput</ar></on><od>filename of the <code>fit</code> format file to trim.</od>
+</option>
+<option><on><ar>fitoutput</ar></on><od>filename of the <code>fit</code> format file to create.</od>
 </option>
 <synopsis><p>Extracts a section from a <code>fit</code> or <code>fitacf</code> format file.</p></synopsis>
 <description><p>Extracts a section from a <code>fit</code> or <code>fitacf</code> format file.</p>

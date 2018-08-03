@@ -5,10 +5,12 @@
 <location>src.bin/tk/tool/trim_raw</location>
 
 <syntax>trim_raw --help</syntax>
-<syntax>trim_raw [-vb] [-t <ar>thr</ar>] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>] <ar>rawacfinput</ar> <ar>rawacfoutput</ar></syntax>
-<syntax>trim_raw -old [-vb] [-t <ar>thr</ar>] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>] [<ar>rawname</ar>]</syntax>
+<syntax>trim_raw [-vb] [-t <ar>thr</ar>] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>] [<ar>rawacfname</ar>]</syntax>
+<syntax>trim_raw -old [-vb] [-t <ar>thr</ar>] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>] <ar>rawinput</ar> <ar>rawoutput</ar></syntax>
 
 <option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
 </option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
@@ -24,13 +26,13 @@
 </option>
 <option><on>-ex <ar>hr:mn</ar></on><od>extract an interval whose extent is <ar>hr:mn</ar>.</od>
 </option>
-<option><on><ar>rawacfinput</ar></on><od>filename of the <code>rawacf</code> format file to trim.</od>
-</option>
-<option><on><ar>rawacfoutput</ar></on><od>filename of the <code>raw</code> format file to create.</od>
+<option><on><ar>rawacfname</ar></on><od>filename of the <code>rawacf</code> format file to trim. If this is omitted, the file will be read from standard input</od>
 </option>
 <option><on>-old</on><od>the input file is a <code>raw</code> (<code>dat</code>) format file.</od>
 </option>
-<option><on><ar>rawname</ar></on><od>filename of the <code>raw</code> (<code>dat</code>) format file to trim. If this is omitted, the file will be read from standard input</od>
+<option><on><ar>rawinput</ar></on><od>filename of the <code>raw</code> (<code>dat</code>) format file to trim.</od>
+</option>
+<option><on><ar>rawoutput</ar></on><od>filename of the <code>raw</code> (<code>dat</code>) format file to create.</od>
 </option>
 <synopsis><p>Extracts a section from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file.</p></synopsis>
 <description><p>Extracts a section from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file.</p>

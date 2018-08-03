@@ -282,6 +282,7 @@ int main(int argc,char *argv[]) {
 
     unsigned char help=0;
     unsigned char option=0;
+    unsigned char version=0;
 
     unsigned char vb=0;
 
@@ -409,6 +410,7 @@ int main(int argc,char *argv[]) {
     /* Set up command line options */
     OptionAdd(&opt,"-help",'x',&help);     /* Print the help message and exit */
     OptionAdd(&opt,"-option",'x',&option); /* Print all command line options */
+    OptionAdd(&opt,"-version",'x',&version);
 
     OptionAdd(&opt,"old",'x',&old);     /* Input file is in fit format */
 
@@ -485,6 +487,11 @@ int main(int argc,char *argv[]) {
     /* If 'option' set then print all command line options */
     if (option==1) {
         OptionDump(stdout,&opt);
+        exit(0);
+    }
+
+    if (version==1) {
+        OptionVersion(stdout);
         exit(0);
     }
 
@@ -704,11 +711,11 @@ int main(int argc,char *argv[]) {
                 if (tlen==0) {
                     if (old) {
                         while ((s=OldFitRead(oldfitfp,prm,fit)) !=-1) {
-                            if (prm->scan==1) break;
+                            if (abs(prm->scan)==1) break;
                         }
                     } else {
                         while ((s=FitFread(fitfp,prm,fit)) !=-1) {
-                            if (prm->scan==1) break;
+                            if (abs(prm->scan)==1) break;
                         }
                     }
                 } else state=0;

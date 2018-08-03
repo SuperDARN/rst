@@ -442,6 +442,7 @@ int main(int argc,char *argv[]) {
 
   unsigned char help=0;
   unsigned char option=0;
+  unsigned char version=0;
  
 
   char *bgcol_txt=NULL;
@@ -706,6 +707,7 @@ int main(int argc,char *argv[]) {
  
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
+  OptionAdd(&opt,"-version",'x',&version);
 
   OptionAdd(&opt,"old",'x',&old); 
 
@@ -893,6 +895,11 @@ int main(int argc,char *argv[]) {
     exit(0);
   }
 
+  if (version==1) {
+    OptionVersion(stdout);
+    exit(0);
+  }
+
 
   if (farg==argc) {
     OptionPrintInfo(stderr,errstr);
@@ -1016,7 +1023,7 @@ int main(int argc,char *argv[]) {
         }
         if (tlen==0) {
           while ((s=OldFitRead(oldfitfp,prm,fit)) !=-1) {
-            if (prm->scan==1) break;
+            if (abs(prm->scan)==1) break;
           }
         } else state=0;
         s=OldFitReadRadarScan(oldfitfp,&state,scn,prm,
@@ -1029,7 +1036,7 @@ int main(int argc,char *argv[]) {
 	}
         if (tlen==0) {
           while ((s=FitFread(fitfp,prm,fit)) !=-1) {
-            if (prm->scan==1) break;
+            if (abs(prm->scan)==1) break;
           }
         } else state=0;
         s=FitFreadRadarScan(fitfp,&state,scn,prm,
@@ -1045,7 +1052,7 @@ int main(int argc,char *argv[]) {
       }
       if (tlen==0) {
         while ((s=CFitRead(cfitfp,cfit)) !=-1) {
-          if (cfit->scan==1) break;
+          if (abs(cfit->scan)==1) break;
         }
       } else state=0;
       s=CFitReadRadarScan(cfitfp,&state,scn,cfit,tlen,syncflg,channel);

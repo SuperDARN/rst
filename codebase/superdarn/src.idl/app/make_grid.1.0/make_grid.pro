@@ -460,7 +460,7 @@ endif
 
 ; Load the hardware information for the radar network
 s = RadarLoadHardware(network, path=envstr)
-if s lt 1 then begin
+if s ne 0 then begin
     print, 'Could not load hardware information.'
     return
 endif
