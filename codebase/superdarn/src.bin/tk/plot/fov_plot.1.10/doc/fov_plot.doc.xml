@@ -83,7 +83,7 @@
 </option>
 <option><on>-term</on><od>plot the terminator.</od>
 </option>
-<option><on>-term</on><od>plot a shaded terminator.</od>
+<option><on>-fterm</on><od>plot a shaded terminator.</od>
 </option>
 <option><on>-tmlbl</on><od>Label the time clock-dial.</od>
 </option>

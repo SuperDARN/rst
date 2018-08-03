@@ -286,6 +286,12 @@ int stream(char *buf,int sze,void *data) {
   return 0;
 } 
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: vec_plot --help\n");
+  return(-1);
+}
+
 int main(int argc,char *argv[]) {
 
 
@@ -416,7 +422,10 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);
 
   if (argc>1) {
-    arg=OptionProcess(1,argc,argv,&opt,NULL);  
+    arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+    if (arg==-1) {
+      exit(-1);
+    }
     if (cfname !=NULL) { /* load the configuration file */
       do {
         fp=fopen(cfname,"r");
@@ -425,7 +434,12 @@ int main(int argc,char *argv[]) {
         cfname=NULL;
         optf=OptionProcessFile(fp);
         if (optf !=NULL) {
-          arg=OptionProcess(0,optf->argc,optf->argv,&opt,NULL);
+          arg=OptionProcess(0,optf->argc,optf->argv,&opt,rst_opterr);
+          if (arg==-1) {
+            fclose(fp);
+            OptionFreeFile(optf);
+            exit(-1);
+          }
           OptionFreeFile(optf);
         }   
         fclose(fp);
