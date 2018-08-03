@@ -8,6 +8,8 @@
 
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
 <option><on><ar>efieldname</ar></on><od>filename of the electric field data. If this is omitted the file is read from standard input.</od>
 </option>
 
