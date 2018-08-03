@@ -8,6 +8,8 @@
 <syntax>rtcfit -rpf [-vb] [-mp <ar>minpwr</ar>] [-L <ar>logname</ar>] [-p <ar>pathname</ar>] [-if <ar>pidname</ar>] [-s <ar>stream</ar>] <ar>host</ar> <ar>portname</ar></syntax>
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
 <option><on>-mp <ar>minpwr</ar></on><od>filter out data with values of lag-zero power less than <ar>minpwr</ar>.</od>
