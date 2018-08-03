@@ -127,7 +127,7 @@ struct IQIDL *IDLMakeIQ(IDL_VPTR *vptr) {
            
   ilDims[0]=1;
   
-  return (struct IQIDLData *) IDL_MakeTempStruct(s,1,ilDims,vptr,TRUE);
+  return (struct IQIDL *) IDL_MakeTempStruct(s,1,ilDims,vptr,TRUE);
   
 }
 
