@@ -191,7 +191,7 @@ int OldRawWrite(int fid,char *name,struct RadarParm *prm,
     oldraw.LAG_TABLE[0][c]=prm->lag[0][c];
     oldraw.LAG_TABLE[1][c]=prm->lag[1][c];
   } 
-  strcpy(oldraw.COMBF,prm->combf);
+  if (prm->combf) strcpy(oldraw.COMBF,prm->combf);
    
   for (c=0;c<oldraw.PARMS.NRANG;c++) {
     if (rtab !=NULL) rv=rtab[c];
