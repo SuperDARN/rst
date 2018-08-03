@@ -13,6 +13,7 @@
 #include "rtypes.h"
 #include "rmath.h" 
 #include "nrfit.h" 
+#include "dmap.h"
 #include "rprm.h"
 #include "rawdata.h" 
 #include "fitdata.h"
@@ -223,7 +224,7 @@ int singlefit(int m, int n, double *p, double *deviates,
 {
 
   int i;
-  double tau,re,im,sig,wi,ti;
+  double tau,re,sig,wi,ti;
 
   struct datapoints *v = (struct datapoints *) private;
   double lag0mag = v->mag;

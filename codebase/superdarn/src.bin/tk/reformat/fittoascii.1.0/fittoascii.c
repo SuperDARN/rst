@@ -35,6 +35,7 @@ int main(int argc,char *argv[])
   char *envstr;
   unsigned char help = 0;
   unsigned char option = 0;
+  unsigned char version=0;
   int s = 0, vb = 0;
 
   struct FitData *fit = FitMake();
@@ -75,6 +76,7 @@ int main(int argc,char *argv[])
   /*add options to control performance*/
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
+  OptionAdd(&opt,"-version",'x',&version);
   OptionAdd(&opt,"vb",'x',&vb);
 
   /*process the options*/
@@ -82,6 +84,11 @@ int main(int argc,char *argv[])
   if(option == 1)
   {
     OptionDump(stdout,&opt);
+    exit(0);
+  }
+
+  if (version==1) {
+    OptionVersion(stdout);
     exit(0);
   }
 
