@@ -164,6 +164,8 @@ int main (int argc,char *argv[]) {
   int arg;
   unsigned char vb=0;
   unsigned char help=0;
+  unsigned char option=0;
+  unsigned char version=0;
 
   int i,j;
   FILE *fitfp=NULL;
@@ -226,6 +228,8 @@ int main (int argc,char *argv[]) {
   RadarLoadHardware(envstr,network);
 
   OptionAdd(&opt,"-help",'x',&help);
+  OptionAdd(&opt,"-option",'x',&option);
+  OptionAdd(&opt,"-version",'x',&version);
   OptionAdd(&opt,"vb",'x',&vb);
 
   OptionAdd(&opt,"old",'x',&old);
@@ -257,6 +261,16 @@ int main (int argc,char *argv[]) {
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
+    exit(0);
+  }
+
+  if (option==1) {
+    OptionDump(stdout,&opt);
+    exit(0);
+  }
+
+  if (version==1) {
+    OptionVersion(stdout);
     exit(0);
   }
 
