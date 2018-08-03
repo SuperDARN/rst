@@ -78,6 +78,12 @@ int rnum=0;
 struct OptionData opt;
 int arg=0;
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: dmaptocdl --help\n");
+  return(-1);
+}
+
 int main(int argc,char *argv[]) {
   int status=0;
   struct DataMap *ptr=NULL;
@@ -103,7 +109,12 @@ int main(int argc,char *argv[]) {
 
 
   if (argc>1) {
-    arg=OptionProcess(1,argc,argv,&opt,NULL); 
+    arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+
+    if (arg==-1) {
+      exit(-1);
+    }
+
     if (help==1) {
       OptionPrintInfo(stdout,hlpstr);
       exit(0);

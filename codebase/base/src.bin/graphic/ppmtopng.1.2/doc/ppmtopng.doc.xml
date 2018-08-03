@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>base</project>
+<name>ppmtopng</name>
+<location>src.bin/graphic/ppmtopng</location>
+
+<syntax>ppmtopng --help</syntax>
+<syntax>ppmtopng [-name <ar>iname</ar>] [<ar>name</ar>]</syntax>
+<syntax>ppmtopng -alpha <ar>alpha</ar> [-name <ar>iname</ar>] [<ar>name</ar>]</syntax>
+<syntax>ppmtopng -nz [-name <ar>iname</ar>] [<ar>name</ar>]</syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>-name <ar>iname</ar></on><od>set the image name in the output image to <ar>iname</ar>.</od>
+</option>
+<option><on>-alpha <ar>alpha</ar></on><od>set alpha channel for all pixels to the value given by <ar>alpha</ar>. The value can be given as a decimal, percentage or hexadecimal.</od>
+</option>
+<option><on>-nz</on><od>set alpha channel to full on (0xff) for any non-zero value pixel in the input image.</od> 
+</option>
+<option><on><ar>name</ar></on><od>input image filename. If this is omitted the image  will be read from standard input.</od>
+</option>
+<synopsis><p>Convert a Portable PixMap (PPM) image to a Portable Network Graphics (PNG) image.</p></synopsis>
+<description><p>Convert a Portable PixMap (PPM) image to a Portable Network Graphics (PNG) image.</p>
+<p>The PNG image file is written to standard output.</p>
+</description>
+
+<example>
+<command>ppmtopng -name "test" inp.ppm &gt; out.png</command>
+<description>Convert PPM file <code>inp.ppm</code> to the PNG file <code>out.png</code>. Set the name of the image to "<code>test</code>".
+</description>
+</example>
+
+<example>
+<command>ppmtopng -nz inp.ppm &gt; out.png</command>
+<description>Convert PPM file <code>inp.ppm</code> to the PNG file <code>out.png</code>. The alpha channel is set to full on for any non-zero pixels in the input image.
+</description>
+</example>
+
+</binary>
