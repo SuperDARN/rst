@@ -7,6 +7,8 @@
 <syntax>cmpraw <ar>rawnameA</ar> <ar>rawnameB</ar></syntax>
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
 <option><on><ar>rawnameA</ar></on><od>filename of the first <code>raw</code> (<code>dat</code>) format file to convert.</od>
 </option>
 <option><on><ar>rawnameB</ar></on><od>filename of the second <code>raw</code> (<code>dat</code>) format file to convert.</od>
