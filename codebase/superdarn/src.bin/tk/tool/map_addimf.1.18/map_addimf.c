@@ -124,12 +124,13 @@ int main(int argc,char *argv[])
 
   float dVx=0;
   float dtilt=-99;
+  float dKp=0;
 
   char *pstr=NULL;
   char *dstr=NULL;
   char *estr=NULL;
 
-  float tmp[4];
+  float tmp[5];
 
   int k;
 
@@ -164,6 +165,7 @@ int main(int argc,char *argv[])
 
   OptionAdd(&opt,"vx",'f',&dVx);
   OptionAdd(&opt,"tilt",'f',&dtilt);
+  OptionAdd(&opt,"kp",'f',&dKp);
 
   OptionAdd(&opt,"ex",'t',&estr);
 
@@ -254,6 +256,7 @@ int main(int argc,char *argv[])
     map->Bz = dBz;
     if (old) map->Bx = dVx;  /* SGS: consider modifying the map structure */
     else     map->Vx = dVx;
+    map->Kp = dKp;
 
     map->imf_flag = 9;
 
@@ -265,6 +268,7 @@ int main(int argc,char *argv[])
       map->Bz = tmp[2];
       if (old) map->Bx = tmp[3];
       else     map->Vx = tmp[3];
+      map->Kp = tmp[4];
     }
     map->imf_delay = delay/60;
 
@@ -279,9 +283,9 @@ int main(int argc,char *argv[])
                  ( (int) delay % 3600)/60, map->Bx,map->By,map->Bz);
        else
          fprintf(stderr,
-                 "%d-%d-%d %d:%d:%d delay=%d:%d Bx=%g By=%g Bz=%g Vx=%g\n",
+                 "%d-%d-%d %d:%d:%d delay=%d:%d Bx=%g By=%g Bz=%g Vx=%g Kp=%g\n",
                  yr,mo,dy,hr,mt,(int) sc,(int) (delay/3600),
-                 ( (int) delay % 3600)/60, map->Bx,map->By,map->Bz,map->Vx);
+                 ( (int) delay % 3600)/60, map->Bx,map->By,map->Bz,map->Vx,map->Kp);
     }  
 
     s = (*Map_Read)(fp,map,grd);
@@ -300,14 +304,15 @@ int findvalue(struct swdata *ptr, double tme, float *val)
 {
   int i,cnt;
   double stime,etime,v;
-  float *imf, *sw;
+  float *imf, *sw, *kp;
   int sinx,einx;
 
   imf = ptr->BGSMc;
   sw  = ptr->Vx;
+  kp  = ptr->Kp;
   cnt = ptr->cnt;
 
-  for (i=0; i<4; i++) val[i] = FILL_VALUE;
+  for (i=0; i<5; i++) val[i] = FILL_VALUE;
 
   for (i=0; (i < cnt) && (ptr->time[i] <= tme); i++);
 
@@ -333,19 +338,23 @@ int findvalue(struct swdata *ptr, double tme, float *val)
     val[1] = imf[3*sinx+1]*(1-v) + imf[3*einx+1]*v;
     val[2] = imf[3*sinx+2]*(1-v) + imf[3*einx+2]*v;
     val[3] = sw[sinx]*(1-v)      + sw[einx]*v;
+    val[4] = kp[sinx]*(1-v)      + kp[einx]*v;
   } else if (fabs(imf[3*sinx]) < fabs(FILL_VALUE/2)) {
     val[0] = imf[3*sinx];
     val[1] = imf[3*sinx+1];
     val[2] = imf[3*sinx+2];
     val[3] = sw[sinx];
+    val[4] = kp[sinx];
   }  else if (fabs(imf[3*einx]) < fabs(FILL_VALUE/2)) {
     val[0] = imf[3*einx];
     val[1] = imf[3*einx+1];
     val[2] = imf[3*einx+2];
     val[3] = sw[einx];
+    val[4] = kp[einx];
   }
 
   if (val[3] == FILL_VALUE) val[3] = 0; /* set Vx to zero for default */
+  if (val[4] == FILL_VALUE) val[4] = 0; /* set Kp to zero for default */
 
   return sinx;
 }
@@ -355,7 +364,7 @@ int load_text(FILE *fp, struct swdata *ptr)
 {
   int yr,mo,dy,hr,mt;
   float sc;
-  float bx,by,bz,vx;
+  float bx,by,bz,vx,kp;
   char line[256],save[256];
   char *tok;
   int i,blk,ntok;
@@ -365,6 +374,7 @@ int load_text(FILE *fp, struct swdata *ptr)
   ptr->BGSMc = malloc(sizeof(float)*IMFSTEP*3);
   ptr->BGSEc = malloc(sizeof(float)*IMFSTEP*3);
   ptr->Vx    = malloc(sizeof(float)*IMFSTEP);
+  ptr->Kp    = malloc(sizeof(float)*IMFSTEP);
 
   while(fgets(line,256,fp) != NULL) {
 
@@ -388,6 +398,9 @@ int load_text(FILE *fp, struct swdata *ptr)
     else if (ntok == 10)
       sscanf(line,"%d%d%d%d%d%f%f%f%f%f",&yr,&mo,&dy, &hr,&mt,&sc,
                   &bx,&by,&bz, &vx);
+    else if (ntok == 11)
+      sscanf(line,"%d%d%d%d%d%f%f%f%f%f%f",&yr,&mo,&dy, &hr,&mt,&sc,
+                  &bx,&by,&bz, &vx,&kp);
     else continue;
 
     ptr->time[cnt]      = TimeYMDHMSToEpoch(yr,mo,dy,hr,mt,sc);
@@ -399,8 +412,11 @@ int load_text(FILE *fp, struct swdata *ptr)
     ptr->BGSEc[cnt*3+1] = by;   /* only one set of values. */
     ptr->BGSEc[cnt*3+2] = bz;
 
-    if (ntok == 10) ptr->Vx[cnt] = vx;
+    if (ntok >= 10) ptr->Vx[cnt] = vx;
     else            ptr->Vx[cnt] = FILL_VALUE;
+
+    if (ntok == 11) ptr->Kp[cnt] = kp;
+    else            ptr->Kp[cnt] = FILL_VALUE;
 
     cnt++;
     if ((cnt % IMFSTEP) == 0) {
@@ -409,6 +425,7 @@ int load_text(FILE *fp, struct swdata *ptr)
         ptr->BGSMc = realloc(ptr->BGSMc,sizeof(float)*IMFSTEP*blk*3);
         ptr->BGSEc = realloc(ptr->BGSEc,sizeof(float)*IMFSTEP*blk*3);
         ptr->Vx    = realloc(ptr->Vx,sizeof(float)*IMFSTEP*blk);
+        ptr->Kp    = realloc(ptr->Kp,sizeof(float)*IMFSTEP*blk);
     }
   }
 
@@ -417,6 +434,7 @@ int load_text(FILE *fp, struct swdata *ptr)
   ptr->BGSMc = realloc(ptr->BGSMc,sizeof(float)*cnt*3);
   ptr->BGSMc = realloc(ptr->BGSMc,sizeof(float)*cnt*3);
   ptr->Vx    = realloc(ptr->Vx,sizeof(double)*cnt);
+  ptr->Kp    = realloc(ptr->Kp,sizeof(double)*cnt);
 
   return 0;
 }
