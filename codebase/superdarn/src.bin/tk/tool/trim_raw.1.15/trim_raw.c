@@ -172,8 +172,12 @@ int main (int argc,char *argv[]) {
   if (version==1) {
     OptionVersion(stdout);
     exit(0);
-  }
+  }  
 
+  if (thr !=-1) {
+    fprintf(stderr,"Error: the -t threshold option has been deprecated.\n");
+    exit(-1);
+  }
 
   if ((old) && (argc-arg<2)) {
     OptionPrintInfo(stderr,errstr);
