@@ -58,6 +58,10 @@
 #include "iq.h"
 #include "iqread.h"
 
+#include "hlpstr.h"
+#include "errstr.h"
+#include "version.h"
+
 #define WIDTH (720)
 #define HEIGHT (500)
 
@@ -187,6 +191,11 @@ void plot_ephem(struct Plot *plot,
   }
 }
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: iqplot --help\n");
+  return(-1);
+}
 
 int main(int argc,char *argv[]) {
 
@@ -219,6 +228,8 @@ int main(int argc,char *argv[]) {
   unsigned char rflg=0;
   unsigned char iflg=0;
 
+  unsigned char help=0;
+  unsigned char option=0;
 
   int wdt=WIDTH,hgt=HEIGHT;
   int ymin=-200,ymax=200;
@@ -264,6 +275,9 @@ int main(int argc,char *argv[]) {
     exit(-1);
   }
 
+  OptionAdd(&opt,"-help",'x',&help);
+  OptionAdd(&opt,"-option",'x',&option);
+
   OptionAdd(&opt,"display",'t',&display_name);
   OptionAdd(&opt,"xoff",'i',&xdoff);
   OptionAdd(&opt,"yoff",'i',&ydoff);
@@ -280,7 +294,21 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"ymin",'i',&yminor);
 
  
-  arg=OptionProcess(1,argc,argv,&opt,NULL);  
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+
+  if (arg==-1) {
+    exit(-1);
+  }
+
+  if (help==1) {
+    OptionPrintInfo(stdout,hlpstr);
+    exit(0);
+  }
+
+  if (option==1) {
+    OptionDump(stdout,&opt);
+    exit(0);
+  }
 
   if (arg<argc) fp=fopen(argv[arg],"r");
   else fp=stdin;

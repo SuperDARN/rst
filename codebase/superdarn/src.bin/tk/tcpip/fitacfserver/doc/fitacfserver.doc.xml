@@ -9,6 +9,8 @@
 
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
 <option><on>-a</on><od>replace the record times in the file with the actual time. </od>
 </option>
 <option><on>-d</on><od>the file contains one complete day of data and the server should send the appropriate record for the current time of day. </od>

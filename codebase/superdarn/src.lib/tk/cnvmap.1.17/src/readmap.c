@@ -66,6 +66,7 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
                  "IMF.Bz",
                  "IMF.Vx",        /* SGS */
                  "IMF.tilt",      /* SGS */
+                 "IMF.Kp",        /* EGT */
                  "model.angle",
                  "model.level",
                  "model.tilt",    /* SGS */
@@ -106,6 +107,7 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
                DATADOUBLE,
                DATADOUBLE,  /* SGS */
                DATADOUBLE,  /* SGS */
+               DATADOUBLE,  /* EGT */
                DATASTRING,
                DATASTRING,
                DATASTRING,  /* SGS */
@@ -131,7 +133,7 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
                0
               };
 
-  struct DataMapScalar *sdata[47];
+  struct DataMapScalar *sdata[48];
 
   char *aname[]={"stid","channel","nvec",
                  "freq","major.revision","minor.revision",
@@ -194,11 +196,12 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
     if (x==14) continue;
     if (x==23) continue;
     if (x==24) continue;
-    if (x==25) continue;  /* SGS */
-    if (x==26) continue;
+    if (x==25) continue;  /* EGT */
+    if (x==26) continue;  /* SGS */
     if (x==27) continue;
-    if (x==28) continue;  /* SGS */
-    if (x==30) continue;
+    if (x==28) continue;
+    if (x==29) continue;  /* SGS */
+    if (x==31) continue;
     if (sdata[x]==NULL) break;
   }
 
@@ -250,41 +253,43 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
     map->Vx=*(sdata[23]->data.dptr);
   if (sdata[24] !=NULL)
     map->tilt=*(sdata[24]->data.dptr);
-
   if (sdata[25] !=NULL)
-    strncpy(map->imf_model[0],*((char **) sdata[25]->data.vptr),64);
+    map->Kp=*(sdata[25]->data.dptr);
+
   if (sdata[26] !=NULL)
-    strncpy(map->imf_model[1],*((char **) sdata[26]->data.vptr),64);
+    strncpy(map->imf_model[0],*((char **) sdata[26]->data.vptr),64);
   if (sdata[27] !=NULL)
-    strncpy(map->imf_model[2],*((char **) sdata[27]->data.vptr),64);
+    strncpy(map->imf_model[1],*((char **) sdata[27]->data.vptr),64);
   if (sdata[28] !=NULL)
-    strncpy(map->imf_model[3],*((char **) sdata[28]->data.vptr),64);
+    strncpy(map->imf_model[2],*((char **) sdata[28]->data.vptr),64);
+  if (sdata[29] !=NULL)
+    strncpy(map->imf_model[3],*((char **) sdata[29]->data.vptr),64);
 
-  map->hemisphere=*(sdata[29]->data.sptr);
-  if (sdata[30] !=NULL)
-    map->noigrf=*(sdata[30]->data.sptr);
-  map->fit_order=*(sdata[31]->data.sptr);
-  map->latmin=*(sdata[32]->data.fptr);
+  map->hemisphere=*(sdata[30]->data.sptr);
+  if (sdata[31] !=NULL)
+    map->noigrf=*(sdata[31]->data.sptr);
+  map->fit_order=*(sdata[32]->data.sptr);
+  map->latmin=*(sdata[33]->data.fptr);
 
-  map->chi_sqr=*(sdata[33]->data.dptr);
-  map->chi_sqr_dat=*(sdata[34]->data.dptr);
-  map->rms_err=*(sdata[35]->data.dptr);
+  map->chi_sqr=*(sdata[34]->data.dptr);
+  map->chi_sqr_dat=*(sdata[35]->data.dptr);
+  map->rms_err=*(sdata[36]->data.dptr);
 
-  map->lat_shft=*(sdata[36]->data.fptr);
-  map->lon_shft=*(sdata[37]->data.fptr);
+  map->lat_shft=*(sdata[37]->data.fptr);
+  map->lon_shft=*(sdata[38]->data.fptr);
 
-  map->mlt.start=*(sdata[38]->data.dptr);
-  map->mlt.end=*(sdata[39]->data.dptr);
-  map->mlt.av=*(sdata[40]->data.dptr);
+  map->mlt.start=*(sdata[39]->data.dptr);
+  map->mlt.end=*(sdata[40]->data.dptr);
+  map->mlt.av=*(sdata[41]->data.dptr);
 
-  map->pot_drop=*(sdata[41]->data.dptr);
-  map->pot_drop_err=*(sdata[42]->data.dptr);
+  map->pot_drop=*(sdata[42]->data.dptr);
+  map->pot_drop_err=*(sdata[43]->data.dptr);
 
-  map->pot_max=*(sdata[43]->data.dptr);
-  map->pot_max_err=*(sdata[44]->data.dptr);
+  map->pot_max=*(sdata[44]->data.dptr);
+  map->pot_max_err=*(sdata[45]->data.dptr);
 
-  map->pot_min=*(sdata[45]->data.dptr);
-  map->pot_min_err=*(sdata[46]->data.dptr);
+  map->pot_min=*(sdata[46]->data.dptr);
+  map->pot_min_err=*(sdata[47]->data.dptr);
 
   grd->stnum=adata[0]->rng[0];
   if (grd->stnum==0) {

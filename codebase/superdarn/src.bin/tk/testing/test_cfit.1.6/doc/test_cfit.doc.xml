@@ -8,6 +8,8 @@
 
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
 <option><on><ar>names</ar></on><od>filenames of the <code>vfit</code> format files.</od>
 </option>
 <synopsis><p>Tests the integrity of <code>cfit</code> format files by reading them and printing the contents.</p></synopsis>

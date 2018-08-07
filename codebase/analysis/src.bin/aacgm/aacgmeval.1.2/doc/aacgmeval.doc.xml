@@ -12,6 +12,8 @@
 
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
 <option><on>-i</on><od>perform the inverse conversion from AACGM to geographic.</od>
 </option>
 <option><on>-lat <ar>lat</ar></on><od>calculate for the latitude <ar>lat</ar>.</od>

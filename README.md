@@ -82,7 +82,7 @@ For Opensuse you will need to make a symlink lcurses library to libncuses (recom
 
 	 ```
 	 cd $RSTPATH/codebase/superdarn/src.lib/tk
-	 tar -P -czuf idl.tar.gz idl
+	 tar -P -czvf idl.tar.gz idl
 	 rm -rf idl
 	 cd $RSTPATH/build/script
 	 make.code

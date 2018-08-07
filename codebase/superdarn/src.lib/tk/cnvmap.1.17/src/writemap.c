@@ -386,6 +386,7 @@ int CnvMapWrite(int fid,struct CnvMapData *map,struct GridData *grd) {
   DataMapAddScalar(data,"IMF.Bz",DATADOUBLE,&map->Bz);
   DataMapAddScalar(data,"IMF.Vx",DATADOUBLE,&map->Vx);    /* SGS */
   DataMapAddScalar(data,"IMF.tilt",DATADOUBLE,&map->tilt);/* SGS */
+  DataMapAddScalar(data,"IMF.Kp",DATADOUBLE,&map->Kp);    /* EGT */
  
   if (strlen(map->imf_model[0]) !=0) {
     mod_ang  = map->imf_model[0];

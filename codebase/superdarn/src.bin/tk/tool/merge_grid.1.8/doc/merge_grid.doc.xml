@@ -10,6 +10,8 @@
 
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
 <option><on><ar>gridname</ar></on><od>filename of the <code>grdmap</code> format file.</od>
