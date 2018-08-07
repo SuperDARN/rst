@@ -55,6 +55,12 @@
 
 struct OptionData opt;
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: make_iqinx --help\n");
+  return(-1);
+}
+
 int main (int argc,char *argv[]) {
 
 
@@ -62,6 +68,7 @@ int main (int argc,char *argv[]) {
   int arg;
   unsigned char help=0;
   unsigned char option=0;
+  unsigned char version=0;
   unsigned char vb=0;
 
   FILE *fp;
@@ -78,9 +85,14 @@ int main (int argc,char *argv[]) {
 
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
+  OptionAdd(&opt,"-version",'x',&version);
   OptionAdd(&opt,"vb",'x',&vb);
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+
+  if (arg==-1) {
+    exit(-1);
+  }
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
@@ -89,6 +101,11 @@ int main (int argc,char *argv[]) {
 
   if (option==1) {
     OptionDump(stdout,&opt);
+    exit(0);
+  }
+
+  if (version==1) {
+    OptionVersion(stdout);
     exit(0);
   }
 

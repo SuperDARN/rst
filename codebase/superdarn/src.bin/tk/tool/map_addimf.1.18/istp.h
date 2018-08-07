@@ -37,5 +37,6 @@ struct swdata {
   float *BGSMc;
   float *BGSEc;
   float *Vx;
+  float *Kp;
 };
 

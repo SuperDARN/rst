@@ -10,6 +10,8 @@
 
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
 <option><on>-old</on><od>the input file is a <code>fit</code> format file.</od>
 </option>
 <option><on><ar>fitinputs</ar></on><od>filenames of the <code>fit</code> format file to concatenate.</od>

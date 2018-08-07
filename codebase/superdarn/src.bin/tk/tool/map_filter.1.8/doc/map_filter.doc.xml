@@ -7,6 +7,8 @@
 <syntax>map_filter [-old] [<ar>mapname</ar>]</syntax>
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
 <option><on>-old</on><od>the input file is a <code>map</code> format file.</od></option>
 <option><on><ar>mapname</ar></on><od>filename of the <code>cnvmap</code> format file. If this is omitted, the file will be read from standard input.</od>
 </option>

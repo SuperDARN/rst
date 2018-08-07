@@ -30,6 +30,8 @@
 
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
 <option><on>-path <ar>pathname</ar></on><od>write the plots to the directory given by <ar>pathname</ar>.</od>
 </option>
 <option><on>-post <ar>post</ar></on><od>post process the plots using the command <ar>post</ar>.</od>

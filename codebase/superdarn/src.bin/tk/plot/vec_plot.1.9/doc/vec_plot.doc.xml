@@ -18,6 +18,8 @@
 </syntax>
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
 <option><on>-cf <ar>cfname</ar></on><od>read command line options from the file <ar>cfname</ar>.</od>
 </option>
 <option><on>-wdt <ar>width</ar></on><od>set the width of the plot to <ar>width</ar>.</od>
