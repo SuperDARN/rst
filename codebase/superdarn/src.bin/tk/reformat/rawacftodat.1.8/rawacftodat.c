@@ -114,6 +114,10 @@ int main(int argc,char *argv[]) {
     exit(0);
   }
 
+  if (thr !=-1) {
+    fprintf(stderr,"Error: the -t threshold option has been deprecated.\n");
+    exit(-1);
+  }
  
   if (arg !=argc) { 
     fp=fopen(argv[arg],"r");

@@ -11,7 +11,7 @@
 </option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
-<option><on>-t <ar>thr</ar></on><od>use the threshold factor <ar>thr</ar> to detemine whether data is saved or not. If this option is specified the existing threshold in the file is ignored</od>
+<option><on>-t <ar>thr</ar></on><od>use the threshold factor <ar>thr</ar> to detemine whether data is saved or not. If this option is specified the existing threshold in the file is ignored (note: this option is deprecated)</od>
 </option>
 
 <option><on><ar>rawname</ar></on><od>filename of the <code>raw</code> (<code>dat</code>) format file to convert.</od>
