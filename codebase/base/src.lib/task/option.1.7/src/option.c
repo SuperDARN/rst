@@ -359,5 +359,28 @@ void OptionFree(struct OptionData *opt) {
 }
 
  
+int OptionVersion(FILE *fp) {
 
+  char *rst_path=NULL;
+  char vname[256];
+  char buff[100];
+  FILE *vfp=NULL;
+
+  rst_path=getenv("RSTPATH");
+  strcpy(vname, rst_path);
+  strcat(vname, "/rst.version");
+
+  vfp=fopen(vname, "r");
+
+  if (vfp != NULL) {
+    while (fscanf(vfp,"%s",buff)==1);
+    fprintf(fp, "RST version: %s\n",buff);
+    fclose(vfp);
+  } else {
+    fprintf(fp, "RST version file %s not found\n", vname);
+    return -1;
+  }
+
+  return 0;
+}
 
