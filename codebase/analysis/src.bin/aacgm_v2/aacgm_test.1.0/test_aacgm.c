@@ -12,7 +12,7 @@ int main(void)
 {
 double lat,lon,hgt;
 double h, mlt_c, mlt_t;
-double rtp[3];
+/*double rtp[3];*/
 double mlat,mlon,r;
 int k, err, npts;
 int yr, mo, dy, hr, mt, sc, dno;

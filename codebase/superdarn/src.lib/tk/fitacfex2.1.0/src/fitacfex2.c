@@ -10,9 +10,11 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#include <zlib.h>
 #include "rtypes.h"
 #include "rmath.h"
 #include "nrfit.h"
+#include "dmap.h"
 #include "rprm.h"
 #include "rawdata.h"
 #include "fitdata.h"

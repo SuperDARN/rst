@@ -18,6 +18,8 @@
 
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
 <option><on>-old</on><od>the input file is a <code>map</code> format file.</od></option>

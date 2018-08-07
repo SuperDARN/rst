@@ -84,7 +84,7 @@ struct OldRawFp *OldRawOpenFd(int rawfd,int inxfd) {
 
   fstat(ptr->rawfp,&ptr->rstat);
 
-  if (ConvertReadShort(ptr->rawfp,&num_byte) !=0) {
+  if (ConvertReadShort(ptr->rawfp,&num_byte) !=0 || num_byte <= 0) {
     close(ptr->rawfp);
     free(ptr);
     free(inbuf);
@@ -140,7 +140,7 @@ struct OldRawFp *OldRawOpenFd(int rawfd,int inxfd) {
      the file */
 
   
- if (ConvertReadShort(ptr->rawfp,&num_byte) !=0) {
+  if (ConvertReadShort(ptr->rawfp,&num_byte) !=0 || num_byte <= 0) {
     close(ptr->rawfp);
     free(ptr);
     free(inbuf);

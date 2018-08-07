@@ -16,7 +16,7 @@ set -e
 #
 # Description:
 #
-# Make the buld software.
+# Make the build software.
 #
 
 ############################################################################

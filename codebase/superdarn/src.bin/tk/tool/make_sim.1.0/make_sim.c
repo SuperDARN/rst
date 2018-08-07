@@ -199,7 +199,7 @@ int main(int argc,char *argv[])
 
   /*other variables*/
   long i,j;
-  int output = 0;
+  /*int output = 0;*/
   double taus;
 
   char helpstr[] =
@@ -560,7 +560,7 @@ int main(int argc,char *argv[])
       }
     }
 
-    int * badtr = malloc(nave*n_pul*2*sizeof(int));
+    unsigned int * badtr = malloc(nave*n_pul*2*sizeof(int));
 
     IQFwrite(stdout,prm,iq,badtr,samples);
     free(samples);
@@ -582,7 +582,7 @@ int main(int argc,char *argv[])
   {
     fprintf(stdout,"%lf  %lf\n",creal(raw_samples[i]),cimag(raw_samples[i]));
   }
-  /*print the ACFs
+  print the ACFs
   for(r=0;r<nrang;r++)
   {
     fprintf(stdout,"%d  %d\n",r,qflg[r]);

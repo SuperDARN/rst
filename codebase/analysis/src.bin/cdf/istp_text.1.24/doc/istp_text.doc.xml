@@ -5,7 +5,10 @@
 <location>src.bin/cdf/istp_text</location>
 <syntax>istp_text --help</syntax>
 <syntax>istp_text  [-cf <ar>cfgname</ar>] [-h] [-path <ar>pathname</ar>] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar> [-gse] [-pos] [-mfi] [-swe] [-mag] [-pla] [-mgf] [-lep] [-cpi] [-ace] [-wind] [-imp8] [-geotail]</syntax>
-<synopsis><p>Extract ASCII listings of  ISTP data from CDF files.</p></synopsis><option><on>--help</on><od>print the help message and exit.</od>
+<synopsis><p>Extract ASCII listings of  ISTP data from CDF files.</p></synopsis>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
 </option>
 <option><on>-cf <ar>cfname</ar></on><od>read command line options from the file <ar>cfname</ar>.</od>
 </option>
