@@ -310,7 +310,10 @@ unsigned int mag_color(double v,void *data) {
   if (key->num==0) return key->defcol;
 
   i=key->num*fabs(v)/key->max;
-  if (i>=key->num) i=key->num-1;
+  if (i>=key->num) {
+    if (key->num==256) i=key->num-2;
+    else i=key->num-1;
+  }
 
   return (key->a[i]<<24) | (key->r[i]<<16) | (key->g[i]<<8) | key->b[i];
 }
