@@ -1483,7 +1483,7 @@ int main(int argc,char *argv[]) {
                       rcmap->imf_model[1], rcmap->imf_model[2],
                       txtcol,0x0f,"Helvetica",12.0,fontdb);
 
-    if ((imfflg) && (rcmap->Bx !=0) && (rcmap->By !=0) && (rcmap->Bz !=0)) {
+    if ((imfflg) && !((rcmap->Bx ==0) && (rcmap->By ==0) && (rcmap->Bz ==0))) {
        PlotLine(plot,imfx-imfr,imfy,imfx+imfr,imfy,grdcol,0x0f,0.5,NULL);
        PlotLine(plot,imfx,imfy-imfr,imfx,imfy+imfr,grdcol,0x0f,0.5,NULL);
        PlotEllipse(plot,NULL,imfx,imfy,imfr,imfr,0,grdcol,0x0f,0.5,NULL);
