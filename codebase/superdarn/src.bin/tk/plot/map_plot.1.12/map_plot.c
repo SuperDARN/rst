@@ -983,7 +983,7 @@ int main(int argc,char *argv[]) {
     } else {
       fprintf(stderr, "No COLOR_TABLE_PATH set\n");
     }
-    keyfp=fopen(xkey_fname,"r");
+    keyfp=fopen(kname,"r");
     if (keyfp !=NULL) {
       load_key(keyfp,&xkey);
       fclose(keyfp);
