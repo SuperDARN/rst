@@ -781,6 +781,11 @@ int main(int argc,char *argv[]) {
 
   fp=fopen(fname,"r");
 
+  if (fp==NULL) {
+    fprintf(stderr,"Error opening map file: %s\n",fname);
+    exit(-1);
+  }
+
   if (magflg && old_aacgm) magflg = 2; /* set to 2 for old AACGM */
 
   /* set function pointer to compute MLT or MLT_v2 */
