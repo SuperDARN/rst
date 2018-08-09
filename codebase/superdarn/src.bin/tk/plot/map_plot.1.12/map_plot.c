@@ -1447,7 +1447,7 @@ int main(int argc,char *argv[]) {
         GrplotStdKey(plot,px,apad,8,khgt, 0,max,kstp, 0,0,2,
                      0,NULL, txtbox,fontdb,label_pwr,NULL,
                      "Helvetica",10.0,txtcol,0x0f,0.5,
-                     xkey.num,vkey.a,xkey.r,xkey.g,xkey.b);
+                     xkey.num,xkey.a,xkey.r,xkey.g,xkey.b);
       else
         GrplotStdKey(plot,px,apad,8,khgt, 0,max,kstp, 0,0,2,
                      0,NULL, txtbox,fontdb,label_wdt,NULL,
