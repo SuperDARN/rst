@@ -1,6 +1,6 @@
 /* elevation.h
    ===========
-   Author: R.J.Barnes, K.Baker & S.G.Shepherd
+   Author: R.J.Barnes, K.Baker, S.G.Shepherd & Marina Schmidt
 */
 
 
@@ -31,8 +31,28 @@
 #ifndef _ELEVATION_H
 #define _ELEVATION_H
 
-double elevation_v2(struct FitPrm *prm, double psi_obs);
-double elevation(struct FitPrm *prm, double phi0);
-double elev_goose(struct FitPrm *prm, double phi0);
+/*Due to the differences in data structures and naming conventions between 
+ * fitacf 2.5 and 3.0 this structure is implemented to contain what is needed 
+ * by the current 3 possible elevation algorithms. In the future, I hope this structure can be removed 
+ * and set data structure with consistent names are used so we can just pass the data structure. */
+
+/*Data used to calculate elevations*/
+struct elevation_data {
+    double interfer_x;
+    double interfer_y;
+    double interfer_z;
+
+    double phidiff;
+    double maxbeam;
+    double bmsep;
+    double bmnum; 
+    double tfreq;
+    double tdiff;
+
+};
+
+double elevation_v2(struct elevation_data *, double psi_obs);
+double elevation(struct elevation_data *, double phi0);
+double elev_goose(struct elevation_data *, double phi0);
 
 #endif

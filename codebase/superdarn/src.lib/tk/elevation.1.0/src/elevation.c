@@ -34,7 +34,7 @@
 #include "fitblk.h"
 #include "rmath.h"
 
-double elevation(struct FitPrm *prm,double phi0) {
+double elevation(struct elevation_data *elev_data,double phi0) {
  
   double k;          /* wave number; 1/m */
   double phi;        /* beam direction off boresight; rad */
@@ -54,21 +54,21 @@ double elevation(struct FitPrm *prm,double phi0) {
   /* calculate the values that don't change if this hasn't already been done. */
 
   if (antenna_separation == 0.0) {
-    antenna_separation= sqrt(prm->interfer[1]*prm->interfer[1] + 
-			                 prm->interfer[0]*prm->interfer[0] +
-	                         prm->interfer[2]*prm->interfer[2]);
-    elev_corr= prm->phidiff* asin( prm->interfer[2]/ antenna_separation);
-    if (prm->interfer[1] > 0.0) /* interferometer in front of main antenna */
+    antenna_separation= sqrt(elev_data->interfer[1]*elev_data->interfer[1] + 
+			                 elev_data->interfer[0]*elev_data->interfer[0] +
+	                         elev_data->interfer[2]*elev_data->interfer[2]);
+    elev_corr= elev_data->phidiff* asin( elev_data->interfer[2]/ antenna_separation);
+    if (elev_data->interfer[1] > 0.0) /* interferometer in front of main antenna */
       phi_sign= 1.0;
     else {                           /* interferometer behind main antenna */
       phi_sign= -1.0;
       elev_corr= -elev_corr;
     }
   }
-  offset=prm->maxbeam/2.0-0.5;
-  phi= prm->bmsep*(prm->bmnum - offset)* PI/ 180.0;
+  offset=elev_data->maxbeam/2.0-0.5;
+  phi= elev_data->bmsep*(elev_data->bmnum - offset)* PI/ 180.0;
   c_phi= cos( phi);
-  k= 2 * PI * prm->tfreq * 1000.0/C;
+  k= 2 * PI * elev_data->tfreq * 1000.0/C;
 
   /* the phase difference phi0 is between -pi and +pi and gets positive,  */
   /* if the signal from the interferometer antenna arrives earlier at the */
@@ -77,7 +77,7 @@ double elevation(struct FitPrm *prm,double phi0) {
   /* the main antenna, than the signal from the interferometer     */
   /* antenna arrives earlier. tdiff < 0  --> dchi_cable > 0        */
 
-  dchi_cable= - 2* PI * prm->tfreq * 1000.0 * prm->tdiff * 1.0e-6;
+  dchi_cable= - 2* PI * elev_data->tfreq * 1000.0 * elev_data->tdiff * 1.0e-6;
 
   /* If the interferometer antenna is in front of the main antenna */
   /* then lower elevation angles correspond to earlier arrival     */

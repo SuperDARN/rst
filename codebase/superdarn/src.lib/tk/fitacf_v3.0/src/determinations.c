@@ -25,6 +25,7 @@ July 2015
 
 #include "rtypes.h"
 #include "determinations.h"
+#include <errno.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -498,7 +499,10 @@ void set_nump(llist_node range, struct FitRange* fit_range_array){
  * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
 void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fit_prms){
-    double x,y,z;
+
+    double phi0_normal, phi0_low, phi_high;
+     
+    
     double antenna_sep,elev_corr;
     int phi_sign;
     double azi_offset,phi_0,c_phi_0;
@@ -511,16 +515,35 @@ void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fi
     double real,imag;
     double psi_uncorrected_unfitted;
     double xcf0_p;
+    struct elevation_data elev_data = malloc(struct elevation_data);
+
+    if (elev_data == NULL || errno != 0)
+    {
+        fprintf(stderr,"Error: Malloc failed on generating elevation_data struct. %d",errno);
+    }
 
     RANGENODE* range_node;
 
     range_node = (RANGENODE*) range;
 
+    elev_data->interfer_x = fit_prms->interfer_x;
+    elev_data->interfer_y = fit_prms->interfer_y;
+    elev_data->interfer_y = fit_prms->interfer_z;
+    elev_data->phidiff = fit_prms->phidiff;
+    elev_data->maxbeam = fit_prms->maxbeam;
+    elev_data->bmsep = fit_prms->bmsep;
+    elev_data->bmnum = fit_prms->bmnum;
+    elev_data->tfreq = fit_prms->tfreq;
+    elev_data->tdfif = fit_prms->tdiff;
+    
 
-    x = fit_prms->interfer_x;
-    y = fit_prms->interfer_y;
-    z = fit_prms->interfer_z;
+    fit_elev_array[range_node->range].low = fit_func->elevation_method(elev_data,range_node->elev_fit->a-range_node->elev_fit->sigma_2_a);
+    fit_elev_array[range_node->range].high = fit_func->elevation_method(elev_data,range_node->elev_fit->a+range_node->elev_fit->sigma_2_a);
+    fit_elev_array[range_node->range].normal = fit_func->elevation_method(elev_data,range_node->elev_fit->a);
+    
+    free(elev_fit);
 
+    /*
     antenna_sep = sqrt(x*x + y*y + z*z);
 
     elev_corr = fit_prms->phidiff * asin(z/antenna_sep);
@@ -558,14 +581,14 @@ void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fi
     }
 
     fit_elev_array[range_node->range].high = 180/M_PI * (elevation + elev_corr);
-
+    */
     /*Elevation errors*/
-    psi_k2d2 = psi/(wave_num * wave_num * antenna_sep * antenna_sep);
+    /*psi_k2d2 = psi/(wave_num * wave_num * antenna_sep * antenna_sep);
     df_by_dy = psi_k2d2/sqrt(theta * (1 - theta));
     fit_elev_array[range_node->range].low = 180/M_PI * sqrt(range_node->elev_fit->sigma_2_a) * fabs(df_by_dy);
-
+    */
     /*Experiment to compare fitted and measured elevation*/
-    real = fit_prms->xcfd[range_node->range * fit_prms->mplgs][0];
+    /*real = fit_prms->xcfd[range_node->range * fit_prms->mplgs][0];
     imag = fit_prms->xcfd[range_node->range * fit_prms->mplgs][1];
     xcf0_p = atan2(imag,real);
 
@@ -584,8 +607,8 @@ void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fi
     else{
         elevation = asin(sqrt(theta));
     }
-    fit_elev_array[range_node->range].normal = 180/M_PI * (elevation + elev_corr);
-
+   fit_elev_array[range_node->range].normal = 180/M_PI * (elevation + elev_corr);
+*/
 }
 
 /**

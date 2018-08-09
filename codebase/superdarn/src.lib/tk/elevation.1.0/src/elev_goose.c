@@ -35,7 +35,7 @@
 #include "fitblk.h"
 #include "rmath.h"
 
-double elev_goose(struct FitPrm *prm, double phi0) {
+double elev_goose(struct elevation_data *elev_data, double phi0) {
   int n;
   double k, psi, dchi_cable, temp, sn2_alpha_min, cs_alpha_min;
   double sin_psi2, sin_psi_xi, sin_psi2_xi2, sn2_alpha_old;
@@ -63,14 +63,14 @@ double elev_goose(struct FitPrm *prm, double phi0) {
   */
 
   if (sep == 0.0) {
-    xi = atan2(prm->interfer[0],(prm->interfer[1]));
-    sep = sqrt(prm->interfer[0]*prm->interfer[0] + 
-			prm->interfer[1]*prm->interfer[1] +
-	       prm->interfer[2]*prm->interfer[2]);
+    xi = atan2(elev_data->interfer_x,(elev_data->interfer_y));
+    sep = sqrt(elev_data->interfer_x*elev_data->interfer_x + 
+			elev_data->interfer_y*elev_data->interfer_y +
+	       elev_data->interfer_z*elev_data->interfer_z);
 
-    elev_corr = atan2(prm->interfer[2], 
-			sqrt(prm->interfer[0]*prm->interfer[0] +
-			prm->interfer[1]*prm->interfer[1]));
+    elev_corr = atan2(elev_data->interfer_z, 
+			sqrt(elev_data->interfer_x*elev_data->interfer_x +
+			elev_data->interfer_y*elev_data->interfer_y));
     cos_xi = cos(xi);
     sin_xi = sin(xi);
   
@@ -79,13 +79,13 @@ double elev_goose(struct FitPrm *prm, double phi0) {
   }
 
   /* compute phasing matrix cone angle */
-  offset=prm->maxbeam/2.0-0.5;
-  psi = prm->bmsep*(prm->bmnum-offset)*PI/180.;	
+  offset=elev_data->maxbeam/2.0-0.5;
+  psi = elev_data->bmsep*(elev_data->bmnum-offset)*PI/180.;	
 
   /* compute wavenumber */
-  k = 2 * PI * prm->tfreq * 1000.0/C;	
+  k = 2 * PI * elev_data->tfreq * 1000.0/C;	
 
-  dchi_cable = - 2* PI * prm->tfreq * 1000.0 * prm->tdiff * 1.0e-6;
+  dchi_cable = - 2* PI * elev_data->tfreq * 1000.0 * elev_data->tdiff * 1.0e-6;
 
   /*	compute the minimum cone angle (alpha) */
 

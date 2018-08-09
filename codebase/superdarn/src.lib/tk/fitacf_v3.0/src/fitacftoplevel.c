@@ -273,7 +273,7 @@ void Copy_Fitting_Prms(struct RadarSite *radar_site, struct RadarParm *radar_prm
  *
  * @return     0 on success.
  */
-int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
+int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data, struct fitacf_functions *fit_func) {
 
   llist ranges, lags;
   double noise_pwr;

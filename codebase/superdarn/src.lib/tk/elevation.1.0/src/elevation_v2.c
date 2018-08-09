@@ -18,7 +18,7 @@
 /* SGS somehow need to pass in options for allowing:                         *
  *     negative elevation angles and residual phase                          */
 
-double elevation_v2(struct FitPrm *prm, double psi_obs)
+double elevation_v2(struct elevation_data *elev_data, double psi_obs)
 {
   static double X,Y,Z;      /* interferometer offsets [m]                    */
   double boff;              /* offset in beam widths to edge of FOV          */
@@ -40,33 +40,33 @@ double elevation_v2(struct FitPrm *prm, double psi_obs)
   /* calculate the values that don't change if this hasn't already been done. */
 
   if (d < -999.) {  /* SGS check this; does this mean a change won't register */
-    X   = prm->interfer[0];
-    Y   = prm->interfer[1];
-    Z   = prm->interfer[2];
+    X   = elev_data->interfer_x;
+    Y   = elev_data->interfer_y;
+    Z   = elev_data->interfer_z;
 
     d   = sqrt(X*X + Y*Y + Z*Z);
   }
 
   /* Ray hooked the cables up backwards so M is I and I is M                */
-  if (prm->phidiff < 0) {
+  if (elev_data->phidiff < 0) {
     X = -X;
     Y = -Y;
     Z = -Z;
   }
   sgn = (Y < 0) ? -1 : 1;
 
-  boff   = prm->maxbeam/2. - 0.5;
-  phi0   = prm->bmsep*(prm->bmnum - boff)* PI/ 180.;
+  boff   = elev_data->maxbeam/2. - 0.5;
+  phi0   = elev_data->bmsep*(prm->bmnum - boff)* PI/ 180.;
   cp0    = cos(phi0);
   sp0    = sin(phi0);
 
-  /*k      = 2 * PI * prm->tfreq * 1000./C;*/
+  /*k      = 2 * PI * elev_data->tfreq * 1000./C;*/
 
   /* Phase delay [radians] due to electrical path difference.                *
    *   If the path length (cable and electronics) to the interferometer is   *
    *   shorter than that to the main antenna array, then the time for the    *
    *   to transit the interferometer electrical path is shorter: tdiff < 0   */
-  psi_ele = -2 * PI * prm->tfreq * prm->tdiff * 1e-3;
+  psi_ele = -2 * PI * elev_data->tfreq * prm->tdiff * 1e-3;
 
   /* Determine elevation angle (a0) where psi (phase difference) is maximum; *
    *   which occurs when k and d are anti-parallel. Using calculus of        *
@@ -97,7 +97,7 @@ double elevation_v2(struct FitPrm *prm, double psi_obs)
   ca0     = cos(a0);
   sa0     = sin(a0);
   /* maximum phase = psi_ele + psi_geo(a0)                                   */
-  psi_max = psi_ele + 2 * PI * prm->tfreq * 1e3/C *
+  psi_max = psi_ele + 2 * PI * elev_data->tfreq * 1e3/C *
                      (X*sp0 + Y*sqrt(ca0*ca0 - sp0*sp0) + Z*sa0);
 
   /* compute the number of 2pi factors necessary to map to correct region    */
@@ -110,7 +110,7 @@ double elevation_v2(struct FitPrm *prm, double psi_obs)
   /* SGS: if not keyword_set(actual) then psi_obs += d2pi                   */
 
   /* now solve for the elevation angle: alpha                               */
-  E = (psi_obs/(2*PI*prm->tfreq*1e3) + prm->tdiff*1e-6)*C - X*sp0;
+  E = (psi_obs/(2*PI*elev_data->tfreq*1e3) + prm->tdiff*1e-6)*C - X*sp0;
   alpha = asin((E*Z + sqrt(E*E * Z*Z - (Y*Y + Z*Z)*(E*E - Y*Y*cp0*cp0)))/
                (Y*Y + Z*Z));
 

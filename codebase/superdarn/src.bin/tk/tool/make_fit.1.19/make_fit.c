@@ -26,6 +26,7 @@
 #include "fitblk.h"
 #include "fitdata.h"
 #include "radar.h"
+#include "elevation.h"
 
 #include "fitacf.h"
 #include "rawread.h"
@@ -52,6 +53,16 @@ struct RadarSite *site;
 
 struct OptionData opt;
 
+/* TODO: move into a header file? */
+/* A structure to store function pointers 
+ * that a fitted algorithm would use. This structure
+ * allows flexibility, modularity and reduces
+ * code redundancy */
+struct fitacf_functions{
+    double (*elevation_method)(void);
+};
+
+
 int rst_opterr(char *txt) {
   fprintf(stderr,"Option not recognized: %s\n",txt);
   fprintf(stderr,"Please try: make_fit --help\n");
@@ -60,6 +71,12 @@ int rst_opterr(char *txt) {
 
 int main(int argc,char *argv[]) {
 
+  struct fitacf_functions *fit_func = malloc(sizeof(fitacf_functions));
+  if(fit_func == NULL)
+  {
+      fprintf(stderr,"Error: Could not get memory for fitacf function structure");
+      exit(-1)
+  }
   unsigned char old=0;
 
   char *envstr;
@@ -231,6 +248,21 @@ int main(int argc,char *argv[]) {
   if (vb)
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
+  if(old_elev)
+  {
+      if(prm->stid == GOOSEBAY)
+      {
+            fit_func->elevation_method = &elevation;
+      }
+      else
+      {
+          fit_func->elevation_method = &elev_goose;
+      }
+  }
+  else 
+  {
+      fit_func->elevation_method = &elevation_v2; /*TODO: rename this method, either obsolete elevation or we callit sheppard_elevation*/
+  }
 
 
   if (fitacf_version == 30){
@@ -242,11 +274,13 @@ int main(int argc,char *argv[]) {
         exit(-1);
       }
 
+
+
       /* If the allocation was successful, copy the parameters and */
       /* load the data into the FitACF structure.                  */
-      if(fit_prms != NULL) {
+      if(fit_prms != NULL) { 
     	  Copy_Fitting_Prms(site,prm,raw,fit_prms);
-    	  Fitacf(fit_prms,fit);
+    	  Fitacf(fit_prms,fit,fit_func);
         /*FitacfFree(fit_prms);*/
     	}
       else {
@@ -257,7 +291,7 @@ int main(int argc,char *argv[]) {
   else if (fitacf_version == 25) {
     fblk = FitACFMake(site,prm->time.yr);
     fblk->prm.old_elev = old_elev;          /* passing in old_elev flag */
-    FitACF(prm,raw,fblk,fit);
+    FitACF(prm,raw,fblk,fit,fit_func);
   }
   else {
     fprintf(stderr, "The requested fitacf version does not exist\n");
@@ -321,7 +355,6 @@ int main(int argc,char *argv[]) {
         if(fit_prms != NULL) {
           Copy_Fitting_Prms(site,prm,raw,fit_prms);
           Fitacf(fit_prms,fit);
-          /*FitacfFree(fit_prms);*/
         }
         else {
           fprintf(stderr, "Unable to allocate fit_prms!\n");

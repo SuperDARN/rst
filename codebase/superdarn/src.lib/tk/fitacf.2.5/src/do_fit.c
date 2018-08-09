@@ -156,18 +156,22 @@ void init_fit_range_data(struct FitRange *ptr,struct FitRange *xptr,
 
 int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
            struct FitRange *ptr, struct FitRange *xptr, struct FitElv *elv,
-           struct FitNoise *nptr)
+           struct FitNoise *nptr, struct fitacf_functions *fit_func)
 {
   struct FitACFBadSample badsmp;
   int *badlag=NULL;
 
   int i=0, k, s;
-
+  
   double *pwrd=NULL,*pwrt=NULL;
   double mnpwr, skylog, freq_to_vel;
   double xomega=0.0;
 
   double noise_pwr=0.0;
+
+  struct elevation_data *elev_data;
+
+  elev_data = malloc(struct elevation_data);
 
   nptr->skynoise=0.0;
   nptr->lag0=0.0;
@@ -365,10 +369,25 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
 
       /* changes which array is first */
 
+      elev_data->interfer_x = iptr->prm.interfer[0];
+      elev_data->interfer_y = iptr->prm.interfer[1];
+      elev_data->interger_z = iptr->prm.interfer[2];
+
+      elev_data->phidiff = iptr->prm.phidiff;
+      elev_data->maxbeam = iptr->prm.maxbeam;
+      elev_data->bmsep = iptr->prm.bmsep;
+      elev_data->tfreq = iptr->prm.tfreq;
+      elev_data->tdiff = iptr->prm.tdiff;
+
+      elv[k].normal = fit_func->elevation_method(elev_data, xptr[k].phi0);
+      elv[k].low    = fit_func->elevation_method(elev_data, xptr[k].phi0+xptr[k].phi0_err);
+      elv[k].high   = fit_func->elevation_method(elev_data, xptr[k].phi0-xptr[k].phi0_err);
+       
+
       /* range = 0.15*(iptr->prm.lagfr + iptr->prm.smsep*(k-1)); - this is never used EGT */
-      if (iptr->prm.old_elev) {
-        /* use old elevation angle routines */
-        if (goose == 0) {
+/*      if (iptr->prm.old_elev) {
+*/        /* use old elevation angle routines */
+/*        if (goose == 0) {
           elv[k].normal = elevation(&iptr->prm, xptr[k].phi0);
           elv[k].low = elevation(&iptr->prm, xptr[k].phi0+xptr[k].phi0_err);
           elv[k].high = elevation(&iptr->prm, xptr[k].phi0-xptr[k].phi0_err);
@@ -378,12 +397,12 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
           elv[k].high = elev_goose(&iptr->prm, xptr[k].phi0-xptr[k].phi0_err);
         }
       } else {
-        /* use the correct elevation angle routine */
-        elv[k].normal = elevation_v2(&iptr->prm, xptr[k].phi0);
+*/        /* use the correct elevation angle routine */
+/*        elv[k].normal = elevation_v2(&iptr->prm, xptr[k].phi0);
         elv[k].low = elevation_v2(&iptr->prm, xptr[k].phi0+xptr[k].phi0_err);
         elv[k].high = elevation_v2(&iptr->prm, xptr[k].phi0-xptr[k].phi0_err);
       }
-    }
+*/    }
     if (ptr[k].qflg == 1) i++;
   }
 
