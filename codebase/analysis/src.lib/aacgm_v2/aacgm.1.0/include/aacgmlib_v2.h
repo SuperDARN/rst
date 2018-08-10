@@ -1,5 +1,4 @@
 #ifndef _AACGMLIB_
-
 #define _AACGMLIB_
 
 /*****************************************************************************
@@ -21,6 +20,7 @@
 #define ALLOWTRACE 4  /* if height is >2000 km use tracing, else use coefs */
 #define BADIDEA    8  /* use coefficients above 2000 km; Terrible idea!!   */
 #define GEOCENTRIC 16 /* assume inputs are geocentric with sphere RE       */
+#define VERBOSE    32 /* set verbosity for output                          */
 #ifndef M_PI
   #define M_PI 3.14159265358979323846 /* define M_PI if not already */
 #endif
