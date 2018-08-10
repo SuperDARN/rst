@@ -466,7 +466,8 @@ int GridTableMap(struct GridTable *ptr, struct RadarScan *scan,
         ptr->freq=0;
         ptr->nscan=0;
         GridTableZero(ptr->pnum,ptr->pnt);
-        ptr->st_time=tlen*( (int) (tm/tlen)); 
+        /*ptr->st_time=tlen*( (int) (tm/tlen));*/
+        ptr->st_time=scan->st_time;
         ptr->ed_time=ptr->st_time+tlen;
         ptr->st_id=scan->stid;
     }
