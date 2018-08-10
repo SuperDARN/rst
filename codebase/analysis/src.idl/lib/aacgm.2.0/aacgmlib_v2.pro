@@ -997,7 +997,7 @@ pro AACGM_v2_Trace, lat_in,lon_in,height_in, lat_out,lon_out, error, $
   dsRE  = ds/RE
   dsRE0 = dsRE
   if not keyword_set(eps) then $
-    eps = 1e-3/RE             ; global error (RE)
+    eps = 1e-4/RE             ; global error (RE)
 
   ; if user wants to fix maximum step size then let them by turning off
   ; radial step size dependence that is default
@@ -1009,11 +1009,9 @@ pro AACGM_v2_Trace, lat_in,lon_in,height_in, lat_out,lon_out, error, $
   rtp[2] = lon_in*DTOR          ; longitude  in radians
 
   ; convert position to Cartesian coords
-  ;//geopack_sphcar, r,theta,phi, x,y,z, /to_rect
   xyzg = sph2car(rtp)
 
   ; convert to magnetic Dipole coordinates
-  ;//geopack_conv_coord, x,y,z, xx,yy,zz, /from_geo, /to_mag
   xyzm = geo2mag(xyzg)
 
   if xyzm[2] gt 0 then idir = -1 else idir = 1    ; N or S hemisphere
@@ -1041,31 +1039,28 @@ pro AACGM_v2_Trace, lat_in,lon_in,height_in, lat_out,lon_out, error, $
 
     xyzp = xyzg
 
-;//   AACGM_v2_RK45(x,y,z, idir, dsRE, eps, $
-;//                                 fixed=fixed, max_ds=max_ds, RRds=RRds)
     ; x,y,z are passed by reference and modified here...
     AACGM_v2_RK45, xyzg, idir, dsRE, eps
 
     ; make sure that stepsize does not go to zero
-    if (dsRE*RE < 1e-2) then dsRE = 1e-2/RE
+    if (dsRE*RE lt 1e-2) then dsRE = 1e-2/RE
 
     ; convert to magnetic Dipole coordinates
-    ;//geopack_conv_coord, x,y,z, xx,yy,zz, /from_geo, /to_mag
     xyzm = geo2mag(xyzg)
 
-    below = (total(xyzg*xyzg) < (RE+height_in)*(RE+height_in)/(RE*RE))
+    below = (total(xyzg*xyzg) lt (RE+height_in)*(RE+height_in)/(RE*RE))
+
     niter++
   endwhile
 
   xyzc = xyzp
-  if (~below && niter > 1) then begin
+  if (~below && niter gt 1) then begin
     ; now bisect stepsize (fixed) to land on magnetic equator w/in 1 meter
 
     while dsRE gt 1e-3/RE do begin
       dsRE *= .5
       xyzp = xyzc
       AACGM_v2_RK45, xyzc, idir, dsRE, eps, /fixed
-;//   geopack_conv_coord, xc,yc,zc, xx,yy,zz, /from_geo, /to_mag
       xyzm = geo2mag(xyzc)
 
       ; Is it possible that resetting here causes a doubling of the tol?
@@ -1081,8 +1076,6 @@ pro AACGM_v2_Trace, lat_in,lon_in,height_in, lat_out,lon_out, error, $
     lon_out = !values.f_nan
     error   = 1
   endif else begin
-    ;//geopack_conv_coord, xc,yc,zc, xx,yy,zz, /from_geo, /to_mag
-    ;//geopack_sphcar, xx,yy,zz, mr,mtheta,mphi, /to_sphere
     xyzm = geo2mag(xyzc)
     rtp  = car2sph(xyzm)
 
@@ -1152,7 +1145,6 @@ pro AACGM_v2_Trace_inv, lat_in,lon_in,height_in, lat_out,lon_out, error, $
   dsRE  = ds/RE
   dsRE0 = dsRE
   if not keyword_set(eps) then $
-;   eps   = 1e-2/RE           ; global error (RE)
     eps   = 1e-4/RE           ; global error (RE)
 
   ; if user wants to fix maximum step size then let them by turning off
@@ -1182,11 +1174,9 @@ pro AACGM_v2_Trace_inv, lat_in,lon_in,height_in, lat_out,lon_out, error, $
     xyzm[2] = 0.d
 
     ; geographic Cartesian coordinates of starting point
-    ;//geopack_conv_coord, xm,ym,zm, x,y,z, /from_mag, /to_geo
     xyzg = mag2geo(xyzm)
 
     ; geographic spherical coordinates of starting point
-    ;//geopack_sphcar, x,y,z, r,theta,phi, /to_sphere
     rtp = car2sph(xyzg)
 
     ; direction of trace is determined by the starting hemisphere?
@@ -1206,7 +1196,7 @@ pro AACGM_v2_Trace_inv, lat_in,lon_in,height_in, lat_out,lon_out, error, $
       if keyword_set(verbose) then print, 'xyz: ', xyzg, dsRE
 
       ; make sure that stepsize does not go to zero
-      if (dsRE*RE < 5e-1) then dsRE = 5e-1/RE
+      if (dsRE*RE lt 5e-1) then dsRE = 5e-1/RE
 
       rtp = car2sph(xyzg)
 
