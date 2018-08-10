@@ -85,7 +85,7 @@ pro init_common, err=err
   IGRF_coefs    = dblarr(IGRF_maxk)             ; interpolated coefficients
 
   IGRF_datetime = {year:-1, month:-1, day:-1, hour:-1, minute:-1, $
-                    second:-1, dayno:-1, daysinyear:-1, fyear:-1.}
+                    second:-1, dayno:-1, daysinyear:-1, fyear:-1.d}
 
   ; load all of the coefficients
   IGRF_loadcoeffs, err=err
@@ -562,7 +562,7 @@ pro IGRF_interpolate_coefs, debug=debug, err=err
 
   i = (myear - IGRF_FIRST_EPOCH)/5;       /* index of first set of coefs */
 
-  if (IGRF_datetime.fyear lt IGRF_LAST_EPOCH+5) then begin
+  if (IGRF_datetime.fyear lt IGRF_LAST_EPOCH) then begin
     ;* interpolate bounding coefficients */
     for l=1, IGRF_nmx do begin    ;/* no l = 0 term in IGRF */
       for m=-l, l do begin
@@ -670,7 +670,7 @@ pro IGRF_SetDateTime, year, month, day, hour, minute, second, err=err
 
   days = -1
   doy  = AACGM_v2_Dayno(year,month,day, days=days)
-  fyear = year + ((doy-1) + $
+  fyear = double(year) + ((doy-1) + $ ; SGS: int year -> rounding errors
             (hour + (minute + second/60.)/60.)/24.) / days
 
   if (fyear lt IGRF_FIRST_EPOCH or fyear gt IGRF_LAST_EPOCH+5) then begin
@@ -760,7 +760,7 @@ pro IGRF_SetNow, err=err
 
   days = -1
   doy  = AACGM_v2_Dayno(year,month,day, days=days)
-  fyear = year + ((doy-1) + $
+  fyear = double(year) + ((doy-1) + $ ; SGS: int year -> rounding errors
             (hour + (minute + second/60.)/60.)/24.) / days
 
   if (fyear lt 1900. or fyear ge 2020.) then begin
@@ -1288,16 +1288,12 @@ pro AACGM_v2_RK45, xyz, idir, ds, eps, fixed=fixed, max_ds=max_ds, RRds=RRds, $
       w2 = xyz + 16.*k1/135. + 6656.*k3/12825. + 28561.*k4/56430. - $
                             9.*k5/50. + 2.*k6/55.
 
+;      rr = sqrt(total((w1-w2)*(w1-w2)))/ds
       rr = abs(w1 - w2)/ds
       rr = sqrt(total(rr*rr))
       if keyword_set(verbose) then print, 'diff: ',rr
-      if rr eq 0 then begin
-;     if (fabs(rr) > 1e-16) {
-        ; it is possible for the two solutions to give the same answer, which
-        ; would correspond to an infinitely large stepsize
-        if keyword_set(max_ds) then ds = max_ds   ; limit the stepsize or
-                                                  ; just leave it alone
-      endif else begin
+;      if rr eq 0 then begin
+      if rr gt 1e-16 then begin
         delt = 0.84 * (eps / RR)^0.25   ; this formula relates the difference
                                         ; in the local trucation errors to the
                                         ; global error of the solution. There
@@ -1306,7 +1302,6 @@ pro AACGM_v2_RK45, xyz, idir, ds, eps, fixed=fixed, max_ds=max_ds, RRds=RRds, $
         if keyword_set(verbose) then print, 'delt: ', delt
         newds = ds * delt
         ds = newds
-
         ;* maximum stepsize is fixed to max_ds in units of Re */
         if keyword_set(max_ds) then ds = min([max_ds,ds])
 
@@ -1316,7 +1311,13 @@ pro AACGM_v2_RK45, xyz, idir, ds, eps, fixed=fixed, max_ds=max_ds, RRds=RRds, $
         ; Note that this is the maximum stepsize, if the algorithm says it
         ; should be smaller, it will use the smaller.
         ; Maximum stepsize is r^3 * 50km, where r is in units of Re
-        if keyword_set(RRds) then   ds = min([50*rtp[0]*rtp[0]*rtp[0]/RE, ds])
+;        if keyword_set(RRds) then   ds = min([50*rtp[0]*rtp[0]*rtp[0]/RE, ds])
+        ds = min([50*rtp[0]*rtp[0]*rtp[0]/RE, ds])
+      endif else begin
+        ; it is possible for the two solutions to give the same answer, which
+        ; would correspond to an infinitely large stepsize
+        if keyword_set(max_ds) then ds = max_ds   ; limit the stepsize or
+                                                  ; just leave it alone
       endelse
     endwhile
 
@@ -1486,4 +1487,3 @@ function geoc2geod, lat,lon,r
 
   return, [dlat,lon,h]
 end
-
