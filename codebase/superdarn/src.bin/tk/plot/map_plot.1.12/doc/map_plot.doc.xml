@@ -9,9 +9,13 @@
 </syntax>
 <syntax>map_plot -stdout [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
 </syntax>
+<syntax>map_plot -png [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
+</syntax>
+<syntax>map_plot -png -stdout [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
+</syntax>
 <syntax>map_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
 </syntax>
-<syntax>map_plot -stdout -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
+<syntax>map_plot -ps -stdout [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
 </syntax>
 <syntax>map_plot -ppm [<ar>options</ar>] <ar>cnvmapname</ar> [<ar>inxname</ar>]
 </syntax>
@@ -33,8 +37,6 @@
 <option><on>--version</on><od>print the RST version number and exit.</od>
 </option>
 <option><on>-path <ar>pathname</ar></on><od>write the plots to the directory given by <ar>pathname</ar>.</od>
-</option>
-<option><on>-post <ar>post</ar></on><od>post process the plots using the command <ar>post</ar>.</od>
 </option>
 <option><on>-cf <ar>cfname</ar></on><od>read command line options from the file <ar>cfname</ar>.</od>
 </option>
@@ -246,9 +248,11 @@
 </option>
 <option><on>-stdout</on><od>plot a single data record and write the plot to standard output.</od>
 </option>
-<option><on>-d <ar>yyyymmdd</ar></on><od>plot the data on date <ar>yyyymmdd</ar>.</od>
+<option><on>-d <ar>yyyymmdd</ar></on><od>plot the data on date <ar>yyyymmdd</ar> (when using -stdout).</od>
 </option>
-<option><on>-t <ar>hr:mn</ar></on><od>plot the data at the time <ar>hr:mn</ar>.</od>
+<option><on>-t <ar>hr:mn</ar></on><od>plot the data at the time <ar>hr:mn</ar> (when using -stdout).</od>
+</option>
+<option><on>-png</on><od>produce a Portable Network Graphics (PNG) image as the output.</od>
 </option>
 <option><on>-ps</on><od>produce a PostScript plot as the output.</od>
 </option>
@@ -276,11 +280,11 @@
 </option>
 <synopsis><p>Plot <code>map</code> and <code>cnvmap</code> format files.</p></synopsis>
 <description><p>Plot the <code>map</code> and <code>cnvmap</code>format files.</p>
-<p>The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, or PostScript file. The default output is XML.</p>
+<p>The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, Portable Network Graphics (PNG), or PostScript file. The default output is PostScript.</p>
 <p>The program usually steps through the convection map data and writes each plot to a file. The output filenames are of the form "<code><em>nnnn.xxx</em></code>", where <em>nnnn</em> is the frame number starting at 0000 and <em>xxx</em> is the suffix "<code>xml</code>","<code>ps</code>","<code>ppm</code>", or "<code>ppmx</code>". The options "<code>-tn</code>" and "<code>-dn</code>" can be used to change this format to one based on the time of each plot.</p>
 <p>If the "<code>-stdout</code>" option is used then the program will just plot a single record from the file and the plot is written to standard output. The "<code>-d</code>" and "<code>-t</code>" options are used to select the time to plot.</p>
 <p>The task only plots what it is instructed to plot on the command line which means that at least some of the options must be included if the plot is to show anything.</p>
-<p>The default map projection is a simple cylindrical projection, the most useful projection is the stereographic projection invoked using the "<code>-stereo</code>" option.</p>
+<p>The default map projection is a stereographic projection.</p>
 <p>A sensible set of default plot options can be invoked using the "<code>-def</code>" option. This will plot a stereographic projection of the fitted velocity vectors, equipotential contours and Hepner-Maynard boundary in geomagnetic coordinates. The plot is rotated so that magnetic noon is at the top.</p>
 <p>The program usually plots the line of sight or fitted velocity vectors contained in the file. However the options "-pwr" and "-wdt" can be used to plot the power and spectral width information stored in extended grid files as an extra parameter.</p> 
 <p>The options "-vkey" and "-xkey" allows a user defined color key to be used to plot the velocity vectors or the extra parameters.</p>
@@ -295,7 +299,7 @@
 </example>
 
 <example>
-<command>map_plot -ps -dn -st 12:00 -stereo -mag -rotate -fcoast -coast -fterm -tmk -vecp -vkeyp -time -imf -modn -pot -fit -ctr -vkey superdarn.key 20021219.cnvmap</command>
+<command>map_plot -ps -dn -st 12:00 -mag -rotate -fcoast -coast -fterm -tmk -vecp -vkeyp -time -imf -modn -pot -fit -ctr -vkey superdarn.key 20021219.cnvmap</command>
 <description>Generate PostScript plots of convections maps from the file "<code>20021219.cnvmap</code>". Store the plots in files named "<code><em>yyyymmdd.hrmn.sc</em>.ps</code>", starting at 12:00UTC. Use a stereographic projection in magnetic coordinates, rotated so that magnetic local noon is at the top of the plot. Plot filled coastlines, terminator, a clockdial representing time, a labelled sample velocity vector, the velocity color bar, the time, IMF conditions, model used, Potential, fitted vectors and the potential contours. The velocity color bar is taken from the file "<code>superdarn.key</code>". 
 </description>
 </example>
@@ -303,8 +307,8 @@
 <example type="rplot">example1</example>
 
 <example>
-<command>map_plot -stdout -t 6:00 -stereo -pad 0 -mag -lat 78.4 -lon 16.00 -square -sf 2.00 -fcoast -coast -vecp -vkeyp -grd -time -hmb -fit -ctr -vkey ~/key/superdarn.key 20021219.cnvmap &gt; map.rp.xml</command>
-<description>Generate a single rPlot XML plot of the convections map at 06:00UTC from the file "<code>20021219.cnvmap</code>". Use a stereographic projection in geographic coordinates and center the plot on latitude 78.4 degrees and longitude 16.00 degrees. Plot filled coastlines, a labelled sample velocity vector, the velocity color bar, the time, fitted vectors, Heppner-Maynard boundary and the potential contours.The velocity color bar is taken from the file "<code>superdarn.key</code>". The plot is stored in the file "<code>map.rp.xml</code>".
+<command>map_plot -stdout -xml -t 6:00 -pad 0 -mag -lat 78.4 -lon 16.00 -square -sf 2.00 -fcoast -coast -vecp -vkeyp -grd -time -hmb -fit -ctr -vkey superdarn.key 20021219.cnvmap &gt; map.rp.xml</command>
+<description>Generate a single rPlot XML plot of the convections map at 06:00UTC from the file "<code>20021219.cnvmap</code>". Use a stereographic projection in geomagnetic coordinates and center the plot on latitude 78.4 degrees and longitude 16.00 degrees. Plot filled coastlines, a labelled sample velocity vector, the velocity color bar, the time, fitted vectors, Heppner-Maynard boundary and the potential contours.The velocity color bar is taken from the file "<code>superdarn.key</code>". The plot is stored in the file "<code>map.rp.xml</code>".
 </description>
 </example>
 

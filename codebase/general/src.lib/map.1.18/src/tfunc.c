@@ -141,7 +141,10 @@ int MapStereographic(int ssze,void *src,int dsze,void *dst,void *data) {
   pnt=(float *)src;
   lat=pnt[0];
   lon=pnt[1];
- 
+
+  if (isinf(pnt[0])) return -1;
+  if (isinf(pnt[1])) return -1;
+
   if (data !=NULL) {
     float *arg;
     arg=(float *) data;
@@ -186,7 +189,10 @@ int MapOrthographic(int ssze,void *src,int dsze,void *dst,void *data) {
   pnt=(float *)src;
   lat=pnt[0];
   lon=pnt[1];
- 
+
+  if (isinf(pnt[0])) return -1;
+  if (isinf(pnt[1])) return -1;
+
   if (data !=NULL) {
     float *arg;
     arg=(float *) data;

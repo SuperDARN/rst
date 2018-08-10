@@ -91,7 +91,7 @@
 #include "errstr.h"
 #include "version.h"
 
-char *fsfx[]={"xml","ppm","ps",0};
+char *fsfx[]={"xml","ppm","ppmx","png","ps",0};
 
 unsigned char gry[256];
 
@@ -215,7 +215,7 @@ int main(int argc,char *argv[]) {
   struct XwinDisplay *dp=NULL;
   struct XwinWindow *win=NULL;
   char *display_name=NULL;
-  char *wname="map_plotxt";
+  char *wname="map_plot";
   int xdoff=-1;
   int ydoff=-1;
   struct timeval tmout;
@@ -452,7 +452,6 @@ int main(int argc,char *argv[]) {
 
   char *dfpath=".";
   char *fpath=NULL;
-  char *postp=NULL;
 
   int chisham=0;
 
@@ -559,7 +558,6 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"ps",'x',&psflg); 
 
   OptionAdd(&opt,"path",'t',&fpath);
-  OptionAdd(&opt,"post",'t',&postp);
   OptionAdd(&opt,"tn",'x',&tnflg);
   OptionAdd(&opt,"dn",'x',&dnflg); 
   OptionAdd(&opt,"mn",'x',&mnflg); 
@@ -769,6 +767,7 @@ int main(int argc,char *argv[]) {
     hmbflg=1;
     modnflg=1;
     tmkflg=1;
+    tlblflg=1;
     vkeyflg=1;
     vecflg=1;
     tmeflg=1;
@@ -781,6 +780,11 @@ int main(int argc,char *argv[]) {
   if (edtestr !=NULL) edte=strdate(edtestr);
 
   fp=fopen(fname,"r");
+
+  if (fp==NULL) {
+    fprintf(stderr,"Error opening map file: %s\n",fname);
+    exit(-1);
+  }
 
   if (magflg && old_aacgm) magflg = 2; /* set to 2 for old AACGM */
 
@@ -818,7 +822,7 @@ int main(int argc,char *argv[]) {
   else clip=MapSquareClip();
 
   if (lat>90) lat=90*rcmap->hemisphere;
-  if (fovflg || ffovflg) fov=make_fov(rgrid->st_time,network,chisham); 
+  if (fovflg || ffovflg) fov=make_fov(rgrid->st_time,network,chisham,old_aacgm);
   if ((fovflg || ffovflg) && !magflg) {
     if (old_aacgm) MapModify(fov,AACGMtransform,&flg);
     else           MapModify(fov,AACGM_v2_transform,&flg);
@@ -853,6 +857,8 @@ int main(int argc,char *argv[]) {
 
   if ((lat<0) && (latmin>0)) latmin=-latmin;
   if ((lat>0) && (latmin<0)) latmin=-latmin;
+
+  if ((defflg) && (rcmap->hemisphere==-1)) flip=1;
 
   marg[0]=lat;
   marg[1]=0;
@@ -982,7 +988,7 @@ int main(int argc,char *argv[]) {
     } else {
       fprintf(stderr, "No COLOR_TABLE_PATH set\n");
     }
-    keyfp=fopen(xkey_fname,"r");
+    keyfp=fopen(kname,"r");
     if (keyfp !=NULL) {
       load_key(keyfp,&xkey);
       fclose(keyfp);
@@ -1073,8 +1079,13 @@ int main(int argc,char *argv[]) {
   }
 
   sfx=fsfx[0];
-  if (gflg) sfx=fsfx[1];
-  if (pflg) sfx=fsfx[2];
+  if (gflg) {
+    if (xmlflg) sfx=fsfx[0];
+    else if (ppmflg) sfx=fsfx[1];
+    else if (ppmxflg) sfx=fsfx[2];
+    else sfx=fsfx[3];
+  }
+  if (pflg) sfx=fsfx[4];
   
 #ifdef _XLIB_
   if (xd !=0) {
@@ -1296,7 +1307,7 @@ int main(int argc,char *argv[]) {
     if (ffovflg) MapPlotPolygon(plot,NULL,pad,pad,wdt-2*pad,hgt-2*pad,1,
 			       ffovcol,0x0f,0.5,NULL, rfov,1);
 
-    if (fpolyflg) {
+    if ((fpolyflg) && (rcmap->num_coef !=0)) {
       for (i=0;i<cnum/2;i++) {
         fpolycol=sgn_color(cval[i],&pkey);
 
@@ -1378,7 +1389,7 @@ int main(int argc,char *argv[]) {
       plot_excluded(plot,vgrid,rcmap->latmin,magflg,pad,pad,wdt-2*pad,
                    hgt-2*pad,vsf,vradius,tfunc,marg,grdcol,lnewdt,old_aacgm);
 
-    if (polyflg) {
+    if ((polyflg) && (rcmap->num_coef !=0)) {
       for (i=0;i<cnum/2;i++) {
         GrplotRawContourPolygon(plot,nctr[i],pad,pad, wdt-2*pad,hgt-2*pad,
                                 0.1,0.5, polycol,0x0f,0,0,NULL);
@@ -1390,7 +1401,7 @@ int main(int argc,char *argv[]) {
       }
     }
    
-    if (ctrflg) {
+    if ((ctrflg) && (rcmap->num_coef !=0)) {
       for (i=0;i<cnum/2;i++) {
         sprintf(txt,"%.2d",(int) cval[i]/1000);
         GrplotRawContour(plot,nctr[i],pad,pad,wdt-2*pad,hgt-2*pad,0.1,0.5,
@@ -1441,7 +1452,7 @@ int main(int argc,char *argv[]) {
         GrplotStdKey(plot,px,apad,8,khgt, 0,max,kstp, 0,0,2,
                      0,NULL, txtbox,fontdb,label_pwr,NULL,
                      "Helvetica",10.0,txtcol,0x0f,0.5,
-                     xkey.num,vkey.a,xkey.r,xkey.g,xkey.b);
+                     xkey.num,xkey.a,xkey.r,xkey.g,xkey.b);
       else
         GrplotStdKey(plot,px,apad,8,khgt, 0,max,kstp, 0,0,2,
                      0,NULL, txtbox,fontdb,label_wdt,NULL,
@@ -1477,7 +1488,7 @@ int main(int argc,char *argv[]) {
                       rcmap->imf_model[1], rcmap->imf_model[2],
                       txtcol,0x0f,"Helvetica",12.0,fontdb);
 
-    if ((imfflg) && (rcmap->Bx !=0) && (rcmap->By !=0) && (rcmap->Bz !=0)) {
+    if ((imfflg) && !((rcmap->Bx ==0) && (rcmap->By ==0) && (rcmap->Bz ==0))) {
        PlotLine(plot,imfx-imfr,imfy,imfx+imfr,imfy,grdcol,0x0f,0.5,NULL);
        PlotLine(plot,imfx,imfy-imfr,imfx,imfy+imfr,grdcol,0x0f,0.5,NULL);
        PlotEllipse(plot,NULL,imfx,imfy,imfr,imfr,0,grdcol,0x0f,0.5,NULL);
@@ -1858,7 +1869,10 @@ unsigned int mag_color(double v,void *data)
   key=(struct key *) data;
   if (key->num==0) return key->defcol;
   i=key->num*fabs(v)/key->max;
-  if (i>=key->num) i=key->num-1;
+  if (i>=key->num) {
+    if (key->num==256) i=key->num-2;
+    else i=key->num-1;
+  }
 
   return (key->a[i]<<24) | (key->r[i]<<16) | (key->g[i]<<8) | key->b[i];
 }
