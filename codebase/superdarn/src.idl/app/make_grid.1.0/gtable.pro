@@ -436,7 +436,7 @@ function GridTableAddBeam, GridTable, RadarSite, alt, tval, RadarBeam, $
     (*GridBm).bm = (*RadarBeam).bm
     (*GridBm).frang = (*RadarBeam).frang
     (*GridBm).rsep = (*RadarBeam).rsep
-    (*GridBm).rxrise = (*RadarSite).recrise
+    (*GridBm).rxrise = RadarSite.recrise
     (*GridBm).nrang = (*RadarBeam).nrang 
 
     ; Convert input tval to year, month, day, hour, minutes, seconds
@@ -624,8 +624,9 @@ function GridTableMap, GridTable, RadarScan, RadarSite, tlen, iflg, alt, $
         (*GridTable).freq = 0
         (*GridTable).nscan = 0
         GridTableZero, (*GridTable).pnum, (*GridTable).pnt
-        (*GridTable).st_time = tlen*( floor(tm/tlen) )      ; should this be floor or round? With 01 min start time,
-        (*GridTable).ed_time = (*GridTable).st_time + tlen  ; round gives 02 while floor gives 00
+        ;(*GridTable).st_time = tlen*( floor(tm/tlen) )      ; should this be floor or round? With 01 min start time,
+        (*GridTable).st_time = (*RadarScan).st_time          ; round gives 02 while floor gives 00
+        (*GridTable).ed_time = (*GridTable).st_time + tlen
         (*GridTable).st_id = (*RadarScan).stid
     endif
 
