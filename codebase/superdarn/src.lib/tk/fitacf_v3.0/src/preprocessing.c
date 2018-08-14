@@ -509,19 +509,19 @@ void print_range_node(llist_node node,FITPRMS* fit_prms){
   }
   fprintf(fp,"\nALPHA\n");
 
-  llist_for_each_arg(((RANGENODE*)node)->alpha_2, (node_func_arg)print_alpha_node,fp,NULL);
+  llist_for_each_arg(((RANGENODE*)node)->alpha_2, (node_func_arg)print_alpha_node,fp,NULL,NULL);
   fprintf(fp,"\n");
-  llist_for_each_arg(((RANGENODE*)node)->pwrs, (node_func_arg)print_pwr_node,fp,NULL);
+  llist_for_each_arg(((RANGENODE*)node)->pwrs, (node_func_arg)print_pwr_node,fp,NULL,NULL);
   fprintf(fp,"LINEAR POWER FIT\n");
   print_fit_data(((RANGENODE*)node)->l_pwr_fit,fp);
   fprintf(fp,"QUADRATIC POWER FIT\n");
   print_fit_data(((RANGENODE*)node)->q_pwr_fit,fp);
   fprintf(fp,"ACF_PHASE FIT\n");
-  llist_for_each_arg(((RANGENODE*)node)->phases, (node_func_arg)print_phase_node,fp,NULL);
+  llist_for_each_arg(((RANGENODE*)node)->phases, (node_func_arg)print_phase_node,fp,NULL,NULL);
   print_fit_data(((RANGENODE*)node)->phase_fit,fp);
   fprintf(fp,"XCF_PHASE FIT\n");
   print_fit_data(((RANGENODE*)node)->elev_fit,fp);
-  llist_for_each_arg(((RANGENODE*)node)->elev, (node_func_arg)print_phase_node,fp,NULL);
+  llist_for_each_arg(((RANGENODE*)node)->elev, (node_func_arg)print_phase_node,fp,NULL,NULL);
   fclose(fp);
 
 }
@@ -536,7 +536,7 @@ void print_uncorrected_phase(llist_node node, FITPRMS* fit_prms){
                           fit_prms->time.us/1.0e6);
   fprintf(fp,"BEAM %02d\n",fit_prms->bmnum);
   fprintf(fp,"RANGE %d\n",((RANGENODE*)node)->range);
-    llist_for_each_arg(((RANGENODE*)node)->phases, (node_func_arg)print_phase_node_to_file,fp, NULL);
+    llist_for_each_arg(((RANGENODE*)node)->phases, (node_func_arg)print_phase_node_to_file,fp, NULL,NULL);
     fclose(fp);
 }
 
@@ -1159,7 +1159,7 @@ void Find_Alpha(llist_node range,llist lags, FITPRMS *fit_prms){
 
   lag_0_pwr = fit_prms->pwr0[range_node->range];
 
-  llist_for_each_arg(lags,(node_func_arg)calculate_alpha_at_lags,range_node,&lag_0_pwr);
+  llist_for_each_arg(lags,(node_func_arg)calculate_alpha_at_lags,range_node,&lag_0_pwr,NULL);
 
 }
 
@@ -1327,7 +1327,7 @@ void XCF_Phase_Unwrap(llist_node range){
   memset(total_2pi_corrections, 0, sizeof(*total_2pi_corrections));
   *total_2pi_corrections = 0;
   llist_for_each_arg(range_node->elev,(node_func_arg)phase_correction,&range_node->phase_fit->b,
-            total_2pi_corrections);
+            total_2pi_corrections,NULL);
 
   llist_reset_iter(range_node->elev);
   S_xx = 0;
@@ -1349,7 +1349,7 @@ void XCF_Phase_Unwrap(llist_node range){
 
   slope_est = S_xy / S_xx;
 
-  llist_for_each_arg(range_node->elev,(node_func_arg)phase_correction,&slope_est, total_2pi_corrections);
+  llist_for_each_arg(range_node->elev,(node_func_arg)phase_correction,&slope_est, total_2pi_corrections,NULL);
 
   free(total_2pi_corrections);
 }
@@ -1372,7 +1372,7 @@ void Filter_TX_Overlap(llist ranges, llist lags, FITPRMS *fit_prms){
 
   mark_bad_samples(fit_prms,bad_samples);
 
-  llist_for_each_arg(ranges, (node_func_arg)filter_tx_overlapped_lags, lags, bad_samples);
+  llist_for_each_arg(ranges, (node_func_arg)filter_tx_overlapped_lags, lags, bad_samples,NULL);
 
   llist_destroy(bad_samples,TRUE,free);
 

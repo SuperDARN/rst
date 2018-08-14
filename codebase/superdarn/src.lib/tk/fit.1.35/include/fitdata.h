@@ -48,6 +48,29 @@ struct FitData {
   struct FitElv  *elv;
 };
 
+/*Data used to calculate elevations*/
+struct elevation_data {
+    double interfer_x;
+    double interfer_y;
+    double interfer_z;
+
+    double phidiff;
+    double maxbeam;
+    double bmsep;
+    double bmnum; 
+    double tfreq;
+    double tdiff;
+
+};
+
+
+
+struct fitacf_functions {
+    double (*elevation_method)(struct elevation_data*, double);
+};
+
+
+
 struct FitData *FitMake();
 void FitFree(struct FitData *ptr);
 int FitSetRng(struct FitData *ptr,int nrang);

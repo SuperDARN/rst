@@ -31,9 +31,9 @@
 
 #include <math.h>
 #include <stdio.h>
-
 #include "fitblk.h"
 #include "rmath.h"
+#include "elevation.h"
 
 double elev_goose(struct elevation_data *elev_data, double phi0) {
   int n;

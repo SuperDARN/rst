@@ -304,13 +304,13 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data, struct fitacf_functions 
 
   /*For each range we find the CRI of each pulse*/
   /*Comment this out for simulated data without CRI*/
-  llist_for_each_arg(ranges,(node_func_arg)Find_CRI,fit_prms,NULL);
+  llist_for_each_arg(ranges,(node_func_arg)Find_CRI,fit_prms,NULL,NULL);
 
   /*Now that we have CRI, we find alpha for each range*/
-  llist_for_each_arg(ranges,(node_func_arg)Find_Alpha,lags,fit_prms);
+  llist_for_each_arg(ranges,(node_func_arg)Find_Alpha,lags,fit_prms,NULL);
 
   /*Each range node has its ACF power, ACF phase, and XCF phase(elevation) data lists filled*/
-  llist_for_each_arg(ranges,(node_func_arg)Fill_Data_Lists_For_Range,lags,fit_prms);
+  llist_for_each_arg(ranges,(node_func_arg)Fill_Data_Lists_For_Range,lags,fit_prms,NULL);
 
   /*llist_for_each_arg(ranges,(node_func_arg)print_uncorrected_phase,fit_prms, NULL);*/
   /*llist_for_each_arg(ranges,(node_func_arg)print_range_node,fit_prms,NULL);*/
@@ -323,7 +323,7 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data, struct fitacf_functions 
   /*llist_for_each_arg(ranges,(node_func_arg)print_range_node,fit_prms,NULL);*/
   /*Criterion is applied to filter low power lags that are considered too close to
   statistical fluctuations*/
-  llist_for_each_arg(ranges,(node_func_arg)Filter_Low_Pwr_Lags,fit_prms,NULL);
+  llist_for_each_arg(ranges,(node_func_arg)Filter_Low_Pwr_Lags,fit_prms,NULL,NULL);
 
   /*Criterion is applied to filter ranges that hold no merit*/
   Filter_Bad_ACFs(fit_prms,ranges,noise_pwr);
@@ -350,7 +350,7 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data, struct fitacf_functions 
 
 
   /*Now the fits are completed, we can make our final determinations from those fits*/
-  ACF_Determinations(ranges, fit_prms, fit_data, noise_pwr);
+  ACF_Determinations(ranges, fit_prms, fit_data, noise_pwr, fit_func);
 
   llist_destroy(lags,TRUE,free);
   llist_destroy(ranges,TRUE,free_range_node);

@@ -8,6 +8,6 @@
 
 int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
            struct FitRange *ptr, struct FitRange *xptr,
-           struct FitElv *elv, struct FitNoise *nptr);
+           struct FitElv *elv, struct FitNoise *nptr, struct fitacf_functions *fit_func);
 #endif
 

@@ -36,6 +36,7 @@
 
 #include "rtypes.h"
 #include "option.h"
+#include "elevation.h"
 
 #include "dmap.h"
 #include "rprm.h"

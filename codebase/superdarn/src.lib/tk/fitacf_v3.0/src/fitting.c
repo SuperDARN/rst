@@ -82,11 +82,11 @@ void Power_Fits(llist_node range){
 void ACF_Phase_Fit(llist ranges,FITPRMS *fit_prms){
     PHASETYPE acf = ACF;
 
-    llist_for_each_arg(ranges,(node_func_arg)calculate_phase_sigma_for_range,fit_prms,&acf);
+    llist_for_each_arg(ranges,(node_func_arg)calculate_phase_sigma_for_range,fit_prms,&acf,NULL);
 
-    llist_for_each_arg(ranges,(node_func_arg)ACF_Phase_Unwrap, fit_prms, NULL);
+    llist_for_each_arg(ranges,(node_func_arg)ACF_Phase_Unwrap, fit_prms, NULL,NULL);
 
-    llist_for_each_arg(ranges,(node_func_arg)phase_fit_for_range,&acf,NULL);
+    llist_for_each_arg(ranges,(node_func_arg)phase_fit_for_range,&acf,NULL,NULL);
 
 
 }
@@ -112,11 +112,11 @@ void ACF_Phase_Fit(llist ranges,FITPRMS *fit_prms){
  */
 void XCF_Phase_Fit(llist ranges,FITPRMS *fit_prms){
     PHASETYPE xcf = XCF;
-    llist_for_each_arg(ranges,(node_func_arg)calculate_phase_sigma_for_range,fit_prms,&xcf);
+    llist_for_each_arg(ranges,(node_func_arg)calculate_phase_sigma_for_range,fit_prms,&xcf,NULL);
 
     llist_for_each(ranges,(node_func)XCF_Phase_Unwrap);
 
-    llist_for_each_arg(ranges,(node_func_arg)phase_fit_for_range,&xcf,NULL);
+    llist_for_each_arg(ranges,(node_func_arg)phase_fit_for_range,&xcf,NULL,NULL);
 
 
 }
@@ -164,11 +164,11 @@ void calculate_phase_sigma_for_range(llist_node range,FITPRMS *fit_prms,PHASETYP
     switch(*phasetype){
         case ACF:
             llist_for_each_arg(range_node->phases,(node_func_arg)calculate_phase_sigma,range_node,
-                (void*)fit_prms);
+                (void*)fit_prms,NULL);
             break;
         case XCF:
             llist_for_each_arg(range_node->elev,(node_func_arg)calculate_phase_sigma,range_node,
-                (void*)fit_prms);
+                (void*)fit_prms, NULL);
             llist_reset_iter(range_node->elev);
 
             /*Since lag 0 phase is included in the elevation fit but for ACF its variance is 0, 

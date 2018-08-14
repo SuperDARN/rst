@@ -11,6 +11,7 @@
 #include <time.h>
 #include <math.h>
 #include <zlib.h>
+#include <errno.h>
 #include "rtypes.h"
 #include "rmath.h"
 #include "nrfit.h"
@@ -138,7 +139,7 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
   int *badlag = malloc(prm->mplgs * sizeof(int));
   struct FitACFBadSample badsmp;
   float *sigma = malloc(prm->mplgs*sizeof(double));
-
+  struct elevation_data *elev_data;
   /* need this for bisection method */
   diff=(180.0/nslopes);
 
@@ -577,9 +578,30 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
           }
           phi0 = calc_phi0(good_lags,xcf_phases, w_guess, goodcnt)*PI/180.;
           fit->xrng[R].phi0 = phi0;
-          fit->elv[R].normal = elevation(&fblk->prm,phi0);
-          fit->elv[R].high = elevation(&fblk->prm,phi0);
-          fit->elv[R].low = elevation(&fblk->prm,phi0);
+          
+                
+          elev_data = malloc(sizeof(struct elevation_data));
+          if (elev_data == NULL || errno != 0)
+          {
+              fprintf(stderr,"Error: Elevation data structure could not be allocated. %d", errno);
+              exit(errno);
+          }
+    
+          elev_data->interfer_x = fblk->prm.interfer[0];
+          elev_data->interfer_y = fblk->prm.interfer[1];
+          elev_data->interfer_z = fblk->prm.interfer[2];
+    
+          elev_data->phidiff = fblk->prm.phidiff;
+          elev_data->maxbeam = fblk->prm.maxbeam;
+          elev_data->bmsep = fblk->prm.bmsep;
+          elev_data->tfreq = fblk->prm.tfreq;
+          elev_data->tdiff = fblk->prm.tdiff;
+ 
+          fit->elv[R].normal = elevation_v2(elev_data,phi0);
+          fit->elv[R].high = elevation_v2(elev_data,phi0);
+          fit->elv[R].low = elevation_v2(elev_data,phi0);
+  
+          free(elev_data);
         }
         else
           {

@@ -72,7 +72,7 @@ typedef void * llist_node;
 typedef void ( * node_func ) ( llist_node node );
 
 /* function prototypes with user arguments*/
-typedef void ( * node_func_arg ) ( llist_node node, void* arg1, void* arg2 );
+typedef void ( * node_func_arg ) ( llist_node node, void* arg1, void* arg2, void* arg3 );
 
 /**
 * @brief Compares two nodes in a list
@@ -169,7 +169,7 @@ int llist_for_each ( llist list, node_func func );
  * @param[in] arg passed to func
  * @return int LLIST_SUCCESS if success
  */
-int llist_for_each_arg ( llist list, node_func_arg func, void * arg1, void* arg2 );
+int llist_for_each_arg ( llist list, node_func_arg func, void * arg1, void* arg2, void* arg3);
 /**
  * @brief sort a lists
  * @param[in] list the list to operator upon

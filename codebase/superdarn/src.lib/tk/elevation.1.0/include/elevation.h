@@ -36,20 +36,7 @@
  * by the current 3 possible elevation algorithms. In the future, I hope this structure can be removed 
  * and set data structure with consistent names are used so we can just pass the data structure. */
 
-/*Data used to calculate elevations*/
-struct elevation_data {
-    double interfer_x;
-    double interfer_y;
-    double interfer_z;
-
-    double phidiff;
-    double maxbeam;
-    double bmsep;
-    double bmnum; 
-    double tfreq;
-    double tdiff;
-
-};
+#include "fitdata.h"
 
 double elevation_v2(struct elevation_data *, double psi_obs);
 double elevation(struct elevation_data *, double phi0);

@@ -25,6 +25,8 @@ July 2015
 
 #include "rtypes.h"
 #include "determinations.h"
+#include "elevation.h"
+#include "fitacf.h"
 #include <errno.h>
 #include <math.h>
 #include <stdio.h>
@@ -76,7 +78,7 @@ void allocate_fit_data(struct FitData* fit_data, FITPRMS* fit_prms){
  *                        fitted data.
  * @param[in]  noise_pwr  The noise power.
  */
-void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data,double noise_pwr){
+void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data,double noise_pwr, struct fitacf_functions *fit_func){
 
     fit_data->revision.major=3;
     fit_data->revision.minor=0;
@@ -89,32 +91,32 @@ void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data
 
     lag_0_pwr_in_dB(fit_data->rng,fit_prms,noise_pwr);
 
-    llist_for_each_arg(ranges,(node_func_arg)find_elevation,fit_data->elv,fit_prms);
-    llist_for_each_arg(ranges,(node_func_arg)set_xcf_phi0,fit_data->xrng,fit_prms);
-    llist_for_each_arg(ranges,(node_func_arg)set_xcf_phi0_err,fit_data->xrng,NULL);
-    llist_for_each_arg(ranges,(node_func_arg)set_xcf_sdev_phi,fit_data->xrng,NULL);
+    llist_for_each_arg(ranges,(node_func_arg)find_elevation,fit_data->elv,fit_prms, fit_func);
+    llist_for_each_arg(ranges,(node_func_arg)set_xcf_phi0,fit_data->xrng,fit_prms, NULL);
+    llist_for_each_arg(ranges,(node_func_arg)set_xcf_phi0_err,fit_data->xrng,NULL, NULL);
+    llist_for_each_arg(ranges,(node_func_arg)set_xcf_sdev_phi,fit_data->xrng,NULL, NULL);
 
 
 #ifdef _RFC_IDX
-    llist_for_each_arg(ranges,(node_func_arg)refractive_index,fit_data->elv,NULL);
+    llist_for_each_arg(ranges,(node_func_arg)refractive_index,fit_data->elv,NULL, NULL);
 #endif
 
-    llist_for_each_arg(ranges,(node_func_arg)set_qflg,fit_data->rng,NULL);
-    llist_for_each_arg(ranges,(node_func_arg)set_p_l,fit_data->rng,&noise_pwr);
-    llist_for_each_arg(ranges,(node_func_arg)set_p_l_err,fit_data->rng,&noise_pwr);
-    llist_for_each_arg(ranges,(node_func_arg)set_p_s,fit_data->rng,&noise_pwr);
-    llist_for_each_arg(ranges,(node_func_arg)set_p_s_err,fit_data->rng,&noise_pwr);
-    llist_for_each_arg(ranges,(node_func_arg)set_v,fit_data->rng,fit_prms);
-    llist_for_each_arg(ranges,(node_func_arg)set_v_err,fit_data->rng,fit_prms);
-    llist_for_each_arg(ranges,(node_func_arg)set_w_l,fit_data->rng,fit_prms);
-    llist_for_each_arg(ranges,(node_func_arg)set_w_l_err,fit_data->rng,fit_prms);
-    llist_for_each_arg(ranges,(node_func_arg)set_w_s,fit_data->rng,fit_prms);
-    llist_for_each_arg(ranges,(node_func_arg)set_w_s_err,fit_data->rng,fit_prms);
-    llist_for_each_arg(ranges,(node_func_arg)set_sdev_l,fit_data->rng,NULL);
-    llist_for_each_arg(ranges,(node_func_arg)set_sdev_s,fit_data->rng,NULL);
-    llist_for_each_arg(ranges,(node_func_arg)set_sdev_phi,fit_data->rng,NULL);
-    llist_for_each_arg(ranges,(node_func_arg)set_gsct,fit_data->rng,NULL);
-    llist_for_each_arg(ranges,(node_func_arg)set_nump,fit_data->rng,NULL);
+    llist_for_each_arg(ranges,(node_func_arg)set_qflg,fit_data->rng,NULL,NULL);
+    llist_for_each_arg(ranges,(node_func_arg)set_p_l,fit_data->rng,&noise_pwr,NULL);
+    llist_for_each_arg(ranges,(node_func_arg)set_p_l_err,fit_data->rng,&noise_pwr,NULL);
+    llist_for_each_arg(ranges,(node_func_arg)set_p_s,fit_data->rng,&noise_pwr,NULL);
+    llist_for_each_arg(ranges,(node_func_arg)set_p_s_err,fit_data->rng,&noise_pwr,NULL);
+    llist_for_each_arg(ranges,(node_func_arg)set_v,fit_data->rng,fit_prms,NULL);
+    llist_for_each_arg(ranges,(node_func_arg)set_v_err,fit_data->rng,fit_prms,NULL);
+    llist_for_each_arg(ranges,(node_func_arg)set_w_l,fit_data->rng,fit_prms,NULL);
+    llist_for_each_arg(ranges,(node_func_arg)set_w_l_err,fit_data->rng,fit_prms,NULL);
+    llist_for_each_arg(ranges,(node_func_arg)set_w_s,fit_data->rng,fit_prms,NULL);
+    llist_for_each_arg(ranges,(node_func_arg)set_w_s_err,fit_data->rng,fit_prms,NULL);
+    llist_for_each_arg(ranges,(node_func_arg)set_sdev_l,fit_data->rng,NULL,NULL);
+    llist_for_each_arg(ranges,(node_func_arg)set_sdev_s,fit_data->rng,NULL,NULL);
+    llist_for_each_arg(ranges,(node_func_arg)set_sdev_phi,fit_data->rng,NULL,NULL);
+    llist_for_each_arg(ranges,(node_func_arg)set_gsct,fit_data->rng,NULL,NULL);
+    llist_for_each_arg(ranges,(node_func_arg)set_nump,fit_data->rng,NULL,NULL);
 
 }
 
@@ -498,8 +500,8 @@ void set_nump(llist_node range, struct FitRange* fit_range_array){
  *
  * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
-void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fit_prms){
-
+void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fit_prms, struct fitacf_functions *fit_func){
+/*
     double phi0_normal, phi0_low, phi_high;
      
     
@@ -515,7 +517,8 @@ void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fi
     double real,imag;
     double psi_uncorrected_unfitted;
     double xcf0_p;
-    struct elevation_data elev_data = malloc(struct elevation_data);
+ */ struct elevation_data *elev_data;
+    elev_data = malloc(sizeof(struct elevation_data));
 
     if (elev_data == NULL || errno != 0)
     {
@@ -534,14 +537,14 @@ void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fi
     elev_data->bmsep = fit_prms->bmsep;
     elev_data->bmnum = fit_prms->bmnum;
     elev_data->tfreq = fit_prms->tfreq;
-    elev_data->tdfif = fit_prms->tdiff;
+    elev_data->tdiff = fit_prms->tdiff;
     
 
     fit_elev_array[range_node->range].low = fit_func->elevation_method(elev_data,range_node->elev_fit->a-range_node->elev_fit->sigma_2_a);
     fit_elev_array[range_node->range].high = fit_func->elevation_method(elev_data,range_node->elev_fit->a+range_node->elev_fit->sigma_2_a);
     fit_elev_array[range_node->range].normal = fit_func->elevation_method(elev_data,range_node->elev_fit->a);
     
-    free(elev_fit);
+    free(elev_data);
 
     /*
     antenna_sep = sqrt(x*x + y*y + z*z);

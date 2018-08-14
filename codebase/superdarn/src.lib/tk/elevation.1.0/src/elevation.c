@@ -33,6 +33,7 @@
 #include <stdio.h>
 #include "fitblk.h"
 #include "rmath.h"
+#include "elevation.h"
 
 double elevation(struct elevation_data *elev_data,double phi0) {
  
@@ -54,11 +55,11 @@ double elevation(struct elevation_data *elev_data,double phi0) {
   /* calculate the values that don't change if this hasn't already been done. */
 
   if (antenna_separation == 0.0) {
-    antenna_separation= sqrt(elev_data->interfer[1]*elev_data->interfer[1] + 
-			                 elev_data->interfer[0]*elev_data->interfer[0] +
-	                         elev_data->interfer[2]*elev_data->interfer[2]);
-    elev_corr= elev_data->phidiff* asin( elev_data->interfer[2]/ antenna_separation);
-    if (elev_data->interfer[1] > 0.0) /* interferometer in front of main antenna */
+    antenna_separation= sqrt(elev_data->interfer_y*elev_data->interfer_y + 
+			                 elev_data->interfer_x*elev_data->interfer_x +
+	                         elev_data->interfer_z*elev_data->interfer_z);
+    elev_corr= elev_data->phidiff* asin( elev_data->interfer_z/ antenna_separation);
+    if (elev_data->interfer_y > 0.0) /* interferometer in front of main antenna */
       phi_sign= 1.0;
     else {                           /* interferometer behind main antenna */
       phi_sign= -1.0;

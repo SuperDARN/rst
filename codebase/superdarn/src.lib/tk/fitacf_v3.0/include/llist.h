@@ -169,7 +169,7 @@ int llist_for_each ( llist list, node_func func );
  * @param[in] arg passed to func
  * @return int LLIST_SUCCESS if success
  */
-int llist_for_each_arg ( llist list, node_func_arg func, void * arg1, void* arg2 );
+int llist_for_each_arg ( llist list, node_func_arg func, void * arg1, void* arg2 , void *arg3);
 /**
  * @brief sort a lists
  * @param[in] list the list to operator upon

@@ -1,6 +1,10 @@
 /* make_fit.c
    ==========
    Author: R.J.Barnes
+   
+   Modifications
+   ============
+   2018-08 Marina Schmidt
 */
 
 /*
@@ -42,6 +46,8 @@
 #include "fit_structures.h"
 #include <fenv.h>
 
+#define GOOSEBAY 1
+
 struct RadarParm *prm;
 struct RawData *raw;
 struct FitData *fit;
@@ -58,10 +64,7 @@ struct OptionData opt;
  * that a fitted algorithm would use. This structure
  * allows flexibility, modularity and reduces
  * code redundancy */
-struct fitacf_functions{
-    double (*elevation_method)(void);
-};
-
+struct fitacf_functions *fit_func;
 
 int rst_opterr(char *txt) {
   fprintf(stderr,"Option not recognized: %s\n",txt);
@@ -71,11 +74,11 @@ int rst_opterr(char *txt) {
 
 int main(int argc,char *argv[]) {
 
-  struct fitacf_functions *fit_func = malloc(sizeof(fitacf_functions));
+  fit_func = malloc(sizeof(struct fitacf_functions));
   if(fit_func == NULL)
   {
       fprintf(stderr,"Error: Could not get memory for fitacf function structure");
-      exit(-1)
+      exit(-1);
   }
   unsigned char old=0;
 
@@ -354,7 +357,7 @@ int main(int argc,char *argv[]) {
         /* load the data into the FitACF structure.                  */
         if(fit_prms != NULL) {
           Copy_Fitting_Prms(site,prm,raw,fit_prms);
-          Fitacf(fit_prms,fit);
+          Fitacf(fit_prms,fit,fit_func);
         }
         else {
           fprintf(stderr, "Unable to allocate fit_prms!\n");
@@ -362,7 +365,7 @@ int main(int argc,char *argv[]) {
         }
       }
       else if (fitacf_version == 25) {
-        FitACF(prm,raw,fblk,fit);
+        FitACF(prm,raw,fblk,fit,fit_func);
       }
       else {
         fprintf(stderr, "The requested fitacf version does not exist\n");
@@ -383,8 +386,9 @@ int main(int argc,char *argv[]) {
   else {
 
   }
-
+    
   if (old) OldRawClose(rawfp);
+  free(fit_func);
   return 0;
 }
 

@@ -34,6 +34,8 @@
 #ifndef _DMAP_H
 #define _DMAP_H
 
+#include <zlib.h>
+
 #define DATACHAR 1
 #define DATASHORT 2
 #define DATAINT 3

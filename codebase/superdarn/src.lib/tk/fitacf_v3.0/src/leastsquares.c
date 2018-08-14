@@ -319,7 +319,7 @@ void two_param_straight_line_fit(FITDATA *fit_data,llist data,int confidence, in
 
 	confidence -= 1;
 	DoF -= 1;
-	llist_for_each_arg(data,(node_func_arg)calculate_sums,fit_data,&linear);
+	llist_for_each_arg(data,(node_func_arg)calculate_sums,fit_data,&linear,NULL);
 
 
 	S = fit_data->sums->S;
@@ -339,7 +339,7 @@ void two_param_straight_line_fit(FITDATA *fit_data,llist data,int confidence, in
 	fit_data->delta_a = sqrt(delta_chi_2[confidence][DoF]) * sqrt(fit_data->sigma_2_a);
 	fit_data->delta_b = sqrt(delta_chi_2[confidence][DoF]) * sqrt(fit_data->sigma_2_b);
 
-	llist_for_each_arg(data,(node_func_arg)find_chi_2,fit_data,&linear);
+	llist_for_each_arg(data,(node_func_arg)find_chi_2,fit_data,&linear,NULL);
 
 	fit_data->Q = gammaq((llist_size(data)-2) * .5,fit_data->chi_2 * 0.5);
 
@@ -372,7 +372,7 @@ void one_param_straight_line_fit(FITDATA *fit_data,llist data,int confidence, in
 	DoF -= 1;
 
 
-	llist_for_each_arg(data,(node_func_arg)calculate_sums,fit_data,&linear);
+	llist_for_each_arg(data,(node_func_arg)calculate_sums,fit_data,&linear,NULL);
 
 	S_xx = fit_data->sums->S_xx;
 	S_xy = fit_data->sums->S_xy;
@@ -389,7 +389,7 @@ void one_param_straight_line_fit(FITDATA *fit_data,llist data,int confidence, in
 	fit_data->delta_b = sqrt(delta_chi_2[confidence][DoF]) * sqrt(fit_data->sigma_2_b);
 
 
-	llist_for_each_arg(data,(node_func_arg)find_chi_2,fit_data,&linear);
+	llist_for_each_arg(data,(node_func_arg)find_chi_2,fit_data,&linear,NULL);
 	fit_data->Q = gammaq((llist_size(data)-1) * .5,fit_data->chi_2 * 0.5);
 
 
@@ -419,7 +419,7 @@ void quadratic_fit(FITDATA *fit_data,llist data,int confidence, int DoF){
 	confidence -= 1;
 	DoF -= 1;
 
-	llist_for_each_arg(data,(node_func_arg)calculate_sums,fit_data,&quadratic);
+	llist_for_each_arg(data,(node_func_arg)calculate_sums,fit_data,&quadratic,NULL);
 
 	S = fit_data->sums->S;
 	S_x = fit_data->sums->S_x;
@@ -440,7 +440,7 @@ void quadratic_fit(FITDATA *fit_data,llist data,int confidence, int DoF){
 
 
 
-	llist_for_each_arg(data,(node_func_arg)find_chi_2,fit_data,&quadratic);
+	llist_for_each_arg(data,(node_func_arg)find_chi_2,fit_data,&quadratic,NULL);
 	fit_data->Q = gammaq((llist_size(data)-2) * .5,fit_data->chi_2 * 0.5);
 
 }

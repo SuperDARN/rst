@@ -166,7 +166,7 @@ int fill_fit_block(struct RadarParm *prm, struct RawData *raw,
     return 0;
 }
 int FitACF(struct RadarParm *prm, struct RawData *raw,struct FitBlock *input,
-           struct FitData *fit) {
+           struct FitData *fit, struct fitacf_functions* fit_func) {
 
     int fnum, goose, s;
 
@@ -192,7 +192,7 @@ int FitACF(struct RadarParm *prm, struct RawData *raw,struct FitBlock *input,
 
     goose = (prm->stid == GOOSEBAY);
 
-    fnum = do_fit(input, 5, goose, fit->rng, fit->xrng, fit->elv, &fit->noise);
+    fnum = do_fit(input, 5, goose, fit->rng, fit->xrng, fit->elv, &fit->noise, fit_func);
 
     return 0;
 }

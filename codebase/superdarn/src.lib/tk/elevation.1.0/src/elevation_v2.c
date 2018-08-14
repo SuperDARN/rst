@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include "fitblk.h"
 #include "rmath.h"
-
+#include "elevation.h"
 /* SGS somehow need to pass in options for allowing:                         *
  *     negative elevation angles and residual phase                          */
 
@@ -56,7 +56,7 @@ double elevation_v2(struct elevation_data *elev_data, double psi_obs)
   sgn = (Y < 0) ? -1 : 1;
 
   boff   = elev_data->maxbeam/2. - 0.5;
-  phi0   = elev_data->bmsep*(prm->bmnum - boff)* PI/ 180.;
+  phi0   = elev_data->bmsep*(elev_data->bmnum - boff)* PI/ 180.;
   cp0    = cos(phi0);
   sp0    = sin(phi0);
 
@@ -66,7 +66,7 @@ double elevation_v2(struct elevation_data *elev_data, double psi_obs)
    *   If the path length (cable and electronics) to the interferometer is   *
    *   shorter than that to the main antenna array, then the time for the    *
    *   to transit the interferometer electrical path is shorter: tdiff < 0   */
-  psi_ele = -2 * PI * elev_data->tfreq * prm->tdiff * 1e-3;
+  psi_ele = -2 * PI * elev_data->tfreq * elev_data->tdiff * 1e-3;
 
   /* Determine elevation angle (a0) where psi (phase difference) is maximum; *
    *   which occurs when k and d are anti-parallel. Using calculus of        *
@@ -110,7 +110,7 @@ double elevation_v2(struct elevation_data *elev_data, double psi_obs)
   /* SGS: if not keyword_set(actual) then psi_obs += d2pi                   */
 
   /* now solve for the elevation angle: alpha                               */
-  E = (psi_obs/(2*PI*elev_data->tfreq*1e3) + prm->tdiff*1e-6)*C - X*sp0;
+  E = (psi_obs/(2*PI*elev_data->tfreq*1e3) + elev_data->tdiff*1e-6)*C - X*sp0;
   alpha = asin((E*Z + sqrt(E*E * Z*Z - (Y*Y + Z*Z)*(E*E - Y*Y*cp0*cp0)))/
                (Y*Y + Z*Z));
 

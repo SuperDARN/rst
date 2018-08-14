@@ -32,6 +32,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 #include "rmath.h"
 #include "badsmp.h"
 #include "fitblk.h"
@@ -41,6 +42,8 @@
 #include "noise_stat.h"
 #include "elevation.h"
 #include "ground_scatter.h"
+#include "fit_structures.h"
+#include "fitacf.h"
 
 int calc_skynoise(struct FitBlock *iptr, struct FitNoise *nptr, double *mnpwr,
                     double *pwrd, double *pwrt){
@@ -171,7 +174,7 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
 
   struct elevation_data *elev_data;
 
-  elev_data = malloc(struct elevation_data);
+
 
   nptr->skynoise=0.0;
   nptr->lag0=0.0;
@@ -368,10 +371,17 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
           xptr[k].phi0 = xptr[k].phi0*iptr->prm.phidiff;
 
       /* changes which array is first */
+      
+      elev_data = malloc(sizeof(struct elevation_data));
+      if (elev_data == NULL || errno != 0)
+      {
+          fprintf(stderr,"Error: Elevation data structure could not be allocated. %d", errno);
+          exit(errno);
+      }
 
       elev_data->interfer_x = iptr->prm.interfer[0];
       elev_data->interfer_y = iptr->prm.interfer[1];
-      elev_data->interger_z = iptr->prm.interfer[2];
+      elev_data->interfer_z = iptr->prm.interfer[2];
 
       elev_data->phidiff = iptr->prm.phidiff;
       elev_data->maxbeam = iptr->prm.maxbeam;
@@ -383,7 +393,7 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
       elv[k].low    = fit_func->elevation_method(elev_data, xptr[k].phi0+xptr[k].phi0_err);
       elv[k].high   = fit_func->elevation_method(elev_data, xptr[k].phi0-xptr[k].phi0_err);
        
-
+      free(elev_data);
       /* range = 0.15*(iptr->prm.lagfr + iptr->prm.smsep*(k-1)); - this is never used EGT */
 /*      if (iptr->prm.old_elev) {
 */        /* use old elevation angle routines */
