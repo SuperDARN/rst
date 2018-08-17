@@ -16,6 +16,7 @@
 #include <string.h>
 #include <time.h>
 #include <zlib.h>
+#include <errno.h>
 
 #include "rtypes.h"
 #include "option.h"
@@ -32,13 +33,13 @@
 #include "fitacf.h"
 #include "rawread.h"
 #include "fitwrite.h"
+#include "elevation.h"
 
 #include "oldrawread.h"
 #include "oldfitwrite.h"
 
 #include "errstr.h"
 #include "hlpstr.h"
-
 
 
 struct RadarParm *prm;
@@ -51,7 +52,7 @@ struct Radar *radar;
 struct RadarSite *site;
 
 struct OptionData opt;
-
+struct fitacf_functions *fit_func;
 int rst_opterr(char *txt) {
   fprintf(stderr,"Option not recognized: %s\n",txt);
   fprintf(stderr,"Please try: make_fitex2 --help\n");
@@ -219,8 +220,15 @@ int main(int argc,char *argv[])
 
  
   fblk=FitACFMake(site,prm->time.yr);
-
-  fitacfex2(prm,raw,fit,fblk,0);
+    
+  fit_func = malloc(sizeof(struct fitacf_functions));
+  if (fit_func == NULL || errno !=0 )
+  {
+      fprintf(stderr,"Error: fitacf function struct was not allocated memory with errno %d",errno);
+      exit(errno);
+  }
+  fit_func->elevation_method = &elevation_v2; 
+  fitacfex2(prm,raw,fit,fblk,0,fit_func);
 
   if (old)
   {
@@ -262,7 +270,7 @@ int main(int argc,char *argv[])
 
 
     if (status==0)
-			fitacfex2(prm,raw,fit,fblk,0);
+			fitacfex2(prm,raw,fit,fblk,0,fit_func);
 
   } while (status==0);
 

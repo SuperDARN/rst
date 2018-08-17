@@ -113,7 +113,7 @@ double bisect(float w_guess, float diff, struct RawData *raw, float *good_lags, 
 }
 
 void fitacfex2(struct RadarParm *prm,struct RawData *raw,
-              struct FitData *fit, struct FitBlock *fblk, int print)
+              struct FitData *fit, struct FitBlock *fblk, int print, struct fitacf_functions* fit_func)
 {
   float minpwr  = 3.0;
   double skynoise = 0.;
@@ -597,9 +597,9 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
           elev_data->tfreq = fblk->prm.tfreq;
           elev_data->tdiff = fblk->prm.tdiff;
  
-          fit->elv[R].normal = elevation_v2(elev_data,phi0);
-          fit->elv[R].high = elevation_v2(elev_data,phi0);
-          fit->elv[R].low = elevation_v2(elev_data,phi0);
+          fit->elv[R].normal = fit_func->elevation_method(elev_data,phi0);
+          fit->elv[R].high   = fit_func->elevation_method(elev_data,phi0);
+          fit->elv[R].low    = fit_func->elevation_method(elev_data,phi0);
   
           free(elev_data);
         }
