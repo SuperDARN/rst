@@ -19,19 +19,18 @@ netpbm | | netcdf-devel | |
  | | | zlib-devel | |
 
 You will also need the CDF (Common Data Format) library which can be downloaded from NASA.
-You can find the latest release at: http://cdf.gsfc.nasa.gov/
-For macOS it is also available through macports, as are all listed dependencies
-For Opensuse you will need to make a symlink lcurses library to libncuses (recommended) or modify the CDF Makefile.
+You can find the latest release at: http://cdf.gsfc.nasa.gov/  
+For macOS it is also available through macports, as are all listed dependencies  
+For Opensuse you will need to make a symlink lcurses library to libncuses (recommended) or modify the CDF Makefile. 
 * (Recommended) To make a symlink from lncurses library to lcurses; run the following commands in the terminal:
 
         ln -s /usr/lib64/libncurses.so /usr/lib64/libcurses.so
         ln -s /usr/lib64/libncurses.a /usr/lib64/libcurses.a
 
-* To modify the Makefile change the following:
-`CURSESLIB_linux_gnu=-lcurses` to `CURSESLIB_linux_gnu=-lncurses`
-`CURSESLIB_linux_gnu32=-lcurses` to `CURSESLIB_linux_gnu32=-lncurses`
-`CURSESLIB_linux_gnu64=-lcurses` to `CURSESLIB_linux_gnu64=-lncurses`
-
+* To modify the Makefile change the following:  
+`CURSESLIB_linux_gnu=-lcurses` to `CURSESLIB_linux_gnu=-lncurses`  
+`CURSESLIB_linux_gnu32=-lcurses` to `CURSESLIB_linux_gnu32=-lncurses`  
+`CURSESLIB_linux_gnu64=-lcurses` to `CURSESLIB_linux_gnu64=-lncurses`  
 
 ## Install notes:
 
