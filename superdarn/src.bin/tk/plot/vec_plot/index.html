@@ -28,6 +28,7 @@
 <tr><td class="docsubtitle" valign=top>Syntax</td></tr>
 <tr><td></td><td width=80% class="docbox" style="font-family: courier;">
 vec_plot --help<br>vec_plot [<em>options</em>] names...
+<br>vec_plot -png [<em>options</em>] names...
 <br>vec_plot -ps [-xp <em>xoff</em>] [-yp <em>yoff</em>] [<em>options</em>] names...
 <br>vec_plot -ppm [<em>options</em>] names...
 <br>vec_plot -ppmx [<em>options</em>] names...
@@ -40,6 +41,8 @@ vec_plot --help<br>vec_plot [<em>options</em>] names...
 <tr><td class="docsubtitle">Options</td></tr>
 <tr><td></td><td>
 <table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-old_aacgm</code></td><td valign="top">use older AACGM rather than default AACGM-v2 for magnetic coordinates..</td></tr>
 <tr><td width="150" valign="top"><code>-cf <em>cfname</em></code></td><td valign="top">read command line options from the file <em>cfname</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-wdt <em>width</em></code></td><td valign="top">set the width of the plot to <em>width</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-logo</code></td><td valign="top">add a credit and logo to the plot.</td></tr>
@@ -48,19 +51,21 @@ vec_plot --help<br>vec_plot [<em>options</em>] names...
 <tr><td width="150" valign="top"><code>-txtcol <em>aarrggbb</em></code></td><td valign="top">set the color of the text to <em>aarrggbb</em>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</td></tr>
 <tr><td width="150" valign="top"><code>-grdcol <em>aarrggbb</em></code></td><td valign="top">set the color of the grid to <em>aarrggbb</em>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</td></tr>
 <tr><td width="150" valign="top"><code><em>name...</em></code></td><td valign="top">the filenames of the <code>vec</code> format files to plot.</td></tr>
+<tr><td width="150" valign="top"><code>-png</code></td><td valign="top">produce a Portable Network Graphics (PNG) image as the output.</td></tr>
 <tr><td width="150" valign="top"><code>-ps</code></td><td valign="top">produce a PostScript plot as the output.</td></tr>
 <tr><td width="150" valign="top"><code>-xp <em>xoff</em></code></td><td valign="top">set the X offset of the PostScript plot to <em>xoff</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-yp <em>xoff</em></code></td><td valign="top">set the Y offset of the PostScript plot to <em>yoff</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-ppm</code></td><td valign="top">produce a Portable PixMap (PPM) image as the output.</td></tr>
 <tr><td width="150" valign="top"><code>-ppmx</code></td><td valign="top">produce an extended Portable PixMap (PPMX) image as the output.</td></tr>
 <tr><td width="150" valign="top"><code>-xml</code></td><td valign="top">produce an XML image representation as the output.</td></tr>
-<tr><td width="150" valign="top"><code>-x</code></td><td valign="top">plot the data on an X-terminal.</td></tr><tr><td width="150" valign="top"><code>-display <em>display</em></code></td><td valign="top">connect to the xterminal named <em>display</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-x</code></td><td valign="top">plot the data on an X-terminal.</td></tr>
+<tr><td width="150" valign="top"><code>-display <em>display</em></code></td><td valign="top">connect to the xterminal named <em>display</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-xoff <em>xoff</em></code></td><td valign="top">open the window, <em>xoff</em> pixels from the left edge of the screen.</td></tr>
 <tr><td width="150" valign="top"><code>-yoff <em>yoff</em></code></td><td valign="top">open the window <em>ypad</em> pixels from the top edge of the screen.</td></tr>
 </table></td></tr>
 <tr><td class="docsubtitle">Description</td></tr>
 <tr><td></td><td><p>Plot <code>vec</code> format files.</p>
-<p>The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, or PostScript file. The default output is XML. The output file is written to standard output.</p>
+<p>The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, Portable Network Graphics (PNG), or PostScript file. The default output is PostScript. The output file is written to standard output.</p>
 <p>The program will attempt to calculate the number of panels to include in the plot based on the number of input files. However this behavior can be overridden using the "<code>-p</code>" option.</p>
 <p>The number and complexity of the command line options makes typing them a laborious process, especially when producing multiple plots. To solve this problem, command line options can be placed in plain text file that can be parsed by the program using the " <code>-cf</code>" option. This allows the user to create a set of configuration files for producing different plots.</p> 
 </td></tr>

@@ -27,17 +27,25 @@
 <table>
 <tr><td class="docsubtitle" valign=top>Syntax</td></tr>
 <tr><td></td><td width=80% class="docbox" style="font-family: courier;">
-<br>map_addmodel --help<br>map_addmodel [-vb] [-old] [-nointerp] [-noigrf] [-cs10|-rg96|-psr10|-ts18]<br>             [-o <em>order</em>] [-d <em>doping</em>] [<em>mapname</em>]<br><br></td></tr>
+<br>map_addmodel --help<br>map_addmodel [-vb] [-old] [-nointerp] [-noigrf] [-rg96|-psr10|-cs10|-ts18|-ts18_kp]<br>             [-o <em>order</em>] [-d <em>doping</em>] [<em>mapname</em>]<br><br></td></tr>
 <tr><td class="docsubtitle">Synopsis</td></tr>
 <tr><td></td><td><p>Calculates the statistical model and adds it to a convection map file.</p></td></tr>
 
 <tr><td class="docsubtitle">Options</td></tr>
 <tr><td></td><td>
 <table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exits.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
 <tr><td width="150" valign="top"><code>-vb</code></td><td valign="top">verbose. Log information to the console.</td></tr>
-<tr><td width="150" valign="top"><code>-old</code></td><td valign="top">the input file is a <code>map</code> format file.</td></tr><tr><td width="150" valign="top"><code>-old_aacgm</code></td><td valign="top">uses the older AACGM software and coefficients. The default</td></tr><tr><td width="150" valign="top"><code></code></td><td valign="top">  is to use AACGM-v2.</td></tr><tr><td width="150" valign="top"><code>-cs10</code></td><td valign="top">uses the CS10 statistical model [default].</td></tr><tr><td width="150" valign="top"><code>-rg96</code></td><td valign="top">uses the RG96 statistical model.</td></tr><tr><td width="150" valign="top"><code>-psr10</code></td><td valign="top">uses the PSR10 statistical model (equivalent to the RG05 model.)</td></tr><tr><td width="150" valign="top"><code>-ts18</code></td><td valign="top">uses the TS18 statistical model.</td></tr><tr><td width="150" valign="top"><code>-nointerp</code></td><td valign="top">Do not interpolate coeffiecients, instead use discrete models.</td></tr><tr><td width="150" valign="top"><code>-noigrf</code></td><td valign="top">Do not use IGRF model to convert potential to velocities,</td></tr><tr><td width="150" valign="top"><code></code></td><td valign="top"> instead use constant values.</td></tr><tr><td width="150" valign="top"><code>-o <em>order</em></code></td><td valign="top">set the order of fit to be <em>order</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-old</code></td><td valign="top">the input file is a <code>map</code> format file.</td></tr>
+<tr><td width="150" valign="top"><code>-old_aacgm</code></td><td valign="top">uses the older AACGM software and coefficients. The default</td></tr><tr><td width="150" valign="top"><code></code></td><td valign="top">  is to use AACGM-v2.</td></tr><tr><td width="150" valign="top"><code>-rg96</code></td><td valign="top">uses the RG96 statistical model.</td></tr>
+<tr><td width="150" valign="top"><code>-psr10</code></td><td valign="top">uses the PSR10 statistical model (equivalent to the RG05 model.)</td></tr>
+<tr><td width="150" valign="top"><code>-cs10</code></td><td valign="top">uses the CS10 statistical model.</td></tr>
+<tr><td width="150" valign="top"><code>-ts18</code></td><td valign="top">uses the TS18 statistical model [default].</td></tr>
+<tr><td width="150" valign="top"><code>-ts18_kp</code></td><td valign="top">uses the TS18-Kp statistical model.</td></tr>
+<tr><td width="150" valign="top"><code>-nointerp</code></td><td valign="top">Do not interpolate coeffiecients, instead use discrete models.</td></tr>
+<tr><td width="150" valign="top"><code>-noigrf</code></td><td valign="top">Do not use IGRF model to convert potential to velocities,</td></tr><tr><td width="150" valign="top"><code></code></td><td valign="top"> instead use constant values.</td></tr><tr><td width="150" valign="top"><code>-o <em>order</em></code></td><td valign="top">set the order of fit to be <em>order</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-d <em>doping</em></code></td><td valign="top">set the doping level to <em>dp</em>. Possible values are low, medium, or high.</td></tr>
-<tr><td width="150" valign="top"><code><em>mapname</em></code></td><td valign="top">filename of the <code>map</code> format file. If this is omitted, the file will</td></tr><tr><td width="150" valign="top"><code></code></td><td valign="top">  be read from standard input.</td></tr></table></td></tr>
+<tr><td width="150" valign="top"><code><em>mapname</em></code></td><td valign="top">filename of the <code>cnvmap</code> format file. If this is omitted, the file will</td></tr><tr><td width="150" valign="top"><code></code></td><td valign="top">  be read from standard input.</td></tr></table></td></tr>
 <tr><td class="docsubtitle">Description</td></tr>
 <tr><td></td><td><p>Calculates the statistical model and adds it to a convection map file.</p>
 <p>The file created is written to standard output.</p>

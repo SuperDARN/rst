@@ -30,34 +30,30 @@
 field_plot --help<br>field_plot [<em>options</em>] <em>fitacfname</em> [<em>inxname</em>]
 <br>field_plot -old [<em>options</em>] [<em>fitname</em>] [<em>inxname</em>]
 <br>field_plot -cfit [<em>options</em>] [<em>cfitname</em>]
-<br>field_plot -csd [<em>options</em>] [<em>csdname</em>]
+<br>field_plot -png [<em>options</em>] <em>fitacfname</em> [<em>inxname</em>]
 <br>field_plot -ps [-xp <em>xoff</em>] [-yp <em>yoff</em>] [<em>options</em>] <em>fitacfname</em> [<em>inxname</em>]
 <br>field_plot -old -ps [-xp <em>xoff</em>] [-yp <em>yoff</em>] [<em>options</em>] [<em>fitname</em>] [<em>inxname</em>]
 <br>field_plot -cfit -ps [-xp <em>xoff</em>] [-yp <em>yoff</em>] [<em>options</em>] [<em>cfitname</em>]
-<br>field_plot -csd -ps [-xp <em>xoff</em>] [-yp <em>yoff</em>] [<em>options</em>] [<em>csdname</em>] [<em>csdname</em>]
 <br>field_plot -ppm [<em>options</em>] <em>fitacfname</em> [<em>inxname</em>]
 <br>field_plot -old -ppm [<em>options</em>] [<em>fitname</em>] [<em>inxname</em>]
 <br>field_plot -cfit -ppm [<em>options</em>] [<em>cfitname</em>]
-<br>field_plot -csd -ppm [<em>options</em>] [<em>csdname</em>] 
 <br>field_plot -ppmx [<em>options</em>] <em>fitacfname</em> [<em>inxname</em>]
 <br>field_plot -old -ppmx [<em>options</em>] [<em>fitname</em>] [<em>inxname</em>]
 <br>field_plot -cfit -ppmx [<em>options</em>] [<em>cfitname</em>]
-<br>field_plot -csd -ppmx [<em>options</em>] [<em>csdname</em>]
 <br>field_plot -xml [<em>options</em>] <em>fitacfname</em> [<em>inxname</em>]
 <br>field_plot -old -xml [<em>options</em>] [<em>fitname</em>] [<em>inxname</em>]
 <br>field_plot -cfit -xml [<em>options</em>] [<em>cfitname</em>]
-<br>field_plot -csd -xml [<em>options</em>] [<em>csdname</em>]
 <br>field_plot -x [-display <em>display</em>] [-xoff <em>xoff</em>] [-yoff <em>yoff</em>] [-delay <em>delay</em>] [<em>options</em>] <em>fitacfname</em> [<em>inxname</em>]
 <br>field_plot -old -x [-display <em>display</em>] [-xoff <em>xoff</em>] [-yoff <em>yoff</em>] [-delay <em>delay</em>] [<em>options</em>] [<em>fitname</em>] [<em>inxname</em>]
 <br>field_plot -cfit -x [-display <em>display</em>] [-xoff <em>xoff</em>] [-yoff <em>yoff</em>] [-delay <em>delay</em>] [<em>options</em>] [<em>cfitname</em>]
-<br>field_plot -csd -x [-display <em>display</em>] [-xoff <em>xoff</em>] [-yoff <em>yoff</em>] [-delay <em>delay</em>] [<em>options</em>] [<em>csdname</em>]
 <br></td></tr>
 <tr><td class="docsubtitle">Synopsis</td></tr>
-<tr><td></td><td><p>Plot <code>fit</code>, <code>fitacf</code>, <code>cfit</code> and <code>csd</code> format files.</p></td></tr>
+<tr><td></td><td><p>Plot <code>fit</code>, <code>fitacf</code>, and <code>cfit</code> format files.</p></td></tr>
 
 <tr><td class="docsubtitle">Options</td></tr>
 <tr><td></td><td>
 <table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
 <tr><td width="150" valign="top"><code>-cf <em>cfname</em></code></td><td valign="top">read command line options from the file <em>cfname</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-def</code></td><td valign="top">plot using some sensible default options so that the user will see something plotted.</td></tr>
 <tr><td width="150" valign="top"><code>-r <em>repeat</em></code></td><td valign="top">set the number of rows and columns of panels in the plot to <em>repeat</em>. The default value of 2 produces a 2x2 panel plot. If this value is set to zero then the program will produce sequential plots and write them to a file.</td></tr>
@@ -77,6 +73,7 @@ field_plot --help<br>field_plot [<em>options</em>] <em>fitacfname</em> [<em>inxn
 <tr><td width="150" valign="top"><code>-lon <em>lon</em></code></td><td valign="top">center the plot on the longitude given by <em>lon</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-latmin <em>latmin</em></code></td><td valign="top">adjust the scale factor so that the lowest visible latitude is  <em>latmin</em>. Applies when the stereographic projection is used.</td></tr>
 <tr><td width="150" valign="top"><code>-mag</code></td><td valign="top">use magnetic coordinates.</td></tr>
+<tr><td width="150" valign="top"><code>-old_aacgm</code></td><td valign="top">use older AACGM rather than default AACGM-v2 for magnetic coordinates.</td></tr>
 <tr><td width="150" valign="top"><code>-rotate</code></td><td valign="top">rotate the plot so that the local noon is at the top of the plot.</td></tr>
 <tr><td width="150" valign="top"><code>-flip</code></td><td valign="top">flip the direction of the X-axis.</td></tr>
 <tr><td width="150" valign="top"><code>-square</code></td><td valign="top">force the use of a square bounding box around the plot.</td></tr>
@@ -154,8 +151,7 @@ field_plot --help<br>field_plot [<em>options</em>] <em>fitacfname</em> [<em>inxn
 <tr><td width="150" valign="top"><code><em>fitname</em></code></td><td valign="top">filename of the <code>fit</code> format file to plot.</td></tr>
 <tr><td width="150" valign="top"><code>-cfit</code></td><td valign="top">file is in the <code>cfit</code> format.</td></tr>
 <tr><td width="150" valign="top"><code><em>cfitname</em></code></td><td valign="top">filename of the <code>cfit</code> format file to plot.</td></tr>
-<tr><td width="150" valign="top"><code>-csd</code></td><td valign="top">file is in the <code>csd</code> format.</td></tr>
-<tr><td width="150" valign="top"><code><em>csd</em></code></td><td valign="top">filename of the <code>csd</code> format file to plot.</td></tr>
+<tr><td width="150" valign="top"><code>-png</code></td><td valign="top">produce a Portable Network Graphics (PNG) image as the output.</td></tr>
 <tr><td width="150" valign="top"><code>-ps</code></td><td valign="top">produce a PostScript plot as the output.</td></tr>
 <tr><td width="150" valign="top"><code>-xp <em>xoff</em></code></td><td valign="top">set the X offset of the PostScript plot to <em>xoff</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-yp <em>xoff</em></code></td><td valign="top">set the Y offset of the PostScript plot to <em>yoff</em>.</td></tr>
@@ -170,8 +166,8 @@ field_plot --help<br>field_plot [<em>options</em>] <em>fitacfname</em> [<em>inxn
 <tr><td width="150" valign="top"><code>-chisham</code></td><td valign="top">use the Chisham virtual height model.</td></tr>
 </table></td></tr>
 <tr><td class="docsubtitle">Description</td></tr>
-<tr><td></td><td><p>Plot <code>fit</code>, <code>fitacf</code>, <code>cfit</code> and <code>csd</code> format files.</p>
-<p>The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, or PostScript file. The default output is XML.</p>
+<tr><td></td><td><p>Plot <code>fit</code>, <code>fitacf</code>, and <code>cfit</code> format files.</p>
+<p>The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, Portable Network Graphics (PNG), or PostScript file. The default output is PostScript.</p>
 <p>The program produces either a multi-panel plot showing a sequence of up to 16 images, or a single-panel plot that can be used to produce movies. Multi-panel plots are written to standard output, while the single panel plots are written to individual files.</p>
 <p>The number of panels contained in the plot is controlled by the "<code>-r</code>" option. If this is set to zero then single panel plots are produced.</p>
 <p>The task only plots what it is instructed to plot on the command line which means that at least some of the options must be included if the plot is to show anything.</p>

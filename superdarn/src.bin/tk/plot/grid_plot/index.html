@@ -28,8 +28,11 @@
 <tr><td class="docsubtitle" valign=top>Syntax</td></tr>
 <tr><td></td><td width=80% class="docbox" style="font-family: courier;">
 grid_plot --help<br>grid_plot [<em>options</em>] <em>gridname</em> [<em>inxname</em>]
-<br>grid_plot -stdout [<em>options</em>] <em>gridname</em> [<em>inxname</em>]<br>grid_plot -ps [-xp <em>xoff</em>] [-yp <em>yoff</em>] [<em>options</em>] <em>gridname</em> [<em>inxname</em>]
-<br>grid_plot -stdout -ps [-land] [-xp <em>xoff</em>] [-yp <em>yoff</em>] [<em>options</em>] <em>gridname</em> [<em>inxname</em>]
+<br>grid_plot -stdout [<em>options</em>] <em>gridname</em> [<em>inxname</em>]
+<br>grid_plot -png [<em>options</em>] <em>gridname</em> [<em>inxname</em>]
+<br>grid_plot -png -stdout [<em>options</em>] <em>gridname</em> [<em>inxname</em>]
+<br>grid_plot -ps [-xp <em>xoff</em>] [-yp <em>yoff</em>] [<em>options</em>] <em>gridname</em> [<em>inxname</em>]
+<br>grid_plot -ps -stdout [-land] [-xp <em>xoff</em>] [-yp <em>yoff</em>] [<em>options</em>] <em>gridname</em> [<em>inxname</em>]
 <br>grid_plot -ppm [<em>options</em>] <em>gridname</em> [<em>inxname</em>]
 <br>grid_plot -ppm -stdout [<em>options</em>] <em>gridname</em> [<em>inxname</em>]
 <br>grid_plot -ppmx [<em>options</em>] <em>gridname</em> [<em>inxname</em>]
@@ -44,6 +47,7 @@ grid_plot --help<br>grid_plot [<em>options</em>] <em>gridname</em> [<em>inxname<
 <tr><td class="docsubtitle">Options</td></tr>
 <tr><td></td><td>
 <table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
 <tr><td width="150" valign="top"><code>-cf <em>cfname</em></code></td><td valign="top">read command line options from the file <em>cfname</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-old</code></td><td valign="top">the input file is in <code>grd</code> format.</td></tr>
 <tr><td width="150" valign="top"><code>-def</code></td><td valign="top">plot using some sensible default options so that the user will see something plotted.</td></tr>
@@ -128,8 +132,9 @@ grid_plot --help<br>grid_plot [<em>options</em>] <em>gridname</em> [<em>inxname<
 <tr><td width="150" valign="top"><code><em>gridname</em></code></td><td valign="top">filename of the <code>grdmap</code> format file to plot.</td></tr>
 <tr><td width="150" valign="top"><code><em>inxname</em></code></td><td valign="top">filename of the index file associated with the <code>grdmap</code> format file to plot.</td></tr>
 <tr><td width="150" valign="top"><code>-stdout</code></td><td valign="top">plot a single data record and write the plot to standard output.</td></tr>
-<tr><td width="150" valign="top"><code>-d <em>yyyymmdd</em></code></td><td valign="top">plot the data on date <em>yyyymmdd</em>.</td></tr>
-<tr><td width="150" valign="top"><code>-t <em>hr:mn</em></code></td><td valign="top">plot the data at the time <em>hr:mn</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-d <em>yyyymmdd</em></code></td><td valign="top">plot the data on date <em>yyyymmdd</em> (when using -stdout).</td></tr>
+<tr><td width="150" valign="top"><code>-t <em>hr:mn</em></code></td><td valign="top">plot the data at the time <em>hr:mn</em> (when using -stdout).</td></tr>
+<tr><td width="150" valign="top"><code>-png</code></td><td valign="top">produce a Portable Network Graphics (PNG) image as the output.</td></tr>
 <tr><td width="150" valign="top"><code>-ps</code></td><td valign="top">produce a PostScript plot as the output.</td></tr>
 <tr><td width="150" valign="top"><code>-xp <em>xoff</em></code></td><td valign="top">set the X offset of the PostScript plot to <em>xoff</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-yp <em>xoff</em></code></td><td valign="top">set the Y offset of the PostScript plot to <em>yoff</em>.</td></tr>
@@ -144,11 +149,11 @@ grid_plot --help<br>grid_plot [<em>options</em>] <em>gridname</em> [<em>inxname<
 </table></td></tr>
 <tr><td class="docsubtitle">Description</td></tr>
 <tr><td></td><td><p>Plot the <code>grd</code> and <code>grdmap</code>format files.</p>
-<p>The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, or PostScript file. The default output is XML.</p>
+<p>The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, Portable Network Graphics (PNG), or PostScript file. The default output is PostScript.</p>
 <p>The program usually steps through the gridded data and writes each plot to a file. The output filenames are of the form "<code><em>nnnn.xxx</em></code>", where <em>nnnn</em> is the frame number starting at 0000 and <em>xxx</em> is the suffix "<code>xml</code>","<code>ps</code>","<code>ppm</code>", or "<code>ppmx</code>". The options "<code>-tn</code>" and "<code>-dn</code>" can be used to change this format to one based on the time of each plot.</p>
 <p>If the "<code>-stdout</code>" option is used then the program will just plot a single record from the file and the plot is written to standard output. The "<code>-d</code>" and "<code>-t</code>" options are used to select the time to plot.</p>
 <p>The task only plots what it is instructed to plot on the command line which means that at least some of the options must be included if the plot is to show anything.</p>
-<p>The default map projection is a simple cylindrical projection, the most useful projection is the stereographic projection invoked using the "<code>-stereo</code>" option.</p>
+<p>The default map projection is a stereographic projection.</p>
 <p>A sensible set of default plot options can be invoked using the "<code>-def</code>" option. This will plot a stereographic projection of line of sight vectors in geomagnetic coordinates. The plot is rotated so that magnetic noon is at the top.</p>
 <p>The program usually plots the line of sight velocity vectors contained in the grid file. However the options "<code>-pwr</code>" and "<code>-wdt</code>" can be used to plot the power and spectral width information stored in extended grid files as an extra parameter.</p> 
 <p>The options "<code>-vkey</code>" and "<code>-xkey</code>" allows a user defined color key to be used to plot the velocity vectors or the extra parameters.</p>
@@ -161,12 +166,12 @@ grid_plot --help<br>grid_plot [<em>options</em>] <em>gridname</em> [<em>inxname<
 <p>Plot gridded data from the file "<code>20040620.grd</code>" on the X-terminal. Use the default set of options and the color key "<code>superdarn.key</code>". 
 </p>
 
-<table ><tr><td class="docbox" ><pre width="80">grid_plot -ps -dn -st 12:00 -stereo -mag -rotate -fcoast -coast -fterm -tmk -vecp -vkeyp -time -raw -vkey ~/key/superdarn.key 20021219.grdmap</pre></td></tr></table>
+<table ><tr><td class="docbox" ><pre width="80">grid_plot -ps -dn -st 12:00 -mag -rotate -fcoast -coast -fterm -tmk -vecp -vkeyp -time -raw -vkey superdarn.key 20021219.grdmap</pre></td></tr></table>
 <p>Generate PostScript plots of gridded data from the file "<code>20021219.grdmap</code>". Store the plots in files named "<code><em>yyyymmdd.hrmn.sc</em>.ps</code>", starting at 12:00UTC. Use a stereographic projection in magnetic coordinates, rotated so that magnetic local noon is at the top of the plot. Plot filled coastlines, terminator, a clockdial representing time, a labelled sample velocity vector, the velocity color bar, the time, and the line of sight vel;ocities. The velocity color bar is taken from the file "<code>superdarn.key</code>". 
 </p>
 <br><center><img src="img/example1.png"></img><br></center>
          
-<table ><tr><td class="docbox" ><pre width="80">grid_plot -stdout -t 12:00 -pad 0 -stereo -mag -lat 84.4 -lon 55.00 -square -sf 2.00 -fcoast -coast  -vecp -xkeyp -time -raw -max -pwr -xkey rainbow.key 20021219.grdmap &gt; grd.rp.xml
+<table ><tr><td class="docbox" ><pre width="80">grid_plot -stdout -t 12:00 -pad 0 -mag -lat 84.4 -lon 55.00 -square -sf 2.00 -fcoast -coast  -vecp -xkeyp -time -raw -max -pwr -xkey rainbow.key 20021219.grdmap &gt; grd.rp.xml
 </pre></td></tr></table>
 <p>Generate a single rPlot XML plot of the gridded data at 06:00UTC from the file "<code>20021219.grdmap</code>". Use a stereographic projection in geographic coordinates and center the plot on latitude 84.4 degrees and longitude 55.00 degrees. Plot filled coastlines, filled radar fields of view, a labelled sample velocity vector, the power color bar, the time, line of sight velocity vectors, and the maximum observed power in each cell. The power color bar is taken from the file "<code>rainbowkey</code>". The plot is stored in the file "<code>grd.rp.xml</code>".
 </p>

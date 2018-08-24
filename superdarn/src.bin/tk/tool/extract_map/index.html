@@ -34,10 +34,14 @@ extract_map --help<br>extract_map [-old] [-mid] [<em>name</em>]<br>extract_map -
 <tr><td class="docsubtitle">Options</td></tr>
 <tr><td></td><td>
 <table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
 <tr><td width="150" valign="top"><code>-old</code></td><td valign="top">the input file is a <code>map</code> format file.</td></tr>
 <tr><td width="150" valign="top"><code>-mid</code></td><td valign="top">record the time in the middle of the map data, not the start and end times.</td></tr>
-<tr><td width="150" valign="top"><code><em>name</em></code></td><td valign="top">filename of the <code>map</code> format file. If this is omitted, the file will be read from standard input.</td></tr>
-<tr><td width="150" valign="top"><code>-p</code></td><td valign="top">extract the cross polar cap potential, the IMF, the statistical model, and the scatter and error statistics.</td></tr><tr><td width="150" valign="top"><code>-s</code></td><td valign="top">extract the scatter statistics.</td></tr><tr><td width="150" valign="top"><code>-l</code></td><td valign="top">extract the lower latitude boundary.</td></tr></table></td></tr>
+<tr><td width="150" valign="top"><code><em>name</em></code></td><td valign="top">filename of the <code>cnvmap</code> format file. If this is omitted, the file will be read from standard input.</td></tr>
+<tr><td width="150" valign="top"><code>-p</code></td><td valign="top">extract the cross polar cap potential, the IMF, the statistical model, and the scatter and error statistics.</td></tr>
+<tr><td width="150" valign="top"><code>-s</code></td><td valign="top">extract the scatter statistics.</td></tr>
+<tr><td width="150" valign="top"><code>-l</code></td><td valign="top">extract the lower latitude boundary.</td></tr>
+</table></td></tr>
 <tr><td class="docsubtitle">Description</td></tr>
 <tr><td></td><td><p>Extract statistics or the original grid file from a convection map data file.</p>
 <p>The extracted statistics are written to standard output.</p></td></tr>

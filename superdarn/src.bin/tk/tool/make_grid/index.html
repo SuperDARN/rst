@@ -34,6 +34,7 @@ make_grid --help<br>make_grid [<em>options</em>] <em>fitacfname</em> [<em>inxnam
 <tr><td class="docsubtitle">Options</td></tr>
 <tr><td></td><td>
 <table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
 <tr><td width="150" valign="top"><code>-vb</code></td><td valign="top">verbose. Log information to the console.</td></tr>
 <tr><td width="150" valign="top"><code>-sd <em>yyyymmdd</em></code></td><td valign="top">start from the date <em>yyyymmdd</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-st <em>hr:mn</em></code></td><td valign="top">start from the time <em>hr:mn</em>.</td></tr>
@@ -66,8 +67,8 @@ make_grid --help<br>make_grid [<em>options</em>] <em>fitacfname</em> [<em>inxnam
 <tr><td width="150" valign="top"><code>-ns</code></td><td valign="top">exclude data with scan flags less than zero.</td></tr>
 <tr><td width="150" valign="top"><code>-xtd</code></td><td valign="top">create extended output that includes both the power and spectral width measurements and their errors.</td></tr>
 <tr><td width="150" valign="top"><code>-isort</code></td><td valign="top">calculate the median power and spectral width independently of the velocity distribution.</td></tr>
-<tr><td width="150" valign="top"><code>-ion</code></td><td valign="top">exclude data marked as ground scatter.</td></tr>
-<tr><td width="150" valign="top"><code>-gs</code></td><td valign="top">exclude data marked as ionospheric scatter.</td></tr>
+<tr><td width="150" valign="top"><code>-ion</code></td><td valign="top">exclude data marked as ground scatter and only include data marked as ionospheric scatter.</td></tr>
+<tr><td width="150" valign="top"><code>-gs</code></td><td valign="top">exclude data marked as ionospheric scatter and only include data marked as ground scatter.</td></tr>
 <tr><td width="150" valign="top"><code>-both</code></td><td valign="top">do not exclude data based on the type flag.</td></tr>
 <tr><td width="150" valign="top"><code>-inertial</code></td><td valign="top">calculate the grid file in the inertial reference frame.</td></tr>
 <tr><td width="150" valign="top"><code>-chisham</code></td><td valign="top">calculate the grid file using the Chisham virtual height model.</td></tr>

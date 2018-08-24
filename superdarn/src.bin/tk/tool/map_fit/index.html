@@ -34,6 +34,7 @@
 <tr><td class="docsubtitle">Options</td></tr>
 <tr><td></td><td>
 <table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
 <tr><td width="150" valign="top"><code>-vb</code></td><td valign="top">verbose. Log information to the console.</td></tr>
 <tr><td width="150" valign="top"><code>-old</code></td><td valign="top">the input file is a <code>map</code> format file.</td></tr>
 <tr><td width="150" valign="top"><code>-old_aacgm</code></td><td valign="top">uses the older AACGM software and coefficients. The default is to use AACGM-v2.</td></tr>
@@ -41,7 +42,7 @@
 <tr><td width="150" valign="top"><code>-mw <em>modelwgt</em></code></td><td valign="top">set the model weighting to <em>modelwgt</em>, which can be either yes or no. If no, the average error of the data vectors will be scaled by the order of the fit and then applied to the model vectors (default). If yes, the average error of the data vectors will not be scaled by the order of the fit before being applied to the model vectors.</td></tr>
 <tr><td width="150" valign="top"><code>-o <em>order</em></code></td><td valign="top">set the order of the fit to be <em>order</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-s <em>source</em></code></td><td valign="top">set the text string indicating the data source  to <em>source</em>.</td></tr>
-<tr><td width="150" valign="top"><code><em>mapname</em></code></td><td valign="top">filename of the <code>map</code> format file. If this is omitted, the file will</td></tr><tr><td width="150" valign="top"><code></code></td><td valign="top">  be read from standard input.</td></tr></table></td></tr>
+<tr><td width="150" valign="top"><code><em>mapname</em></code></td><td valign="top">filename of the <code>cnvmap</code> format file. If this is omitted, the file will</td></tr><tr><td width="150" valign="top"><code></code></td><td valign="top">  be read from standard input.</td></tr></table></td></tr>
 <tr><td class="docsubtitle">Description</td></tr>
 <tr><td></td><td><p>Performs spherical harmonic fitting on a convection map file.</p>
 <p>The file created is written to standard output.</p>

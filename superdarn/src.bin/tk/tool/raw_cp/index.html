@@ -27,19 +27,20 @@
 <table>
 <tr><td class="docsubtitle" valign=top>Syntax</td></tr>
 <tr><td></td><td width=80% class="docbox" style="font-family: courier;">
-raw_cp --help<br>raw_cp <em>rawacfnames...</em><br>raw_cp -old [<em>rawname</em>]<br></td></tr>
+raw_cp --help<br>raw_cp <em>rawacfnames...</em><br>raw_cp -old <em>rawname</em><br></td></tr>
 <tr><td class="docsubtitle">Synopsis</td></tr>
-<tr><td></td><td><p>Determines the program identifier numbers in <code>raw</code> or <code>rawacf</code> format files.</p></td></tr>
+<tr><td></td><td><p>Determines the program identifier numbers in <code>rawacf</code> or <code>raw</code> (<code>dat</code>) format files.</p></td></tr>
 
 <tr><td class="docsubtitle">Options</td></tr>
 <tr><td></td><td>
 <table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
-<tr><td width="150" valign="top"><code><em>rawacfnames</em></code></td><td valign="top">filenames of the <code>rawacf</code> format files.</td></tr>
-<tr><td width="150" valign="top"><code>-old</code></td><td valign="top">files are in the <code>raw</code> format.</td></tr>
-<tr><td width="150" valign="top"><code><em>rawname</em></code></td><td valign="top">filename of the <code>raw</code> format file. If this is omitted the file is read from standard input.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
+<tr><td width="150" valign="top"><code><em>rawacfnames</em></code></td><td valign="top">filenames of the <code>rawacf</code> format files. If this is omitted the file is read from standard input.</td></tr>
+<tr><td width="150" valign="top"><code>-old</code></td><td valign="top">files are in the <code>raw</code> (<code>dat</code>) format.</td></tr>
+<tr><td width="150" valign="top"><code><em>rawname</em></code></td><td valign="top">filename of the <code>raw</code> (<code>dat</code>) format file.</td></tr>
 </table></td></tr>
 <tr><td class="docsubtitle">Description</td></tr>
-<tr><td></td><td><p>Determines the program identifier numbers in <code>raw</code> or <code>rawacf</code> format files.</p>
+<tr><td></td><td><p>Determines the program identifier numbers in <code>rawacf</code> or <code>raw</code> (<code>dat</code>) format files.</p>
 <p>The total number of program identifiers followed by a list of the identifier numbers is written to standard output.</p></td></tr>
 <tr><td class="docsubtitle">Examples</td></tr>
 <tr><td></td><td>

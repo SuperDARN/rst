@@ -27,13 +27,14 @@
 <table>
 <tr><td class="docsubtitle" valign=top>Syntax</td></tr>
 <tr><td></td><td width=80% class="docbox" style="font-family: courier;">
-trim_fit --help<br>trim_fit [-vb] [-sd <em>yyyymmdd</em>] [-st <em>hr:mn</em>] [-ed <em>yyyymmdd</em>] [-et <em>hr:mn</em>] [-ex <em>hr:mn</em>]  [-cp <em>cpid</em>] [-cn <em>channel</em>] <em>fitacfinput</em> <em>fitacfoutput</em><br>trim_fit -i [-vb] [-sd <em>yyyymmdd</em>] [-st <em>hr:mn</em>] [-ed <em>yyyymmdd</em>] [-et <em>hr:mn</em>] [-ex <em>hr:mn</em>]  [-cp <em>cpid</em>] [-cn <em>channel</em>] <em>fitacfinput</em> <em>inxinput</em> <em>fitacfoutput</em> <em>inxoutput</em><br>trim_fit -old [-vb] [-sd <em>yyyymmdd</em>] [-st <em>hr:mn</em>] [-ed <em>yyyymmdd</em>] [-et <em>hr:mn</em>] [-ex <em>hr:mn</em>]  [-cp <em>cpid</em>] [-cn <em>channel</em>] [<em>fitname</em>]<br>trim_fit -i -old [-vb] [-sd <em>yyyymmdd</em>] [-st <em>hr:mn</em>] [-ed <em>yyyymmdd</em>] [-et <em>hr:mn</em>] [-ex <em>hr:mn</em>]  [-cp <em>cpid</em>] [-cn <em>channel</em>] <em>fitname</em> <em>inxname</em> <br></td></tr>
+trim_fit --help<br>trim_fit [-vb] [-sd <em>yyyymmdd</em>] [-st <em>hr:mn</em>] [-ed <em>yyyymmdd</em>] [-et <em>hr:mn</em>] [-ex <em>hr:mn</em>]  [-cp <em>cpid</em>] [-cn <em>channel</em>] [<em>fitacfname</em>]<br>trim_fit -i [-vb] [-sd <em>yyyymmdd</em>] [-st <em>hr:mn</em>] [-ed <em>yyyymmdd</em>] [-et <em>hr:mn</em>] [-ex <em>hr:mn</em>]  [-cp <em>cpid</em>] [-cn <em>channel</em>] <em>fitacfname</em> <em>inxinput</em><br>trim_fit -old [-vb] [-sd <em>yyyymmdd</em>] [-st <em>hr:mn</em>] [-ed <em>yyyymmdd</em>] [-et <em>hr:mn</em>] [-ex <em>hr:mn</em>]  [-cp <em>cpid</em>] [-cn <em>channel</em>] <em>fitinput</em> <em>fitoutput</em><br>trim_fit -i -old [-vb] [-sd <em>yyyymmdd</em>] [-st <em>hr:mn</em>] [-ed <em>yyyymmdd</em>] [-et <em>hr:mn</em>] [-ex <em>hr:mn</em>]  [-cp <em>cpid</em>] [-cn <em>channel</em>] <em>fitinput</em> <em>fitoutput</em> <em>inxinput</em> <em>inxoutput</em><br></td></tr>
 <tr><td class="docsubtitle">Synopsis</td></tr>
 <tr><td></td><td><p>Extracts a section from a <code>fit</code> or <code>fitacf</code> format file.</p></td></tr>
 
 <tr><td class="docsubtitle">Options</td></tr>
 <tr><td></td><td>
 <table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
 <tr><td width="150" valign="top"><code>-vb</code></td><td valign="top">verbose. Log information to the console.</td></tr>
 <tr><td width="150" valign="top"><code>-sd <em>yyyymmdd</em></code></td><td valign="top">extract starting from the date <em>yyyymmdd</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-st <em>hr:mn</em></code></td><td valign="top">extract starting from the time <em>hr:mn</em>.</td></tr>
@@ -42,13 +43,13 @@ trim_fit --help<br>trim_fit [-vb] [-sd <em>yyyymmdd</em>] [-st <em>hr:mn</em>] [
 <tr><td width="150" valign="top"><code>-ex <em>hr:mn</em></code></td><td valign="top">extract an interval whose extent is <em>hr:mn</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-cp <em>cp</em></code></td><td valign="top">extract only those records with the program identifier <em>cp</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-cn <em>channel</em></code></td><td valign="top">extract only those records from channel <em>channel</em>.</td></tr>
-<tr><td width="150" valign="top"><code><em>fitacfinput</em></code></td><td valign="top">filename of the <code>fitacf</code> format file to trim.</td></tr>
-<tr><td width="150" valign="top"><code><em>fitacfoutput</em></code></td><td valign="top">filename of the <code>fitacf</code> format file to create.</td></tr>
+<tr><td width="150" valign="top"><code><em>fitacfname</em></code></td><td valign="top">filename of the <code>fitacf</code> format file to trim. If this is omitted, the file will be read from standard input</td></tr>
 <tr><td width="150" valign="top"><code>-i</code></td><td valign="top">index files are available, for <code>fit</code> format files, an index file is created for the ouput file.</td></tr>
 <tr><td width="150" valign="top"><code><em>inxinput</em></code></td><td valign="top">filename of the index file associated with the <code>fit</code> or <code>fitacf</code> format input file.</td></tr>
 <tr><td width="150" valign="top"><code><em>inxoutput</em></code></td><td valign="top">filename of the index file to create.</td></tr>
 <tr><td width="150" valign="top"><code>-old</code></td><td valign="top">the input file is a <code>fit</code> format file.</td></tr>
-<tr><td width="150" valign="top"><code><em>fitname</em></code></td><td valign="top">filename of the <code>fit</code> (<code>dat</code>) format file to trim. If this is omitted, the file will be read from standard input</td></tr>
+<tr><td width="150" valign="top"><code><em>fitinput</em></code></td><td valign="top">filename of the <code>fit</code> format file to trim.</td></tr>
+<tr><td width="150" valign="top"><code><em>fitoutput</em></code></td><td valign="top">filename of the <code>fit</code> format file to create.</td></tr>
 </table></td></tr>
 <tr><td class="docsubtitle">Description</td></tr>
 <tr><td></td><td><p>Extracts a section from a <code>fit</code> or <code>fitacf</code> format file.</p>

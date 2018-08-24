@@ -27,26 +27,28 @@
 <table>
 <tr><td class="docsubtitle" valign=top>Syntax</td></tr>
 <tr><td></td><td width=80% class="docbox" style="font-family: courier;">
-<br>map_addimf --help<br>map_addimf [-vb] [-old] [-ace|-wind|-omni] [-p <em>path</em>] [-d <em>hr:mn</em>] [-ex hr:mn]<br>           [<em>mapname</em>]<br>map_addimf [-vb] [-old] [-ace|-wind|-omni] [-p <em>path</em>] [-df <em>delayname</em>] [-ex hr:mn]<br>           [<em>mapname</em>]<br>map_addimf [-vb] [-old] [-if <em>imfname</em>] [-d <em>hr:mn</em>] [<em>mapname</em>]<br>map_addimf [-vb] [-old] [-if <em>imfname</em>] [-df <em>delayname</em>] [<em>mapname</em>]<br>map_addimf [-vb] [-old] [-bx <em>bx</em>] [-by <em>by</em>] [-bz <em>bz</em>] [-vx <em>vx</em>] [-tilt <em>tilt</em>]<br>           [<em>mapname</em>]<br><br></td></tr>
+<br>map_addimf --help<br>map_addimf [-vb] [-old] [-ace|-wind|-omni] [-p <em>path</em>] [-d <em>hr:mn</em>] [-ex hr:mn]<br>           [<em>mapname</em>]<br>map_addimf [-vb] [-old] [-ace|-wind|-omni] [-p <em>path</em>] [-df <em>delayname</em>] [-ex hr:mn]<br>           [<em>mapname</em>]<br>map_addimf [-vb] [-old] [-if <em>imfname</em>] [-d <em>hr:mn</em>] [<em>mapname</em>]<br>map_addimf [-vb] [-old] [-if <em>imfname</em>] [-df <em>delayname</em>] [<em>mapname</em>]<br>map_addimf [-vb] [-old] [-bx <em>bx</em>] [-by <em>by</em>] [-bz <em>bz</em>] [-vx <em>vx</em>] [-tilt <em>tilt</em>] [-kp <em>kp</em>]<br>           [<em>mapname</em>]<br><br></td></tr>
 <tr><td class="docsubtitle">Synopsis</td></tr>
 <tr><td></td><td><p>Adds IMF and solar wind data to a convection map file.</p></td></tr>
 
 <tr><td class="docsubtitle">Options</td></tr>
 <tr><td></td><td>
 <table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
 <tr><td width="150" valign="top"><code>-vb</code></td><td valign="top">verbose. Log information to the console.</td></tr>
 <tr><td width="150" valign="top"><code>-old</code></td><td valign="top">the input file is a <code>map</code> format file.</td></tr><tr><td width="150" valign="top"><code>-omni</code></td><td valign="top">use data from OMNI.</td></tr>
 <tr><td width="150" valign="top"><code>-ace</code></td><td valign="top">use IMF data from ACE.</td></tr>
 <tr><td width="150" valign="top"><code>-wind</code></td><td valign="top">use IMF data from wind.</td></tr>
 <tr><td width="150" valign="top"><code>-p <em>pathname</em></code></td><td valign="top">set the directory path to search for the IMF data in to <em>pathname</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-d <em>hr:mn</em></code></td><td valign="top">set the IMF delay time to  <em>hr:mn</em>.</td></tr>
-<tr><td width="150" valign="top"><code>-ex <em>hr:mn</em></code></td><td valign="top">read <em>hr</em> hours and <em>mn</em> minutes of IMF data. By default, 24 hours</td></tr><tr><td width="150" valign="top"><code></code></td><td valign="top">  of data is read.</td></tr><tr><td width="150" valign="top"><code><em>mapname</em></code></td><td valign="top">filename of the <code>map</code> format file. If this is omitted, the file will</td></tr><tr><td width="150" valign="top"><code></code></td><td valign="top">  be read from standard input.</td></tr><tr><td width="150" valign="top"><code>-df <em>delayname</em></code></td><td valign="top">read the delay times from the ASCII text file <em>delayname</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-ex <em>hr:mn</em></code></td><td valign="top">read <em>hr</em> hours and <em>mn</em> minutes of IMF data. By default, 24 hours</td></tr><tr><td width="150" valign="top"><code></code></td><td valign="top">  of data is read.</td></tr><tr><td width="150" valign="top"><code><em>mapname</em></code></td><td valign="top">filename of the <code>cnvmap</code> format file. If this is omitted, the file will</td></tr><tr><td width="150" valign="top"><code></code></td><td valign="top">  be read from standard input.</td></tr><tr><td width="150" valign="top"><code>-df <em>delayname</em></code></td><td valign="top">read the delay times from the ASCII text file <em>delayname</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-if <em>imfname</em></code></td><td valign="top">read the IMF data from the ASCII text file <em>imfname</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-bx <em>bx</em></code></td><td valign="top">set the X component of the magnetic field to <em>bx</em> [nT].</td></tr>
 <tr><td width="150" valign="top"><code>-by <em>by</em></code></td><td valign="top">set the Y component of the magnetic field to <em>by</em> [nT].</td></tr>
 <tr><td width="150" valign="top"><code>-bz <em>bz</em></code></td><td valign="top">set the Z component of the magnetic field to <em>bz</em> [nT].</td></tr>
 <tr><td width="150" valign="top"><code>-vx <em>vx</em></code></td><td valign="top">set the solar wind velocity to <em>vx</em> [km/s].</td></tr>
 <tr><td width="150" valign="top"><code>-tilt <em>tilt</em></code></td><td valign="top">set the dipole tilt angle to <em>tilt</em> [degrees].</td></tr>
+<tr><td width="150" valign="top"><code>-kp <em>kp</em></code></td><td valign="top">set the Kp magnetic index to <em>kp</em>.</td></tr>
 </table></td></tr>
 <tr><td class="docsubtitle">Description</td></tr>
 <tr><td></td><td><p>Adds IMF and solar wind data to a convection map file.</p>
@@ -65,17 +67,16 @@
 </td></tr>
 <tr><td class="docsubtitle">Examples</td></tr>
 <tr><td></td><td>
-<table ><tr><td class="docbox" ><pre width="80">map_addimf -vb -bx 1.5 -by -1.2 -bx 0.4 19970406.map &gt; 19970406.imf.map</pre></td></tr></table>
+<table ><tr><td class="docbox" ><pre width="80">map_addimf -vb -old -bx 1.5 -by -1.2 -bx 0.4 19970406.map &gt; 19970406.imf.map</pre></td></tr></table>
 <p>Adds a fixed IMF of Bx=-15, By=-1.2 and Bz=0.4 to the map file "<coode>19970406.map</code>". The output is stored in the file "<code>19970406.imf.map</code>" and status is logged to standard error.</p>
 
-<table ><tr><td class="docbox" ><pre width="80">map_addimf -ace -d 0:30 -ex 48:00 19981104.map &gt; 19981104.imf.map</pre></td></tr></table>
-
+<table ><tr><td class="docbox" ><pre width="80">map_addimf -old -ace -d 0:30 -ex 48:00 19981104.map &gt; 19981104.imf.map</pre></td></tr></table>
 <p>Adds IMF data from the ACE spacecraft to the map file "<code>19981104.map</code>". A delay of 30 minutes is applied to the data and the map file is expected to be 48 hours in length. The output is stored in the file "<code>19981104.imf.map</code>".</p>
 
-<table ><tr><td class="docbox" ><pre width="80">map_addimf -ace -df delay.txt  19990712.map &gt; 19990712.imf.map</pre></td></tr></table>
+<table ><tr><td class="docbox" ><pre width="80">map_addimf -old -ace -df delay.txt 19990712.map &gt; 19990712.imf.map</pre></td></tr></table>
 <p>Adds IMF data from the ACE spacecraft to the map file "<code>19990712.map</code>". The IMF delays are read from the file "<code>delay.txt</code>". The output is stored in the file "<code>19990712.imf.map</code>".</p>
 
-<table ><tr><td class="docbox" ><pre width="80">map_addimf -if imf.txt -df delay.txt 2000312.map &gt; 20000312.map</pre></td></tr></table>
+<table ><tr><td class="docbox" ><pre width="80">map_addimf -old -if imf.txt -df delay.txt 2000312.map &gt; 20000312.map</pre></td></tr></table>
 <p>Adds IMF data from the text file "<code>imf.txt</code>" to the map file "<code>2000312.map</code>". The IMF delays are taken from the file "<code>delay.txt</code>". The output is stored in the file "<code>19990712.imf.map</code>".</p>
 </td></tr>
 

@@ -3,11 +3,15 @@
 <project>superdarn</project>
 <name>map_fit</name>
 <location>src.bin/tk/tool/map_fit</location>
+
 <syntax></syntax>
 <syntax>map_fit --help</syntax>
 <syntax>map_fit [-vb] [-old] [-ew <ar>errwgt</ar>] [-mw <ar>modelwgt</ar>] [-s <ar>source</ar>] [<ar>mapname</ar>]</syntax>
 <syntax></syntax>
+
 <option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
 </option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
@@ -23,7 +27,7 @@
 </option>
 <option><on>-s <ar>source</ar></on><od>set the text string indicating the data source  to <ar>source</ar>.</od>
 </option>
-<option><on><ar>mapname</ar></on><od>filename of the <code>map</code> format file. If this is omitted, the file will</od></option>
+<option><on><ar>mapname</ar></on><od>filename of the <code>cnvmap</code> format file. If this is omitted, the file will</od></option>
 <option><on></on><od>  be read from standard input.</od></option>
 <synopsis><p>Perform the Spherical Harmonic Fitting on a convection map file.</p></synopsis>
 
@@ -31,6 +35,7 @@
 <p>The file created is written to standard output.</p>
 <p>The input map file must contain valid model data to ensure that the fit converges.</p>
 </description>
+
 <example>
 <command>map_fit -old -ew y -mw n 19981020.map &gt; 19981020.shf.map</command>
 <description>Performs spherical harmonic fitting on the map file called  "<code>19981020.map</code>". Errors are weighted and model weighting is set to normalized. The file created is called "<code>19981020.shf.map</code>" and status is logged to standard error.</description>

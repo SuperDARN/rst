@@ -27,19 +27,20 @@
 <table>
 <tr><td class="docsubtitle" valign=top>Syntax</td></tr>
 <tr><td></td><td width=80% class="docbox" style="font-family: courier;">
-fit_cp --help<br>fit_cp <em>fitacfnames...</em><br>fit_cp -old [<em>fitname</em>]<br></td></tr>
+fit_cp --help<br>fit_cp [<em>fitacfnames...]</em><br>fit_cp -old <em>fitname</em><br></td></tr>
 <tr><td class="docsubtitle">Synopsis</td></tr>
-<tr><td></td><td><p>Determines the program identifier numbers in <code>fit</code> or <code>fitacf</code> format files.</p></td></tr>
+<tr><td></td><td><p>Determines the program identifier numbers in <code>fitacf</code> or <code>fit</code> format files.</p></td></tr>
 
 <tr><td class="docsubtitle">Options</td></tr>
 <tr><td></td><td>
 <table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
-<tr><td width="150" valign="top"><code><em>fitacfnames</em></code></td><td valign="top">filenames of the <code>fitacf</code> format files.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
+<tr><td width="150" valign="top"><code><em>fitacfnames</em></code></td><td valign="top">filenames of the <code>fitacf</code> format files. If this is omitted the file is read from standard input.</td></tr>
 <tr><td width="150" valign="top"><code>-old</code></td><td valign="top">files are in the <code>fit</code> format.</td></tr>
-<tr><td width="150" valign="top"><code><em>fitname</em></code></td><td valign="top">filename of the <code>fit</code> format file. If this is omitted the file is read from standard input.</td></tr>
+<tr><td width="150" valign="top"><code><em>fitname</em></code></td><td valign="top">filename of the <code>fit</code> format file.</td></tr>
 </table></td></tr>
 <tr><td class="docsubtitle">Description</td></tr>
-<tr><td></td><td><p>Determines the program identifier numbers in <code>fit</code> or <code>fitacf</code> format files.</p>
+<tr><td></td><td><p>Determines the program identifier numbers in <code>fitacf</code> or <code>fit</code> format files.</p>
 <p>The total number of program identifiers followed by a list of the identifier numbers is written to standard output.</p></td></tr>
 <tr><td class="docsubtitle">Examples</td></tr>
 <tr><td></td><td>

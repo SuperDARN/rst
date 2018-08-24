@@ -27,13 +27,14 @@
 <table>
 <tr><td class="docsubtitle" valign=top>Syntax</td></tr>
 <tr><td></td><td width=80% class="docbox" style="font-family: courier;">
-maptoefield --help<br>maptoefield [-vb] [-old] [-sd <em>yyyymmdd</em>] [-st <em>hr:mn</em>] [-ed <em>yyyymmdd</em>] [-et <em>hr:mn</em>] [-ex <em>hr:mn</em>] [-s <em>step</em>] [-l <em>latmin</em> [-mlt] [-p] [-v] <em>name</em><br></td></tr>
+maptoefield --help<br>maptoefield [-vb] [-old] [-sd <em>yyyymmdd</em>] [-st <em>hr:mn</em>] [-ed <em>yyyymmdd</em>] [-et <em>hr:mn</em>] [-ex <em>hr:mn</em>] [-s <em>step</em>] [-l <em>latmin</em> [-mlt] [-p] [-v] [<em>name</em>]<br></td></tr>
 <tr><td class="docsubtitle">Synopsis</td></tr>
 <tr><td></td><td><p>Calculate the electric field and other parameters from convection map data.</p><p>Calculate the electric field and other parameters from convection map data.</p></td></tr>
 
 <tr><td class="docsubtitle">Options</td></tr>
 <tr><td></td><td>
 <table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
 <tr><td width="150" valign="top"><code>-vb</code></td><td valign="top">verbose. Log information to the console.</td></tr>
 <tr><td width="150" valign="top"><code>-old</code></td><td valign="top">the input file is a <code>map</code> format file.</td></tr>
 <tr><td width="150" valign="top"><code>-old_aacgm</code></td><td valign="top">uses the older AACGM software and coefficients. The default is to use AACGM-v2.</td></tr>
@@ -47,7 +48,7 @@ maptoefield --help<br>maptoefield [-vb] [-old] [-sd <em>yyyymmdd</em>] [-st <em>
 <tr><td width="150" valign="top"><code>-mlt</code></td><td valign="top">include the magnetic local time in the output.</td></tr>
 <tr><td width="150" valign="top"><code>-p</code></td><td valign="top">include the potential in the output.</td></tr>
 <tr><td width="150" valign="top"><code>-v</code></td><td valign="top">include the derived velocity int the output.</td></tr>
-<tr><td width="150" valign="top"><code><em>name</em></code></td><td valign="top">filename of the convection map file to process. If this is omitted, the file is read from standard input.</td></tr>
+<tr><td width="150" valign="top"><code><em>name</em></code></td><td valign="top">filename of the <code>cnvmap</code> format file to process. If this is omitted, the file is read from standard input.</td></tr>
 </table></td></tr>
 <tr><td class="docsubtitle">Description</td></tr>
 <tr><td></td><td><p>Calculate the electric field and other parameters from convection map data.</p>

@@ -28,13 +28,14 @@
 <tr><td class="docsubtitle" valign=top>Syntax</td></tr>
 <tr><td></td><td width=80% class="docbox" style="font-family: courier;">
 fov_plot --help<br>fov_plot [<em>options</em>]
-<br>fov_plot -ps [-xp <em>xoff</em>] [-yp <em>yoff</em>] [<em>options</em>]<br>fov_plot -ppm [<em>options</em>]<br>fov_plot -ppmx [<em>options</em>]<br>fov_plot -xml [<em>options</em>]<br>fov_plot -x [-display <em>display</em>] [-xoff <em>xoff</em>] [-yoff <em>yoff</em>] [<em>options</em>]<br></td></tr>
+<br>fov_plot -png [<em>options</em>]<br>fov_plot -ps [-xp <em>xoff</em>] [-yp <em>yoff</em>] [<em>options</em>]<br>fov_plot -ppm [<em>options</em>]<br>fov_plot -ppmx [<em>options</em>]<br>fov_plot -xml [<em>options</em>]<br>fov_plot -x [-display <em>display</em>] [-xoff <em>xoff</em>] [-yoff <em>yoff</em>] [<em>options</em>]<br></td></tr>
 <tr><td class="docsubtitle">Synopsis</td></tr>
 <tr><td></td><td><p>Plot the radar fields of view.</p></td></tr>
 
 <tr><td class="docsubtitle">Options</td></tr>
 <tr><td></td><td>
 <table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
 <tr><td width="150" valign="top"><code>-cf <em>cfname</em></code></td><td valign="top">read command line options from the file <em>cfname</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-wdt <em>width</em></code></td><td valign="top">set the width of the plot to <em>width</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-hgt <em>height</em></code></td><td valign="top">set the height of the plot to <em>height</em>.</td></tr>
@@ -47,6 +48,7 @@ fov_plot --help<br>fov_plot [<em>options</em>]
 <tr><td width="150" valign="top"><code>-lon <em>lon</em></code></td><td valign="top">center the plot on the longitude given by <em>lon</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-latmin <em>latmin</em></code></td><td valign="top">adjust the scale factor so that the lowest visible latitude is  <em>latmin</em>. Applies when the stereographic projection is used.</td></tr>
 <tr><td width="150" valign="top"><code>-mag</code></td><td valign="top">use magnetic coordinates.</td></tr>
+<tr><td width="150" valign="top"><code>-old_aacgm</code></td><td valign="top">use older AACGM rather than default AACGM-v2 for magnetic coordinates.</td></tr>
 <tr><td width="150" valign="top"><code>-rotate</code></td><td valign="top">rotate the plot so that the local noon is at the top of the plot.</td></tr>
 <tr><td width="150" valign="top"><code>-flip</code></td><td valign="top">flip the direction of the X-axis.</td></tr>
 <tr><td width="150" valign="top"><code>-square</code></td><td valign="top">force the use of a square bounding box around the plot.</td></tr>
@@ -67,7 +69,7 @@ fov_plot --help<br>fov_plot [<em>options</em>]
 <tr><td width="150" valign="top"><code>-tmtick <em>tick</em></code></td><td valign="top">set the grid interval for the time clock-dial to <em>tick</em> hours.</td></tr>
 <tr><td width="150" valign="top"><code>-lst</code></td><td valign="top">use local solar time rather than local time.</td></tr>
 <tr><td width="150" valign="top"><code>-term</code></td><td valign="top">plot the terminator.</td></tr>
-<tr><td width="150" valign="top"><code>-term</code></td><td valign="top">plot a shaded terminator.</td></tr>
+<tr><td width="150" valign="top"><code>-fterm</code></td><td valign="top">plot a shaded terminator.</td></tr>
 <tr><td width="150" valign="top"><code>-tmlbl</code></td><td valign="top">Label the time clock-dial.</td></tr>
 <tr><td width="150" valign="top"><code>-fontname <em>fontname</em></code></td><td valign="top">plot any labels using the font <em>fontname</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-fontsize <em>fontsize</em></code></td><td valign="top">set the font size to <em>fontsize</em> points.</td></tr>
@@ -91,6 +93,7 @@ fov_plot --help<br>fov_plot [<em>options</em>]
 <tr><td width="150" valign="top"><code>-d <em>yyyymmdd</em></code></td><td valign="top">plot for the date <em>yyyymmdd</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-t <em>hr:mn</em></code></td><td valign="top">plot for the time <em>hr:mn</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-st <em>stid</em></code></td><td valign="top">plot the field of view for the radar with the station identifier <em>stid</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-png</code></td><td valign="top">produce a Portable Network Graphics (PNG) image as the output.</td></tr>
 <tr><td width="150" valign="top"><code>-ps</code></td><td valign="top">produce a PostScript plot as the output.</td></tr>
 <tr><td width="150" valign="top"><code>-xp <em>xoff</em></code></td><td valign="top">set the X offset of the PostScript plot to <em>xoff</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-yp <em>xoff</em></code></td><td valign="top">set the Y offset of the PostScript plot to <em>yoff</em>.</td></tr>
@@ -104,7 +107,7 @@ fov_plot --help<br>fov_plot [<em>options</em>]
 </table></td></tr>
 <tr><td class="docsubtitle">Description</td></tr>
 <tr><td></td><td><p>Plot the radar fields of view.</p>
-<p>The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, or PostScript file. The default output is XML. The output file is written to standard output.</p>
+<p>The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, Portable Network Graphics (PNG), or PostScript file. The default output is PostScript. The output file is written to standard output.</p>
 <p>The task only plots what it is instructed to plot on the command line which means that at least some of the options must be included if the plot is to show anything.</p>
 <p>The default map projection is a simple cylindrical projection, the most useful projection is the stereographic projection invoked using the "<code>-stereo</code>" option.</p>
 <p>The date and time options allow a plot for a specific time to be generated this is most useful when used in conjunction with the "<code>-rotate</code>" option or the "<code>-term</code>" and "<code>-fterm</code>" options.</p>
@@ -112,14 +115,14 @@ fov_plot --help<br>fov_plot [<em>options</em>]
 </td></tr>
 <tr><td class="docsubtitle">Examples</td></tr>
 <tr><td></td><td>
-<table ><tr><td class="docbox" ><pre width="80">fov_plot -grd -fov -ffov -stereo -mag -x kod </pre></td></tr></table>
+<table ><tr><td class="docbox" ><pre width="80">fov_plot -grd -fov -ffov -stereo -mag -x -st kod </pre></td></tr></table>
 <p> Plot a stereographic projection in magnetic coordinates of the Kodiak field of view on an X terminal. Show a grid of latitude and longitude.</p>
 
-<table ><tr><td class="docbox" ><pre width="80">fov_plot -ps -grd -fov -ffov -stereo -coast gbr &gt; gbr.ps</pre></td></tr></table>
-<p>Generate a PostScript  plot of the Goose Bay field of view using a stereographic projection. Show coastlines and a grid of longitude and latitude. The plot is stored in the file "<code>gbr.ps</code>".</p>
+<table ><tr><td class="docbox" ><pre width="80">fov_plot -ps -grd -fov -ffov -stereo -coast -st gbr &gt; gbr.ps</pre></td></tr></table>
+<p>Generate a PostScript plot of the Goose Bay field of view using a stereographic projection. Show coastlines and a grid of longitude and latitude. The plot is stored in the file "<code>gbr.ps</code>".</p>
 <br><center><img src="img/example1.png"></img><br></center>
          
-<table ><tr><td class="docbox" ><pre width="80">fov_plot -grd -fov -ffov-ortho -fterm -d 20040312 -t 12:00 -fcoast -coast -ofov -fofov -fov -ffov sas &gt sas.rp.xml
+<table ><tr><td class="docbox" ><pre width="80">fov_plot -grd -fov -ffov -ortho -fterm -d 20040312 -t 12:00 -fcoast -coast -ofov -fofov -st sas &gt sas.rp.xml
 </pre></td></tr></table>
 <p>Generate an rXML  plot of the Saskatoon field of view using an orthographic projection. Show coastlines, shade land and sea, overlay a grid of longitude and latitude. Show the fields of view of the other radars. Shade the image to show the terminator for a  time of March 12, 2004 at 12:00 UTC. The plot is stored in the file "<code>sas.rp.xml</code>".</p>
 <br><center><img src="img/example2.png"></img><br></center>

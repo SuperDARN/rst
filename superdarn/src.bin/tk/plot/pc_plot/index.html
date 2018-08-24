@@ -28,6 +28,7 @@
 <tr><td class="docsubtitle" valign=top>Syntax</td></tr>
 <tr><td></td><td width=80% class="docbox" style="font-family: courier;">
 pc_plot --help<br>pc_plot [<em>options</em>] <em>name</em>
+<br>pc_plot -png [<em>options</em>] <em>name</em>
 <br>pc_plot -ps [-l] [-xp <em>xoff</em>] [-yp <em>yoff</em>] [<em>options</em>] <em>name</em>
 <br>pc_plot -ppm [<em>options</em>] <em>name</em>
 <br>pc_plot -ppmx [<em>options</em>] <em>name</em>
@@ -39,6 +40,7 @@ pc_plot --help<br>pc_plot [<em>options</em>] <em>name</em>
 <tr><td class="docsubtitle">Options</td></tr>
 <tr><td></td><td>
 <table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
 <tr><td width="150" valign="top"><code>-cf <em>cfname</em></code></td><td valign="top">read command line options from the file <em>cfname</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-old</code></td><td valign="top">the input file is a <code>map</code> format file.</td></tr>
 <tr><td width="150" valign="top"><code>-vb</code></td><td valign="top">verbose. Log information to the console.</td></tr>
@@ -63,6 +65,7 @@ pc_plot --help<br>pc_plot [<em>options</em>] <em>name</em>
 <tr><td width="150" valign="top"><code>-bzmin <em>bzmin</em></code></td><td valign="top">set the minimum of the Z component of the IMF  scale to be <em>bzmin</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-bzmax <em>bzmax</em></code></td><td valign="top">set the maximum of the Z component of the IMF scale to be <em>bzmax</em>.</td></tr>
 <tr><td width="150" valign="top"><code><em>name</em></code></td><td valign="top">the filename of the <code>cnvmap</code> format file to plot.</td></tr>
+<tr><td width="150" valign="top"><code>-ps</code></td><td valign="top">produce a Portable Network Graphics (PNG) image as the output.</td></tr>
 <tr><td width="150" valign="top"><code>-ps</code></td><td valign="top">produce a PostScript plot as the output.</td></tr>
 <tr><td width="150" valign="top"><code>-xp <em>xoff</em></code></td><td valign="top">set the X offset of the PostScript plot to <em>xoff</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-yp <em>xoff</em></code></td><td valign="top">set the Y offset of the PostScript plot to <em>yoff</em>.</td></tr>
@@ -76,7 +79,7 @@ pc_plot --help<br>pc_plot [<em>options</em>] <em>name</em>
 </table></td></tr>
 <tr><td class="docsubtitle">Description</td></tr>
 <tr><td></td><td><p>Plot the cross polar cap potential, scatter statistics or IMF conditions from a convection map file.</p>
-<p>The output can be to an X terminal, Portable PixMap (PPM) files, extended Portable PixMap (PPMX), <code>rPlot</code> XML document,or PostScript file. The default output is <code>rPlot</code> XML.</p>
+<p>The output can be to an X terminal, Portable PixMap (PPM) files, extended Portable PixMap (PPMX), <code>rPlot</code> XML document, Portable Network Graphics (PNG), or PostScript file. The default output is PostScript.</p>
 <p>If the "<code>-x</code>" option is specified the program will display plots in an X terminal window in all other cases the output is written to standard out.</p>
 </td></tr>
 <tr><td class="docsubtitle">Examples</td></tr>

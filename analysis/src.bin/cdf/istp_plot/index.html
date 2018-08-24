@@ -27,13 +27,14 @@
 <table>
 <tr><td class="docsubtitle" valign=top>Syntax</td></tr>
 <tr><td></td><td width=80% class="docbox" style="font-family: courier;">
-istp_plot --help<br>istp_plot [-cf <em>cfname</em>] [<em>options</em>]<br>istp_plot -ps [-land] [-xp <em>xoff</em>] [-yp <em>yoff</em>] [<em>options</em>]<br>istp_plot -ppm [<em>options</em>]<br>istp_plot -ppmx [<em>options</em>]<br>istp_plot -xml [<em>options</em>]<br>istp_plot  -x [-display <em>display</em>] [-xoff <em>xoff</em>] [-yoff <em>yoff</em>] [<em>options</em>]<br></td></tr>
+istp_plot --help<br>istp_plot [-cf <em>cfname</em>] [<em>options</em>]<br>istp_plot -png [<em>options</em>]<br>istp_plot -ps [-land] [-xp <em>xoff</em>] [-yp <em>yoff</em>] [<em>options</em>]<br>istp_plot -ppm [<em>options</em>]<br>istp_plot -ppmx [<em>options</em>]<br>istp_plot -xml [<em>options</em>]<br>istp_plot  -x [-display <em>display</em>] [-xoff <em>xoff</em>] [-yoff <em>yoff</em>] [<em>options</em>]<br></td></tr>
 <tr><td class="docsubtitle">Synopsis</td></tr>
 <tr><td></td><td><p>Plot ISTP data from CDF files.</p></td></tr>
 
 <tr><td class="docsubtitle">Options</td></tr>
 <tr><td></td><td>
 <table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
 <tr><td width="150" valign="top"><code>-cf <em>cfname</em></code></td><td valign="top">read command line options from the file <em>cfname</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-plot <em>names...</em></code></td><td valign="top">plot the parameters given by the comma separated list of parameters,<em>names</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-path <em>path</em></code></td><td valign="top">read the data files from the directory <em>path</em>.</td></tr>
@@ -57,6 +58,7 @@ istp_plot --help<br>istp_plot [-cf <em>cfname</em>] [<em>options</em>]<br>istp_p
 <tr><td width="150" valign="top"><code>-wind</code></td><td valign="top">plot Wind data.</td></tr>
 <tr><td width="150" valign="top"><code>-imp8</code></td><td valign="top">plot IMP8 data.</td></tr>
 <tr><td width="150" valign="top"><code>-geotail</code></td><td valign="top">plot Geotail data.</td></tr>
+<tr><td width="150" valign="top"><code>-png</code></td><td valign="top">produce a Portable Network Graphics (PNG) image as the output.</td></tr>
 <tr><td width="150" valign="top"><code>-ps</code></td><td valign="top">produce a PostScript plot as the output.</td></tr>
 <tr><td width="150" valign="top"><code>-xp <em>xoff</em></code></td><td valign="top">set the X offset of the PostScript plot to <em>xoff</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-yp <em>xoff</em></code></td><td valign="top">set the Y offset of the PostScript plot to <em>yoff</em>.</td></tr>
@@ -69,17 +71,17 @@ istp_plot --help<br>istp_plot [-cf <em>cfname</em>] [<em>options</em>]<br>istp_p
 </table></td></tr>
 <tr><td class="docsubtitle">Description</td></tr>
 <tr><td></td><td>
-<p>Plot ISTP magnetic field and solar wind data from a set of CDF files. The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, or PostScript file. The default output is XML. The output file is written to standard output.</p>
+<p>Plot ISTP magnetic field and solar wind data from a set of CDF files. The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, Portable Network Graphics (PNG), or PostScript file. The default output is XML. The output file is written to standard output.</p>
 <p>The program usually plots 24 hours of magnetic field data in GSM co-ordinates for a given start date and satellite.</p>
 <p>Magnetic field and solar wind data can be plotted together by combining the appropriate options.</p>
 <p>The data files are taken from the sub-directories "<code>ace</code>", "<code>wind</code>", "<code>imp8</code>" and "<code>geotail</code>", of the path given by the "<code>-path</code>" option or by the environment variable <em>ISTP_PATH</em>.</p>
 </td></tr>
 <tr><td class="docsubtitle">Examples</td></tr>
 <tr><td></td><td>
-<table ><tr><td class="docbox" ><pre width="80">istp_plot -x  -ace -sd 19990406</pre></td></tr></table>
+<table ><tr><td class="docbox" ><pre width="80">istp_plot -x -ace -sd 19990406</pre></td></tr></table>
 <p> Plot 24 hours of ACE data starting at 00:00UT on April, 6 1999 on the X terminal.</p>
 
-<table ><tr><td class="docbox" ><pre width="80">istp_plot -ps  -ace -mfi -swe -sd 19980404 -st 12:00 -ex 8:00 &gt; plot.ps</pre></td></tr></table>
+<table ><tr><td class="docbox" ><pre width="80">istp_plot -ps -ace -mfi -swe -sd 19980404 -st 12:00 -ex 8:00 &gt; plot.ps</pre></td></tr></table>
 <p>Generate a PostScript plot of Ace MFI and SWE data for the 8 hour period starting at 12:00UT on April 4, 1998. The plot is stored in the file "<code>plot.ps</code>".</p>
 <br><center><img src="img/example1.png"></img><br></center>
          

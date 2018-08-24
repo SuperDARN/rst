@@ -27,24 +27,25 @@
 <table>
 <tr><td class="docsubtitle" valign=top>Syntax</td></tr>
 <tr><td></td><td width=80% class="docbox" style="font-family: courier;">
-trim_raw --help<br>trim_raw [-vb] [-t <em>thr</em>] [-sd <em>yyyymmdd</em>] [-st <em>hr:mn</em>] [-ed <em>yyyymmdd</em>] [-et <em>hr:mn</em>] [-ex <em>hr:mn</em>] <em>rawacfinput</em> <em>rawacfoutput</em><br>trim_raw -old [-vb] [-t <em>thr</em>] [-sd <em>yyyymmdd</em>] [-st <em>hr:mn</em>] [-ed <em>yyyymmdd</em>] [-et <em>hr:mn</em>] [-ex <em>hr:mn</em>] [<em>rawname</em>]<br></td></tr>
+trim_raw --help<br>trim_raw [-vb] [-t <em>thr</em>] [-sd <em>yyyymmdd</em>] [-st <em>hr:mn</em>] [-ed <em>yyyymmdd</em>] [-et <em>hr:mn</em>] [-ex <em>hr:mn</em>] [<em>rawacfname</em>]<br>trim_raw -old [-vb] [-t <em>thr</em>] [-sd <em>yyyymmdd</em>] [-st <em>hr:mn</em>] [-ed <em>yyyymmdd</em>] [-et <em>hr:mn</em>] [-ex <em>hr:mn</em>] <em>rawinput</em> <em>rawoutput</em><br></td></tr>
 <tr><td class="docsubtitle">Synopsis</td></tr>
 <tr><td></td><td><p>Extracts a section from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file.</p></td></tr>
 
 <tr><td class="docsubtitle">Options</td></tr>
 <tr><td></td><td>
 <table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
 <tr><td width="150" valign="top"><code>-vb</code></td><td valign="top">verbose. Log information to the console.</td></tr>
-<tr><td width="150" valign="top"><code>-t <em>thr</em></code></td><td valign="top">use the threshold factor <em>thr</em> to detemine whether data is saved or not.</td></tr>
+<tr><td width="150" valign="top"><code>-t <em>thr</em></code></td><td valign="top">use the threshold factor <em>thr</em> to detemine whether data is saved or not (note: this option is deprecated).</td></tr>
 <tr><td width="150" valign="top"><code>-sd <em>yyyymmdd</em></code></td><td valign="top">extract starting from the date <em>yyyymmdd</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-st <em>hr:mn</em></code></td><td valign="top">extract starting from the time <em>hr:mn</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-ed <em>yyyymmdd</em></code></td><td valign="top">stop extracting at the date <em>yyyymmdd</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-et <em>hr:mn</em></code></td><td valign="top">stop extracting at the time <em>hr:mn</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-ex <em>hr:mn</em></code></td><td valign="top">extract an interval whose extent is <em>hr:mn</em>.</td></tr>
-<tr><td width="150" valign="top"><code><em>rawacfinput</em></code></td><td valign="top">filename of the <code>rawacf</code> format file to trim.</td></tr>
-<tr><td width="150" valign="top"><code><em>rawacfoutput</em></code></td><td valign="top">filename of the <code>raw</code> format file to create.</td></tr>
+<tr><td width="150" valign="top"><code><em>rawacfname</em></code></td><td valign="top">filename of the <code>rawacf</code> format file to trim. If this is omitted, the file will be read from standard input</td></tr>
 <tr><td width="150" valign="top"><code>-old</code></td><td valign="top">the input file is a <code>raw</code> (<code>dat</code>) format file.</td></tr>
-<tr><td width="150" valign="top"><code><em>rawname</em></code></td><td valign="top">filename of the <code>raw</code> (<code>dat</code>) format file to trim. If this is omitted, the file will be read from standard input</td></tr>
+<tr><td width="150" valign="top"><code><em>rawinput</em></code></td><td valign="top">filename of the <code>raw</code> (<code>dat</code>) format file to trim.</td></tr>
+<tr><td width="150" valign="top"><code><em>rawoutput</em></code></td><td valign="top">filename of the <code>raw</code> (<code>dat</code>) format file to create.</td></tr>
 </table></td></tr>
 <tr><td class="docsubtitle">Description</td></tr>
 <tr><td></td><td><p>Extracts a section from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file.</p>
