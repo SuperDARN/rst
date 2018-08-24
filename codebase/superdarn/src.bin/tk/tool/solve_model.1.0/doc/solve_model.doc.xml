@@ -12,6 +12,8 @@
 
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
 <option><on>-by <ar>by</ar></on><od>set the Y component of the magnetic field to <ar>by</ar> [nT]. The default value is 0 nT.</od>
 </option>
 <option><on>-bz <ar>bz</ar></on><od>set the Z component of the magnetic field to <ar>bz</ar> [nT]. The default value is 0 nT.</od>
