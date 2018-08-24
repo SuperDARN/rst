@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>base</project>
+<name>ppmxtopng</name>
+<location>src.bin/graphic/ppmxtopng</location>
+
+<syntax>ppmxtopng --help</syntax>
+<syntax>ppmxtopng [<ar>name</ar>]</syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on><ar>name</ar></on><od>input image filename. If this is omitted the image will be read from standard input.</od>
+</option>
+<synopsis><p>Convert an extended Portable PixMap (PPMX) image to a Portable Network Graphics (PNG) image.</p></synopsis>
+<description><p>Convert an extended Portable PixMap (PPMX) image to a Portable Network Graphics (PNG) image.</p>
+<p>The PNG image is written to standard output.</p>
+</description>
+
+<example>
+<command>ppmxtopng inp.ppmx &gt; out.png</command>
+<description>Convert PPMX file <code>inp.ppmx</code> to the PNG file <code>out.png</code>.
+</description>
+</example>
+
+</binary>

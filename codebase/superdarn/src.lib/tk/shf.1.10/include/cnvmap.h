@@ -53,6 +53,7 @@ struct CnvMapData {
 
   double Vx;
   double tilt;
+  double Kp;
 
   char imf_model[4][64]; /* the statistical model used */
 

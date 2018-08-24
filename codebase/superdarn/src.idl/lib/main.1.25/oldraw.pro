@@ -436,7 +436,10 @@ ON_IOERROR,iofail
   OldRawMakeOldRawRadarParm,rparm
 
   readu,rawfp.rawunit,rechdr
- 
+
+  ; Make sure the record size is non-zero
+  if rechdr.size le 0 then return,-1
+
   num_byte=rechdr.size
   rawfp.rlen=rechdr.size
   rawfp.ptr+=rechdr.size
@@ -648,7 +651,8 @@ ON_IOERROR,iofail
   num_byte=14+N_TAGS(rparm,/LENGTH)+2*rparm.mppul+4*rparm.mplgs+ $
            ORIG_COMBF_SIZE+2*rparm.nrang
 
-  threshold=floor((raw.thr*rparm.noise)/2);
+  ;threshold=floor((raw.thr*rparm.noise)/2);
+  threshold=0
   slist=where(raw.pwr0[0:rparm.nrang-1] ge threshold,count)
   
   num_byte+=count*(rparm.mplgs*2*2+2)

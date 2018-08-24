@@ -369,7 +369,7 @@ function RPosRngBmAzmElv, beam, range, year, site, frang, rsep, rxrise, height, 
 
     ; Convert radar site geodetic latitude and longitude (gdlat,gdlon) to geocentric spherical
     ; coordinates (glat,glon) and distance from the center to the surface of the oblate spheroid (gdrho)
-    ret = RadarGeoTGC(gdlat, gdlon, gdrho, glat, glon, del)
+    RadarGeoTGC, 1, gdlat, gdlon, gdrho, glat, glon, del
 
     ; Convert radar geocentric spherical coordinates (gdrho,glat,glon) to global Cartesian
     ; coordinates (gbx,gby,gbz)
@@ -442,7 +442,7 @@ function RPosInvMag, beam, range, year, site, frang, rsep, rxrise, height, mlat,
 
     ; Convert radar site geodetic latitude and longitude (gdlat,gdlon) to geocentric spherical
     ; coordinates (glat,glon) and distance from the center to the surface of the oblate spheroid (gdrho)
-    ret = RadarGeoTGC(gdlat, gdlon, gdrho, glat, glon, del)
+    RadarGeoTGC, 1, gdlat, gdlon, gdrho, glat, glon, del
 
     ; Convert radar geocentric spherical coordinates (gdrho,glat,glon) to global Cartesian
     ; coordinates (gbx,gby,gbz)
@@ -489,7 +489,7 @@ function RPosInvMag, beam, range, year, site, frang, rsep, rxrise, height, mlat,
 
     ; Convert range/beam position from geocentric (flat,flon) to geodetic latitude/longitude 
     ; (gdlat,gdlon) and calculate distance from center to surface of oblate spheroid (fdrho)
-    ret = RadarGeoTGC(fdlat, fdlon, fdrho, flat, flon, dummy, /inverse)
+    RadarGeoTGC, -1, fdlat, fdlon, fdrho, flat, flon, dummy
 
     ; Calculate virtual height of range/beam position
     tmp_height = frho - fdrho

@@ -12,9 +12,9 @@ before_install:
   - sudo apt-get -y install libncurses-dev
   - sudo apt-get -y install netpbm
   - sudo apt-get -y install libpng12-dev
-  - wget https://spdf.sci.gsfc.nasa.gov/pub/software/cdf/dist/cdf36_3_1/linux/cdf36_3_1-dist-all.tar.gz
-  - tar -xf cdf36_3_1-dist-all.tar.gz
-  - cd cdf36_3-dist && make clean && make OS=linux ENV=gnu all && make INSTALLDIR=/home/travis/build/SuperDARN/cdf install
+  - wget https://spdf.sci.gsfc.nasa.gov/pub/software/cdf/dist/cdf36_4/linux/cdf36_4-dist-all.tar.gz
+  - tar -xf cdf36_4-dist-all.tar.gz
+  - cd cdf36_4-dist && make clean && make OS=linux ENV=gnu all && make INSTALLDIR=/home/travis/build/SuperDARN/cdf install
   - export RSTPATH=/home/travis/build/SuperDARN/rst
   - . $RSTPATH/.profile.bash
   - export CDF_PATH=/home/travis/build/SuperDARN/cdf
