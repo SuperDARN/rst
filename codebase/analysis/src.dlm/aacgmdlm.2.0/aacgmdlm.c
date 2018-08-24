@@ -7,8 +7,6 @@
  $Licence$
 */
 
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -111,10 +109,8 @@ static IDL_VPTR IDLAACGMConvert(int argc,IDL_VPTR *argv,char *argk) {
   static IDL_LONG geo;
 
   static IDL_KW_PAR kw_pars[]={IDL_KW_FAST_SCAN,
-			       {"GEO",IDL_TYP_LONG,1,
-                                IDL_KW_ZERO,0,
-                                IDL_CHARA(geo)},
-				 {NULL}};
+                                {"GEO",IDL_TYP_LONG,1,IDL_KW_ZERO,0,
+                                  IDL_CHARA(geo)}, {NULL}};
 
   IDL_KWCleanup(IDL_KW_MARK);
   IDL_KWGetParams(argc,argv,argk,kw_pars,outargv,1);
@@ -136,7 +132,6 @@ static IDL_VPTR IDLAACGMConvert(int argc,IDL_VPTR *argv,char *argk) {
 
       IDL_MessageFromBlock(msg_block,AACGM_MISMATCHELMS,IDL_MSG_LONGJMP,
                            "in AACGMConvert()");
-    
     }
 
     if ((outargv[0]->type !=IDL_TYP_FLOAT) && 
@@ -146,17 +141,15 @@ static IDL_VPTR IDLAACGMConvert(int argc,IDL_VPTR *argv,char *argk) {
 
       IDL_MessageFromBlock(msg_block,AACGM_BADTYPE,IDL_MSG_LONGJMP,
                            "of lat in AACGMConvert()");
-
     }
    
-       if ((outargv[1]->type !=IDL_TYP_FLOAT) && 
-           (outargv[1]->type !=IDL_TYP_DOUBLE)) {
+    if ((outargv[1]->type !=IDL_TYP_FLOAT) && 
+        (outargv[1]->type !=IDL_TYP_DOUBLE)) {
 
       /* bad type */
 
       IDL_MessageFromBlock(msg_block,AACGM_BADTYPE,IDL_MSG_LONGJMP,
                            "of lon in AACGMConvert()");
-
     }
    
     if ((outargv[2]->type !=IDL_TYP_FLOAT) && 
@@ -164,43 +157,38 @@ static IDL_VPTR IDLAACGMConvert(int argc,IDL_VPTR *argv,char *argk) {
 
       /* bad type */
 
-
       IDL_MessageFromBlock(msg_block,AACGM_BADTYPE,IDL_MSG_LONGJMP,
                            "of height in AACGMConvert()");
-
     }
    
-
     latptr=(double *) IDL_MakeTempArray(IDL_TYP_DOUBLE,
                                         outargv[0]->value.arr->n_dim,
                                         outargv[0]->value.arr->dim,
-					IDL_ARR_INI_ZERO,&volat);
+                                        IDL_ARR_INI_ZERO,&volat);
     lonptr=(double *) IDL_MakeTempArray(IDL_TYP_DOUBLE,
                                         outargv[0]->value.arr->n_dim,
                                         outargv[0]->value.arr->dim,
-					IDL_ARR_INI_ZERO,&volon);
+                                        IDL_ARR_INI_ZERO,&volon);
 
     rptr=(double *) IDL_MakeTempArray(IDL_TYP_DOUBLE,
                                       outargv[0]->value.arr->n_dim,
                                       outargv[0]->value.arr->dim,
-				      IDL_ARR_INI_ZERO,&vr);
+                                      IDL_ARR_INI_ZERO,&vr);
 
     for (n=0;n<nval;n++) {
-      if (outargv[0]->type==IDL_TYP_FLOAT) inlat=
-         ((float *) outargv[0]->value.arr->data)[n];
+      if (outargv[0]->type==IDL_TYP_FLOAT)
+           inlat= ((float *) outargv[0]->value.arr->data)[n];
       else inlat=((double *) outargv[0]->value.arr->data)[n];
-      if (outargv[1]->type==IDL_TYP_FLOAT) inlon=
-         ((float *) outargv[1]->value.arr->data)[n];
+      if (outargv[1]->type==IDL_TYP_FLOAT)
+           inlon= ((float *) outargv[1]->value.arr->data)[n];
       else inlon=((double *) outargv[1]->value.arr->data)[n];
-      if (outargv[2]->type==IDL_TYP_FLOAT) height=
-         ((float *) outargv[2]->value.arr->data)[n];
+      if (outargv[2]->type==IDL_TYP_FLOAT)
+           height= ((float *) outargv[2]->value.arr->data)[n];
       else height=((double *) outargv[2]->value.arr->data)[n];
 
       s=AACGMConvert(inlat,inlon,height,&latptr[n],&lonptr[n],
                      &rptr[n],geo !=0);
     }
-
-
 
     IDL_VarCopy(volat,argv[3]);
     IDL_VarCopy(volon,argv[4]);
@@ -228,7 +216,6 @@ static IDL_VPTR IDLAACGMConvert(int argc,IDL_VPTR *argv,char *argk) {
 }
 
 
-
 static IDL_VPTR IDLAACGM_v2_GetDateTime(int argc,IDL_VPTR *argv,char *argk) {
 
     int s=0;
@@ -241,6 +228,7 @@ static IDL_VPTR IDLAACGM_v2_GetDateTime(int argc,IDL_VPTR *argv,char *argk) {
     static IDL_VPTR minute;
     static IDL_VPTR second;
     static IDL_VPTR dyno;
+    static IDL_LONG silent;
     
     static IDL_KW_PAR kw_pars[]={IDL_KW_FAST_SCAN,
         {"DAY",IDL_TYP_UNDEF,1,IDL_KW_OUT|IDL_KW_ZERO,0,IDL_CHARA(day)},
@@ -249,6 +237,7 @@ static IDL_VPTR IDLAACGM_v2_GetDateTime(int argc,IDL_VPTR *argv,char *argk) {
         {"MINUTE",IDL_TYP_UNDEF,1,IDL_KW_OUT|IDL_KW_ZERO,0,IDL_CHARA(minute)},
         {"MONTH",IDL_TYP_UNDEF,1,IDL_KW_OUT|IDL_KW_ZERO,0,IDL_CHARA(month)},
         {"SECOND",IDL_TYP_UNDEF,1,IDL_KW_OUT|IDL_KW_ZERO,0,IDL_CHARA(second)},
+        {"SILENT",IDL_TYP_LONG,1,IDL_KW_ZERO,0,IDL_CHARA(silent)},
         {NULL}};
 
     IDL_KWCleanup(IDL_KW_MARK);
@@ -257,7 +246,7 @@ static IDL_VPTR IDLAACGM_v2_GetDateTime(int argc,IDL_VPTR *argv,char *argk) {
     s=AACGM_v2_GetDateTime(&yr,&mo,&dy,&hr,&mt,&sc,&dayno);
 
     if (yr==-1) {
-        IDL_MessageFromBlock(msg_block,AACGM_DATENOTSET,IDL_MSG_RET);
+        if (!silent) IDL_MessageFromBlock(msg_block,AACGM_DATENOTSET,IDL_MSG_RET);
         s=-1;
         IDL_KWCleanup(IDL_KW_CLEAN);
         return (IDL_GettmpLong(s));
@@ -274,7 +263,6 @@ static IDL_VPTR IDLAACGM_v2_GetDateTime(int argc,IDL_VPTR *argv,char *argk) {
     IDL_KWCleanup(IDL_KW_CLEAN);
     return (IDL_GettmpLong(s));
 }
-
 
 
 static IDL_VPTR IDLAACGM_v2_SetDateTime(int argc,IDL_VPTR *argv) {
@@ -321,7 +309,6 @@ static IDL_VPTR IDLAACGM_v2_SetDateTime(int argc,IDL_VPTR *argv) {
 }
 
 
-
 static IDL_VPTR IDLAACGM_v2_SetNow(int argc,IDL_VPTR *argv) {
 
     int s=0;
@@ -329,7 +316,6 @@ static IDL_VPTR IDLAACGM_v2_SetNow(int argc,IDL_VPTR *argv) {
 
     return (IDL_GettmpLong(s));
 }
-
 
 
 static IDL_VPTR IDLAACGM_v2_Convert(int argc,IDL_VPTR *argv,char *argk) {
@@ -349,6 +335,7 @@ static IDL_VPTR IDLAACGM_v2_Convert(int argc,IDL_VPTR *argv,char *argk) {
     static IDL_LONG gcentric;
     static IDL_LONG geo;
     static IDL_LONG trace;
+    static IDL_LONG verbose;
 
     static IDL_KW_PAR kw_pars[]={IDL_KW_FAST_SCAN,
         {"ALLOW_TRACE",IDL_TYP_LONG,1,IDL_KW_ZERO,0,IDL_CHARA(allowtrace)},
@@ -356,6 +343,7 @@ static IDL_VPTR IDLAACGM_v2_Convert(int argc,IDL_VPTR *argv,char *argk) {
         {"GCENTRIC",IDL_TYP_LONG,1,IDL_KW_ZERO,0,IDL_CHARA(gcentric)},
         {"GEO",IDL_TYP_LONG,1,IDL_KW_ZERO,0,IDL_CHARA(geo)},
         {"TRACE",IDL_TYP_LONG,1,IDL_KW_ZERO,0,IDL_CHARA(trace)},
+        {"VERBOSE",IDL_TYP_LONG,1,IDL_KW_ZERO,0,IDL_CHARA(verbose)},
         {NULL}};
 
     IDL_KWCleanup(IDL_KW_MARK);
@@ -365,11 +353,12 @@ static IDL_VPTR IDLAACGM_v2_Convert(int argc,IDL_VPTR *argv,char *argk) {
     IDL_EXCLUDE_EXPR(outargv[4]);
     IDL_EXCLUDE_EXPR(outargv[5]);
 
-    if (geo) code|=1;
-    if (trace) code|=2;
+    if (geo)        code|=1;
+    if (trace)      code|=2;
     if (allowtrace) code|=4;
-    if (badidea) code|=8;
-    if (gcentric) code|=16;
+    if (badidea)    code|=8;
+    if (gcentric)   code|=16;
+    if (verbose)    code|=32;
 
     if (argv[1]->flags & IDL_V_ARR) {
         int nval;
@@ -425,18 +414,18 @@ static IDL_VPTR IDLAACGM_v2_Convert(int argc,IDL_VPTR *argv,char *argk) {
                                           IDL_ARR_INI_ZERO,&vr);
 
         for (n=0;n<nval;n++) {
-            if (outargv[0]->type==IDL_TYP_FLOAT) inlat=
-                ((float *) outargv[0]->value.arr->data)[n];
+            if (outargv[0]->type==IDL_TYP_FLOAT)
+                 inlat= ((float *) outargv[0]->value.arr->data)[n];
             else inlat=((double *) outargv[0]->value.arr->data)[n];
-            if (outargv[1]->type==IDL_TYP_FLOAT) inlon=
-                ((float *) outargv[1]->value.arr->data)[n];
+            if (outargv[1]->type==IDL_TYP_FLOAT)
+                 inlon= ((float *) outargv[1]->value.arr->data)[n];
             else inlon=((double *) outargv[1]->value.arr->data)[n];
-            if (outargv[2]->type==IDL_TYP_FLOAT) height=
-                ((float *) outargv[2]->value.arr->data)[n];
+            if (outargv[2]->type==IDL_TYP_FLOAT)
+                 height= ((float *) outargv[2]->value.arr->data)[n];
             else height=((double *) outargv[2]->value.arr->data)[n];
 
             s=AACGM_v2_Convert(inlat,inlon,height,&latptr[n],&lonptr[n],
-                            &rptr[n],code);
+                               &rptr[n],code);
         }
 
         IDL_VarCopy(volat,argv[3]);
@@ -462,7 +451,6 @@ static IDL_VPTR IDLAACGM_v2_Convert(int argc,IDL_VPTR *argv,char *argk) {
     IDL_KWCleanup(IDL_KW_CLEAN);
     return (IDL_GettmpLong(s));
 }
-
 
 
 int IDL_Load(void) {

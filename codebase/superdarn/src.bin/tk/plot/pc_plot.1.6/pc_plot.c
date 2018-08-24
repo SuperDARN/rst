@@ -174,7 +174,7 @@ int main(int argc,char *argv[]) {
   struct XwinDisplay *dp;
   struct XwinWindow *win;
   char *display_name=NULL;
-  char *wname="istp_plot";
+  char *wname="pc_plot";
   int xdoff=-1;
   int ydoff=-1;
 #endif
@@ -215,6 +215,7 @@ int main(int argc,char *argv[]) {
 
   unsigned char help=0;
   unsigned char option=0;
+  unsigned char version=0;
 
   unsigned char vb=0;
 
@@ -286,6 +287,7 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
+  OptionAdd(&opt,"-version",'x',&version);
 
   OptionAdd(&opt,"old",'x',&old);
   OptionAdd(&opt,"vb",'x',&vb);
@@ -376,6 +378,11 @@ int main(int argc,char *argv[]) {
 
   if (option==1) {
     OptionDump(stdout,&opt);
+    exit(0);
+  }
+
+  if (version==1) {
+    OptionVersion(stdout);
     exit(0);
   }
 

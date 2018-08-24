@@ -151,6 +151,7 @@ int main(int argc,char *argv[]) {
 
   unsigned char help=0;
   unsigned char option=0;
+  unsigned char version=0;
 
   unsigned char vb=0;
 
@@ -219,6 +220,7 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
+  OptionAdd(&opt,"-version",'x',&version);
 
   OptionAdd(&opt,"old",'x',&old); 
   OptionAdd(&opt,"vb",'x',&vb);
@@ -276,6 +278,11 @@ int main(int argc,char *argv[]) {
   }
   if (option==1) {
     OptionDump(stdout,&opt);
+    exit(0);
+  }
+
+  if (version==1) {
+    OptionVersion(stdout);
     exit(0);
   }
 
@@ -405,11 +412,11 @@ int main(int argc,char *argv[]) {
         if (tlen==0) {
           if (old) {
             while ((s=OldFitRead(fitfp,prm,fit)) !=-1) {
-              if (prm->scan==1) break;
+              if (abs(prm->scan)==1) break;
 	    }
 	  } else {
             while ((s=FitFread(fp,prm,fit)) !=-1) {
-              if (prm->scan==1) break;
+              if (abs(prm->scan)==1) break;
 	    }
 	  }
         } else state=0;
@@ -425,7 +432,7 @@ int main(int argc,char *argv[]) {
         }
         if (tlen==0) {
           while ((s=CFitRead(cfitfp,cfit)) !=-1) {
-            if (cfit->scan==1) break;
+            if (abs(cfit->scan)==1) break;
 	  }
         } else state=0;
         s=CFitReadRadarScan(cfitfp,&state,src[0],cfit,tlen,syncflg,channel);

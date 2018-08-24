@@ -62,6 +62,7 @@ int main (int argc,char *argv[]) {
   int arg;
   unsigned char help=0;
   unsigned char option=0;
+  unsigned char version=0;
   int old=0;
   float thr=-1;
   int hflg=1;
@@ -78,6 +79,7 @@ int main (int argc,char *argv[]) {
 
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
+  OptionAdd(&opt,"-version",'x',&version);
   OptionAdd(&opt,"t",'f',&thr);
 
   OptionAdd(&opt,"old",'x',&old);
@@ -97,9 +99,19 @@ int main (int argc,char *argv[]) {
     exit(0);
   }
 
+  if (version==1) {
+    OptionVersion(stdout);
+    exit(0);
+  }
+
   if (old==0) {
     fprintf(stderr,
     "New format files can be concatenated with the cat command.\n");
+    exit(-1);
+  }
+
+  if (thr !=-1) {
+    fprintf(stderr,"Error: the -t threshold option has been deprecated.\n");
     exit(-1);
   }
 

@@ -22,6 +22,9 @@
 ;                    this range. Eliminate reliance on geopack DLMs by calling
 ;                    native IDL routines.
 ; 20150223 SGS       decoupling MLT from AACGM-v2 software.
+; 20180425 EGT       replaced check against common block in cnvcoord_v2() with
+;                    function call to aacgm_v2_getdatetime() so DLMs will work
+;                    properly.
 ;
 ; Functions:
 ;
@@ -268,16 +271,20 @@ end
 ;+-----------------------------------------------------------------------------
 ;
 
-function cnvcoord_v2, in1,in2,in3, geo=geo, trace=trace, $
+function cnvcoord_v2, in1,in2,in3, geo=geo, trace=trace, gcentric=gcentric, $
                             allow_trace=allow_trace, bad_idea=bad_idea, $
-                            eps=eps, verbose=verbose, debug=debug, $
-                            use_geopack=use_geopack, gcentric=gcentric
+                            verbose=verbose
+; SGS: these keywords work in the IDL version but not with the DLMS. It is
+;      is possible to use them without the DLMS
+;                            eps=eps, debug=debug, $
+;                            use_geopack=use_geopack
 
   common AACGM_v2_Com
   common IGRF_v2_Com
 
   ; force user to explicitly set the date and time fields for calculations
-  if (n_elements(aacgm_v2_datetime) eq 0) then begin
+;  if (n_elements(aacgm_v2_datetime) eq 0) then begin
+  if (aacgm_v2_getdatetime(tmp) eq -1) then begin
     print, ""
     print, "ERROR: Date and Time are not currently set."
     print, ""
@@ -291,10 +298,10 @@ function cnvcoord_v2, in1,in2,in3, geo=geo, trace=trace, $
     return, -1
   endif
 
-  if myear_v2 lt IGRF_FIRST_EPOCH or myear_v2 gt IGRF_LAST_EPOCH+5 then begin
-    print, 'year range is ',IGRF_FIRST_EPOCH,'-',IGRF_LAST_EPOCH+5
-    return, -1
-  endif
+;  if myear_v2 lt IGRF_FIRST_EPOCH or myear_v2 gt IGRF_LAST_EPOCH+5 then begin
+;    print, 'year range is ',IGRF_FIRST_EPOCH,'-',IGRF_LAST_EPOCH+5
+;    return, -1
+;  endif
 
 ; ; original Baker code that allows for various inputs
 ; if (n_params() ge 3) then inp = float([in1,in2,in3]) $
@@ -320,9 +327,10 @@ function cnvcoord_v2, in1,in2,in3, geo=geo, trace=trace, $
     outvec  = invec
     ret_val = AACGM_v2_Convert(invec[0],invec[1],invec[2], olat,olon,rad, $
                                 geo=geo, trace=trace, bad_idea=bad_idea, $
-                                allow_trace=allow_trace, eps=eps, $
-                                gcentric=gcentric, $
-                                verbose=verbose, debug=debug)
+                                allow_trace=allow_trace, gcentric=gcentric, $
+                                verbose=verbose)
+; SGS: comment out to work with DLMs that do not support these keywords
+;                                eps=eps, debug=debug)
     outvec[0] = olat
     outvec[1] = olon
     outvec[2] = rad
