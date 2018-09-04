@@ -313,6 +313,7 @@ int main(int argc,char *argv[]) {
       grd->ed_time+=tlen;
     }
 
+    fclose(fp);
     return 0;
   }
 
@@ -363,7 +364,6 @@ int main(int argc,char *argv[]) {
     cnt++;
   }
 
-  fclose(fp);
   return 0;
 }
 
