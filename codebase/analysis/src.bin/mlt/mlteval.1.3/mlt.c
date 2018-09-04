@@ -165,7 +165,7 @@ int main(int argc,char *argv[]) {
       else mlt=MLTConvertYMDHMS_v2(yr,mo,dy,hr,mt,isc,mlon);
       fprintf(stdout,fmt,mlt);  
     }
-    fclose(fp);
+    if (fp !=stdin) fclose(fp);
   }
   return 0;
 }
