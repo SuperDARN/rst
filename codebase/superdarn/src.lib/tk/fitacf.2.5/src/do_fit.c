@@ -371,7 +371,6 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
           xptr[k].phi0 = xptr[k].phi0*iptr->prm.phidiff;
 
       /* changes which array is first */
-      
       elev_data = malloc(sizeof(struct elevation_data));
       if (elev_data == NULL || errno != 0)
       {
@@ -389,18 +388,19 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
       elev_data->tfreq = iptr->prm.tfreq;
       elev_data->tdiff = iptr->prm.tdiff;
 
+
       elv[k].normal = fit_func->elevation_method(elev_data, xptr[k].phi0);
       elv[k].low    = fit_func->elevation_method(elev_data, xptr[k].phi0+xptr[k].phi0_err);
       elv[k].high   = fit_func->elevation_method(elev_data, xptr[k].phi0-xptr[k].phi0_err);
-       
+      fprintf(stderr,"normal: %f\n",elv[k].normal);
       free(elev_data);
       /* range = 0.15*(iptr->prm.lagfr + iptr->prm.smsep*(k-1)); - this is never used EGT */
 /*      if (iptr->prm.old_elev) {
 */        /* use old elevation angle routines */
 /*        if (goose == 0) {
-          elv[k].normal = elevation(&iptr->prm, xptr[k].phi0);
-          elv[k].low = elevation(&iptr->prm, xptr[k].phi0+xptr[k].phi0_err);
-          elv[k].high = elevation(&iptr->prm, xptr[k].phi0-xptr[k].phi0_err);
+      elv[k].normal = elevation(elev_data, xptr[k].phi0);
+      elv[k].low    = elevation(elev_data, xptr[k].phi0+xptr[k].phi0_err);
+      elv[k].high   = elevation(elev_data, xptr[k].phi0-xptr[k].phi0_err);
         } else {
           elv[k].normal = elev_goose(&iptr->prm, xptr[k].phi0);
           elv[k].low = elev_goose(&iptr->prm, xptr[k].phi0+xptr[k].phi0_err);

@@ -251,19 +251,23 @@ int main(int argc,char *argv[]) {
   if (vb)
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
+  fprintf(stderr,"Old elev: %d \n",old_elev);
   if(old_elev)
   {
       if(prm->stid == GOOSEBAY)
       {
-            fit_func->elevation_method = &elevation;
+            fprintf(stderr,"Run elevation goose method\n");
+            fit_func->elevation_method = &elev_goose;
       }
       else
       {
-          fit_func->elevation_method = &elev_goose;
+          fprintf(stderr,"Run elevation method\n");
+          fit_func->elevation_method = &elevation;
       }
   }
   else 
   {
+      fprintf(stderr,"Run elevation 2 method\n");
       fit_func->elevation_method = &elevation_v2; /*TODO: rename this method, either obsolete elevation or we callit sheppard_elevation*/
   }
 
@@ -388,6 +392,8 @@ int main(int argc,char *argv[]) {
   }
     
   if (old) OldRawClose(rawfp);
+  
+  
   free(fit_func);
   return 0;
 }

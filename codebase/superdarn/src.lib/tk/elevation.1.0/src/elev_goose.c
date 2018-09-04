@@ -133,7 +133,7 @@ double elev_goose(struct elevation_data *elev_data, double phi0) {
 
 	if ((fabs(sn2_eps) > 1.0) || (sn2_eps < 0.0)) {
       dchi = dchi - (2*PI);
-	  fprintf(stderr,"changing dchi by -2pi. %f -> %f\n",dchi_old,dchi);
+      fprintf(stderr,"changing dchi by -2pi. %f -> %f\n",dchi_old,dchi);
 	}
   }
 

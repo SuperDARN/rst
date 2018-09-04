@@ -531,7 +531,7 @@ void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fi
 
     elev_data->interfer_x = fit_prms->interfer_x;
     elev_data->interfer_y = fit_prms->interfer_y;
-    elev_data->interfer_y = fit_prms->interfer_z;
+    elev_data->interfer_z = fit_prms->interfer_z;
     elev_data->phidiff = fit_prms->phidiff;
     elev_data->maxbeam = fit_prms->maxbeam;
     elev_data->bmsep = fit_prms->bmsep;
