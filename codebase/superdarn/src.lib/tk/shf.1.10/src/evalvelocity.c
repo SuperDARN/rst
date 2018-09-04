@@ -162,11 +162,14 @@ void CnvMapEvalVelocity(int Lmax,double *coef,double *plm,
   double vx,vy;  
 
   theta=malloc(vptr->num*sizeof(double));
+  if (theta==NULL) return;
   phi=malloc(vptr->num*sizeof(double));
+  if (phi==NULL) {
+    free(theta);
+    return;
+  }
   ex=malloc(vptr->num*sizeof(double));
   ey=malloc(vptr->num*sizeof(double));
-
-  if ((theta==NULL) || (phi==NULL)) return;
 
   for (i=0;i<vptr->num;i++) {
      lat=fabs(vptr->lat[i]);
