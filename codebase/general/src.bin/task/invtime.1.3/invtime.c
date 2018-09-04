@@ -158,7 +158,7 @@ int main(int argc,char *argv[]) {
     fprintf(stdout,"\n");
   }
 
-
+  fclose(fp);
   return 0;
 
 }

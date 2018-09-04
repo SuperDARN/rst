@@ -363,6 +363,7 @@ int main(int argc,char *argv[]) {
     cnt++;
   }
 
+  fclose(fp);
   return 0;
 }
 
