@@ -337,6 +337,7 @@ int main(int argc,char *argv[]) {
   } while (status !=-1);
 
   if (grdfp !=stdin) fclose(grdfp);
+  free(count);
   return 0;
 }
 
