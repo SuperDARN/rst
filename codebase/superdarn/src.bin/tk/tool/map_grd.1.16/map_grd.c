@@ -313,7 +313,7 @@ int main(int argc,char *argv[]) {
       grd->ed_time+=tlen;
     }
 
-    fclose(fp);
+    if (fp !=stdin) fclose(fp);
     return 0;
   }
 

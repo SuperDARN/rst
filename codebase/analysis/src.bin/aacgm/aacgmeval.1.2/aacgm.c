@@ -194,7 +194,7 @@ int main(int argc,char *argv[]) {
       else AACGM_v2_Convert(ilat,ilon,alt,&olat,&olon,&r,flag);
       fprintf(stdout,fmt,olat,olon);    
     }
-    fclose(fp);
+    if (fp !=stdin) fclose(fp);
   }
   return 0;
 }

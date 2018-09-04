@@ -230,7 +230,7 @@ int main(int argc,char *argv[]) {
       else fprintf(stdout,fmt,-brtp[1],brtp[2],-brtp[0],bmag);
       fprintf(stdout,fmt,-brtp[1],brtp[2],-brtp[0],bmag);
     }
-    fclose(fp);
+    if (fp !=stdin) fclose(fp);
   }
   return 0;
 }
