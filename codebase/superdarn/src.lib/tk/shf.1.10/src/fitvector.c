@@ -86,16 +86,22 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
   phi=malloc(sizeof(double)*num);
   if (phi==NULL) {
     free(x);
+    free(y);
     return NULL;
   }
   theta=malloc(sizeof(double)*num);
   if (theta==NULL) {
     free(x);
+    free(y);
+    free(phi);
     return NULL;
   }
   bmag=malloc(sizeof(double)*num);
   if (bmag==NULL) {
     free(x);
+    free(y);
+    free(phi);
+    free(theta);
     return NULL;
   }
 
@@ -103,6 +109,9 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
   if (plm==NULL) {
     free(x);
     free(y);
+    free(phi);
+    free(theta);
+    free(bmag);
     return NULL;
   }
 
@@ -159,6 +168,7 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
     free(y);
     free(phi);
     free(theta);
+    free(bmag);
     return NULL;
   }
 
@@ -276,6 +286,9 @@ double CnvMapFitVector(int num,struct CnvMapSHFVec *data,
     free(result);
     free(soltn);
     free(plm);
+    free(w);
+    free(v);
+    free(var);
     free(a);
     return -1;
   }
