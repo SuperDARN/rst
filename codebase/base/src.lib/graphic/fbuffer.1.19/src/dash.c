@@ -160,6 +160,7 @@ struct FrameBufferDash *FrameBufferMakeDashString(char *str) {
 
   if (s==-1) {
     free(ptr->p);
+    free(tmp);
     free(ptr);
     return NULL;
   }
