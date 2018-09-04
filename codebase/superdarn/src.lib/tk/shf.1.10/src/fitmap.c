@@ -83,7 +83,10 @@ int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd,
   fitvel=malloc(sizeof(struct CnvMapSHFVec)*(grd->vcnum+2*map->num_model));
   if (fitvel==NULL) return -1;
   data=malloc(sizeof(struct CnvMapSHFVec)*(grd->vcnum+2*map->num_model));
-  if (data==NULL) return -1;
+  if (data==NULL) {
+    free(fitvel);
+    return -1;
+  }
 
   if (map->coef !=NULL) free(map->coef);
   map->num_coef=CnvMapIndexLegendre(map->fit_order,map->fit_order)+2;
