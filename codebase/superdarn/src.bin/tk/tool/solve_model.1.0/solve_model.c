@@ -35,9 +35,9 @@
  *
  *
  */
-struct OptionData opt
+struct OptionData opt;
 
-;struct mdata {
+struct mdata {
   double mlat,mlon;
   double azm,vel;
   double pot;
