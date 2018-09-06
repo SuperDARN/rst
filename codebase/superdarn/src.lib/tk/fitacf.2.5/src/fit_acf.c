@@ -67,6 +67,7 @@ int fit_acf (struct complex *acf,int range,
 
     /* the following array has been added to support preprocessing of the
      acf */
+    
     int acf_stat=ACF_UNMODIFIED;
 
     /* ----------------End of declarations ----------------------------------*/
@@ -74,6 +75,7 @@ int fit_acf (struct complex *acf,int range,
     /*if the lag 0 power is less than the noise level,
         then assign label 3 to badlag and return zeros in the
         fitrange object*/
+
     if (cabs(acf[0]) < noise_lev_in) {
         for (j=0; j<prm->mplgs; j++) {
             badlag[j]=3;
@@ -93,6 +95,7 @@ int fit_acf (struct complex *acf,int range,
 
     /* initialize the table of abs(acf[k]) and log(abs(acf[k])) */
     FitACFCkRng(range, badlag, badsmp, prm);
+    
 
     /* Save the original ACF in a new variable so we can try some
          preprocessing on it.
@@ -227,7 +230,7 @@ int fit_acf (struct complex *acf,int range,
     t0 =  prm->mpinc * 1.0e-6;
     t2 = t0 * t0;
     t4 = t2 * t2;
-
+    
     /* calculate all the residual phases */
     /* if calc_phi_res returns a bad status abort the fit */
     s = calc_phi_res(acf, badlag, phi_res, prm->mplgs);
@@ -236,7 +239,6 @@ int fit_acf (struct complex *acf,int range,
                     &phi_k, &w, &pwr, &wt, &wt2, &wp, &bad_pwr);
         return 2;
     }
-
 
     if (!xflag) {
         /*if it's a regular fit (not XCF)*/
@@ -250,7 +252,6 @@ int fit_acf (struct complex *acf,int range,
         sum_phi = phi_loc * w[0] * w[0];
         omega_loc = xomega;
     }
-
 
     /*  The preliminaries are now over.
     Now start the fitting process */

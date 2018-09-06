@@ -532,18 +532,20 @@ void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fi
     elev_data->interfer_x = fit_prms->interfer_x;
     elev_data->interfer_y = fit_prms->interfer_y;
     elev_data->interfer_z = fit_prms->interfer_z;
+    
     elev_data->phidiff = fit_prms->phidiff;
     elev_data->maxbeam = fit_prms->maxbeam;
     elev_data->bmsep = fit_prms->bmsep;
     elev_data->bmnum = fit_prms->bmnum;
     elev_data->tfreq = fit_prms->tfreq;
     elev_data->tdiff = fit_prms->tdiff;
-    
+         
 
     fit_elev_array[range_node->range].low = fit_func->elevation_method(elev_data,range_node->elev_fit->a-range_node->elev_fit->sigma_2_a);
     fit_elev_array[range_node->range].high = fit_func->elevation_method(elev_data,range_node->elev_fit->a+range_node->elev_fit->sigma_2_a);
     fit_elev_array[range_node->range].normal = fit_func->elevation_method(elev_data,range_node->elev_fit->a);
-    
+    fprintf(stderr,"normal: %f\n",fit_elev_array[range_node->range].normal);
+
     free(elev_data);
 
     /*

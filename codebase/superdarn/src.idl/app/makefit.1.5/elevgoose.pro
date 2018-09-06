@@ -152,7 +152,7 @@ function FitACFElevGoose,prm,range,phi0
 
     if ((abs(sn2_eps) gt 1.0) or (sn2_eps lt 0.0)) then begin
       dchi = dchi - (2*!DPI);
-      print,'changing dchi by -2pi.',dchi_old,dchi
+      ; print,'changing dchi by -2pi.',dchi_old,dchi
     endif
   endwhile
 

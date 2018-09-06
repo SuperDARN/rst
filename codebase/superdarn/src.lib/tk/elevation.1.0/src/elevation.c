@@ -53,9 +53,6 @@ double elevation(struct elevation_data *elev_data,double phi0) {
   /* +1 if interferometer antenna is in front of main antenna, -1 otherwise*/
 
   /* calculate the values that don't change if this hasn't already been done. */
-
-  fprintf(stderr,"Elevation Code\n");
-
   if (antenna_separation == 0.0) {
     antenna_separation= sqrt(elev_data->interfer_y*elev_data->interfer_y + 
 			                 elev_data->interfer_x*elev_data->interfer_x +

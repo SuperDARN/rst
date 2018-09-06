@@ -32,7 +32,6 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
 #include "rmath.h"
 #include "badsmp.h"
 #include "fitblk.h"
@@ -186,22 +185,22 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
 
   badlag = malloc(sizeof(int)*iptr->prm.nrang*iptr->prm.mplgs);
   if (badlag==NULL){
-    fprintf(stderr,"Unable to allocate memory for badlag\n");
-    return -1;
+    fprintf(stderr,"Error: Unable to allocate memory for badlag. Error code: %d\n");
+    exit(-1);
   }
 
   pwrd = malloc(sizeof(double)*iptr->prm.nrang);
-  if (pwrd==NULL) {
-    fprintf(stderr,"Unable to allocate memory for pwrd\n");
+  if (pwrd==NULL ) {
+    fprintf(stderr,"Error: Unable to allocate memory for pwrd. Error code: %d\n");
     free(badlag);
-    return -1;
+    exit(-1);
   }
   pwrt = malloc(sizeof(double)*iptr->prm.nrang);
-  if (pwrt==NULL) {
-    fprintf(stderr,"Unable to allocate memory for pwrt\n");
+  if (pwrt==NULL ) {
+    fprintf(stderr,"Error:Unable to allocate memory for pwrt. Error code: %d\n");
     free(badlag);
     free(pwrd);
-    return -1;
+    exit(-1);
   }
 
   if (iptr->prm.offset==0) FitACFBadlags(&iptr->prm,&badsmp);
@@ -212,7 +211,7 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
   s = calc_skynoise(iptr, nptr, &mnpwr, pwrd, pwrt);
   /* How is s ever not 0 since 0 is returned from the function? -KTS 20150430 */
   if (s == -1){
-  /* Should badlag, pwrd, and pwrt allocations be freed here? -KTS 20150430 */
+  /* TODO: Should badlag, pwrd, and pwrt allocations be freed here? -KTS 20150430 */
     return -1;
   }
   /* Now determine the level which will be used as the cut-off power
@@ -236,6 +235,7 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
     ptr[k].qflg = fit_acf(&iptr->acfd[k*iptr->prm.mplgs], k+1,
                           &badlag[k*iptr->prm.mplgs],&badsmp,
                           lag_lim,&iptr->prm,noise_pwr,0,0.0,&ptr[k]);
+
     xomega=ptr[k].v;
     if (ptr[k].qflg == 1) {
       /* several changes have been made here to
@@ -259,10 +259,9 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
       */
 
       /* convert power from natural log to dB */
-
+ 
       ptr[k].p_l = ptr[k].p_l*LN_TO_LOG - skylog;
       ptr[k].p_s = ptr[k].p_s*LN_TO_LOG - skylog;
-
       ptr[k].p_l_err = (ptr[k].p_l_err == HUGE_VAL) ?
                                    HUGE_VAL :
                                    ptr[k].p_l_err*LN_TO_LOG;
@@ -270,7 +269,7 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
       ptr[k].p_s_err = (ptr[k].p_s_err == HUGE_VAL) ?
                                    HUGE_VAL :
                                    ptr[k].p_s_err*LN_TO_LOG;
-
+      
       /* convert Doppler frequency to velocity */
 
       ptr[k].v = iptr->prm.vdir*freq_to_vel*ptr[k].v;
@@ -279,8 +278,8 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
 
       if (ptr[k].v > (freq_to_vel* (PI* 1000.0* 1000.0)/ iptr->prm.mpinc))
            ptr[k].qflg= 8;
-
-      ptr[k].v_err = (ptr[k].v_err == HUGE_VAL) ?
+      
+     ptr[k].v_err = (ptr[k].v_err == HUGE_VAL) ?
           HUGE_VAL :
           freq_to_vel*ptr[k].v_err;
 
@@ -294,13 +293,14 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
       /* sigma is returned as sigma**2 so check the sign for validity
            if sigma**2 is negative take sqrt of the abs and transfer the sign */
 
-      ptr[k].w_s = (ptr[k].w_s >= 0) ? sqrt(ptr[k].w_s) : -sqrt(-ptr[k].w_s);
+      /* TODO this is bad syntax, need to clean it up */
+      
+     ptr[k].w_s = (ptr[k].w_s >= 0) ? sqrt(ptr[k].w_s) : -sqrt(-ptr[k].w_s);
 
-
-      if ((ptr[k].w_s !=0.0) && (ptr[k].w_s_err != HUGE_VAL))
-          ptr[k].w_s_err = 0.5*ptr[k].w_s_err/fabs(ptr[k].w_s);
-      else
-          ptr[k].w_s_err=HUGE_VAL;
+     if ((ptr[k].w_s !=0.0) && (ptr[k].w_s_err != HUGE_VAL))
+         ptr[k].w_s_err = 0.5*ptr[k].w_s_err/fabs(ptr[k].w_s);
+     else
+         ptr[k].w_s_err=HUGE_VAL;
 
       ptr[k].w_s = 3.33*freq_to_vel*ptr[k].w_s;
       ptr[k].w_s_err = (ptr[k].w_s_err == HUGE_VAL) ?
@@ -335,7 +335,7 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
                                       HUGE_VAL :
                                       xptr[k].p_s_err*LN_TO_LOG;
 
-      /* convert Doppler frequency to velocity */
+     /* convert Doppler frequency to velocity */
 
       xptr[k].v = iptr->prm.vdir*freq_to_vel*xptr[k].v;
       xptr[k].v_err = (xptr[k].v_err == HUGE_VAL) ?
@@ -372,10 +372,10 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
 
       /* changes which array is first */
       elev_data = malloc(sizeof(struct elevation_data));
-      if (elev_data == NULL || errno != 0)
+      if (elev_data == NULL)
       {
-          fprintf(stderr,"Error: Elevation data structure could not be allocated. %d", errno);
-          exit(errno);
+          fprintf(stderr,"Error: Elevation data structure could not be allocated. %d\n");
+          exit(-1);
       }
 
       elev_data->interfer_x = iptr->prm.interfer[0];
@@ -387,13 +387,13 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
       elev_data->bmsep = iptr->prm.bmsep;
       elev_data->tfreq = iptr->prm.tfreq;
       elev_data->tdiff = iptr->prm.tdiff;
-
-
+      
       elv[k].normal = fit_func->elevation_method(elev_data, xptr[k].phi0);
       elv[k].low    = fit_func->elevation_method(elev_data, xptr[k].phi0+xptr[k].phi0_err);
       elv[k].high   = fit_func->elevation_method(elev_data, xptr[k].phi0-xptr[k].phi0_err);
       fprintf(stderr,"normal: %f\n",elv[k].normal);
       free(elev_data);
+      
       /* range = 0.15*(iptr->prm.lagfr + iptr->prm.smsep*(k-1)); - this is never used EGT */
 /*      if (iptr->prm.old_elev) {
 */        /* use old elevation angle routines */
