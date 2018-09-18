@@ -91,6 +91,8 @@ double noise_acf(double mnpwr,struct FitPrm *ptr,
 	  n_acf[i].x = 0;
 	  n_acf[i].y = 0;
 	}
+    free(np);
+    free(bad);
     return 0.0;
   }
 
@@ -110,5 +112,7 @@ double noise_acf(double mnpwr,struct FitPrm *ptr,
 	P = P + lag_power(&n_acf[i]);
   }
   P = P/(ptr->mplgs - 1);
+  free(np);
+  free(bad);
   return P;
 }
