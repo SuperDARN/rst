@@ -338,7 +338,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"gs",'x',&gsflg);
   OptionAdd(&opt,"both",'x',&bthflg);
 
-  OptionAdd(&opt,"intertial",'x',&iflg);
+  OptionAdd(&opt,"inertial",'x',&iflg);
 
   OptionAdd(&opt,"rpf",'x',&port_flag);
 
