@@ -553,7 +553,7 @@ void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fi
     imag = fit_prms->xcfd[range_node->range * fit_prms->mplgs][1];
     phi0_normal = atan2(imag,real);
 
-    fit_elev_array[range_node->range].low = fit_func->elevation_method(elev_data,sqrt(range_node->elev_fit->sigma_2_a));
+    fit_elev_array[range_node->range].low = fit_func->elevation_error_method(elev_data,range_node->elev_fit->sigma_2_a,range_node->elev_fit->a);
     fit_elev_array[range_node->range].high = fit_func->elevation_method(elev_data,range_node->elev_fit->a);
     fit_elev_array[range_node->range].normal = fit_func->elevation_method(elev_data,phi0_normal);
     fprintf(stderr,"low elevation: %f\n",fit_elev_array[range_node->range].low);

@@ -268,7 +268,8 @@ int main(int argc,char *argv[]) {
   else 
   {
       fprintf(stderr,"Run elevation 2 method\n");
-      fit_func->elevation_method = &elevation_v2; /*TODO: rename this method, either obsolete elevation or we callit sheppard_elevation*/
+      fit_func->elevation_method = &elevation_v2; /* TODO: rename this method, maybe sheppard_elevation? */
+      fit_func->elevation_error_method = &elevation_error; 
   }
 
 

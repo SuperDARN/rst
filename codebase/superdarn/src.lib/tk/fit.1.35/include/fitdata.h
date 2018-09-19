@@ -48,7 +48,7 @@ struct FitData {
   struct FitElv  *elv;
 };
 
-/*Data used to calculate elevations*/
+/*Data used to calculate elevation angles and errors*/
 struct elevation_data {
     double interfer_x;
     double interfer_y;
@@ -64,10 +64,18 @@ struct elevation_data {
 
 };
 
-
-
+/* struct that contains function points to methods/algorithms 
+ * that the fitacf algorithm may use. This allow flexbility and minimal 
+ * implementation to add a new algorithm in for any possible fitting 
+ * algorithm. The elevation data structure also allows a set struct 
+ * that elevation algorithms must accept makeing so developers being consistent 
+ * with input values.
+ * example) elevation angles: elevation, elev_goose, or elevation_v2
+ * future might be power and phase calculations :) */
 struct fitacf_functions {
     double (*elevation_method)(struct elevation_data*, double);
+    double (*elevation_error_method)(struct elevation_data*, double, double);
+    
 };
 
 
