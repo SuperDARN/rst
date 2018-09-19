@@ -387,11 +387,16 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
       elev_data->bmsep = iptr->prm.bmsep;
       elev_data->tfreq = iptr->prm.tfreq;
       elev_data->tdiff = iptr->prm.tdiff;
-      
+      elev_data->bmnum = iptr->prm.bmnum;
+
       elv[k].normal = fit_func->elevation_method(elev_data, xptr[k].phi0);
-      elv[k].low    = fit_func->elevation_method(elev_data, xptr[k].phi0+xptr[k].phi0_err);
-      elv[k].high   = fit_func->elevation_method(elev_data, xptr[k].phi0-xptr[k].phi0_err);
+      elv[k].low    = fit_func->elevation_method(elev_data, xptr[k].phi0-xptr[k].phi0_err);
+      elv[k].high   = fit_func->elevation_method(elev_data, xptr[k].phi0+xptr[k].phi0_err);
+      fprintf(stderr,"low: %f\n",elv[k].low);
+      fprintf(stderr,"high: %f\n",elv[k].high);
       fprintf(stderr,"normal: %f\n",elv[k].normal);
+
+      
       free(elev_data);
       
       /* range = 0.15*(iptr->prm.lagfr + iptr->prm.smsep*(k-1)); - this is never used EGT */

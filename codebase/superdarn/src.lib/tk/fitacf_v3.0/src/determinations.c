@@ -517,7 +517,11 @@ void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fi
     double real,imag;
     double psi_uncorrected_unfitted;
     double xcf0_p;
- */ struct elevation_data *elev_data;
+ */ 
+    double real,imag;
+    double phi0_normal;
+    struct elevation_data *elev_data;
+    
     elev_data = malloc(sizeof(struct elevation_data));
 
     if (elev_data == NULL || errno != 0)
@@ -539,13 +543,22 @@ void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fi
     elev_data->bmnum = fit_prms->bmnum;
     elev_data->tfreq = fit_prms->tfreq;
     elev_data->tdiff = fit_prms->tdiff;
-         
+    
+    /*
+    phi0_low = range_node->elev_fit->a-range_node->elev_fit->sigma_2_a;
+    phi0_high = range_node->elev_fit->a+range_node->elev_fit->sigma_2_a;
+    phi0_normal = range_node->elev_fit->a;
+    */
+    real = fit_prms->xcfd[range_node->range * fit_prms->mplgs][0];
+    imag = fit_prms->xcfd[range_node->range * fit_prms->mplgs][1];
+    phi0_normal = atan2(imag,real);
 
-    fit_elev_array[range_node->range].low = fit_func->elevation_method(elev_data,range_node->elev_fit->a-range_node->elev_fit->sigma_2_a);
-    fit_elev_array[range_node->range].high = fit_func->elevation_method(elev_data,range_node->elev_fit->a+range_node->elev_fit->sigma_2_a);
-    fit_elev_array[range_node->range].normal = fit_func->elevation_method(elev_data,range_node->elev_fit->a);
-    fprintf(stderr,"normal: %f\n",fit_elev_array[range_node->range].normal);
-
+    fit_elev_array[range_node->range].low = fit_func->elevation_method(elev_data,sqrt(range_node->elev_fit->sigma_2_a));
+    fit_elev_array[range_node->range].high = fit_func->elevation_method(elev_data,range_node->elev_fit->a);
+    fit_elev_array[range_node->range].normal = fit_func->elevation_method(elev_data,phi0_normal);
+    fprintf(stderr,"low elevation: %f\n",fit_elev_array[range_node->range].low);
+    fprintf(stderr,"high elevation: %f\n",fit_elev_array[range_node->range].high);
+    fprintf(stderr,"normal elevation: %f\n",fit_elev_array[range_node->range].normal);
     free(elev_data);
 
     /*

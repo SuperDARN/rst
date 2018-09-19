@@ -51,25 +51,25 @@ double elevation(struct elevation_data *elev_data,double phi0) {
   /* elevation angle correction, if antennas are at different heights; rad */
   static double phi_sign= 0;
   /* +1 if interferometer antenna is in front of main antenna, -1 otherwise*/
-
   /* calculate the values that don't change if this hasn't already been done. */
-  if (antenna_separation == 0.0) {
     antenna_separation= sqrt(elev_data->interfer_y*elev_data->interfer_y + 
 			                 elev_data->interfer_x*elev_data->interfer_x +
 	                         elev_data->interfer_z*elev_data->interfer_z);
     elev_corr= elev_data->phidiff* asin( elev_data->interfer_z/ antenna_separation);
+    fprintf(stderr,"1st elev_corr: %f\n",elev_corr);
     if (elev_data->interfer_y > 0.0) /* interferometer in front of main antenna */
       phi_sign= 1.0;
     else {                           /* interferometer behind main antenna */
       phi_sign= -1.0;
       elev_corr= -elev_corr;
     }
-  }
   offset=elev_data->maxbeam/2.0-0.5;
-  phi= elev_data->bmsep*(elev_data->bmnum - offset)* PI/ 180.0;
+  
+  phi= elev_data->bmsep *( elev_data->bmnum - offset )* PI/ 180.0;
+  
   c_phi= cos( phi);
-  k= 2 * PI * elev_data->tfreq * 1000.0/C;
 
+  k= 2 * PI * elev_data->tfreq * 1000.0/C;
   /* the phase difference phi0 is between -pi and +pi and gets positive,  */
   /* if the signal from the interferometer antenna arrives earlier at the */
   /* receiver than the signal from the main antenna. */
@@ -91,19 +91,26 @@ double elevation(struct elevation_data *elev_data,double phi0) {
   /* change phi0 by multiples of twopi, until it is in the range   */
   /* (chi_max - twopi) to chi_max (interferometer in front)        */
   /* or chi_max to (chi_max + twopi) (interferometer in the back)  */
+  
 
   phi_temp= phi0 + 2*PI* floor( (chi_max - phi0)/ (2*PI));
+
   if (phi_sign < 0.0) phi_temp= phi_temp + (2*PI);
 
+
   /* subtract the cable effect */
+  
   psi= phi_temp - dchi_cable;
   theta= psi/ (k* antenna_separation);
   theta= (c_phi* c_phi - theta* theta);
+
   /* set elevation angle to 0 for out of range values */
-
-  if ( (theta < 0.0) || (fabs( theta) > 1.0) ) theta= - elev_corr;
+  
+  if ( (theta < 0.0) || (fabs( theta) > 1.0) )
+      theta= - elev_corr;
   else theta= asin( sqrt( theta));
-
+  fprintf(stderr,"theta: %f\n",theta);  
+  fprintf(stderr,"elev_corr: %f\n",elev_corr);
   return 180.0* (theta + elev_corr)/ PI; /* in degree */
 }
 

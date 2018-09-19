@@ -54,11 +54,12 @@ struct elevation_data {
     double interfer_y;
     double interfer_z;
 
+    int tfreq;
+    int maxbeam;
+    int bmnum;
+
     double phidiff;
-    double maxbeam;
     double bmsep;
-    double bmnum; 
-    double tfreq;
     double tdiff;
 
 };
