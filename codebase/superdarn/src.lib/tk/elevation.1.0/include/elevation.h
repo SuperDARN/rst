@@ -39,7 +39,10 @@
 #include "fitdata.h"
 
 double elevation_v2(struct elevation_data *, double psi_obs);
+
 double elevation(struct elevation_data *, double phi0);
+
 double elev_goose(struct elevation_data *, double phi0);
 
+double elevation_error(struct elevation_data *, double sigma_2_a, double slope_a);
 #endif
