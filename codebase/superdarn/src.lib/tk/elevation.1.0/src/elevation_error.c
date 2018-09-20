@@ -45,12 +45,12 @@ double elevation_error(struct elevation_data *elev_data, double sigma_2_a, doubl
     double wave_num;
     double phi_0, c_phi_0;
     double theta;
+    double phase_diff_max;
 
     int phi_sign;
     
     /*Elevation error calculation*/
     antenna_sep = sqrt(elev_data->interfer_x*elev_data->interfer_x + elev_data->interfer_y*elev_data->interfer_y + elev_data->interfer_z*elev_data->interfer_z);
-
     elev_corr = elev_data->phidiff * asin(elev_data->interfer_z/antenna_sep);
     if (elev_data->interfer_y > 0.0)
     {
@@ -66,12 +66,13 @@ double elevation_error(struct elevation_data *elev_data, double sigma_2_a, doubl
 
     phi_0 = elev_data->bmsep * (elev_data->bmnum - azimuth_offset) * M_PI/180;
     c_phi_0 = cos(phi_0);
-
     wave_num = 2 * M_PI * elev_data->tfreq * 1000/C; /* C - speed of light m/s */
 
     cable_offset = -2 * M_PI * elev_data->tfreq * 1000 * elev_data->tdiff * 1.0e-6;
 
-    psi_uncorrected = slope_a + 2 * M_PI * floor((slope_a)/(2*M_PI));
+    phase_diff_max = phi_sign * wave_num * antenna_sep * c_phi_0 + cable_offset;
+
+    psi_uncorrected = slope_a + 2 * M_PI * floor((phase_diff_max-slope_a)/(2*M_PI));
 
     if(phi_sign < 0) 
         psi_uncorrected += 2 * M_PI;

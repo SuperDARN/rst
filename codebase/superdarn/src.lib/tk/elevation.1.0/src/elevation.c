@@ -56,7 +56,6 @@ double elevation(struct elevation_data *elev_data,double phi0) {
 			                 elev_data->interfer_x*elev_data->interfer_x +
 	                         elev_data->interfer_z*elev_data->interfer_z);
     elev_corr= elev_data->phidiff* asin( elev_data->interfer_z/ antenna_separation);
-    fprintf(stderr,"1st elev_corr: %f\n",elev_corr);
     if (elev_data->interfer_y > 0.0) /* interferometer in front of main antenna */
       phi_sign= 1.0;
     else {                           /* interferometer behind main antenna */
@@ -109,8 +108,6 @@ double elevation(struct elevation_data *elev_data,double phi0) {
   if ( (theta < 0.0) || (fabs( theta) > 1.0) )
       theta= - elev_corr;
   else theta= asin( sqrt( theta));
-  fprintf(stderr,"theta: %f\n",theta);  
-  fprintf(stderr,"elev_corr: %f\n",elev_corr);
   return 180.0* (theta + elev_corr)/ PI; /* in degree */
 }
 

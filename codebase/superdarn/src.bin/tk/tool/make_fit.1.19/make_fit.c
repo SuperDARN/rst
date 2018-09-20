@@ -258,11 +258,15 @@ int main(int argc,char *argv[]) {
       {
             fprintf(stderr,"Run elevation goose method\n");
             fit_func->elevation_method = &elev_goose;
+            fit_func->elevation_error_method = &elevation_error; 
+
       }
       else
       {
           fprintf(stderr,"Run elevation method\n");
           fit_func->elevation_method = &elevation;
+          fit_func->elevation_error_method = &elevation_error; 
+
       }
   }
   else 
