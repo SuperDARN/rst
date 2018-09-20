@@ -68,6 +68,7 @@
 #include "cfitdata.h"
 #include "cfitread.h"
 #include "rpos.h"
+#include "aacgmlib_v2.h"
 
 #include "errstr.h"
 #include "hlpstr.h"
