@@ -86,6 +86,12 @@ double strtime(char *text) {
 
 }
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: aacgmeval --help\n");
+  return(-1);
+}
+
 int main(int argc,char *argv[]) {
   int arg;
  
@@ -125,7 +131,11 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"t",'t',&tmetxt);              /* Time for AACGM_v2 transformation */
   OptionAdd(&opt,"d",'t',&dtetxt);              /* Date for AACGM_v2 transformation */
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+
+  if (arg==-1) {
+    exit(-1);
+  }
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);

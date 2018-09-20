@@ -57,7 +57,8 @@ int RawEncode(struct DataMap *ptr,struct RadarParm *prm,struct RawData *raw) {
   DataMapAddScalar(ptr,"thr",DATAFLOAT,&raw->thr);
 
   snum=0;
-  tx=(int) ((raw->thr*prm->noise.search)/2.0);
+  /*tx=(int) ((raw->thr*prm->noise.search)/2.0);*/
+  tx=0;
 
   for (c=0;c<prm->nrang;c++) {
     if (raw->pwr0[c]<tx) continue;

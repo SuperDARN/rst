@@ -226,7 +226,8 @@ function RawWrite,unit,prm,raw
   s=DataMapMakeScalar('rawacf.revision.minor',raw.revision.minor,sclvec)
   s=DataMapMakeScalar('thr',raw.thr,sclvec)
 
-  tx=floor((raw.thr*prm.noise.search)/2.0)
+  ;tx=floor((raw.thr*prm.noise.search)/2.0)
+  tx=0
 
   slist=fix(where(raw.pwr0[0:prm.nrang-1] ge tx,count))
 

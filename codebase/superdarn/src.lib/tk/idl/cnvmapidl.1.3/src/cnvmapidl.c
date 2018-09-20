@@ -240,6 +240,7 @@ void IDLCopyCnvMapPrmToIDL(struct CnvMapData *map,struct GridData *grd,
 
   iprm->Vx=map->Vx;
   iprm->tilt=map->tilt;
+  iprm->Kp=map->Kp;
 
   if (map->imf_model[0] !=NULL) {
      strncpy(tmp,map->imf_model[0],64);
@@ -368,25 +369,26 @@ struct CnvMapIDLPrm *IDLMakeCnvMapPrm(IDL_VPTR *vptr) {
     {"BZ",0,(void *) IDL_TYP_DOUBLE}, /* 16 */
     {"VX",0,(void *) IDL_TYP_DOUBLE}, /* 17 */
     {"TILT",0,(void *) IDL_TYP_DOUBLE}, /* 18 */
-    {"IMF_MODEL",mdim,(void *) IDL_TYP_STRING}, /* 19 */
-    {"HEMISPHERE",0,(void *) IDL_TYP_INT}, /* 20 */
-    {"NOIGRF",0,(void *) IDL_TYP_INT}, /* 21 */
-    {"FIT_ORDER",0,(void *) IDL_TYP_INT}, /* 22 */
-    {"LATMIN",0,(void *) IDL_TYP_FLOAT}, /* 23 */
-    {"COEFNUM",0,(void *) IDL_TYP_LONG}, /* 24 */
-    {"CHI_SQR",0,(void *) IDL_TYP_DOUBLE}, /* 25 */
-    {"CHI_SQR_DAT",0,(void *) IDL_TYP_DOUBLE}, /* 26 */
-    {"RMS_ERR",0,(void *) IDL_TYP_DOUBLE}, /* 27 */
-    {"LON_SHFT",0,(void *) IDL_TYP_FLOAT}, /* 28 */
-    {"LAT_SHFT",0,(void *) IDL_TYP_FLOAT}, /* 29 */
-    {"MLT",0, NULL}, /* 30 */
-    {"POT_DROP",0,(void *) IDL_TYP_DOUBLE}, /* 31 */
-    {"POT_DROP_ERR",0,(void *) IDL_TYP_DOUBLE}, /* 32 */
-    {"POT_MAX",0,(void *) IDL_TYP_DOUBLE}, /* 33 */
-    {"POT_MAX_ERR",0,(void *) IDL_TYP_DOUBLE}, /* 34 */
-    {"POT_MIN",0,(void *) IDL_TYP_DOUBLE}, /* 35 */
-    {"POT_MIN_ERR",0,(void *) IDL_TYP_DOUBLE}, /* 36 */
-    {"BNDNUM",0,(void *) IDL_TYP_LONG}, /* 37 */
+    {"KP",0,(void *) IDL_TYP_DOUBLE}, /* 19 */
+    {"IMF_MODEL",mdim,(void *) IDL_TYP_STRING}, /* 20 */
+    {"HEMISPHERE",0,(void *) IDL_TYP_INT}, /* 21 */
+    {"NOIGRF",0,(void *) IDL_TYP_INT}, /* 22 */
+    {"FIT_ORDER",0,(void *) IDL_TYP_INT}, /* 23 */
+    {"LATMIN",0,(void *) IDL_TYP_FLOAT}, /* 24 */
+    {"COEFNUM",0,(void *) IDL_TYP_LONG}, /* 25 */
+    {"CHI_SQR",0,(void *) IDL_TYP_DOUBLE}, /* 26 */
+    {"CHI_SQR_DAT",0,(void *) IDL_TYP_DOUBLE}, /* 27 */
+    {"RMS_ERR",0,(void *) IDL_TYP_DOUBLE}, /* 28 */
+    {"LON_SHFT",0,(void *) IDL_TYP_FLOAT}, /* 29 */
+    {"LAT_SHFT",0,(void *) IDL_TYP_FLOAT}, /* 30 */
+    {"MLT",0, NULL}, /* 31 */
+    {"POT_DROP",0,(void *) IDL_TYP_DOUBLE}, /* 32 */
+    {"POT_DROP_ERR",0,(void *) IDL_TYP_DOUBLE}, /* 33 */
+    {"POT_MAX",0,(void *) IDL_TYP_DOUBLE}, /* 34 */
+    {"POT_MAX_ERR",0,(void *) IDL_TYP_DOUBLE}, /* 35 */
+    {"POT_MIN",0,(void *) IDL_TYP_DOUBLE}, /* 36 */
+    {"POT_MIN_ERR",0,(void *) IDL_TYP_DOUBLE}, /* 37 */
+    {"BNDNUM",0,(void *) IDL_TYP_LONG}, /* 38 */
     
     {0}};
 
@@ -394,7 +396,7 @@ struct CnvMapIDLPrm *IDLMakeCnvMapPrm(IDL_VPTR *vptr) {
  
   cnvmapprm[0].type=IDL_MakeStruct("CNVMAPTIME",ttime);
   cnvmapprm[1].type=IDL_MakeStruct("CNVMAPTIME",ttime);
-  cnvmapprm[30].type=IDL_MakeStruct("CNVMAPMLT",tmlt);
+  cnvmapprm[31].type=IDL_MakeStruct("CNVMAPMLT",tmlt);
 
   s=IDL_MakeStruct("CNVMAPPRM",cnvmapprm);
            
