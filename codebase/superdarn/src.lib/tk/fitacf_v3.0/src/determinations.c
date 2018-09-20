@@ -556,9 +556,6 @@ void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fi
     fit_elev_array[range_node->range].low = fit_func->elevation_error_method(elev_data,range_node->elev_fit->sigma_2_a,range_node->elev_fit->a);
     fit_elev_array[range_node->range].high = fit_func->elevation_method(elev_data,range_node->elev_fit->a);
     fit_elev_array[range_node->range].normal = fit_func->elevation_method(elev_data,phi0_normal);
-    fprintf(stderr,"low elevation: %f\n",fit_elev_array[range_node->range].low);
-    fprintf(stderr,"high elevation: %f\n",fit_elev_array[range_node->range].high);
-    fprintf(stderr,"normal elevation: %f\n",fit_elev_array[range_node->range].normal);
     free(elev_data);
 
     /*

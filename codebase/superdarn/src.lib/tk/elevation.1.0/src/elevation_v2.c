@@ -37,7 +37,6 @@ double elevation_v2(struct elevation_data *elev_data, double psi_obs)
 
   static double d = -9999.; /* separation of antenna arrays [m]              */
   /* calculate the values that don't change if this hasn't already been done. */
-
   if (d < -999.) {  /* SGS check this; does this mean a change won't register */
     X   = elev_data->interfer_x;
     Y   = elev_data->interfer_y;
