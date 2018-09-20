@@ -271,10 +271,13 @@ end
 ;+-----------------------------------------------------------------------------
 ;
 
-function cnvcoord_v2, in1,in2,in3, geo=geo, trace=trace, $
+function cnvcoord_v2, in1,in2,in3, geo=geo, trace=trace, gcentric=gcentric, $
                             allow_trace=allow_trace, bad_idea=bad_idea, $
-                            eps=eps, verbose=verbose, debug=debug, $
-                            use_geopack=use_geopack, gcentric=gcentric
+                            verbose=verbose
+; SGS: these keywords work in the IDL version but not with the DLMS. It is
+;      is possible to use them without the DLMS
+;                            eps=eps, debug=debug, $
+;                            use_geopack=use_geopack
 
   common AACGM_v2_Com
   common IGRF_v2_Com
@@ -324,9 +327,10 @@ function cnvcoord_v2, in1,in2,in3, geo=geo, trace=trace, $
     outvec  = invec
     ret_val = AACGM_v2_Convert(invec[0],invec[1],invec[2], olat,olon,rad, $
                                 geo=geo, trace=trace, bad_idea=bad_idea, $
-                                allow_trace=allow_trace, eps=eps, $
-                                gcentric=gcentric, $
-                                verbose=verbose, debug=debug)
+                                allow_trace=allow_trace, gcentric=gcentric, $
+                                verbose=verbose)
+; SGS: comment out to work with DLMs that do not support these keywords
+;                                eps=eps, debug=debug)
     outvec[0] = olat
     outvec[1] = olon
     outvec[2] = rad

@@ -57,6 +57,12 @@ struct RadarNetwork *network;
 struct Radar *radar;
 struct RadarSite *site;
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: dattorawacf --help\n");
+  return(-1);
+}
+
 int main(int argc,char *argv[]) {
 
   unsigned char help=0;
@@ -120,8 +126,11 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"t",'f',&thr);
   OptionAdd(&opt,"vb",'x',&vb);
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
+  if (arg==-1) {
+    exit(-1);
+  }
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
@@ -144,6 +153,10 @@ int main(int argc,char *argv[]) {
     exit(-1);
   }
 
+  if (thr !=-1) {
+    fprintf(stderr,"Error: the -t threshold option has been deprecated.\n");
+    exit(-1);
+  }
 
   rawfp=OldRawOpen(argv[arg],NULL);
 

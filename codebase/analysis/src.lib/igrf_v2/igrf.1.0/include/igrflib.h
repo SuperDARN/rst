@@ -1,7 +1,7 @@
 #ifndef _IGRFLIB_
 #define _IGRFLIB_
 
-#define IGRF_FIRST_EPOCH 1900
+#define IGRF_FIRST_EPOCH 1590
 #define IGRF_LAST_EPOCH 2015
 /* SGS using IGRF_COEFFS environment variable */
 /*#define IGRF_FILE "igrf12coeffs.txt"*/  /* current IGRF model */
@@ -14,7 +14,7 @@
 #define M_PI 3.14159265358979323846 /* define M_PI if not already */
 #endif
 
-#define MAXSTR 200                    /* maximum string length */
+#define MAXSTR 800                    /* maximum string length */
 #define MAXNYR 100                    /* maximum number of epochs */
 #define IGRF_ORDER  13                     /* maximum order of SH expansion */
 #define IGRF_MAXK   ((IGRF_ORDER+1)*(IGRF_ORDER+1)) /* # of SH coefficients */

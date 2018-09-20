@@ -58,6 +58,8 @@
 #include "rmap.h"
 #include "aacgm.h"
 #include "mlt.h"
+#include "aacgmlib_v2.h"
+#include "mlt_v2.h"
 
 #include "radar.h"
 #include "calcvector.h"
@@ -284,6 +286,12 @@ int stream(char *buf,int sze,void *data) {
   return 0;
 } 
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: vec_plot --help\n");
+  return(-1);
+}
+
 int main(int argc,char *argv[]) {
 
 
@@ -349,6 +357,11 @@ int main(int argc,char *argv[]) {
   float marg[8]={0,0,0,0};
   int c=0;
 
+  int old_aacgm=0;
+
+  /* function pointer for MLT */
+  double (*MLTCnv)(int, int, double);
+
   int yr,mo,dy,hr,mt;
   double sc;
   double mlt;
@@ -406,8 +419,13 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"txtcol",'t',&txtcol_txt);
   OptionAdd(&opt,"grdcol",'t',&grdcol_txt);
 
+  OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);
+
   if (argc>1) {
-    arg=OptionProcess(1,argc,argv,&opt,NULL);  
+    arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+    if (arg==-1) {
+      exit(-1);
+    }
     if (cfname !=NULL) { /* load the configuration file */
       do {
         fp=fopen(cfname,"r");
@@ -416,7 +434,12 @@ int main(int argc,char *argv[]) {
         cfname=NULL;
         optf=OptionProcessFile(fp);
         if (optf !=NULL) {
-          arg=OptionProcess(0,optf->argc,optf->argv,&opt,NULL);
+          arg=OptionProcess(0,optf->argc,optf->argv,&opt,rst_opterr);
+          if (arg==-1) {
+            fclose(fp);
+            OptionFreeFile(optf);
+            exit(-1);
+          }
           OptionFreeFile(optf);
         }   
         fclose(fp);
@@ -448,6 +471,9 @@ int main(int argc,char *argv[]) {
   if (txtcol_txt !=NULL) txtcol=PlotColorStringRGBA(txtcol_txt);
   if (grdcol_txt !=NULL) grdcol=PlotColorStringRGBA(grdcol_txt);
 
+  /* set function pointer to compute MLT or MLT_v2 */
+  if (old_aacgm) MLTCnv = &MLTConvertYrsec;
+  else           MLTCnv = &MLTConvertYrsec_v2;
 
   if (npanel==0) npanel=argc-arg; 
   if (logo) tpad=20;
@@ -606,10 +632,13 @@ int main(int argc,char *argv[]) {
       }
 
       yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,sc);
+
+      if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc); /* required */
+
       if (mlon_av_cnt !=0) {
         mlon_av_val=mlon_av_val/mlon_av_cnt;
 
-        mlt=12.0-MLTConvertYrsec(yr,yrsec,mlon_av_val);
+        mlt=12.0-(*MLTCnv)(yr,yrsec,mlon_av_val);
         if (mlt<0) mlt=24+mlt;
         if (mlt>24) mlt=mlt-24;
 
