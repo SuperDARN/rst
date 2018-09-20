@@ -41,6 +41,12 @@
 
 struct OptionData opt;
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: xmltoppm --help\n");
+  return(-1);
+}
+
 int main(int argc,char *argv[]) {
   char lbuf[256];
   int s=0;
@@ -67,7 +73,11 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"bgcol",'t',&bgtxt);
   OptionAdd(&opt,"alpha",'x',&alpha);
    
-  arg=OptionProcess(1,argc,argv,&opt,NULL);   
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+
+  if (arg==-1) {
+    exit(-1);
+  }
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);

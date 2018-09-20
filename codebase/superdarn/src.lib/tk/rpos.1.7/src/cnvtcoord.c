@@ -32,6 +32,7 @@
 #include "radar.h"
 #include "rpos.h"
 #include "aacgm.h"
+#include "aacgmlib_v2.h"
 
 
 
@@ -374,7 +375,7 @@ void RPosMag(int center,int bcrd,int rcrd,
              struct RadarSite *pos,
              int frang,int rsep,int rxrise,double height,
              double *rho,double *lat,double *lng,
-             int chisham) {
+             int chisham,int old_aacgm) {
 
     double rx;
     double radius;
@@ -401,7 +402,8 @@ void RPosMag(int center,int bcrd,int rcrd,
     fldpnth(pos->geolat,pos->geolon,psi,pos->boresite,
             height,d,rho,lat,lng,chisham);
 
-    AACGMConvert(*lat,*lng,(double) height,lat,lng,&radius,0);
+    if (old_aacgm) AACGMConvert(*lat,*lng,(double) height,lat,lng,&radius,0);
+    else           AACGM_v2_Convert(*lat,*lng,(double) height,lat,lng,&radius,0);
 
 }
 

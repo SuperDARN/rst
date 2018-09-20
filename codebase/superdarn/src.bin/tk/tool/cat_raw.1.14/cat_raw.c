@@ -110,6 +110,11 @@ int main (int argc,char *argv[]) {
     exit(-1);
   }
 
+  if (thr !=-1) {
+    fprintf(stderr,"Error: the -t threshold option has been deprecated.\n");
+    exit(-1);
+  }
+
   if (argc-arg<2) {
     OptionPrintInfo(stderr,errstr);
     exit(-1);

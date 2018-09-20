@@ -74,6 +74,12 @@ char buffer[256];
 
 struct OptionData opt;
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: etime --help\n");
+  return(-1);
+}
+
 int main(int argc,char *argv[]) {
   int arg;
   FILE *fp=NULL;
@@ -115,7 +121,11 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"ed",'t',&edtestr);
   OptionAdd(&opt,"ex",'t',&exstr);
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);   
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+
+  if (arg==-1) {
+    exit(-1);
+  }
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
