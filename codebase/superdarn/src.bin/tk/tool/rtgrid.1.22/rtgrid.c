@@ -422,7 +422,8 @@ int main(int argc,char *argv[]) {
   else sprintf(logbuf,"Host:%s Port File:%s",host,port_fname);
   loginfo(logname,logbuf);
 
-  sprintf(logbuf,"Output file name:%s<stid>.<sfx>",fname);
+  if (old) sprintf(logbuf,"Output file name:%s<stid>.grd",fname);
+  else sprintf(logbuf,"Output file name:%s<stid>.grdmap",fname);
   loginfo(logname,logbuf);
   sprintf(logbuf,"Daily file path:%s",path);
   loginfo(logname,logbuf);
