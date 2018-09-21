@@ -216,7 +216,7 @@ int main(int argc,char *argv[]) {
   int channel=-1;
 
   double min[4]={35,3,10,0};
-  double max[4]={2000,50,1000,200};
+  double max[4]={2500,60,1000,200};
   int fmax=500;
 
   double alt=300.0;
