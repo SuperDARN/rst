@@ -315,13 +315,13 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"fwgt",'i',&mode);
 
-  OptionAdd(&opt,"pmax",'d',&max[0]);
-  OptionAdd(&opt,"vmax",'d',&max[1]);
+  OptionAdd(&opt,"pmax",'d',&max[1]);
+  OptionAdd(&opt,"vmax",'d',&max[0]);
   OptionAdd(&opt,"wmax",'d',&max[2]);
   OptionAdd(&opt,"vemax",'d',&max[3]);
 
-  OptionAdd(&opt,"pmin",'d',&min[0]);
-  OptionAdd(&opt,"vmin",'d',&min[1]);
+  OptionAdd(&opt,"pmin",'d',&min[1]);
+  OptionAdd(&opt,"vmin",'d',&min[0]);
   OptionAdd(&opt,"wmin",'d',&min[2]);
   OptionAdd(&opt,"vemin",'d',&min[3]);
 
