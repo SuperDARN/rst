@@ -4,14 +4,13 @@
 #
 include $(MAKECFG).$(SYSTEM)
 
-INCLUDE=-I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/superdarn \
-        -I$(USR_IPATH)/superdarn
+INCLUDE=-I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/superdarn
 
 SRC = site.c
 OBJS = site.o
-INC=${USR_IPATH}/superdarn
+INC=${IPATH}/superdarn
 LINK="1"
-DSTPATH=$(USR_LIBPATH)
+DSTPATH=$(LIBPATH)
 OUTPUT = site.tst
 LIBS=-lacf.1 -ltsg.1 -lacfex.1 -lshmem.1 
 
