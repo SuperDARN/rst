@@ -890,6 +890,21 @@ struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
                         Gl*afp*mgn*dtn + Hl*afn*mgn*dtn );
 
   free(Ap);
+  free(Bp);
+  free(Cp);
+  free(Dp);
+  free(Ep);
+  free(Fp);
+  free(Gp);
+  free(Hp);
+  free(An);
+  free(Bn);
+  free(Cn);
+  free(Dn);
+  free(En);
+  free(Fn);
+  free(Gn);
+  free(Hn);
   return (ptr);
 }
 
