@@ -8,7 +8,7 @@ include $(MAKECFG).$(SYSTEM)
 
 
 
-INCLUDE=-I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/superdarn \
+INCLUDE=-I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/superdarn
 OBJS = tauscan.o
 SRC=tauscan.c
 DSTPATH = $(BINPATH)
