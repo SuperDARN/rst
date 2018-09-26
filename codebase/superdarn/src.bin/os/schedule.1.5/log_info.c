@@ -46,8 +46,8 @@ void log_info(int flg,char *str) {
 
   date=asctime(time_of_day);  
   date[strlen(date)-1]=':';
-  if (flg==0) fprintf(stderr,date);
-  fprintf(stderr,str);
+  if (flg==0) fprintf(stderr,"%s",date);
+  fprintf(stderr,"%s",str);
   fprintf(stderr,"\n");
   
   sprintf(logpath,"%s.%.4d%.2d%.2d",logname,1900+
@@ -55,8 +55,8 @@ void log_info(int flg,char *str) {
           time_of_day->tm_mday);
   fp=fopen(logpath,"a");
   if (fp !=NULL) {
-    if (flg==0) fprintf(fp,date);
-    fprintf(fp,str);
+    if (flg==0) fprintf(fp,"%s",date);
+    fprintf(fp,"%s",str);
     fprintf(fp,"\n");
     fclose(fp);
   }
