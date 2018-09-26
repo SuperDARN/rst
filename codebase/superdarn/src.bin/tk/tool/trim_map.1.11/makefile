@@ -6,7 +6,7 @@
 #
 include $(MAKECFG).$(SYSTEM)
  
-INCLUDE=-I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/superdarn -I$(USR_IPATH)/analysis
+INCLUDE=-I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/superdarn
 SRC=hlpstr.h errstr.h trim_map.c
 OBJS = trim_map.o
 
