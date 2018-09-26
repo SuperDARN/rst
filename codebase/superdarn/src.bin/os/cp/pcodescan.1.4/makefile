@@ -8,11 +8,10 @@ include $(MAKECFG).$(SYSTEM)
 
 
 
-INCLUDE=-I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/superdarn \
-        -I$(USR_IPATH)/superdarn
+INCLUDE=-I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/superdarn
 OBJS = pcodescan.o
 SRC=pcodescan.c
-DSTPATH = $(USR_BINPATH)
+DSTPATH = $(BINPATH)
 OUTPUT = pcodescan
 
 LIBS= -lsite.1 -lradarshell.1 -lops.1 -lrmsgsnd.1 -ltcpipmsg.1 \

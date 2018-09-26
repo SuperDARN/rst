@@ -8,11 +8,10 @@ include $(MAKECFG).$(SYSTEM)
 
 
 
-INCLUDE=-I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/superdarn \
-        -I$(USR_IPATH)/superdarn
+INCLUDE=-I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/superdarn
 OBJS = themisscan.o
 SRC=themisscan.c
-DSTPATH = $(USR_BINPATH)
+DSTPATH = $(BINPATH)
 OUTPUT = themisscan
 LIBS= -lsite.1 -lradarshell.1 -lops.1 -lrmsgsnd.1 -ltcpipmsg.1 -lerrlog.1 -lfreq.1 -lfit.1 -lraw.1 -lfitacf.1 -lcfit.1 -lrscan.1 -liqdata.1 -lradar.1 -ldmap.1 -lopt.1 -lrtime.1 -lrcnv.1  
 
