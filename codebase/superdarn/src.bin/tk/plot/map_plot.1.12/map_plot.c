@@ -397,6 +397,7 @@ int main(int argc,char *argv[]) {
   unsigned char ctrflg=0;
   unsigned char hmbflg=0;
   unsigned char fovflg=0;
+  unsigned char gfovflg=0;
   unsigned char nopad=0;
   unsigned char ffovflg=0;
 
@@ -652,6 +653,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"hmb",'x',&hmbflg);
   OptionAdd(&opt,"fov",'x',&fovflg);
   OptionAdd(&opt,"ffov",'x',&ffovflg);
+  OptionAdd(&opt,"gfov",'x',&gfovflg);
   OptionAdd(&opt,"exc",'x',&excflg);
 
   OptionAdd(&opt,"pwr",'x',&pwrflg);
@@ -822,7 +824,10 @@ int main(int argc,char *argv[]) {
   else clip=MapSquareClip();
 
   if (lat>90) lat=90*rcmap->hemisphere;
-  if (fovflg || ffovflg) fov=make_fov(rgrid->st_time,network,chisham,old_aacgm);
+  if (fovflg || ffovflg) {
+      if (gfovflg) fov=make_fov_data(rgrid,network,chisham,old_aacgm);
+      else         fov=make_fov(rgrid->st_time,network,chisham,old_aacgm);
+  }
   if ((fovflg || ffovflg) && !magflg) {
     if (old_aacgm) MapModify(fov,AACGMtransform,&flg);
     else           MapModify(fov,AACGM_v2_transform,&flg);
@@ -1142,6 +1147,14 @@ int main(int argc,char *argv[]) {
 
     if (mrgflg) GridMerge(rgrid,rgridmrg);
     if (avflg) GridAverage(rgrid,rgridavg,aval+cprm*(aval !=0)); 
+
+    if ((fovflg || ffovflg) && gfovflg) {
+      fov=make_fov_data(rgrid,network,chisham,old_aacgm);
+      if (!magflg) {
+        if (old_aacgm) MapModify(fov,AACGMtransform,&flg);
+        else           MapModify(fov,AACGM_v2_transform,&flg);
+      }
+    }
     
     /* do plotting here */
     if (rcmap->num_coef !=0) {

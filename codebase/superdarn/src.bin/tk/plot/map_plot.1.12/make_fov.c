@@ -103,3 +103,78 @@ struct PolygonData *make_fov(double tval,struct RadarNetwork *network,
 
     return ptr;
 }
+
+
+struct PolygonData *make_fov_data(struct GridData *gptr,struct RadarNetwork *network,
+                                  int chisham,int old_aacgm) {
+
+    double rho,lat,lon;
+    int i,j,rn,bm;
+    float pnt[2];
+    int yr,mo,dy,hr,mt;
+    double sc;
+    int frang=180;
+    int rsep=45;
+    struct PolygonData *ptr=NULL;
+    struct RadarSite *site=NULL;
+    int st_id;
+    int maxrange=75;
+
+    TimeEpochToYMDHMS(gptr->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
+
+    ptr=PolygonMake(sizeof(float)*2,NULL);
+
+    for (j=0;j<gptr->stnum;j++) {
+
+        if (gptr->sdata[j].npnt==0) continue;
+
+        st_id=gptr->sdata[j].st_id;
+
+        for (i=0;i<network->rnum;i++) {
+
+            if (network->radar[i].id !=st_id) continue;
+            site=RadarYMDHMSGetSite(&(network->radar[i]),yr,mo,dy,hr,mt,(int) sc);
+            if (site==NULL) continue;
+            PolygonAddPolygon(ptr,1);
+
+            for (rn=0;rn<=maxrange;rn++) {
+                RPosMag(0,0,rn,site,frang,rsep,
+                        site->recrise,0,&rho,&lat,&lon,
+                        chisham,old_aacgm);
+                pnt[0]=lat;
+                pnt[1]=lon;
+                PolygonAdd(ptr,pnt);
+            }
+
+            for (bm=1;bm<=site->maxbeam;bm++) {
+                RPosMag(0,bm,maxrange,site,frang,rsep,
+                        site->recrise,0,&rho,&lat,&lon,
+                        chisham,old_aacgm);
+                pnt[0]=lat;
+                pnt[1]=lon;
+                PolygonAdd(ptr,pnt);
+            }
+
+            for (rn=maxrange-1;rn>=0;rn--) {
+                RPosMag(0,site->maxbeam,rn,site,frang,rsep,
+                        site->recrise,0,&rho,&lat,&lon,
+                        chisham,old_aacgm);
+                pnt[0]=lat;
+                pnt[1]=lon;
+                PolygonAdd(ptr,pnt);
+            }
+
+            for (bm=site->maxbeam-1;bm>0;bm--) {
+                RPosMag(0,bm,0,site,frang,rsep,
+                        site->recrise,0,&rho,&lat,&lon,
+                        chisham,old_aacgm);
+                pnt[0]=lat;
+                pnt[1]=lon;
+                PolygonAdd(ptr,pnt);
+            }
+        }
+    }
+
+    return ptr;
+}
+
