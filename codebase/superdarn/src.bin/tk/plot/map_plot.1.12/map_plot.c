@@ -824,13 +824,12 @@ int main(int argc,char *argv[]) {
   else clip=MapSquareClip();
 
   if (lat>90) lat=90*rcmap->hemisphere;
-  if (fovflg || ffovflg) {
-      if (gfovflg) fov=make_fov_data(rgrid,network,chisham,old_aacgm);
-      else         fov=make_fov(rgrid->st_time,network,chisham,old_aacgm);
-  }
-  if ((fovflg || ffovflg) && !magflg) {
-    if (old_aacgm) MapModify(fov,AACGMtransform,&flg);
-    else           MapModify(fov,AACGM_v2_transform,&flg);
+  if ((fovflg || ffovflg) && !gfovflg) {
+    fov=make_fov(rgrid->st_time,network,chisham,old_aacgm);
+    if (!magflg) {
+      if (old_aacgm) MapModify(fov,AACGMtransform,&flg);
+      else           MapModify(fov,AACGM_v2_transform,&flg);
+    }
   }
 
   if (grdflg) grd=make_grid(grdlon,grdlat);   
@@ -906,7 +905,7 @@ int main(int argc,char *argv[]) {
        PolygonFree(igrd);
        PolygonFree(nigrd);
     }
-    if (fovflg || ffovflg) {
+    if ((fovflg || ffovflg) && !gfovflg) {
        nfov=MapTransform(fov,2*sizeof(float),PolygonXYbbox, tfunc,marg);
        pfov=PolygonClip(clip,nfov);
        PolygonFree(fov);
@@ -1154,6 +1153,17 @@ int main(int argc,char *argv[]) {
         if (old_aacgm) MapModify(fov,AACGMtransform,&flg);
         else           MapModify(fov,AACGM_v2_transform,&flg);
       }
+      if (poleflg) {
+        marg[0]=lat;
+        marg[1]=0;
+        if (ortho) marg[2]=sf;
+        else marg[2]=1.25*0.5*sf*90.0/(90-fabs(latmin));
+        marg[3]=flip;
+        nfov=MapTransform(fov,2*sizeof(float),PolygonXYbbox, tfunc,marg);
+        pfov=PolygonClip(clip,nfov);
+        PolygonFree(fov);
+        PolygonFree(nfov);
+      }
     }
     
     /* do plotting here */
@@ -1205,8 +1215,10 @@ int main(int argc,char *argv[]) {
         rgrd=MapTransform(pgrd,2*sizeof(float),PolygonXYbbox,rotate,marg);
       if (pigrd !=NULL) 
        rigrd=MapTransform(pigrd,2*sizeof(float),PolygonXYbbox,rotate,marg);
-      if (pfov !=NULL) 
+      if (pfov !=NULL) {
         rfov=MapTransform(pfov,2*sizeof(float),PolygonXYbbox,rotate,marg);
+        if (gfovflg) PolygonFree(pfov);
+      }
       if (ptmk !=NULL) {
         if (rotflg) marg[1]=0;
         else marg[1]=lon-tme_shft;
