@@ -551,7 +551,7 @@ void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fi
     */
     real = fit_prms->xcfd[range_node->range * fit_prms->mplgs][0];
     imag = fit_prms->xcfd[range_node->range * fit_prms->mplgs][1];
-    phi0_normal = atan2(imag,real);
+    phi0_normal = atan2(imag,real)*fit_prms->phidiff;
 
     fit_elev_array[range_node->range].low = fit_func->elevation_error_method(elev_data,range_node->elev_fit->sigma_2_a,range_node->elev_fit->a);
     fit_elev_array[range_node->range].high = fit_func->elevation_method(elev_data,range_node->elev_fit->a);
@@ -645,7 +645,7 @@ void set_xcf_phi0(llist_node range, struct FitRange* fit_range_array, FITPRMS* f
     real = fit_prms->xcfd[range_node->range * fit_prms->mplgs][0];
     imag = fit_prms->xcfd[range_node->range * fit_prms->mplgs][1];
 
-    fit_range_array[range_node->range].phi0 = atan2(imag,real);
+    fit_range_array[range_node->range].phi0 = atan2(imag,real)*fit_prms->phidiff;
 
 }
 
