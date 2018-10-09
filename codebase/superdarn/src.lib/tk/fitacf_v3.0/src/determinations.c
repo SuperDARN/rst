@@ -88,8 +88,8 @@ void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data
 
     lag_0_pwr_in_dB(fit_data->rng,fit_prms,noise_pwr);
 
-    llist_for_each_arg(ranges,(node_func_arg)set_xcf_phi0,fit_data->xrng,fit_prms);
-    llist_for_each_arg(ranges,(node_func_arg)find_elevation,fit_data->elv,fit_prms); 
+    llist_for_each_arg(ranges,(node_func_arg)set_xcf_phi0,fit_data,fit_prms);
+    llist_for_each_arg(ranges,(node_func_arg)find_elevation,fit_data,fit_prms); 
     llist_for_each_arg(ranges,(node_func_arg)set_xcf_phi0_err,fit_data->xrng,NULL);  
     llist_for_each_arg(ranges,(node_func_arg)set_xcf_sdev_phi,fit_data->xrng,NULL);
 
@@ -497,7 +497,7 @@ void set_nump(llist_node range, struct FitRange* fit_range_array){
  *
  * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
-void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fit_prms){
+void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms){
     double x,y,z;
     double antenna_sep,elev_corr;
     int phi_sign;
@@ -557,12 +557,12 @@ void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fi
         elevation = asin(sqrt(theta));
     }
 
-    fit_elev_array[range_node->range].high = 180/M_PI * (elevation + elev_corr);
+    fit_data->elv[range_node->range].high = 180/M_PI * (elevation + elev_corr);
 
     /*Elevation errors*/
     psi_k2d2 = psi/(wave_num * wave_num * antenna_sep * antenna_sep);
     df_by_dy = psi_k2d2/sqrt(theta * (1 - theta));
-    fit_elev_array[range_node->range].low = 180/M_PI * sqrt(range_node->elev_fit->sigma_2_a) * fabs(df_by_dy);
+    fit_data->elv[range_node->range].low = 180/M_PI * sqrt(range_node->elev_fit->sigma_2_a) * fabs(df_by_dy);
 
     /*Experiment to compare fitted and measured elevation*/
     /*real = fit_prms->xcfd[range_node->range * fit_prms->mplgs][0];
@@ -570,7 +570,7 @@ void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fi
     xcf0_p = atan2(imag,real);
     */
 
-    psi_uncorrected_unfitted = fit_range_array[range_node->range].phi0 + 2 * M_PI * floor((phase_diff_max-xcf0_p)/(2*M_PI));
+    psi_uncorrected_unfitted = fit_data->xrng[range_node->range].phi0 + 2 * M_PI * floor((phase_diff_max-xcf0_p)/(2*M_PI));
 
     if(phi_sign < 0) psi_uncorrected_unfitted += 2 * M_PI;
 
@@ -585,7 +585,7 @@ void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fi
     else{
         elevation = asin(sqrt(theta));
     }
-    fit_elev_array[range_node->range].normal = 180/M_PI * (elevation + elev_corr);
+    fit_data->elv[range_node->range].normal = 180/M_PI * (elevation + elev_corr);
 
 }
 
@@ -599,7 +599,7 @@ void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fi
  *
  * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
-void set_xcf_phi0(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_prms){
+void set_xcf_phi0(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms){
     RANGENODE* range_node;
     double real, imag;
 
@@ -609,7 +609,7 @@ void set_xcf_phi0(llist_node range, struct FitRange* fit_range_array, FITPRMS* f
     imag = fit_prms->xcfd[range_node->range * fit_prms->mplgs][1];
 
     /* Correct phase sign due to cable swapping */
-    fit_range_array[range_node->range].phi0 = atan2(imag,real)*fit_prms->phidiff;
+    fit_data->xrng[range_node->range].phi0 = atan2(imag,real)*fit_prms->phidiff;
     range_node->elev_fit->a *= fit_prms->phidiff;
 }
 
