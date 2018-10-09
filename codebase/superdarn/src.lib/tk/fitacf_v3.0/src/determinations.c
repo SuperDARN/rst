@@ -88,9 +88,9 @@ void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data
 
     lag_0_pwr_in_dB(fit_data->rng,fit_prms,noise_pwr);
 
-    llist_for_each_arg(ranges,(node_func_arg)find_elevation,fit_data->elv,fit_prms);
     llist_for_each_arg(ranges,(node_func_arg)set_xcf_phi0,fit_data->xrng,fit_prms);
-    llist_for_each_arg(ranges,(node_func_arg)set_xcf_phi0_err,fit_data->xrng,NULL);
+    llist_for_each_arg(ranges,(node_func_arg)find_elevation,fit_data->elv,fit_prms); 
+    llist_for_each_arg(ranges,(node_func_arg)set_xcf_phi0_err,fit_data->xrng,NULL);  
     llist_for_each_arg(ranges,(node_func_arg)set_xcf_sdev_phi,fit_data->xrng,NULL);
 
 
@@ -508,7 +508,7 @@ void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fi
     double psi_uncorrected;
     double psi,theta,psi_kd,psi_k2d2,df_by_dy;
     double elevation;
-    double real,imag;
+    /*double real,imag;*/
     double psi_uncorrected_unfitted;
     double xcf0_p;
 
@@ -565,11 +565,12 @@ void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fi
     fit_elev_array[range_node->range].low = 180/M_PI * sqrt(range_node->elev_fit->sigma_2_a) * fabs(df_by_dy);
 
     /*Experiment to compare fitted and measured elevation*/
-    real = fit_prms->xcfd[range_node->range * fit_prms->mplgs][0];
+    /*real = fit_prms->xcfd[range_node->range * fit_prms->mplgs][0];
     imag = fit_prms->xcfd[range_node->range * fit_prms->mplgs][1];
     xcf0_p = atan2(imag,real);
+    */
 
-    psi_uncorrected_unfitted = xcf0_p + 2 * M_PI * floor((phase_diff_max-xcf0_p)/(2*M_PI));
+    psi_uncorrected_unfitted = fit_range_array[range_node->range].phi0 + 2 * M_PI * floor((phase_diff_max-xcf0_p)/(2*M_PI));
 
     if(phi_sign < 0) psi_uncorrected_unfitted += 2 * M_PI;
 
@@ -607,8 +608,9 @@ void set_xcf_phi0(llist_node range, struct FitRange* fit_range_array, FITPRMS* f
     real = fit_prms->xcfd[range_node->range * fit_prms->mplgs][0];
     imag = fit_prms->xcfd[range_node->range * fit_prms->mplgs][1];
 
-    fit_range_array[range_node->range].phi0 = atan2(imag,real);
-
+    /* Correct phase sign due to cable swapping */
+    fit_range_array[range_node->range].phi0 = atan2(imag,real)*fit_prms->phidiff;
+    range_node->elev_fit->a *= fit_prms->phidiff;
 }
 
 
