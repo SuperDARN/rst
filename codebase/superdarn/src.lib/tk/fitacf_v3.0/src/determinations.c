@@ -88,8 +88,8 @@ void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data
 
     lag_0_pwr_in_dB(fit_data->rng,fit_prms,noise_pwr);
 
-    llist_for_each_arg(ranges,(node_func_arg)find_elevation,fit_data,fit_prms); 
     llist_for_each_arg(ranges,(node_func_arg)set_xcf_phi0,fit_data,fit_prms);
+    llist_for_each_arg(ranges,(node_func_arg)find_elevation,fit_data,fit_prms); 
     llist_for_each_arg(ranges,(node_func_arg)set_xcf_phi0_err,fit_data->xrng,NULL);  
     llist_for_each_arg(ranges,(node_func_arg)set_xcf_sdev_phi,fit_data->xrng,NULL);
 
@@ -508,7 +508,6 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
     double psi_uncorrected;
     double psi,theta,psi_kd,psi_k2d2,df_by_dy;
     double elevation;
-    double real,imag;
     double psi_uncorrected_unfitted;
     double xcf0_p;
 
@@ -523,7 +522,7 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
 
     antenna_sep = sqrt(x*x + y*y + z*z);
 
-    elev_corr = fit_prms->phidiff * asin(z/antenna_sep);
+    elev_corr = asin(z/antenna_sep);
     if (y > 0.0){
         phi_sign = 1;
     }
@@ -534,7 +533,6 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
 
     azi_offset = fit_prms->maxbeam/2 - 0.5;
     phi_0 = fit_prms->bmsep * (fit_prms->bmnum - azi_offset) * M_PI/180;
-    phi_sign*=fit_prms->phidiff;
     c_phi_0 = cos(phi_0);
 
     wave_num = 2 * M_PI * fit_prms->tfreq * 1000/C;
@@ -566,13 +564,8 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
     fit_data->elv[range_node->range].low = 180/M_PI * sqrt(range_node->elev_fit->sigma_2_a) * fabs(df_by_dy);
 
     /*Experiment to compare fitted and measured elevation*/
-    real = fit_prms->xcfd[range_node->range * fit_prms->mplgs][0];
-    imag = fit_prms->xcfd[range_node->range * fit_prms->mplgs][1];
-    xcf0_p = atan2(imag,real);
-    psi_uncorrected_unfitted = xcf0_p + 2 * M_PI * floor((phase_diff_max-xcf0_p)/(2*M_PI));
+    psi_uncorrected_unfitted = fit_data->xrng[range_node->range].phi0 + 2 * M_PI * floor((phase_diff_max-xcf0_p)/(2*M_PI));
 
-
-    /*psi_uncorrected_unfitted = fit_data->xrng[range_node->range].phi0 + 2 * M_PI * floor((phase_diff_max-xcf0_p)/(2*M_PI));*/
 
     if(phi_sign < 0) psi_uncorrected_unfitted += 2 * M_PI;
 
@@ -612,7 +605,7 @@ void set_xcf_phi0(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms)
 
     /* Correct phase sign due to cable swapping */
     fit_data->xrng[range_node->range].phi0 = atan2(imag,real)*fit_prms->phidiff;
-    /*range_node->elev_fit->a *= fit_prms->phidiff;*/
+    range_node->elev_fit->a *= fit_prms->phidiff;
 }
 
 
