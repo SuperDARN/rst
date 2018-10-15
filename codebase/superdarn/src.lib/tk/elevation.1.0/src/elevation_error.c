@@ -64,7 +64,6 @@ double elevation_error(struct elevation_data *elev_data, double sigma_2_a, doubl
 
     azimuth_offset = elev_data->maxbeam/2 - 0.5;
 
-    phi_sign*=elev_data->phidiff;
     phi_0 = elev_data->bmsep * (elev_data->bmnum - azimuth_offset) * M_PI/180;
     c_phi_0 = cos(phi_0);
     wave_num = 2 * M_PI * elev_data->tfreq * 1000/C; /* C - speed of light m/s */
