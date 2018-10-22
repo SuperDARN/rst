@@ -87,7 +87,7 @@ int raw_read_current(struct rawfp *fp,struct rawdata *raw_data) {
    do {
      if (ConvertReadShort(fp->rawfp,&num_byte) !=0 || num_byte <= 0) {
        if (num_byte < 0){
-           fprintf(stderr,"WARNING:raw_read_current:raw_read_current:num_byte < 0 in record header, potentially corrupted file.\n");
+           fprintf(stderr,"WARNING : raw_read_current : raw_read_current : num_byte < 0 in record header, potentially corrupted file.\n");
        }
        free(inbuf);
        return -1;

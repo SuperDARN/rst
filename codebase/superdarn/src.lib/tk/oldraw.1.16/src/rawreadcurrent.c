@@ -102,7 +102,7 @@ int OldRawReadCurrent(struct OldRawFp *fp,struct RadarParm *prm,
    do {
      if (ConvertReadShort(fp->rawfp,&num_byte) != 0 || num_byte <= 0) {
        if (num_byte <0) {
-           fprintf(stderr,"WARNING:rawreadcurrent:num_byte < 0 in record header, potentially corrupted file.\n");
+           fprintf(stderr,"WARNING : rawreadcurrent : OldRawReadCurrent : num_byte < 0 in record header, potentially corrupted file.\n");
        }
        free(inbuf);
        return -1;
