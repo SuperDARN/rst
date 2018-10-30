@@ -181,7 +181,7 @@ function FitReadRadarScan, unit, state, RadarScan, prm, fit, tlen, lock, channel
             if tlen eq 0 then begin
                 ; Set flg equal to one if scan data according to scan flag
                 ; was successfully stored in RadarScan structure
-                if prm.scan eq 1 then $
+                if abs(prm.scan) eq 1 then $
                     flg = 1
             endif else begin
                 ; Set flg equal to one if scan data of length tlen was

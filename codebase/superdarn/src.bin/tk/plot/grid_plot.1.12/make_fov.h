@@ -24,4 +24,5 @@
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-struct PolygonData *make_fov(double tval,struct RadarNetwork *network,int chisham);
+struct PolygonData *make_fov(double tval,struct RadarNetwork *network,
+                             int chisham,int old_aacgm);

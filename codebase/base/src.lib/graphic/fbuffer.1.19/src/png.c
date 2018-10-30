@@ -1,4 +1,4 @@
-/* ppm.c
+/* png.c
    ===== 
    Author: R.J.Barnes
 */
@@ -96,7 +96,11 @@ struct FrameBuffer *FrameBufferLoadPNG(FILE *fp,char *name) {
     break;
   }
 
-  if (png_get_color_type(pngptr, infoptr) != 8) {
+  if (png_get_bit_depth(pngptr, infoptr) == 16) {
+    png_set_strip_16(pngptr);
+  }
+
+  if (png_get_bit_depth(pngptr, infoptr) < 8) {
     png_destroy_read_struct(&pngptr,&infoptr,NULL);
     return NULL;
   }

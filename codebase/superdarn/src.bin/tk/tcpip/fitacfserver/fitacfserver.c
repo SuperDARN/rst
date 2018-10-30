@@ -74,7 +74,7 @@ char logfname[256];
 
 int rst_opterr(char *txt) {
   fprintf(stderr,"Option not recognized: %s\n",txt);
-  fprintf(stderr,"Please try again: fitacfserver --help\n");
+  fprintf(stderr,"Please try: fitacfserver --help\n");
   return(-1);
 }
 
@@ -112,6 +112,7 @@ int main(int argc,char *argv[]) {
   int arg;
   unsigned char help=0;
   unsigned char option=0;
+  unsigned char version=0;
   char *logstr=NULL;
   char *pnamestr=NULL;
   char *pidstr=NULL;
@@ -178,6 +179,7 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
+  OptionAdd(&opt,"-version",'x',&version);
 
   OptionAdd(&opt,"lp",'i',&port);
   OptionAdd(&opt,"L",'t',&logstr);
@@ -206,6 +208,11 @@ int main(int argc,char *argv[]) {
 
   if (option==1) {
     OptionDump(stdout,&opt);
+    exit(0);
+  }
+
+  if (version==1) {
+    OptionVersion(stdout);
     exit(0);
   }
 

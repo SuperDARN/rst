@@ -55,10 +55,17 @@ struct fitdata fitB;
 
 struct OptionData opt;
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: cmpfit --help\n");
+  return(-1);
+}
+
 int main(int argc,char *argv[]) {
 
   unsigned char help=0;
   unsigned char option=0;
+  unsigned char version=0;
 
 
   int arg=0;
@@ -72,9 +79,14 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
+  OptionAdd(&opt,"-version",'x',&version);
    
-  arg=OptionProcess(1,argc,argv,&opt,NULL);  
-  
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+
+  if (arg==-1) {
+    exit(-1);
+  }
+
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
     exit(0);
@@ -82,6 +94,11 @@ int main(int argc,char *argv[]) {
 
   if (option==1) {
     OptionDump(stdout,&opt);
+    exit(0);
+  }
+
+  if (version==1) {
+    OptionVersion(stdout);
     exit(0);
   }
 

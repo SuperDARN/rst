@@ -251,6 +251,12 @@ void operate(pid_t parent,int master,int client,char *name,char *log) {
   _exit(EXIT_SUCCESS);
 }
 
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: buffer_server --help\n");
+  return(-1);
+}
+
 int main(int argc,char *argv[]) {
   int arg;
   int sock;
@@ -291,7 +297,11 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"l",'i',&port);
   OptionAdd(&opt,"f",'t',&file);
   OptionAdd(&opt,"lf",'t',&log);
-  arg=OptionProcess(1,argc,argv,&opt,NULL);
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+
+  if (arg==-1) {
+    exit(-1);
+  }
  
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
