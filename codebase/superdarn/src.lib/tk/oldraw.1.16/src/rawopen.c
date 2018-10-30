@@ -87,6 +87,10 @@ struct OldRawFp *OldRawOpenFd(int rawfd,int inxfd) {
   if (ConvertReadShort(ptr->rawfp,&num_byte) !=0 || num_byte <= 0) {
     if (num_byte < 0) {
         fprintf(stderr,"WARNING : rawopen : OldRawOpenFd : num_byte < 0 in record header, potentially corrupted file.\n");
+        close(ptr->rawfp);
+        free(inbuf);
+        ptr->rawread=-2;
+        return ptr;
     }
     close(ptr->rawfp);
     free(ptr);
