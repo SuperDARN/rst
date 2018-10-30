@@ -11,7 +11,7 @@ export IGRF_PATH=${RSTPATH}"/tables/analysis/mag/"
 export SD_MODEL_TABLE=${RSTPATH}"/tables/superdarn/model"
 
 export AACGM_v2_DAT_PREFIX="${RSTPATH}/tables/analysis/aacgm/aacgm_coeffs-12-"
-export IGRF_COEFFS="${IGRF_PATH}igrf12coeffs.txt"
+export IGRF_COEFFS="${IGRF_PATH}magmodel_1590-2015.txt"
 
 export COLOR_TABLE_PATH=${RSTPATH}"/tables/base/key/"
 

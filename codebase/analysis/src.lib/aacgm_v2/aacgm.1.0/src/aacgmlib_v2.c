@@ -978,24 +978,6 @@ int AACGM_v2_Convert(double in_lat, double in_lon, double height,
   printf("AACGM_v2_Convert\n");
   #endif
 
-  /* height < 0 km */
-  if (height < 0) {
-    fprintf(stderr, "WARNING: coordinate transformations are not intended "
-                    "for altitudes < 0 km: %lf\n", height);
-  /*  return -2; */
-  }
-
-  /* height > 2000 km not allowed for coefficients */
-  if (height > MAXALT && !(code & (TRACE|ALLOWTRACE|BADIDEA))) {
-    fprintf(stderr, "ERROR: coefficients are not valid for altitudes "
-                    "above %d km: %lf.\n", MAXALT, height);
-    fprintf(stderr, "       You must either use field-line tracing "
-                    "(TRACE or ALLOWTRACE) or\n"
-                    "       indicate that you know this is a very bad idea "
-                    "(BADIDEA)\n\n");
-    return -4;
-  }
-
   /* latitude out of bounds */
   if (fabs(in_lat) > 90.) {
     fprintf(stderr, "ERROR: latitude must be in the range -90 to +90 degrees: "
@@ -1023,6 +1005,24 @@ int AACGM_v2_Convert(double in_lat, double in_lon, double height,
     in_lat = 90. - rtp[1]/DTOR;
     in_lon = rtp[2]/DTOR;
     height = (rtp[0]-1.)*RE;
+  }
+
+  /* height < 0 km */
+  if ((height < 0) && (code&VERBOSE)) {
+    fprintf(stderr, "WARNING: coordinate transformations are not intended "
+                    "for altitudes < 0 km: %lf\n", height);
+  /*  return -2; */
+  }
+
+  /* height > 2000 km not allowed for coefficients */
+  if (height > MAXALT && !(code & (TRACE|ALLOWTRACE|BADIDEA))) {
+    fprintf(stderr, "ERROR: coefficients are not valid for altitudes "
+                    "above %d km: %lf.\n", MAXALT, height);
+    fprintf(stderr, "       You must either use field-line tracing "
+                    "(TRACE or ALLOWTRACE) or\n"
+                    "       indicate that you know this is a very bad idea "
+                    "(BADIDEA)\n\n");
+    return -4;
   }
 
   /* all inputs are geocentric */
@@ -1333,7 +1333,7 @@ int AACGM_v2_TimeInterp(void)
 int AACGM_v2_Trace(double lat_in, double lon_in, double alt,
                     double *lat_out, double *lon_out)
 {
-  int err, kk, idir;
+  int err, kk, idir, below;
   unsigned long k,niter;
   double ds, dsRE, dsRE0, eps, Lshell;
   double rtp[3],xyzg[3],xyzm[3],xyzc[3],xyzp[3];
@@ -1374,21 +1374,32 @@ int AACGM_v2_Trace(double lat_in, double lon_in, double alt,
   ; lie above the starting altitude. I am considering the solution for
   ; this set of fieldlines as undefined; just like those that lie below
   ; the surface of the Earth.
+  ;
+  ; Added a check for when tracing goes below altitude so as not to contiue
+  ; tracing beyond what is necessary.
+  ;
+  ; Also making sure that stepsize does not go to zero
   */
-  while (idir*xyzm[2] < 0.) {
+  below = 0;
+  while (!below && idir*xyzm[2] < 0.) {
 
     for (kk=0;kk<3;kk++) xyzp[kk] = xyzg[kk]; /* save as previous */
 
     AACGM_v2_RK45(xyzg, idir, &dsRE, eps, 1); /* set to 0 for RK4: /noadapt) */
 
+    /* make sure that stepsize does not go to zero */
+    if (dsRE*RE < 1e-2) dsRE = 1e-2/RE;
+
     /* convert to magnetic Dipole coordinates */
     geo2mag(xyzg, xyzm);
 
+    below = ((xyzg[0]*xyzg[0]+xyzg[1]*xyzg[1]+xyzg[2]*xyzg[2]) <
+             (RE+alt)*(RE+alt)/(RE*RE));
     k++;
   }
   niter = k;
 
-  if (niter > 1) {
+  if (!below && niter > 1) {
     /* now bisect stepsize (fixed) to land on magnetic equator w/in 1 m */
     for (k=0;k<3;k++) xyzc[k] = xyzp[k];
     kk = 0L;
@@ -1405,6 +1416,9 @@ int AACGM_v2_Trace(double lat_in, double lon_in, double alt,
       kk++;
     }
     niter += kk;
+  } else {
+    if (below) printf("BELOW\n");
+    for (k=0;k<3;k++) xyzc[k] = xyzg[k];    /* just use last value */
   }
 
   /* 'trace' back to reference surface along Dipole field lines */
@@ -1483,8 +1497,10 @@ int AACGM_v2_Trace_inv(double lat_in, double lon_in, double alt,
 
       AACGM_v2_RK45(xyzg, idir, &dsRE, eps, 1); /* set to 0 for RK4: /noadapt)*/
 
-      car2sph(xyzg, rtp);
+      /* make sure that stepsize does not go to zero */
+      if (dsRE*RE < 5e-1) dsRE = 5e-1/RE;
 
+      car2sph(xyzg, rtp);
       k++;
     }
     niter = k;

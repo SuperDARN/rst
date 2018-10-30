@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>base</project>
+<name>padxml</name>
+<location>src.bin/graphic/padxml</location>
+
+<syntax>padxml --help</syntax>
+<syntax>padxml [-wdt <ar>width</ar>] [-hgt <ar>height</ar>] [-xpad <ar>xpad</ar>] [-ypad <ar>ypad</ar>] [-bgcol <ar>rrggbb</ar>] [<ar>name</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>-wdt <ar>width</ar></on><od>make the output image width pixels wide.</od>
+</option>
+<option><on>-hgt <ar>height</ar></on><od>make the output image height pixels tall.</od>
+</option>
+<option><on>-xpad <ar>xpad</ar></on><od>place the input image, <ar>xpad</ar> pixels from the left edge of the output image.</od>
+</option>
+<option><on>-ypad <ar>ypad</ar></on><od>place the input image <ar>ypad</ar> pixels from the top edge of the output image.</od>
+</option>
+<option><on>-bgcol <ar>rrggbb</ar></on><od>set the background color of the output image to <ar>rrggbb</ar>, specified as the  hexadecimal value for the 24-bit red,green and blue component color.</od>
+</option>
+<option><on><ar>name</ar></on><od>input image filename. If this is omitted the image will be read from standard input.</od>
+</option>
+<synopsis><p>Pad the edges of an XML image.</p></synopsis>
+<description><p>Resizes an image by adding padding pixels of the specified background color to image.</p>
+<p>The padded XML image file is written to standard output.</p></description>
+
+<example>
+<command>padxml -wdt 720 -hgt 486 -xpad 40 -ypad 3 -bgcol 000000 inp.xml &gt; out.xml</command>
+<description>Pad the XML file <code>inp.xml</code> to 720x486 pixels and store it in the file <code>out.xml</code>
+</description>
+</example>
+
+</binary>

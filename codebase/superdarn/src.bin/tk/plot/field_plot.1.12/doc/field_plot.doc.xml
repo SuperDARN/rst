@@ -11,7 +11,7 @@
 </syntax>
 <syntax>field_plot -cfit [<ar>options</ar>] [<ar>cfitname</ar>]
 </syntax>
-<syntax>field_plot -csd [<ar>options</ar>] [<ar>csdname</ar>]
+<syntax>field_plot -png [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]
 </syntax>
 <syntax>field_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]
 </syntax>
@@ -19,15 +19,11 @@
 </syntax>
 <syntax>field_plot -cfit -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] [<ar>cfitname</ar>]
 </syntax>
-<syntax>field_plot -csd -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] [<ar>csdname</ar>] [<ar>csdname</ar>]
-</syntax>
 <syntax>field_plot -ppm [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]
 </syntax>
 <syntax>field_plot -old -ppm [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]
 </syntax>
 <syntax>field_plot -cfit -ppm [<ar>options</ar>] [<ar>cfitname</ar>]
-</syntax>
-<syntax>field_plot -csd -ppm [<ar>options</ar>] [<ar>csdname</ar>] 
 </syntax>
 <syntax>field_plot -ppmx [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]
 </syntax>
@@ -35,15 +31,11 @@
 </syntax>
 <syntax>field_plot -cfit -ppmx [<ar>options</ar>] [<ar>cfitname</ar>]
 </syntax>
-<syntax>field_plot -csd -ppmx [<ar>options</ar>] [<ar>csdname</ar>]
-</syntax>
 <syntax>field_plot -xml [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]
 </syntax>
 <syntax>field_plot -old -xml [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]
 </syntax>
 <syntax>field_plot -cfit -xml [<ar>options</ar>] [<ar>cfitname</ar>]
-</syntax>
-<syntax>field_plot -csd -xml [<ar>options</ar>] [<ar>csdname</ar>]
 </syntax>
 <syntax>field_plot -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [-delay <ar>delay</ar>] [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]
 </syntax>
@@ -51,10 +43,10 @@
 </syntax>
 <syntax>field_plot -cfit -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [-delay <ar>delay</ar>] [<ar>options</ar>] [<ar>cfitname</ar>]
 </syntax>
-<syntax>field_plot -csd -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [-delay <ar>delay</ar>] [<ar>options</ar>] [<ar>csdname</ar>]
-</syntax>
 
 <option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
 </option>
 <option><on>-cf <ar>cfname</ar></on><od>read command line options from the file <ar>cfname</ar>.</od>
 </option>
@@ -93,6 +85,8 @@
 <option><on>-latmin <ar>latmin</ar></on><od>adjust the scale factor so that the lowest visible latitude is  <ar>latmin</ar>. Applies when the stereographic projection is used.</od>
 </option>
 <option><on>-mag</on><od>use magnetic coordinates.</od>
+</option>
+<option><on>-old_aacgm</on><od>use older AACGM rather than default AACGM-v2 for magnetic coordinates.</od>
 </option>
 <option><on>-rotate</on><od>rotate the plot so that the local noon is at the top of the plot.</od>
 </option>
@@ -248,9 +242,7 @@
 </option>
 <option><on><ar>cfitname</ar></on><od>filename of the <code>cfit</code> format file to plot.</od>
 </option>
-<option><on>-csd</on><od>file is in the <code>csd</code> format.</od>
-</option>
-<option><on><ar>csd</ar></on><od>filename of the <code>csd</code> format file to plot.</od>
+<option><on>-png</on><od>produce a Portable Network Graphics (PNG) image as the output.</od>
 </option>
 <option><on>-ps</on><od>produce a PostScript plot as the output.</od>
 </option>
@@ -276,9 +268,9 @@
 </option>
 <option><on>-chisham</on><od>use the Chisham virtual height model.</od>
 </option>
-<synopsis><p>Plot <code>fit</code>, <code>fitacf</code>, <code>cfit</code> and <code>csd</code> format files.</p></synopsis>
-<description><p>Plot <code>fit</code>, <code>fitacf</code>, <code>cfit</code> and <code>csd</code> format files.</p>
-<p>The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, or PostScript file. The default output is XML.</p>
+<synopsis><p>Plot <code>fit</code>, <code>fitacf</code>, and <code>cfit</code> format files.</p></synopsis>
+<description><p>Plot <code>fit</code>, <code>fitacf</code>, and <code>cfit</code> format files.</p>
+<p>The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, Portable Network Graphics (PNG), or PostScript file. The default output is PostScript.</p>
 <p>The program produces either a multi-panel plot showing a sequence of up to 16 images, or a single-panel plot that can be used to produce movies. Multi-panel plots are written to standard output, while the single panel plots are written to individual files.</p>
 <p>The number of panels contained in the plot is controlled by the "<code>-r</code>" option. If this is set to zero then single panel plots are produced.</p>
 <p>The task only plots what it is instructed to plot on the command line which means that at least some of the options must be included if the plot is to show anything.</p>

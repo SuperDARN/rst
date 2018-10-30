@@ -267,6 +267,12 @@ int load_ace() {
   }
   return 0;
 }
+
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: imfdelay --help\n");
+  return(-1);
+}
  
 int main(int argc,char *argv[]) {
   int arg;
@@ -280,6 +286,7 @@ int main(int argc,char *argv[]) {
 
   unsigned char help=0;
   unsigned char option=0;
+  unsigned char version=0;
 
   char *fdelay_txt=NULL;
 
@@ -314,6 +321,7 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
+  OptionAdd(&opt,"-version",'x',&version);
 
   OptionAdd(&opt,"st",'t',&stime_txt);
   OptionAdd(&opt,"et",'t',&etime_txt);
@@ -333,7 +341,10 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"cf",'t',&cfname);
 
   if (argc>1) { 
-    arg=OptionProcess(1,argc,argv,&opt,NULL);   
+    arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+    if (arg==-1) {
+      exit(-1);
+    }
     if (cfname !=NULL) { /* load the configuration file */
       do {
         fp=fopen(cfname,"r");
@@ -342,7 +353,12 @@ int main(int argc,char *argv[]) {
         cfname=NULL;
         optf=OptionProcessFile(fp);
         if (optf !=NULL) {
-          arg=OptionProcess(0,optf->argc,optf->argv,&opt,NULL);
+          arg=OptionProcess(0,optf->argc,optf->argv,&opt,rst_opterr);
+          if (arg==-1) {
+            fclose(fp);
+            OptionFreeFile(optf);
+            exit(-1);
+          }
           OptionFreeFile(optf);
 	}   
         fclose(fp);
@@ -361,6 +377,11 @@ int main(int argc,char *argv[]) {
 
   if (option==1) {
     OptionDump(stdout,&opt);
+    exit(0);
+  }
+
+  if (version==1) {
+    OptionVersion(stdout);
     exit(0);
   }
 
