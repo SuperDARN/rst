@@ -60,12 +60,14 @@
 <p>If the "<code>-ace</code>" or "<code>-wind</code>" options are specified, the IMF data is taken from the appropriate CDF files for each spacecraft. The files are read from the "ace" and "wind" sub-directories of the path given by given by the "-path" option or by the environment variable "<code>ISTP_PATH</code>".  The argument "<code>-ex</code>" is used to specify how much IMF data should be loaded. By default only 24 hours of data is read.</p>
 <p>The IMF delay can either be fixed using the "<code>-d</code>" option or read from a text file using the "<code>-df</code>" option.  Any lines in the file beginning the character "<code>#</code>" are treated as comments and ignored. Any other lines are expected to contain a time followed by the delay in hours and minutes:</p>
 
-<quote><em>year month day hour minut second dhour dminute</em></quote>
+<quote><em>year month day hour minute second dhour dminute</em></quote>
 
 <p>The delay will be applied to the IMF starting at the time specified and will only change if a subsequent entry in the delay file alters it.</p>
-<p>The "<code>-if</code>" option will read the IMF from the plain text file ifile. Any lines in the file beginning the character "<code>#</code>" are treated as comments and ignored. Any other lines are expected to contain a time followed by the three components of the IMF defined in GSM coordinates.</p>
+<p>The "<code>-if</code>" option will read the IMF from the plain text file ifile. Any lines in the file beginning the character "<code>#</code>" are treated as comments and ignored. Any other lines are expected to contain a time followed by the three components of the IMF defined in GSM coordinates and the solar wind velocity (<em>vx</em>) in km/s units and GSE coordinates. </p>
 
-<quote><em>year month day hour minut second bx by bz</em></quote>
+<quote><em>year month day hour minute second bx by bz vx</em></quote>
+
+<p><strong>NOTE:</strong> The default OMNI invalid measurement value for <em>vx</em> is 99999.9.  This invalid measurement value needs to be modified to be 0.0 in order to select the correct map model.</p>
 
 <p>The IMF will be fixed at this value and will only change if a subsequent entry the IMF file alters it.</p>
 </description>
