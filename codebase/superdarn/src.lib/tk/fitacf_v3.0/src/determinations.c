@@ -509,7 +509,6 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
     double psi,theta,psi_kd,psi_k2d2,df_by_dy;
     double elevation;
     double psi_uncorrected_unfitted;
-    double xcf0_p;
 
     RANGENODE* range_node;
 
@@ -564,7 +563,7 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
     fit_data->elv[range_node->range].low = 180/M_PI * sqrt(range_node->elev_fit->sigma_2_a) * fabs(df_by_dy);
 
     /*Experiment to compare fitted and measured elevation*/
-    psi_uncorrected_unfitted = fit_data->xrng[range_node->range].phi0 + 2 * M_PI * floor((phase_diff_max-xcf0_p)/(2*M_PI));
+    psi_uncorrected_unfitted = fit_data->xrng[range_node->range].phi0 + 2 * M_PI * floor((phase_diff_max-fit_data->xrng[range_node->range].phi0)/(2*M_PI));
 
 
     if(phi_sign < 0) psi_uncorrected_unfitted += 2 * M_PI;
