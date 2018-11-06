@@ -67,7 +67,7 @@
 
 <quote><em>year month day hour minute second bx by bz vx</em></quote>
 
-<p><strong>NOTE:</strong> The default OMNI invalid measurement value for <em>vx</em> is 99999.9.  This invalid measurement value needs to be modified to be 0.0 in order to select the correct map model.</p>
+<p><strong>NOTE:</strong> The default OMNI invalid measurement value for <em>vx</em> is 99999.9.  This invalid measurement value needs to be modified to 0.0 in order to select the correct map model.</p>
 
 <p>The IMF will be fixed at this value and will only change if a subsequent entry the IMF file alters it.</p>
 </description>
