@@ -185,19 +185,19 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
 
   badlag = malloc(sizeof(int)*iptr->prm.nrang*iptr->prm.mplgs);
   if (badlag==NULL){
-    fprintf(stderr,"Error: Unable to allocate memory for badlag. Error code: %d\n");
+    fprintf(stderr,"Error: Unable to allocate memory for badlag.\n");
     exit(-1);
   }
 
   pwrd = malloc(sizeof(double)*iptr->prm.nrang);
   if (pwrd==NULL ) {
-    fprintf(stderr,"Error: Unable to allocate memory for pwrd. Error code: %d\n");
+    fprintf(stderr,"Error: Unable to allocate memory for pwrd.\n");
     free(badlag);
     exit(-1);
   }
   pwrt = malloc(sizeof(double)*iptr->prm.nrang);
   if (pwrt==NULL ) {
-    fprintf(stderr,"Error:Unable to allocate memory for pwrt. Error code: %d\n");
+    fprintf(stderr,"Error:Unable to allocate memory for pwrt.\n");
     free(badlag);
     free(pwrd);
     exit(-1);
@@ -374,7 +374,7 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
       elev_data = malloc(sizeof(struct elevation_data));
       if (elev_data == NULL)
       {
-          fprintf(stderr,"Error: Elevation data structure could not be allocated. %d\n");
+          fprintf(stderr,"Error: Elevation data structure could not be allocated.\n");
           exit(-1);
       }
 
