@@ -5,26 +5,26 @@
 
 /*
  LICENSE AND DISCLAIMER
- 
+
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
+
  This file is part of the Radar Software Toolkit (RST).
- 
+
  RST is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
- 
+
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Lesser General Public License for more details.
- 
+
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+
+
+
 */
 
 #include <stdio.h>
@@ -83,7 +83,7 @@ int main (int argc,char *argv[]) {
   OptionAdd(&opt,"t",'f',&thr);
 
   OptionAdd(&opt,"old",'x',&old);
- 
+
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
   if (arg==-1) {
@@ -121,11 +121,11 @@ int main (int argc,char *argv[]) {
   }
 
   outfp=fopen(argv[argc-1],"w");
-  if (outfp==NULL) { 
+  if (outfp==NULL) {
     fprintf(stderr,"Could not open output file.\n");
     exit(-1);
   }
-    
+
   for (i=arg;i<argc-1;i++) {
     infp=OldRawOpen(argv[i],NULL);
     if (infp==NULL) {
@@ -146,7 +146,7 @@ int main (int argc,char *argv[]) {
 
       recnum++;
       OldRawFwrite(outfp,"rawwrite",prm,raw,recnum,NULL);
-    }    
+    }
     OldRawClose(infp);
   }
   fclose(outfp);
