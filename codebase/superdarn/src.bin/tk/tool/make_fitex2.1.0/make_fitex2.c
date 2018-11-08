@@ -156,31 +156,26 @@ int main(int argc,char *argv[])
     fprintf(stderr,"Environment variable 'SD_HDWPATH' must be defined.\n");
     exit(-1);
   }
- 
+
   RadarLoadHardware(envstr,network);
 
 
-  if (old)
-	{
-		rawfp=OldRawOpen(argv[arg],NULL);
-    if (rawfp==NULL)
-		{
-			fprintf(stderr,"File not found.\n");
-			exit(-1);
-     }
+  if (old) {
+      rawfp=OldRawOpen(argv[arg],NULL);
+      if (rawfp==NULL) {
+          fprintf(stderr,"File not found.\n");
+          exit(-1);
+      }
      status=OldRawRead(rawfp,prm,raw);
-  }
-  else
-	{
-		if (arg==argc) fp=stdin;
-    else fp=fopen(argv[arg],"r");
+  } else {
+      if (arg==argc) fp=stdin;
+      else fp=fopen(argv[arg],"r");
 
-    if (fp==NULL)
-		{
-      fprintf(stderr,"File not found.\n");
-      exit(-1); 
-    }
-    status=RawFread(fp,prm,raw);
+      if (fp==NULL) {
+          fprintf(stderr,"File not found.\n");
+          exit(-1);
+      }
+      status=RawFread(fp,prm,raw);
   }
 
   radar=RadarGetRadar(network,prm->stid);
@@ -217,7 +212,7 @@ int main(int argc,char *argv[])
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
- 
+
   fblk=FitACFMake(site,prm->time.yr);
 
   fitacfex2(prm,raw,fit,fblk,0);
