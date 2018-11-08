@@ -159,6 +159,15 @@ int main(int argc,char *argv[]) {
   }
 
   rawfp=OldRawOpen(argv[arg],NULL);
+  if (rawfp->rawread==-2) {
+    free(rawfp);
+    exit(-1);
+  }
+  if (rawfp==NULL) {
+    fprintf(stderr,"File not found.\n");
+    exit(-1);
+  }
+
 
   command[0]=0;
   n=0;
