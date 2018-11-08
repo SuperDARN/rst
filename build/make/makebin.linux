@@ -7,7 +7,8 @@
 # Linux (GCC)
 #
 
-CFLAGS+=-fPIC -Wall -O3 -g -ansi -D_GNU_SOURCE -D_LINUX
+CFLAGS+=-fPIC -Wall -O3 -ansi -D_GNU_SOURCE -D_LINUX
+
 
 ifdef XPATH
   ifdef XLIB
