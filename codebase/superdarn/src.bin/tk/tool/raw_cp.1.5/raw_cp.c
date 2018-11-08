@@ -114,8 +114,12 @@ int main (int argc,char *argv[]) {
 
   if (old) {
     for (c=arg;c<argc;c++) {
-      rawfp=OldRawOpen(argv[c],NULL);
       fprintf(stderr,"Opening file %s\n",argv[c]);
+      rawfp=OldRawOpen(argv[c],NULL);
+      if (rawfp->rawread==-2) {
+        free(rawfp);
+        continue;
+      }
       if (rawfp==NULL) {
         fprintf(stderr,"file %s not found\n",argv[c]);
         continue;
