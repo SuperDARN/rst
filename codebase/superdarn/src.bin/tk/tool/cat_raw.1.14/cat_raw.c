@@ -128,6 +128,11 @@ int main (int argc,char *argv[]) {
 
   for (i=arg;i<argc-1;i++) {
     infp=OldRawOpen(argv[i],NULL);
+    /* Error case where num_bytes is less than 0 */
+    if(infp->rawread==-2) {
+        free(infp);
+        exit(-1);
+    }
     if (infp==NULL) {
       fprintf(stderr,"Could not open file %s.\n",argv[i]);
       continue;
