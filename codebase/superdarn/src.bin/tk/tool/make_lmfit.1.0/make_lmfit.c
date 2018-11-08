@@ -161,27 +161,22 @@ int main(int argc,char *argv[])
   RadarLoadHardware(envstr,network);
 
 
-  if (old)
-	{
-		rawfp=OldRawOpen(argv[arg],NULL);
-    if (rawfp==NULL)
-		{
-			fprintf(stderr,"File not found.\n");
-			exit(-1);
+  if (old) {
+      rawfp=OldRawOpen(argv[arg],NULL);
+      if (rawfp==NULL) {
+          fprintf(stderr,"File not found.\n");
+          exit(-1);
      }
      status=OldRawRead(rawfp,prm,raw);
-  }
-  else
-	{
-		if (arg==argc) fp=stdin;
-    else fp=fopen(argv[arg],"r");
+  } else {
+      if (arg==argc) fp=stdin;
+      else fp=fopen(argv[arg],"r");
 
-    if (fp==NULL)
-		{
-      fprintf(stderr,"File not found.\n");
-      exit(-1);
-    }
-    status=RawFread(fp,prm,raw);
+      if (fp==NULL) {
+          fprintf(stderr,"File not found.\n");
+          exit(-1);
+      }
+      status=RawFread(fp,prm,raw);
   }
 
   radar=RadarGetRadar(network,prm->stid);
