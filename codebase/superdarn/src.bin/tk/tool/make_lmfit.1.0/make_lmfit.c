@@ -163,6 +163,11 @@ int main(int argc,char *argv[])
 
   if (old) {
       rawfp=OldRawOpen(argv[arg],NULL);
+      /* Error code for num_bytes less than 0 */
+      if (rawfp->rawread==-2) {
+          free(rawfp);
+          exit(-1);
+      }
       if (rawfp==NULL) {
           fprintf(stderr,"File not found.\n");
           exit(-1);
