@@ -5,26 +5,26 @@
 
 /*
  LICENSE AND DISCLAIMER
- 
+
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
+
  This file is part of the Radar Software Toolkit (RST).
- 
+
  RST is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
- 
+
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Lesser General Public License for more details.
- 
+
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+
+
+
  */
 
 
@@ -87,7 +87,7 @@ int main(int argc,char *argv[]) {
   int us;
 
   char combf[128];
-  int j,k; 
+  int j,k;
 
   unsigned char fitflg=0;
   unsigned char rawflg=0;
@@ -102,7 +102,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-option",'x',&option);
   OptionAdd(&opt,"-version",'x',&version);
 
-  OptionAdd(&opt,"old",'x',&old); 
+  OptionAdd(&opt,"old",'x',&old);
 
   OptionAdd(&opt,"raw",'x',&rawflg);
   OptionAdd(&opt,"fit",'x',&fitflg);
@@ -142,7 +142,7 @@ int main(int argc,char *argv[]) {
   if (fitflg) {
     if (old) {
       for (c=arg;c<argc;c++) {
-        fitfp=OldFitOpen(argv[c],NULL); 
+        fitfp=OldFitOpen(argv[c],NULL);
         fprintf(stderr,"Opening file %s\n",argv[c]);
         if (fitfp==NULL) {
           fprintf(stderr,"file %s not found\n",argv[c]);
@@ -150,14 +150,14 @@ int main(int argc,char *argv[]) {
         }
 
         while (OldFitRead(fitfp,prm,fit) !=-1) {
-   
+
         fprintf(stdout,"%.4d %.2d %.2d %.2d %.2d %.2d %.2d ",
                  prm->time.yr,prm->time.mo,prm->time.dy,prm->time.hr,
                  prm->time.mt,
 	         prm->time.sc,prm->time.us);
         fprintf(stdout,"%.2d %.2d %.1d %4d ",prm->stid,
                 prm->bmnum,prm->channel,
-                 prm->scan); 
+                 prm->scan);
         fprintf(stdout,"%8d %3d %3d",prm->cp,prm->intt.sc,prm->intt.us);
         fprintf(stdout,"%5d %5d ",prm->frang,prm->rsep);
         fprintf(stdout,"%6d %6g ",prm->tfreq,prm->noise.search);
@@ -165,7 +165,7 @@ int main(int argc,char *argv[]) {
         fprintf(stdout,"%3d ",prm->nrang);
 
         k=0;
-        for (j=0;prm->combf[j] !=0;j++) 
+        for (j=0;prm->combf[j] !=0;j++)
           if (isprint(prm->combf[j])) {
 	    combf[k]=prm->combf[j];
             k++;
@@ -202,7 +202,7 @@ int main(int argc,char *argv[]) {
                  prm->time.hr,prm->time.mt,prm->time.sc,prm->time.us);
         fprintf(stdout,"%.2d %.2d %.1d %4d ",prm->stid,
                 prm->bmnum,prm->channel,
-                prm->scan); 
+                prm->scan);
         fprintf(stdout,"%8d %3d %3d",prm->cp,prm->intt.sc,prm->intt.us);
         fprintf(stdout,"%5d %5d ",prm->frang,prm->rsep);
         fprintf(stdout,"%6d %6g ",prm->tfreq,prm->noise.search);
@@ -235,21 +235,26 @@ int main(int argc,char *argv[]) {
   } else if (rawflg) {
      if (old) {
       for (c=arg;c<argc;c++) {
-        rawfp=OldRawOpen(argv[c],NULL); 
         fprintf(stderr,"Opening file %s\n",argv[c]);
+        rawfp=OldRawOpen(argv[c],NULL);
+        /* Error case where num_bytes is less than 0 */
+        if (rawfp->rawread==-2) {
+            free(rawfp);
+            exit(-1);
+        }
         if (rawfp==NULL) {
           fprintf(stderr,"file %s not found\n",argv[c]);
           continue;
         }
 
         while (OldRawRead(rawfp,prm,raw) !=-1) {
-   
+
         fprintf(stdout,"%.4d %.2d %.2d %.2d %.2d %.2d %.2d ",
                 prm->time.yr,prm->time.mo,prm->time.dy,
                 prm->time.hr,prm->time.mt,prm->time.sc,prm->time.us);
         fprintf(stdout,"%.2d %.2d %.1d %4d ",prm->stid,
                 prm->bmnum,prm->channel,
-                 prm->scan); 
+                 prm->scan);
         fprintf(stdout,"%8d %3d %3d",prm->cp,prm->intt.sc,prm->intt.us);
         fprintf(stdout,"%5d %5d ",prm->frang,prm->rsep);
         fprintf(stdout,"%6d %6g ",prm->tfreq,prm->noise.search);
@@ -297,7 +302,7 @@ int main(int argc,char *argv[]) {
                  prm->time.hr,prm->time.mt,prm->time.sc,prm->time.us);
         fprintf(stdout,"%.2d %.2d %.1d %4d ",prm->stid,
                 prm->bmnum,prm->channel,
-                prm->scan); 
+                prm->scan);
         fprintf(stdout,"%8d %3d %3d",prm->cp,prm->intt.sc,prm->intt.us);
         fprintf(stdout,"%5d %5d ",prm->frang,prm->rsep);
         fprintf(stdout,"%6d %6g ",prm->tfreq,prm->noise.search);
@@ -332,7 +337,7 @@ int main(int argc,char *argv[]) {
 
 
 
-   
+
   } else {
     for (c=arg;c<argc;c++) {
       cfitfp=CFitOpen(argv[c]);
@@ -362,10 +367,10 @@ int main(int argc,char *argv[]) {
         for (i=0;i<cfit->num;i++) {
 	  if (cfit->data[i].gsct==1) gsct++;
 	  else isct++;
-	  
+
 	}
 	fprintf(stdout,"%3d %3d ",gsct,isct);
-        fprintf(stdout,"\"\""); 
+        fprintf(stdout,"\"\"");
 	fprintf(stdout,"\n");
       }
       CFitClose(cfitfp);
@@ -375,13 +380,4 @@ int main(int argc,char *argv[]) {
 
   return 0;
 }
-   
-
-
-
-
-
-
-
-
 
