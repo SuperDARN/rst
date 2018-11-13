@@ -1,6 +1,10 @@
 /* elevation.c
    ===========
-   Author: R.J.Barnes & K.Baker
+   Authors: R.J.Barnes & K.Baker
+
+   Modified:
+   ========
+   2018-09-20 Marina Schmidt  
 */
 
 /*
@@ -68,7 +72,7 @@ double elevation(struct elevation_data *elev_data,double phi0) {
   
   c_phi= cos( phi);
 
-  k= 2 * PI * elev_data->tfreq * 1000.0/C;
+  k= 2.0 * PI * elev_data->tfreq * 1000.0/C;
   /* the phase difference phi0 is between -pi and +pi and gets positive,  */
   /* if the signal from the interferometer antenna arrives earlier at the */
   /* receiver than the signal from the main antenna. */
@@ -76,7 +80,7 @@ double elevation(struct elevation_data *elev_data,double phi0) {
   /* the main antenna, than the signal from the interferometer     */
   /* antenna arrives earlier. tdiff < 0  --> dchi_cable > 0        */
 
-  dchi_cable= - 2* PI * elev_data->tfreq * 1000.0 * elev_data->tdiff * 1.0e-6;
+  dchi_cable= - 2.0* PI * elev_data->tfreq * 1000.0 * elev_data->tdiff * 1.0e-6;
 
   /* If the interferometer antenna is in front of the main antenna */
   /* then lower elevation angles correspond to earlier arrival     */
@@ -92,9 +96,9 @@ double elevation(struct elevation_data *elev_data,double phi0) {
   /* or chi_max to (chi_max + twopi) (interferometer in the back)  */
   
 
-  phi_temp= phi0 + 2*PI* floor( (chi_max - phi0)/ (2*PI));
+  phi_temp= phi0 + 2.0*PI* floor( (chi_max - phi0)/ (2.0*PI));
 
-  if (phi_sign < 0.0) phi_temp= phi_temp + (2*PI);
+  if (phi_sign < 0.0) phi_temp= phi_temp + (2.0*PI);
 
 
   /* subtract the cable effect */

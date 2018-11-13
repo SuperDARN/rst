@@ -1,6 +1,6 @@
 /* elevation_error.c
  *===================
- * author: Marina Schmidt, Pasha-ponomareko 
+ * Authors: Marina Schmidt, Pasha-ponomareko 
  * 
  * This was taken from Keith Kotyk's fitacf 3.0 code and altered 
  * to meet the new moduralization design for RST
@@ -62,20 +62,20 @@ double elevation_error(struct elevation_data *elev_data, double sigma_2_a, doubl
         elev_corr = -elev_corr;
     }
 
-    azimuth_offset = elev_data->maxbeam/2 - 0.5;
+    azimuth_offset = elev_data->maxbeam/2.0 - 0.5;
 
     phi_0 = elev_data->bmsep * (elev_data->bmnum - azimuth_offset) * M_PI/180;
     c_phi_0 = cos(phi_0);
-    wave_num = 2 * M_PI * elev_data->tfreq * 1000/C; /* C - speed of light m/s */
+    wave_num = 2.0 * M_PI * elev_data->tfreq * 1000/C; /* C - speed of light m/s */
 
-    cable_offset = -2 * M_PI * elev_data->tfreq * 1000 * elev_data->tdiff * 1.0e-6;
+    cable_offset = -2.0 * M_PI * elev_data->tfreq * 1000 * elev_data->tdiff * 1.0e-6;
 
     phase_diff_max = phi_sign * wave_num * antenna_sep * c_phi_0 + cable_offset;
 
-    psi_uncorrected = slope_a + 2 * M_PI * floor((phase_diff_max-slope_a)/(2*M_PI));
+    psi_uncorrected = slope_a + 2.0 * M_PI * floor((phase_diff_max-slope_a)/(2.0*M_PI));
 
     if(phi_sign < 0) 
-        psi_uncorrected += 2 * M_PI;
+        psi_uncorrected += 2.0 * M_PI;
 
     psi = psi_uncorrected - cable_offset;
 

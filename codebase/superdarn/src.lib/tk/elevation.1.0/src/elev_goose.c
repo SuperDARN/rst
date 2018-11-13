@@ -1,6 +1,10 @@
 /* elev_goose.c
    ============
-   Author: R.J.Barnes & K.Baker
+   Authors: R.J.Barnes & K.Baker
+
+   Modified:
+   ========
+   2018-09-20 Marina Schmidt  
 */
 
 /*
@@ -83,9 +87,9 @@ double elev_goose(struct elevation_data *elev_data, double phi0) {
   psi = elev_data->bmsep*(elev_data->bmnum-offset)*PI/180.;	
 
   /* compute wavenumber */
-  k = 2 * PI * elev_data->tfreq * 1000.0/C;	
+  k = 2.0 * PI * elev_data->tfreq * 1000.0/C;	
 
-  dchi_cable = - 2* PI * elev_data->tfreq * 1000.0 * elev_data->tdiff * 1.0e-6;
+  dchi_cable = - 2.0* PI * elev_data->tfreq * 1000.0 * elev_data->tdiff * 1.0e-6;
 
   /*	compute the minimum cone angle (alpha) */
 
@@ -115,12 +119,12 @@ double elev_goose(struct elevation_data *elev_data, double phi0) {
 
   dchi_sep_max = k * sep / cos_xi * cs_alpha_min;
   dchi_max = dchi_cable + dchi_sep_max;
-  n = 0.5 - dchi_max/(2*PI);
+  n = 0.5 - dchi_max/(2.0*PI);
 
-  dchi = phi0 - n*(2*PI);	/* this should be the true phase difference */
+  dchi = phi0 - n*(2.0*PI);	/* this should be the true phase difference */
 
-  if (dchi > dchi_max) dchi = dchi - (2*PI);
-  if (dchi < (dchi_max - (2*PI))) dchi = dchi + (2*PI);
+  if (dchi > dchi_max) dchi = dchi - (2.0*PI);
+  if (dchi < (dchi_max - (2.0*PI))) dchi = dchi + (2.0*PI);
 
   /* compute the cone angle (alpha) */
 
@@ -132,7 +136,7 @@ double elev_goose(struct elevation_data *elev_data, double phi0) {
 	dchi_old = dchi;
 
 	if ((fabs(sn2_eps) > 1.0) || (sn2_eps < 0.0)) {
-      dchi = dchi - (2*PI);
+      dchi = dchi - (2.0*PI);
       /*fprintf(stderr,"changing dchi by -2pi. %f -> %f\n",dchi_old,dchi);*/
 	}
   }

@@ -2,6 +2,10 @@
    ==============
    Author: S.G. Shepherd
 
+   Modified:
+   ========
+   2018-09-20 Marina Schmidt  
+
    elevation angle determination from measured phase difference
 */
 
@@ -58,13 +62,13 @@ double elevation_v2(struct elevation_data *elev_data, double psi_obs)
   cp0    = cos(phi0);
   sp0    = sin(phi0);
 
-  /*k      = 2 * PI * elev_data->tfreq * 1000./C;*/
+  /*k      = 2.0 * PI * elev_data->tfreq * 1000./C;*/
 
   /* Phase delay [radians] due to electrical path difference.                *
    *   If the path length (cable and electronics) to the interferometer is   *
    *   shorter than that to the main antenna array, then the time for the    *
    *   to transit the interferometer electrical path is shorter: tdiff < 0   */
-  psi_ele = -2 * PI * elev_data->tfreq * elev_data->tdiff * 1e-3;
+  psi_ele = -2.0 * PI * elev_data->tfreq * elev_data->tdiff * 1e-3;
 
   /* Determine elevation angle (a0) where psi (phase difference) is maximum; *
    *   which occurs when k and d are anti-parallel. Using calculus of        *
@@ -95,20 +99,20 @@ double elevation_v2(struct elevation_data *elev_data, double psi_obs)
   ca0     = cos(a0);
   sa0     = sin(a0);
   /* maximum phase = psi_ele + psi_geo(a0)                                   */
-  psi_max = psi_ele + 2 * PI * elev_data->tfreq * 1e3/C *
+  psi_max = psi_ele + 2.0 * PI * elev_data->tfreq * 1e3/C *
                      (X*sp0 + Y*sqrt(ca0*ca0 - sp0*sp0) + Z*sa0);
 
   /* compute the number of 2pi factors necessary to map to correct region    */
   dpsi = psi_max - psi_obs;   /* psi_obs is observed phase difference        */
-  n2pi = (Y > 0) ? floor(dpsi/(2*PI)) : ceil(dpsi/(2*PI));
-  d2pi = n2pi * 2*PI;
+  n2pi = (Y > 0) ? floor(dpsi/(2.0*PI)) : ceil(dpsi/(2.0*PI));
+  d2pi = n2pi * 2.0*PI;
 
   /* map observed phase to correct extended phase                           */
   psi_obs += d2pi;
   /* SGS: if not keyword_set(actual) then psi_obs += d2pi                   */
 
   /* now solve for the elevation angle: alpha                               */
-  E = (psi_obs/(2*PI*elev_data->tfreq*1e3) + elev_data->tdiff*1e-6)*C - X*sp0;
+  E = (psi_obs/(2.0*PI*elev_data->tfreq*1e3) + elev_data->tdiff*1e-6)*C - X*sp0;
   alpha = asin((E*Z + sqrt(E*E * Z*Z - (Y*Y + Z*Z)*(E*E - Y*Y*cp0*cp0)))/
                (Y*Y + Z*Z));
 

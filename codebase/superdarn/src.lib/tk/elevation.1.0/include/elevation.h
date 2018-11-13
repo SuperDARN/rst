@@ -1,6 +1,15 @@
 /* elevation.h
    ===========
-   Author: R.J.Barnes, K.Baker, S.G.Shepherd & Marina Schmidt
+   Authors of the following algorithms in the elevation library: 
+   elevation/elev_gooose - R.J.Barnes & K.Baker
+   elevation_v2 - S.G.Shepherd
+   elevation_error - Marina Schmidt & Pasha Ponomarenko
+
+   Modified:
+   ========
+   2018-09-20 Marina Schmidt  
+
+
 */
 
 
