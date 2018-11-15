@@ -33,8 +33,6 @@
 #ifndef _RPRM_H
 #define _RPRM_H
 
-#include "dmap.h"
-
 struct RadarParm {
   struct {
     char major;
