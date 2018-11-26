@@ -125,14 +125,13 @@ int main (int argc,char *argv[]) {
   if (old) {
 
     rawfp=OldRawOpen(argv[arg],NULL);
-    /* Error case where num_bytes is less than 0 */
-    if (rawfp->rawread==-2) {
-        free(rawfp);
-        exit(-1);
-    }
     if (rawfp==NULL) {
       fprintf(stderr,"file %s not found\n",argv[arg]);
       exit(2);
+    } else if (rawfp->rawread==-2) {
+        /* Error case where num_bytes is less than 0 */
+        free(rawfp);
+        exit(-1);
     }
     bmcnt=0;
     st_time=-1;
