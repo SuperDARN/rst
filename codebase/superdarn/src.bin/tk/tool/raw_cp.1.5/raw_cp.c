@@ -116,12 +116,12 @@ int main (int argc,char *argv[]) {
     for (c=arg;c<argc;c++) {
       fprintf(stderr,"Opening file %s\n",argv[c]);
       rawfp=OldRawOpen(argv[c],NULL);
-      if (rawfp->rawread==-2) {
-        free(rawfp);
-        continue;
-      }
       if (rawfp==NULL) {
-        fprintf(stderr,"file %s not found\n",argv[c]);
+        fprintf(stderr,"File %s not found.\n",argv[c]);
+        continue;
+      } else if (rawfp->rawread==-2) {
+        /* Error code where num_bytes < 0 */
+        free(rawfp);
         continue;
       }
       while (OldRawRead(rawfp,prm,raw) !=-1) {

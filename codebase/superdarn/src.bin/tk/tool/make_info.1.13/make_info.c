@@ -237,14 +237,13 @@ int main(int argc,char *argv[]) {
       for (c=arg;c<argc;c++) {
         fprintf(stderr,"Opening file %s\n",argv[c]);
         rawfp=OldRawOpen(argv[c],NULL);
-        /* Error case where num_bytes is less than 0 */
-        if (rawfp->rawread==-2) {
-            free(rawfp);
-            exit(-1);
-        }
         if (rawfp==NULL) {
           fprintf(stderr,"file %s not found\n",argv[c]);
           continue;
+        } else if (rawfp->rawread==-2) {
+            /* Error case where num_bytes is less than 0 */
+            free(rawfp);
+            exit(-1);
         }
 
         while (OldRawRead(rawfp,prm,raw) !=-1) {
