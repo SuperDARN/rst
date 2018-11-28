@@ -1,5 +1,5 @@
 /* map_addimf.c
-   =========== 
+   ===========
    Author: R.J.Barnes and others
 */
 
@@ -51,7 +51,7 @@ FILE *fp;
 
 struct GridData *grd;
 struct CnvMapData *map;
- 
+
 char dpath[256]={"/data"};
 
 double st_time;
@@ -103,7 +103,7 @@ int main(int argc,char *argv[])
   unsigned char vb=0;
 
   char *envstr;
- 
+
   char *dname=NULL;
   struct delaytab *dtable=NULL;
 
@@ -139,8 +139,8 @@ int main(int argc,char *argv[])
   int (*Map_Write)(FILE *, struct CnvMapData *, struct GridData *);
 
   grd = GridMake();
-  map = CnvMapMake(); 
- 
+  map = CnvMapMake();
+
   envstr = getenv("ISTP_PATH");
   if (envstr != NULL) strcpy(dpath,envstr);
 
@@ -191,9 +191,9 @@ int main(int argc,char *argv[])
   }
 
   if (pstr !=NULL) strcpy(dpath,pstr);
-  if (dstr !=NULL) delay=strtime(dstr);  
+  if (dstr !=NULL) delay=strtime(dstr);
   if (estr !=NULL) extent=strtime(estr);
-  
+
   if (arg !=argc) fname=argv[arg];
 
   if (dname !=NULL) {
@@ -202,7 +202,7 @@ int main(int argc,char *argv[])
      dtable=load_delay(fp);
      fclose(fp);
     }
-  }  
+  }
 
   if (iname != NULL) {
     fp = fopen(iname,"r");
@@ -234,7 +234,7 @@ int main(int argc,char *argv[])
   s = (*Map_Read)(fp,map,grd);
 
   st_time = map->st_time - delay;
-  ed_time = map->st_time - delay + extent; 
+  ed_time = map->st_time - delay + extent;
 
   if (wflg == 1)      load_wind();
   else if (aflg == 1) load_ace();
@@ -242,13 +242,13 @@ int main(int argc,char *argv[])
 
   k = 0;
 
-  do {  
+  do {
 
     if (dtable != NULL) {
       while ((k < dtable->num) && (dtable->time[k] <= map->st_time)) k++;
       if (k == 0) delay = dtable->delay[0];
       else        delay = dtable->delay[k-1];
-    }  
+    }
 
     tme = map->st_time - delay;
     map->Bx = dBx;
@@ -286,15 +286,15 @@ int main(int argc,char *argv[])
                  "%d-%d-%d %d:%d:%d delay=%d:%d Bx=%g By=%g Bz=%g Vx=%g Kp=%g\n",
                  yr,mo,dy,hr,mt,(int) sc,(int) (delay/3600),
                  ( (int) delay % 3600)/60, map->Bx,map->By,map->Bz,map->Vx,map->Kp);
-    }  
+    }
 
     s = (*Map_Read)(fp,map,grd);
 
   } while (s != -1);
 
-  fclose(fp); 
+  fclose(fp);
 
-  return 0; 
+  return 0;
 }
 
 
@@ -320,7 +320,7 @@ int findvalue(struct swdata *ptr, double tme, float *val)
   while ((einx < cnt) && (fabs(imf[3*einx]) > fabs(FILL_VALUE/2))) einx++;
   sinx = i-1;
   while ((sinx >= 0)  && (fabs(imf[3*sinx]) > fabs(FILL_VALUE/2))) sinx--;
- 
+
   if (sinx < 0)    sinx = 0;      /* start index */
   if (einx >= cnt) einx = cnt-1;  /* end   index */
 
@@ -451,13 +451,13 @@ struct delaytab *load_delay(FILE *fp)
   ptr=malloc(sizeof(struct delaytab));
   ptr->time=malloc(sizeof(double)*DELAYSTEP);
   ptr->delay=malloc(sizeof(float)*DELAYSTEP);
- 
+
   while(fgets(line,256,fp) !=NULL) {
     for (i=0;(line[i] !=0) && ((line[i]==' ') || (line[i]=='\t') ||
              (line[i] =='\n'));i++);
     if (line[i]==0) continue;
     if (line[i]=='#') continue;
-  
+
     if (sscanf(line,"%d %d %d %d %d %g %d %d",&yr,&mo,&dy,&hr,&mt,&sc,
               &dhr,&dmt) != 8) continue;
 
@@ -476,10 +476,10 @@ struct delaytab *load_delay(FILE *fp)
   ptr->num=cnt;
   ptr->time=realloc(ptr->time,sizeof(double)*cnt);
   ptr->delay=realloc(ptr->delay,sizeof(float)*cnt);
- 
+
   return ptr;
 }
- 
+
 
 double strtime(char *text)
 {
@@ -491,7 +491,7 @@ double strtime(char *text)
   hr=atoi(text);
   mn=atoi(text+i+1);
   return hr*3600L+mn*60L;
-}  
+}
 
 
 int load_omni()
@@ -508,7 +508,7 @@ int load_wind()
 
   CDFid id;
   CDFstatus status;
- 
+
   sprintf(path,"%s/%s",dpath,"wind");
 
   fprintf(stderr,"%s\n",path);
@@ -523,9 +523,9 @@ int load_wind()
       fprintf(stderr,"Could not open cdf file.\n");
       continue;
     }
-  
+
     status=windmfi_imf(id,&sw,st_time,ed_time);
-    
+
     CDFclose(id);
   }
   free_locate(fptr);
@@ -540,7 +540,7 @@ int load_ace()
 
   CDFid id;
   CDFstatus status;
- 
+
   sprintf(path,"%s/%s",dpath,"ace");
   fprintf(stderr,"%s\n",path);
 
@@ -557,12 +557,12 @@ int load_ace()
         continue;
       }
       status=acemfi_imf(id,&sw,st_time,ed_time,0);
-    
+
       CDFclose(id);
     }
     free_locate(fptr);
   } else {
-    free_locate(fptr);    
+    free_locate(fptr);
     fptr=locate_files(path,"k1_mfi",st_time,ed_time);
 
     for (i=0;i<fptr->cnt;i++) {
@@ -573,9 +573,9 @@ int load_ace()
         fprintf(stderr,"Could not open cdf file.\n");
         continue;
       }
-    
+
       status=acemfi_imf(id,&sw,st_time,ed_time,1);
-    
+
       CDFclose(id);
     }
     free_locate(fptr);
