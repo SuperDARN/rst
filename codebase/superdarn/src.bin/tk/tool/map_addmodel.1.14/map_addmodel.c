@@ -367,7 +367,7 @@ int solve_model(int num, struct GridGVec *ptr, float latmin, struct model *mod,
                 int hemi, float decyear, int noigrf, int old_aacgm)
 {
   int i;
-  double *ele_phi=NULL,*ele_the=NULL;
+  double *ele_phi=NULL,*ele_the=NULL,*pot=NULL;
   float *phi=NULL,*the=NULL,*the_col=NULL; 
   double bpolar;
   double bmag = -0.5e-4;
