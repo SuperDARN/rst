@@ -16,6 +16,7 @@
 #include "rtypes.h"
 #include "rmath.h"
 
+#include "shfconst.h" /* use the same constants as in fitting procedure */
 #include "cnvmodel.h"
 
 /*-----------------------------------------------------------------------------
