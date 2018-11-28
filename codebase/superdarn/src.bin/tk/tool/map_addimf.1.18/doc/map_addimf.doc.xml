@@ -23,7 +23,7 @@
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
 <option><on>-old</on><od>the input file is a <code>map</code> format file.</od></option>
-<option><on>-omni</on><od>use data from OMNI.</od>
+<option><on>-omni</on><od>use data from OMNI. (Currently not functional)</od>
 </option>
 <option><on>-ace</on><od>use IMF data from ACE.</od>
 </option>
