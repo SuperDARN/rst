@@ -59,14 +59,6 @@ struct OptionData opt;
 void add_model(struct CnvMapData *map,int num,struct GridGVec *ptr);
 int solve_model(int num, struct GridGVec *ptr, float latmin, struct model *mod,
                 int hemi, float decyear, int igrf_flag, int old_aacgm);
-double factorial(double n);
-void cmult(struct complex *a, struct complex *b, struct complex *c);
-void slv_ylm_mod(float theta, float phi, int order, struct complex *ylm_p,
-                 struct complex *ylm_n, double *anorm, double *plm_p,
-                 double *apcnv);
-void slv_sph_kset(float latmin, int num, float *phi, float *the,
-                  float *the_col, double *ele_phi, double *ele_the,
-                  struct model *mod);
 struct GridGVec *get_model_pos(int Lmax, float latmin, int hemi,
                                int level, int *num);
 
@@ -370,251 +362,6 @@ struct GridGVec *get_model_pos(int Lmax,float latmin,int hemi,
   return ptr;
 }
 
-double factorial(double n)
-{
-  double nfac=1;
-  int m;
-  for (m=n;m>0;m--) nfac=nfac*m;
-  return nfac;
-}
-
-void cmult(struct complex *a,struct complex *b,struct complex *c)
-{
-  a->x = b->x*c->x - b->y*c->y;
-  a->y = b->x*c->y + b->y*c->x;
-}
-
-void slv_ylm_mod(float theta, float phi, int order, struct complex *ylm_p,
-                 struct complex *ylm_n, double *anorm, double *plm_p,
-                 double *apcnv)
-{
-  int l,m,i;
-  double x;
-  double Pmm;
-  double num,den;
-  double numf,denf;
-  for (l=0;l<=order;l++) {
-    for (m=0;m<=l;m++) {
-       num=l-m;
-       den=l+m;
-
-       numf=factorial(num);
-       denf=factorial(den);
-
-       anorm[l*(order+1)+m]=sqrt((2*l+1)/(4*PI)*numf/denf);
-       apcnv[l*(order+1)+m]=pow(-1,m)*numf/denf;
-    }
-  }
-
-  for (l=0;l<=order;l++) {
-    for (m=0;m<=l;m++) {
-      x=cos(theta);
-
-      Pmm=1.0;
-
-      if (m>0) {
-        double fct;
-        double sx2;
-        sx2=sqrt((1-x)*(1+x));
-        fct=1;
-        for (i=1;i<=m;i++) {
-          Pmm=-Pmm*fct*sx2;
-          fct=fct+2;
-        }
-      }
-      if (l !=m) {
-         double pnmp1;
-         pnmp1=x*(2*m+1)*Pmm;
-         if (l != (m+1)) {
-           double Pll=0;
-           int ll;
-           for (ll=m+2;ll<=l;ll++) {
-             Pll=(x*(2*ll-1)*pnmp1-(ll+m-1)*Pmm)/(ll-m);
-             Pmm=pnmp1;
-             pnmp1=Pll;
-           }
-           Pmm=Pll;
-         } else Pmm=pnmp1;
-      }
-      plm_p[l*(order+1)+m]=Pmm;
-
-      ylm_p[l*(order+1)+m].x=Pmm*anorm[l*(order+1)+m]*cos(m*phi);
-      ylm_p[l*(order+1)+m].y=Pmm*anorm[l*(order+1)+m]*sin(m*phi);
-      ylm_n[l*(order+1)+m].x=pow(-1,m)*ylm_p[l*(order+1)+m].x;
-      ylm_n[l*(order+1)+m].y=-pow(-1,m)*ylm_p[l*(order+1)+m].y;
-
-    }
-  }
-}
-
-void slv_sph_kset(float latmin, int num, float *phi, float *the,
-                  float *the_col, double *ele_phi, double *ele_the,
-                  struct model *mod)
-{
-  int i,m,l,n;
-  int ltop,mtop;
-  struct complex *ylm_px=NULL;
-  struct complex *ylm_nx=NULL;
-  double *plm_px=NULL;
-  struct complex *xot_arr=NULL;
-
-  double *pot_arr=NULL;
-  struct complex Ix;
-  struct complex T1,T2;
-  struct complex t;
-/*  float Re=6362.0+300.0; */
-  float Rd = Radial_Dist/1000.;  /* using values in shfconst.h */
-
-  int mlow,mhgh;
-
-  double *anorm,*apcnv;
-
-  ltop=mod->ltop;
-  mtop=mod->mtop;
-  ylm_px=malloc(sizeof(struct complex)*(ltop+1)*(ltop+1)*num);
-  ylm_nx=malloc(sizeof(struct complex)*(ltop+1)*(ltop+1)*num);
-  plm_px=malloc(sizeof(struct complex)*(ltop+1)*(ltop+1)*num);
-  pot_arr=malloc(sizeof(double)*num);
-  xot_arr=malloc(sizeof(struct complex)*num);
-  anorm=malloc(sizeof(double)*(ltop+1)*(ltop+1));
-  apcnv=malloc(sizeof(double)*(ltop+1)*(ltop+1));
-
-
-  if ((ylm_px==NULL) || (ylm_nx==NULL) || (plm_px==NULL) ||
-      (pot_arr==NULL) || (xot_arr==NULL) || (anorm==NULL) ||
-      (apcnv==NULL)) {
-    if (ylm_px !=NULL) free(ylm_px);
-    if (ylm_nx !=NULL) free(ylm_nx);
-    if (plm_px !=NULL) free(plm_px);
-    if (pot_arr !=NULL) free(pot_arr);
-    if (xot_arr !=NULL) free(xot_arr);
-    if (anorm !=NULL) free(anorm);
-    if (apcnv !=NULL) free(apcnv);
-
-  }
-
-  for (i=0;i<num;i++) {
-    slv_ylm_mod(the[i],phi[i],ltop, &ylm_px[(ltop+1)*(ltop+1)*i],
-                                    &ylm_nx[(ltop+1)*(ltop+1)*i], anorm,
-                                    &plm_px[(ltop+1)*(ltop+1)*i], apcnv);
-  }
-
-  for (i=0;i<num;i++) {
-
-    Ix.x=0;
-    Ix.y=0;
-    for (l=0;l<=ltop;l++) {
-      mlow=-l;
-      if (mtop<l) mlow=-mtop;
-      mhgh=-mlow;
-
-      for (m=mlow;m<0;m++) {
-
-        cmult(&t,&mod->aoeff_n[l*(ltop+1)-m],
-              &ylm_nx[i*(ltop+1)*(ltop+1)+l*(ltop+1)-m]);
-
-        Ix.x += t.x;
-        Ix.y += t.y;
-      }
-
-      for (m=0;m<=mhgh;m++) {
-
-        cmult(&t,&mod->aoeff_p[l*(ltop+1)+m],
-              &ylm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+m]);
-         Ix.x += t.x;
-         Ix.y += t.y;
-       }
-    }
-
-    pot_arr[i]   = Ix.x;
-    xot_arr[i].x = Ix.x;
-    xot_arr[i].y = Ix.y;
-  }
-
-  for (i=0;i<num;i++) {
-    Ix.x=0;
-    Ix.y=0;
-
-    for (l=0;l<=ltop;l++) {
-
-      mlow=-l;
-      if (mtop<l) mlow=-mtop;
-      mhgh=-mlow;
-
-      for (m=mlow;m<0;m++) {
-        cmult(&t,&mod->aoeff_n[l*(ltop+1)-m],
-              &ylm_nx[i*(ltop+1)*(ltop+1)+l*(ltop+1)-m]);
-        Ix.x += m*t.x;
-        Ix.y += m*t.y;
-
-      }
-
-      for (m=0;m<=mhgh;m++) {
-
-         cmult(&t,&mod->aoeff_p[l*(ltop+1)+m],
-               &ylm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+m]);
-         Ix.x += m*t.x;
-         Ix.y += m*t.y; 
-       }
-    }
-
-    ele_phi[i] = (1000.0/(Rd*sin(the_col[i])))*Ix.y;
-
-    Ix.x=0;
-    Ix.y=0;
-    for (l=0;l<=ltop;l++) {
-      mlow=-l;
-      if (mtop<l) mlow=-mtop;
-      mhgh=-mlow;
-
-      for (m=mlow;m<0;m++) {
-        n=-m;
-        T1.x=n*cos(the[i])/sin(the[i])*
-            plm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)-m];
-        T1.y=n*cos(the[i])/sin(the[i])*
-            plm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)-m];
-        if ((n+1) <=l) {
-           T2.x=plm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+n+1];
-           T2.y=plm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+n+1];
-        } else {
-          T2.x=0;
-          T2.y=0;
-        }
-
-        T1.x=(T1.x+T2.x)*pow(-1,m)*cos(m*phi[i])*anorm[l*(ltop+1)-m];
-        T1.y=(T1.y+T2.y)*pow(-1,m)*sin(m*phi[i])*anorm[l*(ltop+1)-m];
-        cmult(&t,&T1,&mod->aoeff_n[l*(ltop+1)-m]);
-        Ix.x += t.x; 
-        Ix.y += t.y;
-      }
-
-      for (m=0;m<=mhgh;m++) {
-        T1.x=m*cos(the[i])/sin(the[i])*
-             plm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+m];
-        T1.y=m*cos(the[i])/sin(the[i])*
-             plm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+m];
-        if ((m+1) <=l) {
-          T2.x=plm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+m+1];
-          T2.y=plm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+m+1];
-        } else {
-          T2.x=0;
-          T2.y=0;
-        }
-        T1.x=(T1.x+T2.x)*cos(m*phi[i])*anorm[l*(ltop+1)+m];
-        T1.y=(T1.y+T2.y)*sin(m*phi[i])*anorm[l*(ltop+1)+m];
-        cmult(&t,&T1,&mod->aoeff_p[l*(ltop+1)+m]);
-
-        Ix.x += t.x; 
-        Ix.y += t.y;
-      }
-    }
-    if (latmin > 0)
-      ele_the[i]=-1000.0*(180.0/(90.0-latmin))/Rd*Ix.x;
-    else 
-      ele_the[i]=-1000.0*(180.0/(90.0+latmin))/Rd*Ix.x;
-  }
-}
-
 
 int solve_model(int num, struct GridGVec *ptr, float latmin, struct model *mod,
                 int hemi, float decyear, int noigrf, int old_aacgm)
@@ -637,14 +384,16 @@ int solve_model(int num, struct GridGVec *ptr, float latmin, struct model *mod,
   the_col = malloc(sizeof(float)*num);
   ele_the = malloc(sizeof(double)*num);
   ele_phi = malloc(sizeof(double)*num);
+  pot     = malloc(sizeof(double)*num);
 
   if ( (phi==NULL) || (the==NULL) || (the_col==NULL) ||
-       (ele_the==NULL) ||(ele_phi==NULL) ) {
+       (ele_the==NULL) ||(ele_phi==NULL) || (pot==NULL) ) {
     if (phi !=NULL) free(phi);
     if (the !=NULL) free(the);
     if (the_col !=NULL) free(the_col);
     if (ele_the !=NULL) free(ele_the);
     if (ele_phi !=NULL) free(ele_phi);
+    if (pot !=NULL) free(pot);
 
     return -1;
   }
@@ -655,9 +404,10 @@ int solve_model(int num, struct GridGVec *ptr, float latmin, struct model *mod,
     the_col[i] = (90-ptr[i].mlat)*PI/180.0;
     ele_phi[i] = 0;
     ele_the[i] = 0;
+    pot[i]     = 0;
   }
 
-  slv_sph_kset(latmin,num,phi,the,the_col,ele_phi,ele_the,mod);
+  slv_sph_kset(latmin,num,phi,the,the_col,ele_phi,ele_the,mod,pot);
 
   for (i=0; i<num; i++) {
     ele_phi[i] = ele_phi[i]*hemi;
@@ -680,6 +430,7 @@ int solve_model(int num, struct GridGVec *ptr, float latmin, struct model *mod,
   free(phi);
   free(ele_phi);
   free(ele_the);
+  free(pot);
 
   return 0;
 }
