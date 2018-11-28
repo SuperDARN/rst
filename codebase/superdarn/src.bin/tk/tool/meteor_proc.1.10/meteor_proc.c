@@ -8,6 +8,9 @@
 
 /* 
  $Log: meteor_proc.c,v $
+ Revision 1.11  2007/09/19 19:36:03  code
+ Fixed bug in processing cfit files.
+
  Revision 1.10  2006/03/10 18:31:50  barnes
  Included Nigel Wade's modification to correct for infinite looping condition.
 
@@ -52,7 +55,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <math.h>
-#include <zlib.h>
 #include "rtypes.h"
 #include "option.h"
 #include "rtime.h"
@@ -60,7 +62,8 @@
 #include "dmap.h"
 
 
-#include "radar.h" 
+#include "limit.h"
+#include "radar.h"
 #include "rprm.h"
 #include "fitdata.h"
 #include "fitread.h"
@@ -89,8 +92,8 @@ struct OptionData opt;
 
 int cnt=0;
 
-int merbm[32]={6,11,1,9,0,15,0,11,13,3,5,2,0,4,4};
-int merid[32]={1,3,5,6,7,8,9,10,16,4,11,12,13,14,15};
+int merbm[32]={6,11,1,9,0,15,0,11,13,3,5,2,0,4,4,0};
+int merid[32]={1,3,5,6,7,8,9,10,16,4,11,12,13,14,15,32};
 
 struct metdata {
   int yr,mo,dy,hr,mt,sc;
@@ -318,6 +321,7 @@ int main (int argc,char *argv[]) {
 
           hr=prm.time.hr;
           cnt=num[hr];
+
           if ((req_hr !=-1) && (hr !=req_hr)) continue;
           if (prm.scan <0) continue;
           if (prm.frang==0) continue;
@@ -383,6 +387,7 @@ int main (int argc,char *argv[]) {
 
           hr=prm.time.hr;
           cnt=num[hr];
+
           if ((req_hr !=-1) && (hr !=req_hr)) continue;
           if (prm.scan <0) continue;
           if (prm.frang==0) continue;
@@ -468,10 +473,10 @@ int main (int argc,char *argv[]) {
 
         max_gate=(max_range-cfit.frang)/cfit.rsep;
         met[hr][cnt].max_gate=max_gate;
+        for (i=0;i<max_gate;i++) met[hr][cnt].flg[i]=0;
         for (j=0;j<cfit.num;j++) {
           if (cfit.rng[j]>=max_gate) continue;
           i=cfit.rng[j];
-          met[hr][cnt].flg[i]=0;
           if (fabs(cfit.data[j].v) > max_vel) continue;
           if (cfit.data[j].p_l < min_sn) continue;
           if (cfit.data[j].v_e >= max_v_err) continue;
