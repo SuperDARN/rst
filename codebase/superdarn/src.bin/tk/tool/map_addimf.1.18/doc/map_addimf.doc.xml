@@ -74,7 +74,7 @@
 
 <example>
 <command>map_addimf -vb -old -bx 1.5 -by -1.2 -bx 0.4 19970406.map &gt; 19970406.imf.map</command>
-<description>Adds a fixed IMF of Bx=-15, By=-1.2 and Bz=0.4 to the map file "<coode>19970406.map</code>". The output is stored in the file "<code>19970406.imf.map</code>" and status is logged to standard error.</description>
+<description>Adds a fixed IMF of Bx=-15, By=-1.2 and Bz=0.4 to the map file "<code>19970406.map</code>". The output is stored in the file "<code>19970406.imf.map</code>" and status is logged to standard error.</description>
 </example>
 
 <example>
