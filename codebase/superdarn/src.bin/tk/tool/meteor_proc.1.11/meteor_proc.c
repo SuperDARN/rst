@@ -55,6 +55,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <math.h>
+#include <zlib.h>
 #include "rtypes.h"
 #include "option.h"
 #include "rtime.h"
@@ -62,7 +63,6 @@
 #include "dmap.h"
 
 
-#include "limit.h"
 #include "radar.h"
 #include "rprm.h"
 #include "fitdata.h"
