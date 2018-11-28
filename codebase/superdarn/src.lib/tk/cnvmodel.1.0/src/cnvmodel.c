@@ -16,7 +16,7 @@
 #include "rtypes.h"
 #include "rmath.h"
 
-#include "map_addmodel.h"
+#include "cnvmodel.h"
 
 /*-----------------------------------------------------------------------------
  * Notes:

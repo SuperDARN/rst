@@ -25,7 +25,7 @@
 #include "shfconst.h" /* use the same constants as in fitting procedure */
 #include "igrfcall.h"
 #include "igrflib.h"
-#include "map_addmodel.h"
+#include "cnvmodel.h"
 #include "calc_bmag.h"
 #include "hlpstr.h"
 
