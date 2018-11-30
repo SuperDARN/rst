@@ -5,26 +5,26 @@
 
 /*
  LICENSE AND DISCLAIMER
- 
+
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
+
  This file is part of the Radar Software Toolkit (RST).
- 
+
  RST is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
- 
+
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Lesser General Public License for more details.
- 
+
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+
+
+
 */
 
 #include <stdio.h>
@@ -46,20 +46,20 @@ int32 dcmpr(unsigned char *word) {
   /* decompress value */
   int count;
   int32 value;
- 
-  
+
+
   count=word[0] & 0x0f;
-  value=(word[1] & 0x7f)<<8 | (word[0] & 0xf0); 
+  value=(word[1] & 0x7f)<<8 | (word[0] & 0xf0);
   if (count==0) value=value<<1;
   else {
      value=value | 0x8000;
      value=value<<count;
   }
-  if ((word[1] & 0x80) !=0) value=-value; 
-  return (value);  
+  if ((word[1] & 0x80) !=0) value=-value;
+  return (value);
 }
 
-int raw_read_current(struct rawfp *fp,struct rawdata *raw_data) { 
+int raw_read_current(struct rawfp *fp,struct rawdata *raw_data) {
 
    /* read raw data block from file */
 
@@ -86,6 +86,9 @@ int raw_read_current(struct rawfp *fp,struct rawdata *raw_data) {
    fp->rlen=0;
    do {
      if (ConvertReadShort(fp->rawfp,&num_byte) !=0 || num_byte <= 0) {
+       if (num_byte < 0){
+           fprintf(stderr,"WARNING : raw_read_current : raw_read_current : num_byte < 0 in record header, potentially corrupted file.\n");
+       }
        free(inbuf);
        return -1;
      }
@@ -95,24 +98,24 @@ int raw_read_current(struct rawfp *fp,struct rawdata *raw_data) {
      stat = read(fp->rawfp,inbuf,num_byte);
      if(stat != num_byte) {
        free(inbuf);
-       return -1; 
+       return -1;
      }
      inbuf_ptr=inbuf;
      ConvertToInt(inbuf_ptr,&rec_num);
-   } while (rec_num==0); 
-   inbuf_ptr = inbuf_ptr + 12;  /* skip rec_num + rawwrite */  
+   } while (rec_num==0);
+   inbuf_ptr = inbuf_ptr + 12;  /* skip rec_num + rawwrite */
    num_byte = num_byte - 12;
-  
+
    /* zero out the raw data buffer */
 
-   /* copy radar_parms */   
+   /* copy radar_parms */
    ConvertBlock(inbuf_ptr,radar_parms_pat);
-   memcpy((void *) &(raw_data->PARMS),inbuf_ptr,sizeof(struct radar_parms)); 
+   memcpy((void *) &(raw_data->PARMS),inbuf_ptr,sizeof(struct radar_parms));
    inbuf_ptr = inbuf_ptr + sizeof(struct radar_parms);
    num_byte = num_byte - sizeof(struct radar_parms);
 
    /* copy the pulse pattern */
-  
+
    for (i=0;i<raw_data->PARMS.MPPUL;i++) {
       ConvertToShort(inbuf_ptr,&raw_data->PULSE_PATTERN[i]);
       inbuf_ptr+=sizeof(int16);
@@ -126,8 +129,8 @@ int raw_read_current(struct rawfp *fp,struct rawdata *raw_data) {
          ConvertToShort(inbuf_ptr,&raw_data->LAG_TABLE[j][i]);
          inbuf_ptr = inbuf_ptr + sizeof(int16);
          num_byte = num_byte - sizeof(int16);
-      } 
-	  
+      }
+
    /* copy comment buffer */
    memcpy(raw_data->COMBF,inbuf_ptr,ORIG_COMBF_SIZE);
    inbuf_ptr = inbuf_ptr + ORIG_COMBF_SIZE;
@@ -150,7 +153,7 @@ int raw_read_current(struct rawfp *fp,struct rawdata *raw_data) {
       if((range <= prev_range) && (raw_data->PARMS.XCF))
 		   xcf_data = 1;
 
-      for(i = 0; i < raw_data->PARMS.MPLGS ; ++i) {   
+      for(i = 0; i < raw_data->PARMS.MPLGS ; ++i) {
          for(j=0 ; j < 2; ++j) {
 	    if (xcf_data) raw_data->xcfd[range][i][j] = dcmpr(inbuf_ptr);
 	    else raw_data->acfd[range][i][j] = dcmpr(inbuf_ptr);
@@ -158,17 +161,17 @@ int raw_read_current(struct rawfp *fp,struct rawdata *raw_data) {
             num_byte = num_byte - sizeof(int16);
          }
       }
-		
+
       prev_range = range;
 
-   } 
+   }
   fp->ctime=TimeYMDHMSToEpoch(raw_data->PARMS.YEAR,
 			raw_data->PARMS.MONTH,
 			raw_data->PARMS.DAY,
 			raw_data->PARMS.HOUR,
 			raw_data->PARMS.MINUT,
 			raw_data->PARMS.SEC);
-  free(inbuf);  
+  free(inbuf);
   return 0;
 }
 
