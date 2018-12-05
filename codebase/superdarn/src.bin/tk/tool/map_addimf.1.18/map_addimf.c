@@ -312,10 +312,18 @@ int findvalue(struct swdata *ptr, double tme, float *val)
   kp  = ptr->Kp;
   cnt = ptr->cnt;
 
+  /* Fill in with default values */
   for (i=0; i<5; i++) val[i] = FILL_VALUE;
 
+  /* Increment i until end of file or until the start time */
+  /* of making the map is reached.  This is likely most */
+  /* useful for sw data that contains multiple days.  The */
+  /* default format from OMNI is a year-long file */
   for (i=0; (i < cnt) && (ptr->time[i] <= tme); i++);
 
+  /* Skip over where the IMF value is invalid.  Here invalid */
+  /* is evaluated by being greater than half of the */
+  /* FILL_VALUE value. */
   einx = i;
   while ((einx < cnt) && (fabs(imf[3*einx]) > fabs(FILL_VALUE/2))) einx++;
   sinx = i-1;
@@ -326,6 +334,7 @@ int findvalue(struct swdata *ptr, double tme, float *val)
 
   etime = ptr->time[einx];
   stime = ptr->time[sinx];
+  /* These error codes are left unchecked in map_addimf */
   if (tme < stime) return -1;
   if (tme > etime) return -1;
 
