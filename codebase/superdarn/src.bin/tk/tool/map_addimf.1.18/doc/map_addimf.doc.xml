@@ -73,7 +73,7 @@
 
 <quote><code>2016 12 30 23 17 00     0.64    2.59   -1.96  -336.9</code></quote>
 
-<p>then the records for 23:18 and after will contain the values for IMF and <em>vx</em> in this entry.  Similarly, if values are missing at the beginning of a file, then the first line in the IMF file will be used where there is missing data until new updates are available in IMF data.</p>
+<p>then the records for 23:18 and after will contain the values for IMF and <em>vx</em> in this entry.  Similarly, if values are missing at the beginning of a file, then the first line in the IMF file will be used in place of the missing data.</p>
 </description>
 
 <example>
