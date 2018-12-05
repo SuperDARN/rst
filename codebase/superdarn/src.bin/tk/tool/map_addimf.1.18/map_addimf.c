@@ -334,9 +334,14 @@ int findvalue(struct swdata *ptr, double tme, float *val)
 
   etime = ptr->time[einx];
   stime = ptr->time[sinx];
-  /* These error codes are left unchecked in map_addimf */
-  if (tme < stime) return -1;
-  if (tme > etime) return -1;
+  /* The tme < stime and tme > etime are believed to be */
+  /* error checking in case something has gone wrong. */
+  /* Otherwise, the sinx != einx condition exempts when there */
+  /* is a gap in IMF data at the beginning or end of an IMF */
+  /* file. These returned error codes are left unchecked */
+  /* in map_addimf(). */
+  if ((tme < stime) && (sinx != einx)) return -1;
+  if ((tme > etime) && (sinx != einx)) return -1;
 
   if (einx != sinx) v = (tme - stime)/(etime - stime);
   else              v = 0;
