@@ -317,8 +317,8 @@ int findvalue(struct swdata *ptr, double tme, float *val)
 
   /* Increment i until end of file or until the start time */
   /* of making the map is reached.  This is likely most */
-  /* useful for sw data that contains multiple days.  The */
-  /* default format from OMNI is a year-long file */
+  /* useful for sw data that contains multiple days.  OMNI */
+  /* data is produced in monthly and yearly files. */
   for (i=0; (i < cnt) && (ptr->time[i] <= tme); i++);
 
   /* Skip over where the IMF value is invalid.  Here invalid */
