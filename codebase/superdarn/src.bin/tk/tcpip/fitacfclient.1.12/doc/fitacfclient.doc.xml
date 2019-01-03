@@ -11,6 +11,8 @@
 </option>
 <option><on>--version</on><od>print the RST version number and exit.</od>
 </option>
+<option><on>-nrange <ar>nrng</ar></on><od>set the maximum number of range gates to display to <ar>nrng</ar>.</od>
+</option>
 <option><on><ar>host</ar></on><od>hostname or IP address of the system to connect to.</od>
 </option>
 <option><on><ar>port</ar></on><od>port number to connect to on  the system.</od></option>
