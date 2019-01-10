@@ -5,26 +5,26 @@
 
 /*
  LICENSE AND DISCLAIMER
- 
+
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
+
  This file is part of the Radar Software Toolkit (RST).
- 
+
  RST is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
- 
+
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Lesser General Public License for more details.
- 
+
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+
+
+
 */
 
 #include <stdio.h>
@@ -72,7 +72,7 @@ struct OldRawFp *OldRawOpenFd(int rawfd,int inxfd) {
   if (inbuf==NULL) return NULL;
 
   ptr=malloc(sizeof(struct OldRawFp));
-  
+
   if (ptr==NULL) {
     free(inbuf);
     return NULL;
@@ -88,6 +88,13 @@ struct OldRawFp *OldRawOpenFd(int rawfd,int inxfd) {
   fstat(ptr->rawfp,&ptr->rstat);
 
   if (ConvertReadShort(ptr->rawfp,&num_byte) !=0 || num_byte <= 0) {
+    if (num_byte < 0) {
+        fprintf(stderr,"WARNING : rawopen : OldRawOpenFd : num_byte < 0 in record header, potentially corrupted file.\n");
+        close(ptr->rawfp);
+        free(inbuf);
+        ptr->rawread=-2;
+        return ptr;
+    }
     close(ptr->rawfp);
     free(ptr);
     free(inbuf);
@@ -139,10 +146,10 @@ struct OldRawFp *OldRawOpenFd(int rawfd,int inxfd) {
     ptr->rlen=0;
   }
 
-  /* read the first record so that we can determine the start time of 
+  /* read the first record so that we can determine the start time of
      the file */
 
-  
+
   if (ConvertReadShort(ptr->rawfp,&num_byte) !=0 || num_byte <= 0) {
     close(ptr->rawfp);
     free(ptr);
@@ -164,7 +171,7 @@ struct OldRawFp *OldRawOpenFd(int rawfd,int inxfd) {
   /* now decode the parameter block */
 
   ConvertBlock(inbuf+12,radar_parms_pat);
-  prm=(struct radar_parms *) (inbuf+12);   
+  prm=(struct radar_parms *) (inbuf+12);
 
   ptr->stime=TimeYMDHMSToEpoch(prm->YEAR,prm->MONTH,prm->DAY,
 	  prm->HOUR,prm->MINUT,prm->SEC);
@@ -187,6 +194,7 @@ struct OldRawFp *OldRawOpen(char *rawfile,char *inxfile) {
 
   rawfd=open(rawfile,O_RDONLY);
   if (rawfd==-1) return NULL;
-  
+
   return OldRawOpenFd(rawfd,inxfd);
 }
+
