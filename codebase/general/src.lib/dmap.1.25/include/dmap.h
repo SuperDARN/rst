@@ -29,12 +29,16 @@
 */
 
 
+#ifndef _ZLIB_H
+#define _ZLIB_H
+
+#include <zlib.h>
+
+#endif
 
 
 #ifndef _DMAP_H
 #define _DMAP_H
-
-#include <zlib.h>
 
 #define DATACHAR 1
 #define DATASHORT 2
