@@ -361,7 +361,7 @@ char *label_vec(double val,double min,double max,void *data) {
   if ((val !=max) && (val !=min)) return NULL;
   txt=malloc(32); 
   if (val==max) sprintf(txt,"%g",val);
-  if (val==min) sprintf(txt,"%g m/s (vmag)",val); 
+  if (val==min) sprintf(txt,"%g m/s (vmag)",val);
   return txt;
 }
 
@@ -370,7 +370,7 @@ char *label_vel(double val,double min,double max,void *data) {
   if ((val !=max) && (val !=min)) return NULL;
   txt=malloc(32); 
   if (val==max) sprintf(txt,"%g",val);
-  if (val==min) sprintf(txt,"%g m/s",val); 
+  if (val==min) sprintf(txt,"%g m/s",val);
   return txt;
 }
 
@@ -379,7 +379,7 @@ char *label_wdt(double val,double min,double max,void *data) {
   if ((val !=max) && (val !=min)) return NULL;
   txt=malloc(32); 
   if (val==max) sprintf(txt,"%g",val);
-  if (val==min) sprintf(txt,"%g m/s (sw)",val); 
+  if (val==min) sprintf(txt,"%g m/s (sw)",val);
   return txt;
 }
 
@@ -388,8 +388,25 @@ char *label_pwr(double val,double min,double max,void *data) {
   if ((val !=max) && (val !=min)) return NULL;
   txt=malloc(32); 
   if (val==max) sprintf(txt,"%g",val);
-  if (val==min) sprintf(txt,"%g dB (pwr)",val); 
-   
+  if (val==min) sprintf(txt,"%g dB (pwr)",val);
+  return txt;
+}
+
+char *label_elv(double val,double min,double max,void *data) {
+  char *txt=NULL;
+  if ((val !=max) && (val !=min)) return NULL;
+  txt=malloc(32);
+  if (val==max) sprintf(txt,"%g",val);
+  if (val==min) sprintf(txt,"%g deg",val); 
+  return txt;
+}
+
+char *label_err(double val,double min,double max,void *data) {
+  char *txt=NULL;
+  if ((val !=max) && (val !=min)) return NULL;
+  txt=malloc(32); 
+  if (val==max) sprintf(txt,"%g",val);
+  if (val==min) sprintf(txt,"%g m/s",val);
   return txt;
 }
 
@@ -426,7 +443,6 @@ int main(int argc,char *argv[]) {
   struct timeval tmout;
   float delay=0.1;
   int xstat=0;
-
 #endif
 
   struct FrameBuffer *img=NULL;
@@ -585,6 +601,8 @@ int main(int argc,char *argv[]) {
   unsigned char pwrflg=0;
   unsigned char velflg=0;
   unsigned char wdtflg=0;
+  unsigned char elvflg=0;
+  unsigned char errflg=0;
   unsigned char vecflg=0;
 
   unsigned char tlblflg=0;
@@ -605,6 +623,10 @@ int main(int argc,char *argv[]) {
   double vmax=2000;
   double wmin=0;
   double wmax=500;
+  double emin=0;
+  double emax=50;
+  double vemin=0;
+  double vemax=200;
   float vsf=1.0;
   float vecr=2.0;
 
@@ -666,7 +688,7 @@ int main(int argc,char *argv[]) {
   cfit=CFitMake();
   scn=RadarScanMake();
 
- envstr=getenv("SD_RADAR");
+  envstr=getenv("SD_RADAR");
   if (envstr==NULL) {
     fprintf(stderr,"Environment variable 'SD_RADAR' must be defined.\n");
     exit(-1);
@@ -836,6 +858,8 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"v",'x',&velflg);
   OptionAdd(&opt,"p",'x',&pwrflg);
   OptionAdd(&opt,"w",'x',&wdtflg);
+  OptionAdd(&opt,"e",'x',&elvflg);
+  OptionAdd(&opt,"ve",'x',&errflg);
   OptionAdd(&opt,"vec",'x',&vecflg);
 
   OptionAdd(&opt,"pmin",'d',&pmin);
@@ -846,6 +870,12 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"wmin",'d',&wmin);
   OptionAdd(&opt,"wmax",'d',&wmax);
+
+  OptionAdd(&opt,"emin",'d',&emin);
+  OptionAdd(&opt,"emax",'d',&emax);
+
+  OptionAdd(&opt,"vemin",'d',&vemin);
+  OptionAdd(&opt,"vemax",'d',&vemax);
 
   OptionAdd(&opt,"gs",'x',&gsflg);
   OptionAdd(&opt,"gm",'x',&gmflg);
@@ -1286,14 +1316,20 @@ int main(int argc,char *argv[]) {
   if (pwrflg) pprm=1;
   if (velflg) pprm=2;
   if (wdtflg) pprm=3;
+  if (elvflg) pprm=4;
+  if (errflg) pprm=5;
 
   if (pprm==1) key.max=pmax;
   else if (pprm==2) key.max=vmax;
   else if (pprm==3) key.max=wmax;
+  else if (pprm==4) key.max=emax;
+  else if (pprm==5) key.max=vemax;
 
   if (pprm==1) key.min=pmin;
   else if (pprm==2) key.min=vmin;
   else if (pprm==3) key.min=wmin;
+  else if (pprm==4) key.min=emin;
+  else if (pprm==5) key.min=vemin;
 
   vkey.min=0;
   vkey.max=vmax;
@@ -1671,9 +1707,13 @@ int main(int argc,char *argv[]) {
           if (pprm==1) max=pmax;
           else if (pprm==2) max=vmax;
           else if (pprm==3) max=wmax;
+          else if (pprm==4) max=emax;
+          else if (pprm==5) max=vemax;
           if (pprm==1) min=pmin;
           else if (pprm==2) min=vmin;
           else if (pprm==3) min=wmin;
+          else if (pprm==4) min=emin;
+          else if (pprm==5) min=vemin;
 
           if (khgt<80) kstp=(max-min)/5.0;
           else kstp=(max-min)/10.0;
@@ -1697,6 +1737,20 @@ int main(int argc,char *argv[]) {
                                          0,0,2,
                                          0,NULL,
                                          txtbox,fontdb,label_wdt,NULL,
+                                         "Helvetica",10.0,txtcol,0x0f,0.5,
+                                         key.num,key.a,key.r,key.g,key.b);
+          else if (pprm==4) GrplotStdKey(plot,px,apad,8,khgt,
+                                         emin,emax,kstp,
+                                         0,0,2,
+                                         0,NULL,
+                                         txtbox,fontdb,label_elv,NULL,
+                                         "Helvetica",10.0,txtcol,0x0f,0.5,
+                                         key.num,key.a,key.r,key.g,key.b);
+          else if (pprm==5) GrplotStdKey(plot,px,apad,8,khgt,
+                                         vemin,vemax,kstp,
+                                         0,0,2,
+                                         0,NULL,
+                                         txtbox,fontdb,label_err,NULL,
                                          "Helvetica",10.0,txtcol,0x0f,0.5,
                                          key.num,key.a,key.r,key.g,key.b);
           px+=kwdt;
@@ -1859,6 +1913,8 @@ int main(int argc,char *argv[]) {
     if (pprm==1) sprintf(txt,"Parameter:Power");
     if (pprm==2) sprintf(txt,"Parameter:Velocity");
     if (pprm==3) sprintf(txt,"Parameter:Spectral Width");
+    if (pprm==4) sprintf(txt,"Parameter:Elevation Angle");
+    if (pprm==5) sprintf(txt,"Parameter:Velocity Error");
     txtbox("Helvetica",12.0,strlen(txt),txt,box,fontdb);
 
     PlotText(plot,NULL,"Helvetica",12.0,wdt-box[0],24+4*lnehgt,
