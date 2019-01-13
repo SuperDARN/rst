@@ -149,7 +149,6 @@ struct PolygonData *nigrd;
 struct PolygonData *pigrd;
 struct PolygonData *rigrd;
 
-
 struct PolygonData *tmk;
 struct PolygonData *ntmk;
 struct PolygonData *ptmk;
@@ -179,7 +178,7 @@ struct FitIndex *inx=NULL;
 struct RadarNetwork *network;
 struct Radar *radar;
 struct RadarSite *site;
-  
+
 int circle_clip(struct Plot *plot,
                 float xoff,float yoff,float wdt,float hgt) {
   int i;
@@ -344,7 +343,7 @@ double strtime(char *text) {
   hr=atoi(text);
   mn=atoi(text+i+1);
   return (double) hr*3600L+mn*60L;
-}   
+}
 
 unsigned int find_color(double v,void *data) {
   struct key *key;
@@ -366,7 +365,6 @@ char *label_vec(double val,double min,double max,void *data) {
   return txt;
 }
 
-
 char *label_vel(double val,double min,double max,void *data) {
   char *txt=NULL;
   if ((val !=max) && (val !=min)) return NULL;
@@ -384,7 +382,6 @@ char *label_wdt(double val,double min,double max,void *data) {
   if (val==min) sprintf(txt,"%g m/s (sw)",val); 
   return txt;
 }
-
 
 char *label_pwr(double val,double min,double max,void *data) {
   char *txt=NULL;
@@ -446,8 +443,6 @@ int main(int argc,char *argv[]) {
   char *cfname=NULL;
   FILE *fp;
 
-
-
   float wdt=540,hgt=640;
   float pad=6;
   float tpad=0;
@@ -473,7 +468,6 @@ int main(int argc,char *argv[]) {
   unsigned char help=0;
   unsigned char option=0;
   unsigned char version=0;
- 
 
   char *bgcol_txt=NULL;
   char *txtcol_txt=NULL;
@@ -529,7 +523,6 @@ int main(int argc,char *argv[]) {
   char *fancol_txt=NULL;
   char *ffancol_txt=NULL;
 
-
   char *gscol_txt=NULL;
 
   unsigned int grdcol;
@@ -548,7 +541,6 @@ int main(int argc,char *argv[]) {
 
   unsigned int fancol;
   unsigned int ffancol;
-
 
   unsigned int gscol;
 
@@ -584,9 +576,9 @@ int main(int argc,char *argv[]) {
   unsigned char grdtop=0;
   unsigned char igrdtop=0;
 
-  unsigned char keyflg=0; 
-  unsigned char vkeyflg=0; 
-  unsigned char refvecflg=0; 
+  unsigned char keyflg=0;
+  unsigned char vkeyflg=0;
+  unsigned char refvecflg=0;
 
   unsigned char fovflg=0;
   unsigned char ffovflg=0;
@@ -601,10 +593,9 @@ int main(int argc,char *argv[]) {
 
   unsigned char frmflg=0; 
   unsigned char ovrflg=0; 
-  
+
   unsigned char fanflg=0;
   unsigned char ffanflg=0;
- 
 
   int pprm=0;
 
@@ -616,7 +607,7 @@ int main(int argc,char *argv[]) {
   double wmax=500;
   float vsf=1.0;
   float vecr=2.0;
- 
+
   unsigned char gsflg=0;
   unsigned char gmflg=0;
 
@@ -737,7 +728,7 @@ int main(int argc,char *argv[]) {
   ffancol=PlotColor(0xe0,0xe0,0xe0,0xff);
 
   gscol=PlotColor(0xa0,0xa0,0xa0,0xff);
- 
+
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
   OptionAdd(&opt,"-version",'x',&version);
@@ -746,7 +737,6 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);
 
   OptionAdd(&opt,"cf",'t',&cfname);
-
 
 #ifdef _XLIB_ 
   OptionAdd(&opt,"x",'x',&xd);
@@ -842,8 +832,8 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"ffan",'x',&ffanflg);
 
   OptionAdd(&opt,"gscol",'t',&gscol_txt);
- 
-  OptionAdd(&opt,"v",'x',&velflg); 
+
+  OptionAdd(&opt,"v",'x',&velflg);
   OptionAdd(&opt,"p",'x',&pwrflg);
   OptionAdd(&opt,"w",'x',&wdtflg);
   OptionAdd(&opt,"vec",'x',&vecflg);
@@ -865,7 +855,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"vecp",'x',&refvecflg);
   OptionAdd(&opt,"vsf",'f',&vsf);
   OptionAdd(&opt,"vecr",'f',&vecr);
- 
+
   OptionAdd(&opt,"tmlbl",'x',&tlblflg);
   OptionAdd(&opt,"logo",'x',&logoflg);
   OptionAdd(&opt,"time",'x',&tmeflg);
@@ -914,8 +904,8 @@ int main(int argc,char *argv[]) {
           exit(-1);
         }
         OptionFreeFile(optf);
-       }   
-       fclose(fp);
+      }
+      fclose(fp);
     } while (cfname !=NULL);
   }
 
@@ -933,7 +923,6 @@ int main(int argc,char *argv[]) {
     OptionVersion(stdout);
     exit(0);
   }
-
 
   if (farg==argc) {
     OptionPrintInfo(stderr,errstr);
@@ -973,7 +962,6 @@ int main(int argc,char *argv[]) {
     repeat=repeat*repeat;
     pad=0;
 
- 
   }
 
   if (exstr !=NULL) exsec=strtime(exstr);
@@ -988,7 +976,7 @@ int main(int argc,char *argv[]) {
     if (tolower(chnstr[0])=='a') channel=1;
     if (tolower(chnstr[0])=='b') channel=2;
   }
- 
+
   if (fitflg) {
 
     if (old) {
@@ -997,7 +985,7 @@ int main(int argc,char *argv[]) {
         fprintf(stderr,"File not found.\n");
         exit(-1);
       }
-  
+
       s=OldFitReadRadarScan(oldfitfp,&state,scn,prm,fit,
                             tlen,syncflg,channel);
       if (s==-1) {
@@ -1009,13 +997,13 @@ int main(int argc,char *argv[]) {
         fp=fopen(iname,"r");
         if (fp==NULL) {
           fprintf(stderr,"Index not found.\n");
-	} else {
+        } else {
           inx=FitIndexFload(fp);
           fclose(fp);
           if (inx==NULL) {
             fprintf(stderr,"Error reading index.\n");
           }
-	}
+        }
       }
       fitfp=fopen(dname,"r");
       if (fitfp==NULL) {
@@ -1023,32 +1011,31 @@ int main(int argc,char *argv[]) {
         exit(-1);
       }
       s=FitFreadRadarScan(fitfp,&state,scn,prm,fit,
-                            tlen,syncflg,channel);
+                          tlen,syncflg,channel);
       if (s==-1) {
         fprintf(stderr,"Error reading file.\n");
         exit(-1);
       }
-    }    
+    }
   } else if (cfitflg) {
     cfitfp=CFitOpen(dname);
     if (cfitfp==NULL) {
       fprintf(stderr,"File not found.\n");
       exit(-1);
     }
-  
+
     s=CFitReadRadarScan(cfitfp,&state,scn,cfit,tlen,syncflg,channel);
 
     if (s==-1) {
       fprintf(stderr,"Error reading file.\n");
       exit(-1);
     }
-  } 
-  if ((ssec !=-1) || (sdte !=-1)) { 
+  }
+  if ((ssec !=-1) || (sdte !=-1)) {
     /* we must skip the start of the files */
-     
+
     if (ssec==-1) ssec= ( (int) scn->st_time % (24*3600));
-    if (sdte==-1) ssec+=scn->st_time - 
-                            ( (int) scn->st_time % (24*3600));
+    if (sdte==-1) ssec+=scn->st_time - ( (int) scn->st_time % (24*3600));
     else ssec+=sdte;
 
     TimeEpochToYMDHMS(ssec,&yr,&mo,&dy,&hr,&mt,&sc);
@@ -1065,25 +1052,24 @@ int main(int argc,char *argv[]) {
           }
         } else state=0;
         s=OldFitReadRadarScan(oldfitfp,&state,scn,prm,
-			    fit,tlen,syncflg,channel);  
+                              fit,tlen,syncflg,channel);
       } else {
         s=FitFseek(fitfp,yr,mo,dy,hr,mt,sc,NULL,inx);
         if (s==-1) {
           fprintf(stderr,"File does not contain the requested interval.\n");
           exit(-1);
-	}
+        }
         if (tlen==0) {
           while ((s=FitFread(fitfp,prm,fit)) !=-1) {
             if (abs(prm->scan)==1) break;
           }
         } else state=0;
         s=FitFreadRadarScan(fitfp,&state,scn,prm,
-			    fit,tlen,syncflg,channel);  
-    
+                            fit,tlen,syncflg,channel);
       }
     } else if (cfitflg) {
       s=CFitSeek(cfitfp,yr,mo,dy,hr,mt,sc,NULL,NULL);
-     
+
       if (s ==-1) {
         fprintf(stderr,"File does not contain the requested interval.\n");
         exit(-1);
@@ -1096,16 +1082,15 @@ int main(int argc,char *argv[]) {
       s=CFitReadRadarScan(cfitfp,&state,scn,cfit,tlen,syncflg,channel);
     }
   } else ssec=scn->st_time;
- 
+
   if (esec !=-1) {
-    if (edte==-1) esec+=scn->st_time - 
-                            ( (int) scn->st_time % (24*3600));
+    if (edte==-1) esec+=scn->st_time - ( (int) scn->st_time % (24*3600));
     else esec+=edte;
   }
 
   if (exsec !=0) esec=ssec+exsec;
 
- if (fitflg) {
+  if (fitflg) {
     stid=prm->stid;
     cptab[0]=prm->cp;
     cpnum=1;
@@ -1125,7 +1110,7 @@ int main(int argc,char *argv[]) {
   /* set function pointer to compute MLT or MLT_v2 */
   if (old_aacgm) MLTCnv = &MLTConvertYrsec;
   else           MLTCnv = &MLTConvertYrsec_v2;
- 
+
   TimeEpochToYMDHMS(scn->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
   radar=RadarGetRadar(network,scn->stid);
   site=RadarYMDHMSGetSite(radar,yr,mo,dy,hr,mt,(int) sc);
@@ -1134,28 +1119,26 @@ int main(int argc,char *argv[]) {
 
   if (site->geolat>0) hemisphere=1;
   else hemisphere=-1;
-  
+
   if (!sqflg) clip=MapCircleClip(10);
   else clip=MapSquareClip();
 
   if (lat>90) GeoLocCenter(site,magflg,&lat,&lon,chisham,old_aacgm);
- 
+
   if ((lat<0) && (latmin>0)) latmin=-latmin;
   if ((lat>0) && (latmin<0)) latmin=-latmin;
 
-  if (fovflg || ffovflg) fov=make_fov(scn->st_time,network,scn->stid,chisham); 
+  if (fovflg || ffovflg) fov=make_fov(scn->st_time,network,scn->stid,chisham);
   if ((fovflg || ffovflg) && magflg) {
     if (old_aacgm) MapModify(fov,AACGMtransform,NULL);
     else           MapModify(fov,AACGM_v2_transform,NULL);
   }
 
- 
-
   if (tmtick<1) tmtick=1;
   if (tmtick>6) tmtick=6;
 
-  if (grdflg) grd=make_grid(grdlon,grdlat);   
-  if (igrdflg) igrd=make_grid(igrdlon,igrdlat);   
+  if (grdflg) grd=make_grid(grdlon,grdlat);
+  if (igrdflg) igrd=make_grid(igrdlon,igrdlat);
 
   if (tmkflg) tmk=make_grid(30*tmtick,10);
 
@@ -1177,7 +1160,7 @@ int main(int argc,char *argv[]) {
       else           MapModify(igrd,AACGM_v2_transform,marg);
     }
   }
- 
+
   marg[0]=lat;
   marg[1]=0;
   if (ortho) marg[2]=sf;
@@ -1187,61 +1170,60 @@ int main(int argc,char *argv[]) {
   tfunc=MapStereographic;
   if (ortho) tfunc=MapOrthographic;
 
-
   strcpy(tsfx,"LT");
   if (magflg) strcpy(tsfx,"MLT");
   else if (lstflg) strcpy(tsfx,"LST");
 
   if (lat==90) poleflg=1;
   if (lat==-90) poleflg=1;
- 
+
   if (poleflg) {
     if (mapflg || fmapflg) {
       nmap=MapTransform(map,2*sizeof(float),PolygonXYbbox,
-                             tfunc,marg);
-      pmap=PolygonClip(clip,nmap); 
+                        tfunc,marg);
+      pmap=PolygonClip(clip,nmap);
       PolygonFree(map);
       PolygonFree(nmap);
     }
     if (bndflg) {
-       nbnd=MapTransform(bnd,2*sizeof(float),PolygonXYbbox,
+      nbnd=MapTransform(bnd,2*sizeof(float),PolygonXYbbox,
                         tfunc,marg);
-       pbnd=PolygonClip(clip,nbnd);
-       PolygonFree(bnd);
-       PolygonFree(nbnd);
+      pbnd=PolygonClip(clip,nbnd);
+      PolygonFree(bnd);
+      PolygonFree(nbnd);
     }
     if (grdflg) {
-       ngrd=MapTransform(grd,2*sizeof(float),PolygonXYbbox,
-                      tfunc,marg);
-       pgrd=PolygonClip(clip,ngrd);
-       PolygonFree(grd);
-       PolygonFree(ngrd);
+      ngrd=MapTransform(grd,2*sizeof(float),PolygonXYbbox,
+                        tfunc,marg);
+      pgrd=PolygonClip(clip,ngrd);
+      PolygonFree(grd);
+      PolygonFree(ngrd);
     }
 
     if (igrdflg) {
-       nigrd=MapTransform(igrd,2*sizeof(float),PolygonXYbbox,
-                      tfunc,marg);
-       pigrd=PolygonClip(clip,nigrd);
-       PolygonFree(igrd);
-       PolygonFree(nigrd);
+      nigrd=MapTransform(igrd,2*sizeof(float),PolygonXYbbox,
+                         tfunc,marg);
+      pigrd=PolygonClip(clip,nigrd);
+      PolygonFree(igrd);
+      PolygonFree(nigrd);
     }
     if (fovflg || ffovflg) {
-       nfov=MapTransform(fov,2*sizeof(float),PolygonXYbbox,
-                      tfunc,marg);
-       pfov=PolygonClip(clip,nfov);
-       PolygonFree(fov);
-       PolygonFree(nfov);
-    } 
-  
+      nfov=MapTransform(fov,2*sizeof(float),PolygonXYbbox,
+                        tfunc,marg);
+      pfov=PolygonClip(clip,nfov);
+      PolygonFree(fov);
+      PolygonFree(nfov);
+    }
+
     if (tmkflg) {
-       ntmk=MapTransform(tmk,2*sizeof(float),PolygonXYbbox,
-                      tfunc,marg);
-       ptmk=PolygonClip(clip,ntmk);
-       PolygonFree(tmk);
-       PolygonFree(ntmk);
+      ntmk=MapTransform(tmk,2*sizeof(float),PolygonXYbbox,
+                        tfunc,marg);
+      ptmk=PolygonClip(clip,ntmk);
+      PolygonFree(tmk);
+      PolygonFree(ntmk);
     }
   }
-    
+
   if (bgcol_txt !=NULL) bgcol=PlotColorStringRGBA(bgcol_txt);
   if (txtcol_txt !=NULL) txtcol=PlotColorStringRGBA(txtcol_txt);
 
@@ -1260,7 +1242,6 @@ int main(int argc,char *argv[]) {
 
   if (fancol_txt !=NULL) fancol=PlotColorStringRGBA(fancol_txt);
   if (ffancol_txt !=NULL) ffancol=PlotColorStringRGBA(ffancol_txt);
-
 
   if (gscol_txt !=NULL) gscol=PlotColorStringRGBA(gscol_txt);
 
@@ -1313,7 +1294,7 @@ int main(int argc,char *argv[]) {
   if (pprm==1) key.min=pmin;
   else if (pprm==2) key.min=vmin;
   else if (pprm==3) key.min=wmin;
- 
+
   vkey.min=0;
   vkey.max=vmax;
 
@@ -1331,39 +1312,37 @@ int main(int argc,char *argv[]) {
       key.a=KeyLinearA[1];
       key.r=KeyLinearR[1];
       key.g=KeyLinearG[1];
-      key.b=KeyLinearB[1]; 
+      key.b=KeyLinearB[1];
     } else {
       key.num=KeyLinearMax;
       key.a=KeyLinearA[0];
       key.r=KeyLinearR[0];
       key.g=KeyLinearG[0];
-      key.b=KeyLinearB[0]; 
+      key.b=KeyLinearB[0];
     }
   }
- 
+
   if ((wdt==0) || (hgt==0)) {
     fprintf(stderr,"invalid plot size.\n");
     exit(-1);
   }
 
-
-
   if (wdt>400) {
-     apad=30;
+    apad=30;
   } else {
     khgt=80*wdt/320;
   }
-  
+
   fntdbfname=getenv("FONTDB");
   fontfp=fopen(fntdbfname,"r");
   if (fontfp !=NULL) {
-   fontdb=FrameBufferFontDBLoad(fontfp);
-   fclose(fontfp);
+    fontdb=FrameBufferFontDBLoad(fontfp);
+    fclose(fontfp);
   }
- 
+
   if (fontdb==NULL) {
-   fprintf(stderr,"Could not load fonts.\n");
-   exit(-1);
+    fprintf(stderr,"Could not load fonts.\n");
+    exit(-1);
   }
 
   /* now determine our output type */
@@ -1395,9 +1374,6 @@ int main(int argc,char *argv[]) {
     SplotSetPostScript(splot,psdata,0,xpoff,ypoff);
   }
 
-
-
-
   sfx=fsfx[0];
   if (gflg) {
     if (xmlflg) sfx=fsfx[0];
@@ -1406,12 +1382,11 @@ int main(int argc,char *argv[]) {
     else sfx=fsfx[3];
   }
   if (pflg) sfx=fsfx[4];
-  
 
 #ifdef _XLIB_
   if (xd !=0) {
     dp=XwinOpenDisplay(display_name,&xdf);
- 
+
     if (dp==NULL) {
       fprintf(stderr,"Could not open display.\n");
       exit(-1);
@@ -1419,7 +1394,6 @@ int main(int argc,char *argv[]) {
 
     if (xdoff==-1) xdoff=(dp->wdt-wdt)/2;
     if (ydoff==-1) ydoff=(dp->hgt-hgt)/2;
-
 
     win=XwinMakeWindow(xdoff,ydoff,wdt,hgt,0,
                        dp,wname,
@@ -1437,9 +1411,8 @@ int main(int argc,char *argv[]) {
     PlotDocumentStart(plot,"field_plot",NULL,wdt,hgt,24);
     PlotPlotStart(plot,"field_plot",wdt,hgt,24);
     if (!ovrflg) PlotRectangle(plot,NULL,0,0,wdt,tpad,
-			       1,bgcol,0x0f,0,NULL);
+                               1,bgcol,0x0f,0,NULL);
   }
-
 
   do {
 
@@ -1464,7 +1437,7 @@ int main(int argc,char *argv[]) {
       if (repeat==0) {
         if (tnflg) sprintf(filename,"%.2d%.2d.%.2d.%s",hr,mt,(int) sc,sfx); 
         else if (dnflg) sprintf(filename,"%.4d%.2d%.2d.%.2d%.2d.%.2d.%s",
-                       yr,mo,dy,hr,mt,(int) sc,sfx);
+                                yr,mo,dy,hr,mt,(int) sc,sfx);
         else sprintf(filename,"%.4d.%s",frmcnt,sfx);
         frmcnt++;
         if (pflg) {
@@ -1472,14 +1445,13 @@ int main(int argc,char *argv[]) {
           PostScriptSetText(psdata,stream,outfp);
         }
       }
-    
-      if (trmflg || ftrmflg) {
-          if (lat>0) trm=SZATerminator(yr,mo,dy,hr,mt,sc,1,magflg,
-                              1.0,90.0);
-          if (lat<0) trm=SZATerminator(yr,mo,dy,hr,mt,sc,-1,magflg,
-                            1.0,90.0);
-      }
 
+      if (trmflg || ftrmflg) {
+        if (lat>0) trm=SZATerminator(yr,mo,dy,hr,mt,sc,1,magflg,
+                                     1.0,90.0);
+        if (lat<0) trm=SZATerminator(yr,mo,dy,hr,mt,sc,-1,magflg,
+                                     1.0,90.0);
+      }
 
       if (magflg) tme_shft=-(*MLTCnv)(yr,yrsec,0.0)*15.0;
       else {
@@ -1499,6 +1471,7 @@ int main(int argc,char *argv[]) {
       if (lat<0) tme_shft+=180.0;
       if (rotflg) marg[1]=lon+tme_shft;
       else marg[1]=lon;
+
       if (poleflg) {
         if (pmap !=NULL) 
          rmap=MapTransform(pmap,2*sizeof(float),PolygonXYbbox,rotate,marg);
@@ -1507,220 +1480,189 @@ int main(int argc,char *argv[]) {
         if (pgrd !=NULL) 
         rgrd=MapTransform(pgrd,2*sizeof(float),PolygonXYbbox,rotate,marg);
         if (pigrd !=NULL) 
-        rigrd=MapTransform(pigrd,2*sizeof(float),PolygonXYbbox,rotate,
-                               marg);
+        rigrd=MapTransform(pigrd,2*sizeof(float),PolygonXYbbox,rotate,marg);
         if (pfov !=NULL) 
         rfov=MapTransform(pfov,2*sizeof(float),PolygonXYbbox,rotate,marg);
         if (ptmk !=NULL) {
           if (rotflg) marg[1]=0;
           else marg[1]=lon-tme_shft;
-          rtmk=MapTransform(ptmk,2*sizeof(float),PolygonXYbbox,
-                                rotate,marg);
+          rtmk=MapTransform(ptmk,2*sizeof(float),PolygonXYbbox,rotate,marg);
           if (rotflg) marg[1]=lon+tme_shft;
           else marg[1]=lon;
         }
       } else {
         if (mapflg || fmapflg) {
-          nmap=MapTransform(map,2*sizeof(float),PolygonXYbbox,
-				tfunc,marg);
-	  rmap=PolygonClip(clip,nmap);
-	  PolygonFree(nmap);
+          nmap=MapTransform(map,2*sizeof(float),PolygonXYbbox,tfunc,marg);
+          rmap=PolygonClip(clip,nmap);
+          PolygonFree(nmap);
         }
         if (bndflg) {
-          nbnd=MapTransform(bnd,2*sizeof(float),PolygonXYbbox,
-	       		tfunc,marg);
-	  rbnd=PolygonClip(clip,nbnd);
+          nbnd=MapTransform(bnd,2*sizeof(float),PolygonXYbbox,tfunc,marg);
+          rbnd=PolygonClip(clip,nbnd);
           PolygonFree(nbnd);
         }
         if (grdflg) {
-          ngrd=MapTransform(grd,2*sizeof(float),PolygonXYbbox,
-	      		tfunc,marg);
-   	  rgrd=PolygonClip(clip,ngrd);
-	  PolygonFree(ngrd);
+          ngrd=MapTransform(grd,2*sizeof(float),PolygonXYbbox,tfunc,marg);
+          rgrd=PolygonClip(clip,ngrd);
+          PolygonFree(ngrd);
         }
         if (igrdflg) {
-          nigrd=MapTransform(igrd,2*sizeof(float),PolygonXYbbox,
-	      		tfunc,marg);
-	  rigrd=PolygonClip(clip,nigrd);
-	  PolygonFree(nigrd);
+          nigrd=MapTransform(igrd,2*sizeof(float),PolygonXYbbox,tfunc,marg);
+          rigrd=PolygonClip(clip,nigrd);
+          PolygonFree(nigrd);
         }
         if (fovflg || ffovflg) {
-          nfov=MapTransform(fov,2*sizeof(float),PolygonXYbbox,
-	      		tfunc,marg);
-	  rfov=PolygonClip(clip,nfov);
+          nfov=MapTransform(fov,2*sizeof(float),PolygonXYbbox,tfunc,marg);
+          rfov=PolygonClip(clip,nfov);
           PolygonFree(nfov);
         }
+
         if (tmkflg) {
           if (rotflg) marg[1]=0;
           else marg[1]=lon-tme_shft;
-          ntmk=MapTransform(tmk,2*sizeof(float),PolygonXYbbox,
-	      		tfunc,marg);
-	  rtmk=PolygonClip(clip,ntmk);
-	  PolygonFree(ntmk);
+          ntmk=MapTransform(tmk,2*sizeof(float),PolygonXYbbox,tfunc,marg);
+          rtmk=PolygonClip(clip,ntmk);
+          PolygonFree(ntmk);
           if (rotflg) marg[1]=lon+tme_shft;
           else marg[1]=lon;
         }
       }
       if (trmflg || ftrmflg) {
-         ntrm=MapTransform(trm,2*sizeof(float),PolygonXYbbox,
-                        tfunc,marg);
+         ntrm=MapTransform(trm,2*sizeof(float),PolygonXYbbox,tfunc,marg);
          ptrm=PolygonClip(clip,ntrm);
          PolygonFree(ntrm);
          PolygonFree(trm);
          trm=NULL;
          ntrm=NULL;
-       
       }
       if (repeat==0) {
         PlotDocumentStart(plot,filename,NULL,wdt,hgt,24);
         PlotPlotStart(plot,filename,wdt,hgt,24);
       }
 
-     
       if (!ovrflg) PlotRectangle(plot,NULL,xbox,ybox,wbox,hbox,
-                                  1,bgcol,0x0f,0,NULL);
+                                 1,bgcol,0x0f,0,NULL);
       if (!sqflg) circle_clip(plot,xbox+wbox/2,ybox+hbox/2,
-                             wbox/2-pad,hbox/2-pad);
+                              wbox/2-pad,hbox/2-pad);
       else square_clip(plot,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad);
 
       if (fmapflg) {
         if (!sqflg) PlotEllipse(plot,NULL,xbox+wbox/2,ybox+hbox/2,
-                                 wbox/2-pad,hbox/2-pad,
-                                 1,seacol,0x0f,0,NULL);
+                                wbox/2-pad,hbox/2-pad,
+                                1,seacol,0x0f,0,NULL);
         else PlotRectangle(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,
-                            hbox-2*pad,
-                            1,seacol,0x0f,0,NULL);
+                           hbox-2*pad,
+                           1,seacol,0x0f,0,NULL);
       }
 
       if ((grdflg) && (grdtop==0)) {
         MapPlotPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,0,
-                                grdcol,0x0f,0.5,NULL,
-                                rgrd,1);
+                       grdcol,0x0f,0.5,NULL,
+                       rgrd,1);
       }
 
       if ((igrdflg) && (igrdtop==0)) {
-         MapPlotPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,0,
-                                igrdcol,0x0f,0.5,NULL,
-                                rigrd,1);
+        MapPlotPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,0,
+                       igrdcol,0x0f,0.5,NULL,
+                       rigrd,1);
       }
-
 
       if (fmapflg) {
         MapPlotPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,
-                     1,lndcol,0x0f,0,NULL,rmap,1);
-
+                       1,lndcol,0x0f,0,NULL,rmap,1);
         MapPlotPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,
-                     1,lndcol,0x0f,0,NULL,rmap,3);
-  
+                       1,lndcol,0x0f,0,NULL,rmap,3);
         MapPlotPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,
-                     1,seacol,0x0f,0,NULL,rmap,0);
+                       1,seacol,0x0f,0,NULL,rmap,0);
       }
-     
+
       if (ftrmflg) 
          MapPlotPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,1,
-                               ftrmcol,0x0f,0.5,NULL,
-                               ptrm,1);
+                        ftrmcol,0x0f,0.5,NULL,
+                        ptrm,1);
 
       if (ffovflg) MapPlotPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,1,
-			       ffovcol,0x0f,0.5,NULL,
-			       rfov,1);
-
+                                 ffovcol,0x0f,0.5,NULL,
+                                 rfov,1);
 
       for (c=0;c<scn->num;c++) {
         if ((sflg) && (scn->bm[c].scan !=scan)) continue;
         if ((nsflg) && (scn->bm[c].scan<0)) continue;
         if ((cpid !=-1) && (scn-> bm[c].cpid !=cpid)) continue;
         n=GeoLocBeam(site,yr,&geol,&scn->bm[c],chisham,old_aacgm);
+
         for (rng=0;rng<scn->bm[c].nrang;rng++) {
-         
           if ((expr !=NULL) && (eval_expr(expr,&scn->bm[c],rng)==0))
             scn->bm[c].sct[rng]=0;
-	 
-          if ((gmflg) && (scn->bm[c].rng[rng].gsct !=0))
-	    scn->bm[c].sct[rng]=0;
-        }     
-        
-        if (ffanflg)  plot_filled(plot,&scn->bm[c],&geol.bm[n],0,
-                        magflg,xbox+pad,ybox+pad,
-                        wbox-2*pad,hbox-2*pad,tfunc,marg,ffancol);
-        if (pprm !=0) plot_cell(plot,&scn->bm[c],&geol.bm[n],0,magflg,xbox+pad,ybox+pad,
-                            wbox-2*pad,hbox-2*pad,tfunc,marg,find_color,
-                            &key,pprm,gscol,gsflg);
 
-     
+          if ((gmflg) && (scn->bm[c].rng[rng].gsct !=0))
+            scn->bm[c].sct[rng]=0;
+        }
+
+        if (ffanflg) plot_filled(plot,&scn->bm[c],&geol.bm[n],0,
+                                 magflg,xbox+pad,ybox+pad,
+                                 wbox-2*pad,hbox-2*pad,tfunc,marg,ffancol);
+        if (pprm !=0) plot_cell(plot,&scn->bm[c],&geol.bm[n],0,magflg,xbox+pad,ybox+pad,
+                                wbox-2*pad,hbox-2*pad,tfunc,marg,find_color,
+                                &key,pprm,gscol,gsflg);
+
         if (vecflg) plot_vec(plot,&scn->bm[c],&geol.bm[n],0,magflg,xbox+pad,ybox+pad,
-                              wbox-2*pad,hbox-2*pad,vsf,tfunc,marg,find_color,
-                              &vkey,gscol,gsflg,0.5,vecr);
-	
-        if (fanflg)  plot_outline(plot,&scn->bm[c],&geol.bm[n],0,
-                        magflg,site->maxbeam,xbox+pad,ybox+pad,
-                        wbox-2*pad,hbox-2*pad,tfunc,marg,fancol);
+                             wbox-2*pad,hbox-2*pad,vsf,tfunc,marg,find_color,
+                             &vkey,gscol,gsflg,0.5,vecr);
+
+        if (fanflg) plot_outline(plot,&scn->bm[c],&geol.bm[n],0,
+                                 magflg,site->maxbeam,xbox+pad,ybox+pad,
+                                 wbox-2*pad,hbox-2*pad,tfunc,marg,fancol);
       }
-      
-       
-      
 
       if (mapflg) {
-         MapPlotPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,0,cstcol,0x0f,
-                    0.5,NULL,
-                    rmap,1);
-  
-         MapPlotPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,0,cstcol,0x0f,
-                    0.5,NULL,
-                    rmap,0);
-
-         MapPlotOpenPolygon(plot,NULL,0,0,wbox,hbox,cstcol,0x0f,
-                    0.5,NULL,
-                    pmap,2);
-
+        MapPlotPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,0,cstcol,0x0f,
+                       0.5,NULL,rmap,1);
+        MapPlotPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,0,cstcol,0x0f,
+                       0.5,NULL,rmap,0);
+        MapPlotOpenPolygon(plot,NULL,0,0,wbox,hbox,cstcol,0x0f,
+                           0.5,NULL,pmap,2);
       }
 
       if (bndflg) MapPlotOpenPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,
-                                bndcol,0x0f,0.5,NULL,
-                                rbnd,-1);
-  
+                                     bndcol,0x0f,0.5,NULL,rbnd,-1);
+
       if (fovflg) MapPlotPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,0,
-                             fovcol,0x0f,0.5,NULL,
-                             rfov,1);
+                                 fovcol,0x0f,0.5,NULL,rfov,1);
 
       if (trmflg)
         MapPlotPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,0,
-		     trmcol,0x0f,0.5,NULL,
-		     ptrm,1);
-
+                       trmcol,0x0f,0.5,NULL,ptrm,1);
 
       if ((grdflg) && (grdtop==1)) {
         MapPlotPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,0,
-                                grdcol,0x0f,0.5,NULL,
-                                rgrd,1);
+                       grdcol,0x0f,0.5,NULL,rgrd,1);
       }
 
       if ((igrdflg) && (igrdtop==1)) {
-         MapPlotPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,0,
-                                igrdcol,0x0f,0.5,NULL,
-                                rigrd,1);
+        MapPlotPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,0,
+                       igrdcol,0x0f,0.5,NULL,rigrd,1);
       }
 
       if (tmkflg) MapPlotPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,0,
-                                tmkcol,0x0f,0.5,NULL,
-                                rtmk,1);
-   
+                                 tmkcol,0x0f,0.5,NULL,rtmk,1);
+
       PlotClip(plot,0,NULL,NULL,NULL);
       if (frmflg) {
         if (! sqflg) PlotEllipse(plot,NULL,xbox+wbox/2,ybox+hbox/2,
-                                  wbox/2-pad,hbox/2-pad,
-                                  0,grdcol,0x0f,0.5,NULL);
+                                 wbox/2-pad,hbox/2-pad,
+                                 0,grdcol,0x0f,0.5,NULL);
         else PlotRectangle(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad-1,
-			    hbox-2*pad-1,
-                              0,grdcol,0x0f,0.5,NULL);
-      } 
+                           hbox-2*pad-1,
+                           0,grdcol,0x0f,0.5,NULL);
+      }
       if (tmeflg) {
-         if (repeat==0) plot_time(plot,xbox+5,ybox+5,wbox-10,hbox-10,0,    
-                            scn->st_time,scn->ed_time,
-                        txtcol,0x0f,"Helvetica",12.0,fontdb);
-         else plot_time(plot,xbox+2,ybox+2,wbox-4,hbox-4,1,         
-                        scn->st_time,scn->ed_time,
-                        txtcol,0x0f,"Helvetica",10.0,fontdb);
+        if (repeat==0) plot_time(plot,xbox+5,ybox+5,wbox-10,hbox-10,0,
+                                 scn->st_time,scn->ed_time,
+                                 txtcol,0x0f,"Helvetica",12.0,fontdb);
+        else plot_time(plot,xbox+2,ybox+2,wbox-4,hbox-4,1,
+                       scn->st_time,scn->ed_time,
+                       txtcol,0x0f,"Helvetica",10.0,fontdb);
       }
       px=2;
       if ((repeat==0) || ((repeat!=0) && (cnt==0))) {
@@ -1733,32 +1675,30 @@ int main(int argc,char *argv[]) {
           else if (pprm==2) min=vmin;
           else if (pprm==3) min=wmin;
 
-
           if (khgt<80) kstp=(max-min)/5.0;
           else kstp=(max-min)/10.0;
 
           if (pprm==1) GrplotStdKey(plot,px,apad,8,khgt,
- 		                 pmin,pmax,kstp,
-                                 0,0,2,
-                                 0,NULL,
-                                 txtbox,fontdb,label_pwr,NULL,
-			         "Helvetica",10.0,txtcol,0x0f,0.5,
-                                 key.num,key.a,key.r,key.g,key.b);
+                                    pmin,pmax,kstp,
+                                    0,0,2,
+                                    0,NULL,
+                                    txtbox,fontdb,label_pwr,NULL,
+                                    "Helvetica",10.0,txtcol,0x0f,0.5,
+                                    key.num,key.a,key.r,key.g,key.b);
           else if (pprm==2) GrplotStdKey(plot,px,apad,8,khgt,
- 		                 vmin,vmax,kstp,
-                                 0,0,2,
-                                 0,NULL,
-                                 txtbox,fontdb,label_vel,NULL,
-			         "Helvetica",10.0,txtcol,0x0f,0.5,
-                                 key.num,key.a,key.r,key.g,key.b);
-
+                                         vmin,vmax,kstp,
+                                         0,0,2,
+                                         0,NULL,
+                                         txtbox,fontdb,label_vel,NULL,
+                                         "Helvetica",10.0,txtcol,0x0f,0.5,
+                                         key.num,key.a,key.r,key.g,key.b);
           else if (pprm==3) GrplotStdKey(plot,px,apad,8,khgt,
- 	  	         wmin,wmax,kstp,
-                         0,0,2,
-                         0,NULL,
-                         txtbox,fontdb,label_wdt,NULL,
-		         "Helvetica",10.0,txtcol,0x0f,0.5,
-                         key.num,key.a,key.r,key.g,key.b);
+                                         wmin,wmax,kstp,
+                                         0,0,2,
+                                         0,NULL,
+                                         txtbox,fontdb,label_wdt,NULL,
+                                         "Helvetica",10.0,txtcol,0x0f,0.5,
+                                         key.num,key.a,key.r,key.g,key.b);
           px+=kwdt;
         }
         if ((vkeyflg) && (vkey.num !=0)) {
@@ -1768,29 +1708,28 @@ int main(int argc,char *argv[]) {
           if (khgt<80) kstp=(max-min)/5.0;
           else kstp=(max-min)/10.0;
           GrplotStdKey(plot,px,apad,8,khgt,
- 		         0,vmax,kstp,
-                         0,0,2,
-                         0,NULL,
-                         txtbox,fontdb,label_vec,NULL,
-		         "Helvetica",10.0,txtcol,0x0f,0.5,
-                         vkey.num,vkey.a,vkey.r,vkey.g,vkey.b);
+                       0,vmax,kstp,
+                       0,0,2,
+                       0,NULL,
+                       txtbox,fontdb,label_vec,NULL,
+                       "Helvetica",10.0,txtcol,0x0f,0.5,
+                       vkey.num,vkey.a,vkey.r,vkey.g,vkey.b);
           px+=kwdt;
         }
-        
+
         if (refvecflg) {
           if (px==2) px+=10;
           if (ortho) plot_refvec(plot,px,1.8*apad,0,vmax,magflg,
-                          xbox+pad,ybox+pad,wdt-2*pad,hgt-2*pad,
-                          vsf,tfunc,marg,txtcol,0x0f,0.5,
-                          "Helvetica",10.0,fontdb,vecr,old_aacgm);
+                                 xbox+pad,ybox+pad,wdt-2*pad,hgt-2*pad,
+                                 vsf,tfunc,marg,txtcol,0x0f,0.5,
+                                 "Helvetica",10.0,fontdb,vecr,old_aacgm);
           else plot_refvec(plot,px,1.8*apad,0,vmax,magflg,
-                          xbox+pad,ybox+pad,wdt-2*pad,hgt-2*pad,
-		    vsf,MapStereographic,marg,txtcol,0x0f,0.5,
-                          "Helvetica",10.0,fontdb,vecr,old_aacgm);
-        
+                           xbox+pad,ybox+pad,wdt-2*pad,hgt-2*pad,
+                           vsf,MapStereographic,marg,txtcol,0x0f,0.5,
+                           "Helvetica",10.0,fontdb,vecr,old_aacgm);
         }
       }
-       
+
      if (logoflg==1) {
        if (repeat==0) {
          plot_logo(plot,4,4,wdt-8,hgt-18,txtcol,0x0f,"Helvetica",10.0,fontdb);
@@ -1802,58 +1741,56 @@ int main(int argc,char *argv[]) {
          plot_credit(plot,4,4,wdt-8,18,txtcol,0x0f,"Helvetica",8.0,fontdb);
        }
 
-      }
+     }
 
-      if (tlblflg) plot_time_label(plot,xbox+pad,ybox+pad,wbox-2*pad,
-                                   hbox-2*pad,
-				  90*hemisphere,flip,tsfx,
-                                  lon-tme_shft*(! rotflg),
-                                  (wbox/2)-pad,6,
-                                  txtcol,0x0f,"Helvetica",10.0,fontdb);
-      if (repeat==0) {
-        PlotPlotEnd(plot);  
-        PlotDocumentEnd(plot);
-      
-        if (pflg) fclose(outfp);
+       if (tlblflg) plot_time_label(plot,xbox+pad,ybox+pad,wbox-2*pad,
+                                    hbox-2*pad,
+                                    90*hemisphere,flip,tsfx,
+                                    lon-tme_shft*(! rotflg),
+                                    (wbox/2)-pad,6,
+                                    txtcol,0x0f,"Helvetica",10.0,fontdb);
+       if (repeat==0) {
+         PlotPlotEnd(plot);
+         PlotDocumentEnd(plot);
 
-        if (gflg) { /* image file */
- 
+         if (pflg) fclose(outfp);
+
+         if (gflg) { /* image file */
+
 #ifdef _XLIB_
-         if (xd !=0) {
-           XwinFrameBufferWindow(img,win);
-           tmout.tv_sec=(int) delay;
-           tmout.tv_usec=(delay-(int) delay)*1e6;
-           if (delay!=0) xstat=XwinDisplayEvent(dp,1,&win,1,&tmout);
-           else xstat=XwinDisplayEvent(dp,1,&win,1,NULL);
-           if (xstat==1) break;
-         } else {
+           if (xd !=0) {
+             XwinFrameBufferWindow(img,win);
+             tmout.tv_sec=(int) delay;
+             tmout.tv_usec=(delay-(int) delay)*1e6;
+             if (delay!=0) xstat=XwinDisplayEvent(dp,1,&win,1,&tmout);
+             else xstat=XwinDisplayEvent(dp,1,&win,1,NULL);
+             if (xstat==1) break;
+           } else {
+             outfp=fopen(filename,"w");
+             if (xmlflg) FrameBufferSaveXML(img,stream,outfp);
+             else if (ppmflg) FrameBufferSavePPM(img,outfp);
+             else if (ppmxflg) FrameBufferSavePPMX(img,outfp);
+             else FrameBufferSavePNG(img,outfp);
+             fclose(outfp);
+           }
+#else
            outfp=fopen(filename,"w");
            if (xmlflg) FrameBufferSaveXML(img,stream,outfp);
            else if (ppmflg) FrameBufferSavePPM(img,outfp);
            else if (ppmxflg) FrameBufferSavePPMX(img,outfp);
            else FrameBufferSavePNG(img,outfp);
            fclose(outfp);
-	 }
-#else
-          outfp=fopen(filename,"w");
-          if (xmlflg) FrameBufferSaveXML(img,stream,outfp);
-          else if (ppmflg) FrameBufferSavePPM(img,outfp);
-          else if (ppmxflg) FrameBufferSavePPMX(img,outfp);
-          else FrameBufferSavePNG(img,outfp);
-          fclose(outfp);
 #endif
-          FrameBufferFree(img);
-          img=NULL;
-        }
+           FrameBufferFree(img);
+           img=NULL;
+         }
       } else {
         xbox+=wbox;
         if (xbox>=wdt) {
           xbox=0;
           ybox+=hbox;
-	}
+        }
       }
-
-  
 
       if (rmap !=NULL) PolygonFree(rmap);
       if (rbnd !=NULL) PolygonFree(rbnd);
@@ -1867,117 +1804,110 @@ int main(int argc,char *argv[]) {
     for (c=0;c<step;c++) {
 
       if (fitflg) {
-        if (old) 
+        if (old)
           s=OldFitReadRadarScan(oldfitfp,&state,scn,prm,fit,tlen,
-                              syncflg,channel);
+                                syncflg,channel);
         else s=FitFreadRadarScan(fitfp,&state,scn,prm,fit,tlen,
-                              syncflg,channel);
-
+                                 syncflg,channel);
       } else if (cfitflg)
         s=CFitReadRadarScan(cfitfp,&state,scn,cfit,tlen,
-                              syncflg,channel);
-
+                            syncflg,channel);
     }
     if ((esec !=-1) && (scn->ed_time>esec)) break;
     cnt++;
     if (cnt==repeat) break;
   } while (s !=-1);
- 
 
   if (repeat !=0) {
-     float lnehgt;
-     char tmp[32];
-     
-     sprintf(txt,"Xy");
-     txtbox("Helvetica",12.0,strlen(txt),txt,box,fontdb);
-     lnehgt=1.5*(box[2]-box[1]);
-     
-     plot_time(plot,0,24,wdt,tpad-18,2, 
-               ssec,scn->ed_time,
-               txtcol,0x0f,"Helvetica",12.0,fontdb);
-     
-     sprintf(txt,"Station:%s (%s)",RadarGetName(network,stid),
-          RadarGetCode(network,stid,0));
-     txtbox("Helvetica",12.0,strlen(txt),txt,box,fontdb);
+    float lnehgt;
+    char tmp[32];
 
-     PlotText(plot,NULL,"Helvetica",12.0,wdt-box[0],24+lnehgt,
-            strlen(txt),txt,txtcol,0x0f,0);
+    sprintf(txt,"Xy");
+    txtbox("Helvetica",12.0,strlen(txt),txt,box,fontdb);
+    lnehgt=1.5*(box[2]-box[1]);
 
-     sprintf(txt,"Operated by:%s",RadarGetOperator(network,stid));
-     txtbox("Helvetica",12.0,strlen(txt),txt,box,fontdb);
+    plot_time(plot,0,24,wdt,tpad-18,2, 
+              ssec,scn->ed_time,
+              txtcol,0x0f,"Helvetica",12.0,fontdb);
 
-     PlotText(plot,NULL,"Helvetica",12.0,wdt-box[0],24+2*lnehgt,
-            strlen(txt),txt,txtcol,0x0f,0);
+    sprintf(txt,"Station:%s (%s)",RadarGetName(network,stid),
+            RadarGetCode(network,stid,0));
+    txtbox("Helvetica",12.0,strlen(txt),txt,box,fontdb);
 
+    PlotText(plot,NULL,"Helvetica",12.0,wdt-box[0],24+lnehgt,
+             strlen(txt),txt,txtcol,0x0f,0);
 
-     strcpy(txt,"Program ID");
-     if (cpnum>1) strcat(txt,"s");
-     strcat(txt,":");
-     for (i=0;i<cpnum;i++) {
-       if (i !=0) strcat(txt,",");
-       sprintf(tmp,"%d",cptab[i]);
-       strcat(txt,tmp);
-     }
-     txtbox("Helvetica",12.0,strlen(txt),txt,box,fontdb);
+    sprintf(txt,"Operated by:%s",RadarGetOperator(network,stid));
+    txtbox("Helvetica",12.0,strlen(txt),txt,box,fontdb);
 
-     PlotText(plot,NULL,"Helvetica",12.0,wdt-box[0],24+3*lnehgt,
-            strlen(txt),txt,txtcol,0x0f,0);
+    PlotText(plot,NULL,"Helvetica",12.0,wdt-box[0],24+2*lnehgt,
+             strlen(txt),txt,txtcol,0x0f,0);
 
-     if (pprm==1) sprintf(txt,"Parameter:Power");
-     if (pprm==2) sprintf(txt,"Parameter:Velocity");
-     if (pprm==3) sprintf(txt,"Parameter:Spectral Width");
-     txtbox("Helvetica",12.0,strlen(txt),txt,box,fontdb);
+    strcpy(txt,"Program ID");
+    if (cpnum>1) strcat(txt,"s");
+    strcat(txt,":");
+    for (i=0;i<cpnum;i++) {
+      if (i !=0) strcat(txt,",");
+      sprintf(tmp,"%d",cptab[i]);
+      strcat(txt,tmp);
+    }
+    txtbox("Helvetica",12.0,strlen(txt),txt,box,fontdb);
 
-     PlotText(plot,NULL,"Helvetica",12.0,wdt-box[0],24+4*lnehgt,
-            strlen(txt),txt,txtcol,0x0f,0);
+    PlotText(plot,NULL,"Helvetica",12.0,wdt-box[0],24+3*lnehgt,
+             strlen(txt),txt,txtcol,0x0f,0);
 
-     txtbox("Helvetica",12.0,strlen(revtxt),revtxt,box,fontdb);
+    if (pprm==1) sprintf(txt,"Parameter:Power");
+    if (pprm==2) sprintf(txt,"Parameter:Velocity");
+    if (pprm==3) sprintf(txt,"Parameter:Spectral Width");
+    txtbox("Helvetica",12.0,strlen(txt),txt,box,fontdb);
 
-     PlotText(plot,NULL,"Helvetica",12.0,wdt-box[0],24+5*lnehgt,
-            strlen(revtxt),revtxt,txtcol,0x0f,0);
-     if (expr !=NULL) {
-       sprintf(txt,"Expression:%s",expr);
-       txtbox("Helvetica",12.0,strlen(txt),txt,box,fontdb);
-       PlotText(plot,NULL,"Helvetica",12.0,0.75*wdt-box[0]/2,24+5*lnehgt,
-            strlen(txt),txt,txtcol,0x0f,0);
-  
-     }
+    PlotText(plot,NULL,"Helvetica",12.0,wdt-box[0],24+4*lnehgt,
+             strlen(txt),txt,txtcol,0x0f,0);
 
-     if (magflg) sprintf(txt,"Geomagnetic");
-     else sprintf(txt,"Geographic");
-     txtbox("Helvetica",12.0,strlen(txt),txt,box,fontdb);
-     PlotText(plot,NULL,"Helvetica",12.0,(wdt-box[0])/2,24+1*lnehgt,
+    txtbox("Helvetica",12.0,strlen(revtxt),revtxt,box,fontdb);
+
+    PlotText(plot,NULL,"Helvetica",12.0,wdt-box[0],24+5*lnehgt,
+             strlen(revtxt),revtxt,txtcol,0x0f,0);
+    if (expr !=NULL) {
+      sprintf(txt,"Expression:%s",expr);
+      txtbox("Helvetica",12.0,strlen(txt),txt,box,fontdb);
+      PlotText(plot,NULL,"Helvetica",12.0,0.75*wdt-box[0]/2,24+5*lnehgt,
                strlen(txt),txt,txtcol,0x0f,0);
 
-     if (sflg) {
-       if (scan !=0) sprintf(txt,"Scan Type:%d",scan);
-       else sprintf(txt,"Scan Type:Regular");
-       txtbox("Helvetica",12.0,strlen(txt),txt,box,fontdb);
-       PlotText(plot,NULL,"Helvetica",12.0,(wdt-box[0])/2,24+3*lnehgt,
-            strlen(txt),txt,txtcol,0x0f,0);
-  
-     }
+    }
 
-     if (cpid !=-1) {
-       sprintf(txt,"Program ID Plotted:%d",cpid);
-       txtbox("Helvetica",12.0,strlen(txt),txt,box,fontdb);
-       PlotText(plot,NULL,"Helvetica",12.0,(wdt-box[0])/2,24+4*lnehgt,
-            strlen(txt),txt,txtcol,0x0f,0);
-  
-     }
+    if (magflg) sprintf(txt,"Geomagnetic");
+    else sprintf(txt,"Geographic");
+    txtbox("Helvetica",12.0,strlen(txt),txt,box,fontdb);
+    PlotText(plot,NULL,"Helvetica",12.0,(wdt-box[0])/2,24+1*lnehgt,
+             strlen(txt),txt,txtcol,0x0f,0);
 
+    if (sflg) {
+      if (scan !=0) sprintf(txt,"Scan Type:%d",scan);
+      else sprintf(txt,"Scan Type:Regular");
+      txtbox("Helvetica",12.0,strlen(txt),txt,box,fontdb);
+      PlotText(plot,NULL,"Helvetica",12.0,(wdt-box[0])/2,24+3*lnehgt,
+               strlen(txt),txt,txtcol,0x0f,0);
 
-     if (channel !=0) {
-       if (channel==1) sprintf(txt,"Channel:A");
-       else sprintf(txt,"Channel:B");
-       txtbox("Helvetica",12.0,strlen(txt),txt,box,fontdb);
-       PlotText(plot,NULL,"Helvetica",12.0,(wdt-box[0])/2,24+5*lnehgt,
-            strlen(txt),txt,txtcol,0x0f,0);
-  
-     }
-     
-     PlotPlotEnd(plot);  
-     PlotDocumentEnd(plot);
+    }
+
+    if (cpid !=-1) {
+      sprintf(txt,"Program ID Plotted:%d",cpid);
+      txtbox("Helvetica",12.0,strlen(txt),txt,box,fontdb);
+      PlotText(plot,NULL,"Helvetica",12.0,(wdt-box[0])/2,24+4*lnehgt,
+               strlen(txt),txt,txtcol,0x0f,0);
+    }
+
+    if (channel !=0) {
+      if (channel==1) sprintf(txt,"Channel:A");
+      else sprintf(txt,"Channel:B");
+      txtbox("Helvetica",12.0,strlen(txt),txt,box,fontdb);
+      PlotText(plot,NULL,"Helvetica",12.0,(wdt-box[0])/2,24+5*lnehgt,
+               strlen(txt),txt,txtcol,0x0f,0);
+    }
+
+    PlotPlotEnd(plot);
+    PlotDocumentEnd(plot);
     if (gflg) { /* image file */
 #ifdef _XLIB_
       if (xd !=0) {
@@ -1994,14 +1924,11 @@ int main(int argc,char *argv[]) {
       else if (ppmflg) FrameBufferSavePPM(img,stdout);
       else if (ppmxflg) FrameBufferSavePPMX(img,stdout);
       else FrameBufferSavePNG(img,stdout);
-
 #endif
       FrameBufferFree(img);
       img=NULL;
     }
   }
-
-
 
 #ifdef _XLIB_
   if (xd !=0) {
@@ -2011,7 +1938,5 @@ int main(int argc,char *argv[]) {
 #endif
   return 0;
 
-  
-}  
-
+}
 
