@@ -94,7 +94,7 @@
 struct OptionData opt;
 struct OptionFile *optf=NULL;
 
-struct RadarNetwork *network;  
+struct RadarNetwork *network;
 struct Radar *radar;
 struct RadarSite *site;
 
@@ -111,6 +111,7 @@ struct key pkey;
 struct key vkey;
 struct key wkey;
 struct key ekey;
+struct key vekey;
 
 char *mstr[]={"January","February","March","April","May","June","July",
               "August","September","October","November","December",0};
@@ -179,6 +180,14 @@ char *label_elv(double val,double min,double max,void *data) {
   return txt;
 }
 
+char *label_err(double val,double min,double max,void *data) {
+  char *txt=NULL;
+  if ((val !=min) && (val !=max) && (val !=0)) return NULL;
+  txt=malloc(32);
+  sprintf(txt,"%d m/s",(int) val);
+  return txt;
+}
+
 char *label_noise(double val,double min,double max,void *data) {
   char *txt=NULL;
   txt=malloc(32);
@@ -193,9 +202,6 @@ char *label_freq(double val,double min,double max,void *data) {
   return txt;
 }
 
-
-
-
 int stream(char *buf,int sze,void *data) {
   FILE *fp;
   fp=(FILE *) data;
@@ -208,7 +214,6 @@ int xmldecode(char *buf,int sze,void *data) {
   xmldata=(struct XMLdata *) data;
   return XMLDecode(xmldata,buf,sze);
 } 
-
 
 double strdate(char *text) {
   double tme;
@@ -233,7 +238,7 @@ double strtime(char *text) {
   hr=atoi(text);
   mn=atoi(text+i+1);
   return (double) hr*3600L+mn*60L;
-}   
+}
 
 int rst_opterr(char *txt) {
   fprintf(stderr,"Option not recognized: %s\n",txt);
@@ -258,7 +263,7 @@ int main(int argc,char *argv[]) {
   int ydoff=-1;
 #endif
 
-  int arg=0;  
+  int arg=0;
   char *stmestr=NULL;
   char *etmestr=NULL;
   char *sdtestr=NULL;
@@ -292,6 +297,7 @@ int main(int argc,char *argv[]) {
   unsigned char pwrflg=0;
   unsigned char wdtflg=0;
   unsigned char elvflg=0;
+  unsigned char errflg=0;
 
   unsigned char gsflg=0;
   unsigned char gmflg=0;
@@ -308,7 +314,10 @@ int main(int argc,char *argv[]) {
 
   double emin=0;
   double emax=50;
-  
+
+  double vemin=0;
+  double vemax=200;
+
   double fmin=0.9;
   double fmax=1.9;
   
@@ -346,6 +355,7 @@ int main(int argc,char *argv[]) {
   char *vkey_path=NULL;
   char *wkey_path=NULL;
   char *ekey_path=NULL;
+  char *vekey_path=NULL;
   char *fkey_path=NULL;
   char *nkey_path=NULL;
   char kname[256];
@@ -353,6 +363,7 @@ int main(int argc,char *argv[]) {
   char *vkey_fname=NULL;
   char *wkey_fname=NULL;
   char *ekey_fname=NULL;
+  char *vekey_fname=NULL;
   char *fkey_fname=NULL;
   char *nkey_fname=NULL;
   size_t len;
@@ -435,8 +446,8 @@ int main(int argc,char *argv[]) {
   int yr,mo,dy,hr,mt;
   double sc;
 
-  int type[4];
-  struct FrameBuffer *blk[4]={NULL,NULL,NULL,NULL};
+  int type[5];
+  struct FrameBuffer *blk[5]={NULL,NULL,NULL,NULL,NULL};
   struct FrameBuffer *fblk;
   struct FrameBuffer *nblk;
 
@@ -483,8 +494,8 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"name",'t',&name); /* image name */
   OptionAdd(&opt,"wdt",'i',&wdt); /* width */
-  OptionAdd(&opt,"hgt",'i',&hgt); /* height */ 
-  OptionAdd(&opt,"bgcol",'t',&bgtxt); /* background color */ 
+  OptionAdd(&opt,"hgt",'i',&hgt); /* height */
+  OptionAdd(&opt,"bgcol",'t',&bgtxt); /* background color */
 
   OptionAdd(&opt,"grdcol",'t',&grdtxt); /* grid color */
   OptionAdd(&opt,"txtcol",'t',&txttxt); /* text color */
@@ -499,6 +510,8 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"wkey_path",'t',&wkey_path); /* spectral width key path */
   OptionAdd(&opt,"ekey",'t',&ekey_fname);     /* elevation angle key */
   OptionAdd(&opt,"ekey_path",'t',&ekey_path); /* elevation angle key path */
+  OptionAdd(&opt,"vekey",'t',&vekey_fname);     /* velocity error key */
+  OptionAdd(&opt,"vekey_path",'t',&vekey_path); /* velocity error key path */
   OptionAdd(&opt,"fkey",'t',&fkey_fname);     /* frequency key */
   OptionAdd(&opt,"fkey_path",'t',&fkey_path); /* frequency key path */
   OptionAdd(&opt,"nkey",'t',&nkey_fname);     /* noise key */
@@ -533,6 +546,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"v",'x',&velflg); /* plot velocity */
   OptionAdd(&opt,"w",'x',&wdtflg); /* plot spectral width */
   OptionAdd(&opt,"e",'x',&elvflg); /* plot elevation angle */
+  OptionAdd(&opt,"ve",'x',&errflg); /* plot velocity error */
 
   OptionAdd(&opt,"pmin",'d',&pmin); /* power minimum */
   OptionAdd(&opt,"pmax",'d',&pmax); /* power maximum */
@@ -546,25 +560,28 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"emin",'d',&emin); /* elevation angle minimum */
   OptionAdd(&opt,"emax",'d',&emax); /* elevation angle maximum */
 
+  OptionAdd(&opt,"vemin",'d',&vemin); /* velocity error minimum */
+  OptionAdd(&opt,"vemax",'d',&vemax); /* velocity error maximum */
+
   OptionAdd(&opt,"gs",'x',&gsflg); /* shade ground scatter */
   OptionAdd(&opt,"gm",'x',&gmflg); /* mask ground scatter */
 
-  OptionAdd(&opt,"ns",'x',&nsflg); 
+  OptionAdd(&opt,"ns",'x',&nsflg);
 
   OptionAdd(&opt,"km",'x',&kmflg); /* plot in km */
   OptionAdd(&opt,"frang",'i',&frang); /* first range (km) */
   OptionAdd(&opt,"erang",'i',&erang); /* end range (km) */
   OptionAdd(&opt,"rsep",'i',&rsep);  /* range separation (km) */
- 
+
   OptionAdd(&opt,"srng",'i',&srng); /* first range */
   OptionAdd(&opt,"erng",'i',&erng); /* end range */
- 
+
   OptionAdd(&opt,"geo",'x',&geoflg); /* plot in geographic */
   OptionAdd(&opt,"mag",'x',&magflg); /* plot in magnetic */
- 
+
   OptionAdd(&opt,"latmin",'f',&latmin); /* latitude minimum */
   OptionAdd(&opt,"latmax",'f',&latmax); /* latitude maximum */
- 
+
   OptionAdd(&opt,"ymajor",'f',&ymajor); /* Y axis major tick */
   OptionAdd(&opt,"yminor",'f',&yminor); /* Y axis minor tick */
 
@@ -588,8 +605,8 @@ int main(int argc,char *argv[]) {
   if (cfname !=NULL) { /* load the configuration file */
     int farg;
     do {
-     fp=fopen(cfname,"r");
-     if (fp==NULL) break;
+      fp=fopen(cfname,"r");
+      if (fp==NULL) break;
       free(cfname);
       cfname=NULL;
       optf=OptionProcessFile(fp);
@@ -601,10 +618,10 @@ int main(int argc,char *argv[]) {
           exit(-1);
         }
         OptionFreeFile(optf);
-      }   
+      }
       fclose(fp);
     } while (cfname !=NULL);
-  } 
+  }
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
@@ -638,30 +655,25 @@ int main(int argc,char *argv[]) {
   fntdbfname=getenv("FONTDB");
   fontfp=fopen(fntdbfname,"r");
   if (fontfp !=NULL) {
-   fontdb=FrameBufferFontDBLoad(fontfp);
-   fclose(fontfp);
+    fontdb=FrameBufferFontDBLoad(fontfp);
+    fclose(fontfp);
   }
- 
+
   if (fontdb==NULL) {
-   fprintf(stderr,"Could not load fonts.\n");
-   exit(-1);
+    fprintf(stderr,"Could not load fonts.\n");
+    exit(-1);
   }
 
   bgcolor=PlotColor(0xff,0xff,0xff,0xff);
-
   if (bgtxt !=NULL) sscanf(bgtxt,"%x",&bgcolor);
 
   gscolor=PlotColor(0xa0,0xa0,0xa0,0xff);
-
   if (gsctxt !=NULL) sscanf(gsctxt,"%x",&gscolor);
 
-
   grdcolor=PlotColor(0x00,0x00,0x00,0xff);
-
   if (grdtxt !=NULL) sscanf(grdtxt,"%x",&grdcolor);
 
   txtcolor=PlotColor(0x00,0x00,0x00,0xff);
-
   if (txttxt !=NULL)  sscanf(txttxt,"%x",&txtcolor);
 
   if (pkey_fname !=NULL) {
@@ -740,6 +752,25 @@ int main(int argc,char *argv[]) {
     }
   }
 
+  if (vekey_fname !=NULL) {
+    if (vekey_path == NULL) vekey_path = getenv("COLOR_TABLE_PATH");
+    if (vekey_path != NULL) {
+      strcpy(kname, vekey_path);
+      len = strlen(vekey_path);
+      if (vekey_path[len-1] != '/') strcat(kname, "/");
+      strcat(kname, vekey_fname);
+    } else {
+      fprintf(stderr, "No COLOR_TABLE_PATH set\n");
+    }
+    fp=fopen(kname,"r");
+    if (fp !=NULL) {
+      load_key(fp,&vekey);
+      fclose(fp);
+    } else {
+      fprintf(stderr, "Velocity error color table %s not found\n", kname);
+    }
+  }
+
   if (fkey_fname !=NULL) {
     if (fkey_path == NULL) fkey_path = getenv("COLOR_TABLE_PATH");
     if (fkey_path != NULL) {
@@ -778,7 +809,6 @@ int main(int argc,char *argv[]) {
     }
   }
 
-
 #ifdef _XLIB_ 
    if (xd !=0) {
      pflg=0; 
@@ -805,72 +835,79 @@ int main(int argc,char *argv[]) {
   if (etmestr !=NULL) etime=strtime(etmestr);
   if (sdtestr !=NULL) sdate=strdate(sdtestr);
   if (edtestr !=NULL) edate=strdate(edtestr);
-  
+
   if (xmajorstr !=NULL) xmajor=strtime(xmajorstr);
   if (xminorstr !=NULL) xminor=strtime(xminorstr);
 
-
   if ((smrflg==0) && (cfitflg==0)) fitflg=1;
-   
+
   if (scan !=-8000) sflg=1;
 
   if (chtxt !=NULL) {
     if (tolower(chtxt[0])=='a') chnum=1;
     if (tolower(chtxt[0])=='b') chnum=2;
   }
-  
+
   if (pkey.max==0) {
-      pkey.max=KeyLinearMax;
-      pkey.a=KeyLinearA[0];
-      pkey.r=KeyLinearR[0];
-      pkey.g=KeyLinearG[0];
-      pkey.b=KeyLinearB[0];
+    pkey.max=KeyLinearMax;
+    pkey.a=KeyLinearA[0];
+    pkey.r=KeyLinearR[0];
+    pkey.g=KeyLinearG[0];
+    pkey.b=KeyLinearB[0];
   }
 
   if (vkey.max==0) {
-      vkey.max=KeyLinearMax;
-      vkey.a=KeyLinearA[1];
-      vkey.r=KeyLinearR[1];
-      vkey.g=KeyLinearG[1];
-      vkey.b=KeyLinearB[1];
+    vkey.max=KeyLinearMax;
+    vkey.a=KeyLinearA[1];
+    vkey.r=KeyLinearR[1];
+    vkey.g=KeyLinearG[1];
+    vkey.b=KeyLinearB[1];
   }
 
   if (wkey.max==0) {
-      wkey.max=KeyLinearMax;
-      wkey.a=KeyLinearA[0];
-      wkey.r=KeyLinearR[0];
-      wkey.g=KeyLinearG[0];
-      wkey.b=KeyLinearB[0];
+    wkey.max=KeyLinearMax;
+    wkey.a=KeyLinearA[0];
+    wkey.r=KeyLinearR[0];
+    wkey.g=KeyLinearG[0];
+    wkey.b=KeyLinearB[0];
   }
 
   if (ekey.max==0) {
-      ekey.max=KeyLinearMax;
-      ekey.a=KeyLinearA[0];
-      ekey.r=KeyLinearR[0];
-      ekey.g=KeyLinearG[0];
-      ekey.b=KeyLinearB[0];
+    ekey.max=KeyLinearMax;
+    ekey.a=KeyLinearA[0];
+    ekey.r=KeyLinearR[0];
+    ekey.g=KeyLinearG[0];
+    ekey.b=KeyLinearB[0];
   }
- 
+
+  if (vekey.max==0) {
+    vekey.max=KeyLinearMax;
+    vekey.a=KeyLinearA[0];
+    vekey.r=KeyLinearR[0];
+    vekey.g=KeyLinearG[0];
+    vekey.b=KeyLinearB[0];
+  }
+
   if (nkey.max==0) {
-      nkey.max=KeyTenBlkMax;
-      nkey.a=KeyTenBlkA[0];
-      nkey.r=KeyTenBlkR[0];
-      nkey.g=KeyTenBlkG[0];
-      nkey.b=KeyTenBlkB[0];
+    nkey.max=KeyTenBlkMax;
+    nkey.a=KeyTenBlkA[0];
+    nkey.r=KeyTenBlkR[0];
+    nkey.g=KeyTenBlkG[0];
+    nkey.b=KeyTenBlkB[0];
   }
 
   if (fkey.max==0) {
-      fkey.max=KeyTenBlkMax;
-      fkey.a=KeyTenBlkA[0];
-      fkey.r=KeyTenBlkR[0];
-      fkey.g=KeyTenBlkG[0];
-      fkey.b=KeyTenBlkB[0];
+    fkey.max=KeyTenBlkMax;
+    fkey.a=KeyTenBlkA[0];
+    fkey.r=KeyTenBlkR[0];
+    fkey.g=KeyTenBlkG[0];
+    fkey.b=KeyTenBlkB[0];
   }
 
   if (fitflg) {
     if (old) {
-       if (arg==argc) {
-       OptionPrintInfo(stderr,errstr);
+      if (arg==argc) {
+        OptionPrintInfo(stderr,errstr);
         exit(-1);
       }
       if (argc-arg>1)  oldfitfp=OldFitOpen(argv[arg],argv[arg+1]);
@@ -883,48 +920,47 @@ int main(int argc,char *argv[]) {
     } else {
       if (arg==argc) fp=stdin;
       else {
-         if (argc-arg>1)  {
-	   fp=fopen(argv[arg+1],"r");
-           if (fp==NULL) {
-             fprintf(stderr,"Index not found.\n");
-	   } else {
-             inx=FitIndexFload(fp);
-             fclose(fp);
-             if (inx==NULL) {
-               fprintf(stderr,"Error reading index.\n");
-             }
-	   }
-	 }
-         fitfp=fopen(argv[arg],"r");
-         if (fitfp==NULL) {
+        if (argc-arg>1)  {
+          fp=fopen(argv[arg+1],"r");
+          if (fp==NULL) {
+            fprintf(stderr,"Index not found.\n");
+          } else {
+            inx=FitIndexFload(fp);
+            fclose(fp);
+            if (inx==NULL) {
+              fprintf(stderr,"Error reading index.\n");
+            }
+          }
+        }
+        fitfp=fopen(argv[arg],"r");
+        if (fitfp==NULL) {
           fprintf(stderr,"file %s not found\n",argv[arg]);
           exit(-1);
         }
       }
       stime=fit_find(fitfp,prm,fit,sdate,stime,inx);
-     
-    } 
+    }
   } else if (smrflg) {
     if (arg==argc) {
-     OptionPrintInfo(stderr,errstr);
+      OptionPrintInfo(stderr,errstr);
       exit(-1);
     }
     smrfp=fopen(argv[arg],"r");
     if (smrfp==NULL) {
       fprintf(stderr,"file %s not found\n",argv[arg]);
       exit(-1);
-    }    
+    }
     stime=smr_find(smrfp,prm,fit,fbeam,sdate,stime);
   } else if (cfitflg) {
     if (arg==argc) {
-     OptionPrintInfo(stderr,errstr);
+      OptionPrintInfo(stderr,errstr);
       exit(-1);
     }
     cfitfp=CFitOpen(argv[arg]);
     if (cfitfp==NULL) {
       fprintf(stderr,"file %s not found\n",argv[arg]);
       exit(-1);
-    } 
+    }
     stime=cfit_find(cfitfp,cfit,sdate,stime);
   }
 
@@ -933,18 +969,17 @@ int main(int argc,char *argv[]) {
     if (edate==-1) etime+=stime - ( (int) stime % (24*3600));
     else etime+=edate;
   } else etime=stime+24*3600;
-  if (extime !=0) etime=stime+extime;    
+  if (extime !=0) etime=stime+extime;
 
   if (name==NULL) name=dname;
- 
+
   if (fitflg) {
     if (old) atime=oldfit_scan(stime,oldfitfp,0,prm,
-                             fit,bmnum,chnum,cpid,sflg,scan); 
+                             fit,bmnum,chnum,cpid,sflg,scan);
     else atime=fit_scan(stime,fitfp,0,prm,
                              fit,bmnum,chnum,cpid,sflg,scan); 
   } else if (smrflg) atime=smr_scan(stime,smrfp,fbeam,0,prm,
-                                  fit,bmnum,chnum,cpid,
-                                  sflg,scan); 
+                             fit,bmnum,chnum,cpid,sflg,scan); 
   else if (cfitflg) atime=cfit_scan(atime,cfitfp,1,cfit,bmnum,chnum,cpid,
                                     sflg,scan);
 
@@ -963,8 +998,8 @@ int main(int argc,char *argv[]) {
             cfit->version.minor);
   }
   if (erng==MAX_RANGE) {
-     if ((fitflg) || (smrflg)) erng=prm->nrang;
-     if (cfitflg) erng=cfit->nrang;
+    if ((fitflg) || (smrflg)) erng=prm->nrang;
+    if (cfitflg) erng=cfit->nrang;
   }
 
   if (kmflg) {
@@ -972,16 +1007,15 @@ int main(int argc,char *argv[]) {
       if (frang==-1) frang=prm->frang;
       if (rsep==0) rsep=prm->rsep;
       if (erang==-1) erang=frang+prm->nrang*rsep;
-    } 
-   if (cfitflg) {
+    }
+    if (cfitflg) {
       if (frang==-1) frang=cfit->frang;
       if (rsep==0) rsep=cfit->rsep;
       if (erang==-1) erang=frang+cfit->nrang*cfit->rsep;
-    } 
+    }
   }
- 
 
- envstr=getenv("SD_RADAR");
+  envstr=getenv("SD_RADAR");
   if (envstr==NULL) {
     fprintf(stderr,"Environment variable 'SD_RADAR' must be defined.\n");
     exit(-1);
@@ -995,12 +1029,12 @@ int main(int argc,char *argv[]) {
   }
 
   network=RadarLoad(fp);
-  fclose(fp); 
+  fclose(fp);
   if (network==NULL) {
     fprintf(stderr,"Failed to read radar information.\n");
     exit(-1);
   }
- 
+
   if (!old_aacgm) {
     TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
     AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc); /* required */
@@ -1015,11 +1049,10 @@ int main(int argc,char *argv[]) {
 
     RadarLoadHardware(envstr,network);
     if ((fitflg) || (smrflg)) {
-     radar=RadarGetRadar(network,prm->stid);
-     site=RadarYMDHMSGetSite(radar,prm->time.yr,prm->time.mo,
-		          prm->time.dy,prm->time.hr,prm->time.mt,
+      radar=RadarGetRadar(network,prm->stid);
+      site=RadarYMDHMSGetSite(radar,prm->time.yr,prm->time.mo,
+                          prm->time.dy,prm->time.hr,prm->time.mt,
                           prm->time.sc);
-
     }
     if (cfitflg) {
       TimeEpochToYMDHMS(cfit->time,&yr,&mo,&dy,&hr,&mt,&sc);
@@ -1030,7 +1063,7 @@ int main(int argc,char *argv[]) {
     if (site==NULL) { 
       fprintf(stderr,"Station not found.\n");
       exit(-1);
-    }  
+    }
   }
 
   PlotDocumentStart(plot,name,NULL,wdt,hgt,24);
@@ -1060,17 +1093,21 @@ int main(int argc,char *argv[]) {
     type[cnt]=3;
     cnt++;
   }
+  if (errflg) {
+    type[cnt]=4;
+    cnt++;
+  }
   plt=GrplotMake(wdt,hgt-150,1,cnt,60,80,0,25,0,120);
   GrplotSetPlot(plt,plot);
-  GrplotSetTextBox(plt,txtbox,fontdb);  
+  GrplotSetTextBox(plt,txtbox,fontdb);
 
   nfplt=GrplotMake(wdt,40,1,2,60,80,0,8,0,80);
   GrplotSetPlot(nfplt,plot);
-  GrplotSetTextBox(nfplt,txtbox,fontdb);  
+  GrplotSetTextBox(nfplt,txtbox,fontdb);
 
   bwdt=plt->box_wdt;
   bhgt=plt->box_hgt;
-  
+
   nblk=FrameBufferMake("noise",bwdt,1,24);
   fblk=FrameBufferMake("frequency",bwdt,1,24);
 
@@ -1078,44 +1115,43 @@ int main(int argc,char *argv[]) {
   if (velflg) blk[1]=FrameBufferMake("velocity",bwdt,bhgt,24);
   if (wdtflg) blk[2]=FrameBufferMake("width",bwdt,bhgt,24);
   if (elvflg) blk[3]=FrameBufferMake("elevation",bwdt,bhgt,24);
+  if (errflg) blk[4]=FrameBufferMake("error",bwdt,bhgt,24);
 
   FrameBufferClear(fblk,0x0f,bgcolor);
   FrameBufferClear(nblk,0x0f,bgcolor);
-  
-  for (n=0;n<4;n++) if (blk[n] !=NULL) FrameBufferClear(blk[n],0x0f,bgcolor);
 
-  do {   
+  for (n=0;n<5;n++) if (blk[n] !=NULL) FrameBufferClear(blk[n],0x0f,bgcolor);
+
+  do {
 
     otime=atime;
     if ((fitflg) || (smrflg)) fit_tplot(prm,fit,&tplot);
     if (cfitflg) cfit_tplot(cfit,&tplot);
-  
+
     for (i=0;i<cpnum;i++) if (cptab[i]==tplot.cpid) break;
     if (i==cpnum) {
       cptab[i]=tplot.cpid;
       cpnum++;
     }
 
- 
     if (fitflg) {
       if (old) atime=oldfit_scan(atime,oldfitfp,1,prm,fit,
-                               bmnum,chnum,cpid,sflg,scan);
+                                 bmnum,chnum,cpid,sflg,scan);
       else atime=fit_scan(atime,fitfp,1,prm,fit,
-                               bmnum,chnum,cpid,sflg,scan); 
+                          bmnum,chnum,cpid,sflg,scan); 
     } else if (smrflg) atime=smr_scan(atime,smrfp,fbeam,1,prm,fit,
-                                    bmnum,chnum,cpid,
-                                    sflg,scan);
-    else if (cfitflg) atime=cfit_scan(atime,cfitfp,1,cfit,bmnum,chnum,cpid,
-                                      sflg,scan);
+                                      bmnum,chnum,cpid,sflg,scan);
+    else if (cfitflg) atime=cfit_scan(atime,cfitfp,1,cfit,
+                                      bmnum,chnum,cpid,sflg,scan);
 
     if (atime==-1) break;
     if ((tplot.scan<0) && (nsflg)) {
       if (atime>=etime) break;
       continue;
-    }  
-    
+    }
+
     if ((atime-otime)>120) otime=atime-120;
-    
+
     lft=bwdt*(otime-stime)/(etime-stime);
     rgt=bwdt*(atime-stime)/(etime-stime);
     if (rgt==lft) rgt++;
@@ -1123,7 +1159,8 @@ int main(int argc,char *argv[]) {
     if (lft>=bwdt) lft=bwdt-1;
     if (rgt<0) rgt=0;
     if (rgt>=bwdt) rgt=bwdt-1;
-    for (n=0;n<4;n++) {
+
+    for (n=0;n<5;n++) {
       if (blk[n]==NULL) continue;
       if (lrngflg==0) {
         sprng=1;
@@ -1132,21 +1169,20 @@ int main(int argc,char *argv[]) {
         sprng=srng+1;
         eprng=erng;
       }
+
       for (rng=sprng;rng<=eprng;rng++) {
         if ((expr !=NULL) && (eval_expr(expr,&tplot,rng)==0)) continue;
         if (tplot.qflg[rng]==0) continue;
         if ((tplot.gsct[rng]==1) && (gmflg)) continue;
-   
+
         if (rng>0) btm=bhgt*(rng-1-srng)/(erng-srng);
-        else btm=0; 
+        else btm=0;
         top=bhgt*(rng-srng)/(erng-srng);
 
-
         if (kmflg) {
-
           btm=tplot.frang+(rng-1)*tplot.rsep;
           top=tplot.frang+rng*tplot.rsep;
-          
+
           if (top<frang) continue;
           if (btm>erang) continue;
           if (top>=erang) top=erang;
@@ -1159,43 +1195,43 @@ int main(int argc,char *argv[]) {
         if ((geoflg) || (magflg)) {
           double rho,blat,tlat,lon,tmp;
           if (magflg) RPosMag(0,tplot.bmnum,rng-1,site,tplot.frang,
-                                 tplot.rsep,tplot.rxrise,300,&rho,
-                                 &blat,&lon,chisham,old_aacgm);
+                              tplot.rsep,tplot.rxrise,300,&rho,
+                              &blat,&lon,chisham,old_aacgm);
           else RPosGeo(0,tplot.bmnum,rng-1,site,tplot.frang,tplot.rsep,
-                        tplot.rxrise,300,&rho,&blat,&lon,chisham);   
-   
-          if (magflg) RPosMag(0,tplot.bmnum,rng,site,tplot.frang,tplot.rsep,
-                               tplot.rxrise,300,&rho,&tlat,&lon,chisham,old_aacgm);
-          else RPosGeo(0,tplot.bmnum,rng,site,tplot.frang,tplot.rsep,
-                        tplot.rxrise,300,&rho,&tlat,&lon,chisham);   
+                       tplot.rxrise,300,&rho,&blat,&lon,chisham);
 
-          
+          if (magflg) RPosMag(0,tplot.bmnum,rng,site,tplot.frang,tplot.rsep,
+                              tplot.rxrise,300,&rho,&tlat,&lon,chisham,old_aacgm);
+          else RPosGeo(0,tplot.bmnum,rng,site,tplot.frang,tplot.rsep,
+                       tplot.rxrise,300,&rho,&tlat,&lon,chisham);
 
           if (tlat<blat) {
             tmp=blat;
             blat=tlat;
             tlat=blat;
-	  }
+          }
           btm=bhgt*(blat-latmin)/(latmax-latmin);
           top=bhgt*(tlat-latmin)/(latmax-latmin);
-	}
+        }
+
         if (btm==top) top++;
         if (btm<0) btm=0;
         if (btm>=bhgt) btm=bhgt-1;
         if (top<0) top=0;
-        if (top>=bhgt) top=bhgt-1;       
+        if (top>=bhgt) top=bhgt-1;
 
         if ((n==1) && (tplot.gsct[rng]==1) && (gsflg)) {
           av=(gscolor & 0xff000000) >> 24;
-   	  rv=(gscolor & 0xff0000) >> 16;
-	  gv=(gscolor & 0xff00) >> 8;
+          rv=(gscolor & 0xff0000) >> 16;
+          gv=(gscolor & 0xff00) >> 8;
           bv=(gscolor & 0xff);
         } else {
           if (n==0) val=tplot.p_l[rng];
           if (n==1) val=tplot.v[rng];
           if (n==2) val=tplot.w_l[rng];
           if (n==3) val=tplot.elv[rng];
-          
+          if (n==4) val=tplot.v_e[rng];
+
           if (c<0) c=0;
           if (n==0) {
             val=(val-pmin)/(pmax-pmin);
@@ -1207,7 +1243,7 @@ int main(int argc,char *argv[]) {
             rv=pkey.r[c];
             gv=pkey.g[c];
             bv=pkey.b[c];
-	  } else if (n==1) {
+          } else if (n==1) {
             val=(val-vmin)/(vmax-vmin);
             c=val*vkey.max;
             if (c<0) c=0;
@@ -1217,17 +1253,17 @@ int main(int argc,char *argv[]) {
             rv=vkey.r[c];
             gv=vkey.g[c];
             bv=vkey.b[c];
-	  } else if (n==2) {
+          } else if (n==2) {
             val=(val-wmin)/(wmax-wmin);
             c=val*wkey.max;
             if (c<0) c=0;
             if (c>=wkey.max) c=wkey.max-1; 
             if (wkey.a !=NULL) av=wkey.a[c];
-		else av=255;
+            else av=255;
             rv=wkey.r[c];
             gv=wkey.g[c];
             bv=wkey.b[c];
-	  } else if (n==3) {
+          } else if (n==3) {
             val=(val-emin)/(emax-emin);
             c=val*ekey.max;
             if (c<=0) {
@@ -1236,51 +1272,57 @@ int main(int argc,char *argv[]) {
               gv=0;
               bv=0;
             } else {
-            if (c>=ekey.max) c=ekey.max-1; 
-            if (ekey.a !=NULL) av=ekey.a[c];
-		else av=255;
-            rv=ekey.r[c];
-            gv=ekey.g[c];
-            bv=ekey.b[c];
+              if (c>=ekey.max) c=ekey.max-1; 
+              if (ekey.a !=NULL) av=ekey.a[c];
+              else av=255;
+              rv=ekey.r[c];
+              gv=ekey.g[c];
+              bv=ekey.b[c];
             }
+          } else if (n==4) {
+            val=(val-vemin)/(vemax-vemin);
+            c=val*vekey.max;
+            if (c<0) c=0;
+            if (c>=vekey.max) c=vekey.max-1;
+            if (vekey.a !=NULL) av=vekey.a[c];
+            else av=255; 
+            rv=vekey.r[c];
+            gv=vekey.g[c];
+            bv=vekey.b[c];
           }
-        }  
-	  
-	for (x=lft;x<=rgt;x++) {
-            for (y=btm;y<=top;y++) {
-              blk[n]->img[(bhgt-1-y)*bwdt+x]=rv;
-              blk[n]->img[bwdt*bhgt+(bhgt-1-y)*bwdt+x]=gv;
-	      blk[n]->img[2*bwdt*bhgt+(bhgt-1-y)*bwdt+x]=bv;
-              blk[n]->msk[(bhgt-1-y)*bwdt+x]=av;
-	  }	  
         }
 
+        for (x=lft;x<=rgt;x++) {
+          for (y=btm;y<=top;y++) {
+            blk[n]->img[(bhgt-1-y)*bwdt+x]=rv;
+            blk[n]->img[bwdt*bhgt+(bhgt-1-y)*bwdt+x]=gv;
+            blk[n]->img[2*bwdt*bhgt+(bhgt-1-y)*bwdt+x]=bv;
+            blk[n]->msk[(bhgt-1-y)*bwdt+x]=av;
+          }
+        }
 
       }
     }
-   
-   
-  
+
     if (tplot.noise>0) val=nmax*log10(tplot.noise/200.0)/3.0;
     else val=0;
 
-    val=(val-nmin)/(nmax-nmin);   
+    val=(val-nmin)/(nmax-nmin);
     c=val*nkey.max;
     if (c<0) c=0;
     if (c>=nkey.max) c=nkey.max-1;
-    
+
     for (x=lft;x<=rgt;x++) {
       nblk->img[x]=nkey.r[c];
       nblk->img[bwdt+x]=nkey.g[c];
       nblk->img[2*bwdt+x]=nkey.b[c];
       if (nkey.a !=NULL) nblk->msk[x]=nkey.a[c];
       else nblk->msk[x]=255;
-
     }
-    
+
     val=tplot.tfreq/10000.0;
 
-    val=(val-fmin)/(fmax-fmin);   
+    val=(val-fmin)/(fmax-fmin);
     c=val*fkey.max;
     if (c<0) c=0;
     if (c>=fkey.max) c=fkey.max-1;
@@ -1290,11 +1332,11 @@ int main(int argc,char *argv[]) {
       fblk->img[bwdt+x]=fkey.g[c];
       fblk->img[2*bwdt+x]=fkey.b[c];
       if (fkey.a !=NULL) fblk->msk[x]=fkey.a[c];
-	else fblk->msk[x]=255;
+      else fblk->msk[x]=255;
     }
-     
+
   } while (atime<etime);
- 
+
   if (fitflg){
     if (old) OldFitClose(oldfitfp);
     else if (fitfp !=stdin) fclose(fitfp);
@@ -1317,13 +1359,16 @@ int main(int argc,char *argv[]) {
     GrplotFitImage(plt,i,blk[3],0x0f);
     i++;
   }
+  if (errflg) {
+    GrplotFitImage(plt,i,blk[4],0x0f);
+    i++;
+  }
   if (xmajor==0) {
-    xmajor=3*3600;    
+    xmajor=3*3600;
     if ((etime-stime)<8*3600) xmajor=3600;
     if ((etime-stime)>48*3600) xmajor=12*3600;
     if ((etime-stime)>160*3600) xmajor=24*3600;
   }
-   
 
   if (xminor==0) {
     xminor=15*60;
@@ -1334,7 +1379,7 @@ int main(int argc,char *argv[]) {
 
   if (ymajor==0) {
     if (kmflg) ymajor=(erang-frang)/ytick;
-    else if ((geoflg) || (magflg)) ymajor=(latmax-latmin)/ytick; 
+    else if ((geoflg) || (magflg)) ymajor=(latmax-latmin)/ytick;
     else ymajor=15;
   }
   if (yminor==0) yminor=5;
@@ -1350,77 +1395,77 @@ int main(int argc,char *argv[]) {
     GrplotPanel(plt,i,grdcolor,0x0f,width);
     GrplotXaxis(plt,i,stime,etime,xmajor,xminor,0x07,grdcolor,0x0f,width);
     if (kmflg) {
-       GrplotYaxis(plt,i,frang,erang,ymajor,0,0x03,
-                 grdcolor,0x0f,width);
-
-       GrplotYaxisLabel(plt,i,frang,erang,ymajor,
-                      0x01,label_km,NULL,fontname,
-                     fontsize,txtcolor,0x0f);
-       GrplotYaxisTitle(plt,i,0x01,strlen("Range (km)"),"Range (km)",
-                     fontname,fontsize,txtcolor,0x0f);
-
+      GrplotYaxis(plt,i,frang,erang,ymajor,0,0x03,
+                  grdcolor,0x0f,width);
+      GrplotYaxisLabel(plt,i,frang,erang,ymajor,
+                       0x01,label_km,NULL,fontname,
+                       fontsize,txtcolor,0x0f);
+      GrplotYaxisTitle(plt,i,0x01,strlen("Range (km)"),"Range (km)",
+                       fontname,fontsize,txtcolor,0x0f);
     } else if ((geoflg) || (magflg)) {
       GrplotYaxis(plt,i,latmin,latmax,
-                ymajor,0,0x03,grdcolor,0x0f,width);
+                  ymajor,0,0x03,grdcolor,0x0f,width);
       GrplotYaxisLabel(plt,i,latmin,latmax,ymajor,
-                      0x01,label_lat,NULL,fontname,
-                     fontsize,txtcolor,0x0f);
+                       0x01,label_lat,NULL,fontname,
+                       fontsize,txtcolor,0x0f);
       if (magflg) GrplotYaxisTitle(plt,i,0x01,strlen("Magnetic Latitude"),
-                      "Magnetic Latitude",
-                     fontname,fontsize,txtcolor,0x0f);
+                                   "Magnetic Latitude",
+                                   fontname,fontsize,txtcolor,0x0f);
       if (geoflg) GrplotYaxisTitle(plt,i,0x01,strlen("Geographic Latitude"),
-                      "Geographic Latitude",
-                     fontname,fontsize,txtcolor,0x0f);
+                                   "Geographic Latitude",
+                                   fontname,fontsize,txtcolor,0x0f);
     } else {
-     GrplotYaxis(plt,i,srng,erng,yminor,0,0x03,grdcolor,0x0f,width);
-     GrplotYaxisLabel(plt,i,srng,erng,ymajor,
-                      0x01,label_gate,NULL,fontname,
-                     fontsize,txtcolor,0x0f);
-     GrplotYaxisTitle(plt,i,0x01,strlen("Range Gate"),"Range Gate",
-                    fontname,fontsize,txtcolor,0x0f);
+      GrplotYaxis(plt,i,srng,erng,yminor,0,0x03,grdcolor,0x0f,width);
+      GrplotYaxisLabel(plt,i,srng,erng,ymajor,
+                       0x01,label_gate,NULL,fontname,
+                       fontsize,txtcolor,0x0f);
+      GrplotYaxisTitle(plt,i,0x01,strlen("Range Gate"),"Range Gate",
+                       fontname,fontsize,txtcolor,0x0f);
     }
     if (type[i]==0) {
       GrplotKey(plt,i,10,0,8,bhgt,pmin,pmax,(pmax-pmin)/10,0x02,0x00,NULL,
-              label_pwr,NULL,fontname,fontsize,txtcolor,0x0f,
-              width,pkey.max,pkey.a,pkey.r,pkey.g,pkey.b);
+                label_pwr,NULL,fontname,fontsize,txtcolor,0x0f,
+                width,pkey.max,pkey.a,pkey.r,pkey.g,pkey.b);
 
       GrplotXaxisTitle(plt,i,0x02,strlen("Power"),"Power",
-                     fontname,fontsize,txtcolor,0x0f);
+                       fontname,fontsize,txtcolor,0x0f);
     }
     if (type[i]==1) {
-
       GrplotKey(plt,i,10,0,8,bhgt,vmin,vmax,vmax/5,0x02,0x00,NULL,
-              label_vel,NULL,fontname,fontsize,txtcolor,0x0f,
-              width,vkey.max,vkey.a,vkey.r,vkey.g,vkey.b);
+                label_vel,NULL,fontname,fontsize,txtcolor,0x0f,
+                width,vkey.max,vkey.a,vkey.r,vkey.g,vkey.b);
       GrplotXaxisTitle(plt,i,0x02,strlen("Velocity"),"Velocity",
-                     fontname,fontsize,txtcolor,0x0f);
+                       fontname,fontsize,txtcolor,0x0f);
     }
-
     if (type[i]==2) {
-
       GrplotKey(plt,i,10,0,8,bhgt,wmin,wmax,(wmax-wmin)/10,0x02,0x00,NULL,
-              label_wdt,NULL,fontname,fontsize,txtcolor,0x0f,
-              width,wkey.max,wkey.a,wkey.r,wkey.g,wkey.b);
+                label_wdt,NULL,fontname,fontsize,txtcolor,0x0f,
+                width,wkey.max,wkey.a,wkey.r,wkey.g,wkey.b);
       GrplotXaxisTitle(plt,i,0x02,strlen("Spectral Width"),"Spectral Width",
-                     fontname,fontsize,txtcolor,0x0f);
+                       fontname,fontsize,txtcolor,0x0f);
     }
     if (type[i]==3) {
-
       GrplotKey(plt,i,10,0,8,bhgt,emin,emax,(emax-emin)/10,0x02,0x00,NULL,
-              label_elv,NULL,fontname,fontsize,txtcolor,0x0f,
-              width,ekey.max,ekey.a,ekey.r,ekey.g,ekey.b);
+                label_elv,NULL,fontname,fontsize,txtcolor,0x0f,
+                width,ekey.max,ekey.a,ekey.r,ekey.g,ekey.b);
       GrplotXaxisTitle(plt,i,0x02,strlen("Elevation Angle"),"Elevation Angle",
-                     fontname,fontsize,txtcolor,0x0f);
+                       fontname,fontsize,txtcolor,0x0f);
+    }
+    if (type[i]==4) {
+      GrplotKey(plt,i,10,0,8,bhgt,vemin,vemax,(vemax-vemin)/10,0x02,0x00,NULL,
+                label_err,NULL,fontname,fontsize,txtcolor,0x0f,
+                width,vekey.max,vekey.a,vekey.r,vekey.g,vekey.b);
+      GrplotXaxisTitle(plt,i,0x02,strlen("Velocity Error"),"Velocity Error",
+                       fontname,fontsize,txtcolor,0x0f);
     }
     if (i==cnt-1) {
-        plt->ttl_hgt=20;
-        GrplotXaxisLabel(plt,i,stime,etime,xmajor,
+      plt->ttl_hgt=20;
+      GrplotXaxisLabel(plt,i,stime,etime,xmajor,
                        0x01,label_tme,NULL,fontname,
                        fontsize,txtcolor,0x0f);
-        GrplotXaxisTitle(plt,i,0x01,strlen("UT Time"),"UT Time",
-                    fontname,fontsize,txtcolor,0x0f);
+      GrplotXaxisTitle(plt,i,0x01,strlen("UT Time"),"UT Time",
+                       fontname,fontsize,txtcolor,0x0f);
     }
-
 
   }
   nfplt->ttl_yor=0;
@@ -1428,24 +1473,24 @@ int main(int argc,char *argv[]) {
 
   GrplotFitImage(nfplt,0,fblk,0x0f);
   GrplotFitImage(nfplt,1,nblk,0x0f);
- 
+
   GrplotPanel(nfplt,0,grdcolor,0x0f,width);
   GrplotPanel(nfplt,1,grdcolor,0x0f,width);
   GrplotYaxisTitle(nfplt,0,0x01,strlen("Frequency"),"Frequency",
-                    fontname,fontsize,txtcolor,0x0f);
+                   fontname,fontsize,txtcolor,0x0f);
   GrplotYaxisTitle(nfplt,0,0x02,strlen(revtxt),revtxt,
-                    fontname,fontsize,txtcolor,0x0f);
+                   fontname,fontsize,txtcolor,0x0f);
   GrplotYaxisTitle(nfplt,1,0x01,strlen("Noise dB"),"Noise dB",
-                    fontname,fontsize,txtcolor,0x0f);
+                   fontname,fontsize,txtcolor,0x0f);
 
   GrplotKey(nfplt,0,10,-bwdt/4,
-          10,bwdt*0.4,nmin,nmax,(nmax-nmin)/10,0x04,strlen("Noise"),"Noise",
-              label_noise,NULL,fontname,fontsize,txtcolor,0x0f,
-              width,nkey.max,nkey.a,nkey.r,nkey.g,nkey.b);
+            10,bwdt*0.4,nmin,nmax,(nmax-nmin)/10,0x04,strlen("Noise"),"Noise",
+            label_noise,NULL,fontname,fontsize,txtcolor,0x0f,
+            width,nkey.max,nkey.a,nkey.r,nkey.g,nkey.b);
   GrplotKey(nfplt,0,10,+bwdt/4,
-          10,bwdt*0.4,fmin,fmax,(fmax-fmin)/5,0x04,strlen("Frequency"),
-          "Frequency",label_freq,NULL,fontname,fontsize,txtcolor,0x0f,
-          width,fkey.max,fkey.a,fkey.r,fkey.g,fkey.b);
+            10,bwdt*0.4,fmin,fmax,(fmax-fmin)/5,0x04,strlen("Frequency"),
+            "Frequency",label_freq,NULL,fontname,fontsize,txtcolor,0x0f,
+            width,fkey.max,fkey.a,fkey.r,fkey.g,fkey.b);
 
   sprintf(txt,"Xy");
   txtbox(tfontname,tfontsize,strlen(txt),txt,box,fontdb);
@@ -1454,24 +1499,24 @@ int main(int argc,char *argv[]) {
   sprintf(txt,"Station:%s (%s)",RadarGetName(network,stid),
           RadarGetCode(network,stid,0));
   PlotText(plot,NULL,tfontname,tfontsize,2,lnehgt,
-            strlen(txt),txt,txtcolor,0x0f,0);
+           strlen(txt),txt,txtcolor,0x0f,0);
 
   sprintf(txt,"Operated by:%s",RadarGetOperator(network,stid));
   PlotText(plot,NULL,tfontname,tfontsize,2,2*lnehgt,
-            strlen(txt),txt,txtcolor,0x0f,0);
+           strlen(txt),txt,txtcolor,0x0f,0);
 
   if (sflg) {
     if (scan !=0) sprintf(txt,"Scan Type:%d",scan);
     else sprintf(txt,"Scan Type:Regular");
     PlotText(plot,NULL,tfontname,tfontsize,2,3*lnehgt,
-            strlen(txt),txt,txtcolor,0x0f,0);
+             strlen(txt),txt,txtcolor,0x0f,0);
   }
 
   TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
   sprintf(txt,"%s, %.2d %.4d (%.4d%.2d%.2d)",mstr[mo-1],dy,yr,yr,mo,dy);
   txtbox(tfontname,tfontsize,strlen(txt),txt,box,fontdb);
   PlotText(plot,NULL,tfontname,tfontsize,wdt-2-box[0],lnehgt,
-            strlen(txt),txt,txtcolor,0x0f,0);
+           strlen(txt),txt,txtcolor,0x0f,0);
 
   strcpy(txt,"Program ID");
   if (cpnum>1) strcat(txt,"s");
@@ -1483,40 +1528,38 @@ int main(int argc,char *argv[]) {
   }
   txtbox(tfontname,tfontsize,strlen(txt),txt,box,fontdb);
   PlotText(plot,NULL,tfontname,tfontsize,wdt-2-box[0],2*lnehgt,
-            strlen(txt),txt,txtcolor,0x0f,0);
+           strlen(txt),txt,txtcolor,0x0f,0);
 
   if (expr !=NULL) {
     sprintf(txt,"Function:%s",expr);
     txtbox(tfontname,tfontsize,strlen(txt),txt,box,fontdb);
     PlotText(plot,NULL,tfontname,tfontsize,wdt-2-box[0],3*lnehgt,
-            strlen(txt),txt,txtcolor,0x0f,0);
+             strlen(txt),txt,txtcolor,0x0f,0);
   }
-
 
   if (bmnum==-1) sprintf(txt,"Beam:All");
   else sprintf(txt,"Beam %.2d",bmnum);
- 
+
   txtbox(tfontname,tfontsize,strlen(txt),txt,box,fontdb);
   PlotText(plot,NULL,tfontname,tfontsize,(wdt-box[0])/2,lnehgt,
-            strlen(txt),txt,txtcolor,0x0f,0);
+           strlen(txt),txt,txtcolor,0x0f,0);
 
   if (chnum !=-1) {
     if (chnum==1) sprintf(txt,"Channel:A");
     else sprintf(txt,"Channel:B");
     txtbox(tfontname,tfontsize,strlen(txt),txt,box,fontdb);
     PlotText(plot,NULL,tfontname,tfontsize,(wdt-box[0])/2,2*lnehgt,
-            strlen(txt),txt,txtcolor,0x0f,0);
+             strlen(txt),txt,txtcolor,0x0f,0);
   }
 
   if (cpid !=-1) {
     sprintf(txt,"Program ID Plotted:%d",cpid);
     txtbox(tfontname,tfontsize,strlen(txt),txt,box,fontdb);
     PlotText(plot,NULL,tfontname,tfontsize,(wdt-box[0])/2,3*lnehgt,
-            strlen(txt),txt,txtcolor,0x0f,0);
+             strlen(txt),txt,txtcolor,0x0f,0);
   }
 
-  
-  PlotPlotEnd(plot);   
+  PlotPlotEnd(plot);
   PlotDocumentEnd(plot);
 
   if (!gflg) exit(0);
@@ -1525,11 +1568,10 @@ int main(int argc,char *argv[]) {
     exit(-1);
   }
 
-
 #ifdef _XLIB_
   if (xd !=0) {
     dp=XwinOpenDisplay(display_name,&xdf);
- 
+
     if (dp==NULL) {
       fprintf(stderr,"Could not open display.\n");
       exit(-1);
@@ -1537,7 +1579,6 @@ int main(int argc,char *argv[]) {
 
     if (xdoff==-1) xdoff=(dp->wdt-img->wdt)/2;
     if (ydoff==-1) ydoff=(dp->hgt-img->hgt)/2;
-
 
     win=XwinMakeWindow(xdoff,ydoff,img->wdt,img->hgt,0,
                        dp,wname,
@@ -1548,11 +1589,8 @@ int main(int argc,char *argv[]) {
     }
 
     XwinFrameBufferWindow(img,win);
-
     XwinShowWindow(win);
-
     XwinDisplayEvent(dp,1,&win,1,NULL);
-
     XwinFreeWindow(win);
     XwinCloseDisplay(dp);
   } else {
@@ -1561,12 +1599,12 @@ int main(int argc,char *argv[]) {
     else if (ppmxflg==1) FrameBufferSavePPMX(img,stdout);
     else FrameBufferSavePNG(img,stdout);
   }
-  #else 
+  #else
     if (xmlflg==1) FrameBufferSaveXML(img,stream,stdout);
     else if (ppmflg==1) FrameBufferSavePPM(img,stdout);
     else if (ppmxflg==1) FrameBufferSavePPMX(img,stdout);
     else FrameBufferSavePNG(img,stdout);
   #endif
-    return 0;
+  return 0;
 }
 
