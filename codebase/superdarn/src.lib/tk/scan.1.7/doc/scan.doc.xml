@@ -191,6 +191,11 @@
       <description>Power error from lambda fit of ACF.</description>
     </member>
 
+    <member>
+      <proto>double elv;</proto>
+      <description>Elevation angle from XCF.</description>
+    </member>
+
   </struct>
 
   <description>
