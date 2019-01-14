@@ -275,9 +275,39 @@ double CnvMapFitVector(int num,struct CnvMapSHFVec *data,
   }
 
   w=malloc(sizeof(double)*(kmax+1));
+  if (w==NULL) {
+    free(result);
+    free(soltn);
+    free(plm);
+    return -1;
+  }
   v=malloc(sizeof(double)*(kmax+1)*(kmax+1));
+  if (v==NULL) {
+    free(result);
+    free(soltn);
+    free(plm);
+    free(w);
+    return -1;
+  }
   var=malloc(sizeof(double)*(kmax+1)*(kmax+1));
+  if (var==NULL) {
+    free(result);
+    free(soltn);
+    free(plm);
+    free(w);
+    free(v);
+    return -1;
+  }
   a=malloc(sizeof(double)*num*(kmax+1)); 
+  if (a==NULL) {
+    free(result);
+    free(soltn);
+    free(plm);
+    free(w);
+    free(v);
+    free(var);
+    return -1;
+  }
 
   /* Compute the matrix describing the line-of-sight velocities */
 
