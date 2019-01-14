@@ -112,7 +112,6 @@ struct OldFitFp *OldFitOpenFd(int fitfp,int inxfp) {
            ptr->major_rev=atoi(tmpbuf+i-j);
            for (j=0;(ptr->header[i+1+j] !=' ') && 
                (ptr->header[i+1+j] !=0);i++) tmpbuf[j]=ptr->header[i+1+j]; 
-           /*tmpbuf[j]=0;*/     /* Removing this so the minor_rev is correct */
            ptr->minor_rev=atoi(tmpbuf);
            
         }
