@@ -148,14 +148,6 @@ int main(int argc,char *argv[]) {
 
       if (fit->rng==NULL) continue;
 
-/*
-      for (i=0;i<nrng; i++) {
-        if (fit->rng[i].qflg !=0) fprintf(stderr,"d");
-        else fprintf(stderr,"-");
-      }
-      fprintf(stderr,"\n");
-*/
-
       fprintf(stderr,"\n");
       for (i=0;i<nrng; i++) {
         if (fit->rng[i].qflg !=0)
