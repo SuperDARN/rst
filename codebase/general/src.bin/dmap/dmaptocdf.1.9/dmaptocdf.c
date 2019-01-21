@@ -126,7 +126,7 @@ int loadmap(FILE *fp) {
       if (cdfaname==NULL) cdfaname=malloc(sizeof(char *));
       else {
         char **tmp;
-        tmp=realloc(cdfaname,(snum+1)*sizeof(char *));
+        tmp=realloc(cdfaname,(anum+1)*sizeof(char *));
         if (tmp==NULL) break;
         cdfaname=tmp;
       }  
