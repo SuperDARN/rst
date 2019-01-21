@@ -5,7 +5,10 @@
 <location>src.bin/dmap/dmapdump</location>
 <syntax>dmapdump --help</syntax>
 <syntax>dmapdump [-d] [<ar>name</ar>]</syntax>
+
 <option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
 </option>
 <option><on>-d</on><od>print the data values of the array variables.</od>
 </option>
@@ -20,6 +23,5 @@
 <description>Dump the file "<code>inp.dmap</code>", paginating using the <code>more</code> command.
 </description>
 </example>
-
 
 </binary>
