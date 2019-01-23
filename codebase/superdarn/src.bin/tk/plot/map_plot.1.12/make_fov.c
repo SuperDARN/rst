@@ -39,7 +39,7 @@
 #include "polygon.h"
 
 
-
+/* This function returns FOVs for all operational radars */
 struct PolygonData *make_fov(double tval,struct RadarNetwork *network,
                              int chisham,int old_aacgm) {
 
@@ -105,6 +105,7 @@ struct PolygonData *make_fov(double tval,struct RadarNetwork *network,
 }
 
 
+/* This function returns FOVs for only the radars contributing grid vectors */
 struct PolygonData *make_fov_data(struct GridData *gptr,struct RadarNetwork *network,
                                   int chisham,int old_aacgm) {
 
