@@ -918,8 +918,10 @@ int main(int argc,char *argv[]) {
       }
       stime=oldfit_find(oldfitfp,prm,fit,sdate,stime);
     } else {
-      if (arg==argc) fp=stdin;
-      else {
+      if (arg==argc) {
+        fitfp=stdin;
+        fprintf(stderr,"Reading from stdin - make sure the input filename is not missing\n");
+      } else {
         if (argc-arg>1)  {
           fp=fopen(argv[arg+1],"r");
           if (fp==NULL) {
