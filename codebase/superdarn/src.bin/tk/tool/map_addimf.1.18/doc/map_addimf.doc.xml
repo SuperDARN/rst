@@ -23,7 +23,7 @@
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
 <option><on>-old</on><od>the input file is a <code>map</code> format file.</od></option>
-<option><on>-omni</on><od>use data from OMNI.</od>
+<option><on>-omni</on><od>use data from OMNI. (Currently not functional)</od>
 </option>
 <option><on>-ace</on><od>use IMF data from ACE.</od>
 </option>
@@ -69,12 +69,16 @@
 
 <p><strong>NOTE:</strong> The default OMNI invalid measurement value for <em>vx</em> is 99999.9.  This invalid measurement value needs to be modified to 0.0 in order to select the correct CS10 or TS18 map model.</p>
 
-<p>The IMF will be fixed at this value and will only change if a subsequent entry in the IMF file alters it.</p>
+<p>In the case where there is missing IMF data in the middle of the file, the missing values for <em>bx</em>, <em>by</em>, <em>bz</em>, and <em>Vx</em> will be filled in from an interpolation between the two closest values. The IMF will be fixed to the last value if there is missing IMF data at the end of a file.  For example, if the last value is: </p>
+
+<quote><code>2016 12 30 23 17 00     0.64    2.59   -1.96  -336.9</code></quote>
+
+<p>then the records for 23:18 and after will contain the values for IMF and <em>vx</em> in this entry.  Similarly, if values are missing at the beginning of a file, then the first line in the IMF file will be used in place of the missing data.</p>
 </description>
 
 <example>
 <command>map_addimf -vb -old -bx 1.5 -by -1.2 -bx 0.4 19970406.map &gt; 19970406.imf.map</command>
-<description>Adds a fixed IMF of Bx=-15, By=-1.2 and Bz=0.4 to the map file "<coode>19970406.map</code>". The output is stored in the file "<code>19970406.imf.map</code>" and status is logged to standard error.</description>
+<description>Adds a fixed IMF of Bx=-15, By=-1.2 and Bz=0.4 to the map file "<code>19970406.map</code>". The output is stored in the file "<code>19970406.imf.map</code>" and status is logged to standard error.</description>
 </example>
 
 <example>
