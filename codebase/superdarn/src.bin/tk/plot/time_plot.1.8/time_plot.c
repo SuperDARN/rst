@@ -1305,7 +1305,7 @@ int main(int argc,char *argv[]) {
 
       for (rng=sprng;rng<=eprng;rng++) {
         if ((expr !=NULL) && (eval_expr(expr,&tplot,rng)==0)) continue;
-        if (tplot.qflg[rng]==0) continue;
+        if ((tplot.qflg[rng]==0) && (n !=7)) continue;
         if ((tplot.gsct[rng]==1) && (gmflg)) continue;
 
         if (rng>0) btm=bhgt*(rng-1-srng)/(erng-srng);
