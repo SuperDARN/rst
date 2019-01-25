@@ -55,6 +55,12 @@ int tplotset(struct tplot *ptr,int nrang) {
   memset(tmp,0,sizeof(int)*nrang);
   ptr->gsct=tmp;
 
+  if (ptr->p_0==NULL) tmp=malloc(sizeof(double)*nrang);
+  else tmp=realloc(ptr->p_0,sizeof(double)*nrang);
+  if (tmp==NULL) return -1;
+  memset(tmp,0,sizeof(double)*nrang);
+  ptr->p_0=tmp;
+
   if (ptr->p_l==NULL) tmp=malloc(sizeof(double)*nrang);
   else tmp=realloc(ptr->p_l,sizeof(double)*nrang);
   if (tmp==NULL) return -1;
@@ -90,6 +96,12 @@ int tplotset(struct tplot *ptr,int nrang) {
   if (tmp==NULL) return -1;
   memset(tmp,0,sizeof(double)*nrang);
   ptr->w_l_e=tmp;
+
+  if (ptr->phi0==NULL) tmp=malloc(sizeof(double)*nrang);
+  else tmp=realloc(ptr->phi0,sizeof(double)*nrang);
+  if (tmp==NULL) return -1;
+  memset(tmp,0,sizeof(double)*nrang);
+  ptr->phi0=tmp;
 
   if (ptr->elv==NULL) tmp=malloc(sizeof(double)*nrang);
   else tmp=realloc(ptr->elv,sizeof(double)*nrang);

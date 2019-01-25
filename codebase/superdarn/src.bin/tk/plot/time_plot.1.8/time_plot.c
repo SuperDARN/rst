@@ -110,9 +110,11 @@ struct key nkey;
 struct key pkey;
 struct key vkey;
 struct key wkey;
+struct key phikey;
 struct key ekey;
 struct key vekey;
 struct key wekey;
+struct key p0key;
 
 char *mstr[]={"January","February","March","April","May","June","July",
               "August","September","October","November","December",0};
@@ -170,6 +172,14 @@ char *label_wdt(double val,double min,double max,void *data) {
   if ((val !=min) && (val !=max)) return NULL;
   txt=malloc(32);
   sprintf(txt,"%d m/s",(int) val);
+  return txt;
+}
+
+char *label_phi(double val,double min,double max,void *data) {
+  char *txt=NULL;
+  if ((val !=min) && (val !=max) && (val !=0)) return NULL;
+  txt=malloc(32);
+  sprintf(txt,"%d rad",(int) val);
   return txt;
 }
 
@@ -289,9 +299,11 @@ int main(int argc,char *argv[]) {
   unsigned char velflg=0;
   unsigned char pwrflg=0;
   unsigned char wdtflg=0;
+  unsigned char phiflg=0;
   unsigned char elvflg=0;
   unsigned char verrflg=0;
   unsigned char werrflg=0;
+  unsigned char pwr0flg=0;
 
   unsigned char gsflg=0;
   unsigned char gmflg=0;
@@ -306,6 +318,9 @@ int main(int argc,char *argv[]) {
   double wmin=0;
   double wmax=500;
 
+  double phimin=-3;
+  double phimax=3;
+
   double emin=0;
   double emax=50;
 
@@ -314,6 +329,9 @@ int main(int argc,char *argv[]) {
 
   double wemin=0;
   double wemax=100;
+
+  double p0min=0;
+  double p0max=30;
 
   double fmin=0.9;
   double fmax=1.9;
@@ -351,18 +369,22 @@ int main(int argc,char *argv[]) {
   char *pkey_path=NULL;
   char *vkey_path=NULL;
   char *wkey_path=NULL;
+  char *phikey_path=NULL;
   char *ekey_path=NULL;
   char *vekey_path=NULL;
   char *wekey_path=NULL;
+  char *p0key_path=NULL;
   char *fkey_path=NULL;
   char *nkey_path=NULL;
   char kname[256];
   char *pkey_fname=NULL;
   char *vkey_fname=NULL;
   char *wkey_fname=NULL;
+  char *phikey_fname=NULL;
   char *ekey_fname=NULL;
   char *vekey_fname=NULL;
   char *wekey_fname=NULL;
+  char *p0key_fname=NULL;
   char *fkey_fname=NULL;
   char *nkey_fname=NULL;
   size_t len;
@@ -446,7 +468,7 @@ int main(int argc,char *argv[]) {
   double sc;
 
   int type[6];
-  struct FrameBuffer *blk[6]={NULL,NULL,NULL,NULL,NULL,NULL};
+  struct FrameBuffer *blk[8]={NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
   struct FrameBuffer *fblk;
   struct FrameBuffer *nblk;
 
@@ -546,9 +568,11 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"p",'x',&pwrflg); /* plot power */
   OptionAdd(&opt,"v",'x',&velflg); /* plot velocity */
   OptionAdd(&opt,"w",'x',&wdtflg); /* plot spectral width */
+  OptionAdd(&opt,"phi",'x',&phiflg); /* plot phi0 */
   OptionAdd(&opt,"e",'x',&elvflg); /* plot elevation angle */
   OptionAdd(&opt,"ve",'x',&verrflg); /* plot velocity error */
   OptionAdd(&opt,"we",'x',&werrflg); /* plot spectral width error */
+  OptionAdd(&opt,"p0",'x',&pwr0flg); /* plot lag0 power */
 
   OptionAdd(&opt,"pmin",'d',&pmin); /* power minimum */
   OptionAdd(&opt,"pmax",'d',&pmax); /* power maximum */
@@ -559,6 +583,9 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"wmin",'d',&wmin); /* spectral width minimum */
   OptionAdd(&opt,"wmax",'d',&wmax); /* spectral width maximum */
 
+  OptionAdd(&opt,"phimin",'d',&phimin); /* phi0 minimum */
+  OptionAdd(&opt,"phimax",'d',&phimax); /* phi0 maximum */
+
   OptionAdd(&opt,"emin",'d',&emin); /* elevation angle minimum */
   OptionAdd(&opt,"emax",'d',&emax); /* elevation angle maximum */
 
@@ -567,6 +594,9 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"wemin",'d',&wemin); /* spectral width error minimum */
   OptionAdd(&opt,"wemax",'d',&wemax); /* spectral width error maximum */
+
+  OptionAdd(&opt,"p0min",'d',&p0min); /* lag0 power minimum */
+  OptionAdd(&opt,"p0max",'d',&p0max); /* lag0 power maximum */
 
   OptionAdd(&opt,"gs",'x',&gsflg); /* shade ground scatter */
   OptionAdd(&opt,"gm",'x',&gmflg); /* mask ground scatter */
@@ -738,6 +768,25 @@ int main(int argc,char *argv[]) {
     }
   }
 
+  if (phikey_fname !=NULL) {
+    if (phikey_path == NULL) phikey_path = getenv("COLOR_TABLE_PATH");
+    if (phikey_path != NULL) {
+      strcpy(kname, phikey_path);
+      len = strlen(phikey_path);
+      if (phikey_path[len-1] != '/') strcat(kname, "/");
+      strcat(kname, phikey_fname);
+    } else {
+      fprintf(stderr, "No COLOR_TABLE_PATH set\n");
+    }
+    fp=fopen(kname,"r");
+    if (fp !=NULL) {
+      load_key(fp,&phikey);
+      fclose(fp);
+    } else {
+      fprintf(stderr, "Phi0 color table %s not found\n", kname);
+    }
+  }
+
   if (ekey_fname !=NULL) {
     if (ekey_path == NULL) ekey_path = getenv("COLOR_TABLE_PATH");
     if (ekey_path != NULL) {
@@ -792,6 +841,25 @@ int main(int argc,char *argv[]) {
       fclose(fp);
     } else {
       fprintf(stderr, "Spectral width error color table %s not found\n", kname);
+    }
+  }
+
+  if (p0key_fname !=NULL) {
+    if (p0key_path == NULL) p0key_path = getenv("COLOR_TABLE_PATH");
+    if (p0key_path != NULL) {
+      strcpy(kname, p0key_path);
+      len = strlen(p0key_path);
+      if (p0key_path[len-1] != '/') strcat(kname, "/");
+      strcat(kname, p0key_fname);
+    } else {
+      fprintf(stderr, "No COLOR_TABLE_PATH set\n");
+    }
+    fp=fopen(kname,"r");
+    if (fp !=NULL) {
+      load_key(fp,&p0key);
+      fclose(fp);
+    } else {
+      fprintf(stderr, "Lag0 power color table %s not found\n", kname);
     }
   }
 
@@ -896,6 +964,14 @@ int main(int argc,char *argv[]) {
     wkey.b=KeyLinearB[0];
   }
 
+  if (phikey.max==0) {
+    phikey.max=KeyLinearMax;
+    phikey.a=KeyLinearA[0];
+    phikey.r=KeyLinearR[0];
+    phikey.g=KeyLinearG[0];
+    phikey.b=KeyLinearB[0];
+  }
+
   if (ekey.max==0) {
     ekey.max=KeyLinearMax;
     ekey.a=KeyLinearA[0];
@@ -918,6 +994,14 @@ int main(int argc,char *argv[]) {
     wekey.r=KeyLinearR[0];
     wekey.g=KeyLinearG[0];
     wekey.b=KeyLinearB[0];
+  }
+
+  if (p0key.max==0) {
+    p0key.max=KeyLinearMax;
+    p0key.a=KeyLinearA[0];
+    p0key.r=KeyLinearR[0];
+    p0key.g=KeyLinearG[0];
+    p0key.b=KeyLinearB[0];
   }
 
   if (nkey.max==0) {
@@ -1123,16 +1207,24 @@ int main(int argc,char *argv[]) {
     type[cnt]=2;
     cnt++;
   }
-  if (elvflg) {
+  if (phiflg) {
     type[cnt]=3;
     cnt++;
   }
-  if (verrflg) {
+  if (elvflg) {
     type[cnt]=4;
     cnt++;
   }
-  if (werrflg) {
+  if (verrflg) {
     type[cnt]=5;
+    cnt++;
+  }
+  if (werrflg) {
+    type[cnt]=6;
+    cnt++;
+  }
+  if (pwr0flg) {
+    type[cnt]=7;
     cnt++;
   }
   plt=GrplotMake(wdt,hgt-150,1,cnt,60,80,0,25,0,120);
@@ -1152,14 +1244,16 @@ int main(int argc,char *argv[]) {
   if (pwrflg) blk[0]=FrameBufferMake("power",bwdt,bhgt,24);
   if (velflg) blk[1]=FrameBufferMake("velocity",bwdt,bhgt,24);
   if (wdtflg) blk[2]=FrameBufferMake("width",bwdt,bhgt,24);
-  if (elvflg) blk[3]=FrameBufferMake("elevation",bwdt,bhgt,24);
-  if (verrflg) blk[4]=FrameBufferMake("verror",bwdt,bhgt,24);
-  if (werrflg) blk[5]=FrameBufferMake("werror",bwdt,bhgt,24);
+  if (phiflg) blk[3]=FrameBufferMake("phi0",bwdt,bhgt,24);
+  if (elvflg) blk[4]=FrameBufferMake("elevation",bwdt,bhgt,24);
+  if (verrflg) blk[5]=FrameBufferMake("verror",bwdt,bhgt,24);
+  if (werrflg) blk[6]=FrameBufferMake("werror",bwdt,bhgt,24);
+  if (pwr0flg) blk[7]=FrameBufferMake("lag0power",bwdt,bhgt,24);
 
   FrameBufferClear(fblk,0x0f,bgcolor);
   FrameBufferClear(nblk,0x0f,bgcolor);
 
-  for (n=0;n<5;n++) if (blk[n] !=NULL) FrameBufferClear(blk[n],0x0f,bgcolor);
+  for (n=0;n<8;n++) if (blk[n] !=NULL) FrameBufferClear(blk[n],0x0f,bgcolor);
 
   do {
 
@@ -1199,7 +1293,7 @@ int main(int argc,char *argv[]) {
     if (rgt<0) rgt=0;
     if (rgt>=bwdt) rgt=bwdt-1;
 
-    for (n=0;n<6;n++) {
+    for (n=0;n<8;n++) {
       if (blk[n]==NULL) continue;
       if (lrngflg==0) {
         sprng=1;
@@ -1268,9 +1362,11 @@ int main(int argc,char *argv[]) {
           if (n==0) val=tplot.p_l[rng];
           if (n==1) val=tplot.v[rng];
           if (n==2) val=tplot.w_l[rng];
-          if (n==3) val=tplot.elv[rng];
-          if (n==4) val=tplot.v_e[rng];
-          if (n==5) val=tplot.w_l_e[rng];
+          if (n==3) val=tplot.phi0[rng];
+          if (n==4) val=tplot.elv[rng];
+          if (n==5) val=tplot.v_e[rng];
+          if (n==6) val=tplot.w_l_e[rng];
+          if (n==7) val=tplot.p_0[rng];
 
           if (c<0) c=0;
           if (n==0) {
@@ -1304,6 +1400,23 @@ int main(int argc,char *argv[]) {
             gv=wkey.g[c];
             bv=wkey.b[c];
           } else if (n==3) {
+            val=(val-phimin)/(phimax-phimin);
+            c=val*phikey.max;
+            if (tplot.phi0[rng]<=-4) {
+              av=0;
+              rv=0;
+              gv=0;
+              bv=0;
+            } else {
+              if (c<0) c=0;
+              if (c>=phikey.max) c=phikey.max-1;
+              if (phikey.a !=NULL) av=phikey.a[c];
+              else av=255; 
+              rv=phikey.r[c];
+              gv=phikey.g[c];
+              bv=phikey.b[c];
+            }
+          } else if (n==4) {
             val=(val-emin)/(emax-emin);
             c=val*ekey.max;
             if (c<=0) {
@@ -1319,7 +1432,7 @@ int main(int argc,char *argv[]) {
               gv=ekey.g[c];
               bv=ekey.b[c];
             }
-          } else if (n==4) {
+          } else if (n==5) {
             val=(val-vemin)/(vemax-vemin);
             c=val*vekey.max;
             if (c<0) c=0;
@@ -1329,7 +1442,7 @@ int main(int argc,char *argv[]) {
             rv=vekey.r[c];
             gv=vekey.g[c];
             bv=vekey.b[c];
-          } else if (n==5) {
+          } else if (n==6) {
             val=(val-wemin)/(wemax-wemin);
             c=val*wekey.max;
             if (c<0) c=0;
@@ -1339,6 +1452,16 @@ int main(int argc,char *argv[]) {
             rv=wekey.r[c];
             gv=wekey.g[c];
             bv=wekey.b[c];
+          } else if (n==7) {
+            val=(val-p0min)/(p0max-p0min);
+            c=val*p0key.max;
+            if (c<0) c=0;
+            if (c>=p0key.max) c=p0key.max-1; 
+            if (p0key.a !=NULL) av=p0key.a[c];
+            else av=255;
+            rv=p0key.r[c];
+            gv=p0key.g[c];
+            bv=p0key.b[c];
           }
         }
 
@@ -1405,16 +1528,24 @@ int main(int argc,char *argv[]) {
     GrplotFitImage(plt,i,blk[2],0x0f);
     i++;
   }
-  if (elvflg) {
+  if (phiflg) {
     GrplotFitImage(plt,i,blk[3],0x0f);
     i++;
   }
-  if (verrflg) {
+  if (elvflg) {
     GrplotFitImage(plt,i,blk[4],0x0f);
     i++;
   }
-  if (werrflg) {
+  if (verrflg) {
     GrplotFitImage(plt,i,blk[5],0x0f);
+    i++;
+  }
+  if (werrflg) {
+    GrplotFitImage(plt,i,blk[6],0x0f);
+    i++;
+  }
+  if (pwr0flg) {
+    GrplotFitImage(plt,i,blk[7],0x0f);
     i++;
   }
   if (xmajor==0) {
@@ -1480,7 +1611,6 @@ int main(int argc,char *argv[]) {
       GrplotKey(plt,i,10,0,8,bhgt,pmin,pmax,(pmax-pmin)/10,0x02,0x00,NULL,
                 label_pwr,NULL,fontname,fontsize,txtcolor,0x0f,
                 width,pkey.max,pkey.a,pkey.r,pkey.g,pkey.b);
-
       GrplotXaxisTitle(plt,i,0x02,strlen("Power"),"Power",
                        fontname,fontsize,txtcolor,0x0f);
     }
@@ -1499,24 +1629,38 @@ int main(int argc,char *argv[]) {
                        fontname,fontsize,txtcolor,0x0f);
     }
     if (type[i]==3) {
+      GrplotKey(plt,i,10,0,8,bhgt,phimin,phimax,phimax/4,0x02,0x00,NULL,
+                label_phi,NULL,fontname,fontsize,txtcolor,0x0f,
+                width,phikey.max,phikey.a,phikey.r,phikey.g,phikey.b);
+      GrplotXaxisTitle(plt,i,0x02,strlen("phi0"),"phi0",
+                       fontname,fontsize,txtcolor,0x0f);
+    }
+    if (type[i]==4) {
       GrplotKey(plt,i,10,0,8,bhgt,emin,emax,(emax-emin)/10,0x02,0x00,NULL,
                 label_elv,NULL,fontname,fontsize,txtcolor,0x0f,
                 width,ekey.max,ekey.a,ekey.r,ekey.g,ekey.b);
       GrplotXaxisTitle(plt,i,0x02,strlen("Elevation Angle"),"Elevation Angle",
                        fontname,fontsize,txtcolor,0x0f);
     }
-    if (type[i]==4) {
+    if (type[i]==5) {
       GrplotKey(plt,i,10,0,8,bhgt,vemin,vemax,(vemax-vemin)/10,0x02,0x00,NULL,
                 label_wdt,NULL,fontname,fontsize,txtcolor,0x0f,
                 width,vekey.max,vekey.a,vekey.r,vekey.g,vekey.b);
       GrplotXaxisTitle(plt,i,0x02,strlen("Velocity Error"),"Velocity Error",
                        fontname,fontsize,txtcolor,0x0f);
     }
-    if (type[i]==5) {
+    if (type[i]==6) {
       GrplotKey(plt,i,10,0,8,bhgt,wemin,wemax,(wemax-wemin)/10,0x02,0x00,NULL,
                 label_wdt,NULL,fontname,fontsize,txtcolor,0x0f,
                 width,wekey.max,wekey.a,wekey.r,wekey.g,wekey.b);
       GrplotXaxisTitle(plt,i,0x02,strlen("Spectral Width Error"),"Spectral Width Error",
+                       fontname,fontsize,txtcolor,0x0f);
+    }
+    if (type[i]==7) {
+      GrplotKey(plt,i,10,0,8,bhgt,p0min,p0max,(p0max-p0min)/10,0x02,0x00,NULL,
+                label_pwr,NULL,fontname,fontsize,txtcolor,0x0f,
+                width,p0key.max,p0key.a,p0key.r,p0key.g,p0key.b);
+      GrplotXaxisTitle(plt,i,0x02,strlen("Lag0 Power"),"Lag0 Power",
                        fontname,fontsize,txtcolor,0x0f);
     }
     if (i==cnt-1) {
