@@ -181,22 +181,6 @@ char *label_elv(double val,double min,double max,void *data) {
   return txt;
 }
 
-char *label_verr(double val,double min,double max,void *data) {
-  char *txt=NULL;
-  if ((val !=min) && (val !=max) && (val !=0)) return NULL;
-  txt=malloc(32);
-  sprintf(txt,"%d m/s",(int) val);
-  return txt;
-}
-
-char *label_werr(double val,double min,double max,void *data) {
-  char *txt=NULL;
-  if ((val !=min) && (val !=max) && (val !=0)) return NULL;
-  txt=malloc(32);
-  sprintf(txt,"%d m/s",(int) val);
-  return txt;
-}
-
 char *label_noise(double val,double min,double max,void *data) {
   char *txt=NULL;
   txt=malloc(32);
@@ -1523,14 +1507,14 @@ int main(int argc,char *argv[]) {
     }
     if (type[i]==4) {
       GrplotKey(plt,i,10,0,8,bhgt,vemin,vemax,(vemax-vemin)/10,0x02,0x00,NULL,
-                label_verr,NULL,fontname,fontsize,txtcolor,0x0f,
+                label_wdt,NULL,fontname,fontsize,txtcolor,0x0f,
                 width,vekey.max,vekey.a,vekey.r,vekey.g,vekey.b);
       GrplotXaxisTitle(plt,i,0x02,strlen("Velocity Error"),"Velocity Error",
                        fontname,fontsize,txtcolor,0x0f);
     }
     if (type[i]==5) {
       GrplotKey(plt,i,10,0,8,bhgt,wemin,wemax,(wemax-wemin)/10,0x02,0x00,NULL,
-                label_werr,NULL,fontname,fontsize,txtcolor,0x0f,
+                label_wdt,NULL,fontname,fontsize,txtcolor,0x0f,
                 width,wekey.max,wekey.a,wekey.r,wekey.g,wekey.b);
       GrplotXaxisTitle(plt,i,0x02,strlen("Spectral Width Error"),"Spectral Width Error",
                        fontname,fontsize,txtcolor,0x0f);
