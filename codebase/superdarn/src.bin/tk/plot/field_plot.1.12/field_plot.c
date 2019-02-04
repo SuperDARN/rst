@@ -71,6 +71,8 @@
 #include "grplotstd.h"
 #include "aacgm.h"
 #include "mlt.h"
+#include "aacgmlib_v2.h"
+#include "mlt_v2.h"
 #include "dmap.h"
 #include "stdkey.h"
 #include "radar.h" 
@@ -117,7 +119,7 @@
 
 
 
-char *fsfx[]={"xml","ppm","ps",0};
+char *fsfx[]={"xml","ppm","ppmx","png","ps",0};
 
 unsigned char gry[256];
 
@@ -242,6 +244,34 @@ int stream(char *buf,int sze,void *data) {
   fwrite(buf,sze,1,fp);
   return 0;
 } 
+
+int AACGM_v2_transform(int ssze,void *src,int dsze,void *dst,void *data) {
+
+  float *pnt;
+  int s;
+  double mlon,mlat;
+  double glon,glat,r;
+
+  pnt=(float *)src;
+
+  if (data==NULL) {
+    glat=pnt[0];
+    glon=pnt[1];
+    s=AACGM_v2_Convert(glat,glon,300,&mlat,&mlon,&r,0);
+    pnt=(float *)dst;
+    pnt[0]=mlat;
+    pnt[1]=mlon;
+  } else {
+    mlat=pnt[0];
+    mlon=pnt[1];
+    s=AACGM_v2_Convert(mlat,mlon,300,&glat,&glon,&r,1);
+    pnt=(float *)dst;
+    pnt[0]=glat;
+    pnt[1]=glon;
+  }
+  return s;
+
+}
 
 int AACGMtransform(int ssze,void *src,int dsze,void *dst,void *data) {
 
@@ -393,7 +423,7 @@ int main(int argc,char *argv[]) {
   struct XwinDisplay *dp=NULL;
   struct XwinWindow *win=NULL;
   char *display_name=NULL;
-  char *wname="grid_plot";
+  char *wname="field_plot";
   int xdoff=-1;
   int ydoff=-1;
   struct timeval tmout;
@@ -637,6 +667,9 @@ int main(int argc,char *argv[]) {
   int chisham=0;
   int old_aacgm=0;
 
+  /* function pointer for MLT */
+  double (*MLTCnv)(int, int, double);
+
   prm=RadarParmMake();
   fit=FitMake();
   cfit=CFitMake();
@@ -710,6 +743,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-version",'x',&version);
 
   OptionAdd(&opt,"old",'x',&old); 
+  OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);
 
   OptionAdd(&opt,"cf",'t',&cfname);
 
@@ -914,9 +948,13 @@ int main(int argc,char *argv[]) {
   } else dname=argv[argc-1];
 
   if (defflg) { /* set default plot */
-    keyflg=1;
-    tmeflg=1;
-    sqflg=1;    
+    keyflg=1;   /* plot the color key (-keyp) */
+    tmeflg=1;   /* plot the time of the plotted data (-time) */
+    sqflg=1;    /* force the use of a square bounding box (-square) */
+    mapflg=1;   /* plot coastlines (-coast) */
+    fmapflg=1;  /* plot filled coastlines (-fcoast) */
+    fanflg=1;   /* plot the radar field of view (-fan) */
+    sf=1.5;     /* increase the scale factor (-sf 1.5) */
   }
 
   if (repeat==0) {
@@ -1081,11 +1119,18 @@ int main(int argc,char *argv[]) {
     sprintf(revtxt,"Revision:%d.%d",cfit->version.major,
             cfit->version.minor);
   }
- 
+
+  if (magflg && old_aacgm) magflg = 2; /* set to 2 for old AACGM */
+
+  /* set function pointer to compute MLT or MLT_v2 */
+  if (old_aacgm) MLTCnv = &MLTConvertYrsec;
+  else           MLTCnv = &MLTConvertYrsec_v2;
  
   TimeEpochToYMDHMS(scn->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
   radar=RadarGetRadar(network,scn->stid);
   site=RadarYMDHMSGetSite(radar,yr,mo,dy,hr,mt,(int) sc);
+
+  if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc); /* required */
 
   if (site->geolat>0) hemisphere=1;
   else hemisphere=-1;
@@ -1099,7 +1144,10 @@ int main(int argc,char *argv[]) {
   if ((lat>0) && (latmin<0)) latmin=-latmin;
 
   if (fovflg || ffovflg) fov=make_fov(scn->st_time,network,scn->stid,chisham); 
-  if ((fovflg || ffovflg) && magflg) MapModify(fov,AACGMtransform,NULL);
+  if ((fovflg || ffovflg) && magflg) {
+    if (old_aacgm) MapModify(fov,AACGMtransform,NULL);
+    else           MapModify(fov,AACGM_v2_transform,NULL);
+  }
 
  
 
@@ -1112,11 +1160,22 @@ int main(int argc,char *argv[]) {
   if (tmkflg) tmk=make_grid(30*tmtick,10);
 
   if (magflg) {
-    MapModify(map,AACGMtransform,NULL);
-    MapModify(bnd,AACGMtransform,NULL);
-    if (igrdflg) MapModify(igrd,AACGMtransform,NULL);
+    if (old_aacgm) {
+      MapModify(map,AACGMtransform,NULL);
+      MapModify(bnd,AACGMtransform,NULL);
+    } else {
+      MapModify(map,AACGM_v2_transform,NULL);
+      MapModify(bnd,AACGM_v2_transform,NULL);
+    }
+    if (igrdflg) {
+      if (old_aacgm) MapModify(igrd,AACGMtransform,NULL);
+      else           MapModify(igrd,AACGM_v2_transform,NULL);
+    }
   } else {
-    if (igrdflg) MapModify(igrd,AACGMtransform,marg);
+    if (igrdflg) {
+      if (old_aacgm) MapModify(igrd,AACGMtransform,marg);
+      else           MapModify(igrd,AACGM_v2_transform,marg);
+    }
   }
  
   marg[0]=lat;
@@ -1258,6 +1317,14 @@ int main(int argc,char *argv[]) {
   vkey.min=0;
   vkey.max=vmax;
 
+  if (vkey.num==0) {
+    vkey.num=KeyLinearMax;
+    vkey.a=KeyLinearA[0];
+    vkey.r=KeyLinearR[0];
+    vkey.g=KeyLinearG[0];
+    vkey.b=KeyLinearB[0];
+  }
+
   if (key.num==0) {
     if (pprm==2) {
       key.num=KeyLinearMax;
@@ -1332,8 +1399,13 @@ int main(int argc,char *argv[]) {
 
 
   sfx=fsfx[0];
-  if (gflg) sfx=fsfx[1];
-  if (pflg) sfx=fsfx[2];
+  if (gflg) {
+    if (xmlflg) sfx=fsfx[0];
+    else if (ppmflg) sfx=fsfx[1];
+    else if (ppmxflg) sfx=fsfx[2];
+    else sfx=fsfx[3];
+  }
+  if (pflg) sfx=fsfx[4];
   
 
 #ifdef _XLIB_
@@ -1409,7 +1481,7 @@ int main(int argc,char *argv[]) {
       }
 
 
-      if (magflg) tme_shft=-MLTConvertYrsec(yr,yrsec,0.0)*15.0; 
+      if (magflg) tme_shft=-(*MLTCnv)(yr,yrsec,0.0)*15.0;
       else {
         double dec,eqt,LsoT,LT,Hangle;
         if (lstflg) {
@@ -1710,11 +1782,11 @@ int main(int argc,char *argv[]) {
           if (ortho) plot_refvec(plot,px,1.8*apad,0,vmax,magflg,
                           xbox+pad,ybox+pad,wdt-2*pad,hgt-2*pad,
                           vsf,tfunc,marg,txtcol,0x0f,0.5,
-                          "Helvetica",10.0,fontdb,vecr);
+                          "Helvetica",10.0,fontdb,vecr,old_aacgm);
           else plot_refvec(plot,px,1.8*apad,0,vmax,magflg,
                           xbox+pad,ybox+pad,wdt-2*pad,hgt-2*pad,
 		    vsf,MapStereographic,marg,txtcol,0x0f,0.5,
-                          "Helvetica",10.0,fontdb,vecr);
+                          "Helvetica",10.0,fontdb,vecr,old_aacgm);
         
         }
       }

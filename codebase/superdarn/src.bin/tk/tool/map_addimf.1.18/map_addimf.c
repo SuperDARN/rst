@@ -1,5 +1,5 @@
 /* map_addimf.c
-   =========== 
+   ===========
    Author: R.J.Barnes and others
 */
 
@@ -51,7 +51,7 @@ FILE *fp;
 
 struct GridData *grd;
 struct CnvMapData *map;
- 
+
 char dpath[256]={"/data"};
 
 double st_time;
@@ -103,7 +103,7 @@ int main(int argc,char *argv[])
   unsigned char vb=0;
 
   char *envstr;
- 
+
   char *dname=NULL;
   struct delaytab *dtable=NULL;
 
@@ -124,12 +124,13 @@ int main(int argc,char *argv[])
 
   float dVx=0;
   float dtilt=-99;
+  float dKp=0;
 
   char *pstr=NULL;
   char *dstr=NULL;
   char *estr=NULL;
 
-  float tmp[4];
+  float tmp[5];
 
   int k;
 
@@ -138,8 +139,8 @@ int main(int argc,char *argv[])
   int (*Map_Write)(FILE *, struct CnvMapData *, struct GridData *);
 
   grd = GridMake();
-  map = CnvMapMake(); 
- 
+  map = CnvMapMake();
+
   envstr = getenv("ISTP_PATH");
   if (envstr != NULL) strcpy(dpath,envstr);
 
@@ -164,6 +165,7 @@ int main(int argc,char *argv[])
 
   OptionAdd(&opt,"vx",'f',&dVx);
   OptionAdd(&opt,"tilt",'f',&dtilt);
+  OptionAdd(&opt,"kp",'f',&dKp);
 
   OptionAdd(&opt,"ex",'t',&estr);
 
@@ -189,9 +191,9 @@ int main(int argc,char *argv[])
   }
 
   if (pstr !=NULL) strcpy(dpath,pstr);
-  if (dstr !=NULL) delay=strtime(dstr);  
+  if (dstr !=NULL) delay=strtime(dstr);
   if (estr !=NULL) extent=strtime(estr);
-  
+
   if (arg !=argc) fname=argv[arg];
 
   if (dname !=NULL) {
@@ -200,7 +202,7 @@ int main(int argc,char *argv[])
      dtable=load_delay(fp);
      fclose(fp);
     }
-  }  
+  }
 
   if (iname != NULL) {
     fp = fopen(iname,"r");
@@ -232,7 +234,7 @@ int main(int argc,char *argv[])
   s = (*Map_Read)(fp,map,grd);
 
   st_time = map->st_time - delay;
-  ed_time = map->st_time - delay + extent; 
+  ed_time = map->st_time - delay + extent;
 
   if (wflg == 1)      load_wind();
   else if (aflg == 1) load_ace();
@@ -240,13 +242,13 @@ int main(int argc,char *argv[])
 
   k = 0;
 
-  do {  
+  do {
 
     if (dtable != NULL) {
       while ((k < dtable->num) && (dtable->time[k] <= map->st_time)) k++;
       if (k == 0) delay = dtable->delay[0];
       else        delay = dtable->delay[k-1];
-    }  
+    }
 
     tme = map->st_time - delay;
     map->Bx = dBx;
@@ -254,6 +256,7 @@ int main(int argc,char *argv[])
     map->Bz = dBz;
     if (old) map->Bx = dVx;  /* SGS: consider modifying the map structure */
     else     map->Vx = dVx;
+    map->Kp = dKp;
 
     map->imf_flag = 9;
 
@@ -265,6 +268,7 @@ int main(int argc,char *argv[])
       map->Bz = tmp[2];
       if (old) map->Bx = tmp[3];
       else     map->Vx = tmp[3];
+      map->Kp = tmp[4];
     }
     map->imf_delay = delay/60;
 
@@ -279,18 +283,18 @@ int main(int argc,char *argv[])
                  ( (int) delay % 3600)/60, map->Bx,map->By,map->Bz);
        else
          fprintf(stderr,
-                 "%d-%d-%d %d:%d:%d delay=%d:%d Bx=%g By=%g Bz=%g Vx=%g\n",
+                 "%d-%d-%d %d:%d:%d delay=%d:%d Bx=%g By=%g Bz=%g Vx=%g Kp=%g\n",
                  yr,mo,dy,hr,mt,(int) sc,(int) (delay/3600),
-                 ( (int) delay % 3600)/60, map->Bx,map->By,map->Bz,map->Vx);
-    }  
+                 ( (int) delay % 3600)/60, map->Bx,map->By,map->Bz,map->Vx,map->Kp);
+    }
 
     s = (*Map_Read)(fp,map,grd);
 
   } while (s != -1);
 
-  fclose(fp); 
+  fclose(fp);
 
-  return 0; 
+  return 0;
 }
 
 
@@ -300,29 +304,44 @@ int findvalue(struct swdata *ptr, double tme, float *val)
 {
   int i,cnt;
   double stime,etime,v;
-  float *imf, *sw;
+  float *imf, *sw, *kp;
   int sinx,einx;
 
   imf = ptr->BGSMc;
   sw  = ptr->Vx;
+  kp  = ptr->Kp;
   cnt = ptr->cnt;
 
-  for (i=0; i<4; i++) val[i] = FILL_VALUE;
+  /* Fill in with default values */
+  for (i=0; i<5; i++) val[i] = FILL_VALUE;
 
+  /* Increment i until end of file or until the start time */
+  /* of making the map is reached.  This is likely most */
+  /* useful for sw data that contains multiple days.  OMNI */
+  /* data is produced in monthly and yearly files. */
   for (i=0; (i < cnt) && (ptr->time[i] <= tme); i++);
 
+  /* Skip over where the IMF value is invalid.  Here invalid */
+  /* is evaluated by being greater than half of the */
+  /* FILL_VALUE value. */
   einx = i;
   while ((einx < cnt) && (fabs(imf[3*einx]) > fabs(FILL_VALUE/2))) einx++;
   sinx = i-1;
   while ((sinx >= 0)  && (fabs(imf[3*sinx]) > fabs(FILL_VALUE/2))) sinx--;
- 
+
   if (sinx < 0)    sinx = 0;      /* start index */
   if (einx >= cnt) einx = cnt-1;  /* end   index */
 
   etime = ptr->time[einx];
   stime = ptr->time[sinx];
-  if (tme < stime) return -1;
-  if (tme > etime) return -1;
+  /* The tme < stime and tme > etime are believed to be */
+  /* error checking in case something has gone wrong. */
+  /* Otherwise, the sinx != einx condition exempts when there */
+  /* is a gap in IMF data at the beginning or end of an IMF */
+  /* file. These returned error codes are left unchecked */
+  /* in map_addimf(). */
+  if ((tme < stime) && (sinx != einx)) return -1;
+  if ((tme > etime) && (sinx != einx)) return -1;
 
   if (einx != sinx) v = (tme - stime)/(etime - stime);
   else              v = 0;
@@ -333,19 +352,23 @@ int findvalue(struct swdata *ptr, double tme, float *val)
     val[1] = imf[3*sinx+1]*(1-v) + imf[3*einx+1]*v;
     val[2] = imf[3*sinx+2]*(1-v) + imf[3*einx+2]*v;
     val[3] = sw[sinx]*(1-v)      + sw[einx]*v;
+    val[4] = kp[sinx]*(1-v)      + kp[einx]*v;
   } else if (fabs(imf[3*sinx]) < fabs(FILL_VALUE/2)) {
     val[0] = imf[3*sinx];
     val[1] = imf[3*sinx+1];
     val[2] = imf[3*sinx+2];
     val[3] = sw[sinx];
+    val[4] = kp[sinx];
   }  else if (fabs(imf[3*einx]) < fabs(FILL_VALUE/2)) {
     val[0] = imf[3*einx];
     val[1] = imf[3*einx+1];
     val[2] = imf[3*einx+2];
     val[3] = sw[einx];
+    val[4] = kp[einx];
   }
 
   if (val[3] == FILL_VALUE) val[3] = 0; /* set Vx to zero for default */
+  if (val[4] == FILL_VALUE) val[4] = 0; /* set Kp to zero for default */
 
   return sinx;
 }
@@ -355,7 +378,7 @@ int load_text(FILE *fp, struct swdata *ptr)
 {
   int yr,mo,dy,hr,mt;
   float sc;
-  float bx,by,bz,vx;
+  float bx,by,bz,vx,kp;
   char line[256],save[256];
   char *tok;
   int i,blk,ntok;
@@ -365,6 +388,7 @@ int load_text(FILE *fp, struct swdata *ptr)
   ptr->BGSMc = malloc(sizeof(float)*IMFSTEP*3);
   ptr->BGSEc = malloc(sizeof(float)*IMFSTEP*3);
   ptr->Vx    = malloc(sizeof(float)*IMFSTEP);
+  ptr->Kp    = malloc(sizeof(float)*IMFSTEP);
 
   while(fgets(line,256,fp) != NULL) {
 
@@ -388,6 +412,9 @@ int load_text(FILE *fp, struct swdata *ptr)
     else if (ntok == 10)
       sscanf(line,"%d%d%d%d%d%f%f%f%f%f",&yr,&mo,&dy, &hr,&mt,&sc,
                   &bx,&by,&bz, &vx);
+    else if (ntok == 11)
+      sscanf(line,"%d%d%d%d%d%f%f%f%f%f%f",&yr,&mo,&dy, &hr,&mt,&sc,
+                  &bx,&by,&bz, &vx,&kp);
     else continue;
 
     ptr->time[cnt]      = TimeYMDHMSToEpoch(yr,mo,dy,hr,mt,sc);
@@ -399,8 +426,11 @@ int load_text(FILE *fp, struct swdata *ptr)
     ptr->BGSEc[cnt*3+1] = by;   /* only one set of values. */
     ptr->BGSEc[cnt*3+2] = bz;
 
-    if (ntok == 10) ptr->Vx[cnt] = vx;
+    if (ntok >= 10) ptr->Vx[cnt] = vx;
     else            ptr->Vx[cnt] = FILL_VALUE;
+
+    if (ntok == 11) ptr->Kp[cnt] = kp;
+    else            ptr->Kp[cnt] = FILL_VALUE;
 
     cnt++;
     if ((cnt % IMFSTEP) == 0) {
@@ -409,6 +439,7 @@ int load_text(FILE *fp, struct swdata *ptr)
         ptr->BGSMc = realloc(ptr->BGSMc,sizeof(float)*IMFSTEP*blk*3);
         ptr->BGSEc = realloc(ptr->BGSEc,sizeof(float)*IMFSTEP*blk*3);
         ptr->Vx    = realloc(ptr->Vx,sizeof(float)*IMFSTEP*blk);
+        ptr->Kp    = realloc(ptr->Kp,sizeof(float)*IMFSTEP*blk);
     }
   }
 
@@ -417,6 +448,7 @@ int load_text(FILE *fp, struct swdata *ptr)
   ptr->BGSMc = realloc(ptr->BGSMc,sizeof(float)*cnt*3);
   ptr->BGSMc = realloc(ptr->BGSMc,sizeof(float)*cnt*3);
   ptr->Vx    = realloc(ptr->Vx,sizeof(double)*cnt);
+  ptr->Kp    = realloc(ptr->Kp,sizeof(double)*cnt);
 
   return 0;
 }
@@ -433,13 +465,13 @@ struct delaytab *load_delay(FILE *fp)
   ptr=malloc(sizeof(struct delaytab));
   ptr->time=malloc(sizeof(double)*DELAYSTEP);
   ptr->delay=malloc(sizeof(float)*DELAYSTEP);
- 
+
   while(fgets(line,256,fp) !=NULL) {
     for (i=0;(line[i] !=0) && ((line[i]==' ') || (line[i]=='\t') ||
              (line[i] =='\n'));i++);
     if (line[i]==0) continue;
     if (line[i]=='#') continue;
-  
+
     if (sscanf(line,"%d %d %d %d %d %g %d %d",&yr,&mo,&dy,&hr,&mt,&sc,
               &dhr,&dmt) != 8) continue;
 
@@ -458,10 +490,10 @@ struct delaytab *load_delay(FILE *fp)
   ptr->num=cnt;
   ptr->time=realloc(ptr->time,sizeof(double)*cnt);
   ptr->delay=realloc(ptr->delay,sizeof(float)*cnt);
- 
+
   return ptr;
 }
- 
+
 
 double strtime(char *text)
 {
@@ -473,7 +505,7 @@ double strtime(char *text)
   hr=atoi(text);
   mn=atoi(text+i+1);
   return hr*3600L+mn*60L;
-}  
+}
 
 
 int load_omni()
@@ -490,7 +522,7 @@ int load_wind()
 
   CDFid id;
   CDFstatus status;
- 
+
   sprintf(path,"%s/%s",dpath,"wind");
 
   fprintf(stderr,"%s\n",path);
@@ -505,9 +537,9 @@ int load_wind()
       fprintf(stderr,"Could not open cdf file.\n");
       continue;
     }
-  
+
     status=windmfi_imf(id,&sw,st_time,ed_time);
-    
+
     CDFclose(id);
   }
   free_locate(fptr);
@@ -522,7 +554,7 @@ int load_ace()
 
   CDFid id;
   CDFstatus status;
- 
+
   sprintf(path,"%s/%s",dpath,"ace");
   fprintf(stderr,"%s\n",path);
 
@@ -539,12 +571,12 @@ int load_ace()
         continue;
       }
       status=acemfi_imf(id,&sw,st_time,ed_time,0);
-    
+
       CDFclose(id);
     }
     free_locate(fptr);
   } else {
-    free_locate(fptr);    
+    free_locate(fptr);
     fptr=locate_files(path,"k1_mfi",st_time,ed_time);
 
     for (i=0;i<fptr->cnt;i++) {
@@ -555,9 +587,9 @@ int load_ace()
         fprintf(stderr,"Could not open cdf file.\n");
         continue;
       }
-    
+
       status=acemfi_imf(id,&sw,st_time,ed_time,1);
-    
+
       CDFclose(id);
     }
     free_locate(fptr);

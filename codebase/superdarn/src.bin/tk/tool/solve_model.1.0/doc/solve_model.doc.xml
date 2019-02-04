@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>solve_model</name>
+<location>src.bin/tk/tool/solve_model</location>
+
+<syntax></syntax>
+<syntax>solve_model --help</syntax>
+<syntax>solve_model [-by <ar>by</ar>] [-bz <ar>bz</ar>] [-vx <ar>vx</ar>] [-tilt <ar>tilt</ar>] [-kp <ar>kp</ar>] [-rg96|-psr10|-cs10|-ts18|-ts18_kp] [-nointerp] [-noigrf]</syntax>
+<syntax>solve_model [-sh] [-lat_step <ar>dlat</ar>] [-lon_step <ar>dlon</ar>] [-equal]</syntax>
+<syntax></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-by <ar>by</ar></on><od>set the Y component of the magnetic field to <ar>by</ar> [nT]. The default value is 0 nT.</od>
+</option>
+<option><on>-bz <ar>bz</ar></on><od>set the Z component of the magnetic field to <ar>bz</ar> [nT]. The default value is 0 nT.</od>
+</option>
+<option><on>-vx <ar>vx</ar></on><od>set the solar wind velocity to <ar>vx</ar> [km/s]. The default value is 450 km/s.</od>
+</option>
+<option><on>-tilt <ar>tilt</ar></on><od>set the dipole tilt angle to <ar>tilt</ar> [degrees]. The default value is determined by date/time.</od>
+</option>
+<option><on>-kp <ar>kp</ar></on><od>set the Kp magnetic index to <ar>kp</ar>. The default value is 0.</od>
+</option>
+<option><on>-d <ar>yyyymmdd</ar></on><od>calculate for the date <ar>yyyymmdd</ar>. The default value is the current date.</od>
+</option>
+<option><on>-t <ar>hr:mn</ar></on><od>calculate for the time <ar>hr:mn</ar>. The default value is 00:00 UT.</od>
+</option>
+<option><on>-sh</on><od>calculate the model pattern for the southern hemisphere.</od>
+</option>
+<option><on>-rg96</on><od>use the RG96 statistical model.</od>
+</option>
+<option><on>-psr10</on><od>use the PSR10 statistical model (equivalent to the RG05 model.)</od>
+</option>
+<option><on>-cs10</on><od>use the CS10 statistical model.</od>
+</option>
+<option><on>-ts18</on><od>use the TS18 statistical model [default].</od>
+</option>
+<option><on>-ts18_kp</on><od>use the TS18-Kp statistical model.</od>
+</option>
+<option><on>-nointerp</on><od>do not interpolate coeffiecients, instead use discrete models (applies to CS10 and TS18 models only).</od>
+</option>
+<option><on>-noigrf</on><od>do not use IGRF model to convert potential to velocities, instead use constant values.</od>
+</option>
+<option><on>-old_aacgm</on><od>uses the older AACGM software and coefficients. The default is to use AACGM-v2 coefficients.</od>
+</option>
+<option><on>-lat_step <ar>dlat</ar></on><od>set the latitudinal step size of the grid to <ar>dlat</ar> [degrees]. The default value is 1 degree MLAT.</od>
+</option>
+<option><on>-lon_step <ar>dlon</ar></on><od>set the longitudinal step size of the grid to <ar>dlon</ar> [degrees]. The default value is 2 degrees MLON.</od>
+</option>
+<option><on>-equal</on><od>use an equal-area grid with cell sizes defined by <ar>dlat</ar> [degrees] instead of a uniform grid. The default value is 1 degree in latitude.</od>
+</option>
+
+<synopsis><p>Calculates the statistical model and writes it to standard output.</p></synopsis>
+
+<description><p>Calculates the statistical model and writes it to standard output.</p>
+</description>
+
+<example>
+<command>solve_model -bz -2.5 -by 3.3 -tilt 4.0 -vx 350 &gt; model.txt</command>
+<description>Calculates TS18 model vectors and potential on a uniform grid for input solar wind and dipole tilt parameters. The output is written to the file "<code>model.txt</code>".</description>
+</example>
+
+</binary>

@@ -65,6 +65,8 @@
 
 #include "aacgm.h"
 #include "mlt.h"
+#include "aacgmlib_v2.h"
+#include "mlt_v2.h"
 
 #include "radar.h" 
 
@@ -134,6 +136,34 @@ int xmldecode(char *buf,int sze,void *data) {
   return XMLDecode(xmldata,buf,sze);
 } 
 
+int AACGM_v2_transform(int ssze,void *src,int dsze,void *dst,void *data) {
+
+  float *pnt;
+  int s;
+  double mlon,mlat;
+  double glon,glat,r;
+
+  pnt=(float *)src;
+
+  if (data==NULL) {
+    glat=pnt[0];
+    glon=pnt[1];
+    s=AACGM_v2_Convert(glat,glon,300,&mlat,&mlon,&r,0);
+    pnt=(float *)dst;
+    pnt[0]=mlat;
+    pnt[1]=mlon;
+  } else {
+    mlat=pnt[0];
+    mlon=pnt[1];
+    s=AACGM_v2_Convert(mlat,mlon,300,&glat,&glon,&r,1);
+    pnt=(float *)dst;
+    pnt[0]=glat;
+    pnt[1]=glon;
+  }
+  return s;
+
+}
+
 int AACGMtransform(int ssze,void *src,int dsze,void *dst,void *data) {
 
   float *pnt;
@@ -202,6 +232,12 @@ struct PolygonData *wrap(struct PolygonData *src) {
   dst=MapWraparound(src);
   PolygonFree(src);
   return dst;
+}
+
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: fov_plot --help\n");
+  return(-1);
 }
 
 int main(int argc,char *argv[]) {
@@ -352,7 +388,7 @@ int main(int argc,char *argv[]) {
   double tval=-1;
   double dval=-1;
 
-  int yr,mo,dy,hr,mt;
+  int yr,mo,dy,hr,mt,sec,dno;
   double sc;
   int yrsec;
   float tme_shft;
@@ -370,6 +406,10 @@ int main(int argc,char *argv[]) {
   char tsfx[16];
 
   int chisham=0;
+  int old_aacgm=0;
+
+  /* function pointer for MLT */
+  double (*MLTCnv)(int, int, double);
 
   envstr=getenv("MAPDATA");
 
@@ -527,9 +567,15 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"dotr",'f',&dotr);
   OptionAdd(&opt,"dot",'x',&dotflg);
 
+  OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);
+
   OptionAdd(&opt,"chisham",'x',&chisham); /* use Chisham virtual height model */
 
-  arg=OptionProcess(1,argc,argv,&opt,NULL);  
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+
+  if (arg==-1) {
+    exit(-1);
+  }
 
   if (cfname !=NULL) { /* load the configuration file */
     int farg;
@@ -540,7 +586,12 @@ int main(int argc,char *argv[]) {
       cfname=NULL;
       optf=OptionProcessFile(fp);
       if (optf !=NULL) {
-        farg=OptionProcess(0,optf->argc,optf->argv,&opt,NULL);
+        farg=OptionProcess(0,optf->argc,optf->argv,&opt,rst_opterr);
+        if (farg==-1) {
+          fclose(fp);
+          OptionFreeFile(optf);
+          exit(-1);
+        }
         OptionFreeFile(optf);
        }   
        fclose(fp);
@@ -566,18 +617,50 @@ int main(int argc,char *argv[]) {
   if (tmetxt !=NULL) tval=strtime(tmetxt);
   if (dtetxt !=NULL) dval=strdate(dtetxt);
 
-  tval+=dval;
+  if (magflg && old_aacgm) magflg = 2; /* set to 2 for old AACGM */
+
+  /* set function pointer to compute MLT or MLT_v2 */
+  if (old_aacgm) MLTCnv = &MLTConvertYrsec;
+  else           MLTCnv = &MLTConvertYrsec_v2;
+
+  if (dval !=-1) {
+    if (tval !=-1) {
+      tval+=dval;
+    } else {
+      tval=dval;
+    }
+  } else {
+    fprintf(stderr,"\nDate must be set for fov_plot, using today's date.\n");
+    AACGM_v2_SetNow();
+    AACGM_v2_GetDateTime(&yr,&mo,&dy,&hr,&mt,&sec,&dno);
+    if (tval !=-1) {
+      dval=TimeYMDHMSToEpoch(yr,mo,dy,0,0,0);
+      tval+=dval;
+    } else {
+      tval=TimeYMDHMSToEpoch(yr,mo,dy,0,0,0);
+    }
+  }
   TimeEpochToYMDHMS(tval,&yr,&mo,&dy,&hr,&mt,&sc);
   yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,sc);
 
+  if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc); /* required */
+
   if (magflg) {
-    MapModify(map,AACGMtransform,NULL);
-    MapModify(bnd,AACGMtransform,NULL);
+    if (old_aacgm) {
+      MapModify(map,AACGMtransform,NULL);
+      MapModify(bnd,AACGMtransform,NULL);
+    } else {
+      MapModify(map,AACGM_v2_transform,NULL);
+      MapModify(bnd,AACGM_v2_transform,NULL);
+    }
   }
 
   fov=make_fov(tval,network,alt,chisham); 
 
-  if (magflg) MapModify(fov,AACGMtransform,NULL);
+  if (magflg) {
+    if (old_aacgm) MapModify(fov,AACGMtransform,NULL);
+    else           MapModify(fov,AACGM_v2_transform,NULL);
+  }
 
 
   if (tmtick<1) tmtick=1;
@@ -593,7 +676,7 @@ int main(int argc,char *argv[]) {
   if ((lat>0) && (latmin<0)) latmin=-latmin;
 
   if (trmflg || ftrmflg) {
-    if ((cylind) || (ortho) | (gvp))
+    if ((cylind) || (ortho) || (gvp))
        trm=SZATerminator(yr,mo,dy,hr,mt,sc,0,magflg,
                            1.0,90.0);
      else if (lat>0) trm=SZATerminator(yr,mo,dy,hr,mt,sc,1,magflg,
@@ -621,7 +704,7 @@ int main(int argc,char *argv[]) {
   dec=SZASolarDec(yr,mo,dy,hr,mt,sc);
   eqt=SZAEqOfTime(yr,mo,dy,hr,mt,sc);
 
-  if (magflg) tme_shft=-MLTConvertYrsec(yr,yrsec,0.0)*15.0; 
+  if (magflg) tme_shft=-(*MLTCnv)(yr,yrsec,0.0)*15.0;
     else {
       if (lstflg) {
         LsoT=(hr*3600+mt*60+sc)+eqt;
@@ -861,15 +944,28 @@ int main(int argc,char *argv[]) {
 
  if (dotflg) {
    int s=0;
-   struct RadarSite *site; 
-   float pnt[2]; 
+   struct RadarSite *site;
+   float pnt[2];
+   double mlat,mlon,r;
    if (cfovflg | fcfovflg)  {
      for (i=0;i<network->rnum;i++) {
        if (network->radar[i].id==stid) continue;
        if (network->radar[i].status !=0) continue;
        site=RadarYMDHMSGetSite(&(network->radar[i]),yr,mo,dy,hr,mt,sc);
-       pnt[0]=site->geolat;
-       pnt[1]=site->geolon; 
+       if (magflg) {
+         if (old_aacgm) {
+           s=AACGMConvert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
+           pnt[0]=mlat;
+           pnt[1]=mlon;
+         } else {
+           s=AACGM_v2_Convert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
+           pnt[0]=mlat;
+           pnt[1]=mlon;
+         }
+       } else {
+         pnt[0]=site->geolat;
+         pnt[1]=site->geolon;
+       }
        s=(*tfunc)(sizeof(float)*2,pnt,2*sizeof(float),pnt,marg);
        if (s==0) PlotEllipse(plot,NULL,pad+pnt[0]*(wdt-2*pad),
                     pad+pnt[1]*(hgt-2*pad),dotr,dotr,
@@ -882,8 +978,20 @@ int main(int argc,char *argv[]) {
        if (network->radar[i].id==stid) continue;
        if (network->radar[i].status !=1) continue;
        site=RadarYMDHMSGetSite(&(network->radar[i]),yr,mo,dy,hr,mt,sc);
-       pnt[0]=site->geolat;
-       pnt[1]=site->geolon; 
+       if (magflg) {
+         if (old_aacgm) {
+           s=AACGMConvert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
+           pnt[0]=mlat;
+           pnt[1]=mlon;
+         } else {
+           s=AACGM_v2_Convert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
+           pnt[0]=mlat;
+           pnt[1]=mlon;
+         }
+       } else {
+         pnt[0]=site->geolat;
+         pnt[1]=site->geolon;
+       }
        s=(*tfunc)(sizeof(float)*2,pnt,2*sizeof(float),pnt,marg);
        if (s==0) PlotEllipse(plot,NULL,pad+pnt[0]*(wdt-2*pad),
                     pad+pnt[1]*(hgt-2*pad),dotr,dotr,
@@ -895,8 +1003,20 @@ int main(int argc,char *argv[]) {
    if (fovflg) {
      
      site=RadarYMDHMSGetSite(&(network->radar[stnum]),yr,mo,dy,hr,mt,sc);
-     pnt[0]=site->geolat;
-     pnt[1]=site->geolon; 
+     if (magflg) {
+       if (old_aacgm) {
+         s=AACGMConvert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
+         pnt[0]=mlat;
+         pnt[1]=mlon;
+       } else {
+         s=AACGM_v2_Convert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
+         pnt[0]=mlat;
+         pnt[1]=mlon;
+       }
+     } else {
+       pnt[0]=site->geolat;
+       pnt[1]=site->geolon;
+     }
      s=(*tfunc)(sizeof(float)*2,pnt,2*sizeof(float),pnt,marg);
      if (s==0) PlotEllipse(plot,NULL,pad+pnt[0]*(wdt-2*pad),
                     pad+pnt[1]*(hgt-2*pad),dotr,dotr,

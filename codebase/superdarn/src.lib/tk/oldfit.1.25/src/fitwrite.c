@@ -254,7 +254,7 @@ int OldFitWrite(int fitfp,struct RadarParm *prm,struct FitData *fit,
     oldfit.lag[0][c]=prm->lag[0][c];
     oldfit.lag[1][c]=prm->lag[1][c];
   } 
-  strcpy(oldfit.combf,prm->combf);
+  if (prm->combf) strcpy(oldfit.combf,prm->combf);
 
   oldfit.noise.vel=fit->noise.vel;
   oldfit.noise.lag0=fit->noise.lag0;

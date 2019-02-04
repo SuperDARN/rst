@@ -77,7 +77,7 @@
 #include "errstr.h"
 #include "version.h"
 
-char *fsfx[]={"xml","ppm","ps",0};
+char *fsfx[]={"xml","ppm","ppmx","png","ps",0};
 
 unsigned char gry[256];
 
@@ -310,7 +310,10 @@ unsigned int mag_color(double v,void *data) {
   if (key->num==0) return key->defcol;
 
   i=key->num*fabs(v)/key->max;
-  if (i>=key->num) i=key->num-1;
+  if (i>=key->num) {
+    if (key->num==256) i=key->num-2;
+    else i=key->num-1;
+  }
 
   return (key->a[i]<<24) | (key->r[i]<<16) | (key->g[i]<<8) | key->b[i];
 }
@@ -868,7 +871,12 @@ int main(int argc,char *argv[]) {
   if (edtestr !=NULL) edte=strdate(edtestr);
 
   fp=fopen(fname,"r");
-  
+
+  if (fp==NULL) {
+    fprintf(stderr,"Error opening grid file: %s\n",fname);
+    exit(-1);
+  }
+ 
   if (magflg && old_aacgm) magflg = 2; /* set to 2 for old AACGM */
 
   /* set function pointer to compute MLT or MLT_v2 */
@@ -908,7 +916,7 @@ int main(int argc,char *argv[]) {
   if ((lat<0) && (latmin>0)) latmin=-latmin;
   if ((lat>0) && (latmin<0)) latmin=-latmin;
 
-  if (fovflg || ffovflg) fov=make_fov(rgrid->st_time,network,chisham); 
+  if (fovflg || ffovflg) fov=make_fov(rgrid->st_time,network,chisham,old_aacgm); 
   if ((fovflg || ffovflg) && !magflg) {
     if (old_aacgm) MapModify(fov,AACGMtransform,&flg);
     else           MapModify(fov,AACGM_v2_transform,&flg);
@@ -1133,8 +1141,13 @@ int main(int argc,char *argv[]) {
   }
 
   sfx=fsfx[0];
-  if (gflg) sfx=fsfx[1];
-  if (pflg) sfx=fsfx[2];
+  if (gflg) {
+    if (xmlflg) sfx=fsfx[0];
+    else if (ppmflg) sfx=fsfx[1];
+    else if (ppmxflg) sfx=fsfx[2];
+    else sfx=fsfx[3];
+  }
+  if (pflg) sfx=fsfx[4];
   
 
 #ifdef _XLIB_
@@ -1477,7 +1490,7 @@ int main(int argc,char *argv[]) {
            if (xmlflg) FrameBufferSaveXML(img,stream,outfp);
            else if (ppmflg) FrameBufferSavePPM(img,outfp);
            else if (ppmxflg) FrameBufferSavePPMX(img,outfp);
-           else FrameBufferSavePNG(img,stdout);
+           else FrameBufferSavePNG(img,outfp);
            fclose(outfp);
 	 }
        }
