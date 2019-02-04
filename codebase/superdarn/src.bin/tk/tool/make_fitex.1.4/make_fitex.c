@@ -5,26 +5,26 @@
 
 /*
  LICENSE AND DISCLAIMER
- 
+
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
+
  This file is part of the Radar Software Toolkit (RST).
- 
+
  RST is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
- 
+
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Lesser General Public License for more details.
- 
+
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+
+
+
 */
 
 #include <stdio.h>
@@ -82,7 +82,7 @@ int main(int argc,char *argv[]) {
   FILE *fp=NULL;
   struct OldRawFp *rawfp=NULL;
   FILE *fitfp=NULL;
-  FILE *inxfp=NULL;  
+  FILE *inxfp=NULL;
   int irec=1;
   int drec=2;
   int dnum=0;
@@ -134,13 +134,17 @@ int main(int argc,char *argv[]) {
   }
 
   if (old) {
-     rawfp=OldRawOpen(argv[arg],NULL);
-     if (rawfp==NULL) {
-       fprintf(stderr,"File not found.\n");
-       exit(-1);
-     }
-     status=OldRawRead(rawfp,prm,raw);
-  } else { 
+    rawfp=OldRawOpen(argv[arg],NULL);
+    if (rawfp==NULL) {
+      fprintf(stderr,"File not found.\n");
+      exit(-1);
+    } else if (rawfp->rawread==-2) {
+        /* Error case where num_bytes is less than 0 */
+        free(rawfp);
+        exit(-1);
+    }
+    status=OldRawRead(rawfp,prm,raw);
+  } else {
     if (arg==argc) fp=stdin;
     else fp=fopen(argv[arg],"r");
 
@@ -162,21 +166,21 @@ int main(int argc,char *argv[]) {
 
 
 
-  if (vb) 
+  if (vb)
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
 
 
   FitACFex(prm,raw,fit);
-    
+
   if (old) {
     char vstr[256];
     fitfp=fopen(argv[arg+1],"w");
     if (fitfp==NULL) {
       fprintf(stderr,"Could not create fit file.\n");
       exit(-1);
-    } 
+    }
     if (argc-arg>2) {
       inxfp=fopen(argv[arg+2],"w");
       if (inxfp==NULL) {
@@ -190,7 +194,7 @@ int main(int argc,char *argv[]) {
   }
 
 
-  
+
   do {
 
 
@@ -199,26 +203,26 @@ int main(int argc,char *argv[]) {
     strcpy(tmstr,asctime(gmtime(&ctime)));
     tmstr[24]=0;
     RadarParmSetOriginTime(prm,tmstr);
-  
+
     if (old) {
        dnum=OldFitFwrite(fitfp,prm,fit,NULL);
        if (inxfp !=NULL) OldFitInxFwrite(inxfp,drec,dnum,prm);
        drec+=dnum;
        irec++;
     } else status=FitFwrite(stdout,prm,fit);
-    
+
     if (old) status=OldRawRead(rawfp,prm,raw);
     else status=RawFread(fp,prm,raw);
 
-     if (vb) 
+     if (vb)
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
     FitACFex(prm,raw,fit);
-    
-  
+
+
   } while (status==0);
-  
+
   if (old) OldRawClose(rawfp);
   return 0;
 }
