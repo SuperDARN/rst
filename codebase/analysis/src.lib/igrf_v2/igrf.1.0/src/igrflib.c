@@ -195,8 +195,9 @@ int IGRF_loadcoeffs(void)
   iyear = 0;
   for (m=0; m<len; m++) {
     switch (line[m]) {
-      case 'I': dgrf[iyear] = 0; break;
-      case 'D': dgrf[iyear] = 1; break;
+      case 'U':                         /* for GUFM1 */
+      case 'I': dgrf[iyear] = 0; break; /* for IGRF */
+      case 'D': dgrf[iyear] = 1; break; /* for DGRF */
       case 'G': iyear++; break;
     }
   }

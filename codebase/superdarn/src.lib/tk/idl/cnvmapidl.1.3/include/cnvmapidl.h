@@ -67,6 +67,7 @@ struct CnvMapIDLPrm {
 
   double Vx;
   double tilt;
+  double Kp;
 
   IDL_STRING model[4];
 

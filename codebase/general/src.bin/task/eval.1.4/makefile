@@ -8,7 +8,7 @@ INCLUDE=-I$(IPATH)/base -I$(IPATH)/general \
 SRC=hlpstr.h errstr.h eval.c
 OBJS =eval.o
 DSTPATH = $(BINPATH)
-OUTPUT = eval
+OUTPUT = rst_eval
 LIBS= -lreval.1 -lopt.1 
 SLIB= -lm
 
