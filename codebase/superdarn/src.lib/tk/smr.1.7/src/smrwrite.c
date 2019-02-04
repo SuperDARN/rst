@@ -101,7 +101,7 @@ int SmrFwrite(FILE *fp,struct RadarParm *prm,struct FitData *fit,int pwr) {
    n = 0;
    for (i = 0; i < prm->nrang; ++i) if (rng[i] == 1) {
     
-     status = fprintf(fp, "%3d", i);
+     status = fprintf(fp, "%4d", i);
      if (status < 0 ){
         free(rng);
         return -1;
