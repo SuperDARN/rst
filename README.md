@@ -102,9 +102,8 @@ For Opensuse you will need to make a symlink lcurses library to libncuses (recom
 	 make.code
 	 ```
 
-5. To compile the html documentation, run `make.doc` from the command line. You may need
-   to modify the `URLBASE` environment variable in `$RSTPATH/.profile/rst.bash` for the
-   links in the html pages to function correctly.  Online documentation is available at:
+5. To compile the html documentation locally, run `make.doc` from the command line.
+   Online documentation (compiled with `make.doc -w`) is available at:
 
    https://superdarn.github.io/rst/index.html
 
