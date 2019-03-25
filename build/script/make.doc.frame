@@ -445,7 +445,7 @@ makeproject() {
 ############################################################################
 
 wwwpath="${DOCPATH}/html"
-urlbase="."
+urlbase=".."
 
 if test "${type}" = "www"
 then
