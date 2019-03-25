@@ -340,7 +340,7 @@ int user(char *buffer,int size,void *dptr);
 <name>XMLDBMake</name>
 <location>src.lib/xml/xmldb</location>
 <header>base/rxmldb.h</header>
-<syntax><sn href="structXMLDBdata.html">struct XMLDBdata</sn> *XMLDBMake(<sn href="struct&root;/src.lib/xml/xml/XMLdata.html">struct XMLdata</sn> *xml);</syntax>
+<syntax><sn href="structXMLDBdata.html">struct XMLDBdata</sn> *XMLDBMake(<sn href="&root;/base/src.lib/xml/xml/structXMLdata.html">struct XMLdata</sn> *xml);</syntax>
 </function>
 <function>
 <name>XMLDBMakeBuffer</name>
