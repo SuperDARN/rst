@@ -7,7 +7,7 @@
 <name>TagDBAddTable</name>
 <location>src.lib/xml/tagdb</location>
 <header>base/tagdb.h</header>
-<syntax>int TagDBAddTable(<sn href="structTagDBtable.html">struct TagDBtable</sn> *ptr, <sn href="&root/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *name,<sn href="&root;/src.lib/base/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *start, <sn href="&root;/src.lib/base/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *end);</syntax>
+<syntax>int TagDBAddTable(<sn href="structTagDBtable.html">struct TagDBtable</sn> *ptr, <sn href="&root;/base/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *name,<sn href="&root;/base/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *start, <sn href="&root;/base/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *end);</syntax>
 
 <description><p>The <fn href="TagDBAddTable.html">TagDBAddTable</fn> function add a tag to a lookup table of tags.</p>
 <p>The structure containing the tag lookup table is pointed to by the argument <ar>ptr</ar>.</p>
@@ -22,7 +22,7 @@
 <name>TagDBBuild</name>
 <location>src.lib/xml/tagdb</location>
 <header>base/tagdb.h</header>
-<syntax>int TagDBBuild(<sn href="&root;/src.lib/xml/xmldb/structXMLDBtable.html">struct XMLDBtable</sn> *ptr,<sn href="&root;/src.lib/base/xml/xmldb/structXMLDBtable.html">struct XMLDBtable</sn> *tree,void *data);</syntax>
+<syntax>int TagDBBuild(<sn href="&root;/base/src.lib/xml/xmldb/structXMLDBtable.html">struct XMLDBtable</sn> *ptr,<sn href="&root;/base/src.lib/xml/xmldb/structXMLDBtable.html">struct XMLDBtable</sn> *tree,void *data);</syntax>
 
 <description><p>The <fn href="TagDBBuild.html">TagDBBuild</fn> function is used to decode an XML encoded tag database. It is used as the text decoding function for an XML database parser.</p>
 </description>
