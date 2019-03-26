@@ -102,8 +102,8 @@ For Opensuse you will need to make a symlink lcurses library to libncuses (recom
 	 make.code
 	 ```
 
-5. To compile the html documentation locally, run `make.doc` from the command line.
-   Online documentation (compiled with `make.doc -w`) is available at:
+5. To compile the html documentation, run `make.doc` from the command line.
+   Online documentation is available at:
 
    https://superdarn.github.io/rst/index.html
 
