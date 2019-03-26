@@ -387,6 +387,11 @@ makeproject() {
  
   echo "<table>" > ${nmexml}
   echo "<entry>" >> ${nmexml}
+  echo "<search>SECTION</search>" >> ${nmexml}
+  echo "<replace>"${project}"</replace>" >> ${nmexml}
+  echo "</entry>" >> ${nmexml}
+
+  echo "<entry>" >> ${nmexml}
   echo "<search>URLBASE</search>" >> ${nmexml}
   echo "<replace>"${urlbase}"</replace>" >> ${nmexml}
   echo "</entry>" >> ${nmexml}

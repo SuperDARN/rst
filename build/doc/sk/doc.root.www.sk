@@ -1,7 +1,7 @@
 <!--TOP-->
 
 <head>
-<title>Documentation</title>
+<title>SuperDARN RST Documentation</title>
 <link rel=stylesheet href="/lib/css/superdarn.css" type=text/css>
 <link rel="stylesheet" href="/lib/css/menu.css" type="text/css">
 <link rel=stylesheet href="<!--URLBASE-->/css/doc.css" type=text/css>
@@ -12,8 +12,16 @@
 <body onclick="menuclose();">
 <!--#include virtual="/lib/ssi/top.html"-->
 
+<div id="location">
+<table class="location"><tr>
+<td><a href="<!--URLBASE-->/index.html">Home</a></td>
+</tr>
+</table>
+</div>
+
 <div id="main">
 <br>
+<h3>RST Documentation</h3>
 <center>Navigate by clicking on the links below.</center>
 <ul>
 <!--TOP-->
