@@ -12,13 +12,13 @@ If you have any question or concerns please submit an Issue on the SuperDARN RST
 ## Table of Contents 
   - User Guide
     - [Installation](user-guide/install.md)
-    - [RST HOWTO's](utilizing-rst.md) 
+    - [RST HOWTO's](user-guide/utilizing-rst.md) 
   - Reference Manual
       * General
-        * [Dmap Data](reference/genera/dmap_data.md)
-        * [IQDAT Format](reference/general/iqdat.md)
-        * [RAWACF Format](reference/genera/rawacf.md)
-        * [FITACF Format](reference/general/fitacf.md)
+        * [Dmap Data](references/general/dmap_data.md)
+        * [IQDAT Format](references/general/iqdat.md)
+        * [RAWACF Format](references/general/rawacf.md)
+        * [FITACF Format](references/general/fitacf.md)
       * SuperDARN Tools
         * [```make_fit```](references/superdarn/tools/make_fit.md)
         * [```make_grid```](references/superdarn/tools/make_grid.md)
