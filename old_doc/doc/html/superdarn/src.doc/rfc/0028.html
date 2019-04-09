@@ -1,0 +1,103 @@
+<head>
+<title>Structure in C for the raw I and Q data </title>
+<link rel=stylesheet href=../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table class="location"><tr>
+<td><a href="../../../index.html">Home</a><td>|</td>
+<td><a href=../../../superdarn/index.html>superdarn</a></td><td>|</td>
+<td><a href=../../../superdarn/src.doc/rfc/index.html>rfc</a></td><td>|</td>
+<td>RFC0028</td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">RFC: 0028</h2>
+<table>
+<tr><td class="docsubtitle" valign=top><h3>Title</h3></td></tr>
+<tr><td></td><td>
+<b>Structure in C for the raw I and Q data </b>
+</td></tr>
+
+<tr><td class="docsubtitle" valign=top><h3>Author</h3></td></tr>
+<tr><td></td><td>
+<b>R.J.Barnes</b>
+</td></tr>
+
+
+<tr><td class="docsubtitle"><h3>Summary</h3></td></tr>
+<tr><td></td><td>
+<p>A description of the data structure in the C language used to store the raw I and Q  Data.</p>
+</td></tr>
+<tr><td class="docsubtitle"><h3>Description</h3></td></tr>
+<tr><td></td><td>
+
+<h4>1. Introduction</h4>
+<p>The raw I and Q data are the samples observed by the analogue to digital converter or the digital receiver. They can be used to completely characterize and reconstruct the observations at the radar  Listed below is the C data structure <code>struct FitData</code> used to store the raw  I and Q data.</p>
+<h4>2. Array Limits</h4>
+<p>The array limits are defined as macros in the header <code>superdarn/limit.h</code>.</p>
+<center>
+<table cellspacing="3" bgcolor="e0e0e0" width="100%">
+<tr><td><pre>#define MAXNAVE 300	
+</pre></td></tr></table>
+</center>
+<h4>3. <code>struct IQData</code></h4>
+<p>The raw I and Q data structure is defined in the header <code>superdarn/iqdata.h</code>.</p>
+
+<center>
+<table cellspacing="3" bgcolor="e0e0e0" width="100%">
+<tr><td><pre>struct IQData {
+  struct {
+    int major;                     /* major revision */
+    int minor;                     /* minor revision */
+  } revision;           
+  int chnnum;                      /* number of channels sampled */
+  int smpnum;                      /* number of samples per sequence */
+  int skpnum;                      /* number of samples to skip at start of sequence */
+  int seqnum;                      /* number of pulse sequences taken */
+  struct timespec tval[MAXNAVE];   /* time of each pulse sequence */
+  int atten[MAXNAVE];              /* attenuation setting for each sequence */
+  float noise[MAXNAVE];            /* noise level for each sequence */
+  int offset[MAXNAVE];             /* offset into sample buffer */
+  int size[MAXNAVE];               /* size of buffer for each sequence */
+};
+</pre></td></tr></table>
+</center>
+
+
+<h4>4. Sample buffer</h4>
+
+<p>The raw I and Q data are stored in a one-dimensional array (vector) of type <code>int16</code>. The I and Q samples are interleaved, so the first <em>smpnum</em>*2 samples represent the samples taken for the first pulse sequence. If more than one channel was taken, then the next <em>smpnum</em>*2 samples represent he next channel</p>
+
+
+</td></tr>
+<tr><td class="docsubtitle"><h3>References</h3></td></tr>
+<tr><td></td><td>
+None<br>
+</td></tr>
+<tr><td class="docsubtitle"><h3>History</h3></td></tr>
+<tr><td></td><td>
+2008/03/25  Initial Revision.<br>
+</td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+
+</body>
+
+
+

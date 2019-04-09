@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>base</project>
+<name>ppmtoxml</name>
+<location>src.bin/graphic/ppmtoxml</location>
+<syntax>ppmtoxml --help</syntax>
+<syntax>ppmtoxml [-name <ar>iname</ar>] [<ar>name</ar>]</syntax>
+<syntax>ppmtoxml -alpha <ar>alpha</ar> [-name <ar>iname</ar>] [<ar>name</ar>]</syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>-name <ar>iname</ar></on><od>set the image name in the output image to <ar>iname</ar>.</od>
+</option>
+<option><on>-alpha <ar>alpha</ar></on><od>set alpha channel for all pixels to thvalue given by <ar>alpha</ar>. The value can be given as a decimal, percentage or hexadecimal.</od>
+</option>
+<option><on><ar>name</ar></on><od>input image filename. If this is omitted the image  will be read from standard input.</od>
+</option>
+<synopsis><p>Convert a Portable PixMap (PPM) image to an XML representation.</p></synopsis>
+
+
+<description><p>Convert a Portable PixMap (PPM) image to an XML representation.</p>
+<p>The XML representation is written to standard output.</p>
+</description>
+
+
+<example>
+<command>ppmtoxml -name "rplot" inp.ppm &gt; out.xml</command>
+<description>Convert PPM file <code>inp.ppm</code> to the XML file <code>out.xml</code>. Set the image name to "<code>rplot</code>".
+</description>
+</example>
+
+
+<example>
+<command>ppmtoppmx -alpha 80% inp.ppm &gt; out.xml</command>
+<description>Convert PPM file <code>inp.ppm</code> to the XML representation <code>out.xml</code>. The alpha channel is set to 80%.
+</description>
+</example>
+
+
+</binary>

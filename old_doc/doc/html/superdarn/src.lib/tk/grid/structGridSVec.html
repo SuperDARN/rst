@@ -1,0 +1,167 @@
+
+
+<head>
+<title>struct GridSVec</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href=../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../superdarn/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/grid/index.html>grid</a></td><td>|</td>
+<td>GridSVec</td>
+<td width=100% align=right><a href=../../../../superdarn/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">GridSVec</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">superdarn/griddata.h</td></tr>
+<tr><td class="docsubtitle">Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">grid</a></tr>
+<tr><td class="docsubtitle" valign=top>Members</td></tr>
+<tr><td></td><td width=80% class="docbox"><table>
+
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int st_id;</font></td>
+      <td valign="top">Station identifier number.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int chn;</font></td>
+      <td valign="top">Channel number for a stereo radar.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int npnt;</font></td>
+      <td valign="top">Number of points contributed by this station.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double freq0;</font></td>
+      <td valign="top">Average frequency that the radar was using for this period.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int major_revision;</font></td>
+      <td valign="top">Major revision number.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int minor_revision;</font></td>
+      <td valign="top">Minor revision number.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int prog_id;</font></td>
+      <td valign="top">Control program identifier number.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">char gsct;</font></td>
+      <td valign="top">Ground scatter flag.</td>
+    </tr>
+
+    <tr>
+      <td><font size=-1 face="courier"><b>struct {</b></font></td></tr>
+        <tr>
+          <td valign="top"><font size=-1 face="courier">double mean;</font></td>
+          <td valign="top">Mean noise value for this period.</td>
+        </tr>
+        <tr>
+          <td valign="top"><font size=-1 face="courier">double sd;</font></td>
+          <td valign="top">Standard deviation of the noise for this period.</td>
+        </tr>
+      </tr><tr><td><font size=-1 face="courier"><b>}</b></font></td></tr><tr>
+      <td valign="top"><font size=-1 face="courier">noise;</font></td>
+      <td valign="top">Noise statistics.</td>
+    </tr>
+
+    <tr>
+      <td><font size=-1 face="courier"><b>struct {</b></font></td></tr>
+        <tr>
+          <td valign="top"><font size=-1 face="courier">double min;</font></td>
+          <td valign="top">Minium threshold.</td>
+        </tr>
+        <tr>
+          <td valign="top"><font size=-1 face="courier">double max;</font></td>
+          <td valign="top">Maximum threshold.</td>
+        </tr>
+      </tr><tr><td><font size=-1 face="courier"><b>}</b></font></td></tr><tr>
+      <td valign="top"><font size=-1 face="courier">vel;</font></td>
+      <td valign="top">Velocity thresholds.</td>
+    </tr>
+
+
+    <tr>
+      <td><font size=-1 face="courier"><b>struct {</b></font></td></tr>
+        <tr>
+          <td valign="top"><font size=-1 face="courier">double min;</font></td>
+          <td valign="top">Minium threshold.</td>
+        </tr>
+        <tr>
+          <td valign="top"><font size=-1 face="courier">double max;</font></td>
+          <td valign="top">Maximum threshold.</td>
+        </tr>
+      </tr><tr><td><font size=-1 face="courier"><b>}</b></font></td></tr><tr>
+      <td valign="top"><font size=-1 face="courier">pwr;</font></td>
+      <td valign="top">Power thresholds.</td>
+    </tr>
+
+    <tr>
+      <td><font size=-1 face="courier"><b>struct {</b></font></td></tr>
+        <tr>
+          <td valign="top"><font size=-1 face="courier">double min;</font></td>
+          <td valign="top">Minium threshold.</td>
+        </tr>
+        <tr>
+          <td valign="top"><font size=-1 face="courier">double max;</font></td>
+          <td valign="top">Maximum threshold.</td>
+        </tr>
+      </tr><tr><td><font size=-1 face="courier"><b>}</b></font></td></tr><tr>
+      <td valign="top"><font size=-1 face="courier">wdt;</font></td>
+      <td valign="top">Spectral width thresholds.</td>
+    </tr>
+
+    <tr>
+      <td><font size=-1 face="courier"><b>struct {</b></font></td></tr>
+        <tr>
+          <td valign="top"><font size=-1 face="courier">double min;</font></td>
+          <td valign="top">Minium threshold.</td>
+        </tr>
+        <tr>
+          <td valign="top"><font size=-1 face="courier">double max;</font></td>
+          <td valign="top">Maximum threshold.</td>
+        </tr>
+      </tr><tr><td><font size=-1 face="courier"><b>}</b></font></td></tr><tr>
+      <td valign="top"><font size=-1 face="courier">verr;</font></td>
+      <td valign="top">Velocity error thresholds.</td>
+    </tr>
+
+  </table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td>
+  <p>The <a href="structGridSVec.html"><code>struct GridSVec</code></a> structure stores information about a station contributing to a set of gridded data.</p>
+  </tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+</div>
+
+</body>
+
+
+

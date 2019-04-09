@@ -1,0 +1,81 @@
+
+
+<head>
+<title>struct FrameBufferFontDB</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href=../../../../base/index.html>base</a></td>
+<td>|</td><td><a href=../../../../base/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/index.html>graphic</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/fontdb/index.html>fontdb</a></td><td>|</td>
+<td>FrameBufferFontDB</td>
+<td width=100% align=right><a href=../../../../base/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">FrameBufferFontDB</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">base/fontdb.h</td></tr>
+<tr><td class="docsubtitle">Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">fontdb</a></tr>
+<tr><td class="docsubtitle" valign=top>Members</td></tr>
+<tr><td></td><td width=80% class="docbox"><table>
+
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">char *path;</font></td>
+      <td valign="top">Pathname of the directory containing the font files.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">char *buf;</font></td>
+      <td valign="top">Internal buffer used to deproto the database.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int flg;</font></td>
+      <td valign="top">Internal flag used to deproto the database.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int num;</font></td>
+      <td valign="top">Number of fonts in the datbase.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier"><a href="../../../../base/src.lib/graphic/fbuffer/structFrameBufferFont.html"><code>struct FrameBufferFont</code></a> **font;</font></td>
+      <td valign="top">Pointer to an array of strcutures containing the bit map fonts.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier"><a href="../../../../base/src.lib/graphic/fbuffer/structFrameBufferFont.html"><code>struct FrameBufferFont</code></a> *dfont;</font></td>
+      <td valign="top">Default font to use if no match is found.</td>
+    </tr>
+
+   </table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td>
+  <p>The <a href="structFrameBufferFontDB.html"><code>struct FrameBufferFontDB</code></a> structure stores a font database.</p>
+  </tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+</div>
+
+</body>
+
+
+

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>base</project>
+<name>maketree</name>
+<location>src.bin/build/maketree</location>
+<syntax>maketree  <ar>path</ar> "<ar>pattern</ar>"</syntax>
+<option><on><ar>path</ar></on><od>search path.</od>
+</option>
+<option><on>"<ar>pattern</ar>"</on><od>filename pattern to match, this must be quoted to avoid command line expansion.</od>
+</option>
+<synopsis>Print a directory tree for files that match the pattern.</synopsis>
+<description><p>The program searches for files that match the specified pattern in the directory structure given as the search path. If a matching file is found then the elements of the directory tree are printed to standard output. This output can be used to recreate the directory structure containing the file.</p>
+</description>
+<example>
+<command>maketree www "*.xml" &gt; dir.txt</command>
+<description>Search the directory "<code>www</code>" for any files that match the pattern "<code>*.xml</code>". Record the elements of the directory tree in the file "<code>dir.txt</code>".
+</description>
+</example>
+
+</binary>

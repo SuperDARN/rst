@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>test_fit</name>
+<location>src.bin/tk/testing/test_fit</location>
+
+<syntax>test_fit --help</syntax>
+<syntax>test_fit [<ar>fitacfnames...</ar>]</syntax>
+<syntax>test_fit -old <ar>fitname</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on><ar>fitacfnames</ar></on><od>filenames of the <code>fitacf</code> format files. If this is omitted the file is read from standard input.</od>
+</option>
+<option><on>-old</on><od>files are in the <code>fit</code> format.</od>
+</option>
+<option><on><ar>fitname</ar></on><od>filename of the <code>fit</code> format file.</od>
+</option>
+<synopsis><p>Tests the integrity of <code>fit</code> or <code>fitacf</code> format files by reading them and printing the contents.</p></synopsis>
+<description><p>Tests the integrity of <code>fit</code> or <code>fitacf</code> format files by reading them and printing the contents.</p>
+<p>The contents are written to standard output</p>
+</description>
+
+<example>
+<command>test_fit -old 20040830.gbr.fit | more</command>
+<description>Test the integrity of the file "<code>20040830.gbr.fit</code>", paginating using <code>more</code>.</description>
+</example>
+
+</binary>

@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>general</project>
+<name>dmap</name>
+<location>src.lib/dmap</location>
+
+<function>
+<name>DataMapAddArray</name>
+<location>src.lib/dmap</location>
+<header>general/dmap.h</header>
+<syntax>int DataMapAddArray(<sn href="structDataMap.html">struct DataMap</sn> *ptr, char *name,int type,int dim, int32 *rng,void *data);</syntax>
+<description><p>The <fn href="DataMapAddArray.html">DataMapAddArray</fn> function adds an array variable to a <code>DataMap</code> data structure.</p>
+<p>The data structure is pointed to by the argument <ar>ptr</ar>. The name of the array variable to add is given by the zero terminated string pointed to by the argument <ar>name</ar>.</p>
+<p>The scalar type is given by the argument <ar>type</ar>. Possible values are:</p>
+<center><table>
+<tr><td><pre>DATACHAR</pre></td><td>A single character of type <code>char</code>.</td></tr>
+<tr><td><pre>DATASHORT</pre></td><td>A 16-bit short integer of type <code>int16</code>.</td></tr>
+<tr><td><pre>DATAINT</pre></td><td>A 32-bit integer integer of type <code>int32</code>.</td></tr>
+<tr><td><pre>DATAFLOAT</pre></td><td>A single precision floating point number of type <code>float</code>.</td></tr>
+<tr><td><pre>DATADOUBLE</pre></td><td>A double precision floating point number of type <code>double</code>.</td></tr>
+<tr><td><pre>DATASTRING</pre></td><td>A pointer to a zero terminated text string of type <code>char *</code>.</td></tr>
+</table>
+</center>
+<p>The number of dimensions of the array are given by the argument <ar>dim</ar> and  the ranges of those dimensions are stored in the array pointed to by the argument <ar>rng</ar>.</p>
+<p>The argument <ar>data</ar> is a pointer to the location that stores the array.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">DataMapAddArray.c</example>
+</function>
+
+<function>
+<name>DataMapAddScalar</name>
+<location>src.lib/dmap</location>
+<header>general/dmap.h</header>
+<syntax>int DataMapAddScalar(<sn href="structDataMap.html">struct DataMap</sn> *ptr, char *name,int type,void *data);</syntax>
+<description><p>The <fn href="DataMapAddScalar.html">DataMapAddScalar</fn> function adds a scalar variable to a <code>DataMap</code> data structure.</p>
+<p>The data structure is pointed to by the argument <ar>ptr</ar>. The name of the scalar variable to add is given by the zero terminated string pointed to by the argument <ar>name</ar>.</p>
+<p>The scalar type is given by the argument <ar>type</ar>. Possible values are:</p>
+<center><table>
+<tr><td><pre>DATACHAR</pre></td><td>A single character of type <code>char</code>.</td></tr>
+<tr><td><pre>DATASHORT</pre></td><td>A 16-bit short integer of type <code>int16</code>.</td></tr>
+<tr><td><pre>DATAINT</pre></td><td>A 32-bit integer integer of type <code>int32</code>.</td></tr>
+<tr><td><pre>DATAFLOAT</pre></td><td>A single precision floating point number of type <code>float</code>.</td></tr>
+<tr><td><pre>DATADOUBLE</pre></td><td>A double precision floating point number of type <code>double</code>.</td></tr>
+<tr><td><pre>DATASTRING</pre></td><td>A pointer to a zero terminated text string of type <code>char *</code>.</td></tr>
+</table>
+</center>
+<p>The argument <ar>data</ar> is a pointer to the location that stores the scalar value.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">DataMapAddScalar.c</example>
+</function>
+
+<function>
+<name>DataMapDecodeBuffer</name>
+<location>src.lib/dmap</location>
+<header>general/dmap.h</header>
+<syntax><sn href="structDataMap.html">struct DataMap</sn> *DataMapDecodeBuffer(unsigned char *buf,int size);</syntax>
+<description><p>The <fn href="DataMapDecodeBuffer.html">DataMapDecodeBuffer</fn> function decodes a <code>DataMap</code> data structure from a memory buffer.</p>
+<p>The memory buffer to decode is pointed to by the argument <ar>buf</ar>, and the size of the buffer is given by the argument <ar>size</ar>.</p>
+</description>
+<returns>Returns a pointer to the decoded data structure on success. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
+<example type="source">DataMapDecodeBuffer.c</example>
+</function>
+
+<function>
+<name>DataMapEncodeBuffer</name>
+<location>src.lib/dmap</location>
+<header>general/dmap.h</header>
+<syntax>unsigned char *DataMapEncodeBuffer(<sn href="structDataMap.html">struct DataMap</sn> *ptr,int *size);</syntax>
+<description><p>The <fn href="DataMapEncodeBuffer.html">DataMapEncodeBuffer</fn> function encodes a <code>DataMap</code> data structure into a memory buffer.</p>
+<p>The data structure is pointed to by the argument <ar>ptr</ar>.</p>
+<p>The structure is encoded and stored in a memory buffer, the size of this memory buffer is stored at the location pointed to by the argument <ar>size</ar>.</p>
+</description>
+<returns>Returns a pointer to the memory buffer on success. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
+<example type="source">DataMapEncodeBuffer.c</example>
+</function>
+
+<function>
+<name>DataMapFread</name>
+<location>src.lib/dmap</location>
+<header>general/dmap.h</header>
+<syntax><sn href="structDataMap.html">struct DataMap</sn> *DataMapFread(FILE *fp);</syntax>
+<description><p>The <fn href="DataMapFread.html">DataMapFread</fn> function reads a <code>DataMap</code> data structure from an open stream.</p>
+<p>The structure is read from the open stream pointed to by the argument <ar>fp</ar>.</p>
+</description>
+<returns>Returns a pointer to the data structure on success. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
+<example type="source">DataMapFread.c</example>
+</function>
+
+<function>
+<name>DataMapFree</name>
+<location>src.lib/dmap</location>
+<header>general/dmap.h</header>
+<syntax>void DataMapFree(<sn href="structDataMap.html">struct DataMap</sn> *ptr);</syntax>
+<description><p>The <fn href="DataMapFree.html">DataMapFree</fn> function releases the memory used to store a <code>DataMap</code> data structure.</p>
+<p>The data structure is pointed to by the argument <ar>ptr</ar>.</p>
+</description>
+<example type="source">DataMapFree.c</example>
+</function>
+
+<function>
+<name>DataMapFwrite</name>
+<location>src.lib/dmap</location>
+<header>general/dmap.h</header>
+<syntax>int DataMapFwrite(FILE *fp,<sn href="structDataMap.html">struct DataMap</sn> *ptr);</syntax>
+<description><p>The <fn href="DataMapFwrite.html">DataMapFwrite</fn> function writes a <code>DataMap</code> data structure to an open stream.</p>
+<p>The structure is written to the open file with the descriptor give by the argument <ar>fp</ar>.</p>
+<p>The structure is pointed to by the argument <ar>ptr</ar>.</p>
+</description>
+<returns>Returns the number of bytes written to the file. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">DataMapFwrite.c</example>
+</function>
+
+<function>
+<name>DataMapMake</name>
+<location>src.lib/dmap</location>
+<header>general/dmap.h</header>
+<syntax><sn href="structDataMap.html">struct DataMap</sn> *DataMapMake();</syntax>
+<description><p>The <fn href="DataMapMake.html">DataMapMake</fn> function allocates and initializes  a <code>DataMap</code> data structure.</p>
+</description>
+<returns>Returns a pointer to the data structure on success. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
+<example type="source">DataMapMake.c</example>
+</function>
+
+<function>
+<name>DataMapRead</name>
+<location>src.lib/dmap</location>
+<header>general/dmap.h</header>
+<syntax><sn href="structDataMap.html">struct DataMap</sn> *DataMapRead(int fid);</syntax>
+<description><p>The <fn href="DataMapRead.html">DataMapRead</fn> function reads a <code>DataMap</code> data structure from an open file.</p>
+<p>The structure is read from the open file with the descriptor given by the argument <ar>fid</ar>.</p>
+</description>
+<returns>Returns a pointer to the data structure on success. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
+<example type="source">DataMapRead.c</example>
+</function>
+
+<function>
+<name>DataMapSize</name>
+<location>src.lib/dmap</location>
+<header>general/dmap.h</header>
+<syntax>int DataMapSize(<sn href="structDataMap.html">struct DataMap</sn> *ptr);</syntax>
+<description><p>The <fn href="DataMapSize.html">DataMapSize</fn> function calculates the number of bytes required to store a <code>DataMap</code> data structure.</p>
+<p>The structure is pointed to by the argument <ar>ptr</ar>.</p>
+</description>
+<returns>Returns the size in bytes of bytes required to encode the data structure. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">DataMapSize.c</example>
+</function>
+
+<function>
+<name>DataMapWrite</name>
+<location>src.lib/dmap</location>
+<header>general/dmap.h</header>
+<syntax>int DataMapWrite(int fid,<sn href="structDataMap.html">struct DataMap</sn> *ptr);</syntax>
+<description><p>The <fn href="DataMapWrite.html">DataMapWrite</fn> function writes a <code>DataMap</code> data structure to an open file.</p>
+<p>The structure is written to the open file with the descriptor given by the argument <ar>fid</ar>.</p>
+<p>The structure is pointed to by the argument <ar>ptr</ar>.</p>
+</description>
+<returns>Returns the number of bytes written to the file. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">DataMapWrite.c</example>
+</function>
+
+
+
+<structure>
+  <name>DataMap</name>
+  <location>src.lib/dmap</location>
+  <header>general/dmap.h</header>
+  <struct>
+
+    <member>
+      <proto>int sze;</proto>
+      <description>Size in bytes of the memory buffer used to store the data in the structure.</description>
+    </member>
+
+    <member>
+      <proto>char *buf;</proto>
+      <description>Pointer the memory buffer used to store the data.</description>
+    </member>
+
+    <member>
+      <proto>int snum;</proto>
+      <description>Number of scalar variables.</description>
+    </member>
+
+    <member>
+      <proto>int anum;</proto>
+      <description>Number of array variables.</description>
+    </member>
+
+    <member>
+      <proto><sn href="structDataMapScalar.html">struct DataMapScalar</sn> **scl;</proto>
+      <description>Pointer to an array of scalar variables.</description>
+    </member>
+
+    <member>
+      <proto><sn href="structDataMapArray.html">struct DataMapArray</sn> **arr;</proto>
+      <description>Pointer to an array of array variables.</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structDataMap.html">struct DataMap</sn> structure stores a DataMap data structure.</p>
+  </description>
+</structure>
+
+
+<structure>
+  <name>DataMapArray</name>
+  <location>src.lib/dmap</location>
+  <header>general/dmap.h</header>
+  <struct>
+
+    <member>
+      <proto>char *name;</proto>
+      <description>Pointer the zero terminated string that gives the name of the variable.</description>
+    </member>
+
+    <member>
+      <proto>unsigned char type;</proto>
+      <description>Type proto.</description>
+    </member>
+
+    <member>
+      <proto>int32 dim;</proto>
+      <description>Dimensions of the array.</description>
+    </member>
+
+    <member>
+      <proto>int32 *rng;</proto>
+      <description>Pointer to an array containing the range each dimension.</description>
+    </member>
+
+    <member>
+      <proto><un href="unionDataMapPointer.html">union DataMapPointer</un> data;</proto>
+      <description>Data values stored in the array.</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structDataMapArray.html">struct DataMapArray</sn> structure stores an array variable for a DataMap data structure.</p>
+  </description>
+</structure>
+
+
+<structure>
+  <name>DataMapScalar</name>
+  <location>src.lib/dmap</location>
+  <header>general/dmap.h</header>
+  <struct>
+
+    <member>
+      <proto>char *name;</proto>
+      <description>Pointer the zero terminated string that gives the name of the variable.</description>
+    </member>
+
+    <member>
+      <proto>unsigned char type;</proto>
+      <description>Type proto.</description>
+    </member>
+
+    <member>
+      <proto><un href="unionDataMapPointer.html">union DataMapPointer</un> data;</proto>
+      <description>Data value of the scalar.</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structDataMapScalar.html">struct DataMapScalar</sn> structure stores a scalar variable for a DataMap data structure.</p>
+  </description>
+</structure>
+
+
+<union>
+  <name>DataMapPointer</name>
+  <location>src.lib/dmap</location>
+  <header>general/dmap.h</header>
+  <union>
+
+    <member>
+      <proto>char *cptr;</proto>
+      <description>Pointer to a character.</description>
+    </member>
+
+    <member>
+      <proto>int16 *sptr;</proto>
+      <description>Pointer to a 16 bit integer.</description>
+    </member>
+
+    <member>
+      <proto>int32 *lptr;</proto>
+      <description>Pointer to a 32 bit integer.</description>
+    </member>
+
+    <member>
+      <proto>int32 *fptr;</proto>
+      <description>Pointer to a single precision floating point number.</description>
+    </member>
+
+    <member>
+      <proto>int32 *dptr;</proto>
+      <description>Pointer to a double precision floating point number.</description>
+    </member>
+
+    <member>
+      <proto>void *dptr;</proto>
+      <description>Pointer to a void data type.</description>
+    </member>
+
+  </union>
+
+  <description>
+  <p>The <sn href="unionDataMapPointer.html">union DataMapScalar</sn> union contains the union of different data pointers for a DataMap data structure.</p>
+  </description>
+</union>
+
+</library>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<rfc>
+<id>0007</id>
+<title>cFit Compressed FitACF data format</title>
+<author>R.J.Barnes</author>
+<summary><p>A description of the compressed FitACF data format "cFit".</p></summary>
+<body>
+<h4>1. Introduction</h4>
+<p>The cFit format is a compressed format for storing a limited sub-set of data from the output of the FitACF algorithm. The format does not store all of the radar operating parameters or the full set of derived values of the algorithm, instead it stores sufficient paramaters to characterize the operation of the radar and the power, spectral width, and velocity, and the derived errors, from the analysis.</p>
+<p>The advantage of cFit files is that they are considerably smaller and more convenient to work with than full fit or fitacf files. Typically a cFit file is a few megabytes in length, whereas a fit file can be over a 100 megabytes.</p>
+<h4>2. The Format</h4>
+<p>A cFit file is divided up into blocks or records, each record has the same format but can have varying length depending on the scatter observed by the radar.Each record is divided up into a header and a data section. The structure of a record is given below:</p>
+<center>
+<table cellspacing="3" bgcolor="e0e0e0">
+<tr><td><b>Byte Offset</b></td><td><b>Size (Bytes)</b></td><td><b>Type</b></td><td><b>Content</b></td></tr>
+<tr><td>0</td><td>8</td><td>64-bit double float</td><td>Time in seconds from UNIX epoch (00:00:00 UTC, January 1, 1970).</td></tr>
+<tr><td>8</td><td>2</td><td>16-bit short integer</td><td>Station identifier</td></tr>
+<tr><td>10</td><td>2</td><td>16-bit short integer</td><td>Scan flag</td></tr>
+<tr><td>12</td><td>2</td><td>16-bit short integer</td><td>Program identifier</td></tr>
+
+<tr><td>14</td><td>2</td><td>16-bit short integer</td><td>Beam number</td></tr>
+
+<tr><td>16</td><td>4</td><td>32-bit float</td><td>Beam azimuth</td></tr>
+
+
+<tr><td>20</td><td>2</td><td>16-bit short integer</td><td>Channel</td></tr>
+<tr><td>22</td><td>2</td><td>16-bit short integer</td><td>Integral component of integration time in seconds</td></tr>
+<tr><td>24</td><td>4</td><td>32-bit integer</td><td>Fractional component of integration time in micro-seconds</td></tr>
+
+<tr><td>28</td><td>2</td><td>16-bit short integer</td><td>Distance to first range in kilometers</td></tr>
+<tr><td>30</td><td>2</td><td>16-bit short integer</td><td>Range separation in kilometers</td></tr>
+<tr><td>32</td><td>2</td><td>16-bit short integer</td><td>Receiver rise time in micro-seconds</td></tr>
+<tr><td>34</td><td>2</td><td>16-bit short integer</td><td>Operating frequency in kilohertz</td></tr>
+<tr><td>36</td><td>4</td><td>32-bit integer</td><td>Noise Level</td></tr>
+<tr><td>40</td><td>2</td><td>16-bit short integer</td><td>Attenuation</td></tr>
+<tr><td>42</td><td>2</td><td>16-bit short integer</td><td>Number of averages</td></tr>
+<tr><td>44</td><td>2</td><td>16-bit short integer</td><td>Number range gates</td></tr>
+<tr><td>46</td><td>1</td><td>byte</td><td>Number of stored ranges</td></tr>
+<tr><td>47</td><td>m</td><td>m bytes</td><td>Range table</td></tr>
+<tr><td>47+m</td><td>n</td><td>n bytes</td><td>Data table</td></tr>
+</table>
+</center>
+<p>The remainder of the block consists of the data values for the stored ranges. The range table indicates which range a data value corresponds to. For example, if the first entry in the range table contains a value of 23, that indicates that the first set of data values in the data table came from range 23.</p>
+<p>Each entry in the data table has the same format shown below:</p>
+<center>
+<table cellspacing="3" bgcolor="e0e0e0">
+<tr><td><b>Byte Offset</b></td><td><b>Size (Bytes)</b></td><td><b>Type</b></td><td><b>Content</b></td></tr>
+<tr><td>0</td><td>1</td><td>byte</td><td>Ground scatter flag.</td></tr>
+<tr><td>1</td><td>4</td><td>32-bit float</td><td>Lag-zero power</td></tr>
+<tr><td>5</td><td>4</td><td>32-bit float</td><td>Lag-zero power error</td></tr>
+<tr><td>9</td><td>4</td><td>32-bit float</td><td>Velocity</td></tr>
+<tr><td>13</td><td>4</td><td>32-bit float</td><td>Lambda power</td></tr>
+<tr><td>17</td><td>4</td><td>32-bit float</td><td>Lambda spectral width</td></tr>
+<tr><td>21</td><td>4</td><td>32-bit float</td><td>Velocity error</td></tr>
+<tr><td>25</td><td>4</td><td>32-bit float</td><td>Lambda power error</td></tr>
+<tr><td>29</td><td>4</td><td>32-bit float</td><td>Lambda spectral width error</td></tr>
+</table>
+</center>
+</body>
+<revision>2007/03/26  Update to reflect changes to file format</revision>
+<revision>2004/07/27  Initial Revision.</revision>
+</rfc>
+
+

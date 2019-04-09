@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>rtfittofitacf</name>
+<location>src.bin/tk/tcpip/rtfittofitacf</location>
+<syntax>rtfittofitacf --help</syntax>
+<syntax>rtfittofitacf [-t <ar>timeout</ar>] [-s <ar>stream</ar>] [-L <ar>logname</ar>] [-T <ar>timename</ar>] [-pf <ar>portname</ar>] [-if <ar>pidname</ar>] [-lp <ar>lport</ar>] <ar>host</ar> <ar>rport</ar></syntax>
+<syntax>rtfittofitacf -rpf [-t <ar>timeout</ar>] [-s <ar>stream</ar>] [-L <ar>logname</ar>] [-T <ar>timename</ar>] [-pf <ar>portname</ar>] [-if <ar>pidname</ar>] [-lp <ar>lport</ar>] <ar>host</ar> <ar>rportname</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+
+<option><on>-t <ar>timeout</ar></on><od>set the time to wait before resetting the connection to <ar>timeout</ar> seconds</od></option>
+
+<option><on>-s <ar>stream</ar></on><od>for a multiplexed stream, read the stream number given by <ar>stream</ar>. A value of 255 will read all streams</od>
+</option>
+
+<option><on>-L <ar>logname</ar></on><od>log connections and information in the file <ar>logname</ar>. By default, connections are recorded in <code>log.rt</code>.</od>
+</option>
+
+<option><on>-T <ar>timename</ar></on><od>log the time that the last packet was received in the file <ar>timename</ar>. By default, the time is recorded in <code>time.rt</code>.</od>
+</option>
+
+
+
+<option><on>-pf <ar>portname</ar></on><od>record the port number that the server is listening for connections on in the file <ar>portname</ar>. By default, the port is  recorded in <code>port.id</code>.</od>
+</option>
+
+<option><on>-if <ar>pidname</ar></on><od>record the process Identifier (PID) of the server in the file <ar>pidname</ar>. By default, the PID is  recorded in <code>pid.id</code>.</od>
+</option>
+
+
+<option><on>-lp <ar>lport</ar></on><od>force the server to listen on the local port number <ar>port</ar>. By default, the server requests a port number from the Operating System.</od></option>
+
+<option><on><ar>host</ar></on><od>hostname or IP number of the system to connect to.</od></option>
+<option><on><ar>rport</ar></on><od>port number to connect to on the server.</od></option>
+
+<option><on>-rpf</on><od>The remote port number is stored in a text file.</od>
+</option>
+
+<option><on><ar>rportname</ar></on><od>filename of the text file containing the remote port number.</od></option>
+
+<synopsis><p>Convert a <code>fit</code> format TCP/IP data stream to a <code>fitacf</code> format stream.</p></synopsis>
+
+
+<description><p>Convert a <code>fit</code> format TCP/IP data stream to a <code>fitacf</code> format stream.</p>
+<p>This task can be used to reformat a TCP/IP data stream from legacy servers.</p> </description>
+
+<example>
+<command>rtfitfitacf -L log -pf port.id  -if pid.id -lp 5000 peanut.jhuapl.edu 1024</command>
+<description><p>Reformat the <code>fit</code> data stream from the port 1024 on the server <code>peanut.jhuapl.edu</code>. The port number is recorded in the file "<code>port.id</code>", the process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyymmdd</em> is the date.</p>
+</description>
+</example>
+
+<example>
+<command>rtfittofitacft -L log -pf port.id  -if pid.id -lp -rpf port.gbr localhost</command>
+<description><p>Reformat the <code>fit</code> data stream served from the port listed in "<code>port.gbr</code>" on this host. The port number is recorded in the file "<code>port.id</code>", the process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyymmdd</em> is the date.</p>
+</description>
+</example>
+
+
+
+
+</binary>

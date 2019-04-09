@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>trim_map</name>
+<location>src.bin/tk/tool/trim_map</location>
+
+<syntax>trim_map --help</syntax>
+<syntax>trim_map [-vb] [-old] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>] [<ar>name</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-old</on><od>the input file is a <code>map</code> format file.</od>
+</option>
+<option><on>-sd <ar>yyyymmdd</ar></on><od>extract starting from the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-st <ar>hr:mn</ar></on><od>extract starting from the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ed <ar>yyyymmdd</ar></on><od>stop extracting at the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-et <ar>hr:mn</ar></on><od>stop extracting at the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ex <ar>hr:mn</ar></on><od>extract an interval whose extent is <ar>hr:mn</ar>.</od>
+</option>
+<option><on><ar>name</ar></on><od>filename of the <code>cnvmap</code> format file to trim. If this is omitted, the file is read from standard input.</od>
+</option>
+<synopsis><p>Extracts a section from a <code>map</code> or <code>cnvmap</code> format file.</p></synopsis>
+
+<description><p>Extracts a section from a <code>map</code> or <code>cnvmap</code> format file.</p>
+<p>The extracted section is written to standard output.</p>
+</description>
+
+<example>
+<command>trim_map -vb -old -st 11:00 -et 14:00 19981020.map &gt; 19981020.1100.map</command>
+<description>Extracts a 3 hour period starting at 11:00UT from the file called "<code>19981020.map</code>" to produce a file called "<code>19981020.1100.map</code>". The status is logged to standard error.</description>
+</example>
+
+<example>
+<command>trim_map -sd 19991121 -st 22:00 -ex 4:00 -i 240 199911.cnvmap &gt; 199911.2100.cnvmap</command>
+<description>Extracts a 4 hour period starting at 22:00UT on November 21, 1999 from the file "<code>199911.cnvmap</code>" to produce the output file "<code>199911.2100.cnvmap</code>". The records are re-integrated to produce records at 4-minute intervals.</description>
+</example>
+
+</binary>

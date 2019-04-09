@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>base</project>
+<name>ppmtoppmx</name>
+<location>src.bin/graphic/ppmtoppmx</location>
+<syntax>ppmtoppmx --help</syntax>
+<syntax>ppmtoppmx [-name <ar>iname</ar>] [<ar>name</ar>]</syntax>
+<syntax>ppmtoppmx -alpha <ar>alpha</ar> [-name <ar>iname</ar>] [<ar>name</ar>]</syntax>
+<syntax>ppmtoppmx -nz [-name <ar>iname</ar>] [<ar>name</ar>]</syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>-name <ar>iname</ar></on><od>set the image name in the output image to <ar>iname</ar>.</od>
+</option>
+<option><on>-alpha <ar>alpha</ar></on><od>set alpha channel for all pixels to the value given by <ar>alpha</ar>. The value can be given as a decimal, percentage or hexadecimal.</od>
+</option>
+<option><on>-nz</on><od>set alpha channel to full on (0xff) for any non-zero value pixel in the input image.</od> 
+</option>
+<option><on><ar>name</ar></on><od>input image filename. If this is omitted the image  will be read from standard input.</od>
+</option>
+<synopsis><p>Convert a Portable PixMap (PPM) image to an extended Portable PixMap (PPMX) image.</p></synopsis>
+
+
+<description><p>Convert a Portable PixMap (PPM) image to an extended Portable PixMap (PPMX) image.</p>
+<p>The PPMX image file is written to standard output.</p>
+<p>Extended Portable PixMap files are an enhanced form of PPM files that include an extra alpha channel mask.</p></description>
+
+
+<example>
+<command>ppmtoppmx -name "test" inp.ppm &gt; out.ppmx</command>
+<description>Convert PPM file <code>inp.ppm</code> to the PPMX file <code>out.ppmx</code>. Set the name of the image to "<code>test</code>".
+</description>
+</example>
+
+
+<example>
+<command>ppmtoppmx -nz inp.ppm &gt; out.ppmx</command>
+<description>Convert PPM file <code>inp.ppm</code> to the PPMX file <code>out.ppmx</code>. The alpha channel is set to full on for any non-zero pixels in the input image.
+</description>
+</example>
+
+
+
+</binary>

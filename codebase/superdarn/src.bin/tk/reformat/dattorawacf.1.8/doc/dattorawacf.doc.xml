@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>dattorawacf</name>
+<location>src.bin/tk/reformat/dattorawacf</location>
+<syntax>dattorawacf --help</syntax>
+<syntax>dattorawacf [-vb] <ar>rawname</ar></syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-t <ar>thr</ar></on><od>use the threshold factor <ar>thr</ar> to detemine whether data is saved or not. If this option is specified the existing threshold in the file is ignored (note: this option is deprecated)</od>
+</option>
+
+<option><on><ar>rawname</ar></on><od>filename of the <code>raw</code> (<code>dat</code>) format file to convert.</od>
+</option>
+<synopsis><p>Converts a <code>raw</code> (<code>dat</code>) format file to <code>rawacf</code> format.</p></synopsis>
+
+<description><p>Converts a <code>raw</code> (<code>dat</code>) format file to <code>rawacf</code> format.</p>
+<p>The <code>rawacf</code> format data is written to standard output.</p></description>
+<example>
+<command>dattorawacf test.dat &gt; test.rawacf</command>
+<description>Convert the file "<code>test.dat</code>" to the <code>rawacf</code> format file "<code>test.rawacf</code>".</description>
+</example>
+
+
+
+</binary>

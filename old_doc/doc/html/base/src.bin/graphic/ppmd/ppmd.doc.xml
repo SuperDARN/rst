@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>base</project>
+<name>ppmd</name>
+<location>src.bin/graphic/ppmd</location>
+
+<syntax>ppmd --help</syntax>
+<syntax>ppmd [-smooth] [-scale <ar>sf</ar>] [-wdt <ar>width</ar>] [-hgt <ar>height</ar>] [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [<ar>name</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>-smooth</on><od>smooth the image.</od>
+</option>
+<option><on>-scale <ar>scale</ar></on><od>percentage scale factor to display image at.</od>
+</option>
+<option><on>-wdt <ar>width</ar></on><od>set the width of the image to <ar>width</ar> pixels.</od>
+</option>
+<option><on>-hgt <ar>height</ar></on><od>set the height of the image to <ar>height</ar> pixels.</od>
+</option>
+<option><on>-display <ar>display</ar></on><od>connect to the xterminal named <ar>display</ar>.</od>
+</option>
+<option><on>-xoff <ar>xoff</ar></on><od>open the window, <ar>xoff</ar> pixels from the left edge of the screen.</od>
+</option>
+<option><on>-yoff <ar>yoff</ar></on><od>open the window <ar>ypad</ar> pixels from the top edge of the screen.</od>
+</option>
+<option><on><ar>name</ar></on><od>image filename. If this is omitted the image  will be read from standard input.</od>
+</option>
+<synopsis><p>Displays a Portable PixMap (PPM) image on an X-terminal.</p></synopsis>
+<description><p>Displays a Portable PixMap (PPM) image on an X-terminal.</p>
+<p>The image file is displayed in a window on the terminal. Clicking a mouse button in the window will terminate the program.</p>
+</description>
+
+<example>
+<command>ppmd inp.ppm</command>
+<description>Display the PPM file <code>inp.ppm</code> on the X-terminal.
+</description>
+</example>
+
+</binary>

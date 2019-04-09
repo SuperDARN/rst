@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>time_plot</name>
+<location>src.bin/tk/plot/time_plot</location>
+
+<syntax>time_plot --help</syntax>
+<syntax>time_plot [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]</syntax>
+<syntax>time_plot -old [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]</syntax>
+<syntax>time_plot -cfit [<ar>options</ar>] <ar>cfitname</ar></syntax>
+<syntax>time_plot -smr [<ar>options</ar>] <ar>smrname</ar></syntax>
+<syntax>time_plot -png [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]</syntax>
+<syntax>time_plot -png -old [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]</syntax>
+<syntax>time_plot -png -cfit [<ar>options</ar>] <ar>cfitname</ar></syntax>
+<syntax>time_plot -png -smr [<ar>options</ar>] <ar>smrname</ar></syntax>
+<syntax>time_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]</syntax>
+<syntax>time_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] -old [<ar>fitname</ar>] [<ar>inxname</ar>]</syntax>
+<syntax>time_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] -cfit <ar>cfitname</ar></syntax>
+<syntax>time_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] -smr <ar>smrname</ar></syntax>
+<syntax>time_plot -ppm [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]</syntax>
+<syntax>time_plot -ppm -old [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]</syntax>
+<syntax>time_plot -ppm -cfit [<ar>options</ar>] <ar>cfitname</ar></syntax>
+<syntax>time_plot -ppm -smr [<ar>options</ar>] <ar>smrname</ar></syntax>
+<syntax>time_plot -ppmx [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]</syntax>
+<syntax>time_plot -ppmx -old [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]</syntax>
+<syntax>time_plot -ppmx -cfit [<ar>options</ar>] <ar>cfitname</ar></syntax>
+<syntax>time_plot -ppmx -smr [<ar>options</ar>] <ar>smrname</ar></syntax>
+<syntax>time_plot -xml [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]</syntax>
+<syntax>time_plot -xml -old [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]</syntax>
+<syntax>time_plot -xml -cfit [<ar>options</ar>] <ar>cfitname</ar></syntax>
+<syntax>time_plot -xml -smr [<ar>options</ar>] <ar>smrname</ar></syntax>
+<syntax>time_plot -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]</syntax>
+<syntax>time_plot -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] -old [<ar>options</ar>] [<ar>fitname</ar>] [<ar>inxname</ar>]</syntax>
+<syntax>time_plot  -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] -cfit [<ar>options</ar>] <ar>cfitname</ar></syntax>
+<syntax>time_plot -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] -smr [<ar>options</ar>] <ar>smrname</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-cf <ar>cfname</ar></on><od>read command line options from the file <ar>cfname</ar>.</od>
+</option>
+<option><on>-sd <ar>yyyymmdd</ar></on><od>plot starting from the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-st <ar>hr:mn</ar></on><od>plot starting from the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ed <ar>yyyymmdd</ar></on><od>stop plotting at the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-et <ar>hr:mn</ar></on><od>stop plotting at the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ex <ar>hr:mn</ar></on><od>plot an interval whose extent is <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-name <ar>name</ar></on><od>title the image <ar>name</ar>, for those formats that support image naming.</od>
+</option>
+<option><on>-wdt <ar>width</ar></on><od>set the width of the plot to <ar>width</ar>.</od>
+</option>
+<option><on>-hgt <ar>height</ar></on><od>set the height of the plot to <ar>height</ar>.</od>
+</option>
+<option><on>-bgcol <ar>rrggbb</ar></on><od>set the background color to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
+</option>
+<option><on>-grdcol <ar>rrggbb</ar></on><od>set the color of grid to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
+</option>
+<option><on>-txtcol <ar>rrggbb</ar></on><od>set the color of text to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
+</option>
+<option><on>-gscol <ar>rrggbb</ar></on><od>set the color of ground scatter to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
+</option>
+<option><on>-pkey <ar>pkeyname</ar></on><od>load the power colorkey from the file <ar>pkeyname</ar>.</od>
+</option>
+<option><on>-pkey_path <ar>pkey_path</ar></on><od>load the power colorkey from the custom path <ar>pkey_path</ar>.</od>
+</option>
+<option><on>-vkey <ar>vkeyname</ar></on><od>load the velocity colorkey from the file <ar>vkeyname</ar>.</od>
+</option>
+<option><on>-vkey_path <ar>vkey_path</ar></on><od>load the velocity colorkey from the custom path <ar>vkey_path</ar>.</od>
+</option>
+<option><on>-wkey <ar>wkeyname</ar></on><od>load the spectral width colorkey from the file <ar>wkeyname</ar>.</od>
+</option>
+<option><on>-wkey_path <ar>wkey_path</ar></on><od>load the spectral width colorkey from the custom path <ar>wkey_path</ar>.</od>
+</option>
+<option><on>-ekey <ar>ekeyname</ar></on><od>load the elevation angle colorkey from the file <ar>ekeyname</ar>.</od>
+</option>
+<option><on>-ekey_path <ar>ekey_path</ar></on><od>load the elevation angle colorkey from the custom path <ar>ekey_path</ar>.</od>
+</option>
+<option><on>-fkey <ar>fkeyname</ar></on><od>load the frequency colorkey from the file <ar>fkeyname</ar>.</od>
+</option>
+<option><on>-fkey_path <ar>fkey_path</ar></on><od>load the frequency colorkey from the custom path <ar>fkey_path</ar>.</od>
+</option>
+<option><on>-nkey <ar>nkeyname</ar></on><od>load the noise colorkey from the file <ar>nkeyname</ar>.</od>
+</option>
+<option><on>-nkey_path <ar>nkey_path</ar></on><od>load the noise colorkey from the custom path <ar>nkey_path</ar>.</od>
+</option>
+<option><on>-fontname <ar>fontname</ar></on><od>plot any labels using the font <ar>fontname</ar>.</od>
+</option>
+<option><on>-fontsize <ar>fontsize</ar></on><od>set the font size to <ar>fontsize</ar> points.</od>
+</option>
+<option><on>-tfontname <ar>tfontname</ar></on><od>plot the title using the font <ar>tfontname</ar>.</od>
+</option>
+<option><on>-tfontsize <ar>tfontsize</ar></on><od>set the title font size to <ar>tfontsize</ar> points.</od>
+</option>
+<option><on>-tmajor <ar>hr:mn</ar></on><od>set the interval of the Time axis major tick mark to be <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-tminor <ar>hr:mn</ar></on><od>set the interval of the Time axis minor tick mark to be <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-b <ar>bmnum</ar></on><od>plot beam number <ar>bmnum</ar>, a value of -1 plots all beams.</od>
+</option>
+<option><on>-c <ar>channel</ar></on><od>for stereo mode data, plot channel <ar>channel</ar>, if omitted then both channels are plotted.</od>
+</option>
+<option><on>-cp <ar>cpid</ar></on><od>plot beams that contain the program identifier <ar>cpid</ar> only.</od>
+</option>
+<option><on>-scan <ar>scan</ar></on><od>plot beams that have a value for the scan flag of <ar>scan</ar>.</od>
+</option>
+<option><on>-a</on><od>plot all parameters (excluding elevation angle).</od>
+</option>
+<option><on>-p</on><od>plot power.</od>
+</option>
+<option><on>-v</on><od>plot velocity.</od>
+</option>
+<option><on>-w</on><od>plot spectral width.</od>
+</option>
+<option><on>-e</on><od>plot elevation angle.</od>
+</option>
+<option><on>-pmin <ar>pmin</ar></on><od>set the minimum value of the power scale to <a>pmin</ar>.</od>
+</option>
+<option><on>-pmax <ar>pmax</ar></on><od>set the maximum value of the power scale to <a>pmax</ar>.</od>
+</option>
+<option><on>-vmin <ar>vmin</ar></on><od>set the minimum value of the velocity scale to <a>vmin</ar>.</od>
+</option>
+<option><on>-vmax <ar>vmax</ar></on><od>set the maximum value of the velocity scale to <a>vmax</ar>.</od>
+</option>
+<option><on>-wmin <ar>wmin</ar></on><od>set the minimum value of the spectral width scale to <a>wmin</ar>.</od>
+</option>
+<option><on>-wmax <ar>wmax</ar></on><od>set the maximum value of the spectral width scale to <a>wmax</ar>.</od>
+</option>
+<option><on>-emin <ar>emin</ar></on><od>set the minimum value of the elevation angle scale to <a>emin</ar>.</od>
+</option>
+<option><on>-emax <ar>emax</ar></on><od>set the maximum value of the elevation angle scale to <a>emax</ar>.</od>
+</option>
+<option><on>-gs</on><od>color ground scatter.</od>
+</option>
+<option><on>-gm</on><od>mask out ground scatter.</od>
+</option>
+<option><on>-ns</on><od>ignore non-scan data (data with a scan flag of -1).</od>
+</option>
+<option><on>-km</on><od>plot in terms of distance in kilometers.</od>
+</option>
+<option><on>-frang <ar>frang</ar></on><od>force the distance to the first range to be <ar>frang</ar> kilometers.</od>
+</option>
+<option><on>-erang <ar>erang</ar></on><od>force the distance to the last range to be <ar>erang</ar> kilometers.</od>
+</option>
+<option><on>-rsep <ar>rsep</ar></on><od>force the range separation to be <ar>rsep</ar> kilometers.</od>
+</option>
+<option><on>-lr</on><od>limit the ranges plotted.</od>
+</option>
+<option><on>-srng <ar>start</ar></on><od>set the first range to plot to be <ar>start</ar>.</od>
+</option>
+<option><on>-erng <ar>end</ar></on><od>set the last range to plot to be <ar>end</ar>.</od>
+</option>
+<option><on>-geo</on><od>plot in terms of geographic latitude.</od>
+</option>
+<option><on>-mag</on><od>plot in terms of geomagnetic latitude.</od>
+</option>
+<option><on>-old_aacgm</on><od>user older AACGM rather than AACGM-v2 for magnetic coordinates.</od>
+</option>
+<option><on>-latmin <ar>latmin</ar></on><od>force the lower latitude limit to be <ar>latmin</ar> degrees.</od>
+</option>
+<option><on>-latmax <ar>latmax</ar></on><od>force the upper latitude limit to be <ar>latmax</ar> degrees.</od>
+</option>
+<option><on>-ymajor <ar>ymajor</ar></on><od>set the interval of the Y-axis major tick mark to be <ar>ymajor</ar>.</od>
+</option>
+<option><on>-yminor <ar>yminor</ar></on><od>set the interval of the Y-axis minor tick mark to be <ar>yminor</ar>.</od>
+</option>
+<option><on>-ytick <ar>ytick</ar></on><od>set the number Y-axis tick marks <ar>ytick</ar>.</od>
+</option>
+<option><on>-fn <ar>expr</ar></on><od>apply the mathematic expression <ar>expr</ar> to the data before it is plotted.</od>
+</option>
+<option><on><ar>fitacfname</ar></on><od>filename of the <code>fitacf</code> format file to plot.</od>
+</option>
+<option><on><ar>inxname</ar></on><od>filename of the index file.</od>
+</option>
+<option><on>-old</on><od>file is in the <code>fit</code> format.</od>
+</option>
+<option><on><ar>fitname</ar></on><od>filename of the <code>fit</code> format file to plot.</od>
+</option>
+<option><on>-cfit</on><od>file is in the <code>cfit</code> format.</od>
+</option>
+<option><on><ar>cfitname</ar></on><od>filename of the <code>cfit</code> format file to plot.</od>
+</option>
+<option><on>-smr</on><od>file is in the <code>smr</code> format.</od>
+</option>
+<option><on>-fbeam <ar>fbeam</ar></on><od>assume that the first beam in a scan in the summary file is <ar>fbeam</ar>.</od>
+</option>
+<option><on><ar>smrname</ar></on><od>filename of the <code>smr</code> format file to plot.</od>
+</option>
+<option><on>-png</on><od>produce a Portable Network Graphics (PNG) image as the output.</od>
+</option>
+<option><on>-ps</on><od>produce a PostScript plot as the output.</od>
+</option>
+<option><on>-xp <ar>xoff</ar></on><od>set the X offset of the PostScript plot to <ar>xoff</ar>.</od>
+</option>
+<option><on>-yp <ar>xoff</ar></on><od>set the Y offset of the PostScript plot to <ar>yoff</ar>.</od>
+</option>
+<option><on>-ppm</on><od>produce a Portable PixMap (PPM) image as the output.</od>
+</option>
+<option><on>-ppmx</on><od>produce an extended Portable PixMap (PPMX) image as the output.</od>
+</option>
+<option><on>-xml</on><od>produce an XML image representation as the output.</od>
+</option>
+<option><on>-x</on><od>plot the data on an X-terminal.</od>
+</option>
+<option><on>-display <ar>display</ar></on><od>connect to the xterminal named <ar>display</ar>.</od>
+</option>
+<option><on>-xoff <ar>xoff</ar></on><od>open the window, <ar>xoff</ar> pixels from the left edge of the screen.</od>
+</option>
+<option><on>-yoff <ar>yoff</ar></on><od>open the window <ar>ypad</ar> pixels from the top edge of the screen.</od>
+</option>
+<option><on>-chisham</on><od>use the Chisham virtual height model.</od>
+</option>
+<synopsis><p>Generate a time series plot of data.</p></synopsis>
+<description><p>Generate a time series plot of data.</p>
+<p>The output can be to an XML representation of an image, a Portable PixMap (PPM) files, extended Portable PixMap (PPMX) file, Portable Network Graphics (PNG), or PostScript plot. The default output is PostScript. The plot is written to standard output.</p>
+<p>The options "<code>-pkey</code>", "<code>-vkey</code>", "<code>-wkey</code>", "<code>-fkey</code>" "<code>-nkey</code>" allow user defined color keys to be used.</p>
+<p>The color key file is a plain text file that defines the red green and blue components for each index in the color bar. Any line in the file beginning with a "<code>#</code>" is treated as a comment and ignored. The first line that is not a comment defines the number of entries in the table. The remaining lines in the file contain color values for each index, one value per line. The values are hexadecimal numbers of the form <em>rrggbb</em>, where <em>rr</em> is the red component, <em>gg</em> is the blue component and <em>bb</em> is the blue component.</p>
+<p>The number and complexity of the command line options makes typing them a laborious process, especially when producing multiple plots. To solve this problem, command line options can be placed in plain text file that can be parsed by the program using the " <code>-cf</code>" option. This allows the user to create a set of configuration files for producing different plots.</p> 
+</description>
+
+<example>
+<command>time_plot -x -old -gs -a -b 5 20041230.kod.fit</command>
+<description>Plot a time series of power,velocity and spectral width from the file "<code>20041230.kod.fit</code>". Mark ground scatter in grey. Display the plot on the X terminal.</description>
+</example>
+
+<example>
+<command>time_plot -ps -ex 6:00 -gs -cfit -v -km -b 5 20040120.kod.cfit &gt; kod.ps</command>
+<description>Generate a PostScript plot of a time series of velocity from the first six hours of data in the file "<code>20041230.kod.cfit</code>". Mark ground scatter in grey and plot range in kilometers. The plot is stored in the file "<code>kod.ps</code>".</description>
+</example>
+<example type="rplot">example1</example>
+
+<example>
+<command>time_plot -ex 3:00 -gs -cfit -srng 35 -a -erng 60 -b 5 20040120.kod.cfit &gt; kod.rp.xml</command>
+<description>Generate a PostScript plot of a time series of power, velocity and spectral width from the first six hours of data in the file "<code>20041230.kod.cfit</code>". Mark ground scatter in grey and only plot between ranges 35 and 60.</description>
+</example>
+<example type="rplot">example2</example>
+
+</binary>

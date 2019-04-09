@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>merge_grid</name>
+<location>src.bin/tk/tool/merge_grid</location>
+
+<syntax>combine_grid --help</syntax>
+<syntax>combine_grid [-vb] <ar>gridname</ar></syntax>
+<syntax>combine_grid -old [-vb] <ar>gridname</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on><ar>gridname</ar></on><od>filename of the <code>grdmap</code> format file.</od>
+</option>
+<option><on>-old</on><od>the input file is a <code>grd</code> format file.</od>
+</option>
+<synopsis><p>Merge line of sight vectors in a <code>grd</code> or <code>grdmap</code> file to produce two dimensional vectors.</p></synopsis>
+<description><p>Merge line of sight vectors in a <code>grd</code> or <code>grdmap</code> file to produce two dimensional vectors.</p>
+<p>The output in the form of a <code>grd</code> or <code>grdmap</code> file is written to standard output.</p>
+</description>
+
+<example>
+<command>merge_grid -old 20040830.grd &gt; 20040830.grd.2</command>
+<description>From the <code>grd</code> file "<code>20040830.grd</code>" create a new grid file called "<code>20040830.grd.2</code>" that contains the two-dimensional vector found by merging line of sight vectors.</description>
+</example>
+
+</binary>

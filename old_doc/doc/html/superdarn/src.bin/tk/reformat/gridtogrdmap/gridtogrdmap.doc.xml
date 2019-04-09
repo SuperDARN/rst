@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>gridtogrdmap</name>
+<location>src.bin/tk/reformat/gridtogrdmap</location>
+<syntax>gridtogrdmap --help</syntax>
+<syntax>gridtogrdmap [<ar>gridname</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+
+<option><on><ar>gridname</ar></on><od>filename of the <code>grd</code>  format file. If this is omitted the file is read from standard input.</od>
+</option>
+
+<synopsis><p>Convert a <code>grid</code> format file to a <code>grdmap</code> format file.</p></synopsis>
+
+
+<description><p>Convert a <code>grid</code> format file to a <code>grdmap</code> format file.</p>
+<p>The converted file is written to standard output.</p>
+</description>
+
+<example>
+<command>gridtogrdmap 20040402.grd &gt; 20040402.grdmap</command>
+<description>Convert the <code>grd</code> format file "<code>20040402.grd</code>" to the <code>grdmap</code> format file "<code>20040402.grdmap</code>".
+</description>
+</example>
+
+
+
+</binary>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>radar_id</name>
+<location>src.bin/tk/tool/radar_id</location>
+<syntax>radar_id --help</syntax>
+<syntax>radar_id [-vb] [-n] [-s] [-o] [-h] [-d <ar>yyyymmdd</ar>] [-t <ar>hr:mn</ar>] <ar>stid</ar></syntax>
+<syntax>radar_id -c [-vb] [-n] [-s] [-o] [-h] [-d <ar>yyyymmdd</ar>] [-t <ar>hr:mn</ar>] <ar>stnum</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+
+<option><on>-vb</on><od>verbose. Print out the extra information describing the output.</od></option>
+
+<option><on>-n</on><od>print the station name.</od>
+</option>
+
+<option><on>-s</on><od>print the operational status of the station.</od>
+</option>
+<option><on>-o</on><od>print the name of the operator of the station.</od>
+</option>
+<option><on>-h</on><od>print the geographic (longitude,latitude), location of the station.</od>
+</option>
+<option><on>-d <ar>yyyymmdd</ar></on><od>get the hardware information for the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-t <ar>hr:mn</ar></on><od>get the hardware information for the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on><ar>stid</ar></on><od>station identifier code.</od></option>
+
+<option><on>-c</on><od>get the station identifier code, not the station number (assumes that the station number is given on the command line).</od>
+</option>
+<option><on><ar>stnum</ar></on><od>station number.</od></option>
+
+<synopsis><p>Print out information about the radar sites.</p></synopsis>
+
+
+<description><p>Displays information about a radar site on standard output. The default operation is for the program to display the station identifier number when supplied with the radar identifier code. The other command line options will display additional information.</p>
+<p>The "<code>-c</code>" option will display the radar identifier code when the station identifier number is given on the command line.</p>
+</description>
+
+<example>
+<command>radar_id -vb -n -s -o gbr</command>
+<description>Display the name, status, operator and radar identifier number for the station with the identifier code "gbr". The requested information is labeled.</description>
+</example>
+
+
+
+<example>
+<command>radar_id -vb -d 20040830 -t 0:00 -h -n -s -o hal</command>
+<description>Display the name, status, operator, location and radar identifier number for the station with the identifier code "hal" and the universal time of midnight on the 30th August,2004. The requested information is labeled.</description>
+</example>
+
+
+
+
+</binary>

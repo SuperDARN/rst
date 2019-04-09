@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>analysis</project>
+<name>istp_text</name>
+<location>src.bin/cdf/istp_text</location>
+<syntax>istp_text --help</syntax>
+<syntax>istp_text  [-cf <ar>cfgname</ar>] [-h] [-path <ar>pathname</ar>] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar> [-gse] [-pos] [-mfi] [-swe] [-mag] [-pla] [-mgf] [-lep] [-cpi] [-ace] [-wind] [-imp8] [-geotail]</syntax>
+<synopsis><p>Extract ASCII listings of  ISTP data from CDF files.</p></synopsis>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-cf <ar>cfname</ar></on><od>read command line options from the file <ar>cfname</ar>.</od>
+</option>
+<option><on>-h</on><od>include headers in the text file.</od>
+</option>
+<option><on>-path <ar>path</ar></on><od>read the data files from the directory <ar>path</ar>.</od>
+</option>
+<option><on>-sd <ar>yyyymmdd</ar></on><od>extract starting from the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-st <ar>hr:mn</ar></on><od>extract starting from the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ed <ar>yyyymmdd</ar></on><od>stop extracting at the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-et <ar>hr:mn</ar></on><od>stop extracting at the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ex <ar>hr:mn</ar></on><od>extract an interval whose extent is <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-gse</on><od>plot in GSE coordinates, not GSM.</od>
+</option>
+<option><on>-pos</on><od>include spacecraft position in the text file.</od>
+</option>
+<option><on>-mfi</on><od>include MFI data.</od>
+</option>
+<option><on>-swe</on><od>include SWE data.</od>
+</option>
+<option><on>-mag</on><od>include MAG data.</od>
+</option>
+<option><on>-pla</on><od>include PLA data.</od>
+</option>
+<option><on>-mgf</on><od>include MGF data.</od>
+</option>
+<option><on>-lep</on><od>include LEP data.</od>
+</option>
+<option><on>-cpi</on><od>include CPI data.</od>
+</option>
+<option><on>-ace</on><od>include ACE data.</od>
+</option>
+<option><on>-wind</on><od>include Wind data.</od>
+</option>
+<option><on>-imp8</on><od>include IMP8 data.</od>
+</option>
+<option><on>-geotail</on><od>include Geotail data.</od>
+</option>
+<description>
+<p>Generates a plain ASCII text file containing ISTP magnetic field and solar wind data from a set of CDF files. The file is written to standard output.</p>
+<p>The program usually produces 24 hours of magnetic field data in GSM co-ordinates for a given start date and satellite.</p>
+<p>The data files are taken from the sub-directories "<code>ace</code>", "<code>wind</code>", "<code>imp8</code>" and "<code>geotail</code>", of the path given by the "<code>-path</code>" option or by the environment variable <ar>ISTP_PATH</ar>.</p>
+</description>
+
+
+<example>
+<command>istp_text  -ace -sd 19990406 &gt; mfi.txt</command>
+<description>Generate a text file containing 24 hours of ACE data starting at 00:00UT on April, 6 1999. The output is stored in the file "<code>mfi.txt</code>".</description>
+</example>
+
+<example>
+<command>istp_text -wind -mfi -swe -pos -sd 19971014 -st 4:00 -ex 8:00 &gt; 19981112.wnd.txt</command>
+<description>
+Generate a text file containing 8 hours of Wind MFI, SWE and position data starting at 04:00UT October 14, 1997. The output is stored in the file "<code>19981112.wnd.txt</code>".</description>
+</example>
+
+<example>
+<command>istp_text -ace -mfi -pos -sd 19990406 -st 6:00 -ed 19990408 -et 12:00 &gt; mfi+pos.txt</command>
+<description>
+Generate a text file containing ACE MFI and Position data, starting at 06:00UT April 6, 1999 and ending at 12:00UT April 8,1999. The output is stored in the file "<code>mfi+pos.txt</code>".</description>
+</example>
+
+
+
+
+
+</binary>

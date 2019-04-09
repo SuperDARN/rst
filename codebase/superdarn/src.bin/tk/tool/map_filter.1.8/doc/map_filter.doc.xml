@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>map_filter</name>
+<location>src.bin/tk/tool/map_filter</location>
+<syntax>map_filter --help</syntax>
+<syntax>map_filter [-old] [<ar>mapname</ar>]</syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-old</on><od>the input file is a <code>map</code> format file.</od></option>
+<option><on><ar>mapname</ar></on><od>filename of the <code>cnvmap</code> format file. If this is omitted, the file will be read from standard input.</od>
+</option>
+
+<synopsis><p>Supersample a convection map file in time.</p></synopsis>
+<description><p>Supersample a convection map file in time.</p>
+<p>The task supersamples by skipping over records in the output file for a fixed length of time. By default the task will write a record every 10 minutes</p></description>
+
+<example>
+<command>map_filter -old 20040830.map &gt; 20040830.map.s</command>
+<description>Supersample the <code>map</code> format file "<code>20040830.map</code>" to produce the file "<code>20040830.map.s</code>".</description>
+</example>
+
+</binary>

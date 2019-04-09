@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>general</project>
+<name>raster</name>
+<location>src.lib/raster</location>
+<function>
+<name>Raster</name>
+<location>src.lib/raster</location>
+<header>general/raster.h</header>
+<syntax>void *Raster(int wdt,int hgt,int sparse,int type,void *zero,int poly,float *pnt,int *vertex,void *value);</syntax>
+<description><p>The <fn href="Raster.html">Raster</fn> function uses linear interpolation to extrapolate data values from a limited set of points arranged in a grid.</p>
+<p>The function returns a two-dimensional array, whose extents are equal to the arguments <ar>wdt</ar> and <ar>hgt</ar>. The array is in row major form. The remaining arguments describe the grid of input data.</p>
+<p>If the argument <ar>sparse</ar> has a non-zero value then the input grid is sparsely populated and not all cells have an assigned value. In this case a slower algorithm must be used to interpolate the data.</p> 
+<p>The argument <ar>type</ar> determines the type of input data, possible values are:</p>
+<center><table>
+<tr><td><code>raster_INT</code></td><td>Signed integer.</td></tr>
+<tr><td><code>raster_FLOAT</code></td><td>Single precision floating point.</td></tr>
+<tr><td><code>raster_DOUBLE</code></td><td>Double precision floating point.</td></tr>
+</table></center>
+<p>The data type of the returned array matches that of the input grid.</p>
+<p>The argument <ar>zero</ar> is a pointer to the value to use for points in the array that have no interpolated value. The pointer should be to the same data type as the input grid.</p>
+<p>The x and y co-ordinates of each grid point are described by pairs of elements from the array <ar>pnt</ar>. The range of the x and y coordinates should be between zero and <ar>wdt</ar>.</p>
+<p>The associated data value for each grid point is defined by the elements of the array <ar>value</ar>.</p>
+<p>The arrangement of the grid is described in terms of four sided polygons formed by linking grid points together. The argument <ar>poly</ar> defines the number of polygons in the grid and a complete polygon is described by a group of four elements from the array <ar>vertex</ar>. The elements of the array define the grid points at the four vertices of a polygon.</p>
+</description>
+<returns>Returns a pointer to an array containing the interpolated data. If an error occurs a 
+<code>NULL</code> pointer is returned.</returns>
+<errors>If an error occurs a NULL pointer is returned.</errors>
+
+<example type="rplot">Raster</example>  
+<example type="source">Raster.c</example>
+
+
+</function>
+
+
+<function>
+<name>RasterHigh</name>
+<location>src.lib/raster</location>
+<header>general/raster.h</header>
+<syntax>void *RasterHigh(int wdt,int hgt,int sparse,int type,void *zero,int poly,double *pnt,int *vertex,void *value);</syntax>
+<description><p>The <fn href="RasterHigh.html">RasterHigh</fn> function uses linear interpolation to extrapolate data values from a limited set of points arranged in a grid. This routine uses double precision arithmetic for the interpolation</p>
+<p>The function returns a two-dimensional array, whose extents are equal to the arguments <ar>wdt</ar> and <ar>hgt</ar>. The array is in row major form. The remaining arguments describe the grid of input data.</p>
+<p>If the argument <ar>sparse</ar> has a non-zero value then the input grid is sparsely populated and not all cells have an assigned value. In this case a slower algorithm must be used to interpolate the data.</p> 
+<p>The argument <ar>type</ar> determines the type of input data, possible values are:</p>
+<center><table>
+<tr><td><code>raster_INT</code></td><td>Signed integer.</td></tr>
+<tr><td><code>raster_FLOAT</code></td><td>Single precision floating point.</td></tr>
+<tr><td><code>raster_DOUBLE</code></td><td>Double precision floating point.</td></tr>
+</table></center>
+<p>The data type of the returned array matches that of the input grid.</p>
+<p>The argument <ar>zero</ar> is a pointer to the value to use for points in the array that have no interpolated value. The pointer should be to the same data type as the input grid.</p>
+<p>The x and y co-ordinates of each grid point are described by pairs of elements from the array <ar>pnt</ar>. The range of the x and y coordinates should be between zero and <ar>wdt</ar>.</p>
+<p>The associated data value for each grid point is defined by the elements of the array <ar>value</ar>.</p>
+<p>The arrangement of the grid is described in terms of four sided polygons formed by linking grid points together. The argument <ar>poly</ar> defines the number of polygons in the grid and a complete polygon is described by a group of four elements from the array <ar>vertex</ar>. The elements of the array define the grid points at the four vertices of a polygon.</p>
+</description>
+<returns>Returns a pointer to an array containing the interpolated data. If an error occurs a 
+<code>NULL</code> pointer is returned.</returns>
+<errors>If an error occurs a NULL pointer is returned.</errors>
+
+<example type="rplot">RasterHigh</example>  
+<example type="source">RasterHigh.c</example>
+
+
+</function>
+
+
+</library>

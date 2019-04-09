@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<config>
+  <tree>
+     <delim>/</delim>
+     <path>binary</path>
+  </tree>
+
+
+  <xmldoc>
+    <tagdb type="file">tagdb/help.tagdb.xml</tagdb>
+    <root type="env">URLBASE</root>
+    <xml>
+      <element>
+      <name>name</name>  
+      <default type="text">None</default>
+      </element>
+
+      <element>
+      <name>syntax</name>  
+      <default type="text">None</default>
+      <action>"&xml;\n",
+</action>
+      </element>
+
+      <element>
+      <name>option</name>  
+      <default type="text">None</default>
+      <action>"&xml;\n",
+</action>
+      </element>
+
+      <element>
+      <name>synopsis</name>  
+      <default type="text">None</default>
+      </element>
+
+      <element>
+      <name>description</name>  
+      <default type="text">None</default>
+      </element>
+
+      <element>
+      <name>example</name>  
+      <default type="text">None</default>
+      </element>
+
+
+    </xml>
+  </xmldoc>
+
+  <map>
+     <entry>
+        <search>NAME</search>
+        <replace>name</replace>
+     </entry>
+
+     <entry>
+        <search>SYNTAX</search>
+        <replace>syntax</replace>   
+     </entry>
+
+     <entry>
+        <search>SYNOPSIS</search>
+        <replace>synopsis</replace>
+     </entry>
+
+     <entry>
+        <search>OPTION</search>
+        <replace>option</replace>
+     </entry>
+
+    
+     <entry>
+        <search>DESCRIPTION</search>
+        <replace>description</replace>
+     </entry>
+
+     <entry>
+        <search>EXAMPLE</search>
+        <replace>example</replace>
+     </entry>
+
+
+  </map>
+
+   
+  <script type="file">sk/error.sk</script>
+
+  <match>
+     <element>name</element>
+  </match>
+
+</config>
+
+

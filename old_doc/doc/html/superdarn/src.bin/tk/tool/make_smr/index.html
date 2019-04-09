@@ -1,0 +1,72 @@
+<head>
+<title>make_smr</title>
+<link rel=stylesheet href="../../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../../superdarn/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/tool/index.html>tool</a></td><td>|</td>
+<td>make_smr</td>
+<td width=100% align=right><a href=../../../../../superdarn/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">make_smr</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+make_smr --help<br>make_smr [-vb] [-t <em>minpwr</em>] [-b <em>beams...</em>] <em>fitacfnames...</em><br>make_smr -old [-vb] [-t <em>minpwr</em>] [-b <em>beams...</em>] [<em>fitname</em>]<br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Creates a <code>smr</code> format file from either a <code>fit</code> or <code>fitacf</code> format file.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-vb</code></td><td valign="top">verbose. Log information to the console.</td></tr>
+<tr><td width="150" valign="top"><code>-t <em>minpwr</em></code></td><td valign="top">filter out data with values of lag-zero power less than <em>minpwr</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-b <em>beams</em></code></td><td valign="top">record the beams specified by <em>beams</em> in the <code>smr</code> file. The list of beams is comma separated.</td></tr>
+<tr><td width="150" valign="top"><code><em>fitacfnames...</em></code></td><td valign="top">filenames of the <code>fitacf</code> format file.</td></tr>
+<tr><td width="150" valign="top"><code>-old</code></td><td valign="top">the input file is in the <code>fit</code> format.</td></tr>
+<tr><td width="150" valign="top"><code><em>fitname</em></code></td><td valign="top">filename of the <code>fit</code> format file.</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Creates a <code>smr</code> format file from either a <code>fit</code> or <code>fitacf</code> format file.</p>
+<p>The summary file is written to standard output.</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">make_smr -old -vb -pwr 5 -b 5,10 19971020.gbr.fit &gt; 19971020.gbr.smr</pre></td></tr></table>
+<p>Generates a summary from the <code>fit</code> file "<code>19971020.gbr.fit</code>" to produce a file called "<code>19971020.gbr.smr</code>". Ranges with lag-zero power less than 5dB are ignored. Beams 5 and 10 are recorded. Status is logged on standard error.</p>
+
+<table ><tr><td class="docbox" ><pre width="80">make_smr -b 4,8,12 19981105*.kap.fitacf &gt; 19981105.kap.smr</pre></td></tr></table>
+<p> Generates a summary from the <code>fitacf</code> files called "<code>19981105*.kap.fitacf</code>" to produce a file called "19981105.kap.smr". Ranges with lag-zero power less than 3dB are ignored. Beams 4,8 and 12 are recorded.</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

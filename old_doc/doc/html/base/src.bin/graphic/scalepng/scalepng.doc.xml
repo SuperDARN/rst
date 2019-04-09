@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>base</project>
+<name>scalepng</name>
+<location>src.bin/graphic/scalepng</location>
+
+<syntax>scalepng --help</syntax>
+<syntax>scalepng [-smooth] [-wdt <ar>width</ar>] [-hgt <ar>height</ar>] [<ar>name</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>-smooth</on><od>smooth the output image.</od>
+</option>
+<option><on>-wdt <ar>width</ar></on><od>make the output image width pixels wide.</od>
+</option>
+<option><on>-hgt <ar>height</ar></on><od>make the output image height pixels tall.</od>
+</option>
+<option><on><ar>name</ar></on><od>input image filename. If this is omitted the image will be read from standard input.</od>
+</option>
+<synopsis><p>Scale a Portable Network Graphics (PNG) image.</p></synopsis>
+<description><p>Scale a Portable Network Graphics (PNG) image.</p>
+<p>The scaled PNG image file is written to standard output.</p></description>
+
+<example>
+<command>scalepng -wdt 256 -hgt 256 inp.png &gt; out.png</command>
+<description>Scale the PNG file <code>inp.png</code> to 256x256 pixels and store it in the file <code>out.png</code>.
+</description>
+</example>
+
+<example>
+<command>scalepng -smooth -wdt 64 -hgt 64 inp.png &gt; out.png</command>
+<description>Scale the PNG file <code>inp.png</code> to 64x64 pixels with smoothing and store it in the file <code>out.png</code>.
+</description>
+</example>
+
+</binary>

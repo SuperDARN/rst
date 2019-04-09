@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>base</project>
+<name>makeall</name>
+<location>src.bin/build/makeall</location>
+<syntax>makeall --help</syntax>
+<syntax>makeall [-vb] [-a] [-q] <ar>src</ar></syntax>
+<syntax>makeall [-vb] [-a] [-q] <ar>src</ar> <ar>lst...</ar></syntax>
+<syntax>makeall [-vb] [-a] [-q] <ar>src</ar> stdin</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log status to standard error in addition to standard out.</od>
+</option>
+<option><on>-a</on><od>compile all directories found, do not perform version checking to find the most recent.</od>
+</option>
+<option><on>-q</on><od>quiet mode. Keep going if an error occurs.</od>
+</option>
+<option><on><ar>src</ar></on><od>source directory in which to search for source code.</od>
+</option>
+<option><on><ar>lst...</ar></on><od>list of source code directories to compile.</od>
+</option>
+<option><on>stdin</on><od>read source code directories from standard input.</od>
+</option>
+
+<synopsis>Searches a source code tree looking for source code directories and compiles them.</synopsis>
+
+
+<description>
+<p>The program searches the directory tree specified as a source directory looking for source code to compile. Every time a makefile is encountered make is run in that directory.</p>
+<p>Different versions of the same software can be installed on the same system and are distinguished by having the major and minor version numbers appended to the library home directory name. By default if two versions are installed on a system, only the most recent is compiled. This behavior can be overridden by specifying the "<code>-a</code>" option.</p>
+<p>Any additional arguments on the command line after the source directory are assumed to be a list of specific software to compile. The search of the directory tree is still performed, but only the source code in directories that match the list is compiled. The version number is stripped from the end of the directory name when comparing it with the list.</p>
+<p>If the first argument after the source directory is "<code>stdin</code>", the list of directories is read from the standard input stream.</p>
+<p>The program will terminate if an error occurs, unless the "<code>-q</code>" option is specified.</p>
+<p>All operations are logged to standard output so that they can be recorded in a log file.</p>
+</description>
+
+<example>
+<command>makeall code/src.lib/general &gt; log.make</command>
+<description>Search the directory "<code>code/src.lib/general</code>" looking for software to compile. Compile the most recent versions and record a log of operations in the file "<code>log.make</code>".</description>
+</example>
+
+<example>
+<command>makeall -vb code/src.lib/general tcpip web task &gt; log.make</command>
+<description>
+Search the directory "<code>code/src.lib/general</code>" looking for software to compile in the directories "<code>tcpip</code>", "<code>web</code>" and "<code>task</code>". Compile the most recent versions and record a log of operations in the file "<code>log.make</code>". The log is also reported to standard error.</description>
+</example> 
+
+
+
+</binary>

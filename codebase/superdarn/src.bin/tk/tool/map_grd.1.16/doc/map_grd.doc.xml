@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>map_grd</name>
+<location>src.bin/tk/tool/map_grd</location>
+
+<syntax></syntax>
+<syntax>map_grd --help</syntax>
+<syntax>map_grd [-vb] [-old] [-old_aacgm] [-sh] [-l <ar>latmin</ar>] [<ar>gridname</ar>]</syntax>
+<syntax></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-old</on><od>the input file is a <code>grd</code> format file and the output is a</od></option>
+<option><on></on><od>  <code>map</code> format file.</od></option>
+<option><on>-old_aacgm</on><od>uses the older AACGM software and coefficients. The default</od></option>
+<option><on></on><od>  is to use AACGM-v2.</od></option>
+<option><on>-sh</on><od>the map file is for southern hemisphere data.</od>
+</option>
+<option><on>-l <ar>latmin</ar></on><od>set the lower latitude boundary to <ar>latmin</ar>.</od>
+</option>
+<option><on>-empty</on><od>create an empty map file without any input grid data.</od>
+</option>
+<option><on>-sd <ar>yyyymmdd</ar></on><od>start empty file from the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-st <ar>hr:mn</ar></on><od>start empty file from the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ed <ar>yyyymmdd</ar></on><od>end empty file at the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-et <ar>hr:mn</ar></on><od>end empty file at the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ex <ar>hr:mn</ar></on><od>use the interval for empty file whose extent is <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-tl <ar>tlen</ar></on><od>create empty records of length <ar>tlen</ar> seconds.</od>
+</option>
+<option><on><ar>gridname</ar></on><od>filename of the <code>grdmap</code> format file. If this is omitted, the file will</od></option>
+<option><on></on><od>  be read from standard input.</od></option>
+<synopsis><p>Reformats a grid file into an empty <code>cnvmap</code> format file.</p></synopsis>
+
+<description><p>Creates an empty convection map file from a grid file.</p>
+<p>The file created is written to standard output.</p>
+<p>The output is in the map file format but most of the data fields are empty. Subsequent processing is required to add such things as the IMF data, Model vectors and coefficients of the spherical harmonic fit.</p>
+</description> 
+
+<example>
+<command>map_grd -l 60 -vb 19981020.grd &gt; 19981020.map</command>
+<description>Creates an empty map file from the grid file called  "<code>19981020.grd</code>". The lower latitude limit is set to 60 degrees. The file created is called "<code>19981020.map</code>" and status is logged to standard error.</description>
+</example>
+
+</binary>

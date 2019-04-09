@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>analysis</project>
+<name>igrfeval</name>
+<location>src.bin/igrf/igrfeval</location>
+
+<syntax>igrfeval --help</syntax>
+<syntax>igrfeval [-m] [-lat <ar>lat</ar>] [-lon <ar>lon</ar>] [-alt <ar>alt</ar>] [-fmt <ar>format</ar>]</syntax>
+<syntax>igrfeval [-m] [-f <ar>filename</ar>] [-fmt <ar>format</ar>]</syntax>
+
+<synopsis><p>Calculate IGRF magnetic field components and magnitude [nT].</p></synopsis>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-m</on><od>location is in geomagnetic rather than geographic coordinates.</od>
+</option>
+<option><on>-lat <ar>lat</ar></on><od>calculate for the latitude <ar>lat</ar>.</od>
+</option>
+<option><on>-lon <ar>lon</ar></on><od>calculate for the longitude <ar>lon</ar>.</od>
+</option>
+<option><on>-alt <ar>alt</ar></on><od>calculate for the altitude in kilometers, <ar>alt</ar>.</od>
+</option>
+<option><on>-re <ar>Re</ar></on><od>calculate for the Earth radius in kilometers, <ar>Re</ar>.</od>
+</option>
+<option><on>-d <ar>yyyymmdd</ar></on><od>calculate for the date <ar>yyyymmdd</ar> (v2 only).</od>
+</option>
+<option><on>-t <ar>hr:mn</ar></on><od>calculate for the time <ar>hr:mn</ar> (v2 only).</od>
+</option>
+<option><on>-fmt <ar>format</ar></on><od>use the string <ar>fmt</ar>, to format the output.</od>
+</option>
+<option><on>-xyz</on><od>Output should be in Cartesian rather than North/East/Down coordinates.</od>
+</option>
+<option><on>-f <ar>filename</ar></on><od>read a sequence of latitudes, longitudes and altitudes from the ASCII file, <ar>filename</ar>.</od>
+</option>
+<option><on>-old_aacgm</on><od>use old AACGM coordinates rather than v2.</od>
+</option>
+
+<description>
+<p>Calculates IGRF magnetic field components and magnitude in units of nanotesla [nT]. The output is written to standard output using the formatting string given by the "<code>-fmt</code>" option. The format string should be in the same format as that used by the <code>printf</code> function and will take two double precision floating point numbers as arguments.</p>
+<p>If the "<code>-f</code>" option is given, the latitude,longitude and altitude are read from a space separated ASCII file. If the filename is "<code>-</code>" input is read from standard input.</p>
+</description>
+
+<example>
+<command>igrfeval -lat 85.4 -lon 32.4 -alt 300.0</command>
+<description>Calculate the IGRF magnetic field components at the coordinate given by latitude of 85.4 degrees, longitude 32.4 degrees and altitude of 300 kilometers.</description>
+</example>
+
+<example>
+<command>igrfeval -m -f aacgm.txt</command>
+<description>Calculate the IGRF magnetic field components for the geomagnetic coordinates in the file "<code>aacgm.txt</code>".</description>
+</example>
+
+</binary>

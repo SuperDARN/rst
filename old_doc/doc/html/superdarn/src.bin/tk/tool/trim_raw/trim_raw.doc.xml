@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>trim_raw</name>
+<location>src.bin/tk/tool/trim_raw</location>
+
+<syntax>trim_raw --help</syntax>
+<syntax>trim_raw [-vb] [-t <ar>thr</ar>] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>] [<ar>rawacfname</ar>]</syntax>
+<syntax>trim_raw -old [-vb] [-t <ar>thr</ar>] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>] <ar>rawinput</ar> <ar>rawoutput</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-t <ar>thr</ar></on><od>use the threshold factor <ar>thr</ar> to detemine whether data is saved or not (note: this option is deprecated).</od>
+</option>
+<option><on>-sd <ar>yyyymmdd</ar></on><od>extract starting from the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-st <ar>hr:mn</ar></on><od>extract starting from the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ed <ar>yyyymmdd</ar></on><od>stop extracting at the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-et <ar>hr:mn</ar></on><od>stop extracting at the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ex <ar>hr:mn</ar></on><od>extract an interval whose extent is <ar>hr:mn</ar>.</od>
+</option>
+<option><on><ar>rawacfname</ar></on><od>filename of the <code>rawacf</code> format file to trim. If this is omitted, the file will be read from standard input</od>
+</option>
+<option><on>-old</on><od>the input file is a <code>raw</code> (<code>dat</code>) format file.</od>
+</option>
+<option><on><ar>rawinput</ar></on><od>filename of the <code>raw</code> (<code>dat</code>) format file to trim.</od>
+</option>
+<option><on><ar>rawoutput</ar></on><od>filename of the <code>raw</code> (<code>dat</code>) format file to create.</od>
+</option>
+<synopsis><p>Extracts a section from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file.</p></synopsis>
+<description><p>Extracts a section from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file.</p>
+<p>If the input file is a <code>rawacf</code> format file, the extracted section will be written to standard output</code></description>
+
+<example>
+<command>trim_raw -old -st 11:00 -ex 1:00 20000110.kap.dat 2000011011.kap.dat</command>
+<description>Extracts a one-hour section starting at 11:00UT from the <code>raw</code> file "<code>20000110.kap.dat</code>" to produce the raw file called "<code>200001101.kap.dat</code>".
+</description>
+</example>
+
+<example>
+<command>trim_raw -sd 19990410 -st 22:00 -ed 19990411 -et 4:00 -t 3 19990410.gbr.rawacf &gt; 1999041022.gbr.rawacf</command>
+<description>Extract a six-hour section starting at 22:00UT April 10, 1999 from the <code>rawacf</code> file "<code>19990410.gbr.rawacf</code>" to produce the raw file "<code>1999041022.gbr.rawacf</code>". A threshold of 3 is applied to the lag-zero power.</description>
+</example>
+
+</binary>

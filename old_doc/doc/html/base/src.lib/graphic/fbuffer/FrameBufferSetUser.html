@@ -1,0 +1,72 @@
+
+<head>
+<title>FrameBufferSetUser</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../base/index.html>base</a></td>
+<td>|</td><td><a href=../../../../base/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/index.html>graphic</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/fbuffer/index.html>fbuffer</a></td><td>|</td>
+<td>FrameBufferSetUser</td>
+<td width=100% align=right><a href=../../../../base/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">FrameBufferSetUser</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">int FrameBufferSetUser(<a href="structFrameBuffer.html"><code>struct FrameBuffer</code></a> *ptr, int (*pixel)(int wdt,int hgt,char *img,char *msk, int x,int y,int depth,int off,int sze, unsigned char r,unsigned char g,unsigned char b, unsigned char a,void *data),void *data);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">base/rfbuffer.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">rfbuf</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="FrameBufferSetUser.html"><code>FrameBufferSetUser</code></a> function sets the pixel renderer of a frame buffer to a user supplied function.</p>
+<p>The argument <em>ptr</em> is a pointer to the frame buffer. The argument <em>pixel</em> is a pointer to a function of the form:</p>
+<center><table><tr><td  class="docbox" style="font-family: courier;">
+int pixel(int wdt,int hgt,char *img,char *msk, int x,int y,int depth,int off,int sze, unsigned char r,unsigned char g,unsigned char b, unsigned char a,void *dptr);
+</td></tr></table></center>
+<p>The arguments <em>wdt</em> and <em>hgt</em> give the size of the frame buffer. The arguments <em>img</em> and <em>msk</em> point to the image data and the alpha channel mask.</p>
+<p>The coordinates of the point to render are given by the arguments <em>x</em> and <em>y</em>. The bit depth of the frame buffer is given by the argument <em>depth</em>.</p>
+<p>The offset into the image data of the point to render is given by the argument <em>off</em> and the size in bytes of one channel in the frame buffer is given by the argument <em>sze</em>.</p>
+<p>The red, green, blue and alpha components of the color to use for the point are given by the arguments <em>r</em>, <em>g</em>, <em>b</em> and <em>a</em>.
+</p>
+
+<p>The <em>data</em> argument of the <a href="FrameBufferSetUser.html"><code>FrameBufferSetUser</code></a> function is passed directly as the <em>dptr</em> argument and allows extra parameters to be passed to the function.</p>
+
+
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns zero on success. On error, (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td>None</td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

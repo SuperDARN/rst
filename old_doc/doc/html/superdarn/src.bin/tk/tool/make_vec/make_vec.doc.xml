@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>make_vec</name>
+<location>src.bin/tk/tool/make_vec</location>
+
+<syntax>make_vec --help</syntax>
+<syntax>make_vec [-vb] [-i <ar>stid</ar>] <ar>name</ar></syntax>
+<syntax>make_vec -old [-vb] [-i <ar>stid</ar>] <ar>name</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-i <ar>stid</ar></on><od>create the <code>vec</code> data for the radar station with identifier <ar>stid</ar>.</od>
+</option>
+<option><on><ar>name</ar></on><od>filename of the <code>grdmap</code> format file.</od>
+</option>
+<option><on>-old</on><od>the input file is a <code>grd</code> format file.</od>
+</option>
+<synopsis><p>Creates a <code>vec</code> format file from a <code>grd</code> format or <code>grdmap</code> format file.</p></synopsis>
+<description><p>Creates a <code>vec</code> format file from a <code>grd</code> format or <code>grdmap</code> format file.</p></description>
+
+<example>
+<command>make_vec -old -vb -gbr 19971020.grd &gt; 19971020.gbr.vec</command>
+<description>Generates vec data from the grid file  "<code>19971020.grd</code>" to produce a file called "<code>19971020.gbr.vec</code>". Data for the Goose Bay radar is included in the analysis. Status is logged on standard error.</description>
+</example>
+
+<example>
+<command>cat 19981105.grdmap | make_vec -kap &gt; 19981105.kap.vec</command>  
+<description>Generates vec data from the <code>grdmap</code> file called "19981105.grdmap" to produce a file called "<code>19981105.kap.vec</code>". Data for the Kapuskasing Radar is included.</description>
+</example>
+
+</binary>

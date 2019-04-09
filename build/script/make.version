@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# make.version
+# ============
+# R.J.Barnes
+#
+# Purpose:
+#
+# Make a version header file.
+#
+# Syntax:
+#
+# make.version [path]
+#
+# Description:
+#
+# Make a version header file.
+
+##############################################################################
+
+path=${1}
+vstr=`get.version ${path}`
+s=$?
+if test ${s} -ne 0
+then
+  echo "Error getting version number."
+  exit 1
+fi
+
+vmajor=${vstr%%.*}
+vminor=${vstr##*.}
+
+echo "/*version.h" > version.h
+echo "  =========*/" >> version.h
+echo "" >> version.h
+echo " #define MAJOR_VERSION \""${vmajor}"\"" >> version.h
+echo " #define MINOR_VERSION \""${vminor}"\"" >> version.h
+
+exit 0

@@ -1,0 +1,96 @@
+<head>
+<title>IDL Data Structure for raw I and Q data</title>
+<link rel=stylesheet href=../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table class="location"><tr>
+<td><a href="../../../index.html">Home</a><td>|</td>
+<td><a href=../../../superdarn/index.html>superdarn</a></td><td>|</td>
+<td><a href=../../../superdarn/src.doc/rfc/index.html>rfc</a></td><td>|</td>
+<td>RFC0029</td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">RFC: 0029</h2>
+<table>
+<tr><td class="docsubtitle" valign=top><h3>Title</h3></td></tr>
+<tr><td></td><td>
+<b>IDL Data Structure for raw I and Q data</b>
+</td></tr>
+
+<tr><td class="docsubtitle" valign=top><h3>Author</h3></td></tr>
+<tr><td></td><td>
+<b>R.J.Barnes</b>
+</td></tr>
+
+
+<tr><td class="docsubtitle"><h3>Summary</h3></td></tr>
+<tr><td></td><td>
+<p>A description of the IDL data structure used to store raw I and Q data.</p>
+</td></tr>
+<tr><td class="docsubtitle"><h3>Description</h3></td></tr>
+<tr><td></td><td>
+
+<h4>1. Introduction</h4>
+<p>The raw ACF data is the lowest level  (zero order) data product from the SuperDARN radars. Within IDL a structure is used to store the I and Q data.</p>
+
+<h4>2. Constants</h4>
+<p>A constant is used to define array limits</p>
+<center>
+<table cellspacing="3" bgcolor="e0e0e0" width="100%">
+<tr><td><pre>MAXNAVE=300
+</pre></td></tr></table>
+</center>
+<h4>3. Raw I and Q  data structure <code>IQData</code></h4>
+
+<center>
+<table cellspacing="3" bgcolor="e0e0e0" width="100%">
+<tr><td><pre>raw={IQData, $
+       revision: {rlstr, major: 0L, $        ; major revision 
+                            minor: 0L}, $    ; minor revision
+       chnnum: 0L, $                         ; number of channels
+       smpnum: 0L, $                         ; number of samples per sequence
+       skpnum: 0L, $                         ; number of samples to skip
+       seqnum: 0L, $                         ; number of sequences taken
+       tval: make_array(MAX_NAVE,VALUE={unxtmstr, sec:0L, nsec:0L}), $
+                                             ; time of each sequence
+       atten: intarr(MAX_NAVE), $            ; attenuation for each sequence
+       noise: fltarr(MAX_NAVE), $            ; noie for each sequence
+       offset: lonarr(MAX_NAVE), $           ; offset into sample array
+       size: lonarr(MAX_NAVE) $              ; number of words in sample array
+    }
+</pre></td></tr></table>
+</center>
+
+</td></tr>
+<tr><td class="docsubtitle"><h3>References</h3></td></tr>
+<tr><td></td><td>
+<a href="0028.html">RFC #0028</a><br>
+</td></tr>
+<tr><td class="docsubtitle"><h3>History</h3></td></tr>
+<tr><td></td><td>
+2008/03/25  Initial Revision.<br>
+</td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+
+</body>
+
+
+

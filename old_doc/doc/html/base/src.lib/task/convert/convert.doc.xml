@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>base</project>
+<name>rcnv</name>
+<location>src.lib/task/convert</location>
+<function>
+<name>ConvertBitOrder</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>int ConvertBitOrder();</syntax>
+<description><p>The <fn href="ConvertBitOrder.html">ConvertBitOrder</fn> function determines whether the system is little-endian or big-endian.</p>
+</description>
+<returns>Returns zero if the system has little-endian architecture, or a non zero value if it is big-endian.</returns>
+<example type="source">ConvertBitOrder.c</example>
+</function>
+<function>
+<name>ConvertBlock</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>void ConvertBlock(unsigned char *cnv,int *pattern);</syntax>
+<description><p>The <fn href="ConvertBlock.html">ConvertBlock</fn> function converts a set of bytes into a sequence of numbers. The byte order is reversed on big-endian systems, this ensures that the byte order written and read from a file is always little-endian.</p>
+<p>The numbers to convert are pointed to by the argument <ar>cnv</ar>. Pairs of elements from the array pointed to by the argument <ar>pattern</ar> define the conversion process. The value of the first number defines the number type; (8) for <code>double</code>, (4) for <code>float</code> and <code>int32</code> (32-bit integers), and (2) for <code>int16</code> (16-bit integers). The value of the second element defines how many times that type is repeated. Elements are read from the array until a zero is encountered.</p>
+</description> 
+<example type="source">ConvertBlock.c</example>
+</function>
+<function>
+<name>ConvertFreadDouble</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>int ConvertFreadDouble(FILE *fp,double *val);</syntax>
+<description><p>The <fn href="ConvertFreadDouble.html">ConvertFreadDouble</fn> function reads a variable of type <code>double</code> from an open I/O stream. The bytes are assumed to be in little-endian ordered.</p>
+<p>The bytes are read from the stream pointed to by the argument <ar>fp</ar> and the double-precision floating point number is stored at the location pointed to by the argument <ar>val</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">ConvertFreadDouble.c</example>
+</function>
+<function>
+<name>ConvertFreadFloat</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>int ConvertFreadFloat(FILE *fp,float *val);</syntax>
+<description><p>The <fn href="ConvertFreadFloat.html">ConvertFreadFloat</fn> function reads a variable of type <code>float</code> from an open I/O stream. The bytes are assumed to be in little-endian ordered.</p>
+<p>The bytes are read from the stream pointed to by the argument <ar>fp</ar> and the single-precision floating point number is stored at the location pointed to by the argument <ar>val</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">ConvertFreadFloat.c</example>
+</function>
+<function>
+<name>ConvertFreadInt</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>int ConvertFreadInt(FILE *fp,int32 *val);</syntax>
+<description><p>The <fn href="ConvertFreadInt.html">ConvertFreadInt</fn> function reads a variable of type <code>int32</code> (32-bit integer) from an open I/O stream. The bytes are assumed to be in little-endian ordered.</p>
+<p>The bytes are read from the stream pointed to by the argument <ar>fp</ar> and the 32-bit integer number is stored at the location pointed to by the argument <ar>val</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">ConvertFreadInt.c</example>
+
+</function>
+
+
+<function>
+<name>ConvertFreadLong</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>int ConvertFreadLong(FILE *fp,int64 *val);</syntax>
+<description><p>The <fn href="ConvertFreadLong.html">ConvertFreadLong</fn> function reads a variable of type <code>int64</code> (64-bit integer) from an open I/O stream. The bytes are assumed to be in little-endian ordered.</p>
+<p>The bytes are read from the stream pointed to by the argument <ar>fp</ar> and the 64-bit integer number is stored at the location pointed to by the argument <ar>val</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">ConvertFreadLong.c</example>
+
+</function>
+
+
+
+
+
+<function>
+<name>ConvertFreadShort</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>int ConvertFreadShort(FILE *fp,int16 *val);</syntax>
+<description><p>The <fn href="ConvertFreadShort.html">ConvertFreadShort</fn> function reads a variable of type <code>int16</code> (16-bit integer) from an open I/O stream. The bytes are assumed to be in little-endian ordered.</p>
+<p>The bytes are read from the stream pointed to by the argument <ar>fp</ar> and the 16-bit integer number is stored at the location pointed to by the argument <ar>val</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">ConvertFreadShort.c</example>
+
+</function>
+<function>
+<name>ConvertFromDouble</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>void ConvertFromDouble(double val,unsigned char *cnv);</syntax>
+<description><p>The <fn href="ConvertFromDouble.html">ConvertFromDouble</fn> function converts from a variable of type <code>double</code> to a sequence of little-endian ordered bytes.</p>
+<p>The number to convert is given by the argument <ar>val</ar> and the sequence of bytes are stored at the location pointed to by <ar>cnv</ar>.</p>
+</description>
+<example type="source">ConvertFromDouble.c</example>
+</function>
+<function>
+<name>ConvertFromFloat</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>void ConvertFromFloat(float val,unsigned char *cnv);</syntax>
+<description><p>The <fn href="ConvertFromFloat.html">ConvertFromFloat</fn> function converts from a variable of type <code>float</code> to a sequence of little-endian ordered bytes.</p>
+<p>The number to convert is given by the argument <ar>val</ar> and the sequence of bytes are stored at the location pointed to by <ar>cnv</ar>.</p>
+</description>
+<example type="source">ConvertFromFloat.c</example>
+</function>
+
+<function>
+<name>ConvertFromInt</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>void ConvertFromInt(int32 val,unsigned char *cnv);</syntax>
+<description><p>The <fn href="ConvertFromInt.html">ConvertFromInt</fn> function converts from a variable of type <code>int32</code> (32-bit integer) to a sequence of little-endian ordered bytes.</p>
+<p>The number to convert is given by the argument <ar>val</ar> and the sequence of bytes are stored at the location pointed to by <ar>cnv</ar>.</p>
+</description>
+<example type="source">ConvertFromInt.c</example>
+</function>
+
+
+<function>
+<name>ConvertFromLong</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>void ConvertFromLong(int64 val,unsigned char *cnv);</syntax>
+<description><p>The <fn href="ConvertFromLong.html">ConvertFromLong</fn> function converts from a variable of type <code>int64</code> (64-bit integer) to a sequence of little-endian ordered bytes.</p>
+<p>The number to convert is given by the argument <ar>val</ar> and the sequence of bytes are stored at the location pointed to by <ar>cnv</ar>.</p>
+</description>
+<example type="source">ConvertFromLong.c</example>
+</function>
+
+
+
+
+<function>
+<name>ConvertFromShort</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>void ConvertFromShort(int16 val,unsigned char *cnv);</syntax>
+<description><p>The <fn href="ConvertFromShort.html">ConvertFromShort</fn> function converts from a variable of type <code>int16</code> (16-bit integer) to a sequence of little-endian ordered bytes.</p>
+<p>The number to convert is given by the argument <ar>val</ar> and the sequence of bytes are stored at the location pointed to by <ar>cnv</ar>.</p>
+</description>
+<example type="source">ConvertFromShort.c</example>
+</function>
+<function>
+<name>ConvertFwriteDouble</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>int ConvertFwriteDouble(FILE *fp,double val);</syntax>
+<description><p>The <fn href="ConvertFwriteDouble.html">ConvertFwriteDouble</fn> function writes a variable of type <code>double</code> to an open I/O stream. The bytes are assumed to be in little-endian ordered.</p>
+<p>The bytes are written to the stream pointed to by the argument <ar>fp</ar> and the double-precision floating point number is given by the argument <ar>val</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">ConvertFwriteDouble.c</example>
+</function>
+<function>
+<name>ConvertFwriteFloat</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>int ConvertFwriteFloat(FILE *fp,float val);</syntax>
+
+<description><p>The <fn href="ConvertFwriteFloat.html">ConvertFwriteFloat</fn> function writes a variable of type <code>float</code> to an open I/O stream. The bytes are assumed to be in little-endian ordered.</p>
+<p>The bytes are written to the stream pointed to by the argument <ar>fp</ar> and the single-precision floating point number is given by the argument <ar>val</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">ConvertFwriteFloat.c</example>
+</function>
+<function>
+<name>ConvertFwriteInt</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>int ConvertFwriteInt(FILE *fp,int32 val);</syntax>
+
+<description><p>The <fn href="ConvertFwriteInt.html">ConvertFwriteInt</fn> function writes a variable of type <code>int32</code> (32-bit integer) to an open I/O stream. The bytes are assumed to be in little-endian ordered.</p>
+<p>The bytes are written to the stream pointed to by the argument <ar>fp</ar> and the 32-bit integer number is given by the argument <ar>val</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">ConvertFwriteInt.c</example>
+</function>
+
+
+
+
+
+<function>
+<name>ConvertFwriteLong</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>int ConvertFwriteLong(FILE *fp,int64 val);</syntax>
+
+<description><p>The <fn href="ConvertFwriteLong.html">ConvertFwriteLong</fn> function writes a variable of type <code>int64</code> (64-bit integer) to an open I/O stream. The bytes are assumed to be in little-endian ordered.</p>
+<p>The bytes are written to the stream pointed to by the argument <ar>fp</ar> and the 64-bit integer number is given by the argument <ar>val</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">ConvertFwriteLong.c</example>
+</function>
+
+
+
+
+<function>
+<name>ConvertFwriteShort</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>int ConvertFwriteShort(FILE *fp,int16 val);</syntax>
+
+<description><p>The <fn href="ConvertFwriteShort.html">ConvertFwriteShort</fn> function writes a variable of type <code>int16</code> (16-bit integer) to an open I/O stream. The bytes are assumed to be in little-endian ordered.</p>
+<p>The bytes are written to the stream pointed to by the argument <ar>fp</ar> and the 16-bit integer number is given by the argument <ar>val</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">ConvertFwriteShort.c</example>
+</function>
+<function>
+<name>ConvertReadDouble</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>int ConvertReadDouble(int fp,double *val);</syntax>
+<description><p>The <fn href="ConvertReadDouble.html">ConvertReadDouble</fn> function reads a variable of type <code>double</code> from an open file. The bytes are assumed to be in little-endian ordered.</p>
+<p>The bytes are read from the file with the filed descriptor given by the argument <ar>fd</ar> and the double-precision floating point number is stored at the location pointed to by the argument <ar>val</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">ConvertReadDouble.c</example>
+</function>
+<function>
+<name>ConvertReadFloat</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>int ConvertReadFloat(int fp,float *val);</syntax>
+<description><p>The <fn href="ConvertReadFloat.html">ConvertReadFloat</fn> function reads a variable of type <code>float</code> from an open file. The bytes are assumed to be in little-endian ordered.</p>
+<p>The bytes are read from the file with the filed descriptor given by the argument <ar>fd</ar> and the single-precision floating point number is stored at the location pointed to by the argument <ar>val</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">ConvertReadFloat.c</example>
+</function>
+<function>
+<name>ConvertReadInt</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>int ConvertReadInt(int fp,int32 *val);</syntax>
+
+<description><p>The <fn href="ConvertReadInt.html">ConvertReadInt</fn> function reads a variable of type <code>int32</code> (32-bit integer) from an open file. The bytes are assumed to be in little-endian ordered.</p>
+<p>The bytes are read from the file with the filed descriptor given by the argument <ar>fd</ar> and the 32-bit integer number is stored at the location pointed to by the argument <ar>val</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">ConvertReadInt.c</example>
+</function>
+
+
+
+
+<function>
+<name>ConvertReadLong</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>int ConvertReadLong(int fp,int64 *val);</syntax>
+
+<description><p>The <fn href="ConvertReadLong.html">ConvertReadLong</fn> function reads a variable of type <code>int64</code> (64-bit integer) from an open file. The bytes are assumed to be in little-endian ordered.</p>
+<p>The bytes are read from the file with the filed descriptor given by the argument <ar>fd</ar> and the 64-bit integer number is stored at the location pointed to by the argument <ar>val</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">ConvertReadLong.c</example>
+</function>
+
+
+
+
+
+
+<function>
+<name>ConvertReadShort</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>int ConvertReadShort(int fp,int16 *val);</syntax>
+
+
+<description><p>The <fn href="ConvertReadShort.html">ConvertReadShort</fn> function reads a variable of type <code>int16</code> (16-bit integer) from an open file. The bytes are assumed to be in little-endian ordered.</p>
+<p>The bytes are read from the file with the filed descriptor given by the argument <ar>fd</ar> and the 16-bit integer number is stored at the location pointed to by the argument <ar>val</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">ConvertReadShort.c</example>
+</function>
+<function>
+<name>ConvertToDouble</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>void ConvertToDouble(unsigned char *cnv,double *val);</syntax>
+<description><p>The <fn href="ConvertToDouble.html">ConvertToDouble</fn> function converts a sequence of little-endian ordered bytes to  a variable of type <code>double</code>.</p>
+<p>The sequence of bytes to convert is pointed to by the argument <ar>cnv</ar> and the double-precision floating point number is stored at the location pointed to by <ar>val</ar>.</p>
+</description>
+<example type="source">ConvertToDouble.c</example>
+</function>
+<function>
+<name>ConvertToFloat</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>void ConvertToFloat(unsigned char *cnv,float *val);</syntax>
+<description><p>The <fn href="ConvertToFloat.html">ConvertToFloat</fn> function converts a sequence of little-endian ordered bytes to  a variable of type <code>float</code>.</p>
+<p>The sequence of bytes to convert is pointed to by the argument <ar>cnv</ar> and the single-precision floating point number is stored at the location pointed to by <ar>val</ar>.</p>
+</description>
+<example type="source">ConvertToFloat.c</example>
+</function>
+<function>
+<name>ConvertToInt</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>void ConvertToInt(unsigned char *cnv,int32 *val);</syntax>
+<description><p>The <fn href="ConvertToInt.html">ConvertToInt</fn> function converts a sequence of little-endian ordered bytes to  a variable of type <code>int32</code> (32-bit integer).</p>
+<p>The sequence of bytes to convert is pointed to by the argument <ar>cnv</ar> and the 32-bit integer number is stored at the location pointed to by <ar>val</ar>.</p>
+</description>
+<example type="source">ConvertToInt.c</example>
+</function>
+
+
+
+<function>
+<name>ConvertToLong</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>void ConvertToLong(unsigned char *cnv,int64 *val);</syntax>
+<description><p>The <fn href="ConvertToLong.html">ConvertToLong</fn> function converts a sequence of little-endian ordered bytes to  a variable of type <code>int64</code> (64-bit integer).</p>
+<p>The sequence of bytes to convert is pointed to by the argument <ar>cnv</ar> and the 64-bit integer number is stored at the location pointed to by <ar>val</ar>.</p>
+</description>
+<example type="source">ConvertToLong.c</example>
+</function>
+
+
+
+
+
+<function>
+<name>ConvertToShort</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>void ConvertToShort(unsigned char *cnv,int16 *val);</syntax>
+<description><p>The <fn href="ConvertToShort.html">ConvertToShort</fn> function converts a sequence of little-endian ordered bytes to  a variable of type <code>int16</code> (16-bit integer).</p>
+<p>The sequence of bytes to convert is pointed to by the argument <ar>cnv</ar> and the 16-bit integer number is stored at the location pointed to by <ar>val</ar>.</p>
+</description>
+<example type="source">ConvertToShort.c</example>
+</function>
+<function>
+<name>ConvertWriteDouble</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>int ConvertWriteDouble(int fp,double val);</syntax>
+<description><p>The <fn href="ConvertWriteDouble.html">ConvertWriteDouble</fn> function writes a variable of type <code>double</code> to an open file. The bytes are assumed to be in little-endian ordered.</p>
+<p>The bytes are written to the file with the filed descriptor given by the argument <ar>fd</ar> and the double-precision floating point number is given by the argument <ar>val</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">ConvertWriteDouble.c</example>
+</function>
+<function>
+<name>ConvertWriteFloat</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>int ConvertWriteFloat(int fp,float val);</syntax>
+<description><p>The <fn href="ConvertWriteFloat.html">ConvertWriteFloat</fn> function writes a variable of type <code>float</code> to an open file. The bytes are assumed to be in little-endian ordered.</p>
+<p>The bytes are written to the file with the filed descriptor given by the argument <ar>fd</ar> and the single-precision floating point number is given by the argument <ar>val</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">ConvertWriteFloat.c</example>
+</function>
+<function>
+<name>ConvertWriteInt</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>int ConvertWriteInt(int fp,int32 val);</syntax>
+<description><p>The <fn href="ConvertWriteInt.html">ConvertWriteInt</fn> function writes a variable of type <code>int32</code> (32-bit integer) to an open file. The bytes are assumed to be in little-endian ordered.</p>
+<p>The bytes are written to the file with the filed descriptor given by the argument <ar>fd</ar> and the 32-bit integer number is given by the argument <ar>val</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">ConvertWriteInt.c</example>
+</function>
+
+
+
+
+<function>
+<name>ConvertWriteLong</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>int ConvertWriteLong(int fp,int64 val);</syntax>
+<description><p>The <fn href="ConvertWriteLong.html">ConvertWriteLong</fn> function writes a variable of type <code>int64</code> (64-bit integer) to an open file. The bytes are assumed to be in little-endian ordered.</p>
+<p>The bytes are written to the file with the filed descriptor given by the argument <ar>fd</ar> and the 64-bit integer number is given by the argument <ar>val</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">ConvertWriteLong.c</example>
+</function>
+
+
+
+
+<function>
+<name>ConvertWriteShort</name>
+<location>src.lib/task/convert</location>
+<header>base/rconvert.h</header>
+<syntax>int ConvertWriteShort(int fp,int16 val);</syntax>
+<description><p>The <fn href="ConvertWriteShort.html">ConvertWriteShort</fn> function writes a variable of type <code>int16</code> (16-bit integer) to an open file. The bytes are assumed to be in little-endian ordered.</p>
+<p>The bytes are written to the file with the filed descriptor given by the argument <ar>fd</ar> and the 16-bit integer number is given by the argument <ar>val</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">ConvertWriteShort.c</example>
+
+
+</function>
+</library>

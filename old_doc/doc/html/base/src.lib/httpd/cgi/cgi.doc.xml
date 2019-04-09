@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>base</project>
+<name>rcgi</name>
+<location>src.lib/httpd/cgi</location>
+<function>
+<name>CGIDecode</name>
+<location>src.lib/httpd/cgi</location>
+<header>base/rcgi.h</header>
+<syntax>int CGIDecode(<sn href="structCGIdata.html">struct CGIdata</sn> *ptr,char *type,char *buf,int sze);</syntax>
+</function>
+<function>
+<name>CGIDecodeMultiPart</name>
+<location>src.lib/httpd/cgi</location>
+<header>base/rcgi.h</header>
+<syntax>int CGIDecodeMultiPart(<sn href="structCGIdata.html">struct CGIdata</sn> *ptr,char *type,char *buf,int sze);</syntax>
+</function>
+<function>
+<name>CGIDecodePart</name>
+<location>src.lib/httpd/cgi</location>
+<header>base/rcgi.h</header>
+<syntax>int CGIDecodePart(<sn href="structCGIdata.html">struct CGIdata</sn> *ptr,char *buf,int sze);</syntax>
+</function>
+<function>
+<name>CGIDecodeURLEncoded</name>
+<location>src.lib/httpd/cgi</location>
+<header>base/rcgi.h</header>
+<syntax>int CGIDecodeURLEncoded(<sn href="structCGIdata.html">struct CGIdata</sn> *ptr,char *type,char *buf,int sze);</syntax>
+</function>
+<function>
+<name>CGIFindInBuf</name>
+<location>src.lib/httpd/cgi</location>
+<header>base/rcgi.h</header>
+<syntax>int CGIFindInBuf(char *buf,int sze,char *str);</syntax>
+</function>
+<function>
+<name>CGIFree</name>
+<location>src.lib/httpd/cgi</location>
+<header>base/rcgi.h</header>
+<syntax>void CGIFree(<sn href="structCGIdata.html">struct CGIdata</sn> *ptr);</syntax>
+</function>
+<function>
+<name>CGIGet</name>
+<location>src.lib/httpd/cgi</location>
+<header>base/rcgi.h</header>
+<syntax>int CGIGet(<sn href="structCGIdata.html">struct CGIdata</sn> *ptr);</syntax>
+</function>
+<function>
+<name>CGIGetRawString</name>
+<location>src.lib/httpd/cgi</location>
+<header>base/rcgi.h</header>
+<syntax>char *CGIGetRawString(<sn href="structCGIarg.html">struct CGIarg</sn> *ptr);</syntax>
+</function>
+<function>
+<name>CGIGetString</name>
+<location>src.lib/httpd/cgi</location>
+<header>base/rcgi.h</header>
+<syntax>char *CGIGetString(<sn href="structCGIarg.html">struct CGIarg</sn> *ptr);</syntax>
+</function>
+<function>
+<name>CGIInterpretPart</name>
+<location>src.lib/httpd/cgi</location>
+<header>base/rcgi.h</header>
+<syntax>int CGIInterpretPart(<sn href="structCGIdata.html">struct CGIdata</sn> *ptr,char *buf,int sze);</syntax>
+</function>
+<function>
+<name>CGIMake</name>
+<location>src.lib/httpd/cgi</location>
+<header>base/rcgi.h</header>
+<syntax><sn href="structCGIdata.html">struct CGIdata</sn> *CGIMake();</syntax>
+</function>
+<function>
+<name>CGIMakeURLString</name>
+<location>src.lib/httpd/cgi</location>
+<header>base/rcgi.h</header>
+<syntax>char *CGIMakeURLString(char *inp,int sze);</syntax>
+</function>
+<function>
+<name>CGISetText</name>
+<location>src.lib/httpd/cgi</location>
+<header>base/rcgi.h</header>
+<syntax>int CGISetText(<sn href="structCGIdata.html">struct CGIdata</sn> *ptr,int (*text)(<sn href="structCGIarg.html">struct CGIarg</sn> *,char *, int,void *),void *data);</syntax>
+</function>
+
+
+<structure>
+ <name>CGIarg</name>
+ <location>src.lib/httpd/cgi</location>
+ <header>base/rcgi.h</header>
+ <struct>
+    <member>
+      <proto>char *name;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>char *fname;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <struct>
+         <member>
+           <proto>char *buf;</proto>
+           <description>None</description>
+          </member>
+      </struct>
+      <proto>raw;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <struct>
+        <member>
+          <proto>int sze;</proto>
+          <description>char *buf;</description>
+        </member>
+      </struct>
+      <proto>txt;</proto>
+      <description>None.</description>
+    </member>
+  </struct>
+ </structure>
+
+
+<structure>
+ <name>CGIdata</name>
+ <location>src.lib/httpd/cgi</location>
+ <header>base/rcgi.h</header>
+ <struct>
+    <member>
+      <proto>int num;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>char *buf;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int sze;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int stp;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int max;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int state;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int cnt;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>char *bnd;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <struct> 
+         <member>
+           <proto>int (*user)(<sn href="structCGIarg.html">struct CGIarg</sn> *ptr,char *buf,int sze,void *data);</proto>
+	   <description>None.</description>
+         </member>
+         <member>
+           <proto>void *data;</proto>
+	   <description>None.</description>
+         </member>
+       </struct>
+       <proto>text;</proto>
+       <description>None.</description>
+    </member>
+
+  <member>
+      <struct> 
+         <member>
+           <proto>int state;</proto>
+	   <description>None.</description>
+         </member>
+         <member>
+           <proto>int sze;</proto>
+	   <description>None.</description>
+         </member>
+         <member>
+           <proto>char *buf;</proto>
+	   <description>None.</description>
+         </member>
+         <member>
+           <proto>int stp;</proto>
+	   <description>None.</description>
+         </member>
+         <member>
+           <proto>int max;</proto>
+	   <description>None.</description>
+         </member>
+       </struct>
+       <proto>mime;</proto>
+       <description>None.</description>
+    </member>
+
+    <member>
+      <proto><sn href="structCGIarg.html">struct CGIarg</sn> **arg;</proto>
+      <description>None.</description>
+    </member>
+  </struct>
+</structure>
+
+</library>

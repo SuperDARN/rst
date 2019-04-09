@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>test_raw</name>
+<location>src.bin/tk/testing/test_raw</location>
+
+<syntax>test_raw --help</syntax>
+<syntax>test_raw [<ar>rawacfnames...]</ar></syntax>
+<syntax>test_raw -old <ar>rawname</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on><ar>rawacfnames</ar></on><od>filenames of the <code>rawacf</code> format files. If this is omitted the file is read from standard input.</od>
+</option>
+<option><on>-old</on><od>files are in the <code>raw</code> (<code>dat</code> format.</od>
+</option>
+<option><on><ar>rawname</ar></on><od>filename of the <code>raw</code> (<code>dat</code>) format file.</od>
+</option>
+<synopsis><p>Tests the integrity of <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format files by reading them and printing the contents.</p></synopsis>
+<description><p>Tests the integrity of <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format files by reading them and printing the contents.</p>
+<p>The contents are written to standard output</p>
+</description>
+
+<example>
+<command>test_raw -old 20040830.gbr.dat | more</command>
+<description>Test the integrity of the file "<code>20040830.gbr.dat</code>", paginating using <code>more</code>.</description>
+</example>
+
+</binary>

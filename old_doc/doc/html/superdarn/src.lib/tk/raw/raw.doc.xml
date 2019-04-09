@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>superdarn</project>
+<name>raw</name>
+<location>src.lib/tk/raw</location>
+
+<function>
+<name>RawFread</name>
+<location>src.lib/tk/raw</location>
+<header>superdarn/rawread.h</header>
+<syntax>int RawFread(FILE *fp,<sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm, <sn href="structRawData.html">struct RawData</sn> *raw);</syntax>
+<description><p>The <fn href="RawFread.html">RawFread</fn> function reads a <code>rawacf</code> data record from an open stream.</p>
+<p>The data is read from the open stream pointed to by the argument <ar>fp</ar>. The data is decoded and used to populate the radar parameter block pointed to by the argument <ar>prm</ar> and the raw data structure pointer to by the argument <ar>raw</ar>.</p>  
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">RawFread.c</example>
+</function>
+
+<function>
+<name>RawFseek</name>
+<location>src.lib/tk/raw</location>
+<header>superdarn/rawseek.h</header>
+<syntax>int RawFseek(FILE *fp, int yr,int mo,int dy,int hr,int mt,int sc,double *atme, <sn href="structRawIndex.html">struct RawIndex</sn> *inx);</syntax>
+<description><p>The <fn href="RawFseek.html">RawFseek</fn> function searches for a <code>rawacf</code> data record for a specific time.</p>
+<p>The search is performed on the open stream pointed to by the argument <ar>fp</ar>. The time to search for is specified by the arguments <ar>yr</ar>, <ar>mo</ar>,<ar>dy</ar>,<ar>hr</ar>,<ar>mt</ar>,<ar>sc</ar> giving the year, month, day, hour, minute and second.</p>
+<p>The argument <ar>atme</ar> is a pointer to a double precision floating point number that is used to store the time of the closest record to the time requested expressed in seconds from 0:00UT January 1, 1970. If this argument is set to a <code>NULL</code> pointer then the time is not returned.</p>  
+<p>If the <code>rawacf</code> file has an associated index that has been loaded, then it can be used to speed up the search by setting the argument <ar>inx</ar> to point to it.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">RawFseek.c</example>
+</function>
+
+<function>
+<name>RawFwrite</name>
+<location>src.lib/tk/raw</location>
+<header>superdarn/rawwrite.h</header>
+<syntax>int RawFwrite(FILE *fp,<sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm, <sn href="structRawData.html">struct RawData</sn> *raw);</syntax>
+<description><p>The <fn href="RawFwrite.html">RawFwrite</fn> function writes a <code>rawacf</code> data record to an open stream.</p>
+<p>The data is written to the open stream pointed to by the argument <ar>fp</ar>. The data record is contructed the radar parameter block pointed to by the argument <ar>prm</ar> and the raw data structure pointer to by the argument <ar>raw</ar>.</p>  
+</description>
+<returns>Returns the number of bytes written on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">RawFwrite.c</example>
+</function>
+
+<function>
+<name>RawIndexFload</name>
+<location>src.lib/tk/raw</location>
+<header>superdarn/rawindex.h</header>
+<syntax><sn href="structRawIndex.html">struct RawIndex</sn> *RawIndexFload(FILE *fp);</syntax>
+<description><p>The <fn href="RawIndexFload.html">RawIndexFload</fn> function loads an index to a <code>rawacf</code> data file.</p>
+<p>The index is loaded from the open stream pointed to by the argument <ar>fp</ar>.</p>  
+</description>
+<returns>Returns a pointer to a strcuture containing the index on success. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
+<example type="source">RawIndexFload.c</example>
+</function>
+
+<function>
+<name>RawIndexFree</name>
+<location>src.lib/tk/raw</location>
+<header>superdarn/rawindex.h</header>
+<syntax>void RawIndexFree(<sn href="structRawIndex.html">struct RawIndex</sn> *ptr);</syntax>
+<description><p>The <fn href="RawIndexFree.html">RawIndexFree</fn> function frees memory allocated to store an index to a <code>rawacf</code> file.</p>
+<p>The index structure is pointed to by the argument <ar>ptr</ar>.</p>
+</description>
+<example type="source">RawIndexFree.c</example>
+</function>
+
+<function>
+<name>RawIndexLoad</name>
+<location>src.lib/tk/raw</location>
+<header>superdarn/rawindex.h</header>
+<syntax><sn href="structRawIndex.html">struct RawIndex</sn> *RawIndexLoad(int fid);</syntax>
+<description><p>The <fn href="RawIndexLoad.html">RawIndexLoad</fn> function loads an index to a <code>rawacf</code> data file.</p>
+<p>The index is loaded from the file with the descriptor given by the argument <ar>fid</ar>.</p>  
+</description>
+<returns>Returns a pointer to a strcuture containing the index on success. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
+<example type="source">RawIndexLoad.c</example>
+</function>
+
+<function>
+<name>RawRead</name>
+<location>src.lib/tk/raw</location>
+<header>superdarn/rawread.h</header>
+<syntax>int RawRead(int fid,<sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm, <sn href="structRawData.html">struct RawData</sn> *raw);</syntax>
+<description><p>The <fn href="RawRead.html">RawRead</fn> function reads a <code>rawacf</code> data record from an open file.</p>
+<p>The data is read from the file with the descriptor given by the argument <ar>fid</ar>. The data is decoded and used to populate the radar parameter block pointed to by the argument <ar>prm</ar> and the raw data structure pointer to by the argument <ar>raw</ar>.</p>  
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">RawRead.c</example>
+</function>
+
+<function>
+<name>RawSeek</name>
+<location>src.lib/tk/raw</location>
+<header>superdarn/rawseek.h</header>
+<syntax>int RawSeek(int fid, int yr,int mo,int dy,int hr,int mt,int sc,double *atme, <sn href="structRawIndex.html">struct RawIndex</sn> *inx);</syntax>
+<description><p>The <fn href="RawSeek.html">RawSeek</fn> function searches for a <code>rawacf</code> data record for a specific time.</p>
+<p>The search is performed on the file with the descriptor given by the argument <ar>fid</ar>. The time to search for is specified by the arguments <ar>yr</ar>, <ar>mo</ar>,<ar>dy</ar>,<ar>hr</ar>,<ar>mt</ar>,<ar>sc</ar> giving the year, month, day, hour, minute and second.</p>
+<p>The argument <ar>atme</ar> is a pointer to a double precision floating point number that is used to store the time of the closest record to the time requested expressed in seconds from 0:00UT January 1, 1970. If this argument is set to a <code>NULL</code> pointer then the time is not returned.</p>  
+<p>If the <code>rawacf</code> file has an associated index that has been loaded, then it can be used to speed up the search by setting the argument <ar>inx</ar> to point to it.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">RawSeek.c</example>
+</function>
+
+<function>
+<name>RawWrite</name>
+<location>src.lib/tk/raw</location>
+<header>superdarn/rawwrite.h</header>
+<syntax>int RawWrite(int fid,<sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm *prm</sn>, <sn href="structRawData.html">struct RawData</sn> *raw);</syntax>
+<description><p>The <fn href="RawWrite.html">RawWrite</fn> function writes a <code>rawacf</code> data record to an open file.</p>
+<p>The data is written to the file with the descriptor given by the argument <ar>fid</ar>. If <ar>fid</ar> is set to (-1) then the function will just calculate the number of bytes required to store the data. The data record is contructed the radar parameter block pointed to by the argument <ar>prm</ar> and the raw data structure pointer to by the argument <ar>raw</ar>.</p>
+</description>
+<returns>Returns the number of bytes written on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">RawWrite.c</example>
+</function>
+
+
+<structure>
+  <name>RawData</name>
+  <location>src.lib/tk/raw</location>
+  <header>superdarn/rawdata.h</header>
+  <struct>
+
+    <member>
+      <struct>
+        <member>
+          <proto>char major;</proto>
+          <description>Major revision number.</description>
+        </member>
+        <member>
+          <proto>char minor;</proto>
+          <description>Minor revision number.</description>
+        </member>
+      </struct>
+      <proto>revision;</proto>
+      <description>Revision number.</description>
+    </member>
+
+    <member>
+      <proto>float thr;</proto>
+      <description>Lag-zero power threshold level.</description>
+    </member>
+
+    <member>
+      <proto>float pwr0[MAX_RANGE];</proto>
+      <description>Lag-zero powers.</description>
+    </member>
+
+    <member>
+      <proto>float acfd[MAX_RANGE][LAG_SIZE][2];</proto>
+      <description>ACF data.</description>
+    </member>
+
+    <member>
+      <proto>float xcfd[MAX_RANGE][LAG_SIZE][2];</proto>
+      <description>XCF data.</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structRawData.html">struct RawData</sn> structure stores the raw ACF data.</p>
+  </description>
+</structure>
+
+
+
+<structure>
+  <name>RawIndex</name>
+  <location>src.lib/tk/raw</location>
+  <header>superdarn/rawindex.h</header>
+  <struct>
+
+    <member>
+      <proto>int num;</proto>
+      <description>Number of records in the data file.</description>
+    </member>
+
+    <member>
+      <proto>double *tme;</proto>
+      <description>Pointer to an array of record times, specified as seconds from 0:00UT January 1, 1970.</description>
+    </member>
+
+    <member>
+      <proto>int *inx;</proto>
+      <description>Pointer to an array of byte offsets into the file marking the start of a record.</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structRawIndex.html">struct RawIndex</sn> structure stores an index of a <proto>rawacf</proto> data file.</p>
+  </description>
+</structure>
+
+</library>

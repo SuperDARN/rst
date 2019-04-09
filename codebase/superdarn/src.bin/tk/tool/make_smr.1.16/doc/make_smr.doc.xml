@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>make_smr</name>
+<location>src.bin/tk/tool/make_smr</location>
+
+<syntax>make_smr --help</syntax>
+<syntax>make_smr [-vb] [-t <ar>minpwr</ar>] [-b <ar>beams...</ar>] <ar>fitacfnames...</ar></syntax>
+<syntax>make_smr -old [-vb] [-t <ar>minpwr</ar>] [-b <ar>beams...</ar>] [<ar>fitname</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-t <ar>minpwr</ar></on><od>filter out data with values of lag-zero power less than <ar>minpwr</ar>.</od>
+</option>
+<option><on>-b <ar>beams</ar></on><od>record the beams specified by <ar>beams</ar> in the <code>smr</code> file. The list of beams is comma separated.</od>
+</option>
+<option><on><ar>fitacfnames...</ar></on><od>filenames of the <code>fitacf</code> format file.</od>
+</option>
+<option><on>-old</on><od>the input file is in the <code>fit</code> format.</od>
+</option>
+<option><on><ar>fitname</ar></on><od>filename of the <code>fit</code> format file.</od>
+</option>
+<synopsis><p>Creates a <code>smr</code> format file from either a <code>fit</code> or <code>fitacf</code> format file.</p></synopsis>
+<description><p>Creates a <code>smr</code> format file from either a <code>fit</code> or <code>fitacf</code> format file.</p>
+<p>The summary file is written to standard output.</p>
+</description>
+
+<example>
+<command>make_smr -old -vb -pwr 5 -b 5,10 19971020.gbr.fit &gt; 19971020.gbr.smr</command>
+<description>Generates a summary from the <code>fit</code> file "<code>19971020.gbr.fit</code>" to produce a file called "<code>19971020.gbr.smr</code>". Ranges with lag-zero power less than 5dB are ignored. Beams 5 and 10 are recorded. Status is logged on standard error.</description>
+</example>
+
+<example>
+<command>make_smr -b 4,8,12 19981105*.kap.fitacf &gt; 19981105.kap.smr</command>
+<description> Generates a summary from the <code>fitacf</code> files called "<code>19981105*.kap.fitacf</code>" to produce a file called "19981105.kap.smr". Ranges with lag-zero power less than 3dB are ignored. Beams 4,8 and 12 are recorded.</description>
+</example> 
+
+</binary>

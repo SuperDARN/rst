@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>cmpfit</name>
+<location>src.bin/tk/testing/cmpfit</location>
+<syntax>cmpfit --help</syntax>
+<syntax>cmpfit <ar>fitnameA</ar> <ar>fitnameB</ar></syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on><ar>fitnameA</ar></on><od>filename of the first <code>fit</code> format file to convert.</od>
+</option>
+<option><on><ar>fitnameB</ar></on><od>filename of the second <code>fit</code> format file to convert.</od>
+</option>
+
+<synopsis><p>Compares two <code>fit</code> format file for differences.</p></synopsis>
+
+<description><p>Compares two <code>fit</code> format file for differences.</p>
+<p>Any differences are reported to standard output.</p>
+</description>
+
+<example>
+<command>cmpfit old.fit new.fit</command>
+<description>Compare the <code>fit</code> file "<code>old.fit</code>" with the file "<code>new.fit</code>".</description>
+</example>
+
+
+
+</binary>

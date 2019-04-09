@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>base</project>
+<name>addtext</name>
+<location>src.bin/build/addtext</location>
+<syntax>addtext --help</syntax>
+<syntax>addtext -r <ar>string</ar> [-t <ar>tag</ar>]</syntax>
+<syntax>addtext [-t <ar>tag</ar>] <ar>name</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od></option>
+<option><on>-r <ar>string</ar></on><od>replacement text string to insert in the document.</od></option>
+<option><on>-t <ar>tag</ar></on><od>tag string to match in the document. The default tag is 'License'.</od></option>
+<option><on><ar>name</ar></on><od>text file to read replacement text from.</od></option>
+<synopsis>Insert a block of text or string into a text file.</synopsis>
+
+
+<description><p>Inserts a block of text or string, such as Copyright or License terms, within a section of source code. The source code is read from standard input and RCS style tags of the form "<ar>$tag$</ar>" are searched for. The default tag string is "<code>License</code>" but this can be overridden on the command line with the <op>-t</op> option.</p>
+<p>When a tag is encountered, the text contained in the text file is substituted. As with the RCS utilities, each inserted line is prefixed by the characters that prefix the line that contains the tag:</p>
+<quote>
+// $license$
+</quote>
+<p>Becomes:</p>
+<quote>
+// Terms and Conditions
+// The use of this program is subject to the terms and conditions
+// described in the license agreement.
+</quote>
+<p>As with the RCS utilities, if the tag line is prefixed by "<code>/*</code>", subsequent lines are prefixed with "<code>*</code>".</p>
+<p>The modified source code is written to standard output.</p>
+</description>
+
+<example>
+<command>cat src/main.c | addtext license.txt &gt; main.c</command>
+<description>Add the text contained in the file <code>license.txt</code> to the file <code>src/main.c</code>.
+</description>
+</example>
+
+
+</binary>

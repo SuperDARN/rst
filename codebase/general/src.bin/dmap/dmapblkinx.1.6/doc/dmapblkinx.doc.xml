@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>general</project>
+<name>dmapblkinx</name>
+<location>src.bin/dmap/dmapblkinx</location>
+<syntax>dmapblkinx --help</syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on><ar>name</ar></on><od>filename of the DataMap file, if this is omitted the document will be read from standard input.</od>
+</option>
+<synopsis><p>Dump the block index (file offsets for each block) of a DataMap file.</p></synopsis>
+<description><p>Dump the block index (file offsets for each block) of a DataMap file.</p>
+<p>The offsets are written to standard output. The block offsets can be used to quickly locate a specific block in the DataMap file.</p>
+</description>
+
+
+<example>
+<command>dmapblkinx inp.dmap &gt; out.binx</command>
+<description>Find the block offsets from the  file <code>inp.dmap</code> and store them in the file <code>out.binx</code>
+</description>
+</example>
+
+
+
+</binary>

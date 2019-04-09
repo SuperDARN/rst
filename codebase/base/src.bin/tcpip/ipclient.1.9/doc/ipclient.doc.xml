@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>base</project>
+<name>ipclient</name>
+<location>src.bin/tcpip/ipclient</location>
+<syntax>ipclient --help</syntax>
+<syntax>ipclient <ar>host</ar> <ar>port</ar></syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on><ar>host</ar></on><od>hostname or IP address of the system to connect to.</od>
+</option>
+<option><on><ar>port</ar></on><od>port number to connect to on  the system.</od></option>
+<synopsis><p>Simple TCP/IP client program.</p></synopsis>
+<description><p>The task is a demonstration of a TCP/IP client. It connects to a server and displays any text strings sent to it.</p></description>
+
+<example>
+<command>ipclient peanut.jhuapl.edu  1024</command>
+<description>Connects to the remote host <code>peanut.jhuapl.edu</code> at port 1024.</description>
+</example>
+
+
+</binary>

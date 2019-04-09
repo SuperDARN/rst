@@ -1,0 +1,107 @@
+
+<head>
+<title>RCDFReadR</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../analysis/index.html>analysis</a></td>
+<td>|</td><td><a href=../../../../analysis/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../analysis/src.lib/cdf/index.html>cdf</a></td><td>|</td><td><a href=../../../../analysis/src.lib/cdf/rcdf/index.html>rcdf</a></td><td>|</td>
+<td>RCDFReadR</td>
+<td width=100% align=right><a href=../../../../analysis/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">RCDFReadR</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">int RCDFReadR(CDFid id,int recno,char **varname,<a href="structRCDFData.html"><code>struct RCDFData</code></a> *ptr);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">analysis/rcdf.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">rcdf</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="RCDFReadR.html"><code>RCDFReadR</code></a> function reads a set of <b>R</b> variables from and open CDF file.</p>
+<p>The CDF file is identified by the argument <em>id</em> and the argument <em>recno</em> defines the record number to read. The argument <em>varname</em> is a NULL terminated array of variable names to extract from the record. Each variable it stored in the appropriate element of the array of structures pointed to by the argument <em>ptr</em>.</p></td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns zero on success. On error, a (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, a (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/RCDFReadR.c">RCDFReadR.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* RCDFReadR.c
+   ===========
+   Author: R.J.Barnes
+*/
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;cdf.h&gt;
+#include &quot;rcdf.h&quot;
+
+
+int main(int argc,char *argv[]) {
+  char *varname[256];
+  struct RCDFData vardata[256];
+
+  int n,recno;
+  CDFid id;
+  CDFstatus status;
+  int max;
+
+  fprintf(stdout,&quot;RCDFReadR&apos;n&quot;);
+  if (argc&lt;4) {
+    fprintf(stderr,&quot;Filename, record number and variable must be given.&apos;n&quot;);
+    exit(-1);
+  } 
+
+  recno=atoi(argv[2]);
+  for (n=0;n&lt;argc-3;n++) varname[n]=argv[n+3];
+  varname[argc-3]=0;
+
+ 
+  status=CDFopen(argv[1],&amp;id);
+  if (status !=CDF_OK) {
+     fprintf(stderr,&quot;Could not open cdf file.&apos;n&quot;);
+     exit(-1);
+  }
+
+  max=RCDFReadR(id,recno,varname,vardata);
+
+  CDFclose(id);
+  
+  for (n=0;n&lt;argc-3;n++)
+    fprintf(stdout,&quot;%s %d %d %d %d&apos;n&quot;,vardata[n].name,(int) vardata[n].status,
+	    vardata[n].num,vardata[n].type,vardata[n].numdim);
+  
+  return 0;
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+
