@@ -1,0 +1,68 @@
+
+<head>
+<title>EntitySetText</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../base/index.html>base</a></td>
+<td>|</td><td><a href=../../../../base/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../base/src.lib/xml/index.html>xml</a></td><td>|</td><td><a href=../../../../base/src.lib/xml/xmldb/index.html>xmldb</a></td><td>|</td>
+<td>EntitySetText</td>
+<td width=100% align=right><a href=../../../../base/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">EntitySetText</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">int EntitySetText(<a href="structEntitydata.html"><code>struct Entitydata</code></a> *ptr, int (*text)(char *,int, void *),void *data);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">base/entity.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">rxmldb</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="EntitySetText.html"><code>EntitySetText</code></a> function sets the interface function used to process output from the entity codec.</p>
+<p>The data structure associated with the enitity codec is pointed to by the argument <em>ptr</em>.</p>
+<p>The argument <em>user</em> is a pointer to a function of the form:</p>
+<center><table><tr><td  class="docbox" style="font-family: courier;">
+int user(char *buffer,int size,void *dptr);
+</td></tr></table></center>
+<p>This function is called each time the entity codec either encodes or decodes data.</p>
+<p>The argument <em>buffer</em> is a pointer to a buffer containing the encoded or decoded data buffer and the argument <em>size</em> indicates the size of the buffer.</p>
+<p>The <em>data</em> argument of the <a href="EntitySetText.html"><code>EntitySetText</code></a> function  is passed directly as the <em>dptr</em> argument and allows extra parameters to be passed to the function.</p>
+
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>None</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>None</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td>None</td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

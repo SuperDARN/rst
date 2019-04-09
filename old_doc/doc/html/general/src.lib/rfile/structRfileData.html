@@ -1,0 +1,90 @@
+
+
+<head>
+<title>struct RfileData</title>
+<link rel=stylesheet href=../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href=../../../general/index.html>general</a></td>
+<td>|</td><td><a href=../../../general/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../general/src.lib/rfile/index.html>rfile</a></td><td>|</td>
+<td>RfileData</td>
+<td width=100% align=right><a href=../../../general/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">RfileData</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">general/rfile.h</td></tr>
+<tr><td class="docsubtitle">Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">rfile</a></tr>
+<tr><td class="docsubtitle" valign=top>Members</td></tr>
+<tr><td></td><td width=80% class="docbox"><table>
+
+   <tr>
+     <td valign="top"><font size=-1 face="courier">int type;</font></td>
+     <td valign="top">Type code.</td>
+   </tr>
+
+  <tr>
+       <td><font size=-1 face="courier"><b>union {</b></font></td></tr>
+       <tr>
+          <td valign="top"><font size=-1 face="courier">char *tval;</font></td>
+          <td valign="top">Pointer to a zero terminated string.</td>
+       </tr>
+       <tr>
+          <td valign="top"><font size=-1 face="courier">char cval;</font></td>
+          <td valign="top">Character value.</td>
+       </tr>
+       <tr>
+          <td valign="top"><font size=-1 face="courier">float fval;</font></td>
+          <td valign="top">Single precision floating point number.</td>
+       </tr>
+       <tr>
+          <td valign="top"><font size=-1 face="courier">float dval;</font></td>
+          <td valign="top">Double precision floating point number.</td>
+       </tr>
+       <tr>
+          <td valign="top"><font size=-1 face="courier">int32 ival;</font></td>
+          <td valign="top">Signed integer point number.</td>
+       </tr>
+       </tr><tr><td><font size=-1 face="courier"><b>}</b></font></td></tr><tr>
+
+      <td valign="top"><font size=-1 face="courier">data;</font></td>
+      <td valign="top">Data value.</td>
+   </tr>
+
+   </table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td>
+<p>The <a href="structRfileData.html"><code>struct RfileData</code></a> structure stores a single data value from an rFile format file.</p>
+<p>Possible values of the <em>type</em> field are:</p>
+<center><table>
+<tr><td><pre>FIELD_CHAR</pre></td><td>A single character.</td></tr>
+<tr><td><pre>FIELD_INT</pre></td><td>A signed integer.</td></tr>		
+<tr><td><pre>FIELD_DOUBLE</pre></td><td>A double precision floating point number.</td></tr>
+<tr><td><pre>FIELD_TXT</pre></td><td>A text string.</td></tr>
+</table></center>
+</tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+</div>
+
+</body>
+
+
+

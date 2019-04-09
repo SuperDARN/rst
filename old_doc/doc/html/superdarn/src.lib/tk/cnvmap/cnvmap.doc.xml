@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>superdarn</project>
+<name>cnvmap</name>
+<location>src.lib/tk/cnvmap</location>
+
+<function>
+<name>CnvMapFread</name>
+<location>src.lib/tk/cnvmap</location>
+<header>superdarn/cnvmapread.h</header>
+<syntax>int CnvMapFread(FILE *fp,<sn href="&root;/superdarn/src.lib/tk/shf/structCnvMapData.html">struct CnvMapData</sn> *map,<sn href="&root;/superdarn/src.lib/tk/grid/structGridData.html">struct GridData</sn> *grd);</syntax>
+<description><p>The <fn href="CnvMapFread.html">CnvMapFread</fn> function reads a convection map from an open stream.</p>
+<p>The convection map is read from the open stream pointed to by the argument <ar>fp</ar>. The parameters and co-efficients used to generate the convection map are stored in the structure pointed to by the argument <ar>map</ar>. The gridded data used to generate the map is stored in the structure pointed to by the argument <ar>grd</ar>.</p>
+</description>
+<returns>Returns the number of bytes used to store the convection map on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">CnvMapFread.c</example>
+</function>
+
+<function>
+<name>CnvMapFseek</name>
+<location>src.lib/tk/cnvmap</location>
+<header>superdarn/cnvmapseek.h</header>
+<syntax>int CnvMapFseek(FILE *fp, int yr,int mo,int dy,int hr,int mt,int sc,double *atme, <sn href="structCnvMapIndex.html">struct CnvMapIndex</sn> *inx);</syntax>
+<description><p>The <fn href="CnvMapFseek.html">CnvMapFseek</fn> function searches for a convection map for a specific time.</p>
+<p>The search is performed on the open stream pointed to by the argument <ar>fp</ar>. The time to search for is specified by the arguments <ar>yr</ar>, <ar>mo</ar>,<ar>dy</ar>,<ar>hr</ar>,<ar>mt</ar>,<ar>sc</ar> giving the year, month, day, hour, minute and second.</p>
+<p>The argument <ar>atme</ar> is a pointer to a double precision floating point number that is used to store the time of the closest record to the time requested expressed in seconds from 0:00UT January 1, 1970. If this argument is set to a <code>NULL</code> pointer then the time is not returned.</p>  
+<p>If the file containing the convection maps has an associated index that has been loaded, then it can be used to speed up the search by setting the argument <ar>inx</ar> to point to it.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">CnvMapFseek.c</example>
+</function>
+
+<function>
+<name>CnvMapFwrite</name>
+<location>src.lib/tk/cnvmap</location>
+<header>superdarn/cnvmapwrite.h</header>
+<syntax>int CnvMapFwrite(FILE *fp,<sn href="&root;/superdarn/src.lib/tk/shf/structCnvMapData.html">struct CnvMapData</sn> *map,<sn href="&root;/superdarn/src.lib/tk/grid/structGridData.html">struct GridData</sn> *grd);</syntax>
+<description><p>The <fn href="CnvMapFwrite.html">CnvMapFwrite</fn> function writes a convection map to an open stream.</p>
+<p>The data is written to the open stream pointed to by the argument <ar>fp</ar>.</p>
+<p>The parameters and co-efficients used to generate the convection map are taken from the structure pointed to by the argument <ar>map</ar> and the gridded data used to generate the map is taken from the structure pointed to by the argument <ar>grd</ar>.</p>
+</description>
+<returns>Returns the number of bytes written on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">CnvMapFwrite.c</example>
+</function>
+
+<function>
+<name>CnvMapIndexFload</name>
+<location>src.lib/tk/cnvmap</location>
+<header>superdarn/cnvmapinx.h</header>
+<syntax><sn href="structCnvMapIndex.html">struct CnvMapIndex</sn> *CnvMapIndexFload(FILE *fp);</syntax>
+<description><p>The <fn href="CnvMapIndexFload.html">CnvMapIndexFload</fn> function loads an index to a file containing convection maps.</p>
+<p>The index is loaded from the open stream pointed to by the argument <ar>fp</ar>.</p>  
+</description>
+<returns>Returns a pointer to a structure containing the index on success. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
+<example type="source">CnvMapIndexFload.c</example>
+</function>
+
+<function>
+<name>CnvMapIndexFree</name>
+<location>src.lib/tk/cnvmap</location>
+<header>superdarn/cnvmapindex.h</header>
+<syntax>void CnvMapIndexFree(<sn href="structCnvMapIndex.html">struct CnvMapIndex</sn> *ptr);</syntax>
+<description><p>The <fn href="CnvMapIndexFree.html">CnvMapIndexFree</fn> function frees memory allocated to store an index to a file containing convection maps.</p>
+<p>The index structure is pointed to by the argument <ar>ptr</ar>.</p>
+</description>
+<example type="source">CnvMapIndexFree.c</example>
+</function>
+
+<function>
+<name>CnvMapIndexLoad</name>
+<location>src.lib/tk/cnvmap</location>
+<header>superdarn/cnvmapindex.h</header>
+<syntax><sn href="structCnvMapIndex.html">struct CnvMapIndex</sn> *CnvMapIndexLoad(int fid);</syntax>
+<description><p>The <fn href="CnvMapIndexLoad.html">CnvMapIndexLoad</fn> function loads an index to a file containing convection maps.</p>
+<p>The index is loaded from the file with the descriptor given by the argument <ar>fid</ar>.</p>  
+</description>
+<returns>Returns a pointer to a structure containing the index on success. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
+<example type="source">CnvMapIndexLoad.c</example>
+</function>
+
+<function>
+<name>CnvMapRead</name>
+<location>src.lib/tk/cnvmap</location>
+<header>superdarn/cnvmapread.h</header>
+<syntax>int CnvMapRead(int fid,<sn href="&root;/superdarn/src.lib/tk/shf/structCnvMapData.html">struct CnvMapData</sn> *map,<sn href="&root;/superdarn/src.lib/tk/grid/structGridData.html">struct GridData</sn>  *grd);</syntax>
+<description><p>The <fn href="CnvMapRead.html">CnvMapRead</fn> function reads a convection map from an open file.</p>
+<p>The convection map is read from the file with the descriptor given by the argument <ar>fid</ar>. The parameters and co-efficients used to generate the convection map are stored in the structure pointed to by the argument <ar>map</ar>. The gridded data used to generate the map is stored in the structure pointed to by the argument <ar>grd</ar>.</p>
+</description>
+<returns>Returns the number of bytes used to store the convection map on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">CnvMapRead.c</example>
+</function>
+
+<function>
+<name>CnvMapSeek</name>
+<location>src.lib/tk/cnvmap</location>
+<header>superdarn/cnvmapseek.h</header>
+<syntax>int CnvMapSeek(int fid, int yr,int mo,int dy,int hr,int mt,int sc,double *atme, <sn href="structCnvMapIndex.html">struct CnvMapIndex</sn> *inx);</syntax>
+<description><p>The <fn href="CnvMapSeek.html">CnvMapSeek</fn> function searches for a convection map for a specific time.</p>
+<p>The search is performed on the file with the descriptor given by the argument <ar>fid</ar>. The time to search for is specified by the arguments <ar>yr</ar>, <ar>mo</ar>,<ar>dy</ar>,<ar>hr</ar>,<ar>mt</ar>,<ar>sc</ar> giving the year, month, day, hour, minute and second.</p>
+<p>The argument <ar>atme</ar> is a pointer to a double precision floating point number that is used to store the time of the closest record to the time requested expressed in seconds from 0:00UT January 1, 1970. If this argument is set to a <code>NULL</code> pointer then the time is not returned.</p>  
+<p>If the file containing the convection maps has an associated index that has been loaded, then it can be used to speed up the search by setting the argument <ar>inx</ar> to point to it.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">CnvMapSeek.c</example>
+</function>
+
+<function>
+<name>CnvMapWrite</name>
+<location>src.lib/tk/cnvmap</location>
+<header>superdarn/cnvmapwrite.h</header>
+<syntax>int CnvMapWrite(int fid,<sn href="&root;/superdarn/src.lib/tk/shf/structCnvMapData.html">struct CnvMapData</sn> *map,<sn href="&root;/superdarn/src.lib/tk/grid/structGridData.html">struct GridData</sn>  *grd);</syntax>
+<description><p>The <fn href="CnvMapWrite.html">CnvMapWrite</fn> function writes a convection map to an open file.</p>
+<p>The data is written to the file with the descriptor given by the argument <ar>fid</ar>.If <ar>fid</ar> is set to (-1) then the function will just calculate the number of bytes required to store the data.</p>
+<p>The parameters and co-efficients used to generate the convection map are taken from the structure pointed to by the argument <ar>map</ar> and the gridded data used to generate the map is taken from the structure pointed to by the argument <ar>grd</ar>.</p>
+</description>
+<returns>Returns the number of bytes written on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">CnvMapWrite.c</example>
+</function>
+
+
+<structure>
+  <name>CnvMapIndex</name>
+  <location>src.lib/tk/cnvmap</location>
+  <header>superdarn/cnvmapindex.h</header>
+  <struct>
+
+    <member>
+      <proto>int num;</proto>
+      <description>Number of records in the data file.</description>
+    </member>
+
+    <member>
+      <proto>double *tme;</proto>
+      <description>Pointer to an array of record times, specified as seconds from 0:00UT January 1, 1970.</description>
+    </member>
+
+    <member>
+      <proto>int *inx;</proto>
+      <description>Pointer to an array of byte offsets into the file marking the start of a record.</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structCnvMapIndex.html">struct CnvMapIndex</sn> structure stores an index to a file containing convection maps.</p>
+  </description>
+</structure>
+
+</library>

@@ -1,0 +1,78 @@
+<head>
+<title>fitacfserver</title>
+<link rel=stylesheet href="../../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../../superdarn/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/tcpip/index.html>tcpip</a></td><td>|</td>
+<td>fitacfserver</td>
+<td width=100% align=right><a href=../../../../../superdarn/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">fitacfserver</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+fitacfserver --help<br>fitacfserver [-a] [-d] [-r] [-old] [-L <em>logname</em>] [-pf <em>portname</em>] [-if <em>pidname</em>] [-lp <em>port</em>] [-b <em>bound</em>] [-s <em>stid</em>] [-i <em>intt</em>] <em>name</em><br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Simple TCP/IP server program for <code>fitacf</code> and <code>fit</code> format files.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-a</code></td><td valign="top">replace the record times in the file with the actual time. </td></tr>
+<tr><td width="150" valign="top"><code>-d</code></td><td valign="top">the file contains one complete day of data and the server should send the appropriate record for the current time of day. </td></tr>
+<tr><td width="150" valign="top"><code>-r</code></td><td valign="top">re-open the file when the end is reached.</td></tr>
+<tr><td width="150" valign="top"><code>-old</code></td><td valign="top">input file is in <code>fit</code> format rather than <code>fitacf</code> format.</td></tr>
+<tr><td width="150" valign="top"><code>-L <em>logname</em></code></td><td valign="top">log connections and information in the file <em>logname</em>. By default, connections are recorded in <code>log.rt</code>.</td></tr>
+<tr><td width="150" valign="top"><code>-pf <em>portname</em></code></td><td valign="top">record the port number that the server is listening for connections on in the file <em>portname</em>. By default, the port is  recorded in <code>port.id</code>.</td></tr>
+<tr><td width="150" valign="top"><code>-if <em>pidname</em></code></td><td valign="top">record the process Identifier (PID) of the server in the file <em>pidname</em>. By default, the PID is  recorded in <code>pid.id</code>.</td></tr>
+<tr><td width="150" valign="top"><code>-lp <em>port</em></code></td><td valign="top">force the server to listen on the local port number <em>port</em>. By default, the server requests a port number from the Operating System.</td></tr><tr><td width="150" valign="top"><code>-b <em>bound</em></code></td><td valign="top">synchronize scans with an interval of <em>bound</em> seconds.</td></tr>
+<tr><td width="150" valign="top"><code>-s <em>stid</em></code></td><td valign="top">set the station identifier in the data records to <em>stid</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-i <em>intt</em></code></td><td valign="top">ignore the integration time in the data records and instead use <em>intt</em> seconds.</td></tr>
+<tr><td width="150" valign="top"><code><em>name</em></code></td><td valign="top">filename of the <code>fitacf</code> or <code>fit</code> format file to serve.</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Simple TCP/IP server program for <code>fitacf</code> and <code>fit</code> format files.</p>
+<p>The task can be used to simulate a data feed from a radar site</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">fitacfserver -L log -old -pf port.id  -if pid.id -r 19981112k.fit</pre></td></tr></table><p><p>Serve the fit file "<code>19981112k.fit</code>" from a port allocated by the operating system. The port number is recorded in the file "<code>port.id</code>", the process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyymmdd</em> is the date.</p>
+<p>Once the end of the file is reached, the server rewinds to the beginning of the file and continues.</p></p>
+
+<table ><tr><td class="docbox" ><pre width="80">fitacfserver -L log -pf port.id  -if pid.id -lp 5000 -a -i 4 -b 60 19990830.gbr.fitacf</pre></td></tr></table>
+<p>Serve the <code>fitacf</code> file "<code>19990830.gbr.fitacf</code>" from port 5000. The port number is recorded in the file "<code>port.id</code>", the process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyymmdd</em> is the date.</p>
+<p>The actual time in UT is substituted for the time recorded in the file. A record is served every 4 seconds and the scans are synchronized to one minute boundaries.</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

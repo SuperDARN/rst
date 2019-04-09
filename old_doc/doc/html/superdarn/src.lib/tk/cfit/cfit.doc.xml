@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>superdarn</project>
+<name>cfit</name>
+<location>src.lib/tk/cfit</location>
+
+<function>
+<name>CFitClose</name>
+<location>src.lib/tk/cfit</location>
+<header>superdarn/cfitread.h</header>
+<syntax>void CFitClose(<sn href="structCFitfp.html">struct CFitfp</sn> *fptr);</syntax>
+<description><p>The <fn href="CFitClose.html">CFitClose</fn> function closes <code>cFit</code> data file.</p>
+<p>The open file is pointed to by the argument <ar>ptr</ar>.</p>
+</description>
+<example type="source">CFitClose.c</example>
+</function>
+
+<function>
+<name>CFitFwrite</name>
+<location>src.lib/tk/cfit</location>
+<header>superdarn/cfitwrite.h</header>
+<syntax>int CFitFwrite(FILE *fp,<sn href="structCFitdata.html">struct CFitdata</sn> *ptr);</syntax>
+<description><p>The <fn href="CFitFwrite.html">CFitFwrite</fn> function writes a <code>cFit</code> data record to an open stream.</p>
+<p>The data is written to the open stream pointed to by the argument <ar>fp</ar>. The data is contained in the structure pointed to by the argument <ar>ptr</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">CFitFwrite.c</example>
+</function>
+
+<function>
+<name>CFitOpen</name>
+<location>src.lib/tk/cfit</location>
+<header>general/cfitdata.h</header>
+<syntax><sn href="structCFitfp.html">struct CFitfp</sn> *CFitOpen(char *name);</syntax>
+<description><p>The <fn href="CFitOpen.html">CFitOpen</fn> function opens a <code>cFit</code> data file for reading.</p>
+<p>The name of the file to open is given by the zero terminated string pointed to by the argument <ar>name</ar>.</p>
+</description>
+<returns>Returns a pointer to the file control structure.On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
+<example type="source">CFitOpen.c</example>
+</function>
+
+<function>
+<name>CFitRead</name>
+<location>src.lib/tk/cfit</location>
+<header>superdarn/cfitread.h</header>
+<syntax>int CFitRead(<sn href="structCFitfp.html">struct CFitfp</sn> *fptr,<sn href="structCFitdata.html">struct CFitdata</sn> *ptr);</syntax>
+<description><p>The <fn href="CFitRead.html">CFitRead</fn> function reads a record from a <code>cFit</code> data file.</p>
+<p>The data is read from the open file pointed to by the argument <ar>ptr</ar>. The data is decoded and used to populate the structure pointed to by the argument <ar>ptr</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">CFitRead.c</example>
+</function>
+
+<function>
+<name>CFitReadRadarScan</name>
+<location>src.lib/tk/cfit</location>
+<header>superdarn/cfitscan.h</header>
+<syntax>int CFitReadRadarScan(<sn href="structCFitfp.html">struct CFitfp</sn> *fp,int *state,<sn href="&root;/superdarn/src.lib/tk/scan/structRadarScan.html">struct RadarScan</sn> *ptr,<sn href="structCFitdata.html">struct CFitdata</sn> *cfit,int tlen, int lock,int chn);</syntax>
+<description><p>The <fn href="CFitReadRadarScan.html">CFitReadRadarScan</fn> function reads one full scan of data from a <code>cFit</code> data file.</p>
+<p>The data is read from the open file pointed to by the argument <ar>fp</ar>.</p>
+<p>The argument <ar>state</ar> is a pointer to an integer that is used internally by the function to track progress through the <code>CFit</code> file. Initially this integer should be set to zero, indicating that no data has been read from the file yet. The other possible value of <ar>state</ar> are (1), indicating that a complete scan was read from the file and data from the next scan is pending, or (2) indicating that a file error occurred.</p>
+<p>The scan data is written to the structure pointed to by the argument <ar>ptr</ar>. Memory is automatically allocated within this structure to store the beam data.</p>
+<p>In order for the function to correctly identify a scan boundary, it must read the first beam from the subsequent scan. This data must be preserved so that it can be included in the next block of scan data returned by the next call to the function. This is done by providing storage for the <code>cFit</code> data pointed to by the argument <ar>cfit</ar>.</p>
+<p>If the argument <ar>tlen</ar> has a non-zero value then the function will ignore the scan flag and instead assume the the scan has a length of <ar>tlen</ar> seconds. If the argument <ar>lock</ar> has a non-zero value it is also assumed that the scan boundaries are fixed relative to the start of the day.</p>
+<p>If the final argument <ar>chn</ar>, is compared against the channel number recorded in the radar parameter block, if the two numbers do not match then the data record is excludef from the scan.</p>
+</description> 
+<returns>Returns zero on success, or (1) if the end of file was reached. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">CFitReadRadarScan.c</example>
+</function>
+
+<function>
+<name>CFitSeek</name>
+<location>src.lib/tk/cfit</location>
+<header>superdarn/cfitread.h</header>
+<syntax>int CFitSeek(<sn href="structCFitfp.html">struct CFitfp</sn> *ptr, int yr,int mo,int dy,int hr,int mt,int sc,double *atme);</syntax>
+<description><p>The <fn href="CFitSeek.html">CFitSeek</fn> function searches for a <code>cFit</code> data record for a specific time.</p>
+<p>The search is performed on the file pointed to by the argument <ar>fp</ar>. The time to search for is specified by the arguments <ar>yr</ar>, <ar>mo</ar>,<ar>dy</ar>,<ar>hr</ar>,<ar>mt</ar>,<ar>sc</ar> giving the year, month, day, hour, minute and second.</p>
+<p>The argument <ar>atme</ar> is a pointer to a double precision floating point number that is used to store the time of the closest record to the time requested expressed in seconds from 0:00UT January 1, 1970. If this argument is set to a <code>NULL</code> pointer then the time is not returned.</p>  
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">CFitSeek.c</example>
+</function>
+
+<function>
+<name>CFitToRadarScan</name>
+<location>src.lib/tk/cfit</location>
+<header>superdarn/cfitscan.h</header>
+<syntax>int CFitToRadarScan(<sn href="&root;/superdarn/src.lib/tk/scan/structRadarScan.html">struct RadarScan</sn> *ptr,<sn href="structCFitdata.html">struct CFitdata</sn> *cfit);</syntax>
+<description>
+<p>The <fn href="CFitToRadarScan.html">CFitToRadarScan</fn> function adds a <code>cFit</code> data record to a structure containing radar scan data.</p>
+<p>The radar scan data is pointed to by the argument <ar>ptr</ar>.The scan data is encoded from the parameter block pointed to by the argument <ar>prm</ar> and the <code>fit</code> data structure pointer to by the argument <ar>cfit</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">CFitToRadarScan.c</example>
+</function>
+
+<function>
+<name>CFitWrite</name>
+<location>src.lib/tk/cfit</location>
+<header>general/cfitdata.h</header>
+<syntax>int CFitWrite(int fp,<sn href="structCFitdata.html">struct CFitdata</sn> *ptr);</syntax>
+<description><p>The <fn href="CFitWrite.html">CFitWrite</fn> function writes a <code>cFit</code> data record to an open file.</p>
+<p>The data is written to the open file with the descriptor given by the a argument <ar>fp</ar>. The data is contained in the structure pointed to by the argument <ar>ptr</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">CFitWrite.c</example>
+</function>
+
+<structure>
+  <name>CFitCell</name>
+  <location>src.lib/tk/cfit</location>
+  <header>superdarn/cfitdata.h</header>
+  <struct>
+
+    <member>
+      <proto>int gsct;</proto>
+      <description>Ground scatter flag.</description>
+    </member>
+
+    <member>
+      <proto>double p_0;</proto>
+      <description>Lag zero power.</description>
+    </member>
+
+    <member>
+      <proto>double p_0;</proto>
+      <description>Lag zero power error.</description>
+    </member>
+
+    <member>
+      <proto>double v;</proto>
+      <description>Velocity from ACF.</description>
+    </member>
+   
+    <member>
+      <proto>double v_e;</proto>
+      <description>Velocity error from ACF.</description>
+    </member>
+
+    <member>
+      <proto>double w_l;</proto>
+      <description>Spectral width from lambda fit of ACF.</description>
+    </member>
+
+    <member>
+      <proto>double w_l_e;</proto>
+      <description>Spectral width error from lambda fit of ACF.</description>
+    </member>
+
+    <member>
+      <proto>double p_l;</proto>
+      <description>Power from lambda fit of ACF.</description>
+    </member>
+
+    <member>
+      <proto>double p_l_e;</proto>
+      <description>Power error from lambda fit of ACF.</description>
+    </member>
+  </struct>
+
+  <description>
+  <p>The <sn href="structCFitCell.html">struct CFitCell</sn> structure stores the fitted parameters for a single range.</p>
+  </description>
+</structure>
+
+
+
+<structure>
+  <name>CFitdata</name>
+  <location>src.lib/tk/cfit</location>
+  <header>superdarn/cfitdata.h</header>
+  <struct>
+
+    <member>
+      <struct>
+        <member>
+          <proto>int major;</proto>
+          <description>Major revision number.</description>
+        </member>
+        <member>
+          <proto>int minor;</proto>
+          <description>Minor revision number.</description>
+        </member>
+      </struct>
+      <proto>revision;</proto>
+      <description>Revision number.</description>
+    </member>
+
+    <member>
+      <proto>int16 stid;</proto>
+      <description>Station identifier number.</description>
+    </member>
+
+    <member>
+      <proto>double time;</proto>
+      <description>Data record time stamp, specified as seconds from 0:00UT January 1, 1970.</description>
+    </member>
+
+    <member>
+      <proto>int16 scan;</proto>
+      <description>Scan flag.</description>
+    </member>
+ 
+    <member>
+      <proto>int16 cp;</proto>
+      <description>Control program identifier number.</description>
+    </member>
+
+    <member>
+      <proto>int16 bmnum;</proto>
+      <description>Beam number.</description>
+    </member>
+
+    <member>
+      <proto>float bmazm;</proto>
+      <description>Beam azimuth.</description>
+    </member>
+
+    <member>
+      <proto>int16 channel;</proto>
+      <description>Channel number for a stereo radar.</description>
+    </member>
+
+    <member>
+      <struct>
+        <member>
+          <proto>int16 sc;</proto>
+          <description>Seconds.</description>
+        </member>
+        <member>
+          <proto>int32 us;</proto>
+          <description>Microseconds.</description>
+        </member>
+      </struct>
+      <proto>intt;</proto>
+      <description>Integration time.</description>
+    </member>
+
+    <member>
+      <proto>int16 frang;</proto>
+      <description>Distance to first range (kilometers).</description>
+    </member>
+
+    <member>
+      <proto>int16 rsep;</proto>
+      <description>Range separation (kilometers).</description>
+    </member>
+
+    <member>
+      <proto>int16 rxrise;</proto>
+      <description>Receiver rise time (microseconds).</description>
+    </member>
+
+    <member>
+      <proto>int16 tfreq;</proto>
+      <description>Transmitted frequency.</description>
+    </member>
+
+    <member>
+      <proto>int32 noise;</proto>
+      <description>Calculated noise from clear frequency search.</description>
+    </member>
+
+    <member>
+      <proto>int16 atten;</proto>
+      <description>Attenuation level.</description>
+    </member>
+
+    <member>
+      <proto>int16 nave;</proto>
+      <description>Number of pulse sequences transmitted.</description>
+    </member>
+
+    <member>
+      <proto>int16 nrang;</proto>
+      <description>Number of ranges.</description>
+    </member>
+
+    <member>
+      <proto>unsigned char num;</proto>
+      <description>Number of ranges stored.</description>
+    </member>
+
+    <member>
+      <proto>unsigned char rng[MAX_RANGE];</proto>
+      <description>Range lookup table. The numbers stored in the array correspond to the actual range number for the stored data.</description>
+    </member>
+
+    <member>
+      <proto><sn href="structCFitCell.html">struct CFitCell</sn> data[MAX_RANGE];</proto>
+      <description>Data table.</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structCFitdata.html">struct CFitdata</sn> structure stores the cfit data.</p>
+  </description>
+</structure>
+
+
+
+<structure>
+  <name>CFitfp</name>
+  <location>src.lib/tk/cfit</location>
+  <header>superdarn/cfitread.h</header>
+  <struct>
+
+    <member>
+      <proto>int fitfp;</proto>
+      <description>File descriptor for the data file.</description>
+    </member>
+
+    <member>
+      <proto>char *buf;</proto>
+      <description>File memory buffer, if the file is small enough it is loaded into memory.</description>
+    </member>
+
+    <member>
+      <proto>int fptr;</proto>
+      <description>File pointer.</description>
+    </member>
+
+    <member>
+      <proto>int fsze;</proto>
+      <description>File size.</description>
+    </member>
+
+    <member>
+      <proto>int blen;</proto>
+      <description>Size in bytes of the last record read from the file.</description>
+    </member>
+
+    <member>
+      <proto>double ctime;</proto>
+      <description>Current record time of the file, specified as seconds from 0:00UT January 1, 1970.</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structCFitfp.html">struct CFitfp</sn> structure stores the open file descriptor information for a cfit data file.</p>
+  </description>
+</structure>
+
+</library>

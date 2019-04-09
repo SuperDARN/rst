@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>rawacftodat</name>
+<location>src.bin/tk/reformat/rawacftodat</location>
+<syntax>rawacftodat --help</syntax>
+<syntax>rawacftodat [-vb] [<ar>rawacfname</ar>]</syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on><ar>rawacfname</ar></on><od>filename of the <code>rawacf</code> format file to convert.</od>
+</option>
+<synopsis><p>Converts a <code>rawacf</code> format file to <code>raw</code> (<code>dat</code>) format.</p></synopsis>
+
+<description><p>Converts a <code>rawacf</code> format file to <code>raw</code> (<code>dat</code>) format.</p>
+<p>The <code>raw</code> format data is written to standard output.</p>
+</description>
+
+
+<example>
+<command>rawacftodat test.rawacf &gt; test.dat</command>
+<description>Convert the file "<code>test.rawacf</code>" to the <code>raw</code> format file "<code>test.dat</code>".</description>
+</example>
+
+
+
+</binary>

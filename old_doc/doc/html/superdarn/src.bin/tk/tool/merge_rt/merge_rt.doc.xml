@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>merge_rt</name>
+<location>src.bin/tk/tool/merge_rt</location>
+<syntax>merge_rt --help</syntax>
+<syntax>merge_rt [-vb] [-r]  [-L <ar>logname</ar>] [-if <ar>pidname</ar>] <ar>gridnames...</ar></syntax>
+<syntax>merge_rt -old [-vb] [-r]  [-L <ar>logname</ar>] [-if <ar>pidname</ar>] <ar>gridnames...</ar></syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-i <ar>interval</ar></on><od>divide the day into <ar>interval</ar> second intervals.</od>
+</option>
+
+<option><on>-o <ar>offset</ar></on><od>read the input files at <ar>offset</ar> seconds into each interval.</od>
+</option>
+
+<option><on>-r</on><od>get the record time from the most recent record in the files, not from the record with the most data.</od>
+</option>
+<option><on>-L <ar>logname</ar></on><od>log connections and information in the file <ar>logname</ar>. By default, connections are recorded in <code>log.rt</code>.</od>
+</option>
+
+
+<option><on>-if <ar>pidname</ar></on><od>record the process Identifier (PID) of the server in the file <ar>pidname</ar>. By default, the PID is  recorded in <code>pid.id</code>.</od>
+</option>
+
+
+<option><on><ar>gridnames</ar></on><od>filenames of the <code>grdmap</code> format files to combine.</od>
+</option>
+<option><on>-old</on><od>the input files are in the <code>grd</code> format file.</od>
+</option>
+
+
+<synopsis><p>Combines together multiple grid files to produce a single output file at specific intervals.</p></synopsis>
+
+<description><p>Combines together multiple grid files to produce a single output file at specific intervals.</p>
+<p>The program is used for combining grid files generated from real-time data feeds. The combination of the two options "<code>-i</code>" and "<code>-o</code>", controls when the files are combined.</p> 
+<p>By default the median time of all the input records is calculated and used to "window" the output data. The output record contains the data obtained during this median time period. If the "<code>-r</code>" option is specified then the output record will contain data obtained during the most recent time period contained in the input files.</p>
+</description>
+<example>
+<command>merge_rt -old -i 120 -o 30 rt.???.grd rt.grd</command>
+<description>Combines together all files called "<code>rt.???.grd</code>" to produce a file called "<code>rt.grd</code>". The files are combined starting at 30 seconds after midnight and at every two minutes after that. The data recorded in the output file is from the median time of all the input records.</description>
+</example>
+<example>
+<command>merge_rt -old -r rt.???.grd rt.grd</command>
+<description>Combines together all files called "<code>rt.???.grd</code>" to produce a file called "<code>rt.grd</code>".  The data recorded in the output file is the most recent contained in the input files.</description>
+</example>
+ 
+
+
+</binary>

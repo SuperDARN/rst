@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>general</project>
+<name>rfile</name>
+<location>src.lib/rfile</location>
+<function>
+<name>RfileLoadIndex</name>
+<location>src.lib/rfile</location>
+<header>general/rfile.h</header>
+<syntax><sn href="structRfileIndex.html">struct RfileIndex</sn> *RfileLoadIndex(FILE *fp);</syntax>
+
+
+<description><p>The <fn href="RfileLoadIndex.html">RfileLoadIndex</fn> function loads an index to a file in the <code>rFile</code> format.</p>
+<p>The index is loaded from the open stream pointed to by the argument <ar>fp</ar>.</p>  
+<p>A line in the index file beginning with the character '#' is interpreted as a comment and ignored. Every other line identifies the position of a record within the corresponding data file. The line lists the full start and end time of the data record its position measured in bytes from the start of the file.</p>
+</description>
+<returns>Returns a pointer to a structure containing the index on success. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
+<example type="source">RfileLoadIndex.c</example>
+
+</function>
+<function>
+<name>RfileRead</name>
+<location>src.lib/rfile</location>
+<header>general/rfile.h</header>
+<syntax>int RfileRead(FILE *fp,int num,RfileDecoder *decode, void **data);</syntax>
+<description><p>The <fn href="RfileRead.html">RfileRead</fn> function reads data from a file in the <code>rFile</code> format.</p>
+<p>The data is read from the I/O stream pointed to by the argument <ar>fp</ar>.</p>
+<p>Data in the <code>rFile</code> format consists of plain ASCII text divided into a number of time stamped records. A line beginning with the character '#' is interpreted as a comment and ignored.</p> 
+<p>The first line encountered that is not a comment is the time stamp of the record and should consist of the full date and time of the start and end of the record:</p>
+
+<raw>syear smonth sday shour sminute ssecond eyear emonth eday ehour eminue esecond</raw>
+
+<p>The next line defines the number of blocks within the record:</p>
+
+<raw>blocks</raw>
+
+<p>Each record is comprised of one or more blocks of data. A block consists of a header followed by a number of data entries. A data entry consists of a number of fields, the type of data fields within a block are always identical.</p> 
+<p>The first line in the block header defines the number of entries in the block and the number of fields per entry:</p>
+
+<raw>entries fields</raw>
+
+<p>The following three lines identify the entry fields. The first line gives the names of the fields, the next line give the units associated with that field and the final line gives the data type of the field.</p> 
+<raw>nameA 	nameB	 nameC
+unit1A	unitB 	unitC
+typeA	typeB	typeC</raw>
+
+<p>The data type can be one of:</p> 
+<center><table>
+<tr><td><pre>text</pre></td><td>A string (which cannot contain any spaces).</td></tr>
+<tr><td><pre>char</pre></td><td>A single character.</td></tr>
+<tr><td><pre>float</pre></td><td>A floating point number.</td></tr>
+<tr><td><pre>int</pre></td><td>An integer number.</td></tr>
+</table></center>
+
+<p>After the header comes the body of the block. Each line in the body is a data entry and must have the same number of columns as the block has fields. The number of lines in the body must be equal to the number of entries defined in the block header.</p>
+
+<raw>entry1.A	entry1.B	entry1.C
+entry2.A	entry2.B 	entry2.C
+entry3.A	entry2.B 	entry3.C</raw>
+
+
+<p>The following is an example of an <code>rFile</code> data file:</p>
+
+<raw># Example data file consisting of two records, 
+# each containing two blocks of data.
+
+1997 11 20 0 0 0 1997 11 20 0 5 0
+2
+5 4
+lat 	lon 	hgt 	flg
+degree	degree	km	count
+float	float	float 	int
+55.0	120.0	200.0	0
+56.0	121.0	201.0	1
+57.0	124.0	210.0	2
+58.0	130.0	215.0	0
+58.0	132.0	210.0	2
+6 2
+a	b
+count	count
+int	int
+0	1
+2	1
+3	2
+4	3
+5	4
+10	1
+1997 11 20 00 05 00 1997 11 20 00 10 00
+2
+4 4
+lat 	lon 	hgt 	flg
+degree	degree	km	count
+float	float	float 	int
+35.0	140.0	100.0	2
+37.0	144.0	110.0	4
+38.0	140.0	115.0	5
+38.0	142.0	110.0	6
+3 2
+a	b
+count	count
+int	int
+10	10
+9	21
+8	32</raw>	
+
+<p>The <fn href="RfileRead.html">RfileRead</fn> function uses a series of user supplied decoder functions to interpret the contents of each block. The number of decoder functions and the array of pointers to them are defined by the arguments <ar>num</ar> and <ar>decode</ar> respectively.The user must also supply a block of memory for each decoder function to store its results. Pointers to these memory blocks are stored in the array pointed to by the argument <ar>data</ar>. Different decoder functions can share the same memory by setting the appropriate entries in the array to point to the same value.</p>
+<p>A decoder function has the form:</p>
+
+<fd>int decode(char *name,char *unit,char *type,double st_time,double ed_time,int nent,int nfld,int ent,<sn href="structRfileData.html">struct RfileData</sn> *fdat,void *ptr);</fd>
+
+<p>The decoder functions have a type associated with them:</p>
+<fd>typedef int (*RfileDecoder)(char *,char *,char *,double,double,int,int,int,struct RfileData *,void *ptr);</fd>
+
+<p>As a data entry is read from a block, each decoder functions will be called in turn.The first three arguments are space separated text strings giving the name of the fields in the block, the units of each field, and the data type associated with each field. The function should compare these strings with the fields of the block type it can decode. If the function does not recognize this type of block it should take no further action and return a value of zero. If a match is found the function should decode the entry using the remaining arguments and return a value of (1).</p> 
+<p>The arguments <ar>st_time</ar> and <ar>ed_time</ar> give the start end end time of the record in terms of seconds from 0:00UT January 1, 1970. The argument <ar>nent</ar> give the number of data entries in the data block and the argument <ar>nfld</ar> gives the number of fields per entry. The index number of the entry to decode is given by the argument <ar>ent</ar>.</p>
+<p>The argument <ar>fdat</ar> is a pointer to an array of structures containing the decoded fields of the data entry. This structure includes a flag indicating the type of data. Possible values of this flag are:</p>
+
+<center><table>
+<tr><td><pre>FIELD_CHAR</pre></td><td>A single character.</td></tr>
+<tr><td><pre>FIELD_INT</pre></td><td>A signed integer.</td></tr>		
+<tr><td><pre>FIELD_DOUBLE</pre></td><td>A double precision floating point number.</td></tr>
+<tr><td><pre>FIELD_TXT</pre></td><td>A text string.</td></tr>
+</table></center>
+
+<p>The function should copy the appropriate member of the union for each element in the array into its data buffer pointed to by the argument <ar>ptr</ar>.</p>
+<p>If no decoder functions are defined, the function will extract the start end end time of each data record. If the argument data is not a NULL pointer it is ssumed to be a pointer to an array of double precision floating point numbers used to store the record times measured in seconds from 00:00UT January 1, 1970.
+</p>
+</description>
+<returns>Returns the number of bytes read from the stream if a record 
+is successfully read. On error,  (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">RfileRead.c</example>
+
+
+</function>
+
+
+
+<function>
+<name>RfileReadRaw</name>
+<location>src.lib/rfile</location>
+<header>general/rfile.h</header>
+<syntax>int RfileReadRaw(FILE *fp,int num,RfileDecoder *decode, void **data);</syntax>
+<description>
+<p>The <fn href="RfileReadRaw.html">RfileReadRaw</fn> function reads data from a file in the <code>rFile</code> raw or binary format.</p>
+
+<p>The data is read from the I/O stream pointed to by the argument <ar>fp</ar>.</p>
+<p>The function uses a series of user supplied decoder functions to interpret the contents of each block. The number of decoder functions and the array of pointers to them are defined by the arguments <ar>num</ar> and <ar>decode</ar> respectively.The user must also supply a block of memory for each decoder function to store its results. Pointers to these memory blocks are stored in the array pointed to by the argument <ar>data</ar>. Different decoder functions can share the same memory by setting the appropriate entries in the array to point to the same value.</p>
+<p>A decoder function has the form:</p>
+
+<fd>int decode(char *name,char *unit,char *type,double st_time,double ed_time,int nent,int nfld,int ent,<sn href="structRfileData.html">struct RfileData</sn> *fdat,void *ptr);</fd>
+
+<p>The decoder functions have a type associated with them:</p>
+<fd>typedef int (*RfileDecoder)(char *,char *,char *,double,double,int,int,int,struct RfileData *,void *ptr);</fd>
+
+<p>As a data entry is read from a block, each decoder functions will be called in turn.The first three arguments are space separated text strings giving the name of the fields in the block, the units of each field, and the data type associated with each field. The function should compare these strings with the fields of the block type it can decode. If the function does not recognize this type of block it should take no further action and return a value of zero. If a match is found the function should decode the entry using the remaining arguments and return a value of (1).</p> 
+<p>The arguments <ar>st_time</ar> and <ar>ed_time</ar> give the start end end time of the record in terms of seconds from 0:00UT January 1, 1970. The argument <ar>nent</ar> give the number of data entries in the data block and the argument <ar>nfld</ar> gives the number of fields per entry. The index number of the entry to decode is given by the argument <ar>ent</ar>.</p>
+<p>The argument <ar>fdat</ar> is a pointer to an array of structures containing the decoded fields of the data entry. This structure includes a flag indicating the type of data. Possible values of this flag are:</p>
+
+<center><table>
+<tr><td><pre>FIELD_CHAR</pre></td><td>A single character.</td></tr>
+<tr><td><pre>FIELD_INT</pre></td><td>A signed integer.</td></tr>		
+<tr><td><pre>FIELD_DOUBLE</pre></td><td>A double precision floating point number.</td></tr>
+<tr><td><pre>FIELD_TXT</pre></td><td>A text string.</td></tr>
+</table></center>
+
+<p>The function should copy the appropriate member of the union for each element in the array into its data buffer pointed to by the argument <ar>ptr</ar>.</p>
+<p>If no decoder functions are defined, the function will extract the start end end time of each data record. If the argument data is not a NULL pointer it is ssumed to be a pointer to an array of double precision floating point numbers used to store the record times measured in seconds from 00:00UT January 1, 1970.</p>
+</description>
+<returns>Returns the number of bytes read from the stream if a record 
+is successfully read. On error,  (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">RfileReadRaw.c</example>
+
+</function>
+
+<function>
+<name>RfileSeek</name>
+<location>src.lib/rfile</location>
+<header>general/rfile.h</header>
+<syntax>int RfileSeek(FILE *fp, int yr,int mo,int dy,int hr,int mt,double sc, struct <sn href="structRfileIndex.html">RfileIndex</sn> *inx, double *aval);</syntax>
+
+<description><p>The <fn href="RfileSeek.html">RfileSeek</fn> function searches an <code>rFile</code> format file  data for a specific time.</p>
+<p>The search is performed on the open stream pointed to by the argument <ar>fp</ar>. The time to search for is specified by the arguments <ar>yr</ar>, <ar>mo</ar>,<ar>dy</ar>,<ar>hr</ar>,<ar>mt</ar>,<ar>sc</ar> giving the year, month, day, hour, minute and second.</p>
+<p>The argument <ar>atme</ar> is a pointer to a double precision floating point number that is used to store the time of the closest record to the time requested expressed in seconds from 0:00UT January 1, 1970. If this argument is set to a <code>NULL</code> pointer then the time is not returned.</p>  
+<p>If the file has an associated index that has been loaded, then it can be used to speed up the search by setting the argument <ar>inx</ar> to point to it.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">RfileSeek.c</example>
+
+
+</function>
+
+<structure>
+ <name>RfileData</name>
+ <location>src.lib/rfile</location>
+ <header>general/rfile.h</header>
+ <struct>
+   <member>
+     <proto>int type;</proto>
+     <description>Type code.</description>
+   </member>
+
+  <member>
+       <union>
+       <member>
+          <proto>char *tval;</proto>
+          <description>Pointer to a zero terminated string.</description>
+       </member>
+       <member>
+          <proto>char cval;</proto>
+          <description>Character value.</description>
+       </member>
+       <member>
+          <proto>float fval;</proto>
+          <description>Single precision floating point number.</description>
+       </member>
+       <member>
+          <proto>float dval;</proto>
+          <description>Double precision floating point number.</description>
+       </member>
+       <member>
+          <proto>int32 ival;</proto>
+          <description>Signed integer point number.</description>
+       </member>
+       </union>
+
+      <proto>data;</proto>
+      <description>Data value.</description>
+   </member>
+
+   </struct>
+<description>
+<p>The <sn href="structRfileData.html">struct RfileData</sn> structure stores a single data value from an rFile format file.</p>
+<p>Possible values of the <ar>type</ar> field are:</p>
+<center><table>
+<tr><td><pre>FIELD_CHAR</pre></td><td>A single character.</td></tr>
+<tr><td><pre>FIELD_INT</pre></td><td>A signed integer.</td></tr>		
+<tr><td><pre>FIELD_DOUBLE</pre></td><td>A double precision floating point number.</td></tr>
+<tr><td><pre>FIELD_TXT</pre></td><td>A text string.</td></tr>
+</table></center>
+</description>
+</structure>
+
+
+
+<structure>
+ <name>RfileIndex</name>
+ <location>src.lib/rfile</location>
+ <header>general/rfile.h</header>
+ <struct>
+
+
+         <member>
+         <proto>double *start;</proto>
+         <description>Pointer to an array of record start times, specified as seconds from 0:00UT January 1, 1970.</description>
+         </member>
+         <member>
+         <proto>double *end;</proto>
+         <description>Pointer to an array of record end times, specified as seconds from 0:00UT January 1, 1970.</description>
+         </member>
+
+
+    <member>
+      <proto>int num;</proto>
+      <description>Number of records in the data file.</description>
+    </member>
+    <member>
+      <struct>
+        <member>
+         <proto>double *start;</proto>
+         <description>Pointer to an array of record start times, specified as seconds from 0:00UT January 1, 1970.</description>
+         </member>
+         <member>
+         <proto>double *end;</proto>
+         <description>Pointer to an array of record end times, specified as seconds from 0:00UT January 1, 1970.</description>
+         </member>
+       </struct>
+       <proto>time;</proto>
+       <description>Record timestamps.</description>
+
+    </member>
+
+   <member>
+      <proto>int *offset;</proto>
+      <description>Pointer to an array of byte offsets into the file marking the start of a record.</description>
+    </member>
+</struct>
+
+<description>
+<p>The <sn href="structRfileIndex.html">struct RfileIndex</sn> structure stores an index to a data file in <proto>rFile</proto> format.</p>
+</description>
+</structure>
+
+
+
+</library>

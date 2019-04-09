@@ -1,0 +1,62 @@
+
+<head>
+<title>FrameBufferMakeClip</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../base/index.html>base</a></td>
+<td>|</td><td><a href=../../../../base/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/index.html>graphic</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/fbuffer/index.html>fbuffer</a></td><td>|</td>
+<td>FrameBufferMakeClip</td>
+<td width=100% align=right><a href=../../../../base/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">FrameBufferMakeClip</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;"><a href="structFrameBufferClip.html"><code>struct FrameBufferClip</code></a> *FrameBufferMakeClip(int wdt,int hgt,int num, int *px, int *py,int *t);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">base/rfbuffer.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">rfbuf</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="FrameBufferMakeClip.html"><code>FrameBufferMakeClip</code></a> function creates a clipping polygon.</p>
+<p>The arguments <em>x</em> and <em>y</em> are applied as an offset to each vertex in the clipping polygon. The polygon is expected to lie with the rectangle whose size is given by the arguments <em>wdt</em> and <em>hgt</em>.</p>
+<p>The number of vertices of the clipping polygon is given by the argument <em>num</em>. The arrays containing the X and Y coordinates of each vertex are pointed to by the arguments <em>px</em> and <em>y</em>.</p>
+<p>A polygon can be constructed from straight line segments or bezier curves. The array pointed to by the argument <em>t</em> determines what kind of line segment is used to join to a vertex. If the corresponding entry in the array equals zero, then the segment between the current point and the next point is a straight line; if the entry is (1) then the connecting segment is a bezier curve and the next two vertices are the control points, the curve connects to the third point.</p> 
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns a pointer to the structure containing the clipping polygon on success. On error, a <code>NULL</code> pointer is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, a <code>NULL</code> pointer is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td>None</td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

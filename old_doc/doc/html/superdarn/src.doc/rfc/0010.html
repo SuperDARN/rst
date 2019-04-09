@@ -1,0 +1,510 @@
+<head>
+<title>rPlot XML vector graphics specification</title>
+<link rel=stylesheet href=../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table class="location"><tr>
+<td><a href="../../../index.html">Home</a><td>|</td>
+<td><a href=../../../superdarn/index.html>superdarn</a></td><td>|</td>
+<td><a href=../../../superdarn/src.doc/rfc/index.html>rfc</a></td><td>|</td>
+<td>RFC0010</td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">RFC: 0010</h2>
+<table>
+<tr><td class="docsubtitle" valign=top><h3>Title</h3></td></tr>
+<tr><td></td><td>
+<b>rPlot XML vector graphics specification</b>
+</td></tr>
+
+<tr><td class="docsubtitle" valign=top><h3>Author</h3></td></tr>
+<tr><td></td><td>
+<b>R.J.Barnes</b>
+</td></tr>
+
+
+<tr><td class="docsubtitle"><h3>Summary</h3></td></tr>
+<tr><td></td><td>
+<p>A description of the rPlot, XML based, vector graphics specification.</p>
+</td></tr>
+<tr><td class="docsubtitle"><h3>Description</h3></td></tr>
+<tr><td></td><td>
+
+<h3>1. Introduction</h3>
+<p>The rPlot format is an XML based specification for describing vector graphics. It's purpose is similar to that of the W3C <a href="http://www.w3.org/TR/SVG/">Scalable Vector Graphics (SVG)</a>specification. However, rPlot was developed independently and with slightly different aims.</p>
+<p>The original concept of the rPlot format was to solve the problem of producing data plots that looked good both on the printed page and on the screen. For many years the SuperDARN analysis software has included plotting tools that manage to accomplish this. The tools rely on two graphics libraries, one for producing PostScript output and the other for bitmap images; both libraries had a similar programming interface. The problem was that every plotting program had to have duplicate calls to each library to produce either PostScript or bitmap output. The obvious solution was to create a new interface library that would have a single interface that in turn would call the PostScript or bitmap library depending on the specified output.</p>
+<p>In designing this interface library it quickly became apparent that it would be a good idea to somehow capture and store the graphics commands before they were passed onto the output libraries. By doing this, PostScript or bitmap files could be recreated without having to re-run the plotting tool. The idea of an interface library was replaced by the concept of a vector based graphics file format; rPlot.</p>
+<p>One of the first requirements of the rPlot specification was that it must be extendible so that new features could be added as they were required, the second requirement was that the files should be in plain text so that a simple text editor could be used to either create them or edit them. At this point it became obvious that the format should be based on the eXtensible Markup Language (XML).</p> 
+<h3>1. rPlot Concepts</h3>
+<ul>
+<li>An rPlot file must be a fully conforming XML document.</li>
+<li>A file is comprised of graphics primitives, such as a line or curve.</li>
+<li>A primitive is an XML tag</li>
+<li>A primitive is defined by the content of a the tag. For example, the contents of an ellipse tag defines its width and height.</li>
+<li>A primitve can have attributes that define its properties such as color, line thickness, fill value and position on the page.</li>
+<li>The rPlot document is parsed by a renderer that extracts graphics primitives and renders them one by one.</li>
+<li>Graphics primitives are rendered sequentially from the start of the document. If commands overlap, the current command is painted over the top of the previous.</li>
+<li>rPlot documents can be embedded inside other rPlot documents. This allows complicated plots to be constructed from simpler ones.</li>
+<li>rPlot documents have arbitrary dimensions, the renderer determines how big the final plot is.</li> 
+</ul>
+
+<h3>2. rPlot Graphic Primitive Tags</h3>
+<p>The rPlot specification defines a number of simple graphical primitives as listed below:</p>
+
+<center>
+<table width="60%" cellspacing="3" bgcolor="e0e0e0">
+<tr><td><b>Tag Name</b></td><td><b>Definition</b></td></tr>
+<tr><td><code>bezier</code></td><td>Simple Bezier curve.</td></tr>
+<tr><td><code>ellipse</code></td><td>Ellipse.</td></tr>
+<tr><td><code>image</code></td><td>Inline bitmap image.</td></tr>
+<tr><td><code>imagen</code></td><td>Bitmap image by name reference.</td></tr>
+<tr><td><code>line</code></td><td>Simple line.</td></tr>
+<tr><td><code>polygon</code></td><td>Polygon.</td></tr>
+<tr><td><code>rectangle</code></td><td>Rectangle.</td></tr>
+<tr><td><code>text</code></td><td>Text string.</td></tr>
+</table>
+</center>
+<h3>2. Other Tags</h3>
+<p>In addition to the graphic primitive tags, the rPlot specification includes some addition tags that are not rendered but provide useful features:</p>
+<center>
+<table width="60%" cellspacing="3" bgcolor="e0e0e0">
+<tr><td><b>Tag Name</b></td><td><b>Definition</b></td></tr>
+<tr><td><code>clip</code></td><td>Define a clipping polygon. Subsequent graphic primitives will be clipped to this polygon.</td></tr>
+<tr><td><code>embed</code></td><td>Embed another rPlot document within the current document.</td></tr>
+<tr><td><code>include</code></td><td>Temporarily redirect input to another location.</td></tr>
+<tr><td><code>info</code></td><td>Meta-data container.</td></tr>
+<tr><td><code>rplot</code></td><td>The root element.</td></tr>
+</table>
+</center>
+<h3>2. Tag Contents and Attributes</h3>
+<p>The contents of a tag define the primitive, its size and other characteristics. A tag can also have attributes that define physical properties of the primitive:</p>
+<center>
+<table width="60%" cellspacing="3" bgcolor="e0e0e0">
+<tr><td><pre>&lt;ellipse color="ffff0000" mask="0f" width="0" 
+        position="270 270" fill="1"&gt;
+  &lt;s&gt;
+    &lt;d&gt;
+      &lt;w&gt;220&lt;/w&gt;
+      &lt;h&gt;150&lt;/h&gt;
+    &lt;/d&gt;
+  &lt;/s&gt;
+&lt;/ellipse&gt;
+</pre>
+</td></tr></table>
+</center>
+<p>In the above example a filled ellipse of width 220 units and height 150 units is plotted in red (color="ffff0000"), at position x=270, y=270.</p>
+<h3>2. A basic rPlot document "Hello World"</h3>
+
+<center>
+<table width="60%" cellspacing="3" bgcolor="e0e0e0">
+<tr><td><pre>
+
+&lt;rplot name="hellow.rp.xml" width="540" height="540" depth="24"&gt;
+&lt;info&gt;
+&lt;created&gt;Fri Nov  5 17:55:46 2004&lt;/created&gt;
+&lt;author&gt;R.J.Barnes&lt;/author&gt;
+&lt;version&gt;&lt;major&gt;1&lt;/major&gt;&lt;minor&gt;0&lt;/minor&gt;&lt;/version&gt;
+&lt;/info&gt;
+&lt;ellipse color="ffff0000" mask="0f" width="0" position="270 270" fill="1"&gt;
+&lt;s&gt;&lt;d&gt;&lt;w&gt;220&lt;/w&gt;&lt;h&gt;150&lt;/h&gt;&lt;/d&gt;&lt;/s&gt;
+&lt;/ellipse&gt;
+&lt;text color="ff00ff00" mask="0f" font="Helvetica" 
+       size="34" position="180 280" smooth="1"&gt;
+&lt;t&gt;Hello World&lt;/t&gt;
+&lt;/text&gt;
+&lt;/rplot&gt;
+</pre>
+</td></tr></table>
+</center>
+<p>The root element of the rPlot document is the <code>rplot</code> tag. This defines document name, size and color depth. All subsequent tags are nested within this one. The next tag, <code>info</code> is the meta-data container. The meta-data for rPlot documents is not yet defined, so this tag can be used to contain any information about the plot that you want. rPlot renderers currently ignore the <code>info</code> tag and any nested sub-tags within it. In this example a simple set of meta-data defining the date the plot was generated, the author and version number are included. The remaining two tag pairs define a simple ellipse in red and the "Hello World" text in green.
+</p>
+<h3>Common Attributes</h3>
+<font size="+2"><code>position="<em>x</em> <em>y</em>"</code></font>
+<p>The <code>position</code> attribute defines the position of an element on the page or screen. The position is given in terms of the X and Y offset from the top left-hand corner of the plot.</p>
+
+<font size="+2"><code>color="<em>aarrggbb</em>"</code></font>
+<p>The <code>color</code> tag defines attribute defines the color of a primitive in terms of the red,green,blue and alpha (transparency) channels. The attribute value <em>aarrggbb</em> is in hex, <em>aa</em> gives the value of the alpha channel, <em>rr</em> gives the value of the red channel, <em>gg</em> gives the value of the green channel and <em>bb</em> gives the value of the blue channel. All values range between 0 (off) and ff  (fully on).</p>
+<p>The alpha channel is implemented by the renderer and some output devices (PostScript), do not support it.</p>
+<font size="+2"><code>mask="<em>m</em>"</code></font>
+<p>The <code>mask</code> attribute defines the RGBA color mask. The mask value <em>x</em> is a hexadecimal number and represents which color channels are enabled. The top (4th) bit of <em>x</em> controls the alpha channel, the third bit controls the red channel, the second bit controls the green channel and bottom (1st) bit controls the blue channel. If a bit is set, the channel is enabled otherwise the channel is masked out. A value of <code>f</code> enables all channels.</p>
+<p>The <code>mask</code> attribute is closely coupled with the <code>color</code> attribute and allows you to control the output channels of a plot without having to modify the color directly.</p>
+ 
+<font size="+2"><code>width="<em>w</em>"</code></font>
+<p>The <code>width</code> attribute defines the line width of the primitive. A value of zero will produce hairlines - lines with the smallest width for designated output type.</p>
+
+<font size="+2"><code>fill="<em>f</em>"</code></font>
+<p>The <code>fill</code> attribute defines whether the primitive should be filled or not. A value of <code>1</code> will produce filled polygons and shapes. If this attribute is omitted then only object outlines will be drawn.</p>
+
+<font size="+2"><code>dash="<em>phase</em> <em>dash</em>"</code></font>
+<p>The <code>dash</code> attribute defines a dot-dash pattern to use when drawing the primitive. The dash pattern is defined in the same way that PostScript dot-dash patterns are defined. The space seperated list of dash lengths given by <em>dash</em> is cycled through, the first element give the length of line to draw, the next element gives the length of the gap to leave. The renderer will continue alternating lines and gaps until all elements of <em>dash</em> are exhausted, it will the repeat at the beginning. The phase value given by <em>phase</em> is used as the initial offset into <em>dash</em> that the renderer starts from.</p>
+
+
+<font size="+2"><code>matrix="<em>a</em> <em>b</em> <em>c</em> <em>d</em>"</code></font>
+<p>The <code>matrix</code> attribute applies a matrix transformation on the graphics primitive. The tranformation takes the form:</p>
+<center><table>
+<tr><td rowspan="2"><font size="+3">(</font></td><td>x'</td>
+<td rowspan="2"><font size="+3">)</font></td><td rowspan="2">=</td>
+<td rowspan="2"><font size="+3">(</font></td><td>a</td><td>b</td>
+<td rowspan="2"><font size="+3">)</font></td>
+<td rowspan="2"><font size="+3">(</font></td><td>x</td>
+<td rowspan="2"><font size="+3">)</font></td>
+</tr>
+<tr><td>y'</td><td>c</td><td>d</td><td>y</td></tr>
+</table></center>
+<h3>Embed and Include</h3>
+<p>The great power of the rPlot specification is the ability to embed one document inside another This seemingly simple feature allows you to create very complicated plots. The <code>embed</code> has attributes that let you position and transform the embedded rPlot document, this allows you to easily create multi-panel plots. As rPlot documents do not have a solid background color, you can use the embed feature to create multi-layer plots or overlays to existing plots.</p>
+<p>The <code>include</code> tag is used to include another file in the current rplot document. When the renderer encounters the <code>include</code> tag it will temporarily stop reading the rPlot document and instead read input from the file named in the tag. Once the new file has been parsed, the renderer will continue reading from the original file.</p>
+<p>By combining the <code>embed</code> and <code>include</code> tags you can create complicated multi-panel or multi-layer plots with just a few lines. The example below demonstrates how a multi-layer plot can be constructed:</p>
+ 
+<center>
+<table width="60%" cellspacing="3" bgcolor="e0e0e0">
+<tr><td><pre>&lt;rplot width="540" height="540" depth="24"&gt;
+&lt;rectangle position="0 0" color="ffffffff" fill="1" mask="0f"&gt;
+&lt;s&gt;&lt;d&gt;&lt;w&gt;540&lt;/w&gt;&lt;h&gt;540&lt;/h&gt;&lt;/d&gt;&lt;/s&gt;
+&lt;/rectangle&gt;
+&lt;imagen mask="0f" position="0 0" matrix="1 0 0 1"&gt;
+&lt;name&gt;background.ppm&lt;/name&gt;
+&lt;/imagen&gt;
+&lt;embed position="0 0"&gt;
+&lt;include&gt;&lt;name&gt;overlay.rp.xml&lt;/name&gt;&lt;/include&gt;
+&lt;/embed&gt;
+&lt;/rplot&gt;
+</pre>
+</td></tr></table>
+</center>
+<p>The example overlays the rplot document "overlay.rp.xml" onto the image "backround.ppm".</p>
+<h3>rPlot Tags</h3>
+
+<h3>rplot</h3>
+<center>
+<table width="60%" cellspacing="3" bgcolor="e0e0e0">
+<tr><td>
+<pre>&lt;rplot name="<em>name</em>" width="<em>w</em>" height="<em>h</em>" depth="<em>d</em>"&gt;
+.
+&lt;/rplot&gt;
+</pre></td></tr></table>
+</center>
+<h4>Attributes</h4>
+<table>
+<tr><td valign="top">name="<em>name</em>"</td><td>assigns the string <em>name</em> as the document name or title. The renderer may or may not use this to reference the document.</td></tr>
+<tr><td valign="top">width="<em>w</em>"</td><td>sets the width of the plot to <em>w</em> graphics units.</td></tr>
+<tr><td valign="top">height="<em>h</em>"</td><td>sets the height of the plot to <em>h</em> graphics units.</td></tr>
+<tr><td valign="top">depth="<em>d</em>"</td><td>sets the color-depth of the plot to <em>d</em> bits. Currently only the 24-bit color depth is supported.</td></tr>
+</table>
+<h4>Description</h4>
+<p>The top level rPlot document tag. All subsequent tags are nested within this tag.</p>
+
+<h3>info</h3>
+<center>
+<table width="60%" cellspacing="3" bgcolor="e0e0e0">
+<tr><td>
+<pre>&lt;info&gt;
+.
+&lt;/info&gt;
+</pre></td></tr></table>
+</center>
+<h4>Description</h4>
+<p>This is the meta-data tag. The content of this tag is comprised of XML formatted meta-data. Currently there is no standard for the meta-data and the user is free to populate this tag as they see fit.</p>
+
+<h3>embed</h3>
+<center>
+<table width="60%" cellspacing="3" bgcolor="e0e0e0">
+<tr><td>
+<pre>&lt;embed position="<em>x</em> <em>y</em>" matrix="<em>a</em> <em>b</em> <em>c</em> <em>d</em>"&gt;
+  &lt;rplot&gt;
+   .
+  &lt;/rplot&gt;
+&lt;/embed&gt;
+</pre></td></tr></table>
+</center>
+<h4>Attributes</h4>
+<table>
+<tr><td valign="top">position="<em>x</em> <em>y</em>"</td><td>positions the top left of the embedded document at the coordinates given by <em>x</em> and <em>y</em>.</td></tr>
+<tr><td valign="top">matrix="<em>a</em> <em>b</em> <em>c</em> <em>d</em>"</td><td>applies a two dimensional transform to embedded document. The tranformation matrix is constructed from <em>a</em>,<em>b</em>,<em>c</em> and <em>d</em>.</td></tr>
+</table>
+<h4>Description</h4>
+<p>Embeds an rplot document. The content of this tag must be a valid rPlot document including the <code>rplot</code> root tag pair.</p>
+
+<h3>include</h3>
+<center>
+<table width="60%" cellspacing="3" bgcolor="e0e0e0">
+<tr><td>
+<pre>&lt;include&gt;
+   &lt;name&gt;<em>filename</em>&lt;/name&gt;
+&lt;/include&gt;
+</pre></td></tr></table>
+</center>
+<h4>Description</h4>
+<p>Temporarily redirects input to the file <em>filename</em>. The <code>include</code> tag can be placed anywhere in the rPlot document, consequently the tag can be used to either include whole plots or just import a single value.</p>
+
+<h3>text</h3>
+<center>
+<table width="60%" cellspacing="3" bgcolor="e0e0e0">
+<tr><td>
+<pre>&lt;text color="<em>aarrggbb</em>" mask="<em>m</em>" font="<em>fontname</em>" size="<em>fontsize</em>" 
+       smooth="<em>s</em>" position="<em>x</em> <em>y</em>" matrix="<em>a</em> <em>b</em> <em>c</em> <em>d</em>"&gt;
+<em>text</em>
+&lt;/text&gt;
+</pre></td></tr></table>
+</center>
+<h4>Attributes</h4>
+<table>
+
+<tr><td valign="top">color="<em>aarrggbb</em>"</td><td>color the text string according to the hexadecimal number <em>aarrggbb</em>. The alpha value is given by <em>aa</em>, the red value by <em>rr</em>, the green value by <em>gg</em>, and the blue value by <em>bb</em>.</td></tr>
+
+<tr><td valign="top">mask="<em>m</em>"</td><td>set the color channel mask to <em>m</em></td></tr>
+
+<tr><td valign="top">font="<em>font</em>"</td><td>use the font <em>fontname</em>.</td></tr>
+
+<tr><td valign="top">font="<em>size</em>"</td><td>use a font size of <em>fontsize</em> points.</td></tr>
+
+<tr><td valign="top">smooth="<em>n</em>"</td><td>If n is set to 1, the renderer will attempt to smooth the font.</td></tr>
+
+<tr><td valign="top">position="<em>x</em> <em>y</em>"</td><td>positions the top left of the text at the coordinates given by <em>x</em> and <em>y</em>.</td></tr>
+<tr><td valign="top">matrix="<em>a</em> <em>b</em> <em>c</em> <em>d</em>"</td><td>applies a two dimensional transform to the text string. The tranformation matrix is constructed from <em>a</em>,<em>b</em>,<em>c</em> and <em>d</em>.</td></tr>
+</table>
+<h4>Description</h4>
+<p>Plots the text string <em>text</em>. Special characters such as "&lt;" and "&gt;" must be replaced by their equivalent XML entities.</p>
+
+<h3>line</h3>
+<center>
+<table width="60%" cellspacing="3" bgcolor="e0e0e0">
+<tr><td>
+<pre>&lt;line color="<em>aarrggbb</em>" mask="<em>m</em>" 
+       width="<em>w</em>" dash="<em>phase</em> <em>dash....</em>"&gt;
+&lt;s&gt;&lt;p&gt;&lt;x&gt;<em>startx</em>&lt;/x&gt;&lt;y&gt;<em>starty</em>&lt;/y&gt;&lt;/p&gt;&lt;/s&gt;
+&lt;e&gt;&lt;p&gt;&lt;x&gt;<em>endx</em>&lt;/x&gt;&lt;y&gt;<em>endy</em>&lt;/y&gt;&lt;/p&gt;&lt;/e&gt;
+&lt;/line&gt;
+</pre></td></tr></table>
+</center>
+<h4>Attributes</h4>
+<table>
+
+
+<tr><td valign="top">color="<em>aarrggbb</em>"</td><td>color the line according to the hexadecimal number <em>aarrggbb</em>. The alpha value is given by <em>aa</em>, the red value by <em>rr</em>, the green value by <em>gg</em>, and the blue value by <em>bb</em>.</td></tr>
+
+<tr><td valign="top">mask="<em>m</em>"</td><td>set the color channel mask to <em>m</em></td></tr>
+<tr><td valign="top">width="<em>w</em>"</td><td>set the line thickness to <em>w</em>. A value of zero will produce hairlines.</td></tr>
+<tr><td valign="top">dash="<em>phase dash...</em>"</td><td>set the dash pattern for the line using the phase value <em>phase</em> and the space separated list of dash lengths <em>dash..</em></td></tr>
+</table>
+
+<h4>Description</h4>
+<p>Draw a simple line between <em>startx</em>,<em>starty</em> and <em>endx</em>,<em>endy</em>.</p>
+
+
+<h3>bezier</h3>
+<center>
+<table width="60%" cellspacing="3" bgcolor="e0e0e0">
+<tr><td>
+<pre>&lt;bezier color="<em>aarrggbb</em>" mask="<em>m</em>" 
+       width="<em>w</em>" dash="<em>phase</em> <em>dash....</em>"&gt;
+&lt;a&gt;&lt;p&gt;&lt;x&gt;<em>x1</em>&lt;/x&gt;&lt;y&gt;<em>y1</em>&lt;/y&gt;&lt;/p&gt;&lt;/a&gt;
+&lt;b&gt;&lt;p&gt;&lt;x&gt;<em>x2</em>&lt;/x&gt;&lt;y&gt;<em>y2</em>&lt;/y&gt;&lt;/p&gt;&lt;/b&gt;
+&lt;c&gt;&lt;p&gt;&lt;x&gt;<em>x3</em>&lt;/x&gt;&lt;y&gt;<em>y3</em>&lt;/y&gt;&lt;/p&gt;&lt;/c&gt;
+&lt;d&gt;&lt;p&gt;&lt;x&gt;<em>x4</em>&lt;/x&gt;&lt;y&gt;<em>y4</em>&lt;/y&gt;&lt;/p&gt;&lt;/d&gt;
+&lt;/bezier&gt;
+</pre></td></tr></table>
+</center>
+<h4>Attributes</h4>
+<table>
+
+
+<tr><td valign="top">color="<em>aarrggbb</em>"</td><td>color the line according to the hexadecimal number <em>aarrggbb</em>. The alpha value is given by <em>aa</em>, the red value by <em>rr</em>, the green value by <em>gg</em>, and the blue value by <em>bb</em>.</td></tr>
+
+<tr><td valign="top">mask="<em>m</em>"</td><td>set the color channel mask to <em>m</em></td></tr>
+<tr><td valign="top">width="<em>w</em>"</td><td>set the line thickness to <em>w</em>. A value of zero will produce hairlines.</td></tr>
+<tr><td valign="top">dash="<em>phase dash...</em>"</td><td>set the dash pattern for the line using the phase value <em>phase</em> and the space separated list of dash lengths <em>dash..</em></td></tr>
+</table>
+
+<h4>Description</h4>
+<p>Draw a bezier line between <em>x1</em>,<em>x2</em> and <em>x4</em>,<em>x4</em>, with control points at <em>x2</em>,<em>y2</em>, and <em>x3</em><em>y3</em>.</p>
+
+
+
+<h3>image</h3>
+<center>
+<table width="60%" cellspacing="3" bgcolor="e0e0e0">
+<tr><td>
+<pre>&lt;image mask="<em>m</em>" smooth="<em>s</em>" position="<em>x</em> <em>y</em>" matrix="<em>a</em> <em>b</em> <em>c</em> <em>d</em>"&gt;
+<em>imagedata</em>
+&lt;/image&gt;
+</pre></td></tr></table>
+</center>
+<h4>Attributes</h4>
+<table>
+
+<tr><td valign="top">mask="<em>m</em>"</td><td>set the color channel mask to <em>m</em></td></tr>
+
+<tr><td valign="top">smooth="<em>n</em>"</td><td>If n is set to 1, the renderer will attempt to smooth the bitmap image.</td></tr>
+
+<tr><td valign="top">position="<em>x</em> <em>y</em>"</td><td>positions the top left of the bitmap at the coordinates given by <em>x</em> and <em>y</em>.</td></tr>
+<tr><td valign="top">matrix="<em>a</em> <em>b</em> <em>c</em> <em>d</em>"</td><td>applies a two dimensional transform to the bitmap string. The tranformation matrix is constructed from <em>a</em>,<em>b</em>,<em>c</em> and <em>d</em>.</td></tr>
+</table>
+<h4>Description</h4>
+<p>Plots the bitmap image <em>imagedata</em>. This must be a valid XML format bitmap.</p>
+
+
+<h3>imagen</h3>
+<center>
+<table width="60%" cellspacing="3" bgcolor="e0e0e0">
+<tr><td>
+<pre>&lt;imagen mask="<em>m</em>" smooth="<em>s</em>" position="<em>x</em> <em>y</em>" matrix="<em>a</em> <em>b</em> <em>c</em> <em>d</em>"&gt;
+&lt;name&gt;<em>imagename</em>&lt;/name&gt;
+&lt;/imagen&gt;
+</pre></td></tr></table>
+</center>
+<h4>Attributes</h4>
+<table>
+
+<tr><td valign="top">mask="<em>m</em>"</td><td>set the color channel mask to <em>m</em></td></tr>
+
+<tr><td valign="top">smooth="<em>n</em>"</td><td>If n is set to 1, the renderer will attempt to smooth the bitmap image.</td></tr>
+
+<tr><td valign="top">position="<em>x</em> <em>y</em>"</td><td>positions the top left of the bitmap at the coordinates given by <em>x</em> and <em>y</em>.</td></tr>
+<tr><td valign="top">matrix="<em>a</em> <em>b</em> <em>c</em> <em>d</em>"</td><td>applies a two dimensional transform to the bitmap string. The tranformation matrix is constructed from <em>a</em>,<em>b</em>,<em>c</em> and <em>d</em>.</td></tr>
+</table>
+<h4>Description</h4>
+<p>Plots the bitmap image named <em>imagename</em>. The Renderer attempts to resolve <em>imagename</em> to a known bitmap. This may be translated to a filename or used to search a database of named bitmaps depending on the renderer.</p>
+
+
+
+<h3>ellipse</h3>
+<center>
+<table width="60%" cellspacing="3" bgcolor="e0e0e0">
+<tr><td>
+<pre>&lt;ellipse color="<em>aarrggbb</em>" mask="<em>m</em>" 
+       width="<em>w</em>" dash="<em>phase</em> <em>dash....</em>" fill="<em>f</em>"&gt;
+&lt;s&gt;&lt;d&gt;&lt;w&gt;<em>width</em>&lt;/w&gt;&lt;h&gt;<em>height</em>&lt;/h&gt;&lt;/d&gt;&lt;/s&gt;
+&lt;/ellipse&gt;
+</pre></td></tr></table>
+</center>
+<h4>Attributes</h4>
+<table>
+
+
+<tr><td valign="top">color="<em>aarrggbb</em>"</td><td>color the ellipse according to the hexadecimal number <em>aarrggbb</em>. The alpha value is given by <em>aa</em>, the red value by <em>rr</em>, the green value by <em>gg</em>, and the blue value by <em>bb</em>.</td></tr>
+
+<tr><td valign="top">mask="<em>m</em>"</td><td>set the color channel mask to <em>m</em></td></tr>
+<tr><td valign="top">width="<em>w</em>"</td><td>set the line thickness to <em>w</em>. A value of zero will produce hairlines.</td></tr>
+<tr><td valign="top">dash="<em>phase dash...</em>"</td><td>set the dash pattern for the ellipse using the phase value <em>phase</em> and the space separated list of dash lengths <em>dash..</em></td></tr>
+<tr><td valign="top">fill="<em>f</em>"</td><td>fill the ellipse.</td></tr>
+
+</table>
+
+<h4>Description</h4>
+<p>Draw an ellipse of width <em>width</em> and height <em>height</em>.</p>
+
+
+
+<h3>rectangle</h3>
+<center>
+<table width="60%" cellspacing="3" bgcolor="e0e0e0">
+<tr><td>
+<pre>&lt;rectangle color="<em>aarrggbb</em>" mask="<em>m</em>" 
+       width="<em>w</em>" dash="<em>phase</em> <em>dash....</em>" fill="<em>f</em>"&gt;
+&lt;s&gt;&lt;d&gt;&lt;w&gt;<em>width</em>&lt;/w&gt;&lt;h&gt;<em>height</em>&lt;/h&gt;&lt;/d&gt;&lt;/s&gt;
+&lt;/rectangle&gt;
+</pre></td></tr></table>
+</center>
+<h4>Attributes</h4>
+<table>
+
+
+<tr><td valign="top">color="<em>aarrggbb</em>"</td><td>color the rectangle according to the hexadecimal number <em>aarrggbb</em>. The alpha value is given by <em>aa</em>, the red value by <em>rr</em>, the green value by <em>gg</em>, and the blue value by <em>bb</em>.</td></tr>
+
+<tr><td valign="top">mask="<em>m</em>"</td><td>set the color channel mask to <em>m</em></td></tr>
+<tr><td valign="top">width="<em>w</em>"</td><td>set the line thickness to <em>w</em>. A value of zero will produce hairlines.</td></tr>
+<tr><td valign="top">dash="<em>phase dash...</em>"</td><td>set the dash pattern for the rectangle using the phase value <em>phase</em> and the space separated list of dash lengths <em>dash..</em></td></tr>
+<tr><td valign="top">fill="<em>f</em>"</td><td>fill the rectangle.</td></tr>
+
+</table>
+
+<h4>Description</h4>
+<p>Draw an rectangle of width <em>width</em> and height <em>height</em>.</p>
+
+
+
+
+<h3>polygon</h3>
+<center>
+<table width="60%" cellspacing="3" bgcolor="e0e0e0">
+<tr><td>
+<pre>&lt;polygon color="<em>aarrggbb</em>" mask="<em>m</em>" 
+       width="<em>w</em>" dash="<em>phase</em> <em>dash....</em>" fill="<em>f</em>"&gt;
+&lt;pp&gt;&lt;x&gt;<em>pntx</em>&lt;/x&gt;&lt;y&gt;<em>pnty</em>&lt;/y&gt;&lt;t&gt;type&lt;/t&gt;&lt;/pp&gt;
+&lt;pp&gt;&lt;x&gt;<em>pntx</em>&lt;/x&gt;&lt;y&gt;<em>pnty</em>&lt;/y&gt;&lt;t&gt;type&lt;/t&gt;&lt;/pp&gt;
+&lt;pp&gt;&lt;x&gt;<em>pntx</em>&lt;/x&gt;&lt;y&gt;<em>pnty</em>&lt;/y&gt;&lt;t&gt;type&lt;/t&gt;&lt;/pp&gt;
+.
+.
+&lt;/polygon&gt;
+</pre></td></tr></table>
+</center>
+<h4>Attributes</h4>
+<table>
+
+
+<tr><td valign="top">color="<em>aarrggbb</em>"</td><td>color the polygon according to the hexadecimal number <em>aarrggbb</em>. The alpha value is given by <em>aa</em>, the red value by <em>rr</em>, the green value by <em>gg</em>, and the blue value by <em>bb</em>.</td></tr>
+
+<tr><td valign="top">mask="<em>m</em>"</td><td>set the color channel mask to <em>m</em></td></tr>
+<tr><td valign="top">width="<em>w</em>"</td><td>set the line thickness to <em>w</em>. A value of zero will produce hairlines.</td></tr>
+<tr><td valign="top">dash="<em>phase dash...</em>"</td><td>set the dash pattern for the polygon using the phase value <em>phase</em> and the space separated list of dash lengths <em>dash..</em></td></tr>
+<tr><td valign="top">fill="<em>f</em>"</td><td>fill the polygon.</td></tr>
+
+</table>
+
+<h4>Description</h4>
+<p>Draw a polygon. The vertices of the polygon are given by the set of sub-tags named <code>pp</code>. Each <code>pp</code> tag contains the X and Y coordinates of the vertex given by <em>pntx</em> and <em>pnty</em>, and a type code <em>type</em>. If the type code is zero (0), then the line linking this vertex to the previous one in straight. If the type code is one (1), then the previous three points make up the start point and control points for a bezier curve linked to this one.</p>
+
+
+
+<h3>clip</h3>
+<center>
+<table width="60%" cellspacing="3" bgcolor="e0e0e0">
+<tr><td>
+<pre>&lt;clip&gt;
+&lt;pp&gt;&lt;x&gt;<em>pntx</em>&lt;/x&gt;&lt;y&gt;<em>pnty</em>&lt;/y&gt;&lt;t&gt;type&lt;/t&gt;&lt;/pp&gt;
+&lt;pp&gt;&lt;x&gt;<em>pntx</em>&lt;/x&gt;&lt;y&gt;<em>pnty</em>&lt;/y&gt;&lt;t&gt;type&lt;/t&gt;&lt;/pp&gt;
+&lt;pp&gt;&lt;x&gt;<em>pntx</em>&lt;/x&gt;&lt;y&gt;<em>pnty</em>&lt;/y&gt;&lt;t&gt;type&lt;/t&gt;&lt;/pp&gt;
+.
+.
+&lt;/clip&gt;
+</pre></td></tr></table>
+</center>
+<h4>Description</h4>
+<p>Defines a clipping polygon. The vertices of the polygon are given by the set of sub-tags named <code>pp</code>. Each <code>pp</code> tag contains the X and Y coordinates of the vertex given by <em>pntx</em> and <em>pnty</em>, and a type code <em>type</em>. If the type code is zero (0), then the line linking this vertex to the previous one in straight. If the type code is one (1), then the previous three points make up the start point and control points for a bezier curve linked to this one.</p>
+<p>All subsequent operations will be clipped to this polygon. To remove the clipping polygon, use an empty <code>clip</code> tag.</p>
+
+
+</td></tr>
+<tr><td class="docsubtitle"><h3>References</h3></td></tr>
+<tr><td></td><td>
+None<br>
+</td></tr>
+<tr><td class="docsubtitle"><h3>History</h3></td></tr>
+<tr><td></td><td>
+2004/11/05  Initial Revision.<br>
+</td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+
+</body>
+
+
+

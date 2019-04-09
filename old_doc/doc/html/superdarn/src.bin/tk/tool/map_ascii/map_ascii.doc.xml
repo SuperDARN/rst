@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>map_ascii</name>
+<location>src.bin/tk/tool/map_ascii</location>
+<syntax>map_ascii --help</syntax>
+<syntax>map_ascii [-vb] [-old] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>] <ar>name</ar></syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-old</on><od>the input file is a <code>map</code> format file.</od>
+</option>
+<option><on>-old_aacgm</on><od>uses the older AACGM software and coefficients. The default is to use AACGM-v2.</od>
+</option>
+<option><on>-sd <ar>yyyymmdd</ar></on><od>extract starting from the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-st <ar>hr:mn</ar></on><od>extract starting from the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ed <ar>yyyymmdd</ar></on><od>stop extracting at the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-et <ar>hr:mn</ar></on><od>stop extracting at the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ex <ar>hr:mn</ar></on><od>extract an interval whose extent is <ar>hr:mn</ar>.</od>
+</option>
+<option><on><ar>name</ar></on><od>filename of the <code>cnvmap</code> format file to trim. If this is omitted, the file is read from standard input.</od>
+</option>
+<synopsis><p>Calculate the derived potential from a section of a <code>map</code> format file and produce a plain ASCII text file as output.\n</p>
+<p>The output format header is: <code>(start timestamp) (end timestamp) (minimum magnetic lat)\n</p>
+<p>(Number of grid points)</code>\n\n</p>
+<p>where the timestamps have a format of: <code>year month day hour minute second</code>\n\n</p>
+<p>The output data arrays is: <code>(potential at that point) (count/flag for data point) (geographic lat) (geographic lon) (magnetic lat) (magnetic lon) (magnetic local time)\n</code></p></synopsis>
+
+<description><p>Calculate the derived potential from a section of a <code>map</code> format file and produce a plain ASCII text file as output.</p>
+<p>The file is written to standard output</p>
+</description>
+
+<example>
+<command>map_ascii -old 20030405.map &gt; 20030405.txt</command>
+<description>Generate a plain ASCII, derived potential file from the file "<code>20030405.map</code>". The potentials are stored in the file "<code>20030405.txt</code>".</description>
+</description>
+
+</binary>

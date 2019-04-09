@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>fitacfserver</name>
+<location>src.bin/tk/tcpip/fitacfserver</location>
+
+<syntax>fitacfserver --help</syntax>
+<syntax>fitacfserver [-a] [-d] [-r] [-old] [-L <ar>logname</ar>] [-pf <ar>portname</ar>] [-if <ar>pidname</ar>] [-lp <ar>port</ar>] [-b <ar>bound</ar>] [-s <ar>stid</ar>] [-i <ar>intt</ar>] <ar>name</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-a</on><od>replace the record times in the file with the actual time. </od>
+</option>
+<option><on>-d</on><od>the file contains one complete day of data and the server should send the appropriate record for the current time of day. </od>
+</option>
+<option><on>-r</on><od>re-open the file when the end is reached.</od>
+</option>
+<option><on>-old</on><od>input file is in <code>fit</code> format rather than <code>fitacf</code> format.</od>
+</option>
+<option><on>-L <ar>logname</ar></on><od>log connections and information in the file <ar>logname</ar>. By default, connections are recorded in <code>log.rt</code>.</od>
+</option>
+<option><on>-pf <ar>portname</ar></on><od>record the port number that the server is listening for connections on in the file <ar>portname</ar>. By default, the port is  recorded in <code>port.id</code>.</od>
+</option>
+<option><on>-if <ar>pidname</ar></on><od>record the process Identifier (PID) of the server in the file <ar>pidname</ar>. By default, the PID is  recorded in <code>pid.id</code>.</od>
+</option>
+<option><on>-lp <ar>port</ar></on><od>force the server to listen on the local port number <ar>port</ar>. By default, the server requests a port number from the Operating System.</od></option>
+<option><on>-b <ar>bound</ar></on><od>synchronize scans with an interval of <ar>bound</ar> seconds.</od>
+</option>
+<option><on>-s <ar>stid</ar></on><od>set the station identifier in the data records to <ar>stid</ar>.</od>
+</option>
+<option><on>-i <ar>intt</ar></on><od>ignore the integration time in the data records and instead use <ar>intt</ar> seconds.</od>
+</option>
+<option><on><ar>name</ar></on><od>filename of the <code>fitacf</code> or <code>fit</code> format file to serve.</od>
+</option>
+<synopsis><p>Simple TCP/IP server program for <code>fitacf</code> and <code>fit</code> format files.</p></synopsis>
+<description><p>Simple TCP/IP server program for <code>fitacf</code> and <code>fit</code> format files.</p>
+<p>The task can be used to simulate a data feed from a radar site</p>
+</description>
+
+<example>
+<command>fitacfserver -L log -old -pf port.id  -if pid.id -r 19981112k.fit</command><description><p>Serve the fit file "<code>19981112k.fit</code>" from a port allocated by the operating system. The port number is recorded in the file "<code>port.id</code>", the process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyymmdd</em> is the date.</p>
+<p>Once the end of the file is reached, the server rewinds to the beginning of the file and continues.</p></description>
+</example>
+
+<example>
+<command>fitacfserver -L log -pf port.id  -if pid.id -lp 5000 -a -i 4 -b 60 19990830.gbr.fitacf</command>
+<description>Serve the <code>fitacf</code> file "<code>19990830.gbr.fitacf</code>" from port 5000. The port number is recorded in the file "<code>port.id</code>", the process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyymmdd</em> is the date.</p>
+<p>The actual time in UT is substituted for the time recorded in the file. A record is served every 4 seconds and the scans are synchronized to one minute boundaries.</p>
+</description>
+</example>
+
+</binary>

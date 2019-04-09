@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>cnvmaptomap</name>
+<location>src.bin/tk/reformat/cnvmaptomap</location>
+<syntax>cnvmaptomap --help</syntax>
+<syntax>cnvmaptomap [-vb] [<ar>cnvmapname</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+
+<option><on><ar>cnvmapname</ar></on><od>filename of the <code>cnvmap</code>  format file. If this is omitted the file is read from standard input.</od>
+</option>
+
+<synopsis><p>Convert a <code>cnvmap</code> format file to a <code>map</code> format file.</p></synopsis>
+
+
+<description><p>Convert a <code>cnvmap</code> format file to a <code>map</code> format file.</p>
+<p>The converted file is written to standard output.</p>
+</description>
+
+<example>
+<command>cnvmaptomap 20040402.cnvmap &gt; 20040402.map</command>
+<description>Convert the <code>cnvmap</code> format file "<code>20040402.cnvmap</code>" to the <code>map</code> format file "<code>20040402.map</code>".
+</description>
+</example>
+
+</binary>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>base</project>
+<name>xmltopng</name>
+<location>src.bin/graphic/xmltopng</location>
+
+<syntax>xmltopng --help</syntax>
+<syntax>xmltopng [<ar>name</ar>]</syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on><ar>name</ar></on><od>input image filename. If this is omitted the image will be read from standard input.</od>
+</option>
+<synopsis><p>Convert an XML image representation to a Portable Network Graphics (PNG) image.</p></synopsis>
+<description><p>Convert an XML image representation to a Portable Network Graphics (PNG) image.</p>
+<p>The PNG image file is written to standard output.</p>
+</description>
+
+<example>
+<command>xmltopng inp.xml &gt; out.png</command>
+<description>Convert XML file <code>inp.xml</code> to the PNG file <code>out.png</code>.
+</description>
+</example>
+
+</binary>

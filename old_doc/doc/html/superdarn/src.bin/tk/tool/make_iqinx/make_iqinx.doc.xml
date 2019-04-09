@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>make_iqinx</name>
+<location>src.bin/tk/tool/make_iqinx</location>
+<syntax>make_iqinx --help</syntax>
+<syntax>make_iqinx [-vb] [<ar>iqdatname</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+
+<option><on><ar>iqdatname</ar></on><od>filename of the <code>iqdat</code>  format file. If this is omitted the file is read from standard input.</od>
+</option>
+
+<synopsis><p>Creates an index of a <code>iqdat</code> format file.</p></synopsis>
+
+<description><p>Creates an index of a <code>iqdat</code> format file.</p>
+<p>The index is written to standard output.</p>
+</description>
+<example>
+<command>make_iqinx 20040830.gbr.iqdat &gt; 20040830.gbr.iqinx</command>
+<description>Create an index file for the <code>iqdat</code> format file "<code>20040830.gbr.iqdat</code>". The index is writen to the file "<code>20040830.gbr.iqinx</code>".</description>
+</example>
+
+
+</binary>

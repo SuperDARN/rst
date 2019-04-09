@@ -1,0 +1,135 @@
+<head>
+<title>IDL Data Structure for the Radar Parameter Block</title>
+<link rel=stylesheet href=../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table class="location"><tr>
+<td><a href="../../../index.html">Home</a><td>|</td>
+<td><a href=../../../superdarn/index.html>superdarn</a></td><td>|</td>
+<td><a href=../../../superdarn/src.doc/rfc/index.html>rfc</a></td><td>|</td>
+<td>RFC0020</td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">RFC: 0020</h2>
+<table>
+<tr><td class="docsubtitle" valign=top><h3>Title</h3></td></tr>
+<tr><td></td><td>
+<b>IDL Data Structure for the Radar Parameter Block</b>
+</td></tr>
+
+<tr><td class="docsubtitle" valign=top><h3>Author</h3></td></tr>
+<tr><td></td><td>
+<b>R.J.Barnes</b>
+</td></tr>
+
+
+<tr><td class="docsubtitle"><h3>Summary</h3></td></tr>
+<tr><td></td><td>
+<p>A description of the IDL data structure used to store the radar parameter block.</p>
+</td></tr>
+<tr><td class="docsubtitle"><h3>Description</h3></td></tr>
+<tr><td></td><td>
+
+<h4>1. Introduction</h4>
+<p>The Radar Parameter block is used throughout SuperDARN software to store the radar operating parameters. Within IDL a structure is used to store the parameter block.</p>
+
+<h4>2. Constants</h4>
+<p>A number of constants are used to define array limits</p>
+<center>
+<table cellspacing="3" bgcolor="e0e0e0" width="100%">
+<tr><td><pre>PULSE_SIZE=64
+LAG_SIZE=96
+MAX_RANGE=300
+</pre></td></tr></table>
+</center>
+<h4>3. Radar parameter block structure <code>RadarParm</code></h4>
+
+<center>
+<table cellspacing="3" bgcolor="e0e0e0" width="100%">
+<tr><td><pre>
+  prm={RadarPrm, $
+       revision: {rbstr, major: 0B, $  ; major revision
+                         minor: 0B}, $ ; minor revision
+       origin: { ogstr, code: 0B, $ ; origin code
+                 time: ' ', $ ; time of generation
+                 command: ' '}, $ ; command line or control program
+
+       cp: 0, $                        ; program identifier
+       stid: 0, $                      ; station identifier
+       time: {tmstr, yr:0, $           ; year
+                    mo:0, $            ; month
+                    dy:0, $            ; day
+                    hr:0, $            ; hour
+                    mt:0, $            ; minute
+                    sc:0, $            ; second
+                    us:0  $            ; microsecond
+            }, $
+       txpow: 0, $                     ; transmitted power (kw)
+       nave: 0, $                      ; number of pulse sequences transmitted
+       atten: 0, $                     ; attenuation level
+       lagfr: 0, $                     ; lag to first range (microseconds)
+       smsep: 0, $                     ; sample separation (microseconds)
+       ercod: 0, $                     ; error code
+       stat: {ststr, agc:0, $          ; AGC status word
+                    lopwr:0}, $        ; LOPWR status word
+       noise: {nsstr, search:0.0, $    ; noise from clear frequency search
+                     mean:0.0}, $      ; average noise across frequency band
+       channel: 0, $                   ; channel number for stereo radar
+       bmnum: 0, $                     ; beam number
+       bmazm: 0.0, $                   ; beam azimuth
+       scan: 0, $                      ; scan flag
+       rxrise: 0, $                    ; receiver rise time
+       intt: {itstr, sc:0, $           ; number of seconds integration time
+                     us:0}, $          ; number of microseconds integration time
+       txpl: 0, $                      ; transmit pulse length (microseconds)
+       mpinc: 0, $                     ; multi-pulse increment (microseconds)
+       mppul: 0, $                     ; number of pulses in sequence
+       mplgs: 0, $                     ; number of lags in sequence
+       nrang: 0, $                     ; number of ranges
+       frang: 0, $                     ; distance to first range (kilometers)
+       rsep: 0, $                      ; range separation (kilometers)
+       xcf: 0, $                       ; XCF flag
+       tfreq: 0, $                     ; transmitted frequency
+       offset: 0, $                    ; offset between channels
+       mxpwr: 0L, $                    ; maximum power
+       lvmax: 0L, $                    ; maximum noise level
+       pulse: intarr(PULSE_SIZE), $    ; pulse table
+       lag: intarr(LAG_SIZE,2), $      ; lag table
+       combf: '' $                     ; comment buffer
+    }
+</pre></td></tr></table>
+</center>
+
+</td></tr>
+<tr><td class="docsubtitle"><h3>References</h3></td></tr>
+<tr><td></td><td>
+<a href="0012.html">RFC #0012</a><br>
+</td></tr>
+<tr><td class="docsubtitle"><h3>History</h3></td></tr>
+<tr><td></td><td>
+2007/03/26  Revision to include origin and beam azimuth.<br>2004/11/22  Initial Revision.<br>
+</td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+
+</body>
+
+
+

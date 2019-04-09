@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>maptometaxml</name>
+<location>src.bin/tk/reformat/maptometaxml</location>
+
+<syntax>maptometaxml --help</syntax>
+<syntax>maptometaxml [-old] <ar>name</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-old</on><od>the input file is a <code>map</code> format file.</od>
+</option>
+<option><on><ar>name</ar></on><od>filename of the <code>cnvmap</code> format file to trim. If this is omitted, the file is read from standard input.</od>
+</option>
+<synopsis><p>Extract meta-data from a <code>cnvmap</code> format file and store them as an XML document.</p></synopsis>
+<description><p>Extract meta-data from a <code>cnvmap</code> format file and store them as an XML document.</p>
+<p>The XML is written to standard output.
+</p></description>
+
+<example>
+<command>maptometaxml -old 20040830.map &gt; 20040830.map.xml</command>
+<description>Extract meta-data from the file "<code>20040830.map</code>" and write it to the file "<code>20040830.map.xml</code>".</description>
+</example>
+
+</binary>

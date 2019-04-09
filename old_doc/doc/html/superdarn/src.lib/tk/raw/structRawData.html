@@ -1,0 +1,86 @@
+
+
+<head>
+<title>struct RawData</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href=../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../superdarn/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/raw/index.html>raw</a></td><td>|</td>
+<td>RawData</td>
+<td width=100% align=right><a href=../../../../superdarn/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">RawData</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">superdarn/rawdata.h</td></tr>
+<tr><td class="docsubtitle">Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">raw</a></tr>
+<tr><td class="docsubtitle" valign=top>Members</td></tr>
+<tr><td></td><td width=80% class="docbox"><table>
+
+
+    <tr>
+      <td><font size=-1 face="courier"><b>struct {</b></font></td></tr>
+        <tr>
+          <td valign="top"><font size=-1 face="courier">char major;</font></td>
+          <td valign="top">Major revision number.</td>
+        </tr>
+        <tr>
+          <td valign="top"><font size=-1 face="courier">char minor;</font></td>
+          <td valign="top">Minor revision number.</td>
+        </tr>
+      </tr><tr><td><font size=-1 face="courier"><b>}</b></font></td></tr><tr>
+      <td valign="top"><font size=-1 face="courier">revision;</font></td>
+      <td valign="top">Revision number.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">float thr;</font></td>
+      <td valign="top">Lag-zero power threshold level.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">float pwr0[MAX_RANGE];</font></td>
+      <td valign="top">Lag-zero powers.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">float acfd[MAX_RANGE][LAG_SIZE][2];</font></td>
+      <td valign="top">ACF data.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">float xcfd[MAX_RANGE][LAG_SIZE][2];</font></td>
+      <td valign="top">XCF data.</td>
+    </tr>
+
+  </table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td>
+  <p>The <a href="structRawData.html"><code>struct RawData</code></a> structure stores the raw ACF data.</p>
+  </tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+</div>
+
+</body>
+
+
+

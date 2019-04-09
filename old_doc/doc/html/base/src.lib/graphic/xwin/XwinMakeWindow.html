@@ -1,0 +1,68 @@
+
+<head>
+<title>XwinMakeWindow</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../base/index.html>base</a></td>
+<td>|</td><td><a href=../../../../base/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/index.html>graphic</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/xwin/index.html>xwin</a></td><td>|</td>
+<td>XwinMakeWindow</td>
+<td width=100% align=right><a href=../../../../base/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">XwinMakeWindow</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;"><a href="structXwinWindow.html"><code>struct XwinWindow</code></a> *XwinMakeWindow(int x,int y,int wdt,int hgt,int border, <a href="structXwinDisplay.html"><code>struct XwinDisplay</code></a> *display, char *wname,char *iname, char *rname,char *rclass,int argc, char *argv[], int *flg);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">base/xwin.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">xwin</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="XwinMakeWindow.html"><code>XwinMakeWindow</code></a> creates an X window.</p>
+<p>The initial x and y position, width and height of the window are 
+given by the arguments <em>x</em>, <em>y</em>, <em>wdt</em> and <em>hgt</em>. The argument <em>border</em> defines the width of the window border in pixels.</p>
+<p>The argument <em>display</em> points to a zero terminated string that defines the X terminal display to create the window on.</p>
+<p>The arguments <em>wname</em>, <em>iname</em>, <em>rname</em> and <em>rclass</em> point to zero terminated strings the  define the window name, the icon name, the resource name and the resource class respectively.</p>
+<p>The argument <em>argv</em> is the array of zero-terminated, command line strings passed to the calling program and the argument <em>argc</em> is the number of strings in the array.</p>
+<p>If an error occurs the location pointed to by the argument <em>flg</em> is set to an error value.</p>
+<returns>Returns a pointer to the X window. On error, a <code>NULL</code> pointer is returned and the location pointed to by the argument <em>flg</em> is set to an error value.</returns>
+<errors>
+On error, a <code>NULL</code> pointer is returned and the location pointed to by the argument <em>flg</em> is set to an error value.</returns>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>None</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>None</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/XwinFreeWindow.c">XwinFreeWindow.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60"></pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

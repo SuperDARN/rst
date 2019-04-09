@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>base</project>
+<name>rmath</name>
+<location>src.lib/math/rmath</location>
+
+<function>
+<name>fft1</name>
+<location>src.lib/math/rmath</location>
+<header>base/fft.h</header>
+<syntax>void fft1(float *data,int nn,int isign);</syntax>
+<description><p>The <fn href="fft1.html">fft1</fn> function performs a Fast Fourier Transform.</p>
+<p>The argument <ar>data</ar> is a pointer to the array of single-precision floating point numbers to transform. The argument <ar>nn</ar> indicates the number of points or values in the array. The final argument <ar>isign</ar> indicates the direction of the transform. A value of (1) indicates a forward transform, while (-1) indicates the inverse transform.</p>
+<p>This code is an implementation of the FFT algorithm found in Numerical Recipes</p>
+</description> 
+<example type="source">fft1.c</example>
+</function>
+</library>
+

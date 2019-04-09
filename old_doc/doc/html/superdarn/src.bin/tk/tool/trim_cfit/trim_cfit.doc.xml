@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>trim_cfit</name>
+<location>src.bin/tk/tool/trim_cfit</location>
+<syntax>trim_cfit --help</syntax>
+<syntax>trim_cfit [-vb] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>] [-cp <ar>cpid</ar>] [-cn <ar>channel</ar>] <ar>name</ar></syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-sd <ar>yyyymmdd</ar></on><od>extract starting from the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-st <ar>hr:mn</ar></on><od>extract starting from the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ed <ar>yyyymmdd</ar></on><od>stop extracting at the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-et <ar>hr:mn</ar></on><od>stop extracting at the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ex <ar>hr:mn</ar></on><od>extract an interval whose extent is <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-cp <ar>cp</ar></on><od>extract only those records with the program identifier <ar>cp</ar>.</od>
+</option>
+<option><on>-cn <ar>channel</ar></on><od>extract only those records from channel <ar>channel</ar>.</od>
+</option>
+<option><on><ar>name</ar></on><od>filename of the <code>cfit</code> format file to trim. If this is omitted, the file is read from standard input.</od>
+</option>
+<synopsis><p>Extracts a section from a <code>cfit</code> format file.</p></synopsis>
+</binary>

@@ -1,0 +1,91 @@
+
+
+<head>
+<title>struct RadarScan</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href=../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../superdarn/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/scan/index.html>scan</a></td><td>|</td>
+<td>RadarScan</td>
+<td width=100% align=right><a href=../../../../superdarn/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">RadarScan</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">superdarn/scandata.h</td></tr>
+<tr><td class="docsubtitle">Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">scan</a></tr>
+<tr><td class="docsubtitle" valign=top>Members</td></tr>
+<tr><td></td><td width=80% class="docbox"><table>
+
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int stid;</font></td>
+      <td valign="top">Station identifier number.</td>
+    </tr>
+
+    <tr>
+      <td><font size=-1 face="courier"><b>struct {</b></font></td></tr>
+        <tr>
+          <td valign="top"><font size=-1 face="courier">int major;</font></td>
+          <td valign="top">Major revision number.</td>
+        </tr>
+        <tr>
+          <td valign="top"><font size=-1 face="courier">int minor;</font></td>
+          <td valign="top">Minor revision number.</td>
+        </tr>
+      </tr><tr><td><font size=-1 face="courier"><b>}</b></font></td></tr><tr>
+      <td valign="top"><font size=-1 face="courier">version;</font></td>
+      <td valign="top">Revision number.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double st_time;</font></td>
+      <td valign="top">Start time of the scan, specified as seconds from 0:00UT January 1, 1970.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double ed_time;</font></td>
+      <td valign="top">End time of the scan, specified as seconds from 0:00UT January 1, 1970.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int num;</font></td>
+      <td valign="top">Number of beams of data in the scan.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier"><a href="structRadarBeam.html"><code>struct RadarBeam</code></a> *bm;</font></td>
+      <td valign="top">Pointer to an array of structures containing the beam data.</td>
+    </tr>
+
+  </table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td>
+  <p>The <a href="structRadarScan.html"><code>struct RadarScan</code></a> structure stores radar scan data.</p>
+  </tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+</div>
+
+</body>
+
+
+

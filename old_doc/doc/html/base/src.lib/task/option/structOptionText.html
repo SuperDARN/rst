@@ -1,0 +1,58 @@
+
+
+<head>
+<title>struct OptionText</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href=../../../../base/index.html>base</a></td>
+<td>|</td><td><a href=../../../../base/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../base/src.lib/task/index.html>task</a></td><td>|</td><td><a href=../../../../base/src.lib/task/option/index.html>option</a></td><td>|</td>
+<td>OptionText</td>
+<td width=100% align=right><a href=../../../../base/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">OptionText</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">base/option.h</td></tr>
+<tr><td class="docsubtitle">Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">opt</a></tr>
+<tr><td class="docsubtitle" valign=top>Members</td></tr>
+<tr><td></td><td width=80% class="docbox"><table>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int num;</font></td>
+      <td valign="top">Number of text arrays stored in the structure.</td>
+    </tr>
+    <tr>
+      <td valign="top"><font size=-1 face="courier">char **txt;</font></td>
+      <td valign="top">Pointer to an array of zero terminated text strings found on the command line.</td>
+    </tr>
+  </table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td>
+<p>The <a href="structOptionText.html"><code>struct OptionText</code></a> structure stores an array of strings supplied to as an argument to a comand line option that occurs multiple times in the command line. The structure is created by the function <a href="OptionProcess.html"><code>OptionProcess</code></a> when it encounters a command line option with the type flag of 'a'. The memory claimed by the structure can be freed using the function <a href="OptionFreeText.html"><code>OptionFreeText</code></a>.</p>
+</tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+</div>
+
+</body>
+
+
+
