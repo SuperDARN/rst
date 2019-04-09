@@ -1,0 +1,154 @@
+<head>
+<title>Structure in C for the Gridded data </title>
+<link rel=stylesheet href=../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table class="location"><tr>
+<td><a href="../../../index.html">Home</a><td>|</td>
+<td><a href=../../../superdarn/index.html>superdarn</a></td><td>|</td>
+<td><a href=../../../superdarn/src.doc/rfc/index.html>rfc</a></td><td>|</td>
+<td>RFC0017</td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">RFC: 0017</h2>
+<table>
+<tr><td class="docsubtitle" valign=top><h3>Title</h3></td></tr>
+<tr><td></td><td>
+<b>Structure in C for the Gridded data </b>
+</td></tr>
+
+<tr><td class="docsubtitle" valign=top><h3>Author</h3></td></tr>
+<tr><td></td><td>
+<b>R.J.Barnes</b>
+</td></tr>
+
+
+<tr><td class="docsubtitle"><h3>Summary</h3></td></tr>
+<tr><td></td><td>
+<p>A description of the data structure in the C language used to store the gridded data.</p>
+</td></tr>
+<tr><td class="docsubtitle"><h3>Description</h3></td></tr>
+<tr><td></td><td>
+
+<h4>1. Introduction</h4>
+<p>Gridded SuperDARN data consists of median filtered, geo-magnetically located ionospheric scatter, fitted to an equi-area grid.  Listed below is the C data structure <code>struct GridData</code> used to store the gridded data.</p>
+
+<h4>2. <code>struct GridData</code></h4>
+<p>The gridded data structure is defined in the header <code>superdarn/griddata.h</code>.</p>
+
+<center>
+<table cellspacing="3" bgcolor="e0e0e0" width="100%">
+<tr><td><pre>struct GridData {
+  double st_time;              /* record start time */
+  double ed_time;              /* record end time */
+ 
+  int stnum;                   /* number of stations */
+  int vcnum;
+  unsigned char xtd;           /* extended data flag */
+  struct GridSVec *sdata;      /* station data */
+  struct GridGVec *data;       /* vector data */
+};
+</pre></td></tr></table>
+</center>
+<h4>3. <code>struct GridSVec</code></h4>
+<center>
+<table cellspacing="3" bgcolor="e0e0e0" width="100%">
+<tr><td><pre>struct GridSVec {
+  int st_id;                    /* station identifier */
+  int chn;                      /* channel number */
+  int npnt;                     /* number of vectors from this station */
+  double freq0;                 /* operating frequency */
+  char major_revision;          /* algorithm major revision */
+  char minor_revision;          /* algorithm minor revision */
+  int prog_id;                  /* program identifier */
+  char gsct;                    /* ground scatter componenet */
+
+  struct {
+    double mean;                /* mean noise */
+    double sd;                  /* noise standard deviation */
+  } noise;
+
+  struct {
+    double min;                 /* velocity minimum threshold */
+    double max;                 /* velocity maximum threshold */
+  } vel;
+
+  struct {
+    double min;                 /* power minimum threshold */
+    double max;                 /* power maximum threshold */
+  } pwr;
+
+  struct {
+    double min;                 /* spectral width minimum threshold */
+    double max;                 /* spectral width maximum threshold */
+  } wdt;
+
+  struct {
+    double min;                 /* velocity error minimum threshold */
+    double max;                 /* velocity error maximum threshold */
+  } verr;
+};
+</pre></td></tr></table>
+</center>
+<h4>4. <code>struct GridGVec</code></h4>
+<center>
+<table cellspacing="3" bgcolor="e0e0e0" width="100%">
+<tr><td><pre>
+struct GridGVec {
+  double mlatl                  /* magnetic latittude */
+  double mlon;                  /* magnetic longitude */
+  double azm;                   /* magnetic azimuth */
+  struct {
+   double median;               /* velocity median */
+   double sd;                   /* velocity standard deviation */
+  } vel;
+
+  struct {
+   double median;               /* power median */
+   double sd;                   /* power standard deviation */
+  } pwr;
+
+  struct {
+   double median;               /* spectral width median */ 
+   double sd;                   /* spectral width standard deviation */
+  } wdt;
+  int st_id;                    /* station identifier */
+  int chn;                      /* channel number */
+  int index;                    /* grid index */
+};
+</pre></td></tr></table>
+</center>
+
+</td></tr>
+<tr><td class="docsubtitle"><h3>References</h3></td></tr>
+<tr><td></td><td>
+None<br>
+</td></tr>
+<tr><td class="docsubtitle"><h3>History</h3></td></tr>
+<tr><td></td><td>
+2004/11/19  Initial Revision.<br>
+</td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+
+</body>
+
+
+

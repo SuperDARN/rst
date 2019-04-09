@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>fitacftofit</name>
+<location>src.bin/tk/reformat/fitacftofit</location>
+<syntax>fitacftofit --help</syntax>
+<syntax>fitacftofit [-vb] [<ar>fitacfname</ar>]</syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on><ar>fitacfname</ar></on><od>filename of the <code>fitacf</code> format file to convert. If this is omitted the file is read from standard input</od>
+</option>
+<synopsis><p>Converts a <code>fitacf</code> format file to <code>fit</code> format.</p></synopsis>
+
+<description><p>Converts a <code>fitacf</code> format file to <code>fit</code> format.</p>
+<p>The <code>fit</code> format data is written to standard output.</p>
+</description>
+
+<example>
+<command>fitacftofit test.fitacf &gt; test.fit</command>
+<description>Convert the file "<code>test.fitacf</code>" to the <code>fit</code> format file "<code>test.fit</code>".</description>
+</example>
+
+
+
+
+</binary>

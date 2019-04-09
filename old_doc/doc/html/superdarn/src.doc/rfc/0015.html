@@ -1,0 +1,126 @@
+<head>
+<title>Structure in C for the cFit compressed fitted ACF data </title>
+<link rel=stylesheet href=../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table class="location"><tr>
+<td><a href="../../../index.html">Home</a><td>|</td>
+<td><a href=../../../superdarn/index.html>superdarn</a></td><td>|</td>
+<td><a href=../../../superdarn/src.doc/rfc/index.html>rfc</a></td><td>|</td>
+<td>RFC0015</td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">RFC: 0015</h2>
+<table>
+<tr><td class="docsubtitle" valign=top><h3>Title</h3></td></tr>
+<tr><td></td><td>
+<b>Structure in C for the cFit compressed fitted ACF data </b>
+</td></tr>
+
+<tr><td class="docsubtitle" valign=top><h3>Author</h3></td></tr>
+<tr><td></td><td>
+<b>R.J.Barnes</b>
+</td></tr>
+
+
+<tr><td class="docsubtitle"><h3>Summary</h3></td></tr>
+<tr><td></td><td>
+<p>A description of the data structure in the C language used to store the cFit Data.</p>
+</td></tr>
+<tr><td class="docsubtitle"><h3>Description</h3></td></tr>
+<tr><td></td><td>
+
+<h4>1. Introduction</h4>
+<p>The cFit format is a compressed format for storing a limited sub-set of data from the output of the FitACF algorithm. Listed below is the C data structure <code>struct CFitData</code> used to store the cFit data.</p>
+<h4>2. Array Limits</h4>
+<p>The array limits are defined as macros in the header <code>superdarn/limit.h</code>.</p>
+<center>
+<table cellspacing="3" bgcolor="e0e0e0" width="100%">
+<tr><td><pre>#define MAX_RANGE 300	
+</pre></td></tr></table>
+</center>
+<h4>3. <code>struct CFitData</code></h4>
+<p>The fitted ACF data structure is defined in the header <code>superdarn/cfitdata.h</code>.</p>
+<center>
+<table cellspacing="3" bgcolor="e0e0e0" width="100%">
+<tr><td><pre>struct CFitdata {
+  struct {
+    int major;                     /* major revision */
+    int minor;                     /* minor revision */
+  } version;
+  int16 stid;                      /* station identifier */
+  double time;                     /* time in seconds from UNIX EPOCH */
+  int16 scan;                      /* scan flag */
+  int16 cp;                        /* program identifier */
+  int16 bmnum;                     /* beam number */
+  float bmazm;                     /* beam azimuth */
+  int16 channel;                   /* channel */
+  struct { 
+    int16 sc;                      /* whole number of seconds integration time */
+    int16 us;                      /* fraction number of microseconds of integration time */
+  } intt;
+  int16 frang;                     /* distance to first range (kilometers) */
+  int16 rsep;                      /* range separation (kilometers) */
+  int16 rxrise;                    /* receiver rise time (microseconds) */
+  int16 tfreq;                     /* transmitted frequency */
+  int32 noise;                     /* calculated noise from clear frequency search
+  int16 atten;                     /* attenuation level */
+  int16 nave;                      /* number of integrations */
+  int16 nrang;                     /* number of ranges */
+
+  unsigned char num;               /* number of stored ranges */
+  unsigned char rng[MAX_RANGE];    /* range look-up table */
+  struct CFitCell data[MAX_RANGE]; /* range data */
+};
+</pre></td></tr></table>
+</center>
+<h4>4. <code>struct CFitCell</code></h4>
+<center>
+<table cellspacing="3" bgcolor="e0e0e0" width="100%">
+<tr><td><pre>struct CFitCell {
+  int gsct;
+  double p_0;                      /* lag zero power */
+  double p_0_e;                    /* lag zero power error */
+  double v;                        /* velocity */
+  double v_e;                      /* velocity error */
+  double w_l;                      /* lambda spectral width */
+  double w_l_e;                    /* lambda spectral width error */
+  double p_l;                      /* lambda power */
+  double p_l_e;                    /* lambda power error */
+};
+</pre></td></tr></table>
+</center>
+
+</td></tr>
+<tr><td class="docsubtitle"><h3>References</h3></td></tr>
+<tr><td></td><td>
+None<br>
+</td></tr>
+<tr><td class="docsubtitle"><h3>History</h3></td></tr>
+<tr><td></td><td>
+2007/03/26  Revision to reflect changes in array sizes and beam azimuth.<br>2004/11/19  Initial Revision.<br>
+</td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+
+</body>
+
+
+

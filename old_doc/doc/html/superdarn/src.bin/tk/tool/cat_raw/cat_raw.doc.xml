@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>cat_raw</name>
+<location>src.bin/tk/tool/cat_raw</location>
+
+<syntax>cat_raw --help</syntax>
+<syntax>cat_raw -old <ar>rawinputs...</ar> <ar>rawoutput</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-old</on><od>the input file is a <code>raw</code> (<code>dat</code>) format file.</od>
+</option>
+<option><on><ar>rawinputs</ar></on><od>filenames of the <code>raw</code> (<code>dat</code>) format file to concatenate.</od>
+</option>
+<option><on><ar>rawoutput</ar></on><od>filename of the <code>raw</code> (<code>dat</code>) format file to create.</od>
+</option>
+<synopsis><p>Concatenates a set of <code>raw</code> (<code>dat</code>) format files.</p></synopsis>
+<description><p>Concatenates a set of <code>raw</code> (<code>dat</code>) format files.</p></description>
+
+<example>
+<command>cat_raw -old 19981020.*.gbr.dat 19981020.gbr.C.dat</command>
+<description>Concatenates together all files called "<code>19981020.*.gbr.dat</code>" to produce a file called "<code>19981020.gbr.C.dat</code>".</description>
+</example>
+
+</binary>

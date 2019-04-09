@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>grid_filter</name>
+<location>src.bin/tk/tool/grid_filter</location>
+
+<syntax>grid_filter --help</syntax>
+<syntax>grid_filter [<ar>gridname</ar>]</syntax>
+<syntax>grid_filter -old [<ar>gridname</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on><ar>gridname</ar></on><od>filename of the <code>grdmap</code> format file. If this is omitted, the file will be read from standard input.</od>
+</option>
+<option><on>-old</on><od>the input file is a <code>grd</code> format file.</od>
+</option>
+<synopsis><p>Supersample a grid format file in time.</p></synopsis>
+<description><p>Supersample a grid format file in time.</p>
+<p>The task supersamples by skipping over records in the output file for a fixed length of time. By default the task will write a record every 10 minutes</p></description>
+
+<example>
+<command>grid_filter -old 20040830.grd &gt; 20040830.grd.s</command>
+<description>Supersample the <code>grd</code> format file "<code>20040830.grd</code>" to produce the file "<code>20040830.grd.s</code>".</description>
+</example>
+
+</binary>

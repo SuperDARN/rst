@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>superdarn</project>
+<name>grid</name>
+<location>src.lib/tk/grid</location>
+
+<function>
+<name>GridAdd</name>
+<location>src.lib/tk/grid</location>
+<header>superdarn/griddata.h</header>
+<syntax>void GridAdd(<sn href="structGridData.html">struct GridData</sn> *a,<sn href="structGridData.html">struct GridData</sn> *b,int num);</syntax>
+<description><p>The <fn href="GridAdd.html">GridAdd</fn> function adds together two sets of gridded data.</p>
+<p>The gridded data stored in the structure pointed to by the argument <ar>b</ar> is added to the gridded data stored in the structure pointed to by the argument <ar>a</ar>.</p>
+<p>The header information such as the noise and frequency are added for each contributing site. The correct, averaged values for these parameters are calculated by calling the function with a <code>NULL</code> pointer for argument <ar>b</ar> and the total number of combined blocks of gridded data for the argument <ar>num</ar>.</p> 
+</description>
+<example type="source">GridAdd.c</example>
+</function>
+
+<function>
+<name>GridAverage</name>
+<location>src.lib/tk/grid</location>
+<header>superdarn/griddata.h</header>
+<syntax>void GridAverage(<sn href="structGridData.html">struct GridData</sn> *a,<sn href="structGridData.html">struct GridData</sn> *b,int flg);</syntax>
+<description><p>The <fn href="GridAverage.html">GridAverage</fn> function averages together data in coincident cells in a sets of gridded data.</p>
+<p>The result of the averaging is stored in the structure pointed to by the argument <ar>a</ar>. The gridded data to average is taken from the structure pointed to by the argument <ar>b</ar>.</p>
+<p>The argument <ar>flg</ar> determines the type of operation that is performed. A value of zero will average together all the data points in a cell to produce a single output value. A value of (1) will set the output to the data point with the maximum power. A value of (2) will set the output to the data point with the maximum velocity. A value of (3) sets the output to the point with maximum spectral width. A value of (4) sets the output to the minimum power, a value of (5) to the minimum velocity, and a value of (6) to the minimum spectral width.</p>
+</description>
+<example type="source">GridAverage.c</example>
+</function>
+
+<function>
+<name>GridCopy</name>
+<location>src.lib/tk/grid</location>
+<header>superdarn/griddata.h</header>
+<syntax>void GridCopy(<sn href="structGridData.html">struct GridData</sn>  *a,<sn href="structGridData.html">struct GridData</sn> *b);</syntax>
+<description><p>The <fn href="GridCopy.html">GridCopy</fn> function duplicates a set of gridded data.</p>
+<p>The copied grid data is stored in the structure pointed to by the argument <ar>a</ar>. The gridded data to copy is taken from the structure pointed to by the argument <ar>b</ar>.</p>
+</description>
+<example type="source">GridCopy.c</example>
+</function>
+
+<function>
+<name>GridFread</name>
+<location>src.lib/tk/grid</location>
+<header>superdarn/gridread.h</header>
+<syntax>int GridFread(FILE *fp,<sn href="structGridData.html">struct GridData</sn> *grd);</syntax>
+<description><p>The <fn href="GridFread.html">GridFread</fn> function reads gridded data from an open stream.</p>
+<p>The gridded is read from the open stream pointed to by the argument <ar>fp</ar>.The gridded data is stored in the structure pointed to by the argument <ar>grd</ar>.</p>
+</description>
+<returns>Returns the number of bytes used to store the convection map on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">GridFread.c</example>
+</function>
+
+<function>
+<name>GridFseek</name>
+<location>src.lib/tk/grid</location>
+<header>superdarn/gridseek.h</header>
+<syntax>int GridFseek(FILE *fp, int yr,int mo,int dy,int hr,int mt,int sc,double *atme, <sn href="structGridIndex.html">struct GridIndex</sn> *inx);</syntax>
+<description><p>The <fn href="GridFseek.html">GridFseek</fn> function searches for gridded data for a specific time.</p>
+<p>The search is performed on the open stream pointed to by the argument <ar>fp</ar>. The time to search for is specified by the arguments <ar>yr</ar>, <ar>mo</ar>,<ar>dy</ar>,<ar>hr</ar>,<ar>mt</ar>,<ar>sc</ar> giving the year, month, day, hour, minute and second.</p>
+<p>The argument <ar>atme</ar> is a pointer to a double precision floating point number that is used to store the time of the closest record to the time requested expressed in seconds from 0:00UT January 1, 1970. If this argument is set to a <code>NULL</code> pointer then the time is not returned.</p>  
+<p>If the file containing the gridded data has an associated index that has been loaded, then it can be used to speed up the search by setting the argument <ar>inx</ar> to point to it.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">GridFseek.c</example>
+</function>
+
+<function>
+<name>GridFwrite</name>
+<location>src.lib/tk/grid</location>
+<header>superdarn/gridwrite.h</header>
+<syntax>int GridFwrite(FILE *fp,<sn href="structGridData.html">struct GridData</sn> *grd);</syntax>
+<description><p>The <fn href="GridFwrite.html">GridFwrite</fn> function writes a gridded data to an open stream.</p>
+<p>The data is written to the open stream pointed to by the argument <ar>fp</ar>.</p>
+<p>The gridded data is taken from the structure pointed to by the argument <ar>grd</ar>.</p>
+</description>
+<returns>Returns the number of bytes written on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">GridFwrite.c</example>
+</function>
+
+<function>
+<name>GridIndexFload</name>
+<location>src.lib/tk/grid</location>
+<header>superdarn/gridinx.h</header>
+<syntax><sn href="structGridIndex.html">struct GridIndex</sn> *GridIndexFload(FILE *fp);</syntax>
+<description><p>The <fn href="GridIndexFload.html">GridIndexFload</fn> function loads an index to a file containing gridded data.</p>
+<p>The index is loaded from the open stream pointed to by the argument <ar>fp</ar>.</p>  
+</description>
+<returns>Returns a pointer to a structure containing the index on success. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
+<example type="source">GridIndexFload.c</example>
+</function>
+
+<function>
+<name>GridIndexFree</name>
+<location>src.lib/tk/grid</location>
+<header>superdarn/gridindex.h</header>
+<syntax>void GridIndexFree(<sn href="structGridIndex.html">struct GridIndex</sn> *ptr);</syntax>
+<description><p>The <fn href="GridIndexFree.html">GridIndexFree</fn> function frees memory allocated to store an index to a file containing gridded data.</p>
+<p>The index structure is pointed to by the argument <ar>ptr</ar>.</p>
+</description>
+<example type="source">GridIndexFree.c</example>
+</function>
+
+<function>
+<name>GridIndexLoad</name>
+<location>src.lib/tk/grid</location>
+<header>superdarn/gridindex.h</header>
+<syntax><sn href="structGridIndex.html">struct GridIndex</sn> *GridIndexLoad(int fid);</syntax>
+<description><p>The <fn href="GridIndexLoad.html">GridIndexLoad</fn> function loads an index to a file containing gridded data.</p>
+<p>The index is loaded from the file with the descriptor given by the argument <ar>fid</ar>.</p>  
+</description>
+<returns>Returns a pointer to a structure containing the index on success. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
+<example type="source">GridIndexLoad.c</example>
+</function>
+
+<function>
+<name>GridIntegrate</name>
+<location>src.lib/tk/grid</location>
+<header>superdarn/griddata.h</header>
+<syntax>void GridIntegrate(<sn href="structGridData.html">struct GridData</sn> *a,<sn href="structGridData.html">struct GridData</sn> *b,double *err);</syntax>
+<description><p>The <fn href="GridIntegrate.html">GridIntegrate</fn> function integrates gridded data so that only one vector per site is stored in a grid cell.</p>
+<p>The integrated grid data is stored in the structure pointed to by the argument <ar>a</ar>. The gridded data to integrate is taken from the structure pointed to by the argument <ar>b</ar>.</p>
+<p>The argument <ar>err</ar> is a pointer an array containing the lowest acceptable values for the errors in power, velocity and spectral width. If a cell has an error lower than these values it is replaced by the threshold value.</p>
+</description>
+<example type="source">GridIntegrate.c</example>
+</function>
+
+<function>
+<name>GridLocateCell</name>
+<location>src.lib/tk/grid</location>
+<header>superdarn/griddata.h</header>
+<syntax>int GridLocateCell(int npnt,<sn href="structGridGVec.html">struct GridGVec</sn> *ptr,int index);</syntax>
+<description><p>The <fn href="GridLocateCell.html">GridLocateCell</fn> function finds an instance of a particular grid cell in a set of gridded data points.</p>
+<p>The number of data points is given by the argument <ar>npnt</ar> and the array pointed to by the argument <ar>ptr</ar> contains the points.</p>
+<p>The cell to search for is given by the argument <ar>index</ar>.</p>
+</description>
+<returns>Returns the index into the array of the gridded data points of the first occurence of the grid cell. If the cell could not be found then <ar>npnt</ar> is returned.</returns>
+<example type="source">GridLocateCell.c</example>
+</function>
+
+<function>
+<name>GridMerge</name>
+<location>src.lib/tk/grid</location>
+<header>superdarn/griddata.h</header>
+<syntax>void GridMerge(<sn href="structGridData.html">struct GridData</sn>  *a,<sn href="structGridData.html">struct GridData</sn> *b);</syntax>
+<description><p>The <fn href="GridMerge.html">GridMerge</fn> function merges line of sight velocities in gridded data to produce two-dimensional vectors.</p>
+<p>The gridded data to integrate is taken from the structure pointed to by the argument <ar>a</ar>.The merged grid data is stored in the structure pointed to by the argument <ar>b</ar>.</p>
+</description>
+<example type="source">GridMerge.c</example>
+</function>
+
+<function>
+<name>GridRead</name>
+<location>src.lib/tk/grid</location>
+<header>superdarn/gridread.h</header>
+<syntax>int GridRead(int fid,<sn href="structGridData.html">struct GridData</sn>  *grd);</syntax>
+<description><p>The <fn href="GridRead.html">GridRead</fn> function reads gridded data from an open file.</p>
+<p>The gridded data is read from the file with the descriptor given by the argument <ar>fid</ar>. The gridded data is stored in the structure pointed to by the argument <ar>grd</ar>.</p>
+</description>
+<returns>Returns the number of bytes used to store the convection map on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">GridRead.c</example>
+</function>
+
+<function>
+<name>GridSeek</name>
+<location>src.lib/tk/grid</location>
+<header>superdarn/gridseek.h</header>
+<syntax>int GridSeek(int fid, int yr,int mo,int dy,int hr,int mt,int sc,double *atme, <sn href="structGridIndex.html">struct GridIndex</sn> *inx);</syntax>
+<description><p>The <fn href="GridSeek.html">GridSeek</fn> function searches for a gridded data for a specific time.</p>
+<p>The search is performed on the file with the descriptor given by the argument <ar>fid</ar>. The time to search for is specified by the arguments <ar>yr</ar>, <ar>mo</ar>,<ar>dy</ar>,<ar>hr</ar>,<ar>mt</ar>,<ar>sc</ar> giving the year, month, day, hour, minute and second.</p>
+<p>The argument <ar>atme</ar> is a pointer to a double precision floating point number that is used to store the time of the closest record to the time requested expressed in seconds from 0:00UT January 1, 1970. If this argument is set to a <code>NULL</code> pointer then the time is not returned.</p>  
+<p>If the file containing the gridded data has an associated index that has been loaded, then it can be used to speed up the search by setting the argument <ar>inx</ar> to point to it.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">GridSeek.c</example>
+</function>
+
+<function>
+<name>GridSort</name>
+<location>src.lib/tk/grid</location>
+<header>superdarn/griddata.h</header>
+<syntax>void GridSort(<sn href="structGridData.html">struct GridData</sn> *ptr);</syntax>
+<description><p>The <fn href="GridSort.html">GridSort</fn> function sorts gridded data int grid cell order.</p>
+<p>The gridded data to sort is stored in the structure pointed to by the argument <ar>ptr</ar>.</p>
+</description>
+<example type="source">GridSort.c</example>
+</function>
+
+<function>
+<name>GridWrite</name>
+<location>src.lib/tk/grid</location>
+<header>superdarn/gridwrite.h</header>
+<syntax>int GridWrite(int fid,<sn href="structGridData.html">struct GridData</sn>  *grd);</syntax>
+<description><p>The <fn href="GridWrite.html">GridWrite</fn> function writes gridded data to an open file.</p>
+<p>The data is written to the file with the descriptor given by the argument <ar>fid</ar>.If <ar>fid</ar> is set to (-1) then the function will just calculate the number of bytes required to store the data.</p>
+<p>The gridded data is taken from the structure pointed to by the argument <ar>grd</ar>.</p>
+</description>
+<returns>Returns the number of bytes written on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">GridWrite.c</example>
+</function>
+
+
+<structure>
+  <name>GridData</name>
+  <location>src.lib/tk/grid</location>
+  <header>superdarn/griddata.h</header>
+  <struct>
+
+    <member>
+      <proto>double st_time;</proto>
+      <description>Start time of the data, specified as seconds from 0:00UT January 1, 1970.</description>
+    </member>
+
+    <member>
+      <proto>double ed_time;</proto>
+      <description>End time of the data, specified as seconds from 0:00UT January 1, 1970.</description>
+    </member>
+
+    <member>
+      <proto>int stnum;</proto>
+      <description>Number of stations in the gridded data.</description>
+    </member>
+
+    <member>
+      <proto>int vcnum;</proto>
+      <description>Number of vectors in the gridded data.</description>
+    </member>
+
+    <member>
+      <proto>unsigned char xtd;</proto>
+      <description>Flag indicating whether this data includes extended information. If this is set to (1) then the data points include the power and spectral width information.</description>
+    </member>
+
+    <member>
+      <proto><sn href="structGridSVec.html">struct GridSVec</sn> *sdata;</proto>
+      <description>Pointer to an array of structures containing the status information.</description>
+    </member>
+
+    <member>
+      <proto><sn href="structGridGVec.html">struct GridGVec</sn> *data;</proto>
+      <description>Pointer to an array of structures containing the data points.</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structGridData.html">struct GridData</sn> structure stores the gridded data.</p>
+  </description>
+</structure>
+
+
+<structure>
+  <name>GridIndex</name>
+  <location>src.lib/tk/grid</location>
+  <header>superdarn/gridindex.h</header>
+  <struct>
+
+    <member>
+      <proto>int num;</proto>
+      <description>Number of records in the data file.</description>
+    </member>
+
+    <member>
+      <proto>double *tme;</proto>
+      <description>Pointer to an array of record times, specified as seconds from 0:00UT January 1, 1970.</description>
+    </member>
+
+    <member>
+      <proto>int *inx;</proto>
+      <description>Pointer to an array of byte offsets into the file marking the start of a record.</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structGridIndex.html">struct GridIndex</sn> structure stores an index to a file containing gridded data.</p>
+  </description>
+</structure>
+
+
+<structure>
+  <name>GridGVec</name>
+  <location>src.lib/tk/grid</location>
+  <header>superdarn/griddata.h</header>
+  <struct>
+
+    <member>
+      <proto>double mlat;</proto>
+      <description>Magnetic latitude of data point.</description>
+    </member>
+
+    <member>
+      <proto>double mlon;</proto>
+      <description>Magnetic longitude of data point.</description>
+    </member>
+
+    <member>
+      <proto>double azimuth;</proto>
+      <description>Magnetic azimuth of data point.</description>
+    </member>
+
+    <member>
+      <struct>
+        <member>
+          <proto>double median;</proto>
+          <description>Median value.</description>
+        </member>
+        <member>
+          <proto>double sd;</proto>
+          <description>Standard deviation.</description>
+        </member>
+      </struct>
+      <proto>vel;</proto>
+      <description>Velocity data.</description>
+    </member>
+
+    <member>
+      <struct>
+        <member>
+          <proto>double median;</proto>
+          <description>Median value.</description>
+        </member>
+        <member>
+          <proto>double sd;</proto>
+          <description>Standard deviation.</description>
+        </member>
+      </struct>
+      <proto>pwr;</proto>
+      <description>Power data.</description>
+    </member>
+
+    <member>
+      <struct>
+        <member>
+          <proto>double median;</proto>
+          <description>Median value.</description>
+        </member>
+        <member>
+          <proto>double sd;</proto>
+          <description>Standard deviation.</description>
+        </member>
+      </struct>
+      <proto>wdt;</proto>
+      <description>Spectral width data.</description>
+    </member>
+
+    <member>
+      <proto>int st_id;</proto>
+      <description>Station identifier number.</description>
+    </member>
+
+    <member>
+      <proto>int chn;</proto>
+      <description>Channel number for a stereo radar.</description>
+    </member>
+
+    <member>
+      <proto>int index;</proto>
+      <description>Cell index number.</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structGridGVec.html">struct GridGVec</sn> structure stores information about a single data point in a set of gridded data.</p>
+  </description>
+</structure>
+
+
+<structure>
+  <name>GridSVec</name>
+  <location>src.lib/tk/grid</location>
+  <header>superdarn/griddata.h</header>
+  <struct>
+
+    <member>
+      <proto>int st_id;</proto>
+      <description>Station identifier number.</description>
+    </member>
+
+    <member>
+      <proto>int chn;</proto>
+      <description>Channel number for a stereo radar.</description>
+    </member>
+
+    <member>
+      <proto>int npnt;</proto>
+      <description>Number of points contributed by this station.</description>
+    </member>
+
+    <member>
+      <proto>double freq0;</proto>
+      <description>Average frequency that the radar was using for this period.</description>
+    </member>
+
+    <member>
+      <proto>int major_revision;</proto>
+      <description>Major revision number.</description>
+    </member>
+
+    <member>
+      <proto>int minor_revision;</proto>
+      <description>Minor revision number.</description>
+    </member>
+
+    <member>
+      <proto>int prog_id;</proto>
+      <description>Control program identifier number.</description>
+    </member>
+
+    <member>
+      <proto>char gsct;</proto>
+      <description>Ground scatter flag.</description>
+    </member>
+
+    <member>
+      <struct>
+        <member>
+          <proto>double mean;</proto>
+          <description>Mean noise value for this period.</description>
+        </member>
+        <member>
+          <proto>double sd;</proto>
+          <description>Standard deviation of the noise for this period.</description>
+        </member>
+      </struct>
+      <proto>noise;</proto>
+      <description>Noise statistics.</description>
+    </member>
+
+    <member>
+      <struct>
+        <member>
+          <proto>double min;</proto>
+          <description>Minium threshold.</description>
+        </member>
+        <member>
+          <proto>double max;</proto>
+          <description>Maximum threshold.</description>
+        </member>
+      </struct>
+      <proto>vel;</proto>
+      <description>Velocity thresholds.</description>
+    </member>
+
+
+    <member>
+      <struct>
+        <member>
+          <proto>double min;</proto>
+          <description>Minium threshold.</description>
+        </member>
+        <member>
+          <proto>double max;</proto>
+          <description>Maximum threshold.</description>
+        </member>
+      </struct>
+      <proto>pwr;</proto>
+      <description>Power thresholds.</description>
+    </member>
+
+    <member>
+      <struct>
+        <member>
+          <proto>double min;</proto>
+          <description>Minium threshold.</description>
+        </member>
+        <member>
+          <proto>double max;</proto>
+          <description>Maximum threshold.</description>
+        </member>
+      </struct>
+      <proto>wdt;</proto>
+      <description>Spectral width thresholds.</description>
+    </member>
+
+    <member>
+      <struct>
+        <member>
+          <proto>double min;</proto>
+          <description>Minium threshold.</description>
+        </member>
+        <member>
+          <proto>double max;</proto>
+          <description>Maximum threshold.</description>
+        </member>
+      </struct>
+      <proto>verr;</proto>
+      <description>Velocity error thresholds.</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structGridSVec.html">struct GridSVec</sn> structure stores information about a station contributing to a set of gridded data.</p>
+  </description>
+</structure>
+
+</library>

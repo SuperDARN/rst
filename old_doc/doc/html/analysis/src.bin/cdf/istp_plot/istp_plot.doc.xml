@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>analysis</project>
+<name>istp_plot</name>
+<location>src.bin/cdf/istp_plot</location>
+
+<syntax>istp_plot --help</syntax>
+<syntax>istp_plot [-cf <ar>cfname</ar>] [<ar>options</ar>]</syntax>
+<syntax>istp_plot -png [<ar>options</ar>]</syntax>
+<syntax>istp_plot -ps [-land] [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>]</syntax>
+<syntax>istp_plot -ppm [<ar>options</ar>]</syntax>
+<syntax>istp_plot -ppmx [<ar>options</ar>]</syntax>
+<syntax>istp_plot -xml [<ar>options</ar>]</syntax>
+<syntax>istp_plot  -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [<ar>options</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-cf <ar>cfname</ar></on><od>read command line options from the file <ar>cfname</ar>.</od>
+</option>
+<option><on>-plot <ar>names...</ar></on><od>plot the parameters given by the comma separated list of parameters,<ar>names</ar>.</od>
+</option>
+<option><on>-path <ar>path</ar></on><od>read the data files from the directory <ar>path</ar>.</od>
+</option>
+<option><on>-w <ar>width</ar></on><od>set the width of the plot to <ar>width</ar>.</od>
+</option>
+<option><on>-h <ar>height</ar></on><od>set the height of the plot to <ar>height</ar>.</od>
+</option>
+<option><on>-sd <ar>yyyymmdd</ar></on><od>plot starting from the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-st <ar>hr:mn</ar></on><od>plot starting from the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ed <ar>yyyymmdd</ar></on><od>stop plotting at the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-et <ar>hr:mn</ar></on><od>stop plotting at the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ex <ar>hr:mn</ar></on><od>plot an interval whose extent is <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-gse</on><od>plot in GSE coordinates, not GSM.</od>
+</option>
+<option><on>-pos</on><od>include spacecraft position in the plot.</od>
+</option>
+<option><on>-mfi</on><od>plot MFI data.</od>
+</option>
+<option><on>-swe</on><od>plot SWE data.</od>
+</option>
+<option><on>-mag</on><od>plot MAG data.</od>
+</option>
+<option><on>-pla</on><od>plot PLA data.</od>
+</option>
+<option><on>-mgf</on><od>plot MGF data.</od>
+</option>
+<option><on>-lep</on><od>plot LEP data.</od>
+</option>
+<option><on>-cpi</on><od>plot CPI data.</od>
+</option>
+<option><on>-ace</on><od>plot ACE data.</od>
+</option>
+<option><on>-wind</on><od>plot Wind data.</od>
+</option>
+<option><on>-imp8</on><od>plot IMP8 data.</od>
+</option>
+<option><on>-geotail</on><od>plot Geotail data.</od>
+</option>
+<option><on>-png</on><od>produce a Portable Network Graphics (PNG) image as the output.</od>
+</option>
+<option><on>-ps</on><od>produce a PostScript plot as the output.</od>
+</option>
+<option><on>-xp <ar>xoff</ar></on><od>set the X offset of the PostScript plot to <ar>xoff</ar>.</od>
+</option>
+<option><on>-yp <ar>xoff</ar></on><od>set the Y offset of the PostScript plot to <ar>yoff</ar>.</od>
+</option>
+<option><on>-l</on><od>set the orientation of the PostScript plot to landscape,</od>
+</option>
+<option><on>-ppm</on><od>produce a Portable PixMap (PPM) image as the output.</od>
+</option>
+<option><on>-ppmx</on><od>produce an extended Portable PixMap (PPMX) image as the output.</od>
+</option>
+<option><on>-xml</on><od>produce an XML image representation as the output.</od></option>
+<option><on>-x</on><od>plot the data on an X-terminal.</od></option>
+<option><on>-display <ar>display</ar></on><od>connect to the xterminal named <ar>display</ar>.</od>
+</option>
+<option><on>-xoff <ar>xoff</ar></on><od>open the window, <ar>xoff</ar> pixels from the left edge of the screen.</od>
+</option>
+<option><on>-yoff <ar>yoff</ar></on><od>open the window <ar>ypad</ar> pixels from the top edge of the screen.</od>
+</option>
+
+<synopsis><p>Plot ISTP data from CDF files.</p></synopsis>
+<description>
+<p>Plot ISTP magnetic field and solar wind data from a set of CDF files. The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, Portable Network Graphics (PNG), or PostScript file. The default output is XML. The output file is written to standard output.</p>
+<p>The program usually plots 24 hours of magnetic field data in GSM co-ordinates for a given start date and satellite.</p>
+<p>Magnetic field and solar wind data can be plotted together by combining the appropriate options.</p>
+<p>The data files are taken from the sub-directories "<code>ace</code>", "<code>wind</code>", "<code>imp8</code>" and "<code>geotail</code>", of the path given by the "<code>-path</code>" option or by the environment variable <ar>ISTP_PATH</ar>.</p>
+</description>
+
+<example>
+<command>istp_plot -x -ace -sd 19990406</command>
+<description> Plot 24 hours of ACE data starting at 00:00UT on April, 6 1999 on the X terminal.</description>
+</example>
+
+<example>
+<command>istp_plot -ps -ace -mfi -swe -sd 19980404 -st 12:00 -ex 8:00 &gt; plot.ps</command>
+<description>Generate a PostScript plot of Ace MFI and SWE data for the 8 hour period starting at 12:00UT on April 4, 1998. The plot is stored in the file "<code>plot.ps</code>".</description>
+</example>
+<example type="rplot">example1</example>
+
+<example>
+<command>istp_plot -ace -mfi -sd 19990715 -st 4:00 -ed 19990718 -et 12:00 &gt; plot.rp.xml</command>
+<description>Generate an XML rPlot file of Ace MFI for the period starting at 04:00UT on July 15, 1999, and ending at 12:00UT July 18,1999. The plot is stored in the file "<code>plot.rp.xml</code>".</description>
+</example>
+<example type="rplot">example2</example>
+
+</binary>

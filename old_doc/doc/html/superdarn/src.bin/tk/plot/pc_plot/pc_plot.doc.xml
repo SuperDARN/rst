@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>pc_plot</name>
+<location>src.bin/tk/plot/pc_plot</location>
+
+<syntax>pc_plot --help</syntax>
+<syntax>pc_plot [<ar>options</ar>] <ar>name</ar>
+</syntax>
+<syntax>pc_plot -png [<ar>options</ar>] <ar>name</ar>
+</syntax>
+<syntax>pc_plot -ps [-l] [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] <ar>name</ar>
+</syntax>
+<syntax>pc_plot -ppm [<ar>options</ar>] <ar>name</ar>
+</syntax>
+<syntax>pc_plot -ppmx [<ar>options</ar>] <ar>name</ar>
+</syntax>
+<syntax>pc_plot -xml [<ar>options</ar>] <ar>name</ar>
+</syntax>
+<syntax>pc_plot -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [<ar>options</ar>] <ar>name</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-cf <ar>cfname</ar></on><od>read command line options from the file <ar>cfname</ar>.</od>
+</option>
+<option><on>-old</on><od>the input file is a <code>map</code> format file.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-w <ar>width</ar></on><od>set the width of the plot to <ar>width</ar>.</od>
+</option>
+<option><on>-h <ar>height</ar></on><od>set the height of the plot to <ar>height</ar>.</od>
+</option>
+<option><on>-sd <ar>yyyymmdd</ar></on><od>plot starting from the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-st <ar>hr:mn</ar></on><od>plot starting from the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ed <ar>yyyymmdd</ar></on><od>stop plotting at the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-et <ar>hr:mn</ar></on><od>stop plotting at the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ex <ar>hr:mn</ar></on><od>plot an interval whose extent is <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-s</on><od>include the scatter statistics in the plot.</od>
+</option>
+<option><on>-b</on><od>include the IMF in the plot.</od>
+</option>
+<option><on>-nodelay</on><od>do not use the IMF delay when plotting the IMF.</od>
+</option>
+<option><on>-pmin <ar>pmin</ar></on><od>set the minimum of the potential scale to be <ar>pmin</ar>.</od>
+</option>
+<option><on>-pmax <ar>pmax</ar></on><od>set the maximum of the potential scale to be <ar>pmax</ar>.</od>
+</option>
+<option><on>-smin <ar>smin</ar></on><od>set the minimum of the scatter scale to be <ar>smin</ar>.</od>
+</option>
+<option><on>-smax <ar>smax</ar></on><od>set the maximum of the scatter scale to be <ar>smax</ar>.</od>
+</option>
+<option><on>-bxmin <ar>bxmin</ar></on><od>set the minimum of the X component of the IMF  scale to be <ar>bxmin</ar>.</od>
+</option>
+<option><on>-bxmax <ar>bxmax</ar></on><od>set the maximum of the X component of the IMF scale to be <ar>bxmax</ar>.</od>
+</option>
+<option><on>-bymin <ar>bymin</ar></on><od>set the minimum of the Y component of the IMF  scale to be <ar>bymin</ar>.</od>
+</option>
+<option><on>-bymax <ar>bymax</ar></on><od>set the maximum of the Y component of the IMF scale to be <ar>bymax</ar>.</od>
+</option>
+<option><on>-bzmin <ar>bzmin</ar></on><od>set the minimum of the Z component of the IMF  scale to be <ar>bzmin</ar>.</od>
+</option>
+<option><on>-bzmax <ar>bzmax</ar></on><od>set the maximum of the Z component of the IMF scale to be <ar>bzmax</ar>.</od>
+</option>
+<option><on><ar>name</ar></on><od>the filename of the <code>cnvmap</code> format file to plot.</od>
+</option>
+<option><on>-ps</on><od>produce a Portable Network Graphics (PNG) image as the output.</od>
+</option>
+<option><on>-ps</on><od>produce a PostScript plot as the output.</od>
+</option>
+<option><on>-xp <ar>xoff</ar></on><od>set the X offset of the PostScript plot to <ar>xoff</ar>.</od>
+</option>
+<option><on>-yp <ar>xoff</ar></on><od>set the Y offset of the PostScript plot to <ar>yoff</ar>.</od>
+</option>
+<option><on>-l</on><od>set the orientation of the PostScript plot to landscape,</od>
+</option>
+<option><on>-ppm</on><od>produce a Portable PixMap (PPM) image as the output.</od>
+</option>
+<option><on>-ppmx</on><od>produce an extended Portable PixMap (PPMX) image as the output.</od>
+</option>
+<option><on>-xml</on><od>produce an XML image representation as the output.</od></option>
+<option><on>-x</on><od>plot the data on an X-terminal.</od>
+</option>
+<option><on>-display <ar>display</ar></on><od>connect to the xterminal named <ar>display</ar>.</od>
+</option>
+<option><on>-xoff <ar>xoff</ar></on><od>open the window, <ar>xoff</ar> pixels from the left edge of the screen.</od>
+</option>
+<option><on>-yoff <ar>yoff</ar></on><od>open the window <ar>ypad</ar> pixels from the top edge of the screen.</od>
+</option>
+<synopsis><p>Plot the cross polar cap potential, scatter statistics or IMF conditions from a convection map file.</p></synopsis>
+<description><p>Plot the cross polar cap potential, scatter statistics or IMF conditions from a convection map file.</p>
+<p>The output can be to an X terminal, Portable PixMap (PPM) files, extended Portable PixMap (PPMX), <code>rPlot</code> XML document, Portable Network Graphics (PNG), or PostScript file. The default output is PostScript.</p>
+<p>If the "<code>-x</code>" option is specified the program will display plots in an X terminal window in all other cases the output is written to standard out.</p>
+</description>
+
+<example>
+<command>pc_plot -x -old 20040830.map</command>
+<description>Plot the cross polar cap potential from the file "<code>20040830.map</code>" on the X terminal.</description>
+</example>
+
+<example>
+<command>pc_plot -smax 1400.0 -s 20021219.cnvmap &gt; pc.rp.xml</command>
+<description>Generate an rPlot XML plot of the cross polar cap potential and scatter statistics from the file "<code>20021219.map</code>". The plot is stored in the file "<code>pc.rp.xml</code>".</description>
+</example>
+
+<example type="rplot">example1</example>
+
+</binary>

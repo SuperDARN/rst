@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>analysis</project>
+<name>igrf</name>
+<location>src.lib/igrf/igrf</location>
+
+<function>
+<name>IGRFCall</name>
+<location>src.lib/igrf/mag</location>
+<header>analysis/igrfcall.h</header>
+<syntax>int IGRFCall(double date,double lat,double lon,double elv,double *x,double *y,double *z);</syntax>
+<description><p>The <fn href="IGRFCall.html">IGRFCall</fn> function calculates the components of the geomagnetic field according to the International Geomagnetic Reference Field (IGRF) model.</p>
+<p>The argument <ar>date</ar> is the decimal date used to calculate the field. The arguments <ar>lat</ar>, <ar>lon</ar>, and <ar>elv</ar> give the latitude and longitude in degrees, and the the height in kilometers at which to calculate the field. The components of the field are stored at the locations pointed to by the arguments <ar>x</ar>, <ar>y</ar>, and <ar>z</ar> in local north/east/down coordinates and units of nT.</p>
+</description>
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">IGRFCall.c</example>
+</function>
+
+<function>
+<name>IGRFMagCmp</name>
+<location>src.lib/igrf/mag</location>
+<header>analysis/magcmp.h</header>
+<syntax>int IGRFMagCmp(double date,double rho,double lat,double lon,double *bx,double *by,double *bz,double *b);</syntax>
+<description><p>The <fn href="IGRFMagCmp.html">IGRFCall</fn> function calculates the components of the geomagnetic field according to the International Geomagnetic Reference Field (IGRF) model.</p>
+<p>The argument <ar>date</ar> is the decimal date used to calculate the field. The arguments <ar>lat</ar>, <ar>lon</ar>, and <ar>rho</ar> give the latitude and longitude in degrees, and the distance from the center of the earth in kilometers at which to calculate the field. The components of the field are stored at the locations pointed to by the arguments <ar>bx</ar>, <ar>by</ar>, and <ar>bz</ar> in local south/east/vertical coordinates and units of nT; the magnitude of the field is stored at the location pointed to by the argument <ar>b</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, a (-1) is returned.</returns>
+<errors>On error, a (-1) is returned.</errors>
+<example type="source">IGRFMagCmp.c</example>
+</function>
+
+</library>

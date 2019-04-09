@@ -1,0 +1,86 @@
+
+
+<head>
+<title>struct GridData</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href=../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../superdarn/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/grid/index.html>grid</a></td><td>|</td>
+<td>GridData</td>
+<td width=100% align=right><a href=../../../../superdarn/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">GridData</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">superdarn/griddata.h</td></tr>
+<tr><td class="docsubtitle">Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">grid</a></tr>
+<tr><td class="docsubtitle" valign=top>Members</td></tr>
+<tr><td></td><td width=80% class="docbox"><table>
+
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double st_time;</font></td>
+      <td valign="top">Start time of the data, specified as seconds from 0:00UT January 1, 1970.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double ed_time;</font></td>
+      <td valign="top">End time of the data, specified as seconds from 0:00UT January 1, 1970.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int stnum;</font></td>
+      <td valign="top">Number of stations in the gridded data.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int vcnum;</font></td>
+      <td valign="top">Number of vectors in the gridded data.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">unsigned char xtd;</font></td>
+      <td valign="top">Flag indicating whether this data includes extended information. If this is set to (1) then the data points include the power and spectral width information.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier"><a href="structGridSVec.html"><code>struct GridSVec</code></a> *sdata;</font></td>
+      <td valign="top">Pointer to an array of structures containing the status information.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier"><a href="structGridGVec.html"><code>struct GridGVec</code></a> *data;</font></td>
+      <td valign="top">Pointer to an array of structures containing the data points.</td>
+    </tr>
+
+  </table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td>
+  <p>The <a href="structGridData.html"><code>struct GridData</code></a> structure stores the gridded data.</p>
+  </tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+</div>
+
+</body>
+
+
+

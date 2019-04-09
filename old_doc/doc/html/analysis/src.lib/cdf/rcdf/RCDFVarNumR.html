@@ -1,0 +1,96 @@
+
+<head>
+<title>RCDFVarNumR</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../analysis/index.html>analysis</a></td>
+<td>|</td><td><a href=../../../../analysis/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../analysis/src.lib/cdf/index.html>cdf</a></td><td>|</td><td><a href=../../../../analysis/src.lib/cdf/rcdf/index.html>rcdf</a></td><td>|</td>
+<td>RCDFVarNumR</td>
+<td width=100% align=right><a href=../../../../analysis/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">RCDFVarNumR</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">int RCDFVarNumR(CDFid id);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">analysis/rcdf.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">rcdf</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="RCDFVarNumR.html"><code>RCDFVarNumR</code></a> function determines the number of <b>R</b> variables in the open CDF file identified by the argument <em>id</em>.</p></td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns the number of variables on success. On error, a (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, a (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/RCDFVarNumR.c">RCDFVarNumR.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* RCDFVarNumR.c
+   =============
+   Author: R.J.Barnes
+*/
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;cdf.h&gt;
+#include &quot;rcdf.h&quot;
+
+
+int main(int argc,char *argv[]) {
+
+  CDFid id;
+  CDFstatus status;
+  int num;
+
+  fprintf(stdout,&quot;RCDFVarNumR&apos;n&quot;);
+  if (argc==1) {
+    fprintf(stderr,&quot;No filename.&apos;n&quot;);
+    exit(-1);
+  } 
+
+  status=CDFopen(argv[1],&amp;id);
+  if (status !=CDF_OK) {
+     fprintf(stderr,&quot;Could not open cdf file.&apos;n&quot;);
+     exit(-1);
+  }
+
+  num=RCDFVarNumR(id);
+
+  CDFclose(id);
+  
+  fprintf(stdout,&quot;R var num. :%d&apos;n&quot;,num);
+
+  return 0;
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

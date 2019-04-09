@@ -1,0 +1,71 @@
+
+<head>
+<title>PostScriptSetText</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../base/index.html>base</a></td>
+<td>|</td><td><a href=../../../../base/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/index.html>graphic</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/ps/index.html>ps</a></td><td>|</td>
+<td>PostScriptSetText</td>
+<td width=100% align=right><a href=../../../../base/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">PostScriptSetText</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">int PostScriptSetText(<a href="structPostScript.html"><code>struct PostScript</code></a> *ptr, int (*text)(char *,int,void *),void *data);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">base/rps.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">rps</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="PostScriptSetText.html"><code>PostScriptSetText</code></a> function sets the text stream handler in the  <code>PostScript</code> control structure.</p>
+<p>The argument <em>ptr</em> is a pointer to the PostScript control structure.</p>
+<p>The argument <em>text</em> is a pointer to a function of the form:</p>
+<center><table><tr><td  class="docbox" style="font-family: courier;">
+int (*text) (char *buffer,int size,void *dptr);
+</td></tr></table></center>
+<p>This function is called each time PostScript commands are sent to the text stream.</p>
+<p>The argument <em>buffer</em> is a pointer to a buffer containing the text of the command and the argument <em>size</em> indicates the size of the buffer.</p>
+<p>The <em>data</em> argument of the <a href="PostScriptSetText.html"><code>PostScriptSetText</code></a> function  is passed directly as the <em>dptr</em> argument and allows extra parameters to be passed to the function.</p>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="postscript">PostScriptSetText</example>
+<example type="source">PostScriptSetText.c</example>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>None</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>None</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td>None</td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

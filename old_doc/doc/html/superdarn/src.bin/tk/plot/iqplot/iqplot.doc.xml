@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>iqplot</name>
+<location>src.bin/tk/plot/iqplot</location>
+
+<syntax>iqplot --help</syntax>
+<syntax>iqplot [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [<ar>options</ar>] name
+</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>-cf <ar>cfname</ar></on><od>read command line options from the file <ar>cfname</ar>.</od>
+</option>
+<option><on>-w <ar>width</ar></on><od>set the width of the plot to <ar>width</ar>.</od>
+</option>
+<option><on>-h <ar>height</ar></on><od>set the height of the plot to <ar>height</ar>.</od>
+</option>
+<option><on><ar>name</ar></on><od>the filename of the <code>iqdat</code> format file to plot.</od>
+</option>
+<option><on>-display <ar>display</ar></on><od>connect to the xterminal named <ar>display</ar>.</od>
+</option>
+<option><on>-xoff <ar>xoff</ar></on><od>open the window, <ar>xoff</ar> pixels from the left edge of the screen.</od>
+</option>
+<option><on>-yoff <ar>yoff</ar></on><od>open the window <ar>ypad</ar> pixels from the top edge of the screen.</od>
+</option>
+
+<synopsis><p>Plot raw I&Q samples from a <code>iqdat</code> format file.</p></synopsis>
+<description><p>Plot raw I&Q <code>iqdat</code> format files.</p>
+<p>The output is to the X terminal. The program acts as a "virtual" oscilloscope allowing the user to replay I&Q samples taken at the radar.</p>
+</description>
+
+<example>
+<command>iqplot 20080318.wal.iqdat</command>
+<description>Plot the I&Q samples from the <code>iqdat</code> file called "<code>20080318.iqdat</code>" on the X terminal.</description>
+</example>
+
+</binary>

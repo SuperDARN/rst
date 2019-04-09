@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>extract_map</name>
+<location>src.bin/tk/tool/extract_map</location>
+
+<syntax>extract_map --help</syntax>
+<syntax>extract_map [-old] [-mid] [<ar>name</ar>]</syntax>
+<syntax>extract_map -p [-old] [-mid] [<ar>name</ar>]</syntax>
+<syntax>extract_map -s [-old] [-mid] [<ar>name</ar>]</syntax>
+<syntax>extract_map -l [-old] [-mid] [<ar>name</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-old</on><od>the input file is a <code>map</code> format file.</od>
+</option>
+<option><on>-mid</on><od>record the time in the middle of the map data, not the start and end times.</od>
+</option>
+<option><on><ar>name</ar></on><od>filename of the <code>cnvmap</code> format file. If this is omitted, the file will be read from standard input.</od>
+</option>
+<option><on>-p</on><od>extract the cross polar cap potential, the IMF, the statistical model, and the scatter and error statistics.</od>
+</option>
+<option><on>-s</on><od>extract the scatter statistics.</od>
+</option>
+<option><on>-l</on><od>extract the lower latitude boundary.</od>
+</option>
+
+<synopsis><p>Extract statistics or the original grid file from a convection map data file.</p></synopsis>
+<description><p>Extract statistics or the original grid file from a convection map data file.</p>
+<p>The extracted statistics are written to standard output.</p></description>
+
+<example>
+<command>extract_map -s -old 19981020.map</command>
+<description>Extracts the scatter statistics from the file "<code>19981020.map</code>" and display them on the console.</description>
+</example>
+
+<example>
+<command>extract_map -s -mid 19991120.cnvmap &gt; 19991120.sct</command>
+<description>Extract the scatter statistics from the <code>cnvmap</code> file "<code>19991120.cnvmap</code>" to produce the output file "<code>19991120.sct</code>". The middle time of each record is recorded in the file.</description>
+</example>
+
+</binary>

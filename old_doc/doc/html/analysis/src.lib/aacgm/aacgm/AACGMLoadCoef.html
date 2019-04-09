@@ -1,0 +1,105 @@
+
+<head>
+<title>AACGMLoadCoef</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../analysis/index.html>analysis</a></td>
+<td>|</td><td><a href=../../../../analysis/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../analysis/src.lib/aacgm/index.html>aacgm</a></td><td>|</td><td><a href=../../../../analysis/src.lib/aacgm/aacgm/index.html>aacgm</a></td><td>|</td>
+<td>AACGMLoadCoef</td>
+<td width=100% align=right><a href=../../../../analysis/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">AACGMLoadCoef</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">int AACGMLoadCoef(char *fname);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">analysis/aacgm.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">aacgm</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="AACGMLoadCoef.html"><code>AACGMLoadCoef</code></a> function loads a set of coefficients from the file whose name is given by the argument <em>fname</em>.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns zero on success. On error, a (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, a (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/AACGMLoadCoef.c">AACGMLoadCoef.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* AACGMLoadCoef.c
+   ===============
+   Author: R.J.Barnes
+*/
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &quot;aacgm.h&quot;
+
+
+int main(int argc,char *argv[]) {
+  char *fname=NULL;
+  double ilat,ilon,hgt;
+  double olat,olon,r;
+  int flg;
+  int s;
+
+  ilat=85.0;
+  ilon=45.0;
+  hgt=150.0;
+
+  flg=0;
+  
+  if (argc&lt;2) {
+    fprintf(stderr,&quot;Require coefficient filename.&apos;n&quot;);
+    exit(-1);
+  }
+  fname=argv[1];
+
+  s=AACGMLoadCoef(fname);
+  if (s !=0) {
+    fprintf(stderr,&quot;Error loading coefficients.&apos;n&quot;);
+    exit(-1);
+  }
+  s=AACGMConvert(ilat,ilon,hgt,&amp;olat,&amp;olon,&amp;r,flg);
+  if (s !=0) {
+    fprintf(stderr,&quot;Error in AACGM conversion.&apos;n&quot;);
+    exit(-1);
+  }
+  fprintf(stdout,&quot;AACGMLoadCoef&apos;n&quot;);
+  fprintf(stdout,&quot;Coefficient file:%s&apos;n&quot;,fname);
+  fprintf(stdout,&quot;Input: lat=%g, lon=%g, height=%g&apos;n&quot;,ilat,ilon,hgt);
+  fprintf(stdout,&quot;Output: lat=%g, lon=%g&apos;n&quot;,olat,olon);
+  return 0;
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

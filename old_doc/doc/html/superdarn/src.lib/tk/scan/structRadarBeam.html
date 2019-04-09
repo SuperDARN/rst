@@ -1,0 +1,146 @@
+
+
+<head>
+<title>struct RadarBeam</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href=../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../superdarn/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/scan/index.html>scan</a></td><td>|</td>
+<td>RadarBeam</td>
+<td width=100% align=right><a href=../../../../superdarn/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">RadarBeam</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">superdarn/scandata.h</td></tr>
+<tr><td class="docsubtitle">Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">scan</a></tr>
+<tr><td class="docsubtitle" valign=top>Members</td></tr>
+<tr><td></td><td width=80% class="docbox"><table>
+
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int scan;</font></td>
+      <td valign="top">Scan flag.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int bm;</font></td>
+      <td valign="top">Beam number.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">float bmazm;</font></td>
+      <td valign="top">Beam azimith.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double time;</font></td>
+      <td valign="top">Beam time stamp, specified as seconds from 0:00UT January 1, 1970.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int cpid;</font></td>
+      <td valign="top">Control program identifier number.</td>
+    </tr>
+
+    <tr>
+      <td><font size=-1 face="courier"><b>struct {</b></font></td></tr>
+        <tr>
+          <td valign="top"><font size=-1 face="courier">int sc;</font></td>
+          <td valign="top">Seconds.</td>
+        </tr>
+        <tr>
+          <td valign="top"><font size=-1 face="courier">int us;</font></td>
+          <td valign="top">Microseconds.</td>
+        </tr>
+      </tr><tr><td><font size=-1 face="courier"><b>}</b></font></td></tr><tr>
+      <td valign="top"><font size=-1 face="courier">intt;</font></td>
+      <td valign="top">Integration time.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int nave;</font></td>
+      <td valign="top">Number of pulse sequences transmitted.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int frang;</font></td>
+      <td valign="top">Distance to first range (kilometers).</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int rsep;</font></td>
+      <td valign="top">Range separation (kilometers).</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int rxrise;</font></td>
+      <td valign="top">Receiver rise time (microseconds).</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int freq;</font></td>
+      <td valign="top">Transmitted frequency (kilohertz).</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int noise;</font></td>
+      <td valign="top">Calculated noise from clear frequency search.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int atten;</font></td>
+      <td valign="top">Attenuation level.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int channel;</font></td>
+      <td valign="top">Channel number for a stereo radar.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int nrang;</font></td>
+      <td valign="top">Number of ranges.</td>
+    </tr>
+ 
+    <tr>
+      <td valign="top"><font size=-1 face="courier">unsigned char sct[nrang];</font></td>
+      <td valign="top">Array of flags indicating that a range contains scatter. A non-zero value indicates that there is scatter at that range.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier"><a href="structRadarCell.html"><code>struct RadarCell</code></a> rng[nrang];</font></td>
+      <td valign="top">Range data.</td>
+    </tr>
+
+  </table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td>
+  <p>The <a href="structRadarBeam.html"><code>struct RadarBeam</code></a> structure stores the fitted parameters for a single beam.</p>
+  </tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+</div>
+
+</body>
+
+
+

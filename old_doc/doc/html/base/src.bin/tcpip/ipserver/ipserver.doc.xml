@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>base</project>
+<name>ipserver</name>
+<location>src.bin/tcpip/ipserver</location>
+<syntax>ipserver --help</syntax>
+<syntax>ipserver [-L <ar>logname</ar>] [-pf <ar>portname</ar>] [-if <ar>pidname</ar>] [-lp <ar>port</ar>]</syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+
+<option><on>-L <ar>logname</ar></on><od>log connections and information in the file <ar>logname</ar>. By default, connections are recorded in <code>log.rt</code>.</od>
+</option>
+
+<option><on>-pf <ar>portname</ar></on><od>record the port number that the server is listening for connections on in the file <ar>portname</ar>. By default, the port is  recorded in <code>port.id</code>.</od>
+</option>
+
+<option><on>-if <ar>pidname</ar></on><od>record the process Identifier (PID) of the server in the file <ar>pidname</ar>. By default, the PID is  recorded in <code>pid.id</code>.</od>
+</option>
+
+
+<option><on>-lp <ar>port</ar></on><od>force the server to listen on the local port number <ar>port</ar>. By default, the server requests a port number from the Operating System.</od></option>
+<synopsis><p>Simple TCP/IP server program.</p></synopsis>
+
+<description><p>The task is a demonstration of a TCP/IP server. It waits for clients to connect and then sends a string containing the date and time to them every few seconds.</p></description>
+<example>  
+<command>ipserver -L log  -pf port.id  -if pid.id</command>
+<description>Listen for clients on a port allocated by the operating system. The port number is recorded in the file "<code>port.id</code>", the process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<ar>xxx</ar></code>" where <ar>xxx</ar> is the day of the year.</description>
+</example>
+<example>
+<command>ipserver -L log  -pf port.id  -if pid.id -lp 5000</command>
+<description>Listen for clients on a port 5000. The port number is recorded in the file "<code>port.id</code>", the process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<ar>xxx</ar></code>" where <ar>xxx</ar> is the day of the year.</description>
+</example>
+
+
+
+
+</binary>
+
+
+
+
+

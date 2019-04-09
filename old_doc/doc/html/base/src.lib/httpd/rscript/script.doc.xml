@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>base</project>
+<name>rscript</name>
+<location>src.lib/httpd/rscript</location>
+<function>
+<name>HTMLWriter</name>
+<location>src.lib/httpd/rscript</location>
+<header>base/rscript.h</header>
+<syntax>int HTMLWriter(char *buf,int sze,void *data);</syntax>
+</function>
+<function>
+<name>ScriptDecode</name>
+<location>src.lib/httpd/rscript</location>
+<header>base/rscript.h</header>
+<syntax>int ScriptDecode(<sn href="structScriptData.html">struct ScriptData</sn> *ptr,char *buf,int sze);</syntax>
+</function>
+<function>
+<name>ScriptFree</name>
+<location>src.lib/httpd/rscript</location>
+<header>base/rscript.h</header>
+<syntax>void ScriptFree(<sn href="structScriptData.html">struct ScriptData</sn> *ptr);</syntax>
+</function>
+<function>
+<name>ScriptHTMLFree</name>
+<location>src.lib/httpd/rscript</location>
+<header>base/rscript.h</header>
+<syntax>void ScriptHTMLFree(<sn href="structScriptHTML.html">struct ScriptHTML</sn> *ptr);</syntax>
+</function>
+<function>
+<name>ScriptHTMLMake</name>
+<location>src.lib/httpd/rscript</location>
+<header>base/rscript.h</header>
+<syntax>struct ScriptHTML *ScriptHTMLMake(<sn href="structScriptData.html">struct ScriptData</sn> *script);</syntax>
+</function>
+<function>
+<name>ScriptHTMLSetIgnore</name>
+<location>src.lib/httpd/rscript</location>
+<header>base/rscript.h</header>
+<syntax>int ScriptHTMLSetIgnore(<sn href="structScriptHTML.html">struct ScriptHTML</sn> *ptr,int num,char **ignore);</syntax>
+</function>
+<function>
+<name>ScriptHTMLSetIgnoreCount</name>
+<location>src.lib/httpd/rscript</location>
+<header>base/rscript.h</header>
+<syntax>int ScriptHTMLSetIgnoreCount(<sn href="structScriptHTML.html">struct ScriptHTML</sn> *ptr,char **ignore);</syntax>
+</function>
+<function>
+<name>ScriptHTMLSetPost</name>
+<location>src.lib/httpd/rscript</location>
+<header>base/rscript.h</header>
+<syntax>int ScriptHTMLSetPost(<sn href="structScriptHTML.html">struct ScriptHTML</sn> *ptr,int num,char **post);</syntax>
+</function>
+<function>
+<name>ScriptHTMLSetPostCount</name>
+<location>src.lib/httpd/rscript</location>
+<header>base/rscript.h</header>
+<syntax>int ScriptHTMLSetPostCount(<sn href="structScriptHTML.html">struct ScriptHTML</sn> *ptr,char **post);</syntax>
+</function>
+<function>
+<name>ScriptHTMLSetPostp</name>
+<location>src.lib/httpd/rscript</location>
+<header>base/rscript.h</header>
+<syntax>int ScriptHTMLSetPostp(<sn href="structScriptHTML.html">struct ScriptHTML</sn> *ptr, int (*text)(char *,int,char *,void *),void *data);</syntax>
+</function>
+<function>
+<name>ScriptHTMLSetRemove</name>
+<location>src.lib/httpd/rscript</location>
+<header>base/rscript.h</header>
+<syntax>int ScriptHTMLSetRemove(<sn href="structScriptHTML.html">struct ScriptHTML</sn> *ptr,int num,char **remove);</syntax>
+</function>
+<function>
+<name>ScriptHTMLSetRemoveCount</name>
+<location>src.lib/httpd/rscript</location>
+<header>base/rscript.h</header>
+<syntax>int ScriptHTMLSetRemoveCount(<sn href="structScriptHTML.html">struct ScriptHTML</sn> *ptr,char **remove);</syntax>
+</function>
+<function>
+<name>ScriptHTMLSetReplace</name>
+<location>src.lib/httpd/rscript</location>
+<header>base/rscript.h</header>
+<syntax>int ScriptHTMLSetReplace(<sn href="structScriptHTML.html">struct ScriptHTML</sn> *ptr,int num,char **replace);</syntax>
+</function>
+<function>
+<name>ScriptHTMLSetReplaceCount</name>
+<location>src.lib/httpd/rscript</location>
+<header>base/rscript.h</header>
+<syntax>int ScriptHTMLSetReplaceCount(<sn href="structScriptHTML.html">struct ScriptHTML</sn> *ptr,char **replace);</syntax>
+</function>
+<function>
+<name>ScriptHTMLSetSearch</name>
+<location>src.lib/httpd/rscript</location>
+<header>base/rscript.h</header>
+<syntax>int ScriptHTMLSetSearch(<sn href="structScriptHTML.html">struct ScriptHTML</sn> *ptr,int num,char **search);</syntax>
+</function>
+<function>
+<name>ScriptHTMLSetSearchCount</name>
+<location>src.lib/httpd/rscript</location>
+<header>base/rscript.h</header>
+<syntax>int ScriptHTMLSetSearchCount(<sn href="structScriptHTML.html">struct ScriptHTML</sn> *ptr,char **search);</syntax>
+</function>
+<function>
+<name>ScriptHTMLSetSsi</name>
+<location>src.lib/httpd/rscript</location>
+<header>base/rscript.h</header>
+<syntax>int ScriptHTMLSetSsi(<sn href="structScriptHTML.html">struct ScriptHTML</sn> *ptr, int (*text)(char *,int,void *),void *data);</syntax>
+</function>
+<function>
+<name>ScriptHTMLSetText</name>
+<location>src.lib/httpd/rscript</location>
+<header>base/rscript.h</header>
+<syntax>int ScriptHTMLSetText(<sn href="structScriptHTML.html">struct ScriptHTML</sn> *ptr, int (*text)(char *,int,void *),void *data);</syntax>
+</function>
+<function>
+<name>ScriptMake</name>
+<location>src.lib/httpd/rscript</location>
+<header>base/rscript.h</header>
+<syntax><sn href="structScriptData.html">struct ScriptData</sn> *ScriptMake();</syntax>
+</function>
+<function>
+<name>ScriptSetText</name>
+<location>src.lib/httpd/rscript</location>
+<header>base/rscript.h</header>
+<syntax>int ScriptSetText(<sn href="structScriptData.html">struct ScriptData</sn> *ptr, int (*text)(char *,int,void *),void *data);</syntax>
+</function>
+
+<structure>
+ <name>ScriptData</name>
+ <location>src.lib/httpd/rscript</location>
+ <header>base/rscript.h</header>
+ <struct>
+    <member>
+      <proto>int depth;</proto>
+      <description>None.</description>
+    </member>
+   <member>
+      <proto>int sze;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int max;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int stp;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>char *buf;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <struct>
+        <member>
+          <proto>int (*user)(char *buf,int sze,void *data);</proto>
+          <description>None.</description>
+        </member>
+        <member>
+          <proto>void *data;</proto>
+          <description>None.</description>
+        </member>
+      </struct>
+      <proto>text;</proto>
+      <description>None.</description>
+    </member>
+  </struct>
+</structure>
+
+
+<structure>
+ <name>ScriptHTML</name>
+ <location>src.lib/httpd/rscript</location>
+ <header>base/rscript.h</header>
+ <struct>
+    <member>
+      <struct>
+        <member>
+          <proto>int num;</proto>
+          <description>None.</description>
+        </member>
+        <member>
+          <proto>char **txt;</proto>
+          <description>None.</description>
+        </member>
+
+      </struct>
+      <proto>search;</proto>
+      <description>None.</description>
+    </member>
+   <member>
+      <struct>
+        <member>
+          <proto>int num;</proto>
+          <description>None.</description>
+        </member>
+        <member>
+          <proto>char **txt;</proto>
+          <description>None.</description>
+        </member>
+
+      </struct>
+      <proto>replace;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <struct>
+        <member>
+          <proto>int num;</proto>
+          <description>None.</description>
+        </member>
+        <member>
+          <proto>char **txt;</proto>
+          <description>None.</description>
+        </member>
+
+      </struct>
+      <proto>ignore;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <struct>
+        <member>
+          <proto>int num;</proto>
+          <description>None.</description>
+        </member>
+        <member>
+          <proto>char **txt;</proto>
+          <description>None.</description>
+        </member>
+
+      </struct>
+      <proto>remove;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <struct>
+        <member>
+          <proto>int num;</proto>
+          <description>None.</description>
+        </member>
+        <member>
+          <proto>char **txt;</proto>
+          <description>None.</description>
+        </member>
+
+      </struct>
+      <proto>post;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int iflg;</proto>
+      <description>None.</description>
+    </member>
+    <member>
+      <proto>int pflg;</proto>
+      <description>None.</description>
+    </member>
+
+    <member>
+      <struct>
+        <member>
+          <proto>int (*user)(char *buf,int sze,void *data);</proto>
+          <description>None.</description>
+        </member>
+        <member>
+          <proto>void *data;</proto>
+          <description>None.</description>
+        </member>
+      </struct>
+      <proto>text;</proto>
+      <description>None.</description>
+    </member>
+
+    <member>
+      <struct>
+        <member>
+          <proto>int (*user)(char *buf,int sze,void *data);</proto>
+          <description>None.</description>
+        </member>
+        <member>
+          <proto>void *data;</proto>
+          <description>None.</description>
+        </member>
+      </struct>
+      <proto>ssi;</proto>
+      <description>None.</description>
+    </member>
+
+   <member>
+      <struct>
+        <member>
+          <proto>int (*user)(char *buf,int sze,char *txt,void *data);</proto>
+          <description>None.</description>
+        </member>
+        <member>
+          <proto>void *data;</proto>
+          <description>None.</description>
+        </member>
+      </struct>
+      <proto>postp;</proto>
+      <description>None.</description>
+    </member>
+   </struct>
+   </structure>
+
+
+</library>

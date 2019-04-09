@@ -1,0 +1,66 @@
+<head>
+<title>merge_grid</title>
+<link rel=stylesheet href="../../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../../superdarn/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/tool/index.html>tool</a></td><td>|</td>
+<td>merge_grid</td>
+<td width=100% align=right><a href=../../../../../superdarn/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">merge_grid</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+combine_grid --help<br>combine_grid [-vb] <em>gridname</em><br>combine_grid -old [-vb] <em>gridname</em><br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Merge line of sight vectors in a <code>grd</code> or <code>grdmap</code> file to produce two dimensional vectors.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-vb</code></td><td valign="top">verbose. Log information to the console.</td></tr>
+<tr><td width="150" valign="top"><code><em>gridname</em></code></td><td valign="top">filename of the <code>grdmap</code> format file.</td></tr>
+<tr><td width="150" valign="top"><code>-old</code></td><td valign="top">the input file is a <code>grd</code> format file.</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Merge line of sight vectors in a <code>grd</code> or <code>grdmap</code> file to produce two dimensional vectors.</p>
+<p>The output in the form of a <code>grd</code> or <code>grdmap</code> file is written to standard output.</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">merge_grid -old 20040830.grd &gt; 20040830.grd.2</pre></td></tr></table>
+<p>From the <code>grd</code> file "<code>20040830.grd</code>" create a new grid file called "<code>20040830.grd.2</code>" that contains the two-dimensional vector found by merging line of sight vectors.</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+
