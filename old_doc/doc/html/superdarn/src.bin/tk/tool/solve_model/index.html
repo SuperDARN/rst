@@ -1,0 +1,81 @@
+<head>
+<title>solve_model</title>
+<link rel=stylesheet href="../../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../../superdarn/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/tool/index.html>tool</a></td><td>|</td>
+<td>solve_model</td>
+<td width=100% align=right><a href=../../../../../superdarn/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">solve_model</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+<br>solve_model --help<br>solve_model [-by <em>by</em>] [-bz <em>bz</em>] [-vx <em>vx</em>] [-tilt <em>tilt</em>] [-kp <em>kp</em>] [-rg96|-psr10|-cs10|-ts18|-ts18_kp] [-nointerp] [-noigrf]<br>solve_model [-sh] [-lat_step <em>dlat</em>] [-lon_step <em>dlon</em>] [-equal]<br><br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Calculates the statistical model and writes it to standard output.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-by <em>by</em></code></td><td valign="top">set the Y component of the magnetic field to <em>by</em> [nT]. The default value is 0 nT.</td></tr>
+<tr><td width="150" valign="top"><code>-bz <em>bz</em></code></td><td valign="top">set the Z component of the magnetic field to <em>bz</em> [nT]. The default value is 0 nT.</td></tr>
+<tr><td width="150" valign="top"><code>-vx <em>vx</em></code></td><td valign="top">set the solar wind velocity to <em>vx</em> [km/s]. The default value is 450 km/s.</td></tr>
+<tr><td width="150" valign="top"><code>-tilt <em>tilt</em></code></td><td valign="top">set the dipole tilt angle to <em>tilt</em> [degrees]. The default value is determined by date/time.</td></tr>
+<tr><td width="150" valign="top"><code>-kp <em>kp</em></code></td><td valign="top">set the Kp magnetic index to <em>kp</em>. The default value is 0.</td></tr>
+<tr><td width="150" valign="top"><code>-d <em>yyyymmdd</em></code></td><td valign="top">calculate for the date <em>yyyymmdd</em>. The default value is the current date.</td></tr>
+<tr><td width="150" valign="top"><code>-t <em>hr:mn</em></code></td><td valign="top">calculate for the time <em>hr:mn</em>. The default value is 00:00 UT.</td></tr>
+<tr><td width="150" valign="top"><code>-sh</code></td><td valign="top">calculate the model pattern for the southern hemisphere.</td></tr>
+<tr><td width="150" valign="top"><code>-rg96</code></td><td valign="top">use the RG96 statistical model.</td></tr>
+<tr><td width="150" valign="top"><code>-psr10</code></td><td valign="top">use the PSR10 statistical model (equivalent to the RG05 model.)</td></tr>
+<tr><td width="150" valign="top"><code>-cs10</code></td><td valign="top">use the CS10 statistical model.</td></tr>
+<tr><td width="150" valign="top"><code>-ts18</code></td><td valign="top">use the TS18 statistical model [default].</td></tr>
+<tr><td width="150" valign="top"><code>-ts18_kp</code></td><td valign="top">use the TS18-Kp statistical model.</td></tr>
+<tr><td width="150" valign="top"><code>-nointerp</code></td><td valign="top">do not interpolate coeffiecients, instead use discrete models (applies to CS10 and TS18 models only).</td></tr>
+<tr><td width="150" valign="top"><code>-noigrf</code></td><td valign="top">do not use IGRF model to convert potential to velocities, instead use constant values.</td></tr>
+<tr><td width="150" valign="top"><code>-old_aacgm</code></td><td valign="top">uses the older AACGM software and coefficients. The default is to use AACGM-v2 coefficients.</td></tr>
+<tr><td width="150" valign="top"><code>-lat_step <em>dlat</em></code></td><td valign="top">set the latitudinal step size of the grid to <em>dlat</em> [degrees]. The default value is 1 degree MLAT.</td></tr>
+<tr><td width="150" valign="top"><code>-lon_step <em>dlon</em></code></td><td valign="top">set the longitudinal step size of the grid to <em>dlon</em> [degrees]. The default value is 2 degrees MLON.</td></tr>
+<tr><td width="150" valign="top"><code>-equal</code></td><td valign="top">use an equal-area grid with cell sizes defined by <em>dlat</em> [degrees] instead of a uniform grid. The default value is 1 degree in latitude.</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Calculates the statistical model and writes it to standard output.</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">solve_model -bz -2.5 -by 3.3 -tilt 4.0 -vx 350 &gt; model.txt</pre></td></tr></table>
+<p>Calculates TS18 model vectors and potential on a uniform grid for input solar wind and dipole tilt parameters. The output is written to the file "<code>model.txt</code>".</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

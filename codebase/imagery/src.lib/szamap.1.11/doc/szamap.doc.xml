@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>imagery</project>
+<name>szamap</name>
+<location>src.lib/szamap</location>
+
+<function>
+<name>SZAContour</name>
+<location>src.lib/szamap</location>
+<header>imagery/szamap.h</header>
+<syntax><sn href="&root;/general/src.lib/polygon/structPolygonData.html">struct PolygonData</sn> **SZAContour(int yr,int mo,int dy,int hr,int mt,int sc,int flg,int mode,float step,int znum,double *zenith);</syntax>
+<description><p>The <fn href="SZAContour.html">SZACountour</fn> function generates a set of polygon contours for Solar Zenith Angle.</p>
+<p>The date and time at which to calculate the terminator is given by the arguments <ar>yr</ar>, <ar>mo</ar>, <ar>dy</ar>, <ar>hr</ar>, <ar>mt</ar>, and <ar>sc</ar>.</p>
+<p>The argument <ar>flg</ar> indicates which hemisphere to use. A value of (-1) finds the terminator in the southern hemisphere, a value of (1) finds the terminator in the northern hemisphere, and a value of zero will find it in both. The argument <ar>mode</ar> indicates whether geographic or geomagnetic coordinates are use. A value of zero will produce a polygon in geographic coordinates and a a value of (1) will produce one in geomagnetic coordinates.</p>
+<p>The function operates by creating a grid of longitudes and latitudes, evaluating the solar zenith angle at each grid point and then finding the contour that matches the desired solar zenith angle. The spacing between cells in the grid is given by the argument <ar>step</ar>, specified in degrees.</p>
+<p>The argument <ar>znum</ar> gives the number of contour levels to calculate and the argument <ar>zenith</ar> is a pointer to an array containing the values of solar zenith angle.</p>
+</description> 
+<returns>Returns a pointer to a polygon array of contours of the desired solar zenith angles. On error, a <code>NULL</code> pointer is returned.</returns><errors>On error, a <code>NULL</code> pointer is returned.</errors>
+<example type="rplot">SZAContour</example>  
+<example type="source">SZAContour.c</example>
+</function>
+
+<function>
+<name>SZAMap</name>
+<location>src.lib/szamap</location>
+<header>imagery/szamap.h</header>
+<syntax>float *SZAMap(int yr,int mo,int dy,int hr,int mt,int sc,
+               int wdt,int hgt,int mode,
+               int (*trf)(int ssze,void *src,int dsze, void *dst,void *data),
+              void *data);</syntax>
+<description><p>The <fn href="SZAMap.html">SZAMap</fn> function generates a rectangular grid of Solar Zenith angles for the map projection specified.</p>
+<p>The date and time at which to calculate the terminator is given by the arguments <ar>yr</ar>, <ar>mo</ar>, <ar>dy</ar>, <ar>hr</ar>, <ar>mt</ar>, and <ar>sc</ar>.</p>
+<p>The width and height of the grid are given by the arguments <ar>wdt</ar> and <ar>hgt</ar>.</p>
+<p>The argument <ar>mode</ar> indicates whether geographic or geomagnetic coordinates are use. A value of zero will produce a polygon in geographic coordinates and a a value of (1) will produce one in geomagnetic coordinates.</p>
+<p>The argument <ar>trnf</ar> is a pointer to a function of the form:</p>
+<fd>int (*trnf) (int ssze,void *src,int dsze,void *dst,void *dptr);</fd>
+<p>This function performs the transformation of the map projection.</p>
+<p>The size in bytes of the input coordinate is given be the argument <ar>ssze</ar>. The coordinate data is pointed to by the argument <ar>src</ar>. The first two elements stored in the coordinate data block are assumed to be single precision floating point numbers of type float that represent the actual latitude and longitude of the point to transform.</p>
+<p>The size in bytes of the output coordinate is given be the argument <ar>dsze</ar>. The coordinate data is pointed to by the argument <ar>dst</ar>. The first two elements stored in the coordinate data block are assumed to be single precision floating point numbers of type float that represent the cartesian coordinate that results from the transformation. The range of the cartesian coordinates should be zero to (1).</p>
+<p>The transformation should read the coordinate from <ar>src</ar>, transform it and write the value to <ar>dst</ar>.</p>
+<p>The <ar>data</ar> argument of the  <fn href="SZAMap.html">SZAMap</fn> function is passed directly as the <ar>dptr</ar> argument of the transform and allows extra parameters to be passed to the function.</p>
+<p>The function should return a zero if the transformation was successfully applied or (-1) if an error occurred.</p>
+<p>The <fn href="SZAMap.html">SZAMap</fn> function allocates a memory buffer containing a two-dimensional array of floating point numbers of size equal to the width and height arguments. This array is  used to store the calculated solar zenith angles. For coordinates that are not on the globe, the value stored in the array is set to (-400).</p>
+</description> 
+<returns>Returns a pointer to a two-dimensional array containing the solar zenith angles. On error a <code>NULL</code> pointer is returned.</returns>
+<errors>On error a <code>NULL</code> pointer is returned.</errors>
+<example type="rplot">SZAMap</example>  
+<example type="source">SZAMap.c</example>
+</function>
+
+<function>
+<name>SZATerminator</name>
+<location>src.lib/szamap</location>
+<header>imagery/szamap.h</header>
+<syntax><sn href="&root;/general/src.lib/polygon/structPolygonData.html">struct PolygonData</sn> *SZATerminator(int yr,int mo,int dy,int hr,int mt,int sc,int flg,int mode,float step,float zenith);</syntax>
+<description><p>The <fn href="SZATerminator.html">SZATerminator</fn> function generates a polygon array for a given solar zenith angle.</p>
+<p>The date and time at which to calculate the terminator is given by the arguments <ar>yr</ar>, <ar>mo</ar>, <ar>dy</ar>, <ar>hr</ar>, <ar>mt</ar>, and <ar>sc</ar>.</p>
+<p>The argument <ar>flg</ar> indicates which hemisphere to use. A value of (-1) finds the terminator in the southern hemisphere, a value of (1) finds the terminator in the northern hemisphere, and a value of zero will find it in both. The argument <ar>mode</ar> indicates whether geographic or geomagnetic coordinates are use. A value of zero will produce a polygon in geographic coordinates and a a value of (1) will produce one in geomagnetic coordinates.</p>
+<p>The function operates by creating a grid of longitudes and latitudes, evaluating the solar zenith angle at each grid point and then finding the contour that matches the desired solar zenith angle. The spacing between cells in the grid is given by the argument <ar>step</ar>, specified in degrees.</p>
+<p>The final argument <ar>zenith</ar> gives the desired solar zenith angle.</p>
+</description> 
+<returns>Returns a pointer to a polygon that matches the contour of the desired solar zenith angle. On error, a <code>NULL</code> pointer is returned.</returns><errors>On error, a <code>NULL</code> pointer is returned.</errors>
+<example type="rplot">SZATerminator</example>  
+<example type="source">SZATerminator.c</example>
+</function>
+
+</library>

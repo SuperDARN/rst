@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>test_cfit</name>
+<location>src.bin/tk/testing/test_cfit</location>
+<syntax>test_cfit --help</syntax>
+<syntax>test_cfit <ar>names...</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on><ar>names</ar></on><od>filenames of the <code>vfit</code> format files.</od>
+</option>
+<synopsis><p>Tests the integrity of <code>cfit</code> format files by reading them and printing the contents.</p></synopsis>
+
+<description><p>Tests the integrity of <code>cfit</code> format files by reading them and printing the contents.</p>
+<p>The contents are written to standard output</p>
+</description>
+
+<example>
+<command>test_cfit 20040830.gbr.cfit | more</command>
+<description>Test the integrity of the file "<code>20040830.gbr.cfit</code>", paginating using <code>more</code>.</description>
+</example>
+
+
+
+</binary>

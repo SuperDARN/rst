@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>extract_grid</name>
+<location>src.bin/tk/tool/extract_grid</location>
+
+<syntax>extract_grid --help</syntax>
+<syntax>extract_grid [-mid] [<ar>gridname</ar>]</syntax>
+<syntax>extract_grid -old [-mid] [<ar>gridname</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-mid</on><od>record the time in the middle of the grid data, not the start and end times.</od>
+</option>
+<option><on><ar>gridname</ar></on><od>filename of the <code>grdmap</code> format file. If this is omitted, the file will be read from standard input.</od>
+</option>
+<option><on>-old</on><od>the input file is a <code>grd</code> format file.</od>
+</option>
+<synopsis><p>Extract statistics from a grid file.</p></synopsis>
+<description><p>Extracts the scatter statistics from a grid file.</p>
+<p>The number of stations, their identifier codes and the number of vectors that they contribute to each record is extracted and written to standard output.
+Each record in the grid file produces a single line of output containing the full start and end times of the record:</p>
+<quote><em>syear smonth sday shour sminute sseconds eyear emonth eday ehour eminute seconds...</em></quote> 
+<p>If the "<code>-mid</code>" option is specified the line will contain the time at the middle of the record:</p>
+<quote><em>myear mmonth mday mhour mminute mseconds...</em></quote>
+<p>The remainder of the line lists the total number of vectors and stations in the record followed by the number of vectors associated with each station and each station's identifier number:</p>
+<quote><em>nvec nid vecA vecB vecC...vecn idA idB idC...idn</em></quote>
+</description>
+
+<example>
+<command>extract_grid -old 19981020.grd</command>
+<description>Extracts the scatter statistics from the file "<code>19981020.grd</code>" and display them on the console.</description>
+</example>
+
+<example>
+<command>extract_grid -mid 19991120.grdmap &gt; 19991120.sct</command>
+<description>Extract the scatter statistics from the grid file "<code>19991120.grdmap</code>" to produce the output file "<code>19991120.sct</code>". The middle time of each record is recorded in the file.</description>
+</example>
+
+</binary>

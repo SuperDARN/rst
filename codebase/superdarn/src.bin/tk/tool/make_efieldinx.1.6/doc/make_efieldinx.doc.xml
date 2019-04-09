@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>make_efieldinx</name>
+<location>src.bin/tk/tool/make_efieldinx</location>
+<syntax>make_efieldinx --help</syntax>
+<syntax>make_efieldinx [<ar>efieldname</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on><ar>efieldname</ar></on><od>filename of the electric field data. If this is omitted the file is read from standard input.</od>
+</option>
+
+<synopsis><p>Creates an index of a electric field data.</p></synopsis>
+
+<description><p>Creates an index of eletric field data.</p>
+<p>The index is written to standard output.</p>
+</description>
+
+<example>
+<command>make_efieldinx 20040830.efield &gt; 20040830.efieldinx</command>
+<description>Create an index file for the electric field data file "<code>20040830.efield</code>". The index is writen to the file "<code>20040830.efieldinx</code>".</description>
+</example>
+
+</binary>

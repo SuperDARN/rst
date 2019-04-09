@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>trim_iq</name>
+<location>src.bin/tk/tool/trim_iq</location>
+<syntax>trim_iq --help</syntax>
+<syntax>trim_iq  [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>] [<ar>iqdatname</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-sd <ar>yyyymmdd</ar></on><od>extract starting from the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-st <ar>hr:mn</ar></on><od>extract starting from the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ed <ar>yyyymmdd</ar></on><od>stop extracting at the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-et <ar>hr:mn</ar></on><od>stop extracting at the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ex <ar>hr:mn</ar></on><od>extract an interval whose extent is <ar>hr:mn</ar>.</od>
+</option>
+<option><on><ar>iqdatname</ar></on><od>filename of the <code>iqdat</code> format file to trim. If this is omitted, the file will be read from standard input</od>
+</option>
+
+<synopsis><p>Extracts a section from a <code>iqdat</code> format file.</p></synopsis>
+
+<description><p>Extracts a section from a <code>iqdat</code> format file.</p>
+<p>The extracted section will be written to standard output</code></description>
+
+<example>
+<command>trim_iq  -sd 19990410 -st 22:00 -ed 19990411 -et 4:00  19990410.gbr.iqdat &gt; 1999041022.gbr.iqdat</command>
+
+<description>Extract a six-hour section starting at 22:00UT April 10, 1999 from the <code>iqdat</code> file "<code>19990410.gbr.iqdat</code>" to produce the iq file "<code>1999041022.gbr.iqacf</code>".</description>
+</example>
+
+
+
+</binary>

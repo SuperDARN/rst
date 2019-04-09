@@ -1,0 +1,230 @@
+
+<head>
+<title>DataMapDecodeBuffer</title>
+<link rel=stylesheet href=../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../index.html">Home</a><td>|</td>
+<td><a href=../../../general/index.html>general</a></td>
+<td>|</td><td><a href=../../../general/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../general/src.lib/dmap/index.html>dmap</a></td><td>|</td>
+<td>DataMapDecodeBuffer</td>
+<td width=100% align=right><a href=../../../general/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">DataMapDecodeBuffer</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;"><a href="structDataMap.html"><code>struct DataMap</code></a> *DataMapDecodeBuffer(unsigned char *buf,int size);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">general/dmap.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">dmap</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="DataMapDecodeBuffer.html"><code>DataMapDecodeBuffer</code></a> function decodes a <code>DataMap</code> data structure from a memory buffer.</p>
+<p>The memory buffer to decode is pointed to by the argument <em>buf</em>, and the size of the buffer is given by the argument <em>size</em>.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns a pointer to the decoded data structure on success. On error, a <code>NULL</code> pointer is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, a <code>NULL</code> pointer is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/DataMapDecodeBuffer.c">DataMapDecodeBuffer.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* DataMapRead.c
+   ==============
+   Author: R.J.Barnes */
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;sys/stat.h&gt;
+#include &lt;fcntl.h&gt;
+
+
+#include &quot;rtypes.h&quot;
+#include &quot;dmap.h&quot;
+#include &quot;connex.h&quot;
+
+
+int main(int argc,char *argv[]) {
+
+  char *host;
+  int port;
+
+  int sock;
+  int flag,status,size;
+  unsigned char *buffer=NULL;
+ 
+  struct DataMap *ptr=NULL;
+  struct DataMapScalar *s;
+  struct DataMapArray *a;
+  char **tmp;
+
+ 
+  int c;
+  int x,n;
+
+  if (argc&lt;3) { 
+    fprintf(stderr,&quot;host and port must be specified.'n&quot;);
+    exit(-1);
+  }
+
+  host=argv[1];
+  port=atoi(argv[2]);
+ 
+  sock=ConnexOpen(host,port); 
+  if (sock&lt;0) {
+    fprintf(stderr,&quot;Could not connect to host.'n&quot;);
+    exit(-1);
+  }
+  do {
+   status=ConnexRead(1,&amp;sock,&amp;buffer,&amp;size,&amp;flag,NULL);
+   if (status==-1) break;
+   if (flag !=1) continue;
+   if (size==0) continue;
+
+   ptr=DataMapDecodeBuffer(buffer,size);
+   if (ptr==NULL) fprintf(stderr,&quot;Not a recognized message.&apos;n&quot;);
+
+    fprintf(stdout,&quot;scalars:&apos;n&quot;);
+    for (c=0;c&lt;ptr-&gt;snum;c++) {
+      s=ptr-&gt;scl[c];
+      switch (s-&gt;type) {
+        case DATACHAR:
+        fprintf(stdout,&quot;&apos;tchar&quot;);
+        break;
+        case DATASHORT:
+        fprintf(stdout,&quot;&apos;tshort&quot;);
+        break;
+        case DATAINT:
+        fprintf(stdout,&quot;&apos;tint&quot;);
+        break;
+        case DATAFLOAT:
+        fprintf(stdout,&quot;&apos;tfloat&quot;);
+        break;
+        case DATADOUBLE:
+        fprintf(stdout,&quot;&apos;tdouble&quot;);
+        break;
+        case DATASTRING:
+        fprintf(stdout,&quot;&apos;tstring&quot;);
+        break;
+      }
+      fprintf(stdout,&quot;&apos;t%c%s%c&quot;,'&quot;',s-&gt;name,'&quot;');
+      fprintf(stdout,&quot; = &quot;);
+      switch (s-&gt;type) {
+        case DATACHAR:
+        fprintf(stdout,&quot;%d&quot;,*(s-&gt;data.cptr));
+        break;
+        case DATASHORT:
+        fprintf(stdout,&quot;%d&quot;,*(s-&gt;data.sptr));
+        break;
+        case DATAINT:
+        fprintf(stdout,&quot;%d&quot;,*(s-&gt;data.lptr));
+        break;
+        case DATAFLOAT:
+        fprintf(stdout,&quot;%g&quot;,*(s-&gt;data.fptr));
+        break;
+        case DATADOUBLE:
+        fprintf(stdout,&quot;%g&quot;,*(s-&gt;data.dptr));
+        break;
+        case DATASTRING:
+	tmp=(char **) s-&gt;data.vptr;
+        fprintf(stdout,&quot;%c%s%c&quot;,'&quot;',*tmp,'&quot;');
+        break;
+      }
+      fprintf(stdout,&quot;&apos;n&quot;);
+    }
+    fprintf(stdout,&quot;arrays:&apos;n&quot;);
+    for (c=0;c&lt;ptr-&gt;anum;c++) {
+      a=ptr-&gt;arr[c];
+      switch (a-&gt;type) {
+        case DATACHAR:
+        fprintf(stdout,&quot;&apos;tchar&quot;);
+        break;
+        case DATASHORT:
+        fprintf(stdout,&quot;&apos;tshort&quot;);
+        break;
+        case DATAINT:
+        fprintf(stdout,&quot;&apos;tint&quot;);
+        break;
+        case DATAFLOAT:
+        fprintf(stdout,&quot;&apos;tfloat&quot;);
+        break;
+        case DATADOUBLE:
+        fprintf(stdout,&quot;&apos;tdouble&quot;);
+        break;
+        case DATASTRING:
+        fprintf(stdout,&quot;&apos;tstring&quot;);
+        break;
+      }
+      fprintf(stdout,&quot;&apos;t%c%s%c&quot;,'&quot;',a-&gt;name,'&quot;');
+      fprintf(stdout,&quot; &quot;);
+      for (x=0;x&lt;a-&gt;dim;x++) fprintf(stdout,&quot;[%d]&quot;,a-&gt;rng[a-&gt;dim-1-x]);
+    
+      fprintf(stdout,&quot;=&quot;);
+      n=1;
+      for (x=0;x&lt;a-&gt;dim;x++) n=a-&gt;rng[x]*n;
+      for (x=0;x&lt;n;x++) {
+        if (x % a-&gt;rng[0]==0) fprintf(stdout,&quot;&apos;n&apos;t&apos;t&quot;);
+        else if (x !=0) fprintf(stdout,&quot;,&apos;t&quot;);
+        switch (a-&gt;type) {
+        case DATACHAR:
+          fprintf(stdout,&quot;%d&quot;,a-&gt;data.cptr[x]);
+          break;
+        case DATASHORT:
+          fprintf(stdout,&quot;%d&quot;,a-&gt;data.sptr[x]);
+          break;
+        case DATAINT:
+          fprintf(stdout,&quot;%d&quot;,a-&gt;data.lptr[x]);
+          break;
+        case DATAFLOAT:
+          fprintf(stdout,&quot;%g&quot;,a-&gt;data.fptr[x]);
+          break;
+        case DATADOUBLE:
+          fprintf(stdout,&quot;%g&quot;,a-&gt;data.dptr[x]);
+          break;	    
+        case DATASTRING:
+          tmp=(char **) a-&gt;data.vptr;
+          fprintf(stdout,&quot;%c%s%c&quot;,'&quot;',tmp[x],'&quot;');
+          break;
+	    
+        }  
+        fprintf(stdout,&quot;&apos;n&quot;);
+      } 
+    }  
+    DataMapFree(ptr);
+
+  } while (1);
+  return 0;
+
+}
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

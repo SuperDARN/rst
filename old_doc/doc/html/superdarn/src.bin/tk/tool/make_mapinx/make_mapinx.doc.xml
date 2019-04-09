@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>make_mapinx</name>
+<location>src.bin/tk/tool/make_mapinx</location>
+<syntax>make_mapinx --help</syntax>
+<syntax>make_mapinx [-vb] [<ar>cnvmapname</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+ 
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+
+<option><on>-old</on><od>files are in the <code>map</code> format.</od></option>
+<option><on><ar>cnvmapname</ar></on><od>filename of the <code>cnvmap</code>  format file. If this is omitted the file is read from standard input.</od>
+</option>
+
+<synopsis><p>Creates an index of a <code>cnvmap</code> format file.</p></synopsis>
+
+
+<description><p>Creates an index of a <code>cnvmap</code> format file.</p>
+<p>The index is written to standard output.</p>
+<p>Index files cannot be created for <code>map</code> format files with this utility.</p></description>
+
+<example>
+<command>make_mapinx 20040830.cnvmap &gt; 20040830.cnvinx</command>
+<description>Create an index file for the <code>cnvmap</code> format file "<code>20040830.cnvmap</code>". The index is writen to the file "<code>20040830.cnvinx</code>".</description>
+</example>
+
+
+
+</binary>

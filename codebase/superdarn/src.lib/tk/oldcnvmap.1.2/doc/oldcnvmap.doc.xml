@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>superdarn</project>
+<name>oldcnvmap</name>
+<location>src.lib/tk/oldcnvmap</location>
+
+<function>
+<name>OldCnvMapFread</name>
+<location>src.lib/tk/oldcnvmap</location>
+<header>superdarn/oldcnvmapread.h</header>
+<syntax>int OldCnvMapFread(FILE *fp,<sn href="&root;/superdarn/src.lib/tk/shf/structCnvMapData.html">struct CnvMapData</sn> *map,<sn href="&root;/superdarn/src.lib/tk/grid/structGridData.html">struct GridData</sn> *grd);</syntax>
+<description><p>The <fn href="OldCnvMapFread.html">OldCnvMapFread</fn> function reads a convection map from an open stream.</p>
+<p>The convection map is read from the open stream pointed to by the argument <ar>fp</ar>. The parameters and co-efficients used to generate the convection map are stored in the structure pointed to by the argument <ar>map</ar>. The gridded data used to generate the map is stored in the structure pointed to by the argument <ar>grd</ar>.</p>
+</description>
+<returns>Returns the number of bytes used to store the convection map on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldCnvMapFread.c</example>
+</function>
+
+<function>
+<name>OldCnvMapFseek</name>
+<location>src.lib/tk/oldcnvmap</location>
+<header>superdarn/oldcnvmapread.h</header>
+<syntax>int OldCnvMapFseek(FILE *fp, int yr,int mo,int dy,int hr,int mt,int sc,<sn href="&root;/general/src.lib/rfile/structRfileIndex.html">struct RfileIndex</sn> *inx,double *aval);</syntax>
+<description><p>The <fn href="OldCnvMapFseek.html">OldCnvMapFseek</fn> function searches for a convection map for a specific time.</p>
+<p>The search is performed on the open stream pointed to by the argument <ar>fp</ar>. The time to search for is specified by the arguments <ar>yr</ar>, <ar>mo</ar>,<ar>dy</ar>,<ar>hr</ar>,<ar>mt</ar>,<ar>sc</ar> giving the year, month, day, hour, minute and second.</p>
+<p>The argument <ar>atme</ar> is a pointer to a double precision floating point number that is used to store the time of the closest record to the time requested expressed in seconds from 0:00UT January 1, 1970. If this argument is set to a <code>NULL</code> pointer then the time is not returned.</p>  
+<p>If the file containing the convection maps has an associated index that has been loaded, then it can be used to speed up the search by setting the argument <ar>inx</ar> to point to it.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldCnvMapFseek.c</example>
+</function>
+
+<function>
+<name>OldCnvMapFwrite</name>
+<location>src.lib/tk/oldcnvmap</location>
+<header>superdarn/oldcnvmapwrite.h</header>
+<syntax>int OldCnvMapFwrite(FILE *fp,<sn href="&root;/superdarn/src.lib/tk/shf/structCnvMapData.html">struct CnvMapData</sn> *map,<sn href="&root;/superdarn/src.lib/tk/grid/structGridData.html">struct GridData</sn>  *grd);</syntax>
+<description><p>The <fn href="OldCnvMapFwrite.html">OldCnvMapFwrite</fn> function writes a old formatted cnvmapded data to an open stream.</p>
+<p>The data is written to the open stream pointed to by the argument <ar>fp</ar>.</p>
+<p>The parameters and co-efficients used to generate the convection map are taken from the structure pointed to by the argument <ar>map</ar> and the gridded data used to generate the map is taken from the structure pointed to by the argument <ar>grd</ar>.</p>
+</description>
+<returns>Returns the number of bytes written on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldCnvMapFwrite.c</example>
+</function>
+
+</library>

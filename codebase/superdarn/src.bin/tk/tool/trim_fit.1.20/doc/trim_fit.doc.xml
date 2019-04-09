@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>trim_fit</name>
+<location>src.bin/tk/tool/trim_fit</location>
+
+<syntax>trim_fit --help</syntax>
+<syntax>trim_fit [-vb] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>]  [-cp <ar>cpid</ar>] [-cn <ar>channel</ar>] [<ar>fitacfname</ar>]</syntax>
+<syntax>trim_fit -i [-vb] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>]  [-cp <ar>cpid</ar>] [-cn <ar>channel</ar>] <ar>fitacfname</ar> <ar>inxinput</ar></syntax>
+<syntax>trim_fit -old [-vb] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>]  [-cp <ar>cpid</ar>] [-cn <ar>channel</ar>] <ar>fitinput</ar> <ar>fitoutput</ar></syntax>
+<syntax>trim_fit -i -old [-vb] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>]  [-cp <ar>cpid</ar>] [-cn <ar>channel</ar>] <ar>fitinput</ar> <ar>fitoutput</ar> <ar>inxinput</ar> <ar>inxoutput</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-sd <ar>yyyymmdd</ar></on><od>extract starting from the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-st <ar>hr:mn</ar></on><od>extract starting from the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ed <ar>yyyymmdd</ar></on><od>stop extracting at the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-et <ar>hr:mn</ar></on><od>stop extracting at the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ex <ar>hr:mn</ar></on><od>extract an interval whose extent is <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-cp <ar>cp</ar></on><od>extract only those records with the program identifier <ar>cp</ar>.</od>
+</option>
+<option><on>-cn <ar>channel</ar></on><od>extract only those records from channel <ar>channel</ar>.</od>
+</option>
+<option><on><ar>fitacfname</ar></on><od>filename of the <code>fitacf</code> format file to trim. If this is omitted, the file will be read from standard input</od>
+</option>
+<option><on>-i</on><od>index files are available, for <code>fit</code> format files, an index file is created for the ouput file.</od>
+</option>
+<option><on><ar>inxinput</ar></on><od>filename of the index file associated with the <code>fit</code> or <code>fitacf</code> format input file.</od>
+</option>
+<option><on><ar>inxoutput</ar></on><od>filename of the index file to create.</od>
+</option>
+<option><on>-old</on><od>the input file is a <code>fit</code> format file.</od>
+</option>
+<option><on><ar>fitinput</ar></on><od>filename of the <code>fit</code> format file to trim.</od>
+</option>
+<option><on><ar>fitoutput</ar></on><od>filename of the <code>fit</code> format file to create.</od>
+</option>
+<synopsis><p>Extracts a section from a <code>fit</code> or <code>fitacf</code> format file.</p></synopsis>
+<description><p>Extracts a section from a <code>fit</code> or <code>fitacf</code> format file.</p>
+<p>If the input file is a <code>fitacf</code> format file, the extracted section will be written to standard output</code></description>
+
+<example>
+<command>trim_fit -old -st 11:00 -ex 1:00 20000110.kap.fit 2000011011.kap.fit</command>
+<description>Extracts a one-hour section starting at 11:00UT from the <code>fit</code> file "<code>20000110.kap.dat</code>" to produce the fit file called "<code>200001101.kap.dat</code>".
+</description>
+</example>
+
+<example>
+<command>trim_fit -cp 150 -sd 19990410 -st 22:00 -ed 19990411 -et 4:00 19990410.gbr.fitacf &gt; 1999041022.gbr.fitacf</command>
+<description>Extract a six-hour section starting at 22:00UT April 10, 1999 from the <code>fitacf</code> file "<code>19990410.gbr.fitacf</code>" to produce the fit file "<code>1999041022.gbr.fitacf</code>". Only those records with a program identifier number of 150 will be extracted.</description>
+</example>
+
+</binary>

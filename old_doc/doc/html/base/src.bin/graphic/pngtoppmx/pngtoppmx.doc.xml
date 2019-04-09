@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>base</project>
+<name>pngtoppmx</name>
+<location>src.bin/graphic/pngtoppmx</location>
+
+<syntax>pngtoppmx --help</syntax>
+<syntax>pngtoppmx [<ar>name</ar>]</syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on><ar>name</ar></on><od>input image filename. If this is omitted the image will be read from standard input.</od>
+</option>
+<synopsis><p>Convert a Portable Network Graphics (PNG) image to an extended Portable PixMap (PPMX) image.</p></synopsis>
+<description><p>Convert a Portable Network Graphics (PNG) image to an extended Portable PixMap (PPMX) image.</p>
+<p>The PPMX image file is written to standard output.</p>
+<p>Extended Portable PixMap files are an enhanced form of PPM files that include an extra alpha channel mask.</p></description>
+
+<example>
+<command>pngtoppmx inp.png &gt; out.ppmx</command>
+<description>Convert PNG file <code>inp.png</code> to the PPMX file <code>out.ppmx</code>.
+</description>
+</example>
+
+</binary>

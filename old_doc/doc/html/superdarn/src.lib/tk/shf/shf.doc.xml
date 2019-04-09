@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>superdarn</project>
+<name>shf</name>
+<location>src.lib/tk/shf</location>
+
+<function>
+<name>CnvMapCrdShft</name>
+<location>src.lib/tk/shf</location>
+<header>superdarn/crdshft.h</header>
+<syntax>void CnvMapCrdShft(double *lat,double *lon,double *vazm,double lat_shft,double lon_shft);</syntax>
+</function>
+
+<function>
+<name>CnvMapEvalComponent</name>
+<location>src.lib/tk/shf</location>
+<header>superdarn/evalvelocity.h</header>
+<syntax>void CnvMapEvalComponent(int Lmax,double *ecoef,double *plm, double *phi,int n,double *ecomp);</syntax>
+</function>
+
+<function>
+<name>CnvMapEvalEfield</name>
+<location>src.lib/tk/shf</location>
+<header>superdarn/evalefield.h</header>
+<syntax>void CnvMapEvalEfield(int Lmax,double *coef,double *plm,<sn href="structCnvGrid.html">struct CnvGrid</sn> *vptr,double latmin,<sn href="structCnvMapData.html">struct CnvMapData</sn> *ptr);</syntax>
+</function>
+
+<function>
+<name>CnvMapEvalLegendre</name>
+<location>src.lib/tk/shf</location>
+<header>superdarn/evallegendre.h</header>
+<syntax>void CnvMapEvalLegendre(int Lmax, double *x,int n, double *plm);</syntax>
+</function>
+
+<function>
+<name>CnvMapEvalPhiCoef</name>
+<location>src.lib/tk/shf</location>
+<header>superdarn/evalvelocity.h</header>
+<syntax>double *CnvMapEvalPhiCoef(int Lmax,double *coef,double *theta,int n);</syntax>
+</function>
+
+<function>
+<name>CnvMapEvalPotential</name>
+<location>src.lib/tk/shf</location>
+<header>superdarn/evalpotential.h</header>
+<syntax>void CnvMapEvalPotential(int Lmax,int n,double *coef,double *plm, double *phi,double *v);</syntax>
+</function>
+
+<function>
+<name>CnvMapEvalThetaCoef</name>
+<location>src.lib/tk/shf</location>
+<header>superdarn/evalvelocity.h</header>
+<syntax>double *CnvMapEvalThetaCoef(int Lmax,double *coef,double *theta,int n, double latmin);</syntax>
+</function>
+
+<function>
+<name>CnvMapEvalVelocity</name>
+<location>src.lib/tk/shf</location>
+<header>superdarn/evalvelocity.h</header>
+<syntax>void CnvMapEvalVelocity(int Lmax,double *coef,double *plm,<sn href="structCnvGrid.html">struct CnvGrid</sn> *vptr,double latmin,<sn href="structCnvMapData.html">struct CnvMapData</sn> *ptr);</syntax>
+</function>
+
+<function>
+<name>CnvMapFitMap</name>
+<location>src.lib/tk/shf</location>
+<header>superdarn/fitmap.h</header>
+<syntax>int CnvMapFitMap(<sn href="structCnvMapData.html">struct CnvMapData</sn> *map,<sn href="&root;/superdarn/src.lib/tk/grid/structGridData.html">struct GridData</sn> *grd);</syntax>
+</function>
+
+<function>
+<name>CnvMapFitVector</name>
+<location>src.lib/tk/shf</location>
+<header>src.lib/tk/shf/src/fitvector.h</header>
+<syntax>double CnvMapFitVector(int num,<sn href="structCnvMapSHFVec.html">struct CnvMapSHFVec</sn> *data, double *coef,double *vel, int order,double latmin);</syntax>
+</function>
+
+<function>
+<name>CnvMapIndexLegendre</name>
+<location>src.lib/tk/shf</location>
+<header>superdarn/evallegendre.h</header>
+<syntax>int CnvMapIndexLegendre(int L,int m);</syntax>
+</function>
+
+<function>
+<name>CnvMapSolve</name>
+<location>src.lib/tk/shf</location>
+<header>superdarn/cnvmapsolve.h</header>
+<syntax>int CnvMapSolve(<sn href="structCnvMapData.html">struct CnvMapData</sn> *ptr,<sn href="structCnvGrid.html">struct CnvGrid</sn> *gptr);</syntax>
+</function>
+
+
+<structure>
+  <name>CnvGrid</name>
+  <location>src.lib/tk/shf</location>
+  <header>superdarn/cnvgrid.h</header>
+  <struct>
+
+    <member>
+      <proto>int type;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>int num;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>int nlat;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>int nlon;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>int poly;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>int *vertex;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double *lat;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double *lon;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double *mag;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double *azm;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double *ex;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double *ey;</proto>
+      <description>?</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structCnvGrid.html">struct CnvGrid</sn> structure stores ?.</p>
+  </description>
+</structure>
+
+
+<structure>
+  <name>CnvMapData</name>
+  <location>src.lib/tk/shf</location>
+  <header>superdarn/cnvmap.h</header>
+  <struct>
+
+    <member>
+      <proto>int major_rev;</proto>
+      <description>Major revision number.</description>
+    </member>
+
+    <member>
+      <proto>int minor_rev;</proto>
+      <description>Minor revision number.</description>
+    </member>
+
+    <member>
+      <proto>char source[256];</proto>
+      <description>Source of the data file.</description>
+    </member>
+
+    <member>
+      <proto>double st_time;</proto>
+      <description>Start time of the data, specified as seconds from 0:00UT January 1, 1970.</description>
+    </member>
+
+    <member>
+      <proto>double ed_time;</proto>
+      <description>End time of the data, specified as seconds from 0:00UT January 1, 1970.</description>
+    </member>
+
+    <member>
+      <proto>int num_model;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>int doping_level;</proto>
+      <description>Model doping level.</description>
+    </member>
+
+    <member>
+      <proto>int model_wt;</proto>
+      <description>Model weighting.</description>
+    </member>
+
+    <member>
+      <proto>int error_wt;</proto>
+      <description>Error weighting.</description>
+    </member>
+
+    <member>
+      <proto>int imf_flag;</proto>
+      <description>IMF availability flag.</description>
+    </member>
+
+    <member>
+      <proto>int imf_delay;</proto>
+      <description>IMF delay in minutes.</description>
+    </member>
+
+    <member>
+      <proto>double Bx;</proto>
+      <description>IMF Bx component.</description>
+    </member>
+
+    <member>
+      <proto>double By;</proto>
+      <description>IMF By component.</description>
+    </member>
+
+    <member>
+      <proto>double Bz;</proto>
+      <description>IMF Bz component.</description>
+    </member>
+
+    <member>
+      <proto>char imf_model[2][64];</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>int hemisphere;</proto>
+      <description>Hemisphere flag.</description>
+    </member>
+
+    <member>
+      <proto>int fit_order;</proto>
+      <description>Order of fit.</description>
+    </member>
+
+    <member>
+      <proto>double latmin;</proto>
+      <description>Lower latitude boundary.</description>
+    </member>
+
+    <member>
+      <proto>int num_coef;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double *coef;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double chi_sqr;</proto>
+      <description>True chi-squared error.</description>
+    </member>
+
+    <member>
+      <proto>double chi_sqr_dat;</proto>
+      <description>Chi-squared error for data only.</description>
+    </member>
+
+    <member>
+      <proto>double rms_err;</proto>
+      <description>RMS error.</description>
+    </member>
+
+    <member>
+      <proto>double lon_shft;</proto>
+      <description>Longitudinal pole shift.</description>
+    </member>
+
+    <member>
+      <proto>double lat_shft;</proto>
+      <description>Latitudinal pole shift.</description>
+    </member>
+
+    <member>
+      <struct>
+        <member>
+          <proto>double start;</proto>
+          <description>MLT at start of record.</description>
+        </member>
+        <member>
+          <proto>double end;</proto>
+          <description>MLT at end of record.</description>
+        </member>
+        <member>
+          <proto>double av;</proto>
+          <description>MLT at middle of record.</description>
+        </member>
+      </struct>
+      <proto>mlt;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double pot_drop;</proto>
+      <description>Cross polar-cap potential drop.</description>
+    </member>
+
+    <member>
+      <proto>double pot_drop_err;</proto>
+      <description>Cross polar-cap potential drop error.</description>
+    </member>
+
+    <member>
+      <proto>double pot_max;</proto>
+      <description>Maximum polar-cap potential.</description>
+    </member>
+
+    <member>
+      <proto>double pot_max_err;</proto>
+      <description>Maximum polar-cap potential error.</description>
+    </member>
+
+    <member>
+      <proto>double pot_min;</proto>
+      <description>Minimum polar-cap potential.</description>
+    </member>
+
+    <member>
+      <proto>double pot_min_err;</proto>
+      <description>Minimum polar-cap potential error.</description>
+    </member>
+
+    <member>
+      <proto><sn href="&root;/superdarn/src.lib/tk/grid/structGridGVec.html">struct GridGVec</sn> *model;</proto>
+      <description>?</description>
+    </member>
+    
+    <member>
+      <proto>int num_bnd;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double *bnd_lat;</proto>
+      <description>Magnetic latitudes of the lower latitude boundary.</description>
+    </member>
+
+    <member>
+      <proto>double *bnd_lon;</proto>
+      <description>Magnetic longitudes of the lower latitude boundary.</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structCnvMapData.html">struct CnvMapData</sn> structure stores ?.</p>
+  </description>
+</structure>
+
+
+<structure>
+  <name>CnvMapSHFVec</name>
+  <location>src.lib/tk/shf</location>
+  <header>src.lib/tk/shf/src/shfvector.h</header>
+  <struct>
+
+    <member>
+      <proto>double lat;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double lon;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double vlos;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double verr;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double cos;</proto>
+      <description>?</description>
+    </member>
+
+    <member>
+      <proto>double sin;</proto>
+      <description>?</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structCnvMapSHFVec.html">struct CnvMapSHFVec</sn> structure stores ?.</p>
+  </description>
+</structure>
+
+</library>

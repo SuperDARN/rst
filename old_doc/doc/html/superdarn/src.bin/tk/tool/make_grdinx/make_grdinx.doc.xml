@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>make_grdinx</name>
+<location>src.bin/tk/tool/make_grdinx</location>
+
+<syntax>make_grdinx --help</syntax>
+<syntax>make_grdinx [-vb] [<ar>grdmapname</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on><ar>grdmapname</ar></on><od>filename of the <code>grdmap</code> format file. If this is omitted the file is read from standard input.</od>
+</option>
+<synopsis><p>Creates an index of a <code>grdmap</code> format file.</p></synopsis>
+<description><p>Creates an index of a <code>grdmap</code> format file.</p>
+<p>The index is written to standard output.</p>
+<p>Index files cannot be created for <code>grd</code> format files with this utility.</p></description>
+
+<example>
+<command>make_grdinx 20040830.grdmap &gt; 20040830.grdinx</command>
+<description>Create an index file for the <code>grdmap</code> format file "<code>20040830.grdmap</code>". The index is writen to the file "<code>20040830.grdinx</code>".</description>
+</example>
+
+</binary>

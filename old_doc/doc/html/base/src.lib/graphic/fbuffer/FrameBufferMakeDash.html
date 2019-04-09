@@ -1,0 +1,62 @@
+
+<head>
+<title>FrameBufferMakeDash</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../base/index.html>base</a></td>
+<td>|</td><td><a href=../../../../base/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/index.html>graphic</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/fbuffer/index.html>fbuffer</a></td><td>|</td>
+<td>FrameBufferMakeDash</td>
+<td width=100% align=right><a href=../../../../base/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">FrameBufferMakeDash</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;"><a href="structFrameBufferDash.html"><code>struct FrameBufferDash</code></a> *FrameBufferMakeDash(int *p,int phase,int sze);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">base/rfbuffer.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">rfbuf</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="FrameBufferMakeDash.html"><code>FrameBufferMakeDash</code></a> function makes a dash pattern for a frame buffer.</p>
+<p>The array pointed to by the argument <em>p</em> is interpreted as distances along the line that alternately specify dashes and gaps. The argument <em>sze</em> give the number of elements in the array.</p>
+<p>When a dashed line is plotted an element is read from the array and a dash of length equal to that value is drawn. A gap equal to the value of the next element is then left and the process is repeated until the end of the line is reached, cycling through the array as necessary.</p>
+<p>The argument <em>phase</em> specifies the initial element to use from the array.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns a pointer to the dash structure on success. On error, a <code>NULL</code> pointer is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, a <code>NULL</code> pointer is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td>None</td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

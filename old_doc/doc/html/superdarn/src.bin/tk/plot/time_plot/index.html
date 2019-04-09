@@ -1,0 +1,167 @@
+<head>
+<title>time_plot</title>
+<link rel=stylesheet href="../../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../../superdarn/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/plot/index.html>plot</a></td><td>|</td>
+<td>time_plot</td>
+<td width=100% align=right><a href=../../../../../superdarn/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">time_plot</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+time_plot --help<br>time_plot [<em>options</em>] <em>fitacfname</em> [<em>inxname</em>]<br>time_plot -old [<em>options</em>] [<em>fitname</em>] [<em>inxname</em>]<br>time_plot -cfit [<em>options</em>] <em>cfitname</em><br>time_plot -smr [<em>options</em>] <em>smrname</em><br>time_plot -png [<em>options</em>] <em>fitacfname</em> [<em>inxname</em>]<br>time_plot -png -old [<em>options</em>] [<em>fitname</em>] [<em>inxname</em>]<br>time_plot -png -cfit [<em>options</em>] <em>cfitname</em><br>time_plot -png -smr [<em>options</em>] <em>smrname</em><br>time_plot -ps [-xp <em>xoff</em>] [-yp <em>yoff</em>] [<em>options</em>] <em>fitacfname</em> [<em>inxname</em>]<br>time_plot -ps [-xp <em>xoff</em>] [-yp <em>yoff</em>] -old [<em>fitname</em>] [<em>inxname</em>]<br>time_plot -ps [-xp <em>xoff</em>] [-yp <em>yoff</em>] -cfit <em>cfitname</em><br>time_plot -ps [-xp <em>xoff</em>] [-yp <em>yoff</em>] -smr <em>smrname</em><br>time_plot -ppm [<em>options</em>] <em>fitacfname</em> [<em>inxname</em>]<br>time_plot -ppm -old [<em>options</em>] [<em>fitname</em>] [<em>inxname</em>]<br>time_plot -ppm -cfit [<em>options</em>] <em>cfitname</em><br>time_plot -ppm -smr [<em>options</em>] <em>smrname</em><br>time_plot -ppmx [<em>options</em>] <em>fitacfname</em> [<em>inxname</em>]<br>time_plot -ppmx -old [<em>options</em>] [<em>fitname</em>] [<em>inxname</em>]<br>time_plot -ppmx -cfit [<em>options</em>] <em>cfitname</em><br>time_plot -ppmx -smr [<em>options</em>] <em>smrname</em><br>time_plot -xml [<em>options</em>] <em>fitacfname</em> [<em>inxname</em>]<br>time_plot -xml -old [<em>options</em>] [<em>fitname</em>] [<em>inxname</em>]<br>time_plot -xml -cfit [<em>options</em>] <em>cfitname</em><br>time_plot -xml -smr [<em>options</em>] <em>smrname</em><br>time_plot -x [-display <em>display</em>] [-xoff <em>xoff</em>] [-yoff <em>yoff</em>] [<em>options</em>] <em>fitacfname</em> [<em>inxname</em>]<br>time_plot -x [-display <em>display</em>] [-xoff <em>xoff</em>] [-yoff <em>yoff</em>] -old [<em>options</em>] [<em>fitname</em>] [<em>inxname</em>]<br>time_plot  -x [-display <em>display</em>] [-xoff <em>xoff</em>] [-yoff <em>yoff</em>] -cfit [<em>options</em>] <em>cfitname</em><br>time_plot -x [-display <em>display</em>] [-xoff <em>xoff</em>] [-yoff <em>yoff</em>] -smr [<em>options</em>] <em>smrname</em><br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Generate a time series plot of data.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-cf <em>cfname</em></code></td><td valign="top">read command line options from the file <em>cfname</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-sd <em>yyyymmdd</em></code></td><td valign="top">plot starting from the date <em>yyyymmdd</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-st <em>hr:mn</em></code></td><td valign="top">plot starting from the time <em>hr:mn</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-ed <em>yyyymmdd</em></code></td><td valign="top">stop plotting at the date <em>yyyymmdd</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-et <em>hr:mn</em></code></td><td valign="top">stop plotting at the time <em>hr:mn</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-ex <em>hr:mn</em></code></td><td valign="top">plot an interval whose extent is <em>hr:mn</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-name <em>name</em></code></td><td valign="top">title the image <em>name</em>, for those formats that support image naming.</td></tr>
+<tr><td width="150" valign="top"><code>-wdt <em>width</em></code></td><td valign="top">set the width of the plot to <em>width</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-hgt <em>height</em></code></td><td valign="top">set the height of the plot to <em>height</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-bgcol <em>rrggbb</em></code></td><td valign="top">set the background color to <em>rrggbb</em>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</td></tr>
+<tr><td width="150" valign="top"><code>-grdcol <em>rrggbb</em></code></td><td valign="top">set the color of grid to <em>rrggbb</em>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</td></tr>
+<tr><td width="150" valign="top"><code>-txtcol <em>rrggbb</em></code></td><td valign="top">set the color of text to <em>rrggbb</em>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</td></tr>
+<tr><td width="150" valign="top"><code>-gscol <em>rrggbb</em></code></td><td valign="top">set the color of ground scatter to <em>rrggbb</em>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</td></tr>
+<tr><td width="150" valign="top"><code>-pkey <em>pkeyname</em></code></td><td valign="top">load the power colorkey from the file <em>pkeyname</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-pkey_path <em>pkey_path</em></code></td><td valign="top">load the power colorkey from the custom path <em>pkey_path</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-vkey <em>vkeyname</em></code></td><td valign="top">load the velocity colorkey from the file <em>vkeyname</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-vkey_path <em>vkey_path</em></code></td><td valign="top">load the velocity colorkey from the custom path <em>vkey_path</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-wkey <em>wkeyname</em></code></td><td valign="top">load the spectral width colorkey from the file <em>wkeyname</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-wkey_path <em>wkey_path</em></code></td><td valign="top">load the spectral width colorkey from the custom path <em>wkey_path</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-ekey <em>ekeyname</em></code></td><td valign="top">load the elevation angle colorkey from the file <em>ekeyname</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-ekey_path <em>ekey_path</em></code></td><td valign="top">load the elevation angle colorkey from the custom path <em>ekey_path</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-vekey <em>vekeyname</em></code></td><td valign="top">load the velocity error colorkey from the file <em>vekeyname</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-vekey_path <em>vekey_path</em></code></td><td valign="top">load the velocity error colorkey from the custom path <em>vekey_path</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-fkey <em>fkeyname</em></code></td><td valign="top">load the frequency colorkey from the file <em>fkeyname</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-fkey_path <em>fkey_path</em></code></td><td valign="top">load the frequency colorkey from the custom path <em>fkey_path</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-nkey <em>nkeyname</em></code></td><td valign="top">load the noise colorkey from the file <em>nkeyname</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-nkey_path <em>nkey_path</em></code></td><td valign="top">load the noise colorkey from the custom path <em>nkey_path</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-fontname <em>fontname</em></code></td><td valign="top">plot any labels using the font <em>fontname</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-fontsize <em>fontsize</em></code></td><td valign="top">set the font size to <em>fontsize</em> points.</td></tr>
+<tr><td width="150" valign="top"><code>-tfontname <em>tfontname</em></code></td><td valign="top">plot the title using the font <em>tfontname</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-tfontsize <em>tfontsize</em></code></td><td valign="top">set the title font size to <em>tfontsize</em> points.</td></tr>
+<tr><td width="150" valign="top"><code>-tmajor <em>hr:mn</em></code></td><td valign="top">set the interval of the Time axis major tick mark to be <em>hr:mn</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-tminor <em>hr:mn</em></code></td><td valign="top">set the interval of the Time axis minor tick mark to be <em>hr:mn</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-b <em>bmnum</em></code></td><td valign="top">plot beam number <em>bmnum</em>, a value of -1 plots all beams.</td></tr>
+<tr><td width="150" valign="top"><code>-c <em>channel</em></code></td><td valign="top">for stereo mode data, plot channel <em>channel</em>, if omitted then both channels are plotted.</td></tr>
+<tr><td width="150" valign="top"><code>-cp <em>cpid</em></code></td><td valign="top">plot beams that contain the program identifier <em>cpid</em> only.</td></tr>
+<tr><td width="150" valign="top"><code>-scan <em>scan</em></code></td><td valign="top">plot beams that have a value for the scan flag of <em>scan</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-a</code></td><td valign="top">plot all parameters (excluding elevation angle).</td></tr>
+<tr><td width="150" valign="top"><code>-p</code></td><td valign="top">plot power.</td></tr>
+<tr><td width="150" valign="top"><code>-v</code></td><td valign="top">plot velocity.</td></tr>
+<tr><td width="150" valign="top"><code>-w</code></td><td valign="top">plot spectral width.</td></tr>
+<tr><td width="150" valign="top"><code>-e</code></td><td valign="top">plot elevation angle.</td></tr>
+<tr><td width="150" valign="top"><code>-ve</code></td><td valign="top">plot velocity error.</td></tr>
+<tr><td width="150" valign="top"><code>-pmin <em>pmin</em></code></td><td valign="top">set the minimum value of the power scale to <a>pmin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-pmax <em>pmax</em></code></td><td valign="top">set the maximum value of the power scale to <a>pmax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-vmin <em>vmin</em></code></td><td valign="top">set the minimum value of the velocity scale to <a>vmin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-vmax <em>vmax</em></code></td><td valign="top">set the maximum value of the velocity scale to <a>vmax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-wmin <em>wmin</em></code></td><td valign="top">set the minimum value of the spectral width scale to <a>wmin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-wmax <em>wmax</em></code></td><td valign="top">set the maximum value of the spectral width scale to <a>wmax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-emin <em>emin</em></code></td><td valign="top">set the minimum value of the elevation angle scale to <a>emin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-emax <em>emax</em></code></td><td valign="top">set the maximum value of the elevation angle scale to <a>emax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-vemin <em>vemin</em></code></td><td valign="top">set the minimum value of the velocity error scale to <a>vemin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-vemax <em>vemax</em></code></td><td valign="top">set the maximum value of the velocity error scale to <a>vemax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-gs</code></td><td valign="top">color ground scatter.</td></tr>
+<tr><td width="150" valign="top"><code>-gm</code></td><td valign="top">mask out ground scatter.</td></tr>
+<tr><td width="150" valign="top"><code>-ns</code></td><td valign="top">ignore non-scan data (data with a scan flag of -1).</td></tr>
+<tr><td width="150" valign="top"><code>-km</code></td><td valign="top">plot in terms of distance in kilometers.</td></tr>
+<tr><td width="150" valign="top"><code>-frang <em>frang</em></code></td><td valign="top">force the distance to the first range to be <em>frang</em> kilometers.</td></tr>
+<tr><td width="150" valign="top"><code>-erang <em>erang</em></code></td><td valign="top">force the distance to the last range to be <em>erang</em> kilometers.</td></tr>
+<tr><td width="150" valign="top"><code>-rsep <em>rsep</em></code></td><td valign="top">force the range separation to be <em>rsep</em> kilometers.</td></tr>
+<tr><td width="150" valign="top"><code>-lr</code></td><td valign="top">limit the ranges plotted.</td></tr>
+<tr><td width="150" valign="top"><code>-srng <em>start</em></code></td><td valign="top">set the first range to plot to be <em>start</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-erng <em>end</em></code></td><td valign="top">set the last range to plot to be <em>end</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-geo</code></td><td valign="top">plot in terms of geographic latitude.</td></tr>
+<tr><td width="150" valign="top"><code>-mag</code></td><td valign="top">plot in terms of geomagnetic latitude.</td></tr>
+<tr><td width="150" valign="top"><code>-old_aacgm</code></td><td valign="top">user older AACGM rather than AACGM-v2 for magnetic coordinates.</td></tr>
+<tr><td width="150" valign="top"><code>-latmin <em>latmin</em></code></td><td valign="top">force the lower latitude limit to be <em>latmin</em> degrees.</td></tr>
+<tr><td width="150" valign="top"><code>-latmax <em>latmax</em></code></td><td valign="top">force the upper latitude limit to be <em>latmax</em> degrees.</td></tr>
+<tr><td width="150" valign="top"><code>-ymajor <em>ymajor</em></code></td><td valign="top">set the interval of the Y-axis major tick mark to be <em>ymajor</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-yminor <em>yminor</em></code></td><td valign="top">set the interval of the Y-axis minor tick mark to be <em>yminor</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-ytick <em>ytick</em></code></td><td valign="top">set the number Y-axis tick marks <em>ytick</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-fn <em>expr</em></code></td><td valign="top">apply the mathematic expression <em>expr</em> to the data before it is plotted.</td></tr>
+<tr><td width="150" valign="top"><code><em>fitacfname</em></code></td><td valign="top">filename of the <code>fitacf</code> format file to plot.</td></tr>
+<tr><td width="150" valign="top"><code><em>inxname</em></code></td><td valign="top">filename of the index file.</td></tr>
+<tr><td width="150" valign="top"><code>-old</code></td><td valign="top">file is in the <code>fit</code> format.</td></tr>
+<tr><td width="150" valign="top"><code><em>fitname</em></code></td><td valign="top">filename of the <code>fit</code> format file to plot.</td></tr>
+<tr><td width="150" valign="top"><code>-cfit</code></td><td valign="top">file is in the <code>cfit</code> format.</td></tr>
+<tr><td width="150" valign="top"><code><em>cfitname</em></code></td><td valign="top">filename of the <code>cfit</code> format file to plot.</td></tr>
+<tr><td width="150" valign="top"><code>-smr</code></td><td valign="top">file is in the <code>smr</code> format.</td></tr>
+<tr><td width="150" valign="top"><code>-fbeam <em>fbeam</em></code></td><td valign="top">assume that the first beam in a scan in the summary file is <em>fbeam</em>.</td></tr>
+<tr><td width="150" valign="top"><code><em>smrname</em></code></td><td valign="top">filename of the <code>smr</code> format file to plot.</td></tr>
+<tr><td width="150" valign="top"><code>-png</code></td><td valign="top">produce a Portable Network Graphics (PNG) image as the output.</td></tr>
+<tr><td width="150" valign="top"><code>-ps</code></td><td valign="top">produce a PostScript plot as the output.</td></tr>
+<tr><td width="150" valign="top"><code>-xp <em>xoff</em></code></td><td valign="top">set the X offset of the PostScript plot to <em>xoff</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-yp <em>xoff</em></code></td><td valign="top">set the Y offset of the PostScript plot to <em>yoff</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-ppm</code></td><td valign="top">produce a Portable PixMap (PPM) image as the output.</td></tr>
+<tr><td width="150" valign="top"><code>-ppmx</code></td><td valign="top">produce an extended Portable PixMap (PPMX) image as the output.</td></tr>
+<tr><td width="150" valign="top"><code>-xml</code></td><td valign="top">produce an XML image representation as the output.</td></tr>
+<tr><td width="150" valign="top"><code>-x</code></td><td valign="top">plot the data on an X-terminal.</td></tr>
+<tr><td width="150" valign="top"><code>-display <em>display</em></code></td><td valign="top">connect to the xterminal named <em>display</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-xoff <em>xoff</em></code></td><td valign="top">open the window, <em>xoff</em> pixels from the left edge of the screen.</td></tr>
+<tr><td width="150" valign="top"><code>-yoff <em>yoff</em></code></td><td valign="top">open the window <em>ypad</em> pixels from the top edge of the screen.</td></tr>
+<tr><td width="150" valign="top"><code>-chisham</code></td><td valign="top">use the Chisham virtual height model.</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Generate a time series plot of data.</p>
+<p>The output can be to an XML representation of an image, a Portable PixMap (PPM) files, extended Portable PixMap (PPMX) file, Portable Network Graphics (PNG), or PostScript plot. The default output is PostScript. The plot is written to standard output.</p>
+<p>The options "<code>-pkey</code>", "<code>-vkey</code>", "<code>-wkey</code>", "<code>-fkey</code>" "<code>-nkey</code>" allow user defined color keys to be used.</p>
+<p>The color key file is a plain text file that defines the red green and blue components for each index in the color bar. Any line in the file beginning with a "<code>#</code>" is treated as a comment and ignored. The first line that is not a comment defines the number of entries in the table. The remaining lines in the file contain color values for each index, one value per line. The values are hexadecimal numbers of the form <em>rrggbb</em>, where <em>rr</em> is the red component, <em>gg</em> is the blue component and <em>bb</em> is the blue component.</p>
+<p>The number and complexity of the command line options makes typing them a laborious process, especially when producing multiple plots. To solve this problem, command line options can be placed in plain text file that can be parsed by the program using the " <code>-cf</code>" option. This allows the user to create a set of configuration files for producing different plots.</p> 
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">time_plot -x -old -gs -a -b 5 20041230.kod.fit</pre></td></tr></table>
+<p>Plot a time series of power,velocity and spectral width from the file "<code>20041230.kod.fit</code>". Mark ground scatter in grey. Display the plot on the X terminal.</p>
+
+<table ><tr><td class="docbox" ><pre width="80">time_plot -ps -ex 6:00 -gs -cfit -v -km -b 5 20040120.kod.cfit &gt; kod.ps</pre></td></tr></table>
+<p>Generate a PostScript plot of a time series of velocity from the first six hours of data in the file "<code>20041230.kod.cfit</code>". Mark ground scatter in grey and plot range in kilometers. The plot is stored in the file "<code>kod.ps</code>".</p>
+<br><center><img src="img/example1.png"></img><br></center>
+         
+<table ><tr><td class="docbox" ><pre width="80">time_plot -ex 3:00 -gs -cfit -srng 35 -a -erng 60 -b 5 20040120.kod.cfit &gt; kod.rp.xml</pre></td></tr></table>
+<p>Generate a PostScript plot of a time series of power, velocity and spectral width from the first six hours of data in the file "<code>20041230.kod.cfit</code>". Mark ground scatter in grey and only plot between ranges 35 and 60.</p>
+<br><center><img src="img/example2.png"></img><br></center>
+         </td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

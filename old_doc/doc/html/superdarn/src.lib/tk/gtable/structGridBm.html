@@ -1,0 +1,91 @@
+
+
+<head>
+<title>struct GridBm</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href=../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../superdarn/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/gtable/index.html>gtable</a></td><td>|</td>
+<td>GridBm</td>
+<td width=100% align=right><a href=../../../../superdarn/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">GridBm</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">superdarn/gtable.h</td></tr>
+<tr><td class="docsubtitle">Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">gtable</a></tr>
+<tr><td class="docsubtitle" valign=top>Members</td></tr>
+<tr><td></td><td width=80% class="docbox"><table>
+
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int bm;</font></td>
+      <td valign="top">Beam number.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int frang;</font></td>
+      <td valign="top">Distance to first range (kilometers).</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int rsep;</font></td>
+      <td valign="top">Range separation (kilometers).</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int rxrise;</font></td>
+      <td valign="top">Receiver rise time (microseconds).</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int nrang;</font></td>
+      <td valign="top">Number of ranges.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double azm[nrang];</font></td>
+      <td valign="top">Calculated azimuth for each range cell.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double ival[nrang];</font></td>
+      <td valign="top">Calculated velocity component to subtract for the inertial reference frame.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int inx[nrang];</font></td>
+      <td valign="top">Look up table that relates beam and range to the grid cell table.</td>
+    </tr>
+
+  </table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td>
+  <p>The <a href="structGridBm.html"><code>struct GridBm</code></a> structure stores information about a single radar beam in a set of gridded data.</p>
+  </tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+</div>
+
+</body>
+
+
+

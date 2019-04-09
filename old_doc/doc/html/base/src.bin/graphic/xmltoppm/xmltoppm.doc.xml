@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>base</project>
+<name>xmltoppm</name>
+<location>src.bin/graphic/xmltoppm</location>
+<syntax>xmltoppm --help</syntax>
+<syntax>xmltoppm [-bgcol <ar>rrggbb</ar>] [<ar>name</ar>]</syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>-bgcol <ar>rrggbb</ar></on><od>set the background color of the output image to <ar>rrggbb</ar>, specified as the  hexadecimal value for the 24-bit red,green and blue component color.</od>
+</option>
+<option><on><ar>name</ar></on><od>input image filename. If this is omitted the image  will be read from standard input.</od>
+</option>
+<synopsis><p>Convert an XML image representation to a Portable PixMap (PPM).</p></synopsis>
+
+
+
+<description><p>Convert an XML image representation to Portable PixMap (PPM).</p>
+<p>The PPM image file is written to standard output.</p>
+</description>
+
+
+<example>
+<command>xmltoppm inp.xml &gt; out.ppm</command>
+<description>Convert XML file <code>inp.xml</code> to the PPM file <code>out.ppm</code>.
+</description>
+</example>
+
+
+<example>
+<command>xmltoppm -bgcol ff0000 inp.xml &gt; out.ppm</command>
+<description>Convert XML file <code>inp.xml</code> to the PPM file <code>out.ppm</code>. Set the background color to <code>ff0000</code> (Red).
+</description>
+</example>
+
+</binary>

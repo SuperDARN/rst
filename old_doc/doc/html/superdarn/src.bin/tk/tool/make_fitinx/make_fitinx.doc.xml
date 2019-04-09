@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>make_fitinx</name>
+<location>src.bin/tk/tool/make_fitinx</location>
+
+<syntax>make_fitinx --help</syntax>
+<syntax>make_fitinx [-vb] [<ar>fitacfname</ar>]</syntax>
+<syntax>make_fitinx -old [-vb] <ar>fitname</ar> <ar>inxname</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on><ar>fitacfname</ar></on><od>filename of the <code>fitacf</code> format file. If this is omitted the file is read from standard input.</od>
+</option>
+<option><on>-old</on><od>files are in the <code>fit</code> format.</od>
+</option>
+<option><on><ar>fitname</ar></on><od>filename of the <code>fit</code> format file.</od>
+</option>
+<option><on><ar>inxname</ar></on><od>filename of the index file to create.</od>
+</option>
+<synopsis><p>Creates an index of a <code>fitacf</code> format file.</p></synopsis>
+<description><p>Creates an index of a <code>fitacf</code> format file.</p>
+<p>If the input file is a <code>fitacf</code> format file, then the index is written to standard output.</p>
+</description>
+
+<example>
+<command>make_fitinx 20040830.gbr.fitacf &gt; 20040830.gbr.fitinx</command>
+<description>Create an index file for the <code>fitacf</code> format file "<code>20040830.gbr.fitacf</code>". The index is writen to the file "<code>20040830.gbr.fitinx</code>".</description>
+</example>
+
+<example>
+<command>make_fitinx -old 20040830.gbr.fit 20040830.gbr.inx</command>
+<description>Create an index file for the <code>fit</code> format file "<code>20040830.gbr.fit</code>". The index is writen to the file "<code>20040830.gbr.inx</code>".</description>
+</example>
+
+</binary>

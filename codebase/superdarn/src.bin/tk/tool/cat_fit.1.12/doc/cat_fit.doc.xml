@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>cat_fit</name>
+<location>src.bin/tk/tool/cat_fit</location>
+
+<syntax>cat_fit --help</syntax>
+<syntax>cat_fit -old <ar>fitinputs...</ar> <ar>fitoutput</ar></syntax>
+<syntax>cat_fit -i -old <ar>fitinputs...</ar> <ar>fitoutput</ar> <ar>inxoutput</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-old</on><od>the input file is a <code>fit</code> format file.</od>
+</option>
+<option><on><ar>fitinputs</ar></on><od>filenames of the <code>fit</code> format file to concatenate.</od>
+</option>
+<option><on><ar>fitoutput</ar></on><od>filename of the <code>fit</code> format file to create.</od>
+</option>
+<option><on>-i</on><od>create an associated index file to the <code>fit</code> format output file.</od>
+</option>
+<option><on><ar>inxoutput</ar></on><od>filename of the index file to create.</od>
+</option>
+<synopsis><p>Concatenates a set of <code>fit</code> format files.</p></synopsis>
+<description><p>Concatenates a set of <code>fit</code> format files.</p></description>
+
+<example>
+<command>cat_fit -old 19981020.*.gbr.fit 19981020.gbr.C.fit</command>
+<description>Concatenates together all files called "<code>19981020.*.gbr.fit</code>" to produce a file called "<code>19981020.gbr.C.fit</code>".</description>
+</example>
+
+<example>
+<command>cat_fit -i -old 19981020.*.kap.fit 19981020.kap.C.fit 19981020.kap.C.inx</command>
+<description>Concatenates together all files called "<code>19981020.*.kap.fit</code>" to produce a file called "<code>19981020.kap.C.fit</code>" and the associated index file "<code>19981020.kap.C.inx</code>".</description>
+</example>
+
+</binary>

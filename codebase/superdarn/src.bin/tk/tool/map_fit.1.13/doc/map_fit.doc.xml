@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>map_fit</name>
+<location>src.bin/tk/tool/map_fit</location>
+
+<syntax></syntax>
+<syntax>map_fit --help</syntax>
+<syntax>map_fit [-vb] [-old] [-ew <ar>errwgt</ar>] [-mw <ar>modelwgt</ar>] [-s <ar>source</ar>] [<ar>mapname</ar>]</syntax>
+<syntax></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-old</on><od>the input file is a <code>map</code> format file.</od>
+</option>
+<option><on>-old_aacgm</on><od>uses the older AACGM software and coefficients. The default is to use AACGM-v2.</od>
+</option>
+<option><on>-ew <ar>errwgt</ar></on><od>set the error weighting to <ar>errwgt</ar>, which can be either yes or no. If yes, the data vector errors will be taken from the values in the grid file (default). If no, the average error of the data vectors will be assigned to all data vectors.</od>
+</option>
+<option><on>-mw <ar>modelwgt</ar></on><od>set the model weighting to <ar>modelwgt</ar>, which can be either yes or no. If no, the average error of the data vectors will be scaled by the order of the fit and then applied to the model vectors (default). If yes, the average error of the data vectors will not be scaled by the order of the fit before being applied to the model vectors.</od>
+</option>
+<option><on>-o <ar>order</ar></on><od>set the order of the fit to be <ar>order</ar>.</od>
+</option>
+<option><on>-s <ar>source</ar></on><od>set the text string indicating the data source  to <ar>source</ar>.</od>
+</option>
+<option><on><ar>mapname</ar></on><od>filename of the <code>cnvmap</code> format file. If this is omitted, the file will</od></option>
+<option><on></on><od>  be read from standard input.</od></option>
+<synopsis><p>Perform the Spherical Harmonic Fitting on a convection map file.</p></synopsis>
+
+<description><p>Performs spherical harmonic fitting on a convection map file.</p>
+<p>The file created is written to standard output.</p>
+<p>The input map file must contain valid model data to ensure that the fit converges.</p>
+</description>
+
+<example>
+<command>map_fit -old -ew y -mw n 19981020.map &gt; 19981020.shf.map</command>
+<description>Performs spherical harmonic fitting on the map file called  "<code>19981020.map</code>". Errors are weighted and model weighting is set to normalized. The file created is called "<code>19981020.shf.map</code>" and status is logged to standard error.</description>
+</example>
+
+</binary>

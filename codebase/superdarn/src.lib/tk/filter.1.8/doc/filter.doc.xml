@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>superdarn</project>
+<name>filter</name>
+<location>src.lib/tk/filter</location>
+
+<function>
+<name>FilterBound</name>
+<location>src.lib/tk/filter</location>
+<header>superdarn/bound.h</header>
+<syntax>int FilterBound(int prm,<sn href="&root;/superdarn/src.lib/tk/scan/structRadarScan.html">struct RadarScan</sn> *ptr,double *min,double *max);</syntax>
+<description><p>The <fn href="FilterBound.html">FilterBound</fn> function excludes points from a radar scan data.  The function examines each data point in the scan data and tests whether its parameters lie within certain values. If they do not the data point is rejected and removed.</p>
+<p>The argument <ar>ptr</ar> points to a structure containing the radar scan data.</p>
+<p>The lowest few bits of the argument <ar>prm</ar> determine which parameters associated with a data point are tested. If the lowest bit (1) is set then the velocity parameter is tested, if the second bit (2) is set then the lambda power is tested, if the third bit (4) is set then the spectral width is tested, and if the fourth bit (8) is set then the velocity error is tested.</p>
+<p>The final two arguments, min and max are pointers to arrays that contain the minimum and maximum allowable values associated with each parameter. The first element in the two arrays defines the limits for the velocity, the second the limits for power, the third for spectral width, and the final element the limits for the velocity error.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">FilterBound.c</example>
+</function>
+
+<function>
+<name>FilterBoundType</name>
+<location>src.lib/tk/filter</location>
+<header>superdarn/bound.h</header>
+<syntax>int FilterBoundType(<sn href="&root;/superdarn/src.lib/tk/scan/structRadarScan.html">struct RadarScan</sn> *ptr,int type);</syntax>
+<description><p>The <fn href="FilterBoundType.html">FilterBoundType</fn> function excludes points from radar scan data depending on their type.</p>
+<p>The argument <ar>ptr</ar> points to a structure containing the radar scan data.</p>
+<p>The argument <ar>type</ar> determines which type of data is excluded from the scan, a value of zero excludes ionospheric scatter, and a value of (1) excludes ground scatter</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">FilterBoundType.c</example>
+</function>
+
+<function>
+<name>FilterCheckOps</name>
+<location>src.lib/tk/filter</location>
+<header>superdarn/checkops.h</header>
+<syntax>int FilterCheckOps(int num,<sn href="&root;/superdarn/src.lib/tk/scan/structRadarScan.html">struct RadarScan</sn> *ptr,int fmax);</syntax>
+<description><p>The <fn href="FilterCheckOps.html">FilterCheckOps</fn> function checks to make sure that the radar operating parameters do not change between scans.If the frequency, first range distance or range separation change between scans the location of the scatter will also change making it impossible to filter the data.</p>
+<p>The number of scans of data to compare is given by the argument <ar>num</ar> and the array of structures containing the scan data is pointed to by the argument <ar>ptr</ar>.</p>
+<p>The maximum allowable variation in frequency between scans is given by the argument <ar>fmax</ar>.</p>
+</description>
+<returns>Returns zero if . On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">FilterCheckOps.c</example>
+</function>
+
+<function>
+<name>FilterRadarScan</name>
+<location>src.lib/tk/filter</location>
+<header>superdarn/filter.h</header>
+<syntax>int FilterRadarScan(int mode,int depth,int inx,<sn href="&root;/superdarn/src.lib/tk/scan/structRadarScan.html">struct RadarScan</sn> *src,<sn href="&root;/superdarn/src.lib/tk/scan/structRadarScan.html">struct RadarScan</sn> *dst,int prm);</syntax>
+<description><p>The <fn href="FilterRadarScan.html">FilterRadarScan</fn> function performs median filtering on a sequence of radar scan data. The filter operates on each range-beam cell. A 3x3x3 grid of the neighboring cells in both time and space is extracted from the input data and a weighted sum of the number containing scatter is calculated. If this sum is below a certain threshold then the output cell is considered to be empty and the filter continues on to the next co-ordinate.</p>
+<p>The threshold can be controlled using the lowest bit (1) of the argument <ar>mode</ar>. If the bit is set then a higher threshold is used. If the threshold is exceeded then the output cell is populated. The values of the output parameters are calculated by taking the median value of each parameter from the 3x3x3 input cells. The errors associated with the parameters are calculated from the standard deviation of the input parameters.</p>
+<p>The number of scans of data supplied to the function is given by the argument <ar>depth</ar>, and the first scan to apply the filter to is given by the argument <ar>inx</ar>. The argument <ar>src</ar> is a pointer to an array of structures containing the scan data.</p>
+<p>The filtered data is stored in the structure pointed to by the argument <ar>dst</ar>.</p>
+<p>The bits of the argument <ar>prm</ar> determine which parameters are included in the output. If the lowest bit (1) is set the velocity parameter is included in the output, if the second bit (2) is set then the power parameter is included, and if the third bit (4) is set the spectral width is included.</p>
+<p>The third bit of the argument <ar>mode</ar> is set then the scan information, such as the beam integration time, frequency and noise values, for the output are copied from the middle of the three input scans. If the bit is not set then the average value for all three scans is used.</p>
+</description>
+<returns>Returns zero if . On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">FilterRadarScan.c</example>
+</function>
+
+</library>

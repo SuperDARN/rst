@@ -1,0 +1,86 @@
+<head>
+<title>map_addhmb</title>
+<link rel=stylesheet href="../../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../../superdarn/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/tool/index.html>tool</a></td><td>|</td>
+<td>map_addhmb</td>
+<td width=100% align=right><a href=../../../../../superdarn/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">map_addhmb</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+<br>map_addhmb --help<br>map_addhmb [-vb] [-old] [-old_aacgm] [-cnt <em>count</em>] [-vel <em>vmin</em>] [-ex exlist]<br>           [<em>mapname</em>]<br>map_addhmb -t [-vb] [-old] [-cnt <em>count</em>] [-vel <em>vmin</em>] [-ex exlist] [<em>mapname</em>]<br>map_addhmb -lf <em>latname</em> [-vb] [-old] [<em>mapname</em>]<br>map_addhmb -lat <em>latmin</em> [-vb] [-old] [<em>mapname</em>]<br><br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Calculates the position of the Heppner Maynard Boundary and adds it to a <code>cnvmap</code> format file.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-vb</code></td><td valign="top">verbose. Log information to the console.</td></tr>
+<tr><td width="150" valign="top"><code>-old</code></td><td valign="top">the input file is a <code>map</code> format file.</td></tr>
+<tr><td width="150" valign="top"><code>-old_aacgm</code></td><td valign="top">uses the older AACGM software and coefficients. The default</td></tr><tr><td width="150" valign="top"><code></code></td><td valign="top">  is to use AACGM-v2.</td></tr><tr><td width="150" valign="top"><code>-cnt <em>count</em></code></td><td valign="top">set the number of scatter points to get a match to be <em>count</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-vel <em>vmin</em></code></td><td valign="top">set the minimum velocity to <em>vmin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-ex <em>exlist</em></code></td><td valign="top">exclude data from the stations listed in <em>exlist</em>, which is a</td></tr><tr><td width="150" valign="top"><code></code></td><td valign="top">  comma separated list of radar station numbers.</td></tr><tr><td width="150" valign="top"><code><em>mapname</em></code></td><td valign="top">filename of the <code>cnvmap</code> format file. If this is omitted, the file will</td></tr><tr><td width="150" valign="top"><code></code></td><td valign="top">  be read from standard input.</td></tr><tr><td width="150" valign="top"><code>-t</code></td><td valign="top">instead of adding the calculated boundary to the map file,</td></tr><tr><td width="150" valign="top"><code></code></td><td valign="top">  write the record time and the calculated location as ASCII text to standard</td></tr><tr><td width="150" valign="top"><code></code></td><td valign="top">  output.</td></tr><tr><td width="150" valign="top"><code>-lf <em>latname</em></code></td><td valign="top">do not calculate the boundary, instead read it from the ASCII</td></tr><tr><td width="150" valign="top"><code></code></td><td valign="top">  text file <em>latname</em>.</td></tr><tr><td width="150" valign="top"><code>-lat <em>latmin</em></code></td><td valign="top">do not calculate the boundary, instead set the lower latitude</td></tr><tr><td width="150" valign="top"><code></code></td><td valign="top">  boundary to <em>latmin</em> degrees.</td></tr><tr><td width="150" valign="top"><code>-nodef</code></td><td valign="top">do not use the default latmin if no data is available (ie use latmin from the statistical model).</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Adds a Heppner-Maynard boundary to a convection map file, or generates a data file containing the latitudes of the boundary at magnetic local midnight for each record in the file.</p>
+<p>The file is written to standard output.</p>
+<p>The default operation is to calculate a possible position of the Heppner-Maynard boundary from the line-of-sight velocity data in the convection map file. The two options "<code>-vel</code>" and "<code>-cnt</code>" adjust the algorithm.  A boundary determination is made for each record in the map file. This is median filtered using the previous and subsequent records to reduce rapid fluctuations in the boundary. The median filtered boundary determination is then used to generate zero velocity model vectors that are added to the map file to constrain the convection pattern. The location of the boundary is also stored.</p>
+<p>If the "<code>-lat</code>" option is specified, the location of the boundary is fixed so that at magnetic local midnight it has a latitude of latmin.</p>
+<p>The "<code>-lf</code>" option will read the latitude of the boundary at magnetic local midnight from the plain text file latfile. Any lines in the file beginning the character "<code>#</code>" are treated as comments and ignored. Any other lines are expected to contain a time followed by two latitudes of the boundary at magnetic local midnight:</p>
+
+<center><table><tr><td  class="docbox" style="font-family: courier;"><pre><em>year month day hour minut second median actual</em></pre></td></tr></table></center>
+
+<p>The two values correspond to a filtered and actual value of the latitude. Only the filtered value, median, is used to select the boundary for the map file. The boundary will be fixed at this value starting at the time specified and will only change if a subsequent entry in the boundary files alters it.</p>
+<p>The "<code>-t</code>" option will generate a text file containing the latitude of the boundary at magnetic local midnight for each record in the map file. Each line of the output file contains the date and time of the start of the record followed by the median filtered boundary determination and the actual boundary determination of the record:</p>
+<center><table><tr><td  class="docbox" style="font-family: courier;"><pre><em>year month day hour minut second median actual</em></pre></td></tr></table></center>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">map_addhmb -vb -old 19980410.map &gt; 19980410.hmb.map</pre></td></tr></table>
+<p>Locate the Heppner-Maynard boundary for the map file "<code>19980410.map</code>". The output is written to the file "<code>19980410.hmb.map</code>" and status is logged to standard error.</p>
+
+<table ><tr><td class="docbox" ><pre width="80">map_addhmb -old -lat 64 19970415.map &gt; 19970415.hmb.map</pre></td></tr></table>
+<p>Add vectors to the map file "<code>19970415.map</code>" for a Heppner-Maynard boundary that crosses 64 degrees at magnetic local midnight. The output is written to the file "<code>19970415.hmb.map</code>".</p>
+
+<table ><tr><td class="docbox" ><pre width="80">map_addhmb -old -lf lat.dat 19990830.map &gt; 19980830.hmb.map</pre></td></tr></table>
+<p>Add vectors to the map file "<code>19990830.map</code>" taking latitudes for the Heppner-Maynard boundary from the file "<code>lat.dat</code>". The output is written to the file "<code>19990830.map</code>"</p>
+
+<table ><tr><td class="docbox" ><pre width="80">map_addhmb -old -t -vel 150 -cnt 4 20000410.map &gt; lat.dat</pre></td></tr></table>
+<p>Generate a list of latitudes from the map file "<code>20000410.map</code>". Set the minimum velocity magnitude to 150 m/s and the minimum number of points to 4. The output is written to "<code>lat.dat</code>".</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

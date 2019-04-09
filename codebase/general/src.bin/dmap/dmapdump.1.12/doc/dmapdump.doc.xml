@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>general</project>
+<name>dmapdump</name>
+<location>src.bin/dmap/dmapdump</location>
+<syntax>dmapdump --help</syntax>
+<syntax>dmapdump [-d] [<ar>name</ar>]</syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>-d</on><od>print the data values of the array variables.</od>
+</option>
+<option><on><ar>name</ar></on><od>filename of the DataMap file, if this is omitted the document will be read from standard input.</od>
+</option>
+<synopsis><p>Dump the contents of a DataMap file.</p></synopsis>
+<description><p>Dump the contents of a DataMap file.</p>
+<p>The contents of the DataMap file are written as plain ASCII to standard output.</p></description>
+
+<example>
+<command>dmapdump inp.dmap | more</command>
+<description>Dump the file "<code>inp.dmap</code>", paginating using the <code>more</code> command.
+</description>
+</example>
+
+
+</binary>

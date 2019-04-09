@@ -1,0 +1,173 @@
+#!/bin/bash
+
+set -e
+
+# make.code
+# =========
+# Author R.J.Barnes
+#
+# Purpose:
+#
+# Make source code into binaries
+#
+# Syntax:
+#
+# make.code project
+#
+# Description:
+#
+# Make source code into a set of binaries.
+#
+
+
+############################################################################
+
+# Command line options
+
+############################################################################
+
+if [ ${#} -ge 1 ]
+then
+  mtype=${1}
+else
+  mtype=""
+fi
+
+if [ ${#} -gt 1 ]
+then
+  patn="-p "${2}
+else
+  patn=""
+fi
+
+log="${LOGPATH}/superdarn-rst.build"
+dtval=$(date +%Y%m%d.%H%M)
+
+
+############################################################################
+
+# Compile code
+
+############################################################################
+
+makeaction() {
+
+  compile=${1}
+  project=${2}
+  module=${3}
+  type=${4}
+  mode=${5}
+
+  if [ -n "$mtype" -a "${type}" != "${mtype}" ]; then return 0; fi
+
+  opt=""
+  ctmp=${compile}
+  if [ "${compile}" = "hdr" ]
+  then
+   ctmp="lib"
+   opt="-t hdr"
+  fi
+
+  if [ "${ctmp}" != "${type}" ]; then return 0; fi
+
+  if [ "${module%%/*}" = "codebase" ]
+  then
+    src=${CODEBASE}/${module#codebase/}
+  fi
+
+  if [ "${mode}" = "stdin" ]
+  then
+    echo ${module##*/} ${opt}
+    echo ${module##*/} | makeall -vb ${patn} ${opt} \
+         ${src%/*} stdin >> ${log}.${dtval}
+
+
+  else
+   if [ ! -d ${src} ]
+    then
+      src=${src}.*
+    fi
+    makeall -vb ${patn} ${opt} ${src} >> ${log}.${dtval}
+
+  fi
+  return 0
+}
+
+makemodule() {
+
+  SEP="+"
+
+  compile=${1}
+  fname=${2}
+  modlst=$(cat ${fname} | tr " " "${SEP}")
+
+  for lval in ${modlst}
+  do
+    tmp=`echo ${lval} | tr "${SEP}" " "`
+    prm=${tmp%%#*}
+    if [ -z "${prm}" ]; then continue; fi
+
+    makeaction ${compile} ${prm}
+  done
+  return 0
+}
+
+
+if [ ! -s "${BUILD}/script/build.txt" ]
+then
+  echo "Failed to locate build table"
+  exit 1
+fi
+
+
+# This modification allows for automatic compilation for systems without IDL
+if [ ! -r ${IDL_IPATH}/idl_export.h ]; then
+  echo "Failed to locate idl_export.h - will not compile IDL libraries or DLMs"
+  if [ -d ${RSTPATH}/codebase/superdarn/src.lib/tk/idl ]; then
+    currentdir=(`pwd`)
+    cd ${RSTPATH}/codebase/superdarn/src.lib/tk
+    tar -P -czvf idl.tar.gz idl
+    rm -R idl
+    cd ${currentdir}
+  fi
+else
+  if [ ! -d ${RSTPATH}/codebase/superdarn/src.lib/tk/idl ]; then
+    if [ -a ${RSTPATH}/codebase/superdarn/src.lib/tk/idl.tar.gz ]; then
+      currentdir=(`pwd`)
+      cd ${RSTPATH}/codebase/superdarn/src.lib/tk
+      tar -xzvf idl.tar.gz
+      rm idl.tar.gz
+      cd ${currentdir}
+    else
+      echo "Failed to locate IDL libraries for DLMs"
+      exit 1
+    fi
+  fi
+fi
+
+
+mkdir -p ${LOGPATH}
+makemodule hdr ${BUILD}/script/build.txt
+makemodule lib ${BUILD}/script/build.txt
+makemodule bin ${BUILD}/script/build.txt
+if [ -r ${IDL_IPATH}/idl_export.h ]
+then 
+  makemodule dlm ${BUILD}/script/build.txt
+
+  mkdir -p ${RSTPATH}/idl
+  mkdir -p ${RSTPATH}/idl/lib
+  mkdir -p ${RSTPATH}/idl/app
+
+  cd ${RSTPATH}/idl/lib
+  if ! [ -L analysis ]; then ln -svf ../../codebase/analysis/src.idl/lib analysis; fi
+  if ! [ -L general ]; then ln -svf ../../codebase/general/src.idl/lib general; fi
+  if ! [ -L superdarn ]; then  ln -svf ../../codebase/superdarn/src.idl/lib superdarn; fi
+
+  cd ${RSTPATH}/idl/app
+  if ! [ -L superdarn ]; then ln -svf ../../codebase/superdarn/src.idl/app superdarn; fi
+
+  cd ${RSTPATH}/idl
+  if ! [ -L startup.pro ]; then ln -svf ../codebase/superdarn/src.idl/startup/startup.pro startup.pro; fi
+fi
+exit 0
+

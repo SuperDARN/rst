@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>base</project>
+<name>rxml</name>
+<location>src.lib/xml/xml</location>
+<function>
+<name>XMLCallEnd</name>
+<location>src.lib/xml/xml</location>
+<header>base/rxml.h</header>
+<syntax>int XMLCallEnd(<sn href="structXMLdata.html">struct XMLdata</sn> *ptr,char *name,char *buf,int sze);</syntax>
+
+
+<description><p>The <fn href="XMLCallEnd.html">XMLCallEnd</fn> function forces a call to the user supplied function for interpreting the closing or end tags.</p>
+<p>The data structure  associated with the XML decoder is pointed to by the argument <ar>ptr</ar>.</p>
+<p>The zero terminated string pointed to by the argument <ar>name</ar> gives the tag name.</p>
+<p>The full text enclosed within the tag markers is stored in the buffer pointed to by the argument <ar>buf</ar>, and the size of this buffer is given by the argument <ar>sze</ar>.</p>
+</description> 
+
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error (-1) is returned.</errors>
+
+<example type="source">XMLCallEnd.c</example>
+
+
+</function>
+<function>
+<name>XMLCallStart</name>
+<location>src.lib/xml/xml</location>
+<header>base/rxml.h</header>
+<syntax>int XMLCallStart(<sn href="structXMLdata.html">struct XMLdata</sn> *ptr, char *name,int atnum,char **atname,char **atval, char *buf,int sze);</syntax>
+
+
+<description><p>The <fn href="XMLCallStart.html">XMLCallStart</fn> function forces a call to the user supplied function for interpreting the opening or start tags.</p>
+<p>The data structure associated with the XML decoder is pointed to by the argument <ar>ptr</ar>.</p>
+<p>The zero terminated string pointed to by the argument <ar>name</ar> gives the tag name.</p>
+<p>The number of decoded attributes associated with the tag is given by the argument <ar>atnum</ar>. The name of each attribute is stored as a zero terminated string pointed to by the elements of the array <ar>atname</ar>. The associated value of each attribute is stored as a zero terminated string pointed to by the elements of the array <ar>atval</ar>.</p> 
+<p>The full text enclosed within the tag markers is stored in the buffer pointed to by the argument <ar>buf</ar>, and the size of this buffer is given by the argument <ar>sze</ar>.</p>
+</description> 
+
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error (-1) is returned.</errors>
+
+<example type="source">XMLCallStart.c</example>
+
+
+</function>
+<function>
+<name>XMLDecode</name>
+<location>src.lib/xml/xml</location>
+<header>base/rxml.h</header>
+<syntax>int XMLDecode(<sn href="structXMLdata.html">struct XMLdata</sn> *ptr,char *buf,int sze);</syntax>
+
+<description><p>The <fn href="XMLDecode.html">XMLDecode</fn> function decodes or parses an XML data stream.</p>
+<p>The data structure associated with the XML decoder is pointed to by the argument <ar>ptr</ar>.</p>
+<p>The XML data to process is stored in the text buffer pointed to by the argument <ar>buf</ar>, and the number of bytes in the buffer is given by the argument <ar>sze</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error (-1) is returned.</errors>
+
+<example type="source">XMLDecode.c</example>
+
+
+</function>
+<function>
+<name>XMLFree</name>
+<location>src.lib/xml/xml</location>
+<header>base/rxml.h</header>
+<syntax>void XMLFree(<sn href="structXMLdata.html">struct XMLdata</sn> *ptr);</syntax>
+
+
+<description><p>The <fn href="XMLFree.html">XMLFree</fn> function releases memory used to store the data structure associated iwht an XML decoder.</p>
+<p>The data structure associated with the XML decoder is pointed to by the argument <ar>ptr</ar>.</p>
+</description>
+
+<example type="source">XMLFree.c</example>
+
+
+</function>
+<function>
+<name>XMLMake</name>
+<location>src.lib/xml/xml</location>
+<header>base/rxml.h</header>
+<syntax><sn href="structXMLdata.html">struct XMLdata</sn> *XMLMake();</syntax>
+
+<description><p>The <fn href="XMLMake.html">XMLMake</fn> function allocates memory used to store the data structure associated iwht an XML decoder.</p>
+</description>
+
+<returns>Returns a pointer to the data structure on success. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
+
+<example type="source">XMLMake.c</example>
+
+
+</function>
+<function>
+<name>XMLSetComment</name>
+<location>src.lib/xml/xml</location>
+<header>base/rxml.h</header>
+<syntax>int XMLSetComment(<sn href="structXMLdata.html">struct XMLdata</sn> *ptr, int (*user)(char *,int,void *),void *data);</syntax>
+
+
+<description><p>The <fn href="XMLSetComment.html">XMLSetComment</fn> function sets the interface function used to decode comments.</p>
+<p>The data structure associated with the XML decoder is pointed to by the argument <ar>ptr</ar>.</p>
+<p>The argument <ar>user</ar> is a pointer to a function of the form:</p>
+<fd>
+int user(char *buffer,int size,void *dptr);
+</fd>
+<p>This function is called each time a comment tag is encountered in the XML data stream.</p>
+<p>The argument <ar>buffer</ar> is a pointer to a buffer containing the text of the comment and the argument <ar>size</ar> indicates the size of the buffer.</p>
+<p>The <ar>data</ar> argument of the <fn href="XMLSetComment.html">XMLSetComment</fn> function  is passed directly as the <ar>dptr</ar> argument and allows extra parameters to be passed to the function.</p>
+
+</description>
+
+
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error (-1) is returned.</errors>
+
+<example type="source">XMLSetComment.c</example>
+
+
+</function>
+
+
+<function>
+<name>XMLSetEnd</name>
+<location>src.lib/xml/xml</location>
+<header>base/rxml.h</header>
+<syntax>int XMLSetEnd(<sn href="structXMLdata.html">struct XMLdata</sn> *ptr, int (*user)(char *,char *,int,void *),void *data);</syntax>
+
+
+<description><p>The <fn href="XMLSetEnd.html">XMLSetEnd</fn> function sets the interface function used to decode closing or end tags.</p>
+<p>The data structure associated with the XML decoder is pointed to by the argument <ar>ptr</ar>.</p>
+<p>The argument <ar>user</ar> is a pointer to a function of the form:</p>
+<fd>
+int user(char *name,char *buffer,int size,void *dptr);
+</fd>
+<p>This function is called each time an end tag is encountered in the XML data stream.</p>
+<p>The zero terminated string pointed to by the argument <ar>name</ar> gives the tag name.</p>
+<p>The argument <ar>buffer</ar> is a pointer to a buffer containing the full text enclosed by the tag markers and the argument <ar>size</ar> indicates the size of the buffer.</p>
+<p>The <ar>data</ar> argument of the <fn href="XMLSetEnd.html">XMLSetEnd</fn> function  is passed directly as the <ar>dptr</ar> argument and allows extra parameters to be passed to the function.</p>
+
+</description>
+
+
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error (-1) is returned.</errors>
+
+<example type="source">XMLSetEnd.c</example>
+
+
+</function>
+<function>
+<name>XMLSetProcess</name>
+<location>src.lib/xml/xml</location>
+<header>base/rxml.h</header>
+<syntax>int XMLSetProcess(struct XMLdata *ptr, int (*user)(char *,int,void *),void *data);</syntax>
+
+
+
+<description><p>The <fn href="XMLSetProcess.html">XMLSetProcess</fn> function sets the interface function used to decode processor directives.</p>
+<p>The data structure associated with the XML decoder is pointed to by the argument <ar>ptr</ar>.</p>
+<p>The argument <ar>user</ar> is a pointer to a function of the form:</p>
+<fd>
+int user(char *buffer,int size,void *dptr);
+</fd>
+<p>This function is called each time a processor directive tag is encountered in the XML data stream.</p>
+<p>The argument <ar>buffer</ar> is a pointer to a buffer containing the text of the directive and the argument <ar>size</ar> indicates the size of the buffer.</p>
+<p>The <ar>data</ar> argument of the <fn href="XMLSetProcess.html">XMLSetProcess</fn> function  is passed directly as the <ar>dptr</ar> argument and allows extra parameters to be passed to the function.</p>
+
+</description>
+
+
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error (-1) is returned.</errors>
+
+<example type="source">XMLSetProcess.c</example>
+
+
+</function>
+<function>
+<name>XMLSetStart</name>
+<location>src.lib/xml/xml</location>
+<header>base/rxml.h</header>
+<syntax>int XMLSetStart(<sn href="structXMLdata.html">struct XMLdata</sn> *ptr, int (*user)(char *,int,char **,char **, char *,int,void *),void *data);</syntax>
+
+<description><p>The <fn href="XMLSetStart.html">XMLSetStart</fn> function sets the interface function used to decode opening or start tags.</p>
+<p>The data structure associated with the XML decoder is pointed to by the argument <ar>ptr</ar>.</p>
+<p>The argument <ar>user</ar> is a pointer to a function of the form:</p>
+<fd>
+int user(char *name,int atnum,char **atname,char **atval,char *buf,int sze,void *data);
+</fd>
+<p>This function is called each time an end tag is encountered in the XML data stream.</p>
+<p>The zero terminated string pointed to by the argument <ar>name</ar> gives the tag name.</p>
+<p>The number of decoded attributes associated with the tag is given by the argument <ar>atnum</ar>. The name of each attribute is stored as a zero terminated string pointed to by the elements of the array <ar>atname</ar>. The associated value of each attribute is stored as a zero terminated string pointed to by the elements of the array <ar>atval</ar>.</p> 
+<p>The argument <ar>buffer</ar> is a pointer to a buffer containing the full text enclosed by the tag markers and the argument <ar>size</ar> indicates the size of the buffer.</p>
+<p>The <ar>data</ar> argument of the <fn href="XMLSetStart.html">XMLSetStart</fn> function  is passed directly as the <ar>dptr</ar> argument and allows extra parameters to be passed to the function.</p>
+
+</description>
+
+
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error (-1) is returned.</errors>
+
+<example type="source">XMLSetStart.c</example>
+
+
+</function>
+<function>
+<name>XMLSetText</name>
+<location>src.lib/xml/xml</location>
+<header>base/rxml.h</header>
+<syntax>int XMLSetText(<sn href="structXMLdata.html">struct XMLdata</sn> *ptr, int (*user)(char *,int,void *),void *data);</syntax>
+
+
+<description><p>The <fn href="XMLSetText.html">XMLSetText</fn> function sets the interface function used to decode the body or contents of an XML tag.</p>
+<p>The data structure associated with the XML decoder is pointed to by the argument <ar>ptr</ar>.</p>
+<p>The argument <ar>user</ar> is a pointer to a function of the form:</p>
+<fd>
+int user(char *buffer,int size,void *dptr);
+</fd>
+<p>This function is called each time a tag is encountered in the XML data stream.</p>
+<p>The argument <ar>buffer</ar> is a pointer to a buffer containing the contents of the tag and the argument <ar>size</ar> indicates the size of the buffer.</p>
+<p>The <ar>data</ar> argument of the <fn href="XMLSetText.html">XMLSetText</fn> function  is passed directly as the <ar>dptr</ar> argument and allows extra parameters to be passed to the function.</p>
+
+</description>
+
+
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error (-1) is returned.</errors>
+
+<example type="source">XMLSetText.c</example>
+
+
+</function>
+
+
+<structure>
+ <name>XMLdata</name>
+ <location>src.lib/xml/xml</location>
+ <header>base/rxml.h</header>
+ <struct>
+    <member>
+      <proto>int sze;</proto>
+      <description>Current size of data stored in buffer.</description>
+    </member>
+    <member>
+      <proto>int max;</proto>
+      <description>Maximum size of the buffer.</description>
+   </member>
+   <member>
+      <proto>int stp;</proto>
+      <description>Number of bytes to add to the buffer each time it becomes full.</description>
+   </member>
+   <member>
+      <proto>char *buf;</proto>
+      <description>Memory Buffer.</description>
+   </member>
+   <member>
+      <proto><sn href="structXMLinterface.html">struct XMLinterface</sn> interface;</proto>
+      <description>Structure to hold pointers to interface or handler functions.</description>
+   </member>
+  </struct>
+</structure>
+
+
+<structure>
+ <name>XMLinterface</name>
+ <location>src.lib/xml/xml</location>
+ <header>base/rxml.h</header>
+ <struct>
+   <member>
+     <struct>
+       <member>
+         <proto>int (*user)(char *buf,int sze,void *data);</proto>
+         <description>Function called to process the contents of a tag.</description>
+       </member>
+       <member>
+         <proto>void *data;</proto>
+         <description>Pointer passed as the last argument of the interface function.</description>
+       </member>
+     </struct>
+     <proto>text;</proto>
+     <description>Interface for the contents of a tag.</description>
+   </member>
+   <member>
+     <struct>
+       <member>
+         <proto>int (*user)(char *name,int atnum,char **atname,char **atval,char *buf,int sze,void *data);</proto>
+         <description>Function called to process a start tag.</description>
+       </member>
+       <member>
+         <proto>void *data;</proto>
+         <description>Pointer passed as the last argument of the interface function.</description>
+       </member>
+     </struct>
+     <proto>start;</proto>
+     <description>Interface for a start tag.</description>
+   </member>
+  <member>
+     <struct>
+       <member>
+         <proto>int (*user)(char *name,char *buf,int sze,void *data);</proto>
+         <description>Function called to process an end tag.</description>
+       </member>
+       <member>
+         <proto>void *data;</proto>
+         <description>Pointer passed as the last argument of the interface function.</description>
+       </member>
+     </struct>
+     <proto>end;</proto>
+     <description>Interface for an end tag.</description>
+   </member>
+   <member>
+     <struct>
+       <member>
+         <proto>int (*user)(char *buf,int sze,void *data);</proto>
+         <description>Function called to process a comment.</description>
+       </member>
+       <member>
+         <proto>void *data;</proto>
+         <description>.Pointer passed as the last argument of the interface function.</description>
+       </member>
+     </struct>
+     <proto>comment;</proto>
+     <description>Interface for a comment.</description>
+   </member>
+   <member>
+     <struct>
+       <member>
+         <proto>int (*user)(char *buf,int sze,void *data);</proto>
+         <description>.Function called to process a directive.</description>
+       </member>
+       <member>
+         <proto>void *data;</proto>
+         <description>Pointer passed as the last argument of the interface function.</description>
+       </member>
+     </struct>
+     <proto>process;</proto>
+     <description>Interface for a processing directive.</description>
+   </member>
+ </struct>
+</structure>
+
+
+
+</library>

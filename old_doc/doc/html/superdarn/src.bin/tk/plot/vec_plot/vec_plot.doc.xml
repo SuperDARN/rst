@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>vec_plot</name>
+<location>src.bin/tk/plot/vec_plot</location>
+
+<syntax>vec_plot --help</syntax>
+<syntax>vec_plot [<ar>options</ar>] names...
+</syntax>
+<syntax>vec_plot -png [<ar>options</ar>] names...
+</syntax>
+<syntax>vec_plot -ps [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] names...
+</syntax>
+<syntax>vec_plot -ppm [<ar>options</ar>] names...
+</syntax>
+<syntax>vec_plot -ppmx [<ar>options</ar>] names...
+</syntax>
+<syntax>vec_plot -xml [<ar>options</ar>] names...
+</syntax>
+<syntax>vec_plot -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [<ar>options</ar>] names..
+</syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-old_aacgm</on><od>use older AACGM rather than default AACGM-v2 for magnetic coordinates..</od>
+</option>
+<option><on>-cf <ar>cfname</ar></on><od>read command line options from the file <ar>cfname</ar>.</od>
+</option>
+<option><on>-wdt <ar>width</ar></on><od>set the width of the plot to <ar>width</ar>.</od>
+</option>
+<option><on>-logo</on><od>add a credit and logo to the plot.</od>
+</option>
+<option><on>-p <ar>panel</ar></on><od>set the number of panels in the plot to <ar>panel</ar>.</od>
+</option>
+<option><on>-bgcol <ar>aarrggbb</ar></on><od>set the background color to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+<option><on>-txtcol <ar>aarrggbb</ar></on><od>set the color of the text to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+<option><on>-grdcol <ar>aarrggbb</ar></on><od>set the color of the grid to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
+</option>
+<option><on><ar>name...</ar></on><od>the filenames of the <code>vec</code> format files to plot.</od>
+</option>
+<option><on>-png</on><od>produce a Portable Network Graphics (PNG) image as the output.</od>
+</option>
+<option><on>-ps</on><od>produce a PostScript plot as the output.</od>
+</option>
+<option><on>-xp <ar>xoff</ar></on><od>set the X offset of the PostScript plot to <ar>xoff</ar>.</od>
+</option>
+<option><on>-yp <ar>xoff</ar></on><od>set the Y offset of the PostScript plot to <ar>yoff</ar>.</od>
+</option>
+<option><on>-ppm</on><od>produce a Portable PixMap (PPM) image as the output.</od>
+</option>
+<option><on>-ppmx</on><od>produce an extended Portable PixMap (PPMX) image as the output.</od>
+</option>
+<option><on>-xml</on><od>produce an XML image representation as the output.</od>
+</option>
+<option><on>-x</on><od>plot the data on an X-terminal.</od>
+</option>
+<option><on>-display <ar>display</ar></on><od>connect to the xterminal named <ar>display</ar>.</od>
+</option>
+<option><on>-xoff <ar>xoff</ar></on><od>open the window, <ar>xoff</ar> pixels from the left edge of the screen.</od>
+</option>
+<option><on>-yoff <ar>yoff</ar></on><od>open the window <ar>ypad</ar> pixels from the top edge of the screen.</od>
+</option>
+
+<synopsis><p>Plot <code>vec</code> format files.</p></synopsis>
+<description><p>Plot <code>vec</code> format files.</p>
+<p>The output can be to an X terminal, XML rplot file, Portable PixMap (PPM) file, extended Portable PixMap (PPMX) file, Portable Network Graphics (PNG), or PostScript file. The default output is PostScript. The output file is written to standard output.</p>
+<p>The program will attempt to calculate the number of panels to include in the plot based on the number of input files. However this behavior can be overridden using the "<code>-p</code>" option.</p>
+<p>The number and complexity of the command line options makes typing them a laborious process, especially when producing multiple plots. To solve this problem, command line options can be placed in plain text file that can be parsed by the program using the " <code>-cf</code>" option. This allows the user to create a set of configuration files for producing different plots.</p> 
+</description>
+
+<example>
+<command>vec_plot -x 20021106*.vec</command>
+<description>Plot all the <code>vec</code> format files that match the pattern <code>20021106*.vec</code>".</description>
+</example>
+
+<example>
+<command>vec_plot -logo 20041106*.vec &gt; vec.rp.xml</command>
+<description>Generate an rPlot XML plot of all the <code>vec</code> format files that match the pattern <code>20041106*.vec</code>".</description>
+</example>
+<example type="rplot">example1</example>
+
+</binary>

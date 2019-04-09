@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>cmpraw</name>
+<location>src.bin/tk/testing/cmpraw</location>
+<syntax>cmpraw --help</syntax>
+<syntax>cmpraw <ar>rawnameA</ar> <ar>rawnameB</ar></syntax>
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on><ar>rawnameA</ar></on><od>filename of the first <code>raw</code> (<code>dat</code>) format file to convert.</od>
+</option>
+<option><on><ar>rawnameB</ar></on><od>filename of the second <code>raw</code> (<code>dat</code>) format file to convert.</od>
+</option>
+
+<synopsis><p>Compares two <code>raw</code> (<code>dat</code>) format file for differences.</p></synopsis>
+
+
+
+<description><p>Compares two <code>raw</code> (<code>dat</code>) format file for differences.</p>
+<p>Any differences are reported to standard output.</p>
+</description>
+
+<example>
+<command>cmpraw old.dat new.dat</command>
+<description>Compare the <code>raw</code> file "<code>old.dat</code>" with the file "<code>new.dat</code>".</description>
+</example>
+
+
+</binary>

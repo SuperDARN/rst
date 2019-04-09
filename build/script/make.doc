@@ -1,0 +1,123 @@
+#!/bin/bash
+
+set -e 
+
+# make.doc
+# ========
+# Author R.J.Barnes
+#
+# Purpose:
+#
+# Make documentation
+#
+# Syntax:
+#
+# make.doc project package
+#
+# Description:
+#
+# Make a documentation set for a package.
+#
+
+############################################################################
+
+# Command line options
+
+############################################################################
+
+option=""
+
+for arg in ${*}
+ do
+
+   if test "${arg}" = "-w"
+   then
+      option="-w"
+   fi
+ done
+
+
+build=${BUILD}
+
+log="${LOGPATH}/superdarn-rst.doc"
+dtval=`date +%Y%m%d.%H%M`
+
+
+
+############################################################################
+
+# Generate documenation section
+
+############################################################################
+
+makeaction() {
+  project=${1}
+  module=${2} 
+  type=${3}
+
+  codebase=${module%%/*}
+
+  if test "${codebase}" = "codebase"
+  then
+    src=${CODEBASE}/${module#codebase/}
+  else
+    src=${RSTPATH}/${module}
+  fi
+
+  if test ! -d ${src} 
+  then
+    src=${src}.*
+  fi
+
+
+  if test "${type}" = "doc"
+  then
+    make.doc.rfc ${option} ${CODEBASE} ${project}
+    if test -d ${src}/tutorial 
+    then
+      find ${src}/tutorial -name "*.doc.xml" \
+       -exec make.doc.tutorial ${option} {} \; 2>&1 | tee -a ${log}.${dtval}
+    fi
+  fi
+
+  if test "${type}" = "lib"
+  then
+    find ${src} -name "*.doc.xml" -exec make.doc.lib ${option} {} \; 2>&1 | \
+         tee -a ${log}.${dtval} 
+  fi
+
+  if test "${type}" = "bin"
+  then
+   find ${src} -name "*.doc.xml" -exec make.doc.bin ${option} {} \; 2>&1| \
+         tee -a ${log}.${dtval} 
+  fi
+  return 0
+}
+
+makedoc() {
+
+  SEP="+"
+
+  fname=${1}
+  modlst=`cat ${fname} | tr " " "${SEP}" `
+
+  for lval in ${modlst}
+  do
+    tmp=`echo ${lval} | tr "${SEP}" " "`
+    prm=${tmp%%#*} 
+    if test -z "${prm}"; then continue; fi
+    makeaction ${prm}
+  done
+  return 0
+}
+
+if test ! -s "${BUILD}/script/build.txt"
+then
+  echo "Failed to locate build table"
+  exit 1
+fi
+
+mkdir -p ${LOGPATH}
+makedoc ${BUILD}/script/build.txt 
+make.doc.frame ${option}
+exit 0

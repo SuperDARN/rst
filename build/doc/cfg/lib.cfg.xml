@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<config>
+  <tree>
+     <delim>/</delim>
+     <path>library/function</path>
+  </tree>
+
+  <xmldoc>
+    <tagdb type="file">lib.tagdb.xml</tagdb>
+    <root type="env">URLBASE</root>
+    <xml>
+
+      <element>
+      <name>project</name>
+      <default type="text">None</default>
+      </element>
+
+      <element>
+      <name>name</name>  
+      <default type="text">None</default>
+      </element>
+ 
+      <element>
+      <name>location</name>  
+      <default type="text">None</default>
+      </element>
+
+      <element>
+      <name>syntax</name>  
+      <default type="text">None</default>
+      </element>
+
+      <element>
+      <name>struct</name>  
+      <default type="text">None</default>
+      </element>
+
+      <element>
+      <name>union</name>  
+      <default type="text">None</default>
+      </element>
+
+      <element>
+      <name>header</name>  
+      <default type="text">None</default>
+      </element>
+
+      <element>
+      <name>description</name>  
+      <default type="text">None</default>
+      </element>
+
+      <element>
+      <name>returns</name>  
+      <default type="text">None</default>
+      </element>
+
+      <element>
+      <name>errors</name>  
+      <default type="text">None</default>
+      </element>
+
+      <element>
+      <name>example</name>  
+      <default type="text">None</default>
+      <modifiers>
+         <attr>
+         <name>source</name>
+         <type>rawfile</type>
+         <path>.</path>
+         <action>&lt;br&gt;<center>Source Code: <a href="src/&filename;">&filename;</a></center>&lt;br&gt;<table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">&file;</pre></td></tr></table>&lt;br&gt;</action>
+         </attr>
+
+         <attr>
+         <name>image</name>
+         <type>text</type>
+         <action>&lt;br&gt;<center><img src="img/&xml;.png"></img>&lt;br&gt;</center>
+         </action>
+         </attr>
+
+         <attr>
+         <name>rplot</name>
+         <type>text</type>
+         <action>&lt;br&gt;<center><img src="img/&xml;.png"></img>&lt;br&gt;</center>
+         </action>
+         </attr>
+
+         <attr>
+         <name>url</name>
+         <type>text</type>
+         <action>&lt;br&gt;<center><a href="src/&xml;">&xml;</a>&lt;br&gt;</center>
+         </action>
+         </attr>
+      </modifiers>
+      </element>
+
+    </xml>
+  </xmldoc>
+
+  <map>
+
+     <entry>
+        <search>PROJECT</search>
+        <replace>project</replace>
+     </entry>
+
+     <entry>
+        <search>NAME</search>
+        <replace>name</replace>
+     </entry>
+
+     <entry>
+        <search>LOCATION</search>
+        <replace>location</replace>
+     </entry>
+
+     <entry>
+        <search>STRUCT</search>
+        <replace>struct</replace>
+     </entry>
+
+     <entry>
+        <search>UNION</search>
+        <replace>union</replace>
+     </entry>
+ 
+     <entry>
+        <search>SYNTAX</search>
+        <replace>syntax</replace>
+     </entry>
+
+     <entry>
+        <search>HEADER</search>
+        <replace>header</replace>
+     </entry>
+
+     <entry>
+        <search>DESCRIPTION</search>
+        <replace>description</replace>
+     </entry>
+
+     <entry>
+        <search>RETURNS</search>
+        <replace>returns</replace>
+     </entry>
+
+     <entry>
+        <search>ERRORS</search>
+        <replace>errors</replace>
+     </entry>
+
+     <entry>
+        <search>EXAMPLE</search>
+        <replace>example</replace>
+     </entry>
+
+  </map>
+
+  <external type="file">libname.xml</external>
+   
+  <script type="file">lib.function.sk</script>
+
+  <match>
+     <element>name</element>
+  </match>
+
+</config>

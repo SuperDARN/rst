@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>hmb_plot</name>
+<location>src.bin/tk/plot/hmb_plot</location>
+
+<syntax>hmb_plot --help</syntax>
+<syntax>hmb_plot [<ar>options</ar>] name
+</syntax>
+<syntax>hmb_plot -png [<ar>options</ar>] name
+</syntax>
+<syntax>hmb_plot -ps [-l] [-xp <ar>xoff</ar>] [-yp <ar>yoff</ar>] [<ar>options</ar>] name
+</syntax>
+<syntax>hmb_plot -ppm [<ar>options</ar>] name
+</syntax>
+<syntax>hmb_plot -ppmx [<ar>options</ar>] name
+</syntax>
+<syntax>hmb_plot -xml [<ar>options</ar>] name
+</syntax>
+<syntax>hmb_plot -x [-display <ar>display</ar>] [-xoff <ar>xoff</ar>] [-yoff <ar>yoff</ar>] [<ar>options</ar>] name
+</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-cf <ar>cfname</ar></on><od>read command line options from the file <ar>cfname</ar>.</od>
+</option>
+<option><on>-old</on><od>the input file is a <code>map</code> format file.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-w <ar>width</ar></on><od>set the width of the plot to <ar>width</ar>.</od>
+</option>
+<option><on>-h <ar>height</ar></on><od>set the height of the plot to <ar>height</ar>.</od>
+</option>
+<option><on>-ex <ar>hr:mn</ar></on><od>plot an interval whose extent is <ar>hr:mn</ar>.</od>
+</option>
+<option><on><ar>name</ar></on><od>the filename of the <code>map</code> format file to plot.</od>
+</option>
+<option><on>-png</on><od>produce a Portable Network Graphics (PNG) image as the output.</od>
+</option>
+<option><on>-ps</on><od>produce a PostScript plot as the output.</od>
+</option>
+<option><on>-xp <ar>xoff</ar></on><od>set the X offset of the PostScript plot to <ar>xoff</ar>.</od>
+</option>
+<option><on>-yp <ar>xoff</ar></on><od>set the Y offset of the PostScript plot to <ar>yoff</ar>.</od>
+</option>
+<option><on>-l</on><od>set the orientation of the PostScript plot to landscape,</od>
+</option>
+<option><on>-ppm</on><od>produce a Portable PixMap (PPM) image as the output.</od>
+</option>
+<option><on>-ppmx</on><od>produce an extended Portable PixMap (PPMX) image as the output.</od>
+</option>
+<option><on>-xml</on><od>produce an XML image representation as the output.</od>
+</option>
+<option><on>-x</on><od>plot the data on an X-terminal.</od>
+</option>
+<option><on>-display <ar>display</ar></on><od>connect to the xterminal named <ar>display</ar>.</od>
+</option>
+<option><on>-xoff <ar>xoff</ar></on><od>open the window, <ar>xoff</ar> pixels from the left edge of the screen.</od>
+</option>
+<option><on>-yoff <ar>yoff</ar></on><od>open the window <ar>ypad</ar> pixels from the top edge of the screen.</od>
+</option>
+
+<synopsis><p>Plot the Heppner-Maynard boundary from a <code>cnvmap</code> format files.</p></synopsis>
+<description><p>Plot the Heppner-Maynard boundary from a <code>cnvmap</code> format files.</p>
+<p>The output can be to an X terminal, Portable PixMap (PPM) files, extended Portable PixMap (PPMX), <code>rPlot</code> XML document, Portable Network Graphics (PNG), or PostScript file. The default output is PostScript.</p>
+<p>If the "<code>-x</code>" option is specified the program will display plots in an X terminal window in all other cases the output is written to standard out.</p>
+</description>
+
+<example>
+<command>hmb_plot -x -old 20030407.map</command>
+<description>Plot the Heppner-Maynard boundary from the <code>map</code> file called "<code>20030407.map</code>" on the X terminal.</description>
+</example>
+
+<example>
+<command>hmb_plot 20021219.cnvmap</command>
+<description>Generate an rPlot XML plot of the Heppner-Maynard boundary from the <code>cnvmap</code> file called "<code>20021219.cnvmap</code>". The plot is stored in the file "<code>pc.rp.xml</code>".</description>
+</example>
+<example type="rplot">example1</example>
+
+</binary>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>imagery</project>
+<name>sza</name>
+<location>src.lib/sza</location>
+
+<function>
+<name>SZAAngle</name>
+<location>src.lib/sza</location>
+<header>imagery/sza.h</header>
+<syntax>double SZAAngle(double lon,double lat,double dec,double Hangle);</syntax>
+<description><p>The <fn href="SZAAngle.html">SZAAngle</fn> function calculates the Solar-Zenith Angle at a given location and time.</p>
+<p>The geographic position of the point to calculate the angle for is given by the arguments <ar>lon</ar> and <ar>lat</ar>. The solar declination angle and the solar hour angle are given by the arguments <ar>dec</ar> and <ar>Hangle</ar>.</p>
+</description> 
+<returns>Returns the Solar-Zenith Angle in degrees.</returns>
+<example type="source">SZAAngle.c</example>
+
+</function>
+
+
+<function>
+<name>SZAEqOfTime</name>
+<location>src.lib/sza</location>
+<header>imagery/sza.h</header>
+<syntax>double SZAEqOfTime(double lon,int yr);</syntax>
+<description><p>The <fn href="SZAEqOfTime.html">SZAEqOfTime</fn> function calculates the Equation of Time for a given longitude and year.</p>
+<p>The mean solar longitude is given by the argument <ar>lon</ar> and the year by the argument <ar>yr</ar>.</p>
+</description> 
+<returns>Returns the calculated value for the Equation of Time.</returns>
+<example type="source">SZAEqOfTime.c</example>
+
+
+</function>
+
+</library>
+
+

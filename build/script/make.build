@@ -1,0 +1,77 @@
+#!/bin/bash
+
+set -e 
+
+# make.build
+# ==========
+# Author R.J.Barnes
+#
+# Purpose: 
+#
+# Make build software.
+#
+# Syntax:
+# 
+# make.build
+#
+# Description:
+#
+# Make the build software.
+#
+
+############################################################################
+
+if [ -z "$BUILD" ]; then
+    echo "BUILD environment variable is empty, please set"
+    exit 1
+fi
+
+export LD_LIBRARY_PATH=${BUILD}/lib
+export BINPATH=${BUILD}/bin
+export LIBPATH=${BUILD}/lib
+export IPATH=${BUILD}/include
+mkdir -p ${LIBPATH}
+mkdir -p ${BINPATH}
+mkdir -p ${IPATH}
+
+makebuild() {
+
+  loct=${1}
+  type=${2}
+  path=${CODEBASE}/base/src.${type}/${loct}
+  if test ! -d ${path}
+  then 
+    path=${path}".*"
+  fi
+
+  if test "${type}" = lib
+  then
+    mkfile=`find ${path} -maxdepth 2 -name "makefile" | sort | tail -1 `
+  else
+    mkfile=`find ${path} -maxdepth 1 -name "makefile" | sort | tail -1` 
+  fi
+
+  cd ${mkfile%%/makefile}
+  make clean
+  make
+  return 0
+}
+
+liblist="xml/xml xml/xmldb xml/tagdb xml/xmldoclib \
+         task/option httpd/rscript"
+binlist="xmldoc/xmldoc xmldoc/scdoc \
+         build/addtext build/maketree build/makeall"
+
+rm -f ${LIBPATH}/*
+rm -f ${BINPATH}/*
+
+for libname in ${liblist}
+do
+  makebuild ${libname} lib
+done
+for binname in ${binlist}
+do
+  makebuild ${binname} bin
+done
+exit 0
+

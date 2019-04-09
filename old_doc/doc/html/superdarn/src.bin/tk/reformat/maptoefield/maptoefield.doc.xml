@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>maptoefield</name>
+<location>src.bin/tk/reformat/maptoefield</location>
+
+<syntax>maptoefield --help</syntax>
+<syntax>maptoefield [-vb] [-old] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>] [-s <ar>step</ar>] [-l <ar>latmin</ar> [-mlt] [-p] [-v] [<ar>name</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-old</on><od>the input file is a <code>map</code> format file.</od>
+</option>
+<option><on>-old_aacgm</on><od>uses the older AACGM software and coefficients. The default is to use AACGM-v2.</od>
+</option>
+<option><on>-sd <ar>yyyymmdd</ar></on><od>extract starting from the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-st <ar>hr:mn</ar></on><od>extract starting from the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ed <ar>yyyymmdd</ar></on><od>stop extracting at the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-et <ar>hr:mn</ar></on><od>stop extracting at the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ex <ar>hr:mn</ar></on><od>extract an interval whose extent is <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-s <ar>step</ar></on><od>skip <ar>step</ar> number of records between each record extracted.</od>
+</option>
+<option><on>-l <ar>latmin</ar></on><od>set the lower latitude of the grid to <ar>latmin</ar> degrees.</od>
+</option>
+<option><on>-mlt</on><od>include the magnetic local time in the output.</od>
+</option>
+<option><on>-p</on><od>include the potential in the output.</od>
+</option>
+<option><on>-v</on><od>include the derived velocity int the output.</od>
+</option>
+<option><on><ar>name</ar></on><od>filename of the <code>cnvmap</code> format file to process. If this is omitted, the file is read from standard input.</od>
+</option>
+<synopsis><p>Calculate the electric field and other parameters from convection map data.</p></synopsis>
+
+<synopsis><p>Calculate the electric field and other parameters from convection map data.</p></synopsis>
+
+<description><p>Calculate the electric field and other parameters from convection map data.</p>
+<p>The electric field data is written to standard output.</p>
+</description>
+
+<example>
+<command>maptoefield -old -l 50 20050830.map &gt; 20050830.efield</command>
+<description>Calculate the electric field down to a latitude of 50 degrees from the file "<code>20050830.map</code>". The electric field data is stored in the file "<code>20050830.efield</code>".</description>
+</example>
+
+<example>
+<command>maptoefield -p 20040830.cnvmap &gt; 20040830.efield</command>
+<description>Calculate the electric field and potential from the file "<code>20040830.cnvmapmap</code>". The electric field data is stored in the file "<code>20040830.efield</code>".</description>
+</example>
+
+</binary>

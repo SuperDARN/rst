@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<rfc>
+<id>0029</id>
+<title>IDL Data Structure for raw I and Q data</title>
+<author>R.J.Barnes</author>
+<summary><p>A description of the IDL data structure used to store raw I and Q data.</p></summary>
+<body>
+<h4>1. Introduction</h4>
+<p>The raw ACF data is the lowest level  (zero order) data product from the SuperDARN radars. Within IDL a structure is used to store the I and Q data.</p>
+
+<h4>2. Constants</h4>
+<p>A constant is used to define array limits</p>
+<center>
+<table cellspacing="3" bgcolor="e0e0e0" width="100%">
+<tr><td><pre>MAXNAVE=300
+</pre></td></tr></table>
+</center>
+<h4>3. Raw I and Q  data structure <code>IQData</code></h4>
+
+<center>
+<table cellspacing="3" bgcolor="e0e0e0" width="100%">
+<tr><td><pre>raw={IQData, $
+       revision: {rlstr, major: 0L, $        ; major revision 
+                            minor: 0L}, $    ; minor revision
+       chnnum: 0L, $                         ; number of channels
+       smpnum: 0L, $                         ; number of samples per sequence
+       skpnum: 0L, $                         ; number of samples to skip
+       seqnum: 0L, $                         ; number of sequences taken
+       tval: make_array(MAX_NAVE,VALUE={unxtmstr, sec:0L, nsec:0L}), $
+                                             ; time of each sequence
+       atten: intarr(MAX_NAVE), $            ; attenuation for each sequence
+       noise: fltarr(MAX_NAVE), $            ; noie for each sequence
+       offset: lonarr(MAX_NAVE), $           ; offset into sample array
+       size: lonarr(MAX_NAVE) $              ; number of words in sample array
+    }
+</pre></td></tr></table>
+</center>
+</body>
+<reference><rfc href="0028.html">RFC #0028</rfc></reference>
+<revision>2008/03/25  Initial Revision.</revision>
+</rfc>

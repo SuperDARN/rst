@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>raw_cp</name>
+<location>src.bin/tk/tool/raw_cp</location>
+
+<syntax>raw_cp --help</syntax>
+<syntax>raw_cp <ar>rawacfnames...</ar></syntax>
+<syntax>raw_cp -old <ar>rawname</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on><ar>rawacfnames</ar></on><od>filenames of the <code>rawacf</code> format files. If this is omitted the file is read from standard input.</od>
+</option>
+<option><on>-old</on><od>files are in the <code>raw</code> (<code>dat</code>) format.</od>
+</option>
+<option><on><ar>rawname</ar></on><od>filename of the <code>raw</code> (<code>dat</code>) format file.</od>
+</option>
+<synopsis><p>Determines the program identifier numbers in <code>rawacf</code> or <code>raw</code> (<code>dat</code>) format files.</p></synopsis>
+<description><p>Determines the program identifier numbers in <code>rawacf</code> or <code>raw</code> (<code>dat</code>) format files.</p>
+<p>The total number of program identifiers followed by a list of the identifier numbers is written to standard output.</p></description>
+
+<example>
+<command>raw_cp -old 20030408.gbr.raw</command>
+<description>Find the program identifier numbers in the <code>raw</code> file "<code>20030408.gbr.raw</code>".</description>
+</example>
+
+</binary>

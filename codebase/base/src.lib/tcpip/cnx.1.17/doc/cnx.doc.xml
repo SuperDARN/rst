@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>base</project>
+<name>cnx</name>
+<location>src.lib/tcpip/cnx</location>
+<function>
+<name>ConnexClose</name>
+<location>src.lib/tcpip/cnx</location>
+<header>base/connex.h</header>
+<syntax>void ConnexClose(int msgin_sock);</syntax>
+
+<description><p>The <fn href="ConnexClose.html">ConnexClose</fn> closes a TCP/IP socket stream connection.</p>
+<p>The file descriptor for the socket connection is given by the argument <ar>msgin_sock</ar></p>
+</description>
+<example type="source">ConnexClose.c</example>
+
+</function>
+<function>
+<name>ConnexOpen</name>
+<location>src.lib/tcpip/cnx</location>
+<header>base/connex.h</header>
+<syntax>int ConnexOpen(char *host,int remote_port);</syntax>
+<description><p>The <fn href="ConnexOpen.html">ConnexOpen</fn> opens a non-blocking TCP/IP socket stream connection.</p>
+<p>The arguments <ar>host</ar> and <ar>remote_port</ar> give the hostname and remote port number to connect to.</p>
+</description>
+<returns>Returns the file descriptor of the socket on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">ConnexOpen.c</example>
+
+
+</function>
+<function>
+<name>ConnexRead</name>
+<location>src.lib/tcpip/cnx</location>
+<header>base/connex.h</header>
+<syntax>int ConnexRead(int num,int *sock,unsigned char **buffer,int *size,int *flag, struct timeval *tmout);</syntax>
+<description><p>The <fn href="ConnexRead.html">ConnexRead</fn> function reads formatted data packets from one or more  TCP/IP socket stream connections.</p>
+<p>The number of open streams to process is given by the argument <ar>num</ar>. The socket file descriptors are given by the array pointed to by the argument <ar>sock</ar>.</p>
+<p>If a data packet can be read from a socket then memory is allocated to store the decoded data. The pointer to the memory buffer is stored in the appropriate element of the array pointed to by the argument <ar>buffer</ar>. The number of bytes of data read is stored in the appropriate element of the array pointed to by the argument <ar>size</ar>. The argument <ar>flag</ar> points to an array that stores a status flag for each stream; if data was received then the flag is set to (1), if no data was received then the flag is set to zero, if an error occurred then the flag is set to (-1).</p>
+<p>The final argument <ar>tmout</ar> is a pointer to a timeout structure that indicates how long the function should block until control is returned. If this argument is set to NULL then the function will block indefinitely until data is received on one of the connections.</p> 
+<p>The memory buffers allocated by the function should be freed when they are no longer required.</p>
+</description>
+<returns>Returns the number of sockets that data has been read from on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">ConnexRead.c</example>
+</function>
+<function>
+<name>ConnexReadIP</name>
+<location>src.lib/tcpip/cnx</location>
+<header>base/connex.h</header>
+<syntax>int ConnexReadIP(int fildes,unsigned char **buffer);</syntax>
+<description><p>The <fn href="ConnexReadIP.html">ConnexReadIP</fn> function reads formatted data packets from a TCP/IP socket stream connection.</p>
+<p>The file descriptor of the socket is given by the argument <ar>fildes</ar>. Memory is allocated to store the decoded data and the pointer to the buffer is stored at the location pointed to by the argument <ar>buffer</ar>.</p> 
+<p>The memory allocated for the data should be freed when it is no longer required.</p>
+</description>
+<returns>Returns the size of the decoded data on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">ConnexReadIP.c</example>
+
+</function>
+<function>
+<name>ConnexReadMem</name>
+<location>src.lib/tcpip/cnx</location>
+<header>base/connex.h</header>
+<syntax>int ConnexReadMem(unsigned char *inbuf,unsigned int insize, unsigned char **buffer);</syntax>
+<description><p>The <fn href="ConnexReadIP.html">ConnexReadIP</fn> function reads formatted data packets from a memory buffer.</p>
+<p>The location of the memory buffer to decode is pointed to by  the argument <ar>inbuf</ar> and the size of the buffer is given by <ar>insize</ar>. Memory is allocated to store the decoded data and the pointer to the buffer is stored at the location pointed to by the argument <ar>buffer</ar>.</p> 
+<p>The memory allocated for the data should be freed when it is no longer required.</p>
+</description>
+<returns>Returns the size of the decoded data on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">ConnexReadMem.c</example>
+
+</function>
+
+<function>
+<name>ConnexWriteIP</name>
+<location>src.lib/tcpip/cnx</location>
+<header>base/connex.h</header>
+<syntax>int ConnexWriteIP(int fildes,unsigned char *buffer,unsigned int size);</syntax>
+<description><p>The <fn href="ConnexWriteIP.html">ConnexReadIP</fn> function writes formatted data packets to a TCP/IP socket stream connection.</p>
+<p>The file descriptor of the socket is given by the argument <ar>fildes</ar>. The data is pointed to by the argument <ar>buffer</ar> and the size in bytes is given by the argument <ar>size</ar>.</p> 
+</description>
+<returns>Returns the size of the data on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">ConnexWriteIP.c</example>
+
+
+</function>
+<function>
+<name>ConnexWriteMem</name>
+<location>src.lib/tcpip/cnx</location>
+<header>base/connex.h</header>
+<syntax>int ConnexWriteMem(unsigned char *outbuf,unsigned int outsize, unsigned char *buffer,unsigned int size);</syntax>
+
+<description><p>The <fn href="ConnexWriteIP.html">ConnexReadIP</fn> function writes formatted data packet to a memory buffer.</p>
+<p>The location of the memory buffer to store the data in is given by the argument <ar>outbuf</ar>, the size of this buffer is given by <ar>outsize</ar>. The data is pointed to by the argument <ar>buffer</ar> and the size in bytes is given by the argument <ar>size</ar>.</p>
+<p>The output buffer must be large enough to store the data.</p> 
+</description>
+<returns>Returns the size of the data on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">ConnexWriteMem.c</example>
+
+</function>
+</library>

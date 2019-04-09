@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<config>
+  <tree>
+     <delim>/</delim>
+     <path>binary</path>
+  </tree>
+
+  <xmldoc>
+    <tagdb type="file">bin.tagdb.xml</tagdb>
+    <root type="env">URLBASE</root>
+    <xml>
+
+      <element>
+      <name>project</name>
+      <default type="text">None</default>
+      </element>
+
+      <element>
+      <name>name</name>  
+      <default type="text">None</default>
+      </element>
+
+      <element>
+      <name>location</name>  
+      <default type="text">None</default>
+      </element>
+
+      <element>
+      <name>syntax</name>  
+      <default type="text">None</default>
+      <action>&xml;&lt;br&gt;</action>
+      </element>
+
+      <element>
+      <name>option</name>  
+      <default type="text"><tr><td>None</td></tr></default>
+      </element>
+
+      <element>
+      <name>synopsis</name>  
+      <default type="text">None</default>
+      </element>
+
+      <element>
+      <name>description</name>  
+      <default type="text">None</default>
+      </element>
+
+      <element>
+      <name>example</name>  
+      <default type="text">None</default>
+      <modifiers>
+         <attr>
+         <name>image</name>
+         <type>text</type>
+         <action>&lt;br&gt;<center><img src="img/&xml;.png"></img>&lt;br&gt;</center>&lt;br&gt;
+         </action>
+         </attr>
+
+         <attr>
+         <name>rplot</name>
+         <type>text</type>
+         <action>&lt;br&gt;<center><img src="img/&xml;.png"></img>&lt;br&gt;</center>
+         </action>
+         </attr>
+      </modifiers>
+  
+      </element>
+
+    </xml>
+  </xmldoc>
+
+  <map>
+
+     <entry>
+        <search>PROJECT</search>
+        <replace>project</replace>
+     </entry>
+
+     <entry>
+        <search>NAME</search>
+        <replace>name</replace>
+     </entry>
+
+     <entry>
+        <search>LOCATION</search>
+        <replace>location</replace>
+     </entry>
+
+     <entry>
+        <search>SYNTAX</search>
+        <replace>syntax</replace>   
+     </entry>
+
+     <entry>
+        <search>SYNOPSIS</search>
+        <replace>synopsis</replace>
+     </entry>
+
+     <entry>
+        <search>OPTION</search>
+        <replace>option</replace>
+     </entry>
+
+     <entry>
+        <search>DESCRIPTION</search>
+        <replace>description</replace>
+     </entry>
+
+     <entry>
+        <search>EXAMPLE</search>
+        <replace>example</replace>
+     </entry>
+
+  </map>
+
+  <external type="file">binname.xml</external>
+   
+  <script type="file">bin.sk</script>
+
+  <match>
+     <element>name</element>
+  </match>
+
+</config>
+
+

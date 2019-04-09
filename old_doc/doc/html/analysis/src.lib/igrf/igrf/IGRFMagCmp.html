@@ -1,0 +1,89 @@
+
+<head>
+<title>IGRFMagCmp</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../analysis/index.html>analysis</a></td>
+<td>|</td><td><a href=../../../../analysis/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../analysis/src.lib/igrf/index.html>igrf</a></td><td>|</td><td><a href=../../../../analysis/src.lib/igrf/igrf/index.html>igrf</a></td><td>|</td>
+<td>IGRFMagCmp</td>
+<td width=100% align=right><a href=../../../../analysis/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">IGRFMagCmp</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">int IGRFMagCmp(double date,double rho,double lat,double lon,double *bx,double *by,double *bz,double *b);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">analysis/magcmp.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">igrf</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="IGRFMagCmp.html"><code>IGRFCall</code></a> function calculates the components of the geomagnetic field according to the International Geomagnetic Reference Field (IGRF) model.</p>
+<p>The argument <em>date</em> is the decimal date used to calculate the field. The arguments <em>lat</em>, <em>lon</em>, and <em>rho</em> give the latitude and longitude in degrees, and the distance from the center of the earth in kilometers at which to calculate the field. The components of the field are stored at the locations pointed to by the arguments <em>bx</em>, <em>by</em>, and <em>bz</em> in local south/east/vertical coordinates and units of nT; the magnitude of the field is stored at the location pointed to by the argument <em>b</em>.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns zero on success. On error, a (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, a (-1) is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/IGRFMagCmp.c">IGRFMagCmp.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* IGRFMagCmp.c
+   ==========
+   Author: R.J.Barnes
+*/
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &quot;magcmp.h&quot;
+
+int main() {
+
+   double dte=1997.0;
+   double lat=83.0;
+   double lon=110.0;
+   double rho=6400.0;
+
+   double x,y,z,m;
+ 
+   fprintf(stdout,&quot;lat=%g lon=%g rho=%g&apos;n&quot;,lat,lon,rho);
+ 
+   IGRFMagCmp(dte,rho,lat,lon,&amp;x,&amp;y,&amp;z,&amp;m);
+
+   fprintf(stdout,&quot;x=%g y=%g z=%g m=%g&apos;n&quot;,x,y,z,m);
+
+ 
+   return 0;
+}
+
+ 
+</pre></td></tr></table><br></td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+
