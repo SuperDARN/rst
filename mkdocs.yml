@@ -1,6 +1,0 @@
-site_name: RST Documentation
-pages: 
-    - Home: README.md
-nav: 
-    - Home: index.md
-    - About: about.md
