@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>make_rawinx</name>
+<location>src.bin/tk/tool/make_rawinx</location>
+
+<syntax>make_rawinx --help</syntax>
+<syntax>make_rawinx [-vb] [<ar>rawacfname</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on><ar>rawacfname</ar></on><od>filename of the <code>rawacf</code> format file. If this is omitted the file is read from standard input.</od>
+</option>
+<synopsis><p>Creates an index of a <code>rawacf</code> format file.</p></synopsis>
+<description><p>Creates an index of a <code>rawacf</code> format file.</p>
+<p>The index is written to standard output.</p>
+<p>Index files cannot be created for <code>raw</code> (<code>dat</code>) format files.</p></description>
+
+<example>
+<command>make_rawinx 20040830.gbr.rawacf &gt; 20040830.gbr.rawinx</command>
+<description>Create an index file for the <code>rawacf</code> format file "<code>20040830.gbr.rawacf</code>". The index is writen to the file "<code>20040830.gbr.rawinx</code>".</description>
+</example>
+
+</binary>

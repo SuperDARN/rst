@@ -1,0 +1,131 @@
+
+
+<head>
+<title>struct PostScript</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href=../../../../base/index.html>base</a></td>
+<td>|</td><td><a href=../../../../base/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/index.html>graphic</a></td><td>|</td><td><a href=../../../../base/src.lib/graphic/ps/index.html>ps</a></td><td>|</td>
+<td>PostScript</td>
+<td width=100% align=right><a href=../../../../base/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">PostScript</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">base/rps.h</td></tr>
+<tr><td class="docsubtitle">Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">rps</a></tr>
+<tr><td class="docsubtitle" valign=top>Members</td></tr>
+<tr><td></td><td width=80% class="docbox"><table>
+
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int cnt;</font></td>
+      <td valign="top">Counter indicating the number of strokes in the current path.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">float x;</font></td>
+      <td valign="top">Offset from left edge of the page.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">float y;</font></td>
+      <td valign="top">Offset from the top of the page.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">float wdt;</font></td>
+      <td valign="top">Width of the plot.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">float hgt;</font></td>
+      <td valign="top">Height of the plot.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int land;</font></td>
+      <td valign="top">Flag indicating whether the plot is landscape or portrait. A non-zero value indicates landscape</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int pagenum;</font></td>
+      <td valign="top">Page number.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">float width;</font></td>
+      <td valign="top">Width of the current stroke.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">unsigned int color;</font></td>
+      <td valign="top">Color of the current stroke.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier"><a href="structPostScriptDash.html"><code>struct PostScriptDash</code></a> *dash;</font></td>
+      <td valign="top">Dash pattern of the current stroke.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier"><a href="structPostScriptClip.html"><code>struct PostScriptClip</code></a> *clip;</font></td>
+      <td valign="top">Clipping polygon of the current stroke.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">float px;</font></td>
+      <td valign="top">X coordinate of the current stroke.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">float py;</font></td>
+      <td valign="top">Y coordinate of the current stroke.</td>
+    </tr>
+
+    <tr>
+      <td><font size=-1 face="courier"><b>struct {</b></font></td></tr>
+         <tr>
+           <td valign="top"><font size=-1 face="courier">int (*user)(char *buf,int sze,void *data);</font></td>
+           <td valign="top">Function called to handle the text stream.</td>
+         </tr>
+         <tr>
+           <td valign="top"><font size=-1 face="courier">void *data;</font></td>
+           <td valign="top">Pointer to a block of memory passed as the last argument to the text stream handler.</td>
+         </tr>
+       </tr><tr><td><font size=-1 face="courier"><b>}</b></font></td></tr><tr>
+       <td valign="top"><font size=-1 face="courier">text;</font></td>
+       <td valign="top">Text stream handler.</td>
+    </tr>
+
+  </table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td>
+  <p>The <a href="structPostScript.html"><code>struct PostScript</code></a> structure stores a control structure for an PostScript plot.</p>
+  </tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+</div>
+
+</body>
+
+
+

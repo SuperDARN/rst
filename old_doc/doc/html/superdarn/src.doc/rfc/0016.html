@@ -1,0 +1,128 @@
+<head>
+<title>grdmap DataMap variables definitions</title>
+<link rel=stylesheet href=../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table class="location"><tr>
+<td><a href="../../../index.html">Home</a><td>|</td>
+<td><a href=../../../superdarn/index.html>superdarn</a></td><td>|</td>
+<td><a href=../../../superdarn/src.doc/rfc/index.html>rfc</a></td><td>|</td>
+<td>RFC0016</td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">RFC: 0016</h2>
+<table>
+<tr><td class="docsubtitle" valign=top><h3>Title</h3></td></tr>
+<tr><td></td><td>
+<b>grdmap DataMap variables definitions</b>
+</td></tr>
+
+<tr><td class="docsubtitle" valign=top><h3>Author</h3></td></tr>
+<tr><td></td><td>
+<b>R.J.Barnes</b>
+</td></tr>
+
+
+<tr><td class="docsubtitle"><h3>Summary</h3></td></tr>
+<tr><td></td><td>
+<p>A description of the variables stored in a grdmap DataMap file.</p>
+</td></tr>
+<tr><td class="docsubtitle"><h3>Description</h3></td></tr>
+<tr><td></td><td>
+
+<h4>1. Introduction</h4>
+<p>The grdmap files are stored using the DataMap self-describing file format. Listed here are the variable names and definitions.</p>
+<h4>2. Scalars</h4>
+<p>The scalar components of the grdmap file format are listed below:</p> 
+<center>
+<table cellspacing="3" bgcolor="e0e0e0">
+<tr><td><b>Variable Name</b></td><td><b>Data Type</b></td><td><b>Description</b></td></tr>
+<tr><td>start.time.yr</td><td>short</td><td>Start year.</td></tr>
+<tr><td>start.time.mo</td><td>short</td><td>Start month.</td></tr>
+<tr><td>start.time.dy</td><td>short</td><td>Start day.</td></tr>
+<tr><td>start.time.hr</td><td>short</td><td>Start hour.</td></tr>
+<tr><td>start.time.mt</td><td>short</td><td>Start minute.</td></tr>
+<tr><td>end.time.sc</td><td>double</td><td>End second.</td></tr>
+<tr><td>end.time.yr</td><td>short</td><td>End year.</td></tr>
+<tr><td>end.time.mo</td><td>short</td><td>End month.</td></tr>
+<tr><td>end.time.dy</td><td>short</td><td>End day.</td></tr>
+<tr><td>end.time.hr</td><td>short</td><td>End hour.</td></tr>
+<tr><td>end.time.mt</td><td>short</td><td>End minute.</td></tr>
+<tr><td>end.time.sc</td><td>double</td><td>End second.</td></tr>
+</table>
+</center>
+
+<h4>2. Arrays</h4>
+<p>The Array components of the grdmap file format are listed below:</p> 
+<center>
+<table cellspacing="3" bgcolor="e0e0e0">
+<tr><td><b>Variable Name</b></td><td><b>Data Type</b></td><td><b>Dimensions</b></td><td><b>Description</b></td></tr>
+<tr><td>stid[<em>stnum</em>]</td><td>short</td><td><em>stnum</em></td><td>Station Identifiers.</td></tr>
+<tr><td>channel[<em>stnum</em>]</td><td>short</td><td><em>stnum</em></td><td>Channel Numbers.</td></tr>
+<tr><td>nvec[<em>stnum</em>]</td><td>short</td><td><em>stnum</em></td><td>number of vectors per station.</td></tr>
+<tr><td>freq[<em>stnum</em>]</td><td>float</td><td><em>stnum</em></td><td>Operating frequencies.</td></tr>
+<tr><td>major.revision[<em>stnum</em>]</td><td>short</td><td><em>stnum</em></td><td>Algorithm major revisions.</td></tr>
+<tr><td>minor.revision[<em>stnum</em>]</td><td>short</td><td><em>stnum</em></td><td>Algorithm minor revisions.</td></tr>
+<tr><td>program.id[<em>stnum</em>]</td><td>short</td><td><em>stnum</em></td><td>Program Identifiers.</td></tr>
+<tr><td>noise.mean[<em>stnum</em>]</td><td>float</td><td><em>stnum</em></td><td>Mean noises.</td></tr>
+<tr><td>noise.sd[<em>stnum</em>]</td><td>float</td><td><em>stnum</em></td><td>Noise standard-deviations.</td></tr>
+<tr><td>gsct[<em>stnum</em>]</td><td>short</td><td><em>stnum</em></td><td>Ground scatter component.</td></tr>
+<tr><td>v.min[<em>stnum</em>]</td><td>float</td><td><em>stnum</em></td><td>Velocity minimum thresholds.</td></tr>
+<tr><td>v.max[<em>stnum</em>]</td><td>float</td><td><em>stnum</em></td><td>Velocity maximum thresholds.</td></tr>
+<tr><td>p.min[<em>stnum</em>]</td><td>float</td><td><em>stnum</em></td><td>Power minimum thresholds.</td></tr>
+<tr><td>p.max[<em>stnum</em>]</td><td>float</td><td><em>stnum</em></td><td>Power maximum thresholds.</td></tr>
+<tr><td>w.min[<em>stnum</em>]</td><td>float</td><td><em>stnum</em></td><td>Spectral width minimum thresholds.</td></tr>
+<tr><td>w.max[<em>stnum</em>]</td><td>float</td><td><em>stnum</em></td><td>Spectral width maximum thresholds.</td></tr>
+<tr><td>ve.min[<em>stnum</em>]</td><td>float</td><td><em>stnum</em></td><td>Velocity error minimum thresholds.</td></tr>
+<tr><td>ve.max[<em>stnum</em>]</td><td>float</td><td><em>stnum</em></td><td>Velocity error maximum thresholds.</td></tr>
+
+<tr><td>vector.mlat[<em>vcnum</em>]</td><td>float</td><td><em>vcnum</em></td><td>Magnetic Latitudes.</td></tr>
+<tr><td>vector.mlon[<em>vcnum</em>]</td><td>float</td><td><em>vcnum</em></td><td>Magnetic Longitudes.</td></tr>
+<tr><td>vector.kvect[<em>vcnum</em>]</td><td>float</td><td><em>vcnum</em></td><td>Magnetic Azimuths.</td></tr>
+<tr><td>vector.stid[<em>vcnum</em>]</td><td>short</td><td><em>vcnum</em></td><td>Vector station identifier.</td></tr>
+<tr><td>vector.channel[<em>vcnum</em>]</td><td>short</td><td><em>vcnum</em></td><td>Vector channel.</td></tr>
+<tr><td>vector.index[<em>vcnum</em>]</td><td>int</td><td><em>vcnum</em></td><td>Grid indices.</td></tr>
+<tr><td>vector.vel.median[<em>vcnum</em>]</td><td>float</td><td><em>vcnum</em></td><td>Velocity medians.</td></tr>
+<tr><td>vector.vel.sd[<em>vcnum</em>]</td><td>float</td><td><em>vcnum</em></td><td>Velocity standard deviations.</td></tr>
+<tr><td>vector.pwr.median[<em>vcnum</em>]</td><td>float</td><td><em>vcnum</em></td><td>Power medians.</td></tr>
+<tr><td>vector.pwr.sd[<em>vcnum</em>]</td><td>float</td><td><em>vcnum</em></td><td>Power standard deviations.</td></tr>
+<tr><td>vector.wdt.median[<em>vcnum</em>]</td><td>float</td><td><em>vcnum</em></td><td>Spectral width medians.</td></tr>
+<tr><td>vector.wdt.sd[<em>vcnum</em>]</td><td>float</td><td><em>vcnum</em></td><td>Spectral width standard deviations.</td></tr>
+</table>
+</center>
+<p>A grdmap file consists a number of vectors, <em>vcnum</em>, the vectors come from a number of individual staitons, <em>stnum</em>. The file contains arrays containing the operating and processing parameters of each station and arrays that containing data for each vector.</p>
+<p>The arrays <code>vector.pwr.median,vector.pwr.sd,vector.wdt.median</code> and <code>vector.wdt.sd</code> are only included in extended format grdmap files</p>
+
+</td></tr>
+<tr><td class="docsubtitle"><h3>References</h3></td></tr>
+<tr><td></td><td>
+<a href="0006.html">RFC #0006</a><br>
+</td></tr>
+<tr><td class="docsubtitle"><h3>History</h3></td></tr>
+<tr><td></td><td>
+2004/07/29  Initial Revision.<br>
+</td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+
+</body>
+
+
+

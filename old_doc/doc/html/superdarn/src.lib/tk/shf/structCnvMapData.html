@@ -1,0 +1,245 @@
+
+
+<head>
+<title>struct CnvMapData</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href=../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../superdarn/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/shf/index.html>shf</a></td><td>|</td>
+<td>CnvMapData</td>
+<td width=100% align=right><a href=../../../../superdarn/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">CnvMapData</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">superdarn/cnvmap.h</td></tr>
+<tr><td class="docsubtitle">Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">shf</a></tr>
+<tr><td class="docsubtitle" valign=top>Members</td></tr>
+<tr><td></td><td width=80% class="docbox"><table>
+
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int major_rev;</font></td>
+      <td valign="top">Major revision number.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int minor_rev;</font></td>
+      <td valign="top">Minor revision number.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">char source[256];</font></td>
+      <td valign="top">Source of the data file.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double st_time;</font></td>
+      <td valign="top">Start time of the data, specified as seconds from 0:00UT January 1, 1970.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double ed_time;</font></td>
+      <td valign="top">End time of the data, specified as seconds from 0:00UT January 1, 1970.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int num_model;</font></td>
+      <td valign="top">?</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int doping_level;</font></td>
+      <td valign="top">Model doping level.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int model_wt;</font></td>
+      <td valign="top">Model weighting.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int error_wt;</font></td>
+      <td valign="top">Error weighting.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int imf_flag;</font></td>
+      <td valign="top">IMF availability flag.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int imf_delay;</font></td>
+      <td valign="top">IMF delay in minutes.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double Bx;</font></td>
+      <td valign="top">IMF Bx component.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double By;</font></td>
+      <td valign="top">IMF By component.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double Bz;</font></td>
+      <td valign="top">IMF Bz component.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">char imf_model[2][64];</font></td>
+      <td valign="top">?</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int hemisphere;</font></td>
+      <td valign="top">Hemisphere flag.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int fit_order;</font></td>
+      <td valign="top">Order of fit.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double latmin;</font></td>
+      <td valign="top">Lower latitude boundary.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int num_coef;</font></td>
+      <td valign="top">?</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double *coef;</font></td>
+      <td valign="top">?</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double chi_sqr;</font></td>
+      <td valign="top">True chi-squared error.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double chi_sqr_dat;</font></td>
+      <td valign="top">Chi-squared error for data only.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double rms_err;</font></td>
+      <td valign="top">RMS error.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double lon_shft;</font></td>
+      <td valign="top">Longitudinal pole shift.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double lat_shft;</font></td>
+      <td valign="top">Latitudinal pole shift.</td>
+    </tr>
+
+    <tr>
+      <td><font size=-1 face="courier"><b>struct {</b></font></td></tr>
+        <tr>
+          <td valign="top"><font size=-1 face="courier">double start;</font></td>
+          <td valign="top">MLT at start of record.</td>
+        </tr>
+        <tr>
+          <td valign="top"><font size=-1 face="courier">double end;</font></td>
+          <td valign="top">MLT at end of record.</td>
+        </tr>
+        <tr>
+          <td valign="top"><font size=-1 face="courier">double av;</font></td>
+          <td valign="top">MLT at middle of record.</td>
+        </tr>
+      </tr><tr><td><font size=-1 face="courier"><b>}</b></font></td></tr><tr>
+      <td valign="top"><font size=-1 face="courier">mlt;</font></td>
+      <td valign="top">?</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double pot_drop;</font></td>
+      <td valign="top">Cross polar-cap potential drop.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double pot_drop_err;</font></td>
+      <td valign="top">Cross polar-cap potential drop error.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double pot_max;</font></td>
+      <td valign="top">Maximum polar-cap potential.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double pot_max_err;</font></td>
+      <td valign="top">Maximum polar-cap potential error.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double pot_min;</font></td>
+      <td valign="top">Minimum polar-cap potential.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double pot_min_err;</font></td>
+      <td valign="top">Minimum polar-cap potential error.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier"><a href="../../../../superdarn/src.lib/tk/grid/structGridGVec.html"><code>struct GridGVec</code></a> *model;</font></td>
+      <td valign="top">?</td>
+    </tr>
+    
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int num_bnd;</font></td>
+      <td valign="top">?</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double *bnd_lat;</font></td>
+      <td valign="top">Magnetic latitudes of the lower latitude boundary.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double *bnd_lon;</font></td>
+      <td valign="top">Magnetic longitudes of the lower latitude boundary.</td>
+    </tr>
+
+  </table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td>
+  <p>The <a href="structCnvMapData.html"><code>struct CnvMapData</code></a> structure stores ?.</p>
+  </tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+</div>
+
+</body>
+
+
+

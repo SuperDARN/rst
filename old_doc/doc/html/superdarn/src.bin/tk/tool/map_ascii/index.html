@@ -1,0 +1,76 @@
+<head>
+<title>map_ascii</title>
+<link rel=stylesheet href="../../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../../superdarn/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/tool/index.html>tool</a></td><td>|</td>
+<td>map_ascii</td>
+<td width=100% align=right><a href=../../../../../superdarn/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">map_ascii</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+map_ascii --help<br>map_ascii [-vb] [-old] [-sd <em>yyyymmdd</em>] [-st <em>hr:mn</em>] [-ed <em>yyyymmdd</em>] [-et <em>hr:mn</em>] [-ex <em>hr:mn</em>] <em>name</em><br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Calculate the derived potential from a section of a <code>map</code> format file and produce a plain ASCII text file as output.\n</p>
+<p>The output format header is: <code>(start timestamp) (end timestamp) (minimum magnetic lat)\n</p>
+<p>(Number of grid points)</code>\n\n</p>
+<p>where the timestamps have a format of: <code>year month day hour minute second</code>\n\n</p>
+<p>The output data arrays is: <code>(potential at that point) (count/flag for data point) (geographic lat) (geographic lon) (magnetic lat) (magnetic lon) (magnetic local time)\n</code></p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-vb</code></td><td valign="top">verbose. Log information to the console.</td></tr>
+<tr><td width="150" valign="top"><code>-old</code></td><td valign="top">the input file is a <code>map</code> format file.</td></tr>
+<tr><td width="150" valign="top"><code>-old_aacgm</code></td><td valign="top">uses the older AACGM software and coefficients. The default is to use AACGM-v2.</td></tr>
+<tr><td width="150" valign="top"><code>-sd <em>yyyymmdd</em></code></td><td valign="top">extract starting from the date <em>yyyymmdd</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-st <em>hr:mn</em></code></td><td valign="top">extract starting from the time <em>hr:mn</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-ed <em>yyyymmdd</em></code></td><td valign="top">stop extracting at the date <em>yyyymmdd</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-et <em>hr:mn</em></code></td><td valign="top">stop extracting at the time <em>hr:mn</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-ex <em>hr:mn</em></code></td><td valign="top">extract an interval whose extent is <em>hr:mn</em>.</td></tr>
+<tr><td width="150" valign="top"><code><em>name</em></code></td><td valign="top">filename of the <code>cnvmap</code> format file to trim. If this is omitted, the file is read from standard input.</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Calculate the derived potential from a section of a <code>map</code> format file and produce a plain ASCII text file as output.</p>
+<p>The file is written to standard output</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">map_ascii -old 20030405.map &gt; 20030405.txt</pre></td></tr></table>
+<p>Generate a plain ASCII, derived potential file from the file "<code>20030405.map</code>". The potentials are stored in the file "<code>20030405.txt</code>".</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

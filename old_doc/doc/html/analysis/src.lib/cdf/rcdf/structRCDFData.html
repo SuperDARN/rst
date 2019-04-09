@@ -1,0 +1,86 @@
+
+
+<head>
+<title>struct RCDFData</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href=../../../../analysis/index.html>analysis</a></td>
+<td>|</td><td><a href=../../../../analysis/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../analysis/src.lib/cdf/index.html>cdf</a></td><td>|</td><td><a href=../../../../analysis/src.lib/cdf/rcdf/index.html>rcdf</a></td><td>|</td>
+<td>RCDFData</td>
+<td width=100% align=right><a href=../../../../analysis/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">RCDFData</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">analysis/rcdf.h</td></tr>
+<tr><td class="docsubtitle">Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">rcdf</a></tr>
+<tr><td class="docsubtitle" valign=top>Members</td></tr>
+<tr><td></td><td width=80% class="docbox"><table>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">char name[CDF_VAR_NAME_LEN+1];</font></td>
+      <td valign="top">CDF variable name.</td>
+    </tr>
+    <tr>
+      <td valign="top"><font size=-1 face="courier">CDFstatus status;</font></td>
+      <td valign="top">status reported by the read operation.</td>
+   </tr>
+   <tr>
+      <td valign="top"><font size=-1 face="courier">int num;</font></td>
+      <td valign="top">variable number.</td>
+   </tr>
+   <tr>
+      <td valign="top"><font size=-1 face="courier">int type;</font></td>
+      <td valign="top">variable type.</td>
+   </tr>
+   <tr>
+      <td valign="top"><font size=-1 face="courier">int numdim;</font></td>
+      <td valign="top">number of dimensions.</td>
+   </tr>
+   <tr>
+      <td valign="top"><font size=-1 face="courier">int var[CDF_MAX_DIMS];</font></td>
+      <td valign="top">dimension variances.</td>
+   </tr>
+   <tr>
+      <td valign="top"><font size=-1 face="courier">int dim[CDF_MAX_DIMS];</font></td>
+      <td valign="top">dimension sizes.</td>
+   </tr>
+   <tr>
+      <td valign="top"><font size=-1 face="courier">int size;</font></td>
+      <td valign="top">size of data buffer in bytes.</td>
+   </tr>
+   <tr>
+      <td valign="top"><font size=-1 face="courier">void *data;</font></td>
+      <td valign="top">buffer containing the variable data.</td>
+   </tr>
+  </table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td>
+<p>The <a href="structRCDFData.html"><code>struct RCDFData</code></a> structure stores a CDF variable.</p>
+</tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+</div>
+
+</body>
+
+
+

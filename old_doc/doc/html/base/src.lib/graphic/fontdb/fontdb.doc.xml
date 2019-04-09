@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>base</project>
+<name>fontdb</name>
+<location>src.lib/graphic/fontdb</location>
+
+<function>
+<name>FrameBufferFontDBFind</name>
+<location>src.lib/graphic/fontdb</location>
+<header>base/fontdb.h</header>
+<syntax><sn href="structFrameBufferFontDB.html">struct FrameBufferFontDB</sn> *FrameBufferFontDBFind(<sn href="structFrameBufferFontDB.html">struct FrameBufferFontDB</sn> *ptr,char *name,int sze);</syntax>
+<description><p>The <fn href="FrameBufferFontDBFind.html">FrameBufferFontDBFind</fn> function attempts to locate a bitmap font in a font database.</p>
+<p>The structure containing the font database is pointed to by the argument <ar>ptr</ar>.</p>
+<p>The name of the font to search for is given by the zero terminated string pointed to by the argument <ar>name</ar> and the size of the font is given by the argument <ar>sze</ar>.</p>
+</description>
+<returns>Returns a pointer to the structure containing the bitmap font on success. On error a <code>NULL</code> pointer is returned.</returns>
+<errors>On error a <code>NULL</code> pointer is returned.</errors>
+<example type="image">FrameBufferFontDBFind</example>
+<example type="source">FrameBufferFontDBFind.c</example>
+</function>
+
+<function>
+<name>FrameBufferFontDBFree</name>
+<location>src.lib/graphic/fontdb</location>
+<header>base/fontdb.h</header>
+<syntax>void FrameBufferFontDBFree(<sn href="structFrameBufferFontDB.html">struct FrameBufferFontDB</sn> *ptr);</syntax>
+<description><p>The <fn href="FrameBufferFontDBFree.html">FrameBufferFontDBFree</fn> function releases memory allocated to store a font database.</p>
+<p>The structure containing the font database is pointed to by the argument <ar>ptr</ar>.</p>
+</description>
+<example type="image">FrameBufferFontDBFree</example>
+<example type="source">FrameBufferFontDBFree.c</example>
+</function>
+
+<function>
+<name>FrameBufferFontDBLoad</name>
+<location>src.lib/graphic/fontdb</location>
+<header>base/fontdb.h</header>
+<syntax><sn href="structFrameBufferFontDB.html">struct FrameBufferFontDB</sn> *FrameBufferFontDBLoad(FILE *fp);</syntax>
+<description><p>The <fn href="FrameBufferFontDBLoad.html">FrameBufferFontDBLoad</fn> function loads a font database from an open stream into memory.</p>
+<p>The database is read from the open stream pointed to by the argument <ar>fp</ar>.</p>
+</description>
+<returns>Returns a pointer to the structure containing the database on success. On error a <code>NULL</code> pointer is returned.</returns>
+<errors>On error a <code>NULL</code> pointer is returned.</errors>
+<example type="image">FrameBufferFontDBLoad</example>
+<example type="source">FrameBufferFontDBLoad.c</example>
+</function>
+
+
+
+<structure>
+  <name>FrameBufferFontDB</name>
+  <location>src.lib/graphic/fontdb</location>
+  <header>base/fontdb.h</header>
+  <struct>
+
+    <member>
+      <proto>char *path;</proto>
+      <description>Pathname of the directory containing the font files.</description>
+    </member>
+
+    <member>
+      <proto>char *buf;</proto>
+      <description>Internal buffer used to deproto the database.</description>
+    </member>
+
+    <member>
+      <proto>int flg;</proto>
+      <description>Internal flag used to deproto the database.</description>
+    </member>
+
+    <member>
+      <proto>int num;</proto>
+      <description>Number of fonts in the datbase.</description>
+    </member>
+
+    <member>
+      <proto><sn href="&root;/base/src.lib/graphic/fbuffer/structFrameBufferFont.html">struct FrameBufferFont</sn> **font;</proto>
+      <description>Pointer to an array of strcutures containing the bit map fonts.</description>
+    </member>
+
+    <member>
+      <proto><sn href="&root;/base/src.lib/graphic/fbuffer/structFrameBufferFont.html">struct FrameBufferFont</sn> *dfont;</proto>
+      <description>Default font to use if no match is found.</description>
+    </member>
+
+   </struct>
+
+  <description>
+  <p>The <sn href="structFrameBufferFontDB.html">struct FrameBufferFontDB</sn> structure stores a font database.</p>
+  </description>
+
+</structure>
+
+</library>

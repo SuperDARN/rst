@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>combine_grid</name>
+<location>src.bin/tk/tool/combine_grid</location>
+
+<syntax>combine_grid --help</syntax>
+<syntax>combine_grid [-vb] [-r] <ar>gridnames...</ar></syntax>
+<syntax>combine_grid -old [-vb] [-r] <ar>gridnames...</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-r</on><od>combine with replacement.
+As each input record is combined together to form the output, a check is made to see if any of the data is from a station already included. If a duplicate set of vectors is found they will replace the existing vectors in the output.</od>
+</option>
+<option><on><ar>gridnames</ar></on><od>filenames of the <code>grdmap</code> format files.</od>
+</option>
+<option><on>-old</on><od>the input files are in the <code>grd</code> format file.</od>
+</option>
+<synopsis><p>Combines together grid files.</p></synopsis>
+<description><p>Combines together multiple grid files to produce a single file written to standard output.</p>
+<p>By default the output record is the simple combination of all of the input records. If two records contain data from the identical station, the two sets of vectors are both included in the output record.</p> 
+<p>The "<code>-r</code>" option combines with replacement so that as each input record is processed, a check is made to see if any of the vectors are from a station that has already been included. Any duplicate vectors replace the existing data in the output file.</p> 
+<p>This option is most useful when dealing with a grid file containing data from one station that is contaminated with noise. Rather than having to reprocess the entire file, the user can regenerate a new grid file for the affected station and then use the combine with replacement option to replace it in the existing grid file.</p>
+<p>The resultant file is written to standard output.</p>
+</description>
+
+<example>
+<command>combine_grid -old -vb 19981020.???.grd &gt; 19981020.grd</command>
+<description>Combines together all files called "<code>19981020.???.grd</code>" to produce a file called "<code>19981020.grd</code>". The status is logged to standard error.</description>
+</example>
+
+<example>
+<command>combine_grid -vb -r 19991120.grdmap 19991120.gbr.grdmap &gt; 19991120.2.grdmap</command>
+<description>Combines with replacement the file "<code>19991120.grdmap</code>" and "<code>19991120.gbr.grdmap</code>" to produce the output file "<code>19991120.2.grdmap</code>".</description>
+</example>
+
+</binary>

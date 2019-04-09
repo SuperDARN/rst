@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>superdarn</project>
+<name>oldgrid</name>
+<location>src.lib/tk/oldgrid</location>
+
+<function>
+<name>OldGridFread</name>
+<location>src.lib/tk/oldgrid</location>
+<header>superdarn/oldgridread.h</header>
+<syntax>int OldGridFread(FILE *fp,<sn href="&root;/superdarn/src.lib/tk/grid/structGridData.html">struct GridData</sn> *ptr);</syntax>
+<description><p>The <fn href="OldGridFread.html">OldGridFread</fn> function reads old formatted gridded data from an open stream.</p>
+<p>The gridded data is read from the open stream pointed to by the argument <ar>fp</ar>. The gridded data is stored in the structure pointed to by the argument <ar>grd</ar>.</p>
+</description>
+<returns>Returns the number of bytes used to store the convection map on success. On error, (-1) is returned.</returns>
+<example type="source">OldGridFread.c</example>
+</function>
+
+<function>
+<name>OldGridFseek</name>
+<location>src.lib/tk/oldgrid</location>
+<header>superdarn/oldgridread.h</header>
+<syntax>int OldGridFseek(FILE *fp, int yr,int mo,int dy,int hr,int mt,int sc,<sn href="&root;/general/src.lib/rfile/structRfileIndex.html">struct RfileIndex</sn> *inx,double *aval);</syntax>
+<description><p>The <fn href="OldGridFseek.html">OldGridFseek</fn> function searches for old formatted gridded data for a specific time.</p>
+<p>The search is performed on the open stream pointed to by the argument <ar>fp</ar>. The time to search for is specified by the arguments <ar>yr</ar>, <ar>mo</ar>,<ar>dy</ar>,<ar>hr</ar>,<ar>mt</ar>,<ar>sc</ar> giving the year, month, day, hour, minute and second.</p>
+<p>The argument <ar>atme</ar> is a pointer to a double precision floating point number that is used to store the time of the closest record to the time requested expressed in seconds from 0:00UT January 1, 1970. If this argument is set to a <code>NULL</code> pointer then the time is not returned.</p>  
+<p>If the file containing the gridded data has an associated index that has been loaded, then it can be used to speed up the search by setting the argument <ar>inx</ar> to point to it.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldGridFseek.c</example>
+</function>
+
+<function>
+<name>OldGridFwrite</name>
+<location>src.lib/tk/oldgrid</location>
+<header>superdarn/oldgridwrite.h</header>
+<syntax>int OldGridFwrite(FILE *fp,<sn href="&root;/superdarn/src.lib/tk/grid/structGridData.html">struct GridData</sn> *ptr);</syntax>
+<description><p>The <fn href="OldGridFwrite.html">OldGridFwrite</fn> function writes a old formatted gridded data to an open stream.</p>
+<p>The data is written to the open stream pointed to by the argument <ar>fp</ar>.</p>
+<p>The gridded data is taken from the structure pointed to by the argument <ar>grd</ar>.</p>
+</description>
+<returns>Returns the number of bytes written on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+<example type="source">OldGridFwrite.c</example>
+</function>
+</function>
+
+</library>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>rawstat</name>
+
+<location>src.bin/tk/tool/rawstat</location>
+<syntax>rawstat --help</syntax>
+<syntax>rawstat <ar>rawacfnames...</ar></syntax>
+<syntax>rawstat -old [<ar>rawname</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on><ar>rawacfnames</ar></on><od>filenames of the <code>rawacf</code> format files.</od>
+</option>
+<option><on>-old</on><od>files are in the <code>raw</code> format.</od>
+</option>
+<option><on><ar>rawname</ar></on><od>filename of the <code>raw</code> format file.</od>
+</option>
+<synopsis><p>Generates statistics on <code>raw</code> or <code>rawacf</code> format files. The statistics give the start and end time of the file, the station identifier and the number records in the file</p></synopsis>
+<description><p>Generates statistics on <code>raw</code> or <code>rawacf</code> format files.  </p>
+<p>The contents are written to standard output</p>
+</description>
+
+<example>
+<command>rawstat -old 20040830.gbr.raw</command>
+<description>Generate statistics from the file "<code>20040830.gbr.raw</code>".</description>
+</example>
+
+</binary>

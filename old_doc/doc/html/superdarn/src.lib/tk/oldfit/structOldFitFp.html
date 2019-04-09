@@ -1,0 +1,146 @@
+
+
+<head>
+<title>struct OldFitFp</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href=../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../superdarn/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/oldfit/index.html>oldfit</a></td><td>|</td>
+<td>OldFitFp</td>
+<td width=100% align=right><a href=../../../../superdarn/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">OldFitFp</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">superdarn/oldfitread.h</td></tr>
+<tr><td class="docsubtitle">Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">oldfit</a></tr>
+<tr><td class="docsubtitle" valign=top>Members</td></tr>
+<tr><td></td><td width=80% class="docbox"><table>
+
+
+  <tr>
+      <td valign="top"><font size=-1 face="courier">int fitfp;</font></td>
+      <td valign="top">File descriptor for the data file.</td>
+  </tr>
+ 
+ <tr>
+      <td valign="top"><font size=-1 face="courier">int inxfp;</font></td>
+      <td valign="top">File descriptor for the index file.</td>
+ </tr>
+
+  <tr>
+      <td valign="top"><font size=-1 face="courier">int fit_recl;</font></td>
+      <td valign="top">Size of a record in the data.</td>
+  </tr>
+
+ <tr>
+      <td valign="top"><font size=-1 face="courier">int inx_recl;</font></td>
+      <td valign="top">Size of a record in the index file.</td>
+  </tr>
+
+
+  <tr>
+      <td valign="top"><font size=-1 face="courier">struct stat rstat;</font></td>
+      <td valign="top">File status for the data file.</td>
+  </tr>
+
+  <tr>
+      <td valign="top"><font size=-1 face="courier">struct stat istat;</font></td>
+      <td valign="top">File status for the index file.</td>
+  </tr>
+
+  <tr>
+      <td valign="top"><font size=-1 face="courier">int blen;</font></td>
+      <td valign="top">Number of blocks in the current record.</td>
+  </tr>
+
+  <tr>
+      <td valign="top"><font size=-1 face="courier">int inx_srec;</font></td>
+      <td valign="top">Start record in index file.</td>
+  </tr>
+
+  <tr>
+      <td valign="top"><font size=-1 face="courier">int inx_erec;</font></td>
+      <td valign="top">End record in index file.</td>
+  </tr>
+
+ <tr>
+      <td valign="top"><font size=-1 face="courier">double ctime;</font></td>
+      <td valign="top">Current record time of the file, specified as seconds from 0:00UT January 1, 1970.</td>
+  </tr>
+
+ <tr>
+      <td valign="top"><font size=-1 face="courier">double stime;</font></td>
+      <td valign="top">Start time of the file, specified as seconds from 0:00UT January 1, 1970.</td>
+  </tr>
+
+ <tr>
+      <td valign="top"><font size=-1 face="courier">double etime;</font></td>
+      <td valign="top">End time of the file, specified as seconds from 0:00UT January 1, 1970.</td>
+  </tr>
+
+  <tr>
+      <td valign="top"><font size=-1 face="courier">int time;</font></td>
+      <td valign="top">(Redundant).</td>
+  </tr>
+
+  <tr>
+      <td valign="top"><font size=-1 face="courier">char header[80];</font></td>
+      <td valign="top">Header record.</td>
+  </tr>
+
+   <tr>
+      <td valign="top"><font size=-1 face="courier">char date[32];</font></td>
+      <td valign="top">Creation date.</td>
+  </tr>
+
+  <tr>
+      <td valign="top"><font size=-1 face="courier">char extra[256];</font></td>
+      <td valign="top">Extra information recorded in the header.</td>
+  </tr>
+
+ <tr>
+      <td valign="top"><font size=-1 face="courier">int major_rev;</font></td>
+      <td valign="top">File major revision number.</td>
+  </tr>
+
+  <tr>
+      <td valign="top"><font size=-1 face="courier">int minor_rev;</font></td>
+      <td valign="top">File minor revision number.</td>
+  </tr>
+
+  <tr>
+      <td valign="top"><font size=-1 face="courier">int (*fitread)(<a href="structOldFitFp.html"><code>struct OldFitFp</code></a> *fp,<a href="../../../../superdarn/src.lib/tk/radar/structRadarParm.html"><code>struct RadarParm *prm</code></a>, <a href="../../../../superdarn/src.lib/tk/fit/structFitData.html"><code>struct FitData</code></a> *fit);</font></td>
+      <td valign="top">Pointer to the function that reads records from the file.</td>
+  </tr>
+ </table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td>
+<p>The <a href="structOldFitFp.html"><code>struct OldFitFp</code></a> structure stores the open file descriptor information for a fit data file.</p>
+</tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+</div>
+
+</body>
+
+
+

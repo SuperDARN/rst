@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>make_cfit</name>
+<location>src.bin/tk/tool/make_cfit</location>
+
+<syntax>make_cfit --help</syntax>
+<syntax>make_cfit [-vb] [-p <ar>minpwr</ar>] <ar>fitacfname</ar></syntax>
+<syntax>make_cfit -old [-vb] [-p <ar>minpwr</ar>] [<ar>fitname</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-p <ar>minpwr</ar></on><od>filter out data with values of lag-zero power less than <ar>minpwr</ar>.</od>
+</option>
+<option><on><ar>fitacfname</ar></on><od>filename of the <code>fitacf</code> format file.</od>
+</option>
+<option><on>-old</on><od>the input file is in the <code>fit</code> format.</od>
+</option>
+<option><on><ar>fitname</ar></on><od>filename of the <code>fit</code> format file.</od>
+</option>
+<synopsis><p>Creates a <code>cfit</code> format file from either a <code>fit</code> or <code>fitacf</code> format file.</p></synopsis>
+<description><p>Creates a <code>cfit</code> format file from either a <code>fit</code> or <code>fitacf</code> format file.</p>
+<p>The <code>cfit</code> file is written to standard output</p></description>
+
+<example>
+<command>make_cfit -old 20040830.gbr.fit &gt 20040830.gbr.cfit</command>
+<description>Create a <code>cfit</code> format file from the <code>fit</code> file named "<code>20040830.gbr.fit</code>", the output file is called "<code>20040830.gbr.cfit</code>".</description>
+</example>
+
+<example>
+<command>make_cfit 20040830.gbr.fitacf &gt 20040830.gbr.cfit</command>
+<description>Create a <code>cfit</code> format file from the <code>fitacf</code> file named "<code>20040830.gbr.fitacf</code>", the output file is called "<code>20040830.gbr.cfit</code>".</description>
+</example>
+
+</binary>

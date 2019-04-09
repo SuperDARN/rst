@@ -1,0 +1,86 @@
+
+
+<head>
+<title>struct RfileIndex</title>
+<link rel=stylesheet href=../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href=../../../general/index.html>general</a></td>
+<td>|</td><td><a href=../../../general/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../general/src.lib/rfile/index.html>rfile</a></td><td>|</td>
+<td>RfileIndex</td>
+<td width=100% align=right><a href=../../../general/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">RfileIndex</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">general/rfile.h</td></tr>
+<tr><td class="docsubtitle">Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">rfile</a></tr>
+<tr><td class="docsubtitle" valign=top>Members</td></tr>
+<tr><td></td><td width=80% class="docbox"><table>
+
+
+
+         <tr>
+         <td valign="top"><font size=-1 face="courier">double *start;</font></td>
+         <td valign="top">Pointer to an array of record start times, specified as seconds from 0:00UT January 1, 1970.</td>
+         </tr>
+         <tr>
+         <td valign="top"><font size=-1 face="courier">double *end;</font></td>
+         <td valign="top">Pointer to an array of record end times, specified as seconds from 0:00UT January 1, 1970.</td>
+         </tr>
+
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int num;</font></td>
+      <td valign="top">Number of records in the data file.</td>
+    </tr>
+    <tr>
+      <td><font size=-1 face="courier"><b>struct {</b></font></td></tr>
+        <tr>
+         <td valign="top"><font size=-1 face="courier">double *start;</font></td>
+         <td valign="top">Pointer to an array of record start times, specified as seconds from 0:00UT January 1, 1970.</td>
+         </tr>
+         <tr>
+         <td valign="top"><font size=-1 face="courier">double *end;</font></td>
+         <td valign="top">Pointer to an array of record end times, specified as seconds from 0:00UT January 1, 1970.</td>
+         </tr>
+       </tr><tr><td><font size=-1 face="courier"><b>}</b></font></td></tr><tr>
+       <td valign="top"><font size=-1 face="courier">time;</font></td>
+       <td valign="top">Record timestamps.</td>
+
+    </tr>
+
+   <tr>
+      <td valign="top"><font size=-1 face="courier">int *offset;</font></td>
+      <td valign="top">Pointer to an array of byte offsets into the file marking the start of a record.</td>
+    </tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td>
+<p>The <a href="structRfileIndex.html"><code>struct RfileIndex</code></a> structure stores an index to a data file in <td valign="top"><font size=-1 face="courier">rFile</font></td> format.</p>
+</tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+</div>
+
+</body>
+
+
+

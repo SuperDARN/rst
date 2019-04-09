@@ -1,0 +1,93 @@
+<head>
+<title>Structure in C for the Raw ACF data </title>
+<link rel=stylesheet href=../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+<div id="location">
+<table class="location"><tr>
+<td><a href="../../../index.html">Home</a><td>|</td>
+<td><a href=../../../superdarn/index.html>superdarn</a></td><td>|</td>
+<td><a href=../../../superdarn/src.doc/rfc/index.html>rfc</a></td><td>|</td>
+<td>RFC0013</td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">RFC: 0013</h2>
+<table>
+<tr><td class="docsubtitle" valign=top><h3>Title</h3></td></tr>
+<tr><td></td><td>
+<b>Structure in C for the Raw ACF data </b>
+</td></tr>
+
+<tr><td class="docsubtitle" valign=top><h3>Author</h3></td></tr>
+<tr><td></td><td>
+<b>R.J.Barnes</b>
+</td></tr>
+
+
+<tr><td class="docsubtitle"><h3>Summary</h3></td></tr>
+<tr><td></td><td>
+<p>A description of the data structure in the C language used to store the Raw ACF Data.</p>
+</td></tr>
+<tr><td class="docsubtitle"><h3>Description</h3></td></tr>
+<tr><td></td><td>
+
+<h4>1. Introduction</h4>
+<p>The raw ACF data is the primary (first order) data product from the SuperDARN radars.  Listed below is the C data structure <code>struct RawData</code> used to store the ACF data.</p>
+<h4>2. Array Limits</h4>
+<p>The array limits are defined as macros in the header <code>superdarn/limit.h</code>.</p>
+<center>
+<table cellspacing="3" bgcolor="e0e0e0" width="100%">
+<tr><td><pre>#define LAG_SIZE 96	       
+#define MAX_RANGE 300	
+</pre></td></tr></table>
+</center>
+<h4>3. <code>struct RawData</code></h4>
+<p>The ACF data structure is defined in the header <code>superdarn/rawdata.h</code>.</p>
+
+<center>
+<table cellspacing="3" bgcolor="e0e0e0" width="100%">
+<tr><td><pre>struct RawData {
+  struct {
+    int major;                        /* major revision */
+    int minor;                        /* minor revision */
+  } revision;            
+  float thr;                          /* lag-zero power threshold level */
+  float pwr0[MAX_RANGE];              /* lag-zero powers
+  float acfd[MAX_RANGE][LAG_SIZE][2]; /* ACF data */
+  float xcfd[MAX_RANGE][LAG_SIZE][2]; /* XCF data */
+};
+</pre></td></tr></table>
+</center>
+
+</td></tr>
+<tr><td class="docsubtitle"><h3>References</h3></td></tr>
+<tr><td></td><td>
+None<br>
+</td></tr>
+<tr><td class="docsubtitle"><h3>History</h3></td></tr>
+<tr><td></td><td>
+2007/03/26  Revision to reflect change in array sizes<br>2004/11/19  Initial Revision.<br>
+</td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+
+</body>
+
+
+
