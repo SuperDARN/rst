@@ -105,11 +105,11 @@
     <member>
       <struct>
         <member>
-           <proto><sn href="&root;/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *enproto;</proto>
+           <proto><sn href="&root;/base/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *enproto;</proto>
            <description>None.</description>
         </member>
         <member>
-           <proto><sn href="&root;src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *deproto;</proto>
+           <proto><sn href="&root;/base/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *deproto;</proto>
            <description>None.</description>
         </member>
       </struct>
@@ -119,11 +119,11 @@
     <member>
       <struct>
         <member>
-           <proto><sn href="&root;/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *enproto;</proto>
+           <proto><sn href="&root;/base/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *enproto;</proto>
            <description>None.</description>
         </member>
         <member>
-           <proto><sn href="&root;/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *deproto;</proto>
+           <proto><sn href="&root;/base/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *deproto;</proto>
            <description>None.</description>
         </member>
       </struct>
@@ -156,7 +156,7 @@
  <header>base/tagdb.h</header>
  <struct>
    <member>
-      <proto><sn href="&root;/src.lib/xml/xml/XMLdata.html">struct XMLdata</sn> *ptr;</proto>
+      <proto><sn href="&root;/base/src.lib/xml/xml/structXMLdata.html">struct XMLdata</sn> *ptr;</proto>
       <description>None.</description>
     </member>
     <member>

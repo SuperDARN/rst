@@ -105,7 +105,7 @@
 
 <description><p>The <fn href="EntityDecode.html">EntityDecode</fn> function decodes any entities found in a data stream.</p>
 <p>The data to process is stored in the text pointer to by the argument <ar>buf</ar>, and the number of bytes in the buffer is given by the argument <ar>sze</ar>.</p>
-<p>The argument <ar>data</ar> is assumed to be a pointer to a structure of type <sn href="structEnitydata.html">struct Entitydata</sn>. The function will automatically cast the argument as a pointer of this type.</p>
+<p>The argument <ar>data</ar> is assumed to be a pointer to a structure of type <sn href="structEntitydata.html">struct Entitydata</sn>. The function will automatically cast the argument as a pointer of this type.</p>
 <p>The unusual syntax allows this function to be used as a text decoder or parser for other libraries.</p>
 </description>
 <returns>Returns zero on success. On error, (-1) is returned.</returns>
@@ -140,7 +140,7 @@
 
 <description><p>The <fn href="EntityEncode.html">EntityEncode</fn> function encodes any symbols found in a data stream into entities.</p>
 <p>The data to process is stored in the text pointer to by the argument <ar>buf</ar>, and the number of bytes in the buffer is given by the argument <ar>sze</ar>.</p>
-<p>The argument <ar>data</ar> is assumed to be a pointer to a structure of type <sn href="structEnitydata.html">struct Entitydata</sn>. The function will automatically cast the argument as a pointer of this type.</p>
+<p>The argument <ar>data</ar> is assumed to be a pointer to a structure of type <sn href="structEntitydata.html">struct Entitydata</sn>. The function will automatically cast the argument as a pointer of this type.</p>
 <p>The unusual syntax allows this function to be used as a text decoder or parser for other libraries.</p>
 </description>
 
@@ -511,7 +511,7 @@ int user(char *buffer,int size,void *dptr);
  <header>base/rxmldb.h</header>
  <struct>
    <member>
-     <proto><sn href="&root;/src.lib/xml/xml/structXMLdata.html">struct XMLdata</sn> *ptr;</proto>
+     <proto><sn href="&root;/base/src.lib/xml/xml/structXMLdata.html">struct XMLdata</sn> *ptr;</proto>
      <description>None.</description>
    </member>
    <member>
