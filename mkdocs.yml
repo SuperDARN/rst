@@ -2,4 +2,4 @@ site_name: RST Documentation
 nav: 
     - Home: index.md
     - About: about.md
-theme: read-the-docs
+theme: readthedocs
