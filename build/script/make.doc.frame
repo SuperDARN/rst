@@ -289,8 +289,8 @@ makeindex() {
     sort -f ${inxtxt} | while read line
     do
       html=${line##\"*\" }
-      tmp=${line%\" $html}
-      name=${tmp#\"} 
+      tmp2=${line%\" $html}
+      name=${tmp2#\"}
       let=`echo ${name} | cut -c 1 | tr [:lower:] [:upper:]`
       echo "<entry>" >> ${inxxml}.${let}.xml 
       echo "<name>"${name}"</name>" >> ${inxxml}.${let}.xml 
@@ -345,8 +345,8 @@ makeindex() {
                       ${tmp} ${docindexcfg} \
                       ${inxxml}.${let}.xml >> ${indexhtml} 
 
-      tmp=`cat ${inxxml}.${let}.xml | wc -l`
-      let cnt=cnt+tmp
+      tmp2=`cat ${inxxml}.${let}.xml | wc -l`
+      let cnt=cnt+tmp2
       if test ${cnt} -gt ${mid} -a ${flg} -eq 0
       then
         echo "</td><td valign=top>" >> ${indexhtml}
@@ -386,6 +386,11 @@ makeproject() {
   fi
  
   echo "<table>" > ${nmexml}
+  echo "<entry>" >> ${nmexml}
+  echo "<search>SECTION</search>" >> ${nmexml}
+  echo "<replace>"${project}"</replace>" >> ${nmexml}
+  echo "</entry>" >> ${nmexml}
+
   echo "<entry>" >> ${nmexml}
   echo "<search>URLBASE</search>" >> ${nmexml}
   echo "<replace>"${urlbase}"</replace>" >> ${nmexml}
@@ -445,7 +450,7 @@ makeproject() {
 ############################################################################
 
 wwwpath="${DOCPATH}/html"
-urlbase="."
+urlbase=".."
 
 if test "${type}" = "www"
 then
