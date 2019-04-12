@@ -79,7 +79,7 @@
       <description>Number of frame buffers or bitmaps in the database.</description>
     </member>
     <member>
-      <proto><sn href="&root;/src.lib/graphic/fbuffer/structFrameBuffer.html">struct FrameBuffer</sn> **img;</proto>
+      <proto><sn href="&root;/base/src.lib/graphic/fbuffer/structFrameBuffer.html">struct FrameBuffer</sn> **img;</proto>
       <description>Pointer to an array of pointers to the frame buffers or bitmaps in the database.</description>
     </member>
   </struct>
