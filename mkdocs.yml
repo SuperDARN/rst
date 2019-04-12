@@ -1,5 +1,20 @@
 site_name: RST Documentation
-nav: 
-    - Home: index.md
-    - About: about.md
-theme: read-the-docs
+repo_url: https://github.com/superdarn/rst
+theme: readthedocs
+pages:
+- Home: index.md
+- About: about.md
+- User-Guide:
+        - install: user-guide/install.md
+        - RST HOWTO: user-guide/utilizing-rst.md 
+- Reference Manual:
+        - General:
+                - Dmap Data: references/general/dmap_data.md
+                - IQDAT Format: references/general/iqdat.md
+                - RAWACF Format: references/general/rawacf.md
+                - FITACF Format: references/general/fitacf.md
+        - SuperDARN Tools:
+                - make_fit: references/superdarn/tools/make_fit.md
+                - make_grid: references/superdarn/tools/make_grid.md
+
+
