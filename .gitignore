@@ -19,3 +19,7 @@ codebase/general/src.lib/stdkey.1.5/src/make_palette
 *hlpstr.h
 *version.h
 site/
+docs/xml
+docs/latex/
+docs/html 
+
