@@ -5,18 +5,18 @@ Radar Software Toolkit
 
 In addition to this code, you will need the following packages:
 
-Debian 8.7 | Mint 18.1 | OpenSUSE 42.2 | Ubuntu 16.04 | macOS 10.12.4
----------- | --------- | ------------- | ------------ | --------------
-gcc | libc6-dev | gcc | libhdf5-serial-dev | libhdf5
-libhdf5-serial-dev | libncurses5-dev | hdf5-devel | libncurses-dev | libnetcdf
-libnetcdf-dev | libnetcdf-dev | libpng16-devel | libnetcdf-dev | libcurses
-libncurses | libpng16-dev | libX11-devel | libpng12-dev | libpng16
-libpng12-dev | libx11-dev | libXext6 | libx11-dev | libx11
-libx11-dev | libxext-dev | libXext-devel | libxext-dev | cdf
-libxext-dev | | netcdf | netpbm | netpbm (10.77.03_2+x11)
-netpbm | | netcdf-devel | |
- | | | ncurses-devel | |
- | | | zlib-devel | |
+Debian 8.7 | Mint 18.1 | OpenSUSE 42.2 | Ubuntu 16.04 | macOS 10.12.4 | CentOS 6.10
+---------- | --------- | ------------- | ------------ | ------------- | -----------
+gcc | libc6-dev | gcc | libhdf5-serial-dev | libhdf5 | libhdf5
+libhdf5-serial-dev | libncurses5-dev | hdf5-devel | libncurses-dev | libnetcdf | libnetcdf
+libnetcdf-dev | libnetcdf-dev | libpng16-devel | libnetcdf-dev | libcurses | libcurses
+libncurses | libpng16-dev | libX11-devel | libpng12-dev | libpng16 | libpng12
+libpng12-dev | libx11-dev | libXext6 | libx11-dev | libx11 | libX11
+libx11-dev | libxext-dev | libXext-devel | libxext-dev | cdf | libXest
+libxext-dev | | netcdf | netpbm | netpbm (10.77.03_2+x11) | netpbm 
+netpbm | | netcdf-devel | | | zlib
+ | | | ncurses-devel | | |
+ | | | zlib-devel | | |
 
 You will also need the CDF (Common Data Format) library which can be downloaded from NASA.
 You can find the latest release at: http://cdf.gsfc.nasa.gov/  
