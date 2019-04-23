@@ -52,7 +52,6 @@ int snum=0;
 struct DataMapScalar **sptr=NULL;
 char **cdfsname;
 
-
 int anum=0;
 struct DataMapArray **aptr=NULL;
 char **cdfaname;
@@ -60,7 +59,6 @@ char **cdfaname;
 int32 *rptr=NULL;
 int32 *roff=NULL;
 int rnum=0; 
-
 
 struct OptionData opt;
 int arg=0;
@@ -96,15 +94,12 @@ int main(int argc,char *argv[]) {
   unsigned char option=0;
   unsigned char version=0;
 
-
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
   OptionAdd(&opt,"-version",'x',&version);
 
   OptionAdd(&opt,"vb",'x',&vbflg);
   OptionAdd(&opt,"z",'x',&zflg);
-
-
 
   if (argc>1) {
     arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
@@ -140,45 +135,43 @@ int main(int argc,char *argv[]) {
         fprintf(stderr,"File not found.\n");
         exit(-1);
       }
-    }  
+    }
   } else {
     OptionPrintInfo(stdout,errstr);
     exit(-1);
   }
 
-
   if (cdfname==NULL) cdfname=cdfdef;
 
   while (1) {
 
-   if (zflg) ptr=DataMapReadZ(zfp);
+    if (zflg) ptr=DataMapReadZ(zfp);
     else ptr=DataMapFread(fp);
 
     if (ptr==NULL) break;
 
-
     for (c=0;c<ptr->snum;c++) {
       sx=ptr->scl[c];
       for (n=0;n<snum;n++) {
-	sy=sptr[n];
+        sy=sptr[n];
         if (strcmp(sx->name,sy->name) !=0) continue;
         if (sx->type !=sy->type) continue;
         break;
       }
       if (n==snum) {
-	/* copy the scalar */
+        /* copy the scalar */
         if (sptr==NULL) sptr=malloc(sizeof(struct DataMapScalar *));
         else {
           struct DataMapScalar **tmp;
           tmp=realloc(sptr,(snum+1)*sizeof(struct DataMapScalar *));
           if (tmp==NULL) break;
           sptr=tmp;
-	}
+        }
         sptr[snum]=DataMapMakeScalar(sx->name,0,sx->type,NULL);
         snum++;
       }
     }
-    if (c !=ptr->snum) {      
+    if (c !=ptr->snum) {
       status=-1;
       break;
     }
@@ -198,37 +191,34 @@ int main(int argc,char *argv[]) {
       }
 
       if (n==anum) {
-	/* copy the array */
-      
+        /* copy the array */
         if (roff==NULL) roff=malloc(sizeof(int32));
         else {
           int32 *tmp;
           tmp=realloc(roff,(anum+1)*sizeof(int32));
           if (tmp==NULL) break;
-	  roff=tmp;
-	}
+          roff=tmp;
+        }
         roff[anum]=rnum;
         if (rptr==NULL) rptr=malloc(sizeof(int32)*ax->dim);
         else {
           int32 *tmp;
           tmp=realloc(rptr,(rnum+ax->dim)*sizeof(int32));
           if (tmp==NULL) break;
-	  rptr=tmp;
-	}
+            rptr=tmp;
+        }
         for (i=0;i<ax->dim;i++) rptr[rnum+i]=ax->rng[i];
         rnum+=ax->dim;
-	
+
         if (aptr==NULL) aptr=malloc(sizeof(struct DataMapArray *));
         else {
           struct DataMapArray **tmp;
           tmp=realloc(aptr,(anum+1)*sizeof(struct DataMapArray *));
           if (tmp==NULL) break;
           aptr=tmp;
-	}
-        aptr[anum]=DataMapMakeArray(ax->name,0,ax->type,ax->dim,NULL,
-				    NULL);
+        }
+        aptr[anum]=DataMapMakeArray(ax->name,0,ax->type,ax->dim,NULL,NULL);
         anum++;
-       
 
       }
 
@@ -255,7 +245,6 @@ int main(int argc,char *argv[]) {
      if (c !=ax->dim) ax->dim=0;
   }
 
-
   cdfsname=malloc(sizeof(char *)*snum);
   if (cdfsname==NULL) {
     fprintf(stderr,"Could not allocate scalar name table.\n");
@@ -268,14 +257,12 @@ int main(int argc,char *argv[]) {
     exit(-1);
   }
 
-
-
   for (n=0;n<snum;n++) { 
     sx=sptr[n];
     cdfsname[n]=malloc(strlen(sx->name)+1);
     for (c=0;sx->name[c] !=0;c++) 
        if (isalnum(sx->name[c])) cdfsname[n][c]=sx->name[c];
-	   else cdfsname[n][c]='_';
+    else cdfsname[n][c]='_';
     cdfsname[n][c]=0;
     x=0;
     for (c=0;c<n;c++) if (strncmp(cdfsname[c],cdfsname[n],
@@ -303,8 +290,8 @@ int main(int argc,char *argv[]) {
     if (ax->dim==0) continue;
     cdfaname[n]=malloc(strlen(ax->name)+1);
     for (c=0;ax->name[c] !=0;c++) 
-       if (isalnum(ax->name[c])) cdfaname[n][c]=ax->name[c];
-	   else cdfaname[n][c]='_';
+      if (isalnum(ax->name[c])) cdfaname[n][c]=ax->name[c];
+    else cdfaname[n][c]='_';
     cdfaname[n][c]=0;
     for (c=0;c<n;c++) if (strncmp(cdfaname[c],cdfaname[n],
                           strlen(cdfaname[n]))==0) x++;
@@ -345,7 +332,7 @@ int main(int argc,char *argv[]) {
 
   fprintf(fp,"\n#GLOBALattributes\n");
   fprintf(fp,"\n#VARIABLEattributes\n");
- 
+
   fprintf(fp,"\n#variables\n\n");
   for (n=0;n<snum;n++) {
     sx=sptr[n];
@@ -388,10 +375,8 @@ int main(int argc,char *argv[]) {
     fprintf(fp,"! --------          ----     --------\n");
     fprintf(fp,"\n.\n\n");
 
-
-  }  
+  }
   fprintf(fp,"\n#zVariables\n\n");
-
 
   for (n=0;n<anum;n++) {
     ax=aptr[n];
@@ -448,51 +433,51 @@ int main(int argc,char *argv[]) {
 
   fp=fopen(argv[3],"w");
   for (n=0;n<snum;n++) {
-   fprintf(fp,"\t");
-     sx=sptr[n];
-     switch(sx->type) {
-     case DATACHAR:
+    fprintf(fp,"\t");
+    sx=sptr[n];
+    switch(sx->type) {
+      case DATACHAR:
         fprintf(fp,"char 0");
         break;
-     case DATASHORT:
+      case DATASHORT:
         fprintf(fp,"short 0");
         break;
-     case DATAINT:
+      case DATAINT:
         fprintf(fp,"int 0");
         break;
-     case DATAFLOAT:
+      case DATAFLOAT:
         fprintf(fp,"float 0");
         break;
-     case DATADOUBLE:
+      case DATADOUBLE:
         fprintf(fp,"double 0");
         break;
-     case DATASTRING:
+      case DATASTRING:
         fprintf(fp,"string 0"); 
     }
     fprintf(fp," %c%s%c=%s;\n",'"',sx->name,'"',cdfsname[n]);
   }
 
   for (n=0;n<anum;n++) {
-   fprintf(fp,"\t");
-     ax=aptr[n];
-     if (ax->dim==0) continue;
-     switch(ax->type) {
-     case DATACHAR:
+    fprintf(fp,"\t");
+    ax=aptr[n];
+    if (ax->dim==0) continue;
+    switch(ax->type) {
+      case DATACHAR:
         fprintf(fp,"char");
         break;
-     case DATASHORT:
+      case DATASHORT:
         fprintf(fp,"short");
         break;
-     case DATAINT:
+      case DATAINT:
         fprintf(fp,"int");
         break;
-     case DATAFLOAT:
+      case DATAFLOAT:
         fprintf(fp,"float");
         break;
-     case DATADOUBLE:
+      case DATADOUBLE:
         fprintf(fp,"double");
         break;
-     case DATASTRING:
+      case DATASTRING:
         fprintf(fp,"string"); 
     }
     fprintf(fp," %d",ax->dim); 
