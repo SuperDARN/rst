@@ -81,7 +81,7 @@ int loadmap(FILE *fp) {
     t=0;
     if (strncmp(buf+x,"char",4)==0) t=DATACHAR;
     if (strncmp(buf+x,"short",5)==0) t=DATASHORT;
-    if (strncmp(buf+x,"long",4)==0) t=DATAINT;
+    if (strncmp(buf+x,"int",3)==0) t=DATAINT;
     if (strncmp(buf+x,"float",5)==0) t=DATAFLOAT;
     if (strncmp(buf+x,"double",6)==0) t=DATADOUBLE;
     if (strncmp(buf+x,"string",6)==0) t=DATASTRING;
