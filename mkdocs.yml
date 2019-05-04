@@ -11,7 +11,7 @@ pages:
                         - RAWACF to FITACF: user_guide/make_fit.md
                         - FITACF to GRID: user_guide/make_grid.md
                         - GRID to MAP: user_guide/map_grid.md
-                - Plot Generation
+                - Plot Generation:
                         - time_plot: user_guide/time_plot.md 
 - Reference Manual:
         - General:
