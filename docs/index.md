@@ -13,9 +13,12 @@ If you have any question or concerns please submit an Issue on the SuperDARN RST
   - User Guide
 	* [Installation](user_guide/install.md)
 	* RST HOWTO's 
-		* [RAWACF to FITACF](user_guide/make_fit.md)
-		* [FITACF to GRID](user_guide/make_grid.md)
-		* [GRID to MAP](user_guide/map_grid.md)
+		* File Conversions
+			* [RAWACF to FITACF](user_guide/make_fit.md)
+			* [FITACF to GRID](user_guide/make_grid.md)
+			* [GRID to MAP](user_guide/map_grid.md)
+		* Plot Generation
+			* [`time_plot`](user_guide/time_plot.md)
   - Reference Manual
       * General
         * [Dmap Data](references/general/dmap_data.md)
