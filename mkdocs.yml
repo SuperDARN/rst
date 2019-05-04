@@ -5,8 +5,11 @@ pages:
 - Home: index.md
 - About: about.md
 - User-Guide:
-        - install: user-guide/install.md
-        - RST HOWTO: user-guide/utilizing-rst.md 
+        - install: user_guide/install.md
+        - RST HOWTO: 
+                - RAWACF to FITACF: user_guide/make_fit.md
+                - FITACF to GRID: user_guide/make_grid.md
+                - GRID to MAP: user_guide/map_grid.md 
 - Reference Manual:
         - General:
                 - Dmap Data: references/general/dmap_data.md
