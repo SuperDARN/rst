@@ -11,8 +11,11 @@ If you have any question or concerns please submit an Issue on the SuperDARN RST
 
 ## Table of Contents 
   - User Guide
-    - [Installation](user-guide/install.md)
-    - [RST HOWTO's](user-guide/utilizing-rst.md) 
+	* [Installation](user_guide/install.md)
+	* RST HOWTO's 
+		* [RAWACF to FITACF](user_guide/make_fit.md)
+		* [FITACF to GRID](user_guide/make_grid.md)
+		* [GRID to MAP](user_guide/map_grid.md)
   - Reference Manual
       * General
         * [Dmap Data](references/general/dmap_data.md)
