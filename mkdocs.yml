@@ -4,8 +4,9 @@ theme: readthedocs
 pages:
 - Home: index.md
 - About: about.md
-- User-Guide:
-        - install: user_guide/install.md
+- Installation:
+        - Linux: user_guide/linux_install.md
+        - MacOSX: user_guide/mac_install.md
 - RST HOWTO: 
         - RAWACF to FITACF: user_guide/make_fit.md
         - FITACF to GRID: user_guide/make_grid.md

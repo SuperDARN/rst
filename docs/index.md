@@ -10,8 +10,9 @@ If you cannot access GitHub then you can download newest release on SuperDARN VT
 If you have any question or concerns please submit an Issue on the SuperDARN RST repository or email: Data Analysis Working Group. 
 
 ## Table of Contents 
-  - User Guide
-	* [Installation](user_guide/install.md)
+  - Installtion
+	* [Linux](user_guide/linux_install.md)
+	* [MacOSX](user_guide/mac_install.md)
   -  RST HOWTO's 
 	* [RAWACF to FITACF](user_guide/make_fit.md)
 	* [FITACF to GRID](user_guide/make_grid.md)
