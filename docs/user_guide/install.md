@@ -1,7 +1,4 @@
-[![DOI](https://zenodo.org/badge/74060190.svg)](https://zenodo.org/badge/latestdoi/74060190)
-
-Radar Software Toolkit
-========
+# Linux 
 
 In addition to this code, you will need the following packages:
 
