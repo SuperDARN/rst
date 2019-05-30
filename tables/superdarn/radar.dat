@@ -1,3 +1,35 @@
+# radar.dat
+# =========
+#
+# This file contains status information for each radar in the SuperDARN network.
+# Radar information is stored, one radar per line, as a series of white space separated fields.
+# Text fields are quoted (") to allow spaces. The definiton of those fields are as follows:
+#
+# 01  Station ID Number  Unique numerical radar identifier.
+#                        Zero (0) is reserved for a "test" radar. Other numbers are
+#                        allocated on request.
+#
+# 02  Status             Current status of the radar. Possible values are:
+#                        (0)     Offline, or under test
+#                        (1)     Operational
+#                        (-1)    Decommissioned
+#
+# 03  Start Date         First date (YYYYMMDD) that data is available from the radar.
+#
+# 04  End Date           Last date (YYYYMMDD) that data is available from the radar. For
+#                        operational radars, this is set to some future date.
+#
+# 05  Station Name       Full name of the radar site.
+#
+# 06  Operator           Operator, or PI instituition of the radar.
+#
+# 07  Hardware Filename  Filename of the text file containing radar hardware configuration.
+#
+# 08+ Station ID Codes   Station identifiers. Radars are usually identified by a three letter
+#                        code. Older radars also have a single letter code letter. Multiple
+#                        identifiers can be defined and they can be of any length to allow
+#                        short nicknames for a given radar.
+
 0   0 20080203 25000101 "Test Radar"              "United Nations of SuperDARN"         "hdw.dat.tst" "tst" "x"
 1   1 19831001 25000101 "Goose Bay"               "Virginia Tech"                       "hdw.dat.gbr" "gbr" "g"
 2  -1 19861001 19950930 "Schefferville"           "CNRS/LPC2E"                          "hdw.dat.sch" "sch" "s"
