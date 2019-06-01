@@ -76,7 +76,7 @@ char logbuf[256];
 struct OptionData opt;
 
 int make_grid(struct GridData *out,
-	      struct GridData **in,int fnum,int *dflg) {
+              struct GridData **in,int fnum,int *dflg) {
 
   int i,j,k=0,l=0;
   int tpnt=0;
@@ -85,57 +85,57 @@ int make_grid(struct GridData *out,
   out->stnum=0;
   out->vcnum=0;
   out->xtd=0;
- 
+
   l=0;
   for (i=0;i<fnum;i++) 
-    if ( (dflg[i] !=0) && 
-         (in[i]->st_time<out->ed_time) && 
-	 (in[i]->ed_time>out->st_time)) { 
-   
-     
-     if (in[i]->xtd) out->xtd=1;
-     for (j=0;j<in[i]->stnum;j++) {  
-  
-       if (out->sdata !=NULL) out->sdata=realloc(out->sdata,
-                                      sizeof(struct GridSVec)*(l+1));
-       else out->sdata=malloc(sizeof(struct GridSVec));
-     
-       out->sdata[l].st_id=in[i]->sdata[j].st_id;
-       out->sdata[l].chn=in[i]->sdata[j].chn;
-       out->sdata[l].npnt=in[i]->sdata[j].npnt;
-       out->sdata[l].freq0=in[i]->sdata[j].freq0;
-       out->sdata[l].major_revision=in[i]->sdata[j].major_revision;
-       out->sdata[l].minor_revision=in[i]->sdata[j].minor_revision;
-       out->sdata[l].prog_id=in[i]->sdata[j].prog_id;
-       out->sdata[l].noise.mean=in[i]->sdata[j].noise.mean;
-       out->sdata[l].noise.sd=in[i]->sdata[j].noise.sd;
-       out->sdata[l].gsct=in[i]->sdata[j].gsct;
-       out->sdata[l].vel.min=in[i]->sdata[j].vel.min;
-       out->sdata[l].vel.max=in[i]->sdata[j].vel.max;
-       out->sdata[l].pwr.min=in[i]->sdata[j].pwr.min;
-       out->sdata[l].pwr.max=in[i]->sdata[j].pwr.max;
-       out->sdata[l].wdt.min=in[i]->sdata[j].wdt.min;
-       out->sdata[l].wdt.max=in[i]->sdata[j].wdt.max;
-       out->sdata[l].verr.min=in[i]->sdata[j].verr.min;
-       out->sdata[l].verr.max=in[i]->sdata[j].verr.max;
+    if ( (dflg[i] !=0) &&
+         (in[i]->st_time<out->ed_time) &&
+         (in[i]->ed_time>out->st_time)) {
 
-       data[l]=in[i]->data;     
-       l++;
-     }
+    if (in[i]->xtd) out->xtd=1;
+    for (j=0;j<in[i]->stnum;j++) {
+
+      if (out->sdata !=NULL) out->sdata=realloc(out->sdata,
+                                    sizeof(struct GridSVec)*(l+1));
+      else out->sdata=malloc(sizeof(struct GridSVec));
+
+      out->sdata[l].st_id=in[i]->sdata[j].st_id;
+      out->sdata[l].chn=in[i]->sdata[j].chn;
+      out->sdata[l].npnt=in[i]->sdata[j].npnt;
+      out->sdata[l].freq0=in[i]->sdata[j].freq0;
+      out->sdata[l].major_revision=in[i]->sdata[j].major_revision;
+      out->sdata[l].minor_revision=in[i]->sdata[j].minor_revision;
+      out->sdata[l].prog_id=in[i]->sdata[j].prog_id;
+      out->sdata[l].noise.mean=in[i]->sdata[j].noise.mean;
+      out->sdata[l].noise.sd=in[i]->sdata[j].noise.sd;
+      out->sdata[l].gsct=in[i]->sdata[j].gsct;
+      out->sdata[l].vel.min=in[i]->sdata[j].vel.min;
+      out->sdata[l].vel.max=in[i]->sdata[j].vel.max;
+      out->sdata[l].pwr.min=in[i]->sdata[j].pwr.min;
+      out->sdata[l].pwr.max=in[i]->sdata[j].pwr.max;
+      out->sdata[l].wdt.min=in[i]->sdata[j].wdt.min;
+      out->sdata[l].wdt.max=in[i]->sdata[j].wdt.max;
+      out->sdata[l].verr.min=in[i]->sdata[j].verr.min;
+      out->sdata[l].verr.max=in[i]->sdata[j].verr.max;
+
+      data[l]=in[i]->data;
+      l++;
     }
-    tpnt=0;
-    for (i=0;i<l;i++) tpnt+=out->sdata[i].npnt;
-    out->stnum=l;
-    out->vcnum=tpnt;
-    if (out->data !=NULL) 
-      out->data=realloc(out->data,sizeof(struct GridGVec)*tpnt);    
-    else out->data=malloc(sizeof(struct GridGVec)*tpnt);
+  }
 
-    k=0;
-    for (i=0;i<l;i++) {
-      memcpy(&out->data[k],data[i],sizeof(struct GridGVec)*out->sdata[i].npnt);
-      k+=out->sdata[i].npnt;
-    } 
+  tpnt=0;
+  for (i=0;i<l;i++) tpnt+=out->sdata[i].npnt;
+  out->stnum=l;
+  out->vcnum=tpnt;
+  if (out->data !=NULL)
+    out->data=realloc(out->data,sizeof(struct GridGVec)*tpnt);
+  else out->data=malloc(sizeof(struct GridGVec)*tpnt);
+
+  k=0;
+  for (i=0;i<l;i++) {
+    memcpy(&out->data[k],data[i],sizeof(struct GridGVec)*out->sdata[i].npnt);
+    k+=out->sdata[i].npnt;
+  }
 
   return l;
 }
