@@ -107,7 +107,6 @@ void day_output(char *path,struct GridTable *ptr,int xtd,
   FILE *fp;
   char fname[256];
 
-
   int syr,smo,sdy,shr,smt;
   double sec;
 
@@ -203,7 +202,6 @@ int main(int argc,char *argv[]) {
   int mask=S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 
   time_t stme;
-  /*struct tm *gtme;*/
   time_t utc;
   struct timeval tv;
   int timeout;
@@ -488,80 +486,78 @@ int main(int argc,char *argv[]) {
     else AACGM_v2_SetDateTime(yr,mo,dy,0,0,0);
 
     do {
-       utc=time(NULL);
-       /*gtme=gmtime(&utc);*/
-       timeout=tlen-(utc-stme);
+      utc=time(NULL);
+      timeout=tlen-(utc-stme);
 
-       tv.tv_sec=timeout;
-       tv.tv_usec=0;
+      tv.tv_sec=timeout;
+      tv.tv_usec=0;
 
-       s=FitCnxRead(1,&sock,prm,fit,&flag,&tv);
-       if (s==0) sleep(1);
+      s=FitCnxRead(1,&sock,prm,fit,&flag,&tv);
+      if (s==0) sleep(1);
 
-       if ((s==-1) || (flag==-1) || (resetflg !=0))  break;
-       if ((s==0) && (timeout>reset)) {
+      if ((s==-1) || (flag==-1) || (resetflg !=0))  break;
+      if ((s==0) && (timeout>reset)) {
+        resetflg=1;
+        break;
+      }
+      if ((s==1) && (flag==1)) {
+        if (prm->scan<0) continue;
 
-         resetflg=1;
-         break;
-       }
-       if ((s==1) && (flag==1)) {
-         if (prm->scan<0) continue;
+        if (channel !=-1) {
+          if ((channel==1) && (prm->channel==2)) continue;
+          if ((channel==2) && (prm->channel!=2)) continue;
+          grid->chn=prm->channel;
+        }
 
-         if (channel !=-1) {
-           if ((channel==1) && (prm->channel==2)) continue;
-           if ((channel==2) && (prm->channel!=2)) continue;
-           grid->chn=prm->channel;
-         }
+      }
 
-       }
+      utc=time(NULL);
 
-       utc=time(NULL);
+      if ((s==1) && (flag==1)) {
+        fprintf(stderr,".");
+        fflush(stderr);
+        dotflag=1;
+        dataflg=1;
 
-       if ((s==1) && (flag==1)) {
-         fprintf(stderr,".");
-         fflush(stderr);
-         dotflag=1;
-         dataflg=1;
+        process_beam(src[inx],prm,fit);
 
-         process_beam(src[inx],prm,fit);
+      }
 
-       }
+      if ((utc-stme)>=tlen) {
 
-       if ((utc-stme)>=tlen) {
+        src[inx]->st_time=stme;
+        src[inx]->ed_time=stme+tlen;
 
-         src[inx]->st_time=stme;
-         src[inx]->ed_time=stme+tlen;
+        TimeEpochToYMDHMS(src[inx]->st_time,
+          &yr,&mo,&dy,&hr,&mt,&sc);
+        if (dataflg==1) sprintf(logbuf,
+          "%d:%d:%d:Processing scan %d (data received)",
+          hr,mt,(int) sc,num);
+        else sprintf(logbuf,
+          "%d:%d:%d:Processing scan %d (no data received)",
+          hr,mt,(int) sc,num);
+        dataflg=0;
+        loginfo(logname,logbuf);
+        stme=utc-(utc % tlen);
 
-         TimeEpochToYMDHMS(src[inx]->st_time,
-           &yr,&mo,&dy,&hr,&mt,&sc);
-         if (dataflg==1) sprintf(logbuf,
-           "%d:%d:%d:Processing scan %d (data received)",
-           hr,mt,(int) sc,num);
-         else sprintf(logbuf,
-           "%d:%d:%d:Processing scan %d (no data received)",
-           hr,mt,(int) sc,num);
-         dataflg=0;
-         loginfo(logname,logbuf);
-         stme=utc-(utc % tlen);
+        RadarScanResetBeam(src[inx],ebmno,ebm);
+        exclude_range(src[inx],minrng,maxrng);
+        FilterBoundType(src[inx],grid->gsct);
 
-         RadarScanResetBeam(src[inx],ebmno,ebm);
-         exclude_range(src[inx],minrng,maxrng);
-         FilterBoundType(src[inx],grid->gsct);
+        if (bflg) FilterBound(15,src[inx],min,max);
 
-         if (bflg) FilterBound(15,src[inx],min,max);
+        if ((num>=nbox) && (limit==1) && (mode !=-1))
+          chk=FilterCheckOps(nbox,src,fmax);
+        else chk=0;
 
-         if ((num>=nbox) && (limit==1) && (mode !=-1))
-           chk=FilterCheckOps(nbox,src,fmax);
-         else chk=0;
+        if ((chk==0) && (num>=nbox)) {
 
-         if ((chk==0) && (num>=nbox)) {
+          if (mode !=-1) FilterRadarScan(mode,nbox,inx,src,dst,15,isort);
+          else out=src[inx];
 
-           if (mode !=-1) FilterRadarScan(mode,nbox,inx,src,dst,15,isort);
-           else out=src[inx];
+          TimeEpochToYMDHMS(out->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
 
-           TimeEpochToYMDHMS(out->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
-
-           if (site==NULL) {
+          if (site==NULL) {
             radar=RadarGetRadar(network,out->stid);
             if (radar==NULL) {
               fprintf(stderr,"Failed to get radar information.\n");
@@ -575,34 +571,33 @@ int main(int argc,char *argv[]) {
             if (channel==2) strcat(fname,".b");
             if (old) strcat(fname,".grd");
             else strcat(fname,".grdmap");
-           }
+          }
 
-           s=GridTableTest(grid,out);
+          s=GridTableTest(grid,out);
 
-           if (s==1) {
-              fid=open(fname,O_WRONLY | O_TRUNC | O_CREAT,mask);
-              if (fid==0) continue;
-              fcntl(fid,F_SETLKW,&flock);
+          if (s==1) {
+             fid=open(fname,O_WRONLY | O_TRUNC | O_CREAT,mask);
+             if (fid==0) continue;
+             fcntl(fid,F_SETLKW,&flock);
 
-              if (old) OldGridTableWrite(fid,grid,wrtlog,xtd);
-              else GridTableWrite(fid,grid,wrtlog,xtd);
-              sprintf(logbuf,"Storing:%s\n",wrtlog);
-              loginfo(logname,logbuf);
-              close(fid);
-              if (old) day_output(path,grid,xtd,stcode,channel,"grd");
-              else day_output(path,grid,xtd,stcode,channel,"grdmap");
+             if (old) OldGridTableWrite(fid,grid,wrtlog,xtd);
+             else GridTableWrite(fid,grid,wrtlog,xtd);
+             sprintf(logbuf,"Storing:%s\n",wrtlog);
+             loginfo(logname,logbuf);
+             close(fid);
+             if (old) day_output(path,grid,xtd,stcode,channel,"grd");
+             else day_output(path,grid,xtd,stcode,channel,"grdmap");
+          }
+          GridTableMap(grid,out,site,avlen,iflg,alt,chisham,old_aacgm);
+        }
+        if (bxcar) inx++;
+        if (inx>2) inx=0;
 
-           }
-           GridTableMap(grid,out,site,avlen,iflg,alt,chisham,old_aacgm);
-         }
-         if (bxcar) inx++;
-         if (inx>2) inx=0;
-
-         src[inx]->st_time=-1;
-         src[inx]->ed_time=-1;
-         RadarScanReset(src[inx]);
-         num++;
-       }
+        src[inx]->st_time=-1;
+        src[inx]->ed_time=-1;
+        RadarScanReset(src[inx]);
+        num++;
+      }
 
     } while (1);
 
@@ -614,5 +609,4 @@ int main(int argc,char *argv[]) {
 
   return 0;
 }
-
 
