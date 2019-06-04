@@ -34,7 +34,7 @@ Let's take a look at what each option means:
 - `-a` Plot all parameters (power, velocity, spectral width). You can plot the elevation angles by adding `-e`
 
 
-![!](timeplot1.png)
+![!](figures/timeplot1.png)
 
 
 By default, the time axis spans 24 hours, but we have supplied a 2-hour `fitacf` file. To change the axis range to suit the time span of the input data, you have two options:
@@ -55,7 +55,7 @@ cat 20181001.*.lyr.fitacf > 20181001.lyr.fitacf
 time_plot -x -a 20181001.lyr.fitacf
 ```
 
-![!](timeplot2.png)
+![!](figures/timeplot2.png)
 
 
 ## More customization options
@@ -66,7 +66,7 @@ A full list of options for customizing the range-time plots is available by typi
 time_plot -x -a -c A -b 7 20181001.lyr.fitacf
 ```
 
-![!](timeplot3.png)
+![!](figures/timeplot3.png)
 
 **Plot only the velocity parameter, and change the range of the color key**
 ```
@@ -87,7 +87,7 @@ time_plot -x -a -km -ymajor 500 -yminor 100 -frang 0 20181001.lyr.fitacf
 ```
 time_plot -x -a -mag -latmin 72 -latmax 85 -b 0 -c A 20181001.lyr.fitacf
 ```
-![!](timeplot4.png)
+![!](figures/timeplot4.png)
 
 **Create a PostScript output of the plot**
 ```
