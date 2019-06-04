@@ -89,29 +89,40 @@ sudo zypper install gcc
  libxext-dev 		 |  libxext-dev 		 |
  netpbm (10.77.03_2+x11) |  netpbm (10.77.03_2+x11) |
 
+To install the above libraries on a OpenSuse distribution use `sudo zypper`. 
+For example:
+```Bash
+sudo apt install gcc
+```
 
 ## Installation Steps
 
+1. Obtaining RST software:
+	a) via **GitHub**: 
+	```Bash
+	git clone https://github.com/superdarn/rst/
+	```
+	b) via **Download**: [RST zip]()
 
-1. Upon obtaining the software (with git clone or downloading a zip file), make sure the RST
-   environment variables are properly set.   In `rst/.profile.bash`:
+2. Check RST environment variables:
+   Open `rst/.profile.bash` using your preferred text editor:
+	```	
+      	OSTYPE="linux"
+       	SYSTEM="linux"
+	```
 
-       OSTYPE="linux" for any linux operating system or "darwin" for macOS
-       SYSTEM="linux" or "darwin" as appropriate
+   Open `rst/.profile/base.bash` to check paths are correctly set:
 
-   In `rst/.profile/base.bash`, check to make sure these paths are appropriate:
+   `XPATH, NETCDF_PATH, CDF_PATH` 
+   To check if the paths are set correctly locate the following header files:
+   For NETCDF_PATH `locate netcdf.h`
+   For CDF PATH `locate cdf.h`
+   
+   - If you have **IDL**, check to see that `IDL_IPATH` in `rst/.profile/idl.bash` is correct.
+   	(Note: for users without access to IDL, modifying the `IDL_IPATH` environment variable is
+   	not required).
 
-   `XPATH, NETCDF_PATH, CDF_PATH`
-
-   If you are running macOS and run into issues with the X11 libraries, you may
-   need to add a symbolic link.
-
-   If you have IDL, check to see that `IDL_IPATH` in `rst/.profile/idl.bash` is correct.
-   (Note: for users without access to IDL, modifying the `IDL_IPATH` environment variable is
-   not required).
-
-2. Load the RST environment variables.  For example, this is accomplished in linux by modifying
-   the `~/.bashrc` file by adding:
+2. Load the RST environment variables. Open and edit your `~/.bashrc` file to include:
 
         # bash profile for rst
         export RSTPATH="INSTALL LOCATION"/rst

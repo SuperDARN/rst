@@ -10,18 +10,9 @@ If you cannot access GitHub then you can download newest release on SuperDARN VT
 If you have any question or concerns please submit an Issue on the SuperDARN RST repository or email: Data Analysis Working Group. 
 
 ## Table of Contents 
-  - Installtion
-	* [Linux](user_guide/linux_install.md)
-	* [MacOSX](user_guide/mac_install.md)
-  -  RST HOWTO's 
-	* [RAWACF to FITACF](user_guide/make_fit.md)
-	* [FITACF to GRID](user_guide/make_grid.md)
-	* [GRID to MAP](user_guide/map_grid.md)
-	* [Range-time Plots](user_guide/time_plot.md)
-    * [Field of View Plots](user_guide/fov_plot.md)
-    * [Field Plots](user_guide/field_plot.md)
-    * [Grid Plots](user_guide/grid_plot.md)
-    * [Convection Plots](user_guide/map_plot.md)
+  - User Guide
+    - [Installation](user-guide/install.md)
+    - [RST HOWTO's](user-guide/utilizing-rst.md) 
   - Reference Manual
       * General
         * [Dmap Data](references/general/dmap_data.md)
@@ -31,5 +22,14 @@ If you have any question or concerns please submit an Issue on the SuperDARN RST
       * SuperDARN Tools
         * [```make_fit```](references/superdarn/tools/make_fit.md)
         * [```make_grid```](references/superdarn/tools/make_grid.md)
-
-
+  - Data Processing
+      * [make_fit](make_fit.md)
+      * [make_grd](make_grd.md)
+      * [map_grid](map_grid.md)
+  - Plotting Routines
+      * [time_plot](time_plot.md)
+      * [field_plot](field_plot.md)
+      * [fov_plot](fov_plot.md)
+      * [grid_plot](grid_plot.md)
+      * [map_plot](map_plot.md)
+      * [Customizing colors](colors.md)
