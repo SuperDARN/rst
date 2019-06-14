@@ -29,15 +29,15 @@
 #define _SCANDATA_H
 
 struct RadarCell {
-    int gsct;
-    double p_0;
-    double p_0_e;
-    double v;
-    double v_e;
-    double w_l;
-    double w_l_e;
-    double p_l;
-    double p_l_e;
+  int gsct;
+  double p_0;
+  double p_0_e;
+  double v;
+  double v_e;
+  double w_l;
+  double w_l_e;
+  double p_l;
+  double p_l_e;
 };
 
 struct RadarBeam {
