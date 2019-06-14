@@ -148,10 +148,11 @@ int exclude_outofscan(struct RadarScan *ptr) {
 
 
 /**
- * Exclude scatter in range gates below minrng or beyond maxrng,
- * or from slant ranges below minsrng or beyond maxsrng. If range
- * gate and slant range thresholds are both provided, only the
- * slant range thresholds are considered.
+ * Exclude scatter in range gates below minrng or beyond maxrng (the minimum
+ * and maximum range gates, respectively), or from slant ranges below
+ * minsrng or beyond maxsrng (the minimum and maximum slant ranges,
+ * respectively). If range gate and slant range thresholds are both provided,
+ * only the slant range thresholds are considered.
  **/
 void exclude_range(struct RadarScan *ptr,int minrng,int maxrng,
                    double minsrng,double maxsrng) {
@@ -202,7 +203,7 @@ void exclude_range(struct RadarScan *ptr,int minrng,int maxrng,
 
 
 /**
- *
+ * Parse the comma separated list of beams to exclude
  **/
 void parse_ebeam(char *str) {
 
@@ -272,6 +273,10 @@ double strtime(char *text) {
     return hr*3600L+mn*60L;
 
 }
+
+/**
+ * Outputs an error statement for an unrecognized input option
+ **/
 
 int rst_opterr(char *txt) {
     fprintf(stderr,"Option not recognized: %s\n",txt);
