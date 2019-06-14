@@ -54,16 +54,8 @@
 #include "checkops.h"
 #include "rpos.h"
 
-#include "gtable.h"
-#include "gtablewrite.h"
-#include "oldgtablewrite.h"
-
 #include "hlpstr.h"
 #include "errstr.h"
-
-#include "aacgm.h"
-#include "aacgmlib_v2.h"
-
 
 struct RadarParm *prm;
 struct FitData *fit;
@@ -76,104 +68,13 @@ struct RadarNetwork *network;
 struct Radar *radar;
 struct RadarSite *site;
 
-int nbox;
-
-/**
- * Load the command line options
- **/
 struct OptionData opt;
-
-int command_options(int argc, char *argv[], int *old, int *tlen,
-		    unsigned char *vb, unsigned char *cfitflg,
-		    unsigned char *fitflg, unsigned char *catflg,
-		    unsigned char *nsflg, char *stmestr, char *etmestr,
-		    char *sdtestr, char *edtestr, char *exstr, char *chnstr,
-		    char *chstr_fix)
-{
-  /* Initialize input options */
-  int farg=0;
-  unsigned char help=0, option=0, version=0;
-
-
-  /* If only information is desired, print it out and exit */
-  OptionAdd(&opt, "-help", 'x', &help);
-  OptionAdd(&opt, "-option", 'x', &option);
-  OptionAdd(&opt, "-version", 'x', &version);
-
-  /* If 'help' set then print help message */
-  if(help==1)
-    {
-      OptionPrintInfo(stdout, hlpstr);
-      exit(0);
-    }
-
-  /* If 'option' set then print all command line options */
-  if(option==1)
-    {
-      OptionDump(stdout, &opt);
-      exit(0);
-    }
-
-  /* If 'version' set, then print the version number */
-  if(version==1)
-    {
-      OptionVersion(stdout);
-      exit(0);
-    }
-
-  /* Determine input file format */
-  OptionAdd(&opt, "old", 'x', old);      /* Old fit format */
-  OptionAdd(&opt, "fit", 'x', fitflg);   /* New fit format */
-  OptionAdd(&opt, "cfit", 'x', cfitflg); /* cfit format    */
-
-  /* If not explicity working from cfit files, treat input as fit or fitacf */
-  if(*cfitflg == 0) *fitflg = 1;
-
-  /* Concatenate multiple input files */
-  OptionAdd(&opt, "c", 'x', catflg); 
-
-  /* Verbose: log information to console */
-  OptionAdd(&opt, "vb", 'x', vb);
-
-  /* Set time information */
-  OptionAdd(&opt, "st", 't', stmestr);  /* Start time in HH:MM format */
-  OptionAdd(&opt, "et", 't', etmestr);  /* End time in HH:MM format */
-  OptionAdd(&opt, "sd", 't', sdtestr);  /* Start date in YYYYMMDD format */
-  OptionAdd(&opt, "ed", 't', edtestr);  /* End date in YYYYMMDD format */
-  OptionAdd(&opt, "ex", 't', exstr);    /* Use interval with extent HH:MM */
-
-  /* Ignore scan flag, use scan length of tl seconds */
-  OptionAdd(&opt, "tl", 'i', tlen);
-
-  /* Process channel options */
-  OptionAdd(&opt, "cn", 't', chnstr);         /* For stereo channel a or b   */
-  OptionAdd(&opt, "cn_fix", 't', chnstr_fix); /* User-defined channel number */
-
-  /* Apply scan flag limit (ie exclude data with scan flag = -1) */
-  OptionAdd(&opt, "ns", 'x', &nsflg);
-
-  /* Process command line options */
-  farg = OptionProcess(1, argc, argv, &opt, rst_opterr);
-
-  /* If command line option not recognized then print error and exit */
-  if(farg == -1) exit(-1);
-
-  if(farg == argc)
-    {
-      OptionPrintInfo(stderr, errstr);
-      exit(-1);
-    }
-
-  return farg;
-}
-
-
 
 /**
  * Writes a fit, fitacf, or cfit format file to stdout
  **/
 
-int main(int argc,char *argv[])
+int main(int argc, char *argv[])
 {
   int inum, fnum;
   int yr, mo, dy, hr, mt;
@@ -209,12 +110,17 @@ int main(int argc,char *argv[])
 		      unsigned char *fitflg, unsigned char *catflg,
 		      unsigned char *nsflg, char *stmestr, char *etmestr,
 		      char *sdtestr, char *edtestr, char *exstr, char *chnstr,
-		      char *chstr_fix);
+		      char *chnstr_fix);
+  double strtime(char *text);
+  int exclude_outofscan(struct RadarScan *ptr);
+  double strdate(char *text);
+  void write_scan(FILE *fp, struct RadarScan *scan, unsigned char vb,
+		  char *vbuf);
 
   /* Process the command line options */
   farg = command_options(argc, argv, &old, &tlen, &vb, &cfitflg, &fitflg,
-			 &catflg, &nsflg, &stmestr, &etmestr, &sdtestr,
-			 &edtestr, &exstr, &chnstr, &chstr_fix);
+			 &catflg, &nsflg, stmestr, etmestr, sdtestr,
+			 edtestr, exstr, chnstr, chnstr_fix);
 
   /* Initialize radar parameter and fit/cfit structures */
   prm = RadarParmMake();
@@ -223,6 +129,9 @@ int main(int argc,char *argv[])
 
   /* Initialize RadarScan structure */
   src = RadarScanMake();
+
+  /* Write the header line */
+  write_scan(stdout, NULL, vb, vbuf);
 
   /* Make sure the SD_RADAR environment variable is set */
   envstr=getenv("SD_RADAR");
@@ -491,7 +400,7 @@ int main(int argc,char *argv[])
 	      else state = 0;
 
 	      /* Read the first full scan of data from open cfit file
-		 corresponding to grid start date and time */
+		 corresponding to the start date and time */
 	      s = CFitReadRadarScan(cfitfp, &state, src, cfit, tlen,
 				    syncflg, channel);
 
@@ -513,9 +422,6 @@ int main(int argc,char *argv[])
 
       /* If time extent provided then use that to calculate end time */
       if(extime != 0) etime = stime + extime;
-
-      /* This value tracks the number of radar scans which have been output */
-      num = 0;
 
       /* Continue writing data to stdout until the input scan data is beyond
 	 the end time or end of input file is reached */
@@ -542,8 +448,7 @@ int main(int argc,char *argv[])
 	    }
 
 	  /* write data to output file */
-	  printf("WRITE DATA HERE\n");fflush(stdout);
-	  //write_scan(stdout, src, vb, vbuf); //HERE
+	  write_scan(stdout, src, vb, vbuf);
 
 	  if(vbuf != NULL) fprintf(stderr,"Storing:%s\n", vbuf);
 
@@ -575,4 +480,95 @@ int main(int argc,char *argv[])
 
     return 0;
 
+}
+
+
+/**
+ * Load the command line options
+ **/
+
+int command_options(int argc, char *argv[], int *old, int *tlen,
+		    unsigned char *vb, unsigned char *cfitflg,
+		    unsigned char *fitflg, unsigned char *catflg,
+		    unsigned char *nsflg, char *stmestr, char *etmestr,
+		    char *sdtestr, char *edtestr, char *exstr, char *chnstr,
+		    char *chnstr_fix)
+{
+  /* Initialize input options */
+  int farg=0;
+  unsigned char help=0, option=0, version=0;
+
+  int rst_opterr(char *txt);
+
+
+  /* If only information is desired, print it out and exit */
+  OptionAdd(&opt, "-help", 'x', &help);
+  OptionAdd(&opt, "-option", 'x', &option);
+  OptionAdd(&opt, "-version", 'x', &version);
+
+  /* If 'help' set then print help message */
+  if(help==1)
+    {
+      OptionPrintInfo(stdout, hlpstr);
+      exit(0);
+    }
+
+  /* If 'option' set then print all command line options */
+  if(option==1)
+    {
+      OptionDump(stdout, &opt);
+      exit(0);
+    }
+
+  /* If 'version' set, then print the version number */
+  if(version==1)
+    {
+      OptionVersion(stdout);
+      exit(0);
+    }
+
+  /* Determine input file format */
+  OptionAdd(&opt, "old", 'x', old);      /* Old fit format */
+  OptionAdd(&opt, "fit", 'x', fitflg);   /* New fit format */
+  OptionAdd(&opt, "cfit", 'x', cfitflg); /* cfit format    */
+
+  /* If not explicity working from cfit files, treat input as fit or fitacf */
+  if(*cfitflg == 0) *fitflg = 1;
+
+  /* Concatenate multiple input files */
+  OptionAdd(&opt, "c", 'x', catflg); 
+
+  /* Verbose: log information to console */
+  OptionAdd(&opt, "vb", 'x', vb);
+
+  /* Set time information */
+  OptionAdd(&opt, "st", 't', stmestr);  /* Start time in HH:MM format */
+  OptionAdd(&opt, "et", 't', etmestr);  /* End time in HH:MM format */
+  OptionAdd(&opt, "sd", 't', sdtestr);  /* Start date in YYYYMMDD format */
+  OptionAdd(&opt, "ed", 't', edtestr);  /* End date in YYYYMMDD format */
+  OptionAdd(&opt, "ex", 't', exstr);    /* Use interval with extent HH:MM */
+
+  /* Ignore scan flag, use scan length of tl seconds */
+  OptionAdd(&opt, "tl", 'i', tlen);
+
+  /* Process channel options */
+  OptionAdd(&opt, "cn", 't', chnstr);         /* For stereo channel a or b   */
+  OptionAdd(&opt, "cn_fix", 't', chnstr_fix); /* User-defined channel number */
+
+  /* Apply scan flag limit (ie exclude data with scan flag = -1) */
+  OptionAdd(&opt, "ns", 'x', &nsflg);
+
+  /* Process command line options */
+  farg = OptionProcess(1, argc, argv, &opt, rst_opterr);
+
+  /* If command line option not recognized then print error and exit */
+  if(farg == -1) exit(-1);
+
+  if(farg == argc)
+    {
+      OptionPrintInfo(stderr, errstr);
+      exit(-1);
+    }
+
+  return farg;
 }
