@@ -181,17 +181,13 @@ ON_IOERROR, iofail
       mo=(stnum/100) mod 100
       yr=stnum/10000
 
-       
       rad.st_time=TimeYMDHMSToEpoch(yr,mo,dy,0,0,0)
 
       dy=ednum mod 100;
       mo=(ednum/100) mod 100
       yr=ednum/10000
 
-       
       rad.ed_time=TimeYMDHMSToEpoch(yr,mo,dy,0,0,0)
-
-
 
       ; decode the text strings
       s=strpos(txt,'"')
@@ -212,6 +208,7 @@ ON_IOERROR, iofail
          rad.code[n]=strmid(txt,s+1,e-s-1)
          n=n+1
       endwhile   
+      rad.cnum=n
 
       if (c ne 0) then radar=[radar,rad] $
       else radar[0]=rad
