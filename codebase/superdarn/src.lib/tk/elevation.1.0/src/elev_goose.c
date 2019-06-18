@@ -133,7 +133,7 @@ double elev_goose(struct FitPrm *prm, double phi0) {
 
     if ((fabs(sn2_eps) > 1.0) || (sn2_eps < 0.0)) {
       dchi = dchi - (2*PI);
-      fprintf(stderr,"changing dchi by -2pi. %f -> %f / sn2_eps: %f\n",dchi_old,dchi,sn2_eps);
+      fprintf(stderr,"changing dchi by -2pi. %f -> %f\n",dchi_old,dchi);
     }
 
     /* counter to make sure this loop doesn't run to infinity - EGT 20190618 */
