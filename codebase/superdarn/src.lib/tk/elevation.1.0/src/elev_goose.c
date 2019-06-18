@@ -37,6 +37,7 @@
 
 double elev_goose(struct FitPrm *prm, double phi0) {
   int n;
+  int cnt=0;
   double k, psi, dchi_cable, temp, sn2_alpha_min, cs_alpha_min;
   double sin_psi2, sin_psi_xi, sin_psi2_xi2, sn2_alpha_old;
   double dchi_sep_max, dchi_max, dchi, dchi_old, cs_alpha, sn2_eps=0, sn_eps;
@@ -124,7 +125,7 @@ double elev_goose(struct FitPrm *prm, double phi0) {
   /* compute the cone angle (alpha) */
 
   dchi_old = 0.0;
-  while (fabs(dchi_old - dchi) > PI) {
+  while (fabs(dchi_old - dchi) > PI && cnt < 10) {
     cs_alpha = (dchi - dchi_cable)/(k*sep)*cos_xi;
     sn2_eps = 1.0 - (cs_alpha*cs_alpha)/(cos_xi2) - (sin_psi2/cos_xi2)
              - 2.0*cs_alpha*sin_psi_xi/cos_xi2;
@@ -132,8 +133,11 @@ double elev_goose(struct FitPrm *prm, double phi0) {
 
     if ((fabs(sn2_eps) > 1.0) || (sn2_eps < 0.0)) {
       dchi = dchi - (2*PI);
-      fprintf(stderr,"changing dchi by -2pi. %f -> %f\n",dchi_old,dchi);
+      fprintf(stderr,"changing dchi by -2pi. %f -> %f / sn2_eps: %f\n",dchi_old,dchi,sn2_eps);
     }
+
+    /* counter to make sure this loop doesn't run to infinity - EGT 20190618 */
+    cnt++;
   }
 
   sn_eps = sqrt(sn2_eps);
