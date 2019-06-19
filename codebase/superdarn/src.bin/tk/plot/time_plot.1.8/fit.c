@@ -135,7 +135,7 @@ void fit_tplot(struct RadarParm *prm,struct FitData *fit,struct tplot *tptr) {
     tptr->p_l_e[i]=fit->rng[i].p_l_err;
     tptr->v_e[i]=fit->rng[i].v_err;
     tptr->w_l_e[i]=fit->rng[i].w_l_err;
-    if (fit->xrng !=NULL) tptr->phi0[i]=fit->rng[i].phi0;
+    if (fit->xrng !=NULL) tptr->phi0[i]=fit->xrng[i].phi0;
     else tptr->phi0[i]=-4;
     if (fit->elv !=NULL) tptr->elv[i]=fit->elv[i].normal;
     else tptr->elv[i]=-1;
