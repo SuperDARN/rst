@@ -34,7 +34,7 @@
 #include "fitblk.h"
 #include "rmath.h"
 
-double elevation(struct FitPrm *prm,double range,double phi0) {
+double elevation(struct FitPrm *prm,double phi0) {
  
   double k;          /* wave number; 1/m */
   double phi;        /* beam direction off boresight; rad */
