@@ -392,21 +392,21 @@ char *label_pwr(double val,double min,double max,void *data) {
   return txt;
 }
 
+char *label_phi(double val,double min,double max,void *data) {
+  char *txt=NULL;
+  if ((val !=max) && (val !=min)) return NULL;
+  txt=malloc(32);
+  if (val==max) sprintf(txt,"%g",val);
+  if (val==min) sprintf(txt,"%g rad",val);
+  return txt;
+}
+
 char *label_elv(double val,double min,double max,void *data) {
   char *txt=NULL;
   if ((val !=max) && (val !=min)) return NULL;
   txt=malloc(32);
   if (val==max) sprintf(txt,"%g",val);
   if (val==min) sprintf(txt,"%g deg",val); 
-  return txt;
-}
-
-char *label_err(double val,double min,double max,void *data) {
-  char *txt=NULL;
-  if ((val !=max) && (val !=min)) return NULL;
-  txt=malloc(32); 
-  if (val==max) sprintf(txt,"%g",val);
-  if (val==min) sprintf(txt,"%g m/s",val);
   return txt;
 }
 
@@ -601,8 +601,11 @@ int main(int argc,char *argv[]) {
   unsigned char pwrflg=0;
   unsigned char velflg=0;
   unsigned char wdtflg=0;
+  unsigned char phiflg=0;
   unsigned char elvflg=0;
-  unsigned char errflg=0;
+  unsigned char verrflg=0;
+  unsigned char werrflg=0;
+  unsigned char pwr0flg=0;
   unsigned char vecflg=0;
 
   unsigned char tlblflg=0;
@@ -619,14 +622,28 @@ int main(int argc,char *argv[]) {
 
   double pmin=0;
   double pmax=30;
+
   double vmin=-2000;
   double vmax=2000;
+
   double wmin=0;
   double wmax=500;
+
+  double phimin=-3;
+  double phimax=3;
+
   double emin=0;
   double emax=50;
+
   double vemin=0;
   double vemax=200;
+
+  double wemin=0;
+  double wemax=100;
+
+  double p0min=0;
+  double p0max=30;
+
   float vsf=1.0;
   float vecr=2.0;
 
@@ -855,30 +872,42 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"gscol",'t',&gscol_txt);
 
-  OptionAdd(&opt,"v",'x',&velflg);
-  OptionAdd(&opt,"p",'x',&pwrflg);
-  OptionAdd(&opt,"w",'x',&wdtflg);
-  OptionAdd(&opt,"e",'x',&elvflg);
-  OptionAdd(&opt,"ve",'x',&errflg);
+  OptionAdd(&opt,"v",'x',&velflg); /* plot velocity */
+  OptionAdd(&opt,"p",'x',&pwrflg); /* plot power */
+  OptionAdd(&opt,"w",'x',&wdtflg); /* plot spectral width */
+  OptionAdd(&opt,"phi",'x',&phiflg); /* plot phi0 */
+  OptionAdd(&opt,"e",'x',&elvflg); /* plot elevation angle */
+  OptionAdd(&opt,"ve",'x',&verrflg); /* plot velocity error */
+  OptionAdd(&opt,"we",'x',&werrflg); /* plot spectral width error */
+  OptionAdd(&opt,"p0",'x',&pwr0flg); /* plot lag0 power */
   OptionAdd(&opt,"vec",'x',&vecflg);
 
-  OptionAdd(&opt,"pmin",'d',&pmin);
-  OptionAdd(&opt,"pmax",'d',&pmax);
+  OptionAdd(&opt,"pmin",'d',&pmin); /* power minimum */
+  OptionAdd(&opt,"pmax",'d',&pmax); /* power maximum */
 
-  OptionAdd(&opt,"vmin",'d',&vmin);
-  OptionAdd(&opt,"vmax",'d',&vmax);
+  OptionAdd(&opt,"vmin",'d',&vmin); /* velocity minimum */
+  OptionAdd(&opt,"vmax",'d',&vmax); /* velocity maximum */
 
-  OptionAdd(&opt,"wmin",'d',&wmin);
-  OptionAdd(&opt,"wmax",'d',&wmax);
+  OptionAdd(&opt,"wmin",'d',&wmin); /* spectral width minimum */
+  OptionAdd(&opt,"wmax",'d',&wmax); /* spectral width maximum */
 
-  OptionAdd(&opt,"emin",'d',&emin);
-  OptionAdd(&opt,"emax",'d',&emax);
+  OptionAdd(&opt,"phimin",'d',&phimin); /* phi0 minimum */
+  OptionAdd(&opt,"phimax",'d',&phimax); /* phi0 maximum */
 
-  OptionAdd(&opt,"vemin",'d',&vemin);
-  OptionAdd(&opt,"vemax",'d',&vemax);
+  OptionAdd(&opt,"emin",'d',&emin); /* elevation angle minimum */
+  OptionAdd(&opt,"emax",'d',&emax); /* elevation angle maximum */
 
-  OptionAdd(&opt,"gs",'x',&gsflg);
-  OptionAdd(&opt,"gm",'x',&gmflg);
+  OptionAdd(&opt,"vemin",'d',&vemin); /* velocity error minimum */
+  OptionAdd(&opt,"vemax",'d',&vemax); /* velocity error maximum */
+
+  OptionAdd(&opt,"wemin",'d',&wemin); /* spectral width error minimum */
+  OptionAdd(&opt,"wemax",'d',&wemax); /* spectral width error maximum */
+
+  OptionAdd(&opt,"p0min",'d',&p0min); /* lag0 power minimum */
+  OptionAdd(&opt,"p0max",'d',&p0max); /* lag0 power maximum */
+
+  OptionAdd(&opt,"gs",'x',&gsflg); /* shade ground scatter */
+  OptionAdd(&opt,"gm",'x',&gmflg); /* mask ground scatter */
 
   OptionAdd(&opt,"keyp",'x',&keyflg);
   OptionAdd(&opt,"vkeyp",'x',&vkeyflg);
@@ -1316,20 +1345,29 @@ int main(int argc,char *argv[]) {
   if (pwrflg) pprm=1;
   if (velflg) pprm=2;
   if (wdtflg) pprm=3;
-  if (elvflg) pprm=4;
-  if (errflg) pprm=5;
+  if (phiflg) pprm=4;
+  if (elvflg) pprm=5;
+  if (verrflg) pprm=6;
+  if (werrflg) pprm=7;
+  if (pwr0flg) pprm=8;
 
   if (pprm==1) key.max=pmax;
   else if (pprm==2) key.max=vmax;
   else if (pprm==3) key.max=wmax;
-  else if (pprm==4) key.max=emax;
-  else if (pprm==5) key.max=vemax;
+  else if (pprm==4) key.max=phimax;
+  else if (pprm==5) key.max=emax;
+  else if (pprm==6) key.max=vemax;
+  else if (pprm==7) key.max=wemax;
+  else if (pprm==8) key.max=p0max;
 
   if (pprm==1) key.min=pmin;
   else if (pprm==2) key.min=vmin;
   else if (pprm==3) key.min=wmin;
-  else if (pprm==4) key.min=emin;
-  else if (pprm==5) key.min=vemin;
+  else if (pprm==4) key.min=phimin;
+  else if (pprm==5) key.min=emin;
+  else if (pprm==6) key.min=vemin;
+  else if (pprm==7) key.min=wemin;
+  else if (pprm==8) key.min=p0min;
 
   vkey.min=0;
   vkey.max=vmax;
@@ -1707,13 +1745,19 @@ int main(int argc,char *argv[]) {
           if (pprm==1) max=pmax;
           else if (pprm==2) max=vmax;
           else if (pprm==3) max=wmax;
-          else if (pprm==4) max=emax;
-          else if (pprm==5) max=vemax;
+          else if (pprm==4) max=phimax;
+          else if (pprm==5) max=emax;
+          else if (pprm==6) max=vemax;
+          else if (pprm==7) max=wemax;
+          else if (pprm==8) max=p0max;
           if (pprm==1) min=pmin;
           else if (pprm==2) min=vmin;
           else if (pprm==3) min=wmin;
-          else if (pprm==4) min=emin;
-          else if (pprm==5) min=vemin;
+          else if (pprm==4) min=phimin;
+          else if (pprm==5) min=emin;
+          else if (pprm==6) min=vemin;
+          else if (pprm==7) min=wemin;
+          else if (pprm==8) min=p0min;
 
           if (khgt<80) kstp=(max-min)/5.0;
           else kstp=(max-min)/10.0;
@@ -1740,17 +1784,38 @@ int main(int argc,char *argv[]) {
                                          "Helvetica",10.0,txtcol,0x0f,0.5,
                                          key.num,key.a,key.r,key.g,key.b);
           else if (pprm==4) GrplotStdKey(plot,px,apad,8,khgt,
+                                         phimin,phimax,kstp,
+                                         0,0,2,
+                                         0,NULL,
+                                         txtbox,fontdb,label_phi,NULL,
+                                         "Helvetica",10.0,txtcol,0x0f,0.5,
+                                         key.num,key.a,key.r,key.g,key.b);
+          else if (pprm==5) GrplotStdKey(plot,px,apad,8,khgt,
                                          emin,emax,kstp,
                                          0,0,2,
                                          0,NULL,
                                          txtbox,fontdb,label_elv,NULL,
                                          "Helvetica",10.0,txtcol,0x0f,0.5,
                                          key.num,key.a,key.r,key.g,key.b);
-          else if (pprm==5) GrplotStdKey(plot,px,apad,8,khgt,
+          else if (pprm==6) GrplotStdKey(plot,px,apad,8,khgt,
                                          vemin,vemax,kstp,
                                          0,0,2,
                                          0,NULL,
-                                         txtbox,fontdb,label_err,NULL,
+                                         txtbox,fontdb,label_vel,NULL,
+                                         "Helvetica",10.0,txtcol,0x0f,0.5,
+                                         key.num,key.a,key.r,key.g,key.b);
+          else if (pprm==7) GrplotStdKey(plot,px,apad,8,khgt,
+                                         wemin,wemax,kstp,
+                                         0,0,2,
+                                         0,NULL,
+                                         txtbox,fontdb,label_wdt,NULL,
+                                         "Helvetica",10.0,txtcol,0x0f,0.5,
+                                         key.num,key.a,key.r,key.g,key.b);
+          else if (pprm==8) GrplotStdKey(plot,px,apad,8,khgt,
+                                         p0min,p0max,kstp,
+                                         0,0,2,
+                                         0,NULL,
+                                         txtbox,fontdb,label_pwr,NULL,
                                          "Helvetica",10.0,txtcol,0x0f,0.5,
                                          key.num,key.a,key.r,key.g,key.b);
           px+=kwdt;
@@ -1913,8 +1978,11 @@ int main(int argc,char *argv[]) {
     if (pprm==1) sprintf(txt,"Parameter:Power");
     if (pprm==2) sprintf(txt,"Parameter:Velocity");
     if (pprm==3) sprintf(txt,"Parameter:Spectral Width");
-    if (pprm==4) sprintf(txt,"Parameter:Elevation Angle");
-    if (pprm==5) sprintf(txt,"Parameter:Velocity Error");
+    if (pprm==4) sprintf(txt,"Parameter:Phi0");
+    if (pprm==5) sprintf(txt,"Parameter:Elevation Angle");
+    if (pprm==6) sprintf(txt,"Parameter:Velocity Error");
+    if (pprm==7) sprintf(txt,"Parameter:Spectral Width Error");
+    if (pprm==8) sprintf(txt,"Parameter:Lag0 Power");
     txtbox("Helvetica",12.0,strlen(txt),txt,box,fontdb);
 
     PlotText(plot,NULL,"Helvetica",12.0,wdt-box[0],24+4*lnehgt,

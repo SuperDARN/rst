@@ -63,14 +63,17 @@ void plot_cell(struct Plot *plot,struct RadarBeam *sbm,
   int t[4]={0,0,0,0};
   float map[2],pnt[2];
   for (rng=0;rng<sbm->nrang;rng++) {
-    if (sbm->sct[rng]==0) continue;
+    if ((sbm->sct[rng]==0) && (prm !=8)) continue;
 
     if (cfn !=NULL) {
       if (prm==1) color=(*cfn)(sbm->rng[rng].p_l,cdata);
       else if (prm==2)  color=(*cfn)(sbm->rng[rng].v,cdata);
       else if (prm==3)  color=(*cfn)(sbm->rng[rng].w_l,cdata);
-      else if (prm==4)  color=(*cfn)(sbm->rng[rng].elv,cdata);
-      else color=(*cfn)(sbm->rng[rng].v_e,cdata);
+      else if (prm==4)  color=(*cfn)(sbm->rng[rng].phi0,cdata);
+      else if (prm==5)  color=(*cfn)(sbm->rng[rng].elv,cdata);
+      else if (prm==6)  color=(*cfn)(sbm->rng[rng].v_e,cdata);
+      else if (prm==7)  color=(*cfn)(sbm->rng[rng].w_l_e,cdata);
+      else color=(*cfn)(sbm->rng[rng].p_0,cdata);
     }
 
     if ((prm==2) && (gsflg) && (sbm->rng[rng].gsct !=0)) color=gscol;
