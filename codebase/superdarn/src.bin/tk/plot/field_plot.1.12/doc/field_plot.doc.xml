@@ -182,9 +182,15 @@
 </option>
 <option><on>-w</on><od>plot spectral width.</od>
 </option>
+<option><on>-phi</on><od>plot phi0.</od>
+</option>
 <option><on>-e</on><od>plot elevation angle.</od>
 </option>
 <option><on>-ve</on><od>plot velocity error.</od>
+</option>
+<option><on>-we</on><od>plot spectral width error.</od>
+</option>
+<option><on>-p0</on><od>plot lag0 power.</od>
 </option>
 <option><on>-vec</on><od>plot velocity vectors.</od>
 </option>
@@ -200,6 +206,10 @@
 </option>
 <option><on>-wmax <ar>wmax</ar></on><od>set the maximum value of the spectral width scale to <ar>wmax</ar>.</od>
 </option>
+<option><on>-phimin <ar>phimin</ar></on><od>set the minimum value of the phi0 scale to <ar>phimin</ar>.</od>
+</option>
+<option><on>-phimax <ar>phimax</ar></on><od>set the maximum value of the phi0 scale to <ar>phimax</ar>.</od>
+</option>
 <option><on>-emin <ar>emin</ar></on><od>set the minimum value of the elevation angle scale to <ar>emin</ar>.</od>
 </option>
 <option><on>-emax <ar>emax</ar></on><od>set the maximum value of the elevation angle scale to <ar>emax</ar>.</od>
@@ -207,6 +217,14 @@
 <option><on>-vemin <ar>vemin</ar></on><od>set the minimum value of the velocity error scale to <ar>vemin</ar>.</od>
 </option>
 <option><on>-vemax <ar>vemax</ar></on><od>set the maximum value of the velocity error scale to <ar>vemax</ar>.</od>
+</option>
+<option><on>-wemin <ar>wemin</ar></on><od>set the minimum value of the spectral width error scale to <ar>wemin</ar>.</od>
+</option>
+<option><on>-wemax <ar>wemax</ar></on><od>set the maximum value of the spectral width error scale to <ar>wemax</ar>.</od>
+</option>
+<option><on>-p0min <ar>p0min</ar></on><od>set the minimum value of the lag0 power scale to <ar>p0min</ar>.</od>
+</option>
+<option><on>-p0max <ar>p0max</ar></on><od>set the maximum value of the lag0 power scale to <ar>p0max</ar>.</od>
 </option>
 <option><on>-gs</on><od>color ground scatter.</od>
 </option>
