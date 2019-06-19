@@ -22,6 +22,8 @@
 </option>
 <option><on>-old</on><od>input file is in <code>raw</code> (<code>dat</code>) file format and the output should be in <code>fit</code> file format.</od>
 </option>
+<option><on>-old_elev</on><od>use old elevation angle algorithm(s).</od>
+</option>
 <option><on><ar>rawname</ar></on><od>filename of the <code>raw</code> (<code>dat</code>) format file.</od>
 </option>
 <option><on><ar>fitname</ar></on><od>filename of the <code>fit</code> format file to create.</od>
