@@ -247,6 +247,8 @@ int OldFitWrite(int fitfp,struct RadarParm *prm,struct FitData *fit,
   oldfit.prms.MXPWR=prm->mxpwr;
   oldfit.prms.LVMAX=prm->lvmax;   
 
+  oldfit.prms.usr_resL1=prm->offset;
+
   if (oldfit.prms.NRANG>ORIG_MAX_RANGE) oldfit.prms.NRANG=ORIG_MAX_RANGE;
     
   for (c=0;c<prm->mppul;c++) oldfit.pulse[c]=prm->pulse[c];
