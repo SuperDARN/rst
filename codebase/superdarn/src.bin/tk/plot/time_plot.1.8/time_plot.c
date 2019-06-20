@@ -1082,11 +1082,35 @@ int main(int argc,char *argv[]) {
     stime=cfit_find(cfitfp,cfit,sdate,stime);
   }
 
+  
+
 
   if (etime !=-1) {
     if (edate==-1) etime+=stime - ( (int) stime % (24*3600));
     else etime+=edate;
-  } else etime=stime+24*3600;
+  } else {
+   /* determine end time from the last record in the file
+      (then navigate back to the start time) 
+      this has been implemented only for fit/fitacf format files */
+    int status=0;
+    if (fitflg && old) {
+       while (status!=-1) status=OldFitRead(oldfitfp,prm,fit);
+       etime=TimeYMDHMSToEpoch(prm->time.yr,prm->time.mo,prm->time.dy,
+                               prm->time.hr,prm->time.mt,
+                               prm->time.sc+prm->time.us/1.0e6);
+       TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
+       status=OldFitSeek(oldfitfp,yr,mo,dy,hr,mt,0,NULL);
+     } else if (fitflg) {
+       while (status!=-1) status=FitFread(fitfp,prm,fit);
+       etime=TimeYMDHMSToEpoch(prm->time.yr,prm->time.mo,prm->time.dy,
+                               prm->time.hr,prm->time.mt,
+                               prm->time.sc+prm->time.us/1.0e6);
+       TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
+       status=FitFseek(fitfp,yr,mo,dy,hr,mt,0,NULL,inx);
+
+     } else etime=stime+24*3600; /* cfit or smr format: default 24 hour */
+  }
+
   if (extime !=0) etime=stime+extime;
 
   if (name==NULL) name=dname;
@@ -1509,6 +1533,7 @@ int main(int argc,char *argv[]) {
     }
 
   } while (atime<etime);
+
 
   if (fitflg){
     if (old) OldFitClose(oldfitfp);
