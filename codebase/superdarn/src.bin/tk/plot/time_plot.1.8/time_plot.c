@@ -1083,14 +1083,13 @@ int main(int argc,char *argv[]) {
   }
 
   
-
-
   if (etime !=-1) {
     if (edate==-1) etime+=stime - ( (int) stime % (24*3600));
     else etime+=edate;
   } else {
    /* determine end time from the last record in the file
-      (then navigate back to the start time) 
+      (then navigate back to the start time)
+      if the total time range is less than 10min then set it to 10min.
       this has been implemented only for fit/fitacf format files */
     int status=0;
     if (fitflg && old) {
@@ -1109,6 +1108,7 @@ int main(int argc,char *argv[]) {
        status=FitFseek(fitfp,yr,mo,dy,hr,mt,0,NULL,inx);
 
      } else etime=stime+24*3600; /* cfit or smr format: default 24 hour */
+  if (etime-stime<10*60) etime=stime+10*60;
   }
 
   if (extime !=0) etime=stime+extime;
