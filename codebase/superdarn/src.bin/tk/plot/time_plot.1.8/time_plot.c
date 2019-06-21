@@ -1088,7 +1088,6 @@ int main(int argc,char *argv[]) {
     else etime+=edate;
   } else {
    /* determine end time from the last record in the file
-      (then navigate back to the start time)
       if the total time range is less than 10min then set it to 10min.
       this has been implemented only for fit/fitacf format files */
     int status=0;
@@ -1100,13 +1099,11 @@ int main(int argc,char *argv[]) {
        TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
        status=OldFitSeek(oldfitfp,yr,mo,dy,hr,mt,0,NULL);
      } else if (fitflg) {
-       while (status!=-1) status=FitFread(fitfp,prm,fit);
-       etime=TimeYMDHMSToEpoch(prm->time.yr,prm->time.mo,prm->time.dy,
-                               prm->time.hr,prm->time.mt,
-                               prm->time.sc+prm->time.us/1.0e6);
+       double atme;
+       status=FitFseek(fitfp,yr+1,mo,dy,hr,mt,0,&atme,inx);
+       etime=atme;
        TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
        status=FitFseek(fitfp,yr,mo,dy,hr,mt,0,NULL,inx);
-
      } else etime=stime+24*3600; /* cfit or smr format: default 24 hour */
   if (etime-stime<10*60) etime=stime+10*60;
   }
