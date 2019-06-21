@@ -135,32 +135,25 @@ Now install the [CDF library](#cdf-library)
 
 Now install the [CDF library](#cdf-library) 
 
-
-
-
 ### CentOS
 
-   16.04 		 |     18.04   |
- ------------------------|-------------| 		
- libhdf5-serial-dev	 |  libhdf5-serial-dev	 | 
- libncurses-dev 	 |  libncurses-dev 	 |
- libnetcdf-dev 		 |  libnetcdf-dev 		 |
- libpng12-dev 		 |  libpng-dev 		 |
- libx11-dev 		 |  libx11-dev 		 |
- libxext-dev 		 |  libxext-dev 		 |
- netpbm (10.77.03_2+x11) |  netpbm (10.77.03_2+x11) |
+   7 		         |
+ --------------------|
+ hdf5-devel	         |
+ ncurses-devel 	     |
+ netcdf-devel 		 |
+ netcdf              |
+ libpng12-devel 	 |
+ libx11-devel        |
+ libxext             |
+ libxext-devel 		 |
+ zlib-devel          |
 
-To install the above libraries on a OpenSuse distribution use `sudo zypper`. 
-```bash
-sudo zypper install gcc
-```
-Installation line:
+**CentOS 7**
 
+    sudo yum install hdf5-devel libpng12-devel libX11-devel libXext libXext-devel netcdf netcdf-devel ncurses-devel zlib-devel
 
 Now install the [CDF library](#cdf-library) 
-
-
-
 
 ### CDF Library 
 
@@ -172,6 +165,16 @@ For Opensuse you will need to make a symlink lcurses library to libncuses (recom
 Now go to the [Installation](#installation)
 
 #### TroubleShooting: 
+
+> If you find any problems/solutions, please make a [github issue](https://github.com/superdarn/rst/issues/new) so the community can help you or add it to the documentation
+
+
+**Problem**
+
+Error: curses.h not found
+
+**Solution**
+
 * (Recommended) To make a symlink from lncurses library to lcurses; run the following commands in the terminal:
 
         ln -s /usr/lib64/libncurses.so /usr/lib64/libcurses.so
@@ -238,7 +241,9 @@ links in the html pages to function correctly.  Online documentation is availabl
 
 https://superdarn.github.io/rst/index.html
 
-## Troouble Shooting
+## Trooubleshooting
+
+> If you find any problems/solutions, please make a [github issue](https://github.com/superdarn/rst/issues/new) so the community can help you or add it to the documentation
 
 ### Without IDL 
 
