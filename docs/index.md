@@ -28,8 +28,4 @@ If you have any question or concerns please submit an Issue on the SuperDARN RST
         * [IQDAT Format](references/general/iqdat.md)
         * [RAWACF Format](references/general/rawacf.md)
         * [FITACF Format](references/general/fitacf.md)
-      * SuperDARN Tools
-        * [```make_fit```](references/superdarn/tools/make_fit.md)
-        * [```make_grid```](references/superdarn/tools/make_grid.md)
-
 
