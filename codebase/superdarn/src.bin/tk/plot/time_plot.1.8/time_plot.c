@@ -1086,7 +1086,8 @@ int main(int argc,char *argv[]) {
   if (etime !=-1) {
     if (edate==-1) etime+=stime - ( (int) stime % (24*3600));
     else etime+=edate;
-  } else {
+  } else if (extime !=0) etime=stime+extime;
+  else {
    /* determine end time from the last record in the file
       if the total time range is less than 10min then set it to 10min.
       this has been implemented only for fit/fitacf format files */
@@ -1108,7 +1109,7 @@ int main(int argc,char *argv[]) {
   if (etime-stime<10*60) etime=stime+10*60;
   }
 
-  if (extime !=0) etime=stime+extime;
+  
 
   if (name==NULL) name=dname;
 
