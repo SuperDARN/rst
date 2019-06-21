@@ -1,22 +1,54 @@
 # Linux 
 
+This guide is intended to provide installation instructions on several **Linux Distrobutions**. It begins with a list of dependencies required for each distrubution and concludes with instructions for installing RST. If you do not see you Linux distrobution or version please create an [issue](https://github.com/superdarn/rst/issues/new) on GitHub page and we can help and add it into our installtion guide. 
+
+If you run into any problems with installing RST please create an [issue](https://github.com/superdarn/rst/issues/new) addressing your problem and the error message you recieve. The community will then help you with solving your problem and add it into our troubleshooting section to help other future users. 
+
+Table of Contents: 
+-------------------
+
+1. [Library Requirements](#library-requirements)
+    1. [Debian](#debian)
+    2. [Mint](#mint)
+    3. [OpenSuse](#opensuse)
+    4. [Ubuntu](#ubuntu)
+    5. [Fedora](#fedora)
+    6. [CentOS](#centos)
+    7. [CDF Library](#cdf-library) 
+2. [Installation](#installation) 
+3. [Troubleshooting](#troubleshooting)
+
 ## Library Requirements
 
-### CDF (Common Data Format) Library 
+> Warning! sudo priviledges need to install the various libraries 
 
-You will also need the CDF (Common Data Format) library which can be downloaded from NASA.
-You can find the latest release at: http://cdf.gsfc.nasa.gov/  
-For macOS it is also available through macports, as are all listed dependencies  
-For Opensuse you will need to make a symlink lcurses library to libncuses (recommended) or modify the CDF Makefile. 
-* (Recommended) To make a symlink from lncurses library to lcurses; run the following commands in the terminal:
+If you do not have `sudo` privlidges please contanct the system administrator of your system to install the follow libraries for your distribution.  
 
-        ln -s /usr/lib64/libncurses.so /usr/lib64/libcurses.so
-        ln -s /usr/lib64/libncurses.a /usr/lib64/libcurses.a
+### Ubuntu 
 
-* To modify the Makefile change the following:  
-`CURSESLIB_linux_gnu=-lcurses` to `CURSESLIB_linux_gnu=-lncurses`  
-`CURSESLIB_linux_gnu32=-lcurses` to `CURSESLIB_linux_gnu32=-lncurses`  
-`CURSESLIB_linux_gnu64=-lcurses` to `CURSESLIB_linux_gnu64=-lncurses`  
+   16.04 		 |     18.04   |
+ ------------------------|-------------| 		
+ libhdf5-serial-dev	 |  libhdf5-serial-dev	 | 
+ libncurses-dev 	 |  libncurses-dev 	 |
+ libnetcdf-dev 		 |  libnetcdf-dev 		 |
+ libpng12-dev 		 |  libpng-dev 		 |
+ libx11-dev 		 |  libx11-dev 		 |
+ libxext-dev 		 |  libxext-dev 		 |
+ netpbm (10.77.03_2+x11) |  netpbm (10.77.03_2+x11) |
+
+Installation line:
+
+**Ubuntu 18.4**
+
+    
+    sudo apt-get install libhdf5-serial-dev libncurses-dev libnetcdf-dev libpng-dev libx11-dev libxext-dev netpbm
+
+**Ubuntu 16.04**
+    
+    sudo apt-get install libhdf5-serial-dev libncurses-dev libnetcdf-dev libpng12-dev libx11-dev libxext-dev netpbm
+
+Now install the [CDF library](#cdf-library) 
+
 
 ### Debian 
 
@@ -31,11 +63,11 @@ For Opensuse you will need to make a symlink lcurses library to libncuses (recom
 |libxext-dev 		|
 |netpbm 		|	 
  			
-To install the above libraries on a Debian distribution use ``. 
-For example:
-```Bash
+**Debian 8.7**
 
-```
+    sudo apt-get install gcc libhdf5-serial-dev libnetcdf-dev libncurses libpng12-dev libx11-dev libxext-dev netpbm
+
+Now install the [CDF library](#cdf-library) 
 
 ### Mint 
 
@@ -50,11 +82,13 @@ libxext-dev 	|
 netcdf 		|
 netcdf-devel 	|
 
-To install the above libraries on a Debian distribution use ``. 
-For example:
-```Bash
+**Mint 18.1**
+    
+    sudo apt-get install libc6-dev libncurses5-dev libnetcdf-dev libpng16-dev libx11-dev libxext-dev
 
-```
+
+
+Now install the [CDF library](#cdf-library) 
 
 ### OpenSuse
 
@@ -71,13 +105,40 @@ For example:
  ncurses-devel 	|
  zlib-devel 	|
 
-To install the above libraries on a OpenSuse distribution use `sudo zypper`. 
-For example:
-```Bash
-sudo zypper install gcc
-```
+**OpenSUSE 42.2**
 
-### Ubuntu 
+    sudo zypper install gcc hdf5-devel libpng16-devel libX11-devel libXext6 libXext-devel netcdf netcdf-devel ncurses-devel zlib-devel
+
+**OpenSUSE Leap 15.0**
+
+    sudo zypper install gcc hdf5-devel libpng16-devel libX11-devel libXext6 libXext-devel netcdf netcdf-devel ncurses-devel zlib-devel
+
+Now install the [CDF library](#cdf-library) 
+
+### Fedora
+
+   25 		         |
+ --------------------| 		
+ hdf5-devel	         |
+ ncurses-dev 	     |
+ netcdf              |
+ netcdf-dev 		 |
+ libpng-devel 		 |
+ libx11-devel 		 |
+ libxext-devel 		 |
+ libext              |
+ zlib-devel          |
+
+**Fedora 25**
+
+    sudo dnf install hdf5-devel libpng-devel libX11-devel libXext libXext-devel netcdf netcdf-devel ncurses-devel zlib-devel
+
+Now install the [CDF library](#cdf-library) 
+
+
+
+
+### CentOS
 
    16.04 		 |     18.04   |
  ------------------------|-------------| 		
@@ -90,12 +151,39 @@ sudo zypper install gcc
  netpbm (10.77.03_2+x11) |  netpbm (10.77.03_2+x11) |
 
 To install the above libraries on a OpenSuse distribution use `sudo zypper`. 
-For example:
-```Bash
-sudo apt install gcc
+```bash
+sudo zypper install gcc
 ```
+Installation line:
 
-## Installation Steps
+
+Now install the [CDF library](#cdf-library) 
+
+
+
+
+### CDF Library 
+
+You will also need the CDF (Common Data Format) library which can be downloaded from NASA. **Make sure you successfully installed the ncurses library for your distrobution first.** 
+You can find the latest release at: http://cdf.gsfc.nasa.gov/  
+For macOS it is also available through macports, as are all listed dependencies  
+For Opensuse you will need to make a symlink lcurses library to libncuses (recommended) or modify the CDF Makefile. 
+
+Now go to the [Installation](#installation)
+
+#### TroubleShooting: 
+* (Recommended) To make a symlink from lncurses library to lcurses; run the following commands in the terminal:
+
+        ln -s /usr/lib64/libncurses.so /usr/lib64/libcurses.so
+        ln -s /usr/lib64/libncurses.a /usr/lib64/libcurses.a
+
+* To modify the Makefile change the following:  
+`CURSESLIB_linux_gnu=-lcurses` to `CURSESLIB_linux_gnu=-lncurses`  
+`CURSESLIB_linux_gnu32=-lcurses` to `CURSESLIB_linux_gnu32=-lncurses`  
+`CURSESLIB_linux_gnu64=-lcurses` to `CURSESLIB_linux_gnu64=-lncurses`  
+
+
+## Installation
 
 1. Obtaining RST software:
 	a) via **GitHub**: 
@@ -150,9 +238,9 @@ links in the html pages to function correctly.  Online documentation is availabl
 
 https://superdarn.github.io/rst/index.html
 
-### Troouble Shooting
+## Troouble Shooting
 
-#### Without IDL 
+### Without IDL 
 
 **Error**
 
