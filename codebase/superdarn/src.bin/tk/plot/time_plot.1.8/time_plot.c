@@ -1082,12 +1082,34 @@ int main(int argc,char *argv[]) {
     stime=cfit_find(cfitfp,cfit,sdate,stime);
   }
 
-
+  
   if (etime !=-1) {
     if (edate==-1) etime+=stime - ( (int) stime % (24*3600));
     else etime+=edate;
-  } else etime=stime+24*3600;
-  if (extime !=0) etime=stime+extime;
+  } else if (extime !=0) etime=stime+extime;
+  else {
+   /* determine end time from the last record in the file
+      if the total time range is less than 10min then set it to 10min.
+      this has been implemented only for fit/fitacf format files */
+    int status=0;
+    if (fitflg && old) {
+       while (status!=-1) status=OldFitRead(oldfitfp,prm,fit);
+       etime=TimeYMDHMSToEpoch(prm->time.yr,prm->time.mo,prm->time.dy,
+                               prm->time.hr,prm->time.mt,
+                               prm->time.sc+prm->time.us/1.0e6);
+       TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
+       status=OldFitSeek(oldfitfp,yr,mo,dy,hr,mt,0,NULL);
+     } else if (fitflg) {
+       double atme;
+       status=FitFseek(fitfp,yr+1,mo,dy,hr,mt,0,&atme,inx);
+       etime=atme;
+       TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
+       status=FitFseek(fitfp,yr,mo,dy,hr,mt,0,NULL,inx);
+     } else etime=stime+24*3600; /* cfit or smr format: default 24 hour */
+  if (etime-stime<10*60) etime=stime+10*60;
+  }
+
+  
 
   if (name==NULL) name=dname;
 
@@ -1510,6 +1532,7 @@ int main(int argc,char *argv[]) {
 
   } while (atime<etime);
 
+
   if (fitflg){
     if (old) OldFitClose(oldfitfp);
     else if (fitfp !=stdin) fclose(fitfp);
@@ -1551,6 +1574,7 @@ int main(int argc,char *argv[]) {
   if (xmajor==0) {
     xmajor=3*3600;
     if ((etime-stime)<8*3600) xmajor=3600;
+    if ((etime-stime)<2*3600) xmajor=600;
     if ((etime-stime)>48*3600) xmajor=12*3600;
     if ((etime-stime)>160*3600) xmajor=24*3600;
   }
@@ -1558,6 +1582,7 @@ int main(int argc,char *argv[]) {
   if (xminor==0) {
     xminor=15*60;
     if ((etime-stime)<8*3600) xminor=600;
+    if ((etime-stime)<2*3600) xminor=120;
     if ((etime-stime)>48*3600) xminor=3600;
     if ((etime-stime)>160*3600) xminor=3*3600;
   }
