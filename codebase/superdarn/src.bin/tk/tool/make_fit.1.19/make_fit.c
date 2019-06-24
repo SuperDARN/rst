@@ -205,13 +205,20 @@ int main(int argc,char *argv[]) {
     }
     status=RawFread(fp,prm,raw);
   }
+  
+  if (status == -1)
+  {
+      fprintf(stderr, "Error: Could not read the contents of the file, may be empty\n");
+      /* Using -2 to simbolize reading error of the file*/
+      exit(-2);
+  }
 
   radar=RadarGetRadar(network,prm->stid);
   if (radar==NULL) {
     fprintf(stderr,"Failed to get radar information.\n");
     exit(-1);
   }
-
+    
   site=RadarYMDHMSGetSite(radar,prm->time.yr,prm->time.mo,
 		          prm->time.dy,prm->time.hr,prm->time.mt,
                           prm->time.sc);

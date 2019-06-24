@@ -43,7 +43,9 @@ struct RadarSite *RadarEpochGetSite(struct Radar *ptr,double tval) {
 
   /* If tval is before the radar.dat start time of the radar
      then return NULL */
-  if ((ptr->st_time !=-1) && (tval<ptr->st_time)) return NULL;
+  if ((ptr->st_time !=-1) && (tval<ptr->st_time)) {
+      fprintf(stderr,"Warning: Data is before commissioning date set in the radar.dat file\n");   
+  }
   /* If tval is after the radar.dat end time of the radar
      then return NULL */
   if ((ptr->ed_time !=-1) && (tval>ptr->ed_time)) return NULL;
