@@ -71,6 +71,7 @@ int main(int argc,char *argv[]) {
   unsigned char version=0;
 
   unsigned char vb=0;
+  unsigned char old_elev=0;
 
   FILE *fp=NULL;
   struct OldRawFp *rawfp=NULL;
@@ -100,6 +101,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-version",'x',&version);
 
   OptionAdd(&opt,"vb",'x',&vb);
+  OptionAdd(&opt,"old_elev",'x',&old_elev);   /* set to use old elev ang alg */
 
   OptionAdd(&opt,"old",'x',&old);
 
@@ -147,8 +149,6 @@ int main(int argc,char *argv[]) {
     OptionVersion(stdout);
     exit(0);
   }
-
-
 
 
   if ((old) && (argc-arg<2)) {
@@ -239,10 +239,10 @@ int main(int argc,char *argv[]) {
   }
 
 
-
   if (vb)
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
+
 
   if (fitacf_version == 30){
       /* Allocate the memory for the FIT parameter structure */
@@ -266,7 +266,8 @@ int main(int argc,char *argv[]) {
       }
   }
   else if (fitacf_version == 25) {
-    fblk=FitACFMake(site,prm->time.yr);
+    fblk = FitACFMake(site,prm->time.yr);
+    fblk->prm.old_elev = old_elev;          /* passing in old_elev flag */
     FitACF(prm,raw,fblk,fit);
   }
   else {

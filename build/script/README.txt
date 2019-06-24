@@ -140,7 +140,7 @@ make.doc.rfc
 
 Syntax:
 
-make.doc.rfc [-w] project
+make.doc.rfc [-w] codebase project
 
 Description:
 

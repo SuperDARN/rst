@@ -13,7 +13,7 @@ setenv LOGPATH "${RSTPATH}/log"
 setenv DOCPATH "${RSTPATH}/doc"
 
 setenv WWWPATH "${DOCPATH}/www"
-setenv URLBASE "/doc"
+setenv URLBASE "https://superdarn.github.io/rst"
 
 setenv LIBPATH "${RSTPATH}/lib"
 setenv BINPATH "${RSTPATH}/bin"
