@@ -69,6 +69,7 @@
 #include "cfitdata.h"
 #include "cfitread.h"
 #include "fitread.h"
+#include "fitseek.h"
 #include "fitindex.h"
 #include "oldfitread.h"
 #include "stdkey.h"
