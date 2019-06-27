@@ -529,12 +529,16 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"vkey_path",'t',&vkey_path); /* velocity key path */
   OptionAdd(&opt,"wkey",'t',&wkey_fname);     /* spectral width key */
   OptionAdd(&opt,"wkey_path",'t',&wkey_path); /* spectral width key path */
+  OptionAdd(&opt,"phikey",'t',&phikey_fname);     /* phi0 key */
+  OptionAdd(&opt,"phikey_path",'t',&phikey_path); /* phi0 key path */
   OptionAdd(&opt,"ekey",'t',&ekey_fname);     /* elevation angle key */
   OptionAdd(&opt,"ekey_path",'t',&ekey_path); /* elevation angle key path */
   OptionAdd(&opt,"vekey",'t',&vekey_fname);     /* velocity error key */
   OptionAdd(&opt,"vekey_path",'t',&vekey_path); /* velocity error key path */
   OptionAdd(&opt,"wekey",'t',&wekey_fname);     /* spectral width error key */
   OptionAdd(&opt,"wekey_path",'t',&wekey_path); /* spectral width error key path */
+  OptionAdd(&opt,"p0key",'t',&p0key_fname);     /* lag0 power key */
+  OptionAdd(&opt,"p0key_path",'t',&p0key_path); /* lag0 power key path */
   OptionAdd(&opt,"fkey",'t',&fkey_fname);     /* frequency key */
   OptionAdd(&opt,"fkey_path",'t',&fkey_path); /* frequency key path */
   OptionAdd(&opt,"nkey",'t',&nkey_fname);     /* noise key */
