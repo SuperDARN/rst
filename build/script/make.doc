@@ -120,4 +120,5 @@ fi
 mkdir -p ${LOGPATH}
 makedoc ${BUILD}/script/build.txt 
 make.doc.frame ${option}
+make.doc.rfc ${option} codebase superdarn
 exit 0

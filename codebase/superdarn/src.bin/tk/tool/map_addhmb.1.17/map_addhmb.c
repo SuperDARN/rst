@@ -36,9 +36,9 @@
 struct CnvMapData *map[3];
 struct GridData *grd[3];
 
-float bndarr[24][26];
-float lathmb[26];
-int latcnt[26];
+float bndarr[24][36];
+float lathmb[36];
+int latcnt[36];
 
 struct OptionData opt;
 
@@ -94,7 +94,7 @@ int main(int argc,char *argv[])
   float latdef=62;
 
   float latref=59;
-  int nlat=26;
+  int nlat=36;
 
   float bndstep=5;
   int bndnp;
