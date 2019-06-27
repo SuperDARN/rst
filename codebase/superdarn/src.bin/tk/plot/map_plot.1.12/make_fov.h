@@ -26,3 +26,5 @@
 
 struct PolygonData *make_fov(double tval,struct RadarNetwork *network,
                              int chisham,int old_aacgm);
+struct PolygonData *make_fov_data(struct GridData *ptr,struct RadarNetwork *network,
+                                  int chisham,int old_aacgm);

@@ -49,12 +49,14 @@ struct tplot {
   int atten;
   int *qflg;
   int *gsct;
+  double *p_0;
   double *p_l;
   double *p_l_e;
   double *v;
   double *v_e;
   double *w_l;
   double *w_l_e;
+  double *phi0;
   double *elv;
 }; 
 
