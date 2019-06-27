@@ -520,6 +520,12 @@ int llist_for_each ( llist list, node_func func )
  * @param[in] arg passed to func
  * @return int LLIST_SUCCESS if success
  */
+/*
+ * NOTE: if we want variable arguement list then we need to use "..." which is 
+ *       what printf uses. This can be complex and hard to understand from 
+ *       a none programmers point of view. To keep things simple I implemented 
+ *       a variable structure that contains everything. 
+ */
 int llist_for_each_arg ( llist list, node_func_arg func, void * arg1, void * arg2 )
 {
     _list_node *iterator;
