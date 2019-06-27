@@ -13,7 +13,7 @@ export LOGPATH="${RSTPATH}/log"
 export DOCPATH="${RSTPATH}/doc"
 
 export WWWPATH="${DOCPATH}/www"
-export URLBASE="/doc"
+export URLBASE="https://superdarn.github.io/rst"
 
 export LIBPATH="${RSTPATH}/lib"
 export BINPATH="${RSTPATH}/bin"

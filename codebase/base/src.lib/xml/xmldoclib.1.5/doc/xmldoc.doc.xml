@@ -8,13 +8,13 @@
 <name>getDBstring</name>
 <location>src.lib/xml/xmldoclib</location>
 <header>xmldoc.h</header>
-<syntax>char *getDBstring(<sn href="&root;/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *ptr);</syntax>
+<syntax>char *getDBstring(<sn href="&root;/base/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *ptr);</syntax>
 </function>
 <function>
 <name>XMLdocBuild</name>
 <location>src.lib/xml/xmldoclib</location>
 <header>base/rxmldoc.h</header>
-<syntax>int XMLdocBuild(<sn href="&root;/src.lib/xml/xmldb/structXMLDBtable.html">struct XMLDBtable</sn> *ptr,<sn href="&root;/src.lib/base/xml/xmldb/structXMLDBtable.html">struct XMLDBtable</sn> *tree,void *data);</syntax>
+<syntax>int XMLdocBuild(<sn href="&root;/base/src.lib/xml/xmldb/structXMLDBtable.html">struct XMLDBtable</sn> *ptr,<sn href="&root;/base/src.lib/xml/xmldb/structXMLDBtable.html">struct XMLDBtable</sn> *tree,void *data);</syntax>
 </function>
 <function>
 <name>XMLdocFileTrap</name>
@@ -44,7 +44,7 @@
 <name>XMLdocGetConfigSection</name>
 <location>src.lib/xml/xmldoclib</location>
 <header>base/rxmldoc.h</header>
-<syntax>int XMLdocGetConfigSection(<sn href="&root;/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *ptr,char *root,char *path, int (*text)(<sn href="&root;/src.lib/base/xml/xmldb/structXMLDBtable.html">struct XMLDBtable</sn> *,<sn href="&root;/src.lib/base/xml/xmldb/structXMLDBtable.html">struct XMLDBtable</sn> *,void *), void *data);</syntax>
+<syntax>int XMLdocGetConfigSection(<sn href="&root;/base/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *ptr,char *root,char *path, int (*text)(<sn href="&root;/base/src.lib/xml/xmldb/structXMLDBtable.html">struct XMLDBtable</sn> *,<sn href="&root;/base/src.lib/xml/xmldb/structXMLDBtable.html">struct XMLDBtable</sn> *,void *), void *data);</syntax>
 </function>
 <function>
 <name>XMLdocIncludeText</name>
@@ -62,13 +62,13 @@
 <name>XMLdocRender</name>
 <location>src.lib/xml/xmldoclib</location>
 <header>base/rxmldoc.h</header>
-<syntax>int XMLdocRender(<sn href="&root;/src.lib/xml/xmldb/structXMLDBtable.html">struct XMLDBtable</sn> *ptr,<sn href="structXMLdocdata.html">XMLdocdata</sn> *xmldoc,int index);</syntax>
+<syntax>int XMLdocRender(<sn href="&root;/base/src.lib/xml/xmldb/structXMLDBtable.html">struct XMLDBtable</sn> *ptr,<sn href="structXMLdocdata.html">XMLdocdata</sn> *xmldoc,int index);</syntax>
 </function>
 <function>
 <name>XMLdocRenderElement</name>
 <location>src.lib/xml/xmldoclib</location>
 <header>base/rxmldoc.h</header>
-<syntax>int XMLdocRenderElement(<sn href="&root;/src.lib/xml/tagdb/structTagDBdata.html">struct TagDBdata</sn> *tag,<sn href="&root;/src.lib/base/xml/tagdb/structTagDBtable.html">struct TagDBtable</sn> *tagdb, <sn href="structXMLdocelement.html">struct XMLdocelement</sn> *x,<sn href="&root;/src.lib/base/xml/xmldb/structXMLDBelement.html">struct XMLDBelement</sn> *e);</syntax>
+<syntax>int XMLdocRenderElement(<sn href="&root;/base/src.lib/xml/tagdb/structTagDBdata.html">struct TagDBdata</sn> *tag,<sn href="&root;/base/src.lib/xml/tagdb/structTagDBtable.html">struct TagDBtable</sn> *tagdb, <sn href="structXMLdocelement.html">struct XMLdocelement</sn> *x,<sn href="&root;/base/src.lib/xml/xmldb/structXMLDBelement.html">struct XMLDBelement</sn> *e);</syntax>
 </function>
 <function>
 <name>XMLdocRenderFile</name>
@@ -89,19 +89,19 @@
  <header>base/rxmldoc.h</header>
  <struct>
    <member>
-     <proto><sn href="&root;/src.lib/xml/tagdb/structTagDBtable.html">struct TagDBtable</sn> *tagdb;</proto>
+     <proto><sn href="&root;/base/src.lib/xml/tagdb/structTagDBtable.html">struct TagDBtable</sn> *tagdb;</proto>
      <description>None.</description>
    </member>
    <member>
-     <proto><sn href="&root;/src.lib/xml/tagdb/structTagDBdata.html">struct TagDBdata</sn> *tag;</proto>
+     <proto><sn href="&root;/base/src.lib/xml/tagdb/structTagDBdata.html">struct TagDBdata</sn> *tag;</proto>
      <description>None.</description>
    </member>
    <member>
-     <proto><sn href="&root;/src.lib/xml/xmldb/structEntitydata.html">struct Entitydata</sn> *ent;</proto>
+     <proto><sn href="&root;/base/src.lib/xml/xmldb/structEntitydata.html">struct Entitydata</sn> *ent;</proto>
      <description>None.</description>
    </member>
    <member>
-     <proto><sn href="&root;/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *root;</proto>
+     <proto><sn href="&root;/base/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDBbuffer</sn> *root;</proto>
      <description>None.</description>
    </member>
    <member>
@@ -127,7 +127,7 @@
      <description>None.</description>
    </member>
    <member>
-     <proto><sn href="&root;/src.lib/xml/tagdb/structTagDBtable.html">struct TagDBtable</sn> *tagdb;</proto>
+     <proto><sn href="&root;/base/src.lib/xml/tagdb/structTagDBtable.html">struct TagDBtable</sn> *tagdb;</proto>
      <description>None.</description>
    </member>
    <member>
@@ -149,11 +149,11 @@
       <description>None.</description>
    </member>
    <member>
-     <proto><sn href="&root;/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDdbuffer</sn> *action;</proto>
+     <proto><sn href="&root;/base/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDdbuffer</sn> *action;</proto>
      <description>None.</description>
    </member>
    <member>
-     <proto><sn href="struct&root;/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDdbuffer</sn> *defval;</proto>
+     <proto><sn href="&root;/base/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDdbuffer</sn> *defval;</proto>
      <description>None.</description>
    </member>
    <member>
@@ -206,7 +206,7 @@
      <description>None.</description>
    </member>
    <member>
-     <proto><sn href="&root;/src.lib/xml/tagdb/structTagDBtable.html">struct TagDBtable</sn> *tagdb;</proto>
+     <proto><sn href="&root;/base/src.lib/xml/tagdb/structTagDBtable.html">struct TagDBtable</sn> *tagdb;</proto>
      <description>None.</description>
    </member>
    <member>
@@ -224,7 +224,7 @@
       <description>None.</description>
    </member>
    <member>
-     <proto><sn href="&root;/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDdbuffer</sn> *action;</proto>
+     <proto><sn href="&root;/base/src.lib/xml/xmldb/structXMLDBbuffer.html">struct XMLDdbuffer</sn> *action;</proto>
      <description>None.</description>
    </member>
   </struct>
