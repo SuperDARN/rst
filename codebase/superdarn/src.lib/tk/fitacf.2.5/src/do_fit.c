@@ -389,17 +389,10 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
     if (ptr[k].qflg == 1) i++;
   }
 
-<<<<<<< HEAD
-    free(badlag);
-    free(pwrd);
-    free(pwrt);
-    return i;
-=======
   free(badlag);
   free(pwrd);
   free(pwrt);
 
   return i;
->>>>>>> 606a7926b27e55122fe837393301e9e41c043cd1
 }
 
