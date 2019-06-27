@@ -1106,7 +1106,8 @@ int main(int argc,char *argv[]) {
        status=OldFitSeek(oldfitfp,yr,mo,dy,hr,mt,0,NULL);
      } else if (fitflg) {
        double atme;
-       status=FitFseek(fitfp,yr+1,mo,dy,hr,mt,0,&atme,inx);
+       status=FitFseek(fitfp,prm->time.yr+1,prm->time.mo,prm->time.dy,
+                             prm->time.hr,prm->time.mt,0,&atme,inx);
        etime=atme;
        TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
        status=FitFseek(fitfp,yr,mo,dy,hr,mt,0,NULL,inx);
