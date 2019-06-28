@@ -137,17 +137,21 @@ Now install the [CDF library](#cdf-library)
 
 ### CentOS
 
-   7 		         |
- --------------------|
- hdf5-devel	         |
- ncurses-devel 	     |
- netcdf-devel 		 |
- netcdf              |
- libpng12-devel 	 |
- libx11-devel        |
- libxext             |
- libxext-devel 		 |
- zlib-devel          |
+ 6.10                |  7 		         |
+ ----------------    |--------------------|
+ libhdf5	     |  hdf5-devel	         |
+ libnetcdf	     |  ncurses-devel 	     |
+ libcurses	     |  netcdf-devel 		 |
+ libpng12	     |  netcdf              |
+ libX11		     |  libpng12-devel 	 |
+ libXest	     |  libx11-devel        |
+ netpbm		     |  libxext             |
+ zlib		     |  libxext-devel 		 |
+ _  		     |  zlib-devel          |
+
+**CentOS 6.10**
+
+   `sudo yum install libhdf5 libnetcdf libcurses libpng12 libX11 libXest netpbm zlib`
 
 **CentOS 7**
 
