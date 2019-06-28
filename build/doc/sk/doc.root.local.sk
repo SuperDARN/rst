@@ -20,14 +20,83 @@
 
 <div id="main">
 <h3>SuperDARN Radar Software Toolkit (RST) Documentation</h3>
-<center>Navigate by clicking on the links below.</center>
+<left>Navigate by clicking on the links below:</left>
 <ul>
 <!--TOP-->
 <!--MAIN-->
 <li><a href="<!--URL-->"><!--NAME--></a></li>
 <!--MAIN-->
 <!--TAIL-->
+</ul>
 <br><br>
+
+<div id="shortcuts">
+<left>Here are a few shortcuts to several commonly used routines:</left>
+<br><br>
+
+<table style="width:40%">
+  <tr>
+    <th style="text-align:left">Data Processing:</th>
+  <tr>
+    <td><a href="<!--URLBASE-->/general/src.bin/dmap/dmapdump/index.html">dmapdump</a></td>
+    <td>Print the contents of a dmap-format file</td>
+  </tr>
+  <tr>
+    <td><a href="<!--URLBASE-->/superdarn/src.bin/tk/tool/make_fit/index.html">make_fit</a></td>
+    <td>Create a fit/fitacf file from a dat/rawacf file</td>
+  </tr>
+  <tr>
+    <td><a href="<!--URLBASE-->/superdarn/src.bin/tk/tool/make_grid/index.html">make_grid</a></td>
+    <td>Create a grid file from a fit/fitacf file</td>
+  </tr>
+  <tr>
+    <th style="text-align:left">Map Potential:</th>
+  <tr>
+    <td><a href="<!--URLBASE-->/superdarn/src.bin/tk/tool/map_grd/index.html">map_grd</a></td>
+    <td>Create an empty map file from a grid file</td>
+  </tr>
+  <tr>
+    <td><a href="<!--URLBASE-->/superdarn/src.bin/tk/tool/map_addhmb/index.html">map_addhmb</a></td>
+    <td>Add a Heppner-Maynard boundary to a map file</td>
+  </tr>
+  <tr>
+    <td><a href="<!--URLBASE-->/superdarn/src.bin/tk/tool/map_addimf/index.html">map_addimf</a></td>
+    <td>Add solar wind data to a map file</td>
+  </tr>
+  <tr>
+    <td><a href="<!--URLBASE-->/superdarn/src.bin/tk/tool/map_addmodel/index.html">map_addmodel</a></td>
+    <td>Add statistical model vectors to a map file</td>
+  </tr>
+  <tr>
+    <td><a href="<!--URLBASE-->/superdarn/src.bin/tk/tool/map_fit/index.html">map_fit</a></td>
+    <td>Perform spherical harmonic fitting on a map file</td>
+  </tr>
+  <tr>
+    <th style="text-align:left">Plotting:</th>
+  <tr>
+    <td><a href="<!--URLBASE-->/superdarn/src.bin/tk/plot/fov_plot/index.html">fov_plot</a></td>
+    <td>Plot radar fields of view on a map</td>
+  </tr>
+  <tr>
+    <td><a href="<!--URLBASE-->/superdarn/src.bin/tk/plot/time_plot/index.html">time_plot</a></td>
+    <td>Plot fit/fitacf data as a time series</td>
+  </tr>
+  <tr>
+    <td><a href="<!--URLBASE-->/superdarn/src.bin/tk/plot/field_plot/index.html">field_plot</a></td>
+    <td>Plot fit/fitacf data on a map</td>
+  </tr>
+  <tr>
+    <td><a href="<!--URLBASE-->/superdarn/src.bin/tk/plot/grid_plot/index.html">grid_plot</a></td>
+    <td>Plot grid data on a map</td>
+  </tr>
+  <tr>
+    <td><a href="<!--URLBASE-->/superdarn/src.bin/tk/plot/map_plot/index.html">map_plot</a></td>
+    <td>Plot Map Potential data on a map</td>
+  </tr>
+</table>
+<br><br>
+</div>
+
 </div>
 
 <div id="tail">
