@@ -59,8 +59,11 @@ struct rawfp *raw_open(char *rawfile,char *inxfile) {
   if (inbuf==NULL) return NULL;
 
   ptr=malloc(sizeof(struct rawfp));
-
-  if (ptr==NULL) return NULL;
+  
+  if (ptr==NULL) {
+    free(inbuf);
+    return NULL;
+  }
 
   ptr->rawfp=open(rawfile,O_RDONLY);
   ptr->stime=-1;

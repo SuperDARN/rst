@@ -205,7 +205,9 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
   s = calc_skynoise(iptr, nptr, &mnpwr, pwrd, pwrt);
   /* How is s ever not 0 since 0 is returned from the function? -KTS 20150430 */
   if (s == -1){
-  /* Should badlag, pwrd, and pwrt allocations be freed here? -KTS 20150430 */
+    free(badlag);
+    free(pwrd);
+    free(pwrt);
     return -1;
   }
   /* Now determine the level which will be used as the cut-off power

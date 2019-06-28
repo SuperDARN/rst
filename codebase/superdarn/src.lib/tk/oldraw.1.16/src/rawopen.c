@@ -73,7 +73,10 @@ struct OldRawFp *OldRawOpenFd(int rawfd,int inxfd) {
 
   ptr=malloc(sizeof(struct OldRawFp));
 
-  if (ptr==NULL) return NULL;
+  if (ptr==NULL) {
+    free(inbuf);
+    return NULL;
+  }
 
   ptr->rawfp=rawfd;
   ptr->stime=-1;

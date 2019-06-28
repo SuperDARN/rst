@@ -465,4 +465,3 @@ void add_model(struct CnvMapData *map,int num,struct GridGVec *ptr)
      if (map->model[i].mlon>180) map->model[i].mlon-=360;
   }
 }
-
