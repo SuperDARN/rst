@@ -452,4 +452,3 @@ double strtime(char *text) {
 
   return hr*3600L+mn*60L;
 }
-

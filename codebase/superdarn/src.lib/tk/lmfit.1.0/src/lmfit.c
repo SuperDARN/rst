@@ -283,6 +283,7 @@ void lm_noise_stat(struct RadarParm *prm, struct RawData * raw,
   else
     *skynoise = prm->noise.search;
 
+  free(pwrd);
   return;
 }
 
@@ -598,8 +599,19 @@ double getguessex(struct RadarParm *prm,struct RawData *raw,
 
 
 		}
-		else
+		else {
+            free(model_phi);
+            free(model_vels);
+            free(model_errors);
+            free(lagpwr);
+            free(logpwr);
+            free(data_phi_pos);
+            free(data_phi_neg);
+            free(lag_avail);
+            free(sigma);
+            free(good_lags);
 			return -88888888.;
+        }
 
 
 
