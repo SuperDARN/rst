@@ -1,24 +1,74 @@
-# Linux 
+# Mac 
 
-In addition to this code, you will need the following packages:
+This guide is intended to provide installation instructions on **macOS** for Apple branded desktops and laptops. It begins with a list of dependencies required with instructions for installing RST. This process should was designed for OS **Sierra** and above, but should still work on any machine which can run XCode. If you run into any problems with installing RST please create an [issue](https://github.com/superdarn/rst/issues/new) addressing your problem and the error message you recieve. The community will then help you with solving your problem and add it into our troubleshooting section to help other future users. 
 
-Debian 8.7 | Mint 18.1 | OpenSUSE 42.2 | Ubuntu 16.04 | macOS 10.12.4
----------- | --------- | ------------- | ------------ | --------------
-gcc | libc6-dev | gcc | libhdf5-serial-dev | libhdf5
-libhdf5-serial-dev | libncurses5-dev | hdf5-devel | libncurses-dev | libnetcdf
-libnetcdf-dev | libnetcdf-dev | libpng16-devel | libnetcdf-dev | libcurses
-libncurses | libpng16-dev | libX11-devel | libpng12-dev | libpng16
-libpng12-dev | libx11-dev | libXext6 | libx11-dev | libx11
-libx11-dev | libxext-dev | libXext-devel | libxext-dev | cdf
-libxext-dev | | netcdf | netpbm | netpbm (10.77.03_2+x11)
-netpbm | | netcdf-devel | |
- | | | ncurses-devel | |
- | | | zlib-devel | |
+Table of Contents: 
+-------------------
 
-You will also need the CDF (Common Data Format) library which can be downloaded from NASA.
+1. [Library Requirements](#library-requirements) 
+    1. [Macports](#macports)
+    2. [Homebrew](#homebrew)
+    3. [CDF] (#cdf)
+2. [Installation](#installation) 
+3. [Troubleshooting](#troubleshooting)
+
+## Library Requirements
+
+> Warning! sudo priviledges need to install the various libraries. 
+
+If you do not have `sudo` privlidges please contact the system administrator of your system to install the follow libraries for your distribution.  
+
+We will be installing the dependencies using a Mac compatible package manager, such as Macports or Homebrew. Make sure you have one of those installed
+
+Please also note, the names of the following dependicies have been known to change name slightly depending on date, and which package manager you use. A quick google can often tell you the new name if it has changed - just replace the name in the install commands if it has changed.
+
+[Macports install guide](https://www.macports.org/install.php)
+[Homebrew install guide](https://docs.brew.sh/Installation)
+
+You also need the CDF library, see below.
+
+
+   Dependencies 	 |
+ ------------------------| 		
+ libhdf5		 |
+ libncurses		 |
+ libpng16		 |
+ libx11			 | 		
+ netpbm 		 |
+ netcdf			 |
+
+Installation line:
+
+### Macports
+    
+    sudo port install libhdf5 libnetcdf libcurses libpng16 libx11 netpbm (10.77.03_2+x11)
+
+### Homebrew
+    
+    sudo brew install hdf5 netcdf ncurses libpng netpbm
+    
+For X11, make sure you have XCode installed from the macOS App store
+
+Now install the [CDF](#cdf)
+
+### CDF 
+
+You will also need the CDF (Common Data Format) library which can be downloaded from NASA. **Make sure you successfully installed the ncurses library for your distrobution first.** 
 You can find the latest release at: http://cdf.gsfc.nasa.gov/  
-For macOS it is also available through macports, as are all listed dependencies  
-For Opensuse you will need to make a symlink lcurses library to libncuses (recommended) or modify the CDF Makefile. 
+For macOS it is also available through macports, as are all listed dependencies   
+
+Now go to the [Installation](#installation)
+
+#### TroubleShooting: 
+
+> If you find any problems/solutions, please make a [github issue](https://github.com/superdarn/rst/issues/new) so the community can help you or add it to the documentation
+
+**Problem**
+
+Error: curses.h not found
+
+**Solution**
+
 * (Recommended) To make a symlink from lncurses library to lcurses; run the following commands in the terminal:
 
         ln -s /usr/lib64/libncurses.so /usr/lib64/libcurses.so
@@ -29,28 +79,35 @@ For Opensuse you will need to make a symlink lcurses library to libncuses (recom
 `CURSESLIB_linux_gnu32=-lcurses` to `CURSESLIB_linux_gnu32=-lncurses`  
 `CURSESLIB_linux_gnu64=-lcurses` to `CURSESLIB_linux_gnu64=-lncurses`  
 
-## Install notes:
 
+## Installation
 
-1. Upon obtaining the software (with git clone or downloading a zip file), make sure the RST
-   environment variables are properly set.   In `rst/.profile.bash`:
+1. Obtaining RST software:
+	a) via **GitHub**: 
+	```Bash
+	git clone https://github.com/superdarn/rst/
+	```
+	b) via **Download**: [RST zip]()
 
-       OSTYPE="linux" for any linux operating system or "darwin" for macOS
-       SYSTEM="linux" or "darwin" as appropriate
+2. Check RST environment variables:
+   Open `rst/.profile.bash` using your preferred text editor:
+	```	
+      	OSTYPE="linux"
+       	SYSTEM="linux"
+	```
 
-   In `rst/.profile/base.bash`, check to make sure these paths are appropriate:
+   Open `rst/.profile/base.bash` to check paths are correctly set:
 
-   `XPATH, NETCDF_PATH, CDF_PATH`
+   `XPATH, NETCDF_PATH, CDF_PATH` 
+   To check if the paths are set correctly locate the following header files:
+   For NETCDF_PATH `locate netcdf.h`
+   For CDF PATH `locate cdf.h`
+   
+   - If you have **IDL**, check to see that `IDL_IPATH` in `rst/.profile/idl.bash` is correct.
+   	(Note: for users without access to IDL, modifying the `IDL_IPATH` environment variable is
+   	not required).
 
-   If you are running macOS and run into issues with the X11 libraries, you may
-   need to add a symbolic link.
-
-   If you have IDL, check to see that `IDL_IPATH` in `rst/.profile/idl.bash` is correct.
-   (Note: for users without access to IDL, modifying the `IDL_IPATH` environment variable is
-   not required).
-
-2. Load the RST environment variables.  For example, this is accomplished in linux by modifying
-   the `~/.bashrc` file by adding:
+2. Load the RST environment variables. Open and edit your `~/.bashrc` file to include:
 
         # bash profile for rst
         export RSTPATH="INSTALL LOCATION"/rst
@@ -65,18 +122,31 @@ For Opensuse you will need to make a symlink lcurses library to libncuses (recom
 3. Run `make.build` from the command line.  You may need to change directory to `$RSTPATH/build/script`.
    This runs a helper script that sets up other compiling code.
 
-   If you are running macOS Sierra or later, you may have trouble for this step
-   and step 4 if you run the commands in iTerm.app, due to a non-standard bash
-   implimentation.  These can be avoided by running the installation in a
-   xterm terminal like XQuartz.
-
 4. In the same directory run `make.code` to compile all of the code.
    This runs a script to find all of the source codes and compile them into binaries.
    A log of this compilation is stored in `$RSTPATH/log`.
 
-   4a.	 If you don't have IDL and the IDL skip in make.code fails, you will see an error
-   	 upon the inability to locate `idl_export.h`.  If this happens:
+### Compiling Old Documentation
+**Warning documentation may be outdated**
 
+To compile the html documentation, run `make.doc` from the command line. You may need
+to modify the `URLBASE` environment variable in `$RSTPATH/.profile/rst.bash` for the
+links in the html pages to function correctly.  Online documentation is available at:
+
+https://superdarn.github.io/rst/index.html
+
+## Trooubleshooting
+
+> If you find any problems/solutions, please make a [github issue](https://github.com/superdarn/rst/issues/new) so the community can help you or add it to the documentation
+
+### Without IDL 
+
+**Error**
+
+`make.code` fails with the error upon the inability to locate `idl_export.h`.
+
+
+**Solution**
 	 ```
 	 cd $RSTPATH/codebase/superdarn/src.lib/tk
 	 tar -P -czvf idl.tar.gz idl
@@ -85,54 +155,19 @@ For Opensuse you will need to make a symlink lcurses library to libncuses (recom
 	 make.code
 	 ```
 
-   4b.	 If the order of make.code is executed incorrectly, you will see an error upon
-   	 the inability to locate a header file (i.e. `sza.h`).  If this happens (using
-	 `sza.h` as an example):
+**Error**
+If the order of make.code is executed incorrectly, you will see an error upon
+the inability to locate a header file (i.e. `sza.h`).  If this happens (using
+`sza.h` as an example):
 
-	 ```
-	 find $RSTPATH -name "sza.h"
-	 >> $RSTPATH/codebase/imagery/src.lib/sza.1.9/include/sza.h
-	 cd $RSTPATH/codebase/imagery/src.lib/sza.1.9/src
-	 make clean
-	 make
-	 cd $RSTPATH/build/script
-	 make.code
-	 ```
+**Solution**
+```
+find $RSTPATH -name "sza.h"
+>> $RSTPATH/codebase/imagery/src.lib/sza.1.9/include/sza.h
+cd $RSTPATH/codebase/imagery/src.lib/sza.1.9/src
+make clean
+make
+cd $RSTPATH/build/script
+make.code
+```
 
-5. To compile the html documentation, run `make.doc` from the command line. You may need
-   to modify the `URLBASE` environment variable in `$RSTPATH/.profile/rst.bash` for the
-   links in the html pages to function correctly.  Online documentation is available at:
-
-   https://superdarn.github.io/rst/index.html
-
-
-### Historical Version Log
-
-
-- 3.3   -  Final bug fixes and updates of the 3.x series (Aug 2011)
-- 3.2   -  First release with DLM support (Nov 2010)
-- 3.1   -  First release of ROS 3 (Jun 2010)
-- 2.11  -  added support for I&Q sample analysis (Mar 2008)
-- 2.10  -  bug fixes to the fitacfex library and rnk hardware.dat (May 2007)
-- 2.09  -  fixed known errors in the documentation - gold release (Mar 2007)
-- 2.08  -  further bug fixes, fitacfex and documentation system
-           included. (Mar 2007)
-- 2.07  -  introduced fitacf version 2.0 and numerous bug fixes (Feb 2007)
-- 2.06  -  introduction of the origin flag and the beam azimuth parameter
-           together with numerous bug fixes (Aug 2006)
-- 2.05  -  modification to deal with arbitrary numbers of radar beams (Mar 2006)
-- 2.04  -  bug fixes from the deployment of the Radar Operating System (Feb 2006)
-- 2.03  -  added ksh enviroment as an option plus more bug fixes (Sep 2005)
-- 2.02  -  more bug fixes and more XML documentation completed. (Aug 2005)
-- 2.01  -  various bug fixes and improvements to the IDL libraries (Jul 2005)
-- 2.00  -  code adopted as official release. (Apr 2005)
-- 1.07  -  numerous bug fixes. (Apr 2005)
-- 1.06  -  completed IDL interfaces for grid and map data, incorporated help
-           and error messages derived from XML documentation. (Nov 2004)
-- 1.05  -  adopted the DataMap format for grid and map data, incorporated
-           outline documentation and fixed a lot of bugs. (Oct 2004)
-- 1.04  -  general bug fixes, addition of Mac OS X support (Aug 2004)
-- 1.03  -  implemented the legacy IDL interfaces and incorporated the
-           data tables into this release (Aug 2004)
-- 1.02  -  incorporated the IDL interfaces and fixed a lot of bugs (Aug 2004)
-- 1.01  -  initial revision of the code. (Jul 2004)
