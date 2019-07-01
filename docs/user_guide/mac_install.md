@@ -8,7 +8,7 @@ Table of Contents:
 1. [Library Requirements](#library-requirements) 
     1. [Macports](#macports)
     2. [Homebrew](#homebrew)
-    3. [CDF] (#cdf)
+    3. [CDF](#cdf)
 2. [Installation](#installation) 
 3. [Troubleshooting](#troubleshooting)
 
@@ -23,6 +23,7 @@ We will be installing the dependencies using a Mac compatible package manager, s
 Please also note, the names of the following dependicies have been known to change name slightly depending on date, and which package manager you use. A quick google can often tell you the new name if it has changed - just replace the name in the install commands if it has changed.
 
 [Macports install guide](https://www.macports.org/install.php)
+
 [Homebrew install guide](https://docs.brew.sh/Installation)
 
 You also need the CDF library, see below.
