@@ -93,8 +93,8 @@ Error: curses.h not found
 2. Check RST environment variables:
    Open `rst/.profile.bash` using your preferred text editor:
 	```	
-      	OSTYPE="linux"
-       	SYSTEM="linux"
+      	OSTYPE="darwin"
+       	SYSTEM="darwin"
 	```
 
    Open `rst/.profile/base.bash` to check paths are correctly set:
