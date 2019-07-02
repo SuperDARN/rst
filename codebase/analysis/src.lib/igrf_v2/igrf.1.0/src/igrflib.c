@@ -1303,12 +1303,11 @@ int plh2xyz(double lat, double lon, double alt, double rtp[])
 
 int geoc2geod(double lat, double lon, double r, double llh[])
 {
-  double a,f,b,ee,e4,aa, theta,phi, st,ct,sp,cp, x,y,z;
+  double a,f,ee,e4,aa, theta,phi, st,ct,sp,cp, x,y,z;
   double k0i,pp,zeta,rho,s,rho3,t,u,v,w,kappa;
 
   a = 6378.1370;             /* semi-major axis */
   f = 1./298.257223563;     /* flattening */
-  b = a*(1. -f);             /* semi-minor axis */
   ee = (2. - f) * f;
   e4 = ee*ee;
   aa = a*a;
