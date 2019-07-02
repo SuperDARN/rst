@@ -87,8 +87,10 @@ int IGRF_loadcoeffs(void)
   int k,l,m,n, ll,mm;
   int fac, len;
   int iyear, nyear;
+  #if DEBUG > 1
   int dgrf[MAXNYR];
   int epoch[MAXNYR];
+  #endif
   char jnk;
   char *filename;
 /*  char header[2][MAXSTR];*/
@@ -196,10 +198,14 @@ int IGRF_loadcoeffs(void)
   for (m=0; m<len; m++) {
     switch (line[m]) {
       case 'U':                         /* for GUFM1 */
-      case 'I': dgrf[iyear] = 0; break; /* for IGRF */
-      case 'D': dgrf[iyear] = 1; break; /* for DGRF */
       case 'G': iyear++; break;
     }
+    #if DEBUG > 1
+    switch (line[m]) {
+      case 'I': dgrf[iyear] = 0; break; /* for IGRF */
+      case 'D': dgrf[iyear] = 1; break; /* for DGRF */
+    }
+    #endif
   }
   #if DEBUG > 1
   for (m=0; m<nyear; m++) fprintf(stderr, "%d\n", dgrf[m]);
@@ -215,8 +221,8 @@ int IGRF_loadcoeffs(void)
   /* read the years, which should be 5-year integer epochs... */
   for (m=0; m<nyear; m++) {
     fscanf(fp, "%lf", &fyear);
-    epoch[m] = (int)floor(fyear);
     #if DEBUG > 1
+    epoch[m] = (int)floor(fyear);
     fprintf(stderr, "%8.2lf\n", fyear);
     #endif
   }
