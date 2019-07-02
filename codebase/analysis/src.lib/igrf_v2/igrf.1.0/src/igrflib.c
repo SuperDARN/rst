@@ -1250,11 +1250,10 @@ int geod2geoc(double lat, double lon, double alt, double rtp[]) {
 
 int plh2xyz(double lat, double lon, double alt, double rtp[])
 {
-  double a,b,f,ee,st,ct,sp,cp,N,Nac,x,y,z,r,t;
+  double a,f,ee,st,ct,sp,cp,N,Nac,z,r,t;
 
   a = 6378.1370;              /* semi-major axis */
   f = 1./298.257223563;       /* flattening */
-  b = a*(1. -f);              /* semi-minor axis */
   ee = (2. - f) * f;
 
   st = sin(lat*DTOR);
@@ -1265,8 +1264,6 @@ int plh2xyz(double lat, double lon, double alt, double rtp[])
   N = a / sqrt(1. - ee*st*st);
   Nac = (N + alt) * ct;
 
-  x = Nac * cp;
-  y = Nac * sp;
   z = (N*(1. - ee)+alt) * st;
 
   r = sqrt(Nac*Nac + z*z);
