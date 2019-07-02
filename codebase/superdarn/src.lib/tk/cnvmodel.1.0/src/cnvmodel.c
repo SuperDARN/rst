@@ -365,7 +365,7 @@ struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
   float alow[8],ahgh[8];
   float mlow[6],mhgh[6];
   float mod_angil[8],mod_angih[8];
-  float mod_levi[6];
+  float mod_levi[6]={0.0};
 
   switch (imod) {
     case CS10:
