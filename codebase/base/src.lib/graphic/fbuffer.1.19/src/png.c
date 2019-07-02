@@ -36,7 +36,7 @@
 #include "rfbuffer.h"
 
 struct FrameBuffer *FrameBufferLoadPNG(FILE *fp,char *name) {
-  int s=0,x,y,d=1,m=0,nump=0;
+  int s=0,x,y,d=1,m=0
   int wdt,hgt,rowbytes;
 
   unsigned char hdr[8];
