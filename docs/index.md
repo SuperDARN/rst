@@ -14,14 +14,17 @@ If you have any question or concerns please submit an Issue on the SuperDARN RST
 	* [Linux](user_guide/linux_install.md)
 	* [MacOSX](user_guide/mac_install.md)
   -  RST HOWTO's 
-	* [RAWACF to FITACF](user_guide/make_fit.md)
-	* [FITACF to GRID](user_guide/make_grid.md)
-	* [GRID to MAP](user_guide/map_grid.md)
-	* [Range-time Plots](user_guide/time_plot.md)
-    * [Field of View Plots](user_guide/fov_plot.md)
-    * [Field Plots](user_guide/field_plot.md)
-    * [Grid Plots](user_guide/grid_plot.md)
-    * [Convection Plots](user_guide/map_plot.md)
+	  - Data Processing
+      * [RAWACF to FITACF](user_guide/make_fit.md)
+	    * [FITACF to GRID](user_guide/make_grid.md)
+	    * [GRID to MAP](user_guide/map_grid.md)
+	  - Plotting Data
+      * [Range-time Plots](user_guide/time_plot.md)
+      * [Field of View Plots](user_guide/fov_plot.md)
+      * [Field Plots](user_guide/field_plot.md)
+      * [Grid Plots](user_guide/grid_plot.md)
+      * [Convection Plots](user_guide/map_plot.md)
+      * [Customizing Colors](user_guide/colors.md)
   - Reference Manual
       * General
         * [Dmap Data](references/general/dmap_data.md)
