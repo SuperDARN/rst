@@ -151,7 +151,7 @@ Now install the [CDF library](#cdf-library)
 
 **CentOS 6.10**
 
-   `sudo yum install libhdf5 libnetcdf libcurses libpng12 libX11 libXest netpbm zlib`
+   sudo yum install libhdf5 libnetcdf libcurses libpng12 libX11 libXest netpbm zlib
 
 **CentOS 7**
 
