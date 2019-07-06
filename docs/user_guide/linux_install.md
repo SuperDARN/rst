@@ -118,7 +118,7 @@ Now install the [CDF library](#cdf-library)
 
 ### Fedora
 
-   25 		         |
+   25 to 29 		         |
  --------------------| 		
  hdf5-devel	         |
  ncurses-dev 	     |
@@ -130,7 +130,7 @@ Now install the [CDF library](#cdf-library)
  libext              |
  zlib-devel          |
 
-**Fedora 25**
+**Fedora 25 to 29**
 
     sudo dnf install hdf5-devel libpng-devel libX11-devel libXext libXext-devel netcdf netcdf-devel ncurses-devel zlib-devel
 
@@ -152,7 +152,7 @@ Now install the [CDF library](#cdf-library)
 
 **CentOS 6.10**
 
-   sudo yum install libhdf5 libnetcdf libcurses libpng12 libX11 libXest netpbm zlib
+    sudo yum install libhdf5 libnetcdf libcurses libpng12 libX11 libXest netpbm zlib
 
 **CentOS 7**
 
@@ -166,7 +166,7 @@ You will also need the CDF (Common Data Format) library which can be downloaded 
 !!! Note
     **Make sure you successfully installed the ncurses library for your distrobution first.** 
 You can find the latest release at: http://cdf.gsfc.nasa.gov/  
-For macOS it is also available through macports, as are all listed dependencies  
+
 For Opensuse you will need to make a symlink lcurses library to libncuses (recommended) or modify the CDF Makefile. 
 
 Now go to the [Installation](#installation)
