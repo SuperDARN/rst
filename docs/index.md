@@ -5,12 +5,12 @@ RST is an open source software package that allows researchers to analyze, model
 ## RST source code 
 
 Currently, our software is hosted on the [SuperDARN GitHub](https://github.com/SuperDARN/rst) repository. 
-If you cannot access GitHub then you can download newest release on SuperDARN VT  [website](http://vt.superdarn.org/tiki-index.php?page=software)
+If you cannot access GitHub then you can download newest release on SuperDARN VT  [website](http://vt.superdarn.org/tiki-index.php?page=software).
 
 If you have any question or concerns please submit an Issue on the SuperDARN RST repository or email: Data Analysis Working Group. 
 
 ## Table of Contents 
-  - Installtion
+  - Installation
 	* [Linux](user_guide/linux_install.md)
 	* [MacOSX](user_guide/mac_install.md)
   -  RST HOWTO's 
