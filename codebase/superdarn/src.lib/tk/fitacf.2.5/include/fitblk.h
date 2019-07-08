@@ -26,6 +26,7 @@ struct FitPrm {
   int mppul;
   int bmnum;
   int old;
+  int old_elev; /* set to use the old elevation angle routines SGS: 20170811 */
   int *lag[2];
   int *pulse;
   int *pwr0;

@@ -56,9 +56,12 @@ void CnvMapEvalEfield(int Lmax,double *coef,double *plm,
   double lon,lat,tmp=0;
 
   theta=malloc(vptr->num*sizeof(double));
+  if (theta==NULL) return;
   phi=malloc(vptr->num*sizeof(double));
- 
-  if ((theta==NULL) || (phi==NULL)) return;
+  if (phi==NULL) {
+    free(theta);
+    return;
+  }
 
   for (i=0;i<vptr->num;i++) {
      lat=fabs(vptr->lat[i]);

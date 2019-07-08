@@ -119,7 +119,7 @@ int main (int argc,char *argv[]) {
       if (rawfp==NULL) {
         fprintf(stderr,"File %s not found.\n",argv[c]);
         continue;
-      } else if (rawfp->rawread==-2) {
+      } else if (rawfp->error==-2) {
         /* Error code where num_bytes < 0 */
         free(rawfp);
         continue;

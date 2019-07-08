@@ -62,9 +62,12 @@ int CnvMapSolvePotential(struct CnvMapData *ptr,struct CnvGrid *pptr) {
   alpha=tlimit/((90.0-fabs(ptr->latmin))/180.0*PI);  
 
   x=malloc(sizeof(double)*pptr->num);
+  if (x==NULL) return -1;
   ph=malloc(sizeof(double)*pptr->num);
- 
-  if ((x==NULL) || (ph==NULL)) return -1;
+  if (ph==NULL) {
+    free(x);
+    return -1;
+  }
 
   for (i=0;i<pptr->num;i++) {
     lat=fabs(pptr->lat[i]);

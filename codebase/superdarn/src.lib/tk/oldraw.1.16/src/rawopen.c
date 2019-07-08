@@ -73,7 +73,10 @@ struct OldRawFp *OldRawOpenFd(int rawfd,int inxfd) {
 
   ptr=malloc(sizeof(struct OldRawFp));
 
-  if (ptr==NULL) return NULL;
+  if (ptr==NULL) {
+    free(inbuf);
+    return NULL;
+  }
 
   ptr->rawfp=rawfd;
   ptr->stime=-1;
@@ -81,6 +84,7 @@ struct OldRawFp *OldRawOpenFd(int rawfd,int inxfd) {
   ptr->frec=0;
   ptr->rlen=0;
   ptr->ptr=0;
+  ptr->error=0;
 
   fstat(ptr->rawfp,&ptr->rstat);
 
@@ -89,7 +93,7 @@ struct OldRawFp *OldRawOpenFd(int rawfd,int inxfd) {
         fprintf(stderr,"WARNING : rawopen : OldRawOpenFd : num_byte < 0 in record header, potentially corrupted file.\n");
         close(ptr->rawfp);
         free(inbuf);
-        ptr->rawread=-2;
+        ptr->error=-2;
         return ptr;
     }
     close(ptr->rawfp);

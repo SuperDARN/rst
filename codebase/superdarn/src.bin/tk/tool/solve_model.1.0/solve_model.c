@@ -301,7 +301,7 @@ struct mdata *get_model_pos(float latmin,int hemi,int *num,
     for (i=0;i<nlat;i++) {
 
       grdlat=i*lat_step+latmin+lat_step/2.0;
-      lspc=((int) (360*cos(fabs(grdlat)*PI/180)+0.5))/(360.0);
+      lspc=((int) (360.0/lat_step*cos(fabs(grdlat)*PI/180)+0.5))/(360.0);
       nlon=lspc*360.0;
 
       for (j=0;j<nlon;j++) {
@@ -452,4 +452,3 @@ double strtime(char *text) {
 
   return hr*3600L+mn*60L;
 }
-

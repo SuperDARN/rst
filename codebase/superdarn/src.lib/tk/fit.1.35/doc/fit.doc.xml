@@ -35,7 +35,7 @@
 <location>src.lib/tk/fit</location>
 <header>superdarn/fitscan.h</header>
 <syntax>int FitFreadRadarScan(FILE *fp,int *state, <sn href="&root;/superdarn/src.lib/tk/scan/structRadarScan.html">struct RadarScan</sn> *ptr, <sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm, <sn href="&root;/superdarn/src.lib/tk/fit/structFitData.html">struct FitData</sn> *fit, int tlen, int lock,int chn);</syntax>
-<description><p>The <fn href="FitFReadRadarScan.html">FitFReadRadarScan</fn> function reads one full scan of data from a <code>fitacf</code> data file.</p>
+<description><p>The <fn href="FitFreadRadarScan.html">FitFReadRadarScan</fn> function reads one full scan of data from a <code>fitacf</code> data file.</p>
 <p>The data is read from the stream pointed to by the argument <ar>fp</ar>.</p>
 <p>The argument <ar>state</ar> is a pointer to an integer that is used internally by the function to track progress through the <code>fit</code> file. Initially this integer should be set to zero, indicating that no data has been read from the file yet. The other possible value of <ar>state</ar> are (1), indicating that a complete scan was read from the file and data from the next scan is pending, or (2) indicating that a file error occurred.</p>
 <p>The scan data is written to the structure pointed to by the argument <ar>ptr</ar>. Memory is automatically allocated within this structure to store the beam data.</p>
