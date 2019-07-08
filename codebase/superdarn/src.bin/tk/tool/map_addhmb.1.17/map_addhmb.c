@@ -74,7 +74,7 @@ int main(int argc,char *argv[])
   int tme;
   int yrsec=0;
   int i,j;
-  int s;
+  int s=0;
 
   int cnt=0;
 

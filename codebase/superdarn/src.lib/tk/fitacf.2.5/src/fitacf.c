@@ -58,14 +58,14 @@ void FitACFFree(struct FitBlock *fptr) {
 }
 
 
-struct FitBlock *FitACFMake(struct RadarSite *hd,
-                 int year) {
+struct FitBlock *FitACFMake(struct RadarSite *hd, int year) {
     int i;
     struct FitBlock *fptr;
-    fptr=malloc(sizeof(struct FitBlock));
+
+    fptr = malloc(sizeof(struct FitBlock));
     if (fptr==NULL) return NULL;
 
-    if (year < 1993) fptr->prm.old=1;
+    if (year < 1993) fptr->prm.old=1; /* needed for old pulse seq. */
     for (i=0;i<3;i++) fptr->prm.interfer[i]=hd->interfer[i];
     fptr->prm.bmsep=hd->bmsep;
     fptr->prm.phidiff=hd->phidiff;
@@ -82,7 +82,7 @@ struct FitBlock *FitACFMake(struct RadarSite *hd,
 }
 
 int fill_fit_block(struct RadarParm *prm, struct RawData *raw,
-                    struct FitBlock *input, struct FitData *fit){
+                   struct FitBlock *input, struct FitData *fit){
 
     int i, j, n;
     void *tmp=NULL;
@@ -165,7 +165,8 @@ int fill_fit_block(struct RadarParm *prm, struct RawData *raw,
 
     return 0;
 }
-int FitACF(struct RadarParm *prm, struct RawData *raw,struct FitBlock *input, struct FitData *fit) {
+int FitACF(struct RadarParm *prm, struct RawData *raw,struct FitBlock *input,
+           struct FitData *fit) {
 
     int fnum, goose, s;
 

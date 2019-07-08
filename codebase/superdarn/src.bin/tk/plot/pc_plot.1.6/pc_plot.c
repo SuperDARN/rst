@@ -797,7 +797,7 @@ int main(int argc,char *argv[]) {
     else FrameBufferSavePNG(img,stdout);
   #endif
 
-
+  free(fname);
   return 0;
 
 

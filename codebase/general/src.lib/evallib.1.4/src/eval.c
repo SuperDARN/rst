@@ -252,6 +252,7 @@ int Eval(char *expression,double *ptr,
                s=Eval(argbuf+m,&args[argnum],dvar,vdata,dfun,fdata);
                if (s !=0) {
   		  free(sum);
+                  free(argbuf);
                   return s;
 	       }
                argnum++;

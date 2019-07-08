@@ -76,9 +76,25 @@
 </option>
 <option><on>-wkey_path <ar>wkey_path</ar></on><od>load the spectral width colorkey from the custom path <ar>wkey_path</ar>.</od>
 </option>
+<option><on>-phikey <ar>phikeyname</ar></on><od>load the phi0 colorkey from the file <ar>phikeyname</ar>.</od>
+</option>
+<option><on>-phikey_path <ar>phikey_path</ar></on><od>load the phi0 colorkey from the custom path <ar>phikey_path</ar>.</od>
+</option>
 <option><on>-ekey <ar>ekeyname</ar></on><od>load the elevation angle colorkey from the file <ar>ekeyname</ar>.</od>
 </option>
 <option><on>-ekey_path <ar>ekey_path</ar></on><od>load the elevation angle colorkey from the custom path <ar>ekey_path</ar>.</od>
+</option>
+<option><on>-vekey <ar>vekeyname</ar></on><od>load the velocity error colorkey from the file <ar>vekeyname</ar>.</od>
+</option>
+<option><on>-vekey_path <ar>vekey_path</ar></on><od>load the velocity error colorkey from the custom path <ar>vekey_path</ar>.</od>
+</option>
+<option><on>-wekey <ar>wekeyname</ar></on><od>load the spectral width error colorkey from the file <ar>wekeyname</ar>.</od>
+</option>
+<option><on>-wekey_path <ar>wekey_path</ar></on><od>load the spectral width error colorkey from the custom path <ar>wekey_path</ar>.</od>
+</option>
+<option><on>-p0key <ar>p0keyname</ar></on><od>load the lag0 power colorkey from the file <ar>p0keyname</ar>.</od>
+</option>
+<option><on>-p0key_path <ar>p0key_path</ar></on><od>load the lag0 power colorkey from the custom path <ar>p0key_path</ar>.</od>
 </option>
 <option><on>-fkey <ar>fkeyname</ar></on><od>load the frequency colorkey from the file <ar>fkeyname</ar>.</od>
 </option>
@@ -108,7 +124,7 @@
 </option>
 <option><on>-scan <ar>scan</ar></on><od>plot beams that have a value for the scan flag of <ar>scan</ar>.</od>
 </option>
-<option><on>-a</on><od>plot all parameters (excluding elevation angle).</od>
+<option><on>-a</on><od>plot power, velocity, and spectral width.</od>
 </option>
 <option><on>-p</on><od>plot power.</od>
 </option>
@@ -116,7 +132,15 @@
 </option>
 <option><on>-w</on><od>plot spectral width.</od>
 </option>
+<option><on>-phi</on><od>plot phi0.</od>
+</option>
 <option><on>-e</on><od>plot elevation angle.</od>
+</option>
+<option><on>-ve</on><od>plot velocity error.</od>
+</option>
+<option><on>-we</on><od>plot spectral width error.</od>
+</option>
+<option><on>-p0</on><od>plot lag0 power.</od>
 </option>
 <option><on>-pmin <ar>pmin</ar></on><od>set the minimum value of the power scale to <a>pmin</ar>.</od>
 </option>
@@ -130,9 +154,25 @@
 </option>
 <option><on>-wmax <ar>wmax</ar></on><od>set the maximum value of the spectral width scale to <a>wmax</ar>.</od>
 </option>
+<option><on>-phimin <ar>phimin</ar></on><od>set the minimum value of the phi0 scale to <a>phimin</ar>.</od>
+</option>
+<option><on>-phimax <ar>phimax</ar></on><od>set the maximum value of the phi0 scale to <a>phimax</ar>.</od>
+</option>
 <option><on>-emin <ar>emin</ar></on><od>set the minimum value of the elevation angle scale to <a>emin</ar>.</od>
 </option>
 <option><on>-emax <ar>emax</ar></on><od>set the maximum value of the elevation angle scale to <a>emax</ar>.</od>
+</option>
+<option><on>-vemin <ar>vemin</ar></on><od>set the minimum value of the velocity error scale to <a>vemin</ar>.</od>
+</option>
+<option><on>-vemax <ar>vemax</ar></on><od>set the maximum value of the velocity error scale to <a>vemax</ar>.</od>
+</option>
+<option><on>-wemin <ar>wemin</ar></on><od>set the minimum value of the spectral width error scale to <a>wemin</ar>.</od>
+</option>
+<option><on>-wemax <ar>wemax</ar></on><od>set the maximum value of the spectral width error scale to <a>wemax</ar>.</od>
+</option>
+<option><on>-p0min <ar>p0min</ar></on><od>set the minimum value of the lag0 power scale to <a>p0min</ar>.</od>
+</option>
+<option><on>-p0max <ar>p0max</ar></on><od>set the maximum value of the lag0 power scale to <a>p0max</ar>.</od>
 </option>
 <option><on>-gs</on><od>color ground scatter.</od>
 </option>
