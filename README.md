@@ -3,6 +3,8 @@
 Radar Software Toolkit
 ========
 
+For a detailed installation guide and how to use RST for Linux and Mac OSX please see the following documentation: https://radar-software-toolkit-rst.readthedocs.io/en/latest/
+
 In addition to this code, you will need the following packages:
 
 Debian 8.7 | Mint 18.1 | OpenSUSE 42.2 | Ubuntu 16.04 | macOS 10.12.4
