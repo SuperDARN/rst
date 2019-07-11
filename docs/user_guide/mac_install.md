@@ -1,6 +1,6 @@
 # Mac 
 
-This guide is intended to provide installation instructions on **macOS** for Apple branded desktops and laptops. It begins with a list of dependencies required with instructions for installing RST. This process should was designed for OS **Sierra** and above, but should still work on any machine which can run XCode. If you run into any problems with installing RST please create an [issue](https://github.com/superdarn/rst/issues/new) addressing your problem and the error message you recieve. The community will then help you with solving your problem and add it into our troubleshooting section to help other future users. 
+This guide is intended to provide installation instructions on **macOS** for Apple branded desktops and laptops. It begins with a list of dependencies required with instructions for installing RST. This process was designed for OS **Sierra** and above, but should still work on any machine which can run XCode. If you encounter any problems with installing RST, please create an [issue](https://github.com/superdarn/rst/issues/new) describing your problem and the error message you recieve. The community will then help you solve the problem and add it into our troubleshooting section to help other users. 
 
 Table of Contents: 
 -------------------
@@ -14,13 +14,13 @@ Table of Contents:
 
 ## Library Requirements
 
-> Warning! sudo priviledges need to install the various libraries. 
+> Warning! sudo privileges need to install the various libraries. 
 
-If you do not have `sudo` privlidges please contact the system administrator of your system to install the follow libraries for your distribution.  
+If you do not have `sudo` privileges please contact the system administrator of your system to install the follow libraries for your distribution.  
 
-We will be installing the dependencies using a Mac compatible package manager, such as Macports or Homebrew. Make sure you have one of those installed
+We will be installing the dependencies using a Mac compatible package manager, such as Macports or Homebrew. Make sure you have one of those installed.
 
-Please also note, the names of the following dependicies have been known to change name slightly depending on date, and which package manager you use. A quick google can often tell you the new name if it has changed - just replace the name in the install commands if it has changed.
+Note that the names of the following dependencies have been known to change slightly depending on the date and the particular package manager used. A quick google search can often tell you the new name if it has changed - just replace the name in the install commands if it has changed.
 
 [Macports install guide](https://www.macports.org/install.php)
 
@@ -54,15 +54,15 @@ Now install the [CDF](#cdf)
 
 ### CDF 
 
-You will also need the CDF (Common Data Format) library which can be downloaded from NASA. **Make sure you successfully installed the ncurses library for your distrobution first.** 
-You can find the latest release at: http://cdf.gsfc.nasa.gov/  
+You will also need the CDF (Common Data Format) library which can be downloaded from NASA. **Make sure you successfully installed the ncurses library for your distribution first.** 
+You can find the latest release at: http://cdf.gsfc.nasa.gov
 For macOS it is also available through macports, as are all listed dependencies   
 
 Now go to the [Installation](#installation)
 
 #### TroubleShooting: 
 
-> If you find any problems/solutions, please make a [github issue](https://github.com/superdarn/rst/issues/new) so the community can help you or add it to the documentation
+> If you find any problems/solutions, please create a [github issue](https://github.com/superdarn/rst/issues/new) so the community can help you or add it to the documentation
 
 **Problem**
 
@@ -70,7 +70,7 @@ Error: curses.h not found
 
 **Solution**
 
-* (Recommended) To make a symlink from lncurses library to lcurses; run the following commands in the terminal:
+* (Recommended) To make a symlink from lncurses library to lcurses, run the following commands in the terminal:
 
         ln -s /usr/lib64/libncurses.so /usr/lib64/libcurses.so
         ln -s /usr/lib64/libncurses.a /usr/lib64/libcurses.a
@@ -102,10 +102,10 @@ Error: curses.h not found
    `XPATH, NETCDF_PATH, CDF_PATH` 
    To check if the paths are set correctly locate the following header files:
    For NETCDF_PATH `locate netcdf.h`
-   For CDF PATH `locate cdf.h`
+   For CDF_PATH `locate cdf.h`
    
    - If you have **IDL**, check to see that `IDL_IPATH` in `rst/.profile/idl.bash` is correct.
-   	(Note: for users without access to IDL, modifying the `IDL_IPATH` environment variable is
+   	(Note: for users without IDL, modifying the `IDL_IPATH` environment variable is
    	not required).
 
 2. Load the RST environment variables. Open and edit your `~/.bashrc` file to include:
@@ -128,7 +128,7 @@ Error: curses.h not found
    A log of this compilation is stored in `$RSTPATH/log`.
 
 ### Compiling Old Documentation
-**Warning documentation may be outdated**
+**Warning: documentation may be outdated**
 
 To compile the html documentation, run `make.doc` from the command line. You may need
 to modify the `URLBASE` environment variable in `$RSTPATH/.profile/rst.bash` for the
