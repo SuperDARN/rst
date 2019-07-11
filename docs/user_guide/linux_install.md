@@ -1,6 +1,6 @@
 # Linux 
 
-This guide is intended to provide installation instructions on several **Linux Distrobutions**. It begins with a list of dependencies required for each distrubution and concludes with instructions for installing RST. If you do not see you Linux distrobution or version please create an [issue](https://github.com/superdarn/rst/issues/new) on GitHub page and we can help and add it into our installtion guide. 
+This guide is intended to provide installation instructions on several **Linux Distributions**. It begins with a list of dependencies required for each distrubution and concludes with instructions for installing RST. If you do not see you Linux distribution or version please create an [issue](https://github.com/superdarn/rst/issues/new) on GitHub page and we can help and add it into our installtion guide. 
 
 If you run into any problems with installing RST please create an [issue](https://github.com/superdarn/rst/issues/new) addressing your problem and the error message you recieve. The community will then help you with solving your problem and add it into our troubleshooting section to help other future users. 
 
@@ -164,7 +164,7 @@ Now install the [CDF library](#cdf-library)
 
 You will also need the CDF (Common Data Format) library which can be downloaded from NASA. 
 !!! Note
-    **Make sure you successfully installed the ncurses library for your distrobution first.** 
+    **Make sure you successfully installed the ncurses library for your distribution first.** 
 You can find the latest release at: http://cdf.gsfc.nasa.gov/  
 
 For Opensuse you will need to make a symlink lcurses library to libncuses (recommended) or modify the CDF Makefile. 
