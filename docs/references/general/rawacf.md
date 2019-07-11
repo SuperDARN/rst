@@ -1,3 +1,3 @@
 !!! Warning 
-    This page is in progress of being written. 
+    This page is under development. 
 
