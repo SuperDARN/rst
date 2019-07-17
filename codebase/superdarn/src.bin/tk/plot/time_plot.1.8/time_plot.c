@@ -1581,7 +1581,7 @@ int main(int argc,char *argv[]) {
   if (xmajor==0) {
     xmajor=3*3600;
     if ((etime-stime)<8*3600) xmajor=3600;
-    if ((etime-stime)<2*3600) xmajor=600;
+    if ((etime-stime)<2*3600) xmajor=1200;
     if ((etime-stime)>48*3600) xmajor=12*3600;
     if ((etime-stime)>160*3600) xmajor=24*3600;
   }
@@ -1589,7 +1589,7 @@ int main(int argc,char *argv[]) {
   if (xminor==0) {
     xminor=15*60;
     if ((etime-stime)<8*3600) xminor=600;
-    if ((etime-stime)<2*3600) xminor=120;
+    if ((etime-stime)<2*3600) xminor=300;
     if ((etime-stime)>48*3600) xminor=3600;
     if ((etime-stime)>160*3600) xminor=3*3600;
   }
