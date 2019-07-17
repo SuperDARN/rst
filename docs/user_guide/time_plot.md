@@ -36,19 +36,19 @@ Let's take a look at what each option means:
 
 ![!](figures/timeplot1.png)
 
+By default, the time axis range will be determined automatically from the time span of the input file (this behavior was introduced in RST4.3). To plot a subset of the data file you have two options: 
 
-By default, the time axis spans 24 hours, but we have supplied a 2-hour `fitacf` file. To change the axis range to suit the time span of the input data, you have two options:
+1. Provide the start and end times for the time axis: `-st HH:MM -et HH:MM`
+2. Specify the start time and the interval length: `-st HH:MM -ex HH:MM`
 
-1. Specify the interval length in the format `-ex HH:MM`
-2. Provide the start and end times for the time axis: `-st HH:MM -et HH:MM`
 
 ```
-time_plot -x -a -ex 02:00 20181001.0601.00.lyr.fitacf
-time_plot -x -a -st 06:00 -et 08:00 20181001.0601.00.lyr.fitacf
+time_plot -x -a -st 06:30 -et 07:30 20181001.0601.00.lyr.fitacf
+time_plot -x -a -st 06:30 -ex 01:00 20181001.0601.00.lyr.fitacf
 ```
 
 ## 24-hour plot
-Most often you will want to plot data spanning more than two hours. To achieve this, you first need to concatenate the required `fitacf` files into a single file. With this new input file you should obtain the more familiar 24-hour range-time plot:
+Most often you will want to plot data spanning more than two hours. To achieve this, you first need to concatenate the `fitacf` files into a single file. With this new input file you should obtain the more familiar 24-hour range-time plot:
 
 ```
 cat 20181001.*.lyr.fitacf > 20181001.lyr.fitacf
