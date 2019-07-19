@@ -10,7 +10,6 @@ RST's documentation is currently hosted on two sites:
   https://superdarn.github.io/rst/
 
 ## Getting Started 
----
 
 Installation guide for:
   - [Linux](https://radar-software-toolkit-rst.readthedocs.io/en/latest/user_guide/linux_install/)
@@ -18,7 +17,6 @@ Installation guide for:
   - <font color="grey">Windows </font> yet to be implemented
 
 ## Historical Version Log
----
 
 - 3.3   -  Final bug fixes and updates of the 3.x series (Aug 2011)
 - 3.2   -  First release with DLM support (Nov 2010)
