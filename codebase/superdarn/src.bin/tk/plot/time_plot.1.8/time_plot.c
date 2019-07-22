@@ -1104,6 +1104,10 @@ int main(int argc,char *argv[]) {
                                prm->time.sc+prm->time.us/1.0e6);
        TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
        status=OldFitSeek(oldfitfp,yr,mo,dy,hr,mt,0,NULL);
+       if (status==-1) {
+         fprintf(stderr,"Error determining start/end time of file. Please specify using -st and -et options.\n");
+          exit(-1);
+       }
        status=OldFitRead(oldfitfp,prm,fit);
      } else if (fitflg) {
        double atme;
@@ -1115,8 +1119,8 @@ int main(int argc,char *argv[]) {
      } else etime=stime+24*3600; /* cfit or smr format: default 24 hour */
   if (etime-stime<10*60) etime=stime+10*60;
   }
-
   
+
 
   if (name==NULL) name=dname;
 
