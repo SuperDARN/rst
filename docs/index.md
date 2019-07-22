@@ -13,7 +13,7 @@ If you have any question or concerns please submit an Issue on the SuperDARN RST
   - Installation
 	* [Linux](user_guide/linux_install.md)
 	* [MacOSX](user_guide/mac_install.md)
-  -  RST HOWTO's 
+  -  RST Tutorials 
 	  - Data Processing
          * [RAWACF to FITACF](user_guide/make_fit.md)
 	     * [FITACF to GRID](user_guide/make_grid.md)

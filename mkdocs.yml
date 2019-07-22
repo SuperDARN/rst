@@ -12,7 +12,7 @@ pages:
 - Installation:
         - Linux: user_guide/linux_install.md
         - MacOSX: user_guide/mac_install.md
-- RST HOWTO: 
+- RST Tutorials: 
     - Data Processing: 
             - RAWACF to FITACF: user_guide/make_fit.md
             - FITACF to GRID: user_guide/make_grid.md
