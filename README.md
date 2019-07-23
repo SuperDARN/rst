@@ -4,7 +4,7 @@ Radar Software Toolkit
 ========
 
 RST's documentation is currently hosted on two sites:
-- RST readthedocs includes the installation guide, RST HowTo's, and SuperDARN data formats (coming soon):
+- RST readthedocs includes the installation guide, RST Tutorials, and SuperDARN data formats (coming soon):
   https://radar-software-toolkit-rst.readthedocs.io/en/latest/
 - RST API documentation includes the software structure and binary command line description and options: 
   https://superdarn.github.io/rst/
