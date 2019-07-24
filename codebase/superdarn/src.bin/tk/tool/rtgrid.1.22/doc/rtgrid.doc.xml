@@ -95,15 +95,15 @@
 </description>
 
 <example>
-<command>rtgrid -L log -tl 120 -i 120 -if pid.id kapqnx.jhuapl.edu 1024</command>
-<description>Generate a grdmap file using the real-time data stream from the host "<code>kapqnx.jhuapl.edu</code>", served at port 1024. Ignore the scan flag and use a scan length of two minutes. Generate a record every two minutes.  The process identifier is recorded in the file "<code>pid.id</code>", logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyy</em> is the year, <em>mm</em> is the month, and <em>dd</em> is the day.
+    <command>rtgrid -L log -tl 120 -i 120 -if pid.id <ip address/hostname> <port number></command>
+            <description>Generate a grdmap file using the real-time data stream from the specified <ip address/hostname>, served at the provided <port number>. Ignore the scan flag and use a scan length of two minutes. Generate a record every two minutes.  The process identifier is recorded in the file "<code>pid.id</code>", logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyy</em> is the year, <em>mm</em> is the month, and <em>dd</em> is the day.
 </description>
 </example>
 
 <example>
-<command>rtgrid -rpf -L log -if pid.id -p /data/rt/grd gbayqnx.jhuapl.edu port.gbr</command>
+    <command>rtgrid -rpf -L log -if pid.id -p /data/rt/grd <ip address/hostname> port.<radar identifier></command>
 <description>
-Generate a grdmap file using the real-time data stream from the host "<code>gbayqnx.jhuapl.edu</code>", served at port contained in the file "<code>port.gbr</code>". The process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyy</em> is the year, <em>mm</em> is the month, and <em>dd</em> is the day.
+    Generate a grdmap file using the real-time data stream from the specified ip address/hostname, served at the port number contained in the file "<code>port.<radar identifier></code>". The process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyy</em> is the year, <em>mm</em> is the month, and <em>dd</em> is the day.
 The daily files are stored in the directory "<code>/data/rt/grd</code>".
 </description>
 </example>
