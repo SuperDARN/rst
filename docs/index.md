@@ -1,6 +1,10 @@
+<!--
+(C) copyright 2019 SuperDARN Canada, University of Saskatchewan
+author: Marina Schmidt, SuperDARN Canada
+-->
 # Radar Software Toolkit (RST)
 
-RST is an open source software package that allows researchers to analyze, model, and quickly visualize the SuperDARN project data.
+RST is an open source software package (licensed under GPL v3.0) that allows researchers to analyze, model, and quickly visualize the SuperDARN project data.
 
 ## RST source code 
 
@@ -25,6 +29,8 @@ If you have any question or concerns please submit an Issue on the SuperDARN RST
          * [Grid Plots](user_guide/grid_plot.md)
          * [Convection Plots](user_guide/map_plot.md)
          * [Customizing Colors](user_guide/colors.md)
+  - Developers Guide
+    * [Copyrights and Licensing](developers_guide/copyright_license.md) 
   - SuperDARN Data Formats
     * [Dmap Data](references/general/dmap_data.md)
     * [IQDAT Format](references/general/iqdat.md)

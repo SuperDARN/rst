@@ -1,3 +1,8 @@
+<!--
+(C) copyright 2019 SuperDARN Canada, University of Saskatchewan
+author: Marina Schmidt, SuperDARN Canada
+-->
+
 # Linux 
 
 This guide is intended to provide installation instructions on several **Linux Distributions**. It begins with a list of dependencies required for each distrubution and concludes with instructions for installing RST. If you do not see you Linux distribution or version please create an [issue](https://github.com/superdarn/rst/issues/new) on GitHub page and we can help and add it into our installtion guide. 
