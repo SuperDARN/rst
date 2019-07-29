@@ -98,24 +98,19 @@ Now install the [CDF library](#cdf-library)
 
 ### OpenSuse
 
- OpenSUSE 42.2 	| Leap 15.0 	|
- ------------- 	|-----------	| 
- gcc 		|		| 
- hdf5-devel 	|	    	|
- libpng16-devel |		|
- libX11-devel 	|		|
- libXext6 	|		|
- libXext-devel 	|		|
- netpbm 	|		|
- 		|		|
+ OpenSUSE 42.2/Leap 15.0 |
+ ---------------|
+ gcc 		        | 
+ hdf5-devel     |
+ libpng16-devel |
+ libX11-devel 	|
+ libXext6 	    |
+ libXext-devel 	|
+ netpbm 	      |
  ncurses-devel 	|
- zlib-devel 	|
+ zlib-devel 	  |
 
-**OpenSUSE 42.2**
-
-    sudo zypper install gcc hdf5-devel libpng16-devel libX11-devel libXext6 libXext-devel netcdf netcdf-devel ncurses-devel zlib-devel
-
-**OpenSUSE Leap 15.0**
+**OpenSUSE 42.2/Leap 15.0**
 
     sudo zypper install gcc hdf5-devel libpng16-devel libX11-devel libXext6 libXext-devel netcdf netcdf-devel ncurses-devel zlib-devel
 
