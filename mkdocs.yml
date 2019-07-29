@@ -1,3 +1,5 @@
+# (C) copyright 2019 SuperDARN Canada, University of Saskatchewan
+# author: Marina Schmidt, SuperDARN Canada
 site_name: RST Documentation
 repo_url: https://github.com/superdarn/rst
 theme: readthedocs
@@ -24,6 +26,8 @@ pages:
             - Grid Plots: user_guide/grid_plot.md
             - Convection Plots: user_guide/map_plot.md
             - Customized Colors: user_guide/colors.md
+- RST Developers Guide:
+    - Copyrights and Licensing: developers_guide/copyright_license.md 
 - SuperDARN Data Formats:
      - Dmap Data: references/general/dmap_data.md
      - IQDAT Format: references/general/iqdat.md
