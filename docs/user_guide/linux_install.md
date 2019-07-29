@@ -43,15 +43,14 @@ Table of Contents:
  netpbm (10.77.03_2+x11) |  netpbm (10.77.03_2+x11) |
 
 Installation line:
-
-**Ubuntu 18.4**
-
-    
-    sudo apt-get install libhdf5-serial-dev libncurses-dev libnetcdf-dev libpng-dev libx11-dev libxext-dev netpbm
-
 **Ubuntu 16.04**
     
     sudo apt-get install libhdf5-serial-dev libncurses-dev libnetcdf-dev libpng12-dev libx11-dev libxext-dev netpbm
+
+
+**Ubuntu 18.04**
+
+    sudo apt-get install libhdf5-serial-dev libncurses-dev libnetcdf-dev libpng-dev libx11-dev libxext-dev netpbm
 
 Now install the [CDF library](#cdf-library) 
 
