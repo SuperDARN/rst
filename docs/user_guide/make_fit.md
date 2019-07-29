@@ -20,7 +20,7 @@ make_fit 2002020202f.rawacf > 2002020202f.fitacf
 
 It is also possible to process `dat` files directly using `make_fit -old`, which will produce an old-format `fit` file as output. However, lossy compression associated with the old-format `fit` files will lead to small differences in the fitted parameters compared to the recommended procedure shown above. 
 ```
-make_fit -old [inputfile].dat [outputfile].fit```
+make_fit -old [inputfile].dat [outputfile].fit
 ```
 
 
