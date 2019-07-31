@@ -1,3 +1,7 @@
+<!--
+(C) copyright 2019 University Centre in Svalbard (UNIS)
+author: Emma Bland, UNIS
+-->
 # Convection maps
 
 Convection maps can be plotted using the `map_plot` routine. 

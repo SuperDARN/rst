@@ -1,3 +1,7 @@
+<!--
+(C) copyright 2019 University Centre in Svalbard (UNIS)
+author: Emma Bland, UNIS
+-->
 # Fan plots
 
 To generate a fan plot we use the routine `field_plot`. The source code can be found in `$RSTPATH/codebase/superdarn/src.bin/tk/plot/field_plot.X`

@@ -1,3 +1,7 @@
+<!--
+(C) copyright 2019 University Centre in Svalbard (UNIS)
+author: Emma Bland, UNIS
+-->
 The RST plotting routines should have been added to your path during installation, but you can find them in `$RSTPATH/bin`. You can view the available input options for each routine using, for example
 ```
 time_plot --help

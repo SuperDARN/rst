@@ -1,3 +1,7 @@
+<!--
+(C) copyright 2019 University Centre in Svalbard (UNIS)
+author: Emma Bland, UNIS
+-->
 # FITACF to GRD
 Grid files contain combined data from multiple SuperDARN radars which have been organised into a latitude/longitude grid. Grid files are created in a two-step process:
 

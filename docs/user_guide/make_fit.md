@@ -1,3 +1,7 @@
+<!--
+(C) copyright 2019 University Centre in Svalbard (UNIS)
+author: Emma Bland, UNIS
+-->
 # RAWACF to FITACF
 
 SuperDARN data is distributed to the community in the `rawacf`  format. For most science applications you will want to process these files into the `fitacf` format using the `make_fit` routine.

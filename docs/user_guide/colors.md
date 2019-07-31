@@ -1,3 +1,7 @@
+<!--
+(C) copyright 2019 University Centre in Svalbard (UNIS)
+author: Emma Bland, UNIS
+-->
 # Colors in RST
 
 RST includes a set of color tables which are used by the plotting routines. You can view the available color tables in the directory `$COLOR_TABLE_PATH` (`$RSTPATH/tables/base/key`). 

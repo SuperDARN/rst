@@ -1,3 +1,7 @@
+<!--
+(C) copyright 2019 University Centre in Svalbard (UNIS)
+author: Emma Bland, UNIS
+-->
 # Radar field of view plots
 The `fov_plot` function plots the fields of view of SuperDARN radars onto a map. It does not plot any data.
 
