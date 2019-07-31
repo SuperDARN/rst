@@ -1,3 +1,7 @@
+<!--
+(C) copyright 2019 University Centre in Svalbard (UNIS)
+author: Emma Bland, UNIS
+-->
 # Hemisphere plots of gridded parameters
 
 

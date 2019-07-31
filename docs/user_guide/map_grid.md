@@ -1,3 +1,7 @@
+<!--
+(C) copyright 2019 University Centre in Svalbard (UNIS)
+author: Emma Bland, UNIS
+-->
 # GRID to MAP
 Map files contain the same information as grid files, and also contain the fitted coefficients describing the convection pattern. They are produced from combined grid files using a multi-step process:
 
