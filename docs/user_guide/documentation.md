@@ -29,13 +29,13 @@ To add documentation in the read the docs:
 2. Go to or create the appropriate folder where you documentation will be stored in
 3. Create or add to the markdown file you want to add your documentation to
   - Markdown files end in .md 
-4. Using [Markdown](https://www.markdownguide.org/cheat-sheet) syntax write your documentation
+4. Write your documentation using [Markdown](https://www.markdownguide.org/cheat-sheet) syntax 
 5. If you added a new file to the folder system add it to the `./mkdocs.yml` configure file and `./index.md` file 
 
 Viewing the Documentation:
 1. install `mkdocs` via `pip install mkdocs` 
 2. view the documentation via `mkdocs serve` 
-  - click on the local host address is presents to you
+  - click on the local host address shown in the terminal
 
 Other methods of viewing the documentation is pushing the documentation to GitHub and building it on readthedocs. 
 By pushing it to GitHub it may automatically build the documentation if webhooks are correctly setup.  
