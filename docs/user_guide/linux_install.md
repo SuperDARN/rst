@@ -5,7 +5,7 @@ author: Marina Schmidt, SuperDARN Canada
 
 # Linux 
 
-This guide is intended to provide installation instructions on several **Linux Distributions**. It begins with a list of dependencies required for each distrubution and concludes with instructions for installing RST. If you do not see you Linux distribution or version please create an [issue](https://github.com/superdarn/rst/issues/new) on GitHub page and we can help and add it into our installtion guide. 
+This guide is intended to provide installation instructions on several **Linux Distributions**. It begins with a list of dependencies required for each distribution and concludes with instructions for installing RST. If you do not see you Linux distribution or version please create an [issue](https://github.com/superdarn/rst/issues/new) on GitHub page and we can help and add it into our installation guide. 
 
 If you run into any problems with installing RST please create an [issue](https://github.com/superdarn/rst/issues/new) addressing your problem and the error message you recieve. The community will then help you with solving your problem and add it into our troubleshooting section to help other future users. 
 
@@ -27,8 +27,8 @@ Table of Contents:
 ## Library Requirements
 
 !!! Warning
-    sudo priviledges needed to install the various libraries 
-    If you do not have `sudo` privlidges please contanct the system administrator of your system to install the follow libraries for your distribution.  
+    sudo privileges needed to install the various libraries 
+    If you do not have `sudo` privileges please contact the system administrator of your system to install the follow libraries for your distribution.  
 
 ### Ubuntu 
 
@@ -247,7 +247,7 @@ links in the html pages to function correctly.  Online documentation is availabl
 
 https://superdarn.github.io/rst/index.html
 
-## Trooubleshooting
+## Troubleshooting
 
 > If you find any problems/solutions, please make a [github issue](https://github.com/superdarn/rst/issues/new) so the community can help you or add it to the documentation
 

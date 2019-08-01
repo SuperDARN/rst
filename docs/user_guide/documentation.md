@@ -7,7 +7,7 @@ Currently the read the docs documents:
   - Linux
   - Mac
   - Windows (coming soon)
-- HowTo's 
+- RST Tutorials 
 - DMAP format (coming soon)
 
 The XML documentation currently hosts:

@@ -42,7 +42,8 @@ You can then concatenate the 2-hour `fitacf` files into a daily file, for exampl
 cat 20181001.*.lyr.fitacf > 20181001.lyr.fitacf
 ```
 
-*When concatenating `fitacf` files, it is important that the files are in chronological order. Usually the shell sorts the filenames in the correct order automatically, but if you do the listing with wildcards (e.g. system call from another program), you may need to do the sorting yourself.*
+!!! Warning
+    When concatenating `fitacf` files, it is important that the files are in chronological order. Usually the shell sorts the filenames in the correct order automatically, but if you do the listing with wildcards (e.g. system call from another program), you may need to do the sorting yourself.
 
 
 

@@ -3,7 +3,7 @@
 author: Emma Bland, UNIS
 -->
 # FITACF to GRD
-Grid files contain combined data from multiple SuperDARN radars which have been organised into a latitude/longitude grid. Grid files are created in a two-step process:
+Grid files contain combined data from multiple SuperDARN radars which have been organized into a latitude/longitude grid. Grid files are created in a two-step process:
 
 1. Create separate grid files for each radar
 2. Combine the separate grid files into a single file
@@ -15,7 +15,7 @@ combine_grid -vb *.grd > [outputfile].grd
 
 *Sometimes `make_grid` is not able to use the scan flag to determine the scan length. If you get the "error reading file" error message, try adding `-tl 60`*
 
-The `make_grid` routine provides a lot of options for customising the gridding process, such as the altitude at which the mapping is performed, or whether to exclude ground/ionospheric scatter. The optional `-xtd` ("extended") flag will include the power and spectral width parameters in the output file, in addition to the velocity. Type `make_grid --help` for more information. 
+The `make_grid` routine provides a lot of options for customizing the gridding process, such as the altitude at which the mapping is performed, or whether to exclude ground/ionospheric scatter. The optional `-xtd` ("extended") flag will include the power and spectral width parameters in the output file, in addition to the velocity. Type `make_grid --help` for more information. 
 	
 ## Full-day grid files
 The standard practice is to generate 24-hour grid files. If you have already made a concatenated 24-hour fitacf file, then use that file in the manner shown above. Otherwise, you can use the `-c` flag to get RST to concatenate the input fitacf files on-the-fly. This works only when the input files are all from the same radar; the method for combining data from multiple radars into a single grid file is shown in the next section.
