@@ -25,8 +25,10 @@ make_grid -vb -tl 60 -xtd -c 20181001.*.lyr.fitacf > 20181001.lyr.grd
 
 ## Multi-Channel Data 
 
-Sometimes SuperDARN data contains multiple channels from specific modes like *twofsound* which uses channel 1 and 2 instead of 0. 
-To parse out the channel data for these modes use the option `-cn`. 
+Some SuperDARN radars provide multi-channel data, either through stereo capability (e.g. Hankasalmi) or as a convenient way to separate data from different frequencies (e.g. the  *twofsound* mode). In both cases, the data are assigned to either channel 1 or channel 2. When only a single channel is used, the channel number is 0. 
+
+By default, `make_grid` will use the data from all available channels when making a grid file. To include data from just one channel, use the `-cn` option: 
+
  - `-cn a` : will grab only channel 0 and 1 data and will not combine the two channels. 
  - `-cn b` : will grab only channel 2 data. 
 
@@ -41,19 +43,21 @@ make_grid -cn b 20180101.C0.cly.fitacf > 20180101.cly.2.grid
 
 
 !!! Warning
-    `make_grid` will grab all three channels and put all the data in  median filter for the given integration time.
+    By default, `make_grid` will grab all available channels and put all the data in a median filter for the given integration time.
 
 !!! Note
     Canadian radars typically run `twofsound`: *Saskatoon*, *Prince George*, *Rankin Inlet*, *Clyde River*, *Inuvik*.
-    To check if the radars data contains channel 1 or 2 data you can use the following command:
+    To check if a fitacf file contains channel 1 or 2 data you can use the following command:
     ```
     dmapdump 20180101.C0.cly.fitacf | grep "channel\" \= 1" | wc -l
     ```
 
 ## Combine data from multiple radars
 First, generate grid files for each `fitacf` file you want to include. For example,
+
 ```
 # Make grid files for specific radars
+#
 for radar in lyr cly inv rkn
 do 
   make_grid -new -tl 60 -xtd -vb -c \
