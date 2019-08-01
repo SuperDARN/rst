@@ -16,7 +16,7 @@ Colors in RST are specified in the (hex) format ''AARRGGBB'':
 
 New color keys can be provided as a text file, for example:
 ```
-# NEW VELOCITY COLOUR KEY
+# NEW VELOCITY COLOR KEY
 #   blue=motion towards radar
 #   red=motion away from radar
 #   high contrast either side of 0 m/s
@@ -42,6 +42,6 @@ field_plot [options] -key [newcolorkey.key] [file.fitacf]
 time_plot [options] -vkey [newcolorkey.key] [file.fitacf]
 ```
 
-In `time_plot`, you can replace `-vkey` with `-pkey`, `-wkey`, `-fkey` or `-nkey` to specify colour keys for the power, spectral width, frequency and noise respectively. 
+In `time_plot`, you can replace `-vkey` with `-pkey`, `-wkey`, `-fkey` or `-nkey` to specify color keys for the power, spectral width, frequency and noise respectively. 
 
 If you want to keep your new color key in a directory other than `$COLOR_TABLE_PATH`, you can specify the path using `-vkey_path`, `-xkey_path` etc. Type `[function name] --help | grep key_path` to view the available options. 

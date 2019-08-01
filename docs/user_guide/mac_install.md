@@ -1,6 +1,6 @@
 # Mac 
 
-This guide is intended to provide installation instructions on **macOS** for Apple branded desktops and laptops. It begins with a list of dependencies required with instructions for installing RST. This process was designed for OS **Sierra** and above, but should still work on any machine which can run XCode. If you encounter any problems with installing RST, please create an [issue](https://github.com/superdarn/rst/issues/new) describing your problem and the error message you recieve. The community will then help you solve the problem and add it into our troubleshooting section to help other users. 
+This guide is intended to provide installation instructions on **macOS** for Apple branded desktops and laptops. It begins with a list of dependencies required with instructions for installing RST. This process was designed for OS **Sierra** and above, but should still work on any machine which can run XCode. If you encounter any problems with installing RST, please create an [issue](https://github.com/superdarn/rst/issues/new) describing your problem and the error message you receive. The community will then help you solve the problem and add it into our troubleshooting section to help other users. 
 
 Table of Contents: 
 -------------------
@@ -136,7 +136,7 @@ links in the html pages to function correctly.  Online documentation is availabl
 
 https://superdarn.github.io/rst/index.html
 
-## Trooubleshooting
+## Troubleshooting
 
 > If you find any problems/solutions, please make a [github issue](https://github.com/superdarn/rst/issues/new) so the community can help you or add it to the documentation
 
