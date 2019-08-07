@@ -55,7 +55,7 @@ Now install the [CDF](#cdf)
 ### CDF 
 
 You will also need the CDF (Common Data Format) library which can be downloaded from NASA. **Make sure you successfully installed the ncurses library for your distribution first.** 
-You can find the latest release at: http://cdf.gsfc.nasa.gov
+You can find the latest release at: [http://cdf.gsfc.nasa.gov/](http://cdf.gsfc.nasa.gov)
 For macOS it is also available through macports, as are all listed dependencies   
 
 Now go to the [Installation](#installation)
