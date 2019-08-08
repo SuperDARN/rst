@@ -1113,6 +1113,10 @@ int main(int argc,char *argv[]) {
        double atme;
        status=FitFseek(fitfp,prm->time.yr+1,prm->time.mo,prm->time.dy,
                              prm->time.hr,prm->time.mt,0,&atme,inx);
+       if (status!=-1) { /* status should be -1 if end of file was reached successfully */
+         fprintf(stderr,"Error determining start/end time of file. Please specify using -st and -et options.\n");
+          exit(-1);
+       }
        etime=atme;
        TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
        status=FitFseek(fitfp,yr,mo,dy,hr,mt,0,NULL,inx);
