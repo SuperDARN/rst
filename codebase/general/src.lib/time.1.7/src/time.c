@@ -167,7 +167,7 @@ double TimeYMDHMSToJulian(int yr,int mo,int dy,int hr,int mt,double sc) {
   jdoy=i+1720994.5+B;
 
   
-  dfrac=1+(double)TimeYMDHMSToYrsec(yr+1,mo,dy,hr,mt,sc)/DAY_SEC;
+  dfrac=1.0+(double)TimeYMDHMSToYrsec(yr+1,mo,dy,hr,mt,sc)/DAY_SEC;
    
   return jdoy+dfrac; 
 
