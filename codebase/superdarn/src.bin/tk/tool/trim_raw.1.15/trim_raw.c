@@ -5,26 +5,26 @@
 
 /*
  LICENSE AND DISCLAIMER
- 
+
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
+
  This file is part of the Radar Software Toolkit (RST).
- 
+
  RST is free software: you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
- 
+
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Lesser General Public License for more details.
- 
+
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+
+
+
 */
 
 #include <stdio.h>
@@ -70,7 +70,7 @@ double strdate(char *text) {
   dy=val % 100;
   mo=(val / 100) % 100;
   yr=(val / 10000);
-  if (yr<1970) yr+=1900;  
+  if (yr<1970) yr+=1900;
   tme=TimeYMDHMSToEpoch(yr,mo,dy,0,0,0);
 
   return tme;
@@ -85,7 +85,7 @@ double strtime(char *text) {
   text[i]=0;
   hr=atoi(text);
   for (j=i+1;(text[j] !=':') && (text[j] !=0);j++);
-  if (text[j]==0) { 
+  if (text[j]==0) {
     mn=atoi(text+i+1);
     return (double) hr*3600L+mn*60L;
   }
@@ -93,7 +93,7 @@ double strtime(char *text) {
   mn=atoi(text+i+1);
   sc=atof(text+j+1);
   return (double) hr*3600L+mn*60L+sc;
-}   
+}
 
 int rst_opterr (char *txt) {
   fprintf(stderr,"Option not recognized: %s\n",txt);
@@ -172,7 +172,7 @@ int main (int argc,char *argv[]) {
   if (version==1) {
     OptionVersion(stdout);
     exit(0);
-  }  
+  }
 
   if (thr !=-1) {
     fprintf(stderr,"Error: the -t threshold option has been deprecated.\n");
@@ -191,22 +191,26 @@ int main (int argc,char *argv[]) {
   if (edtestr !=NULL) edate=strdate(edtestr);
 
 
-   if (old) {
-     rawfp=OldRawOpen(argv[arg],NULL);
-     if (rawfp==NULL) {
-       fprintf(stderr,"File not found.\n");
-       exit(-1);
-     }
-  } else { 
+  if (old) {
+    rawfp=OldRawOpen(argv[arg],NULL);
+    if (rawfp==NULL) {
+      fprintf(stderr,"File not found.\n");
+      exit(-1);
+    } else if (rawfp->error==-2) {
+        /* Error case where num_bytes is less than 0 */
+        free(rawfp);
+        exit(-1);
+    }
+  } else {
     if ((argc-arg)>1) {
       fp=fopen(argv[arg+1],"r");
       if (fp==NULL) {
-	fprintf(stderr,"Index not found.\n");
+        fprintf(stderr,"Index not found.\n");
         exit(-1);
       }
       inx=RawIndexFload(fp);
 
-      
+
       fclose(fp);
       if (inx==NULL) {
         fprintf(stderr,"Error loading index.\n");
@@ -242,23 +246,23 @@ int main (int argc,char *argv[]) {
 
    /* skip here */
 
-    if ((stime !=-1) || (sdate !=-1)) { 
+    if ((stime !=-1) || (sdate !=-1)) {
       /* we must skip the start of the files */
       int yr,mo,dy,hr,mt;
-      double sc; 
+      double sc;
       if (stime==-1) stime= ( (int) atime % (24*3600));
       if (sdate==-1) stime+=atime - ( (int) atime % (24*3600));
       else stime+=sdate;
 
       TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
       if (old) status=OldRawSeek(rawfp,yr,mo,dy,hr,mt,sc,NULL);
-      else status=RawFseek(fp,yr,mo,dy,hr,mt,sc,NULL,inx); 
-    
+      else status=RawFseek(fp,yr,mo,dy,hr,mt,sc,NULL,inx);
+
       if (status ==-1) {
         fprintf(stderr,"File does not contain the requested interval.\n");
         exit(-1);
       }
- 
+
       if (old) {
          if (OldRawRead(rawfp,prm,raw)==-1)  {
            fprintf(stderr,"Error reading file\n");
@@ -272,7 +276,7 @@ int main (int argc,char *argv[]) {
       }
 
     } else stime=atime;
-   
+
     if (etime !=-1) {
        if (edate==-1) etime+=atime - ( (int) atime % (24*3600));
        else etime+=edate;
@@ -297,10 +301,10 @@ int main (int argc,char *argv[]) {
    }
 
 
- 
+
    do {
      if (thr !=-1) raw->thr=thr;
-     
+
      atime=TimeYMDHMSToEpoch(prm->time.yr,
 		    prm->time.mo,
                     prm->time.dy,
@@ -320,7 +324,7 @@ int main (int argc,char *argv[]) {
 
      if (old) status=OldRawRead(rawfp,prm,raw);
      else status=RawFread(fp,prm,raw);
-  } while (status !=-1);  
+  } while (status !=-1);
   if (old) OldRawClose(rawfp);
   if (fp !=stdin) fclose(fp);
   return 0;

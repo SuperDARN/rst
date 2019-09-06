@@ -79,17 +79,39 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
   x=malloc(sizeof(double)*num);
   if (x==NULL) return NULL;
   y=malloc(sizeof(double)*num);
-  if (y==NULL) return NULL;
+  if (y==NULL) {
+    free(x);
+    return NULL;
+  }
   phi=malloc(sizeof(double)*num);
-  if (phi==NULL) return NULL;
+  if (phi==NULL) {
+    free(x);
+    free(y);
+    return NULL;
+  }
   theta=malloc(sizeof(double)*num);
-  if (theta==NULL) return NULL;
+  if (theta==NULL) {
+    free(x);
+    free(y);
+    free(phi);
+    return NULL;
+  }
   bmag=malloc(sizeof(double)*num);
-  if (bmag==NULL) return NULL;
+  if (bmag==NULL) {
+    free(x);
+    free(y);
+    free(phi);
+    free(theta);
+    return NULL;
+  }
 
   plm=malloc(sizeof(double)*(order+1)*(order+1)*num);
   if (plm==NULL) {
     free(x);
+    free(y);
+    free(phi);
+    free(theta);
+    free(bmag);
     return NULL;
   }
 
@@ -146,6 +168,7 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
     free(y);
     free(phi);
     free(theta);
+    free(bmag);
     return NULL;
   }
 
@@ -252,9 +275,39 @@ double CnvMapFitVector(int num,struct CnvMapSHFVec *data,
   }
 
   w=malloc(sizeof(double)*(kmax+1));
+  if (w==NULL) {
+    free(result);
+    free(soltn);
+    free(plm);
+    return -1;
+  }
   v=malloc(sizeof(double)*(kmax+1)*(kmax+1));
+  if (v==NULL) {
+    free(result);
+    free(soltn);
+    free(plm);
+    free(w);
+    return -1;
+  }
   var=malloc(sizeof(double)*(kmax+1)*(kmax+1));
+  if (var==NULL) {
+    free(result);
+    free(soltn);
+    free(plm);
+    free(w);
+    free(v);
+    return -1;
+  }
   a=malloc(sizeof(double)*num*(kmax+1)); 
+  if (a==NULL) {
+    free(result);
+    free(soltn);
+    free(plm);
+    free(w);
+    free(v);
+    free(var);
+    return -1;
+  }
 
   /* Compute the matrix describing the line-of-sight velocities */
 
@@ -263,6 +316,10 @@ double CnvMapFitVector(int num,struct CnvMapSHFVec *data,
     free(result);
     free(soltn);
     free(plm);
+    free(w);
+    free(v);
+    free(var);
+    free(a);
     return -1;
   }
 

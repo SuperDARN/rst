@@ -117,6 +117,7 @@ struct PlotDash *PlotMakeDashString(char *str) {
 
   if (s==-1) {
     free(ptr->p);
+    free(tmp);
     free(ptr);
     return NULL;
   }
@@ -125,6 +126,7 @@ struct PlotDash *PlotMakeDashString(char *str) {
   ftmp=realloc(ptr->p,sze);
   if (ftmp==NULL) {
     free(ptr->p);
+    free(tmp);
     free(ptr);
     return NULL;
   }

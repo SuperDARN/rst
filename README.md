@@ -3,105 +3,20 @@
 Radar Software Toolkit
 ========
 
-In addition to this code, you will need the following packages:
+RST's documentation is currently hosted on two sites:
+- RST readthedocs includes the installation guide, RST Tutorials, and SuperDARN data formats (coming soon):
+  https://radar-software-toolkit-rst.readthedocs.io/en/latest/
+- RST API documentation includes the software structure and binary command line description and options: 
+  https://superdarn.github.io/rst/
 
-Debian 8.7 | Mint 18.1 | OpenSUSE 42.2 | Ubuntu 16.04 | macOS 10.12.4
----------- | --------- | ------------- | ------------ | --------------
-gcc | libc6-dev | gcc | libhdf5-serial-dev | libhdf5
-libhdf5-serial-dev | libncurses5-dev | hdf5-devel | libncurses-dev | libnetcdf
-libnetcdf-dev | libnetcdf-dev | libpng16-devel | libnetcdf-dev | libcurses
-libncurses | libpng16-dev | libX11-devel | libpng12-dev | libpng16
-libpng12-dev | libx11-dev | libXext6 | libx11-dev | libx11
-libx11-dev | libxext-dev | libXext-devel | libxext-dev | cdf
-libxext-dev | | netcdf | netpbm | netpbm (10.77.03_2+x11)
-netpbm | | netcdf-devel | |
- | | | ncurses-devel | |
- | | | zlib-devel | |
+## Getting Started 
 
-You will also need the CDF (Common Data Format) library which can be downloaded from NASA.
-You can find the latest release at: http://cdf.gsfc.nasa.gov/
-For macOS it is also available through macports, as are all listed dependencies
+Installation guide for:
+  - [Linux](https://radar-software-toolkit-rst.readthedocs.io/en/latest/user_guide/linux_install/)
+  - [MacOSX](https://radar-software-toolkit-rst.readthedocs.io/en/latest/user_guide/mac_install/)
+  - <font color="grey">Windows </font> yet to be implemented
 
-
-## Install notes:
-
-
-1. Upon obtaining the software (with git clone or downloading a zip file), make sure the RST
-   environment variables are properly set.   In `rst/.profile.bash`:
-
-       OSTYPE="linux" for any linux operating system or "darwin" for macOS
-       SYSTEM="linux" or "darwin" as appropriate
-
-   In `rst/.profile/base.bash`, check to make sure these paths are appropriate:
-
-   `XPATH, NETCDF_PATH, CDF_PATH`
-
-   If you are running macOS and run into issues with the X11 libraries, you may
-   need to add a symbolic link.
-
-   If you have IDL, check to see that `IDL_IPATH` in `rst/.profile/idl.bash` is correct.
-   (Note: for users without access to IDL, modifying the `IDL_IPATH` environment variable is
-   not required).
-
-2. Load the RST environment variables.  For example, this is accomplished in linux by modifying
-   the `~/.bashrc` file by adding:
-
-        # bash profile for rst
-        export RSTPATH="INSTALL LOCATION"/rst
-        . $RSTPATH/.profile.bash
-
-   where the INSTALL LOCATION is the path with the RST repository that has been copied to your
-   computer.  In order to load the environment variables you just setup, you'll need to close 
-   your current terminal and open a new terminal, or from the command line type:
-   
-       source ~/.bashrc
-
-3. Run `make.build` from the command line.  You may need to change directory to `$RSTPATH/build/script`.
-   This runs a helper script that sets up other compiling code.
-
-   If you are running macOS Sierra or later, you may have trouble for this step
-   and step 4 if you run the commands in iTerm.app, due to a non-standard bash
-   implimentation.  These can be avoided by running the installation in a
-   xterm terminal like XQuartz.
-
-4. In the same directory run `make.code` to compile all of the code.
-   This runs a script to find all of the source codes and compile them into binaries.
-   A log of this compilation is stored in `$RSTPATH/log`.
-
-   4a.	 If you don't have IDL and the IDL skip in make.code fails, you will see an error
-   	 upon the inability to locate `idl_export.h`.  If this happens:
-
-	 ```
-	 cd $RSTPATH/codebase/superdarn/src.lib/tk
-	 tar -P -czvf idl.tar.gz idl
-	 rm -rf idl
-	 cd $RSTPATH/build/script
-	 make.code
-	 ```
-
-   4b.	 If the order of make.code is executed incorrectly, you will see an error upon
-   	 the inability to locate a header file (i.e. `sza.h`).  If this happens (using
-	 `sza.h` as an example):
-
-	 ```
-	 find $RSTPATH -name "sza.h"
-	 >> $RSTPATH/codebase/imagery/src.lib/sza.1.9/include/sza.h
-	 cd $RSTPATH/codebase/imagery/src.lib/sza.1.9/src
-	 make clean
-	 make
-	 cd $RSTPATH/build/script
-	 make.code
-	 ```
-
-5. To compile the html documentation, run `make.doc` from the command line. You may need
-   to modify the `URLBASE` environment variable in `$RSTPATH/.profile/rst.bash` for the
-   links in the html pages to function correctly.  Online documentation is available at:
-
-   https://superdarn.github.io/rst/index.html
-
-
-### Historical Version Log
-
+## Historical Version Log
 
 - 3.3   -  Final bug fixes and updates of the 3.x series (Aug 2011)
 - 3.2   -  First release with DLM support (Nov 2010)
