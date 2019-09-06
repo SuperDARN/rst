@@ -5,7 +5,7 @@
 #
 #
 include $(MAKECFG).$(SYSTEM)
-INCLUDE=-I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/superdarn -DPOSIX -D__EXTENSIONS__
+INCLUDE=-I$(IPATH)/analysis -I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/superdarn -DPOSIX -D__EXTENSIONS__
 
 OBJS = rtgrid.o loginfo.o 
 SRC=hlpstr.h errstr.h rtgrid.c loginfo.c loginfo.h output.h

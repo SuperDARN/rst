@@ -16,9 +16,9 @@
 </option>
 <option><on>-i <ar>intt</ar></on><od>integrate the grid data into records of length <ar>intt</ar> seconds.</od>
 </option>
-<option><on>-cn <ar>channel</ar></on><od>process data from channel <ar>channel</ar> for stereo mode data.</od>
+<option><on>-cn <ar>channel</ar></on><od>process data from a specific channel number for stereo mode data or twofsound data.</od>
 </option>
-<option><on>-ebm <ar>ebeams</ar></on><od>exclude the beams listed in <ar>ebeams</ar>, which is a comma separated list of beam numbers.</od>
+<option><on>-ebm <ar>ebeams</ar></on><od>exclude the beam numbers listed in <ar>ebeams</ar>, comma separated.</od>
 </option>
 <option><on>-minrng <ar>minrange</ar></on><od>exclude data from range gates lower than <ar>minrange</ar>.</od>
 </option>
@@ -64,6 +64,10 @@
 </option>
 <option><on>-inertial</on><od>calculate the grid file in the inertial reference frame.</od>
 </option>
+<option><on>-chisham</on><od>calculate the grid file using the Chisham virtual height model.</od>
+</option>
+<option><on>-old_aacgm</on><od>calculate the grid file using old AACGM coefficients rather than v2.</od>
+</option>
 <option><on>-L <ar>logname</ar></on><od>log connections and information in the file <ar>logname</ar>. By default, connections are recorded in <code>log.rt</code>.</od>
 </option>
 <option><on>-p <ar>pathname</ar></on><od>store the daily files in the directory <ar>pathname</ar>.</od>
@@ -71,8 +75,6 @@
 <option><on>-f <ar>filename</ar></on><od>store the grid data in the file <ar>filename</ar>.</od>
 </option>
 <option><on>-if <ar>pidname</ar></on><od>record the process Identifier (PID) of the server in the file <ar>pidname</ar>. By default, the PID is  recorded in <code>pid.id</code>.</od>
-</option>
-<option><on>-s <ar>stream</ar></on><od>for a multiplexed stream, read the stream number given by <ar>stream</ar>. A value of 255 will read all streams</od>
 </option>
 <option><on><ar>host</ar></on><od>hostname or IP number of the system to connect to.</od>
 </option>
@@ -89,19 +91,18 @@
 <p>A grid file is a highly processed data product consisting of geo-magnetically located line of sight velocity vectors.</p>  
 <p>The algorithm optionally applies a median filter to the scan data to remove noise. Each range-beam cell together with its immediate neighbors in the current, preceding and following scans is examined. A weighted sum of all the cells containing scatter is calculated and if this sum exceeds a certain threshold, the median data value of the cells is substituted for the central cell. Various command line options control how the filter is applied.</p> 
 <p>Once the data has been filtered, the geo-magnetic location of each line of sight velocity measurement is calculated.  The vectors are then fixed to an equi-area grid to ensure that the data is not biased according to its location in the radar field of view.</p>
-<p>The vectors in each cell are averaged together over a fixed period of time to generate an output record, which is then stored in the specified output file. An additional file containing all of the records for a given day is also created. The name of this file takes the form "<code><em>yyyymmdd.iii</em>.grd</code>", where <em>yyyy</em> is the year, <em>mm</em> the month, <em>dd</em> the day, and <em>iii</em> the station identifier code.</p> 
+<p>The vectors in each cell are averaged together over a fixed period of time to generate an output record, which is then stored in the specified output file. An additional file containing all of the records for a given day is also created. The name of this file takes the form "<code><em>yyyymmdd.iii</em>.grdmap</code>", where <em>yyyy</em> is the year, <em>mm</em> the month, <em>dd</em> the day, and <em>iii</em> the station identifier code.</p>
 </description>
 
 <example>
-<command>rtgrid -L log -tl 120 -i 120 -if pid.id kapqnx.jhuapl.edu 1024</command>
-<description>Generate a grdmap file using the real-time data stream from the host "<code>kapqnx.jhuapl.edu</code>", served at port 1024. Ignore the scan flag and use a scan length of two minutes. Generate a record every two minutes.  The process identifier is recorded in the file "<code>pid.id</code>", logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyy</em> is the year, <em>mm</em> is the month, and <em>dd</em> is the day.
+<command>rtgrid -L log -tl 120 -i 120 -if pid.id &lt;ip address/hostname&gt; &lt;port number&gt;</command>
+<description>Generate a grdmap file using the real-time data stream from the specified &lt;ip address/hostname&gt;, served at the provided &lt;port number&gt;. Ignore the scan flag and use a scan length of two minutes. Generate a record every two minutes.  The process identifier is recorded in the file "<code>pid.id</code>", logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyy</em> is the year, <em>mm</em> is the month, and <em>dd</em> is the day.
 </description>
 </example>
 
 <example>
-<command>rtgrid -rpf port.gbr -L log -pf port.id -if pid.id -p /data/rt/grd gbayqnx.jhuapl.edu</command>
-<description>
-Generate a grdmap file using the real-time data stream from the host "<code>gbayqnx.jhuapl.edu</code>", served at port contained in the file "<code>port.gbr</code>". The process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyy</em> is the year, <em>mm</em> is the month, and <em>dd</em> is the day.
+<command>rtgrid -rpf -L log -if pid.id -p /data/rt/grd &lt;ip address/hostname&gt; port.&lt;radar identifier&gt;</command>
+<description> Generate a grdmap file using the real-time data stream from the specified ip address/hostname, served at the port number contained in the file "<code>port.&lt;radar identifier&gt;</code>". The process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyy</em> is the year, <em>mm</em> is the month, and <em>dd</em> is the day.
 The daily files are stored in the directory "<code>/data/rt/grd</code>".
 </description>
 </example>

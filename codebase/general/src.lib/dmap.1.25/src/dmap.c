@@ -1194,6 +1194,13 @@ struct DataMap *DataMapDecodeBuffer(unsigned char *buf,int size) {
     a->type=type;
     ptr->arr[c]=a;   
     ConvertToInt(buf+off,(int32 *) &(a->dim));
+    /* check for possibly corrupted array dimension size */
+    if (a->dim <= 0 || a->dim > 999) {
+      fprintf(stderr,"Warning: %s array dimension possibly corrupted (%d)\n",a->name,a->dim);
+      a->rng=NULL;
+      a->data.vptr=NULL;
+      break;
+    }
     off+=sizeof(int32);
     a->rng=malloc(a->dim*sizeof(int32));
     if (a->rng==NULL) break;

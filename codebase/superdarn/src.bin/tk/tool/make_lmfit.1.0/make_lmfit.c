@@ -5,11 +5,11 @@
 
 /*
  (c) 2010 JHU/APL & Others - Please Consult LICENSE.superdarn-rst.3.2-beta-4-g32f7302.txt for more information.
-  
- 
- 
+
+
+
 */
- 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -18,14 +18,14 @@
 #include <math.h>
 #include <zlib.h>
 
-#include "rtypes.h" 
+#include "rtypes.h"
 #include "option.h"
 
 #include "dmap.h"
 #include "rprm.h"
 #include "rawdata.h"
 #include "fitblk.h"
-#include "fitdata.h" 
+#include "fitdata.h"
 #include "radar.h"
 
 #include "lmfit.h"
@@ -85,7 +85,7 @@ int main(int argc,char *argv[])
   int c,n;
   char command[128];
   char tmstr[40];
- 
+
   prm=RadarParmMake();
   raw=RawMake();
   fit=FitMake();
@@ -144,7 +144,7 @@ int main(int argc,char *argv[])
   }
 
   network=RadarLoad(fp);
-  fclose(fp); 
+  fclose(fp);
   if (network==NULL)
 	{
     fprintf(stderr,"Failed to read radar information.\n");
@@ -161,27 +161,26 @@ int main(int argc,char *argv[])
   RadarLoadHardware(envstr,network);
 
 
-  if (old)
-	{
-		rawfp=OldRawOpen(argv[arg],NULL);
-    if (rawfp==NULL)
-		{
-			fprintf(stderr,"File not found.\n");
-			exit(-1);
-     }
-     status=OldRawRead(rawfp,prm,raw);  
-  }
-  else
-	{
-		if (arg==argc) fp=stdin;
-    else fp=fopen(argv[arg],"r");
+  if (old) {
+      rawfp=OldRawOpen(argv[arg],NULL);
+      if (rawfp==NULL) {
+          fprintf(stderr,"File not found.\n");
+          exit(-1);
+      } else if (rawfp->error==-2) {
+          /* Error code for num_bytes less than 0 */
+          free(rawfp);
+          exit(-1);
+      }
+     status=OldRawRead(rawfp,prm,raw);
+  } else {
+      if (arg==argc) fp=stdin;
+      else fp=fopen(argv[arg],"r");
 
-    if (fp==NULL)
-		{
-      fprintf(stderr,"File not found.\n");
-      exit(-1);
-    }
-    status=RawFread(fp,prm,raw);
+      if (fp==NULL) {
+          fprintf(stderr,"File not found.\n");
+          exit(-1);
+      }
+      status=RawFread(fp,prm,raw);
   }
 
   radar=RadarGetRadar(network,prm->stid);
@@ -214,7 +213,7 @@ int main(int argc,char *argv[])
 
 
 
-  if (vb)  
+  if (vb)
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
