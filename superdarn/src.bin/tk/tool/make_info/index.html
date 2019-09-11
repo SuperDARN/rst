@@ -9,8 +9,6 @@
 
 </div>
 
-</div>
-
 <div id="location">
 <table width=100% class="location"><tr>
 <td><a href="../../../../../index.html">Home</a><td>|</td>
@@ -27,22 +25,26 @@
 <table>
 <tr><td class="docsubtitle" valign=top>Syntax</td></tr>
 <tr><td></td><td width=80% class="docbox" style="font-family: courier;">
-make_info --help<br>make_info [<em>fitacfnames...]</em><br>make_info -old <em>fitname</em><br>make_info -cfit <em>cfitnames...</em><br></td></tr>
+make_info --help<br>make_info [<em>fitacfnames...]</em><br>make_info -old <em>fitname</em><br>make_info -fit <em>fitacfname</em><br>make_info -raw <em>rawacfname</em><br>make_info -raw -old <em>rawname</em><br>make_info -cfit <em>cfitnames...</em><br></td></tr>
 <tr><td class="docsubtitle">Synopsis</td></tr>
-<tr><td></td><td><p>Extract information (metadata) from <code>fit</code>, <code>fitacf</code> or <code>cfit</code> format files.</p></td></tr>
+<tr><td></td><td><p>Extract information (metadata) from <code>dat</code>, <code>rawacf</code>, <code>fit</code>, <code>fitacf</code> or <code>cfit</code> format files.</p></td></tr>
 
 <tr><td class="docsubtitle">Options</td></tr>
 <tr><td></td><td>
 <table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
 <tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
 <tr><td width="150" valign="top"><code><em>fitacfnames</em></code></td><td valign="top">filenames of the <code>fitacf</code> format files. If this is omitted the file is read from standard input.</td></tr>
-<tr><td width="150" valign="top"><code>-old</code></td><td valign="top">files are in the <code>fit</code> format.</td></tr>
+<tr><td width="150" valign="top"><code>-old</code></td><td valign="top">files are in the <code>dat</code> or <code>fit</code> format.</td></tr>
 <tr><td width="150" valign="top"><code><em>fitname</em></code></td><td valign="top">filename of the <code>fit</code> format file.</td></tr>
+<tr><td width="150" valign="top"><code>-fit</code></td><td valign="top">files are in the <code>fit</code> or <code>fitacf</code> format [default].</td></tr>
+<tr><td width="150" valign="top"><code>-raw</code></td><td valign="top">files are in the <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format.</td></tr>
+<tr><td width="150" valign="top"><code><em>rawacfname</em></code></td><td valign="top">filename of the <code>rawacf</code> format file.</td></tr>
+<tr><td width="150" valign="top"><code><em>rawname</em></code></td><td valign="top">filename of the <code>raw</code> (<code>dat</code>) format file.</td></tr>
 <tr><td width="150" valign="top"><code>-cfit</code></td><td valign="top">files are in the <code>cfit</code> format.</td></tr>
 <tr><td width="150" valign="top"><code><em>cfitnames</em></code></td><td valign="top">filenames of the <code>cfit</code> format files.</td></tr>
 </table></td></tr>
 <tr><td class="docsubtitle">Description</td></tr>
-<tr><td></td><td><p>Extract information (metadata) from <code>fit</code>, <code>fitacf</code> or <code>cfit</code> format files.</p>
+<tr><td></td><td><p>Extract information (metadata) from <code>dat</code>, <code>rawacf</code>, <code>fit</code>, <code>fitacf</code> or <code>cfit</code> format files.</p>
 <p>The extracted information is written to standard output.</p></td></tr>
 <tr><td class="docsubtitle">Examples</td></tr>
 <tr><td></td><td>

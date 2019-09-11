@@ -35,7 +35,7 @@
 <tr><td class=docsubtitle>Library</td></tr>
 <tr><td></td><td style="font-family: courier;"><a href="index.html">fit</a></td></tr>
 <tr><td class="docsubtitle">Description</td></tr>
-<tr><td></td><td class="docbody"><p>The <a href="FitFReadRadarScan.html"><code>FitFReadRadarScan</code></a> function reads one full scan of data from a <code>fitacf</code> data file.</p>
+<tr><td></td><td class="docbody"><p>The <a href="FitFreadRadarScan.html"><code>FitFReadRadarScan</code></a> function reads one full scan of data from a <code>fitacf</code> data file.</p>
 <p>The data is read from the stream pointed to by the argument <em>fp</em>.</p>
 <p>The argument <em>state</em> is a pointer to an integer that is used internally by the function to track progress through the <code>fit</code> file. Initially this integer should be set to zero, indicating that no data has been read from the file yet. The other possible value of <em>state</em> are (1), indicating that a complete scan was read from the file and data from the next scan is pending, or (2) indicating that a file error occurred.</p>
 <p>The scan data is written to the structure pointed to by the argument <em>ptr</em>. Memory is automatically allocated within this structure to store the beam data.</p>

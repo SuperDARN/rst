@@ -9,8 +9,6 @@
 
 </div>
 
-</div>
-
 <div id="location">
 <table width=100% class="location"><tr>
 <td><a href="../../../../../index.html">Home</a><td>|</td>
@@ -27,7 +25,7 @@
 <table>
 <tr><td class="docsubtitle" valign=top>Syntax</td></tr>
 <tr><td></td><td width=80% class="docbox" style="font-family: courier;">
-rtfitacftofit --help<br>rtfitacftofit [-t <em>timeout</em>] [-s <em>stream</em>] [-L <em>logname</em>] [-T <em>timename</em>] [-pf <em>portname</em>] [-if <em>pidname</em>] [-lp <em>lport</em>] <em>host</em> <em>rport</em><br>rtfitacftofit -rpf [-t <em>timeout</em>] [-s <em>stream</em>] [-L <em>logname</em>] [-T <em>timename</em>] [-pf <em>portname</em>] [-if <em>pidname</em>] [-lp <em>lport</em>] <em>host</em> <em>rportname</em><br></td></tr>
+rtfitacftofit --help<br>rtfitacftofit [-t <em>timeout</em>] [-L <em>logname</em>] [-T <em>timename</em>] [-pf <em>portname</em>] [-if <em>pidname</em>] [-lp <em>lport</em>] <em>host</em> <em>rport</em><br>rtfitacftofit -rpf [-t <em>timeout</em>] [-L <em>logname</em>] [-T <em>timename</em>] [-pf <em>portname</em>] [-if <em>pidname</em>] [-lp <em>lport</em>] <em>host</em> <em>rportname</em><br></td></tr>
 <tr><td class="docsubtitle">Synopsis</td></tr>
 <tr><td></td><td><p>Convert a <code>fitacf</code> format TCP/IP data stream to a <code>fit</code> format stream.</p></td></tr>
 
@@ -35,23 +33,26 @@ rtfitacftofit --help<br>rtfitacftofit [-t <em>timeout</em>] [-s <em>stream</em>]
 <tr><td></td><td>
 <table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
 <tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
-<tr><td width="150" valign="top"><code>-t <em>timeout</em></code></td><td valign="top">set the time to wait before resetting the connection to <em>timeout</em> seconds</td></tr><tr><td width="150" valign="top"><code>-s <em>stream</em></code></td><td valign="top">for a multiplexed stream, read the stream number given by <em>stream</em>. A value of 255 will read all streams</td></tr>
+<tr><td width="150" valign="top"><code>-t <em>timeout</em></code></td><td valign="top">set the time to wait before resetting the connection to <em>timeout</em> seconds</td></tr>
 <tr><td width="150" valign="top"><code>-L <em>logname</em></code></td><td valign="top">log connections and information in the file <em>logname</em>. By default, connections are recorded in <code>log.rt</code>.</td></tr>
 <tr><td width="150" valign="top"><code>-T <em>timename</em></code></td><td valign="top">log the time that the last packet was received in the file <em>timename</em>. By default, the time is recorded in <code>time.rt</code>.</td></tr>
 <tr><td width="150" valign="top"><code>-pf <em>portname</em></code></td><td valign="top">record the port number that the server is listening for connections on in the file <em>portname</em>. By default, the port is  recorded in <code>port.id</code>.</td></tr>
 <tr><td width="150" valign="top"><code>-if <em>pidname</em></code></td><td valign="top">record the process Identifier (PID) of the server in the file <em>pidname</em>. By default, the PID is  recorded in <code>pid.id</code>.</td></tr>
-<tr><td width="150" valign="top"><code>-lp <em>lport</em></code></td><td valign="top">force the server to listen on the local port number <em>port</em>. By default, the server requests a port number from the Operating System.</td></tr><tr><td width="150" valign="top"><code><em>host</em></code></td><td valign="top">hostname or IP number of the system to connect to.</td></tr><tr><td width="150" valign="top"><code><em>rport</em></code></td><td valign="top">port number to connect to on the server.</td></tr><tr><td width="150" valign="top"><code>-rpf</code></td><td valign="top">The remote port number is stored in a text file.</td></tr>
-<tr><td width="150" valign="top"><code><em>rportname</em></code></td><td valign="top">filename of the text file containing the remote port number.</td></tr></table></td></tr>
+<tr><td width="150" valign="top"><code>-lp <em>lport</em></code></td><td valign="top">force the server to listen on the local port number <em>port</em>. By default, the server requests a port number from the Operating System.</td></tr><tr><td width="150" valign="top"><code><em>host</em></code></td><td valign="top">hostname or IP number of the system to connect to.</td></tr>
+<tr><td width="150" valign="top"><code><em>rport</em></code></td><td valign="top">port number to connect to on the server.</td></tr>
+<tr><td width="150" valign="top"><code>-rpf</code></td><td valign="top">The remote port number is stored in a text file.</td></tr>
+<tr><td width="150" valign="top"><code><em>rportname</em></code></td><td valign="top">filename of the text file containing the remote port number.</td></tr>
+</table></td></tr>
 <tr><td class="docsubtitle">Description</td></tr>
 <tr><td></td><td><p>Convert a <code>fitacf</code> format TCP/IP data stream to a <code>fit</code> format stream.</p>
 <p>This task can be used to reformat a TCP/IP data stream to supply legacy clients.</p> </td></tr>
 <tr><td class="docsubtitle">Examples</td></tr>
 <tr><td></td><td>
-<table ><tr><td class="docbox" ><pre width="80">rtfitacftofit -L log -pf port.id  -if pid.id -lp 5000 peanut.jhuapl.edu 1024</pre></td></tr></table>
+<table ><tr><td class="docbox" ><pre width="80">rtfitacftofit -L log -pf port.id -if pid.id -lp 5000 peanut.jhuapl.edu 1024</pre></td></tr></table>
 <p><p>Reformat the <code>fitacf</code> data stream from the port 1024 on the server <code>peanut.jhuapl.edu</code>. The port number is recorded in the file "<code>port.id</code>", the process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyymmdd</em> is the date.</p>
 </p>
 
-<table ><tr><td class="docbox" ><pre width="80">rtfitacftofit -L log -pf port.id  -if pid.id -lp -rpf port.gbr localhost</pre></td></tr></table>
+<table ><tr><td class="docbox" ><pre width="80">rtfitacftofit -L log -pf port.id -if pid.id -lp -rpf port.gbr localhost</pre></td></tr></table>
 <p><p>Reformat the <code>fitacf</code> data stream served from the port listed in "<code>port.gbr</code>" on this host. The port number is recorded in the file "<code>port.id</code>", the process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyymmdd</em> is the date.</p>
 </p>
 </td></tr>

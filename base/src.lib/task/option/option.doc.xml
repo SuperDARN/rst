@@ -63,7 +63,7 @@
 <location>src.lib/task/option</location>
 <header>base/option.h</header>
 <syntax>void OptionFreeFile(<sn href="structOptionFile.html">struct OptionFile</sn> *ptr);</syntax>
-<description><p>The <fn href="OptionFreeFile.html">OptionFreeFile</fn> function releases memory used to store command line options parsed from a file using the function <fn href="OptionProcessFile">OptionProcessFile</fn>.</p>
+<description><p>The <fn href="OptionFreeFile.html">OptionFreeFile</fn> function releases memory used to store command line options parsed from a file using the function <fn href="OptionProcessFile.html">OptionProcessFile</fn>.</p>
 <p>The parsed command line options are given by the argument <ar>ptr</ar> which is a pointer to a structure.</p>
 </description>
 <returns>Returns zero on success. On error, (-1) is returned.</returns>

@@ -9,8 +9,6 @@
 
 </div>
 
-</div>
-
 <div id="location">
 <table width=100% class="location"><tr>
 <td><a href="../../../../../index.html">Home</a><td>|</td>
@@ -27,7 +25,7 @@
 <table>
 <tr><td class="docsubtitle" valign=top>Syntax</td></tr>
 <tr><td></td><td width=80% class="docbox" style="font-family: courier;">
-rtcfit --help<br>rtcfit [-vb] [-mp <em>minpwr</em>]  [-L <em>logname</em>] [-p <em>pathname</em>] [-if <em>pidname</em>] [-s <em>stream</em>] <em>host</em> <em>port</em><br>rtcfit -rpf [-vb] [-mp <em>minpwr</em>] [-L <em>logname</em>] [-p <em>pathname</em>] [-if <em>pidname</em>] [-s <em>stream</em>] <em>host</em> <em>portname</em><br></td></tr>
+rtcfit --help<br>rtcfit [-vb] [-mp <em>minpwr</em>]  [-L <em>logname</em>] [-p <em>pathname</em>] [-if <em>pidname</em>] <em>host</em> <em>port</em><br>rtcfit -rpf [-vb] [-mp <em>minpwr</em>] [-L <em>logname</em>] [-p <em>pathname</em>] [-if <em>pidname</em>] <em>host</em> <em>portname</em><br></td></tr>
 <tr><td class="docsubtitle">Synopsis</td></tr>
 <tr><td></td><td><p>Creates a <code>cFit</code> format file from a <code>fitacf</code> TCP/IP data stream.</p></td></tr>
 
@@ -40,9 +38,11 @@ rtcfit --help<br>rtcfit [-vb] [-mp <em>minpwr</em>]  [-L <em>logname</em>] [-p <
 <tr><td width="150" valign="top"><code>-L <em>logname</em></code></td><td valign="top">log connections and information in the file <em>logname</em>. By default, connections are recorded in <code>log.rt</code>.</td></tr>
 <tr><td width="150" valign="top"><code>-p <em>pathname</em></code></td><td valign="top">store the daily files in the directory <em>pathname</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-if <em>pidname</em></code></td><td valign="top">record the process Identifier (PID) of the server in the file <em>pidname</em>. By default, the PID is  recorded in <code>pid.id</code>.</td></tr>
-<tr><td width="150" valign="top"><code>-s <em>stream</em></code></td><td valign="top">for a multiplexed stream, read the stream number given by <em>stream</em>. A value of 255 will read all streams</td></tr>
-<tr><td width="150" valign="top"><code><em>host</em></code></td><td valign="top">hostname or IP number of the system to connect to.</td></tr><tr><td width="150" valign="top"><code><em>rport</em></code></td><td valign="top">port number to connect to on the server.</td></tr><tr><td width="150" valign="top"><code>-rpf</code></td><td valign="top">The remote port number is stored in a text file.</td></tr>
-<tr><td width="150" valign="top"><code><em>rportname</em></code></td><td valign="top">filename of the text file containing the remote port number.</td></tr></table></td></tr>
+<tr><td width="150" valign="top"><code><em>host</em></code></td><td valign="top">hostname or IP number of the system to connect to.</td></tr>
+<tr><td width="150" valign="top"><code><em>rport</em></code></td><td valign="top">port number to connect to on the server.</td></tr>
+<tr><td width="150" valign="top"><code>-rpf</code></td><td valign="top">The remote port number is stored in a text file.</td></tr>
+<tr><td width="150" valign="top"><code><em>rportname</em></code></td><td valign="top">filename of the text file containing the remote port number.</td></tr>
+</table></td></tr>
 <tr><td class="docsubtitle">Description</td></tr>
 <tr><td></td><td><p>Creates a <code>cFit</code> format file from a <code>fitacf</code> TCP/IP data stream.</p>
 <p>The data is written to a file called "<code><em>yyyymmdd.iii</em>.cfit</code>" where <em>yyyy</em> is the year, <em>mm</em> is the month, <em>dd</em> is the day, and <em>iii</em> is the radar identifier code.</p>

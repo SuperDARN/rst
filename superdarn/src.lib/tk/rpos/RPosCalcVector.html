@@ -44,7 +44,36 @@
 <tr><td class="docsubtitle">Errors</td></tr>
 <tr><td></td><td>None</td></tr>
 <tr><td class="docsubtitle">Example</td></tr>
-<tr><td></td><td><br><center>Source Code: <a href="src/RPosCalcVector.c">RPosCalcVector.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60"></pre></td></tr></table><br></td></tr>
+<tr><td></td><td><br><center>Source Code: <a href="src/RPosCalcVector.c">RPosCalcVector.c</a></center><br><table width="540" cellpadding="4"><tr><td class="docbox"><pre width="60">/* RPosCalcVector
+   ==============
+   Author: R.J.Barnes */
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#include &quot;calcvector.h&quot;
+
+
+int main(int argc,char *argv[]) {
+ 
+  double alat=58.0;
+  double alon=140.0;
+  double mag=1500.0;
+  double azm=18.0;
+
+  double blat,blon;
+
+  RPosCalcVector(alat,alon,mag,azm,&amp;blat,&amp;blon);
+
+
+  fprintf(stdout,&quot;RPosCalcVector&apos;n&quot;);
+  fprintf(stdout,&quot;alat=%g, alon=%g, mag=%g, azm=%g&apos;n&quot;,alat,alon,mag,azm);
+  fprintf(stdout,&quot;blat=%g blon=%g&apos;n&quot;,blat,blon);
+
+  return 0;
+}
+</pre></td></tr></table><br></td></tr>
 </table>
 <br><br>
 </div>

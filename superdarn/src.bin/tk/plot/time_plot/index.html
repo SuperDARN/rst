@@ -9,8 +9,6 @@
 
 </div>
 
-</div>
-
 <div id="location">
 <table width=100% class="location"><tr>
 <td><a href="../../../../../index.html">Home</a><td>|</td>
@@ -54,8 +52,16 @@ time_plot --help<br>time_plot [<em>options</em>] <em>fitacfname</em> [<em>inxnam
 <tr><td width="150" valign="top"><code>-vkey_path <em>vkey_path</em></code></td><td valign="top">load the velocity colorkey from the custom path <em>vkey_path</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-wkey <em>wkeyname</em></code></td><td valign="top">load the spectral width colorkey from the file <em>wkeyname</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-wkey_path <em>wkey_path</em></code></td><td valign="top">load the spectral width colorkey from the custom path <em>wkey_path</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-phikey <em>phikeyname</em></code></td><td valign="top">load the phi0 colorkey from the file <em>phikeyname</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-phikey_path <em>phikey_path</em></code></td><td valign="top">load the phi0 colorkey from the custom path <em>phikey_path</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-ekey <em>ekeyname</em></code></td><td valign="top">load the elevation angle colorkey from the file <em>ekeyname</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-ekey_path <em>ekey_path</em></code></td><td valign="top">load the elevation angle colorkey from the custom path <em>ekey_path</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-vekey <em>vekeyname</em></code></td><td valign="top">load the velocity error colorkey from the file <em>vekeyname</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-vekey_path <em>vekey_path</em></code></td><td valign="top">load the velocity error colorkey from the custom path <em>vekey_path</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-wekey <em>wekeyname</em></code></td><td valign="top">load the spectral width error colorkey from the file <em>wekeyname</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-wekey_path <em>wekey_path</em></code></td><td valign="top">load the spectral width error colorkey from the custom path <em>wekey_path</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-p0key <em>p0keyname</em></code></td><td valign="top">load the lag0 power colorkey from the file <em>p0keyname</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-p0key_path <em>p0key_path</em></code></td><td valign="top">load the lag0 power colorkey from the custom path <em>p0key_path</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-fkey <em>fkeyname</em></code></td><td valign="top">load the frequency colorkey from the file <em>fkeyname</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-fkey_path <em>fkey_path</em></code></td><td valign="top">load the frequency colorkey from the custom path <em>fkey_path</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-nkey <em>nkeyname</em></code></td><td valign="top">load the noise colorkey from the file <em>nkeyname</em>.</td></tr>
@@ -70,19 +76,31 @@ time_plot --help<br>time_plot [<em>options</em>] <em>fitacfname</em> [<em>inxnam
 <tr><td width="150" valign="top"><code>-c <em>channel</em></code></td><td valign="top">for stereo mode data, plot channel <em>channel</em>, if omitted then both channels are plotted.</td></tr>
 <tr><td width="150" valign="top"><code>-cp <em>cpid</em></code></td><td valign="top">plot beams that contain the program identifier <em>cpid</em> only.</td></tr>
 <tr><td width="150" valign="top"><code>-scan <em>scan</em></code></td><td valign="top">plot beams that have a value for the scan flag of <em>scan</em>.</td></tr>
-<tr><td width="150" valign="top"><code>-a</code></td><td valign="top">plot all parameters (excluding elevation angle).</td></tr>
+<tr><td width="150" valign="top"><code>-a</code></td><td valign="top">plot power, velocity, and spectral width.</td></tr>
 <tr><td width="150" valign="top"><code>-p</code></td><td valign="top">plot power.</td></tr>
 <tr><td width="150" valign="top"><code>-v</code></td><td valign="top">plot velocity.</td></tr>
 <tr><td width="150" valign="top"><code>-w</code></td><td valign="top">plot spectral width.</td></tr>
+<tr><td width="150" valign="top"><code>-phi</code></td><td valign="top">plot phi0.</td></tr>
 <tr><td width="150" valign="top"><code>-e</code></td><td valign="top">plot elevation angle.</td></tr>
+<tr><td width="150" valign="top"><code>-ve</code></td><td valign="top">plot velocity error.</td></tr>
+<tr><td width="150" valign="top"><code>-we</code></td><td valign="top">plot spectral width error.</td></tr>
+<tr><td width="150" valign="top"><code>-p0</code></td><td valign="top">plot lag0 power.</td></tr>
 <tr><td width="150" valign="top"><code>-pmin <em>pmin</em></code></td><td valign="top">set the minimum value of the power scale to <a>pmin</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-pmax <em>pmax</em></code></td><td valign="top">set the maximum value of the power scale to <a>pmax</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-vmin <em>vmin</em></code></td><td valign="top">set the minimum value of the velocity scale to <a>vmin</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-vmax <em>vmax</em></code></td><td valign="top">set the maximum value of the velocity scale to <a>vmax</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-wmin <em>wmin</em></code></td><td valign="top">set the minimum value of the spectral width scale to <a>wmin</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-wmax <em>wmax</em></code></td><td valign="top">set the maximum value of the spectral width scale to <a>wmax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-phimin <em>phimin</em></code></td><td valign="top">set the minimum value of the phi0 scale to <a>phimin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-phimax <em>phimax</em></code></td><td valign="top">set the maximum value of the phi0 scale to <a>phimax</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-emin <em>emin</em></code></td><td valign="top">set the minimum value of the elevation angle scale to <a>emin</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-emax <em>emax</em></code></td><td valign="top">set the maximum value of the elevation angle scale to <a>emax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-vemin <em>vemin</em></code></td><td valign="top">set the minimum value of the velocity error scale to <a>vemin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-vemax <em>vemax</em></code></td><td valign="top">set the maximum value of the velocity error scale to <a>vemax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-wemin <em>wemin</em></code></td><td valign="top">set the minimum value of the spectral width error scale to <a>wemin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-wemax <em>wemax</em></code></td><td valign="top">set the maximum value of the spectral width error scale to <a>wemax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-p0min <em>p0min</em></code></td><td valign="top">set the minimum value of the lag0 power scale to <a>p0min</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-p0max <em>p0max</em></code></td><td valign="top">set the maximum value of the lag0 power scale to <a>p0max</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-gs</code></td><td valign="top">color ground scatter.</td></tr>
 <tr><td width="150" valign="top"><code>-gm</code></td><td valign="top">mask out ground scatter.</td></tr>
 <tr><td width="150" valign="top"><code>-ns</code></td><td valign="top">ignore non-scan data (data with a scan flag of -1).</td></tr>
