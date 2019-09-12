@@ -1022,9 +1022,9 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
       }
     }
     if (latmin > 0)
-      ele_the[i]=-1000.0*(180.0/(90.0-latmin))/Rd*Ix.x;
+      ele_the[i]=-1000.0*Ix.x*(180.0/(90.0-latmin))/Rd;
     else
-      ele_the[i]=-1000.0*(180.0/(90.0+latmin))/Rd*Ix.x;
+      ele_the[i]=-1000.0*Ix.x*(180.0/(90.0+latmin))/Rd;
   }
 }
 

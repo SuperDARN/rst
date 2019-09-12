@@ -183,7 +183,7 @@ void make_hmb()
 
       mlt=m;
 
-      lathmb[n]=n+40.0;
+      lathmb[n]=n+40.0; /* The +40.0 means we start making the grid used by the iterative HMB-finding algorithm at geomagnetic latitude of 40 degrees. */  
       latmin=lathmb[n];
 
       bfac=(90-latmin)/(90-latref);

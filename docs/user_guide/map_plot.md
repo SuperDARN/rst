@@ -8,7 +8,7 @@ Convection maps can be plotted using the `map_plot` routine.
 
 ## Example plot
 ```
-map_plot -png 
+map_plot -png \ 
          -coast -fcoast -mag -grd -grdontop \
          -ctr -poly -fpoly -fpolycol 554090DD \
          -extra -fit -rotate -hmb -imf -tmlbl -maxmin -pot -latmin 50 \

@@ -164,7 +164,7 @@ Now install the [CDF library](#cdf-library)
 You will also need the CDF (Common Data Format) library which can be downloaded from NASA. 
 !!! Note
     **Make sure you successfully installed the ncurses library for your distribution first.** 
-You can find the latest release at: http://cdf.gsfc.nasa.gov/  
+You can find the latest release at: [http://cdf.gsfc.nasa.gov/](http://cdf.gsfc.nasa.gov/)
 
 For Opensuse you will need to make a symlink lcurses library to libncuses (recommended) or modify the CDF Makefile. 
 
