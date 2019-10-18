@@ -5,9 +5,12 @@
 include $(MAKECFG).$(SYSTEM)
 
 INCLUDE = -I$(IPATH)/analysis -I$(IPATH)/base -I$(IPATH)/general \
-		-I$(IPATH)/superdarn
+		-I$(IPATH)/superdarn -I/.
 
 SRC =	read_fit.c \
+	read_fit_funcs.c \
+	load_fit.c \
+	load_radar_site.c \
 	grid_funcs.c \
 	write_scan.c
 
