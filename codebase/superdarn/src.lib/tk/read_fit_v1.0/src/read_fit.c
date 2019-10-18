@@ -89,8 +89,9 @@ int main(int argc, char *argv[])
   double strdate(char *text);
   int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
 	       double stime, double sdate, double etime, double edate,
-	       unsigned char cfitflg, unsigned char fitflg, unsigned char nsflg,
-	       char *iname, char *dnames, char *vbuf);
+	       unsigned char wrtflg, unsigned char cfitflg,
+	       unsigned char fitflg, unsigned char nsflg, char *iname,
+	       char *dnames, char *vbuf, struct MultRadarScan *mult_scan);
   
   /* Process the command line options */
   farg = command_options(argc, argv, &old, &tlen, &vb, &cfitflg, &fitflg,
@@ -149,11 +150,12 @@ int main(int argc, char *argv[])
 
   /* TEST ONLY */
   mult_scans = (struct MultRadarScan *)(malloc(sizeof(struct MultRadarScan)));
-  memset(mult_scans, 0, sizeof(struct MultRadarScan))
+  memset(mult_scans, 0, sizeof(struct MultRadarScan));
+  mult_scans->num_scans = 0;
 
   /* Put the load routine here */
   ret_stat = load_fit(fnum, channel, channel_fix, old, tlen, stime, sdate,
-		      etime, edate, cfitflg, fitflg, nsflg, iname, dnames,
+		      etime, edate, 0, cfitflg, fitflg, nsflg, iname, dnames,
 		      vbuf, mult_scans);
 
   /* TEST WRITE */
