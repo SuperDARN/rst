@@ -1,3 +1,26 @@
+/* write_scan.c
+   ===================
+   Author: Angeline G. Burrell - NRL - 2019
+*/
+
+/*
+ LICENSE AND DISCLAIMER
+
+ This file is part of the Radar Software Toolkit (RST).
+
+ RST is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Lesser General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ any later version.
+
+ RST is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Lesser General Public License for more details.
+
+ You should have received a copy of the GNU Lesser General Public License
+ along with RST.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,32 +29,49 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <ctype.h>
-#include <zlib.h>
 #include "rtypes.h"
 #include "dmap.h"
 #include "option.h"
 #include "rtime.h"
 #include "radar.h"
-#include "rprm.h"
-#include "fitdata.h"
-#include "cfitdata.h"
 #include "scandata.h"
-#include "fitread.h"
-#include "fitscan.h"
-#include "fitindex.h"
-#include "fitseek.h"
-#include "oldfitread.h"
-#include "oldfitscan.h"
-#include "cfitread.h"
-#include "cfitindex.h"
-#include "cfitseek.h"
 #include "cfitscan.h"
 #include "fitscan.h"
-#include "filter.h"
-#include "bound.h"
-#include "checkops.h"
-#include "rpos.h"
 
+/*
+ * Cycle through and write multiple scans of radar data
+ */
+
+void write_mult_scan(FILE *fp, struct MultRadarScan *mult_scan,
+		     unsigned char vb, char *vbuf)
+{
+  int iscan;
+
+  struct RadarScanCycl *scan;
+
+  void write_scan(FILE *fp, struct RadarScan *scan, unsigned char vb,
+		  char *vbuf);
+
+  /* Write the header */
+  write_scan(fp, NULL, vp, vbuf);
+
+  scan = mult_scan->scan_ptr;
+
+  for(iscan = 0; iscan < mult_scan->num_scans; iscan++)
+    {
+      /* Write all the beams from this scan */
+      write_scan(fp, &scan->scan_data, vb, vbuf);
+
+      /* Cycle to the next scan */
+      scan = scan->next_scan;
+    }
+
+  return;
+}
+
+/* 
+ * Write a scan of radar data
+ */
 
 void write_scan(FILE *fp, struct RadarScan *scan, unsigned char vb, char *vbuf)
 {
