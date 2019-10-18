@@ -1,7 +1,14 @@
 # Makefile for read_fit
 # ======================
+# Copyright (C) 2019 <insitution or authors name>
 # Author: AGB
 #
+# Disclaimer: This code is licensed under GPL v3.0 please LICENSE to 
+# 			  see the full license 
+#
+# Modified:
+# =========
+#  Oct-18-2019 Marina Schmidt Added INC variable
 include $(MAKECFG).$(SYSTEM)
 
 INCLUDE = -I$(IPATH)/analysis -I$(IPATH)/base -I$(IPATH)/general \
@@ -15,6 +22,8 @@ SRC =	read_fit.c \
 	write_scan.c
 
 OBJS =	$(SRC:.c=.o)
+
+INC=$(IPATH)/superdarn
 
 DSTPATH = $(BINPATH)
 
