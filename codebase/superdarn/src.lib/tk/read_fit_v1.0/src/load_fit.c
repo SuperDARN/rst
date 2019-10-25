@@ -24,48 +24,56 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/stat.h>
+#include <zlib.h>
 
+#include "rtypes.h"
 #include "rtime.h"
+#include "dmap.h" /* DMap library needs to go before rprm.h */
 #include "rprm.h"
+#include "scandata.h" /* scandata.h needs to go before the various fitdata.h */
+#include "fitindex.h"
 #include "fitdata.h"
-#include "cfitdata.h"
-#include "scandata.h"
 #include "fitread.h"
 #include "fitscan.h"
-#include "fitindex.h"
 #include "fitseek.h"
 #include "oldfitread.h"
 #include "oldfitscan.h"
-#include "cfitread.h"
+#include "cfitdata.h"
 #include "cfitindex.h"
-#include "cfitseek.h"
+#include "cfitread.h"
 #include "cfitscan.h"
-#include "fitscan.h"
-/* #include "filter.h" */
+#include "cfitseek.h"
+#include "multscan.h"
+/* #include "errstr.h" */
 
 int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
 	     double stime, double sdate, double etime, double edate,
+	     double extime,
 	     unsigned char wrtflg, unsigned char cfitflg, unsigned char fitflg,
-	     unsigned char nsflg, char *iname, char *dnames, char *vbuf,
-	     struct MultRadarScan *mult_scan)
+	     unsigned char nsflg, unsigned char vb, char *vbuf, char *iname,
+	     char **dnames, struct MultRadarScan *mult_scan)
 {
   int yr, mo, dy, hr, mt, inum;
   int ret_flg=0, state=0, syncflg=1;
  
   double sc;
 
+  FILE *fp, *fitfp;
+
   struct RadarParm *prm;
   struct FitData *fit;
   struct CFitdata *cfit;
   struct RadarScan *scan;
   struct FitIndex *inx;
-  struct RadarSite *site;
+  struct RadarSite *site=NULL;
   struct OldFitFp *oldfitfp=NULL;
   struct CFitfp *cfitfp=NULL;
   struct RadarScanCycl *data_ptr, *prev_ptr;
 
   void load_radar_site(int yr, int mo, int dy, int hr, int mt, int sc,
 		       int stid, struct RadarSite *site);
+  int exclude_outofscan(struct RadarScan *ptr);
   void write_scan(FILE *fp, struct RadarScan *scan, unsigned char vb,
 		  char *vbuf);
 
@@ -96,12 +104,12 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
       prev_ptr            = mult_scan->last_ptr;
       prev_ptr->next_scan = (struct RadarScanCycl *)(malloc(sizeof(struct RadarScanCycl)));
       data_ptr            = prev_ptr->next_scan;
-      data_ptr->next_scan = (struct RadarScanCycle *)(NULL);
       data_ptr->prev_scan = prev_ptr;
+      data_ptr->next_scan = NULL; /* (struct RadarScanCycle *)(NULL); */
     }
 
   /* Cycle through all of the fit files */
-  for(inum; inum < fnum; inum++)
+  for(inum=0; inum < fnum; inum++)
     {
       /* Assign the input and index file names */
       fprintf(stderr, "Opening file:%s\n", dnames[inum]);
@@ -142,9 +150,8 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
 		{
 		  /* Open the index file for reading */
 		  if((fp = fopen(iname, "r")) == NULL)
-		    {
-		      fprintf(stderr,"Could not open index.\n");
-                    }
+		    fprintf(stderr,"Could not open index.\n");
+
 		  else
 		    {
 		      if((inx = FitIndexFload(fp)) == NULL)
@@ -154,7 +161,7 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
                 }
 
 	      /* Open the fitacf file for reading */
-	      if((fitfp=fopen(dnames[inum], "r")) == NULL)
+	      if((fitfp = fopen(dnames[inum], "r")) == NULL)
 		{
 		  fprintf(stderr,"File not found.\n");
 		  exit(-1);
@@ -334,7 +341,7 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
 	  else
 	    {
 	      /* I think this won't work, but let's try */
-	      data_ptr->scan_data = scan;
+	      data_ptr->scan_data = *scan;
 
 	      if(mult_scan->num_scans == 0)
 		{
@@ -391,7 +398,7 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
       data_ptr = prev_ptr;
 
       if(data_ptr != (struct RadarScanCycl *)(NULL))
-	data_ptr->next_scan = (struct RadarScanCycle *)(NULL);
+	data_ptr->next_scan = NULL; /* (struct RadarScanCycle *)(NULL); */
 
       mult_scan->last_ptr = data_ptr;
     } 

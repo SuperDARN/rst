@@ -26,17 +26,28 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <ctype.h>
+#include <zlib.h>
+
+
 #include "rtypes.h"
-#include "dmap.h"
-#include "option.h"
 #include "rtime.h"
-#include "radar.h"
-#include "scandata.h"
-#include "cfitscan.h"
+#include "dmap.h" /* DMap library needs to go before rprm.h */
+#include "rprm.h"
+#include "scandata.h" /* scandata.h needs to go before the various fitdata.h */
+#include "fitindex.h"
+#include "fitdata.h"
+#include "fitread.h"
 #include "fitscan.h"
+#include "fitseek.h"
+#include "oldfitread.h"
+#include "oldfitscan.h"
+#include "cfitdata.h"
+#include "cfitindex.h"
+#include "cfitread.h"
+#include "cfitscan.h"
+#include "cfitseek.h"
+#include "multscan.h"
+/* #include "errstr.h" */
 
 /*
  * Cycle through and write multiple scans of radar data
@@ -53,7 +64,7 @@ void write_mult_scan(FILE *fp, struct MultRadarScan *mult_scan,
 		  char *vbuf);
 
   /* Write the header */
-  write_scan(fp, NULL, vp, vbuf);
+  write_scan(fp, NULL, vb, vbuf);
 
   scan = mult_scan->scan_ptr;
 
