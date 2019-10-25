@@ -25,18 +25,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-/* #include <sys/stat.h>
- * #include <sys/types.h>
- * #include <unistd.h>
- * #include <ctype.h>
- * #include <zlib.h>
- * #include "rtypes.h"
- * #include "dmap.h"
- */
 #include "option.h"
 #include "radar.h"
-#include "bound.h"
-#include "checkops.h"
+/* #include "bound.h"
+ * #include "checkops.h"
+ */
 #include "rpos.h"
 #include "scandata.h"
 #include "multscan.h"
@@ -52,7 +45,7 @@ struct OptionData opt;
 
 int main(int argc, char *argv[])
 {
-  int len, fnum, channel, channel_fix, ret_stat;
+  int inum, len, fnum, channel, channel_fix, ret_stat;
 
   char vstr[256];
 
@@ -68,7 +61,6 @@ int main(int argc, char *argv[])
 
   /* Initialize file information */
   char **dnames=NULL, *iname=NULL;
-  FILE *fitfp=NULL;
 
   /* Initialize fit scan structure TESTING ONLY */
   struct MultRadarScan *mult_scans;
@@ -85,13 +77,13 @@ int main(int argc, char *argv[])
   int set_stereo_channel(char *chnstr);
   int set_fix_channel(char *chnstr_fix);
   double strtime(char *text);
-  int exclude_outofscan(struct RadarScan *ptr);
   double strdate(char *text);
   int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
 	       double stime, double sdate, double etime, double edate,
-	       unsigned char wrtflg, unsigned char cfitflg,
-	       unsigned char fitflg, unsigned char nsflg, char *iname,
-	       char *dnames, char *vbuf, struct MultRadarScan *mult_scan);
+	       double extime, unsigned char wrtflg, unsigned char cfitflg,
+	       unsigned char fitflg, unsigned char nsflg, unsigned char vb,
+	       char *vbuf, char *iname, char **dnames,
+	       struct MultRadarScan *mult_scan);
   
   /* Process the command line options */
   farg = command_options(argc, argv, &old, &tlen, &vb, &cfitflg, &fitflg,
@@ -118,7 +110,7 @@ int main(int argc, char *argv[])
   if(catflg == 0)
     {
       /* For a single input file, an index file may also be provided */
-      dnames = (char **)malloc(sizeof(*char));
+      dnames = (char **)malloc(sizeof(char*));
 
       if(argc-farg > 1)
 	{
@@ -130,21 +122,19 @@ int main(int argc, char *argv[])
       len = strlen(argv[fnum]);
       dnames[0] = (char *)malloc(sizeof(char) * (len+1));
       strcpy(dnames[0], argv[fnum]);
-      dnames[0][len] = \0;
       fnum = 1;
     }
   else
     {
       /* For multiple input files, no index files are allowed */
       fnum = argc - farg;
-      dnames = (char **)malloc(sizeof(*char) * fnum);
+      dnames = (char **)malloc(sizeof(char*) * fnum);
 
       for(inum=0; inum<fnum; inum++)
 	{
 	  len = strlen(argv[inum+argc]);
 	  dnames[inum] = (char *)malloc(sizeof(char) * (len+1));
 	  strcpy(dnames[inum], argv[inum+argc]);
-	  dnames[inum][len] = \0;
 	}
     }
 
@@ -155,8 +145,8 @@ int main(int argc, char *argv[])
 
   /* Put the load routine here */
   ret_stat = load_fit(fnum, channel, channel_fix, old, tlen, stime, sdate,
-		      etime, edate, 0, cfitflg, fitflg, nsflg, iname, dnames,
-		      vbuf, mult_scans);
+		      etime, edate, extime, 0, cfitflg, fitflg, nsflg, vb, vbuf, iname,
+		      dnames, mult_scans);
 
   /* TEST WRITE */
   write_mult_scan(stdout, mult_scans, vb, vbuf);

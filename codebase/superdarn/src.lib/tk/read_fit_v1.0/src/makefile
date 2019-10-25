@@ -12,7 +12,7 @@
 include $(MAKECFG).$(SYSTEM)
 
 INCLUDE = -I$(IPATH)/analysis -I$(IPATH)/base -I$(IPATH)/general \
-		-I$(IPATH)/superdarn -I/.
+		-I$(IPATH)/superdarn -I../include/
 
 SRC =	read_fit.c \
 	read_fit_funcs.c \
