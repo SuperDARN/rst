@@ -159,8 +159,10 @@ int RadarLoadHardware(char *hdwpath,struct RadarNetwork *ptr) {
   double recrise;
   int maxatten,maxrange,maxbeam;
   int status;
+
   if (ptr==NULL) return -1;
   if (hdwpath==NULL) return -1;
+  
   for (n=0;n<ptr->rnum;n++) {
     sprintf(fname,"%s/%s",hdwpath,ptr->radar[n].hdwfname);
     fp=fopen(fname,"r");
