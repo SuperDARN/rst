@@ -77,6 +77,12 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
   void write_scan(FILE *fp, struct RadarScan *scan, unsigned char vb,
 		  char *vbuf);
 
+
+  printf("TEST INPUT: %d %d %d %d %d %f %f %f %f %f %d %d %d %d %s %s\n",
+	 fnum, channel, channel_fix, old, tlen, stime, sdate, etime, edate,
+	 extime, wrtflg, cfitflg, fitflg, nsflg, iname, dnames[0]);
+  fflush(stdout);
+  
   /* Initialize radar parameter and fit/cfit structures */
   prm = RadarParmMake();
   fit = FitMake();
@@ -107,6 +113,8 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
       data_ptr->prev_scan = prev_ptr;
       data_ptr->next_scan = NULL; /* (struct RadarScanCycle *)(NULL); */
     }
+
+  printf("TEST FNUM: %d\n", fnum);fflush(stdout);
 
   /* Cycle through all of the fit files */
   for(inum=0; inum < fnum; inum++)
@@ -144,6 +152,7 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
 	  else
 	    {
 	      /* Input file is in fitacf format */
+	      printf("INPUT FILE IS IN FITACF FORMAT\n");fflush(stdout);
 
 	      /* Check if index file provided */
 	      if(iname != NULL)
@@ -169,8 +178,10 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
 
 	      /* Read first available radar scan in fitacf file (will use scan
 		 flag if tlen not provided) */
+	      printf("READING FIRST SCAN\n");fflush(stdout);
 	      ret_flg = FitFreadRadarScan(fitfp, &state, scan, prm, fit,
 					  tlen, syncflg, channel);
+	      printf("READ FIRST SCAN\n");fflush(stdout);
 
 	      /* Verify that scan was properly read */
 	      if(ret_flg == -1)
@@ -219,6 +230,8 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
 	  /* Calculate year, month, day, hour, minute, and second of 
 	     grid start time */
 	  TimeEpochToYMDHMS(stime, &yr, &mo, &dy, &hr, &mt, &sc);
+
+	  printf("NEW: %f %f\n", sdate, stime);fflush(stdout);
 
 	  /* Search for index of corresponding record in input file given
 	     grid start time */
@@ -330,7 +343,7 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
 	  /* Load the appropriate radar hardware information for the day
 	     and time of the radar scan (only done once) */
 	  if(site == NULL)
-	    load_radar_site(yr, mo, dy, hr, mt, scan->stid, (int)sc, site);
+	    load_radar_site(yr, mo, dy, hr, mt, (int)sc, scan->stid, site);
 
 	  /* write data to output file or save into structure */
 	  if(wrtflg)

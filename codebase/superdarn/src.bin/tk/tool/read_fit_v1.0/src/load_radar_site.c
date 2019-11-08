@@ -41,6 +41,9 @@ void load_radar_site(int yr, int mo, int dy, int hr, int mt, int sc,
   struct RadarNetwork *network;
   struct Radar *radar;
 
+  printf("START LOAD RADAR SITE: %d %d %d %d %d %d %d\n", yr, mo, dy, hr, mt,
+	 sc, stid);fflush(stdout);
+
   /* Make sure the SD_RADAR environment variable is set */
   envstr = getenv("SD_RADAR");
   if(envstr==NULL)
@@ -83,7 +86,7 @@ void load_radar_site(int yr, int mo, int dy, int hr, int mt, int sc,
   radar = RadarGetRadar(network, stid);
   if(radar == NULL)
     {
-      fprintf(stderr,"Failed to get radar information.\n");
+      fprintf(stderr,"Failed to get radar information for stid %d.\n", stid);
       exit(-1);
     }
   site = RadarYMDHMSGetSite(radar, yr, mo, dy, hr, mt, sc);
