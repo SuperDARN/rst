@@ -25,15 +25,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "option.h"
 #include "radar.h"
-/* #include "bound.h"
- * #include "checkops.h"
- */
 #include "rpos.h"
 #include "scandata.h"
 #include "multscan.h"
-
 #include "hlpstr.h"
 #include "errstr.h"
 
