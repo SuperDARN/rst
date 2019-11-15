@@ -13,6 +13,6 @@ OUTPUT = grid_filter
 LIBS= -lgrd.1 -loldgrd.1 -lrfile.1 -ldmap.1 -lopt.1 -lrtime.1 -lrcnv.1 
 SLIB= -lm -lz
 
- 
+
 
 include $(MAKEBIN).$(SYSTEM)
