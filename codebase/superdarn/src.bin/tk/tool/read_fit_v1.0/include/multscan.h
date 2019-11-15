@@ -34,7 +34,7 @@
 
 struct RadarScanCycl
 {
-  struct RadarScan scan_data;
+  struct RadarScan *scan_data;
   struct RadarScanCycl *next_scan;
   struct RadarScanCycl *prev_scan;
 };

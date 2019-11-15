@@ -66,12 +66,12 @@ void write_mult_scan(FILE *fp, struct MultRadarScan *mult_scan,
   /* Write the header */
   write_scan(fp, NULL, vb, vbuf);
 
+  /* Cycle through all the scans */
   scan = mult_scan->scan_ptr;
-
   for(iscan = 0; iscan < mult_scan->num_scans; iscan++)
     {
       /* Write all the beams from this scan */
-      write_scan(fp, &scan->scan_data, vb, vbuf);
+      write_scan(fp, scan->scan_data, vb, vbuf);
 
       /* Cycle to the next scan */
       scan = scan->next_scan;
@@ -94,6 +94,7 @@ void write_scan(FILE *fp, struct RadarScan *scan, unsigned char vb, char *vbuf)
   struct RadarBeam *bm;
   struct RadarCell rng;
 
+  /* If there is no scan data, print the header information */
   if(scan == NULL)
     {
       sprintf(scan_info, "#STID");
@@ -104,6 +105,7 @@ void write_scan(FILE *fp, struct RadarScan *scan, unsigned char vb, char *vbuf)
     }
   else
     {
+      /* Cycle through all the beams in this scan */
       for(snum=0; snum<scan->num; snum++)
 	{
 	  /* Write out the desired info that is the same for this scan */
@@ -120,6 +122,7 @@ void write_scan(FILE *fp, struct RadarScan *scan, unsigned char vb, char *vbuf)
 		  bm->intt.us, bm->nave, bm->frang, bm->rsep, bm->rxrise,
 		  bm->freq, bm->noise, bm->atten, bm->channel, bm->nrang);
 
+	  /* Cycle through all the range gates */
 	  for(rg=0; rg<bm->nrang; rg++)
 	    {
 	      /* Write out the range info */
@@ -135,7 +138,6 @@ void write_scan(FILE *fp, struct RadarScan *scan, unsigned char vb, char *vbuf)
 	    }
 	}
     }
-
 
   return;
 }
