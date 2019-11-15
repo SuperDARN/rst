@@ -62,11 +62,6 @@ int main(int argc, char *argv[])
   /* Initialize file information */
   char **dnames=NULL, *iname=NULL;
 
-  /* Initialize fit scan structure TESTING ONLY */
-  struct MultRadarScan *mult_scans;
-  void write_mult_scan(FILE *fp, struct MultRadarScan *mult_scan,
-		       unsigned char vb, char *vbuf);
-
   /* Declare local subroutines */
   int command_options(int argc, char *argv[], int *old, int *tlen,
 		      unsigned char *vb, unsigned char *cfitflg,
@@ -138,21 +133,12 @@ int main(int argc, char *argv[])
 	}
     }
 
-  /* TEST ONLY */
-  mult_scans = (struct MultRadarScan *)(malloc(sizeof(struct MultRadarScan)));
-  memset(mult_scans, 0, sizeof(struct MultRadarScan));
-  mult_scans->num_scans = 0;
-
-  /* Put the load routine here */
+  /* Load and output the data here */
   ret_stat = load_fit(fnum, channel, channel_fix, old, tlen, stime, sdate,
-		      etime, edate, extime, 0, cfitflg, fitflg, nsflg, vb, vbuf, iname,
-		      dnames, mult_scans);
-
-  /* TEST WRITE */
-  write_mult_scan(stdout, mult_scans, vb, vbuf);
+		      etime, edate, extime, 1, cfitflg, fitflg, nsflg, vb, vbuf,
+		      iname, dnames, NULL);
 
   return ret_stat;
-
 }
 
 
@@ -163,9 +149,9 @@ int main(int argc, char *argv[])
 int command_options(int argc, char *argv[], int *old, int *tlen,
 		    unsigned char *vb, unsigned char *cfitflg,
 		    unsigned char *fitflg, unsigned char *catflg,
-		    unsigned char *nsflg, char *stmestr, char *etmestr,
-		    char *sdtestr, char *edtestr, char *exstr, char *chnstr,
-		    char *chnstr_fix)
+		    unsigned char *nsflg, char *stmestr,
+		    char *etmestr, char *sdtestr, char *edtestr, char *exstr,
+		    char *chnstr, char *chnstr_fix)
 {
   /* Initialize input options */
   int farg=0;

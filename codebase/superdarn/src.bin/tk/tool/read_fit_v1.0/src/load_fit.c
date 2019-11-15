@@ -24,6 +24,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/stat.h>
 #include <zlib.h>
 
@@ -49,10 +50,10 @@
 
 int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
 	     double stime, double sdate, double etime, double edate,
-	     double extime,
-	     unsigned char wrtflg, unsigned char cfitflg, unsigned char fitflg,
-	     unsigned char nsflg, unsigned char vb, char *vbuf, char *iname,
-	     char **dnames, struct MultRadarScan *mult_scan)
+	     double extime, unsigned char wrtflg, unsigned char cfitflg,
+	     unsigned char fitflg, unsigned char nsflg, unsigned char vb,
+	     char *vbuf, char *iname, char **dnames,
+	     struct MultRadarScan *mult_scan)
 {
   int yr, mo, dy, hr, mt, inum;
   int ret_flg=0, state=0, syncflg=1;
@@ -64,7 +65,6 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
   struct RadarParm *prm;
   struct FitData *fit;
   struct CFitdata *cfit;
-  struct RadarScan *scan;
   struct FitIndex *inx;
   struct RadarSite *site=NULL;
   struct OldFitFp *oldfitfp=NULL;
@@ -77,24 +77,25 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
   void write_scan(FILE *fp, struct RadarScan *scan, unsigned char vb,
 		  char *vbuf);
 
-
-  printf("TEST INPUT: %d %d %d %d %d %f %f %f %f %f %d %d %d %d %s %s\n",
-	 fnum, channel, channel_fix, old, tlen, stime, sdate, etime, edate,
-	 extime, wrtflg, cfitflg, fitflg, nsflg, iname, dnames[0]);
-  fflush(stdout);
-  
   /* Initialize radar parameter and fit/cfit structures */
   prm = RadarParmMake();
   fit = FitMake();
   cfit = CFitMake();
 
   /* Initialize RadarScan structure */
-  scan = RadarScanMake();
+  /* scan = RadarScanMake(); */
   data_ptr = (struct RadarScanCycl *)(NULL);
   prev_ptr = (struct RadarScanCycl *)(NULL);
 
   /* Write the header line or initialize the multi-scan output */
-  if(wrtflg) write_scan(stdout, NULL, vb, vbuf);
+  if(wrtflg)
+    {
+      write_scan(stdout, NULL, vb, vbuf);
+      data_ptr = (struct RadarScanCycl *)(malloc(sizeof(struct RadarScanCycl)));
+      memset(data_ptr, 0, sizeof(struct RadarScanCycl));
+      data_ptr->prev_scan = (struct RadarScanCycl *)(NULL);
+      data_ptr->next_scan = (struct RadarScanCycl *)(NULL);
+    }
   else if(mult_scan->num_scans == 0)
     {
       /* Initialize a new multi-scan output */
@@ -108,13 +109,14 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
     {
       /* Add to an existing multi-scan output */
       prev_ptr            = mult_scan->last_ptr;
-      prev_ptr->next_scan = (struct RadarScanCycl *)(malloc(sizeof(struct RadarScanCycl)));
+      prev_ptr->next_scan = (struct RadarScanCycl *)
+	(malloc(sizeof(struct RadarScanCycl)));
       data_ptr            = prev_ptr->next_scan;
       data_ptr->prev_scan = prev_ptr;
-      data_ptr->next_scan = NULL; /* (struct RadarScanCycle *)(NULL); */
+      data_ptr->next_scan = NULL;
     }
 
-  printf("TEST FNUM: %d\n", fnum);fflush(stdout);
+  data_ptr->scan_data = RadarScanMake();
 
   /* Cycle through all of the fit files */
   for(inum=0; inum < fnum; inum++)
@@ -139,8 +141,9 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
 
 	      /* Read first available radar scan in fit file (will use scan
 		 flag if tlen not provided) */
-	      ret_flg = OldFitReadRadarScan(oldfitfp, &state, scan, prm,
-					    fit, tlen, syncflg, channel);
+	      ret_flg = OldFitReadRadarScan(oldfitfp, &state,
+					    data_ptr->scan_data, prm, fit, tlen,
+					    syncflg, channel);
 
 	      /* Verify that scan was properly read */
 	      if(ret_flg == -1)
@@ -152,7 +155,6 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
 	  else
 	    {
 	      /* Input file is in fitacf format */
-	      printf("INPUT FILE IS IN FITACF FORMAT\n");fflush(stdout);
 
 	      /* Check if index file provided */
 	      if(iname != NULL)
@@ -178,10 +180,9 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
 
 	      /* Read first available radar scan in fitacf file (will use scan
 		 flag if tlen not provided) */
-	      printf("READING FIRST SCAN\n");fflush(stdout);
-	      ret_flg = FitFreadRadarScan(fitfp, &state, scan, prm, fit,
+	      ret_flg = FitFreadRadarScan(fitfp, &state, data_ptr->scan_data,
+					  prm, fit,
 					  tlen, syncflg, channel);
-	      printf("READ FIRST SCAN\n");fflush(stdout);
 
 	      /* Verify that scan was properly read */
 	      if(ret_flg == -1)
@@ -203,8 +204,8 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
             }
 
 	  /* Verify that the cfit file was properly opened */
-	  ret_flg = CFitReadRadarScan(cfitfp, &state, scan, cfit, tlen, syncflg,
-				      channel);
+	  ret_flg = CFitReadRadarScan(cfitfp, &state, data_ptr->scan_data, cfit,
+				      tlen, syncflg, channel);
 	  if(ret_flg == -1)
 	    {
 	      fprintf(stderr,"Error reading file.\n");
@@ -219,19 +220,17 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
 
 	  /* If start time not provided then use time of first record
 	   * in fit file */
-	  if(stime==-1) stime = ((int) scan->st_time % (24*3600));
+	  if(stime==-1) stime = ((int)data_ptr->scan_data->st_time % (24*3600));
 
 	  /* If start date not provided then use date of first record
 	   * in fit file, otherwise use provided sdate */
-	  if (sdate==-1) stime += scan->st_time -
-			   ((int) scan->st_time % (24*3600));
+	  if (sdate==-1) stime += data_ptr->scan_data->st_time -
+			   ((int)data_ptr->scan_data->st_time % (24*3600));
 	  else stime += sdate;
 
 	  /* Calculate year, month, day, hour, minute, and second of 
 	     grid start time */
 	  TimeEpochToYMDHMS(stime, &yr, &mo, &dy, &hr, &mt, &sc);
-
-	  printf("NEW: %f %f\n", sdate, stime);fflush(stdout);
 
 	  /* Search for index of corresponding record in input file given
 	     grid start time */
@@ -274,11 +273,13 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
 
 	      /* Read the first full scan of data from open fit or fitacf file
 		 corresponding to grid start date and time */
-	      if(old) ret_flg = OldFitReadRadarScan(oldfitfp, &state, scan, prm,
+	      if(old) ret_flg = OldFitReadRadarScan(oldfitfp, &state,
+						    data_ptr->scan_data, prm,
 						    fit, tlen, syncflg,
 						    channel);
-	      else ret_flg = FitFreadRadarScan(fitfp, &state, scan, prm, fit,
-					       tlen, syncflg, channel);
+	      else
+		ret_flg = FitFreadRadarScan(fitfp, &state, data_ptr->scan_data,
+					    prm, fit, tlen, syncflg, channel);
             }
 	  else
 	    {
@@ -307,22 +308,23 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
 
 	      /* Read the first full scan of data from open cfit file
 		 corresponding to the start date and time */
-	      ret_flg = CFitReadRadarScan(cfitfp, &state, scan, cfit, tlen,
-					  syncflg, channel);
+	      ret_flg = CFitReadRadarScan(cfitfp, &state, data_ptr->scan_data,
+					  cfit, tlen, syncflg, channel);
 
             }
         }
-      else stime = scan->st_time;   /* If the start date and time are not
-				      provided, use the time of the input
-				      file's first record */
+      else stime = data_ptr->scan_data->st_time;   /* If the start date and time
+						      are not provided, use the
+						      time of the input
+						      file's first record */
 
       /* If end time provided then determine end date */
       if(etime != -1)
 	{
 	  /* If end date not provided then use date of first record
 	     in input file */
-	  if(edate == -1) etime += scan->st_time -
-                            ((int) scan->st_time % (24*3600));
+	  if(edate == -1) etime += data_ptr->scan_data->st_time -
+                            ((int) data_ptr->scan_data->st_time % (24*3600));
 	  else etime += edate;
         }
 
@@ -334,45 +336,45 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
       do
 	{
 	  /* If 'ns' option set then exclude data where scan flag = -1 */
-	  if(nsflg) exclude_outofscan(scan);
+	  if(nsflg) exclude_outofscan(data_ptr->scan_data);
 
 	  /* Calculate year, month, day, hour, minute and second of the output
 	     scan start time */
-	  TimeEpochToYMDHMS(scan->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
+	  TimeEpochToYMDHMS(data_ptr->scan_data->st_time, &yr, &mo, &dy, &hr,
+			    &mt, &sc);
 
 	  /* Load the appropriate radar hardware information for the day
 	     and time of the radar scan (only done once) */
 	  if(site == NULL)
-	    load_radar_site(yr, mo, dy, hr, mt, (int)sc, scan->stid, site);
+	    load_radar_site(yr, mo, dy, hr, mt, (int)sc,
+			    data_ptr->scan_data->stid, site);
 
 	  /* write data to output file or save into structure */
 	  if(wrtflg)
 	    {
-	      write_scan(stdout, scan, vb, vbuf);
+	      write_scan(stdout, data_ptr->scan_data, vb, vbuf);
 	      if(vbuf != NULL) fprintf(stderr,"Storing:%s\n", vbuf);
 	    }
 	  else
 	    {
-	      /* I think this won't work, but let's try */
-	      data_ptr->scan_data = *scan;
-
+	      /* Assign global starting data */
 	      if(mult_scan->num_scans == 0)
 		{
-		  /* Assign global starting data */
-		  mult_scan->st_time = scan->st_time;
-		  mult_scan->stid    = scan->stid;
-		  mult_scan->version.major = scan->version.major;
-		  mult_scan->version.minor = scan->version.minor;
+		  mult_scan->st_time = data_ptr->scan_data->st_time;
+		  mult_scan->stid    = data_ptr->scan_data->stid;
+		  mult_scan->version.major = data_ptr->scan_data->version.major;
+		  mult_scan->version.minor = data_ptr->scan_data->version.minor;
 		}
 
 	      /* Update ending data and cycle to the next scan */
 	      mult_scan->num_scans++;
-	      mult_scan->ed_time = scan->ed_time;
+	      mult_scan->ed_time = data_ptr->scan_data->ed_time;
 	      
 	      data_ptr->next_scan = (struct RadarScanCycl *)
 		(malloc(sizeof(struct RadarScanCycl)));
 	      prev_ptr            = data_ptr;
 	      data_ptr            = data_ptr->next_scan;
+	      data_ptr->scan_data = RadarScanMake();
 	      data_ptr->prev_scan = prev_ptr;
 	      data_ptr->next_scan = (struct RadarScanCycl *)(NULL);
 	    }
@@ -381,18 +383,20 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
 	  if(fitflg)
 	    {
 	      if(old)
-		ret_flg = OldFitReadRadarScan(oldfitfp, &state, scan, prm, fit,
+		ret_flg = OldFitReadRadarScan(oldfitfp, &state,
+					      data_ptr->scan_data, prm, fit,
 					      tlen, syncflg, channel);
 	      else
-		ret_flg = FitFreadRadarScan(fitfp, &state, scan, prm, fit,
+		ret_flg = FitFreadRadarScan(fitfp, &state, data_ptr->scan_data,
+					    prm, fit,
 					    tlen, syncflg, channel);
             }
 	  else
-	    ret_flg = CFitReadRadarScan(cfitfp, &state, scan, cfit, tlen,
-					syncflg, channel);
+	    ret_flg = CFitReadRadarScan(cfitfp, &state, data_ptr->scan_data,
+					cfit, tlen, syncflg, channel);
 
 	  /* If scan data is beyond end time then break out of loop */
-	  if((etime != -1) && (scan->st_time > etime)) break;
+	  if((etime != -1) && (data_ptr->scan_data->st_time > etime)) break;
 	  
         } while (ret_flg != -1);
 
@@ -408,12 +412,14 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
   /* Close open ends in data structure */
   if(data_ptr != (struct RadarScanCycl *)(NULL))
     {
+      RadarScanFree(data_ptr->scan_data);
       data_ptr = prev_ptr;
 
       if(data_ptr != (struct RadarScanCycl *)(NULL))
-	data_ptr->next_scan = NULL; /* (struct RadarScanCycle *)(NULL); */
+	data_ptr->next_scan = NULL;
 
-      mult_scan->last_ptr = data_ptr;
+      if(mult_scan != (struct MultRadarScan *)(NULL))
+	mult_scan->last_ptr = data_ptr;
     } 
 
   return(ret_flg);
