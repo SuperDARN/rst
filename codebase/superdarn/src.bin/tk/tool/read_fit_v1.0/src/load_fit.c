@@ -91,32 +91,22 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
   if(wrtflg)
     {
       write_scan(stdout, NULL, vb, vbuf);
-      data_ptr = (struct RadarScanCycl *)(malloc(sizeof(struct RadarScanCycl)));
-      memset(data_ptr, 0, sizeof(struct RadarScanCycl));
-      data_ptr->prev_scan = (struct RadarScanCycl *)(NULL);
-      data_ptr->next_scan = (struct RadarScanCycl *)(NULL);
+      data_ptr = RadarScanCyclMake();
     }
   else if(mult_scan->num_scans == 0)
     {
       /* Initialize a new multi-scan output */
-      mult_scan->scan_ptr = &mult_scan->scan;
-      data_ptr            = mult_scan->scan_ptr;
-      data_ptr->prev_scan = prev_ptr;
-      data_ptr->next_scan = (struct RadarScanCycl *)(NULL);
-      mult_scan->last_ptr = (struct RadarScanCycl *)(NULL);
+      mult_scan->scan = *RadarScanCyclMake();
+      data_ptr        = mult_scan->scan_ptr;
     }
   else
     {
       /* Add to an existing multi-scan output */
       prev_ptr            = mult_scan->last_ptr;
-      prev_ptr->next_scan = (struct RadarScanCycl *)
-	(malloc(sizeof(struct RadarScanCycl)));
+      prev_ptr->next_scan = RadarScanCyclMake();
       data_ptr            = prev_ptr->next_scan;
       data_ptr->prev_scan = prev_ptr;
-      data_ptr->next_scan = NULL;
     }
-
-  data_ptr->scan_data = RadarScanMake();
 
   /* Cycle through all of the fit files */
   for(inum=0; inum < fnum; inum++)
