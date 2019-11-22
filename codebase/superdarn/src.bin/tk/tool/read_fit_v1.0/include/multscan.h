@@ -1,6 +1,6 @@
-/* scandata.h
+/* multscan.h
    ==========
-   Author: R.J.Barnes
+   Author: A.G. Burrell, NRL
 */
 
 /*
@@ -56,11 +56,11 @@ struct MultRadarScan
   struct RadarScanCycl *last_ptr;
 };
 
-/* struct MultRadarScan *MultRadarScanMake();
- * void MultRadarScanFree(struct MultRadarScan *ptr);
- * int MultRadarScanReset(struct MultRadarScan *ptr);
- * int MultRadarScanResetScan(struct MultRadarScan *ptr, int *scan_ptr);
- * struct RadarScan *MultRadarScanAddScan(struct MultRadarScan *ptr);
- */
+struct MultRadarScan *MultRadarScanMake();
+struct RadarScanCycl *RadarScanCyclMake();
+void MultRadarScanFree(struct MultRadarScan *ptr);
+void RadarScanCyclFree(struct RadarScanCycl *ptr);
+int MultRadarScanReset(struct MultRadarScan *ptr);
+int RadarScanCyclReset(struct RadarScanCycl *ptr);
 
 #endif
