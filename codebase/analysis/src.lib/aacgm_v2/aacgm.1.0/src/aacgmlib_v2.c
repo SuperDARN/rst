@@ -1254,7 +1254,7 @@ void AACGM_v2_errmsg(int ecode)
   "* AACGM-v2 ERROR: Date out of bounds                                     *\n"
   "*                                                                        *\n"
   "* The current date range for AACGM-v2 coordinates is [1990-2025), which  *\n"
-  "* corresponds to the date range for the IGRF12 model, including the      *\n"
+  "* corresponds to the date range for the IGRF13 model, including the      *\n"
   "* 5-year secular variation.                                              *"
   "\n");
     break;

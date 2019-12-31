@@ -115,7 +115,7 @@ end
 ;     
 ;     Input Arguments:  
 ;       filename      - name of file which contains IGRF coefficients; default
-;                       is current IGRF model: igrf12coeffs.txt
+;                       is current IGRF model: igrf13coeffs.txt
 ;
 ;     Return Value:
 ;       error code
@@ -675,7 +675,7 @@ pro IGRF_SetDateTime, year, month, day, hour, minute, second, err=err
 
   if (fyear lt IGRF_FIRST_EPOCH or fyear gt IGRF_LAST_EPOCH+5) then begin
     print, ''
-    print, 'Date range for IGRF12 is '+strtrim(IGRF_FIRST_EPOCH,2)+'-'+$
+    print, 'Date range for IGRF13 is '+strtrim(IGRF_FIRST_EPOCH,2)+'-'+$
                                        strtrim(IGRF_LAST_EPOCH+5,2)
     print, ''
     err = -1
