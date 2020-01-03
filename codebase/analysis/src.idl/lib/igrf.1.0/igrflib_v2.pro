@@ -68,7 +68,7 @@ pro init_common, err=err
                       IGRF_nmx
 
   ; initial globals
-; IGRF_file   = "igrf12coeffs.txt"    ; using environment variable in v2.3
+; IGRF_file   = "igrf13coeffs.txt"    ; using environment variable in v2.3
   IGRF_order  = 13
   IGRF_maxnyr = 100
   IGRF_maxk   = (IGRF_ORDER+1)*(IGRF_ORDER+1)
