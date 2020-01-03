@@ -74,7 +74,7 @@ void igrf_pause(void)
 ;     
 ;     Input Arguments:  
 ;       filename      - name of file which contains IGRF coefficients; default
-;                       is current IGRF model: igrf12coeffs.txt
+;                       is current IGRF model: igrf13coeffs.txt
 ;
 ;     Return Value:
 ;       error code
