@@ -68,7 +68,7 @@ pro init_common, err=err
                       IGRF_nmx
 
   ; initial globals
-; IGRF_file   = "igrf12coeffs.txt"    ; using environment variable in v2.3
+; IGRF_file   = "igrf13coeffs.txt"    ; using environment variable in v2.3
   IGRF_order  = 13
   IGRF_maxnyr = 100
   IGRF_maxk   = (IGRF_ORDER+1)*(IGRF_ORDER+1)
@@ -115,7 +115,7 @@ end
 ;     
 ;     Input Arguments:  
 ;       filename      - name of file which contains IGRF coefficients; default
-;                       is current IGRF model: igrf12coeffs.txt
+;                       is current IGRF model: igrf13coeffs.txt
 ;
 ;     Return Value:
 ;       error code
@@ -635,7 +635,7 @@ end
 ;       err = IGRF_SetDateTime(year, month, day, hour, minute, second);
 ;     
 ;     Input Arguments:  
-;       year          - year [1900-2020)
+;       year          - year [1900-2025)
 ;       month         - month of year [01-12]
 ;       day           - day of month [01-31]
 ;       hour          - hour of day [00-24]
@@ -675,7 +675,7 @@ pro IGRF_SetDateTime, year, month, day, hour, minute, second, err=err
 
   if (fyear lt IGRF_FIRST_EPOCH or fyear gt IGRF_LAST_EPOCH+5) then begin
     print, ''
-    print, 'Date range for IGRF12 is '+strtrim(IGRF_FIRST_EPOCH,2)+'-'+$
+    print, 'Date range for IGRF13 is '+strtrim(IGRF_FIRST_EPOCH,2)+'-'+$
                                        strtrim(IGRF_LAST_EPOCH+5,2)
     print, ''
     err = -1
@@ -711,7 +711,7 @@ end
 ;       err = IGRF_GetDateTime(year, month, day, hour, minute, second, dayno);
 ;     
 ;     Output Arguments (integer pointers):  
-;       year          - year [1900-2020)
+;       year          - year [1900-2025)
 ;       month         - month of year [01-12]
 ;       day           - day of month [01-31]
 ;       hour          - hour of day [00-24]
@@ -763,9 +763,9 @@ pro IGRF_SetNow, err=err
   fyear = double(year) + ((doy-1) + $ ; SGS: int year -> rounding errors
             (hour + (minute + second/60.)/60.)/24.) / days
 
-  if (fyear lt 1900. or fyear ge 2020.) then begin
+  if (fyear lt 1590. or fyear ge 2025.) then begin
     print, ''
-    print, 'Date range for IGRF12 is 1900-2020'
+    print, 'Date range for GUFM1/IGRF13 is 1590-2025'
     print, ''
     err = -1
     return
@@ -888,7 +888,7 @@ pro IGRF_v2_errmsg, ecode
     1: begin  ; Date/Time out of bounds */
   print, "* IGRF ERROR: Date out of bounds                                     *"
   print,"*                                                                        *"
-  print,"* The current date range for IGRF12 is [1990-2020), which                *"
+  print,"* The current date range for GUFM1/IGRF13 is [1590-2025), which          *"
   print,"* includes the 5-year secular variation.                                 *"
   end
   endcase
@@ -1487,3 +1487,4 @@ function geoc2geod, lat,lon,r
 
   return, [dlat,lon,h]
 end
+
