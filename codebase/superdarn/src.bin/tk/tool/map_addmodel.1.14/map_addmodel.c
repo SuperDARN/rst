@@ -185,7 +185,7 @@ int main(int argc,char *argv[]) {
   if (fname==NULL) fp=stdin;
   else fp=fopen(fname,"r");
   if (fp==NULL) {
-    fprintf(stderr,"Grid file not found.\n");
+    fprintf(stderr,"File not found.\n");
     exit(-1);
   }
 
