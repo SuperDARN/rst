@@ -116,7 +116,7 @@ int main (int argc,char *argv[]) {
       if (rawfp==NULL) {
         fprintf(stderr,"Could not open file %s.\n",argv[c]);
         continue;
-      } else if (rawfp->rawread==-2) {
+      } else if (rawfp->error==-2) {
       /* Error case where num_bytes is less than 0 */
         free(rawfp);
         exit(-1);

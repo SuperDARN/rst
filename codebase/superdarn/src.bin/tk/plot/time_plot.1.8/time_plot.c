@@ -70,6 +70,7 @@
 #include "cfitread.h"
 #include "fitread.h"
 #include "fitindex.h"
+#include "fitseek.h"
 #include "oldfitread.h"
 #include "stdkey.h"
 #include "tplot.h"
@@ -529,12 +530,16 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"vkey_path",'t',&vkey_path); /* velocity key path */
   OptionAdd(&opt,"wkey",'t',&wkey_fname);     /* spectral width key */
   OptionAdd(&opt,"wkey_path",'t',&wkey_path); /* spectral width key path */
+  OptionAdd(&opt,"phikey",'t',&phikey_fname);     /* phi0 key */
+  OptionAdd(&opt,"phikey_path",'t',&phikey_path); /* phi0 key path */
   OptionAdd(&opt,"ekey",'t',&ekey_fname);     /* elevation angle key */
   OptionAdd(&opt,"ekey_path",'t',&ekey_path); /* elevation angle key path */
   OptionAdd(&opt,"vekey",'t',&vekey_fname);     /* velocity error key */
   OptionAdd(&opt,"vekey_path",'t',&vekey_path); /* velocity error key path */
   OptionAdd(&opt,"wekey",'t',&wekey_fname);     /* spectral width error key */
   OptionAdd(&opt,"wekey_path",'t',&wekey_path); /* spectral width error key path */
+  OptionAdd(&opt,"p0key",'t',&p0key_fname);     /* lag0 power key */
+  OptionAdd(&opt,"p0key_path",'t',&p0key_path); /* lag0 power key path */
   OptionAdd(&opt,"fkey",'t',&fkey_fname);     /* frequency key */
   OptionAdd(&opt,"fkey_path",'t',&fkey_path); /* frequency key path */
   OptionAdd(&opt,"nkey",'t',&nkey_fname);     /* noise key */
@@ -1099,17 +1104,27 @@ int main(int argc,char *argv[]) {
                                prm->time.sc+prm->time.us/1.0e6);
        TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
        status=OldFitSeek(oldfitfp,yr,mo,dy,hr,mt,0,NULL);
+       if (status==-1) {
+         fprintf(stderr,"Error determining start/end time of file. Please specify using -st and -et options.\n");
+          exit(-1);
+       }
+       status=OldFitRead(oldfitfp,prm,fit);
      } else if (fitflg) {
        double atme;
-       status=FitFseek(fitfp,yr+1,mo,dy,hr,mt,0,&atme,inx);
+       status=FitFseek(fitfp,prm->time.yr+1,prm->time.mo,prm->time.dy,
+                             prm->time.hr,prm->time.mt,0,&atme,inx);
+       if (status!=-1) { /* status should be -1 if end of file was reached successfully */
+         fprintf(stderr,"Error determining start/end time of file. Please specify using -st and -et options.\n");
+          exit(-1);
+       }
        etime=atme;
        TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
        status=FitFseek(fitfp,yr,mo,dy,hr,mt,0,NULL,inx);
      } else etime=stime+24*3600; /* cfit or smr format: default 24 hour */
   if (etime-stime<10*60) etime=stime+10*60;
   }
-
   
+
 
   if (name==NULL) name=dname;
 
@@ -1574,7 +1589,7 @@ int main(int argc,char *argv[]) {
   if (xmajor==0) {
     xmajor=3*3600;
     if ((etime-stime)<8*3600) xmajor=3600;
-    if ((etime-stime)<2*3600) xmajor=600;
+    if ((etime-stime)<2*3600) xmajor=1200;
     if ((etime-stime)>48*3600) xmajor=12*3600;
     if ((etime-stime)>160*3600) xmajor=24*3600;
   }
@@ -1582,7 +1597,7 @@ int main(int argc,char *argv[]) {
   if (xminor==0) {
     xminor=15*60;
     if ((etime-stime)<8*3600) xminor=600;
-    if ((etime-stime)<2*3600) xminor=120;
+    if ((etime-stime)<2*3600) xminor=300;
     if ((etime-stime)>48*3600) xminor=3600;
     if ((etime-stime)>160*3600) xminor=3*3600;
   }

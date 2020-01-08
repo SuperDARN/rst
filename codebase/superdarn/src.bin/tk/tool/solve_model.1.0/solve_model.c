@@ -288,10 +288,10 @@ struct mdata *get_model_pos(float latmin,int hemi,int *num,
                             float lat_step,float lon_step,int equal)
 {
   struct mdata *ptr=NULL;
-  float nlat,nlon;
+  float nlat, nlon;
   float grdlat;
   double lspc;
-  int i,j;
+  int i, j;
   int cnt=0;
 
   nlat=(int)((90.0-latmin)/lat_step);
@@ -299,37 +299,36 @@ struct mdata *get_model_pos(float latmin,int hemi,int *num,
   if (equal) {
 
     for (i=0;i<nlat;i++) {
-
-      grdlat=i*lat_step+latmin+lat_step/2.0;
-      lspc=((int) (360.0/lat_step*cos(fabs(grdlat)*PI/180)+0.5))/(360.0);
-      nlon=lspc*360.0;
+      grdlat=(float)i*lat_step + latmin + lat_step/2.0;
+      lspc=(double)((int)(cos(fabs(grdlat)*PI/180.0)*360.0/lat_step+0.5))/360.0;
+      nlon=(float)lspc * 360.0;
 
       for (j=0;j<nlon;j++) {
         if (ptr == NULL) ptr = malloc(sizeof(struct mdata));
         else             ptr = realloc(ptr,sizeof(struct mdata)*(cnt+1));
 
-        ptr[cnt].mlat=grdlat;
-        ptr[cnt].mlon=(j*360.0/nlon)+(360.0/nlon/2.0);
-        ptr[cnt].pot=0;
-        ptr[cnt].azm=0;
-        ptr[cnt].vel=0;
+        ptr[cnt].mlat=(double)grdlat;
+        ptr[cnt].mlon=(double)((j*360.0/nlon)+((360.0/nlon)/2.0));
+        ptr[cnt].pot=0.0;
+        ptr[cnt].azm=0.0;
+        ptr[cnt].vel=0.0;
         cnt++;
       }
     }
 
   } else {
 
-    nlon=(int)(360.0/lon_step);
+    nlon=(float)((int)(360.0/lon_step));
 
     if (ptr == NULL) ptr = malloc(sizeof(struct mdata)*nlat*nlon);
 
     for (i=0;i<nlat;i++) {
       for (j=0;j<nlon;j++) {
-        ptr[cnt].mlat=i*lat_step+latmin+lat_step/2.0;
-        ptr[cnt].mlon=j*lon_step;
-        ptr[cnt].pot=0;
-        ptr[cnt].azm=0;
-        ptr[cnt].vel=0;
+        ptr[cnt].mlat=(double)(i*lat_step+latmin+lat_step/2.0);
+        ptr[cnt].mlon=(double)(j*lon_step);
+        ptr[cnt].pot=0.0;
+        ptr[cnt].azm=0.0;
+        ptr[cnt].vel=0.0;
         cnt++;
       }
     }
@@ -377,8 +376,8 @@ int solve_model(int num, struct mdata *ptr, float latmin, struct model *mod,
 
   for (i=0; i<num; i++) {
     phi[i]     = ptr[i].mlon*PI/180.0;
-    the[i]     = (90-ptr[i].mlat)*(1.0/(90-latmin))*PI;
-    the_col[i] = (90-ptr[i].mlat)*PI/180.0;
+    the[i]     = (90.0-ptr[i].mlat)*(1.0/(90.0-latmin))*PI;
+    the_col[i] = (90.0-ptr[i].mlat)*PI/180.0;
     ele_phi[i] = 0;
     ele_the[i] = 0;
     pot[i]     = 0;
@@ -391,8 +390,8 @@ int solve_model(int num, struct mdata *ptr, float latmin, struct model *mod,
     ele_the[i] = ele_the[i]*hemi;
 
     if (noigrf) {
-      bmag = -1e3*bpolar*(1 - 3*Altitude/Re)*
-              sqrt(3.*(cos(the_col[i])*cos(the_col[i]))+1.)/2.;
+      bmag = -1.0e3*bpolar*(1.0 - 3.0*Altitude/Re)*
+              sqrt(3.0*(cos(the_col[i])*cos(the_col[i]))+1.0)/2.0;
     } else {
       bmag = 1e3*calc_bmag(hemi*ptr[i].mlat,ptr[i].mlon,decyear,old_aacgm);
     }

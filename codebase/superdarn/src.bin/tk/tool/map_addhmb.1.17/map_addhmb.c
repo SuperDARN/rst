@@ -36,7 +36,7 @@
 struct CnvMapData *map[3];
 struct GridData *grd[3];
 
-float bndarr[24][36];
+float bndarr[24][36]; /* the boundary array sizes correspond to the grid within which the HMB boundary is searched for when determining the HMB from the data: [24 MLT hours] and [36 Geomagnetic Latitudes, ranging from 40 to 76 degrees] */
 float lathmb[36];
 int latcnt[36];
 
@@ -188,7 +188,7 @@ int main(int argc,char *argv[])
   if (fname==NULL) fp=stdin;
   else fp=fopen(fname,"r");
   if (fp==NULL) {
-    fprintf(stderr,"Grid file not found.\n");
+    fprintf(stderr,"File not found.\n");
     exit(-1);
   }
 
