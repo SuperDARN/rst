@@ -48,7 +48,7 @@ struct OldRawFp {
   int major_rev;
   int minor_rev;
   int (*rawread)(struct OldRawFp *ptr,struct RadarParm *,struct RawData *);
-
+  int error; 
 };
 
 
