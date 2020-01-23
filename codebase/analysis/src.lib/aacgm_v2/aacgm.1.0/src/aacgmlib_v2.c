@@ -71,6 +71,9 @@ static struct {
   int daysinyear;
 } aacgm_date = {-1,-1,-1,-1,-1,-1,-1,-1};
 
+static int myear = 0;       /* model year: 5-year epoch */
+static double fyear = 0.;   /* floating point year */
+
 static int myear_old = -1;
 static double fyear_old = -1.;
 
