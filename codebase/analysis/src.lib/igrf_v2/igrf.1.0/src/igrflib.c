@@ -87,10 +87,8 @@ int IGRF_loadcoeffs(void)
   int k,l,m,n, ll,mm;
   int fac, len;
   int iyear, nyear;
-  #if DEBUG > 1
   int dgrf[MAXNYR];
   int epoch[MAXNYR];
-  #endif
   char jnk;
   char *filename;
 /*  char header[2][MAXSTR];*/
@@ -198,14 +196,10 @@ int IGRF_loadcoeffs(void)
   for (m=0; m<len; m++) {
     switch (line[m]) {
       case 'U':                         /* for GUFM1 */
-      case 'G': iyear++; break;
-    }
-    #if DEBUG > 1
-    switch (line[m]) {
       case 'I': dgrf[iyear] = 0; break; /* for IGRF */
       case 'D': dgrf[iyear] = 1; break; /* for DGRF */
+      case 'G': iyear++; break;
     }
-    #endif
   }
   #if DEBUG > 1
   for (m=0; m<nyear; m++) fprintf(stderr, "%d\n", dgrf[m]);
@@ -221,8 +215,8 @@ int IGRF_loadcoeffs(void)
   /* read the years, which should be 5-year integer epochs... */
   for (m=0; m<nyear; m++) {
     fscanf(fp, "%lf", &fyear);
-    #if DEBUG > 1
     epoch[m] = (int)floor(fyear);
+    #if DEBUG > 1
     fprintf(stderr, "%8.2lf\n", fyear);
     #endif
   }
@@ -1256,18 +1250,23 @@ int geod2geoc(double lat, double lon, double alt, double rtp[]) {
 
 int plh2xyz(double lat, double lon, double alt, double rtp[])
 {
-  double a,f,ee,st,ct,N,Nac,z,r,t;
+  double a,b,f,ee,st,ct,sp,cp,N,Nac,x,y,z,r,t;
 
   a = 6378.1370;              /* semi-major axis */
   f = 1./298.257223563;       /* flattening */
+  b = a*(1. -f);              /* semi-minor axis */
   ee = (2. - f) * f;
 
   st = sin(lat*DTOR);
   ct = cos(lat*DTOR);
+  sp = sin(lon*DTOR);
+  cp = cos(lon*DTOR);
 
   N = a / sqrt(1. - ee*st*st);
   Nac = (N + alt) * ct;
 
+  x = Nac * cp;
+  y = Nac * sp;
   z = (N*(1. - ee)+alt) * st;
 
   r = sqrt(Nac*Nac + z*z);
@@ -1307,11 +1306,12 @@ int plh2xyz(double lat, double lon, double alt, double rtp[])
 
 int geoc2geod(double lat, double lon, double r, double llh[])
 {
-  double a,f,ee,e4,aa, theta,phi, st,ct,sp,cp, x,y,z;
+  double a,f,b,ee,e4,aa, theta,phi, st,ct,sp,cp, x,y,z;
   double k0i,pp,zeta,rho,s,rho3,t,u,v,w,kappa;
 
   a = 6378.1370;             /* semi-major axis */
   f = 1./298.257223563;     /* flattening */
+  b = a*(1. -f);             /* semi-minor axis */
   ee = (2. - f) * f;
   e4 = ee*ee;
   aa = a*a;
