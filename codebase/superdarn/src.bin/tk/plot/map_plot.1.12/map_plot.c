@@ -456,7 +456,7 @@ int main(int argc,char *argv[]) {
   char *dfpath=".";
   char *fpath=NULL;
   struct stat sb={0};   /* Needed for dir check */
-  int fpath_error=0;    /* Error code for dir check */
+  int fpath_error;    /* Error code for dir check */
 
   int chisham=0;
 
