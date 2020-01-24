@@ -1,6 +1,7 @@
 /* map_plot.c
    ==========
    Author: R.J.Barnes and others
+           K.T. Sterne
 */
 
 /*
@@ -12,6 +13,7 @@
 #include <string.h>
 #include <math.h>
 #include <time.h>
+#include <sys/stat.h>
 
 #ifdef _XLIB_
 #include <X11/Xlib.h>
@@ -453,6 +455,8 @@ int main(int argc,char *argv[]) {
 
   char *dfpath=".";
   char *fpath=NULL;
+  struct stat sb={0};
+  int fpath_error=0;
 
   int chisham=0;
 
@@ -484,7 +488,7 @@ int main(int argc,char *argv[]) {
   }
 
   network=RadarLoad(fp);
-  fclose(fp); 
+  fclose(fp);
   if (network==NULL) {
     fprintf(stderr,"Failed to read radar information.\n");
     exit(-1);
@@ -536,7 +540,7 @@ int main(int argc,char *argv[]) {
   hmbcol=PlotColor(0x00,0x80,0x00,0xff);
   fovcol=PlotColor(0x00,0x00,0x00,0xff);
   ffovcol=PlotColor(0xc0,0xc0,0xc0,0xff);
- 
+
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
   OptionAdd(&opt,"-version",'x',&version);
@@ -744,7 +748,7 @@ int main(int argc,char *argv[]) {
   if (old) {
     if (argc-arg>1) {
       fp=fopen(argv[arg+1],"r");
-      if (fp !=NULL) { 
+      if (fp !=NULL) {
          oinx=RfileLoadIndex(fp);
          fclose(fp);
       }
@@ -752,7 +756,7 @@ int main(int argc,char *argv[]) {
   } else {
      if (argc-arg>1) {
       fp=fopen(argv[arg+1],"r");
-      if (fp !=NULL) { 
+      if (fp !=NULL) {
          inx=CnvMapIndexFload(fp);
          fclose(fp);
       }
@@ -1060,9 +1064,9 @@ int main(int argc,char *argv[]) {
   if (ppmxflg) gflg=1;
   if (pngflg) gflg=1;
 
-#ifdef _XLIB_ 
+#ifdef _XLIB_
    if (xd !=0) {
-     pflg=0; 
+     pflg=0;
      gflg=1;
    }
 #endif
@@ -1113,8 +1117,24 @@ int main(int argc,char *argv[]) {
   }
   #endif
 
-  if (fpath==NULL) fpath=dfpath;
-
+  if (fpath==NULL) {
+    fpath=dfpath;
+  } else {
+    /* If the output path is set, test to make sure it exists */
+    fpath_error=stat(fpath, &sb);
+    if (fpath_error==-1) {
+        /* In the future this can be added with reference to
+           if (ENOENT == errno) . That's when errno is enabled */
+        fprintf(stderr,"Error: Path %s does not exist\n",fpath);
+        exit(-2);
+    } else {
+        /* Test if the object is a directory or other file */
+        if (!S_ISDIR(sb.st_mode)) {
+            fprintf(stderr,"Error: Path %s exists, but it is not a directory\n",fpath);
+            exit(-3);
+        }
+    }
+  }
   do {
     tme = (rcmap->st_time + rcmap->ed_time)/2.;
     TimeEpochToYMDHMS(tme,&yr,&mo,&dy,&hr,&mt,&sc);
