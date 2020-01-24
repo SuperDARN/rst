@@ -222,7 +222,7 @@ int main(int argc,char *argv[]) {
   int ydoff=-1;
   struct timeval tmout;
   float delay=0.1;
-  int xstat=0;
+  int xstat;
 #endif
 
   struct RfileIndex *oinx=NULL;
@@ -248,7 +248,7 @@ int main(int argc,char *argv[]) {
   float khgt=80;
   float kwdt=44;
   float apad=22;
-  float px=2;
+  float px;
 
   float imfx,imfy,imfr;
   float imfmx=10;
@@ -371,7 +371,7 @@ int main(int argc,char *argv[]) {
   int yr,mo,dy,hr,mt;
   double sc;
   int yrsec;
-  double tval=0;
+  double tval;
   float tme_shft;
   int noigrf=0;
   double tme;
@@ -435,8 +435,8 @@ int main(int argc,char *argv[]) {
   double pmax=30;
   double wmax=500;
   double vmax=1000;
-  int degfree=0;
-  int degfree_dat=0;
+  int degfree;
+  int degfree_dat;
 
   float vsf=2.0;
   float vradius=2.0;
@@ -455,8 +455,8 @@ int main(int argc,char *argv[]) {
 
   char *dfpath=".";
   char *fpath=NULL;
-  struct stat sb={0};
-  int fpath_error=0;
+  struct stat sb={0};   /* Needed for dir check */
+  int fpath_error=0;    /* Error code for dir check */
 
   int chisham=0;
 
