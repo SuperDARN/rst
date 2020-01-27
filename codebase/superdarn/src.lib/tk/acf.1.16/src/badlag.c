@@ -51,8 +51,10 @@ int ACFBadLagZero(struct TSGprm *prm,int mplgs,int *lagtable[2]) {
  
   for(i=0; i < prm->mppul;i++)
     if(lagtable[0][0] == prm->pat[i]) break;
-    if(i >= (prm->mppul - 1)) badrng = -1;  
-    else {   
+  
+  if(i >= (prm->mppul - 1)) {
+      badrng = -1;  
+  } else {
       sampleunit = prm->mpinc / prm->smsep;
       mpincdiff = prm->pat[i+1] - 
                    prm->pat[i];
