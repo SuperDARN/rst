@@ -49,7 +49,7 @@
 ;                                        [minute], [second])
 ;
 ;     Arguments:
-;       year          - year [1900-2020)
+;       year          - year [1900-2025)
 ;       month         - month [1-12]
 ;       day           - day [1-31]
 ;       hour          - hour [0-24]
@@ -68,9 +68,6 @@ function AACGM_v2_SetDateTime, year,month,day,hour,minute,second
 
   common AACGM_v2_Com
   common IGRF_v2_Com
-
-  aacgm_v2_datetime = {year:-1, month:-1, day:-1, hour:-1, minute:-1, $
-                        second:-1, dayno:-1, daysinyear:-1}
 
   ; set defaults if not all parameters are passed in
   np = n_params()
@@ -93,6 +90,9 @@ function AACGM_v2_SetDateTime, year,month,day,hour,minute,second
     print, ''
     return, -1
   endif
+
+  aacgm_v2_datetime = {year:-1, month:-1, day:-1, hour:-1, minute:-1, $
+                        second:-1, dayno:-1, daysinyear:-1}
 
   aacgm_v2_datetime.year       = year
   aacgm_v2_datetime.month      = month
@@ -322,7 +322,7 @@ function cnvcoord_v2, in1,in2,in3, geo=geo, trace=trace, gcentric=gcentric, $
   outpos = tmp
   s1 = size(tmp)
 
-  for j = 0,s1[2]-1 do begin
+  for j = 0L,s1[2]-1 do begin
     invec   = tmp[0:2,j]
     outvec  = invec
     ret_val = AACGM_v2_Convert(invec[0],invec[1],invec[2], olat,olon,rad, $
