@@ -114,9 +114,7 @@ struct IQIDL *IDLMakeIQ(IDL_VPTR *vptr) {
     {"OFFSET",ndim,(void *) IDL_TYP_LONG}, /* 9 */
     {"SIZE",ndim,(void *) IDL_TYP_LONG}, /* 10 */
     {"BADTR",ndim,(void *) IDL_TYP_LONG}, /* 11 */
-
-
-  };
+    {0}};
 
   static IDL_MEMINT ilDims[IDL_MAX_ARRAY_DIM];
  
