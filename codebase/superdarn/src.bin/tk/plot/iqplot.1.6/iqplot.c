@@ -57,6 +57,8 @@
 #include "rprm.h"
 #include "iq.h"
 #include "iqread.h"
+#include "iqindex.h"
+#include "iqseek.h"
 
 #include "hlpstr.h"
 #include "errstr.h"
@@ -191,6 +193,44 @@ void plot_ephem(struct Plot *plot,
   }
 }
 
+
+double strdate(char *text) {
+
+  double tme;
+  int val;
+  int yr,mo,dy;
+
+  val=atoi(text);
+  dy=val % 100;
+  mo=(val / 100) % 100;
+  yr=(val / 10000);
+
+  if (yr<1970) yr+=1900;
+
+  tme=TimeYMDHMSToEpoch(yr,mo,dy,0,0,0);
+
+  return tme;
+}
+
+
+double strtime(char *text) {
+
+  int hr,mn;
+  int i;
+
+  for (i=0;(text[i] !=':') && (text[i] !=0);i++);
+  if (text[i]==0) {
+    fprintf(stderr,"Warning: must include ':' in '-t hr:mn' input - your date/time is probably incorrect!\n");
+    return atoi(text)*3600L;
+  }
+  text[i]=0;
+  hr=atoi(text);
+  mn=atoi(text+i+1);
+
+  return hr*3600L+mn*60L;
+}
+
+
 int rst_opterr(char *txt) {
   fprintf(stderr,"Option not recognized: %s\n",txt);
   fprintf(stderr,"Please try: iqplot --help\n");
@@ -230,6 +270,25 @@ int main(int argc,char *argv[]) {
 
   unsigned char help=0;
   unsigned char option=0;
+
+  int status=0;
+  double atime;
+
+  char *stmestr=NULL;
+  char *etmestr=NULL;
+  char *sdtestr=NULL;
+  char *edtestr=NULL;
+  char *exstr=NULL;
+
+  double sdate=-1;
+  double edate=-1;
+
+  double stime=-1; /* specified start time*/
+  double etime=-1; /* end time */
+  double extime=0;
+
+  int yr,mo,dy,hr,mt;
+  double sc;
 
   float wdt=WIDTH,hgt=HEIGHT;
   int ymin=-200,ymax=200;
@@ -292,6 +351,12 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"i",'x',&iflg);
   OptionAdd(&opt,"p",'x',&pflg);
 
+  OptionAdd(&opt,"st",'t',&stmestr);
+  OptionAdd(&opt,"et",'t',&etmestr);
+  OptionAdd(&opt,"sd",'t',&sdtestr);
+  OptionAdd(&opt,"ed",'t',&edtestr);
+  OptionAdd(&opt,"ex",'t',&exstr);
+
   OptionAdd(&opt,"xmaj",'i',&xmajor);
   OptionAdd(&opt,"xmin",'i',&xminor);
   OptionAdd(&opt,"ymaj",'i',&ymajor);
@@ -336,8 +401,24 @@ int main(int argc,char *argv[]) {
     exit(0);
   }
 
+  if (exstr !=NULL) extime=strtime(exstr);
+  if (stmestr !=NULL) stime=strtime(stmestr);
+  if (etmestr !=NULL) etime=strtime(etmestr);
+  if (sdtestr !=NULL) sdate=strdate(sdtestr);
+  if (edtestr !=NULL) edate=strdate(edtestr);
+
   if (arg<argc) fp=fopen(argv[arg],"r");
   else fp=stdin;
+
+  if (fp==NULL) {
+    fprintf(stderr,"File not found.\n");
+    exit(-1);
+  }
+
+  if (IQFread(fp,prm,iq,&badtr,&samples)==-1) {
+    fprintf(stderr,"Error reading file.\n");
+    exit(-1);
+  }
 
   if ((wdt==0) || (hgt==0)) {
     fprintf(stderr,"Invalid plot size.\n");
@@ -410,9 +491,39 @@ int main(int argc,char *argv[]) {
   if (ymajor==0) ymajor=ymax/4;
   if (yminor==0) yminor=ymax/20;
 
+  atime=TimeYMDHMSToEpoch(prm->time.yr,prm->time.mo,prm->time.dy,
+                          prm->time.hr,prm->time.mt,prm->time.sc+prm->time.us/1.0e6);
+
+  if ((stime !=-1) || (sdate !=-1)) {
+    if (stime==-1) stime= ( (int) atime % (24*3600));
+    if (sdate==-1) stime+=atime - ( (int) atime % (24*3600));
+    else stime+=sdate;
+
+    TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
+    status=IQFseek(fp,yr,mo,dy,hr,mt,sc,NULL,NULL);
+
+    if (status == -1) {
+      fprintf(stderr,"File does not contain the requested interval.\n");
+      exit(-1);
+    }
+    if (IQFread(fp,prm,iq,&badtr,&samples)==-1) {
+      fprintf(stderr,"Error reading file.\n");
+      exit(-1);
+    }
+  } else stime=atime;
+
+  if (etime !=-1) {
+    if (edate==-1) etime+=atime - ( (int) atime % (24*3600));
+    else etime+=edate;
+  }
+
+  if (extime !=0) etime=stime+extime;
+
   while(IQFread(fp,prm,iq,&badtr,&samples)==0) {
 
-   
+    atime=TimeYMDHMSToEpoch(prm->time.yr,prm->time.mo,prm->time.dy,
+                            prm->time.hr,prm->time.mt,prm->time.sc+prm->time.us/1.0e6);
+    if ((etime !=-1) && (atime>=etime)) break;
    
     for (n=0;n<iq->seqnum;n++) {
       tval=iq->tval[n].tv_sec+(1.0*iq->tval[n].tv_nsec)/1.0e9;
