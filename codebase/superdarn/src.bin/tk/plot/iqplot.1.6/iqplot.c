@@ -266,6 +266,7 @@ int main(int argc,char *argv[]) {
   unsigned char rflg=0;
   unsigned char iflg=0;
 
+  int bmnum=-1;
   unsigned char interfer=0;
 
   unsigned char help=0;
@@ -356,6 +357,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"i",'x',&iflg);
   OptionAdd(&opt,"p",'x',&pflg);
 
+  OptionAdd(&opt,"b",'i',&bmnum);
   OptionAdd(&opt,"int",'x',&interfer);
 
   OptionAdd(&opt,"st",'t',&stmestr);
@@ -539,6 +541,7 @@ int main(int argc,char *argv[]) {
   while(IQFread(fp,prm,iq,&badtr,&samples)==0) {
 
     if ((interfer) && (prm->xcf==0)) continue;
+    if ((bmnum !=-1) && (prm->bmnum !=bmnum)) continue;
 
     atime=TimeYMDHMSToEpoch(prm->time.yr,prm->time.mo,prm->time.dy,
                             prm->time.hr,prm->time.mt,prm->time.sc+prm->time.us/1.0e6);
