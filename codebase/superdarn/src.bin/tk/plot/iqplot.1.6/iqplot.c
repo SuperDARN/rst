@@ -205,7 +205,7 @@ int main(int argc,char *argv[]) {
   float lne=0.5;
 
   struct timeval tmout;
-  float delay=0;
+  float delay=0.001;
 
   int xdf=0;
   struct XwinDisplay *dp;
@@ -281,6 +281,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"display",'t',&display_name);
   OptionAdd(&opt,"xoff",'i',&xdoff);
   OptionAdd(&opt,"yoff",'i',&ydoff);
+  OptionAdd(&opt,"delay",'f',&delay);
   OptionAdd(&opt,"m",'i',&ymax);
   OptionAdd(&opt,"s",'i',&xmin);
   OptionAdd(&opt,"n",'i',&xnum);
@@ -458,7 +459,7 @@ int main(int argc,char *argv[]) {
       tmout.tv_sec=(int) delay;
       tmout.tv_usec=(delay-(int) delay)*1e6;
       if (delay !=0) XwinDisplayEvent(dp,1,&win,1,&tmout);
-      else XwinDisplayEvent(dp,1,&win,1,&tmout);
+      else XwinDisplayEvent(dp,1,&win,1,NULL);
      
       FrameBufferFree(img);
       img=NULL;
