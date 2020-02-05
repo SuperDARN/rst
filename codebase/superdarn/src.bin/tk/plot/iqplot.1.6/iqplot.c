@@ -321,6 +321,9 @@ int main(int argc,char *argv[]) {
   unsigned rcol=0xff00ffff;
   unsigned icol=0xffff0000;
 
+  char *rcol_txt=NULL;
+  char *icol_txt=NULL;
+
   prm=RadarParmMake();
   iq=IQMake();
  
@@ -358,6 +361,9 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"sd",'t',&sdtestr);
   OptionAdd(&opt,"ed",'t',&edtestr);
   OptionAdd(&opt,"ex",'t',&exstr);
+
+  OptionAdd(&opt,"rcol",'t',&rcol_txt);
+  OptionAdd(&opt,"icol",'t',&icol_txt);
 
   OptionAdd(&opt,"xmaj",'i',&xmajor);
   OptionAdd(&opt,"xmin",'i',&xminor);
@@ -413,6 +419,9 @@ int main(int argc,char *argv[]) {
   if (etmestr !=NULL) etime=strtime(etmestr);
   if (sdtestr !=NULL) sdate=strdate(sdtestr);
   if (edtestr !=NULL) edate=strdate(edtestr);
+
+  if (rcol_txt !=NULL) rcol=PlotColorStringRGBA(rcol_txt);
+  if (icol_txt !=NULL) icol=PlotColorStringRGBA(icol_txt);
 
   if (arg<argc) fp=fopen(argv[arg],"r");
   else fp=stdin;

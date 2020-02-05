@@ -34,6 +34,10 @@
 </option>
 <option><on>-p</on><od>plot the power of the I&Q samples on a logarithmic scale.</od>
 </option>
+<option><on>-rcol <ar>rrggbb</ar></on><od>set the color of the real (I) component to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color [default is teal].</od>
+</option>
+<option><on>-icol <ar>rrggbb</ar></on><od>set the color of the imaginary (Q) component to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color [default is red].</od>
+</option>
 <option><on>-m <ar>ymax</ar></on><od>set the extent of the Y-axis to +/-<ar>ymax</ar> when plotting I&Q components.</od>
 </option>
 <option><on>-s <ar>xmin</ar></on><od>set the first I&Q sample plotted to <ar>xmin</ar>.</od>
