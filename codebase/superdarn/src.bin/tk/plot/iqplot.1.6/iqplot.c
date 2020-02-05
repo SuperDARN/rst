@@ -231,7 +231,7 @@ int main(int argc,char *argv[]) {
   unsigned char help=0;
   unsigned char option=0;
 
-  int wdt=WIDTH,hgt=HEIGHT;
+  float wdt=WIDTH,hgt=HEIGHT;
   int ymin=-200,ymax=200;
   int xnum=300;
   int xmin=0,xmax=0;
@@ -278,6 +278,8 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
 
+  OptionAdd(&opt,"wdt",'f',&wdt);
+  OptionAdd(&opt,"hgt",'f',&hgt);
   OptionAdd(&opt,"display",'t',&display_name);
   OptionAdd(&opt,"xoff",'i',&xdoff);
   OptionAdd(&opt,"yoff",'i',&ydoff);
@@ -314,7 +316,11 @@ int main(int argc,char *argv[]) {
   if (arg<argc) fp=fopen(argv[arg],"r");
   else fp=stdin;
 
- 
+  if ((wdt==0) || (hgt==0)) {
+    fprintf(stderr,"Invalid plot size.\n");
+    exit(-1);
+  }
+
   if ((rflg==0) && (iflg==0) && (pflg==0)) {
     rflg=1;
     iflg=1;

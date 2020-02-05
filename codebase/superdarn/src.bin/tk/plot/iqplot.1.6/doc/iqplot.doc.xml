@@ -12,9 +12,9 @@
 </option>
 <option><on>-cf <ar>cfname</ar></on><od>read command line options from the file <ar>cfname</ar>.</od>
 </option>
-<option><on>-w <ar>width</ar></on><od>set the width of the plot to <ar>width</ar>.</od>
+<option><on>-wdt <ar>width</ar></on><od>set the width of the plot to <ar>width</ar>.</od>
 </option>
-<option><on>-h <ar>height</ar></on><od>set the height of the plot to <ar>height</ar>.</od>
+<option><on>-hgt <ar>height</ar></on><od>set the height of the plot to <ar>height</ar>.</od>
 </option>
 <option><on>-r</on><od>plot the real (I) component of the I&Q samples.</od>
 </option>
