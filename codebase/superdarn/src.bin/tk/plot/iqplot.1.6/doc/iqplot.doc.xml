@@ -34,6 +34,8 @@
 </option>
 <option><on>-p</on><od>plot the power of the I&Q samples on a logarithmic scale.</od>
 </option>
+<option><on>-b <ar>bmnum</ar></on><od>only plot the I&Q samples from beam number <ar>bmnum</ar>.</od>
+</option>
 <option><on>-int</on><od>plot I&Q samples from the interferometer array instead of the main array.</od>
 </option>
 <option><on>-rcol <ar>rrggbb</ar></on><od>set the color of the real (I) component to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color [default is teal].</od>
