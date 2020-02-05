@@ -266,6 +266,8 @@ int main(int argc,char *argv[]) {
   unsigned char rflg=0;
   unsigned char iflg=0;
 
+  unsigned char interfer=0;
+
   unsigned char help=0;
   unsigned char option=0;
   unsigned char version=0;
@@ -354,6 +356,8 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"i",'x',&iflg);
   OptionAdd(&opt,"p",'x',&pflg);
 
+  OptionAdd(&opt,"int",'x',&interfer);
+
   OptionAdd(&opt,"st",'t',&stmestr);
   OptionAdd(&opt,"et",'t',&etmestr);
   OptionAdd(&opt,"sd",'t',&sdtestr);
@@ -432,6 +436,10 @@ int main(int argc,char *argv[]) {
   if (IQFread(fp,prm,iq,&badtr,&samples)==-1) {
     fprintf(stderr,"Error reading file.\n");
     exit(-1);
+  }
+
+  if ((interfer) && (prm->xcf==0)) {
+    fprintf(stderr,"Warning: Interferometer samples may not be present in this file.\n");
   }
 
   if ((wdt==0) || (hgt==0)) {
@@ -530,6 +538,8 @@ int main(int argc,char *argv[]) {
 
   while(IQFread(fp,prm,iq,&badtr,&samples)==0) {
 
+    if ((interfer) && (prm->xcf==0)) continue;
+
     atime=TimeYMDHMSToEpoch(prm->time.yr,prm->time.mo,prm->time.dy,
                             prm->time.hr,prm->time.mt,prm->time.sc+prm->time.us/1.0e6);
     if ((etime !=-1) && (atime>=etime)) break;
@@ -542,7 +552,9 @@ int main(int argc,char *argv[]) {
       pxmax=xmax;
       if (pxmax>=iq->smpnum) pxmax=iq->smpnum;
       if (pxmin>=iq->smpnum) pxmin=iq->smpnum;
-      ptr=samples+iq->offset[n];
+
+      if (interfer) ptr=samples+iq->offset[n]+2*iq->smpnum;
+      else          ptr=samples+iq->offset[n];
 
       GrplotXaxis(plt,0,xmin,xmax,xmajor,xminor,0x08,dgcol,0x0f,lne);
       GrplotYaxis(plt,0,ymin,ymax,ymajor,yminor,0x08,dgcol,0x0f,lne);
@@ -552,7 +564,6 @@ int main(int argc,char *argv[]) {
       if (pflg) {
         for (x=pxmin+1;x<pxmax;x++) {
           ax=x-1;
-
           ay=ptr[2*(x-1)+1]*ptr[2*(x-1)+1]+ptr[2*(x-1)]*ptr[2*(x-1)];
           if (ay !=0) ay=log10(ay);
           bx=x;
@@ -571,6 +582,7 @@ int main(int argc,char *argv[]) {
           GrplotLine(plt,0,ax,ay,bx,by,xmin,xmax,ymin,ymax,icol,0x0f,lne,NULL);
         }
       }
+
       if (rflg) {
         for (x=pxmin+1;x<pxmax;x++) {
           ax=x-1;
