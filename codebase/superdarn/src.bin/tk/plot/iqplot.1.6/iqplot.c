@@ -297,6 +297,25 @@ int main(int argc,char *argv[]) {
   int yr,mo,dy,hr,mt;
   double sc;
 
+  int status=0;
+  double atime;
+
+  char *stmestr=NULL;
+  char *etmestr=NULL;
+  char *sdtestr=NULL;
+  char *edtestr=NULL;
+  char *exstr=NULL;
+
+  double sdate=-1;
+  double edate=-1;
+
+  double stime=-1; /* specified start time*/
+  double etime=-1; /* end time */
+  double extime=0;
+
+  int yr,mo,dy,hr,mt;
+  double sc;
+
   float wdt=WIDTH,hgt=HEIGHT;
   int ymin=-200,ymax=200;
   int xnum=300;
