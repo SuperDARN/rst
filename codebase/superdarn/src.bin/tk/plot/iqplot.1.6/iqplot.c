@@ -248,6 +248,7 @@ int main(int argc,char *argv[]) {
 
   float ax,ay,bx,by;
   int n;
+  char *cfname=NULL;
   FILE *fp=NULL;
   double tval;
 
@@ -296,11 +297,33 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"ymaj",'i',&ymajor);
   OptionAdd(&opt,"ymin",'i',&yminor);
 
+  OptionAdd(&opt,"cf",'t',&cfname);
  
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
   if (arg==-1) {
     exit(-1);
+  }
+
+  if (cfname !=NULL) { /* load the configuration file */
+    int farg;
+    do {
+      fp=fopen(cfname,"r");
+      if (fp==NULL) break;
+      free(cfname);
+      cfname=NULL;
+      optf=OptionProcessFile(fp);
+      if (optf !=NULL) {
+        farg=OptionProcess(0,optf->argc,optf->argv,&opt,rst_opterr);
+        if (farg==-1) {
+          fclose(fp);
+          OptionFreeFile(optf);
+          exit(-1);
+        }
+        OptionFreeFile(optf);
+       }
+       fclose(fp);
+    } while (cfname !=NULL);
   }
 
   if (help==1) {
