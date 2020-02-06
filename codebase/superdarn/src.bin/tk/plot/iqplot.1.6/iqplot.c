@@ -552,6 +552,7 @@ int main(int argc,char *argv[]) {
 
     for (n=0;n<iq->seqnum;n++) {
       tval=iq->tval[n].tv_sec+(1.0*iq->tval[n].tv_nsec)/1.0e9;
+      if (tval == 0) tval=atime;
       PlotPlotStart(plot,"image",wdt,hgt,24);
       PlotRectangle(plot,NULL,0,0,wdt,hgt,1,bgcol,0x0f,0,NULL);
       pxmin=xmin;
