@@ -203,8 +203,8 @@ static IDL_VPTR IDLIQRead(int argc,IDL_VPTR *argv) {
 
   if (samples !=NULL) {
     int n=0;
-    if (prm->xcf == 1) adim[0]=iq->seqnum*iq->chnnum*iq->smpnum*2*2;
-    else               adim[0]=iq->seqnum*iq->chnnum*iq->smpnum*2;
+    if (prm->xcf == 1) adim[0]=iq->seqnum*iq->smpnum*2*2;
+    else               adim[0]=iq->seqnum*iq->smpnum*2;
     isamples=(short *) 
            IDL_MakeTempArray(IDL_TYP_INT,1,adim,IDL_ARR_INI_ZERO,&vsamples);
     for (n=0;n<adim[0];n++) {
