@@ -81,7 +81,7 @@ void IDLCopyIQToIDL(struct IQ *iq,struct IQIDL *iiq) {
     iiq->noise[n]=iq->noise[n];
     iiq->offset[n]=iq->offset[n];
     iiq->size[n]=iq->size[n];
-    iiq->badtr[n]=iq->badtr[n];
+    if (iq->badtr !=NULL) iiq->badtr[n]=iq->badtr[n];
   }
 }
 
