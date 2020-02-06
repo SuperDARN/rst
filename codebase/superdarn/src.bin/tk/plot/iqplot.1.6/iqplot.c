@@ -276,6 +276,7 @@ int main(int argc,char *argv[]) {
 
   int status=0;
   double atime;
+  int offset;
 
   char *stmestr=NULL;
   char *etmestr=NULL;
@@ -560,8 +561,11 @@ int main(int argc,char *argv[]) {
       if (pxmax>=iq->smpnum) pxmax=iq->smpnum;
       if (pxmin>=iq->smpnum) pxmin=iq->smpnum;
 
-      if (interfer) ptr=samples+iq->offset[n]+2*iq->smpnum;
-      else          ptr=samples+iq->offset[n];
+      if (iq->offset[n] == 0) offset=n*iq->smpnum;
+      else                    offset=iq->offset[n];
+
+      if (interfer) ptr=samples+offset+2*iq->smpnum;
+      else          ptr=samples+offset;
 
       GrplotXaxis(plt,0,xmin,xmax,xmajor,xminor,0x08,dgcol,0x0f,lne);
       GrplotYaxis(plt,0,ymin,ymax,ymajor,yminor,0x08,dgcol,0x0f,lne);
