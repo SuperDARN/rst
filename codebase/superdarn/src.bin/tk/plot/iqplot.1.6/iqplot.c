@@ -267,6 +267,7 @@ int main(int argc,char *argv[]) {
   unsigned char iflg=0;
 
   int bmnum=-1;
+  int chnum=-1;
   unsigned char interfer=0;
 
   unsigned char help=0;
@@ -358,6 +359,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"p",'x',&pflg);
 
   OptionAdd(&opt,"b",'i',&bmnum);
+  OptionAdd(&opt,"c",'i',&chnum);
   OptionAdd(&opt,"int",'x',&interfer);
 
   OptionAdd(&opt,"st",'t',&stmestr);
@@ -542,6 +544,7 @@ int main(int argc,char *argv[]) {
 
     if ((interfer) && (prm->xcf==0)) continue;
     if ((bmnum !=-1) && (prm->bmnum !=bmnum)) continue;
+    if ((chnum !=-1) && (prm->channel !=chnum)) continue;
 
     atime=TimeYMDHMSToEpoch(prm->time.yr,prm->time.mo,prm->time.dy,
                             prm->time.hr,prm->time.mt,prm->time.sc+prm->time.us/1.0e6);
