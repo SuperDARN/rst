@@ -215,9 +215,6 @@ function IQRead,unit,prm,iq,badtr,samples
  
 
   if (iq.seqnum gt 0) then begin
-     if (prm.xcf eq 0) then samples=intarr(iq.seqnum*iq.chnnum*iq.smpnum*2) $
-     else samples=intarr(iq.seqnum*iq.chnnum*iq.smpnum*2*2)
-
      iq.tval[0:iq.seqnum-1].sec=*(arrvec[arrid[0]].ptr)
      iq.tval[0:iq.seqnum-1].nsec=*(arrvec[arrid[1]].ptr)*1000
      iq.atten[0:iq.seqnum-1]=*(arrvec[arrid[2]].ptr)
