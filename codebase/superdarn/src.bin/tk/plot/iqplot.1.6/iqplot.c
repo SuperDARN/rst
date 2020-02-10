@@ -57,6 +57,8 @@
 #include "rprm.h"
 #include "iq.h"
 #include "iqread.h"
+#include "iqindex.h"
+#include "iqseek.h"
 
 #include "hlpstr.h"
 #include "errstr.h"
@@ -68,12 +70,12 @@
 struct OptionData opt;
 struct OptionFile *optf=NULL;
 
-
 struct RadarParm *prm;
 struct IQ *iq;
 unsigned int *badtr;
 int16 *samples;
 int16 *ptr;
+
 
 char *mktext(double value,double min,double max,void *data) {
   char *txt=NULL;
@@ -81,6 +83,7 @@ char *mktext(double value,double min,double max,void *data) {
   sprintf(txt,"%g",value);
   return txt;
 }
+
 
 int txtbox(char *fntname,float sze,int num,char *txt,float *box,void *data) {
   struct FrameBufferFontDB *fontdb;
@@ -90,13 +93,13 @@ int txtbox(char *fntname,float sze,int num,char *txt,float *box,void *data) {
   fontdb=(struct FrameBufferFontDB *)data;
   if (fontdb==NULL) return -1;
   fnt=FrameBufferFontDBFind(fontdb,fntname,sze);
-  
+
   FrameBufferTextBox(fnt,num,txt,tbox);
-  
+
   box[0]=tbox[0];
   box[1]=tbox[1];
   box[2]=tbox[2];
- 
+
   return 0;
 }
 
@@ -113,7 +116,7 @@ void plot_time(struct Plot *plot,
   char *month[]={"Jan","Feb","Mar","Apr","May","Jun",
                "Jul","Aug","Sep","Oct","Nov","Dec",0};
   char *tmeA="00:00:00.0000 UT";
- 
+
   char *tmeC="0";
   float cwdt;
   float x,y;
@@ -139,11 +142,11 @@ void plot_time(struct Plot *plot,
     if (isdigit(txt[i])) x+=cwdt;
     else x+=txbox[0];
   }
- 
+
   sprintf(txt,"%.2d:%.2d:%.2d.%.4d UT",shr,smt,ssc,fsec);
-  
+
   txtbox(fontname,fontsize,strlen(tmeA),tmeA,txbox,txtdata);
-  
+
   x=xoff+wdt-txbox[0];
   y=yoff+txbox[2];
   for (i=0;txt[i] !=0;i++) {
@@ -154,12 +157,11 @@ void plot_time(struct Plot *plot,
     else x+=txbox[0];
   }
 }
-  
 
 
 void plot_ephem(struct Plot *plot,
                float xoff,float yoff,float wdt,float hgt,
-	       int bmnum,int channel,int tfreq,float noise,int nave,int ave,
+               int bmnum,int channel,int tfreq,float noise,int nave,int ave,
                unsigned int color,unsigned char mask,
                char *fontname,float fontsize,
                void *txtdata) {
@@ -171,7 +173,6 @@ void plot_ephem(struct Plot *plot,
 
   float cwdt;
   float x,y;
-
 
   txtbox(fontname,fontsize,strlen(dig),dig,txbox,txtdata);
   cwdt=txbox[0];
@@ -191,21 +192,59 @@ void plot_ephem(struct Plot *plot,
   }
 }
 
+
+double strdate(char *text) {
+
+  double tme;
+  int val;
+  int yr,mo,dy;
+
+  val=atoi(text);
+  dy=val % 100;
+  mo=(val / 100) % 100;
+  yr=(val / 10000);
+
+  if (yr<1970) yr+=1900;
+
+  tme=TimeYMDHMSToEpoch(yr,mo,dy,0,0,0);
+
+  return tme;
+}
+
+
+double strtime(char *text) {
+
+  int hr,mn;
+  int i;
+
+  for (i=0;(text[i] !=':') && (text[i] !=0);i++);
+  if (text[i]==0) {
+    fprintf(stderr,"Warning: must include ':' in '-t hr:mn' input - your date/time is probably incorrect!\n");
+    return atoi(text)*3600L;
+  }
+  text[i]=0;
+  hr=atoi(text);
+  mn=atoi(text+i+1);
+
+  return hr*3600L+mn*60L;
+}
+
+
 int rst_opterr(char *txt) {
   fprintf(stderr,"Option not recognized: %s\n",txt);
   fprintf(stderr,"Please try: iqplot --help\n");
   return(-1);
 }
 
-int main(int argc,char *argv[]) {
 
+int main(int argc,char *argv[]) {
 
   char *fntdbfname;
   struct FrameBufferFontDB *fontdb=NULL;
   float lne=0.5;
 
   struct timeval tmout;
-  float delay=0;
+  float delay=0.001;
 
   int xdf=0;
   struct XwinDisplay *dp;
@@ -220,23 +259,47 @@ int main(int argc,char *argv[]) {
   float xoff=0,yoff=0;
 
   struct Splot *splot=NULL;
-  struct Plot *plot=NULL;  
+  struct Plot *plot=NULL;
   struct Grplot *plt;
 
   unsigned char pflg=0;
-
   unsigned char rflg=0;
   unsigned char iflg=0;
 
+  int bmnum=-1;
+  int chnum=-1;
+  unsigned char interfer=0;
+
   unsigned char help=0;
   unsigned char option=0;
+  unsigned char version=0;
 
-  int wdt=WIDTH,hgt=HEIGHT;
+  int status=0;
+  double atime;
+  int offset;
+
+  char *stmestr=NULL;
+  char *etmestr=NULL;
+  char *sdtestr=NULL;
+  char *edtestr=NULL;
+  char *exstr=NULL;
+
+  double sdate=-1;
+  double edate=-1;
+
+  double stime=-1; /* specified start time*/
+  double etime=-1; /* end time */
+  double extime=0;
+
+  int yr,mo,dy,hr,mt;
+  double sc;
+
+  float wdt=WIDTH,hgt=HEIGHT;
   int ymin=-200,ymax=200;
   int xnum=300;
   int xmin=0,xmax=0;
   int x;
- 
+
   int pxmin,pxmax;
 
   int xmajor=0;
@@ -248,6 +311,7 @@ int main(int argc,char *argv[]) {
 
   float ax,ay,bx,by;
   int n;
+  char *cfname=NULL;
   FILE *fp=NULL;
   double tval;
 
@@ -260,16 +324,19 @@ int main(int argc,char *argv[]) {
   unsigned rcol=0xff00ffff;
   unsigned icol=0xffff0000;
 
+  char *rcol_txt=NULL;
+  char *icol_txt=NULL;
+
   prm=RadarParmMake();
   iq=IQMake();
- 
+
   fntdbfname=getenv("FONTDB");
   fp=fopen(fntdbfname,"r");
   if (fp !=NULL) {
     fontdb=FrameBufferFontDBLoad(fp);
     fclose(fp);
   }
- 
+
   if (fontdb==NULL) {
     fprintf(stderr,"Could not load fonts.\n");
     exit(-1);
@@ -277,10 +344,14 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
+  OptionAdd(&opt,"-version",'x',&version);
 
+  OptionAdd(&opt,"wdt",'f',&wdt);
+  OptionAdd(&opt,"hgt",'f',&hgt);
   OptionAdd(&opt,"display",'t',&display_name);
   OptionAdd(&opt,"xoff",'i',&xdoff);
   OptionAdd(&opt,"yoff",'i',&ydoff);
+  OptionAdd(&opt,"delay",'f',&delay);
   OptionAdd(&opt,"m",'i',&ymax);
   OptionAdd(&opt,"s",'i',&xmin);
   OptionAdd(&opt,"n",'i',&xnum);
@@ -288,16 +359,51 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"i",'x',&iflg);
   OptionAdd(&opt,"p",'x',&pflg);
 
+  OptionAdd(&opt,"b",'i',&bmnum);
+  OptionAdd(&opt,"c",'i',&chnum);
+  OptionAdd(&opt,"int",'x',&interfer);
+
+  OptionAdd(&opt,"st",'t',&stmestr);
+  OptionAdd(&opt,"et",'t',&etmestr);
+  OptionAdd(&opt,"sd",'t',&sdtestr);
+  OptionAdd(&opt,"ed",'t',&edtestr);
+  OptionAdd(&opt,"ex",'t',&exstr);
+
+  OptionAdd(&opt,"rcol",'t',&rcol_txt);
+  OptionAdd(&opt,"icol",'t',&icol_txt);
+
   OptionAdd(&opt,"xmaj",'i',&xmajor);
   OptionAdd(&opt,"xmin",'i',&xminor);
   OptionAdd(&opt,"ymaj",'i',&ymajor);
   OptionAdd(&opt,"ymin",'i',&yminor);
 
- 
+  OptionAdd(&opt,"cf",'t',&cfname);
+
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
   if (arg==-1) {
     exit(-1);
+  }
+
+  if (cfname !=NULL) { /* load the configuration file */
+    int farg;
+    do {
+      fp=fopen(cfname,"r");
+      if (fp==NULL) break;
+      free(cfname);
+      cfname=NULL;
+      optf=OptionProcessFile(fp);
+      if (optf !=NULL) {
+        farg=OptionProcess(0,optf->argc,optf->argv,&opt,rst_opterr);
+        if (farg==-1) {
+          fclose(fp);
+          OptionFreeFile(optf);
+          exit(-1);
+        }
+        OptionFreeFile(optf);
+       }
+       fclose(fp);
+    } while (cfname !=NULL);
   }
 
   if (help==1) {
@@ -310,10 +416,42 @@ int main(int argc,char *argv[]) {
     exit(0);
   }
 
+  if (version==1) {
+    OptionVersion(stdout);
+    exit(0);
+  }
+
+  if (exstr !=NULL) extime=strtime(exstr);
+  if (stmestr !=NULL) stime=strtime(stmestr);
+  if (etmestr !=NULL) etime=strtime(etmestr);
+  if (sdtestr !=NULL) sdate=strdate(sdtestr);
+  if (edtestr !=NULL) edate=strdate(edtestr);
+
+  if (rcol_txt !=NULL) rcol=PlotColorStringRGBA(rcol_txt);
+  if (icol_txt !=NULL) icol=PlotColorStringRGBA(icol_txt);
+
   if (arg<argc) fp=fopen(argv[arg],"r");
   else fp=stdin;
 
- 
+  if (fp==NULL) {
+    fprintf(stderr,"File not found.\n");
+    exit(-1);
+  }
+
+  if (IQFread(fp,prm,iq,&badtr,&samples)==-1) {
+    fprintf(stderr,"Error reading file.\n");
+    exit(-1);
+  }
+
+  if ((interfer) && (prm->xcf==0)) {
+    fprintf(stderr,"Warning: Interferometer samples may not be present in this file.\n");
+  }
+
+  if ((wdt==0) || (hgt==0)) {
+    fprintf(stderr,"Invalid plot size.\n");
+    exit(-1);
+  }
+
   if ((rflg==0) && (iflg==0) && (pflg==0)) {
     rflg=1;
     iflg=1;
@@ -322,14 +460,12 @@ int main(int argc,char *argv[]) {
   splot=SplotMake();
 
   SplotSetFrameBuffer(splot,&img,fontdb,NULL,NULL);
-  
+
   plot=PlotMake();
   SplotSetPlot(plot,splot);
 
-  
-
   dp=XwinOpenDisplay(display_name,&xdf);
- 
+
   if (dp==NULL) {
     fprintf(stderr,"Could not open display.\n");
     exit(-1);
@@ -337,7 +473,6 @@ int main(int argc,char *argv[]) {
 
   if (xdoff==-1) xdoff=(dp->wdt-wdt)/2;
   if (ydoff==-1) ydoff=(dp->hgt-hgt)/2;
-
 
   win=XwinMakeWindow(xdoff,ydoff,wdt,hgt,0,
                      dp,wname,
@@ -348,13 +483,11 @@ int main(int argc,char *argv[]) {
   }
   XwinShowWindow(win);
 
-  PlotDocumentStart(plot,"image",NULL,wdt,hgt,24);      
+  PlotDocumentStart(plot,"image",NULL,wdt,hgt,24);
 
   plt=GrplotMake(wdt,hgt,xpnum,ypnum,lpad,rpad,bpad,tpad,xoff,yoff);
   GrplotSetPlot(plt,plot);
-  GrplotSetTextBox(plt,txtbox,fontdb);  
-
-
+  GrplotSetTextBox(plt,txtbox,fontdb);
 
   plt->major_hgt=8;
   plt->minor_hgt=5;
@@ -380,19 +513,59 @@ int main(int argc,char *argv[]) {
   if (ymajor==0) ymajor=ymax/4;
   if (yminor==0) yminor=ymax/20;
 
+  atime=TimeYMDHMSToEpoch(prm->time.yr,prm->time.mo,prm->time.dy,
+                          prm->time.hr,prm->time.mt,prm->time.sc+prm->time.us/1.0e6);
+
+  if ((stime !=-1) || (sdate !=-1)) {
+    if (stime==-1) stime= ( (int) atime % (24*3600));
+    if (sdate==-1) stime+=atime - ( (int) atime % (24*3600));
+    else stime+=sdate;
+
+    TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
+    status=IQFseek(fp,yr,mo,dy,hr,mt,sc,NULL,NULL);
+
+    if (status == -1) {
+      fprintf(stderr,"File does not contain the requested interval.\n");
+      exit(-1);
+    }
+    if (IQFread(fp,prm,iq,&badtr,&samples)==-1) {
+      fprintf(stderr,"Error reading file.\n");
+      exit(-1);
+    }
+  } else stime=atime;
+
+  if (etime !=-1) {
+    if (edate==-1) etime+=atime - ( (int) atime % (24*3600));
+    else etime+=edate;
+  }
+
+  if (extime !=0) etime=stime+extime;
+
   while(IQFread(fp,prm,iq,&badtr,&samples)==0) {
 
-   
-   
+    if ((interfer) && (prm->xcf==0)) continue;
+    if ((bmnum !=-1) && (prm->bmnum !=bmnum)) continue;
+    if ((chnum !=-1) && (prm->channel !=chnum)) continue;
+
+    atime=TimeYMDHMSToEpoch(prm->time.yr,prm->time.mo,prm->time.dy,
+                            prm->time.hr,prm->time.mt,prm->time.sc+prm->time.us/1.0e6);
+    if ((etime !=-1) && (atime>=etime)) break;
+
     for (n=0;n<iq->seqnum;n++) {
       tval=iq->tval[n].tv_sec+(1.0*iq->tval[n].tv_nsec)/1.0e9;
+      if (tval == 0) tval=atime;
       PlotPlotStart(plot,"image",wdt,hgt,24);
       PlotRectangle(plot,NULL,0,0,wdt,hgt,1,bgcol,0x0f,0,NULL);
       pxmin=xmin;
       pxmax=xmax;
       if (pxmax>=iq->smpnum) pxmax=iq->smpnum;
       if (pxmin>=iq->smpnum) pxmin=iq->smpnum;
-      ptr=samples+iq->offset[n];
+
+      if (iq->offset[n] == 0) offset=n*iq->smpnum;
+      else                    offset=iq->offset[n];
+
+      if (interfer) ptr=samples+offset+2*iq->smpnum;
+      else          ptr=samples+offset;
 
       GrplotXaxis(plt,0,xmin,xmax,xmajor,xminor,0x08,dgcol,0x0f,lne);
       GrplotYaxis(plt,0,ymin,ymax,ymajor,yminor,0x08,dgcol,0x0f,lne);
@@ -402,7 +575,6 @@ int main(int argc,char *argv[]) {
       if (pflg) {
         for (x=pxmin+1;x<pxmax;x++) {
           ax=x-1;
-        
           ay=ptr[2*(x-1)+1]*ptr[2*(x-1)+1]+ptr[2*(x-1)]*ptr[2*(x-1)];
           if (ay !=0) ay=log10(ay);
           bx=x;
@@ -412,8 +584,6 @@ int main(int argc,char *argv[]) {
         }
       }
 
-      
-       
       if (iflg) {
         for (x=pxmin+1;x<pxmax;x++) {
           ax=x-1;
@@ -423,6 +593,7 @@ int main(int argc,char *argv[]) {
           GrplotLine(plt,0,ax,ay,bx,by,xmin,xmax,ymin,ymax,icol,0x0f,lne,NULL);
         }
       }
+
       if (rflg) {
         for (x=pxmin+1;x<pxmax;x++) {
           ax=x-1;
@@ -444,27 +615,27 @@ int main(int argc,char *argv[]) {
                      "Helvetica",10.0,fgcol,0x0f);
 
       plot_time(plot,2,2,wdt-4,hgt-4,tval,fgcol,0x0f,"Helvetica",12.0,fontdb);
-     
+
       plot_ephem(plot,100+2,2,wdt-4,hgt-4,prm->bmnum,prm->channel,prm->tfreq,
                  prm->noise.search,
                  prm->nave,n,fgcol,0x0f,"Helvetica",12.0,fontdb);
-     
 
-      PlotPlotEnd(plot);  
+      PlotPlotEnd(plot);
       PlotDocumentEnd(plot);
       if (img==NULL) continue;
-   
+
       XwinFrameBufferWindow(img,win);
       tmout.tv_sec=(int) delay;
       tmout.tv_usec=(delay-(int) delay)*1e6;
       if (delay !=0) XwinDisplayEvent(dp,1,&win,1,&tmout);
-      else XwinDisplayEvent(dp,1,&win,1,&tmout);
-     
+      else XwinDisplayEvent(dp,1,&win,1,NULL);
+
       FrameBufferFree(img);
       img=NULL;
     }
 
-  } 
+  }
+
   PlotDocumentEnd(plot);
   XwinFreeWindow(win);
   XwinCloseDisplay(dp);
