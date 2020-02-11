@@ -1,7 +1,7 @@
 /* map_plot.c
    ==========
    Author: R.J.Barnes and others
-           K.T. Sterne
+
 */
 
 /*
