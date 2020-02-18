@@ -24,7 +24,7 @@ The DAWG welcomes new testers and developers to join the team. Here are some way
   - Test pull requests: to determine which [pull requests](https://github.com/SuperDARN/rst/pulls) need to be tested right away, filter them by their milestones
   - Get involved in projects: the [projects](https://github.com/SuperDARN/rst/projects) page is used to organize our priority areas. Each project board shows items which are in progress, ready for testing/review, and completed.
  - Discuss [issues](https://github.com/SuperDARN/rst/issues) and answer questions
- - Become a developer: if you would like to contribute code to RST, please contact the DAWG chairs
+ - Become a developer: if you would like to contribute code to RST, please contact the DAWG chairs: Kevin Sterne (kevintyler *at* vt *dot* edu) and Emma Bland (emmab *at* unis *dot* no)
 
 ## Historical Version Log
 
