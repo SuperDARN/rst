@@ -82,6 +82,12 @@ int acemfi_imf(CDFid id,struct swdata *ptr,double stime,double etime,
   if (ptr->BGSEc==NULL) ptr->BGSEc=malloc(3*sizeof(float)*max);
   else ptr->BGSEc=realloc(ptr->BGSEc,3*sizeof(float)*max);
 
+  if (ptr->Vx==NULL) ptr->Vx=malloc(sizeof(float)*max);
+  else ptr->Vx=realloc(ptr->Vx,sizeof(float)*max);
+
+  if (ptr->Kp==NULL) ptr->Kp=malloc(sizeof(float)*max);
+  else ptr->Kp=realloc(ptr->Kp,sizeof(float)*max);
+
   for (i=0;i<rmax;i++) {
     status=RCDFReadR(id,i,varlist,data);
     if (status==0) {
