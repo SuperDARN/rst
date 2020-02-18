@@ -561,7 +561,7 @@ int main(int argc,char *argv[]) {
       if (pxmax>=iq->smpnum) pxmax=iq->smpnum;
       if (pxmin>=iq->smpnum) pxmin=iq->smpnum;
 
-      if (iq->offset[n] == 0) offset=n*iq->smpnum;
+      if (iq->offset[n] == 0) offset=n*iq->smpnum*2*2;
       else                    offset=iq->offset[n];
 
       if (interfer) ptr=samples+offset+2*iq->smpnum;
