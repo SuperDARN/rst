@@ -308,7 +308,11 @@ int main (int argc,char *argv[]) {
     }
 
     if (digital) {
-      xcfoff = 2*iq->smpnum;
+      if (prm->xcf==1) {
+        xcfoff = 2*iq->smpnum;
+      } else {
+        xcfoff = 0;
+      }
     } else {
       if (prm->xcf==1) {
         xcfoff = 2;
