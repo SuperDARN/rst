@@ -64,7 +64,7 @@ char pidname[256]={"pid.id"};
 
 extern int loaddata(char *);
 
-char logfname[256]={"web.rt.log"};
+char logfname[256]={"log.rt"};
 char timefname[256]={"time.rt"};
 
 struct OptionData opt;
