@@ -55,14 +55,12 @@
 #include "errstr.h"
 #include "hlpstr.h"
 
-
-
 #define ACF_PART 0
 #define XCF_PART 1
 #define REAL_BUF_OFFSET 0
 #define IMAG_BUF_OFFSET 1
 
-struct RadarNetwork *network;  
+struct RadarNetwork *network;
 struct Radar *radar;
 struct RadarSite *site;
 
@@ -82,7 +80,7 @@ int loadlag(FILE *fp,int *lag[2]) {
     if (txt[c]=='#') continue;
     if (sscanf(txt,"%d %d\n",&real,&imag) !=2) continue;
     lag[0][lagnum]=real;
-    lag[1][lagnum]=imag; 
+    lag[1][lagnum]=imag;
     lagnum++;
   }
   return lagnum-1;
@@ -108,7 +106,7 @@ int main (int argc,char *argv[]) {
   struct IQ *iq;
   struct RawData *raw;
   unsigned int *badtr=NULL;
-  int16 *samples=NULL;  
+  int16 *samples=NULL;
   int16 *ptr;
 
   void *tmp=NULL;
@@ -123,12 +121,11 @@ int main (int argc,char *argv[]) {
   int *lag[2]={NULL,NULL};
   int *pulse=NULL;
 
-
   int mplgs=0;
 
   int roff=REAL_BUF_OFFSET;
   int ioff=IMAG_BUF_OFFSET;
-  
+
   float thrsh=0;
   int qiflg=0;
   int skpval=0;
@@ -153,7 +150,7 @@ int main (int argc,char *argv[]) {
   }
 
   network=RadarLoad(fp);
-  fclose(fp); 
+  fclose(fp);
   if (network==NULL) {
     fprintf(stderr,"Failed to read radar information.\n");
     exit(-1);
@@ -210,22 +207,20 @@ int main (int argc,char *argv[]) {
   }
 
   while (IQFread(fp,prm,iq,&badtr,&samples) !=-1) {
-    if (vb) 
+    if (vb)
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
-	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
+              prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
-    
     /* get the hardware info */
 
-     radar=RadarGetRadar(network,prm->stid);
-     if (radar==NULL) {
+    radar=RadarGetRadar(network,prm->stid);
+    if (radar==NULL) {
       fprintf(stderr,"Failed to get radar information.\n");
       break;
     }
 
-    site=RadarYMDHMSGetSite(radar,prm->time.yr,prm->time.mo,
-	  	          prm->time.dy,prm->time.hr,prm->time.mt,
-                          prm->time.sc);
+    site=RadarYMDHMSGetSite(radar,prm->time.yr,prm->time.mo,prm->time.dy,
+                            prm->time.hr,prm->time.mt,prm->time.sc);
 
     if (site==NULL) {
       fprintf(stderr,"Failed to get site information.\n");
@@ -263,28 +258,26 @@ int main (int argc,char *argv[]) {
     memset(tmp,0,sizeof(float)*2*prm->nrang*prm->mplgs);
     xcfd=tmp;
 
-  
     for (i=0;i<2;i++) {
       if (lag[i]==NULL) tmp=malloc(sizeof(int)*(prm->mplgs+1));
       else tmp=realloc(lag[i],sizeof(int)*(prm->mplgs+1));
       if (tmp==NULL) break;
       lag[i]=tmp;
       for (j=0;j<=prm->mplgs;j++) lag[i][j]=prm->lag[i][j];
-   }
-   if (i !=2) {
-     s=-1;
-     break;
-   }
-   mplgs=prm->mplgs;
- 
+    }
+    if (i !=2) {
+      s=-1;
+      break;
+    }
+    mplgs=prm->mplgs;
 
-   if (skpval==0) skpval=iq->skpnum;   
+    if (skpval==0) skpval=iq->skpnum;
 
     if (pulse==NULL) tmp=malloc(sizeof(int)*prm->mppul);
     else tmp=realloc(pulse,sizeof(int)*prm->mppul);
     if (tmp==NULL) {
-       s=-1;
-       break;
+      s=-1;
+      break;
     }
     pulse=tmp;
 
@@ -298,46 +291,41 @@ int main (int argc,char *argv[]) {
     tprm.mppul=prm->mppul;
     tprm.smdelay=skpval;
     tprm.pat=pulse;
-    
+
     badrng=ACFBadLagZero(&tprm,prm->mplgs,lag);
-    
+
     for (n=0;n<iq->seqnum;n++) {
 
       ptr=samples+iq->offset[n];
 
       ACFSumPower(&tprm,mplgs,lag,pwr0,
-		       ptr,2*iq->chnnum,skpval !=0,
-                       roff,ioff,badrng,
-                       iq->noise[n],prm->mxpwr,prm->atten*atstp,
-                       thr,lmt,&abflg);
-       
-      
-      ACFCalculate(&tprm,ptr,2*iq->chnnum,skpval !=0,
-		   roff,ioff,mplgs,
-	  	   lag,acfd,ACF_PART,2,badrng,iq->atten[n]*atstp,NULL);
+                  ptr,2*iq->chnnum,skpval !=0,
+                  roff,ioff,badrng,
+                  iq->noise[n],prm->mxpwr,prm->atten*atstp,
+                  thr,lmt,&abflg);
 
-      if (prm->xcf==1) ACFCalculate(&tprm,ptr,
-				     2*iq->chnnum,skpval !=0,
-                                     roff,ioff,prm->mplgs,
-	  	                     lag,xcfd,XCF_PART,2,badrng,
-				     iq->atten[n]*atstp,NULL);
+      ACFCalculate(&tprm,ptr,2*iq->chnnum,skpval !=0,
+                   roff,ioff,mplgs,
+                   lag,acfd,ACF_PART,2,badrng,iq->atten[n]*atstp,NULL);
+
+      if (prm->xcf==1) ACFCalculate(&tprm,ptr,2*iq->chnnum,skpval !=0,
+                                    roff,ioff,prm->mplgs,
+                                    lag,xcfd,XCF_PART,2,badrng,
+                                    iq->atten[n]*atstp,NULL);
 
       if ((n>0) && (iq->atten[n] !=iq->atten[n-1]))
-              ACFNormalize(pwr0,acfd,xcfd,prm->nrang,prm->mplgs,atstp); 
-          
+              ACFNormalize(pwr0,acfd,xcfd,prm->nrang,prm->mplgs,atstp);
 
-    }   
-   
-     
+    }
+
     ACFAverage(pwr0,acfd,xcfd,prm->nave,prm->nrang,prm->mplgs);
-    
+
     RawSetPwr(raw,prm->nrang,pwr0,0,NULL);
     RawSetACF(raw,prm->nrang,prm->mplgs,acfd,0,NULL);
     RawSetXCF(raw,prm->nrang,prm->mplgs,xcfd,0,NULL);
-     
+
     raw->thr=thrsh;
     RawFwrite(stdout,prm,raw);
-   
 
   }
   if (fp !=stdin) fclose(fp);
@@ -346,5 +334,5 @@ int main (int argc,char *argv[]) {
     return -1;
   }
   return 0;
-} 
+}
 
