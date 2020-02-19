@@ -132,6 +132,11 @@ int main (int argc,char *argv[]) {
 
   int s=0;
 
+  int digital=0;
+  int rngoff;
+  int xcfoff;
+  int chnnum=0;
+
   prm=RadarParmMake();
   iq=IQMake();
   raw=RawMake();
@@ -171,6 +176,8 @@ int main (int argc,char *argv[]) {
   OptionAdd(&opt,"t",'f',&thrsh);
   OptionAdd(&opt,"qi",'x',&qiflg);
   OptionAdd(&opt,"skip",'i',&skpval);
+  OptionAdd(&opt,"d",'x',&digital);     /* Added d option so we can process IQ data from digital receivers ASREIMER */
+  OptionAdd(&opt,"chnnum",'i',&chnnum); /* Added chnnum override flag in case wrong number of channels is in iqdat ASREIMER */
 
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
@@ -294,23 +301,39 @@ int main (int argc,char *argv[]) {
 
     badrng=ACFBadLagZero(&tprm,prm->mplgs,lag);
 
+    if (chnnum > 0) {
+      rngoff = 2*chnnum;
+    } else {
+      rngoff = 2*iq->chnnum;
+    }
+
+    if (digital) {
+      xcfoff = 2*iq->smpnum;
+    } else {
+      if (prm->xcf==1) {
+        xcfoff = 2;
+      } else {
+        xcfoff = 0;
+      }
+    }
+
     for (n=0;n<iq->seqnum;n++) {
 
       ptr=samples+iq->offset[n];
 
       ACFSumPower(&tprm,mplgs,lag,pwr0,
-                  ptr,2*iq->chnnum,skpval !=0,
+                  ptr,rngoff,skpval !=0,
                   roff,ioff,badrng,
                   iq->noise[n],prm->mxpwr,prm->atten*atstp,
                   thr,lmt,&abflg);
 
-      ACFCalculate(&tprm,ptr,2*iq->chnnum,skpval !=0,
+      ACFCalculate(&tprm,ptr,rngoff,skpval !=0,
                    roff,ioff,mplgs,
-                   lag,acfd,ACF_PART,2,badrng,iq->atten[n]*atstp,NULL);
+                   lag,acfd,ACF_PART,xcfoff,badrng,iq->atten[n]*atstp,NULL);
 
-      if (prm->xcf==1) ACFCalculate(&tprm,ptr,2*iq->chnnum,skpval !=0,
+      if (prm->xcf==1) ACFCalculate(&tprm,ptr,rngoff,skpval !=0,
                                     roff,ioff,prm->mplgs,
-                                    lag,xcfd,XCF_PART,2,badrng,
+                                    lag,xcfd,XCF_PART,xcfoff,badrng,
                                     iq->atten[n]*atstp,NULL);
 
       if ((n>0) && (iq->atten[n] !=iq->atten[n-1]))
