@@ -136,6 +136,7 @@ int main (int argc,char *argv[]) {
   int rngoff;
   int xcfoff;
   int chnnum=0;
+  int offset;
 
   prm=RadarParmMake();
   iq=IQMake();
@@ -323,7 +324,10 @@ int main (int argc,char *argv[]) {
 
     for (n=0;n<iq->seqnum;n++) {
 
-      ptr=samples+iq->offset[n];
+      if (iq->offset[n] == 0) offset=n*iq->smpnum*2*2;
+      else                    offset=iq->offset[n];
+
+      ptr=samples+offset;
 
       ACFSumPower(&tprm,mplgs,lag,pwr0,
                   ptr,rngoff,skpval !=0,
