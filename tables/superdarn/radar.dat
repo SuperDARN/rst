@@ -59,6 +59,7 @@
 33  1 20080202 25000101 "Blackstone"              "Virginia Tech"                       "hdw.dat.bks" "bks"
 40  1 20061101 25000101 "Hokkaido East"           "Nagoya University"                   "hdw.dat.hok" "hok"
 41  1 20141029 25000101 "Hokkaido West"           "Nagoya University"                   "hdw.dat.hkw" "hkw"
+50  1 20190625 25000101 "Jiamusi East"            "National Space Science Center, CAS"  "hdw.dat.jme" "jme"
 64  1 20080101 25000101 "Inuvik"                  "University of Saskatchewan"          "hdw.dat.inv" "inv"
 65  1 20070501 25000101 "Rankin Inlet"            "University of Saskatchewan"          "hdw.dat.rkn" "rkn"
 66  1 20120806 25000101 "Clyde River"             "University of Saskatchewan"          "hdw.dat.cly" "cly"
