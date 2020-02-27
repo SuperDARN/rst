@@ -245,6 +245,12 @@ int main (int argc,char *argv[]) {
  
    do {
 
+     atime=TimeYMDHMSToEpoch(prm->time.yr,prm->time.mo,prm->time.dy,
+                             prm->time.hr,prm->time.mt,
+                             prm->time.sc+prm->time.us/1.0e6);
+
+     if ((etime !=-1) && (atime>=etime)) break;
+
      fprintf(stderr,"%s\n",prm->origin.time);
      fprintf(stderr,"%s\n",prm->origin.command);
      fprintf(stderr,"%s\n",prm->combf);
@@ -260,16 +266,9 @@ int main (int argc,char *argv[]) {
          
      IQFwrite(stdout,prm,iq,badtr,samples);
      
-     atime=TimeYMDHMSToEpoch(prm->time.yr,
-		    prm->time.mo,
-                    prm->time.dy,
-                    prm->time.hr,
-		    prm->time.mt,
-                    prm->time.sc+prm->time.us/1.0e6);
      TimeEpochToYMDHMS(atime,&yr,&mo,&dy,&hr,&mt,&sc);
      if (vb==1) fprintf(stderr,"%d-%d-%d %d:%d:%d\n",yr,mo,dy,hr,mt,(int) sc);
 
-      if ((etime !=-1) && (atime>=etime)) break;
       status=IQFread(fp,prm,iq,&badtr,&samples);
  
   } while (status !=-1);  
