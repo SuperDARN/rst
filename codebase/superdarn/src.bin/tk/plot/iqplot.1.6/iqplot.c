@@ -160,7 +160,7 @@ void plot_time(struct Plot *plot,
 
 
 void plot_ephem(struct Plot *plot,
-               float xoff,float yoff,float wdt,float hgt,
+               float xoff,float yoff,float wdt,float hgt,int interfer,
                int bmnum,int channel,int tfreq,float noise,int nave,int ave,
                unsigned int color,unsigned char mask,
                char *fontname,float fontsize,
@@ -168,6 +168,7 @@ void plot_ephem(struct Plot *plot,
   int i;
   char txt[256];
   float txbox[3]={0,0,0};
+  char antenna[256];
 
   char *dig="0";
 
@@ -177,9 +178,11 @@ void plot_ephem(struct Plot *plot,
   txtbox(fontname,fontsize,strlen(dig),dig,txbox,txtdata);
   cwdt=txbox[0];
 
-  sprintf(txt,"bmnum=%.2d channel=%.1d tfreq=%.5d noise=%4.2f smp=%.3d/%.3d",
-          bmnum,channel,
-          tfreq,noise,ave,nave);
+  if (interfer) sprintf(antenna,"Interferometer");
+  else          sprintf(antenna,"Main Array");
+
+  sprintf(txt,"bmnum=%.2d channel=%.1d tfreq=%.5d noise=%4.2f smp=%.3d/%.3d (%s)",
+          bmnum,channel,tfreq,noise,ave,nave,antenna);
   txtbox(fontname,fontsize,strlen(txt),txt,txbox,txtdata);
   x=xoff;
   y=yoff+txbox[2];
@@ -561,7 +564,7 @@ int main(int argc,char *argv[]) {
       if (pxmax>=iq->smpnum) pxmax=iq->smpnum;
       if (pxmin>=iq->smpnum) pxmin=iq->smpnum;
 
-      if (iq->offset[n] == 0) offset=n*iq->smpnum;
+      if (iq->offset[n] == 0) offset=n*iq->smpnum*2*2;
       else                    offset=iq->offset[n];
 
       if (interfer) ptr=samples+offset+2*iq->smpnum;
@@ -616,7 +619,8 @@ int main(int argc,char *argv[]) {
 
       plot_time(plot,2,2,wdt-4,hgt-4,tval,fgcol,0x0f,"Helvetica",12.0,fontdb);
 
-      plot_ephem(plot,100+2,2,wdt-4,hgt-4,prm->bmnum,prm->channel,prm->tfreq,
+      plot_ephem(plot,100+2,2,wdt-4,hgt-4,interfer,
+                 prm->bmnum,prm->channel,prm->tfreq,
                  prm->noise.search,
                  prm->nave,n,fgcol,0x0f,"Helvetica",12.0,fontdb);
 
