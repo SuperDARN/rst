@@ -47,7 +47,7 @@ for arg in ${*}
 
    if test "${arg}" = "-w"
    then
-      type="-w"
+      type="www"
    else
       if test ${c} -eq 0
       then 

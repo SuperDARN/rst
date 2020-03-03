@@ -102,9 +102,13 @@ struct PolygonData *MapTransform(struct PolygonData *src,
 
   dpnt=malloc(sze);
   ipnt=malloc(src->sze);
-  if (dpnt==NULL) return NULL;
+  if (dpnt==NULL) {
+    free(ipnt);
+    return NULL;
+  }
   dst=PolygonMake(sze,bbox);
   if (dst==NULL) {
+    free(ipnt);
     free(dpnt);
     return NULL;
   }

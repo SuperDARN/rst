@@ -84,11 +84,8 @@ void lag_overlap(int range,int *badlag,struct FitPrm *ptr) {
   long pwr_ratio;
   int bad_pulse[PULSE_SIZE];  /* 1 if there is a bad pulse */
   int i;
-  double nave;
   double tot_cri; /* cumulative CRI power */ 
   --range;  /* compensate for the index which starts from 0 instead of 1 */
-
-  nave = (double) (ptr->nave);
 
   for (pulse = 0; pulse < ptr->mppul; ++pulse)
       bad_pulse[pulse] = 0;

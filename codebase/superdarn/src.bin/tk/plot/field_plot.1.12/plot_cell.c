@@ -63,72 +63,74 @@ void plot_cell(struct Plot *plot,struct RadarBeam *sbm,
   int t[4]={0,0,0,0};
   float map[2],pnt[2];
   for (rng=0;rng<sbm->nrang;rng++) {
-    if (sbm->sct[rng]==0) continue;
+    if ((sbm->sct[rng]==0) && (prm !=8)) continue;
 
     if (cfn !=NULL) {
       if (prm==1) color=(*cfn)(sbm->rng[rng].p_l,cdata);
       else if (prm==2)  color=(*cfn)(sbm->rng[rng].v,cdata);
-      else color=(*cfn)(sbm->rng[rng].w_l,cdata);
+      else if (prm==3)  color=(*cfn)(sbm->rng[rng].w_l,cdata);
+      else if (prm==4)  color=(*cfn)(sbm->rng[rng].phi0,cdata);
+      else if (prm==5)  color=(*cfn)(sbm->rng[rng].elv,cdata);
+      else if (prm==6)  color=(*cfn)(sbm->rng[rng].v_e,cdata);
+      else if (prm==7)  color=(*cfn)(sbm->rng[rng].w_l_e,cdata);
+      else color=(*cfn)(sbm->rng[rng].p_0,cdata);
     }
-    
+
     if ((prm==2) && (gsflg) && (sbm->rng[rng].gsct !=0)) color=gscol;
-   
+
     if (magflg) {
-       map[0]=gbm->mlat[0][rng];
-       map[1]=gbm->mlon[0][rng];
-       s=(*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
-       if (s !=0) continue;
-       px[0]=xoff+wdt*pnt[0];
-       py[0]=yoff+hgt*pnt[1];     
-       map[0]=gbm->mlat[2][rng];
-       map[1]=gbm->mlon[2][rng];
-       s=(*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
-       if (s !=0) continue;
-       px[1]=xoff+wdt*pnt[0];
-       py[1]=yoff+hgt*pnt[1];   
-       map[0]=gbm->mlat[2][rng+1];
-       map[1]=gbm->mlon[2][rng+1];
-       s=(*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
-       if (s !=0) continue;
-       px[2]=xoff+wdt*pnt[0];
-       py[2]=yoff+hgt*pnt[1];     
-       map[0]=gbm->mlat[0][rng+1];
-       map[1]=gbm->mlon[0][rng+1];
-       s=(*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
-       if (s !=0) continue;
-       px[3]=xoff+wdt*pnt[0];
-       py[3]=yoff+hgt*pnt[1];     
+      map[0]=gbm->mlat[0][rng];
+      map[1]=gbm->mlon[0][rng];
+      s=(*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
+      if (s !=0) continue;
+      px[0]=xoff+wdt*pnt[0];
+      py[0]=yoff+hgt*pnt[1];
+      map[0]=gbm->mlat[2][rng];
+      map[1]=gbm->mlon[2][rng];
+      s=(*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
+      if (s !=0) continue;
+      px[1]=xoff+wdt*pnt[0];
+      py[1]=yoff+hgt*pnt[1];
+      map[0]=gbm->mlat[2][rng+1];
+      map[1]=gbm->mlon[2][rng+1];
+      s=(*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
+      if (s !=0) continue;
+      px[2]=xoff+wdt*pnt[0];
+      py[2]=yoff+hgt*pnt[1];
+      map[0]=gbm->mlat[0][rng+1];
+      map[1]=gbm->mlon[0][rng+1];
+      s=(*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
+      if (s !=0) continue;
+      px[3]=xoff+wdt*pnt[0];
+      py[3]=yoff+hgt*pnt[1];
     } else {
-       map[0]=gbm->glat[0][rng];
-       map[1]=gbm->glon[0][rng];
-       s=(*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
-       if (s !=0) continue;
-       px[0]=xoff+wdt*pnt[0];
-       py[0]=yoff+hgt*pnt[1];     
-       map[0]=gbm->glat[2][rng];
-       map[1]=gbm->glon[2][rng];
-       s=(*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
-       if (s !=0) continue;
-       px[1]=xoff+wdt*pnt[0];
-       py[1]=yoff+hgt*pnt[1];   
-       map[0]=gbm->glat[2][rng+1];
-       map[1]=gbm->glon[2][rng+1];
-       s=(*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
-       if (s !=0) continue;
-       px[2]=xoff+wdt*pnt[0];
-       py[2]=yoff+hgt*pnt[1];     
-       map[0]=gbm->glat[0][rng+1];
-       map[1]=gbm->glon[0][rng+1];
-       s=(*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
-       if (s !=0) continue;
-       px[3]=xoff+wdt*pnt[0];
-       py[3]=yoff+hgt*pnt[1];  
+      map[0]=gbm->glat[0][rng];
+      map[1]=gbm->glon[0][rng];
+      s=(*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
+      if (s !=0) continue;
+      px[0]=xoff+wdt*pnt[0];
+      py[0]=yoff+hgt*pnt[1];
+      map[0]=gbm->glat[2][rng];
+      map[1]=gbm->glon[2][rng];
+      s=(*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
+      if (s !=0) continue;
+      px[1]=xoff+wdt*pnt[0];
+      py[1]=yoff+hgt*pnt[1];
+      map[0]=gbm->glat[2][rng+1];
+      map[1]=gbm->glon[2][rng+1];
+      s=(*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
+      if (s !=0) continue;
+      px[2]=xoff+wdt*pnt[0];
+      py[2]=yoff+hgt*pnt[1];
+      map[0]=gbm->glat[0][rng+1];
+      map[1]=gbm->glon[0][rng+1];
+      s=(*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
+      if (s !=0) continue;
+      px[3]=xoff+wdt*pnt[0];
+      py[3]=yoff+hgt*pnt[1];
     }
-   
 
     PlotPolygon(plot,NULL,0,0,4,px,py,t,1,color,0x0f,0,NULL);
-    
-        
-    
-  } 
+
+  }
 }

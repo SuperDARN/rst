@@ -32,10 +32,10 @@
 #include "map_addhmb.h"
 
 float latref=59;
-int nlat=26;
+int nlat=36;
 
-float bndarr[24][26];
-float lathmb[26];
+float bndarr[24][36];
+float lathmb[36];
 
 #define HMBSTEP 50
 
@@ -183,7 +183,7 @@ void make_hmb()
 
       mlt=m;
 
-      lathmb[n]=n+50.0;
+      lathmb[n]=n+40.0; /* The +40.0 means we start making the grid used by the iterative HMB-finding algorithm at geomagnetic latitude of 40 degrees. */  
       latmin=lathmb[n];
 
       bfac=(90-latmin)/(90-latref);
