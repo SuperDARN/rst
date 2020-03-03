@@ -1,4 +1,4 @@
-#  Hardware parameters for Dome C East radar.
+#  Hardware parameters for Dome C North radar.
 #
 # Each radar has a distinct set of hardware parameters that are used
 # by the radar control software and the analysis software. These
@@ -91,12 +91,12 @@
 #
 # **********************************************************************
 # ==Notes==
-# 06/02/2020 updated for beam separation sign.
+#
 #
 # **********************************************************************
 #
 #  1   2      3        4         5       6      7      8    9   10   11   12  13(1)  13(2)  13(3)  14   15  16 17
 #
 # UNTIL 26/Oct/2999 11:00:01.0
-   96 2999 25786801  -75.090  123.350  3233.0  115.0  3.24  1   10 -0.151  0    0.0  -90.0    0.0 100.0  7  75 16
-# EOF
+   97 2999 25786801  -75.086  123.3597  3232.0 -28.0 -3.24 +1.0 10.0 -0.175 0.0  0.0  -90.0  0.0 100.0  2  75 16
+# EOF 
