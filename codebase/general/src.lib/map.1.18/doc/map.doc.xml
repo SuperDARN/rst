@@ -182,15 +182,15 @@
 <returns>Returns zero if the transformation was successful.On error, (-1) is returned.</returns>
 <errors>On error, (-1) is returned.</errors>
 <example type="rplot">MapTransverseMercator</example>  
-<example type="source">MapTransversMercator.c</example>
+<example type="source">MapTransverseMercator.c</example>
 </function>
 
 <function>
 <name>MapWraparound</name>
 <location>src.lib/map</location>
 <header>general/rmap.h</header>
-<syntax><sn href="&root;/general/src.lib/polygon/structPolygonData.html">struct PolygonData</sn> *MapWraparound(<sn href="&root;/general/src.lib/general/polygon/structPolygonData.html">struct PolygonData</sn> *map);</syntax>
-<description><p>The <fn href="MapWrapAround.html">MapWrapAround</fn> duplicates polygons so that cylindrical map projections are plotted correctly</p>
+<syntax><sn href="&root;/general/src.lib/polygon/structPolygonData.html">struct PolygonData</sn> *MapWraparound(<sn href="&root;/general/src.lib/polygon/structPolygonData.html">struct PolygonData</sn> *map);</syntax>
+<description><p>The <fn href="MapWraparound.html">MapWraparound</fn> duplicates polygons so that cylindrical map projections are plotted correctly</p>
 <p>The set of polygons to duplicate is pointed to by the argument <ar>map</ar>.</p>
 </description>
 <returns>Returns a pointer to the new set of polygons. If an error occurs a <code>NULL</code> pointer is returned.</returns>

@@ -160,6 +160,7 @@ struct FrameBufferDash *FrameBufferMakeDashString(char *str) {
 
   if (s==-1) {
     free(ptr->p);
+    free(tmp);
     free(ptr);
     return NULL;
   }
@@ -173,6 +174,7 @@ struct FrameBufferDash *FrameBufferMakeDashString(char *str) {
   itmp=realloc(ptr->p,sze);
   if (itmp==0) {
     free(ptr->p);
+    free(tmp);
     free(ptr);
     return NULL;
   }

@@ -7,6 +7,9 @@
 <syntax>make_info --help</syntax>
 <syntax>make_info [<ar>fitacfnames...]</ar></syntax>
 <syntax>make_info -old <ar>fitname</ar></syntax>
+<syntax>make_info -fit <ar>fitacfname</ar></syntax>
+<syntax>make_info -raw <ar>rawacfname</ar></syntax>
+<syntax>make_info -raw -old <ar>rawname</ar></syntax>
 <syntax>make_info -cfit <ar>cfitnames...</ar></syntax>
 
 <option><on>--help</on><od>print the help message and exit.</od>
@@ -15,16 +18,24 @@
 </option>
 <option><on><ar>fitacfnames</ar></on><od>filenames of the <code>fitacf</code> format files. If this is omitted the file is read from standard input.</od>
 </option>
-<option><on>-old</on><od>files are in the <code>fit</code> format.</od>
+<option><on>-old</on><od>files are in the <code>dat</code> or <code>fit</code> format.</od>
 </option>
 <option><on><ar>fitname</ar></on><od>filename of the <code>fit</code> format file.</od>
+</option>
+<option><on>-fit</on><od>files are in the <code>fit</code> or <code>fitacf</code> format [default].</od>
+</option>
+<option><on>-raw</on><od>files are in the <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format.</od>
+</option>
+<option><on><ar>rawacfname</ar></on><od>filename of the <code>rawacf</code> format file.</od>
+</option>
+<option><on><ar>rawname</ar></on><od>filename of the <code>raw</code> (<code>dat</code>) format file.</od>
 </option>
 <option><on>-cfit</on><od>files are in the <code>cfit</code> format.</od>
 </option>
 <option><on><ar>cfitnames</ar></on><od>filenames of the <code>cfit</code> format files.</od>
 </option>
-<synopsis><p>Extract information (metadata) from <code>fit</code>, <code>fitacf</code> or <code>cfit</code> format files.</p></synopsis>
-<description><p>Extract information (metadata) from <code>fit</code>, <code>fitacf</code> or <code>cfit</code> format files.</p>
+<synopsis><p>Extract information (metadata) from <code>dat</code>, <code>rawacf</code>, <code>fit</code>, <code>fitacf</code> or <code>cfit</code> format files.</p></synopsis>
+<description><p>Extract information (metadata) from <code>dat</code>, <code>rawacf</code>, <code>fit</code>, <code>fitacf</code> or <code>cfit</code> format files.</p>
 <p>The extracted information is written to standard output.</p></description>
 
 <example>

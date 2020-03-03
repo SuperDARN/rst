@@ -115,6 +115,7 @@ struct PostScriptDash *PostScriptMakeDashString(char *str) {
 
   if (s==-1) {
     free(ptr->p);
+    free(tmp);
     free(ptr);
     return NULL;
   }
@@ -123,6 +124,7 @@ struct PostScriptDash *PostScriptMakeDashString(char *str) {
   ftmp=realloc(ptr->p,sze);
   if (ftmp==NULL) {
     free(ptr->p);
+    free(tmp);
     free(ptr);
     return NULL;
   }

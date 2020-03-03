@@ -164,7 +164,7 @@ int main(int argc,char *argv[]) {
     fprintf(stdout,"\n");
   }
 
-
+  if (fp !=stdin) fclose(fp);
   return 0;
 
 }

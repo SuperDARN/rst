@@ -7,7 +7,7 @@
 <name>Contour</name>
 <location>src.lib/contour</location>
 <header>general/contour.h</header>
-<syntax><sn href="&root;/src.lib/polygon/structPolygonData.html">struct PolygonData</sn> **Contour(void *zbuffer,int type, int wdt,int hgt,int cnum, void *cval,int smooth,int cflag,int rflag, int bflag);</syntax>
+<syntax><sn href="&root;/general/src.lib/polygon/structPolygonData.html">struct PolygonData</sn> **Contour(void *zbuffer,int type, int wdt,int hgt,int cnum, void *cval,int smooth,int cflag,int rflag, int bflag);</syntax>
 <description><p>The <fn href="Contour.html">Contour</fn> function traces a set of contour lines for a set of data points.</p>
 <p>The argument <ar>zbuffer</ar> is a pointer to the two dimensional array that contains the data to trace, the type of the array is given by the argument <ar>type</ar>. Possible values of type are:</p>
 <center><table>
@@ -34,7 +34,7 @@
 <name>ContourFree</name>
 <location>src.lib/contour</location>
 <header>general/contour.h</header>
-<syntax>void ContourFree(int cnum,<sn href="&root;/src.lib/polygon/structPolygonData.html">struct PolygonData</sn> **ptr);</syntax>
+<syntax>void ContourFree(int cnum,<sn href="&root;/general/src.lib/polygon/structPolygonData.html">struct PolygonData</sn> **ptr);</syntax>
 <description><p>The <fn href="ContourFree.html">ContourFree</fn> function frees the memory allocated to store contours.</p>
 <p>The argument <ar>cnum</ar> defines the number of contours and the argument <ar>ptr</ar> is a pointer to the array of contours.</p>
 </description>
@@ -46,7 +46,7 @@
 <name>ContourModify</name>
 <location>src.lib/contour</location>
 <header>general/contour.h</header>
-<syntax>void ContourModify(int cnum,<sn href="&root;/src.lib/polygon/PolygonData.html">struct PolygonData</sn> **src, int (*trf)(int ssze,void *src,int dsze, void *dst,void *data), void *data);</syntax>
+<syntax>void ContourModify(int cnum,<sn href="&root;/general/src.lib/polygon/structPolygonData.html">struct PolygonData</sn> **src, int (*trf)(int ssze,void *src,int dsze, void *dst,void *data), void *data);</syntax>
 
 <description><p>The <fn href="ContourModify.html">ContourModify</fn> function modifies a set of contours.</p>
 <p>The argument <ar>cnum</ar> gives the number of contours in the array pointed to by the argument <ar>src</ar>.</p>
@@ -68,7 +68,7 @@
 <name>ContourTransform</name>
 <location>src.lib/contour</location>
 <header>general/contour.h</header>
-<syntax> <sn href="&root;/src.lib/polygon/PolygonData.html">struct PolygonData</sn> **ContourTransform(int cnum,<sn href="&root;/src.lib/general/polygon/structPolygonData.html">struct PolygonData</sn> **src, int (*trf)(int ssze,void *src,int dsze, void *dst,void *data), void *data);</syntax>
+<syntax> <sn href="&root;/general/src.lib/polygon/structPolygonData.html">struct PolygonData</sn> **ContourTransform(int cnum,<sn href="&root;/general/src.lib/polygon/structPolygonData.html">struct PolygonData</sn> **src, int (*trf)(int ssze,void *src,int dsze, void *dst,void *data), void *data);</syntax>
 <description><p>The <fn href="ContourTransform.html">ContourTransform</fn> function applies a map transform to a set of contours.</p>
 <p>The argument <ar>cnum</ar> gives the number of contours in the array pointed to by the argument <ar>src</ar>.</p>
 <p>The argument <ar>trnf</ar> is a pointer to a function of the form:</p>
