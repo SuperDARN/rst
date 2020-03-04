@@ -34,6 +34,8 @@
 #ifndef _RMATH_H
 #define _RMATH_H
 
+/*Need to use _COMPLEX_H to not
+ * override the comple.h definition*/
 #ifndef _COMPLEX_H
 struct complex {
     double x,y;
@@ -41,6 +43,7 @@ struct complex {
 #define cabs(a) sqrt((a.x*a.x)+(a.y*a.y))
 #endif
 
+/*Speed of Light in m/s*/
 #define C 2.99792458e+8
 #define LN_TO_LOG 4.342944819
 
@@ -48,9 +51,11 @@ struct complex {
 #define HUGE_VAL 1.0e36                /* default value of HUGE */
 #endif
  
+/*PI constant*/
 #define PI 3.14159265358979323846
-#define RE 6371.2 /*Earth's radius in km*/
 
+/*Earth's radius in km*/
+#define RE 6371.2 
 
 #define asind(x) asin(x)*180/PI
 #define acosd(x) acos(x)*180/PI
