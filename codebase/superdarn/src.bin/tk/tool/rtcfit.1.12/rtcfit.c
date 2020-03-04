@@ -46,6 +46,7 @@
 #include "option.h"
 #include "rtime.h"
 #include "radar.h" 
+#include "rmath.h"
 
 #include "dmap.h"
 #include "rprm.h"

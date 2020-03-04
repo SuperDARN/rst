@@ -34,23 +34,23 @@
 #ifndef _RMATH_H
 #define _RMATH_H
 
-#ifndef _COMPLEX
+#ifndef _COMPLEX_H
 struct complex {
     double x,y;
 };
 #define cabs(a) sqrt((a.x*a.x)+(a.y*a.y))
 #endif
 
-#define C 2.997e+8
+#define C 2.99792458e+8
 #define LN_TO_LOG 4.342944819
 
 #ifndef HUGE_VAL
 #define HUGE_VAL 1.0e36                /* default value of HUGE */
 #endif
  
-#ifndef PI
 #define PI 3.14159265358979323846
-#endif
+#define RE 6371.2 /*Earth's radius in km*/
+
 
 #define asind(x) asin(x)*180/PI
 #define acosd(x) acos(x)*180/PI

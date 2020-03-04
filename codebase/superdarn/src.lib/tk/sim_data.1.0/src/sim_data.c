@@ -32,10 +32,9 @@ THE SOFTWARE.
 #include <unistd.h>
 #include <ctype.h>
 #include <math.h>
-#include <complex.h>
 #include <time.h>
+#include <complex.h>
 #include "sim_data.h"
-
 
 /*this is a C version of Pasha's IDL data generator*/
 
