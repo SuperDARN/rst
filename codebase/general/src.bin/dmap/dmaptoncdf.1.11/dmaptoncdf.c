@@ -275,7 +275,7 @@ int main(int argc,char *argv[]) {
           s=nc_put_var1_short(ncid,varid,index,sx->data.sptr);
           break;
         case DATAINT:
-          s=nc_put_var1_long(ncid,varid,index,(long *) sx->data.iptr);
+          s=nc_put_var1_int(ncid,varid,index,sx->data.iptr);
           break;
         case DATAFLOAT:
           s=nc_put_var1_float(ncid,varid,index,sx->data.fptr);
@@ -371,7 +371,7 @@ int main(int argc,char *argv[]) {
           s=nc_put_vara_short(ncid,varid,start,count,ax->data.sptr);
           break;
         case DATAINT:
-          s=nc_put_vara_long(ncid,varid,start,count,(long *) ax->data.iptr);
+          s=nc_put_vara_int(ncid,varid,start,count,ax->data.iptr);
           break;
         case DATAFLOAT:
           s=nc_put_vara_float(ncid,varid,start,count,ax->data.fptr);
