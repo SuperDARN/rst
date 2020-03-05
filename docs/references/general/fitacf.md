@@ -1,6 +1,6 @@
 # FITACF files 
 
-FITACF files are a fitted post processed data product from RAWACF files (sometimes dat files).
+FITACF files are a fitted post-processed data product from RAWACF files (sometimes dat files).
 
 ## Naming Conventions
 
@@ -148,7 +148,7 @@ A scan is determined with the `scan` flag by the value. 1 or -1 inidicates the b
 to 15, however, radars that have more than 16 beams will sometimes start at other beams to meet the 3 second integration time and 60 second scan time. 
 
 !!! Note 
-    *Control programs* can change the beam pattern, `cp` will inidicate the *control program* numerical value and `combf` sometimes contains the *control programs* command/name. 
+    *Control programs* can change the beam pattern; `cp` will indicate the *control program* numerical value, and `combf` sometimes contains the *control program's* command/name. 
 
 Uncommonly FITACF records can appear partial meaning there are missing **vector** fields. For example: 
 ```bash
@@ -165,5 +165,5 @@ scalars:
         char    "origin.code" = 0
 
 ```
-This is a legacy behviour of RST that happens because of potentially "bad" data or no data was collected making `slist` empty. 
-Currently this is ongoing investigation. 
+Partial records are a legacy behavior of RST that happens because of potentially "bad" data, or no data was collected, making `slist` empty. 
+Currently, this is an ongoing investigation. 
