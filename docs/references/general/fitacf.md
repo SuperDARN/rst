@@ -12,7 +12,7 @@ Some radars operate using more than one channel and separate them by adding a le
 
 > YYYY.MM.DD.HH.mm.ss.<3-letter abbreviation>.[a-d].fitacf
 
-For example, King Salmon was running stereo mode on 2019-02-01 as it can be shown in the file names `20190201.0401.00.ksr.a.fitacf.bz2` and `20190201.0401.00.ksr.b.fitacf.bz2`.
+For example, on 2019-02-01 the King Salmon radar (KSR) was operating simultaneously on two channels as seen from the file names `20190201.0401.00.ksr.a.fitacf` and `20190201.0401.00.ksr.b.fitacf`.
 Each file contains data from a different frequency. 
 
 !!! Note
@@ -29,7 +29,7 @@ RST includes the following fitting algorithms:
 - [LMFIT](https://doi.org/10.1002/rds.20031) (optional)
 
 Other fitting algorithms that are not yet implemented in RST:
-- lmfit2 
+- [lmfit2](https://github.com/asreimer/lmfit2)
 
 ## Fields
 
@@ -111,8 +111,8 @@ FITACF files contain a record that contains scalar and vector fields.
 | *p_l_e*     | *dB*      | *[num_pts]*    | ***float*** | Power error from lambda fit of ACF                                          |
 | *p_s*       | *dB*      | *[num_pts]*    | ***float*** | Power from sigma fit of ACF                                                 |
 | *p_s_e*     | *dB*      | *[num_pts]*    | ***float*** | Power error from sigma fit of ACF                                           |
-| *v*         | *m/s* | *[num_pts]*    | ***float*** | velocity from ACF                                                           |
-| *v_e* | *m/s* | *[num_pts]* |  ***float*** |Velocity error from ACF |
+| *v*         | *m/s* | *[num_pts]*    | ***float*** | Velocity from ACF                                                           |
+| *v_e* | *m/s* | *[num_pts]* |  ***float*** | Velocity error from ACF |
 | *w_l* | *m/s* | *[num_pts]* | ***float*** | Spectral width from lambda fit of ACF | 
 | *w_l_e* | *m/s* | *[num_pts]* | ***float*** | Spectral width error from lambda fit of ACF |
 | *w_s* | *m/s* | *[num_pts]* | ***float*** | Spectral width from sigma fit of ACF | 
@@ -128,8 +128,8 @@ FITACF files contain a record that contains scalar and vector fields.
 | *x_p_s_e* | *dB* | *[num_pts]* |  ***float*** | Power  error from sigma fit  of XCF | 
 | *x_v* | *m/s* | *[num_pts]* | ***float*** | Velocity from XCF | 
 | *x_v_e* | *m/s* | *[num_pts]* | ***float*** | Velocity error from XCF | 
-| *x_w_l* | *m/s* | *[num_pts]* | ***float*** | Spectral width from lamdba fit of XCF | 
-| *x_w_l_e* | *m/s* | *[num_pts]* | ***float*** | Spectral width error from lamdbad fit of XCF | 
+| *x_w_l* | *m/s* | *[num_pts]* | ***float*** | Spectral width from lambda fit of XCF | 
+| *x_w_l_e* | *m/s* | *[num_pts]* | ***float*** | Spectral width error from lambda fit of XCF | 
 | *x_w_s* | *m/s* | *[num_pts]* | ***float*** | Spectral wdith from sigma fit of XCF | 
 | *x_w_s_e* | *m/s* | *[num_pts]* | ***float*** | Spectral wdith error from sigma fit of XCF | 
 | *phi0* | *radians* | *[num_pts]* | ***float*** | Phase determination at lag zero of the ACF | 
