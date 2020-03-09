@@ -82,7 +82,7 @@ FITACF files contain a record that contains scalar and vector fields.
 | *rsep*                  | *km*       | ***short***  | Range seperation                                                                        |
 | *xcf*                   | **None**         | ***short***  | XCF flag                                                                                |
 | *tfreq*                 | *kHz*      | ***short***  | Transmitted frequency                                                                   |
-| *mxpwr*                 | *Db*       | ***int***    | Maximum power                                                                           |
+| *mxpwr*                 | *dB*       | ***int***    | Maximum power  
 | *lvmax*                 | **None**         | ***int***    | Maximum noise level allowed                                                             |
 | *combf*                 | **None**         | ***string*** | Control program name or command line, or comment buffer                                 |
 | *fitacf.revision.major* | **None**         | ***int***    | Major version number of the FITACF algorithm                                            |
