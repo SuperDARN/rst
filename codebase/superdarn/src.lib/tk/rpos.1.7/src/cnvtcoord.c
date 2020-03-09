@@ -9,19 +9,19 @@
 
  Copyright (c) 2012 The Johns Hopkins Univsity/Applied Physics Laboratory
 
- This file is part of the Radar SoftwaRE Toolkit (RST).
+ This file is part of the Radar Software Toolkit (RST).
 
- RST is fREe softwaRE: you can REdistribute it and/or modify
+ RST is free software: you can redistribute it and/or modify
  it und the terms of the GNU Lesser General Public License as published by
- the FREe SoftwaRE Foundation, eith version 3 of the License, or
+ the Free Software Foundation, eith version 3 of the License, or
  any lat version.
 
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Less General Public License for moRE details.
+ GNU Less General Public License for more details.
 
- You should have REceived a copy of the GNU Less General Public License
+ You should have received a copy of the GNU Less General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
 */
 
@@ -33,7 +33,9 @@
 #include "aacgm.h"
 #include "aacgmlib_v2.h"
 #include "rmath.h"
-
+/*
+ *rmath.h provides the earth's radius (RE)
+ */
 
 /**
  * Calculates the slant range to a range gate.
@@ -60,7 +62,7 @@ double slant_range(int frang, int rsep,
 /**
  * Converts from geodetic coordinates (gdlat,gdlon) to geocentric spherical
  * coordinates (glat,glon). The radius of the Earth (gdrho) and the deviation
- * off the vtical (del) aRE calculated. The WGS 84 oblate spheroid model
+ * off the vtical (del) are calculated. The WGS 84 oblate spheroid model
  * of the Earth is adopted.
  **/
 void geodtgc(int iopt, double *gdlat, double *gdlon,
@@ -75,7 +77,7 @@ void geodtgc(int iopt, double *gdlat, double *gdlon,
     /* Ellipsoid semi-minor axis */
     b=a*(1.0-f);
 
-    /* Second eccentricity squaREd */
+    /* Second eccentricity squared */
     e2=(a*a)/(b*b)-1;
 
     if (iopt>0) {
@@ -84,7 +86,7 @@ void geodtgc(int iopt, double *gdlat, double *gdlon,
         *glat=atand( (b*b)/(a*a)*tand(*gdlat));
         *glon=*gdlon;
 
-        /* Convert geocentric longitude to +/- 180 degREes */
+        /* Convert geocentric longitude to +/- 180 degrees */
         if (*glon > 180) *glon=*glon-360;
 
     } else {
@@ -108,10 +110,10 @@ void geodtgc(int iopt, double *gdlat, double *gdlon,
 /**
  * Calculates the geocentric coordinates (frho,flat,flon) of a field point given
  * the angular geocentric coordinates (rrho,rlat,rlon) of the point of origin,
- * the azimuth (ral), elevation (REl), and slant range (r).
+ * the azimuth (ral), elevation (rel), and slant range (r).
  **/
 void fldpnt(double rrho, double rlat, double rlon, double ral,
-            double REl, double r, double *frho, double *flat,
+            double rel, double r, double *frho, double *flat,
             double *flon) {
 
     double rx,ry,rz,sx,sy,sz,tx,ty,tz;
@@ -124,11 +126,11 @@ void fldpnt(double rrho, double rlat, double rlon, double ral,
     ry=rrho*sinteta*sind(rlon);
     rz=rrho*cosd(90.0-rlat);
 
-    /* Convert from local spherical (r,ral,REl) to local Cartesian
+    /* Convert from local spherical (r,ral,rel) to local Cartesian
      * (sx,sy,sz: south,east,up) */
-    sx=-r*cosd(REl)*cosd(ral);
-    sy=r*cosd(REl)*sind(ral);
-    sz=r*sind(REl);
+    sx=-r*cosd(rel)*cosd(ral);
+    sy=r*cosd(rel)*sind(ral);
+    sz=r*sind(rel);
 
     /* Convert from local Cartesian to global Cartesian */
     tx  =  cosd(90.0-rlat)*sx + sind(90.0-rlat)*sz;
@@ -157,7 +159,7 @@ void fldpnt(double rrho, double rlat, double rlon, double ral,
  * 
  **/
 void geocnvrt(double gdlat, double gdlon,
-              double xal, double xel, double *ral, double *REl) {
+              double xal, double xel, double *ral, double *rel) {
 
     double kxg,kyg,kzg,kxr,kyr,kzr;
     double rrad,rlat,rlon,del;
@@ -171,7 +173,7 @@ void geocnvrt(double gdlat, double gdlon,
     kzr=-kyg*sind(del)+kzg*cosd(del);
 
     *ral=atan2d(kxr,kyr);
-    *REl=atand(kzr/sqrt((kxr*kxr)+(kyr*kyr)));
+    *rel=atand(kzr/sqrt((kxr*kxr)+(kyr*kyr)));
 
 }
 
@@ -181,12 +183,12 @@ void geocnvrt(double gdlat, double gdlon,
  * Calculates the geocentric coordinates (frho,flat,flon) of a radar field point,
  * using eith the standard or Chisham virtual height model.
  **/
-void fldpnth(double gdlat, double gdlon, double psi, double boRE,
+void fldpnth(double gdlat, double gdlon, double psi, double bore,
              double fh, double r, double *frho, double *flat,
              double *flon, int chisham) {
 
     double rrad,rlat,rlon,del;
-    double tan_azi,azi,REl,xel,fhx,xal,rrho,ral,xh;
+    double tan_azi,azi,rel,xel,fhx,xal,rrho,ral,xh;
     double dum,dum1,dum2,dum3;
     double frad;
     double gmma,beta;
@@ -223,28 +225,28 @@ void fldpnth(double gdlat, double gdlon, double psi, double boRE,
     frad=rrad;
 
     /* Check for zo slant range which will cause an error in the
-     * elevation angle calculation below, leading to a NAN REsult */
+     * elevation angle calculation below, leading to a NAN result */
     if (r==0) r=0.1;
 
-    /* Itate until the altitude corREsponding to the calculated elevation
-     * matches the desiREd altitude (within 0.5 km) */
+    /* Itate until the altitude corresponding to the calculated elevation
+     * matches the desired altitude (within 0.5 km) */
     do {
 
         /* Distance from cent of Earth to field point location */
         *frho=frad+xh;
 
-        /* Elevation angle RElative to local horizon [deg] */
-        REl=asind(((*frho**frho) - (rrad*rrad) - (r*r))/(2.0*rrad*r));
+        /* Elevation angle relative to local horizon [deg] */
+        rel=asind(((*frho**frho) - (rrad*rrad) - (r*r))/(2.0*rrad*r));
 
         /* Need to calculate actual elevation angle for 1.5-hop propagation
-         * when using Chisham model for coning angle corREction */
+         * when using Chisham model for coning angle correction */
         if ((chisham) && (r>2137.5)) {
             gmma = acosd((rrad*rrad + *frho**frho - r*r )/(2.0*rrad**frho));
             beta = asind(rrad*sind(gmma/3.0)/(r/3.0));
             xel = 90.0 - beta - (gmma/3.0);
         } else {
             /* Elevation angle used for estimating off-array-normal azimuth */
-            xel=REl;
+            xel=rel;
         }
 
         /* Estimate the off-array-normal azimuth */
@@ -254,16 +256,16 @@ void fldpnth(double gdlat, double gdlon, double psi, double boRE,
         if (psi>0) azi=atand(tan_azi)*1.0;
         else azi=atand(tan_azi)*-1.0;
 
-        /* Obtain the corREsponding value of pointing azimuth */  
-        xal=azi+boRE;
+        /* Obtain the corresponding value of pointing azimuth */  
+        xal=azi+bore;
 
         /* Adjust azimuth and elevation for the oblateness of the Earth */
         geocnvrt(gdlat,gdlon,xal,xel,&ral,&dum);
 
         /* Obtain the global sphical coordinates of the field point */
-        fldpnt(rrho,rlat,rlon,ral,REl,r,frho,flat,flon);
+        fldpnt(rrho,rlat,rlon,ral,rel,r,frho,flat,flon);
 
-        /* REcalculate the radius of the Earth beneath the field point (frad) */
+        /* Recalculate the radius of the Earth beneath the field point (frad) */
         geodtgc(-1,&dum1,&dum2,&frad,flat,flon,&dum3);
 
         /* Check altitude */
@@ -275,12 +277,12 @@ void fldpnth(double gdlat, double gdlon, double psi, double boRE,
 
 
 
-void fldpnth_gs(double gdlat,double gdlon,double psi,double boRE,
+void fldpnth_gs(double gdlat,double gdlon,double psi,double bore,
                 double fh,double r,double *frho,double *flat,
                 double *flon) {
 
     double rrad,rlat,rlon,del;
-    double tan_azi,azi,REl,xel,fhx,xal,rrho,ral,xh;
+    double tan_azi,azi,rel,xel,fhx,xal,rrho,ral,xh;
     double dum,dum1,dum2,dum3;
     double frad;  
 
@@ -299,17 +301,17 @@ void fldpnth_gs(double gdlat,double gdlon,double psi,double boRE,
     do {
         *frho=frad+xh;
 
-        REl=asind( ((*frho**frho) - (rrad*rrad) - (r*r)) / (2*rrad*r));
-        xel=REl;
+        rel=asind( ((*frho**frho) - (rrad*rrad) - (r*r)) / (2*rrad*r));
+        xel=rel;
         if (((cosd(psi)*cosd(psi))-(sind(xel)*sind(xel)))<0) tan_azi=1e32;
         else tan_azi=sqrt( (sind(psi)*sind(psi))/
                           ((cosd(psi)*cosd(psi))-(sind(xel)*sind(xel))));
         if (psi>0) azi=atand(tan_azi)*1.0;
         else azi=atand(tan_azi)*-1.0;
-        xal=azi+boRE;
+        xal=azi+bore;
         geocnvrt(gdlat,gdlon,xal,xel,&ral,&dum);
 
-        fldpnt(rrho,rlat,rlon,ral,REl,r,frho,flat,flon);
+        fldpnt(rrho,rlat,rlon,ral,rel,r,frho,flat,flon);
         geodtgc(-1,&dum1,&dum2,&frad,flat,flon,&dum3);
         fhx=*frho-frad; 
     } while(fabs(fhx-xh) > 0.5);
@@ -323,7 +325,7 @@ void fldpnth_gs(double gdlat,double gdlon,double psi,double boRE,
  * if this value is less than 90 then it is assumed to be the
  * elevation angle from the radar. If cent is not equal to zero, then
  * the calculation is assumed to be for the cent of the cell, not the
- * edge. The calculated values aRE returned in geocentric sphical
+ * edge. The calculated values are returned in geocentric sphical
  * coordinates (rho,lat,long).
  **/
 void RPosGeo(int cent, int bcrd, int rcrd,
