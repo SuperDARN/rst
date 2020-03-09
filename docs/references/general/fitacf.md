@@ -122,7 +122,7 @@ FITACF files contain a record that contains scalar and vector fields.
 | *sd_phi* | **None** | *[num_pts]* | ***float*** | Standard deviation of phase fit of ACF | 
 | *x_qflg* | **None** | *[num_pts]* | ***char*** | Quality flag of XCF | 
 | *x_gflg* | **None** | *[num_pts]* | ***char*** | Ground scatter flag of XCF | 
-| *x_p_l* | *dB* | *[num_pts]* | ***float*** | Power from lamdba of XCF | 
+| *x_p_l* | *dB* | *[num_pts]* | ***float*** | Power from lamdba fit of XCF | 
 | *x_p_l_e* | *dB* | *[num_pts]* | ***float*** | Power error from lambda fit of XCF | 
 | *x_p_s* | *dB* | *[num_pts]* | ***float*** | Power from sigma fit of XCF | 
 | *x_p_s_e* | *dB* | *[num_pts]* |  ***float*** | Power  error from sigma fit  of XCF | 
