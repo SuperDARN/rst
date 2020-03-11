@@ -1,3 +1,9 @@
+<!-- Copyright (C) 2020 SuperDARN Canada, University of Saskatchewan 
+author(s): Marina Schmidt 
+
+Disclaimer: License under GNU v3.0, the file is found in the root directory under LICENSE 
+
+-->
 # FITACF files 
 
 FITACF files are a fitted post-processed data product from RAWACF files (sometimes dat files).
