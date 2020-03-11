@@ -35,7 +35,7 @@
 #define _RMATH_H
 
 /*Need to use _COMPLEX_H to not
- * override the comple.h definition*/
+ * override the complex.h definition*/
 #ifndef _COMPLEX_H
 struct complex {
     double x,y;
@@ -65,7 +65,6 @@ struct complex {
 #define atand(x) atan(x)*180.0/PI
 #define atan2d(x,y) atan2(x,y)*180.0/PI
 #endif
-
 
 
 
