@@ -166,5 +166,4 @@ scalars:
         char    "origin.code" = 0
 
 ```
-Partial records are a legacy behavior of RST that happens because of potentially "bad" data, or no data was collected, making `slist` empty. 
-Currently, this is an ongoing investigation. 
+Partial records occur when there are no range gates with a successful fit to the ACF, resulting in an empty `slist`. This is a legacy behavior of the DMAP file format which the Data Analysis Working Group is investigating. 
