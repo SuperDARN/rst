@@ -66,14 +66,14 @@ double slant_range(int frang, int rsep,
 /**
  * Converts from geodetic coordinates (gdlat,gdlon) to geocentric spherical
  * coordinates (glat,glon). The radius of the Earth (gdrho) and the deviation
- * off the vtical (del) are calculated. The WGS 84 oblate spheroid model
+ * off the vertical (del) are calculated. The WGS 84 oblate spheroid model
  * of the Earth is adopted.
  **/
 void geodtgc(int iopt, double *gdlat, double *gdlon,
              double *grho, double *glat,
              double *glon, double *del) {
 
-    /* WGS 84 oblate sphoid defining parameters */
+    /* WGS 84 oblate spheroid defining parameters */
     double a=6378.137;
     double f=1.0/298.257223563;
     double b,e2;
@@ -104,7 +104,7 @@ void geodtgc(int iopt, double *gdlat, double *gdlon,
     /* Calculate the geocentric Earth radius at the geodetic latitude [km] */
     *grho=a/sqrt(1.0+e2*sind(*glat)*sind(*glat));
 
-    /* Calculate the deviation of the vtical [deg] */
+    /* Calculate the deviation of the vertical [deg] */
     *del=*gdlat-*glat;
 
 }
