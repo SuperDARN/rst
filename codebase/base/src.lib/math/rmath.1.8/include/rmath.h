@@ -54,7 +54,7 @@ struct complex {
 /*PI constant*/
 #define PI 3.14159265358979323846
 
-/*Earth's radius in km*/
+/*Earth's mean spherical radius in km*/
 #define RE 6371.2 
 
 #define asind(x) asin(x)*180/PI
@@ -65,7 +65,6 @@ struct complex {
 #define atand(x) atan(x)*180.0/PI
 #define atan2d(x,y) atan2(x,y)*180.0/PI
 #endif
-
 
 
 
