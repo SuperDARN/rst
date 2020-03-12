@@ -81,7 +81,7 @@ FITACF files contain a record that contains scalar and vector fields.
 | *mpinc*                 | *us* | ***short***  | Multi-pulse increment                                                                   |
 | *mppul*                 | **None**         | ***short***  | Number of pulses in the sequence                                                        |
 | *mplgs*                 | **None**         | ***short***  | Number of lags in the sequence                                                          |
-| *mplgexes*              | **None**         | ***short***  |                                                                                         |
+| *mplgexs*              | **None**         | ***short***  |   Number of lags used for tauscan. This field originates from `fittex` algorithm and is not used in FITACF file format. | 
 | *ifmode*                | **None**         | ***short***  | Receiver was processing at an IF (intermediate frequency) instead of RF (radio frequency) band       |
 | *nrang*                 | **None**         | ***short***  | Number of range range gates                                                             |
 | *frang*                 | *km*       | ***short***  | Distance to the first range gate                                                        |
