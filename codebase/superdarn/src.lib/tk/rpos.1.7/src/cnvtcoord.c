@@ -9,23 +9,23 @@ Modifications:
 */
 
 /*
- LICENSE AND DISCLAIM
+ LICENSE AND DISCLAIMER
 
- Copyright (c) 2012 The Johns Hopkins Univsity/Applied Physics Laboratory
+ Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 
  This file is part of the Radar Software Toolkit (RST).
 
  RST is free software: you can redistribute it and/or modify
- it und the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, eith version 3 of the License, or
- any lat version.
+ it under the terms of the GNU Lesser General Public License as published by
+ the Free Software Foundation, eitherer version 3 of the License, or
+ any later version.
 
  RST is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
- MCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Less General Public License for more details.
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Lesser General Public License for more details.
 
- You should have received a copy of the GNU Less General Public License
+ You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
 */
 
@@ -56,7 +56,7 @@ double slant_range(int frang, int rsep,
     /* Calculate the sample separation in microseconds */
     smsep=rsep*20/3;
 
-    /* return the calculated slant range [km] */
+    /* Return the calculated slant range [km] */
     return (lagfr-rxris+(range_gate-1)*smsep+range_edge)*0.15;
 
 }
@@ -64,7 +64,7 @@ double slant_range(int frang, int rsep,
 
 
 /**
- * Converts from geodetic coordinates (gdlat,gdlon) to geocentric spherical
+ * Converts from geodetic coordinates (gdlat,gdlon) to geocenterric spherical
  * coordinates (glat,glon). The radius of the Earth (gdrho) and the deviation
  * off the vertical (del) are calculated. The WGS 84 oblate spheroid model
  * of the Earth is adopted.
@@ -81,21 +81,21 @@ void geodtgc(int iopt, double *gdlat, double *gdlon,
     /* Ellipsoid semi-minor axis */
     b=a*(1.0-f);
 
-    /* Second eccentricity squared */
+    /* Second eccenterricity squared */
     e2=(a*a)/(b*b)-1;
 
     if (iopt>0) {
 
-        /* Convert geodetic latitude/longitude to geocentric [deg] */
+        /* Convert geodetic latitude/longitude to geocenterric [deg] */
         *glat=atand( (b*b)/(a*a)*tand(*gdlat));
         *glon=*gdlon;
 
-        /* Convert geocentric longitude to +/- 180 degrees */
+        /* Convert geocenterric longitude to +/- 180 degrees */
         if (*glon > 180) *glon=*glon-360;
 
     } else {
 
-        /* Convert geocentric latitude/longitude to geodetic [deg] */
+        /* Convert geocenterric latitude/longitude to geodetic [deg] */
         *gdlat=atand( (a*a)/(b*b)*tand(*glat));
         *gdlon=*glon;
 
@@ -112,8 +112,8 @@ void geodtgc(int iopt, double *gdlat, double *gdlon,
 
 
 /**
- * Calculates the geocentric coordinates (frho,flat,flon) of a field point given
- * the angular geocentric coordinates (rrho,rlat,rlon) of the point of origin,
+ * Calculates the geocenterric coordinates (frho,flat,flon) of a field point given
+ * the angular geocenterric coordinates (rrho,rlat,rlon) of the point of origin,
  * the azimuth (ral), elevation (rel), and slant range (r).
  **/
 void fldpnt(double rrho, double rlat, double rlon, double ral,
@@ -124,7 +124,7 @@ void fldpnt(double rrho, double rlat, double rlon, double ral,
     double sinteta;
 
     /* Convert from global spherical (rrho,rlat,rlon) to global Cartesian
-     * (rx,ry,rz: Earth cented) */
+     * (rx,ry,rz: Earth centered) */
     sinteta=sind(90.0-rlat);
     rx=rrho*sinteta*cosd(rlon);
     ry=rrho*sinteta*sind(rlon);
@@ -184,8 +184,8 @@ void geocnvrt(double gdlat, double gdlon,
 
 
 /**
- * Calculates the geocentric coordinates (frho,flat,flon) of a radar field point,
- * using eith the standard or Chisham virtual height model.
+ * Calculates the geocenterric coordinates (frho,flat,flon) of a radar field point,
+ * using either the standard or Chisham virtual height model.
  **/
 void fldpnth(double gdlat, double gdlon, double psi, double bore,
              double fh, double r, double *frho, double *flat,
@@ -228,15 +228,15 @@ void fldpnth(double gdlat, double gdlon, double psi, double bore,
     /* Radius of the Earth beneath the field point (updates) */
     frad=rrad;
 
-    /* Check for zo slant range which will cause an error in the
+    /* Check for zero slant range which will cause an error in the
      * elevation angle calculation below, leading to a NAN result */
     if (r==0) r=0.1;
 
-    /* Itate until the altitude corresponding to the calculated elevation
+    /* Iterate until the altitude corresponding to the calculated elevation
      * matches the desired altitude (within 0.5 km) */
     do {
 
-        /* Distance from cent of Earth to field point location */
+        /* Distance from center of Earth to field point location */
         *frho=frad+xh;
 
         /* Elevation angle relative to local horizon [deg] */
@@ -266,7 +266,7 @@ void fldpnth(double gdlat, double gdlon, double psi, double bore,
         /* Adjust azimuth and elevation for the oblateness of the Earth */
         geocnvrt(gdlat,gdlon,xal,xel,&ral,&dum);
 
-        /* Obtain the global sphical coordinates of the field point */
+        /* Obtain the global spherical coordinates of the field point */
         fldpnt(rrho,rlat,rlon,ral,rel,r,frho,flat,flon);
 
         /* Recalculate the radius of the Earth beneath the field point (frad) */
@@ -324,15 +324,15 @@ void fldpnth_gs(double gdlat,double gdlon,double psi,double bore,
 
 
 /**
- * This function convts a gate/beam coordinate to geographic
+ * This function converts a gate/beam coordinate to geographic
  * position. The height of the transformation is given by height -
  * if this value is less than 90 then it is assumed to be the
- * elevation angle from the radar. If cent is not equal to zero, then
- * the calculation is assumed to be for the cent of the cell, not the
- * edge. The calculated values are returned in geocentric sphical
+ * elevation angle from the radar. If center is not equal to zero, then
+ * the calculation is assumed to be for the center of the cell, not the
+ * edge. The calculated values are returned in geocenterric spherical
  * coordinates (rho,lat,long).
  **/
-void RPosGeo(int cent, int bcrd, int rcrd,
+void RPosGeo(int center, int bcrd, int rcrd,
              struct RadarSite *pos,
              int frang, int rsep,
              int rxrise, double height,
@@ -345,9 +345,9 @@ void RPosGeo(int cent, int bcrd, int rcrd,
     double bm_edge=0;
     double range_edge=0;
 
-    /* If not calculating cent position of range-beam cell then calculate
-     * position of near-left corn instead */
-    if (cent==0) {
+    /* If not calculating center position of range-beam cell then calculate
+     * position of near-left corner instead */
+    if (center==0) {
         bm_edge=-pos->bmsep*0.5;
         range_edge=-0.5*rsep*20/3;
     }
@@ -367,7 +367,7 @@ void RPosGeo(int cent, int bcrd, int rcrd,
      * elevation angle [deg], so we calculat the field point height */
     if (height < 90) height=-RE+sqrt((RE*RE)+2*d*RE*sind(height)+(d*d));
 
-    /* Calculate the geocentric coordinates of the field point */
+    /* Calculate the geocenterric coordinates of the field point */
     fldpnth(pos->geolat,pos->geolon,psi,pos->boresite,
             height,d,rho,lat,lng,chisham);
 
@@ -375,7 +375,7 @@ void RPosGeo(int cent, int bcrd, int rcrd,
 
 
 
-void RPosMag(int cent,int bcrd,int rcrd,
+void RPosMag(int center,int bcrd,int rcrd,
              struct RadarSite *pos,
              int frang,int rsep,int rxrise,double height,
              double *rho,double *lat,double *lng,
@@ -389,7 +389,7 @@ void RPosMag(int cent,int bcrd,int rcrd,
     double range_edge=0;
     double offset=0;
 
-    if (cent==0) {
+    if (center==0) {
         bm_edge=-pos->bmsep*0.5;
         range_edge=-0.5*rsep*20/3;
     }
@@ -412,7 +412,7 @@ void RPosMag(int cent,int bcrd,int rcrd,
 
 
 
-void RPosCubic(int cent,int bcrd,int rcrd,
+void RPosCubic(int center,int bcrd,int rcrd,
                struct RadarSite *pos,
                int frang,int rsep,int rxrise,double height,
                double *x,double *y,double *z) {
@@ -427,7 +427,7 @@ void RPosCubic(int cent,int bcrd,int rcrd,
 
     int chisham=0;
 
-    if (cent==0) {
+    if (center==0) {
         bm_edge=-pos->bmsep*0.5;
         range_edge=-0.5*rsep*20/3;
     }
@@ -443,7 +443,7 @@ void RPosCubic(int cent,int bcrd,int rcrd,
     fldpnth(pos->geolat,pos->geolon,psi,pos->boresite,
             height,d,&rho,&lat,&lng,chisham);
 
-    /* convt to x,y,z (normalized to the unit sphere) */
+    /* convert to x,y,z (normalized to the unit sphere) */
 
     lng=90-lng;
     *x=rho*cos(lng*PI/180.0)*cos(lat*PI/180.0)/RE;
@@ -454,7 +454,7 @@ void RPosCubic(int cent,int bcrd,int rcrd,
 
 
 
-void RPosGeoGS(int cent,int bcrd,int rcrd,
+void RPosGeoGS(int center,int bcrd,int rcrd,
                struct RadarSite *pos,
                int frang,int rsep,int rxrise,double height,
                double *rho,double *lat,double *lng) {
@@ -465,7 +465,7 @@ void RPosGeoGS(int cent,int bcrd,int rcrd,
     double bm_edge=0;
     double range_edge=0;
 
-    if (cent==0) {
+    if (center==0) {
         bm_edge=-pos->bmsep*0.5;
         range_edge=-0.5*rsep*20/3;
     }
@@ -485,7 +485,7 @@ void RPosGeoGS(int cent,int bcrd,int rcrd,
 
 
 
-void RPosMagGS(int cent,int bcrd,int rcrd,
+void RPosMagGS(int center,int bcrd,int rcrd,
                struct RadarSite *pos,
                int frang,int rsep,int rxrise,double height,
                double *rho,double *lat,double *lng) {
@@ -497,7 +497,7 @@ void RPosMagGS(int cent,int bcrd,int rcrd,
     double bm_edge=0;
     double range_edge=0;
 
-    if (cent==0) {
+    if (center==0) {
         bm_edge=-pos->bmsep*0.5;
         range_edge=-0.5*rsep*20/3;
     }
@@ -520,7 +520,7 @@ void RPosMagGS(int cent,int bcrd,int rcrd,
 
 
 
-void RPosCubicGS(int cent,int bcrd,int rcrd,
+void RPosCubicGS(int center,int bcrd,int rcrd,
                  struct RadarSite *pos,
                  int frang,int rsep,int rxrise,double height,
                  double *x,double *y,double *z) {
@@ -533,7 +533,7 @@ void RPosCubicGS(int cent,int bcrd,int rcrd,
     double bm_edge=0;
     double range_edge=0;
 
-    if (cent==0) {
+    if (center==0) {
         bm_edge=-pos->bmsep*0.5;
         range_edge=-0.5*rsep*20/3;
     }
@@ -549,7 +549,7 @@ void RPosCubicGS(int cent,int bcrd,int rcrd,
     fldpnth_gs(pos->geolat,pos->geolon,psi,pos->boresite,
                height,d,&rho,&lat,&lng);
 
-    /* convt to x,y,z (normalized to the unit sphere) */
+    /* conervt to x,y,z (normalized to the unit sphere) */
 
     lng=90-lng;
     *x=rho*cos(lng*PI/180.0)*cos(lat*PI/180.0)/RE;
