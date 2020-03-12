@@ -1,4 +1,4 @@
-/*Copyright (C) 2016  SuperDARN Canada
+/*Copyright (C) 2016  SuperDARN Canada, University of Saskatchewan
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -16,9 +16,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 /*
 ACF determinations from fitted parameters
 
-Keith Kotyk
-ISAS
-July 2015
+author(s): Keith Kotyk
+modifications: 
+    2020-03-11 Marina Schmidt (SuperDARN Canada) removed all defined constants 
+                              and include rmath.h
 
 */
 

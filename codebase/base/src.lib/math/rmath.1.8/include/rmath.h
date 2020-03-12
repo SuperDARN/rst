@@ -1,6 +1,10 @@
 /* rmath.h
    =======
    Author: R.J.Barnes
+
+Modifitcations:
+    2020-03-11 Marina Schmidt added RST defined constants and changed _COMPLEX 
+                              to _COMPLEX_H so complex.h can be used
 */
 
 
