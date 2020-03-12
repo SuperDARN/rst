@@ -5,7 +5,10 @@
 <location>src.bin/rfile/index_file</location>
 <syntax>index_file --help</syntax>
 <syntax>index_file [<ar>name</ar>]</syntax>
+
 <option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
 </option>
 <option><on><ar>name</ar></on><od>filename of the rFile format file, if this is omitted the file will be read from standard input.</od>
 </option>
@@ -14,12 +17,10 @@
 <description><p>Generates an index of a data file in the rFile data format. The index is written to standard output.</p>
 <p>The index contains the start and end times of each record, together with the file offset of the start of each record.</p>
 </description>
+
 <example>
 <command>index_file test.dat &gt; test.inx</command>
 <description>Generates an index of the data file "<code>test.dat</code>" and stores it in the file "<code>test.inx</code>".</description>
 </example>
-
- 
-
 
 </binary>
