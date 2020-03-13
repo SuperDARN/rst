@@ -64,7 +64,7 @@ double slant_range(int frang, int rsep,
 
 
 /**
- * Converts from geodetic coordinates (gdlat,gdlon) to geocenterric spherical
+ * Converts from geodetic coordinates (gdlat,gdlon) to geocentric spherical
  * coordinates (glat,glon). The radius of the Earth (gdrho) and the deviation
  * off the vertical (del) are calculated. The WGS 84 oblate spheroid model
  * of the Earth is adopted.
@@ -81,27 +81,27 @@ void geodtgc(int iopt, double *gdlat, double *gdlon,
     /* Ellipsoid semi-minor axis */
     b=a*(1.0-f);
 
-    /* Second eccenterricity squared */
+    /* Second eccentricity squared */
     e2=(a*a)/(b*b)-1;
 
     if (iopt>0) {
 
-        /* Convert geodetic latitude/longitude to geocenterric [deg] */
+        /* Convert geodetic latitude/longitude to geocentric [deg] */
         *glat=atand( (b*b)/(a*a)*tand(*gdlat));
         *glon=*gdlon;
 
-        /* Convert geocenterric longitude to +/- 180 degrees */
+        /* Convert geocentric longitude to +/- 180 degrees */
         if (*glon > 180) *glon=*glon-360;
 
     } else {
 
-        /* Convert geocenterric latitude/longitude to geodetic [deg] */
+        /* Convert geocentric latitude/longitude to geodetic [deg] */
         *gdlat=atand( (a*a)/(b*b)*tand(*glat));
         *gdlon=*glon;
 
     }
 
-    /* Calculate the geocenterric Earth radius at the geodetic latitue [km] */
+    /* Calculate the geocentric Earth radius at the geodetic latitude [km] */
     *grho=a/sqrt(1.0+e2*sind(*glat)*sind(*glat));
 
     /* Calculate the deviation of the vertical [deg] */
@@ -112,8 +112,8 @@ void geodtgc(int iopt, double *gdlat, double *gdlon,
 
 
 /**
- * Calculates the geocenterric coordinates (frho,flat,flon) of a field point given
- * the angular geocenterric coordinates (rrho,rlat,rlon) of the point of origin,
+ * Calculates the geocentric coordinates (frho,flat,flon) of a field point given
+ * the angular geocentric coordinates (rrho,rlat,rlon) of the point of origin,
  * the azimuth (ral), elevation (rel), and slant range (r).
  **/
 void fldpnt(double rrho, double rlat, double rlon, double ral,
@@ -184,7 +184,7 @@ void geocnvrt(double gdlat, double gdlon,
 
 
 /**
- * Calculates the geocenterric coordinates (frho,flat,flon) of a radar field point,
+ * Calculates the geocentric coordinates (frho,flat,flon) of a radar field point,
  * using either the standard or Chisham virtual height model.
  **/
 void fldpnth(double gdlat, double gdlon, double psi, double bore,
@@ -329,7 +329,7 @@ void fldpnth_gs(double gdlat,double gdlon,double psi,double bore,
  * if this value is less than 90 then it is assumed to be the
  * elevation angle from the radar. If center is not equal to zero, then
  * the calculation is assumed to be for the center of the cell, not the
- * edge. The calculated values are returned in geocenterric spherical
+ * edge. The calculated values are returned in geocentric spherical
  * coordinates (rho,lat,long).
  **/
 void RPosGeo(int center, int bcrd, int rcrd,
@@ -367,7 +367,7 @@ void RPosGeo(int center, int bcrd, int rcrd,
      * elevation angle [deg], so we calculat the field point height */
     if (height < 90) height=-RE+sqrt((RE*RE)+2*d*RE*sind(height)+(d*d));
 
-    /* Calculate the geocenterric coordinates of the field point */
+    /* Calculate the geocentric coordinates of the field point */
     fldpnth(pos->geolat,pos->geolon,psi,pos->boresite,
             height,d,rho,lat,lng,chisham);
 
@@ -549,7 +549,7 @@ void RPosCubicGS(int center,int bcrd,int rcrd,
     fldpnth_gs(pos->geolat,pos->geolon,psi,pos->boresite,
                height,d,&rho,&lat,&lng);
 
-    /* conervt to x,y,z (normalized to the unit sphere) */
+    /* convert to x,y,z (normalized to the unit sphere) */
 
     lng=90-lng;
     *x=rho*cos(lng*PI/180.0)*cos(lat*PI/180.0)/RE;
