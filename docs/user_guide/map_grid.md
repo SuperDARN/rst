@@ -1,6 +1,8 @@
 <!--
-(C) copyright 2019 University Centre in Svalbard (UNIS)
+(C) Copyright 2019 University Centre in Svalbard (UNIS)
 author: Emma Bland, UNIS
+Modifications:
+    2020-03-14 Emma Bland updated instructions on how to add IMF data
 -->
 # GRID to MAP
 Map files contain the same information as grid files, and also contain the fitted coefficients describing the convection pattern. They are produced from combined grid files using a multi-step process:
@@ -24,7 +26,17 @@ map_fit  20181001.model.map > 20181001.north.map
 ```
 
 ## Supplying IMF data
-IMF data can be supplied as a text file to the `map_addimf` routine using `-if [imffile]` 
+
+IMF data from the ACE and WIND satellites can be supplied in CDF format using the `-ace` or `-wind` options in `map_addimf`. 
+```
+map_addimf -ace 20181001.hmb.map > 20181001.imf.map
+```
+The CDF files can be obtained from CDAWeb (https://cdaweb.gsfc.nasa.gov/). The ACE files have the form `ac_k1_mfi_[date]_v[xx].cdf` and should be placed in the directory `$ISTP_PATH/ace/[year]`. You can edit the `$ISTP_PATH` environment variable in `$RST_PATH/.profile/superdarn.bash`.
+
+!!! Warning
+    By default, RST loads 24 hours of IMF data. If you need to load data for a longer time period, use `-ex hr:mt`.
+
+IMF data can also be supplied as a text file to the `map_addimf` routine using `-if [imffile]` 
 The file should have the columns shown below. The IMF values will change only when a subsequent line the IMF file alters it.
 
 ```
