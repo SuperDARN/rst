@@ -286,7 +286,7 @@ int GridTableAddBeam(struct GridTable *ptr,
     if (bm==NULL) return -1;
 
     /* Inertial velocity correction as a function of radar geodetic latitude [m/s] */
-    velco=(2*PI/86400.0)*6356.779*1000*cos(PI*pos->geolat/180.0);
+    velco=(2*PI/86400.0)*RE*1000*cos(PI*pos->geolat/180.0);
 
     /* If the GridBm structure doesn't exist in GridTable then create one,
      * otherwise add another beam to the array and update the beam number */
