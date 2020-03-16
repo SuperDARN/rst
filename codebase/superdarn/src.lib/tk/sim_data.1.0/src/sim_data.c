@@ -35,6 +35,7 @@ THE SOFTWARE.
 #include <time.h>
 #include <complex.h>
 #include "sim_data.h"
+#include "rmath.h"
 
 /*this is a C version of Pasha's IDL data generator*/
 
@@ -273,14 +274,13 @@ void sim_data(double *t_d, double *t_g, double *t_c, double *v_dop, int * qflg,
   ********************************************************/
   int n = 2000;                             /*Number of scatterers (per range gate per integration period)*/
   double t_n = dt*1.e-2;                    /*Irregularity decay time for white noise*/
-  double c = 3.e8;                          /*Speed of light (m/s)*/
   double pwrtot = 0.;                       /*total power, used to normalize ACFs*/
   long numtot = 0;                          /*number of good ACFs*/
   double npwrtot = 0.;                      /*total noise power, used to normalize noise ACFs*/
   long nnumtot = 0;                         /*number of good noise ACFs*/
   long offset = 3300;                       /*time offset (in samples, ~1s) to allow irregularity*/
                                             /*generation/decay to reach steady state*/
-  double rngsep = smsep*c/2.;               /*range gate spearation*/
+  double rngsep = smsep*C/2.;               /*range gate spearation*/
   double smptime;                           /*time a raw sample is recorded*/
   long n_samples = (long)(pulse_t[n_pul-1]*dt/smsep+nrang+lagfr);      /*number of samples in 1 pulse sequence*/
 
@@ -289,7 +289,7 @@ void sim_data(double *t_d, double *t_g, double *t_c, double *v_dop, int * qflg,
   double rng = 0,taus,amplitude,phase;
   long seed = time(NULL)*time(NULL);        /*a seed for random number generation*/
 
-  double lambda = c/freq;
+  double lambda = C/freq;
 
   /*control program dependent variables*/
   taus = dt/smsep;                                      /*lag time in samples*/
