@@ -1,6 +1,10 @@
 /* rmath.h
    =======
    Author: R.J.Barnes
+
+Modifitcations:
+    2020-03-11 Marina Schmidt added RST defined constants and changed _COMPLEX 
+                              to _COMPLEX_H so complex.h can be used
 */
 
 
@@ -34,23 +38,28 @@
 #ifndef _RMATH_H
 #define _RMATH_H
 
-#ifndef _COMPLEX
+/*Need to use _COMPLEX_H to not
+ * override the complex.h definition*/
+#ifndef _COMPLEX_H
 struct complex {
     double x,y;
 };
 #define cabs(a) sqrt((a.x*a.x)+(a.y*a.y))
 #endif
 
-#define C 2.997e+8
+/*Speed of Light in m/s*/
+#define C 2.99792458e+8
 #define LN_TO_LOG 4.342944819
 
 #ifndef HUGE_VAL
 #define HUGE_VAL 1.0e36                /* default value of HUGE */
 #endif
  
-#ifndef PI
+/*PI constant*/
 #define PI 3.14159265358979323846
-#endif
+
+/*Earth's mean spherical radius (average distance from center to the actual surface everywhere) in km*/
+#define RE 6371.2 
 
 #define asind(x) asin(x)*180/PI
 #define acosd(x) acos(x)*180/PI
@@ -60,9 +69,6 @@ struct complex {
 #define atand(x) atan(x)*180.0/PI
 #define atan2d(x,y) atan2(x,y)*180.0/PI
 #endif
-
-
-
 
 
 

@@ -32,7 +32,7 @@
 #include <math.h>
 #include <string.h>
 #include "rfbuffer.h"
-
+#include "rmath.h"
 
 
 #ifndef PI

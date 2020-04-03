@@ -699,7 +699,8 @@ int main(int argc,char *argv[]) {
 
   /* function pointer for MLT */
   double (*MLTCnv)(int, int, double);
-
+  double dec,eqt,LsoT,LT,Hangle;
+  
   prm=RadarParmMake();
   fit=FitMake();
   cfit=CFitMake();
@@ -1529,7 +1530,6 @@ int main(int argc,char *argv[]) {
 
       if (magflg) tme_shft=-(*MLTCnv)(yr,yrsec,0.0)*15.0;
       else {
-        double dec,eqt,LsoT,LT,Hangle;
         if (lstflg) {
           dec=SZASolarDec(yr,mo,dy,hr,mt,sc);
           eqt=SZAEqOfTime(yr,mo,dy,hr,mt,sc);

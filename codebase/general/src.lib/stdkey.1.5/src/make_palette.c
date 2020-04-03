@@ -29,11 +29,12 @@
 
 #include <stdio.h>
 #include <math.h>
+#include "rmath.h"
 
 #ifndef PI
 #define PI 3.14159265358979323846
 #endif
-
+ 
 
 
 int out_reg[256][3];

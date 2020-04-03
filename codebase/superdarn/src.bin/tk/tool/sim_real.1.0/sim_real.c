@@ -37,6 +37,7 @@ THE SOFTWARE.
 #include <sys/time.h>
 #include <zlib.h>
 #include "rtypes.h"
+#include "rmath.h"
 #include "dmap.h"
 #include "sim_data.h"
 #include "rtypes.h"
@@ -174,7 +175,6 @@ int main(int argc,char *argv[])
   double t_d = .04;                         /*Irregualrity decay time s*/
   double w = -9999.;                        /*spectral width*/
   double v_dop =450.;                       /*Background velocity (m/s)*/
-  double c = 3.e8;                          /*Speed of light (m/s)*/
   double freq = 12.e6;                      /*transmit frequency*/
   double amp0 = 1.;                         /*amplitude scaling factor*/
   int noise_flg = 1;                        /*flag to indicate whether white noise is included*/
@@ -269,7 +269,7 @@ int main(int argc,char *argv[])
 		dt *= 1.e-6;
 		freq *= 1.e3;
 
-		double lambda = c/freq;
+		double lambda = C/freq;
 		if(w != -9999.)
 			t_d = lambda/(w*2.*PI);
 

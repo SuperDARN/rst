@@ -2,10 +2,10 @@
    ==========
 */
 
+#include "rmath.h"
 #ifndef _sim_data_H
 #define _sim_data_H
 
-#define PI 3.14159
 
 struct irreg
 {
