@@ -58,6 +58,28 @@ int rst_opterr(char *txt) {
   return(-1);
 }
 
+void free_files(struct OldRawFp *rawfp, FILE *fp, FILE *fitfp, FILE *inxfp)
+{
+    if (rawfp != NULL) OldRawClose(rawfp);
+    if (fp != NULL) fclose(fp);
+    if (fitfp != NULL) fclose(fitfp);
+    if (inxfp != NULL) fclose(inxfp);
+}
+
+void free_fitstructs(FITPRMS *fit_prms, struct FitData *fit, struct FitBlock *fblk)
+{
+    if (fit != NULL) FitFree(fit);
+    if (fit_prms != NULL) FitacfFree(fit_prms);
+    if (fblk != NULL) FitACFFree(fblk); 
+}
+
+void free_radarstructs(struct RadarNetwork *network, struct RadarParm *prm, struct RawData *raw)
+{
+    if (network != NULL) RadarFree(network);
+    if (prm != NULL) RadarParmFree(prm);
+    if (raw != NULL) RawFree(raw);
+}
+
 int main(int argc,char *argv[]) {
 
   unsigned char old=0;
@@ -65,6 +87,7 @@ int main(int argc,char *argv[]) {
   char *envstr;
   int status;
   int arg;
+  int return_value = 0; 
 
   unsigned char help=0;
   unsigned char option=0;
@@ -87,12 +110,8 @@ int main(int argc,char *argv[]) {
   char tmstr[40];
 
   char* fitacf_version_s = NULL;
-  int fitacf_version;
+  int fitacf_version = 25;
   FITPRMS *fit_prms = NULL;
-
-  prm=RadarParmMake();
-  raw=RawMake();
-  fit=FitMake();
 
   /*feenableexcept(FE_INVALID | FE_OVERFLOW);*/
 
@@ -110,6 +129,26 @@ int main(int argc,char *argv[]) {
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
   if (arg==-1) {
+     fprintf(stderr,"Error processing options\n");
+      OptionFree(&opt);
+      exit(-1);
+  }
+
+  if (option==1) {
+    OptionDump(stdout,&opt);
+    OptionFree(&opt);
+    exit(0);
+  }
+
+  if (version==1) {
+    OptionVersion(stdout);
+    OptionFree(&opt);
+    exit(0);
+  }
+
+  if ((old) && (argc-arg<2)) {
+    OptionPrintInfo(stdout,hlpstr);
+    OptionFree(&opt);  
     exit(-1);
   }
 
@@ -122,18 +161,14 @@ int main(int argc,char *argv[]) {
     }
     else {
       fprintf(stderr, "The requested fitacf version does not exist\n");
+      OptionFree(&opt);
       exit(-1);
     }
-  }
-  else {
-    fitacf_version = 25;
   }
 
   if (vb) {
     fprintf(stderr, "Using fitacf version: %0.1f\n", (float)fitacf_version/10);
   }
-
-
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
@@ -155,7 +190,8 @@ int main(int argc,char *argv[]) {
     OptionPrintInfo(stdout,hlpstr);
     exit(-1);
   }
-
+ 
+  OptionFree(&opt);
   envstr=getenv("SD_RADAR");
   if (envstr==NULL) {
     fprintf(stderr,"Environment variable 'SD_RADAR' must be defined.\n");
@@ -179,10 +215,34 @@ int main(int argc,char *argv[]) {
   envstr=getenv("SD_HDWPATH");
   if (envstr==NULL) {
     fprintf(stderr,"Environment variable 'SD_HDWPATH' must be defined.\n");
+    RadarFree(network);
     exit(-1);
   }
 
-  RadarLoadHardware(envstr,network);
+  return_value = RadarLoadHardware(envstr,network);
+  if (return_value == -1)
+  {
+      fprintf(stderr,"Could not load hardware file\n");
+      RadarFree(network);
+      free(envstr);
+      exit(-1);
+  }
+
+
+  prm=RadarParmMake();
+  if (prm == NULL)
+  {
+      RadarFree(network);
+      fprintf(stderr,"Error: cannot create Radar parameter\n");
+      exit(-1);
+  }
+  raw=RawMake();
+  if (raw == NULL)
+  {
+      fprintf(stderr,"Error: cannot cread Rawacf structure\n");
+      free_radarstructs(network, prm, raw);
+      exit(-1);
+  }
 
   if (old) {
      rawfp=OldRawOpen(argv[arg],NULL);
@@ -191,17 +251,22 @@ int main(int argc,char *argv[]) {
        exit(-1);
      } else if (rawfp->error == -2) {
        /* Error case where num_bytes is less than 0 */
+       OldRawClose(rawfp);
        free(rawfp);
+       free_radarstructs(network, prm, raw);
        exit(-1);
      }
      status=OldRawRead(rawfp,prm,raw);
-  } else {
-    if (arg==argc) fp=stdin;
-    else fp=fopen(argv[arg],"r");
-
+  } 
+  else {
+    if (arg==argc) 
+        fp=stdin;
+    else 
+        fp=fopen(argv[arg],"r");
     if (fp==NULL) {
-      fprintf(stderr,"File not found.\n");
-      exit(-1);
+        fprintf(stderr,"File not found.\n");
+        free_radarstructs(network, prm, raw);
+        exit(-1);
     }
     status=RawFread(fp,prm,raw);
   }
@@ -209,6 +274,8 @@ int main(int argc,char *argv[]) {
   radar=RadarGetRadar(network,prm->stid);
   if (radar==NULL) {
     fprintf(stderr,"Failed to get radar information.\n");
+    free_radarstructs(network, prm, raw);
+    free_files(rawfp, fp, fitfp, inxfp);
     exit(-1);
   }
 
@@ -218,6 +285,8 @@ int main(int argc,char *argv[]) {
 
   if (site==NULL) {
     fprintf(stderr,"Failed to get site information.\n");
+    free_radarstructs(network, prm, raw);
+    free_files(rawfp, fp, fitfp, inxfp);
     exit(-1);
   }
 
@@ -236,14 +305,44 @@ int main(int argc,char *argv[]) {
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
+  fit=FitMake();
+  if (fit == NULL)
+  {
+    fprintf(stderr, "Error: cannot allocate memory for fitdata structure\n");
+    free_radarstructs(network, prm, raw);
+    free_files(rawfp, fp, fitfp, inxfp);
+    exit(-1);
+  }
 
   if (fitacf_version == 30){
       /* Allocate the memory for the FIT parameter structure */
       /* and initialise the values to zero.                  */
       fit_prms = malloc(sizeof(*fit_prms));
+      if (fit_prms == NULL)
+      {
+          fprintf(stderr,"Error: Could not allocate memory for fitacf parameter structure \n");
+          free_radarstructs(network, prm, raw);
+          free_files(rawfp, fp, fitfp, inxfp);
+          free_fitstructs(fit_prms, fit, fblk);
+          exit(-1);
+      }      
+      
       memset(fit_prms, 0, sizeof(*fit_prms));
-      if (Allocate_Fit_Prm(prm, fit_prms) == -1) {
-        exit(-1);
+      if (fit_prms == NULL)
+      {
+          fprintf(stderr,"Error: Could not allocate memory for fitacf parameter structure \n");
+          free_radarstructs(network, prm, raw);
+          free_files(rawfp, fp, fitfp, inxfp);
+          free_fitstructs(fit_prms, fit, fblk);
+          exit(-1);
+      }
+            
+      if (Allocate_Fit_Prm(prm, fit_prms) == -1) { 
+          fprintf(stderr,"Error: Could not allocate space for FITACF 3.0 Parameter\n");
+          free_radarstructs(network, prm, raw);
+          free_files(rawfp, fp, fitfp, inxfp);
+          free_fitstructs(fit_prms, fit, fblk);
+          exit(-1);
       }
 
       /* If the allocation was successful, copy the parameters and */
@@ -254,8 +353,11 @@ int main(int argc,char *argv[]) {
         /*FitacfFree(fit_prms);*/
     	}
       else {
-        fprintf(stderr, "Unable to allocate fit_prms!\n");
-        exit(-1);
+          fprintf(stderr, "Unable to allocate fit_prms!\n");
+          free_radarstructs(network, prm, raw);
+          free_files(rawfp, fp, fitfp, inxfp);
+          free_fitstructs(fit_prms, fit, fblk);
+          exit(-1);
       }
   }
   else if (fitacf_version == 25) {
@@ -263,22 +365,24 @@ int main(int argc,char *argv[]) {
     fblk->prm.old_elev = old_elev;          /* passing in old_elev flag */
     FitACF(prm,raw,fblk,fit);
   }
-  else {
-    fprintf(stderr, "The requested fitacf version does not exist\n");
-    exit(-1);
-  }
 
   if (old) {
     char vstr[256];
     fitfp=fopen(argv[arg+1],"w");
     if (fitfp==NULL) {
-      fprintf(stderr,"Could not create fit file.\n");
-      exit(-1);
+        fprintf(stderr,"Could not create fit file.\n");
+        free_radarstructs(network, prm, raw);
+        free_files(rawfp, fp, fitfp, inxfp);
+        free_fitstructs(fit_prms, fit, fblk);
+        exit(-1);
     }
     if (argc-arg>2) {
       inxfp=fopen(argv[arg+2],"w");
       if (inxfp==NULL) {
         fprintf(stderr,"Could not create inx file.\n");
+        free_radarstructs(network, prm, raw);
+        free_files(rawfp, fp, fitfp, inxfp);
+        free_fitstructs(fit_prms, fit, fblk);
         exit(-1);
       }
     }
@@ -287,16 +391,29 @@ int main(int argc,char *argv[]) {
     if (inxfp !=NULL) OldFitInxHeaderFwrite(inxfp,prm);
   }
 
-
-
   do {
 
 
     ctime = time((time_t) 0);
-    RadarParmSetOriginCommand(prm,command);
+    if (RadarParmSetOriginCommand(prm,command) == -1) 
+    {
+        fprintf(stderr,"Error: cannot set Origin Coommand\n");
+        free_radarstructs(network, prm, raw);
+        free_files(rawfp, fp, fitfp, inxfp);
+        free_fitstructs('' fit_prms, fit, fblk);
+        exit(-1);
+    }
+    
     strcpy(tmstr,asctime(gmtime(&ctime)));
     tmstr[24]=0;
-    RadarParmSetOriginTime(prm,tmstr);
+    if (RadarParmSetOriginTime(prm,tmstr) == -1)
+    {
+        fprintf(stderr,"Error: cannot set Origin Time\n");
+        free_radarstructs(network, prm, raw);
+        free_files(rawfp, fp, fitfp, inxfp);
+        free_fitstructs('' fit_prms, fit, fblk);
+        exit(-1);
+    }
 
     if (old) {
        dnum=OldFitFwrite(fitfp,prm,fit,NULL);
@@ -317,7 +434,11 @@ int main(int argc,char *argv[]) {
       if (fitacf_version == 30) {
 
         if (Allocate_Fit_Prm(prm, fit_prms) == -1) {
-          exit(-1);
+            fprintf(stderr,"Error: allocatte space for fitacf record\n");
+            free_radarstructs(network, prm, raw);
+            free_files(rawfp, fp, fitfp, inxfp);
+            free_fitstructs('' fit_prms, fit, fblk);            
+            exit(-1);
         }
 
         /* If the allocation was successful, copy the parameters and */
@@ -328,32 +449,31 @@ int main(int argc,char *argv[]) {
           /*FitacfFree(fit_prms);*/
         }
         else {
-          fprintf(stderr, "Unable to allocate fit_prms!\n");
-          exit(-1);
+            fprintf(stderr, "Unable to allocate fit_prms!\n");
+            free_radarstructs(network, prm, raw);
+            free_files(rawfp, fp, fitfp, inxfp);
+            free_fitstructs('' fit_prms, fit, fblk);
+            exit(-1);
         }
       }
       else if (fitacf_version == 25) {
         FitACF(prm,raw,fblk,fit);
       }
       else {
-        fprintf(stderr, "The requested fitacf version does not exist\n");
-        exit(-1);
+            fprintf(stderr, "The requested fitacf version does not exist\n");
+            free_radarstructs(network, prm, raw);
+            free_files(rawfp, fp, fitfp, inxfp);
+            free_fitstructs('' fit_prms, fit, fblk);
+            exit(-1);
       }
     }
 
 
   } while (status==0);
-  FitFree(fit);
 
-  if (fitacf_version == 30) {
-    FitacfFree(fit_prms);
-  }
-  else if (fitacf_version == 25) {
-    FitACFFree(fblk);
-  }
-  else {
-
-  }
+  free_radarstructs(network, prm, raw);
+  free_files(rawfp, fp, fitfp, inxfp);
+  free_fitstructs('' fit_prms, fit, fblk);
 
   if (old) OldRawClose(rawfp);
   return 0;
