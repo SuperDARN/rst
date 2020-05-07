@@ -79,6 +79,12 @@ int RawEncode(struct DataMap *ptr,struct RadarParm *prm,struct RawData *raw) {
     xnum[1]=0;
     xnum[2]=0;
   }
+
+  if (raw->acfd[0] == NULL) {
+    DataMapStoreArray(ptr,"pwr0",DATAFLOAT,1,&p0num,raw->pwr0);
+    fprintf(stderr,"Warning: acfd array missing\n");
+    return 0;
+  }
   
   if (snum !=0) slist=DataMapStoreArray(ptr,"slist",DATASHORT,1,&snum,NULL);
   DataMapStoreArray(ptr,"pwr0",DATAFLOAT,1,&p0num,raw->pwr0);
