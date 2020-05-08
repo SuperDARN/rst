@@ -400,7 +400,7 @@ int main(int argc,char *argv[]) {
         fprintf(stderr,"Error: cannot set Origin Coommand\n");
         free_radarstructs(network, prm, raw);
         free_files(rawfp, fp, fitfp, inxfp);
-        free_fitstructs('' fit_prms, fit, fblk);
+        free_fitstructs(fit_prms, fit, fblk);
         exit(-1);
     }
     
@@ -411,7 +411,7 @@ int main(int argc,char *argv[]) {
         fprintf(stderr,"Error: cannot set Origin Time\n");
         free_radarstructs(network, prm, raw);
         free_files(rawfp, fp, fitfp, inxfp);
-        free_fitstructs('' fit_prms, fit, fblk);
+        free_fitstructs(fit_prms, fit, fblk);
         exit(-1);
     }
 
@@ -437,7 +437,7 @@ int main(int argc,char *argv[]) {
             fprintf(stderr,"Error: allocatte space for fitacf record\n");
             free_radarstructs(network, prm, raw);
             free_files(rawfp, fp, fitfp, inxfp);
-            free_fitstructs('' fit_prms, fit, fblk);            
+            free_fitstructs(fit_prms, fit, fblk);            
             exit(-1);
         }
 
@@ -452,7 +452,7 @@ int main(int argc,char *argv[]) {
             fprintf(stderr, "Unable to allocate fit_prms!\n");
             free_radarstructs(network, prm, raw);
             free_files(rawfp, fp, fitfp, inxfp);
-            free_fitstructs('' fit_prms, fit, fblk);
+            free_fitstructs(fit_prms, fit, fblk);
             exit(-1);
         }
       }
@@ -463,7 +463,7 @@ int main(int argc,char *argv[]) {
             fprintf(stderr, "The requested fitacf version does not exist\n");
             free_radarstructs(network, prm, raw);
             free_files(rawfp, fp, fitfp, inxfp);
-            free_fitstructs('' fit_prms, fit, fblk);
+            free_fitstructs(fit_prms, fit, fblk);
             exit(-1);
       }
     }
@@ -473,7 +473,7 @@ int main(int argc,char *argv[]) {
 
   free_radarstructs(network, prm, raw);
   free_files(rawfp, fp, fitfp, inxfp);
-  free_fitstructs('' fit_prms, fit, fblk);
+  free_fitstructs(fit_prms, fit, fblk);
 
   if (old) OldRawClose(rawfp);
   return 0;
