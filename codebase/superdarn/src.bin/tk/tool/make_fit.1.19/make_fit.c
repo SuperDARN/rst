@@ -6,6 +6,8 @@
 /*
  (c) 2010 JHU/APL & Others - Please Consult LICENSE.superdarn-rst.3.2-beta-4-g32f7302.txt for more information.
 
+Modifitactions: 
+2020-05-07 Marina Schmidt Added Free functioons
 
 
 */
@@ -58,6 +60,19 @@ int rst_opterr(char *txt) {
   return(-1);
 }
 
+/*Folloowing coding style: https://www.cs.swarthmore.edu/~newhall/unixhelp/c_codestyle.html*/
+
+/*
+ *Function: free_files
+ *---------------------
+ *Frees file types used in make_fit
+ *  rawfp: old RAWACF file pointer 
+ *  fp: new RAWACF file pointer
+ *  fitfp: FITACF file pointer
+ *  inxfp: Index file pointer
+ *
+ *  returns: nothing
+ */
 void free_files(struct OldRawFp *rawfp, FILE *fp, FILE *fitfp, FILE *inxfp)
 {
     if (rawfp != NULL) OldRawClose(rawfp);
@@ -66,6 +81,15 @@ void free_files(struct OldRawFp *rawfp, FILE *fp, FILE *fitfp, FILE *inxfp)
     if (inxfp != NULL) fclose(inxfp);
 }
 
+/*
+ *Function: free_fitstructs
+ *-----------------------------
+ *  fit_prms: fitacf parameters used in FITACF 3.0 algorithm
+ *  fit: fitacf data structure
+ *  FitBlock: fitacf block used in FITACF 2.5 algorithm
+ * 
+ *  returns: nothing
+ */
 void free_fitstructs(FITPRMS *fit_prms, struct FitData *fit, struct FitBlock *fblk)
 {
     if (fit != NULL) FitFree(fit);
@@ -73,6 +97,15 @@ void free_fitstructs(FITPRMS *fit_prms, struct FitData *fit, struct FitBlock *fb
     if (fblk != NULL) FitACFFree(fblk); 
 }
 
+/*
+ *Function: free_radarstructs
+ *---------------------------
+ *  network: Radar network structure
+ *  RadarParam: radar parameter structure
+ *  RawData: rawacf data structure
+ *
+ *  return: nothing
+ */
 void free_radarstructs(struct RadarNetwork *network, struct RadarParm *prm, struct RawData *raw)
 {
     if (network != NULL) RadarFree(network);
