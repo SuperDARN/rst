@@ -7,7 +7,7 @@
 # Darwin (GCC)
 #
 
-CFLAGS = -Wall -O3 -ansi -D_GNU_SOURCE -D_DARWIN -I/opt/local/include
+CFLAGS = -Wall -pedantic -O3 -D_GNU_SOURCE -D_DARWIN -I/opt/local/include
 
 ifdef XPATH
   ifdef XLIB
