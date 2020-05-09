@@ -31,7 +31,7 @@ If a GRID file is produced for 24-hours using the `-c` option in `make_grid` (se
 After GRID files are produced for seperate radars, they are sometimes further combined with other radars GRID files to meka a GRD file. Similar to GRID file just with multiple radar data included. 
 See [combine_grid](../../user_guide/make_grid.md) on how to make GRD files. 
 
-The commone naming convetion for 24-hr GRD files are:
+The common naming convention for 24-hr GRD files is:
 
 > YYYYMMDD.grd  
 
@@ -49,7 +49,7 @@ GRID files contain a record that contains scalar and vector fields.
 | *start.hour*  | *hrs*      | ***short***  | Start Hour of the integration period                       |
 | *start.minute*  | *min*      | ***short***  | Start Minute of the integration period                     |
 | *start.second*  | *s*        | ***short***  | Start Seconds of the integration period                    |
-| *end.yearr*    | **None**   | ***short***  | End Year of the integration period                         |
+| *end.year*    | **None**   | ***short***  | End Year of the integration period                         |
 | *end.month*    | **None**   | ***short***  | End Month number (not padded) of the integration period    |
 | *end.day*    | **None**   | ***short***  | End Day (not padded) of the integration period             |
 | *end.hour*    | *hrs*      | ***short***  | End Hour of the integration period                         |
@@ -67,24 +67,24 @@ GRID files contain a record that contains scalar and vector fields.
 | :---------- | :-----:         | :-------:      | :---:       | :---                                                                        |
 | *stid*      |  **None**       |  *[numstid]*     | ***short*** | A list of of station id's that provided data for the record |
 | *channel*   |  **None**       |  *[numstid]*     | ***short*** | A list of channel numbers associated to the station id the record |
-| *nvec*      | **None** | *[numstid]*  | ***short*** | Number of vectors per station|
+| *nvec*      | **None** | *[numstid]*  | ***short*** | Number of vectors for each station|
 | *freq*      | *kHz* | *[numstid]* | ***float*** | Frequency each radar was running for that record |
 | *major.revision* | **None** | *[numstid]* | ***short*** | Major algorithm number per station number|
 | *minor.revision* | **None** | *[numstid]* | ***short*** | Minor algorithm number per station number|
-| *proogram.id*     | **None** | *[numstid]* | ***short*** | Control program ID per station number 
-| *noise.mean*      | **None** | *[numstid]* | ***float*** | Mean noise per station number |
+| *program.id*     | **None** | *[numstid]* | ***short*** | Control program ID per station number 
+| *noise.mean*      | **None** | *[numstid]* | ***float*** | Mean noise for each radar |
 | *noise.sd*        | **None** | *[numstid]* | ***float*** | Noise Standard deviation per station number |
 | *gsct*            | **None** | *[numstid]* | ***short*** | A list of groundscatter flags associated to each radars data for the given record |
 | *v.min*           | *m/s* | *[numstid]* | ***float*** | Velocity minimum threshold per station number |
 | *v.max*           | *m/s* | *[numstid]* | ***float*** | Velocity maximum threshold per station number |
 | *p.min*           | **None** | *[numstid]* | ***float*** | Power minimum threshold per station number |
 | *p.max*           | **None** | *[numstid]* | ***float*** | Power maximum threshold per station number |
-| *w.min*           | *m/s*  | *[numstid]* | ***float*** | Spectral minimum threshold per station number |
-| *w.max*           | *m/s*  | *[numstid]* | ***float*** | Spectral maximum threshold per station number |
+| *w.min*           | *m/s*  | *[numstid]* | ***float*** | Spectral width minimum threshold per station number |
+| *w.max*           | *m/s*  | *[numstid]* | ***float*** | Spectral width maximum threshold per station number |
 | *ve.min*          | *m/s*  | *[numstid]* | ***float*** | Velocity error minimum threshold per station number |
 | *ve.max*          | *m/s*  | *[numstid]* | ***float*** | Velocity error maximum threshold per station number |
 | *vector.mlat*     | *degrees* | *[numv]* | ***float*** | Magnetic Latitude per vector point |
-| *vector.mlon*     | *degrees* | *[numv]* | ***float*** | Magentic Longitutde  per vector point |
+| *vector.mlon*     | *degrees* | *[numv]* | ***float*** | Magnetic Longitude  per vector point |
 | *vector.kvec*     | *degrees*  | *[numv]*   | ***flost*** | Magnetic Azimuth per vector point |
 | *vector.stid*     | **None**  | *[numv]*   | ***short*** | Station identifier per vector point|
 | *vector.channel*  | **None**  | *[numv]*   | ***short*** | Channel number per vector point |  
