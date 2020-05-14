@@ -60,7 +60,7 @@ int rst_opterr(char *txt) {
   return(-1);
 }
 
-/*Folloowing coding style: https://www.cs.swarthmore.edu/~newhall/unixhelp/c_codestyle.html*/
+/*Following coding style: https://www.cs.swarthmore.edu/~newhall/unixhelp/c_codestyle.html*/
 
 /*
  *Function: free_files
@@ -266,13 +266,13 @@ int main(int argc,char *argv[]) {
   if (prm == NULL)
   {
       RadarFree(network);
-      fprintf(stderr,"Error: cannot create Radar parameter\n");
+      fprintf(stderr,"Error: cannot create Radar parameter block\n");
       exit(-1);
   }
   raw=RawMake();
   if (raw == NULL)
   {
-      fprintf(stderr,"Error: cannot cread Rawacf structure\n");
+      fprintf(stderr,"Error: cannot read Rawacf structure\n");
       free_radarstructs(network, prm, raw);
       exit(-1);
   }
@@ -371,7 +371,7 @@ int main(int argc,char *argv[]) {
       }
             
       if (Allocate_Fit_Prm(prm, fit_prms) == -1) { 
-          fprintf(stderr,"Error: Could not allocate space for FITACF 3.0 Parameter\n");
+          fprintf(stderr,"Error: Could not allocate space for FITACF 3.0 Parameter structure\n");
           free_radarstructs(network, prm, raw);
           free_files(rawfp, fp, fitfp, inxfp);
           free_fitstructs(fit_prms, fit, fblk);
@@ -430,7 +430,7 @@ int main(int argc,char *argv[]) {
     ctime = time((time_t) 0);
     if (RadarParmSetOriginCommand(prm,command) == -1) 
     {
-        fprintf(stderr,"Error: cannot set Origin Coommand\n");
+        fprintf(stderr,"Error: cannot set Origin Command\n");
         free_radarstructs(network, prm, raw);
         free_files(rawfp, fp, fitfp, inxfp);
         free_fitstructs(fit_prms, fit, fblk);
@@ -467,7 +467,7 @@ int main(int argc,char *argv[]) {
       if (fitacf_version == 30) {
 
         if (Allocate_Fit_Prm(prm, fit_prms) == -1) {
-            fprintf(stderr,"Error: allocatte space for fitacf record\n");
+            fprintf(stderr,"Error: cannot allocate space for fitacf record\n");
             free_radarstructs(network, prm, raw);
             free_files(rawfp, fp, fitfp, inxfp);
             free_fitstructs(fit_prms, fit, fblk);            
@@ -511,7 +511,6 @@ int main(int argc,char *argv[]) {
   if (old) OldRawClose(rawfp);
   return 0;
 }
-
 
 
 
