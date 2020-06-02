@@ -6,13 +6,13 @@ Disclaimer: License under GNU v3.0, the file is found in the root directory unde
 -->
 # GRID files 
 
-GRID files are post-processed data product from FITACF files.
+GRID files are post-processed data produced from FITACF files.
 
 ## Naming Conventions
 
-### Single GRID files
+### Single radar GRID files
 
-Currently the common naming convention for a GRID file is:
+Currently the common naming convention for a single radar GRID file is:
 
 > YYYYMMDD.HH.mm.ss.<3-letter abbreviation>.grid
 
@@ -65,7 +65,7 @@ GRID files contain a record that contains scalar and vector fields.
 
 | Field name  | Units           | Dimensionality | Data Type   | Description                                                                 |
 | :---------- | :-----:         | :-------:      | :---:       | :---                                                                        |
-| *stid*      |  **None**       |  *[numstid]*     | ***short*** | A list of of station id's that provided data for the record |
+| *stid*      |  **None**       |  *[numstid]*     | ***short*** | A list of of station IDs that provided data for the record |
 | *channel*   |  **None**       |  *[numstid]*     | ***short*** | A list of channel numbers associated to the station id the record |
 | *nvec*      | **None** | *[numstid]*  | ***short*** | Number of vectors for each station|
 | *freq*      | *kHz* | *[numstid]* | ***float*** | Transmitted frequency for each radar |
