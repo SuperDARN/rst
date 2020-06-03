@@ -16,7 +16,7 @@ Currently the common naming convention for a single radar GRID file is:
 
 > YYYYMMDD.HH.mm.ss.<3-letter abbreviation>.grid
 
-SuperDARN radars routinely change operating frequency. Some operating modes use multiple frequencies, either at the same time, or by alternating between frequencies. As a result, some files from some radars include all records for all frequencies in the same file and other radars separate out the individual frequencies into separate files, designated by a channel letter in the file name:
+Some radars provide separate data files for each channel. In this case, the channel is specified after the 3-letter station ID:
 
 > YYYYMMDD.HH.mm.ss.<3-letter abbreviation>.[a-d].grid
 
