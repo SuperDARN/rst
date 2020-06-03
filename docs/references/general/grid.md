@@ -28,7 +28,7 @@ If a GRID file is produced for 24-hours using the `-c` option in `make_grid` (se
 
 ### Combined GRID files 
 
-After GRID files are produced for seperate radars, they are sometimes further combined with other radars GRID files to meka a GRD file. Similar to GRID file just with multiple radar data included. 
+After GRID files are produced for separate radars, they are sometimes further combined with other radars GRID files to make a GRD file. This file has the same format as a GRID file, but includes data from multiple radars. 
 See [combine_grid](../../user_guide/make_grid.md) on how to make GRD files. 
 
 The common naming convention for 24-hr GRD files is:
