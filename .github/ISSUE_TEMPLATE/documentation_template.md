@@ -8,7 +8,7 @@
 - [ ] new 
 - [ ] remove
 - [ ] typo/grammar change
-- [ ] markdown improvement
+- [ ] formatting improvement
 
 ## Category 
 
@@ -37,4 +37,3 @@
 ## Details
 
 *please describe and link to any readthedocs/code you are suggesting improvements/changes to be made.*
-

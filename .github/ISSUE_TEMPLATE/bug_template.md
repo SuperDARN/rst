@@ -36,7 +36,7 @@
 
 ## Extra Notes
 
-*Please provide any other details about this feature*
+*Please provide any other details about this bug*
 - *Operating System*
 - *Compiler version* `gcc --version`
 - *Examples of what the visual should look like*
