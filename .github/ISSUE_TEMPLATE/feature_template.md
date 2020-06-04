@@ -16,7 +16,7 @@
 
 ## Description
 
-*Please provide a description of the new feature and if will improve or solve a problem.*
+*Please provide a description of the new feature, and whether it will improve/solve a problem.*
 
 ### RST Checklist 
 
@@ -28,7 +28,7 @@
 
 ### Developement help
 
-*RST does not have a dedicated development team on hand to full feature development. 
+*RST does not have a dedicated development team for full feature development. 
 However, if you are able to provide some time and help, the community will try to aid you the best way they can in making your feature possible.*
 
 *If you need help please indicate what expertise you are looking for:*
@@ -36,7 +36,7 @@ However, if you are able to provide some time and help, the community will try t
 - [ ] scientific help with ensuring what you develop is scientifically correct/accurate
 - [ ] project management to help organize what steps need to be taken to make this possible 
 
-*Please also provide any other information you may need help with not including testing/reviewers of code*
+*Please also provide any other information you may need help with (not including testing/reviewers of code)*
 
 ## User Interface 
 

@@ -29,8 +29,8 @@
 
 ### Installation Process 
 
-*Please proved your steps of trying to install RST.*
+*Please provide the steps you took to install RST.*
 
 ### Documentation
 
-*Please link to any documentation or qoute anything for more information on.*
+*Please link to any documentation or other sources of information.*
