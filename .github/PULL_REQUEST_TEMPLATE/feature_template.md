@@ -40,7 +40,7 @@
 *Example info:*
 - *Does it use metadata?*
 - *Does it require a change in the `make.build; make.code`?*
-- *New dependecies or requirements to installing RST?*
+- *New dependencies or requirements to installing RST?*
 - *Are there **performance hits/improvements**?*
 - *Compiler version?* `gcc --version`
 - *Operating system?*

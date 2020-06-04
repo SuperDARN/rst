@@ -48,8 +48,6 @@ What goals are you trying to achieve with the add/updated/removed documentation?
 
 - [ ] spell checker (US recommended)
 - [ ] grammar checker
-- [ ] meets PEP8 documentation style (if applicable)
-- [ ] meets numpy/pandas docstring style (if applicable)
 - [ ] view in readthedocs/markdown viewer (if applicable)
 - [ ] proof read
 
@@ -66,4 +64,3 @@ What do you want the review to focus on?
 ## **readthedocs** Link/Display
 
 *Please provide the readthedocs link to your documentation or how to view it.* 
-
