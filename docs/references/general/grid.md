@@ -31,7 +31,7 @@ If a GRID file is produced for 24-hours using the `-c` option in `make_grid` (se
 After GRID files are produced for separate radars, they may then be combined with other radars' GRID files to make a GRD file. This file has the same format as a GRID file, but includes data from multiple radars. 
 See [combine_grid](../../user_guide/make_grid.md) on how to make GRD files. 
 
-Combined GRD files are produced for the northern and southern hemispheres separately and usually contain 24 hours of data. The common naming convention for 24-hr GRD files is:
+Combined GRD files are produced for the northern and southern hemispheres separately and usually contain 24 hours of data. One naming convention for 24-hr GRD files could be:
 
 > YYYYMMDD.north.grd  
 > YYYYMMDD.south.grd  
