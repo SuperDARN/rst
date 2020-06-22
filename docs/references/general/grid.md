@@ -62,7 +62,7 @@ GRID files contain a record that contains scalar and vector fields.
 
 !!! Note
     Let the number of radars in a given GRID/GRD record be defined as *numstid* and
-    Let the number of vector points in a give GRID/GRD record be defined as *numv*. 
+    Let the number of gridded velocity vectors in a given record be defined as *numv*. 
 
 | Field name  | Units           | Dimensionality | Data Type   | Description                                                                 |
 | :---------- | :-----:         | :-------:      | :---:       | :---                                                                        |
