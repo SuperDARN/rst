@@ -68,7 +68,7 @@ GRID files contain a record that contains scalar and vector fields.
 | :---------- | :-----:         | :-------:      | :---:       | :---                                                                        |
 | *stid*      |  **None**       |  *[numstid]*     | ***short*** | A list of of station IDs that provided data for the record |
 | *channel*   |  **None**       |  *[numstid]*     | ***short*** | A list of channel numbers associated to the station id the record |
-| *nvec*      | **None** | *[numstid]*  | ***short*** | Number of vectors for each station|
+| *nvec*      | **None** | *[numstid]*  | ***short*** | Number of velocity vectors for each station|
 | *freq*      | *kHz* | *[numstid]* | ***float*** | Transmitted frequency for each radar |
 | *major.revision* | **None** | *[numstid]* | ***short*** | Major `make_grid` version number per station number |
 | *minor.revision* | **None** | *[numstid]* | ***short*** | Minor `make_grid` version number per station number |
