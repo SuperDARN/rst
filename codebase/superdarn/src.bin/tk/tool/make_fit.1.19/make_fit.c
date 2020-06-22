@@ -162,27 +162,33 @@ int main(int argc,char *argv[]) {
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
   if (arg==-1) {
-     fprintf(stderr,"Error processing options\n");
+      fprintf(stderr,"Error processing options\n");
       OptionFree(&opt);
       exit(-1);
   }
 
   if (option==1) {
-    OptionDump(stdout,&opt);
-    OptionFree(&opt);
-    exit(0);
+      OptionDump(stdout,&opt);
+      OptionFree(&opt);
+      exit(0);
   }
 
   if (version==1) {
-    OptionVersion(stdout);
-    OptionFree(&opt);
-    exit(0);
+      OptionVersion(stdout);
+      OptionFree(&opt);
+      exit(0);
   }
 
   if ((old) && (argc-arg<2)) {
+      OptionPrintInfo(stdout,hlpstr);
+      OptionFree(&opt);  
+      exit(-1);
+  }
+  
+  if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
-    OptionFree(&opt);  
-    exit(-1);
+    OptionFree(&opt);
+    exit(0);
   }
 
   if (fitacf_version_s != NULL) {
@@ -203,26 +209,6 @@ int main(int argc,char *argv[]) {
     fprintf(stderr, "Using fitacf version: %0.1f\n", (float)fitacf_version/10);
   }
 
-  if (help==1) {
-    OptionPrintInfo(stdout,hlpstr);
-    exit(0);
-  }
-
-  if (option==1) {
-    OptionDump(stdout,&opt);
-    exit(0);
-  }
-
-  if (version==1) {
-    OptionVersion(stdout);
-    exit(0);
-  }
-
-
-  if ((old) && (argc-arg<2)) {
-    OptionPrintInfo(stdout,hlpstr);
-    exit(-1);
-  }
  
   OptionFree(&opt);
   envstr=getenv("SD_RADAR");
@@ -281,6 +267,7 @@ int main(int argc,char *argv[]) {
      rawfp=OldRawOpen(argv[arg],NULL);
      if (rawfp==NULL) {
        fprintf(stderr,"File not found.\n");
+       free_radarstructs(network, prm, raw);
        exit(-1);
      } else if (rawfp->error == -2) {
        /* Error case where num_bytes is less than 0 */
@@ -508,18 +495,5 @@ int main(int argc,char *argv[]) {
   free_files(rawfp, fp, fitfp, inxfp);
   free_fitstructs(fit_prms, fit, fblk);
 
-  if (old) OldRawClose(rawfp);
   return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
