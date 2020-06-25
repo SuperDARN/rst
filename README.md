@@ -2,7 +2,7 @@
 
 Radar Software Toolkit
 ========
-The Radar Software Toolkit (RST) is maintained by the SuperDARN Data Analysis Working Group (DAWG). To find out what we are currently working on, take a look at our [projects](https://github.com/SuperDARN/rst/projects) page, and also the current [issues](https://github.com/SuperDARN/rst/issues) and [pull requests](https://github.com/SuperDARN/rst/pulls). 
+The Radar Software Toolkit (RST) is maintained by the SuperDARN Data Analysis Working Group (DAWG). For general information and updates from the DAWG, visit our website at https://superdarn.github.io/dawg/
 
 ## Documentation
 RST's documentation is currently hosted on two sites:
