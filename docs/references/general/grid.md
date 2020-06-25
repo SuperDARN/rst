@@ -76,7 +76,7 @@ GRID files contain a record that contains scalar and vector fields.
 | *noise.mean*      | **None** | *[numstid]* | ***float*** | Mean noise for each radar |
 | *noise.sd*        | **None** | *[numstid]* | ***float*** | Noise Standard deviation per station number |
 | *gsct*            | **None** | *[numstid]* | ***short*** | A list of groundscatter flags associated to each radars data for the given record |
-| *v.min*           | *m/s* | *[numstid]* | ***float*** | Velocity minimum threshold per station number |
+| *v.min*           | *m/s* | *[numstid]* | ***float*** | Minimum velocity threshold |
 | *v.max*           | *m/s* | *[numstid]* | ***float*** | Velocity maximum threshold per station number |
 | *p.min*           | **None** | *[numstid]* | ***float*** | Power minimum threshold per station number |
 | *p.max*           | **None** | *[numstid]* | ***float*** | Power maximum threshold per station number |
