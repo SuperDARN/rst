@@ -99,6 +99,6 @@ GRID files contain a record that contains scalar and vector fields.
 
 ## File structure
 
-GRID files contain typically 24 hours of data. Individual records in a GRID file contain a record for each integration time period (default 120 seconds). 
+GRID files typically contain up to 24 hours of data. Individual records in a GRID file contain a record for each integration time period (default 120 seconds) from one or more radars.
 
 Partial records may occur in GRID and GRD file. See [fitacf](fittacf.md) for more information. 
