@@ -22,7 +22,7 @@ Some radars provide separate data files for each channel. In this case, the chan
 
 See [fitacf](fitacf.md) documentation for more information on this naming convention. 
 
-If a GRID file is produced for 24-hours using the `-c` option in `make_grid` (see [`make_grid` tutorial](../../user_guide/make_grid.md)) then the common naming convention is:
+If a GRID file is produced for 24-hours using the `-c` option in `make_grid` (see [`make_grid` tutorial](../../user_guide/make_grid.md)) or by combining individual GRID files with `combine_grid`, then the common naming convention is:
 
 > YYYYYMMDD.<3-letter abbreviation>.grid
 
