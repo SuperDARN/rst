@@ -1,0 +1,44 @@
+{
+    "creators":[
+        {
+            "affiliation": "The Unviersity Centre in Svalbard",
+            "name": "Bland, Emma"
+        },
+        {
+            "affiliation": "Naval Research Laboratory",
+            "name": "Burrell, A.G."
+        },
+        {
+            "affiliation": "University of Saskatchewan",
+            "name": "Kotyk, K."
+        },
+        {
+            "affiliation": "University of Saskatchewan",
+            "name": "Ponomarenko, P.V."
+        },
+        {
+            "affiliation": "SRI International",
+            "name": "Reimer, A.S."
+        },
+        {
+            "affiliation": "University of Saskatchewan",
+            "name": "Schmidt, M."
+        },
+        {
+            "affiliation": "Dartmouth College",
+            "name": "Shepherd, S.G."
+        },
+        {
+            "affiliation": "Virginia Tech",
+            "name": "Sterne, K.T."
+        },
+        {
+            "affiliation": "Dartmouth College",
+            "name": "Thomas, E.G."
+        },
+        {
+            "affiliation": "Lancaster University",
+            "name": "Walach, M.-T."
+        }
+    ]
+}
