@@ -2,11 +2,13 @@
     "creators":[
         {
             "affiliation": "The Unviersity Centre in Svalbard",
-            "name": "Bland, Emma"
+            "name": "Bland, Emma",
+            "orcid": "0000-0002-0252-0400"
         },
         {
             "affiliation": "Naval Research Laboratory",
-            "name": "Burrell, A.G."
+            "name": "Burrell, A.G.",
+            "orcid": "0000-0001-8875-9326"
         },
         {
             "affiliation": "University of Saskatchewan",
@@ -14,11 +16,13 @@
         },
         {
             "affiliation": "University of Saskatchewan",
-            "name": "Ponomarenko, P.V."
+            "name": "Ponomarenko, P.V.",
+            "orcid": "0000-0001-8407-0193"
         },
         {
             "affiliation": "SRI International",
-            "name": "Reimer, A.S."
+            "name": "Reimer, A.S.",
+            "orcid": "0000-0002-4621-3453"
         },
         {
             "affiliation": "University of Saskatchewan",
@@ -26,19 +30,22 @@
         },
         {
             "affiliation": "Dartmouth College",
-            "name": "Shepherd, S.G."
+            "name": "Shepherd, S.G.",
         },
         {
             "affiliation": "Virginia Tech",
-            "name": "Sterne, K.T."
+            "name": "Sterne, K.T.",
+            "orcid": "0000-0002-1076-0009"
         },
         {
             "affiliation": "Dartmouth College",
-            "name": "Thomas, E.G."
+            "name": "Thomas, E.G.",
+            "orcid": "0000-0001-8036-8793"
         },
         {
             "affiliation": "Lancaster University",
-            "name": "Walach, M.-T."
+            "name": "Walach, M.-T.",
+            "orcid": "0000-0002-9352-0659"
         }
     ]
 }
