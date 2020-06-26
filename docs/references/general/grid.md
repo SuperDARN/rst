@@ -44,7 +44,8 @@ GRID files contain a record that contains scalar and vector fields.
 
 | Field name       | Units      | Data Type    | Description                                                |
 | :----------      | :-----:    | :-------:    | :---                                                       |
-| *start.year*  | **None**   | ***short***  | Start Year of the integration period                       |
+The following times refer to the start and end of the integration period:
+| *start.year*  | **None**   | ***short***  | Start Year |
 | *start.month*  | **None**   | ***short***  | Start Month number (not padded)                            |
 | *start.day*  | **None**   | ***short***  | Start Day (not padded)  |
 | *start.hour*  | *hrs*      | ***short***  | Start Hour   |
