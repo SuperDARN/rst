@@ -89,7 +89,7 @@ GRID files contain a record that contains scalar and vector fields.
 | *vector.kvec*     | *degrees*  | *[numv]*   | ***flost*** | Magnetic Azimuth per vector point |
 | *vector.stid*     | **None**  | *[numv]*   | ***short*** | Station identifier per vector point|
 | *vector.channel*  | **None**  | *[numv]*   | ***short*** | Channel number per vector point |  
-| *vector.index*    | **None**  | *[numv]*   | ***int***   | Grid indices|
+| *vector.index*    | **None**  | *[numv]*   | ***int***   | Grid cell index |
 | *vector.vel.median* | *m/s* | *[numv]*   | ***float*** | Velocity medians per vector point|
 | *vector.vel.sd*     | *m/s*   | *[numv]*   | ***float*** | Velocity standard deviation per vector point|
 | *vector.pwr.median* | *dB*  | *[numv]*   | ***float*** | Power median per vector point|
