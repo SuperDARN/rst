@@ -46,16 +46,16 @@ GRID files contain a record that contains scalar and vector fields.
 | :----------      | :-----:    | :-------:    | :---                                                       |
 | *start.year*  | **None**   | ***short***  | Start Year of the integration period                       |
 | *start.month*  | **None**   | ***short***  | Start Month number (not padded)                            |
-| *start.day*  | **None**   | ***short***  | Start Day (not padded) of the integration period           |
-| *start.hour*  | *hrs*      | ***short***  | Start Hour of the integration period                       |
-| *start.minute*  | *min*      | ***short***  | Start Minute of the integration period                     |
-| *start.second*  | *s*        | ***short***  | Start Seconds of the integration period                    |
-| *end.year*    | **None**   | ***short***  | End Year of the integration period                         |
-| *end.month*    | **None**   | ***short***  | End Month number (not padded) of the integration period    |
-| *end.day*    | **None**   | ***short***  | End Day (not padded) of the integration period             |
-| *end.hour*    | *hrs*      | ***short***  | End Hour of the integration period                         |
-| *end.minute*    | *min*      | ***short***  | End Minute of the integration period                       |
-| *end.second*    | *s*        | ***short***  | End Seconds of the integration period                      |
+| *start.day*  | **None**   | ***short***  | Start Day (not padded)  |
+| *start.hour*  | *hrs*      | ***short***  | Start Hour   |
+| *start.minute*  | *min*      | ***short***  | Start Minute |
+| *start.second*  | *s*        | ***short***  | Start Seconds  |
+| *end.year*    | **None**   | ***short***  | End Year |
+| *end.month*    | **None**   | ***short***  | End Month (not padded) |
+| *end.day*    | **None**   | ***short***  | End Day (not padded) |
+| *end.hour*    | *hrs*      | ***short***  | End Hour  |
+| *end.minute*    | *min*      | ***short***  | End Minute |
+| *end.second*    | *s*        | ***short***  | End Seconds |
 
 
 ### Vectors 
