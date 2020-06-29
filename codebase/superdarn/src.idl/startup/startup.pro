@@ -30,6 +30,7 @@
 .run oldcnvmap.pro
 .run fitacf.pro
 .run efield.pro
+.run snd.pro
 
 ; Legacy interfaces
 .run genlib.pro
