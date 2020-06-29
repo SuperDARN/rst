@@ -33,7 +33,7 @@ See [combine_grid](../../user_guide/make_grid.md) for instructions on how to com
 
 For further Map Potential processing, separate GRID files should be produced for the Northern and Southern Hemispheres. One naming convention for 24-hr GRID files could be:
 
-> YYYYMMDD.north.grd  
+> YYYYMMDD.north.grid  
 > YYYYMMDD.south.grid  
 
 ## Fields
