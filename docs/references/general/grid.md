@@ -41,10 +41,9 @@ For further Map Potential processing, separate GRID files should be produced for
 GRID files contain a record that contains scalar and vector fields. 
 
 ### Scalars
-
-| Field name       | Units      | Data Type    | Description                                                |
-| :----------      | :-----:    | :-------:    | :---                                                       |
-The following times refer to the start and end of the integration period:
+The following times refer to the start and end of the integration period.
+| Field name       | Units      | Data Type    | Description                                  |
+| :----------      | :-----:    | :-------:    | :---                                           |
 | *start.year*  | **None**   | ***short***  | Start Year |
 | *start.month*  | **None**   | ***short***  | Start Month number (not padded)                            |
 | *start.day*  | **None**   | ***short***  | Start Day (not padded)  |
@@ -91,12 +90,12 @@ The following times refer to the start and end of the integration period:
 | *vector.stid*     | **None**  | *[numv]*   | ***short*** | Station identifier per vector point|
 | *vector.channel*  | **None**  | *[numv]*   | ***short*** | Channel number per vector point |  
 | *vector.index*    | **None**  | *[numv]*   | ***int***   | Grid cell index |
-| *vector.vel.median* | *m/s* | *[numv]*   | ***float*** | Velocity medians per vector point|
-| *vector.vel.sd*     | *m/s*   | *[numv]*   | ***float*** | Velocity standard deviation per vector point|
-| *vector.pwr.median* | *dB*  | *[numv]*   | ***float*** | Power median per vector point|
-| *vector.pwr.sd*     | *dB*  | *[numv]*   | ***float*** | Power standard deviation per vector point|
-| *vector.wdt.median* | *m/s* | *[numv]*   | ***float*** | Spectral Width median per vector point|
-| *vector.wdt.sd      | *m/s* | *[numv]*   | ***float*** | Spectral Width median per vector point|
+| *vector.vel.median* | *m/s* | *[numv]*   | ***float*** | Weighted mean velocity magnitude |
+| *vector.vel.sd*     | *m/s*   | *[numv]*   | ***float*** | Velocity standard deviation |
+| *vector.pwr.median* | *dB*  | *[numv]*   | ***float*** | Weighted mean power|
+| *vector.pwr.sd*     | *dB*  | *[numv]*   | ***float*** | Power standard deviation|
+| *vector.wdt.median* | *m/s* | *[numv]*   | ***float*** | Weighted mean spectral width|
+| *vector.wdt.sd      | *m/s* | *[numv]*   | ***float*** | Standard deviation of spectral width|
 
 ## File structure
 
