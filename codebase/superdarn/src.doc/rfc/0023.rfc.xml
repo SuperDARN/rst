@@ -65,7 +65,7 @@
               azm: 0.0, $                    ; magnetic azimuth
               vel: {GridValue,median:0.0, $  ; velocity median
                               sd:0.0}, $     ; velocity standard deviation
-              pwr: {GridValue,median:0.0, $  ; power median
+              pwr: {GridValue,median:0.0, $  ; power weighted mean (it's known that the parameter name is misleading)
                               sd:0.0}, $     ; power standard deviation
               wdt: {GridValue,median:0.0, $  ; spectral width weighted mean (it's known that the parameter name is misleading)
                               sd:0.0}, $     ; spectral width standard deviation
