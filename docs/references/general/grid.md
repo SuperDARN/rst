@@ -61,7 +61,7 @@ The following times refer to the start and end of the integration period.
 ### Vectors 
 
 !!! Note
-    Let the number of radars in a given GRID/GRD record be defined as *numstid*, and let the number of gridded velocity vectors in a given record be defined as *numv*. 
+    Let the number of radars in a given GRID record be defined as *numstid*, and let the number of gridded velocity vectors in a given record be defined as *numv*. 
 
 | Field name  | Units           | Dimensionality | Data Type   | Description                                                                 |
 | :---------- | :-----:         | :-------:      | :---:       | :---                                                                        |
