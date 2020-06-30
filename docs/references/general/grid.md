@@ -83,11 +83,11 @@ The following times refer to the start and end of the integration period.
 | *w.max*           | *m/s*  | *[numstid]* | ***float*** | Spectral width maximum threshold per station number |
 | *ve.min*          | *m/s*  | *[numstid]* | ***float*** | Velocity error minimum threshold per station number |
 | *ve.max*          | *m/s*  | *[numstid]* | ***float*** | Velocity error maximum threshold per station number |
-| *vector.mlat*     | *degrees* | *[numv]* | ***float*** | Magnetic Latitude per vector point |
-| *vector.mlon*     | *degrees* | *[numv]* | ***float*** | Magnetic Longitude  per vector point |
-| *vector.kvec*     | *degrees*  | *[numv]*   | ***flost*** | Magnetic Azimuth per vector point |
-| *vector.stid*     | **None**  | *[numv]*   | ***short*** | Station identifier per vector point|
-| *vector.channel*  | **None**  | *[numv]*   | ***short*** | Channel number per vector point |  
+| *vector.mlat*     | *degrees* | *[numv]* | ***float*** | Magnetic Latitude |
+| *vector.mlon*     | *degrees* | *[numv]* | ***float*** | Magnetic Longitude |
+| *vector.kvec*     | *degrees*  | *[numv]*   | ***flost*** | Magnetic Azimuth |
+| *vector.stid*     | **None**  | *[numv]*   | ***short*** | Station identifier |
+| *vector.channel*  | **None**  | *[numv]*   | ***short*** | Channel number |  
 | *vector.index*    | **None**  | *[numv]*   | ***int***   | Grid cell index |
 | *vector.vel.median* | *m/s* | *[numv]*   | ***float*** | Weighted mean velocity magnitude |
 | *vector.vel.sd*     | *m/s*   | *[numv]*   | ***float*** | Velocity standard deviation |
