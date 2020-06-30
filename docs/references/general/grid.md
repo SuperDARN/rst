@@ -70,19 +70,19 @@ The following times refer to the start and end of the integration period.
 | *nvec*      | **None** | *[numstid]*  | ***short*** | Number of velocity vectors for each station|
 | *freq*      | *kHz* | *[numstid]* | ***float*** | Transmitted frequency for each radar |
 | *major.revision* | **None** | *[numstid]* | ***short*** | Major `make_grid` version number                    |
-| *minor.revision* | **None** | *[numstid]* | ***short*** | Minor `make_grid` version number per station number |
-| *program.id*     | **None** | *[numstid]* | ***short*** | Control program ID per station number 
-| *noise.mean*      | **None** | *[numstid]* | ***float*** | Mean noise for each radar |
-| *noise.sd*        | **None** | *[numstid]* | ***float*** | Noise Standard deviation per station number |
-| *gsct*            | **None** | *[numstid]* | ***short*** | A list of groundscatter flags associated to each radars data for the given record |
+| *minor.revision* | **None** | *[numstid]* | ***short*** | Minor `make_grid` version number |
+| *program.id*     | **None** | *[numstid]* | ***short*** | Control program ID | 
+| *noise.mean*      | **None** | *[numstid]* | ***float*** | Mean noise |
+| *noise.sd*        | **None** | *[numstid]* | ***float*** | Noise Standard deviation |
+| *gsct*            | **None** | *[numstid]* | ***short*** | Groundscatter flag |
 | *v.min*           | *m/s* | *[numstid]* | ***float*** | Minimum velocity threshold |
-| *v.max*           | *m/s* | *[numstid]* | ***float*** | Velocity maximum threshold per station number |
-| *p.min*           | **None** | *[numstid]* | ***float*** | Power minimum threshold per station number |
-| *p.max*           | **None** | *[numstid]* | ***float*** | Power maximum threshold per station number |
-| *w.min*           | *m/s*  | *[numstid]* | ***float*** | Spectral width minimum threshold per station number |
-| *w.max*           | *m/s*  | *[numstid]* | ***float*** | Spectral width maximum threshold per station number |
-| *ve.min*          | *m/s*  | *[numstid]* | ***float*** | Velocity error minimum threshold per station number |
-| *ve.max*          | *m/s*  | *[numstid]* | ***float*** | Velocity error maximum threshold per station number |
+| *v.max*           | *m/s* | *[numstid]* | ***float*** | Velocity maximum threshold |
+| *p.min*           | **None** | *[numstid]* | ***float*** | Power minimum threshold |
+| *p.max*           | **None** | *[numstid]* | ***float*** | Power maximum threshold |
+| *w.min*           | *m/s*  | *[numstid]* | ***float*** | Spectral width minimum threshold |
+| *w.max*           | *m/s*  | *[numstid]* | ***float*** | Spectral width maximum threshold |
+| *ve.min*          | *m/s*  | *[numstid]* | ***float*** | Velocity error minimum threshold |
+| *ve.max*          | *m/s*  | *[numstid]* | ***float*** | Velocity error maximum threshold |
 | *vector.mlat*     | *degrees* | *[numv]* | ***float*** | Magnetic Latitude |
 | *vector.mlon*     | *degrees* | *[numv]* | ***float*** | Magnetic Longitude |
 | *vector.kvec*     | *degrees*  | *[numv]*   | ***flost*** | Magnetic Azimuth |
