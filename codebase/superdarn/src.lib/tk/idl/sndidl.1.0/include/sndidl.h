@@ -58,8 +58,8 @@ struct SndIDLData {
   float sky_noise;
 
   struct {
-    IDL_LONG major;
-    IDL_LONG minor;
+    short major;
+    short minor;
   } snd_revision;
 
   UCHAR qflg[MAX_RANGE]; 
