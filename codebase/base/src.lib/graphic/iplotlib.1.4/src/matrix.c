@@ -35,6 +35,7 @@
 #include <math.h>
 #include "rfbuffer.h"
 #include "iplot.h"
+#include "rmath.h"
 
 #ifndef PI
   #define PI 3.14159265358979323846

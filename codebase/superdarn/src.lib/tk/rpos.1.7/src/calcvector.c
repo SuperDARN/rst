@@ -32,7 +32,6 @@
 #include <math.h>
 #include "rmath.h"
 
-#define Re 6362
 #define h 400
 
 
@@ -51,7 +50,7 @@ void RPosCalcVector(double lat,double lon,double mag,double azm,
   }
   ar=azm*PI/180.0;  
   cr=(90.0-lat)*PI/180.0;
-  br=0.2*mag/(Re+h);
+  br=0.2*mag/(RE+h);
   
   arg=cos(br)*cos(cr)+sin(br)*sin(cr)*cos(ar);
   asr=acos(arg);

@@ -1,4 +1,4 @@
-/*Copyright (C) 2016  SuperDARN Canada
+/*Copyright (C) 2016  SuperDARN Canada, University of Saskatchewan
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -16,9 +16,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 /*
 ACF determinations from fitted parameters
 
-Keith Kotyk
-ISAS
-July 2015
+author(s): Keith Kotyk
+modifications: 
+    2020-03-11 Marina Schmidt (SuperDARN Canada) removed all defined constants 
+                              and include rmath.h
 
 */
 
@@ -29,7 +30,7 @@ July 2015
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include "rmath.h"
 
 /**
  * @brief      Allocates space needed for final data parameters.
@@ -135,9 +136,9 @@ void refractive_index(llist_node range, struct FitElv* fit_elev_array){
 
     height = (range_node->range <= 10) ? CLOSE_GATE_HEIGHT : FAR_GATE_HEIGHT;
 
-    cos_elev_angle = cos(M_PI/180 * fit_elev_array[range_node->range].normal);
+    cos_elev_angle = cos(PI/180 * fit_elev_array[range_node->range].normal);
 
-    height_ratio = (EARTH_RADIUS/(EARTH_RADIUS + height));
+    height_ratio = (RE/(RE + height));
 
     range_node->refrc_idx =  height_ratio * (cos_elev_angle/MAGNETIC_DIP_ANGLE);
 
@@ -280,7 +281,7 @@ void set_v(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_prms
 
     range_node = (RANGENODE*) range;
 
-    conversion_factor = C/((4*M_PI)*(fit_prms->tfreq * 1000.0)) * fit_prms->vdir;
+    conversion_factor = C/((4*PI)*(fit_prms->tfreq * 1000.0)) * fit_prms->vdir;
 
     velocity = range_node->phase_fit->b * conversion_factor * (1/range_node->refrc_idx);
 
@@ -302,7 +303,7 @@ void set_v_err(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_
     double conversion_factor,velocity_err;
 
     range_node = (RANGENODE*) range;
-    conversion_factor = C/((4*M_PI)*(fit_prms->tfreq * 1000.0));
+    conversion_factor = C/((4*PI)*(fit_prms->tfreq * 1000.0));
 
     velocity_err = sqrt(range_node->phase_fit->sigma_2_b) * conversion_factor * (1/range_node->refrc_idx);
 
@@ -324,7 +325,7 @@ void set_w_l(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_pr
     double conversion_factor;
 
     range_node = (RANGENODE*) range;
-    conversion_factor = C/((4*M_PI)*(fit_prms->tfreq * 1000.0))*2.;
+    conversion_factor = C/((4*PI)*(fit_prms->tfreq * 1000.0))*2.;
 
     fit_range_array[range_node->range].w_l = fabs(range_node->l_pwr_fit->b) * conversion_factor;
 }
@@ -344,7 +345,7 @@ void set_w_l_err(llist_node range, struct FitRange* fit_range_array, FITPRMS* fi
     double conversion_factor;
 
     range_node = (RANGENODE*) range;
-    conversion_factor = C/(4*M_PI)/(fit_prms->tfreq * 1000.0)*2.;
+    conversion_factor = C/(4*PI)/(fit_prms->tfreq * 1000.0)*2.;
 
     fit_range_array[range_node->range].w_l_err = sqrt(range_node->l_pwr_fit_err->sigma_2_b) * conversion_factor;
 }
@@ -365,7 +366,7 @@ void set_w_s(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_pr
     double fit_sqrt;
 
     range_node = (RANGENODE*) range;
-    conversion_factor = C/(4*M_PI)/(fit_prms->tfreq * 1000.0) *4.* sqrt(log(2));
+    conversion_factor = C/(4*PI)/(fit_prms->tfreq * 1000.0) *4.* sqrt(log(2));
 
     fit_sqrt = sqrt(fabs(range_node->q_pwr_fit->b));
     fit_range_array[range_node->range].w_s = fit_sqrt * conversion_factor;
@@ -387,7 +388,7 @@ void set_w_s_err(llist_node range, struct FitRange* fit_range_array, FITPRMS* fi
     double fit_sqrt, fit_std_dev, w_s_err;
     range_node = (RANGENODE*) range;
 
-    conversion_factor = C/(4*M_PI)/(fit_prms->tfreq * 1000.0) * 4.*sqrt(log(2));
+    conversion_factor = C/(4*PI)/(fit_prms->tfreq * 1000.0) * 4.*sqrt(log(2));
     fit_std_dev = sqrt(range_node->q_pwr_fit_err->sigma_2_b);
     fit_sqrt = sqrt(fabs(range_node->q_pwr_fit->b));
     w_s_err =  fit_std_dev/2./fit_sqrt * conversion_factor;
@@ -531,18 +532,18 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
     }
 
     azi_offset = fit_prms->maxbeam/2 - 0.5;
-    phi_0 = fit_prms->bmsep * (fit_prms->bmnum - azi_offset) * M_PI/180;
+    phi_0 = fit_prms->bmsep * (fit_prms->bmnum - azi_offset) * PI/180;
     c_phi_0 = cos(phi_0);
 
-    wave_num = 2 * M_PI * fit_prms->tfreq * 1000/C;
+    wave_num = 2 * PI * fit_prms->tfreq * 1000/C;
 
-    cable_offset = -2 * M_PI * fit_prms->tfreq * 1000 * fit_prms->tdiff * 1.0e-6;
+    cable_offset = -2 * PI * fit_prms->tfreq * 1000 * fit_prms->tdiff * 1.0e-6;
 
     phase_diff_max = phi_sign * wave_num * antenna_sep * c_phi_0 + cable_offset;
 
-    psi_uncorrected = range_node->elev_fit->a + 2 * M_PI * floor((phase_diff_max-range_node->elev_fit->a)/(2*M_PI));
+    psi_uncorrected = range_node->elev_fit->a + 2 * PI * floor((phase_diff_max-range_node->elev_fit->a)/(2*PI));
 
-    if(phi_sign < 0) psi_uncorrected += 2 * M_PI;
+    if(phi_sign < 0) psi_uncorrected += 2 * PI;
 
     psi = psi_uncorrected - cable_offset;
 
@@ -555,18 +556,18 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
         elevation = asin(sqrt(theta));
     }
 
-    fit_data->elv[range_node->range].high = 180/M_PI * (elevation + elev_corr);
+    fit_data->elv[range_node->range].high = 180/PI * (elevation + elev_corr);
 
     /*Elevation errors*/
     psi_k2d2 = psi/(wave_num * wave_num * antenna_sep * antenna_sep);
     df_by_dy = psi_k2d2/sqrt(theta * (1 - theta));
-    fit_data->elv[range_node->range].low = 180/M_PI * sqrt(range_node->elev_fit->sigma_2_a) * fabs(df_by_dy);
+    fit_data->elv[range_node->range].low = 180/PI * sqrt(range_node->elev_fit->sigma_2_a) * fabs(df_by_dy);
 
     /*Experiment to compare fitted and measured elevation*/
-    psi_uncorrected_unfitted = fit_data->xrng[range_node->range].phi0 + 2 * M_PI * floor((phase_diff_max-fit_data->xrng[range_node->range].phi0)/(2*M_PI));
+    psi_uncorrected_unfitted = fit_data->xrng[range_node->range].phi0 + 2 * PI * floor((phase_diff_max-fit_data->xrng[range_node->range].phi0)/(2*PI));
 
 
-    if(phi_sign < 0) psi_uncorrected_unfitted += 2 * M_PI;
+    if(phi_sign < 0) psi_uncorrected_unfitted += 2 * PI;
 
     psi = psi_uncorrected_unfitted - cable_offset;
 
@@ -579,7 +580,7 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
     else{
         elevation = asin(sqrt(theta));
     }
-    fit_data->elv[range_node->range].normal = 180/M_PI * (elevation + elev_corr);
+    fit_data->elv[range_node->range].normal = 180/PI * (elevation + elev_corr);
 
 }
 

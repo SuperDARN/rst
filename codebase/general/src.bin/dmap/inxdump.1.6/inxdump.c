@@ -58,6 +58,7 @@ int main (int argc,char *argv[]) {
   int arg;
   unsigned char help=0;
   unsigned char option=0;
+  unsigned char version=0;
   unsigned char startstop=0;
   int st=0;
   double tme[2];
@@ -67,6 +68,7 @@ int main (int argc,char *argv[]) {
 
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
+  OptionAdd(&opt,"-version",'x',&version);
   OptionAdd(&opt,"xtd",'x',&startstop);
 
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
@@ -85,6 +87,10 @@ int main (int argc,char *argv[]) {
     exit(0);
   }
 
+  if (version==1) {
+    OptionVersion(stdout);
+    exit(0);
+  }
 
   if (arg==argc) fp=stdin;
   else fp=fopen(argv[arg],"r");

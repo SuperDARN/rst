@@ -70,7 +70,7 @@
 int ground_scatter (struct FitRange *ptr) {
 
   double vabs,wabs,g,g_err;
-  double dv, dw;
+  /* double dv, dw; */
 
   /*
     This is the old version.  No one seems to remember why
@@ -95,12 +95,13 @@ int ground_scatter (struct FitRange *ptr) {
   /* don't allow the error to get too extreme.  If v_err/v or
      w_err/w is greater than 1 (100% error) just use 1.0 */
 
+  /*
   dv = ((ptr->v_err/vabs) > 1.0) ? 1.0 :
     (ptr->v_err/vabs);
 
   dw = ((ptr->w_l_err/wabs) > 1.0) ? 1.0 :
     (ptr->w_l_err/wabs);
-
+  */
   /*  g_err = fabs(g)*sqrt(dv*dv + dw*dw);*/
   g_err = 0; /* turn off any correction for the error */
 

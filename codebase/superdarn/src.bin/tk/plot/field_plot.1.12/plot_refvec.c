@@ -58,12 +58,11 @@ void plot_refvec(struct Plot *plot,float px,float py,int or,double max,
   float map[2],pnt[2];
   float ax,ay,bx,by;
   float txbox[3];
-
+  double mlat,mlon,glat,glon,r;
+  
   lat=90.0;
   lon=0.0;
   if (!magflg) {
-    double mlat,mlon,glat,glon,r;
-    int s;
     mlat=lat;
     mlon=lon;
     if (old_aacgm) s=AACGMConvert(mlat,mlon,150,&glat,&glon,&r,1);
@@ -82,8 +81,6 @@ void plot_refvec(struct Plot *plot,float px,float py,int or,double max,
   RPosCalcVector(90.0,0.0,max*sf,0.0,&lat,&lon);
 
   if (!magflg) {
-    double mlat,mlon,glat,glon,r;
-    int s;
     mlat=lat;
     mlon=lon;
     if (old_aacgm) s=AACGMConvert(mlat,mlon,150,&glat,&glon,&r,1);

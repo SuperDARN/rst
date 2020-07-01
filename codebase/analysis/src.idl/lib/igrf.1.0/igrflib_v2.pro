@@ -130,7 +130,7 @@ pro IGRF_loadcoeffs, file=file, debug=debug, err=err
     ; IGRF coefficient environment variable is not set
     print, ''
     print, '================================================================='
-    print, 'Environment variable IGRF_COFFS is not set.'
+    print, 'Environment variable IGRF_COEFFS is not set.'
     print, 'You MUST set this variable to the fully qualified path of the '
     print, 'IGRF coefficient file that was part of the AACGM-v2 distribution.'
     print, '================================================================='

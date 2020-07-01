@@ -4,7 +4,11 @@
 <name>dmapblkinx</name>
 <location>src.bin/dmap/dmapblkinx</location>
 <syntax>dmapblkinx --help</syntax>
+<syntax>dmapblkinx [<ar>name</ar>]</syntax>
+
 <option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
 </option>
 <option><on><ar>name</ar></on><od>filename of the DataMap file, if this is omitted the document will be read from standard input.</od>
 </option>
@@ -13,13 +17,10 @@
 <p>The offsets are written to standard output. The block offsets can be used to quickly locate a specific block in the DataMap file.</p>
 </description>
 
-
 <example>
 <command>dmapblkinx inp.dmap &gt; out.binx</command>
-<description>Find the block offsets from the  file <code>inp.dmap</code> and store them in the file <code>out.binx</code>
+<description>Find the block offsets from the file <code>inp.dmap</code> and store them in the file <code>out.binx</code>
 </description>
 </example>
-
-
 
 </binary>
