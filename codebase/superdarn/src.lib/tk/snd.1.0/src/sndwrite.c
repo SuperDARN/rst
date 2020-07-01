@@ -37,6 +37,8 @@ int SndWrite(int fid, struct SndData *snd) {
   float *phi0=NULL;
   float *phi0_e=NULL;
 
+  float sky_noise;
+
   ptr=DataMapMake();
   if (ptr==NULL) return -1;
 
@@ -71,7 +73,8 @@ int SndWrite(int fid, struct SndData *snd) {
   DataMapAddScalar(ptr,"xcf",DATASHORT,&snd->xcf);
   DataMapAddScalar(ptr,"tfreq",DATASHORT,&snd->tfreq);
 
-  DataMapStoreScalar(ptr,"noise.sky",DATAFLOAT,&snd->sky_noise);
+  sky_noise=snd->sky_noise;
+  DataMapStoreScalar(ptr,"noise.sky",DATAFLOAT,&sky_noise);
 
   DataMapAddScalar(ptr,"snd.revision.major",DATASHORT,&snd->snd_revision.major);
   DataMapAddScalar(ptr,"snd.revision.minor",DATASHORT,&snd->snd_revision.minor);
