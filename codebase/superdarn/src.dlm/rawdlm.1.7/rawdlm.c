@@ -109,7 +109,7 @@ static IDL_VPTR IDLRawRead(int argc,IDL_VPTR *argv) {
   int s=0;
 
 
-  IDL_VPTR vprm=NULL,vraw=NULL;;
+  IDL_VPTR vprm=NULL,vraw=NULL;
 
   IDL_LONG unit=0;
   IDL_FILE_STAT stat;

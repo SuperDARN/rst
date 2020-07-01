@@ -183,7 +183,7 @@ static IDL_VPTR IDLOldRawRead(int argc,IDL_VPTR *argv) {
 
   int s=0;
 
-  IDL_VPTR vprm=NULL,vraw=NULL;;
+  IDL_VPTR vprm=NULL,vraw=NULL;
 
   IDL_FILE_STAT stat;
 
