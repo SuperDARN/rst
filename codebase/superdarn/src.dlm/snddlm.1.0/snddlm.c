@@ -91,7 +91,7 @@ static IDL_VPTR IDLSndRead(int argc,IDL_VPTR *argv) {
 
   int s=0;
 
-  IDL_VPTR vsnd=NULL;;
+  IDL_VPTR vsnd=NULL;
 
   IDL_LONG unit=0;
   IDL_FILE_STAT stat;
