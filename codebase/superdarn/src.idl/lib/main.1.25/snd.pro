@@ -123,16 +123,16 @@ function SndRead,unit,snd
            'time.yr','time.mo','time.dy','time.hr','time.mt','time.sc', $
            'time.us','nave','lagfr','smsep','noise.search','noise.mean', $
            'bmnum','bmazm','scan','rxrise','intt.sc','intt.us', $
-           'nrang','frang','rsep','xcf','tfreq','sky_noise', $
+           'nrang','frang','rsep','xcf','tfreq','noise.sky', $
            'snd.revision.major','snd.revision.minor']
 
   scltype=[1,1,2,2, $
            2,2,2,2,2,2, $
            3,2,2,2,4,4, $
            2,4,2,2,2,3, $
-           2,2,2,2,2,3, $
+           2,2,2,2,2,4, $
            2,2]
-  
+
   sclid=intarr(n_elements(sclname))
   sclid[*]=-1
 
@@ -146,7 +146,7 @@ function SndRead,unit,snd
 
   arrid=intarr(n_elements(arrname))  
   arrid[*]=-1
-  
+
   if (n_elements(sclvec) ne 0) then begin
     for n=0,n_elements(sclname)-1 do $
       sclid[n]=DataMapFindScalar(sclname[n],scltype[n],sclvec)
@@ -156,7 +156,7 @@ function SndRead,unit,snd
     for n=0,n_elements(arrname)-1 do $
       arrid[n]=DataMapFindArray(arrname[n],arrtype[n],arrvec)
   endif
-   
+
   q=where(sclid eq -1,count)
 
   if (count ne 0) then begin
@@ -165,7 +165,7 @@ function SndRead,unit,snd
     st=DataMapFreeArray(arrvec)
     return, -2
   endif
- 
+
   ; populate the structures
 
   snd.radar_revision.major=*(sclvec[sclid[0]].ptr)
@@ -217,16 +217,16 @@ function SndRead,unit,snd
      st=DataMapFreeArray(arrvec)
     return,s
   endif
-  
-  snd.qflg[slist]= (*(arrvec[arrid[0]].ptr))[*]
-  snd.gflg[slist]= (*(arrvec[arrid[1]].ptr))[*]
-  snd.v[slist]= (*(arrvec[arrid[2]].ptr))[*]
-  snd.v_e[slist]= (*(arrvec[arrid[3]].ptr))[*]
-  snd.p_l[slist]= (*(arrvec[arrid[4]].ptr))[*]
-  snd.w_l[slist]= (*(arrvec[arrid[5]].ptr))[*]
-  snd.x_qflg[slist]= (*(arrvec[arrid[6]].ptr))[*]
-  snd.phi0[slist]= (*(arrvec[arrid[7]].ptr))[*]
-  snd.phi0_e[slist]= (*(arrvec[arrid[8]].ptr))[*]
+
+  snd.qflg[slist]= (*(arrvec[arrid[1]].ptr))[*]
+  snd.gflg[slist]= (*(arrvec[arrid[2]].ptr))[*]
+  snd.v[slist]= (*(arrvec[arrid[3]].ptr))[*]
+  snd.v_e[slist]= (*(arrvec[arrid[4]].ptr))[*]
+  snd.p_l[slist]= (*(arrvec[arrid[5]].ptr))[*]
+  snd.w_l[slist]= (*(arrvec[arrid[6]].ptr))[*]
+  snd.x_qflg[slist]= (*(arrvec[arrid[7]].ptr))[*]
+  snd.phi0[slist]= (*(arrvec[arrid[8]].ptr))[*]
+  snd.phi0_e[slist]= (*(arrvec[arrid[9]].ptr))[*]
 
   st=DataMapFreeScalar(sclvec)
   st=DataMapFreeArray(arrvec)
