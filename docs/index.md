@@ -35,4 +35,4 @@ The software is maintained by the SuperDARN Data Analysis Working Group (DAWG) o
     * [IQDAT Format](references/general/iqdat.md)
     * [RAWACF Format](references/general/rawacf.md)
     * [FITACF Format](references/general/fitacf.md)
-
+    * [GRID Format](references/general/grid.md)
