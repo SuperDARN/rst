@@ -64,7 +64,7 @@ int FitToSnd(struct SndData *ptr, struct RadarParm *prm,
     ptr->rng[c].p_l = fit->rng[c].p_l;
     ptr->rng[c].w_l = fit->rng[c].w_l;
 
-    if (prm->xcf) {
+    if ((prm->xcf) && (fit->xrng != NULL)) {
       ptr->rng[c].x_qflg = fit->xrng[c].qflg;
       ptr->rng[c].phi0 = fit->xrng[c].phi0;
       ptr->rng[c].phi0_err = fit->xrng[c].phi0_err;
