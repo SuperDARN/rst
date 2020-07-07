@@ -5,7 +5,10 @@
 <location>src.bin/dmap/dmaptocdl</location>
 <syntax>dmaptocdl --help</syntax>
 <syntax>dmaptocdl [-vb] <ar>datamap</ar> <ar>cdl</ar> <ar>map</ar></syntax>
+
 <option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
 </option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
@@ -28,12 +31,9 @@
 <p>The tool <code>dmaptocdl</code> first analyses a dmap file to determine the size of the arrays required and produces an outline CDL file. The user can edit this CDL file to correct any problems and add any meta-data (attributes).</p>
 </description>
 
-
-
 <example>
 <command>dmaptocdl 20021219.kap.fitacf fitacf.cdl fitmacf.cdfmap</command>
 <description>Generate the CDL file  "<code>fitacf.cdl</code>" and mapping table  "<code>fitacf.cdfmap</code>" from the file "<code>20021219.kap.fitacf</code>".</description>
 </example>
-
 
 </binary>

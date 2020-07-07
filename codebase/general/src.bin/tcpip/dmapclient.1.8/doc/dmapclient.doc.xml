@@ -5,7 +5,10 @@
 <location>src.bin/tcpip/dmapclient</location>
 <syntax>dmapclient --help</syntax>
 <syntax>dmapclient [-d] [-s <ar>stream</ar>] <ar>host</ar> <ar>port</ar></syntax>
+
 <option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
 </option>
 <option><on>-d</on><od>print the data values in the array variables.</od>
 </option>
@@ -13,14 +16,12 @@
 </option>
 <option><on><ar>host</ar></on><od>hostname or IP address of the system to connect to.</od>
 </option>
-<option><on><ar>port</ar></on><od>port number to connect to on  the system.</od></option>
+<option><on><ar>port</ar></on><od>port number to connect to on the system.</od></option>
 <synopsis><p>Simple client program for a DataMap TCP/IP stream.</p></synopsis>
 <description><p>A Simple diagnostic client program for a DataMap TCP/IP streams.</p>
 <p>The program will connect to a remote server delivering DatMap formatted packets and dump them to the console.</p>
 <p>If the remote server uses multiplexed streams then the "<code>-s</code"> command line option can be used to select the stream.</p>
 </description>
-
-
 
 <example>
 <command>dmapclient peanut.jhuapl.edu 1024</command>
@@ -31,9 +32,5 @@
 <command>dmapclient -d -s 1 peanut.jhuapl.edu 1024</command>
 <description>Connect to the remote host <code>peanut.jhuapl.edu</code> at port 1024.Use stream number 1. Print the data values in the array variables.</description>
 </example>
-
-
-
-
 
 </binary>
