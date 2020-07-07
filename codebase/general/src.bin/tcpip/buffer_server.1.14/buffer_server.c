@@ -274,6 +274,7 @@ int main(int argc,char *argv[]) {
  
   unsigned char help=0;
   unsigned char option=0;
+  unsigned char version=0;
 
   int remote_port=0;
   char chost[256];
@@ -294,6 +295,7 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
+  OptionAdd(&opt,"-version",'x',&version);
   OptionAdd(&opt,"l",'i',&port);
   OptionAdd(&opt,"f",'t',&file);
   OptionAdd(&opt,"lf",'t',&log);
@@ -313,6 +315,10 @@ int main(int argc,char *argv[]) {
     exit(0);
   }
 
+  if (version==1) {
+    OptionVersion(stdout);
+    exit(0);
+  }
 
   if (argc-arg<2) {
     OptionPrintInfo(stderr,errstr);

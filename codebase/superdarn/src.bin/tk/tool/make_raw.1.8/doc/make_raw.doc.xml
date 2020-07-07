@@ -10,21 +10,27 @@
 </option>
 <option><on>--version</on><od>print the RST version number and exit.</od>
 </option>
-
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
-
-<option><on><ar>iqdatname</ar></on><od>filename of the <code>iqdat</code>  format file. If this is omitted the file is read from standard input.</od>
+<option><on>-qi</on><od>the I&Q samples of the input <code>iqdat</code> format file are reversed.</od>
+</option>
+<option><on>-d</on><od>the input <code>iqdat</code> format file originated from a digital receiver.</od>
+</option>
+<option><on>-skip <ar>skpval</ar></on><od>set the number of samples to skip at the start of each sequence to <ar>skpval</ar>. The default value is taken from the IQ structure of the input <code>iqdat</code> format file.</od>
+</option>
+<option><on>-chnnum <ar>chnnum</ar></on><od>set the number of receiver channels to <ar>chnnum</ar>. The default value si taken from the IQ structure of the input <code>iqdat</code> format file.</od>
+</option>
+<option><on><ar>iqdatname</ar></on><od>filename of the <code>iqdat</code> format file. If this is omitted the file is read from standard input.</od>
 </option>
 
-<synopsis><p>Creates a <code>rawacf</code> format file from a <code>iqdat</code> format file.</p></synopsis>
-
-<description><p>Creates a <code>rawacf</code> format file from a <code>iqdat</code> format file.</p>
-<p>The <code>rawacf</code> format file  is written to standard output.</p>
+<synopsis><p>Creates a <code>rawacf</code> format file from an <code>iqdat</code> format file.</p></synopsis>
+<description><p>Creates a <code>rawacf</code> format file from an <code>iqdat</code> format file.</p>
+<p>The <code>rawacf</code> format file is written to standard output.</p>
 </description>
+
 <example>
 <command>make_raw 20040830.gbr.iqdat &gt; 20040830.gbr.rawacf</command>
-<description>Create an <code>rawacf</code> format file from the <code>iqdat</code> format file "<code>20040830.gbr.iqdat</code>".The <code>rawacf</code> format ile is written to "<code>20040830.gbr.rawacf</code>".</description>
+<description>Create a <code>rawacf</code> format file from the <code>iqdat</code> format file "<code>20040830.gbr.iqdat</code>".The <code>rawacf</code> format file is written to "<code>20040830.gbr.rawacf</code>".</description>
 </example>
 
 

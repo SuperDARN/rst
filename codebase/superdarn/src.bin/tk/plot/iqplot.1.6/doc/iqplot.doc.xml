@@ -10,11 +10,53 @@
 
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
 <option><on>-cf <ar>cfname</ar></on><od>read command line options from the file <ar>cfname</ar>.</od>
 </option>
-<option><on>-w <ar>width</ar></on><od>set the width of the plot to <ar>width</ar>.</od>
+<option><on>-sd <ar>yyyymmdd</ar></on><od>plot starting from the date <ar>yyyymmdd</ar>.</od>
 </option>
-<option><on>-h <ar>height</ar></on><od>set the height of the plot to <ar>height</ar>.</od>
+<option><on>-st <ar>hr:mn</ar></on><od>plot starting from the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ed <ar>yyyymmdd</ar></on><od>stop plotting at the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-et <ar>hr:mn</ar></on><od>stop plotting at the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ex <ar>hr:mn</ar></on><od>plot an interval whose extent is <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-wdt <ar>width</ar></on><od>set the width of the plot to <ar>width</ar>.</od>
+</option>
+<option><on>-hgt <ar>height</ar></on><od>set the height of the plot to <ar>height</ar>.</od>
+</option>
+<option><on>-r</on><od>plot the real (I) component of the I&Q samples.</od>
+</option>
+<option><on>-i</on><od>plot the imaginary (Q) component of the I&Q samples.</od>
+</option>
+<option><on>-p</on><od>plot the power of the I&Q samples on a logarithmic scale.</od>
+</option>
+<option><on>-b <ar>bmnum</ar></on><od>only plot the I&Q samples from beam number <ar>bmnum</ar>.</od>
+</option>
+<option><on>-c <ar>chnum</ar></on><od>only plot the I&Q samples from channel <ar>chnum</ar> for stereo mode data.</od>
+</option>
+<option><on>-int</on><od>plot I&Q samples from the interferometer array instead of the main array.</od>
+</option>
+<option><on>-rcol <ar>rrggbb</ar></on><od>set the color of the real (I) component to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color [default is teal].</od>
+</option>
+<option><on>-icol <ar>rrggbb</ar></on><od>set the color of the imaginary (Q) component to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color [default is red].</od>
+</option>
+<option><on>-m <ar>ymax</ar></on><od>set the extent of the Y-axis to +/-<ar>ymax</ar> when plotting I&Q components.</od>
+</option>
+<option><on>-s <ar>xmin</ar></on><od>set the first I&Q sample plotted to <ar>xmin</ar>.</od>
+</option>
+<option><on>-n <ar>xnum</ar></on><od>set the number of I&Q samples plotted to <ar>xnum</ar>.</od>
+</option>
+<option><on>-xmaj <ar>xmajor</ar></on><od>set the number of X-axis major tick marks to <ar>xmajor</ar>.</od>
+</option>
+<option><on>-xmin <ar>xminor</ar></on><od>set the number of X-axis minor tick marks to <ar>xminor</ar>.</od>
+</option>
+<option><on>-ymaj <ar>ymajor</ar></on><od>set the number of Y-axis major tick marks to <ar>ymajor</ar>.</od>
+</option>
+<option><on>-ymin <ar>yminor</ar></on><od>set the number of Y-axis minor tick marks to <ar>yminor</ar>.</od>
 </option>
 <option><on><ar>name</ar></on><od>the filename of the <code>iqdat</code> format file to plot.</od>
 </option>
@@ -23,6 +65,8 @@
 <option><on>-xoff <ar>xoff</ar></on><od>open the window, <ar>xoff</ar> pixels from the left edge of the screen.</od>
 </option>
 <option><on>-yoff <ar>yoff</ar></on><od>open the window <ar>ypad</ar> pixels from the top edge of the screen.</od>
+</option>
+<option><on>-delay <ar>delay</ar></on><od>set the delay between frames to <ar>delay</ar> milliseconds, a value of 0 will pause the frame until a mouse button is pressed.</od>
 </option>
 
 <synopsis><p>Plot raw I&Q samples from a <code>iqdat</code> format file.</p></synopsis>

@@ -5,7 +5,10 @@
 <location>src.bin/dmap/dmaptocdf</location>
 <syntax>dmaptocdf --help</syntax>
 <syntax>dmaptocdf [-vb] <ar>datamap</ar> <ar>map</ar> <ar>cdf</ar></syntax>
+
 <option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
 </option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
@@ -30,9 +33,5 @@
 <command>dmaptocdf 20021219.kap.fitacf fitacf.cdfmap 20021219.kap.cdf</command>
 <description>Populate the empty CDF file "<code>20021219.kap.cdf</code>" with data from the file "<code>20021219.kap.fitacf</code>" using the mapping table "<code>fitacf.cdfmap</code>".</description>
 </example>
-
-
-
-
 
 </binary>

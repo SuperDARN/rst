@@ -2,19 +2,29 @@
 
 Radar Software Toolkit
 ========
+The Radar Software Toolkit (RST) is maintained by the SuperDARN Data Analysis Working Group (DAWG). For general information and updates from the DAWG, visit our website at https://superdarn.github.io/dawg/
 
+## Documentation
 RST's documentation is currently hosted on two sites:
 - RST readthedocs includes the installation guide, RST Tutorials, and SuperDARN data formats (coming soon):
   https://radar-software-toolkit-rst.readthedocs.io/en/latest/
 - RST API documentation includes the software structure and binary command line description and options: 
   https://superdarn.github.io/rst/
 
-## Getting Started 
+## Installation
 
 Installation guide for:
   - [Linux](https://radar-software-toolkit-rst.readthedocs.io/en/latest/user_guide/linux_install/)
   - [MacOSX](https://radar-software-toolkit-rst.readthedocs.io/en/latest/user_guide/mac_install/)
   - <font color="grey">Windows </font> yet to be implemented
+  
+## Contribute to RST
+The DAWG welcomes new testers and developers to join the team. Here are some ways to contribute:
+
+  - Test pull requests: to determine which [pull requests](https://github.com/SuperDARN/rst/pulls) need to be tested right away, filter them by their milestones
+  - Get involved in projects: the [projects](https://github.com/SuperDARN/rst/projects) page is used to organize our priority areas. Each project board shows items which are in progress, ready for testing/review, and completed.
+ - Discuss [issues](https://github.com/SuperDARN/rst/issues) and answer questions
+ - Become a developer: if you would like to contribute code to RST, please contact us at darn-dawg *at* isee *dot* nagoya-u *dot* ac *dot* jp or submit a new [issue](https://github.com/SuperDARN/rst/issues) on Github.
 
 ## Historical Version Log
 

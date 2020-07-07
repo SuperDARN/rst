@@ -1,4 +1,4 @@
-/*Copyright (C) 2016  SuperDARN Canada
+/*Copyright (C) 2016  SuperDARN Canada, University of Saskatchewan
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -16,13 +16,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 /*
 ACF Processing main functions
 
-Keith Kotyk
-ISAS
-July 2015
+Author(s): Keith Kotyk July 2015
+
+Modifications: 
+    2020-03-11 Marina Schmidt (SuperDARN Canada) removed all defined 
+                              constants and included rmath.h 
 
 */
 
 #include "rtypes.h"
+#include "rmath.h"
 #include "preprocessing.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -739,10 +742,10 @@ void phase_correction(PHASENODE* phase, double* slope_est, int* total_2pi_correc
   phi_pred = *slope_est * phase_node->t;
 
   phi_diff = phi_pred - phase_node->phi;
-  phi_diff = round(100000.0 * (phi_diff)/(2 * M_PI))/100000.0;
+  phi_diff = round(100000.0 * (phi_diff)/(2 * PI))/100000.0;
   phi_corr = round(phi_diff);
 
-  phase_node->phi += phi_corr * 2 * M_PI;
+  phase_node->phi += phi_corr * 2 * PI;
 
   *total_2pi_corrections += abs(phi_corr);
 
@@ -773,7 +776,7 @@ double cutoff_power_correction(FITPRMS *fit_prms){
 
   while(cpdf < 10./fit_prms->nrang){
     x=i/1000.;
-    pdf=exp(-((x-1.)*(x-1.)/(2.*s*s)))/s/sqrt(2*M_PI)/1000.;  /* Normalized Gaussian distribution centered at 1 */
+    pdf=exp(-((x-1.)*(x-1.)/(2.*s*s)))/s/sqrt(2*PI)/1000.;  /* Normalized Gaussian distribution centered at 1 */
     cpdf=cpdf+pdf;
     cpdfx=cpdfx+pdf*x;
     i++;
@@ -1216,7 +1219,7 @@ void ACF_Phase_Unwrap(llist_node range, FITPRMS* fit_prms){
     sigma_bar = (local_copy[i+1].sigma + local_copy[i].sigma)/2;
     d_tau = local_copy[i+1].t - local_copy[i].t;
 
-    if(fabs(d_phi) < M_PI){
+    if(fabs(d_phi) < PI){
       slope_num += d_phi/(sigma_bar * sigma_bar)/d_tau;
       slope_denom += 1/(sigma_bar * sigma_bar);
     }

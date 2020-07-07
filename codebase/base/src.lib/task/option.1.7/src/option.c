@@ -368,7 +368,7 @@ int OptionVersion(FILE *fp) {
 
   rst_path=getenv("RSTPATH");
   strcpy(vname, rst_path);
-  strcat(vname, "/rst.version");
+  strcat(vname, "/.rst.version");
 
   vfp=fopen(vname, "r");
 
