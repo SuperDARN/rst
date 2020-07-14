@@ -49,6 +49,7 @@ pro SndMakeSndData,snd
 
   snd={SndData, $
          radar_revision: {rdstr, major: 0B, minor: 0B}, $
+         origin: {ogstr, code: 0B, time: ' ', command: ' '}, $
          cp: 0, $
          stid: 0, $
          time: {tmstr, yr:0, $
@@ -74,6 +75,7 @@ pro SndMakeSndData,snd
          xcf: 0, $
          tfreq: 0, $
          sky_noise: 0.0, $
+         combf: '', $
          snd_revision: {sdstr, major: 0, minor: 0}, $
          qflg: bytarr(MAX_RANGE), $
          gflg: bytarr(MAX_RANGE), $
@@ -119,19 +121,21 @@ function SndRead,unit,snd
 
   SndMakeSndData,snd
 
-  sclname=['radar.revision.major','radar.revision.minor','cp','stid', $
+  sclname=['radar.revision.major','radar.revision.minor', $
+           'origin.code','origin.time','origin.command','cp','stid', $
            'time.yr','time.mo','time.dy','time.hr','time.mt','time.sc', $
            'time.us','nave','lagfr','smsep','noise.search','noise.mean', $
            'bmnum','bmazm','scan','rxrise','intt.sc','intt.us', $
            'nrang','frang','rsep','xcf','tfreq','noise.sky', $
-           'snd.revision.major','snd.revision.minor']
+           'combf','snd.revision.major','snd.revision.minor']
 
-  scltype=[1,1,2,2, $
+  scltype=[1,1, $
+           1,9,9,2,2, $
            2,2,2,2,2,2, $
            3,2,2,2,4,4, $
            2,4,2,2,2,3, $
            2,2,2,2,2,4, $
-           2,2]
+           9,2,2]
 
   sclid=intarr(n_elements(sclname))
   sclid[*]=-1
@@ -170,34 +174,38 @@ function SndRead,unit,snd
 
   snd.radar_revision.major=*(sclvec[sclid[0]].ptr)
   snd.radar_revision.minor=*(sclvec[sclid[1]].ptr)
-  snd.cp=*(sclvec[sclid[2]].ptr)
-  snd.stid=*(sclvec[sclid[3]].ptr)
-  snd.time.yr=*(sclvec[sclid[4]].ptr)
-  snd.time.mo=*(sclvec[sclid[5]].ptr)
-  snd.time.dy=*(sclvec[sclid[6]].ptr)
-  snd.time.hr=*(sclvec[sclid[7]].ptr)
-  snd.time.mt=*(sclvec[sclid[8]].ptr)
-  snd.time.sc=*(sclvec[sclid[9]].ptr)
-  snd.time.us=*(sclvec[sclid[10]].ptr)
-  snd.nave=*(sclvec[sclid[11]].ptr)
-  snd.lagfr=*(sclvec[sclid[12]].ptr)
-  snd.smsep=*(sclvec[sclid[13]].ptr)
-  snd.noise.search=*(sclvec[sclid[14]].ptr)
-  snd.noise.mean=*(sclvec[sclid[15]].ptr)
-  snd.bmnum=*(sclvec[sclid[16]].ptr)
-  snd.bmazm=*(sclvec[sclid[17]].ptr)
-  snd.scan=*(sclvec[sclid[18]].ptr)
-  snd.rxrise=*(sclvec[sclid[19]].ptr)
-  snd.intt.sc=*(sclvec[sclid[20]].ptr)
-  snd.intt.us=*(sclvec[sclid[21]].ptr)
-  snd.nrang=*(sclvec[sclid[22]].ptr)
-  snd.frang=*(sclvec[sclid[23]].ptr)
-  snd.rsep=*(sclvec[sclid[24]].ptr)
-  snd.xcf=*(sclvec[sclid[25]].ptr)
-  snd.tfreq=*(sclvec[sclid[26]].ptr)
-  snd.sky_noise=*(sclvec[sclid[27]].ptr)
-  snd.snd_revision.major=*(sclvec[sclid[28]].ptr)
-  snd.snd_revision.minor=*(sclvec[sclid[29]].ptr)
+  snd.origin.code=*(sclvec[sclid[2]].ptr)
+  snd.origin.time=*(sclvec[sclid[3]].ptr)
+  snd.origin.command=*(sclvec[sclid[4]].ptr)
+  snd.cp=*(sclvec[sclid[5]].ptr)
+  snd.stid=*(sclvec[sclid[6]].ptr)
+  snd.time.yr=*(sclvec[sclid[7]].ptr)
+  snd.time.mo=*(sclvec[sclid[8]].ptr)
+  snd.time.dy=*(sclvec[sclid[9]].ptr)
+  snd.time.hr=*(sclvec[sclid[10]].ptr)
+  snd.time.mt=*(sclvec[sclid[11]].ptr)
+  snd.time.sc=*(sclvec[sclid[12]].ptr)
+  snd.time.us=*(sclvec[sclid[13]].ptr)
+  snd.nave=*(sclvec[sclid[14]].ptr)
+  snd.lagfr=*(sclvec[sclid[15]].ptr)
+  snd.smsep=*(sclvec[sclid[16]].ptr)
+  snd.noise.search=*(sclvec[sclid[17]].ptr)
+  snd.noise.mean=*(sclvec[sclid[18]].ptr)
+  snd.bmnum=*(sclvec[sclid[19]].ptr)
+  snd.bmazm=*(sclvec[sclid[20]].ptr)
+  snd.scan=*(sclvec[sclid[21]].ptr)
+  snd.rxrise=*(sclvec[sclid[22]].ptr)
+  snd.intt.sc=*(sclvec[sclid[23]].ptr)
+  snd.intt.us=*(sclvec[sclid[24]].ptr)
+  snd.nrang=*(sclvec[sclid[25]].ptr)
+  snd.frang=*(sclvec[sclid[26]].ptr)
+  snd.rsep=*(sclvec[sclid[27]].ptr)
+  snd.xcf=*(sclvec[sclid[28]].ptr)
+  snd.tfreq=*(sclvec[sclid[29]].ptr)
+  snd.sky_noise=*(sclvec[sclid[30]].ptr)
+  snd.combf=*(sclvec[sclid[31]].ptr)
+  snd.snd_revision.major=*(sclvec[sclid[32]].ptr)
+  snd.snd_revision.minor=*(sclvec[sclid[33]].ptr)
 
   if (arrid[0] eq -1) then begin
     st=DataMapFreeScalar(sclvec)
@@ -261,6 +269,9 @@ function SndWrite,unit,snd
 
   s=DataMapMakeScalar('radar.revision.major',snd.radar_revision.major,sclvec)
   s=DataMapMakeScalar('radar.revision.minor',snd.radar_revision.minor,sclvec)
+  s=DataMapMakeScalar('origin.code',snd.origin.code,sclvec)
+  s=DataMapMakeScalar('origin.time',snd.origin.time,sclvec)
+  s=DataMapMakeScalar('origin.command',snd.origin.command,sclvec)
   s=DataMapMakeScalar('cp',snd.cp,sclvec)
   s=DataMapMakeScalar('stid',snd.stid,sclvec)
   s=DataMapMakeScalar('time.yr',snd.time.yr,sclvec)
@@ -286,9 +297,10 @@ function SndWrite,unit,snd
   s=DataMapMakeScalar('rsep',snd.rsep,sclvec)
   s=DataMapMakeScalar('xcf',snd.xcf,sclvec)
   s=DataMapMakeScalar('tfreq',snd.tfreq,sclvec)
+  s=DataMapMakeScalar('noise.sky',snd.sky_noise,sclvec)
+  s=DataMapMakeScalar('combf',snd.combf,sclvec)
   s=DataMapMakeScalar('snd.revision.major',snd.snd_revision.major,sclvec)
   s=DataMapMakeScalar('snd.revision.minor',snd.snd_revision.minor,sclvec)
-  s=DataMapMakeScalar('noise.sky',snd.sky_noise,sclvec)
 
   q=snd.qflg[0:snd.nrang-1]+snd.x_qflg[0:snd.nrang-1]
 

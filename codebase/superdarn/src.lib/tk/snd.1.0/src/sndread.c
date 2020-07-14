@@ -24,9 +24,15 @@ int SndDecode(struct DataMap *ptr, struct SndData *snd) {
   struct DataMapScalar *s;
   struct DataMapArray *a;
 
+  if (snd->origin.time !=NULL) free(snd->origin.time);
+  if (snd->origin.command !=NULL) free(snd->origin.command);
+  if (snd->combf !=NULL) free(snd->combf);
   if (snd->rng !=NULL) free(snd->rng);
 
   memset(snd,0,sizeof(struct SndData));
+  snd->origin.time=NULL;
+  snd->origin.command=NULL;
+  snd->combf=NULL;
   snd->rng=NULL;
 
   for (c=0;c<ptr->snum;c++) {
@@ -36,6 +42,13 @@ int SndDecode(struct DataMap *ptr, struct SndData *snd) {
       snd->radar_revision.major=*(s->data.cptr);
     if ((strcmp(s->name,"radar.revision.minor")==0) && (s->type==DATACHAR))
       snd->radar_revision.minor=*(s->data.cptr);
+
+    if ((strcmp(s->name,"origin.code")==0) && (s->type==DATACHAR))
+      snd->origin.code=*(s->data.cptr);
+    if ((strcmp(s->name,"origin.time")==0) && (s->type==DATASTRING))
+      SndSetOriginTime(snd,*((char **) s->data.vptr));
+    if ((strcmp(s->name,"origin.command")==0) && (s->type==DATASTRING))
+      SndSetOriginCommand(snd,*((char **) s->data.vptr));
 
     if ((strcmp(s->name,"cp")==0) && (s->type==DATASHORT))
       snd->cp=*(s->data.sptr);
@@ -89,6 +102,8 @@ int SndDecode(struct DataMap *ptr, struct SndData *snd) {
       snd->tfreq=*(s->data.sptr);
     if ((strcmp(s->name,"noise.sky")==0) && (s->type==DATAFLOAT))
       snd->sky_noise=*(s->data.fptr);
+    if ((strcmp(s->name,"combf")==0) && (s->type==DATASTRING))
+      SndSetCombf(snd,*((char **) s->data.vptr));
     if ((strcmp(s->name,"snd.revision.major")==0) && (s->type==DATASHORT))
       snd->snd_revision.major=*(s->data.sptr);
     if ((strcmp(s->name,"snd.revision.minor")==0) && (s->type==DATASHORT))

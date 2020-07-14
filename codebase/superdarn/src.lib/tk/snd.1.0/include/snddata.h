@@ -19,6 +19,12 @@ struct SndData {
     char minor;
   } radar_revision;
 
+  struct {
+    char code;
+    char *time;
+    char *command;
+  } origin;
+
   int16 cp;
   int16 stid;
   
@@ -59,6 +65,8 @@ struct SndData {
 
   double sky_noise;
 
+  char *combf;
+
   struct {
     int major;
     int minor;
@@ -83,6 +91,9 @@ struct SndRange { /* fitted parameters for a single range */
 
 struct SndData *SndMake();
 void SndFree(struct SndData *ptr);
+int SndSetOriginTime(struct SndData *ptr,char *str);
+int SndSetOriginCommand(struct SndData *ptr,char *str);
+int SndSetCombf(struct SndData *ptr,char *str);
 int SndSetRng(struct SndData *ptr,int nrang);
 
 #endif

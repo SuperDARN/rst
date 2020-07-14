@@ -50,7 +50,8 @@ int FitToSnd(struct SndData *ptr, struct RadarParm *prm,
   ptr->rsep = prm->rsep;
   ptr->xcf = prm->xcf;
   ptr->tfreq = prm->tfreq;
-  ptr->sky_noise=fit->noise.skynoise;
+  ptr->sky_noise = fit->noise.skynoise;
+  ptr->combf = prm->combf;
   ptr->snd_revision.major = SND_MAJOR_REVISION;
   ptr->snd_revision.minor = SND_MINOR_REVISION;
 

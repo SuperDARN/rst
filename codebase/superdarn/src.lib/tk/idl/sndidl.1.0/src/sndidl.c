@@ -29,6 +29,14 @@ void IDLCopySndDataFromIDL(int nrang, struct SndIDLData *isnd,
 
   snd->radar_revision.major = isnd->radar_revision.major;
   snd->radar_revision.minor = isnd->radar_revision.minor;
+  snd->origin.code = isnd->origin.code;
+
+  if (strlen(IDL_STRING_STR(&isnd->origin.time)) !=0)
+    SndSetOriginTime(snd,IDL_STRING_STR(&isnd->origin.time));
+
+  if (strlen(IDL_STRING_STR(&isnd->origin.command)) !=0)
+    SndSetOriginCommand(snd,IDL_STRING_STR(&isnd->origin.command));
+
   snd->cp = isnd->cp;
   snd->stid = isnd->stid;
   snd->time.yr = isnd->time.yr;
@@ -55,6 +63,10 @@ void IDLCopySndDataFromIDL(int nrang, struct SndIDLData *isnd,
   snd->xcf = isnd->xcf;
   snd->tfreq = isnd->tfreq;
   snd->sky_noise = isnd->sky_noise;
+
+  if (strlen(IDL_STRING_STR(&isnd->combf)) !=0)
+    SndSetCombf(snd,IDL_STRING_STR(&isnd->combf));
+
   snd->snd_revision.major = isnd->snd_revision.major;
   snd->snd_revision.minor = isnd->snd_revision.minor;
 
@@ -77,10 +89,30 @@ void IDLCopySndDataToIDL(int nrang, struct SndData *snd,
 
   int n;
 
+  char combftmp[COMBF_SIZE+1];
+  char origintimetmp[ORIGIN_TIME_SIZE+1];
+  char origincommandtmp[ORIGIN_COMMAND_SIZE+1];
+
+  memset(&combftmp,0,COMBF_SIZE+1);
+  memset(&origintimetmp,0,ORIGIN_TIME_SIZE+1);
+  memset(&origincommandtmp,0,ORIGIN_COMMAND_SIZE+1);
+
   memset(isnd,0,sizeof(struct SndIDLData));
 
   isnd->radar_revision.major = snd->radar_revision.major;
   isnd->radar_revision.minor = snd->radar_revision.minor;
+  isnd->origin.code = snd->origin.code;
+
+  if (snd->origin.time !=NULL) {
+    strncpy(origintimetmp,snd->origin.time,ORIGIN_TIME_SIZE);
+    IDL_StrStore(&isnd->origin.time,origintimetmp);
+  }
+
+  if (snd->origin.command !=NULL) {
+    strncpy(origincommandtmp,snd->origin.command,ORIGIN_COMMAND_SIZE);
+    IDL_StrStore(&isnd->origin.command,origincommandtmp);
+  }
+
   isnd->cp = snd->cp;
   isnd->stid = snd->stid;
   isnd->time.yr = snd->time.yr;
@@ -107,6 +139,12 @@ void IDLCopySndDataToIDL(int nrang, struct SndData *snd,
   isnd->xcf = snd->xcf;
   isnd->tfreq = snd->tfreq;
   isnd->sky_noise = snd->sky_noise;
+
+  if (snd->combf !=NULL) {
+    strncpy(combftmp,snd->combf,COMBF_SIZE);
+    IDL_StrStore(&isnd->combf,combftmp);
+  }
+
   isnd->snd_revision.major = snd->snd_revision.major;
   isnd->snd_revision.minor = snd->snd_revision.minor;
 
@@ -133,6 +171,12 @@ struct SndIDLData *IDLMakeSndData(IDL_VPTR *vptr) {
   static IDL_STRUCT_TAG_DEF radar_revision[]={
     {"MAJOR",0,(void *) IDL_TYP_BYTE},
     {"MINOR",0,(void *) IDL_TYP_BYTE},
+    {0}};
+
+  static IDL_STRUCT_TAG_DEF origin[]={
+    {"CODE",0,(void *) IDL_TYP_BYTE},
+    {"TIME",0,(void *) IDL_TYP_STRING},
+    {"COMMAND",0,(void *) IDL_TYP_STRING},
     {0}};
 
   static IDL_STRUCT_TAG_DEF time[]={
@@ -162,43 +206,46 @@ struct SndIDLData *IDLMakeSndData(IDL_VPTR *vptr) {
 
   static IDL_STRUCT_TAG_DEF snddata[]={
     {"RADAR_REVISION",0,NULL},          /* 0 */
-    {"CP",0,(void *) IDL_TYP_INT},      /* 1 */
-    {"STID",0,(void *) IDL_TYP_INT},    /* 2 */
-    {"TIME",0,NULL},                    /* 3 */
-    {"NAVE",0,(void *) IDL_TYP_INT},    /* 4 */
-    {"LAGFR",0,(void *) IDL_TYP_INT},   /* 5 */
-    {"SMSEP",0,(void *) IDL_TYP_INT},   /* 6 */
-    {"NOISE",0,NULL},                   /* 7 */
-    {"BMNUM",0,(void *) IDL_TYP_INT},   /* 8 */
-    {"BMAZM",0,(void *) IDL_TYP_FLOAT}, /* 9 */
-    {"SCAN",0,(void *) IDL_TYP_INT},    /* 10 */
-    {"RXRISE",0,(void *) IDL_TYP_INT},  /* 11 */
-    {"INTT",0,NULL},                    /* 12 */
-    {"NRANG",0,(void *) IDL_TYP_INT},   /* 13 */
-    {"FRANG",0,(void *) IDL_TYP_INT},   /* 14 */
-    {"RSEP",0,(void *) IDL_TYP_INT},    /* 15 */
-    {"XCF",0,(void *) IDL_TYP_INT},     /* 16 */
-    {"TFREQ",0,(void *) IDL_TYP_INT},   /* 17 */
-    {"SKY_NOISE",0,(void *) IDL_TYP_FLOAT}, /* 18 */
-    {"SND_REVISION",0,NULL},            /* 19 */
-    {"QFLG",rdim,(void *) IDL_TYP_BYTE}, /* 20 */
-    {"GFLG",rdim,(void *) IDL_TYP_BYTE}, /* 21 */
-    {"V",rdim,(void *) IDL_TYP_FLOAT},   /* 22 */
-    {"V_E",rdim,(void *) IDL_TYP_FLOAT}, /* 23 */
-    {"P_L",rdim,(void *) IDL_TYP_FLOAT}, /* 24 */
-    {"W_L",rdim,(void *) IDL_TYP_FLOAT}, /* 25 */
-    {"X_QFLG",rdim,(void *) IDL_TYP_BYTE}, /* 26 */
-    {"PHI0",rdim,(void *) IDL_TYP_FLOAT}, /* 27 */
-    {"PHI0_E",rdim,(void *) IDL_TYP_FLOAT}, /* 28 */
+    {"ORIGIN",0,NULL},                  /* 1 */
+    {"CP",0,(void *) IDL_TYP_INT},      /* 2 */
+    {"STID",0,(void *) IDL_TYP_INT},    /* 3 */
+    {"TIME",0,NULL},                    /* 4 */
+    {"NAVE",0,(void *) IDL_TYP_INT},    /* 5 */
+    {"LAGFR",0,(void *) IDL_TYP_INT},   /* 6 */
+    {"SMSEP",0,(void *) IDL_TYP_INT},   /* 7 */
+    {"NOISE",0,NULL},                   /* 8 */
+    {"BMNUM",0,(void *) IDL_TYP_INT},   /* 9 */
+    {"BMAZM",0,(void *) IDL_TYP_FLOAT}, /* 10 */
+    {"SCAN",0,(void *) IDL_TYP_INT},    /* 11 */
+    {"RXRISE",0,(void *) IDL_TYP_INT},  /* 12 */
+    {"INTT",0,NULL},                    /* 13 */
+    {"NRANG",0,(void *) IDL_TYP_INT},   /* 14 */
+    {"FRANG",0,(void *) IDL_TYP_INT},   /* 15 */
+    {"RSEP",0,(void *) IDL_TYP_INT},    /* 16 */
+    {"XCF",0,(void *) IDL_TYP_INT},     /* 17 */
+    {"TFREQ",0,(void *) IDL_TYP_INT},   /* 18 */
+    {"SKY_NOISE",0,(void *) IDL_TYP_FLOAT}, /* 19 */
+    {"COMBF",0,(void *) IDL_TYP_STRING}, /* 20 */
+    {"SND_REVISION",0,NULL},            /* 21 */
+    {"QFLG",rdim,(void *) IDL_TYP_BYTE}, /* 22 */
+    {"GFLG",rdim,(void *) IDL_TYP_BYTE}, /* 23 */
+    {"V",rdim,(void *) IDL_TYP_FLOAT},   /* 24 */
+    {"V_E",rdim,(void *) IDL_TYP_FLOAT}, /* 25 */
+    {"P_L",rdim,(void *) IDL_TYP_FLOAT}, /* 26 */
+    {"W_L",rdim,(void *) IDL_TYP_FLOAT}, /* 27 */
+    {"X_QFLG",rdim,(void *) IDL_TYP_BYTE}, /* 28 */
+    {"PHI0",rdim,(void *) IDL_TYP_FLOAT}, /* 29 */
+    {"PHI0_E",rdim,(void *) IDL_TYP_FLOAT}, /* 30 */
     {0}};
 
   static IDL_MEMINT ilDims[IDL_MAX_ARRAY_DIM];
 
   snddata[0].type=IDL_MakeStruct("RDSTR",radar_revision);
-  snddata[3].type=IDL_MakeStruct("TMSTR",time);
-  snddata[7].type=IDL_MakeStruct("NSSTR",noise);
-  snddata[12].type=IDL_MakeStruct("ITSTR",intt);
-  snddata[19].type=IDL_MakeStruct("SDSTR",snd_revision);
+  snddata[1].type=IDL_MakeStruct("OGSTR",origin);
+  snddata[4].type=IDL_MakeStruct("TMSTR",time);
+  snddata[8].type=IDL_MakeStruct("NSSTR",noise);
+  snddata[13].type=IDL_MakeStruct("ITSTR",intt);
+  snddata[21].type=IDL_MakeStruct("SDSTR",snd_revision);
 
   s=IDL_MakeStruct("SNDDATA",snddata);
 
