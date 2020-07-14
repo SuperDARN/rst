@@ -62,8 +62,8 @@ For macOS it is also available through MacPorts, as are all listed dependencies.
 From the above site, navigate to the `macosx` directory and download the pre-compiled binary file `cdf[XX_X]-setup_universal_binary.tar.gz`, where `XX_X` is the version number of the latest release. 
 
 Unpack the binary using the following steps: 
-1. `tar -xzvf cdf[XX_X]-setup_universal_binary.tar.gz`
-2. double-click on the unpacked binary to be led through installation instructions.  
+    1. `tar -xzvf cdf[XX_X]-setup_universal_binary.tar.gz`
+    2. double-click on the unpacked binary to be led through installation instructions.  
 
 Alternatively, you may follow the instructions given on the [linux page](linux_install.md), replacing:
 
