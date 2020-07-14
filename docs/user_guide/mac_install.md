@@ -63,6 +63,7 @@ From the above site, navigate to the `macosx` directory and download the pre-com
 
 Unpack the binary using the following steps:
 
+
 1. `tar -xzvf cdf[XX_X]-setup_universal_binary.tar.gz`
 2. double-click on the unpacked binary to be led through installation instructions.  
 
