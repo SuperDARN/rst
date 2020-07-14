@@ -118,6 +118,15 @@ int main(int argc,char *argv[]) {
     strcat(command,argv[c]);
   }
 
+  command[0]=0;
+  n=0;
+  for (c=0;c<argc;c++) {
+    n+=strlen(argv[c])+1;
+    if (n>127) break;
+    if (c !=0) strcat(command," ");
+    strcat(command,argv[c]);
+  }
+
   while ((s=FitFread(fp,prm,fit)) !=-1) {
 
     if ((cpid !=-1) && (prm->cp !=cpid)) continue;
