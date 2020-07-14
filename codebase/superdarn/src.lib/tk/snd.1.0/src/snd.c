@@ -22,6 +22,9 @@ struct SndData *SndMake() {
   ptr=malloc(sizeof(struct SndData));
   if (ptr==NULL) return NULL;
   memset(ptr,0,sizeof(struct SndData));
+  ptr->origin.time=NULL;
+  ptr->origin.command=NULL;
+  ptr->combf=NULL;
   ptr->rng=NULL;
   return ptr;
 }
