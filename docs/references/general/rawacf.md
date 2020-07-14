@@ -24,7 +24,7 @@ For example, on 2019-02-01 the King Salmon radar (KSR) was operating simultaneou
 Each file contains data from a different frequency channel. 
 
 !!! Note
-Sometimes modes like `twofsound` will write data into a single file. In this case the two frequencies are marked as two separate channels, denoted using the `channel` parameter. However, it is important to note that some SuperDARN radars have stereo capability (transmitting and receiving on 2 frequencies simultaneously), which was the original intended usage of the `channel` parameter.
+        Sometimes modes like `twofsound` will write data into a single file. In this case the two frequencies are marked as two separate channels, denoted using the `channel` parameter. However, it is important to note that some SuperDARN radars have stereo capability (transmitting and receiving on 2 frequencies simultaneously), which was the original intended usage of the `channel` parameter.
 
 ## Fields
 
