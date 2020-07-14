@@ -58,7 +58,7 @@ You will also need the CDF (Common Data Format) library which can be downloaded 
 You can find the latest release at: [http://cdf.gsfc.nasa.gov/](http://cdf.gsfc.nasa.gov)
 For macOS it is also available through MacPorts, as are all listed dependencies. However, if the MacPorts installation errors or you do not use MacPorts, you may follow the instructions below.
 
-From the above site, navigate to the `macosx` directory and download the pre-compiled binary file `cdf[XX_X]-setup_universal_binary.tar.gz`, where `XX_X` is the version number of the latest release. Unpack the binary using `tar -xzvf cdf[XX_X]-setup_universal_binary.tar.gz` and double-click on the unpacked binary to be led through installation instructions.  Alternatively, you may follow the instructions given on the linux page, replacing the `make OS=linux ENV=gnu all` with `make OS=macosx ENV=gnu all`.  You can now delete the `cdfXX_X-dist` directory or binary and the `tar.gz` archive.
+From the above site, navigate to the `macosx` directory and download the pre-compiled binary file `cdf[XX_X]-setup_universal_binary.tar.gz`, where `XX_X` is the version number of the latest release. Unpack the binary using `tar -xzvf cdf[XX_X]-setup_universal_binary.tar.gz` and double-click on the unpacked binary to be led through installation instructions.  Alternatively, you may follow the instructions given on the [linux page](linux_install.md), replacing the `make OS=linux ENV=gnu all` with `make OS=macosx ENV=gnu all`.  You can now delete the `cdfXX_X-dist` directory or binary and the `tar.gz` archive.
 
 Now go to the [Installation](#installation)
 
@@ -171,4 +171,3 @@ make
 cd $RSTPATH/build/script
 make.code
 ```
-
