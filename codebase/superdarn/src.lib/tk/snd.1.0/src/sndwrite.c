@@ -44,6 +44,9 @@ int SndWrite(int fid, struct SndData *snd) {
 
   DataMapAddScalar(ptr,"radar.revision.major",DATACHAR,&snd->radar_revision.major);
   DataMapAddScalar(ptr,"radar.revision.minor",DATACHAR,&snd->radar_revision.minor);
+  DataMapAddScalar(ptr,"origin.code",DATACHAR,&snd->origin.code);
+  DataMapAddScalar(ptr,"origin.time",DATASTRING,&snd->origin.time);
+  DataMapAddScalar(ptr,"origin.command",DATASTRING,&snd->origin.command);
   DataMapAddScalar(ptr,"cp",DATASHORT,&snd->cp);
   DataMapAddScalar(ptr,"stid",DATASHORT,&snd->stid);
   DataMapAddScalar(ptr,"time.yr",DATASHORT,&snd->time.yr);
@@ -75,6 +78,8 @@ int SndWrite(int fid, struct SndData *snd) {
 
   sky_noise=snd->sky_noise;
   DataMapStoreScalar(ptr,"noise.sky",DATAFLOAT,&sky_noise);
+
+  DataMapAddScalar(ptr,"combf",DATASTRING,&snd->combf);
 
   DataMapAddScalar(ptr,"snd.revision.major",DATASHORT,&snd->snd_revision.major);
   DataMapAddScalar(ptr,"snd.revision.minor",DATASHORT,&snd->snd_revision.minor);

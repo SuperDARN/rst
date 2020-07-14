@@ -30,9 +30,72 @@ struct SndData *SndMake() {
 void SndFree(struct SndData *ptr) {
 
   if (ptr==NULL) return;
+  if (ptr->origin.time !=NULL) free(ptr->origin.time);
+  if (ptr->origin.command !=NULL) free(ptr->origin.command);
+  if (ptr->combf !=NULL) free(ptr->combf);
   if (ptr->rng !=NULL) free(ptr->rng);
   free(ptr);
   return;
+}
+
+
+int SndSetOriginTime(struct SndData *ptr,char *str) {
+  char *tmp=NULL;
+  if (ptr==NULL) return -1;
+
+  if (str==NULL) {
+    if (ptr->origin.time !=NULL) free(ptr->origin.time);
+    ptr->origin.time=NULL;
+    return 0;
+  }
+
+  if (ptr->origin.time==NULL) tmp=malloc(strlen(str)+1);
+  else tmp=realloc(ptr->origin.time,strlen(str)+1);
+
+  if (tmp==NULL) return -1;
+  strcpy(tmp,str);
+  ptr->origin.time=tmp;
+  return 0;
+}
+
+
+int SndSetOriginCommand(struct SndData *ptr,char *str) {
+  char *tmp=NULL;
+  if (ptr==NULL) return -1;
+
+  if (str==NULL) {
+    if (ptr->origin.command !=NULL) free(ptr->origin.command);
+    ptr->origin.command=NULL;
+    return 0;
+  }
+
+  if (ptr->origin.command==NULL) tmp=malloc(strlen(str)+1);
+  else tmp=realloc(ptr->origin.command,strlen(str)+1);
+
+  if (tmp==NULL) return -1;
+  strcpy(tmp,str);
+  ptr->origin.command=tmp;
+  return 0;
+}
+
+
+int SndSetCombf(struct SndData *ptr,char *str) {
+  void *tmp=NULL;
+  if (ptr==NULL) return -1;
+
+  if (str==NULL) {
+    if (ptr->combf !=NULL) free(ptr->combf);
+    ptr->combf=NULL;
+    return 0;
+  }
+
+  if (ptr->combf==NULL) tmp=malloc(strlen(str)+1);
+  else tmp=realloc(ptr->combf,strlen(str)+1);
+
+  if (tmp==NULL) return -1;
+  strcpy(tmp,str);
+  ptr->combf=tmp;
+  return 0;
 }
 
 

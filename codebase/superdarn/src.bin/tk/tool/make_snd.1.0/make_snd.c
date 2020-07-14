@@ -10,6 +10,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <string.h>
+#include <time.h>
 #include <zlib.h>
 #include "rtypes.h"
 #include "dmap.h"
@@ -46,6 +48,11 @@ int main(int argc,char *argv[]) {
   struct FitData *fit;
   struct SndData *snd;
   FILE *fp; 
+
+  time_t ctime;
+  int c,n;
+  char command[128];
+  char tmstr[40];
 
   int cnt=0;
 
@@ -88,7 +95,23 @@ int main(int argc,char *argv[]) {
   } else fp=stdin;
 
 
+  command[0]=0;
+  n=0;
+  for (c=0;c<argc;c++) {
+    n+=strlen(argv[c])+1;
+    if (n>127) break;
+    if (c !=0) strcat(command," ");
+    strcat(command,argv[c]);
+  }
+
   while ((s=FitFread(fp,prm,fit)) !=-1) {
+
+    snd->origin.code=1;
+    ctime = time((time_t) 0);
+    strcpy(tmstr,asctime(gmtime(&ctime)));
+    tmstr[24]=0;
+    SndSetOriginTime(snd,tmstr);
+    SndSetOriginCommand(snd,command);
 
     s=FitToSnd(snd,prm,fit,prm->scan);
     if (s==-1) {

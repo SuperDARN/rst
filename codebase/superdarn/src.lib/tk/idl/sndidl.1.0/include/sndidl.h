@@ -10,12 +10,22 @@
 
 #define MAX_RANGE 300
 
+#define ORIGIN_TIME_SIZE 26
+#define ORIGIN_COMMAND_SIZE 128
+#define COMBF_SIZE 80
+
 
 struct SndIDLData {
   struct {
     UCHAR major;
     UCHAR minor;
   } radar_revision;
+
+  struct {
+    UCHAR code;
+    IDL_STRING time;
+    IDL_STRING command;
+  } origin;
 
   short cp;
   short stid;
@@ -56,6 +66,8 @@ struct SndIDLData {
   short tfreq;
 
   float sky_noise;
+
+  IDL_STRING combf;
 
   struct {
     short major;
