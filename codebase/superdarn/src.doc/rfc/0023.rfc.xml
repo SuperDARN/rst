@@ -63,11 +63,11 @@
 <tr><td><pre> gvec={GridGVec, mlat:0.0, $      ; magnetic latitude
               mlon:0.0, $                    ; magnetic longitude
               azm: 0.0, $                    ; magnetic azimuth
-              vel: {GridValue,median:0.0, $  ; velocity median
+              vel: {GridValue,median:0.0, $  ; velocity mean
                               sd:0.0}, $     ; velocity standard deviation
-              pwr: {GridValue,median:0.0, $  ; power median
+              pwr: {GridValue,median:0.0, $  ; power mean
                               sd:0.0}, $     ; power standard deviation
-              wdt: {GridValue,median:0.0, $  ; spectral width median
+              wdt: {GridValue,median:0.0, $  ; spectral width mean
                               sd:0.0}, $     ; spectral width standard deviation
               st_id: 0, $                    ; station identifier
               chn: 0, $                      ; channel number
@@ -79,5 +79,4 @@
 </body>
 <reference><rfc href="0017.html">RFC #0017</rfc></reference>
 <revision>2004/11/22  Initial Revision.</revision>
-<revision>2019/09/16  Fixed typos.</revision>
 </rfc>

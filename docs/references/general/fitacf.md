@@ -12,11 +12,11 @@ FITACF files are a fitted post-processed data product from RAWACF files (sometim
 
 Currently the common naming convention for FITACF files is:
 
-> YYYY.MM.DD.HH.mm.ss.<3-letter abbreviation>.fitacf
+> YYYYMMDD.HH.mm.ss.<3-letter abbreviation>.fitacf
 
 SuperDARN radars routinely change operating frequency. Some operating modes use multiple frequencies, either at the same time, or by alternating between frequencies. As a result, some files from some radars include all records for all frequencies in the same file and other radars separate out the individual frequencies into separate files, designated by a channel letter in the file name:
 
-> YYYY.MM.DD.HH.mm.ss.<3-letter abbreviation>.[a-d].fitacf
+> YYYYMMDD.HH.mm.ss.<3-letter abbreviation>.[a-d].fitacf
 
 For example, on 2019-02-01 the King Salmon radar (KSR) was operating simultaneously on two channels as seen from the file names `20190201.0401.00.ksr.a.fitacf` and `20190201.0401.00.ksr.b.fitacf`.
 Each file contains data from a different frequency channel. 

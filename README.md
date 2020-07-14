@@ -2,7 +2,7 @@
 
 Radar Software Toolkit
 ========
-The Radar Software Toolkit (RST) is maintained by the SuperDARN Data Analysis Working Group (DAWG). To find out what we are currently working on, take a look at our [projects](https://github.com/SuperDARN/rst/projects) page, and also the current [issues](https://github.com/SuperDARN/rst/issues) and [pull requests](https://github.com/SuperDARN/rst/pulls). 
+The Radar Software Toolkit (RST) is maintained by the SuperDARN Data Analysis Working Group (DAWG). For general information and updates from the DAWG, visit our website at https://superdarn.github.io/dawg/
 
 ## Documentation
 RST's documentation is currently hosted on two sites:
@@ -24,7 +24,7 @@ The DAWG welcomes new testers and developers to join the team. Here are some way
   - Test pull requests: to determine which [pull requests](https://github.com/SuperDARN/rst/pulls) need to be tested right away, filter them by their milestones
   - Get involved in projects: the [projects](https://github.com/SuperDARN/rst/projects) page is used to organize our priority areas. Each project board shows items which are in progress, ready for testing/review, and completed.
  - Discuss [issues](https://github.com/SuperDARN/rst/issues) and answer questions
- - Become a developer: if you would like to contribute code to RST, please contact the DAWG chairs: Kevin Sterne (kevintyler *at* vt *dot* edu) and Emma Bland (emmab *at* unis *dot* no)
+ - Become a developer: if you would like to contribute code to RST, please contact us at darn-dawg *at* isee *dot* nagoya-u *dot* ac *dot* jp or submit a new [issue](https://github.com/SuperDARN/rst/issues) on Github.
 
 ## Historical Version Log
 
