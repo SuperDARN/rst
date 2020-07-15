@@ -49,7 +49,7 @@ pro SndMakeSndData,snd
 
   snd={SndData, $
          radar_revision: {rdstr, major: 0B, minor: 0B}, $
-         origin: {ogstr, code: 0B, time: ' ', command: ' '}, $
+         origin: {ogstr, code: 0B, time: '', command: ''}, $
          cp: 0, $
          stid: 0, $
          time: {tmstr, yr:0, $
@@ -161,51 +161,51 @@ function SndRead,unit,snd
       arrid[n]=DataMapFindArray(arrname[n],arrtype[n],arrvec)
   endif
 
-  q=where(sclid eq -1,count)
+  ;q=where(sclid eq -1,count)
 
-  if (count ne 0) then begin
-    print,'File is in the wrong format!'
-    st=DataMapFreeScalar(sclvec)
-    st=DataMapFreeArray(arrvec)
-    return, -2
-  endif
+  ;if (count ne 0) then begin
+  ;  print,'File is in the wrong format!'
+  ;  st=DataMapFreeScalar(sclvec)
+  ;  st=DataMapFreeArray(arrvec)
+  ;  return, -2
+  ;endif
 
   ; populate the structures
 
-  snd.radar_revision.major=*(sclvec[sclid[0]].ptr)
-  snd.radar_revision.minor=*(sclvec[sclid[1]].ptr)
-  snd.origin.code=*(sclvec[sclid[2]].ptr)
-  snd.origin.time=*(sclvec[sclid[3]].ptr)
-  snd.origin.command=*(sclvec[sclid[4]].ptr)
-  snd.cp=*(sclvec[sclid[5]].ptr)
-  snd.stid=*(sclvec[sclid[6]].ptr)
-  snd.time.yr=*(sclvec[sclid[7]].ptr)
-  snd.time.mo=*(sclvec[sclid[8]].ptr)
-  snd.time.dy=*(sclvec[sclid[9]].ptr)
-  snd.time.hr=*(sclvec[sclid[10]].ptr)
-  snd.time.mt=*(sclvec[sclid[11]].ptr)
-  snd.time.sc=*(sclvec[sclid[12]].ptr)
-  snd.time.us=*(sclvec[sclid[13]].ptr)
-  snd.nave=*(sclvec[sclid[14]].ptr)
-  snd.lagfr=*(sclvec[sclid[15]].ptr)
-  snd.smsep=*(sclvec[sclid[16]].ptr)
-  snd.noise.search=*(sclvec[sclid[17]].ptr)
-  snd.noise.mean=*(sclvec[sclid[18]].ptr)
-  snd.bmnum=*(sclvec[sclid[19]].ptr)
-  snd.bmazm=*(sclvec[sclid[20]].ptr)
-  snd.scan=*(sclvec[sclid[21]].ptr)
-  snd.rxrise=*(sclvec[sclid[22]].ptr)
-  snd.intt.sc=*(sclvec[sclid[23]].ptr)
-  snd.intt.us=*(sclvec[sclid[24]].ptr)
-  snd.nrang=*(sclvec[sclid[25]].ptr)
-  snd.frang=*(sclvec[sclid[26]].ptr)
-  snd.rsep=*(sclvec[sclid[27]].ptr)
-  snd.xcf=*(sclvec[sclid[28]].ptr)
-  snd.tfreq=*(sclvec[sclid[29]].ptr)
-  snd.sky_noise=*(sclvec[sclid[30]].ptr)
-  snd.combf=*(sclvec[sclid[31]].ptr)
-  snd.snd_revision.major=*(sclvec[sclid[32]].ptr)
-  snd.snd_revision.minor=*(sclvec[sclid[33]].ptr)
+  if (sclid[0] ne -1) then snd.radar_revision.major=*(sclvec[sclid[0]].ptr)
+  if (sclid[1] ne -1) then snd.radar_revision.minor=*(sclvec[sclid[1]].ptr)
+  if (sclid[2] ne -1) then snd.origin.code=*(sclvec[sclid[2]].ptr)
+  if (sclid[3] ne -1) then snd.origin.time=*(sclvec[sclid[3]].ptr)
+  if (sclid[4] ne -1) then snd.origin.command=*(sclvec[sclid[4]].ptr)
+  if (sclid[5] ne -1) then snd.cp=*(sclvec[sclid[5]].ptr)
+  if (sclid[6] ne -1) then snd.stid=*(sclvec[sclid[6]].ptr)
+  if (sclid[7] ne -1) then snd.time.yr=*(sclvec[sclid[7]].ptr)
+  if (sclid[8] ne -1) then snd.time.mo=*(sclvec[sclid[8]].ptr)
+  if (sclid[9] ne -1) then snd.time.dy=*(sclvec[sclid[9]].ptr)
+  if (sclid[10] ne -1) then snd.time.hr=*(sclvec[sclid[10]].ptr)
+  if (sclid[11] ne -1) then snd.time.mt=*(sclvec[sclid[11]].ptr)
+  if (sclid[12] ne -1) then snd.time.sc=*(sclvec[sclid[12]].ptr)
+  if (sclid[13] ne -1) then snd.time.us=*(sclvec[sclid[13]].ptr)
+  if (sclid[14] ne -1) then snd.nave=*(sclvec[sclid[14]].ptr)
+  if (sclid[15] ne -1) then snd.lagfr=*(sclvec[sclid[15]].ptr)
+  if (sclid[16] ne -1) then snd.smsep=*(sclvec[sclid[16]].ptr)
+  if (sclid[17] ne -1) then snd.noise.search=*(sclvec[sclid[17]].ptr)
+  if (sclid[18] ne -1) then snd.noise.mean=*(sclvec[sclid[18]].ptr)
+  if (sclid[19] ne -1) then snd.bmnum=*(sclvec[sclid[19]].ptr)
+  if (sclid[20] ne -1) then snd.bmazm=*(sclvec[sclid[20]].ptr)
+  if (sclid[21] ne -1) then snd.scan=*(sclvec[sclid[21]].ptr)
+  if (sclid[22] ne -1) then snd.rxrise=*(sclvec[sclid[22]].ptr)
+  if (sclid[23] ne -1) then snd.intt.sc=*(sclvec[sclid[23]].ptr)
+  if (sclid[24] ne -1) then snd.intt.us=*(sclvec[sclid[24]].ptr)
+  if (sclid[25] ne -1) then snd.nrang=*(sclvec[sclid[25]].ptr)
+  if (sclid[26] ne -1) then snd.frang=*(sclvec[sclid[26]].ptr)
+  if (sclid[27] ne -1) then snd.rsep=*(sclvec[sclid[27]].ptr)
+  if (sclid[28] ne -1) then snd.xcf=*(sclvec[sclid[28]].ptr)
+  if (sclid[29] ne -1) then snd.tfreq=*(sclvec[sclid[29]].ptr)
+  if (sclid[30] ne -1) then snd.sky_noise=*(sclvec[sclid[30]].ptr)
+  if (sclid[31] ne -1) then snd.combf=*(sclvec[sclid[31]].ptr)
+  if (sclid[32] ne -1) then snd.snd_revision.major=*(sclvec[sclid[32]].ptr)
+  if (sclid[33] ne -1) then snd.snd_revision.minor=*(sclvec[sclid[33]].ptr)
 
   if (arrid[0] eq -1) then begin
     st=DataMapFreeScalar(sclvec)
@@ -214,27 +214,27 @@ function SndRead,unit,snd
   endif
 
   if ~(ptr_valid(arrvec[arrid[0]].ptr)) then begin
-     st=DataMapFreeScalar(sclvec)
-     st=DataMapFreeArray(arrvec)
-     return, s
+    st=DataMapFreeScalar(sclvec)
+    st=DataMapFreeArray(arrvec)
+    return, s
   endif
 
   slist=*(arrvec[arrid[0]].ptr)
   if (n_elements(slist) eq 0) then begin
-     st=DataMapFreeScalar(sclvec)
-     st=DataMapFreeArray(arrvec)
+    st=DataMapFreeScalar(sclvec)
+    st=DataMapFreeArray(arrvec)
     return,s
   endif
 
-  snd.qflg[slist]= (*(arrvec[arrid[1]].ptr))[*]
-  snd.gflg[slist]= (*(arrvec[arrid[2]].ptr))[*]
-  snd.v[slist]= (*(arrvec[arrid[3]].ptr))[*]
-  snd.v_e[slist]= (*(arrvec[arrid[4]].ptr))[*]
-  snd.p_l[slist]= (*(arrvec[arrid[5]].ptr))[*]
-  snd.w_l[slist]= (*(arrvec[arrid[6]].ptr))[*]
-  snd.x_qflg[slist]= (*(arrvec[arrid[7]].ptr))[*]
-  snd.phi0[slist]= (*(arrvec[arrid[8]].ptr))[*]
-  snd.phi0_e[slist]= (*(arrvec[arrid[9]].ptr))[*]
+  if (arrid[1] ne -1) then snd.qflg[slist]= (*(arrvec[arrid[1]].ptr))[*]
+  if (arrid[2] ne -1) then snd.gflg[slist]= (*(arrvec[arrid[2]].ptr))[*]
+  if (arrid[3] ne -1) then snd.v[slist]= (*(arrvec[arrid[3]].ptr))[*]
+  if (arrid[4] ne -1) then snd.v_e[slist]= (*(arrvec[arrid[4]].ptr))[*]
+  if (arrid[5] ne -1) then snd.p_l[slist]= (*(arrvec[arrid[5]].ptr))[*]
+  if (arrid[6] ne -1) then snd.w_l[slist]= (*(arrvec[arrid[6]].ptr))[*]
+  if (arrid[7] ne -1) then snd.x_qflg[slist]= (*(arrvec[arrid[7]].ptr))[*]
+  if (arrid[8] ne -1) then snd.phi0[slist]= (*(arrvec[arrid[8]].ptr))[*]
+  if (arrid[9] ne -1) then snd.phi0_e[slist]= (*(arrvec[arrid[9]].ptr))[*]
 
   st=DataMapFreeScalar(sclvec)
   st=DataMapFreeArray(arrvec)
