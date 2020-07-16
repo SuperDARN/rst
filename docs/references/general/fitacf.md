@@ -63,7 +63,7 @@ FITACF files contain a record that contains scalar and vector fields.
 | *nave*                  | **None**         | ***short***  | Number of pulse sequences transmitted                                                   |
 | *atten*                 | **None**         | ***short***  | Attenuation level                                                                       |
 | *lagfr*                 | *us* | ***short***  | Lag to first range                                                                      |
-| *smsep*                 | *us* | ***short***  | Sample seperation                                                                       |
+| *smsep*                 | *us* | ***short***  | Sample separation                                                                       |
 | *ercod*                 | **None**         | ***short***  | Error Code                                                                              |
 | *stat.agc*              | **None**         | ***short***  | AGC status word                                                                         |
 | *stat.lopwr*            | **None**         | ***short***  | LOPWR status word                                                                       |
@@ -85,7 +85,7 @@ FITACF files contain a record that contains scalar and vector fields.
 | *ifmode*                | **None**         | ***short***  |  A flag indicating that the receiver voltage samples were obtained by digitizing the signal at an intermediate frequency (and then digitally mixed to baseband) instead of mixing to baseband and then digitizing (`ifmode=0`).         |
 | *nrang*                 | **None**         | ***short***  | Number of range range gates                                                             |
 | *frang*                 | *km*       | ***short***  | Distance to the first range gate                                                        |
-| *rsep*                  | *km*       | ***short***  | Range seperation                                                                        |
+| *rsep*                  | *km*       | ***short***  | Range separation                                                                        |
 | *xcf*                   | **None**         | ***short***  | XCF flag, indicates if XCF for elevation angle estimation is available (1) or not (0)                                                                                |
 | *tfreq*                 | *kHz*      | ***short***  | Transmitted frequency                                                                   |
 | *mxpwr*                 | *dB*       | ***int***    | Maximum power  
@@ -128,7 +128,7 @@ FITACF files contain a record that contains scalar and vector fields.
 | *sd_phi* | **None** | *[num_pts]* | ***float*** | Standard deviation of phase fit of ACF | 
 | *x_qflg* | **None** | *[num_pts]* | ***char*** | Quality flag of XCF | 
 | *x_gflg* | **None** | *[num_pts]* | ***char*** | Ground scatter flag of XCF | 
-| *x_p_l* | *dB* | *[num_pts]* | ***float*** | Power from lamdba fit of XCF | 
+| *x_p_l* | *dB* | *[num_pts]* | ***float*** | Power from lambda fit of XCF | 
 | *x_p_l_e* | *dB* | *[num_pts]* | ***float*** | Power error from lambda fit of XCF | 
 | *x_p_s* | *dB* | *[num_pts]* | ***float*** | Power from sigma fit of XCF | 
 | *x_p_s_e* | *dB* | *[num_pts]* |  ***float*** | Power  error from sigma fit  of XCF | 
@@ -136,8 +136,8 @@ FITACF files contain a record that contains scalar and vector fields.
 | *x_v_e* | *m/s* | *[num_pts]* | ***float*** | Velocity error from fit of XCF | 
 | *x_w_l* | *m/s* | *[num_pts]* | ***float*** | Spectral width from lambda fit of XCF | 
 | *x_w_l_e* | *m/s* | *[num_pts]* | ***float*** | Spectral width error from lambda fit of XCF | 
-| *x_w_s* | *m/s* | *[num_pts]* | ***float*** | Spectral wdith from sigma fit of XCF | 
-| *x_w_s_e* | *m/s* | *[num_pts]* | ***float*** | Spectral wdith error from sigma fit of XCF | 
+| *x_w_s* | *m/s* | *[num_pts]* | ***float*** | Spectral width from sigma fit of XCF | 
+| *x_w_s_e* | *m/s* | *[num_pts]* | ***float*** | Spectral width error from sigma fit of XCF | 
 | *phi0* | *radians* | *[num_pts]* | ***float*** | Phase determination at lag zero of the ACF | 
 | *phi0_e* | *radians* | *[num_pts]* | ***float*** | Phase determination error at lag zero of the ACF | 
 | *elv* | *degrees* | *[num_pts]* | ***float*** | Elevation angle estimate |
