@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <ctype.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
@@ -49,6 +50,11 @@ int main(int argc,char *argv[]) {
   struct SndData *snd;
   FILE *fp; 
 
+  int cpid=-1;
+  int channel=-1;
+  char *cpstr=NULL;
+  char *chnstr=NULL;
+
   time_t ctime;
   int c,n;
   char command[128];
@@ -64,6 +70,8 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-option",'x',&option);
   OptionAdd(&opt,"-version",'x',&version);
   OptionAdd(&opt,"vb",'x',&vb);
+  OptionAdd(&opt,"cp",'t',&cpstr);
+  OptionAdd(&opt,"cn",'t',&chnstr);
 
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
@@ -94,6 +102,12 @@ int main(int argc,char *argv[]) {
     }
   } else fp=stdin;
 
+  if (cpstr !=NULL) cpid=atoi(cpstr);
+
+  if (chnstr !=NULL) {
+    if (tolower(chnstr[0])=='a') channel=1;
+    if (tolower(chnstr[0])=='b') channel=2;
+  }
 
   command[0]=0;
   n=0;
@@ -105,6 +119,9 @@ int main(int argc,char *argv[]) {
   }
 
   while ((s=FitFread(fp,prm,fit)) !=-1) {
+
+    if ((cpid !=-1) && (prm->cp !=cpid)) continue;
+    if ((channel !=-1) && (prm->channel !=channel)) continue;
 
     snd->origin.code=1;
     ctime = time((time_t) 0);
