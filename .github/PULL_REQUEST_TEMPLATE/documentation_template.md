@@ -26,10 +26,6 @@ Which category does this documentation add/updated/remove?
     - [ ] installation
     - [ ] tutorials
 - [ ] history
-- [ ] guidelines 
-    - [ ] developer
-    - [ ] communication
-    - [ ] release
 
 ### Details
 
