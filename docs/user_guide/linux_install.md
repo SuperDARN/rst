@@ -168,6 +168,21 @@ You can find the latest release at: [http://cdf.gsfc.nasa.gov/](http://cdf.gsfc.
 
 For Opensuse you will need to make a symlink lcurses library to libncuses (recommended) or modify the CDF Makefile. 
 
+**Example installation for Ubuntu/Mint**
+
+From the above site, navigate to the `linux` directory and download the file `cdf[XX_X]-dist-cdf.tar.gz`, where `XX_X` is the version number of the latest release. 
+
+Unpack and install the package (see README.install for more information):
+
+    tar -xzvf cdf[XX_X]-dist-cdf.tar.gz
+    cd cdfXX_X-dist
+    make OS=linux ENV=gnu all
+    make test
+    sudo make INSTALLDIR=/usr/local/cdf install
+
+You can now delete the `cdfXX_X-dist` directory and the `tar.gz` archive.
+
+
 Now go to the [Installation](#installation)
 
 #### TroubleShooting: 
