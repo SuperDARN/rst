@@ -10,7 +10,6 @@
 
 Which category does this documentation add/updated/remove?
 - [ ] code documentation
-- [ ] wiki
 - [ ] README
 - [ ] installation guide
     - [ ] OS specifics
