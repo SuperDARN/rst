@@ -60,7 +60,7 @@ RAWACF files contain a record that contains scalar and vector fields.
 | *noise.mean*            | *None*   | float     | Average noise from clear frequency band                                                 |
 | *channel*               | *None*   | short     | Channel number, used to denote different Tx/Rx channels on Stereo radars, and to denote changes in radar operating parameters between scans, e.g. alternating between 2 frequencies scan-to-scan      |
 | *bmnum*                 | *None*   | short     | Beam number, zero based indexing                                                        |
-| *bmazm*                 | *None*   | float     | Beam azimuth                                                                            |
+| *bmazm*                 | *degrees*   | float     | Beam azimuth                                                                            |
 | *scan*                  | *None*   | short     | Scan flag, switches between 0 to +/-1. For some radars, the sign indicates scan direction. |
 | *offset*                | *us*     | short     | Offset between channels for a stereo radar                                              |
 | *rxrise*                | *us*     | short     | Receiver rise time                                                                      |
