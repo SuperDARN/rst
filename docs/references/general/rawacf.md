@@ -95,7 +95,7 @@ RAWACF files contain a record that contains scalar and vector fields.
 | *ptab*      | *None*   | *[mppul]*      | short       | Pulse table                                                                 |
 | *ltab*      | *None*   | *[mplgs+1][2]* | short       | Lag table, showing which pulses to use to estimate each lag                 |
 | *pwr0*      | *dB*     | *[nrang]*      | float       | Lag zero power (actually SNR), estimated from voltage samples (not fitted)  |
-| *slist*     | *None*   | *[0-nrang]*    | short       | List of range gates where a good fit to the ACF was achieved during the integration period |
+| *slist*     | *None*   | *[0-nrang]*    | short       | List of range gates with ACF/XCF data available |
 | *acfd*      | *None*   | *[2][mplgs][0-nrang]*    | short       | Calculated ACFs                                                             |
 | *xcfd*      | *None*   | *[2][mplgs][0-nrang]*    | char        | Calculated XCFs                                                             |
 
@@ -108,4 +108,3 @@ Scans usually begin on whole-minute boundaries and last for either 1min or 2min.
 
 !!! Note 
     Different *control programs* in general have different beam patterns; `cp` will indicate the *control program* numerical value, and `combf` sometimes contains the *control program's* command/name. 
-
