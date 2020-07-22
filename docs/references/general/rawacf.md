@@ -8,7 +8,7 @@ Disclaimer: License under GNU v3.0, the file is found in the root directory unde
 
 RAWACF files are raw files produced at radar sites. 
 
-Sometime they are post-processed data product from dat files (see `dattorawacf`).
+Sometimes they are post-processed data product from dat files (see `dattorawacf`).
 
 ## Naming Conventions
 
@@ -72,14 +72,14 @@ RAWACF files contain a record that contains scalar and vector fields.
 | *mplgs*                 | *None*   | short     | Number of lags estimated from the sequence                                              |
 | *mplgexs*               | *None*   | short     | Number of lags used for tauscan. This field originates from `fittex` algorithm and is not used in RAWACF file format. | 
 | *ifmode*                | *None*   | short     | A flag indicating that the receiver voltage samples were obtained by digitizing the signal at an intermediate frequency (and then digitally mixed to baseband) instead of mixing to baseband and then digitizing (`ifmode=0`).         |
-| *nrang*                 | *None*   | short     | Number of range range gates                                                             |
+| *nrang*                 | *None*   | short     | Number of range gates                                                             |
 | *frang*                 | *km*     | short     | Distance to the first range gate                                                        |
 | *rsep*                  | *km*     | short     | Range seperation                                                                        |
 | *xcf*                   | *None*   | short     | XCF flag, indicates if XCF for elevation angle estimation is available (1) or not (0)   |
 | *tfreq*                 | *kHz*    | short     | Transmitted frequency                                                                   |
 | *mxpwr*                 | *dB*     | int       | Maximum power                                                                           |
 | *lvmax*                 | *None*   | int       | Maximum noise level allowed                                                             |
-| *combf*                 | *None*   | string    | Control program name or command line, or comment buffer                                 |
+| *combf*                 | *None*   | string    | Comment buffer, usually contains the control program name or command line command used to generate the file                            |
 | *rawacf.revision.major* | *None*   | int       | Major version number of the RAWACF algorithm                                            |
 | *rawacf.revision.minor* | *None*   | int       | Minor version number of the RAWACF algorithm                                            |
 | *thr*                   | *None*   | float     | Threshold factor                                                                        |
