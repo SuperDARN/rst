@@ -414,6 +414,7 @@ int main(int argc,char *argv[]) {
   do {
 
 
+    prm->origin.code = 1;
     ctime = time((time_t) 0);
     if (RadarParmSetOriginCommand(prm,command) == -1) 
     {

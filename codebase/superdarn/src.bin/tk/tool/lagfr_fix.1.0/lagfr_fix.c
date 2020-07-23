@@ -189,6 +189,7 @@ int main(int argc,char *argv[])
 
   do
   {
+    prm->origin.code = 1;
     ctime = time((time_t) 0);
     RadarParmSetOriginCommand(prm,command);
     strcpy(tmstr,asctime(gmtime(&ctime)));
