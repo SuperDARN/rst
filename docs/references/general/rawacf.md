@@ -8,7 +8,7 @@ Disclaimer: License under GNU v3.0, the file is found in the root directory unde
 
 RAWACF files are raw files produced at radar sites. 
 
-Sometimes they are post-processed data product from dat files (see `dattorawacf`).
+Sometimes they are post-processed from IQDAT files or converted from the older-format dat files (see `dattorawacf`).
 
 ## Naming Conventions
 
@@ -36,7 +36,7 @@ RAWACF files contain a record that contains scalar and vector fields.
 | :----------             | :-----:  | :-------: | :---                                                                                    |
 | *radar.revision.major*  | *None*   | char      | Major version number of the radar operating system                                      |
 | *radar.revision.minor*  | *None*   | char      | Minor version number of the radar operating system                                      |
-| *origin.code*           | *None*   | char      | Code indicating origin of the date (0 if generated at the radar)                        |
+| *origin.code*           | *None*   | char      | Code indicating origin of the data (0 if generated at the radar)                        |
 | *origin.time*           | *None*   | string    | Text indicating when the file was generated                                             |
 | *origin.command*        | *None*   | string    | Command line routine used to generate the file                                          |
 | *cp*                    | *None*   | short     | [Control program identifier](http://superdarn.thayer.dartmouth.edu/WG-sched/cpids.html) |
@@ -79,7 +79,7 @@ RAWACF files contain a record that contains scalar and vector fields.
 | *tfreq*                 | *kHz*    | short     | Transmitted frequency                                                                   |
 | *mxpwr*                 | *dB*     | int       | Maximum power                                                                           |
 | *lvmax*                 | *None*   | int       | Maximum noise level allowed                                                             |
-| *combf*                 | *None*   | string    | Comment buffer, usually contains the control program name or command line command used to generate the file                            |
+| *combf*                 | *None*   | string    | Comment buffer, usually contains the control program name                            |
 | *rawacf.revision.major* | *None*   | int       | Major version number of the RAWACF algorithm                                            |
 | *rawacf.revision.minor* | *None*   | int       | Minor version number of the RAWACF algorithm                                            |
 | *thr*                   | *None*   | float     | Threshold factor                                                                        |
@@ -96,15 +96,15 @@ RAWACF files contain a record that contains scalar and vector fields.
 | *ltab*      | *None*   | *[mplgs+1][2]* | short       | Lag table, showing which pulses to use to estimate each lag                 |
 | *pwr0*      | *dB*     | *[nrang]*      | float       | Lag zero power (actually SNR), estimated from voltage samples (not fitted)  |
 | *slist*     | *None*   | *[0-nrang]*    | short       | List of range gates with ACF/XCF data available |
-| *acfd*      | *None*   | *[2][mplgs][0-nrang]*    | short       | Calculated ACFs                                                             |
-| *xcfd*      | *None*   | *[2][mplgs][0-nrang]*    | char        | Calculated XCFs                                                             |
+| *acfd*      | *None*   | *[2][mplgs][0-nrang]*    | float       | Calculated ACFs                                                             |
+| *xcfd*      | *None*   | *[2][mplgs][0-nrang]*    | float       | Calculated XCFs                                                             |
 
 ## File structure
 
 RAWACF files contain typically 2 hours of data. Individual records in the RAWACF file contain the raw data for a single integration period (usually 3s or 7s, but depends on operating mode of the radar). 
 In the standard operational mode (common mode) where each beam is scanned sequentially, the beam number `bmnum` will change each integration period. However, some control programs will stay on one beam for a whole scan (called a "camping beam"). 
 A "scan" is a beam sequence which gets repeated. In the common mode (*normal scan*), one scan is completed when each beam has been sampled sequentially from 0 to `bmnum-1` (or `bmnum-1` to 0). Radars with more than 16 beams *may* sample a subset of beams rather than their full field of view in order to maintain a 1min scan time. 
-Scans usually begin on whole-minute boundaries and last for either 1min or 2min. Custom control programs which define different scan lengths may also exist. The `scan` flag is used to indicate the beginning of each scan pattern. A value of 1 or -1 indicates the beginning of the scan, and then the value changes to 0 for the rest the scan. When the `scan` value changes from 0 back to 1 this indicates the end of the scan. 
+Scans usually begin on whole-minute boundaries and last for either 1min or 2min. Custom control programs which define different scan lengths may also exist. The `scan` flag is used to indicate the beginning of each scan pattern. A value of 1 or -1 indicates the beginning of the scan, and then the value changes to 0 for the rest of the scan. When the `scan` value changes from 0 back to 1 this indicates the end of the scan. 
 
 !!! Note 
     Different *control programs* in general have different beam patterns; `cp` will indicate the *control program* numerical value, and `combf` sometimes contains the *control program's* command/name. 
