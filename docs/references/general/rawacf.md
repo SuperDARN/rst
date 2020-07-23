@@ -54,7 +54,7 @@ RAWACF files contain a record that contains scalar and vector fields.
 | *lagfr*                 | *us*     | short     | Lag to first range                                                                      |
 | *smsep*                 | *us*     | short     | Sample seperation                                                                       |
 | *ercod*                 | *None*   | short     | Error Code                                                                              |
-| *stat.agc*              | *None*   | short     | AGC status word                                                                         |
+| *stat.agc*              | *None*   | short     | Automatic gain control status word                                                                         |
 | *stat.lopwr*            | *None*   | short     | LOPWR status word                                                                       |
 | *noise.search*          | *None*   | float     | Calculated noise from clear frequency search                                            |
 | *noise.mean*            | *None*   | float     | Average noise from clear frequency band                                                 |
