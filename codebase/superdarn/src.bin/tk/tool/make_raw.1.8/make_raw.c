@@ -1,5 +1,5 @@
 /* make_raw.c
-    ==========
+   ==========
    Author: R.J.Barnes
 */
 
@@ -138,6 +138,11 @@ int main (int argc,char *argv[]) {
   int chnnum=0;
   int offset;
 
+  time_t ctime;
+  int c;
+  char command[128];
+  char tmstr[40];
+
   prm=RadarParmMake();
   iq=IQMake();
   raw=RawMake();
@@ -214,10 +219,26 @@ int main (int argc,char *argv[]) {
     exit(-1);
   }
 
+  command[0]=0;
+  n=0;
+  for (c=0;c<argc;c++) {
+    n+=strlen(argv[c])+1;
+    if (n>127) break;
+    if (c !=0) strcat(command," ");
+    strcat(command,argv[c]);
+  }
+
   while (IQFread(fp,prm,iq,&badtr,&samples) !=-1) {
     if (vb)
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
               prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
+
+    prm->origin.code=1;
+    ctime = time((time_t) 0);
+    RadarParmSetOriginCommand(prm,command);
+    strcpy(tmstr,asctime(gmtime(&ctime)));
+    tmstr[24]=0;
+    RadarParmSetOriginTime(prm,tmstr);
 
     /* get the hardware info */
 
