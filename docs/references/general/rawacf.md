@@ -67,7 +67,7 @@ RAWACF files contain a record that contains scalar and vector fields.
 | *intt.sc*               | *s*      | short     | Number of seconds of integration time                                                   |
 | *intt.us*               | *us*     | int       | Number of microseconds of integration time                                              |
 | *txpl*                  | *us*     | short     | Transmitted pulse length                                                                |
-| *mpinc*                 | *us*     | short     | Multi-pulse increment                                                                   |
+| *mpinc*                 | *us*     | short     | Multi-pulse increment (lag separation)                                                                  |
 | *mppul*                 | *None*   | short     | Number of pulses in the sequence                                                        |
 | *mplgs*                 | *None*   | short     | Number of lags estimated from the sequence                                              |
 | *mplgexs*               | *None*   | short     | Number of lags used for tauscan. This field originates from `fittex` algorithm and is not used in RAWACF file format. | 
