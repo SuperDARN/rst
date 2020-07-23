@@ -55,7 +55,7 @@ RAWACF files contain a record that contains scalar and vector fields.
 | *smsep*                 | *us*     | short     | Sample seperation                                                                       |
 | *ercod*                 | *None*   | short     | Error Code                                                                              |
 | *stat.agc*              | *None*   | short     | Automatic gain control status word                                                                         |
-| *stat.lopwr*            | *None*   | short     | LOPWR status word                                                                       |
+| *stat.lopwr*            | *None*   | short     | Low power status word                                                                       |
 | *noise.search*          | *None*   | float     | Calculated noise from clear frequency search                                            |
 | *noise.mean*            | *None*   | float     | Average noise from clear frequency band                                                 |
 | *channel*               | *None*   | short     | Channel number, used to denote different Tx/Rx channels on Stereo radars, and to denote changes in radar operating parameters between scans, e.g. alternating between 2 frequencies scan-to-scan      |
@@ -69,8 +69,8 @@ RAWACF files contain a record that contains scalar and vector fields.
 | *txpl*                  | *us*     | short     | Transmitted pulse length                                                                |
 | *mpinc*                 | *us*     | short     | Multi-pulse increment (lag separation)                                                                  |
 | *mppul*                 | *None*   | short     | Number of pulses in the sequence                                                        |
-| *mplgs*                 | *None*   | short     | Number of lags estimated from the sequence                                              |
-| *mplgexs*               | *None*   | short     | Number of lags used for tauscan. This field originates from `fittex` algorithm and is not used in RAWACF file format. | 
+| *mplgs*                 | *None*   | short     | Number of lags in the lag table                                              |
+| *mplgexs*               | *None*   | short     | Number of lags used for tauscan. This field originates from `fitex` algorithm and is not used in RAWACF file format. | 
 | *ifmode*                | *None*   | short     | A flag indicating that the receiver voltage samples were obtained by digitizing the signal at an intermediate frequency (and then digitally mixed to baseband) instead of mixing to baseband and then digitizing (`ifmode=0`).         |
 | *nrang*                 | *None*   | short     | Number of range gates                                                             |
 | *frang*                 | *km*     | short     | Distance to the first range gate                                                        |
