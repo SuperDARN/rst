@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <string.h>
 #include <time.h>
 #include <unistd.h>
 #include <sys/stat.h>
@@ -81,7 +82,7 @@ double strdate(char *text) {
   dy=val % 100;
   mo=(val / 100) % 100;
   yr=(val / 10000);
-  if (yr<1970) yr+=1900;  
+  if (yr<1970) yr+=1900;
   tme=TimeYMDHMSToEpoch(yr,mo,dy,0,0,0);
 
   return tme;
@@ -96,7 +97,7 @@ double strtime(char *text) {
   text[i]=0;
   hr=atoi(text);
   for (j=i+1;(text[j] !=':') && (text[j] !=0);j++);
-  if (text[j]==0) { 
+  if (text[j]==0) {
     mn=atoi(text+i+1);
     return (double) hr*3600L+mn*60L;
   }
@@ -156,6 +157,11 @@ int main (int argc,char *argv[]) {
   char *chnstr=NULL;
   char *cpstr=NULL;
 
+  time_t ctime;
+  int c,n;
+  char command[128];
+  char tmstr[40];
+
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
   OptionAdd(&opt,"-version",'x',&version);
@@ -205,22 +211,22 @@ int main (int argc,char *argv[]) {
   if (edtestr !=NULL) edate=strdate(edtestr);
 
   if (cpstr !=NULL) cpid=atoi(cpstr);
-   
+
   if (chnstr !=NULL) {
     if (tolower(chnstr[0])=='a') channel=1;
     if (tolower(chnstr[0])=='b') channel=2;
   }
-    
+
   if (old) {
     char vstr[256];
 
     pbuf[0]=RadarParmMake();
     pbuf[1]=RadarParmMake();
-  
+
     fbuf[0]=FitMake();
     fbuf[1]=FitMake();
 
-    if ((argc-1-inxflg-arg) >1)  fitfp=OldFitOpen(argv[arg],argv[arg+1]);
+    if ((argc-1-inxflg-arg) >1) fitfp=OldFitOpen(argv[arg],argv[arg+1]);
     else fitfp=OldFitOpen(argv[arg],NULL);
 
     if (fitfp==NULL) {
@@ -232,7 +238,7 @@ int main (int argc,char *argv[]) {
       fprintf(stderr,"could not create fit file.\n");
       exit(-1);
     }
- 
+
     if (inxflg !=0) {
       inxfp=fopen(argv[argc-1],"w");
       if (inxfp==NULL) fprintf(stderr,"could not create index file.\n");
@@ -243,22 +249,22 @@ int main (int argc,char *argv[]) {
       exit(-1);
     }
     sprintf(vstr,"%d.%d",fbuf[fnum]->revision.major,
-                         fbuf[fnum]->revision.minor); 
+                         fbuf[fnum]->revision.minor);
     OldFitHeaderFwrite(fp,"trim_fit","fitacf",vstr);
 
     atime=TimeYMDHMSToEpoch(pbuf[fnum]->time.yr,
-		    pbuf[fnum]->time.mo,
+                    pbuf[fnum]->time.mo,
                     pbuf[fnum]->time.dy,
                     pbuf[fnum]->time.hr,
-		    pbuf[fnum]->time.mt,
+                    pbuf[fnum]->time.mt,
                     pbuf[fnum]->time.sc+pbuf[fnum]->time.us/1.0e6);
 
 
     /* skip here */
 
-    if ((stime !=-1) || (sdate !=-1)) { 
+    if ((stime !=-1) || (sdate !=-1)) {
       int yr,mo,dy,hr,mt;
-      double sc;  
+      double sc;
       
       if (stime==-1) stime= ( (int) atime % (24*3600));
       if (sdate==-1) stime+=atime - ( (int) atime % (24*3600));
@@ -276,14 +282,14 @@ int main (int argc,char *argv[]) {
         exit(-1);
       }
     } else stime=atime;
-   
+
     if (etime !=-1) {
        if (edate==-1) etime+=atime - ( (int) atime % (24*3600));
        else etime+=edate;
     }
     if (extime !=0) etime=stime+extime;
 
-  
+
     do {
       prm=pbuf[fnum];
       fit=fbuf[fnum];
@@ -292,36 +298,36 @@ int main (int argc,char *argv[]) {
       if ((cpid !=-1) && (prm->cp !=cpid)) continue;
       if ((set_channel==0) &&
           (channel !=-1) && (prm->channel !=channel)) continue;
- 
+
       if (set_channel==1) prm->channel=channel;
 
       if ((inxfp !=NULL) && (irec==1)) OldFitInxHeaderFwrite(inxfp,prm);
       dnum=OldFitFwrite(fp,prm,fit,NULL);
       if (inxfp !=NULL) OldFitInxFwrite(inxfp,drec,dnum,prm);
       atime=TimeYMDHMSToEpoch(prm->time.yr,
-	  	      prm->time.mo,
+                      prm->time.mo,
                       prm->time.dy,
                       prm->time.hr,
-		      prm->time.mt,
+                      prm->time.mt,
                       prm->time.sc+prm->time.us/1.0e6);
 
       TimeEpochToYMDHMS(atime,&yr,&mo,&dy,&hr,&mt,&sc);
       if (vb==1) fprintf(stderr,"%d-%d-%d %d:%d:%d %.2d %.2d %.4d\n",
-                            yr,mo,dy,hr,mt,
-                            (int) sc,prm->channel,
-                            prm->bmnum,prm->cp);
+                         yr,mo,dy,hr,mt,
+                         (int) sc,prm->channel,
+                         prm->bmnum,prm->cp);
 
       drec+=dnum;
       irec++;
       atime=TimeYMDHMSToEpoch(pbuf[fnum]->time.yr,
-		    pbuf[fnum]->time.mo,
+                    pbuf[fnum]->time.mo,
                     pbuf[fnum]->time.dy,
                     pbuf[fnum]->time.hr,
-		    pbuf[fnum]->time.mt,
+                    pbuf[fnum]->time.mt,
                     pbuf[fnum]->time.sc+pbuf[fnum]->time.us/1.0e6);
-     
+
       if ((etime !=-1) && (atime>=etime)) break;
- 
+
     } while (OldFitRead(fitfp,pbuf[fnum],fbuf[fnum]) !=-1);
     OldFitClose(fitfp);
     if (inxfp !=NULL) {
@@ -332,6 +338,15 @@ int main (int argc,char *argv[]) {
     }
     fclose(fp);
   } else {
+
+    command[0]=0;
+    n=0;
+    for (c=0;c<argc;c++) {
+      n+=strlen(argv[c])+1;
+      if (n>127) break;
+      if (c !=0) strcat(command," ");
+      strcat(command,argv[c]);
+    }
 
     prm=RadarParmMake();
     fit=FitMake();
@@ -361,10 +376,10 @@ int main (int argc,char *argv[]) {
     }
 
     atime=TimeYMDHMSToEpoch(prm->time.yr,
-		            prm->time.mo,
+                            prm->time.mo,
                             prm->time.dy,
                             prm->time.hr,
-		            prm->time.mt,
+                            prm->time.mt,
                             prm->time.sc+prm->time.us/1.0e6);
 
 
@@ -373,9 +388,9 @@ int main (int argc,char *argv[]) {
 
     /* skip here */
 
-    if ((stime !=-1) || (sdate !=-1)) { 
+    if ((stime !=-1) || (sdate !=-1)) {
       int yr,mo,dy,hr,mt;
-      double sc;  
+      double sc;
       
       if (stime==-1) stime= ( (int) atime % (24*3600));
       if (sdate==-1) stime+=atime - ( (int) atime % (24*3600));
@@ -393,14 +408,14 @@ int main (int argc,char *argv[]) {
         exit(-1);
       }
     } else stime=atime;
-   
+
     if (etime !=-1) {
        if (edate==-1) etime+=atime - ( (int) atime % (24*3600));
        else etime+=edate;
     }
     if (extime !=0) etime=stime+extime;
 
-  
+
     do {
       if ((cpid !=-1) && (prm->cp !=cpid)) continue;
       if ((set_channel==0) &&
@@ -408,47 +423,33 @@ int main (int argc,char *argv[]) {
  
       if (set_channel==1) prm->channel=channel;
       atime=TimeYMDHMSToEpoch(prm->time.yr,
-	  	      prm->time.mo,
+                      prm->time.mo,
                       prm->time.dy,
                       prm->time.hr,
-		      prm->time.mt,
+                      prm->time.mt,
                       prm->time.sc+prm->time.us/1.0e6);
       if ((etime !=-1) && (atime>=etime)) break;
 
 
       TimeEpochToYMDHMS(atime,&yr,&mo,&dy,&hr,&mt,&sc);
       if (vb==1) fprintf(stderr,"%d-%d-%d %d:%d:%d %.2d %.2d %.4d\n",
-                            yr,mo,dy,hr,mt,
-                            (int) sc,prm->channel,
-                            prm->bmnum,prm->cp);
- 
+                         yr,mo,dy,hr,mt,
+                         (int) sc,prm->channel,
+                         prm->bmnum,prm->cp);
+
+      prm->origin.code=1;
+      ctime= time((time_t) 0);
+      RadarParmSetOriginCommand(prm,command);
+      strcpy(tmstr,asctime(gmtime(&ctime)));
+      tmstr[24]=0;
+      RadarParmSetOriginTime(prm,tmstr);
+
       status=FitFwrite(stdout,prm,fit);
 
     } while (FitFread(fp,prm,fit) !=-1);
     if (fp !=stdin) fclose(fp);
   }
 
-  return 0; 
-} 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  return 0;
+}
 
