@@ -251,17 +251,19 @@ int main (int argc,char *argv[]) {
     if ((etime !=-1) && (atime>=etime)) break;
 
     TimeEpochToYMDHMS(atime,&yr,&mo,&dy,&hr,&mt,&sc);
-    if (vb==1) fprintf(stderr,"%d-%d-%d %d:%d:%d\n",yr,mo,dy,hr,mt,(int) sc);
+    if (vb==1) {
+      fprintf(stderr,"%d-%d-%d %d:%d:%d\n",yr,mo,dy,hr,mt,(int) sc);
 
-    fprintf(stderr,"%s\n",prm->origin.time);
-    fprintf(stderr,"%s\n",prm->origin.command);
-    fprintf(stderr,"%s\n",prm->combf);
-    fprintf(stderr,"%d:",prm->mppul);
-    for (n=0;n<prm->mppul;n++) fprintf(stderr,"%d ",prm->pulse[n]);
-    fprintf(stderr,"\n");
-    fprintf(stderr,"%d\n",prm->mplgs);
-    for (n=0;n<=prm->mplgs;n++) fprintf(stderr,"%d,%d ",prm->lag[0][n],prm->lag[1][n]);
-    fprintf(stderr,"\n");
+      fprintf(stderr,"%s\n",prm->origin.time);
+      fprintf(stderr,"%s\n",prm->origin.command);
+      fprintf(stderr,"%s\n",prm->combf);
+      fprintf(stderr,"%d:",prm->mppul);
+      for (n=0;n<prm->mppul;n++) fprintf(stderr,"%d ",prm->pulse[n]);
+      fprintf(stderr,"\n");
+      fprintf(stderr,"%d\n",prm->mplgs);
+      for (n=0;n<=prm->mplgs;n++) fprintf(stderr,"%d,%d ",prm->lag[0][n],prm->lag[1][n]);
+      fprintf(stderr,"\n");
+    }
 
     prm->origin.code=1;
     ctime = time((time_t) 0);
