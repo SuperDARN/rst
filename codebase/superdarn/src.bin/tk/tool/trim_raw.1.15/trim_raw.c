@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <string.h>
 #include <time.h>
 #include <unistd.h>
 #include <sys/stat.h>
@@ -137,6 +138,11 @@ int main (int argc,char *argv[]) {
 
   char vstring[256];
 
+  time_t ctime;
+  int c,n;
+  char command[128];
+  char tmstr[40];
+
   prm=RadarParmMake();
   raw=RawMake();
 
@@ -238,10 +244,10 @@ int main (int argc,char *argv[]) {
    }
 
    atime=TimeYMDHMSToEpoch(prm->time.yr,
-	   	           prm->time.mo,
+                           prm->time.mo,
                            prm->time.dy,
                            prm->time.hr,
-		           prm->time.mt,
+                           prm->time.mt,
                            prm->time.sc+prm->time.us/1.0e6);
 
    /* skip here */
@@ -294,9 +300,18 @@ int main (int argc,char *argv[]) {
      }
      sprintf(vstring,"%d.%.3d",raw->revision.major,raw->revision.minor);
      if (OldRawHeaderFwrite(fp,"rawwrite",vstring,raw->thr,
-			    "trimmed with trim_raw") !=0) {
+                            "trimmed with trim_raw") !=0) {
        fprintf(stderr,"Could not write header.\n");
        exit(-1);
+     }
+   } else {
+     command[0]=0;
+     n=0;
+     for (c=0;c<argc;c++) {
+       n+=strlen(argv[c])+1;
+       if (n>127) break;
+       if (c !=0) strcat(command," ");
+       strcat(command,argv[c]);
      }
    }
 
@@ -306,10 +321,10 @@ int main (int argc,char *argv[]) {
      if (thr !=-1) raw->thr=thr;
 
      atime=TimeYMDHMSToEpoch(prm->time.yr,
-		    prm->time.mo,
+                    prm->time.mo,
                     prm->time.dy,
                     prm->time.hr,
-		    prm->time.mt,
+                    prm->time.mt,
                     prm->time.sc+prm->time.us/1.0e6);
 
      if ((etime !=-1) && (atime>=etime)) break;
@@ -317,7 +332,15 @@ int main (int argc,char *argv[]) {
      if (old) {
        recnum++;
        OldRawFwrite(fp,"rawwrite",prm,raw,recnum,NULL);
-     } else RawFwrite(stdout,prm,raw);
+     } else {
+       prm->origin.code=1;
+       ctime = time((time_t) 0);
+       RadarParmSetOriginCommand(prm,command);
+       strcpy(tmstr,asctime(gmtime(&ctime)));
+       tmstr[24]=0;
+       RadarParmSetOriginTime(prm,tmstr);
+       RawFwrite(stdout,prm,raw);
+     }
 
      TimeEpochToYMDHMS(atime,&yr,&mo,&dy,&hr,&mt,&sc);
      if (vb==1) fprintf(stderr,"%d-%d-%d %d:%d:%d\n",yr,mo,dy,hr,mt,(int) sc);
@@ -329,27 +352,5 @@ int main (int argc,char *argv[]) {
   if (fp !=stdin) fclose(fp);
   return 0;
 
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
