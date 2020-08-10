@@ -547,6 +547,7 @@ int main(int argc,char *argv[]) {
 
   unsigned char fovflg=0;
   unsigned char ffovflg=0;
+  unsigned char gfovflg=0;
   unsigned char pwrflg=0;
   unsigned char wdtflg=0;
 
@@ -755,6 +756,7 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"fov",'x',&fovflg);
   OptionAdd(&opt,"ffov",'x',&ffovflg);
+  OptionAdd(&opt,"gfov",'x',&gfovflg);
 
   OptionAdd(&opt,"pwr",'x',&pwrflg);
   OptionAdd(&opt,"swd",'x',&wdtflg);
@@ -916,10 +918,12 @@ int main(int argc,char *argv[]) {
   if ((lat<0) && (latmin>0)) latmin=-latmin;
   if ((lat>0) && (latmin<0)) latmin=-latmin;
 
-  if (fovflg || ffovflg) fov=make_fov(rgrid->st_time,network,chisham,old_aacgm); 
-  if ((fovflg || ffovflg) && !magflg) {
-    if (old_aacgm) MapModify(fov,AACGMtransform,&flg);
-    else           MapModify(fov,AACGM_v2_transform,&flg);
+  if ((fovflg || ffovflg) && !gfovflg) {
+    fov=make_fov(rgrid->st_time,network,chisham,old_aacgm);
+    if (!magflg) {
+      if (old_aacgm) MapModify(fov,AACGMtransform,&flg);
+      else           MapModify(fov,AACGM_v2_transform,&flg);
+    }
   }
 
   if (tmtick<1) tmtick=1;
@@ -967,45 +971,39 @@ int main(int argc,char *argv[]) {
 
   if (poleflg) {
     if (mapflg || fmapflg) {
-      nmap=MapTransform(map,2*sizeof(float),PolygonXYbbox,
-                             tfunc,marg);
+      nmap=MapTransform(map,2*sizeof(float),PolygonXYbbox,tfunc,marg);
       pmap=PolygonClip(clip,nmap); 
       PolygonFree(map);
       PolygonFree(nmap);
     }
     if (bndflg) {
-       nbnd=MapTransform(bnd,2*sizeof(float),PolygonXYbbox,
-                        tfunc,marg);
+       nbnd=MapTransform(bnd,2*sizeof(float),PolygonXYbbox,tfunc,marg);
        pbnd=PolygonClip(clip,nbnd);
        PolygonFree(bnd);
        PolygonFree(nbnd);
     }
     if (grdflg) {
-       ngrd=MapTransform(grd,2*sizeof(float),PolygonXYbbox,
-                      tfunc,marg);
+       ngrd=MapTransform(grd,2*sizeof(float),PolygonXYbbox,tfunc,marg);
        pgrd=PolygonClip(clip,ngrd);
        PolygonFree(grd);
        PolygonFree(ngrd);
     }
 
     if (igrdflg) {
-       nigrd=MapTransform(igrd,2*sizeof(float),PolygonXYbbox,
-                      tfunc,marg);
+       nigrd=MapTransform(igrd,2*sizeof(float),PolygonXYbbox,tfunc,marg);
        pigrd=PolygonClip(clip,nigrd);
        PolygonFree(igrd);
        PolygonFree(nigrd);
     }
 
-    if (fovflg || ffovflg) {
-       nfov=MapTransform(fov,2*sizeof(float),PolygonXYbbox,
-                      tfunc,marg);
+    if ((fovflg || ffovflg) && !gfovflg) {
+       nfov=MapTransform(fov,2*sizeof(float),PolygonXYbbox,tfunc,marg);
        pfov=PolygonClip(clip,nfov);
        PolygonFree(fov);
        PolygonFree(nfov);
     }
     if (tmkflg) {
-       ntmk=MapTransform(tmk,2*sizeof(float),PolygonXYbbox,
-                      tfunc,marg);
+       ntmk=MapTransform(tmk,2*sizeof(float),PolygonXYbbox,tfunc,marg);
        ptmk=PolygonClip(clip,ntmk);
        PolygonFree(tmk);
        PolygonFree(ntmk);
@@ -1199,6 +1197,25 @@ int main(int argc,char *argv[]) {
     if (mrgflg) GridMerge(rgrid,rgridmrg);
     if (avflg) GridAverage(rgrid,rgridavg,aval+cprm*(aval !=0)); 
 
+    if ((fovflg || ffovflg) && gfovflg) {
+      fov=make_fov_data(rgrid,network,chisham,old_aacgm);
+      if (!magflg) {
+        if (old_aacgm) MapModify(fov,AACGMtransform,&flg);
+        else           MapModify(fov,AACGM_v2_transform,&flg);
+      }
+      if (poleflg) {
+        marg[0]=lat;
+        marg[1]=0;
+        if (ortho) marg[2]=sf;
+        else marg[2]=1.25*0.5*sf*90.0/(90-fabs(latmin));
+        marg[3]=flip;
+        nfov=MapTransform(fov,2*sizeof(float),PolygonXYbbox,tfunc,marg);
+        pfov=PolygonClip(clip,nfov);
+        PolygonFree(fov);
+        PolygonFree(nfov);
+      }
+    }
+
     if (trmflg || ftrmflg) {
       if (lat>0) trm=SZATerminator(yr,mo,dy,hr,mt,sc,1,magflg, 1.0,90.0);
       if (lat<0) trm=SZATerminator(yr,mo,dy,hr,mt,sc,-1,magflg, 1.0,90.0);
@@ -1224,16 +1241,18 @@ int main(int argc,char *argv[]) {
     else marg[1]=lon;
     if (poleflg) {
       if ((rotflg) && (flip)) marg[1]=-lon-tme_shft;
-      if (pmap !=NULL) 
+      if (pmap !=NULL)
         rmap=MapTransform(pmap,2*sizeof(float),PolygonXYbbox,rotate,marg);
-      if (pbnd !=NULL) 
+      if (pbnd !=NULL)
         rbnd=MapTransform(pbnd,2*sizeof(float),PolygonXYbbox,rotate,marg);
-      if (pgrd !=NULL) 
+      if (pgrd !=NULL)
         rgrd=MapTransform(pgrd,2*sizeof(float),PolygonXYbbox,rotate,marg);
-      if (pigrd !=NULL) 
+      if (pigrd !=NULL)
        rigrd=MapTransform(pigrd,2*sizeof(float),PolygonXYbbox,rotate,marg);
-      if (pfov !=NULL) 
+      if (pfov !=NULL) {
         rfov=MapTransform(pfov,2*sizeof(float),PolygonXYbbox,rotate,marg);
+        if (gfovflg) PolygonFree(pfov);
+      }
       if (ptmk !=NULL) {
         if (rotflg) marg[1]=0;
         else marg[1]=lon-tme_shft;
