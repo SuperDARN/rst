@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <string.h>
 #include <time.h>
 #include <unistd.h>
 #include <sys/stat.h>
@@ -123,6 +124,11 @@ int main (int argc,char *argv[]) {
   unsigned char option=0;
   unsigned char version=0;
 
+  time_t ctime;
+  int c,n;
+  char command[128];
+  char tmstr[40];
+
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
   OptionAdd(&opt,"-version",'x',&version);
@@ -161,6 +167,15 @@ int main (int argc,char *argv[]) {
   if (sdtestr !=NULL) sdate=strdate(sdtestr);
   if (edtestr !=NULL) edate=strdate(edtestr);
 
+  command[0]=0;
+  n=0;
+  for (c=0;c<argc;c++) {
+    n+=strlen(argv[c])+1;
+    if (n>127) break;
+    if (c !=0) strcat(command," ");
+    strcat(command,argv[c]);
+  }
+
   snd=SndMake();
 
   if (arg==argc) fp=stdin;
@@ -185,7 +200,7 @@ int main (int argc,char *argv[]) {
 
   /* skip here */
 
-  if ((stime !=-1) || (sdate !=-1)) { 
+  if ((stime !=-1) || (sdate !=-1)) {
     if (stime==-1) stime= ( (int) atime % (24*3600));
     if (sdate==-1) stime+=atime - ( (int) atime % (24*3600));
     else stime+=sdate;
@@ -218,6 +233,13 @@ int main (int argc,char *argv[]) {
     TimeEpochToYMDHMS(atime,&yr,&mo,&dy,&hr,&mt,&sc);
     if (vb==1) fprintf(stderr,"%d-%d-%d %d:%d:%d",
                        yr,mo,dy,hr,mt,(int) sc);
+
+    snd->origin.code=1;
+    ctime = time((time_t) 0);
+    SndSetOriginCommand(snd,command);
+    strcpy(tmstr,asctime(gmtime(&ctime)));
+    tmstr[24]=0;
+    SndSetOriginTime(snd,tmstr);
 
     status=SndFwrite(stdout,snd);
 
