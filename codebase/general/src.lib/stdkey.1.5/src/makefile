@@ -5,10 +5,6 @@
 #
 include $(MAKECFG).$(SYSTEM)
 
-INCLUDE=-I$(IPATH)/base -I$(IPATH)/general
-SRC=make_palette.c
-SLIB=-lm
-LIBS=-lm
 OUTPUT=stdkey
 DSTPATH=$(LIBPATH)
 OBJS=paltable.o
