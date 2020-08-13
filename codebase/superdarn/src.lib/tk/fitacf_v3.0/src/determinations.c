@@ -20,6 +20,7 @@ author(s): Keith Kotyk
 modifications: 
     2020-03-11 Marina Schmidt (SuperDARN Canada) removed all defined constants 
                               and include rmath.h
+    2020-08-12 Marina Schmidt (SuperDARN Canada) removed map function for better decoupling abilities
 
 */
 
@@ -33,11 +34,11 @@ modifications:
 #include "rmath.h"
 
 /**
- * @brief      Allocates space needed for final data parameters.
+ * Allocates space needed for final data parameters.
  *
- * @param      fit_data  The FitData struct that holds parameters that have been extracted from
+ * @param fit_data:  The FitData struct that holds parameters that have been extracted from
  *                       fitted data.
- * @param      fit_prms  The FITPRM struct holding rawacf record info.
+ * @param fit_prms:  The FITPRM struct holding rawacf record info.
  */
 void allocate_fit_data(struct FitData* fit_data, FITPRMS* fit_prms){
     fit_data->rng = realloc(fit_data->rng,fit_prms->nrang * sizeof(*fit_data->rng));
@@ -78,6 +79,7 @@ void allocate_fit_data(struct FitData* fit_data, FITPRMS* fit_prms){
  */
 void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data,double noise_pwr){
 
+    _list_node = *iterator;
     fit_data->revision.major=3;
     fit_data->revision.minor=0;
 
@@ -88,33 +90,88 @@ void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data
     fit_data->noise.lag0 = 0.0;
 
     lag_0_pwr_in_dB(fit_data->rng,fit_prms,noise_pwr);
+    
+    if (ranges == NULL)
+    {
+        fprintf(stderr, "List is empty\n");
+    }
+    // get the first node of the list called the head 
+    iterator = ((_llist*)list)->head;
+    while(iterator != NULL)
+    {
+        set_xcf_phi0(iterator->node, fit_data, fit_prms);
+        find_elevation(iterator->node, fit_data, fit_prms);
+        set_xcf_phi0_err(iterator->node, fit_data->xrng);
+        set_xcf_sdev_phi(iterator->node, fit_data->xrng);
+        
+        // if refractive index is not set to a constant
+        // then calculate it
+        #ifdef _RFC_IDX
+            refractive_index(iteration->node, fit_data->elv);
+        #endif
 
-    llist_for_each_arg(ranges,(node_func_arg)set_xcf_phi0,fit_data,fit_prms);
-    llist_for_each_arg(ranges,(node_func_arg)find_elevation,fit_data,fit_prms); 
-    llist_for_each_arg(ranges,(node_func_arg)set_xcf_phi0_err,fit_data->xrng,NULL);  
-    llist_for_each_arg(ranges,(node_func_arg)set_xcf_sdev_phi,fit_data->xrng,NULL);
+        // setting quality flag
+        set_qflg(iteration->node, fit_data->rng);
+        
+        // setting Signal-to-Noise fields (dB)
+        set_p_l(iteration->node, fit_data->rng, &noise_pwr);
+        set_p_l_err(iteration->node, fit_data->rng, &noise_pwr);
+        set_p_l_s(iteration->node, fit_data->rng, &noise_pwr);
+        set_p_l_s_err(iteration->node, fit_data->rng, &noise_pwr);
+
+        // setting velocity fields (m/s)
+        set_v(iteration->node, fit_data->rng, fit_prms);
+        set_v_err(iteration->node, fit_data->rng, fit_prms);
+
+        // setting the spectral width fields (m/s)
+        set_w_l(iteration->node, fit_data->rng, fit_prms);
+        set_w_l_err(iteration->node, fit_data->rng, fit_prms);
+        set_w_l_s(iteration->node, fit_data->rng, fit_prms);
+        set_w_l_s_err(iteration->node, fit_data->rng, fit_prms);
+
+        // setting standard deviation fields 
+        set_std_l(iteration->node, fit_data->rng);
+        set_std_s(iteration->node, fit_data->rng);
+        set_std_phi(iteration->node, fit_data->rng);
+        
+        // setting ground scatter field
+        set_gsct(iteration->node, fit_data->rng);
+
+        // TODO: ???
+        set_nump(iteration->node, fit_data->rng);
+
+        // Go to the next item in the list 
+        iterator = iterator->next;
+    }
+
+    //llist_for_each_arg(ranges,(node_func_arg)set_xcf_phi0,fit_data,fit_prms);
+    //llist_for_each_arg(ranges,(node_func_arg)find_elevation,fit_data,fit_prms); 
+    //llist_for_each_arg(ranges,(node_func_arg)set_xcf_phi0_err,fit_data->xrng,NULL);  
+    //llist_for_each_arg(ranges,(node_func_arg)set_xcf_sdev_phi,fit_data->xrng,NULL);
 
 
-#ifdef _RFC_IDX
-    llist_for_each_arg(ranges,(node_func_arg)refractive_index,fit_data->elv,NULL);
-#endif
+//#ifdef _RFC_IDX
+//    llist_for_each_arg(ranges,(node_func_arg)refractive_index,fit_data->elv,NULL);
+//#endif
 
-    llist_for_each_arg(ranges,(node_func_arg)set_qflg,fit_data->rng,NULL);
-    llist_for_each_arg(ranges,(node_func_arg)set_p_l,fit_data->rng,&noise_pwr);
-    llist_for_each_arg(ranges,(node_func_arg)set_p_l_err,fit_data->rng,&noise_pwr);
-    llist_for_each_arg(ranges,(node_func_arg)set_p_s,fit_data->rng,&noise_pwr);
-    llist_for_each_arg(ranges,(node_func_arg)set_p_s_err,fit_data->rng,&noise_pwr);
-    llist_for_each_arg(ranges,(node_func_arg)set_v,fit_data->rng,fit_prms);
-    llist_for_each_arg(ranges,(node_func_arg)set_v_err,fit_data->rng,fit_prms);
-    llist_for_each_arg(ranges,(node_func_arg)set_w_l,fit_data->rng,fit_prms);
-    llist_for_each_arg(ranges,(node_func_arg)set_w_l_err,fit_data->rng,fit_prms);
-    llist_for_each_arg(ranges,(node_func_arg)set_w_s,fit_data->rng,fit_prms);
-    llist_for_each_arg(ranges,(node_func_arg)set_w_s_err,fit_data->rng,fit_prms);
-    llist_for_each_arg(ranges,(node_func_arg)set_sdev_l,fit_data->rng,NULL);
-    llist_for_each_arg(ranges,(node_func_arg)set_sdev_s,fit_data->rng,NULL);
-    llist_for_each_arg(ranges,(node_func_arg)set_sdev_phi,fit_data->rng,NULL);
-    llist_for_each_arg(ranges,(node_func_arg)set_gsct,fit_data->rng,NULL);
-    llist_for_each_arg(ranges,(node_func_arg)set_nump,fit_data->rng,NULL);
+    //llist_for_each_arg(ranges,(node_func_arg)set_qflg,fit_data->rng,NULL);
+    //llist_for_each_arg(ranges,(node_func_arg)set_p_l,fit_data->rng,&noise_pwr);
+    //llist_for_each_arg(ranges,(node_func_arg)set_p_l_err,fit_data->rng,&noise_pwr);
+    //llist_for_each_arg(ranges,(node_func_arg)set_p_s,fit_data->rng,&noise_pwr);
+    //llist_for_each_arg(ranges,(node_func_arg)set_p_s_err,fit_data->rng,&noise_pwr);
+    
+    //llist_for_each_arg(ranges,(node_func_arg)set_v,fit_data->rng,fit_prms);
+    //llist_for_each_arg(ranges,(node_func_arg)set_v_err,fit_data->rng,fit_prms);
+    
+    //llist_for_each_arg(ranges,(node_func_arg)set_w_l,fit_data->rng,fit_prms);
+    //llist_for_each_arg(ranges,(node_func_arg)set_w_l_err,fit_data->rng,fit_prms);
+    //llist_for_each_arg(ranges,(node_func_arg)set_w_s,fit_data->rng,fit_prms);
+    //llist_for_each_arg(ranges,(node_func_arg)set_w_s_err,fit_data->rng,fit_prms);
+    //llist_for_each_arg(ranges,(node_func_arg)set_sdev_l,fit_data->rng,NULL);
+    //llist_for_each_arg(ranges,(node_func_arg)set_sdev_s,fit_data->rng,NULL);
+    //llist_for_each_arg(ranges,(node_func_arg)set_sdev_phi,fit_data->rng,NULL);
+    //llist_for_each_arg(ranges,(node_func_arg)set_gsct,fit_data->rng,NULL);
+    //llist_for_each_arg(ranges,(node_func_arg)set_nump,fit_data->rng,NULL);
 
 }
 
