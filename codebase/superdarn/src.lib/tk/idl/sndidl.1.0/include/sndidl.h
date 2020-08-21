@@ -78,8 +78,8 @@ struct SndIDLData {
   UCHAR gflg[MAX_RANGE]; 
   float v[MAX_RANGE];
   float v_e[MAX_RANGE];
-  float w_l[MAX_RANGE];
   float p_l[MAX_RANGE]; 
+  float w_l[MAX_RANGE];
   UCHAR x_qflg[MAX_RANGE];
   float phi0[MAX_RANGE];
   float phi0_e[MAX_RANGE];
