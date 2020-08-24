@@ -24,7 +24,7 @@ modifications:
 
 */
 
-
+#include "llist.h"
 #include "rtypes.h"
 #include "determinations.h"
 #include <math.h>
@@ -79,7 +79,7 @@ void allocate_fit_data(struct FitData* fit_data, FITPRMS* fit_prms){
  */
 void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data,double noise_pwr){
 
-    _list_node = *iterator;
+    list_node *iterator;
     fit_data->revision.major=3;
     fit_data->revision.minor=0;
 
@@ -96,7 +96,7 @@ void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data
         fprintf(stderr, "List is empty\n");
     }
     // get the first node of the list called the head 
-    iterator = ((_llist*)list)->head;
+    iterator = ((struct list *)ranges)->head;
     while(iterator != NULL)
     {
         set_xcf_phi0(iterator->node, fit_data, fit_prms);
@@ -107,38 +107,38 @@ void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data
         // if refractive index is not set to a constant
         // then calculate it
         #ifdef _RFC_IDX
-            refractive_index(iteration->node, fit_data->elv);
+            refractive_index(iterator->node, fit_data->elv);
         #endif
 
         // setting quality flag
-        set_qflg(iteration->node, fit_data->rng);
+        set_qflg(iterator->node, fit_data->rng);
         
         // setting Signal-to-Noise fields (dB)
-        set_p_l(iteration->node, fit_data->rng, &noise_pwr);
-        set_p_l_err(iteration->node, fit_data->rng, &noise_pwr);
-        set_p_l_s(iteration->node, fit_data->rng, &noise_pwr);
-        set_p_l_s_err(iteration->node, fit_data->rng, &noise_pwr);
+        set_p_l(iterator->node, fit_data->rng, &noise_pwr);
+        set_p_l_err(iterator->node, fit_data->rng);
+        set_p_s(iterator->node, fit_data->rng, &noise_pwr);
+        set_p_s_err(iterator->node, fit_data->rng);
 
         // setting velocity fields (m/s)
-        set_v(iteration->node, fit_data->rng, fit_prms);
-        set_v_err(iteration->node, fit_data->rng, fit_prms);
+        set_v(iterator->node, fit_data->rng, fit_prms);
+        set_v_err(iterator->node, fit_data->rng, fit_prms);
 
         // setting the spectral width fields (m/s)
-        set_w_l(iteration->node, fit_data->rng, fit_prms);
-        set_w_l_err(iteration->node, fit_data->rng, fit_prms);
-        set_w_l_s(iteration->node, fit_data->rng, fit_prms);
-        set_w_l_s_err(iteration->node, fit_data->rng, fit_prms);
+        set_w_l(iterator->node, fit_data->rng, fit_prms);
+        set_w_l_err(iterator->node, fit_data->rng, fit_prms);
+        set_w_s(iterator->node, fit_data->rng, fit_prms);
+        set_w_s_err(iterator->node, fit_data->rng, fit_prms);
 
         // setting standard deviation fields 
-        set_std_l(iteration->node, fit_data->rng);
-        set_std_s(iteration->node, fit_data->rng);
-        set_std_phi(iteration->node, fit_data->rng);
+        set_sdev_l(iterator->node, fit_data->rng);
+        set_sdev_s(iterator->node, fit_data->rng);
+        set_sdev_phi(iterator->node, fit_data->rng);
         
         // setting ground scatter field
-        set_gsct(iteration->node, fit_data->rng);
+        set_gsct(iterator->node, fit_data->rng);
 
         // TODO: ???
-        set_nump(iteration->node, fit_data->rng);
+        set_nump(iterator->node, fit_data->rng);
 
         // Go to the next item in the list 
         iterator = iterator->next;
