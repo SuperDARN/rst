@@ -143,36 +143,6 @@ void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data
         // Go to the next item in the list 
         iterator = iterator->next;
     }
-
-    //llist_for_each_arg(ranges,(node_func_arg)set_xcf_phi0,fit_data,fit_prms);
-    //llist_for_each_arg(ranges,(node_func_arg)find_elevation,fit_data,fit_prms); 
-    //llist_for_each_arg(ranges,(node_func_arg)set_xcf_phi0_err,fit_data->xrng,NULL);  
-    //llist_for_each_arg(ranges,(node_func_arg)set_xcf_sdev_phi,fit_data->xrng,NULL);
-
-
-//#ifdef _RFC_IDX
-//    llist_for_each_arg(ranges,(node_func_arg)refractive_index,fit_data->elv,NULL);
-//#endif
-
-    //llist_for_each_arg(ranges,(node_func_arg)set_qflg,fit_data->rng,NULL);
-    //llist_for_each_arg(ranges,(node_func_arg)set_p_l,fit_data->rng,&noise_pwr);
-    //llist_for_each_arg(ranges,(node_func_arg)set_p_l_err,fit_data->rng,&noise_pwr);
-    //llist_for_each_arg(ranges,(node_func_arg)set_p_s,fit_data->rng,&noise_pwr);
-    //llist_for_each_arg(ranges,(node_func_arg)set_p_s_err,fit_data->rng,&noise_pwr);
-    
-    //llist_for_each_arg(ranges,(node_func_arg)set_v,fit_data->rng,fit_prms);
-    //llist_for_each_arg(ranges,(node_func_arg)set_v_err,fit_data->rng,fit_prms);
-    
-    //llist_for_each_arg(ranges,(node_func_arg)set_w_l,fit_data->rng,fit_prms);
-    //llist_for_each_arg(ranges,(node_func_arg)set_w_l_err,fit_data->rng,fit_prms);
-    //llist_for_each_arg(ranges,(node_func_arg)set_w_s,fit_data->rng,fit_prms);
-    //llist_for_each_arg(ranges,(node_func_arg)set_w_s_err,fit_data->rng,fit_prms);
-    //llist_for_each_arg(ranges,(node_func_arg)set_sdev_l,fit_data->rng,NULL);
-    //llist_for_each_arg(ranges,(node_func_arg)set_sdev_s,fit_data->rng,NULL);
-    //llist_for_each_arg(ranges,(node_func_arg)set_sdev_phi,fit_data->rng,NULL);
-    //llist_for_each_arg(ranges,(node_func_arg)set_gsct,fit_data->rng,NULL);
-    //llist_for_each_arg(ranges,(node_func_arg)set_nump,fit_data->rng,NULL);
-
 }
 
 /**
