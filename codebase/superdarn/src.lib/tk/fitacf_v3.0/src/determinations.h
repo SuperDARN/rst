@@ -46,13 +46,63 @@ struct FitRange* new_range_array(FITPRMS* fit_prms);
 void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data,double noise_pwr);
 
 void lag_0_pwr_in_dB(struct FitRange* fit_range_array,FITPRMS* fit_prms,double noise_pwr);
+
+/*
+ * Setting the quality flag in fitted data. This determines if the data is good or bad. 
+ *
+ * @param fit_range_array: list of records from RAWACF 
+ * @param fit_prms: Fitacf parameters
+ * @param noise_pwr: noise power in dB
+ *
+ * @post: 
+ *
+ */
 void set_qflg(llist_node range,struct FitRange* fit_range_array);
+
+/*
+ *
+ *
+ *
+ */
 void set_p_l(llist_node range, struct FitRange* fit_range_array, double* noise_pwr);
+
+/*
+ *
+ *
+ *
+ */
 void set_p_l_err(llist_node range, struct FitRange* fit_range_array);
+
+/*
+ *
+ *
+ *
+ */
 void set_p_s(llist_node range, struct FitRange* fit_range_array, double* noise_pwr);
+
+/*
+ *
+ *
+ *
+ */
 void set_p_s_err(llist_node range, struct FitRange* fit_range_array);
+
+/*
+ *
+ *
+ *
+ *
+ */
 void set_v(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_prms);
+
+/*
+ *
+ *
+ *
+ *
+ */
 void set_v_err(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_prms);
+
 void set_w_l(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_prms);
 void set_w_l_err(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_prms);
 void set_w_s(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_prms);
