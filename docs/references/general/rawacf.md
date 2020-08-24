@@ -94,7 +94,7 @@ RAWACF files contain a record that contains scalar and vector fields.
 | :---------- | :-----:  | :-------:      | :---:       | :---                                                                        |
 | *ptab*      | *None*   | *[mppul]*      | short       | Pulse table, showing when pulses are transmitted as integer multiples of mpinc/smsep                                                              |
 | *ltab*      | *None*   | *[mplgs+1][2]* | short       | Lag table, showing which pulses to use to estimate each lag                 |
-| *pwr0*      | *dB*     | *[nrang]*      | float       | Lag zero power (actually SNR), estimated from voltage samples (not fitted)  |
+| *pwr0*      | *None*     | *[nrang]*      | float       | Lag zero power, estimated from voltage samples (not fitted)  |
 | *slist*     | *None*   | *[0-nrang]*    | short       | List of range gates with ACF/XCF data available |
 | *acfd*      | *None*   | *[2][mplgs][0-nrang]*    | float       | Calculated ACFs                                                             |
 | *xcfd*      | *None*   | *[2][mplgs][0-nrang]*    | float       | Calculated XCFs                                                             |
