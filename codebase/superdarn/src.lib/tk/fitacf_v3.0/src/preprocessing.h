@@ -52,7 +52,6 @@ bool range_node_eq(llist_node node,llist_node cmp);
 bool alpha_node_eq(llist_node node,llist_node cmp);
 
 void print_node(llist_node node);
-void print_range_node(llist_node node, FITPRMS *fit_prms);
 void print_lag_node(llist_node node, FITPRMS *fit_prms);
 void print_pwr_node(llist_node node,FILE* fp);
 void print_alpha_node(llist_node node, FILE* fp);

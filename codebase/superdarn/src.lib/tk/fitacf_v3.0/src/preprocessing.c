@@ -494,41 +494,6 @@ void print_phase_node(llist_node node, FILE* fp){
 
 }
 
-void print_range_node(llist_node node,FITPRMS* fit_prms){
-  int i;
-  FILE* fp;
-
-  fp = fopen("fullrangeinfo.txt","a");
-  fprintf(fp,"TIME %d-%02d-%02dT%02d:%02d:%f\n",fit_prms->time.yr, fit_prms->time.mo,
-                          fit_prms->time.dy, fit_prms->time.hr,
-                          fit_prms->time.mt, fit_prms->time.sc +
-                          fit_prms->time.us/1.0e6);
-  fprintf(fp,"BEAM %02d\n",fit_prms->bmnum);
-  fprintf(fp,"RANGE %d\n",((RANGENODE*)node)->range);
-
-  fprintf(fp,"CRI ");
-  for(i=0;i<8;i++){
-    fprintf(fp,"%f ",((RANGENODE*)node)->CRI[i]);
-  }
-  fprintf(fp,"\nALPHA\n");
-
-  llist_for_each_arg(((RANGENODE*)node)->alpha_2, (node_func_arg)print_alpha_node,fp,NULL);
-  fprintf(fp,"\n");
-  llist_for_each_arg(((RANGENODE*)node)->pwrs, (node_func_arg)print_pwr_node,fp,NULL);
-  fprintf(fp,"LINEAR POWER FIT\n");
-  print_fit_data(((RANGENODE*)node)->l_pwr_fit,fp);
-  fprintf(fp,"QUADRATIC POWER FIT\n");
-  print_fit_data(((RANGENODE*)node)->q_pwr_fit,fp);
-  fprintf(fp,"ACF_PHASE FIT\n");
-  llist_for_each_arg(((RANGENODE*)node)->phases, (node_func_arg)print_phase_node,fp,NULL);
-  print_fit_data(((RANGENODE*)node)->phase_fit,fp);
-  fprintf(fp,"XCF_PHASE FIT\n");
-  print_fit_data(((RANGENODE*)node)->elev_fit,fp);
-  llist_for_each_arg(((RANGENODE*)node)->elev, (node_func_arg)print_phase_node,fp,NULL);
-  fclose(fp);
-
-}
-
 void print_uncorrected_phase(llist_node node, FITPRMS* fit_prms){
   FILE* fp;
 
