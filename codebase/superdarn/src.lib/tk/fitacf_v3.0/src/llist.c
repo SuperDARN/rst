@@ -45,7 +45,6 @@ static list_node *listsort ( list_node *list, list_node ** updated_tail, compera
 llist llist_create ( comperator compare_func, equal equal_func, unsigned flags)
 {
     list *new_list;
-    int rc = 0;
     new_list = malloc ( sizeof ( list ) );
 
     if ( new_list == NULL )
@@ -75,17 +74,17 @@ llist llist_create ( comperator compare_func, equal equal_func, unsigned flags)
  * @param[in] destructor alternative destructor, if the previous param is true,
  *            if NULL is provided standard library c free() will be used
  */
-void llist_destroy ( llist list, bool destroy_nodes, node_func destructor )
+void llist_destroy ( llist data_list, bool destroy_nodes, node_func destructor )
 {
     list_node *iterator;
     list_node *next;
 
-    if ( list == NULL )
+    if ( data_list == NULL )
     {
         return;
     }
     /* Delete the data contained in the nodes*/
-    iterator = ( ( list * ) list )->head;
+    iterator = ( ( list * ) data_list )->head;
 
     while ( iterator != NULL )
     {
@@ -111,7 +110,7 @@ void llist_destroy ( llist list, bool destroy_nodes, node_func destructor )
     }
 
     /*release the list*/
-    free ( list );
+    free ( data_list );
 
     return;
 
@@ -122,17 +121,17 @@ void llist_destroy ( llist list, bool destroy_nodes, node_func destructor )
  * @param[in] list the list to operate on
  * @return int  number of elements in the list or -1 if error
  */
-int llist_size ( llist list )
+int llist_size ( llist data_list )
 {
     unsigned int retval = 0;
-    if ( list == NULL )
+    if ( data_list == NULL )
     {
         return 0;
     }
 
     {
         /*read only critical section*/
-        retval = ( ( list * ) list )->count;
+        retval = ((struct list *) data_list )->count;
     }
 
     return retval;
@@ -145,23 +144,23 @@ int llist_size ( llist list )
  *
  * @return     LLIST_SUCCESS if successful.
  */
-int llist_go_next(llist list)
+int llist_go_next(llist data_list)
 {
 
-    if ( list == NULL )
+    if ( data_list == NULL )
     {
         return LLIST_NULL_ARGUMENT;
     }
 
-    if(( ( list * ) list )->iter == NULL){
+    if(( ( list * ) data_list )->iter == NULL){
         return LLIST_END_OF_LIST;
     }
 
-    if(( ( list * ) list )->iter->next == NULL){
+    if(( ( list * ) data_list )->iter->next == NULL){
         return LLIST_END_OF_LIST;
     }
 
-    ( ( list * ) list )->iter = ( ( list * ) list )->iter->next;
+    ( ( list * ) data_list )->iter = ( ( list * ) data_list )->iter->next;
 
     return LLIST_SUCCESS;
 }
@@ -174,14 +173,14 @@ int llist_go_next(llist list)
  *
  * @return     LLIST_SUCCESS if successful.
  */
-int llist_reset_iter(llist list){
+int llist_reset_iter(llist data_list){
 
-    if ( list == NULL )
+    if ( data_list == NULL )
     {
         return LLIST_NULL_ARGUMENT;
     }
 
-    ( ( list * ) list )->iter = ( ( list * ) list )->head;
+    ( ( list * ) data_list )->iter = ( ( list * ) data_list )->head;
 
     return LLIST_SUCCESS;
 }
@@ -194,19 +193,19 @@ int llist_reset_iter(llist list){
  *
  * @return     LLIST_SUCCESS if successful.
  */
-int llist_get_iter(llist list,void** item){
+int llist_get_iter(llist data_list,void** item){
 
-    if ( list == NULL )
+    if ( data_list == NULL )
     {
         return LLIST_NULL_ARGUMENT;
     }
 
-    if(( ( list * ) list )->iter == NULL){
+    if(( ( list * ) data_list )->iter == NULL){
         *item = NULL;
         return LLIST_NODE_NOT_FOUND;
     }
 
-    *item = ( ( list * ) list )->iter->node;
+    *item = ( ( list * ) data_list )->iter->node;
     return LLIST_SUCCESS;
 
 }
@@ -218,11 +217,11 @@ int llist_get_iter(llist list,void** item){
  * @param[in] flags flags
  * @return int LLIST_SUCCESS if success
  */
-int llist_add_node ( llist list, llist_node node, int flags )
+int llist_add_node ( llist data_list, llist_node node, int flags )
 {
     list_node *node_wrapper = NULL;
 
-    if ( list == NULL )
+    if ( data_list == NULL )
     {
         return LLIST_NULL_ARGUMENT;
     }
@@ -236,23 +235,23 @@ int llist_add_node ( llist list, llist_node node, int flags )
 
     node_wrapper->node = node;
 
-    ( ( list * ) list )->count++;
+    ( ( list * ) data_list )->count++;
 
-    if ( ( ( list * ) list )->head == NULL ) /* Adding the first node, update head and tail to point to that node*/
+    if ( ( ( list * ) data_list )->head == NULL ) /* Adding the first node, update head and tail to point to that node*/
     {
         node_wrapper->next = NULL;
-        ( ( list * ) list )->head = ( ( list * ) list )->tail = node_wrapper;
+        ( ( list * ) data_list )->head = ( ( list * ) data_list )->tail = node_wrapper;
     }
     else if ( flags & ADD_NODE_FRONT )
     {
-        node_wrapper->next = ( ( list * ) list )->head;
-        ( ( list * ) list )->head = node_wrapper;
+        node_wrapper->next = ( ( list * ) data_list )->head;
+        ( ( list * ) data_list )->head = node_wrapper;
     }
     else   /* add node in the rear*/
     {
         node_wrapper->next = NULL;
-        ( ( list * ) list )->tail->next = node_wrapper;
-        ( ( list * ) list )->tail = node_wrapper;
+        ( ( list * ) data_list )->tail->next = node_wrapper;
+        ( ( list * ) data_list )->tail = node_wrapper;
     }
 
     return LLIST_SUCCESS;
@@ -266,19 +265,19 @@ int llist_add_node ( llist list, llist_node node, int flags )
  * @param[in] destructor function, if NULL is provided, free() will be used
  * @return int LLIST_SUCCESS if success
  */
-int llist_delete_node ( llist list, llist_node node,
+int llist_delete_node ( llist data_list, llist_node node,
 		bool destroy_node, node_func destructor )
 {
     list_node *iterator;
     list_node *temp;
     equal actual_equal;
 
-    if ( ( list == NULL ) || ( node == NULL ) )
+    if ( ( data_list == NULL ) || ( node == NULL ) )
     {
         return LLIST_NULL_ARGUMENT;
     }
 
-    actual_equal = ( ( list * ) list )->equal_func;
+    actual_equal = ( ( list * ) data_list )->equal_func;
 
 	if ( actual_equal == NULL )
     {
@@ -287,7 +286,7 @@ int llist_delete_node ( llist list, llist_node node,
 
 
 
-    iterator = ( ( list * ) list )->head;
+    iterator = ( ( list * ) data_list )->head;
 
     if ( NULL == iterator)
     {
@@ -312,23 +311,23 @@ int llist_delete_node ( llist list, llist_node node,
         }
 
 
-        ( ( list * ) list )->head = ( ( list * ) list )->head->next;
-        if (( ( list * ) list )->iter == iterator){
-            ( ( list * ) list )->iter = ( ( list * ) list )->head;
+        ( ( list * ) data_list )->head = ( ( list * ) data_list )->head->next;
+        if (( ( list * ) data_list )->iter == iterator){
+            ( ( list * ) data_list )->iter = ( ( list * ) data_list )->head;
         }
 
         free ( iterator );
-        ( ( list * ) list )->count--;
+        ( ( list * ) data_list )->count--;
 
-        if ( ( ( list * ) list )->count == 0 )
+        if ( ( ( list * ) data_list )->count == 0 )
         {
             /*
              *  if we deleted the last node, we need to reset the tail also
              *  There's no need to check it somewhere else, because the last node must be the head (and tail)
              */
-            ( ( list * ) list )->tail = NULL;
+            ( ( list * ) data_list )->tail = NULL;
         }
-        /*assert ( ( ( list * ) list )->count >= 0 );*/
+        /*assert ( ( ( list * ) data_list )->count >= 0 );*/
         return LLIST_SUCCESS;
     }
     else
@@ -338,8 +337,8 @@ int llist_delete_node ( llist list, llist_node node,
             if ( actual_equal ( iterator->next->node, node ) )
             {
                 /* found it */
-                if((( ( list * ) list )->iter == iterator->next)){
-                    ( ( list * ) list )->iter = iterator;
+                if((( ( list * ) data_list )->iter == iterator->next)){
+                    ( ( list * ) data_list )->iter = iterator;
                 }
                 temp = iterator->next;
                 iterator->next = temp->next;
@@ -357,7 +356,7 @@ int llist_delete_node ( llist list, llist_node node,
                 }
                 free ( temp );
 
-                ( ( list * ) list )->count--;
+                ( ( list * ) data_list )->count--;
                 return LLIST_SUCCESS;
             }
 
@@ -380,16 +379,16 @@ int llist_delete_node ( llist list, llist_node node,
  * @param[in] func the function to perform
  * @return int LLIST_SUCCESS if success
  */
-int llist_for_each ( llist list, node_func func )
+int llist_for_each ( llist data_list, node_func func )
 {
     list_node *iterator;
 
-    if ( ( list == NULL ) || ( func == NULL ) )
+    if ( ( data_list == NULL ) || ( func == NULL ) )
     {
         return LLIST_NULL_ARGUMENT;
     }
 
-    iterator = ( ( list * ) list )->head;
+    iterator = ( ( list * ) data_list )->head;
 
     while ( iterator != NULL )
     {
@@ -413,17 +412,17 @@ int llist_for_each ( llist list, node_func func )
  *       a none programmers point of view. To keep things simple I implemented 
  *       a variable structure that contains everything. 
  */
-int llist_for_each_arg ( llist list, node_func_arg func, void * arg1, void * arg2 )
+int llist_for_each_arg ( llist data_list, node_func_arg func, void * arg1, void * arg2 )
 {
     list_node *iterator;
 
-    if ( ( list == NULL ) || ( func == NULL ) )
+    if ( ( data_list == NULL ) || ( func == NULL ) )
     {
         return LLIST_NULL_ARGUMENT;
     }
 
 
-    iterator = ( ( list * ) list )->head;
+    iterator = ( ( list * ) data_list )->head;
 
     while ( iterator != NULL )
     {
@@ -442,16 +441,16 @@ int llist_for_each_arg ( llist list, node_func_arg func, void * arg1, void * arg
  *              this pointer can be used only if llist_find_node returned LLIST_SUCCESS
  * @return LLIST_SUCCESS if success
  */
-int llist_find_node ( llist list, void *data, llist_node *found)
+int llist_find_node ( llist data_list, void *data, llist_node *found)
 {
     list_node *iterator;
     equal actual_equal;
-    if ( list == NULL )
+    if ( data_list == NULL )
     {
         return LLIST_NULL_ARGUMENT;
     }
 
-    actual_equal = ( ( list * ) list )->equal_func;
+    actual_equal = ( ( list * ) data_list )->equal_func;
 
     if ( actual_equal == NULL )
     {
@@ -459,7 +458,7 @@ int llist_find_node ( llist list, void *data, llist_node *found)
     }
 
 
-    iterator = ( ( list * ) list )->head;
+    iterator = ( ( list * ) data_list )->head;
 
     while ( iterator != NULL )
     {
@@ -484,13 +483,13 @@ int llist_find_node ( llist list, void *data, llist_node *found)
  * @param[in] list the list to operate on
  * @return the head node, NULL on error
  */
-llist_node llist_get_head ( llist list )
+llist_node llist_get_head ( llist data_list )
 {
-    if ( list != NULL )
+    if ( data_list != NULL )
         {
-            if ( ( ( list * ) list )->head ) /* there's at least one node*/
+            if ( ( ( list * ) data_list )->head ) /* there's at least one node*/
             {
-                return ( ( list * ) list )->head->node;
+                return ( ( list * ) data_list )->head->node;
             }
         }
 
@@ -540,12 +539,12 @@ int llist_concat ( llist first, llist second )
  * @param[in] flags
  * @return int LLIST_SUCCESS if success
  */
-int llist_sort ( llist list, int flags )
+int llist_sort ( llist data_list, int flags )
 {
 
     comperator cmp;
-    list *thelist = ( list * ) list;
-    if ( list == NULL )
+    list *thelist = ( list * ) data_list;
+    if ( data_list == NULL )
     {
         return LLIST_NULL_ARGUMENT;
     }
@@ -668,17 +667,17 @@ static list_node *listsort ( list_node *list, list_node ** updated_tail, compera
 }
 
 /*helper function to return both min or max*/
-static int llist_get_min_max(llist list, llist_node * output, bool max)
+static int llist_get_min_max(llist data_list, llist_node * output, bool max)
 {
     comperator cmp;
-    list_node *iterator = ( ( list * ) list )->head;
+    list_node *iterator = ( ( list * ) data_list )->head;
 
-	if ( list == NULL )
+	if ( data_list == NULL )
 	{
 		return LLIST_NULL_ARGUMENT;
 	}
 
-    cmp =  ( ( list * ) list )->comp_func;
+    cmp =  ( ( list * ) data_list )->comp_func;
 
  	if ( cmp == NULL )
     {
@@ -716,7 +715,7 @@ static int llist_get_min_max(llist list, llist_node * output, bool max)
  * @param[out] minumum node
  * @return int LLIST_SUCCESS if success
  */
-int llist_get_min(llist list, llist_node * min)
+int llist_get_min(llist data_list, llist_node * min)
 {
-	return llist_get_min_max(list,min,false);
+	return llist_get_min_max(data_list,min,false);
 }
