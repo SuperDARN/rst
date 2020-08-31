@@ -5,7 +5,10 @@
 <location>src.bin/task/eval</location>
 <syntax>rst_eval --help</syntax>
 <syntax>rst_eval [-c <ar>cast</ar>] [-f <ar>format</ar>] <ar>expr</ar></syntax>
+
 <option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
 </option>
 <option><on>-c <ar>cast</ar></on><od>force the final calculated value of the expression to be <ar>cast</ar> data type.</od>
 </option>
@@ -18,6 +21,7 @@
 <p>The calculated value is written to standard output</p>
 <p>The expression to evaluate should be quoted.</p>
 </description>
+
 <example>
 <command>rst_eval "2.5*3.12/6"</command>
 <description>Evaluate 2.5*3.12/6.</description>
@@ -27,7 +31,5 @@
 <command>rst_eval -c int -f "%d" "2.3*0.5"</command>
 <description>Evaluate 2.3*0.5, convert the result to an integer and print it using the format "<code>%d</code>".</description>
 </example>
-
-
 
 </binary>

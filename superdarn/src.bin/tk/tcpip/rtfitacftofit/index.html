@@ -52,7 +52,7 @@ rtfitacftofit --help<br>rtfitacftofit [-t <em>timeout</em>] [-L <em>logname</em>
 <p><p>Reformat the <code>fitacf</code> data stream from the port 1024 on the server <code>peanut.jhuapl.edu</code>. The port number is recorded in the file "<code>port.id</code>", the process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyymmdd</em> is the date.</p>
 </p>
 
-<table ><tr><td class="docbox" ><pre width="80">rtfitacftofit -L log -pf port.id -if pid.id -lp -rpf port.gbr localhost</pre></td></tr></table>
+<table ><tr><td class="docbox" ><pre width="80">rtfitacftofit -L log -pf port.id -if pid.id -rpf localhost port.gbr</pre></td></tr></table>
 <p><p>Reformat the <code>fitacf</code> data stream served from the port listed in "<code>port.gbr</code>" on this host. The port number is recorded in the file "<code>port.id</code>", the process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyymmdd</em> is the date.</p>
 </p>
 </td></tr>

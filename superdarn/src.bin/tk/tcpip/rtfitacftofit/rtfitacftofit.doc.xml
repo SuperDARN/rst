@@ -42,7 +42,7 @@
 </example>
 
 <example>
-<command>rtfitacftofit -L log -pf port.id -if pid.id -lp -rpf port.gbr localhost</command>
+<command>rtfitacftofit -L log -pf port.id -if pid.id -rpf localhost port.gbr</command>
 <description><p>Reformat the <code>fitacf</code> data stream served from the port listed in "<code>port.gbr</code>" on this host. The port number is recorded in the file "<code>port.id</code>", the process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyymmdd</em> is the date.</p>
 </description>
 </example>

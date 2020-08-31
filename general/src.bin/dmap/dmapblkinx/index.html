@@ -25,13 +25,14 @@
 <table>
 <tr><td class="docsubtitle" valign=top>Syntax</td></tr>
 <tr><td></td><td width=80% class="docbox" style="font-family: courier;">
-dmapblkinx --help<br></td></tr>
+dmapblkinx --help<br>dmapblkinx [<em>name</em>]<br></td></tr>
 <tr><td class="docsubtitle">Synopsis</td></tr>
 <tr><td></td><td><p>Dump the block index (file offsets for each block) of a DataMap file.</p></td></tr>
 
 <tr><td class="docsubtitle">Options</td></tr>
 <tr><td></td><td>
 <table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
 <tr><td width="150" valign="top"><code><em>name</em></code></td><td valign="top">filename of the DataMap file, if this is omitted the document will be read from standard input.</td></tr>
 </table></td></tr>
 <tr><td class="docsubtitle">Description</td></tr>
@@ -41,7 +42,7 @@ dmapblkinx --help<br></td></tr>
 <tr><td class="docsubtitle">Examples</td></tr>
 <tr><td></td><td>
 <table ><tr><td class="docbox" ><pre width="80">dmapblkinx inp.dmap &gt; out.binx</pre></td></tr></table>
-<p>Find the block offsets from the  file <code>inp.dmap</code> and store them in the file <code>out.binx</code>
+<p>Find the block offsets from the file <code>inp.dmap</code> and store them in the file <code>out.binx</code>
 </p>
 </td></tr>
 

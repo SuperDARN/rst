@@ -27,23 +27,27 @@
 <tr><td></td><td width=80% class="docbox" style="font-family: courier;">
 make_raw --help<br>make_raw [-vb] [<em>iqdatname</em>]<br></td></tr>
 <tr><td class="docsubtitle">Synopsis</td></tr>
-<tr><td></td><td><p>Creates a <code>rawacf</code> format file from a <code>iqdat</code> format file.</p></td></tr>
+<tr><td></td><td><p>Creates a <code>rawacf</code> format file from an <code>iqdat</code> format file.</p></td></tr>
 
 <tr><td class="docsubtitle">Options</td></tr>
 <tr><td></td><td>
 <table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
 <tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
 <tr><td width="150" valign="top"><code>-vb</code></td><td valign="top">verbose. Log information to the console.</td></tr>
-<tr><td width="150" valign="top"><code><em>iqdatname</em></code></td><td valign="top">filename of the <code>iqdat</code>  format file. If this is omitted the file is read from standard input.</td></tr>
+<tr><td width="150" valign="top"><code>-qi</code></td><td valign="top">the I&Q samples of the input <code>iqdat</code> format file are reversed.</td></tr>
+<tr><td width="150" valign="top"><code>-d</code></td><td valign="top">the input <code>iqdat</code> format file originated from a digital receiver.</td></tr>
+<tr><td width="150" valign="top"><code>-skip <em>skpval</em></code></td><td valign="top">set the number of samples to skip at the start of each sequence to <em>skpval</em>. The default value is taken from the IQ structure of the input <code>iqdat</code> format file.</td></tr>
+<tr><td width="150" valign="top"><code>-chnnum <em>chnnum</em></code></td><td valign="top">set the number of receiver channels to <em>chnnum</em>. The default value si taken from the IQ structure of the input <code>iqdat</code> format file.</td></tr>
+<tr><td width="150" valign="top"><code><em>iqdatname</em></code></td><td valign="top">filename of the <code>iqdat</code> format file. If this is omitted the file is read from standard input.</td></tr>
 </table></td></tr>
 <tr><td class="docsubtitle">Description</td></tr>
-<tr><td></td><td><p>Creates a <code>rawacf</code> format file from a <code>iqdat</code> format file.</p>
-<p>The <code>rawacf</code> format file  is written to standard output.</p>
+<tr><td></td><td><p>Creates a <code>rawacf</code> format file from an <code>iqdat</code> format file.</p>
+<p>The <code>rawacf</code> format file is written to standard output.</p>
 </td></tr>
 <tr><td class="docsubtitle">Examples</td></tr>
 <tr><td></td><td>
 <table ><tr><td class="docbox" ><pre width="80">make_raw 20040830.gbr.iqdat &gt; 20040830.gbr.rawacf</pre></td></tr></table>
-<p>Create an <code>rawacf</code> format file from the <code>iqdat</code> format file "<code>20040830.gbr.iqdat</code>".The <code>rawacf</code> format ile is written to "<code>20040830.gbr.rawacf</code>".</p>
+<p>Create a <code>rawacf</code> format file from the <code>iqdat</code> format file "<code>20040830.gbr.iqdat</code>".The <code>rawacf</code> format file is written to "<code>20040830.gbr.rawacf</code>".</p>
 </td></tr>
 
 
