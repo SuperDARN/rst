@@ -72,11 +72,14 @@
 #include "fitindex.h"
 #include "fitseek.h"
 #include "oldfitread.h"
+#include "snddata.h"
+#include "sndread.h"
 #include "stdkey.h"
 #include "tplot.h"
 #include "fit.h"
 #include "oldfit.h"
 #include "smr.h"
+#include "snd.h"
 #include "cfit.h"
 #include "expr.h"
 #include "hlpstr.h"
@@ -102,6 +105,7 @@ struct RadarSite *site;
 struct RadarParm *prm;
 struct FitData *fit;
 struct CFitdata *cfit;
+struct SndData *snd;
 
 struct FitIndex *inx;
 
@@ -288,6 +292,7 @@ int main(int argc,char *argv[]) {
   struct CFitfp *cfitfp=NULL;
   FILE *fitfp=NULL;
   FILE *smrfp=NULL;
+  FILE *sndfp=NULL;
 
   int bmnum=-1;
   char *chtxt=NULL;
@@ -432,6 +437,7 @@ int main(int argc,char *argv[]) {
 
   unsigned char fitflg=0;
   unsigned char smrflg=0;
+  unsigned char sndflg=0;
   unsigned char cfitflg=0;
 
   unsigned char help=0;
@@ -489,6 +495,7 @@ int main(int argc,char *argv[]) {
   prm=RadarParmMake();
   fit=FitMake();
   cfit=CFitMake();
+  snd=SndMake();
 
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
@@ -562,6 +569,7 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"fit",'x',&fitflg); /* fit file */
   OptionAdd(&opt,"smr",'x',&smrflg); /* summary file */
+  OptionAdd(&opt,"snd",'x',&sndflg); /* sounding file */
   OptionAdd(&opt,"cfit",'x',&cfitflg); /* cfit file */
 
   OptionAdd(&opt,"b",'i',&bmnum); /* beam number */
@@ -936,7 +944,7 @@ int main(int argc,char *argv[]) {
   if (xmajorstr !=NULL) xmajor=strtime(xmajorstr);
   if (xminorstr !=NULL) xminor=strtime(xminorstr);
 
-  if ((smrflg==0) && (cfitflg==0)) fitflg=1;
+  if ((smrflg==0) && (cfitflg==0) && (sndflg==0)) fitflg=1;
 
   if (scan !=-8000) sflg=1;
 
@@ -1074,6 +1082,17 @@ int main(int argc,char *argv[]) {
       exit(-1);
     }
     stime=smr_find(smrfp,prm,fit,fbeam,sdate,stime);
+  } else if (sndflg) {
+    if (arg==argc) {
+      OptionPrintInfo(stderr,errstr);
+      exit(-1);
+    }
+    sndfp=fopen(argv[arg],"r");
+    if (sndfp==NULL) {
+      fprintf(stderr,"file %s not found\n",argv[arg]);
+      exit(-1);
+    }
+    stime=snd_find(sndfp,snd,sdate,stime);
   } else if (cfitflg) {
     if (arg==argc) {
       OptionPrintInfo(stderr,errstr);
@@ -1130,11 +1149,13 @@ int main(int argc,char *argv[]) {
 
   if (fitflg) {
     if (old) atime=oldfit_scan(stime,oldfitfp,0,prm,
-                             fit,bmnum,chnum,cpid,sflg,scan);
+                               fit,bmnum,chnum,cpid,sflg,scan);
     else atime=fit_scan(stime,fitfp,0,prm,
-                             fit,bmnum,chnum,cpid,sflg,scan); 
+                        fit,bmnum,chnum,cpid,sflg,scan);
   } else if (smrflg) atime=smr_scan(stime,smrfp,fbeam,0,prm,
-                             fit,bmnum,chnum,cpid,sflg,scan); 
+                                    fit,bmnum,chnum,cpid,sflg,scan);
+  else if (sndflg) atime=snd_scan(stime,sndfp,0,snd,
+                                  bmnum,cpid,sflg,scan);
   else if (cfitflg) atime=cfit_scan(atime,cfitfp,1,cfit,bmnum,chnum,cpid,
                                     sflg,scan);
 
@@ -1145,6 +1166,13 @@ int main(int argc,char *argv[]) {
     sprintf(revtxt,"Revision:%d.%d",fit->revision.major,
             fit->revision.minor);
   }
+  if (sndflg) {
+    stid=snd->stid;
+    cptab[0]=snd->cp;
+    cpnum=1;
+    sprintf(revtxt,"Revision:%d.%d",snd->snd_revision.major,
+            snd->snd_revision.minor);
+  }
   if (cfitflg) {
     stid=cfit->stid;
     cptab[0]=cfit->cp;
@@ -1154,6 +1182,7 @@ int main(int argc,char *argv[]) {
   }
   if (erng==MAX_RANGE) {
     if ((fitflg) || (smrflg)) erng=prm->nrang;
+    if (sndflg) erng=snd->nrang;
     if (cfitflg) erng=cfit->nrang;
   }
 
@@ -1162,6 +1191,11 @@ int main(int argc,char *argv[]) {
       if (frang==-1) frang=prm->frang;
       if (rsep==0) rsep=prm->rsep;
       if (erang==-1) erang=frang+prm->nrang*rsep;
+    }
+    if (sndflg) {
+      if (frang==-1) frang=snd->frang;
+      if (rsep==0) rsep=snd->rsep;
+      if (erang==-1) erang=frang+snd->nrang*snd->rsep;
     }
     if (cfitflg) {
       if (frang==-1) frang=cfit->frang;
@@ -1208,6 +1242,12 @@ int main(int argc,char *argv[]) {
       site=RadarYMDHMSGetSite(radar,prm->time.yr,prm->time.mo,
                           prm->time.dy,prm->time.hr,prm->time.mt,
                           prm->time.sc);
+    }
+    if (sndflg) {
+      radar=RadarGetRadar(network,snd->stid);
+      site=RadarYMDHMSGetSite(radar,snd->time.yr,snd->time.mo,
+                          snd->time.dy,snd->time.hr,snd->time.mt,
+                          snd->time.sc);
     }
     if (cfitflg) {
       TimeEpochToYMDHMS(cfit->time,&yr,&mo,&dy,&hr,&mt,&sc);
@@ -1296,6 +1336,7 @@ int main(int argc,char *argv[]) {
 
     otime=atime;
     if ((fitflg) || (smrflg)) fit_tplot(prm,fit,&tplot);
+    if (sndflg) snd_tplot(snd,&tplot);
     if (cfitflg) cfit_tplot(cfit,&tplot);
 
     for (i=0;i<cpnum;i++) if (cptab[i]==tplot.cpid) break;
@@ -1311,6 +1352,8 @@ int main(int argc,char *argv[]) {
                           bmnum,chnum,cpid,sflg,scan); 
     } else if (smrflg) atime=smr_scan(atime,smrfp,fbeam,1,prm,fit,
                                       bmnum,chnum,cpid,sflg,scan);
+    else if (sndflg) atime=snd_scan(atime,sndfp,1,snd,
+                                    bmnum,cpid,sflg,scan);
     else if (cfitflg) atime=cfit_scan(atime,cfitfp,1,cfit,
                                       bmnum,chnum,cpid,sflg,scan);
 
@@ -1552,6 +1595,7 @@ int main(int argc,char *argv[]) {
     if (old) OldFitClose(oldfitfp);
     else if (fitfp !=stdin) fclose(fitfp);
   } else if (smrflg) fclose(smrfp);
+  else if (sndflg) fclose(sndfp);
 
   i=0;
   if (pwrflg) {
