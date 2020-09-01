@@ -68,19 +68,6 @@ int read_set() {
   return c;
 }
 
-/*int get_length() { 
-  int smin=3600*24;
-  int scan;
-  int i;
-  for (i=0;i<fnum;i++) {
-    if (dflg[i] !=0) {
-       scan=in_rcd[i]->ed_time-in_rcd[i]->st_time;
-       if (scan<smin) smin=scan;
-    }
-  }
-  return smin;
-}*/
-  
 
 int main(int argc,char *argv[]) {
 
@@ -96,8 +83,6 @@ int main(int argc,char *argv[]) {
   double st_time=0;
 
   int i,c=0;
- 
-  rcd=SndMake(); 
  
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
