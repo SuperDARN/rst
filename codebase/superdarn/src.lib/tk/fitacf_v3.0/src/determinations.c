@@ -151,7 +151,6 @@ void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data
  * @param[in]  range           A RANGENODE struct.
  * @param      fit_elev_array  A FitElv array that holds calculated elevation.
  *
- * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
 void refractive_index(llist_node range, struct FitElv* fit_elev_array){
     double height;
@@ -203,7 +202,6 @@ void lag_0_pwr_in_dB(struct FitRange* fit_range_array,FITPRMS* fit_prms,double n
  * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
  *                              final results.
  *
- * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
 void set_qflg(llist_node range,struct FitRange* fit_range_array){
     RANGENODE* range_node;
@@ -222,7 +220,6 @@ void set_qflg(llist_node range,struct FitRange* fit_range_array){
  *                              final results.
  * @param      noise_pwr        The noise power.
  *
- * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
 void set_p_l(llist_node range, struct FitRange* fit_range_array, double* noise_pwr){
     RANGENODE* range_node;
@@ -242,7 +239,6 @@ void set_p_l(llist_node range, struct FitRange* fit_range_array, double* noise_p
  * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
  *                              final results.
  *
- * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
 void set_p_l_err(llist_node range, struct FitRange* fit_range_array){
     RANGENODE* range_node;
@@ -261,7 +257,6 @@ void set_p_l_err(llist_node range, struct FitRange* fit_range_array){
  *                              final results.
  * @param      noise_pwr        The noise power.
  *
- * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
 void set_p_s(llist_node range, struct FitRange* fit_range_array, double* noise_pwr){
     RANGENODE* range_node;
@@ -281,7 +276,6 @@ void set_p_s(llist_node range, struct FitRange* fit_range_array, double* noise_p
  * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
  *                              final results.
  *
- * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
 void set_p_s_err(llist_node range, struct FitRange* fit_range_array){
     RANGENODE* range_node;
@@ -300,7 +294,6 @@ void set_p_s_err(llist_node range, struct FitRange* fit_range_array){
  *                              final results.
  * @param      fit_prms         The FITPRM struct holding rawacf record info.
  *
- * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
 void set_v(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_prms){
     RANGENODE* range_node;
@@ -323,7 +316,6 @@ void set_v(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_prms
  *                              final results.
  * @param      fit_prms         The FITPRM struct holding rawacf record info.
  *
- * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
 void set_v_err(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_prms){
     RANGENODE* range_node;
@@ -345,7 +337,6 @@ void set_v_err(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_
  *                              final results.
  * @param      fit_prms         The FITPRM struct holding rawacf record info.
  *
- * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
 void set_w_l(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_prms){
     RANGENODE* range_node;
@@ -365,7 +356,6 @@ void set_w_l(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_pr
  *                              final results.
  * @param      fit_prms         The FITPRM struct holding rawacf record info.
  *
- * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
 void set_w_l_err(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_prms){
     RANGENODE* range_node;
@@ -385,7 +375,6 @@ void set_w_l_err(llist_node range, struct FitRange* fit_range_array, FITPRMS* fi
  *                              final results.
  * @param      fit_prms         The FITPRM struct holding rawacf record info.
  *
- * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
 void set_w_s(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_prms){
     RANGENODE* range_node;
@@ -407,7 +396,6 @@ void set_w_s(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_pr
  *                              final results.
  * @param      fit_prms         The FITPRM struct holding rawacf record info.
  *
- * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
 void set_w_s_err(llist_node range, struct FitRange* fit_range_array, FITPRMS* fit_prms){
     RANGENODE* range_node;
@@ -430,7 +418,6 @@ void set_w_s_err(llist_node range, struct FitRange* fit_range_array, FITPRMS* fi
  *                              final results.
  * @param      fit_prms         The FITPRM struct holding rawacf record info.
  *
- * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
 void set_sdev_l(llist_node range, struct FitRange* fit_range_array){
     RANGENODE* range_node;
@@ -448,7 +435,6 @@ void set_sdev_l(llist_node range, struct FitRange* fit_range_array){
  *                              final results.
  * @param      fit_prms         The FITPRM struct holding rawacf record info.
  *
- * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
 void set_sdev_s(llist_node range, struct FitRange* fit_range_array){
     RANGENODE* range_node;
@@ -466,7 +452,6 @@ void set_sdev_s(llist_node range, struct FitRange* fit_range_array){
  *                              final results.
  * @param      fit_prms         The FITPRM struct holding rawacf record info.
  *
- * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
 void set_sdev_phi(llist_node range, struct FitRange* fit_range_array){
     RANGENODE* range_node;
@@ -484,7 +469,6 @@ void set_sdev_phi(llist_node range, struct FitRange* fit_range_array){
  *                              final results.
  * @param      fit_prms         The FITPRM struct holding rawacf record info.
  *
- * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
 void set_gsct(llist_node range, struct FitRange* fit_range_array){
     RANGENODE* range_node;
@@ -505,7 +489,6 @@ void set_gsct(llist_node range, struct FitRange* fit_range_array){
  *                              final results.
  * @param      fit_prms         The FITPRM struct holding rawacf record info.
  *
- * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
 void set_nump(llist_node range, struct FitRange* fit_range_array){
     RANGENODE* range_node;
@@ -523,7 +506,6 @@ void set_nump(llist_node range, struct FitRange* fit_range_array){
  *                              final results.
  * @param      fit_prms         The FITPRM struct holding rawacf record info.
  *
- * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
 void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms){
     double x,y,z;
@@ -619,7 +601,6 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
  *                              final results.
  * @param      fit_prms         The FITPRM struct holding rawacf record info.
  *
- * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
 void set_xcf_phi0(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms){
     RANGENODE* range_node;
@@ -643,7 +624,6 @@ void set_xcf_phi0(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms)
  * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
  *                              final results.
  *
- * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
 void set_xcf_phi0_err(llist_node range, struct FitRange* fit_range_array){
     RANGENODE* range_node;
@@ -661,7 +641,6 @@ void set_xcf_phi0_err(llist_node range, struct FitRange* fit_range_array){
  * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
  *                              final results.
  *
- * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
 void set_xcf_sdev_phi(llist_node range, struct FitRange* fit_range_array){
     RANGENODE* range_node;
@@ -671,13 +650,4 @@ void set_xcf_sdev_phi(llist_node range, struct FitRange* fit_range_array){
     fit_range_array[range_node->range].sdev_phi = range_node->elev_fit->chi_2;
 
 }
-
-
-
-
-
-
-
-
-
 

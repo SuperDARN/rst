@@ -274,7 +274,8 @@ void Copy_Fitting_Prms(struct RadarSite *radar_site, struct RadarParm *radar_prm
  * @return     0 on success.
  */
 int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
-
+ 
+  list_node *iterator;
   llist ranges, lags;
   double noise_pwr;
 
@@ -301,15 +302,18 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
   /*Here we fill the list of ranges with range nodes.*/
   Fill_Range_List(fit_prms, ranges);
 
-  /*For each range we find the CRI of each pulse*/
-  /*Comment this out for simulated data without CRI*/
-  llist_for_each_arg(ranges,(node_func_arg)Find_CRI,fit_prms,NULL);
-
-  /*Now that we have CRI, we find alpha for each range*/
-  llist_for_each_arg(ranges,(node_func_arg)Find_Alpha,lags,fit_prms);
-
-  /*Each range node has its ACF power, ACF phase, and XCF phase(elevation) data lists filled*/
-  llist_for_each_arg(ranges,(node_func_arg)Fill_Data_Lists_For_Range,lags,fit_prms);
+  iterator = ((struct list *)ranges)->head;
+  while (iterator != NULL)
+  {
+      /*For each range we find the CRI of each pulse*/
+      /*Comment this out for simulated data without CRI*/
+      Find_CRI(iterator->node, fit_prms);
+      /*Now that we have CRI, we find alpha for each range*/
+      Find_Alpha(iterator->node, lags, fit_prms);
+      /*Each range node has its ACF power, ACF phase, and XCF phase(elevation) data lists filled*/
+      Fill_Data_Lists_For_Range(iterator->node, lags, fit_prms );
+      iterator = iterator->next; 
+  }
 
   /*Tx overlapped data is removed from consideration*/
   /*Comment this out for simulated data without TX overlap*/
@@ -317,7 +321,12 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
 
   /*Criterion is applied to filter low power lags that are considered too close to
   statistical fluctuations*/
-  llist_for_each_arg(ranges,(node_func_arg)Filter_Low_Pwr_Lags,fit_prms,NULL);
+  iterator = ((struct list *)ranges)->head;
+  while (iterator != NULL)
+  {
+      Filter_Low_Pwr_Lags(iterator->node, fit_prms);
+      iterator = iterator->next;
+  }
 
   /*Criterion is applied to filter ranges that hold no merit*/
   Filter_Bad_ACFs(fit_prms,ranges,noise_pwr);
@@ -329,7 +338,12 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
   While the theoretical value of |R(tau)| never exceeds unity, its experimetnal estimate 
   can be larger than 1 due to either statistical fluctuations or contribution from 
   cros-range interference so that the variance estimate becomes imaginary, i.e. meaningless.*/
-  llist_for_each(ranges,(node_func)Power_Fits);
+  iterator = ((struct list *)ranges)->head;
+  while (iterator != NULL)
+  {
+      Power_Fits(iterator->node);
+      iterator = iterator->next;
+  }
 
   /*We perform the phase fits for velocity and elevation. The ACF phase fit improves the
   fit of the XCF phase fit and must be done first*/
@@ -341,7 +355,8 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
 
   /*Now the fits are completed, we can make our final determinations from those fits*/
   ACF_Determinations(ranges, fit_prms, fit_data, noise_pwr);
-
+  
+  free(iterator);
   llist_destroy(lags,TRUE,free);
   llist_destroy(ranges,TRUE,free_range_node);
 
