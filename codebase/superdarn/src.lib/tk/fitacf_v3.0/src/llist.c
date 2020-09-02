@@ -21,6 +21,9 @@ NOTICE:
 Modified for SuperDARN uses and purposes
 Keith Kotyk
 2015
+
+2020-09-02 Marina Schmidt (SuperDARN Canada) removed non-used functions to reduce the file length. 
+
  */
 
 #include "rtypes.h"

@@ -1,4 +1,5 @@
-/*Copyright (C) 2016  SuperDARN Canada
+/*Copyright (C) 2015  SuperDARN Canada, University of Saskatchewan
+author(s): Keith Kotyk
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -11,16 +12,16 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-/*
-ACF least square fitting wrapper functions
-
-Keith Kotyk
-ISAS
-July 2015
+Modifications
+    2020-09-02 Marina Schmidt (SuperDARN Canada) removed map function for better decoupling abilities
 
 */
+
+
+
+//ACF least square fitting wrapper functions
 
 #include "rtypes.h"
 #include <math.h>

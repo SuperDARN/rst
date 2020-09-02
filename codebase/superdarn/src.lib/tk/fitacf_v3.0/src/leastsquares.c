@@ -1,4 +1,5 @@
-/*Copyright (C) 2016  SuperDARN Canada
+/*Copyright (C) 2015  SuperDARN Canada, University of Saskatchewan
+author(s): Keith Kotyk
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -11,18 +12,18 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Modifications:
+    2020-09-02 Marina Schmidt (SuperDARN Canada) removed map function for better decoupling abilities
+
+*/
+
 
 /*Least squares fitting
-
-Keith Kotyk
-ISAS
-June 16, 2015
-
 Functions follow the naming scheme and procedures used in
 NUMERICAL RECIPES IN C: THE ART OF SCIENTIFIC COMPUTING
 pages 661-663
-
 */
 
 #include "llist.h"
