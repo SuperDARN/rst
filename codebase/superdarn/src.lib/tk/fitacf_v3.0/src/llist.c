@@ -374,66 +374,6 @@ int llist_delete_node ( llist data_list, llist_node node,
 }
 
 /**
- * @brief operate on each element of the list
- * @param[in] list the list to operator upon
- * @param[in] func the function to perform
- * @return int LLIST_SUCCESS if success
- */
-int llist_for_each ( llist data_list, node_func func )
-{
-    list_node *iterator;
-
-    if ( ( data_list == NULL ) || ( func == NULL ) )
-    {
-        return LLIST_NULL_ARGUMENT;
-    }
-
-    iterator = ( ( list * ) data_list )->head;
-
-    while ( iterator != NULL )
-    {
-        func ( iterator->node );
-        iterator = iterator->next;
-    }
-
-    return LLIST_SUCCESS;
-}
-
-/**
- * @brief operate on each element of the list
- * @param[in] list the list to operator upon
- * @param[in] func the function to perform
- * @param[in] arg passed to func
- * @return int LLIST_SUCCESS if success
- */
-/*
- * NOTE: if we want variable arguement list then we need to use "..." which is 
- *       what printf uses. This can be complex and hard to understand from 
- *       a none programmers point of view. To keep things simple I implemented 
- *       a variable structure that contains everything. 
- */
-int llist_for_each_arg ( llist data_list, node_func_arg func, void * arg1, void * arg2 )
-{
-    list_node *iterator;
-
-    if ( ( data_list == NULL ) || ( func == NULL ) )
-    {
-        return LLIST_NULL_ARGUMENT;
-    }
-
-
-    iterator = ( ( list * ) data_list )->head;
-
-    while ( iterator != NULL )
-    {
-        func ( iterator->node , arg1, arg2);
-        iterator = iterator->next;
-    }
-    
-    return LLIST_SUCCESS;
-}
-
-/**
  * @brief Finds a node in a list
  * @param[in]  list the list to operator upon
  * @param[in]  data the data to find
