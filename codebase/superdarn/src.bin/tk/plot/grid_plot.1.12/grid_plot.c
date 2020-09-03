@@ -1335,10 +1335,10 @@ int main(int argc,char *argv[]) {
  
     if (celflg) {
       if (avflg) 
-        plot_cell(plot,rgridavg,0,magflg,pad,pad,wdt-2*pad,
+        plot_cell(plot,rgridavg,latmin,magflg,pad,pad,wdt-2*pad,
                     hgt-2*pad,tfunc,marg,mag_color,&xkey,cprm,old_aacgm);
       else 
-        plot_cell(plot,rgrid,0,magflg,pad,pad,wdt-2*pad,
+        plot_cell(plot,rgrid,latmin,magflg,pad,pad,wdt-2*pad,
                     hgt-2*pad,tfunc,marg,mag_color,&xkey,cprm,old_aacgm);
     }
 
