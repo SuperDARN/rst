@@ -26,6 +26,11 @@ if [ -z "$BUILD" ]; then
     exit 1
 fi
 
+TAG_VERSION=$1
+if [ -z ${TAG_VERSION} ]; then
+    $TAG_VERSION=0.0
+fi
+
 export LD_LIBRARY_PATH=${BUILD}/lib
 export BINPATH=${BUILD}/bin
 export LIBPATH=${BUILD}/lib
@@ -73,5 +78,11 @@ for binname in ${binlist}
 do
   makebuild ${binname} bin
 done
+
+cd ${RSTPATH}/tables/superdarn/hdw/ 
+git checkout ${TAG_VERSION}
+git pull origin ${TAG_VERSION}
+git submodule update --init
+
 exit 0
 
