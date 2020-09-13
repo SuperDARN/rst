@@ -28,7 +28,7 @@ fi
 
 TAG_VERSION=$1
 if [ -z ${TAG_VERSION} ]; then
-    $TAG_VERSION=0.0
+    TAG_VERSION=0.0
 fi
 
 export LD_LIBRARY_PATH=${BUILD}/lib
@@ -85,4 +85,3 @@ git pull origin ${TAG_VERSION}
 git submodule update --init
 
 exit 0
-
