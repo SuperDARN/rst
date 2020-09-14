@@ -99,3 +99,18 @@ Don't do this
 
 ## Organizing the Code 
 
+### Header Files 
+
+In C, header files are the glue that lets each other file that `#include` it will be aware of all the functions. 
+Thus this is where *function headers* and `struct` are put. Please avoid putting `struct` in the source code `.c` files because this makes the `structs` private and challenging to debug in the future.
+
+## Best Practices 
+
+1. Check return values and `ERRNO` value. To see all possible values that a Linux system call might return [errno values](https://www-numi.fnal.gov/offline_software/srt_public_context/WebDocs/Errors/unix_system_errors.html)
+
+2. If your function type is `void` then make sure to use `ERRNO` global variable to indicate an error in your function. Avoid -1 values as this can be vague. 
+
+3. If an error is stored and at the top level call or returned, then print a useful error message. 
+
+
+
