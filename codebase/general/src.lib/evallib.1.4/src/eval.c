@@ -166,6 +166,7 @@ int EvalFindObject(char *ptr,int *op,int *step) {
   return k;
 }
 
+// TODO: function description 
 int Eval(char *expression,double *ptr,
          int (*dvar)(char *ptr,double *val,void *data),
          void *vdata,
@@ -197,7 +198,13 @@ int Eval(char *expression,double *ptr,
 
   /* pre-parse the sum removing white space */
 
+  // TODO: errno check
   sum=malloc(strlen(expression)+1);
+  if (sum == NULL)
+  {
+      fprintf(stderr, "Error: malloc could create memory for sum\n");
+      return -1;
+  }
   while (expression[i] !=0) {
     if (expression[i] !=' ') {
      sum[j]=expression[i];
