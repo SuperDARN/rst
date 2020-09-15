@@ -86,11 +86,21 @@ void ACF_Phase_Fit(llist ranges,FITPRMS *fit_prms){
     list_node *iterator; 
 
     iterator = ((struct list *) ranges)->head;
-
     while (iterator != NULL)
     {
         calculate_phase_sigma_for_range(iterator->node, fit_prms, &acf);
+        iterator = iterator->next;
+    }
+    iterator = ((struct list *) ranges)->head;
+    while (iterator != NULL)
+    {
+       
         ACF_Phase_Unwrap(iterator->node, fit_prms);
+        iterator = iterator->next;
+    }
+    iterator = ((struct list *) ranges)->head;
+    while (iterator != NULL)
+    {
         phase_fit_for_range(iterator->node, &acf);
         iterator = iterator->next;
     }
@@ -124,7 +134,17 @@ void XCF_Phase_Fit(llist ranges,FITPRMS *fit_prms){
     while (iterator != NULL)
     {
         calculate_phase_sigma_for_range(iterator->node, fit_prms, &xcf);
+        iterator = iterator->next;
+    }
+    iterator = ((struct list *)ranges)->head;
+    while(iterator != NULL)
+    {
         XCF_Phase_Unwrap(iterator->node);
+        iterator = iterator->next;
+    }
+    iterator = ((struct list *)ranges)->head;
+    while(iterator != NULL)
+    {
         phase_fit_for_range(iterator->node, &xcf);
         iterator = iterator->next;
     }

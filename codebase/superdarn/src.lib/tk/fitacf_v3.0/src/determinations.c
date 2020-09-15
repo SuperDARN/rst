@@ -100,7 +100,18 @@ void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data
     while(iterator != NULL)
     {
         set_xcf_phi0(iterator->node, fit_data, fit_prms);
+        iterator = iterator->next; 
+    }
+    iterator = ((struct list *)ranges)->head;
+    while(iterator != NULL)
+    {
         find_elevation(iterator->node, fit_data, fit_prms);
+         iterator = iterator->next; 
+    }
+    iterator = ((struct list *)ranges)->head;
+    while(iterator != NULL)
+    {
+       
         set_xcf_phi0_err(iterator->node, fit_data->xrng);
         set_xcf_sdev_phi(iterator->node, fit_data->xrng);
         

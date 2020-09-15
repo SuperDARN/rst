@@ -1239,7 +1239,7 @@ void XCF_Phase_Unwrap(llist_node range){
       phase_correction(iterator->node, &range_node->phase_fit->b, total_2pi_corrections);
       iterator = iterator->next;
   }
- 
+  free(iterator); 
   llist_reset_iter(range_node->elev);
   S_xx = 0;
   S_xy = 0;
@@ -1268,7 +1268,6 @@ void XCF_Phase_Unwrap(llist_node range){
       phase_correction(iterator->node, &range_node->phase_fit->b, total_2pi_corrections);
       iterator = iterator->next;
   }
-  free(iterator);
   free(total_2pi_corrections);
 }
 

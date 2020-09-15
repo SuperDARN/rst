@@ -307,12 +307,24 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
   iterator = ((struct list *)ranges)->head;
   while (iterator != NULL)
   {
-      /*For each range we find the CRI of each pulse*/
+      /*For each range we find the cross range interference (CRI) of each pulse*/
       /*Comment this out for simulated data without CRI*/
       Find_CRI(iterator->node, fit_prms);
+      iterator = iterator->next; 
+  }
+  iterator = ((struct list *)ranges)->head;
+  while (iterator != NULL)
+  {
       /*Now that we have CRI, we find alpha for each range*/
       Find_Alpha(iterator->node, lags, fit_prms);
+      iterator = iterator->next; 
+  }
+  iterator = ((struct list *)ranges)->head;
+  while (iterator != NULL)
+  {
+
       /*Each range node has its ACF power, ACF phase, and XCF phase(elevation) data lists filled*/
+      
       Fill_Data_Lists_For_Range(iterator->node, lags, fit_prms );
       iterator = iterator->next; 
   }
