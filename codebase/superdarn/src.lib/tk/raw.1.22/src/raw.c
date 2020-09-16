@@ -187,21 +187,21 @@ void *RawFlatten(struct RawData *ptr,int nrang,int mplgs,size_t *size) {
   p=sizeof(struct RawData);
 
   if (ptr->pwr0 !=NULL) {
-    memcpy(buf+p,ptr->pwr0,nrang*sizeof(float));
+    memcpy((int *)buf+p,ptr->pwr0,nrang*sizeof(float));
     r->pwr0=(void *) p;
     p+=nrang*sizeof(float);
   }
 
   for (n=0;n<2;n++) {
     if (ptr->acfd[n]==NULL) continue; 
-    memcpy(buf+p,ptr->acfd[n],(nrang*mplgs)*sizeof(float));
+    memcpy((int *)buf+p,ptr->acfd[n],(nrang*mplgs)*sizeof(float));
     r->acfd[n]=(void *) p;
     p+=(nrang*mplgs)*sizeof(float); 
   }
 
   for (n=0;n<2;n++) {
     if (ptr->xcfd[n]==NULL) continue; 
-    memcpy(buf+p,ptr->xcfd[n],(nrang*mplgs)*sizeof(float));
+    memcpy((int *)buf+p,ptr->xcfd[n],(nrang*mplgs)*sizeof(float));
     r->xcfd[n]=(void *) p;
     p+=(nrang*mplgs)*sizeof(float); 
   }
@@ -223,21 +223,21 @@ int RawExpand(struct RawData *ptr,int nrang,int mplgs,void *buffer) {
   memcpy(ptr,buffer,sizeof(struct RawData));
 
   if (ptr->pwr0 !=NULL) {
-    p=buffer+(size_t) ptr->pwr0;
+    p=(int *)buffer+(size_t) ptr->pwr0;
     ptr->pwr0=malloc(nrang*sizeof(float));
     memcpy(ptr->pwr0,p,nrang*sizeof(float));
   }
 
   for (n=0;n<2;n++) {
     if (ptr->acfd[n]==NULL) continue;
-    p=buffer+(size_t) ptr->acfd[n]; 
+    p=(int *)buffer+(size_t) ptr->acfd[n]; 
     ptr->acfd[n]=malloc((nrang*mplgs)*sizeof(float));
     memcpy(ptr->acfd[n],p,(nrang*mplgs)*sizeof(float));
   }
 
   for (n=0;n<2;n++) {
     if (ptr->xcfd[n]==NULL) continue;
-    p=buffer+(size_t) ptr->xcfd[n]; 
+    p=(int *) buffer+(size_t) ptr->xcfd[n]; 
     ptr->xcfd[n]=malloc((nrang*mplgs)*sizeof(float));
     memcpy(ptr->xcfd[n],p,(nrang*mplgs)*sizeof(float));
   }
