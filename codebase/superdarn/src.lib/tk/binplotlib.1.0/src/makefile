@@ -3,14 +3,15 @@
 # by E.G.Thomas
 #
 include $(MAKECFG).$(SYSTEM)
-INCLUDE=-I$(IPATH)/base
+INCLUDE = -I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/analysis \
+		  -I$(IPATH)/superdarn
 
-SRC = text_box.c
+SRC = plot_logo.c text_box.c
 
-OBJS = text_box.o
+OBJS = plot_logo.o text_box.o
 
-INC = $(IPATH)/base
-DSTPATH=$(LIBPATH)
+INC = $(IPATH)/superdarn
+DSTPATH = $(LIBPATH)
 OUTPUT = binplot
 LINK="1"
 

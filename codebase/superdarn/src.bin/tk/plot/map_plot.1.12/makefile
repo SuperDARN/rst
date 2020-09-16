@@ -14,10 +14,10 @@ SRC = plot_extra.c plot_extra.h plot_model.c plot_model.h \
       plot_imf.c plot_imf.h plot_raw.c plot_raw.h plot_vec.c plot_vec.h \
       make_vgrid.c make_vgrid.h make_grid.c make_grid.h plot_cell.c plot_cell.h \
       make_pgrid.c make_pgrid.h make_fov.c make_fov.h make_hmb.c make_hmb.h \
-      plot_time_label.c plot_time_label.h plot_logo.c plot_logo.h
+      plot_time_label.c plot_time_label.h
 
 OBJS = plot_vec.o plot_time_label.o plot_chi.o plot_source.o \
-       plot_extra.o plot_logo.o plot_time.o plot_imf_delay.o plot_imf.o \
+       plot_extra.o plot_time.o plot_imf_delay.o plot_imf.o \
        plot_model_name.o plot_maxmin.o plot_excluded.o plot_model.o \
        plot_cell.o plot_raw.o plot_fit.o make_hmb.o make_fov.o make_grid.o \
        make_pgrid.o make_vgrid.o key.o map_plot.o 
