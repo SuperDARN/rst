@@ -1522,9 +1522,9 @@ int main(int argc,char *argv[]) {
 
     if (vecflg) {
       if (px==2) px+=10;
-      plot_vec(plot,px,1.8*apad,0,vmax,magflg, pad,pad,wdt-2*pad,hgt-2*pad,
-               vsf,vradius,tfunc,marg,txtcol,0x0f,0.5, "Helvetica",10.0,fontdb,
-               old_aacgm);
+      plot_grid_vec(plot,px,1.8*apad,0,vmax,magflg, pad,pad,wdt-2*pad,hgt-2*pad,
+                    vsf,vradius,tfunc,marg,txtcol,0x0f,0.5, "Helvetica",10.0,fontdb,
+                    old_aacgm);
     }
 
     if (modnflg)

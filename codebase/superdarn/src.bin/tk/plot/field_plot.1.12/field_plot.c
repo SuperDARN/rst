@@ -1724,9 +1724,9 @@ int main(int argc,char *argv[]) {
                                       wbox-2*pad,hbox-2*pad,tfunc,marg,find_color,
                                       &key,pprm,gscol,gsflg);
 
-        if (vecflg) plot_vec(plot,&scn->bm[c],&geol.bm[n],0,magflg,xbox+pad,ybox+pad,
-                             wbox-2*pad,hbox-2*pad,vsf,tfunc,marg,find_color,
-                             &vkey,gscol,gsflg,0.5,vecr);
+        if (vecflg) plot_field_vec(plot,&scn->bm[c],&geol.bm[n],0,magflg,xbox+pad,ybox+pad,
+                                   wbox-2*pad,hbox-2*pad,vsf,tfunc,marg,find_color,
+                                   &vkey,gscol,gsflg,0.5,vecr);
 
         if (fanflg) plot_outline(plot,&scn->bm[c],&geol.bm[n],0,
                                  magflg,site->maxbeam,xbox+pad,ybox+pad,
