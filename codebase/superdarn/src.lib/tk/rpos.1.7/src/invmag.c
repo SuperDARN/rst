@@ -312,7 +312,8 @@ int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
     double gbx,gby,gbz; 
     double ghx,ghy,ghz;
     double bx,by,bz,b;
-    double dummy,elv,azc;
+    double dummy,azc;
+    // double elv; 
 
     double tmp_ht;
     double xlat,xlon,nlat,nlon;
@@ -377,7 +378,7 @@ int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
     norm_vec(&ghx,&ghy,&ghz);
 
     /* Calculate the elevation angle of the orthogonal radar-to-range/beam vector */
-    elv=atan2d(ghz,sqrt(ghx*ghx+ghy*ghy));
+    // elv=atan2d(ghz,sqrt(ghx*ghx+ghy*ghy));
 
     /* Calculate the azimuth of the orthogonal radar-to-range/beam vector */
     azc=atan2d(ghy,-ghx);
