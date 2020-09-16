@@ -1,5 +1,5 @@
 /* make_fov.h
-   ==========
+   ========== 
    Author: R.J.Barnes
 */
 
@@ -24,4 +24,13 @@
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-struct PolygonData *make_fov(double tval,struct RadarNetwork *network,float alt,int chisham);
+struct PolygonData *make_fov(double tval,struct RadarNetwork *network,
+                             float alt,int chisham);
+
+struct PolygonData *make_field_fov(double tval,struct RadarNetwork *network,
+                                   int id,int chisham);
+
+struct PolygonData *make_grid_fov(double tval,struct RadarNetwork *network,
+                                  int chisham,int old_aacgm);
+struct PolygonData *make_grid_fov_data(struct GridData *ptr,struct RadarNetwork *network,
+                                       int chisham,int old_aacgm);

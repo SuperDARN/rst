@@ -1232,7 +1232,7 @@ int main(int argc,char *argv[]) {
   if ((lat<0) && (latmin>0)) latmin=-latmin;
   if ((lat>0) && (latmin<0)) latmin=-latmin;
 
-  if (fovflg || ffovflg) fov=make_fov(scn->st_time,network,scn->stid,chisham);
+  if (fovflg || ffovflg) fov=make_field_fov(scn->st_time,network,scn->stid,chisham);
   if ((fovflg || ffovflg) && magflg) {
     if (old_aacgm) MapModify(fov,AACGMtransform,NULL);
     else           MapModify(fov,AACGM_v2_transform,NULL);

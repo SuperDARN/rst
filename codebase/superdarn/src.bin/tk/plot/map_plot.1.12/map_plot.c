@@ -69,6 +69,8 @@
 #include "sza.h"
 #include "szamap.h"
 
+#include "scandata.h"	
+#include "geobeam.h"
 #include "plot_fit.h"
 #include "plot_cell.h"
 #include "plot_raw.h"
@@ -829,7 +831,7 @@ int main(int argc,char *argv[]) {
 
   if (lat>90) lat=90*rcmap->hemisphere;
   if ((fovflg || ffovflg) && !gfovflg) {
-    fov=make_fov(rgrid->st_time,network,chisham,old_aacgm);
+    fov=make_grid_fov(rgrid->st_time,network,chisham,old_aacgm);
     if (!magflg) {
       if (old_aacgm) MapModify(fov,AACGMtransform,&flg);
       else           MapModify(fov,AACGM_v2_transform,&flg);
@@ -1168,7 +1170,7 @@ int main(int argc,char *argv[]) {
     if (avflg) GridAverage(rgrid,rgridavg,aval+cprm*(aval !=0));
 
     if ((fovflg || ffovflg) && gfovflg) {
-      fov=make_fov_data(rgrid,network,chisham,old_aacgm);
+      fov=make_grid_fov_data(rgrid,network,chisham,old_aacgm);
       if (!magflg) {
         if (old_aacgm) MapModify(fov,AACGMtransform,&flg);
         else           MapModify(fov,AACGM_v2_transform,&flg);
