@@ -43,6 +43,7 @@
 #include "radar.h"
 #include "scandata.h"
 #include "calcvector.h"
+#include "griddata.h"
 #include "geobeam.h"
 #include "plot_cell.h"
 

@@ -1370,11 +1370,11 @@ int main(int argc,char *argv[]) {
 
     if (celflg) {
       if (avflg)
-          plot_cell(plot,rgridavg,rcmap->latmin,magflg,pad,pad,wdt-2*pad,
-                    hgt-2*pad,tfunc,marg,mag_color,&xkey,cprm,old_aacgm);
+          plot_grid_cell(plot,rgridavg,rcmap->latmin,magflg,pad,pad,wdt-2*pad,
+                         hgt-2*pad,tfunc,marg,mag_color,&xkey,cprm,old_aacgm);
       else
-         plot_cell(plot,rgrid,rcmap->latmin,magflg,pad,pad,wdt-2*pad,
-                    hgt-2*pad,tfunc,marg,mag_color,&xkey,cprm,old_aacgm);
+         plot_grid_cell(plot,rgrid,rcmap->latmin,magflg,pad,pad,wdt-2*pad,
+                        hgt-2*pad,tfunc,marg,mag_color,&xkey,cprm,old_aacgm);
     }
 
     if (mapflg) {

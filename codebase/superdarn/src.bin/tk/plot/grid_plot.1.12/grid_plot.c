@@ -66,6 +66,8 @@
 #include "sza.h"
 #include "szamap.h"
 
+#include "scandata.h"
+#include "geobeam.h"
 #include "plot_cell.h"
 #include "plot_raw.h"
 #include "plot_logo.h"
@@ -1354,11 +1356,11 @@ int main(int argc,char *argv[]) {
  
     if (celflg) {
       if (avflg) 
-        plot_cell(plot,rgridavg,latmin,magflg,pad,pad,wdt-2*pad,
-                    hgt-2*pad,tfunc,marg,mag_color,&xkey,cprm,old_aacgm);
+        plot_grid_cell(plot,rgridavg,latmin,magflg,pad,pad,wdt-2*pad,
+                       hgt-2*pad,tfunc,marg,mag_color,&xkey,cprm,old_aacgm);
       else 
-        plot_cell(plot,rgrid,latmin,magflg,pad,pad,wdt-2*pad,
-                    hgt-2*pad,tfunc,marg,mag_color,&xkey,cprm,old_aacgm);
+        plot_grid_cell(plot,rgrid,latmin,magflg,pad,pad,wdt-2*pad,
+                       hgt-2*pad,tfunc,marg,mag_color,&xkey,cprm,old_aacgm);
     }
 
     if (rawflg) 

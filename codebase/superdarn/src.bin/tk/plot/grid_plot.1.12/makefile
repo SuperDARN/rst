@@ -7,11 +7,11 @@ INCLUDE=-I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/analysis -I$(IPATH)/imager
 
 SRC = grid_plot.c hlpstr.h plot_time.c plot_time.h \
       errstr.h plot_raw.c plot_raw.h \
-      plot_vec.c plot_vec.h make_grid.c make_grid.h plot_cell.c plot_cell.h \
+      plot_vec.c plot_vec.h make_grid.c make_grid.h \
       make_fov.c make_fov.h
 
 OBJS = plot_vec.o \
-       plot_time.o plot_cell.o plot_raw.o make_fov.o make_grid.o \
+       plot_time.o plot_raw.o make_fov.o make_grid.o \
        grid_plot.o 
 
 DSTPATH = $(BINPATH)

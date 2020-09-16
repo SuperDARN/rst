@@ -106,6 +106,7 @@
 #include "sza.h"
 #include "szamap.h"
 
+#include "griddata.h"
 #include "geobeam.h"
 #include "plot_cell.h"
 #include "plot_vec.h"
@@ -1719,9 +1720,9 @@ int main(int argc,char *argv[]) {
         if (ffanflg) plot_filled(plot,&scn->bm[c],&geol.bm[n],0,
                                  magflg,xbox+pad,ybox+pad,
                                  wbox-2*pad,hbox-2*pad,tfunc,marg,ffancol);
-        if (pprm !=0) plot_cell(plot,&scn->bm[c],&geol.bm[n],0,magflg,xbox+pad,ybox+pad,
-                                wbox-2*pad,hbox-2*pad,tfunc,marg,find_color,
-                                &key,pprm,gscol,gsflg);
+        if (pprm !=0) plot_field_cell(plot,&scn->bm[c],&geol.bm[n],0,magflg,xbox+pad,ybox+pad,
+                                      wbox-2*pad,hbox-2*pad,tfunc,marg,find_color,
+                                      &key,pprm,gscol,gsflg);
 
         if (vecflg) plot_vec(plot,&scn->bm[c],&geol.bm[n],0,magflg,xbox+pad,ybox+pad,
                              wbox-2*pad,hbox-2*pad,vsf,tfunc,marg,find_color,
