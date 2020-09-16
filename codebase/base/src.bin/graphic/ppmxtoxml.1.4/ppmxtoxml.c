@@ -44,7 +44,7 @@ int stream(char *buf,int sze,void *data) {
   FILE *fp;
   fp=(FILE *) data;
   fwrite(buf,sze,1,stdout);
-  close(fp);
+  fclose(fp);
   return 0;
 }
 
