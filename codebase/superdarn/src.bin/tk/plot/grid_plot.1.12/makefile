@@ -6,11 +6,11 @@ include $(MAKECFG).$(SYSTEM)
 INCLUDE=-I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/analysis -I$(IPATH)/imagery -I$(IPATH)/superdarn
 
 SRC = grid_plot.c hlpstr.h plot_time.c plot_time.h \
-      key.c key.h errstr.h plot_source.c plot_source.h plot_raw.c plot_raw.h \
+      key.c key.h errstr.h plot_raw.c plot_raw.h \
       plot_vec.c plot_vec.h make_grid.c make_grid.h plot_cell.c plot_cell.h \
       make_fov.c make_fov.h plot_time_label.c plot_time_label.h
 
-OBJS = plot_vec.o plot_time_label.o plot_source.o \
+OBJS = plot_vec.o plot_time_label.o \
        plot_time.o plot_cell.o plot_raw.o make_fov.o make_grid.o key.o \
        grid_plot.o 
 

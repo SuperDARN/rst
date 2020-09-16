@@ -4,11 +4,11 @@
 #
 include $(MAKECFG).$(SYSTEM)
 INCLUDE = -I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/analysis \
-		  -I$(IPATH)/superdarn
+          -I$(IPATH)/superdarn
 
-SRC = plot_logo.c text_box.c
+SRC = plot_logo.c plot_source.c text_box.c
 
-OBJS = plot_logo.o text_box.o
+OBJS = plot_logo.o plot_source.o text_box.o
 
 INC = $(IPATH)/superdarn
 DSTPATH = $(LIBPATH)
