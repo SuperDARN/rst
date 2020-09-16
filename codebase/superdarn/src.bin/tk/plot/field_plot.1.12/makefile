@@ -8,9 +8,9 @@ INCLUDE=-I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/analysis \
 
 OBJS = plot_time.o \
        plot_cell.o plot_outline.o plot_vec.o plot_refvec.o make_fov.o \
-       make_grid.o key.o geobeam.o expr.o field_plot.o 
+       make_grid.o geobeam.o expr.o field_plot.o
 
-SRC = hlpstr.h plot_time.c plot_time.h key.c key.h \
+SRC = hlpstr.h plot_time.c plot_time.h \
       expr.c expr.h field_plot.c errstr.h \
       plot_vec.c plot_vec.h geobeam.c geobeam.h make_grid.c make_grid.h \
       plot_cell.c plot_cell.h make_fov.c make_fov.h \
