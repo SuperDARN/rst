@@ -7,9 +7,9 @@ INCLUDE = -I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/analysis \
           -I$(IPATH)/imagery -I$(IPATH)/superdarn 
  
 SRC = hlpstr.h fov_plot.c errstr.h clip.c clip.h \
-      make_grid.c make_grid.h make_fov.c make_fov.h
+      make_fov.c make_fov.h
  
-OBJS = make_grid.o clip.o make_fov.o fov_plot.o  
+OBJS = clip.o make_fov.o fov_plot.o  
 DSTPATH = $(BINPATH)
 OUTPUT = fov_plot
 LIBS = -lrpos.1 -lradar.1 -lsza.1 -lszamap.1 -laacgm.1 -lmlt.1 -lastalg.1 \

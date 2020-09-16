@@ -1241,10 +1241,10 @@ int main(int argc,char *argv[]) {
   if (tmtick<1) tmtick=1;
   if (tmtick>6) tmtick=6;
 
-  if (grdflg) grd=make_grid(grdlon,grdlat);
-  if (igrdflg) igrd=make_grid(igrdlon,igrdlat);
+  if (grdflg) grd=make_grid(grdlon,grdlat,0);
+  if (igrdflg) igrd=make_grid(igrdlon,igrdlat,0);
 
-  if (tmkflg) tmk=make_grid(30*tmtick,10);
+  if (tmkflg) tmk=make_grid(30*tmtick,10,0);
 
   if (magflg) {
     if (old_aacgm) {

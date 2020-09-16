@@ -12,13 +12,13 @@ SRC = plot_extra.c plot_extra.h plot_model.c plot_model.h \
       map_plot.c plot_excluded.c plot_excluded.h \
       plot_chi.c plot_chi.h plot_maxmin.c plot_maxmin.h plot_fit.c plot_fit.h \
       plot_imf.c plot_imf.h plot_vec.c plot_vec.h \
-      make_vgrid.c make_vgrid.h make_grid.c make_grid.h \
+      make_vgrid.c make_vgrid.h \
       make_pgrid.c make_pgrid.h make_fov.c make_fov.h make_hmb.c make_hmb.h
 
 OBJS = plot_vec.o plot_chi.o \
        plot_extra.o plot_time.o plot_imf_delay.o plot_imf.o \
        plot_model_name.o plot_maxmin.o plot_excluded.o plot_model.o \
-       plot_fit.o make_hmb.o make_fov.o make_grid.o \
+       plot_fit.o make_hmb.o make_fov.o \
        make_pgrid.o make_vgrid.o map_plot.o 
 
 DSTPATH = $(BINPATH)
