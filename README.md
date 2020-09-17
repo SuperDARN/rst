@@ -31,7 +31,7 @@ Nishitani, N., Ruohoniemi, J.M., Lester, M. et al. Review of the accomplishments
 
 During your study, if using data from individual radars only, **please contact the Principal Investigator (PI) of that radar about potential co-authorship**. A list of radars, institutions, and their PI's information can be found [here](https://superdarn.ca/radar-info)
 
-For more information please read [citing SuperDARN data]()
+For more information please read [citing SuperDARN data](https://radar-software-toolkit-rst.readthedocs.io/en/latest/user_guide/citing.md)
 
 ## Contribute to RST
 The DAWG welcomes new testers and developers to join the team. Here are some ways to contribute:
