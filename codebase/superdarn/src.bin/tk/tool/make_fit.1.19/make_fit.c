@@ -272,7 +272,6 @@ int main(int argc,char *argv[]) {
      } else if (rawfp->error == -2) {
        /* Error case where num_bytes is less than 0 */
        OldRawClose(rawfp);
-       free(rawfp);
        free_radarstructs(network, prm, raw);
        exit(-1);
      }
