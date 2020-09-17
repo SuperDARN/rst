@@ -53,7 +53,12 @@ int OldGridEncodeOne(FILE *fp,struct GridData *ptr) {
                 "float","float","float","float",0};
 
   int npnt=0;
-  for (i=0;i<ptr->stnum;i++) if (ptr->sdata[i].st_id !=-1) npnt++;
+  for (i=0;i<ptr->stnum;i++){
+      if (ptr->sdata[i].st_id !=-1) 
+      { 
+          npnt++;
+      }
+  }
   
   fprintf(fp,"%d %d\n",npnt,18);
  
@@ -196,9 +201,30 @@ int OldGridFwrite(FILE *fp,struct GridData *ptr) {
   fprintf(fp,"%d\n",NBLOCKS);
 
   nfile=OldGridEncodeOne(fp,ptr);
-  if (ptr->xtd) npnt=OldGridEncodeThree(fp,ptr);
-  else npnt=OldGridEncodeTwo(fp,ptr);
+  if (nfile < 0)
+  {
+      fprintf(stderr, "Error: OldGridEncodeOne returned a negative value\n");
+      return -1;
+  }
  
+  if (ptr->xtd) 
+  {
+      npnt=OldGridEncodeThree(fp,ptr);
+      if (npnt < 0)
+      {
+          fprintf(stderr, "Error: OldGridEncodeThree returned a negative value\n");
+          return -1;
+      }
+  }
+  else
+  {
+      npnt=OldGridEncodeTwo(fp,ptr);
+       if (npnt < 0)
+      {
+          fprintf(stderr, "Error: OldGridEncodeTwo returned a negative value\n");
+          return -1;
+      }
+  }
   return 0;
 }
 
