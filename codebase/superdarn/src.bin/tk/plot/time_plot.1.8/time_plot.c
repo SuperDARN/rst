@@ -214,6 +214,7 @@ int stream(char *buf,int sze,void *data) {
   FILE *fp;
   fp=(FILE *) data;
   fwrite(buf,sze,1,stdout);
+  fclose(fp);
   return 0;
 }
 
@@ -1406,7 +1407,9 @@ int main(int argc,char *argv[]) {
         }
 
         if ((geoflg) || (magflg)) {
-          double rho,blat,tlat,lon,tmp;
+          // tmp was also used for a char array above this is why its bad to define within a if function
+          double rho,blat,tlat,lon;
+          //double tmp_swap;
           if (magflg) RPosMag(0,tplot.bmnum,rng-1,site,tplot.frang,
                               tplot.rsep,tplot.rxrise,300,&rho,
                               &blat,&lon,chisham,old_aacgm);
@@ -1419,7 +1422,8 @@ int main(int argc,char *argv[]) {
                        tplot.rxrise,300,&rho,&tlat,&lon,chisham);
 
           if (tlat<blat) {
-            tmp=blat;
+            // TODO: this isn't actually swapping things
+            // tmp_swap=blat;
             blat=tlat;
             tlat=blat;
           }
