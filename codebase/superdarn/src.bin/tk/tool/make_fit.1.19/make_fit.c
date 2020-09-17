@@ -319,7 +319,6 @@ int main(int argc,char *argv[]) {
     strcat(command,argv[c]);
   }
 
-
   if (vb)
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
@@ -418,7 +417,7 @@ int main(int argc,char *argv[]) {
     {
         fprintf(stderr,"Error: cannot set Origin Command\n");
         free_radarstructs(network, prm, raw);
-        free_files(rawfp, fp, fitfp, inxfp);
+        free_files(rawfp, fp, NULL, inxfp);
         free_fitstructs(fit_prms, fit, fblk);
         exit(-1);
     }
@@ -429,7 +428,7 @@ int main(int argc,char *argv[]) {
     {
         fprintf(stderr,"Error: cannot set Origin Time\n");
         free_radarstructs(network, prm, raw);
-        free_files(rawfp, fp, fitfp, inxfp);
+        free_files(rawfp, fp, NULL, inxfp);
         free_fitstructs(fit_prms, fit, fblk);
         exit(-1);
     }
@@ -455,7 +454,7 @@ int main(int argc,char *argv[]) {
         if (Allocate_Fit_Prm(prm, fit_prms) == -1) {
             fprintf(stderr,"Error: cannot allocate space for fitacf record\n");
             free_radarstructs(network, prm, raw);
-            free_files(rawfp, fp, fitfp, inxfp);
+            free_files(rawfp, fp, NULL, inxfp);
             free_fitstructs(fit_prms, fit, fblk);            
             exit(-1);
         }
@@ -470,7 +469,7 @@ int main(int argc,char *argv[]) {
         else {
             fprintf(stderr, "Unable to allocate fit_prms!\n");
             free_radarstructs(network, prm, raw);
-            free_files(rawfp, fp, fitfp, inxfp);
+            free_files(rawfp, fp, NULL, inxfp);
             free_fitstructs(fit_prms, fit, fblk);
             exit(-1);
         }
@@ -481,7 +480,7 @@ int main(int argc,char *argv[]) {
       else {
             fprintf(stderr, "The requested fitacf version does not exist\n");
             free_radarstructs(network, prm, raw);
-            free_files(rawfp, fp, fitfp, inxfp);
+            free_files(rawfp, fp, NULL, inxfp);
             free_fitstructs(fit_prms, fit, fblk);
             exit(-1);
       }
@@ -491,7 +490,7 @@ int main(int argc,char *argv[]) {
   } while (status==0);
 
   free_radarstructs(network, prm, raw);
-  free_files(rawfp, fp, fitfp, inxfp);
+  free_files(rawfp, fp, NULL, inxfp);
   free_fitstructs(fit_prms, fit, fblk);
 
   return 0;
