@@ -365,6 +365,7 @@ struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
   float alow[8],ahgh[8];
   float mlow[6],mhgh[6];
   float mod_angil[8],mod_angih[8];
+  // TODO: maybe initialize these variables as good practice and removing warnings 
   float mod_levi[6];
 
   switch (imod) {
