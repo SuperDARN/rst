@@ -17,8 +17,8 @@ The software is maintained by the SuperDARN Data Analysis Working Group (DAWG) o
 	* [Linux](user_guide/linux_install.md)
 	* [MacOSX](user_guide/mac_install.md)
   - SuperDARN Data:
-    * [Accessing Data]: user_guide/data.md
-    * [Citing Data]: user_guide/citing.md
+    * [Accessing Data]: (user_guide/data.md)
+    * [Citing Data]: (user_guide/citing.md)
   -  RST Tutorials 
 	  - Data Processing
        * [RAWACF to FITACF](user_guide/make_fit.md)
