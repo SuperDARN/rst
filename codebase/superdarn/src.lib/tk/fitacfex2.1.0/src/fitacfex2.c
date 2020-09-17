@@ -44,8 +44,9 @@ double bisect(float w_guess, float diff, struct RawData *raw, float *good_lags, 
   float c_fac = (3. - sqrt(5))/2.;
   float r_fac = 1. - c_fac;
   float xr, xl, x0, x1, x2, x3, f1, f2;
+  // TODO is this correct? does maxiter matter?
   int count, maxiter;
-  maxiter = 100;
+  //maxiter = 100;
 
 
   count = 0;
@@ -133,8 +134,11 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
   float delta_pos,delta_neg,error_neg=0,error_pos=0;
   int   *lag_avail=NULL,availcnt=0,goodcnt=0;
   int   mininx=0,lastlag,lag,i,j,p,R,L;
-  double prev_err,v_temp,w_guess;
-  float diff,err;
+  //double prev_err;
+  //double v_temp;
+  double w_guess;
+  float diff;
+  //float err;
   int *badlag = malloc(prm->mplgs * sizeof(int));
   struct FitACFBadSample badsmp;
   float *sigma = malloc(prm->mplgs*sizeof(double));
@@ -491,9 +495,9 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
 
       if(sct_flg)
       {
-        v_temp = model_vels[mininx];
-        err=999.;
-        prev_err=9999.;
+        //v_temp = model_vels[mininx];
+        //err=999.;
+        //prev_err=9999.;
         w_guess = (mininx-nslopes)*diff;
 
 
