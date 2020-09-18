@@ -19,11 +19,9 @@ Installation guide for:
   - <font color="grey">Windows </font> yet to be implemented
 
 ## Citing SuperDARN Data 
-The Super Dual Auroral Radar Network (SuperDARN) is a made up of nominally 36 radars and 20 institutions, to cite general SuperDARN you can use:
+The Super Dual Auroral Radar Network (SuperDARN) consists of more than 30 radars operated by institutions in 10 different countries. The following review papers are recommended for general information about the network's scientific achievements, and for citing SuperDARN in publications:
 
 Greenwald, R.A., Baker, K.B., Dudeney, J.R. et al. Space Sci Rev (1995) 71: 761. doi:10.1007/BF00751350
-
-For the general achievements of the SuperDARN Network, you can read these papers:
 
 Chisham, G., Lester, M., Milan, S.E. et al. A decade of the Super Dual Auroral Radar Network (SuperDARN): scientific achievements, new techniques and future directions. Surv Geophys 28, 33–109 (2007) doi:10.1007/s10712-007-9017-8
 
