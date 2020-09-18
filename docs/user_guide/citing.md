@@ -25,14 +25,3 @@ Click on DOI badge:
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3994968.svg)](https://doi.org/10.5281/zenodo.3994968)
 
 Scroll to the bottom and copy *Share Cite as* text or clicking on the preferred *Export* type. 
-
-## Acknowledgments 
-
-RST is also built on various scientific algorithms and libraries: 
-
-- [AACGM and AACGMv2](http://superdarn.thayer.dartmouth.edu/aacgm.html)
-- IGRF
-- Chisham Virtual Hieght Model 
-- Dr. Evan Thomas Statistical Convection Map models 
-- Dr. Shepherd Elevation Angle algorithm 
--
