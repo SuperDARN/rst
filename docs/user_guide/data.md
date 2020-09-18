@@ -1,8 +1,6 @@
 # Getting SuperDARN Data 
 
-RST does not provide an interface for downloading data. However, there are other means of getting access to the data. 
-
-The Data Distribution Working Group (DDWG) manages the checking and distribution of data. If you have any inquiries, please contact the chair Kevin Krieger at superdarn@usask.ca
+RST does not provide an interface for downloading data. The Data Distribution Working Group (DDWG) manages the checking and distribution of data. If you have any inquiries, please contact the chair Kevin Krieger at superdarn@usask.ca
 
 ## Data Mirrors
 To get access to the data, there are two possible data servers: one utilizes Globus, and one uses rsync, sftp and scp: 
