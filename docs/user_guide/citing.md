@@ -1,13 +1,12 @@
 # How to cite SuperDARN
 
-Super Dual Auroral Radar Network (SuperDARN) is a made up of 36 radars 20 institutions, to cite general SuperDARN you can use: 
+The Super Dual Auroral Radar Network (SuperDARN) consists of more than 30 radars operated by institutions in 10 different countries. The following review papers are recommended for general information about the network's scientific achievements, and for citing SuperDARN in publications:
 
-- Greenwald, R.A., Baker, K.B., Dudeney, J.R. et al. Space Sci Rev (1995) 71: 761. [doi:10.1007/BF00751350](https://doi.org/10.1007/BF00751350)
+Greenwald, R.A., Baker, K.B., Dudeney, J.R. et al. Space Sci Rev (1995) 71: 761. doi:10.1007/BF00751350
 
-For the general achievements of the SuperDARN Network, you can read these papers: 
+Chisham, G., Lester, M., Milan, S.E. et al. A decade of the Super Dual Auroral Radar Network (SuperDARN): scientific achievements, new techniques and future directions. Surv Geophys 28, 33–109 (2007) doi:10.1007/s10712-007-9017-8
 
-- Chisham, G., Lester, M., Milan, S.E. et al. A decade of the Super Dual Auroral Radar Network (SuperDARN): scientific achievements, new techniques and future directions. Surv Geophys 28, 33–109 (2007) [doi:10.1007/s10712-007-9017-8](https://link.springer.com/article/10.1007/s10712-007-9017-8)
-- Nishitani, N., Ruohoniemi, J.M., Lester, M. et al. Review of the accomplishments of mid-latitude Super Dual Auroral Radar Network (SuperDARN) HF radars. Prog Earth Planet Sci 6, 27 (2019) [doi:10.1186/s40645-019-0270-5](https://progearthplanetsci.springeropen.com/articles/10.1186/s40645-019-0270-5)
+Nishitani, N., Ruohoniemi, J.M., Lester, M. et al. Review of the accomplishments of mid-latitude Super Dual Auroral Radar Network (SuperDARN) HF radars. Prog Earth Planet Sci 6, 27 (2019) doi:10.1186/s40645-019-0270-5
 
 During your study, if using data from individual radars only, please contact the Principal Investigator (PI) of that radar about potential co-authorship. 
 A list of radars, institutions, and their PI's information can be found [here](http://vt.superdarn.org/tiki-index.php?page=Radar+Overview).  
