@@ -247,8 +247,8 @@ struct SndIDLData *IDLMakeSndData(IDL_VPTR *vptr) {
   snddata[1].type=IDL_MakeStruct("OGSTR",origin);
   snddata[4].type=IDL_MakeStruct("TMSTR",time);
   snddata[8].type=IDL_MakeStruct("NSSTR",noise);
-  snddata[13].type=IDL_MakeStruct("ITSTR",intt);
-  snddata[21].type=IDL_MakeStruct("SDSTR",snd_revision);
+  snddata[14].type=IDL_MakeStruct("ITSTR",intt);
+  snddata[22].type=IDL_MakeStruct("SDSTR",snd_revision);
 
   s=IDL_MakeStruct("SNDDATA",snddata);
 
