@@ -49,6 +49,7 @@ struct SndIDLData {
     float mean;
   } noise;
 
+  short channel;
   short bmnum;
   float bmazm;
   short scan;

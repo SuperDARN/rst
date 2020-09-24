@@ -62,6 +62,7 @@ int SndWrite(int fid, struct SndData *snd) {
   DataMapAddScalar(ptr,"noise.search",DATAFLOAT,&snd->noise.search);
   DataMapAddScalar(ptr,"noise.mean",DATAFLOAT,&snd->noise.mean);
 
+  DataMapAddScalar(ptr,"channel",DATASHORT,&snd->channel);
   DataMapAddScalar(ptr,"bmnum",DATASHORT,&snd->bmnum);
   DataMapAddScalar(ptr,"bmazm",DATAFLOAT,&snd->bmazm);
 

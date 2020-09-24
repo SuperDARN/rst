@@ -77,7 +77,7 @@ void snd_tplot(struct SndData *snd,struct tplot *tptr) {
   int i;
 
   tptr->bmnum=snd->bmnum;
-  tptr->channel=0;
+  tptr->channel=snd->channel;
   tptr->cpid=snd->cp;
   tptr->scan=snd->scan;
   tptr->nrang=snd->nrang;

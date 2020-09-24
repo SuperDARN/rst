@@ -78,6 +78,8 @@ int SndDecode(struct DataMap *ptr, struct SndData *snd) {
       snd->noise.search=*(s->data.fptr);
     if ((strcmp(s->name,"noise.mean")==0) && (s->type==DATAFLOAT))
       snd->noise.mean=*(s->data.fptr);
+    if ((strcmp(s->name,"channel")==0) && (s->type==DATASHORT))
+      snd->channel=*(s->data.sptr);
     if ((strcmp(s->name,"bmnum")==0) && (s->type==DATASHORT))
       snd->bmnum=*(s->data.sptr);
     if ((strcmp(s->name,"bmazm")==0) && (s->type==DATAFLOAT))

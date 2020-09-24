@@ -39,6 +39,7 @@ int FitToSnd(struct SndData *ptr, struct RadarParm *prm,
   ptr->smsep = prm->smsep;
   ptr->noise.search = prm->noise.search;
   ptr->noise.mean = prm->noise.mean;
+  ptr->channel = prm->channel;
   ptr->bmnum = prm->bmnum;
   ptr->bmazm = prm->bmazm;
   ptr->scan = scan;
