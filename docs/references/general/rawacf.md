@@ -75,7 +75,7 @@ RAWACF files contain a record that contains scalar and vector fields.
 | *nrang*                 | *None*   | short     | Number of range gates                                                             |
 | *frang*                 | *km*     | short     | Distance to the first range gate                                                        |
 | *rsep*                  | *km*     | short     | Range seperation                                                                        |
-| *xcf*                   | *None*   | short     | XCF flag, indicates if XCF for elevation angle estimation is available (1) or not (0)   |
+| *xcf*                   | *None*   | short     | XCF flag, indicating whether the power, velocity, spectral width and phi0 parameters fitted from the cross-correlation function are available (xcf=1) or not available (xcf=0)   |
 | *tfreq*                 | *kHz*    | short     | Transmitted frequency                                                                   |
 | *mxpwr*                 | *dB*     | int       | Maximum power                                                                           |
 | *lvmax*                 | *None*   | int       | Maximum noise level allowed                                                             |
