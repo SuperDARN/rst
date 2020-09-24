@@ -490,7 +490,7 @@ int main(int argc,char *argv[]) {
   } while (status==0);
 
   free_radarstructs(network, prm, raw);
-  free_files(rawfp, fp, NULL, inxfp);
+  //free_files(rawfp, fp, NULL, inxfp);
   free_fitstructs(fit_prms, fit, fblk);
 
   return 0;
