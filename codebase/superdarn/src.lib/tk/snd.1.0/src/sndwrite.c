@@ -82,6 +82,9 @@ int SndWrite(int fid, struct SndData *snd) {
 
   DataMapAddScalar(ptr,"combf",DATASTRING,&snd->combf);
 
+  DataMapAddScalar(ptr,"fitacf.revision.major",DATAINT,&snd->fit_revision.major);
+  DataMapAddScalar(ptr,"fitacf.revision.minor",DATAINT,&snd->fit_revision.minor);
+
   DataMapAddScalar(ptr,"snd.revision.major",DATASHORT,&snd->snd_revision.major);
   DataMapAddScalar(ptr,"snd.revision.minor",DATASHORT,&snd->snd_revision.minor);
 

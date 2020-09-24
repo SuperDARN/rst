@@ -77,6 +77,7 @@ pro SndMakeSndData,snd
          tfreq: 0, $
          sky_noise: 0.0, $
          combf: '', $
+         fit_revision: {rlstr, major: 0L, minor: 0L}, $
          snd_revision: {sdstr, major: 0, minor: 0}, $
          qflg: bytarr(MAX_RANGE), $
          gflg: bytarr(MAX_RANGE), $
@@ -128,7 +129,8 @@ function SndRead,unit,snd
            'time.us','nave','lagfr','smsep','noise.search','noise.mean', $
            'channel','bmnum','bmazm','scan','rxrise','intt.sc','intt.us', $
            'nrang','frang','rsep','xcf','tfreq','noise.sky', $
-           'combf','snd.revision.major','snd.revision.minor']
+           'combf','fitacf.revision.major','fitacf.revision.minor', $
+           'snd.revision.major','snd.revision.minor']
 
   scltype=[1,1, $
            1,9,9,2,2, $
@@ -136,7 +138,8 @@ function SndRead,unit,snd
            3,2,2,2,4,4, $
            2,2,4,2,2,2,3, $
            2,2,2,2,2,4, $
-           9,2,2]
+           9,3,3, $
+           2,2]
 
   sclid=intarr(n_elements(sclname))
   sclid[*]=-1
@@ -206,8 +209,10 @@ function SndRead,unit,snd
   if (sclid[30] ne -1) then snd.tfreq=*(sclvec[sclid[30]].ptr)
   if (sclid[31] ne -1) then snd.sky_noise=*(sclvec[sclid[31]].ptr)
   if (sclid[32] ne -1) then snd.combf=*(sclvec[sclid[32]].ptr)
-  if (sclid[33] ne -1) then snd.snd_revision.major=*(sclvec[sclid[33]].ptr)
-  if (sclid[34] ne -1) then snd.snd_revision.minor=*(sclvec[sclid[34]].ptr)
+  if (sclid[33] ne -1) then snd.fit_revision.major=*(sclvec[sclid[33]].ptr)
+  if (sclid[34] ne -1) then snd.fit_revision.minor=*(sclvec[sclid[34]].ptr)
+  if (sclid[35] ne -1) then snd.snd_revision.major=*(sclvec[sclid[35]].ptr)
+  if (sclid[36] ne -1) then snd.snd_revision.minor=*(sclvec[sclid[36]].ptr)
 
   if (arrid[0] eq -1) then begin
     st=DataMapFreeScalar(sclvec)

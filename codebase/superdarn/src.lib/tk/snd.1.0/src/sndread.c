@@ -106,6 +106,10 @@ int SndDecode(struct DataMap *ptr, struct SndData *snd) {
       snd->sky_noise=*(s->data.fptr);
     if ((strcmp(s->name,"combf")==0) && (s->type==DATASTRING))
       SndSetCombf(snd,*((char **) s->data.vptr));
+    if ((strcmp(s->name,"fitacf.revision.major")==0) && (s->type==DATAINT))
+      snd->fit_revision.major=*(s->data.iptr);
+    if ((strcmp(s->name,"fitacf.revision.minor")==0) && (s->type==DATAINT))
+      snd->fit_revision.minor=*(s->data.iptr);
     if ((strcmp(s->name,"snd.revision.major")==0) && (s->type==DATASHORT))
       snd->snd_revision.major=*(s->data.sptr);
     if ((strcmp(s->name,"snd.revision.minor")==0) && (s->type==DATASHORT))

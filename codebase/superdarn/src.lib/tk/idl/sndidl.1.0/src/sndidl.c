@@ -68,6 +68,9 @@ void IDLCopySndDataFromIDL(int nrang, struct SndIDLData *isnd,
   if (strlen(IDL_STRING_STR(&isnd->combf)) !=0)
     SndSetCombf(snd,IDL_STRING_STR(&isnd->combf));
 
+  snd->fit_revision.major = isnd->fit_revision.major;
+  snd->fit_revision.minor = isnd->fit_revision.minor;
+
   snd->snd_revision.major = isnd->snd_revision.major;
   snd->snd_revision.minor = isnd->snd_revision.minor;
 
@@ -147,6 +150,9 @@ void IDLCopySndDataToIDL(int nrang, struct SndData *snd,
     IDL_StrStore(&isnd->combf,combftmp);
   }
 
+  isnd->fit_revision.major = snd->fit_revision.major;
+  isnd->fit_revision.minor = snd->fit_revision.minor;
+
   isnd->snd_revision.major = snd->snd_revision.major;
   isnd->snd_revision.minor = snd->snd_revision.minor;
 
@@ -201,6 +207,11 @@ struct SndIDLData *IDLMakeSndData(IDL_VPTR *vptr) {
     {"US",0,(void *) IDL_TYP_LONG},
     {0}};
 
+  static IDL_STRUCT_TAG_DEF fit_revision[]={
+    {"MAJOR",0,(void *) IDL_TYP_LONG},
+    {"MINOR",0,(void *) IDL_TYP_LONG},
+    {0}};
+
   static IDL_STRUCT_TAG_DEF snd_revision[]={
     {"MAJOR",0,(void *) IDL_TYP_INT},
     {"MINOR",0,(void *) IDL_TYP_INT},
@@ -229,16 +240,17 @@ struct SndIDLData *IDLMakeSndData(IDL_VPTR *vptr) {
     {"TFREQ",0,(void *) IDL_TYP_INT},   /* 19 */
     {"SKY_NOISE",0,(void *) IDL_TYP_FLOAT}, /* 20 */
     {"COMBF",0,(void *) IDL_TYP_STRING}, /* 21 */
-    {"SND_REVISION",0,NULL},            /* 22 */
-    {"QFLG",rdim,(void *) IDL_TYP_BYTE}, /* 23 */
-    {"GFLG",rdim,(void *) IDL_TYP_BYTE}, /* 24 */
-    {"V",rdim,(void *) IDL_TYP_FLOAT},   /* 25 */
-    {"V_E",rdim,(void *) IDL_TYP_FLOAT}, /* 26 */
-    {"P_L",rdim,(void *) IDL_TYP_FLOAT}, /* 27 */
-    {"W_L",rdim,(void *) IDL_TYP_FLOAT}, /* 28 */
-    {"X_QFLG",rdim,(void *) IDL_TYP_BYTE}, /* 29 */
-    {"PHI0",rdim,(void *) IDL_TYP_FLOAT}, /* 30 */
-    {"PHI0_E",rdim,(void *) IDL_TYP_FLOAT}, /* 31 */
+    {"FIT_REVISION",0,NULL},             /* 22 */
+    {"SND_REVISION",0,NULL},             /* 23 */
+    {"QFLG",rdim,(void *) IDL_TYP_BYTE}, /* 24 */
+    {"GFLG",rdim,(void *) IDL_TYP_BYTE}, /* 25 */
+    {"V",rdim,(void *) IDL_TYP_FLOAT},   /* 26 */
+    {"V_E",rdim,(void *) IDL_TYP_FLOAT}, /* 27 */
+    {"P_L",rdim,(void *) IDL_TYP_FLOAT}, /* 28 */
+    {"W_L",rdim,(void *) IDL_TYP_FLOAT}, /* 29 */
+    {"X_QFLG",rdim,(void *) IDL_TYP_BYTE}, /* 30 */
+    {"PHI0",rdim,(void *) IDL_TYP_FLOAT}, /* 31 */
+    {"PHI0_E",rdim,(void *) IDL_TYP_FLOAT}, /* 32 */
     {0}};
 
   static IDL_MEMINT ilDims[IDL_MAX_ARRAY_DIM];
@@ -248,7 +260,8 @@ struct SndIDLData *IDLMakeSndData(IDL_VPTR *vptr) {
   snddata[4].type=IDL_MakeStruct("TMSTR",time);
   snddata[8].type=IDL_MakeStruct("NSSTR",noise);
   snddata[14].type=IDL_MakeStruct("ITSTR",intt);
-  snddata[22].type=IDL_MakeStruct("SDSTR",snd_revision);
+  snddata[22].type=IDL_MakeStruct("RLSTR",fit_revision);
+  snddata[23].type=IDL_MakeStruct("SDSTR",snd_revision);
 
   s=IDL_MakeStruct("SNDDATA",snddata);
 

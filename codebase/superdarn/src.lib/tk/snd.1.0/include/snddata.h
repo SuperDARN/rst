@@ -71,6 +71,11 @@ struct SndData {
   struct {
     int major;
     int minor;
+  } fit_revision;
+
+  struct {
+    int major;
+    int minor;
   } snd_revision;
 
   struct SndRange *rng;
