@@ -52,7 +52,7 @@ RAWACF files contain a record that contains scalar and vector fields.
 | *nave*                  | *None*   | short     | Number of pulse sequences transmitted                                                   |
 | *atten*                 | *None*   | short     | Attenuation level                                                                       |
 | *lagfr*                 | *us*     | short     | Lag to first range                                                                      |
-| *smsep*                 | *us*     | short     | Sample seperation                                                                       |
+| *smsep*                 | *us*     | short     | Sample separation                                                                       |
 | *ercod*                 | *None*   | short     | Error Code                                                                              |
 | *stat.agc*              | *None*   | short     | Automatic gain control status word                                                                         |
 | *stat.lopwr*            | *None*   | short     | Low power status word                                                                       |
@@ -74,7 +74,7 @@ RAWACF files contain a record that contains scalar and vector fields.
 | *ifmode*                | *None*   | short     | A flag indicating that the receiver voltage samples were obtained by digitizing the signal at an intermediate frequency (and then digitally mixed to baseband) instead of directly sampling the RF signals (`ifmode=0`).         |
 | *nrang*                 | *None*   | short     | Number of range gates                                                             |
 | *frang*                 | *km*     | short     | Distance to the first range gate                                                        |
-| *rsep*                  | *km*     | short     | Range seperation                                                                        |
+| *rsep*                  | *km*     | short     | Range separation                                                                        |
 | *xcf*                   | *None*   | short     | XCF flag, indicating whether the power, velocity, spectral width and phi0 parameters fitted from the cross-correlation function are available (xcf=1) or not available (xcf=0)   |
 | *tfreq*                 | *kHz*    | short     | Transmitted frequency                                                                   |
 | *mxpwr*                 | *dB*     | int       | Maximum power                                                                           |
