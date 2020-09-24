@@ -102,7 +102,7 @@ RAWACF files contain a record that contains scalar and vector fields.
 ## File structure
 
 RAWACF files contain typically 2 hours of data. Individual records in the RAWACF file contain the raw data for a single integration period (usually 3s or 7s, but depends on operating mode of the radar). 
-In the standard operational mode (common mode) where each beam is scanned sequentially, the beam number `bmnum` will change each integration period. However, some control programs will stay on one beam for a whole scan (called a "camping beam"). 
+In the standard operational mode (common mode) where each beam is scanned sequentially, the beam number `bmnum` will increase or decrease by 1 after each integration period. Other control programs may involve different beam sequences, including sampling the beams in a different order, or sampling a subset of the available beams.
 A "scan" is a beam sequence which gets repeated. In the common mode (*normal scan*), one scan is completed when each beam has been sampled sequentially from 0 to `bmnum-1` (or `bmnum-1` to 0). Radars with more than 16 beams *may* sample a subset of beams rather than their full field of view in order to maintain a 1min scan time. 
 Scans usually begin on whole-minute boundaries and last for either 1min or 2min. Custom control programs which define different scan lengths may also exist. The `scan` flag is used to indicate the beginning of each scan pattern. A value of 1 or -1 indicates the beginning of the scan, and then the value changes to 0 for the rest of the scan. When the `scan` value changes from 0 back to 1 this indicates the end of the scan. 
 
