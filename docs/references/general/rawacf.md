@@ -71,7 +71,7 @@ RAWACF files contain a record that contains scalar and vector fields.
 | *mppul*                 | *None*   | short     | Number of pulses in the sequence                                                        |
 | *mplgs*                 | *None*   | short     | Number of lags in the lag table                                              |
 | *mplgexs*               | *None*   | short     | Number of lags used for tauscan. This field originates from `fitex` algorithm and is not used in RAWACF file format. | 
-| *ifmode*                | *None*   | short     | A flag indicating that the receiver voltage samples were obtained by digitizing the signal at an intermediate frequency (and then digitally mixed to baseband) instead of mixing to baseband and then digitizing (`ifmode=0`).         |
+| *ifmode*                | *None*   | short     | A flag indicating that the receiver voltage samples were obtained by digitizing the signal at an intermediate frequency (and then digitally mixed to baseband) instead of directly sampling the RF signals (`ifmode=0`).         |
 | *nrang*                 | *None*   | short     | Number of range gates                                                             |
 | *frang*                 | *km*     | short     | Distance to the first range gate                                                        |
 | *rsep*                  | *km*     | short     | Range seperation                                                                        |
