@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include <sys/types.h>
+#include <string.h>
+#include <time.h>
 #include <zlib.h>
 #include "rtypes.h"
 #include "option.h"
@@ -82,7 +84,11 @@ int main(int argc,char *argv[]) {
 
   double st_time=0;
 
-  int i,c=0;
+  int i,c=0,n=0;
+
+  time_t ctime;
+  char command[128];
+  char tmstr[40];
  
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
@@ -138,6 +144,14 @@ int main(int argc,char *argv[]) {
     fprintf(stderr,"Processing %d files\n",c);
   }
 
+  command[0]=0;
+  for (c=0;c<argc;c++) {
+    n+=strlen(argv[c])+1;
+    if (n>127) break;
+    if (c !=0) strcat(command," ");
+    strcat(command,argv[c]);
+  }
+
   while ((opfp=read_set()) !=0)  {
 
     /* Find the earliest sounding record */
@@ -151,6 +165,13 @@ int main(int argc,char *argv[]) {
     /* Write the next sounding record */
     for (i=0;i<fnum;i++) {
       if ( (dflg[i] !=0) && (in_time[i] == st_time) ) {
+
+        in_rcd[i]->origin.code=1;
+        ctime = time((time_t) 0);
+        strcpy(tmstr,asctime(gmtime(&ctime)));
+        tmstr[24]=0;
+        SndSetOriginTime(in_rcd[i],tmstr);
+        SndSetOriginCommand(in_rcd[i],command);
 
         SndFwrite(stdout,in_rcd[i]);
 
