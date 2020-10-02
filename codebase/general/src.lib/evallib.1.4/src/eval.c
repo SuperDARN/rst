@@ -202,7 +202,7 @@ int Eval(char *expression,double *ptr,
   sum=malloc(strlen(expression)+1);
   if (sum == NULL)
   {
-      fprintf(stderr, "Error: malloc could create memory for sum\n");
+      fprintf(stderr, "Error: malloc could not create memory for sum\n");
       return -1;
   }
   while (expression[i] !=0) {
@@ -440,7 +440,6 @@ int Eval(char *expression,double *ptr,
   free(sum);
   return 0;
 }
-
 
 
 
