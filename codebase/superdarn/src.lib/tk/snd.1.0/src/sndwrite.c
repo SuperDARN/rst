@@ -62,6 +62,7 @@ int SndWrite(int fid, struct SndData *snd) {
   DataMapAddScalar(ptr,"noise.search",DATAFLOAT,&snd->noise.search);
   DataMapAddScalar(ptr,"noise.mean",DATAFLOAT,&snd->noise.mean);
 
+  DataMapAddScalar(ptr,"channel",DATASHORT,&snd->channel);
   DataMapAddScalar(ptr,"bmnum",DATASHORT,&snd->bmnum);
   DataMapAddScalar(ptr,"bmazm",DATAFLOAT,&snd->bmazm);
 
@@ -80,6 +81,9 @@ int SndWrite(int fid, struct SndData *snd) {
   DataMapStoreScalar(ptr,"noise.sky",DATAFLOAT,&sky_noise);
 
   DataMapAddScalar(ptr,"combf",DATASTRING,&snd->combf);
+
+  DataMapAddScalar(ptr,"fitacf.revision.major",DATAINT,&snd->fit_revision.major);
+  DataMapAddScalar(ptr,"fitacf.revision.minor",DATAINT,&snd->fit_revision.minor);
 
   DataMapAddScalar(ptr,"snd.revision.major",DATASHORT,&snd->snd_revision.major);
   DataMapAddScalar(ptr,"snd.revision.minor",DATASHORT,&snd->snd_revision.minor);

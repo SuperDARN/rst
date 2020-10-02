@@ -78,6 +78,8 @@ int SndDecode(struct DataMap *ptr, struct SndData *snd) {
       snd->noise.search=*(s->data.fptr);
     if ((strcmp(s->name,"noise.mean")==0) && (s->type==DATAFLOAT))
       snd->noise.mean=*(s->data.fptr);
+    if ((strcmp(s->name,"channel")==0) && (s->type==DATASHORT))
+      snd->channel=*(s->data.sptr);
     if ((strcmp(s->name,"bmnum")==0) && (s->type==DATASHORT))
       snd->bmnum=*(s->data.sptr);
     if ((strcmp(s->name,"bmazm")==0) && (s->type==DATAFLOAT))
@@ -104,6 +106,10 @@ int SndDecode(struct DataMap *ptr, struct SndData *snd) {
       snd->sky_noise=*(s->data.fptr);
     if ((strcmp(s->name,"combf")==0) && (s->type==DATASTRING))
       SndSetCombf(snd,*((char **) s->data.vptr));
+    if ((strcmp(s->name,"fitacf.revision.major")==0) && (s->type==DATAINT))
+      snd->fit_revision.major=*(s->data.iptr);
+    if ((strcmp(s->name,"fitacf.revision.minor")==0) && (s->type==DATAINT))
+      snd->fit_revision.minor=*(s->data.iptr);
     if ((strcmp(s->name,"snd.revision.major")==0) && (s->type==DATASHORT))
       snd->snd_revision.major=*(s->data.sptr);
     if ((strcmp(s->name,"snd.revision.minor")==0) && (s->type==DATASHORT))

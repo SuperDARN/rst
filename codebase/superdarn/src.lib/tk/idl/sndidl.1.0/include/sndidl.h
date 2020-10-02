@@ -49,6 +49,7 @@ struct SndIDLData {
     float mean;
   } noise;
 
+  short channel;
   short bmnum;
   float bmazm;
   short scan;
@@ -68,6 +69,11 @@ struct SndIDLData {
   float sky_noise;
 
   IDL_STRING combf;
+
+  struct {
+    IDL_LONG major;
+    IDL_LONG minor;
+  } fit_revision;
 
   struct {
     short major;

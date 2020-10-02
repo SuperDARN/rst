@@ -64,6 +64,7 @@ pro SndMakeSndData,snd
          lagfr: 0, $
          smsep: 0, $
          noise: {nsstr, search:0.0, mean:0.0}, $
+         channel: 0, $
          bmnum: 0, $
          bmazm: 0.0, $
          scan: 0, $
@@ -76,6 +77,7 @@ pro SndMakeSndData,snd
          tfreq: 0, $
          sky_noise: 0.0, $
          combf: '', $
+         fit_revision: {rlstr, major: 0L, minor: 0L}, $
          snd_revision: {sdstr, major: 0, minor: 0}, $
          qflg: bytarr(MAX_RANGE), $
          gflg: bytarr(MAX_RANGE), $
@@ -125,17 +127,19 @@ function SndRead,unit,snd
            'origin.code','origin.time','origin.command','cp','stid', $
            'time.yr','time.mo','time.dy','time.hr','time.mt','time.sc', $
            'time.us','nave','lagfr','smsep','noise.search','noise.mean', $
-           'bmnum','bmazm','scan','rxrise','intt.sc','intt.us', $
+           'channel','bmnum','bmazm','scan','rxrise','intt.sc','intt.us', $
            'nrang','frang','rsep','xcf','tfreq','noise.sky', $
-           'combf','snd.revision.major','snd.revision.minor']
+           'combf','fitacf.revision.major','fitacf.revision.minor', $
+           'snd.revision.major','snd.revision.minor']
 
   scltype=[1,1, $
            1,9,9,2,2, $
            2,2,2,2,2,2, $
            3,2,2,2,4,4, $
-           2,4,2,2,2,3, $
+           2,2,4,2,2,2,3, $
            2,2,2,2,2,4, $
-           9,2,2]
+           9,3,3, $
+           2,2]
 
   sclid=intarr(n_elements(sclname))
   sclid[*]=-1
@@ -191,21 +195,24 @@ function SndRead,unit,snd
   if (sclid[16] ne -1) then snd.smsep=*(sclvec[sclid[16]].ptr)
   if (sclid[17] ne -1) then snd.noise.search=*(sclvec[sclid[17]].ptr)
   if (sclid[18] ne -1) then snd.noise.mean=*(sclvec[sclid[18]].ptr)
-  if (sclid[19] ne -1) then snd.bmnum=*(sclvec[sclid[19]].ptr)
-  if (sclid[20] ne -1) then snd.bmazm=*(sclvec[sclid[20]].ptr)
-  if (sclid[21] ne -1) then snd.scan=*(sclvec[sclid[21]].ptr)
-  if (sclid[22] ne -1) then snd.rxrise=*(sclvec[sclid[22]].ptr)
-  if (sclid[23] ne -1) then snd.intt.sc=*(sclvec[sclid[23]].ptr)
-  if (sclid[24] ne -1) then snd.intt.us=*(sclvec[sclid[24]].ptr)
-  if (sclid[25] ne -1) then snd.nrang=*(sclvec[sclid[25]].ptr)
-  if (sclid[26] ne -1) then snd.frang=*(sclvec[sclid[26]].ptr)
-  if (sclid[27] ne -1) then snd.rsep=*(sclvec[sclid[27]].ptr)
-  if (sclid[28] ne -1) then snd.xcf=*(sclvec[sclid[28]].ptr)
-  if (sclid[29] ne -1) then snd.tfreq=*(sclvec[sclid[29]].ptr)
-  if (sclid[30] ne -1) then snd.sky_noise=*(sclvec[sclid[30]].ptr)
-  if (sclid[31] ne -1) then snd.combf=*(sclvec[sclid[31]].ptr)
-  if (sclid[32] ne -1) then snd.snd_revision.major=*(sclvec[sclid[32]].ptr)
-  if (sclid[33] ne -1) then snd.snd_revision.minor=*(sclvec[sclid[33]].ptr)
+  if (sclid[19] ne -1) then snd.channel=*(sclvec[sclid[19]].ptr)
+  if (sclid[20] ne -1) then snd.bmnum=*(sclvec[sclid[20]].ptr)
+  if (sclid[21] ne -1) then snd.bmazm=*(sclvec[sclid[21]].ptr)
+  if (sclid[22] ne -1) then snd.scan=*(sclvec[sclid[22]].ptr)
+  if (sclid[23] ne -1) then snd.rxrise=*(sclvec[sclid[23]].ptr)
+  if (sclid[24] ne -1) then snd.intt.sc=*(sclvec[sclid[24]].ptr)
+  if (sclid[25] ne -1) then snd.intt.us=*(sclvec[sclid[25]].ptr)
+  if (sclid[26] ne -1) then snd.nrang=*(sclvec[sclid[26]].ptr)
+  if (sclid[27] ne -1) then snd.frang=*(sclvec[sclid[27]].ptr)
+  if (sclid[28] ne -1) then snd.rsep=*(sclvec[sclid[28]].ptr)
+  if (sclid[29] ne -1) then snd.xcf=*(sclvec[sclid[29]].ptr)
+  if (sclid[30] ne -1) then snd.tfreq=*(sclvec[sclid[30]].ptr)
+  if (sclid[31] ne -1) then snd.sky_noise=*(sclvec[sclid[31]].ptr)
+  if (sclid[32] ne -1) then snd.combf=*(sclvec[sclid[32]].ptr)
+  if (sclid[33] ne -1) then snd.fit_revision.major=*(sclvec[sclid[33]].ptr)
+  if (sclid[34] ne -1) then snd.fit_revision.minor=*(sclvec[sclid[34]].ptr)
+  if (sclid[35] ne -1) then snd.snd_revision.major=*(sclvec[sclid[35]].ptr)
+  if (sclid[36] ne -1) then snd.snd_revision.minor=*(sclvec[sclid[36]].ptr)
 
   if (arrid[0] eq -1) then begin
     st=DataMapFreeScalar(sclvec)
@@ -286,6 +293,7 @@ function SndWrite,unit,snd
   s=DataMapMakeScalar('smsep',smd.smsep,sclvec)
   s=DataMapMakeScalar('noise.search',smd.noise.search,sclvec)
   s=DataMapMakeScalar('noise.mean',snd.noise.mean,sclvec)
+  s=DataMapMakeScalar('channel',snd.channel,sclvec)
   s=DataMapMakeScalar('bmnum',snd.bmnum,sclvec)
   s=DataMapMakeScalar('bmazm',snd.bmazm,sclvec)
   s=DataMapMakeScalar('scan',snd.scan,sclvec)

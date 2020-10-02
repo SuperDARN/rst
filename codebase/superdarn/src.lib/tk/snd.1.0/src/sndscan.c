@@ -103,7 +103,7 @@ int SndReadRadarScan(int fid, int *state,
         bm->freq=snd->tfreq;
         bm->noise=snd->noise.search;
         bm->atten=0;
-        bm->channel=0;
+        bm->channel=snd->channel;
         bm->nrang=snd->nrang;
 
         /* Set flags indicating scatter in each range gate to zero */
@@ -215,7 +215,7 @@ int SndToRadarScan(struct RadarScan *ptr,
   bm->freq=snd->tfreq;
   bm->noise=snd->noise.search;
   bm->atten=0;
-  bm->channel=0;
+  bm->channel=snd->channel;
   bm->nrang=snd->nrang;
 
   for (r=0;r<bm->nrang;r++) bm->sct[r]=0;
