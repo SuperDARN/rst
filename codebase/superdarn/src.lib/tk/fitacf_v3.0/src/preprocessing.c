@@ -1189,7 +1189,7 @@ void ACF_Phase_Unwrap(llist_node range, FITPRMS* fit_prms){
   double piecewise_slope_est = 0.0;
   int *total_2pi_corrections;
   double S_xy = 0.0, S_xx = 0.0;
-  int num_local_phases=0;;
+  int num_local_phases=0;
 
   range_node = (RANGENODE*) range;
 
@@ -1472,6 +1472,5 @@ void Fill_Data_Lists_For_Range(llist_node range,llist lags,FITPRMS *fit_prms){
 
 
 }
-
 
 
