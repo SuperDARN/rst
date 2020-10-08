@@ -932,7 +932,7 @@ void lmfit(struct RadarParm *prm,struct RawData *raw,
       status = mpfit(singlefit,availcnt*2,3,psingle,parssingle,&config,(void *)data,&result);
       if (status <= 0)
       {
-          fprintf(stderr, "Error: mpfit returned error %d check mpfit.h to determine wwhat the error means.\n", status);
+          fprintf(stderr, "Error: mpfit returned error %d. Check mpfit.h to determine what the error means.\n", status);
       }
       /*final params from single-component fit*/
       t_if = psingle[0];
