@@ -46,7 +46,7 @@ double bisect(float w_guess, float diff, struct RawData *raw, float *good_lags, 
   float xr, xl, x0, x1, x2, x3, f1, f2;
   // TODO is this correct? does maxiter matter?
   int count, maxiter;
-  //maxiter = 100;
+maxiter = 100;
 
 
   count = 0;
