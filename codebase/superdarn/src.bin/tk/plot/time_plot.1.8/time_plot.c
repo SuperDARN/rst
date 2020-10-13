@@ -1365,6 +1365,8 @@ int main(int argc,char *argv[]) {
 
     if ((atime-otime)>120) otime=atime-120;
 
+    if ((sndflg) && (atime-otime)>2) otime=atime-2;
+
     lft=bwdt*(otime-stime)/(etime-stime);
     rgt=bwdt*(atime-stime)/(etime-stime);
     if (rgt==lft) rgt++;
