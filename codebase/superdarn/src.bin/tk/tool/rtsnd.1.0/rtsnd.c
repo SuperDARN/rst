@@ -373,16 +373,16 @@ int main(int argc,char *argv[]) {
                   path,yr,mo,dy,(hr/2)*2,RadarGetCode(network,snd->stid,0));
         }
 
-        fp=fopen(dname,"a");
-        SndFwrite(fp,snd);
-        fclose(fp);
-
         if ((now-hstart) >= 2*3600) { /* advance to the next 2-hour block */
           hstart=now-(int) now % (2*3600); /* start of 2-hour block */
           TimeEpochToYMDHMS(hstart,&yr,&mo,&dy,&hr,&mt,&sc);
           sprintf(dname,"%s/%.4d%.2d%.2d.%.2d.%s.snd",
                   path,yr,mo,dy,(hr/2)*2,RadarGetCode(network,snd->stid,0));
         }
+
+        fp=fopen(dname,"a");
+        SndFwrite(fp,snd);
+        fclose(fp);
 
         cnt++;
 
