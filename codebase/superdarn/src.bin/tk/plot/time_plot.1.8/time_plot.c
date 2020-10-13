@@ -1365,7 +1365,9 @@ int main(int argc,char *argv[]) {
 
     if ((atime-otime)>120) otime=atime-120;
 
-    if ((sndflg) && (atime-otime)>2) otime=atime-2;
+    /* SND-format data collected at the end of a scan typically has
+     * an integration time of only ~1.5 to 2.0 seconds */
+    if ((sndflg) && (atime-otime)>4) otime=atime-2;
 
     lft=bwdt*(otime-stime)/(etime-stime);
     rgt=bwdt*(atime-stime)/(etime-stime);
