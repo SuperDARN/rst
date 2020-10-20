@@ -50,6 +50,7 @@ struct PolygonData *make_fov(double tval,struct RadarNetwork *network,
     int rsep=45;
     struct PolygonData *ptr=NULL;
     struct RadarSite *site=NULL;
+    int maxrange=75;
 
     TimeEpochToYMDHMS(tval,&yr,&mo,&dy,&hr,&mt,&sc);
 
@@ -61,7 +62,7 @@ struct PolygonData *make_fov(double tval,struct RadarNetwork *network,
         if (site==NULL) continue;
         PolygonAddPolygon(ptr,i);
 
-        for (rn=0;rn<=75;rn++) {
+        for (rn=0;rn<=maxrange;rn++) {
             RPosGeo(0,0,rn,site,frang,rsep,
                     site->recrise,alt,&rho,&lat,&lon,chisham);
             pnt[0]=lat;
@@ -70,14 +71,14 @@ struct PolygonData *make_fov(double tval,struct RadarNetwork *network,
         }
 
         for (bm=1;bm<=site->maxbeam;bm++) {
-            RPosGeo(0,bm,75,site,frang,rsep,
+            RPosGeo(0,bm,maxrange,site,frang,rsep,
                     site->recrise,alt,&rho,&lat,&lon,chisham);
             pnt[0]=lat;
             pnt[1]=lon;
             PolygonAdd(ptr,pnt);
         }
 
-        for (rn=75-1;rn>=0;rn--) {
+        for (rn=maxrange-1;rn>=0;rn--) {
             RPosGeo(0,site->maxbeam,rn,site,frang,rsep,
                     site->recrise,alt,&rho,&lat,&lon,chisham);
             pnt[0]=lat;

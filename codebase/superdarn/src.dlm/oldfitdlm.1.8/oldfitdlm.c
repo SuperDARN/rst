@@ -383,7 +383,7 @@ static IDL_VPTR IDLOldFitRead(int argc,IDL_VPTR *argv) {
 
   int s=0;
 
-  IDL_VPTR vprm=NULL,vfit=NULL;;
+  IDL_VPTR vprm=NULL,vfit=NULL;
 
   IDL_FILE_STAT stat;
 

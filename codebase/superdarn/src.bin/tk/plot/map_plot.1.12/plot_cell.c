@@ -97,7 +97,7 @@ void plot_cell(struct Plot *plot, struct GridData *ptr,float latmin,int magflg,
 
     lon = ptr->data[i].mlon;
     lat = ptr->data[i].mlat;
-    if (lat < latmin) continue;
+    if (abs(lat) < abs(latmin)) continue;
     nlon = (int) (360*cos((lat-0.5)*PI/180)+0.5);
     lstp = 360.0/nlon; 
     s = cell_convert(xoff,yoff,wdt,hgt,lat-0.5,lon-lstp/2,&px[0],&py[0],
