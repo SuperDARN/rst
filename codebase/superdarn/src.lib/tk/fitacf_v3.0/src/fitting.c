@@ -198,6 +198,7 @@ void calculate_phase_sigma_for_range(llist_node range,FITPRMS *fit_prms,PHASETYP
                 calculate_phase_sigma(iterator->node, range_node, (void*)fit_prms);
                 iterator = iterator->next;
             }
+            free(iterator);
             break;
         case XCF:
             iterator = ((struct list *)range_node->elev)->head;
@@ -206,6 +207,7 @@ void calculate_phase_sigma_for_range(llist_node range,FITPRMS *fit_prms,PHASETYP
                 calculate_phase_sigma(iterator->node, range_node, (void*)fit_prms);
                 iterator = iterator->next;
             }
+            free(iterator);
             llist_reset_iter(range_node->elev);
     
             /*Since lag 0 phase is included in the elevation fit but for ACF its variance is 0, 
@@ -219,7 +221,6 @@ void calculate_phase_sigma_for_range(llist_node range,FITPRMS *fit_prms,PHASETYP
         
             break;
     }
-    free(iterator);
 
 
 }
