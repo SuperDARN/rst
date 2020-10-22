@@ -74,7 +74,6 @@ typedef void ( * node_func ) ( llist_node node );
 /* function prototypes with user arguments*/
 typedef void ( * node_func_arg ) ( llist_node node, void* arg1, void* arg2 );
 
-
 /**
 * @brief Compares two nodes in a list
 * @param[in] first llist_node
@@ -93,24 +92,6 @@ typedef int ( * comperator ) ( llist_node first,llist_node second );
 typedef bool ( * equal ) ( llist_node, llist_node );
 
 #define LLIST_INITALIZER {0,NULL,NULL,NULL,NULL}
-
-typedef struct list_node
-{
-    llist_node node;
-    struct list_node *next;
-} list_node;
-
-typedef struct list
-{
-    unsigned int count;
-    comperator comp_func;
-    equal equal_func;
-    list_node *head;
-    list_node *tail;
-    list_node *iter;
-
-} list;
-
 
 /**
  * @brief Create a list
@@ -143,6 +124,17 @@ void llist_destroy ( llist list, bool destroy_nodes, node_func destructor );
 int llist_add_node ( llist list, llist_node node, int flags );
 
 /**
+ * @brief Insert a node at a specific location
+ * @param[in] list the list to operator upon
+ * @param[in] new_node the node to add
+ * @param[in] pos_node a position reference node
+ * @param[in] flags flags
+ * @return int LLIST_SUCCESS if success
+ */
+int llist_insert_node ( llist list,  llist_node new_node, llist_node pos_node, int flags );
+
+
+/**
  * @brief Delete a node from a list
  * @param[in] list the list to operator upon
  * @param[in] node the node to delete
@@ -163,6 +155,22 @@ int llist_delete_node ( llist list, llist_node node, bool destroy_node, node_fun
 int llist_find_node ( llist list, void * data, llist_node * found );
 
 /**
+ * @brief operate on each element of the list
+ * @param[in] list the list to operator upon
+ * @param[in] func the function to perform
+ * @return int LLIST_SUCCESS if success
+ */
+int llist_for_each ( llist list, node_func func );
+
+/**
+ * @brief operate on each element of the list
+ * @param[in] list the list to operator upon
+ * @param[in] func the function to perform
+ * @param[in] arg passed to func
+ * @return int LLIST_SUCCESS if success
+ */
+int llist_for_each_arg ( llist list, node_func_arg func, void * arg1, void* arg2 );
+/**
  * @brief sort a lists
  * @param[in] list the list to operator upon
  * @param[in] flags
@@ -176,6 +184,36 @@ int llist_sort ( llist list, int flags );
  * @return the head node, NULL on error
  */
 llist_node llist_get_head ( llist list );
+
+/**
+ * @brief Returns the tail node of the list
+ * @param[in] list the list to operate on
+ * @return the tail node, NULL on error
+ */
+llist_node llist_get_tail ( llist list );
+
+
+/**
+ * @brief push a node to the head of the list
+ * @param[in] list the list to operate on
+ * @param[in] node the node to push
+ * @return int LLIST_SUCCESS if success
+ */
+int llist_push ( llist list, llist_node node );
+
+/**
+ * @brief peek at the head of the list
+ * @param[in] list the list to operate on
+ * @return llist_node the head node
+ */
+llist_node llist_peek( llist list );
+
+/**
+ * @brief pop the head of the list
+ * @param[in] list the list to operate on
+ * @return llist_node the head node
+ */
+llist_node llist_pop( llist list );
 
 /**
  * @brief return the number of elements in the list
@@ -195,12 +233,34 @@ int llist_size( llist list );
 int llist_concat( llist first, llist second );
 
 /**
+ * @brief get the maximum node in a given list
+ * @param[in] list the list to operate upon
+ * @param[out] maximum node
+ * @return int LLIST_SUCCESS if success
+ */
+int llist_get_max( llist list, llist_node * max);
+
+/**
  * @brief get the minimum node in a given list
  * @param[in] list the list to operate upon
  * @param[out] minumum node
  * @return int LLIST_SUCCESS if success
  */
 int llist_get_min(llist list, llist_node * min);
+
+/**
+ * @brief Reverse a list
+ * @param[in] list the list to operate upon
+ * @return int LLIST_SUCCESS if success
+ */
+int llist_reverse( llist list );
+
+/**
+ * @brief check if list is empty
+ * @param[in] list the list to operate upon
+ * @return bool True if list is empty
+ */
+bool llist_is_empty( llist list );
 
 /**
  * @brief      Resets iterator to head of the list

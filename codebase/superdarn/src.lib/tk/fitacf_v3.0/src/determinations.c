@@ -79,12 +79,13 @@ void allocate_fit_data(struct FitData* fit_data, FITPRMS* fit_prms){
  */
 void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data,double noise_pwr){
 
-    list_node *iterator;
+    int list_null_flag = LLIST_SUCCESS;
     fit_data->revision.major=3;
     fit_data->revision.minor=0;
 
     allocate_fit_data(fit_data,fit_prms);
 
+    llist_node node; 
     fit_data->noise.vel = 0.0;
     fit_data->noise.skynoise = noise_pwr;
     fit_data->noise.lag0 = 0.0;
@@ -96,64 +97,72 @@ void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data
         fprintf(stderr, "List is empty\n");
     }
     // get the first node of the list called the head 
-    iterator = ((struct list *)ranges)->head;
-    while(iterator != NULL)
+    llist_reset_iter(ranges);
+    llist_get_iter(ranges, &node);
+    while(node != NULL && list_null_flag == LLIST_SUCCESS)
     {
-        set_xcf_phi0(iterator->node, fit_data, fit_prms);
-        iterator = iterator->next; 
+       set_xcf_phi0(node, fit_data, fit_prms); 
+       list_null_flag = llist_go_next(ranges);
+       llist_get_iter(ranges, &node); 
     }
-    iterator = ((struct list *)ranges)->head;
-    while(iterator != NULL)
+    list_null_flag = LLIST_SUCCESS;
+    llist_reset_iter(ranges);
+    llist_get_iter(ranges, &node); 
+    while(node != NULL && list_null_flag == LLIST_SUCCESS)
     {
-        find_elevation(iterator->node, fit_data, fit_prms);
-         iterator = iterator->next; 
+       find_elevation(node, fit_data, fit_prms);
+       list_null_flag = llist_go_next(ranges);
+       llist_get_iter(ranges, &node); 
+
     }
-    iterator = ((struct list *)ranges)->head;
-    while(iterator != NULL)
+    list_null_flag = LLIST_SUCCESS;
+    llist_reset_iter(ranges);
+    llist_get_iter(ranges, &node);
+    while(node != NULL && list_null_flag == LLIST_SUCCESS)
     {
-       
-        set_xcf_phi0_err(iterator->node, fit_data->xrng);
-        set_xcf_sdev_phi(iterator->node, fit_data->xrng);
-        
+        set_xcf_phi0_err(node, fit_data->xrng);
+        set_xcf_sdev_phi(node, fit_data->xrng);
+
         // if refractive index is not set to a constant
         // then calculate it
         #ifdef _RFC_IDX
-            refractive_index(iterator->node, fit_data->elv);
+            refractive_index(node, fit_data->elv);
         #endif
 
         // setting quality flag
-        set_qflg(iterator->node, fit_data->rng);
+        set_qflg(node, fit_data->rng);
         
         // setting Signal-to-Noise fields (dB)
-        set_p_l(iterator->node, fit_data->rng, &noise_pwr);
-        set_p_l_err(iterator->node, fit_data->rng);
-        set_p_s(iterator->node, fit_data->rng, &noise_pwr);
-        set_p_s_err(iterator->node, fit_data->rng);
+        set_p_l(node, fit_data->rng, &noise_pwr);
+        set_p_l_err(node, fit_data->rng);
+        set_p_s(node, fit_data->rng, &noise_pwr);
+        set_p_s_err(node, fit_data->rng);
 
         // setting velocity fields (m/s)
-        set_v(iterator->node, fit_data->rng, fit_prms);
-        set_v_err(iterator->node, fit_data->rng, fit_prms);
+        set_v(node, fit_data->rng, fit_prms);
+        set_v_err(node, fit_data->rng, fit_prms);
 
         // setting the spectral width fields (m/s)
-        set_w_l(iterator->node, fit_data->rng, fit_prms);
-        set_w_l_err(iterator->node, fit_data->rng, fit_prms);
-        set_w_s(iterator->node, fit_data->rng, fit_prms);
-        set_w_s_err(iterator->node, fit_data->rng, fit_prms);
+        set_w_l(node, fit_data->rng, fit_prms);
+        set_w_l_err(node, fit_data->rng, fit_prms);
+        set_w_s(node, fit_data->rng, fit_prms);
+        set_w_s_err(node, fit_data->rng, fit_prms);
 
         // setting standard deviation fields 
-        set_sdev_l(iterator->node, fit_data->rng);
-        set_sdev_s(iterator->node, fit_data->rng);
-        set_sdev_phi(iterator->node, fit_data->rng);
+        set_sdev_l(node, fit_data->rng);
+        set_sdev_s(node, fit_data->rng);
+        set_sdev_phi(node, fit_data->rng);
         
         // setting ground scatter field
-        set_gsct(iterator->node, fit_data->rng);
+        set_gsct(node, fit_data->rng);
 
         // TODO: ???
-        set_nump(iterator->node, fit_data->rng);
+        set_nump(node, fit_data->rng);
 
-        // Go to the next item in the list 
-        iterator = iterator->next;
+       list_null_flag = llist_go_next(ranges);
+       llist_get_iter(ranges, &node); 
     }
+    llist_reset_iter(ranges);
 }
 
 /**
@@ -582,7 +591,6 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
     psi_k2d2 = psi/(wave_num * wave_num * antenna_sep * antenna_sep);
     df_by_dy = psi_k2d2/sqrt(theta * (1 - theta));
     fit_data->elv[range_node->range].low = 180/PI * sqrt(range_node->elev_fit->sigma_2_a) * fabs(df_by_dy);
-    fprintf(stderr, "sigma 2a %f\n", range_node->elev_fit->sigma_2_a);
 
     /*Experiment to compare fitted and measured elevation*/
     psi_uncorrected_unfitted = fit_data->xrng[range_node->range].phi0 + 2 * PI * floor((phase_diff_max-fit_data->xrng[range_node->range].phi0)/(2*PI));
