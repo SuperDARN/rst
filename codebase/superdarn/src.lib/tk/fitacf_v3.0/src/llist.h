@@ -155,6 +155,22 @@ int llist_delete_node ( llist list, llist_node node, bool destroy_node, node_fun
 int llist_find_node ( llist list, void * data, llist_node * found );
 
 /**
+ * @brief operate on each element of the list
+ * @param[in] list the list to operator upon
+ * @param[in] func the function to perform
+ * @return int LLIST_SUCCESS if success
+ */
+int llist_for_each ( llist list, node_func func );
+
+/**
+ * @brief operate on each element of the list
+ * @param[in] list the list to operator upon
+ * @param[in] func the function to perform
+ * @param[in] arg passed to func
+ * @return int LLIST_SUCCESS if success
+ */
+int llist_for_each_arg ( llist list, node_func_arg func, void * arg1, void* arg2 );
+/**
  * @brief sort a lists
  * @param[in] list the list to operator upon
  * @param[in] flags

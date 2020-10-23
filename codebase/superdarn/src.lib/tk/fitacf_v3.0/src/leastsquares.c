@@ -124,6 +124,8 @@ void print_fit_data(FITDATA *fit_data, FILE* fp){
  * @param      fit_data  The fit data
  * @param      fit_type  The fit type
  *
+ * The function is meant to be mapped to every data node via the list method llist_for_each. This
+ * function computes all the sums needed to directly calculate the linear least squares fit.
  */
 void calculate_sums(llist_node data,FITDATA *fit_data,FIT_TYPE* fit_type){
 	DATA* data_node;
@@ -163,6 +165,8 @@ void calculate_sums(llist_node data,FITDATA *fit_data,FIT_TYPE* fit_type){
  * @param      fit_data  A FITDATA struct for which to add to.
  * @param      fit_type  The fit type, linear or quadratic.
  *
+ * The function is meant to be mapped to every data node via the list method llist_for_each. This
+ * function computes the chi square value of a data set for least squares.
  */
 void find_chi_2(llist_node data,FITDATA *fit_data, FIT_TYPE* fit_type){
 	DATA* data_node;
@@ -330,6 +334,9 @@ void two_param_straight_line_fit(FITDATA *fit_data,llist data,int confidence, in
     list_null_flag = LLIST_SUCCESS;
     llist_reset_iter(data);
 
+    //llist_for_each_arg(data,(node_func_arg)calculate_sums,fit_data,&linear);
+
+
 	S = fit_data->sums->S;
 	S_x = fit_data->sums->S_x;
 	S_y = fit_data->sums->S_y;
@@ -356,6 +363,8 @@ void two_param_straight_line_fit(FITDATA *fit_data,llist data,int confidence, in
     }
     list_null_flag = LLIST_SUCCESS;
     llist_reset_iter(data);
+
+	//llist_for_each_arg(data,(node_func_arg)find_chi_2,fit_data,&linear);
 
 	fit_data->Q = gammaq((llist_size(data)-2) * .5,fit_data->chi_2 * 0.5);
 
@@ -398,6 +407,8 @@ void one_param_straight_line_fit(FITDATA *fit_data,llist data,int confidence, in
     list_null_flag = LLIST_SUCCESS;
     llist_reset_iter(data);
 
+	//llist_for_each_arg(data,(node_func_arg)calculate_sums,fit_data,&linear);
+
 	S_xx = fit_data->sums->S_xx;
 	S_xy = fit_data->sums->S_xy;
 
@@ -422,7 +433,10 @@ void one_param_straight_line_fit(FITDATA *fit_data,llist data,int confidence, in
     list_null_flag = LLIST_SUCCESS;
     llist_reset_iter(data);
 
+    //llist_for_each_arg(data,(node_func_arg)find_chi_2,fit_data,&linear);
 	fit_data->Q = gammaq((llist_size(data)-1) * .5,fit_data->chi_2 * 0.5);
+
+
 }
 
 /**
@@ -461,6 +475,8 @@ void quadratic_fit(FITDATA *fit_data,llist data,int confidence, int DoF){
     list_null_flag = LLIST_SUCCESS;
     llist_reset_iter(data);
 
+	//llist_for_each_arg(data,(node_func_arg)calculate_sums,fit_data,&quadratic);
+
 	S = fit_data->sums->S;
 	S_x = fit_data->sums->S_x;
 	S_y = fit_data->sums->S_y;
@@ -489,6 +505,7 @@ void quadratic_fit(FITDATA *fit_data,llist data,int confidence, int DoF){
     list_null_flag = LLIST_SUCCESS;
     llist_reset_iter(data);
 
+	//llist_for_each_arg(data,(node_func_arg)find_chi_2,fit_data,&quadratic);
 	fit_data->Q = gammaq((llist_size(data)-2) * .5,fit_data->chi_2 * 0.5);
 
 }

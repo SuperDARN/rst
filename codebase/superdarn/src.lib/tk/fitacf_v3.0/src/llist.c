@@ -27,6 +27,7 @@ Keith Kotyk
 #include "llist.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
 #include <pthread.h>
 
 #define LOG_FUNC_ENTRANCE() printf("%lu: In %s\n", time(NULL), __PRETTY_FUNCTION__);
@@ -247,7 +248,19 @@ int llist_go_next(llist list)
     return LLIST_SUCCESS;
 }
 
-
+/*int llist_iter_not_at_end(llist list)
+{
+    if(( ( _llist * ) list )->iter == NULL){
+        return LLIST_END_OF_LIST;
+    }
+    else if(( ( _llist * ) list )->iter->next == NULL){
+        return LLIST_END_OF_LIST;
+    }
+    else{
+        return LLIST_SUCCESS;
+    }
+}
+*/
 /**
  * @brief      Resets iterator to head of the list
  *
@@ -419,6 +432,7 @@ int llist_delete_node ( llist list, llist_node node,
                  */
                 ( ( _llist * ) list )->tail = NULL;
             }
+            /*assert ( ( ( _llist * ) list )->count >= 0 );*/
             UNLOCK( list, LLIST_MULTITHREAD_ISSUE );
             return LLIST_SUCCESS;
         }
@@ -449,6 +463,7 @@ int llist_delete_node ( llist list, llist_node node,
                     free ( temp );
 
                     ( ( _llist * ) list )->count--;
+                    /*assert ( ( ( _llist * ) list )->count >= 0 );*/
 
                     UNLOCK( list, LLIST_MULTITHREAD_ISSUE );
                     return LLIST_SUCCESS;
@@ -466,8 +481,76 @@ int llist_delete_node ( llist list, llist_node node,
 
     }
 
+    /*assert ( 1 == 2 );*/
+    /* this assert always failed. we assume that the function never gets here...*/
     UNLOCK( list, LLIST_MULTITHREAD_ISSUE );
     return LLIST_ERROR;
+}
+
+/**
+ * @brief operate on each element of the list
+ * @param[in] list the list to operator upon
+ * @param[in] func the function to perform
+ * @return int LLIST_SUCCESS if success
+ */
+int llist_for_each ( llist list, node_func func )
+{
+    _list_node *iterator;
+
+    if ( ( list == NULL ) || ( func == NULL ) )
+    {
+        return LLIST_NULL_ARGUMENT;
+    }
+
+    iterator = ( ( _llist * ) list )->head;
+
+    while ( iterator != NULL )
+    {
+        func ( iterator->node );
+        iterator = iterator->next;
+    }
+
+    return LLIST_SUCCESS;
+}
+
+/**
+ * @brief operate on each element of the list
+ * @param[in] list the list to operator upon
+ * @param[in] func the function to perform
+ * @param[in] arg passed to func
+ * @return int LLIST_SUCCESS if success
+ */
+/*
+ * NOTE: if we want variable arguement list then we need to use "..." which is 
+ *       what printf uses. This can be complex and hard to understand from 
+ *       a none programmers point of view. To keep things simple I implemented 
+ *       a variable structure that contains everything. 
+ */
+int llist_for_each_arg ( llist list, node_func_arg func, void * arg1, void * arg2 )
+{
+    _list_node *iterator;
+
+    if ( ( list == NULL ) || ( func == NULL ) )
+    {
+        return LLIST_NULL_ARGUMENT;
+    }
+
+    READ_LOCK( list, LLIST_MULTITHREAD_ISSUE )
+
+    {
+
+        iterator = ( ( _llist * ) list )->head;
+
+        while ( iterator != NULL )
+        {
+            func ( iterator->node , arg1, arg2);
+            iterator = iterator->next;
+        }
+    }
+
+    UNLOCK( list, LLIST_MULTITHREAD_ISSUE )
+
+    return LLIST_SUCCESS;
 }
 
 /**
@@ -550,6 +633,8 @@ int llist_insert_node ( llist list, llist_node new_node, llist_node pos_node,
     }
     UNLOCK( list, LLIST_MULTITHREAD_ISSUE )
 
+    assert ( 1 == 2 );
+    /* this assert will always fail. we assume that the function never gets here...*/
     return LLIST_ERROR;
 
 }
