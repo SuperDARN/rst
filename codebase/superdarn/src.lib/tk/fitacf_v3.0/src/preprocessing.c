@@ -529,7 +529,7 @@ void print_uncorrected_phase(llist_node node, FITPRMS* fit_prms){
  * @param      lag_0_pwr  The lag 0 power for a range.
  *
  * This function calculates the alpha value used in the Bendat and Piersol calculation for ACF
- * power and phase. This function is meant to be mapped to list values using llist_for_each.
+ * power and phase.
  */
 void calculate_alpha_at_lags(llist_node lag, llist_node range, double* lag_0_pwr){
   double pulse_i_cri,pulse_j_cri;
@@ -654,8 +654,7 @@ void mark_bad_samples(FITPRMS *fit_prms, llist bad_samples){
  * @param[in]  bad_samples  The list of bad samples.
  *
  * This function prunes ACF power and ACF/XCF phase nodes from the range at lags that are marked
- * by bad samples from TX overlap. This function is meant to be mapped to each range in a list using
- * llist_for_each.
+ * by bad samples from TX overlap.
  */
 void filter_tx_overlapped_lags(llist_node range, llist lags, llist bad_samples){
   RANGENODE* range_node;
@@ -988,7 +987,7 @@ void Fill_Range_List(FITPRMS *fit_prms, llist ranges){
  *
  * This function prunes off low power lags determined by cutoff criteria. Once a cuttoff lag is
  * determined, all subsequent lags in the list are removed as they too will be below the fluctuation
- * level. This function is meant to be mapped to a list of ranges using llist_for_each.
+ * level. 
  */
 void Filter_Low_Pwr_Lags(llist_node range, FITPRMS* fit_prms){
   double log_sigma_fluc = 0;
@@ -1065,7 +1064,7 @@ void Filter_Low_Pwr_Lags(llist_node range, FITPRMS* fit_prms){
  * @param      fit_prms  The FITPRM struct holding rawacf record info.
  *
  * For a given range, this function finds the cross-range interference of each pulse in the
- * pulse sequence. This function is meant to be mapped to a list of ranges using llist_for_each.
+ * pulse sequence.
  */
 void Find_CRI(llist_node range,FITPRMS *fit_prms){
   int pulse_to_check;
@@ -1112,7 +1111,6 @@ void Find_CRI(llist_node range,FITPRMS *fit_prms){
  * @param      fit_prms  The FITPRM struct holding rawacf record info.
  *
  * For a given range this function creates a new list of alpha values at each lag for that range.
- * This function is meant to be mapped to a list of ranges using llist_for_each.
  */
 void Find_Alpha(llist_node range,llist lags, FITPRMS *fit_prms){
   llist alpha_2;
@@ -1140,8 +1138,6 @@ void Find_Alpha(llist_node range,llist lags, FITPRMS *fit_prms){
   list_null_flag = LLIST_SUCCESS;
   llist_reset_iter(lags);
 
-  //llist_for_each_arg(lags,(node_func_arg)calculate_alpha_at_lags,range_node,&lag_0_pwr);
-
 }
 
 
@@ -1155,8 +1151,7 @@ void Find_Alpha(llist_node range,llist lags, FITPRMS *fit_prms){
  * fitting. The first iteration comes up with an estimate of the slope to determine whether an
  * unwrap is necessary. The second step does a quick fit to the phase and determines whether
  * the unwrapped or wrapped phase has a better error. The method with a better error is the phase
- * used for true fitting. This method is meant to be mapped to a list of ranges using
- * llist_for_each.
+ * used for true fitting.
  */
 void ACF_Phase_Unwrap(llist_node range, FITPRMS* fit_prms){
   RANGENODE* range_node;
@@ -1281,8 +1276,7 @@ void ACF_Phase_Unwrap(llist_node range, FITPRMS* fit_prms){
  * @param[in]  range  A RANGENODE struct.
  *
  * This function unwraps the phase for XCF. Only one iteration is needed to improve the unwrap
- * because the fitted slope of the ACF phase is used as the initial phase unwrapping guess. This
- * function is meant to mapped to a list of ranges using llist_for_each.
+ * because the fitted slope of the ACF phase is used as the initial phase unwrapping guess.
  */
 void XCF_Phase_Unwrap(llist_node range){
   
@@ -1309,9 +1303,6 @@ void XCF_Phase_Unwrap(llist_node range){
   }
   list_null_flag = LLIST_SUCCESS;
   llist_reset_iter(range_node->elev);
-
-  //llist_for_each_arg(range_node->elev,(node_func_arg)phase_correction,&range_node->phase_fit->b,
-  //          total_2pi_corrections);
 
   llist_reset_iter(range_node->elev);
   S_xx = 0;
@@ -1343,8 +1334,6 @@ void XCF_Phase_Unwrap(llist_node range){
   }
   list_null_flag = LLIST_SUCCESS;
   llist_reset_iter(range_node->elev);
-
-  //llist_for_each_arg(range_node->elev,(node_func_arg)phase_correction,&slope_est, total_2pi_corrections);
 
   free(total_2pi_corrections);
 }
@@ -1379,8 +1368,6 @@ void Filter_TX_Overlap(llist ranges, llist lags, FITPRMS *fit_prms){
     }
     list_null_flag = LLIST_SUCCESS;
     llist_reset_iter(ranges);
-
-    //llist_for_each_arg(ranges, (node_func_arg)filter_tx_overlapped_lags, lags, bad_samples);
 
     llist_destroy(bad_samples,TRUE,free);
 
@@ -1438,8 +1425,7 @@ void Determine_Lags(llist lags,FITPRMS *fit_prms){
  * @param      fit_prms  The FITPRM struct holding rawacf record info.
  *
  * Each RANGENODE contains a list of ACF phases, XCF phases, and ACF power values for each lag. This
- * function takes the range data from a raw record and adds it to the lists for a RANGENODE. This
- * function is meant to be mapped to a list of ranges using llist_for_each.
+ * function takes the range data from a raw record and adds it to the lists for a RANGENODE.
  */
 void Fill_Data_Lists_For_Range(llist_node range,llist lags,FITPRMS *fit_prms){
   RANGENODE* range_node;
