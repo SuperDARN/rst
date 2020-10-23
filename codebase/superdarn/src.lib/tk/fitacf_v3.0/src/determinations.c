@@ -79,13 +79,13 @@ void allocate_fit_data(struct FitData* fit_data, FITPRMS* fit_prms){
  */
 void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data,double noise_pwr){
 
+    llist_node node; 
     int list_null_flag = LLIST_SUCCESS;
     fit_data->revision.major=3;
     fit_data->revision.minor=0;
 
     allocate_fit_data(fit_data,fit_prms);
 
-    llist_node node; 
     fit_data->noise.vel = 0.0;
     fit_data->noise.skynoise = noise_pwr;
     fit_data->noise.lag0 = 0.0;

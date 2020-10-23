@@ -321,7 +321,6 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
   /*Comment this out for simulated data without TX overlap*/
   Filter_TX_Overlap(ranges, lags, fit_prms);
 
-  llist_reset_iter(ranges);
   llist_get_iter(ranges, &node);
   while(node != NULL && list_null_flag == LLIST_SUCCESS)
   {
@@ -332,14 +331,11 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
   llist_reset_iter(ranges);
   list_null_flag = LLIST_SUCCESS;
 
-  /*llist_for_each_arg(ranges,(node_func_arg)print_range_node,fit_prms,NULL);*/
   /*Criterion is applied to filter low power lags that are considered too close to
   statistical fluctuations*/
-  //llist_for_each_arg(ranges,(node_func_arg)Filter_Low_Pwr_Lags,fit_prms,NULL);
 
   /*Criterion is applied to filter ranges that hold no merit*/
   Filter_Bad_ACFs(fit_prms,ranges,noise_pwr);
-  /*llist_for_each_arg(ranges,(node_func_arg)print_range_node,fit_prms,NULL);*/
 
   /*At this point all remaining data are meaningful so we perform power fits.
   The phase fitting stage is dependent on fitted power so that the power fits must be done first.
@@ -348,7 +344,6 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
   While the theoretical value of |R(tau)| never exceeds unity, its experimetnal estimate 
   can be larger than 1 due to either statistical fluctuations or contribution from 
   cros-range interference so that the variance estimate becomes imaginary, i.e. meaningless.*/
-  llist_reset_iter(ranges);
   llist_get_iter(ranges, &node);
   while(node != NULL && list_null_flag == LLIST_SUCCESS)
   {
@@ -357,20 +352,14 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
     llist_get_iter(ranges, &node); 
   }
   llist_reset_iter(ranges);
-  list_null_flag = LLIST_SUCCESS;
-
-  //llist_for_each(ranges,(node_func)Power_Fits);
 
   /*We perform the phase fits for velocity and elevation. The ACF phase fit improves the
   fit of the XCF phase fit and must be done first*/
   ACF_Phase_Fit(ranges,fit_prms);
 
-  /*llist_for_each_arg(ranges,(node_func_arg)print_range_node,fit_prms,NULL);*/
-
   Filter_Bad_Fits(ranges);
 
   XCF_Phase_Fit(ranges,fit_prms);
-
 
   /*Now the fits are completed, we can make our final determinations from those fits*/
   ACF_Determinations(ranges, fit_prms, fit_data, noise_pwr);
