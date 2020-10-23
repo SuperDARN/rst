@@ -316,14 +316,6 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
   llist_reset_iter(ranges);
   list_null_flag = LLIST_SUCCESS;
   /*Now that we have CRI, we find alpha for each range*/
-  //llist_for_each_arg(ranges,(node_func_arg)Find_Alpha,lags,fit_prms);
-
-  /*Each range node has its ACF power, ACF phase, and XCF phase(elevation) data lists filled*/
-  //llist_for_each_arg(ranges,(node_func_arg)Fill_Data_Lists_For_Range,lags,fit_prms);
-
-  /*llist_for_each_arg(ranges,(node_func_arg)print_uncorrected_phase,fit_prms, NULL);*/
-  /*llist_for_each_arg(ranges,(node_func_arg)print_range_node,fit_prms,NULL);*/
-
 
   /*Tx overlapped data is removed from consideration*/
   /*Comment this out for simulated data without TX overlap*/
