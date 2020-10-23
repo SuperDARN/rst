@@ -48,6 +48,8 @@ July 2015
  */
 void Power_Fits(llist_node range){
     RANGENODE* range_node;
+    llist_node node; 
+    int list_null_flag = LLIST_SUCCESS;
 
     range_node = (RANGENODE*) range;
 
@@ -58,7 +60,18 @@ void Power_Fits(llist_node range){
 
     /*Here we fit for errors using log corrected sigma*/
 
-    llist_for_each(range_node->pwrs,calculate_log_pwr_sigma);
+    llist_reset_iter(range_node->pwrs);
+    llist_get_iter(range_node->pwrs, &node);
+    while(node != NULL && list_null_flag == LLIST_SUCCESS)
+    {
+       calculate_log_pwr_sigma(node);
+       list_null_flag = llist_go_next(range_node->pwrs);
+       llist_get_iter(range_node->pwrs, &node); 
+    }
+    list_null_flag = LLIST_SUCCESS;
+    llist_reset_iter(range_node->pwrs);
+
+    //llist_for_each(range_node->pwrs,calculate_log_pwr_sigma);
 
     two_param_straight_line_fit(range_node->l_pwr_fit_err,range_node->pwrs,1, 1);
 
@@ -81,12 +94,27 @@ void Power_Fits(llist_node range){
  */
 void ACF_Phase_Fit(llist ranges,FITPRMS *fit_prms){
     PHASETYPE acf = ACF;
+    llist_node node; 
+    int list_null_flag = LLIST_SUCCESS;
 
-    llist_for_each_arg(ranges,(node_func_arg)calculate_phase_sigma_for_range,fit_prms,&acf);
+    llist_reset_iter(ranges);
+    llist_get_iter(ranges, &node);
+    while(node != NULL && list_null_flag == LLIST_SUCCESS)
+    {
+       calculate_phase_sigma_for_range(node, fit_prms, &acf);
+       ACF_Phase_Unwrap(node, fit_prms);
+       phase_fit_for_range(node, &acf);
+       list_null_flag = llist_go_next(ranges);
+       llist_get_iter(ranges, &node); 
+    }
+    list_null_flag = LLIST_SUCCESS;
+    llist_reset_iter(ranges);
 
-    llist_for_each_arg(ranges,(node_func_arg)ACF_Phase_Unwrap, fit_prms, NULL);
+    //llist_for_each_arg(ranges,(node_func_arg)calculate_phase_sigma_for_range,fit_prms,&acf);
 
-    llist_for_each_arg(ranges,(node_func_arg)phase_fit_for_range,&acf,NULL);
+    //llist_for_each_arg(ranges,(node_func_arg)ACF_Phase_Unwrap, fit_prms, NULL);
+
+    //llist_for_each_arg(ranges,(node_func_arg)phase_fit_for_range,&acf,NULL);
 
 
 }
@@ -112,11 +140,26 @@ void ACF_Phase_Fit(llist ranges,FITPRMS *fit_prms){
  */
 void XCF_Phase_Fit(llist ranges,FITPRMS *fit_prms){
     PHASETYPE xcf = XCF;
-    llist_for_each_arg(ranges,(node_func_arg)calculate_phase_sigma_for_range,fit_prms,&xcf);
+    llist_node node; 
+    int list_null_flag = LLIST_SUCCESS;
 
-    llist_for_each(ranges,(node_func)XCF_Phase_Unwrap);
+    llist_reset_iter(ranges);
+    llist_get_iter(ranges, &node);
+    while(node != NULL && list_null_flag == LLIST_SUCCESS)
+    {
+       calculate_phase_sigma_for_range(node, fit_prms, &xcf);
+       XCF_Phase_Unwrap(node);
+       phase_fit_for_range(node, &xcf);
+       list_null_flag = llist_go_next(ranges);
+       llist_get_iter(ranges, &node); 
+    }
+    list_null_flag = LLIST_SUCCESS;
+    llist_reset_iter(ranges);
+    //llist_for_each_arg(ranges,(node_func_arg)calculate_phase_sigma_for_range,fit_prms,&xcf);
 
-    llist_for_each_arg(ranges,(node_func_arg)phase_fit_for_range,&xcf,NULL);
+    //llist_for_each(ranges,(node_func)XCF_Phase_Unwrap);
+
+    //llist_for_each_arg(ranges,(node_func_arg)phase_fit_for_range,&xcf,NULL);
 
 
 }
@@ -160,15 +203,38 @@ void calculate_phase_sigma_for_range(llist_node range,FITPRMS *fit_prms,PHASETYP
     RANGENODE* range_node;
     PHASENODE* xcf0 = NULL,*xcf1 = NULL;
     range_node = (RANGENODE*) range;
+    llist_node node; 
+    int list_null_flag = LLIST_SUCCESS;
 
     switch(*phasetype){
         case ACF:
-            llist_for_each_arg(range_node->phases,(node_func_arg)calculate_phase_sigma,range_node,
-                (void*)fit_prms);
+            llist_reset_iter(range_node->phases);
+            llist_get_iter(range_node->phases, &node);
+            while(node != NULL && list_null_flag == LLIST_SUCCESS)
+            {
+               calculate_phase_sigma(node, range_node, (void*) fit_prms);
+               list_null_flag = llist_go_next(range_node->phases);
+               llist_get_iter(range_node->phases, &node); 
+            }
+            list_null_flag = LLIST_SUCCESS;
+            llist_reset_iter(range_node->phases);
+
+            //llist_for_each_arg(range_node->phases,(node_func_arg)calculate_phase_sigma,range_node,
+            //    (void*)fit_prms);
             break;
         case XCF:
-            llist_for_each_arg(range_node->elev,(node_func_arg)calculate_phase_sigma,range_node,
-                (void*)fit_prms);
+            //llist_for_each_arg(range_node->elev,(node_func_arg)calculate_phase_sigma,range_node,
+            //    (void*)fit_prms);
+            llist_reset_iter(range_node->elev);
+            llist_get_iter(range_node->elev, &node);
+            while(node != NULL && list_null_flag == LLIST_SUCCESS)
+            {
+               calculate_phase_sigma(node, range_node, (void*) fit_prms);
+               list_null_flag = llist_go_next(range_node->elev);
+               llist_get_iter(range_node->elev, &node); 
+            }
+            list_null_flag = LLIST_SUCCESS;
+
             llist_reset_iter(range_node->elev);
 
             /*Since lag 0 phase is included in the elevation fit but for ACF its variance is 0, 
@@ -226,10 +292,23 @@ void calculate_phase_sigma(llist_node phase, llist_node range, FITPRMS *fit_prms
  */
 void calculate_log_pwr_sigma_for_range(llist_node range){
     RANGENODE* range_node;
+    llist_node node; 
+    int list_null_flag = LLIST_SUCCESS;
 
     range_node = (RANGENODE*) range;
 
-    llist_for_each(range_node->pwrs,calculate_log_pwr_sigma);
+    llist_reset_iter(range_node->pwrs);
+    llist_get_iter(range_node->pwrs, &node);
+    while(node != NULL && list_null_flag == LLIST_SUCCESS)
+    {
+       calculate_log_pwr_sigma(node);
+       list_null_flag = llist_go_next(range_node->pwrs);
+       llist_get_iter(range_node->pwrs, &node); 
+    }
+    list_null_flag = LLIST_SUCCESS;
+    llist_reset_iter(range_node->pwrs);
+
+    //llist_for_each(range_node->pwrs,calculate_log_pwr_sigma);
 }
 
 /**
