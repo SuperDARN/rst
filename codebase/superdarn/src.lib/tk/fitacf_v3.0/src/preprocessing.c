@@ -503,6 +503,9 @@ void print_phase_node_to_file(llist_node node, FILE* fp){
 void print_uncorrected_phase(llist_node node, FITPRMS* fit_prms){
   FILE* fp;
 
+  int list_null_flag = LLIST_SUCCESS;
+  llist_node phase_node;
+
   fp = fopen("phases.txt","a");
   fprintf(fp,"TIME %d-%02d-%02dT%02d:%02d:%f\n",fit_prms->time.yr, fit_prms->time.mo,
                           fit_prms->time.dy, fit_prms->time.hr,
@@ -510,7 +513,18 @@ void print_uncorrected_phase(llist_node node, FITPRMS* fit_prms){
                           fit_prms->time.us/1.0e6);
   fprintf(fp,"BEAM %02d\n",fit_prms->bmnum);
   fprintf(fp,"RANGE %d\n",((RANGENODE*)node)->range);
-  llist_for_each_arg(((RANGENODE*)node)->phases, (node_func_arg)print_phase_node_to_file,fp, NULL);
+  
+  llist_reset_iter(((RANGENODE*)node)->phases);
+  llist_get_iter(((RANGENODE*)node)->phases, &phase_node);
+  while(phase_node != NULL && list_null_flag == LLIST_SUCCESS)
+  {
+     print_phase_node_to_file(phase_node, fp);
+     list_null_flag = llist_go_next(((RANGENODE*)node)->phases);
+     llist_get_iter(((RANGENODE*)node)->phases, &phase_node); 
+  }
+  list_null_flag = LLIST_SUCCESS;
+  llist_reset_iter(((RANGENODE*)node)->phases);
+
   fclose(fp);
 }
 
