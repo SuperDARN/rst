@@ -4,7 +4,7 @@
 <name>rtsnd</name>
 <location>src.bin/tk/tool/rtsnd</location>
 
-<syntax>rtcsnd --help</syntax>
+<syntax>rtsnd --help</syntax>
 <syntax>rtsnd [-L <ar>logname</ar>] [-p <ar>pathname</ar>] [-if <ar>pidname</ar>] <ar>host</ar> <ar>port</ar></syntax>
 <syntax>rtsnd -rpf [-L <ar>logname</ar>] [-p <ar>pathname</ar>] [-if <ar>pidname</ar>] <ar>host</ar> <ar>portname</ar></syntax>
 
