@@ -64,16 +64,9 @@ char mbuf[BUF_SIZE];
 void logtime(char *fname,int nbytes) {
   char txt[256];
   int mask=S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
-  //struct flock flock;
   int fid;
   int yr,mo,dy,hr,mt,sc,us,s;
-  
-  // TODO: do we need this?
-  //flock.l_type=F_WRLCK;
-  //flock.l_whence=SEEK_SET;
-  //flock.l_start=0;
-  //flock.l_len=0;
-
+ 
   TimeReadClock(&yr,&mo,&dy,&hr,&mt,&sc,&us);
 
   fid=open(fname,O_WRONLY | O_TRUNC | O_CREAT,mask);
