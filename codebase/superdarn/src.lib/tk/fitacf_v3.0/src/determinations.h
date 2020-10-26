@@ -34,9 +34,7 @@ July 2015
 #include "fitblk.h"
 #include "llist.h"
 
-#ifndef _RMATH_H
 #define LN_TO_LOG 1/log(10) /*natural log to log conversion*/
-#endif
 
 #define V_max 30.0 /*velocity in m/s, upper limit used in gsct determination*/
 #define W_max 90.0 /*spectral width in m/s, upper limit used in gsct determination*/
