@@ -46,7 +46,7 @@ ACF determination functions
 
 
 struct FitRange* new_range_array(FITPRMS* fit_prms);
-void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data,double noise_pwr);
+void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data,double noise_pwr, int elv_version);
 
 void lag_0_pwr_in_dB(struct FitRange* fit_range_array,FITPRMS* fit_prms,double noise_pwr);
 
@@ -116,7 +116,11 @@ void set_sdev_phi(llist_node range, struct FitRange* fit_range_array);
 void set_gsct(llist_node range, struct FitRange* fit_range_array);
 void set_nump(llist_node range, struct FitRange* fit_range_array);
 
-void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms);
+void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms, int elv_version);
+void find_elevation_high(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms);
+void find_elevation_low(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms);
+
+
 void set_xcf_phi0(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms);
 void set_xcf_phi0_err(llist_node range, struct FitRange* fit_range_array);
 void set_xcf_sdev_phi(llist_node range, struct FitRange* fit_range_array);
