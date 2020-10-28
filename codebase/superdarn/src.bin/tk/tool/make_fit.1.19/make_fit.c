@@ -371,7 +371,7 @@ int main(int argc,char *argv[]) {
       /* If the allocation was successful, copy the parameters and */
       /* load the data into the FitACF structure.                  */
       if(fit_prms != NULL) {
-    	  if (prm->stid == 1)
+    	  if (prm->stid == 1 && elv_version == 1)
           {
               elv_version = 0;
           }
