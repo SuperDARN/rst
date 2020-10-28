@@ -545,15 +545,15 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
     // elv_version 0 is goosebay
     if (elv_version == 2)
     {
-        fit_data->elv[range_node->range].normal = elevation_v2( (struct FitPrm *) fit_prms, phi_0);
+        fit_data->elv[range_node->range].normal = elevation_v2( (struct FitPrm *) fit_prms, range_node->elev_fit->a);
     }
     else if (elv_version == 1)
     {
-        fit_data->elv[range_node->range].normal = elevation( (struct FitPrm*) fit_prms, phi_0);
+        fit_data->elv[range_node->range].normal = elevation( (struct FitPrm*) fit_prms, range_node->elev_fit->a);
     }
     else if (elv_version == 0)
     {
-        fit_data->elv[range_node->range].normal = elev_goose( (struct FitPrm*) fit_prms, phi_0);
+        fit_data->elv[range_node->range].normal = elev_goose( (struct FitPrm*) fit_prms, range_node->elev_fit->a);
     }
     else
     {
