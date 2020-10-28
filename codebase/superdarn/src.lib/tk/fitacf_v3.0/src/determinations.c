@@ -540,9 +540,9 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
     azi_offset = fit_prms->maxbeam/2 - 0.5;
     phi_0 = fit_prms->bmsep * (fit_prms->bmnum - azi_offset) * PI/180;
 
-    // elv_version 2 is Simon's
-    // elv_version 1 is original
-    // elv_version 0 is goosebay
+    // elv_version 2 is the Shepherd [2017] elevation calculation
+    // elv_version 1 is original elevation calculation
+    // elv_version 0 is specifically for the GBR radar when -old_elev is specified
     if (elv_version == 2)
     {
         fit_data->elv[range_node->range].normal = elevation_v2( (struct FitPrm *) fit_prms, phi_0);
@@ -746,4 +746,3 @@ void set_xcf_sdev_phi(llist_node range, struct FitRange* fit_range_array){
     fit_range_array[range_node->range].sdev_phi = range_node->elev_fit->chi_2;
 
 }
-
