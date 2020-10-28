@@ -84,7 +84,7 @@
 #include "expr.h"
 #include "hlpstr.h"
 #include "errstr.h"
-#include "graphics.h"
+#include "text_box.h"
 #include "key.h"
 #include "version.h"
 #include "aacgmlib_v2.h"
