@@ -34,7 +34,7 @@ ACF determinations from fitted parameters
 #include <stdlib.h>
 #include <string.h>
 #include "rmath.h"
-
+#include "fitblk.h"
 /**
  * Allocates space needed for final data parameters.
  *
@@ -80,7 +80,6 @@ void allocate_fit_data(struct FitData* fit_data, FITPRMS* fit_prms){
  * @param[in]  noise_pwr  The noise power.
  */
 void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data,double noise_pwr, int elv_version){
-
     int list_null_flag = LLIST_SUCCESS;
     fit_data->revision.major=3;
     fit_data->revision.minor=0;
@@ -536,30 +535,42 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
     double azi_offset,phi_0;
     RANGENODE* range_node;
     range_node = (RANGENODE*) range;
-   
+    struct FitPrm* fitprm;
+    fitprm = malloc(sizeof(struct FitPrm));
     azi_offset = fit_prms->maxbeam/2 - 0.5;
     phi_0 = fit_prms->bmsep * (fit_prms->bmnum - azi_offset) * PI/180;
+    
+    // need this elevation algorithms to work. 
+    // TODO: make consistent structs between fitacf versionss
+    // so we don't have this problem again
+    fitprm->interfer[0] = fit_prms->interfer[0];
+    fitprm->interfer[1] = fit_prms->interfer[1];
+    fitprm->interfer[2] = fit_prms->interfer[2];
+    fitprm->maxbeam = fit_prms->maxbeam;
+    fitprm->bmnum = fit_prms->bmnum;
+    fitprm->tfreq = fit_prms->tfreq;
+    fitprm->tdiff = fit_prms->tdiff;
 
     // elv_version 2 is the Shepherd [2017] elevation calculation
     // elv_version 1 is original elevation calculation
     // elv_version 0 is specifically for the GBR radar when -old_elev is specified
     if (elv_version == 2)
     {
-        fit_data->elv[range_node->range].normal = elevation_v2( (struct FitPrm *) fit_prms, range_node->elev_fit->a);
+        fit_data->elv[range_node->range].normal = elevation_v2( fitprm, range_node->elev_fit->a);
     }
     else if (elv_version == 1)
     {
-        fit_data->elv[range_node->range].normal = elevation( (struct FitPrm*) fit_prms, range_node->elev_fit->a);
+        fit_data->elv[range_node->range].normal = elevation( fitprm, range_node->elev_fit->a);
     }
     else if (elv_version == 0)
     {
-        fit_data->elv[range_node->range].normal = elev_goose( (struct FitPrm*) fit_prms, range_node->elev_fit->a);
+        fit_data->elv[range_node->range].normal = elev_goose(fitprm, range_node->elev_fit->a);
     }
     else
     {
         fprintf(stderr, "Error: Elevation version does not exist\n");
     }
-
+    free(fitprm);
 }
 
 void find_elevation_high(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms)
