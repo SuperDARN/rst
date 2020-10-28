@@ -30,6 +30,7 @@
 
 
 #include <math.h>
+#include <complex.h>
 #include "rmath.h"
 #include "badsmp.h"
 #include "fitblk.h"
@@ -41,8 +42,8 @@
 
 double noise_acf(double mnpwr,struct FitPrm *ptr,
 	             double *pwr, struct FitACFBadSample *badsmp,
-				 struct complex *raw,
-				 struct complex *n_acf) {
+				 complex *raw,
+				 complex *n_acf) {
   int i, j;
 
   int *np=NULL;
@@ -61,25 +62,24 @@ double noise_acf(double mnpwr,struct FitPrm *ptr,
   memset(bad,0,sizeof(int)*ptr->mplgs);
 
   for (i=0; i< ptr->mplgs; i++) {
-	n_acf[i].x = 0;
-	n_acf[i].y= 0;
+	n_acf[i] = CMPLX(0, 0);
 	np[i] = 0;
   }
   plim = PLIM * mnpwr;
 
   for (i=0; i< ptr->nrang; i++) {
-    if ((pwr[i] < plim) && ((fabs(raw[i*ptr->mplgs].x) + 
-			fabs(raw[i*ptr->mplgs].y)) > 0) &&
-			(fabs(raw[i*ptr->mplgs].x) < plim) &&
-			(fabs(raw[i*ptr->mplgs].y) < plim)) {
+    if ((pwr[i] < plim) && ((fabs(creal(raw[i*ptr->mplgs])) + 
+			fabs(cimag(raw[i*ptr->mplgs]))) > 0) &&
+			(fabs(creal(raw[i*ptr->mplgs])) < plim) &&
+			(fabs(cimag(raw[i*ptr->mplgs])) < plim)) {
 	  FitACFCkRng((i+1), bad,badsmp, ptr);
 
 	  for (j=0; j< ptr->mplgs; j++) {
-	    if ((fabs(raw[i*ptr->mplgs+j].x) < plim) &&
-			(fabs(raw[i*ptr->mplgs+j].y) < plim) &&
+	    if ((fabs(creal(raw[i*ptr->mplgs+j])) < plim) &&
+			(fabs(cimag(raw[i*ptr->mplgs+j])) < plim) &&
 			(bad[j] == 0)) {
-		  n_acf[j].x = n_acf[j].x + raw[i*ptr->mplgs+j].x;
-		  n_acf[j].y = n_acf[j].y + raw[i*ptr->mplgs+j].y;
+		  n_acf[j] = CMPLX((creal(n_acf[j]) + creal(raw[i*ptr->mplgs+j])),
+                  (cimag(n_acf[j]) + cimag(raw[i*ptr->mplgs+j])));
 		  ++(np[j]);
 		}
 	  }
@@ -88,8 +88,7 @@ double noise_acf(double mnpwr,struct FitPrm *ptr,
 
   if (np[0] <= 2) {
 	for (i=0; i < ptr->mplgs; ++i) {
-	  n_acf[i].x = 0;
-	  n_acf[i].y = 0;
+	  n_acf[i] = CMPLX(0, 0);
 	}
     free(np);
     free(bad);
@@ -98,11 +97,9 @@ double noise_acf(double mnpwr,struct FitPrm *ptr,
 
   for (i=0; i< ptr->mplgs; i++) {
 	if (np[i] > 2) {
-	  n_acf[i].x = n_acf[i].x/np[i];
-	  n_acf[i].y = n_acf[i].y/np[i];
+	  n_acf[i] = CMPLX((creal(n_acf[i])/np[i]), (cimag(n_acf[i])/np[i]));
 	} else {
-	  n_acf[i].x = 0;
-	  n_acf[i].y= 0;
+	  n_acf[i] = CMPLX(0, 0);
 	}
   }
 

@@ -89,23 +89,23 @@ void setup_fblk(struct RadarParm *prm, struct RawData *raw,struct FitBlock *inpu
   if (tmp==NULL) return;
   input->prm.pwr0=tmp;
 
-  if (input->acfd==NULL) tmp=malloc(sizeof(struct complex)*input->prm.nrang*
+  if (input->acfd==NULL) tmp=malloc(sizeof(complex)*input->prm.nrang*
                                     input->prm.mplgs);
-  else tmp=realloc(input->acfd,sizeof(struct complex)*input->prm.nrang*
+  else tmp=realloc(input->acfd,sizeof(complex)*input->prm.nrang*
                                    input->prm.mplgs);
   if (tmp==NULL) return;
   input->acfd=tmp;
 
-  if (input->xcfd==NULL) tmp=malloc(sizeof(struct complex)*input->prm.nrang*
+  if (input->xcfd==NULL) tmp=malloc(sizeof(complex)*input->prm.nrang*
                                     input->prm.mplgs);
-  else tmp=realloc(input->xcfd,sizeof(struct complex)*input->prm.nrang*
+  else tmp=realloc(input->xcfd,sizeof(complex)*input->prm.nrang*
                                    input->prm.mplgs);
   if (tmp==NULL) return;
   input->xcfd=tmp;
 
-  memset(input->acfd,0,sizeof(struct complex)*input->prm.nrang*
+  memset(input->acfd,0,sizeof(complex)*input->prm.nrang*
                                    input->prm.mplgs);
-  memset(input->xcfd,0,sizeof(struct complex)*input->prm.nrang*
+  memset(input->xcfd,0,sizeof(complex)*input->prm.nrang*
                                    input->prm.mplgs);
 
 
@@ -115,14 +115,12 @@ void setup_fblk(struct RadarParm *prm, struct RawData *raw,struct FitBlock *inpu
 
     if (raw->acfd[0] !=NULL) {
       for (j=0;j<input->prm.mplgs;j++) {
-        input->acfd[i*input->prm.mplgs+j].x=raw->acfd[0][i*input->prm.mplgs+j];
-        input->acfd[i*input->prm.mplgs+j].y=raw->acfd[1][i*input->prm.mplgs+j];
+        input->acfd[i*input->prm.mplgs+j] = CMPLX(raw->acfd[0][i*input->prm.mplgs+j], raw->acfd[1][i*input->prm.mplgs+j]);
       }
     }
     if (raw->xcfd[0] !=NULL) {
       for (j=0;j<input->prm.mplgs;j++) {
-        input->xcfd[i*input->prm.mplgs+j].x=raw->xcfd[0][i*input->prm.mplgs+j];
-        input->xcfd[i*input->prm.mplgs+j].y=raw->xcfd[1][i*input->prm.mplgs+j];
+        input->xcfd[i*input->prm.mplgs+j] = CMPLX(raw->xcfd[0][i*input->prm.mplgs+j], raw->xcfd[1][i*input->prm.mplgs+j]);
       }
     }
   }
