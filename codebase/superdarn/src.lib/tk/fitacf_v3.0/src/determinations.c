@@ -557,15 +557,15 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
     // elv_version 0 is specifically for the GBR radar when -old_elev is specified
     if (elv_version == 2)
     {
-        fit_data->elv[range_node->range].normal = elevation_v2( fitprm, range_node->elev_fit->a);
+        fit_data->elv[range_node->range].normal = elevation_v2( fitprm, fit_data->xrng[range_node->range].phi0);
     }
     else if (elv_version == 1)
     {
-        fit_data->elv[range_node->range].normal = elevation( fitprm, range_node->elev_fit->a);
+        fit_data->elv[range_node->range].normal = elevation( fitprm, fit_data->xrng[range_node->range].phi0);
     }
     else if (elv_version == 0)
     {
-        fit_data->elv[range_node->range].normal = elev_goose(fitprm, range_node->elev_fit->a);
+        fit_data->elv[range_node->range].normal = elev_goose(fitprm, fit_data->xrng[range_node->range].phi0);
     }
     else
     {
