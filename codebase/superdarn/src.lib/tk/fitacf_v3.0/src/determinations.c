@@ -34,7 +34,6 @@ ACF determinations from fitted parameters
 #include <stdlib.h>
 #include <string.h>
 #include "rmath.h"
-#include "fitblk.h"
 /**
  * Allocates space needed for final data parameters.
  *
