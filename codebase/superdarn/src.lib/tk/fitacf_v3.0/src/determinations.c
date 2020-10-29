@@ -550,6 +550,7 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
     fitprm->bmnum = fit_prms->bmnum;
     fitprm->tfreq = fit_prms->tfreq;
     fitprm->tdiff = fit_prms->tdiff;
+    fitprm->phidiff = fit_prms->phidiff;
 
     // elv_version 2 is the Shepherd [2017] elevation calculation
     // elv_version 1 is original elevation calculation
