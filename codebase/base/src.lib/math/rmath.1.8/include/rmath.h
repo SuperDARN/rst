@@ -38,15 +38,6 @@ Modifitcations:
 #ifndef _RMATH_H
 #define _RMATH_H
 
-/*Need to use _COMPLEX_H to not
- * override the complex.h definition*/
-#ifndef _COMPLEX_H
-struct complex {
-    double x,y;
-};
-#define cabs(a) sqrt((a.x*a.x)+(a.y*a.y))
-#endif
-
 /*Speed of Light in m/s*/
 #define C 2.99792458e+8
 #define LN_TO_LOG 4.342944819

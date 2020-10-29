@@ -24,6 +24,6 @@
  
  */
 
-double lag_power(complex *a);
+double lag_power(double complex *a);
 double noise_stat(double mnpwr,struct FitPrm *ptr,
-                  struct FitACFBadSample *badsmp, complex *acf);
+                  struct FitACFBadSample *badsmp, double complex *acf);

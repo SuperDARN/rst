@@ -41,9 +41,6 @@
 #define ACF_GROUND_SCAT 2
 #define ACF_MIXED_SCAT	3
 
-int acf_preproc(struct complex *acf,
-                struct complex *orig_acf,
-                double *noise_lev,
-                int range,int *badlag,
-                int mplgs);
+int acf_preproc(complex *acf, complex *orig_acf, double *noise_lev, int range,
+        int *badlag, int mplgs);
 

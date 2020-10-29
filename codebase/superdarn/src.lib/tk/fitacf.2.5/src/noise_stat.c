@@ -32,7 +32,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <compplex.h>
+#include <complex.h>
 #include "rmath.h"
 #include "fitblk.h"
 
@@ -43,13 +43,13 @@
 #define ROOT_3 1.7
 
 
-double lag_power(complex *a) {
-  return sqrt(a->x*a->x + a->y*a->y);
+double lag_power(double complex a) {
+  return sqrt(creal(a)*creal(a) + cimag(a)*cimag(a));
 }
 
 double noise_stat(double mnpwr,struct FitPrm *ptr,
                   struct FitACFBadSample *badsmp,
-		  complex *acf) {
+		  double complex *acf) {
   double plim;
   int i, j, np0, npt;
   int *bdlag;
@@ -80,7 +80,7 @@ double noise_stat(double mnpwr,struct FitPrm *ptr,
 
 	for (j=1; j < ptr->mplgs; ++j) {
       if (bdlag[j]) continue;
-	  temp = lag_power(&acf[i*ptr->mplgs+j]);
+	  temp = lag_power(acf[i*ptr->mplgs+j]);
 	  if (temp < low_lim || temp > high_lim) continue;
 	  ++npt;
 	  P = P + temp;

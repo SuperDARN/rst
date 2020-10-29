@@ -13,6 +13,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <sys/types.h>
+#include <complex.h>
 #include "rtypes.h"
 #include "rmath.h"
 
@@ -203,19 +204,19 @@ struct model *load_model(FILE *fp, int ihem, int ilev, int iang,
     return NULL;
   }
 
-  ptr->aoeff_p=malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
+  ptr->aoeff_p=malloc(sizeof(double complex)*(ptr->ltop+1)*(ptr->ltop+1));
   if (ptr->aoeff_p==NULL) {
     free(ptr);
     return NULL;
   }
-  ptr->aoeff_n=malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
+  ptr->aoeff_n=malloc(sizeof(double complex)*(ptr->ltop+1)*(ptr->ltop+1));
   if (ptr->aoeff_n==NULL) {
     free(ptr->aoeff_p);
     free(ptr);
     return NULL;
   }
-  memset(ptr->aoeff_p,0,sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
-  memset(ptr->aoeff_n,0,sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
+  memset(ptr->aoeff_p,0,sizeof(double complex)*(ptr->ltop+1)*(ptr->ltop+1));
+  memset(ptr->aoeff_n,0,sizeof(double complex)*(ptr->ltop+1)*(ptr->ltop+1));
 
 
   for (l=0; l<=ptr->ltop; l++) {
@@ -224,12 +225,10 @@ struct model *load_model(FILE *fp, int ihem, int ilev, int iang,
 
       if (m < 0) {
         k = l*(ptr->ltop+1)-m;
-        ptr->aoeff_n[k].x = cr;
-        ptr->aoeff_n[k].y = ci;
+        ptr->aoeff_n[k] = CMPLX(cr, ci);
       } else {
         k = l*(ptr->ltop+1)+m;
-        ptr->aoeff_p[k].x = cr;
-        ptr->aoeff_p[k].y = ci;
+        ptr->aoeff_p[k] = CMPLX(cr, ci);
       }
 
     }
@@ -356,8 +355,8 @@ struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
   double afac,afac_l,afac_h,denom;
   float Al,Bl,Cl,Dl,El,Fl,Gl,Hl;
   double dtp,dtn,mgp,mgn,afp,afn;
-  struct complex *Ap,*Bp,*Cp,*Dp,*Ep,*Fp,*Gp,*Hp;
-  struct complex *An,*Bn,*Cn,*Dn,*En,*Fn,*Gn,*Hn;
+  double complex *Ap,*Bp,*Cp,*Dp,*Ep,*Fp,*Gp,*Hp;
+  double complex *An,*Bn,*Cn,*Dn,*En,*Fn,*Gn,*Hn;
 
   /* These are hardcoded to the largest possible number of
    * model bins (currently CS10) - EGT */
@@ -450,10 +449,10 @@ struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
   sprintf(ptr->level,"Esw  %5.1f mV/m",mag);
   sprintf(ptr->angle,"Bang %5.0f deg.",cang);
 
-  ptr->aoeff_p=malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
-  ptr->aoeff_n=malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
-  memset(ptr->aoeff_p,0,sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
-  memset(ptr->aoeff_n,0,sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
+  ptr->aoeff_p=malloc(sizeof(double complex)*(ptr->ltop+1)*(ptr->ltop+1));
+  ptr->aoeff_n=malloc(sizeof(double complex)*(ptr->ltop+1)*(ptr->ltop+1));
+  memset(ptr->aoeff_p,0,sizeof(double complex)*(ptr->ltop+1)*(ptr->ltop+1));
+  memset(ptr->aoeff_n,0,sizeof(double complex)*(ptr->ltop+1)*(ptr->ltop+1));
 
   ptr->ihem = ih;
   ptr->ilev = im1;
@@ -482,62 +481,62 @@ struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
   mgp = mhgh[im1] - mag;
   mgn = mag - mlow[im1];
 
-  Ap = malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
-  Bp = malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
-  Cp = malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
-  Dp = malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
-  Ep = malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
-  Fp = malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
-  Gp = malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
-  Hp = malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
+  Ap = malloc(sizeof(double complex)*(ptr->ltop+1)*(ptr->ltop+1));
+  Bp = malloc(sizeof(double complex)*(ptr->ltop+1)*(ptr->ltop+1));
+  Cp = malloc(sizeof(double complex)*(ptr->ltop+1)*(ptr->ltop+1));
+  Dp = malloc(sizeof(double complex)*(ptr->ltop+1)*(ptr->ltop+1));
+  Ep = malloc(sizeof(double complex)*(ptr->ltop+1)*(ptr->ltop+1));
+  Fp = malloc(sizeof(double complex)*(ptr->ltop+1)*(ptr->ltop+1));
+  Gp = malloc(sizeof(double complex)*(ptr->ltop+1)*(ptr->ltop+1));
+  Hp = malloc(sizeof(double complex)*(ptr->ltop+1)*(ptr->ltop+1));
 
-  An = malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
-  Bn = malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
-  Cn = malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
-  Dn = malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
-  En = malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
-  Fn = malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
-  Gn = malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
-  Hn = malloc(sizeof(struct complex)*(ptr->ltop+1)*(ptr->ltop+1));
+  An = malloc(sizeof(double complex)*(ptr->ltop+1)*(ptr->ltop+1));
+  Bn = malloc(sizeof(double complex)*(ptr->ltop+1)*(ptr->ltop+1));
+  Cn = malloc(sizeof(double complex)*(ptr->ltop+1)*(ptr->ltop+1));
+  Dn = malloc(sizeof(double complex)*(ptr->ltop+1)*(ptr->ltop+1));
+  En = malloc(sizeof(double complex)*(ptr->ltop+1)*(ptr->ltop+1));
+  Fn = malloc(sizeof(double complex)*(ptr->ltop+1)*(ptr->ltop+1));
+  Gn = malloc(sizeof(double complex)*(ptr->ltop+1)*(ptr->ltop+1));
+  Hn = malloc(sizeof(double complex)*(ptr->ltop+1)*(ptr->ltop+1));
 
   for (l=0; l<=ptr->ltop; l++) {
     for (m=-l; m<=l; m++) {
       if (m < 0) {
         k = l*(ptr->ltop+1)-m;
-        An[k].x = model[ih][it1][im1][ia1]->aoeff_n[k].x/denom;
-        An[k].y = model[ih][it1][im1][ia1]->aoeff_n[k].y/denom;
-        Bn[k].x = model[ih][it1][im1][ia2]->aoeff_n[k].x/denom;
-        Bn[k].y = model[ih][it1][im1][ia2]->aoeff_n[k].y/denom;
-        Cn[k].x = model[ih][it1][im2][ia1]->aoeff_n[k].x/denom;
-        Cn[k].y = model[ih][it1][im2][ia1]->aoeff_n[k].y/denom;
-        Dn[k].x = model[ih][it1][im2][ia2]->aoeff_n[k].x/denom;
-        Dn[k].y = model[ih][it1][im2][ia2]->aoeff_n[k].y/denom;
-        En[k].x = model[ih][it2][im1][ia1]->aoeff_n[k].x/denom;
-        En[k].y = model[ih][it2][im1][ia1]->aoeff_n[k].y/denom;
-        Fn[k].x = model[ih][it2][im1][ia2]->aoeff_n[k].x/denom;
-        Fn[k].y = model[ih][it2][im1][ia2]->aoeff_n[k].y/denom;
-        Gn[k].x = model[ih][it2][im2][ia1]->aoeff_n[k].x/denom;
-        Gn[k].y = model[ih][it2][im2][ia1]->aoeff_n[k].y/denom;
-        Hn[k].x = model[ih][it2][im2][ia2]->aoeff_n[k].x/denom;
-        Hn[k].y = model[ih][it2][im2][ia2]->aoeff_n[k].y/denom;
+        An[k] = CMPLX(creal(model[ih][it1][im1][ia1]->aoeff_n[k])/denom, 
+                cimag(model[ih][it1][im1][ia1]->aoeff_n[k])/denom);
+        Bn[k] = CMPLX(creal(model[ih][it1][im1][ia2]->aoeff_n[k])/denom, 
+                cimag(model[ih][it1][im1][ia2]->aoeff_n[k])/denom);
+        Cn[k] = CMPLX(creal(model[ih][it1][im2][ia1]->aoeff_n[k])/denom, 
+                cimag(model[ih][it1][im2][ia1]->aoeff_n[k])/denom);
+        Dn[k] = CMPLX(creal(model[ih][it1][im2][ia2]->aoeff_n[k])/denom, 
+                cimag(model[ih][it1][im2][ia2]->aoeff_n[k])/denom);
+        En[k] = CMPLX(creal(model[ih][it2][im1][ia1]->aoeff_n[k])/denom, 
+                cimag(model[ih][it2][im1][ia1]->aoeff_n[k])/denom);
+        Fn[k] = CMPLX(creal(model[ih][it2][im1][ia2]->aoeff_n[k])/denom, 
+                cimag(model[ih][it2][im1][ia2]->aoeff_n[k])/denom);
+        Gn[k] = CMPLX(creal(model[ih][it2][im2][ia1]->aoeff_n[k])/denom, 
+                cimag(model[ih][it2][im2][ia1]->aoeff_n[k])/denom);
+        Hn[k] = CMPLX(creal(model[ih][it2][im2][ia2]->aoeff_n[k])/denom, 
+                cimag(model[ih][it2][im2][ia2]->aoeff_n[k])/denom);
       } else {
         k = l*(ptr->ltop+1)+m;
-        Ap[k].x = model[ih][it1][im1][ia1]->aoeff_p[k].x/denom;
-        Ap[k].y = model[ih][it1][im1][ia1]->aoeff_p[k].y/denom;
-        Bp[k].x = model[ih][it1][im1][ia2]->aoeff_p[k].x/denom;
-        Bp[k].y = model[ih][it1][im1][ia2]->aoeff_p[k].y/denom;
-        Cp[k].x = model[ih][it1][im2][ia1]->aoeff_p[k].x/denom;
-        Cp[k].y = model[ih][it1][im2][ia1]->aoeff_p[k].y/denom;
-        Dp[k].x = model[ih][it1][im2][ia2]->aoeff_p[k].x/denom;
-        Dp[k].y = model[ih][it1][im2][ia2]->aoeff_p[k].y/denom;
-        Ep[k].x = model[ih][it2][im1][ia1]->aoeff_p[k].x/denom;
-        Ep[k].y = model[ih][it2][im1][ia1]->aoeff_p[k].y/denom;
-        Fp[k].x = model[ih][it2][im1][ia2]->aoeff_p[k].x/denom;
-        Fp[k].y = model[ih][it2][im1][ia2]->aoeff_p[k].y/denom;
-        Gp[k].x = model[ih][it2][im2][ia1]->aoeff_p[k].x/denom;
-        Gp[k].y = model[ih][it2][im2][ia1]->aoeff_p[k].y/denom;
-        Hp[k].x = model[ih][it2][im2][ia2]->aoeff_p[k].x/denom;
-        Hp[k].y = model[ih][it2][im2][ia2]->aoeff_p[k].y/denom;
+        Ap[k] = CMPLX(creal(model[ih][it1][im1][ia1]->aoeff_p[k])/denom,
+                cimag(model[ih][it1][im1][ia1]->aoeff_p[k])/denom);
+        Bp[k] = CMPLX(creal(model[ih][it1][im1][ia2]->aoeff_p[k])/denom,
+                cimag(model[ih][it1][im1][ia2]->aoeff_p[k])/denom);
+        Cp[k] = CMPLX(creal(model[ih][it1][im2][ia1]->aoeff_p[k])/denom,
+                cimag(model[ih][it1][im2][ia1]->aoeff_p[k])/denom);
+        Dp[k] = CMPLX(creal(model[ih][it1][im2][ia2]->aoeff_p[k])/denom,
+                cimag(model[ih][it1][im2][ia2]->aoeff_p[k])/denom);
+        Ep[k] = CMPLX(creal(model[ih][it2][im1][ia1]->aoeff_p[k])/denom,
+                cimag(model[ih][it2][im1][ia1]->aoeff_p[k])/denom);
+        Fp[k] = CMPLX(creal(model[ih][it2][im1][ia2]->aoeff_p[k])/denom,
+                cimag(model[ih][it2][im1][ia2]->aoeff_p[k])/denom);
+        Gp[k] = CMPLX(creal(model[ih][it2][im2][ia1]->aoeff_p[k])/denom,
+                cimag(model[ih][it2][im2][ia1]->aoeff_p[k])/denom);
+        Hp[k] = CMPLX(creal(model[ih][it2][im2][ia2]->aoeff_p[k])/denom,
+                cimag(model[ih][it2][im2][ia2]->aoeff_p[k])/denom);
       }
     }
   }
@@ -547,27 +546,27 @@ struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
       if (m < 0) {
         k = l*(ptr->ltop+1)-m;
 
-        ptr->aoeff_n[k].x = An[k].x*afp*mgp*dtp + Bn[k].x*afn*mgp*dtp +
-                            Cn[k].x*afp*mgn*dtp + Dn[k].x*afn*mgn*dtp +
-                            En[k].x*afp*mgp*dtn + Fn[k].x*afn*mgp*dtn +
-                            Gn[k].x*afp*mgn*dtn + Hn[k].x*afn*mgn*dtn;
-
-        ptr->aoeff_n[k].y = An[k].y*afp*mgp*dtp + Bn[k].y*afn*mgp*dtp +
-                            Cn[k].y*afp*mgn*dtp + Dn[k].y*afn*mgn*dtp +
-                            En[k].y*afp*mgp*dtn + Fn[k].y*afn*mgp*dtn +
-                            Gn[k].y*afp*mgn*dtn + Hn[k].y*afn*mgn*dtn;
+        ptr->aoeff_n[k] = CMPLX(creal(An[k])*afp*mgp*dtp + 
+                creal(Bn[k])*afn*mgp*dtp + creal(Cn[k])*afp*mgn*dtp +
+                creal(Dn[k])*afn*mgn*dtp + creal(En[k])*afp*mgp*dtn + 
+                creal(Fn[k])*afn*mgp*dtn + creal(Gn[k])*afp*mgn*dtn + 
+                creal(Hn[k])*afn*mgn*dtn, cimag(An[k])*afp*mgp*dtp +
+                cimag(Bn[k])*afn*mgp*dtp + cimag(Cn[k])*afp*mgn*dtp +
+                cimag(Dn[k])*afn*mgn*dtp + cimag(En[k])*afp*mgp*dtn +
+                cimag(Fn[k])*afn*mgp*dtn + cimag(Gn[k])*afp*mgn*dtn +
+                cimag(Hn[k])*afn*mgn*dtn);
       } else {
         k = l*(ptr->ltop+1)+m;
 
-        ptr->aoeff_p[k].x = Ap[k].x*afp*mgp*dtp + Bp[k].x*afn*mgp*dtp +
-                            Cp[k].x*afp*mgn*dtp + Dp[k].x*afn*mgn*dtp +
-                            Ep[k].x*afp*mgp*dtn + Fp[k].x*afn*mgp*dtn +
-                            Gp[k].x*afp*mgn*dtn + Hp[k].x*afn*mgn*dtn;
-
-        ptr->aoeff_p[k].y = Ap[k].y*afp*mgp*dtp + Bp[k].y*afn*mgp*dtp +
-                            Cp[k].y*afp*mgn*dtp + Dp[k].y*afn*mgn*dtp +
-                            Ep[k].y*afp*mgp*dtn + Fp[k].y*afn*mgp*dtn +
-                            Gp[k].y*afp*mgn*dtn + Hp[k].y*afn*mgn*dtn;
+        ptr->aoeff_p[k] = CMPLX(creal(Ap[k])*afp*mgp*dtp +
+                creal(Bp[k])*afn*mgp*dtp + creal(Cp[k])*afp*mgn*dtp +
+                creal(Dp[k])*afn*mgn*dtp + creal(Ep[k])*afp*mgp*dtn +
+                creal(Fp[k])*afn*mgp*dtn + creal(Gp[k])*afp*mgn*dtn +
+                creal(Hp[k])*afn*mgn*dtn, cimag(Ap[k])*afp*mgp*dtp +
+                cimag(Bp[k])*afn*mgp*dtp + cimag(Cp[k])*afp*mgn*dtp +
+                cimag(Dp[k])*afn*mgn*dtp + cimag(Ep[k])*afp*mgp*dtn +
+                cimag(Fp[k])*afn*mgp*dtn + cimag(Gp[k])*afp*mgn*dtn +
+                cimag(Hp[k])*afn*mgn*dtn);
 
       }
     }
@@ -788,15 +787,15 @@ double factorial(double n)
 }
 
 
-void cmult(struct complex *a,struct complex *b,struct complex *c)
+void cmult(double complex a,double complex b,double complex c)
 {
-  a->x = b->x*c->x - b->y*c->y;
-  a->y = b->x*c->y + b->y*c->x;
+  a = CMPLX(creal(b)*creal(c) - cimag(b)*cimag(c),
+          creal(b)*cimag(c) + cimag(b)*creal(c));
 }
 
 
-void slv_ylm_mod(float theta, float phi, int order, struct complex *ylm_p,
-                 struct complex *ylm_n, double *anorm, double *plm_p,
+void slv_ylm_mod(float theta, float phi, int order, double complex *ylm_p,
+                 double complex *ylm_n, double *anorm, double *plm_p,
                  double *apcnv)
 {
   int l,m,i;
@@ -849,10 +848,10 @@ void slv_ylm_mod(float theta, float phi, int order, struct complex *ylm_p,
       }
       plm_p[l*(order+1)+m]=Pmm;
 
-      ylm_p[l*(order+1)+m].x=Pmm*anorm[l*(order+1)+m]*cos(m*phi);
-      ylm_p[l*(order+1)+m].y=Pmm*anorm[l*(order+1)+m]*sin(m*phi);
-      ylm_n[l*(order+1)+m].x=pow(-1,m)*ylm_p[l*(order+1)+m].x;
-      ylm_n[l*(order+1)+m].y=-pow(-1,m)*ylm_p[l*(order+1)+m].y;
+      ylm_p[l*(order+1)+m] = CMPLX(Pmm*anorm[l*(order+1)+m]*cos(m*phi), 
+              Pmm*anorm[l*(order+1)+m]*sin(m*phi));
+      ylm_n[l*(order+1)+m] = CMPLX(pow(-1,m)*creal(ylm_p[l*(order+1)+m]),
+              -pow(-1,m)*cimag(ylm_p[l*(order+1)+m]));
 
     }
   }
@@ -865,15 +864,15 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
 {
   int i,m,l,n;
   int ltop,mtop;
-  struct complex *ylm_px=NULL;
-  struct complex *ylm_nx=NULL;
+  double complex *ylm_px=NULL;
+  double complex *ylm_nx=NULL;
   double *plm_px=NULL;
-  struct complex *xot_arr=NULL;
+  double complex *xot_arr=NULL;
 
   double *pot_arr=NULL;
-  struct complex Ix;
-  struct complex T1,T2;
-  struct complex t;
+  double complex Ix;
+  double complex T1,T2;
+  double complex t;
 /*  float Re=6362.0+300.0; */
   float Rd = Radial_Dist/1000.;  /* using values in shfconst.h */
 
@@ -883,11 +882,11 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
 
   ltop=mod->ltop;
   mtop=mod->mtop;
-  ylm_px=malloc(sizeof(struct complex)*(ltop+1)*(ltop+1)*num);
-  ylm_nx=malloc(sizeof(struct complex)*(ltop+1)*(ltop+1)*num);
-  plm_px=malloc(sizeof(struct complex)*(ltop+1)*(ltop+1)*num);
+  ylm_px=malloc(sizeof(double complex)*(ltop+1)*(ltop+1)*num);
+  ylm_nx=malloc(sizeof(double complex)*(ltop+1)*(ltop+1)*num);
+  plm_px=malloc(sizeof(double complex)*(ltop+1)*(ltop+1)*num);
   pot_arr=malloc(sizeof(double)*num);
-  xot_arr=malloc(sizeof(struct complex)*num);
+  xot_arr=malloc(sizeof(double complex)*num);
   anorm=malloc(sizeof(double)*(ltop+1)*(ltop+1));
   apcnv=malloc(sizeof(double)*(ltop+1)*(ltop+1));
 
@@ -913,8 +912,7 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
 
   for (i=0;i<num;i++) {
 
-    Ix.x=0;
-    Ix.y=0;
+    Ix = CMPLX(0, 0);
     for (l=0;l<=ltop;l++) {
       mlow=-l;
       if (mtop<l) mlow=-mtop;
@@ -922,31 +920,27 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
 
       for (m=mlow;m<0;m++) {
 
-        cmult(&t,&mod->aoeff_n[l*(ltop+1)-m],
-              &ylm_nx[i*(ltop+1)*(ltop+1)+l*(ltop+1)-m]);
+        cmult(t,mod->aoeff_n[l*(ltop+1)-m],
+              ylm_nx[i*(ltop+1)*(ltop+1)+l*(ltop+1)-m]);
 
-        Ix.x += t.x;
-        Ix.y += t.y;
+        Ix += CMPLX(creal(t), cimag(t));
       }
 
       for (m=0;m<=mhgh;m++) {
 
-        cmult(&t,&mod->aoeff_p[l*(ltop+1)+m],
-              &ylm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+m]);
-         Ix.x += t.x;
-         Ix.y += t.y;
+        cmult(t,mod->aoeff_p[l*(ltop+1)+m],
+              ylm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+m]);
+        Ix += CMPLX(creal(t), cimag(t));
        }
     }
 
-    pot[i]       = Ix.x;
-    pot_arr[i]   = Ix.x;
-    xot_arr[i].x = Ix.x;
-    xot_arr[i].y = Ix.y;
+    pot[i] = creal(Ix);
+    pot_arr[i] = creal(Ix);
+    xot_arr[i] = Ix;
   }
 
   for (i=0;i<num;i++) {
-    Ix.x=0;
-    Ix.y=0;
+    Ix = CMPLX(0, 0);
 
     for (l=0;l<=ltop;l++) {
 
@@ -955,26 +949,23 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
       mhgh=-mlow;
 
       for (m=mlow;m<0;m++) {
-        cmult(&t,&mod->aoeff_n[l*(ltop+1)-m],
-              &ylm_nx[i*(ltop+1)*(ltop+1)+l*(ltop+1)-m]);
-        Ix.x += m*t.x;
-        Ix.y += m*t.y;
+        cmult(t,mod->aoeff_n[l*(ltop+1)-m],
+              ylm_nx[i*(ltop+1)*(ltop+1)+l*(ltop+1)-m]);
+        Ix += CMPLX(m*creal(t), m*cimag(t));
 
       }
 
       for (m=0;m<=mhgh;m++) {
 
-         cmult(&t,&mod->aoeff_p[l*(ltop+1)+m],
-               &ylm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+m]);
-         Ix.x += m*t.x;
-         Ix.y += m*t.y;
+         cmult(t,mod->aoeff_p[l*(ltop+1)+m],
+               ylm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+m]);
+         Ix += CMPLX(m*creal(t), m*cimag(t));
        }
     }
 
-    ele_phi[i] = (1000.0/(Rd*sin(the_col[i])))*Ix.y;
+    ele_phi[i] = (1000.0/(Rd*sin(the_col[i])))*cimag(Ix);
 
-    Ix.x=0;
-    Ix.y=0;
+    Ix = CMPLX(0, 0);
     for (l=0;l<=ltop;l++) {
       mlow=-l;
       if (mtop<l) mlow=-mtop;
@@ -982,49 +973,47 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
 
       for (m=mlow;m<0;m++) {
         n=-m;
-        T1.x=n*cos(the[i])/sin(the[i])*
-            plm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)-m];
-        T1.y=n*cos(the[i])/sin(the[i])*
-            plm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)-m];
+        T1 = CMPLX(n*cos(the[i])/sin(the[i])*
+                plm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)-m],
+                n*cos(the[i])/sin(the[i])*
+                plm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)-m]);
         if ((n+1) <=l) {
-           T2.x=plm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+n+1];
-           T2.y=plm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+n+1];
+           T2 = CMPLX(plm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+n+1], 
+                   plm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+n+1]);
         } else {
-          T2.x=0;
-          T2.y=0;
+          T2 = CMPLX(0, 0);
         }
 
-        T1.x=(T1.x+T2.x)*pow(-1,m)*cos(m*phi[i])*anorm[l*(ltop+1)-m];
-        T1.y=(T1.y+T2.y)*pow(-1,m)*sin(m*phi[i])*anorm[l*(ltop+1)-m];
-        cmult(&t,&T1,&mod->aoeff_n[l*(ltop+1)-m]);
-        Ix.x += t.x;
-        Ix.y += t.y;
+        T1= CMPLX((creal(T1)+creal(T2))*pow(-1,m)*
+                cos(m*phi[i])*anorm[l*(ltop+1)-m], 
+                (cimag(T1)+cimag(T2))*pow(-1,m)*
+                sin(m*phi[i])*anorm[l*(ltop+1)-m]);
+        cmult(t,T1,mod->aoeff_n[l*(ltop+1)-m]);
+        Ix += CMPLX(creal(t), cimag(t));
       }
 
       for (m=0;m<=mhgh;m++) {
-        T1.x=m*cos(the[i])/sin(the[i])*
-             plm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+m];
-        T1.y=m*cos(the[i])/sin(the[i])*
-             plm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+m];
+        T1 = CMPLX(m*cos(the[i])/sin(the[i])*
+                plm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+m], 
+                m*cos(the[i])/sin(the[i])*
+                plm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+m]);
         if ((m+1) <=l) {
-          T2.x=plm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+m+1];
-          T2.y=plm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+m+1];
+          T2 = CMPLX(plm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+m+1], 
+                  plm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+m+1]);
         } else {
-          T2.x=0;
-          T2.y=0;
+          T2 = CMPLX(0, 0);
         }
-        T1.x=(T1.x+T2.x)*cos(m*phi[i])*anorm[l*(ltop+1)+m];
-        T1.y=(T1.y+T2.y)*sin(m*phi[i])*anorm[l*(ltop+1)+m];
-        cmult(&t,&T1,&mod->aoeff_p[l*(ltop+1)+m]);
+        T1 = CMPLX((creal(T1)+creal(T2))*cos(m*phi[i])*anorm[l*(ltop+1)+m],
+                (cimag(T1)+cimag(T2))*sin(m*phi[i])*anorm[l*(ltop+1)+m]);
+        cmult(t,T1,mod->aoeff_p[l*(ltop+1)+m]);
 
-        Ix.x += t.x;
-        Ix.y += t.y;
+        Ix += CMPLX(creal(t), cimag(t));
       }
     }
     if (latmin > 0)
-      ele_the[i]=-1000.0*Ix.x*(180.0/(90.0-latmin))/Rd;
+      ele_the[i]=-1000.0*creal(Ix)*(180.0/(90.0-latmin))/Rd;
     else
-      ele_the[i]=-1000.0*Ix.x*(180.0/(90.0+latmin))/Rd;
+      ele_the[i]=-1000.0*creal(Ix)*(180.0/(90.0+latmin))/Rd;
   }
 }
 
