@@ -94,6 +94,11 @@
 #include "oldfitread.h"
 #include "oldfitscan.h"
 
+#include "snddata.h"
+#include "sndread.h"
+#include "sndseek.h"
+#include "sndscan.h"
+
 #include "key.h"
 #include "text_box.h"
 #include "plot_time.h"
@@ -101,6 +106,7 @@
 #include "sza.h"
 #include "szamap.h"
 
+#include "griddata.h"
 #include "geobeam.h"
 #include "plot_cell.h"
 #include "plot_vec.h"
@@ -168,6 +174,7 @@ struct PolygonData *clip;
 struct CFitdata *cfit;
 struct RadarParm *prm;
 struct FitData *fit;
+struct SndData *snd;
 
 struct RadarScan *scn;
 
@@ -653,6 +660,7 @@ int main(int argc,char *argv[]) {
   unsigned char poleflg=0;
 
   unsigned char cfitflg=0,fitflg=0;
+  unsigned char sndflg=0;
 
   char *chnstr=NULL;
 
@@ -660,6 +668,7 @@ int main(int argc,char *argv[]) {
   FILE *fitfp=NULL;
   struct OldFitFp *oldfitfp=NULL;
   struct CFitfp *cfitfp=NULL;
+  FILE *sndfp=NULL;
   int tlen=0;
   int syncflg=0;
 
@@ -704,6 +713,7 @@ int main(int argc,char *argv[]) {
   prm=RadarParmMake();
   fit=FitMake();
   cfit=CFitMake();
+  snd=SndMake();
   scn=RadarScanMake();
 
   envstr=getenv("SD_RADAR");
@@ -927,6 +937,7 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"fit",'x',&fitflg);
   OptionAdd(&opt,"cfit",'x',&cfitflg);
+  OptionAdd(&opt,"snd",'x',&sndflg);
   OptionAdd(&opt,"tl",'i',&tlen);
   OptionAdd(&opt,"cn",'t',&chnstr);
   OptionAdd(&opt,"ns",'x',&nsflg);
@@ -989,7 +1000,7 @@ int main(int argc,char *argv[]) {
     exit(-1);
   }
 
-  if (cfitflg==0) fitflg=1;
+  if ((cfitflg==0) && (sndflg==0)) fitflg=1;
 
   if (argc-farg>1) {
     dname=argv[argc-2];
@@ -1090,6 +1101,19 @@ int main(int argc,char *argv[]) {
       fprintf(stderr,"Error reading file.\n");
       exit(-1);
     }
+  } else if (sndflg) {
+    sndfp=fopen(dname,"r");
+    if (sndfp==NULL) {
+      fprintf(stderr,"File not found.\n");
+      exit(-1);
+    }
+
+    s=SndFreadRadarScan(sndfp,&state,scn,snd,tlen,syncflg);
+
+    if (s==-1) {
+      fprintf(stderr,"Error reading file.\n");
+      exit(-1);
+    }
   }
   if ((ssec !=-1) || (sdte !=-1)) {
     /* we must skip the start of the files */
@@ -1140,6 +1164,19 @@ int main(int argc,char *argv[]) {
         }
       } else state=0;
       s=CFitReadRadarScan(cfitfp,&state,scn,cfit,tlen,syncflg,channel);
+    } else if (sndflg) {
+      s=SndFseek(sndfp,yr,mo,dy,hr,mt,sc,NULL);
+
+      if (s ==-1) {
+        fprintf(stderr,"File does not contain the requested interval.\n");
+        exit(-1);
+      }
+      if (tlen==0) {
+        while ((s=SndFread(sndfp,snd)) !=-1) {
+          if (abs(snd->scan)==1) break;
+        }
+      } else state=0;
+      s=SndFreadRadarScan(sndfp,&state,scn,snd,tlen,syncflg);
     }
   } else ssec=scn->st_time;
 
@@ -1163,6 +1200,13 @@ int main(int argc,char *argv[]) {
     cpnum=1;
     sprintf(revtxt,"Revision:%d.%d",cfit->version.major,
             cfit->version.minor);
+  }
+  if (sndflg) {
+    stid=snd->stid;
+    cptab[0]=snd->cp;
+    cpnum=1;
+    sprintf(revtxt,"Revision:%d.%d",snd->snd_revision.major,
+            snd->snd_revision.minor);
   }
 
   if (magflg && old_aacgm) magflg = 2; /* set to 2 for old AACGM */
@@ -1188,7 +1232,7 @@ int main(int argc,char *argv[]) {
   if ((lat<0) && (latmin>0)) latmin=-latmin;
   if ((lat>0) && (latmin<0)) latmin=-latmin;
 
-  if (fovflg || ffovflg) fov=make_fov(scn->st_time,network,scn->stid,chisham);
+  if (fovflg || ffovflg) fov=make_field_fov(scn->st_time,network,scn->stid,chisham);
   if ((fovflg || ffovflg) && magflg) {
     if (old_aacgm) MapModify(fov,AACGMtransform,NULL);
     else           MapModify(fov,AACGM_v2_transform,NULL);
@@ -1197,10 +1241,10 @@ int main(int argc,char *argv[]) {
   if (tmtick<1) tmtick=1;
   if (tmtick>6) tmtick=6;
 
-  if (grdflg) grd=make_grid(grdlon,grdlat);
-  if (igrdflg) igrd=make_grid(igrdlon,igrdlat);
+  if (grdflg) grd=make_grid(grdlon,grdlat,0);
+  if (igrdflg) igrd=make_grid(igrdlon,igrdlat,0);
 
-  if (tmkflg) tmk=make_grid(30*tmtick,10);
+  if (tmkflg) tmk=make_grid(30*tmtick,10,0);
 
   if (magflg) {
     if (old_aacgm) {
@@ -1676,13 +1720,13 @@ int main(int argc,char *argv[]) {
         if (ffanflg) plot_filled(plot,&scn->bm[c],&geol.bm[n],0,
                                  magflg,xbox+pad,ybox+pad,
                                  wbox-2*pad,hbox-2*pad,tfunc,marg,ffancol);
-        if (pprm !=0) plot_cell(plot,&scn->bm[c],&geol.bm[n],0,magflg,xbox+pad,ybox+pad,
-                                wbox-2*pad,hbox-2*pad,tfunc,marg,find_color,
-                                &key,pprm,gscol,gsflg);
+        if (pprm !=0) plot_field_cell(plot,&scn->bm[c],&geol.bm[n],0,magflg,xbox+pad,ybox+pad,
+                                      wbox-2*pad,hbox-2*pad,tfunc,marg,find_color,
+                                      &key,pprm,gscol,gsflg);
 
-        if (vecflg) plot_vec(plot,&scn->bm[c],&geol.bm[n],0,magflg,xbox+pad,ybox+pad,
-                             wbox-2*pad,hbox-2*pad,vsf,tfunc,marg,find_color,
-                             &vkey,gscol,gsflg,0.5,vecr);
+        if (vecflg) plot_field_vec(plot,&scn->bm[c],&geol.bm[n],0,magflg,xbox+pad,ybox+pad,
+                                   wbox-2*pad,hbox-2*pad,vsf,tfunc,marg,find_color,
+                                   &vkey,gscol,gsflg,0.5,vecr);
 
         if (fanflg) plot_outline(plot,&scn->bm[c],&geol.bm[n],0,
                                  magflg,site->maxbeam,xbox+pad,ybox+pad,
@@ -1931,6 +1975,8 @@ int main(int argc,char *argv[]) {
       } else if (cfitflg)
         s=CFitReadRadarScan(cfitfp,&state,scn,cfit,tlen,
                             syncflg,channel);
+      else if (sndflg)
+        s=SndFreadRadarScan(sndfp,&state,scn,snd,tlen,syncflg);
     }
     if ((esec !=-1) && (scn->ed_time>esec)) break;
     cnt++;
