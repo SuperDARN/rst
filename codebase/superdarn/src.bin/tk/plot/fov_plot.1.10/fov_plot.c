@@ -70,6 +70,7 @@
 
 #include "radar.h" 
 
+#include "griddata.h"
 #include "make_fov.h"
 #include "text_box.h"
 #include "plot_time_label.h"

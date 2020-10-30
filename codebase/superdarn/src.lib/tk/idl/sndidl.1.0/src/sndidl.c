@@ -51,6 +51,7 @@ void IDLCopySndDataFromIDL(int nrang, struct SndIDLData *isnd,
   snd->smsep = isnd->smsep;
   snd->noise.search = isnd->noise.search;
   snd->noise.mean = isnd->noise.mean;
+  snd->channel = isnd->channel;
   snd->bmnum = isnd->bmnum;
   snd->bmazm = isnd->bmazm;
   snd->scan = isnd->scan;
@@ -66,6 +67,9 @@ void IDLCopySndDataFromIDL(int nrang, struct SndIDLData *isnd,
 
   if (strlen(IDL_STRING_STR(&isnd->combf)) !=0)
     SndSetCombf(snd,IDL_STRING_STR(&isnd->combf));
+
+  snd->fit_revision.major = isnd->fit_revision.major;
+  snd->fit_revision.minor = isnd->fit_revision.minor;
 
   snd->snd_revision.major = isnd->snd_revision.major;
   snd->snd_revision.minor = isnd->snd_revision.minor;
@@ -127,6 +131,7 @@ void IDLCopySndDataToIDL(int nrang, struct SndData *snd,
   isnd->smsep = snd->smsep;
   isnd->noise.search = snd->noise.search;
   isnd->noise.mean = snd->noise.mean;
+  isnd->channel = snd->channel;
   isnd->bmnum = snd->bmnum;
   isnd->bmazm = snd->bmazm;
   isnd->scan = snd->scan;
@@ -144,6 +149,9 @@ void IDLCopySndDataToIDL(int nrang, struct SndData *snd,
     strncpy(combftmp,snd->combf,COMBF_SIZE);
     IDL_StrStore(&isnd->combf,combftmp);
   }
+
+  isnd->fit_revision.major = snd->fit_revision.major;
+  isnd->fit_revision.minor = snd->fit_revision.minor;
 
   isnd->snd_revision.major = snd->snd_revision.major;
   isnd->snd_revision.minor = snd->snd_revision.minor;
@@ -199,43 +207,50 @@ struct SndIDLData *IDLMakeSndData(IDL_VPTR *vptr) {
     {"US",0,(void *) IDL_TYP_LONG},
     {0}};
 
+  static IDL_STRUCT_TAG_DEF fit_revision[]={
+    {"MAJOR",0,(void *) IDL_TYP_LONG},
+    {"MINOR",0,(void *) IDL_TYP_LONG},
+    {0}};
+
   static IDL_STRUCT_TAG_DEF snd_revision[]={
     {"MAJOR",0,(void *) IDL_TYP_INT},
     {"MINOR",0,(void *) IDL_TYP_INT},
     {0}};
 
   static IDL_STRUCT_TAG_DEF snddata[]={
-    {"RADAR_REVISION",0,NULL},          /* 0 */
-    {"ORIGIN",0,NULL},                  /* 1 */
-    {"CP",0,(void *) IDL_TYP_INT},      /* 2 */
-    {"STID",0,(void *) IDL_TYP_INT},    /* 3 */
-    {"TIME",0,NULL},                    /* 4 */
-    {"NAVE",0,(void *) IDL_TYP_INT},    /* 5 */
-    {"LAGFR",0,(void *) IDL_TYP_INT},   /* 6 */
-    {"SMSEP",0,(void *) IDL_TYP_INT},   /* 7 */
-    {"NOISE",0,NULL},                   /* 8 */
-    {"BMNUM",0,(void *) IDL_TYP_INT},   /* 9 */
-    {"BMAZM",0,(void *) IDL_TYP_FLOAT}, /* 10 */
-    {"SCAN",0,(void *) IDL_TYP_INT},    /* 11 */
-    {"RXRISE",0,(void *) IDL_TYP_INT},  /* 12 */
-    {"INTT",0,NULL},                    /* 13 */
-    {"NRANG",0,(void *) IDL_TYP_INT},   /* 14 */
-    {"FRANG",0,(void *) IDL_TYP_INT},   /* 15 */
-    {"RSEP",0,(void *) IDL_TYP_INT},    /* 16 */
-    {"XCF",0,(void *) IDL_TYP_INT},     /* 17 */
-    {"TFREQ",0,(void *) IDL_TYP_INT},   /* 18 */
-    {"SKY_NOISE",0,(void *) IDL_TYP_FLOAT}, /* 19 */
-    {"COMBF",0,(void *) IDL_TYP_STRING}, /* 20 */
-    {"SND_REVISION",0,NULL},            /* 21 */
-    {"QFLG",rdim,(void *) IDL_TYP_BYTE}, /* 22 */
-    {"GFLG",rdim,(void *) IDL_TYP_BYTE}, /* 23 */
-    {"V",rdim,(void *) IDL_TYP_FLOAT},   /* 24 */
-    {"V_E",rdim,(void *) IDL_TYP_FLOAT}, /* 25 */
-    {"P_L",rdim,(void *) IDL_TYP_FLOAT}, /* 26 */
-    {"W_L",rdim,(void *) IDL_TYP_FLOAT}, /* 27 */
-    {"X_QFLG",rdim,(void *) IDL_TYP_BYTE}, /* 28 */
-    {"PHI0",rdim,(void *) IDL_TYP_FLOAT}, /* 29 */
-    {"PHI0_E",rdim,(void *) IDL_TYP_FLOAT}, /* 30 */
+    {"RADAR_REVISION",0,NULL},           /* 0 */
+    {"ORIGIN",0,NULL},                   /* 1 */
+    {"CP",0,(void *) IDL_TYP_INT},       /* 2 */
+    {"STID",0,(void *) IDL_TYP_INT},     /* 3 */
+    {"TIME",0,NULL},                     /* 4 */
+    {"NAVE",0,(void *) IDL_TYP_INT},     /* 5 */
+    {"LAGFR",0,(void *) IDL_TYP_INT},    /* 6 */
+    {"SMSEP",0,(void *) IDL_TYP_INT},    /* 7 */
+    {"NOISE",0,NULL},                    /* 8 */
+    {"CHANNEL",0,(void *) IDL_TYP_INT},  /* 9 */
+    {"BMNUM",0,(void *) IDL_TYP_INT},   /* 10 */
+    {"BMAZM",0,(void *) IDL_TYP_FLOAT}, /* 11 */
+    {"SCAN",0,(void *) IDL_TYP_INT},    /* 12 */
+    {"RXRISE",0,(void *) IDL_TYP_INT},  /* 13 */
+    {"INTT",0,NULL},                    /* 14 */
+    {"NRANG",0,(void *) IDL_TYP_INT},   /* 15 */
+    {"FRANG",0,(void *) IDL_TYP_INT},   /* 16 */
+    {"RSEP",0,(void *) IDL_TYP_INT},    /* 17 */
+    {"XCF",0,(void *) IDL_TYP_INT},     /* 18 */
+    {"TFREQ",0,(void *) IDL_TYP_INT},   /* 19 */
+    {"SKY_NOISE",0,(void *) IDL_TYP_FLOAT}, /* 20 */
+    {"COMBF",0,(void *) IDL_TYP_STRING}, /* 21 */
+    {"FIT_REVISION",0,NULL},             /* 22 */
+    {"SND_REVISION",0,NULL},             /* 23 */
+    {"QFLG",rdim,(void *) IDL_TYP_BYTE}, /* 24 */
+    {"GFLG",rdim,(void *) IDL_TYP_BYTE}, /* 25 */
+    {"V",rdim,(void *) IDL_TYP_FLOAT},   /* 26 */
+    {"V_E",rdim,(void *) IDL_TYP_FLOAT}, /* 27 */
+    {"P_L",rdim,(void *) IDL_TYP_FLOAT}, /* 28 */
+    {"W_L",rdim,(void *) IDL_TYP_FLOAT}, /* 29 */
+    {"X_QFLG",rdim,(void *) IDL_TYP_BYTE}, /* 30 */
+    {"PHI0",rdim,(void *) IDL_TYP_FLOAT}, /* 31 */
+    {"PHI0_E",rdim,(void *) IDL_TYP_FLOAT}, /* 32 */
     {0}};
 
   static IDL_MEMINT ilDims[IDL_MAX_ARRAY_DIM];
@@ -244,8 +259,9 @@ struct SndIDLData *IDLMakeSndData(IDL_VPTR *vptr) {
   snddata[1].type=IDL_MakeStruct("OGSTR",origin);
   snddata[4].type=IDL_MakeStruct("TMSTR",time);
   snddata[8].type=IDL_MakeStruct("NSSTR",noise);
-  snddata[13].type=IDL_MakeStruct("ITSTR",intt);
-  snddata[21].type=IDL_MakeStruct("SDSTR",snd_revision);
+  snddata[14].type=IDL_MakeStruct("ITSTR",intt);
+  snddata[22].type=IDL_MakeStruct("RLSTR",fit_revision);
+  snddata[23].type=IDL_MakeStruct("SDSTR",snd_revision);
 
   s=IDL_MakeStruct("SNDDATA",snddata);
 

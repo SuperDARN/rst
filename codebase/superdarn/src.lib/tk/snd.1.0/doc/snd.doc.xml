@@ -238,6 +238,11 @@
     </member>
 
     <member>
+      <proto>int16 channel;</proto>
+      <description>Channel number for a stereo or other multi-channel radar.</description>
+    </member>
+
+    <member>
       <proto>int16 bmnum;</proto>
       <description>Beam number.</description>
     </member>
@@ -305,6 +310,21 @@
     <member>
       <proto>char *combf;</proto>
       <description>Comment buffer.</description>
+    </member>
+
+    <member>
+      <struct>
+        <member>
+          <proto>char major;</proto>
+          <description>FITACF major revision number.</description>
+        </member>
+        <member>
+          <proto>char minor;</proto>
+          <description>FITACF minor revision number.</description>
+        </member>
+      </struct>
+      <proto>fitacf_revision;</proto>
+      <description>FITACF revision number.</description>
     </member>
 
     <member>

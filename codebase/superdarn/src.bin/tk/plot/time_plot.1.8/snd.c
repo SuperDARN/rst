@@ -77,7 +77,7 @@ void snd_tplot(struct SndData *snd,struct tplot *tptr) {
   int i;
 
   tptr->bmnum=snd->bmnum;
-  tptr->channel=0;
+  tptr->channel=snd->channel;
   tptr->cpid=snd->cp;
   tptr->scan=snd->scan;
   tptr->nrang=snd->nrang;
@@ -100,6 +100,8 @@ void snd_tplot(struct SndData *snd,struct tplot *tptr) {
     tptr->p_l[i]=snd->rng[i].p_l;
     tptr->w_l[i]=snd->rng[i].w_l;
     tptr->v_e[i]=snd->rng[i].v;
+    if (snd->rng[i].x_qflg == 1) tptr->phi0[i]=snd->rng[i].phi0;
+    else tptr->phi0[i]=-4;
   }
 
 }

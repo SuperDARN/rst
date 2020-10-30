@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>rtsnd</name>
+<location>src.bin/tk/tool/rtsnd</location>
+
+<syntax>rtsnd --help</syntax>
+<syntax>rtsnd [-L <ar>logname</ar>] [-p <ar>pathname</ar>] [-if <ar>pidname</ar>] <ar>host</ar> <ar>port</ar></syntax>
+<syntax>rtsnd -rpf [-L <ar>logname</ar>] [-p <ar>pathname</ar>] [-if <ar>pidname</ar>] <ar>host</ar> <ar>portname</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-noscan</on><od>ignore scan flag and process all data (usually sounding mode data is indicated by a scan flag of -2).</od>
+</option>
+<option><on>-cn <ar>channel</ar></on><od>process data from a specific channel number for stereo mode data.</od>
+</option>
+<option><on>-L <ar>logname</ar></on><od>log connections and information in the file <ar>logname</ar>. By default, connections are recorded in <code>snd.rt.log</code>.</od>
+</option>
+<option><on>-p <ar>pathname</ar></on><od>store the 2-hour files in the directory <ar>pathname</ar>.</od>
+</option>
+<option><on>-if <ar>pidname</ar></on><od>record the process Identifier (PID) of the server in the file <ar>pidname</ar>. By default, the PID is recorded in <code>snd.rt.pid</code>.</od>
+</option>
+<option><on><ar>host</ar></on><od>hostname or IP number of the system to connect to.</od>
+</option>
+<option><on><ar>rport</ar></on><od>port number to connect to on the server.</od>
+</option>
+<option><on>-rpf</on><od>The remote port number is stored in a text file.</od>
+</option>
+<option><on><ar>rportname</ar></on><od>filename of the text file containing the remote port number.</od>
+</option>
+<synopsis><p>Creates 2-hour <code>snd</code> format files from a <code>fitacf</code> TCP/IP data stream.</p></synopsis>
+<description><p>Creates 2-hour <code>snd</code> format files from a <code>fitacf</code> TCP/IP data stream.</p>
+<p>The data is written to a file called "<code><em>yyyymmdd.hh.iii</em>.snd</code>" where <em>yyyy</em> is the year, <em>mm</em> is the month, <em>dd</em> is the day, <em>hh</em> is the hour, and <em>iii</em> is the radar identifier code.</p>
+</description>
+
+<example>
+<command>make_snd -L log -if pid.id kapqnx.jhuapl.edu 1024</command>
+<description>Generates <code>snd</code> files from the host "<code>kapqnx.jhuapl.edu</code>", served at port 1024. The process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyy</em> is the year, <em>mm</em> is the month, and <em>dd</em> is the day.</description>
+</example>
+
+<example>
+<command>make_snd -L log -if pid.id -rpf port.kap kapqnx.jhuapl.edu</command>
+<description>Generates <code>snd</code> files from the host "<code>kapqnx.jhuapl.edu</code>", served at port contained in the file "<code>port.kap</code>". The process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyy</em> is the year, <em>mm</em> is the month, and <em>dd</em> is the day.</description>
+</example>
+
+</binary>

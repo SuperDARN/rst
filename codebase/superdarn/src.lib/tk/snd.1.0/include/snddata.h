@@ -9,7 +9,7 @@
 
 
 #define SND_MAJOR_REVISION 1
-#define SND_MINOR_REVISION 0
+#define SND_MINOR_REVISION 1
 
 
 struct SndData {
@@ -47,6 +47,7 @@ struct SndData {
     float mean;
   } noise;
 
+  int16 channel;
   int16 bmnum;
   float bmazm;
   int16 scan;
@@ -66,6 +67,11 @@ struct SndData {
   double sky_noise;
 
   char *combf;
+
+  struct {
+    int major;
+    int minor;
+  } fit_revision;
 
   struct {
     int major;
