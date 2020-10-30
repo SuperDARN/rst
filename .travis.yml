@@ -1,14 +1,17 @@
-language: C
+language: c
 
-matrix:
+jobs:
   include:
-    - os: linux
+    - name: "Ubuntu 16.04 (xenial)"
+      os: linux
       dist: xenial
       env: TRAVIS_DIST_NAME="xenial"
-    - os: linux
+    - name: "Ubuntu 18.04 (bionic)"
+      os: linux
       dist: bionic
       env: TRAVIS_DIST_NAME="bionic"
-    - os: linux
+    - name: "Ubuntu 20.04 (focal)"
+      os: linux
       dist: focal
       env: TRAVIS_DIST_NAME="focal"
 
