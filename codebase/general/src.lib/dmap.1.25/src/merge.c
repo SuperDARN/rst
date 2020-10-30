@@ -154,7 +154,7 @@ struct DataMapArray *DataMapMergeArray(char *name,
   n=1;
   for (c=0;c<x->dim;c++)  n=n*x->rng[c];
   for (c=0;c<n;c++) { 
-    sp=x->data.vptr+wd*c;   
+    sp=(int*)x->data.vptr+wd*c;   
     t=c;
     for (cc=0;cc<x->dim;cc++) {
       inx[cc]=t % x->rng[cc];
@@ -165,14 +165,14 @@ struct DataMapArray *DataMapMergeArray(char *name,
       if (cc !=x->dim) t=t*rngbuf[cc];
       t+=inx[cc-1];
     }
-    dp=tmp+wd*t;
+    dp=(int*)tmp+wd*t;
     memcpy(dp,sp,wd);
   }     
 
   n=1;
   for (c=0;c<y->dim;c++)  n=n*y->rng[c];
   for (c=0;c<n;c++) { 
-    sp=y->data.vptr+wd*c;   
+    sp=(int*)y->data.vptr+wd*c;   
     t=c;
     for (cc=0;cc<y->dim;cc++) {
       inx[cc]=t % y->rng[cc];
@@ -184,7 +184,7 @@ struct DataMapArray *DataMapMergeArray(char *name,
       if (cc !=x->dim) t=t*rngbuf[cc];
       t+=inx[cc-1];
     }
-    dp=tmp+wd*t;
+    dp=(int*)tmp+wd*t;
     memcpy(dp,sp,wd);
   }     
   free(inx);  

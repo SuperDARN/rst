@@ -70,7 +70,7 @@ struct FrameBuffer *FrameBufferLoadPPM(FILE *fp,char *name) {
   while ((s==0) && (fgets(str,255,fp) !=NULL) && (str[0]=='#'));
   if ((s==0) && (sscanf(str,"%d %d",&wdt,&hgt) !=2)) s=-1;
   if ((s==0) && (fgets(str,255,fp)==NULL)) s=-1;
-  if ((s==0) && (sscanf(str,"%d",&max) !=1)) s=-1; 
+  if ((s==0) && (sscanf(str,"%u",&max) !=1)) s=-1; 
 
   ptr->wdt=wdt;
   ptr->hgt=hgt;
@@ -199,7 +199,7 @@ struct FrameBuffer *FrameBufferLoadPPMX(FILE *fp) {
   while ((s==0) && (fgets(str,255,fp) !=NULL) && (str[0]=='#'));
   if ((s==0) && (sscanf(str,"%d %d",&wdt,&hgt) !=2)) s=-1;
   if ((s==0) && (fgets(str,255,fp)==NULL)) s=-1;
-  if ((s==0) && (sscanf(str,"%d",&max) !=1)) s=-1; 
+  if ((s==0) && (sscanf(str,"%u",&max) !=1)) s=-1; 
   if ((s==0) && (fgets(str,255,fp)==NULL)) s=-1;
   if (s==0) {
     for (c=0;str[c] !=0;c++) if (!isspace(str[c])) break;

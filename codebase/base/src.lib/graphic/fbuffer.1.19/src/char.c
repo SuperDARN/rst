@@ -182,8 +182,7 @@ int FrameBufferSaveFont(FILE *fp,
     if (fwrite(ptr->chr[c].data,sze,1,fp) !=1) break;
   }
   return 0;
-};
-
+}
 
 
 int FrameBufferTextBox(struct FrameBufferFont *fnt,

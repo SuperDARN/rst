@@ -90,8 +90,15 @@ struct PolygonData **SZAContour(int yr,int mo,int dy,int hr,int mt,int sc,
         if (mode==0) {
            tlat=lat;
            tlon=lon;
-        } else s = (*AACGM_Cnv)(lat,lon,0,&tlat,&tlon,&r,1);
-
+        } else
+        {
+            // TODO: comment what is going on here... 
+            s = (*AACGM_Cnv)(lat,lon,0,&tlat,&tlon,&r,1);
+            if (s == -1)
+            {
+                fprintf(stderr, "Error: AACGM convert returned an error\n");
+            }
+        }
         LsoT=(hr*3600+mt*60)+(tlon*4*60)+eqt;
         Hangle=15*((LsoT/3600)-12);
         Z=SZAAngle(tlon,tlat,dec,Hangle);

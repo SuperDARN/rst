@@ -37,6 +37,10 @@ int main(int argc,char *argv[]) {
   double value;
 
   s=Eval(sum,&value,decode_value,NULL,decode_function,NULL);
+  if (s == -1)
+  {
+      fprintf(stderr, "Warning: Eval returned a negative, may be an error\n");
+  }
   fprintf(stdout,"%s=%g\n",sum,value);
 
   return 0;

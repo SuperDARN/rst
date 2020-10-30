@@ -80,10 +80,6 @@ void XMLdocFreeElement(struct XMLdocelement *ptr) {
   free(ptr);
 }
 
-
-
-
-
 void XMLdocFree(struct XMLdocdata *ptr) {
   int i;
   if (ptr==NULL) return;
@@ -103,11 +99,3 @@ void XMLdocFree(struct XMLdocdata *ptr) {
   free(ptr);
   return;
 }
-
-
-
-
-
-
-
-
