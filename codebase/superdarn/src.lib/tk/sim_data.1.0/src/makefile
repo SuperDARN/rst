@@ -12,7 +12,7 @@ INC=$(IPATH)/superdarn
 DSTPATH=$(LIBPATH)
 OUTPUT=sim_data
 LINK="1"
-
+CFLAGS=-Wno-gnu-anonymous-struct
 
 
 include $(MAKELIB).$(SYSTEM)

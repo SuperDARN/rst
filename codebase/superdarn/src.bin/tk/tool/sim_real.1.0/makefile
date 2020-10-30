@@ -13,6 +13,6 @@ DSTPATH = $(BINPATH)
 OUTPUT = sim_real
 LIBS=-lsim_data.1 -lradar.1 -lfitacf.1 -lraw.1 -lfit.1 -ldmap.1 -lrtime.1 -lrcnv.1 -lrmath.1 -liqdata.1
 SLIB=-lm -lz
- 
+CFLAGS=-Wno-gnu-anonymous-struct 
 
 include $(MAKEBIN).$(SYSTEM)
