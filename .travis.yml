@@ -1,28 +1,57 @@
 language: C
+
+matrix:
+  include:
+    - os: linux
+      dist: xenial
+      env: TRAVIS_DIST_NAME="xenial"
+    - os: linux
+      dist: bionic
+      env: TRAVIS_DIST_NAME="bionic"
+    - os: linux
+      dist: focal
+      env: TRAVIS_DIST_NAME="focal"
+
+compiler:
+  - gcc
+
+addons:
+  apt:
+    update: true
+    packages:
+      - wget
+      - make
+      - vim
+      - git
+      - libx11-dev
+      - libxext-dev
+      - libhdf5-serial-dev
+      - libnetcdf-dev
+      - libncurses-dev
+      - netpbm
+
+env:
+  global:
+    - RSTPATH="/home/travis/build/SuperDARN/rst"
+
 before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get -y install wget
-  - sudo apt-get -y install make
-  - sudo apt-get -y install vim
-  - sudo apt-get -y install git
-  - sudo apt-get -y install libx11-dev
-  - sudo apt-get -y install libxext-dev
-  - sudo apt-get -y install libhdf5-serial-dev
-  - sudo apt-get -y install libnetcdf-dev
-  - sudo apt-get -y install libncurses-dev
-  - sudo apt-get -y install netpbm
-  - sudo apt-get -y install libpng12-dev
+  - if [[ "$TRAVIS_DIST_NAME" == "xenial" ]]; then sudo apt-get -y install libpng12-dev; fi
+  - if [[ "$TRAVIS_DIST_NAME" == "bionic" ]]; then sudo apt-get -y install libpng-dev; fi
+  - if [[ "$TRAVIS_DIST_NAME" == "focal" ]]; then sudo apt-get -y install libpng-dev; fi
   - wget https://spdf.sci.gsfc.nasa.gov/pub/software/cdf/dist/cdf36_4/linux/cdf36_4-dist-all.tar.gz
   - tar -xf cdf36_4-dist-all.tar.gz
   - cd cdf36_4-dist && make clean && make OS=linux ENV=gnu all && make INSTALLDIR=/home/travis/build/SuperDARN/cdf install
-  - export RSTPATH=/home/travis/build/SuperDARN/rst
   - . $RSTPATH/.profile.bash
   - export CDF_PATH=/home/travis/build/SuperDARN/cdf
+
 install:
   - make.build
+
 script:
   - make.code
+
 after_script:
   - make.doc
+
 notifications:
   email: false
