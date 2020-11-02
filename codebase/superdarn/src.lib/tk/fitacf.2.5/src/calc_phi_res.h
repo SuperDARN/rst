@@ -30,4 +30,4 @@
 
 
 
-int calc_phi_res(complex *acf,int *badlag, double *phi_res,int mplgs);
+int calc_phi_res(double complex *acf, int *badlag, double *phi_res,int mplgs);

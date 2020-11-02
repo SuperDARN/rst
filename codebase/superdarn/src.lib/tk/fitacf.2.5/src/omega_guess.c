@@ -42,9 +42,8 @@
 #include <complex.h>
 #include "rmath.h"
 
-double omega_guess(complex *acf,double *tau,
-                   int *badlag,double *phi_res,
-                   double *omega_err,int mpinc,int mplgs) {
+double omega_guess(double complex *acf,double *tau, int *badlag,
+        double *phi_res, double *omega_err,int mpinc,int mplgs) {
 
     int i,j,nave=0;
     double delta_tau, delta_phi, omega=0.0, 

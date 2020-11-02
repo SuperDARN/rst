@@ -30,14 +30,13 @@
 
 
 #include <math.h>
-
+#include <complex.h>
 #include "rmath.h"
 #include "badsmp.h"
 #include "fitblk.h"
 #include "noise_stat.h"
 
-void remove_noise(int mplgs,complex *acf,
-				  complex *ncf) {
+void remove_noise(int mplgs, double complex *acf, double complex *ncf) {
   int i;
   double pa, plim;
 

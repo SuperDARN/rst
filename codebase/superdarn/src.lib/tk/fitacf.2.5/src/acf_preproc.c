@@ -36,8 +36,8 @@
 #include "rmath.h"
 #include "acf_preproc.h"
 
-int acf_preproc(complex *acf, complex *orig_acf, double *noise_lev, int range,
-        int *badlag, int mplgs) {
+int acf_preproc(double complex *acf, double complex *orig_acf, 
+        double *noise_lev, int range, int *badlag, int mplgs) {
   int k;
   
   for (k=0; k < mplgs; k++) {

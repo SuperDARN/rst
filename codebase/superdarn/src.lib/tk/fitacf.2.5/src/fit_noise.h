@@ -29,7 +29,6 @@
 
 
 
-void fit_noise(complex *nacf,int *badlag,
-               struct FitACFBadSample *badsmp,
-	       double skynoise,struct FitPrm *prm,
-	       struct FitRange *ptr);
+void fit_noise(double complex *nacf, int *badlag, 
+        struct FitACFBadSample *badsmp, double skynoise, struct FitPrm *prm,
+        struct FitRange *ptr);

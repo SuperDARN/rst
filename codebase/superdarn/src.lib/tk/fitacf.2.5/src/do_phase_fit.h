@@ -32,7 +32,7 @@
 int do_phase_fit(double omega_guess, 
 		  char xflag, 
 		  int mplgs,
-		  complex *acf,
+		  double complex *acf,
 		  double *tau,
 		  double *w,
 		  double *sum_wk2_arr,

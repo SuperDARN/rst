@@ -128,23 +128,23 @@ int fill_fit_block(struct RadarParm *prm, struct RawData *raw,
     if (tmp==NULL) return -1;
     input->prm.pwr0=tmp;
 
-    if (input->acfd==NULL) tmp=malloc(sizeof(complex)*input->prm.nrang*
+    if (input->acfd==NULL) tmp=malloc(sizeof(double complex)*input->prm.nrang*
                                                                         input->prm.mplgs);
-    else tmp=realloc(input->acfd,sizeof(complex)*input->prm.nrang*
+    else tmp=realloc(input->acfd,sizeof(double complex)*input->prm.nrang*
                                                                      input->prm.mplgs); 
     if (tmp==NULL) return -1;
     input->acfd=tmp;
 
-    if (input->xcfd==NULL) tmp=malloc(sizeof(complex)*input->prm.nrang*
+    if (input->xcfd==NULL) tmp=malloc(sizeof(double complex)*input->prm.nrang*
                                                                         input->prm.mplgs);
-    else tmp=realloc(input->xcfd,sizeof(complex)*input->prm.nrang*
+    else tmp=realloc(input->xcfd,sizeof(double complex)*input->prm.nrang*
                                                                      input->prm.mplgs);
     if (tmp==NULL) return -1;
     input->xcfd=tmp;
 
-    memset(input->acfd,0,sizeof(complex)*input->prm.nrang*
+    memset(input->acfd,0,sizeof(double complex)*input->prm.nrang*
                                                                      input->prm.mplgs);
-    memset(input->xcfd,0,sizeof(complex)*input->prm.nrang*
+    memset(input->xcfd,0,sizeof(double complex)*input->prm.nrang*
                                                                      input->prm.mplgs);
 
     for (i=0;i<input->prm.nrang;i++) {

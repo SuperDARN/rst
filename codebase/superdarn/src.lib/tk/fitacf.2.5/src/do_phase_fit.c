@@ -49,7 +49,7 @@
         omega_guess - (double) initial guess for the value of omega
         xflag - (char) flag to indicate this is an XCF fit
         mplgs - (int) number of lags in the acf
-        acf - (complex) the acf (or xcf) to be fitted
+        acf - (double complex) the acf (or xcf) to be fitted
         tau - (double) array of lag values
         w - (double) array of weights (powers) for each lag
         sum_wk2_arr - (double) array of sum of w*k^2
@@ -74,7 +74,7 @@
 int do_phase_fit (double omega_guess,
                     char xflag,
                     int mplgs,
-                    complex *acf,
+                    double complex *acf,
                     double *tau,
                     double *w,
                     double *sum_wk2_arr,
@@ -154,7 +154,7 @@ int do_phase_fit (double omega_guess,
 
         if (!xflag) phi_loc = 0.;
 
-        sum_phi = catan(acf[0]);
+        sum_phi = atan2(cimag(acf[0]), creal(acf[0]));
         sum_phi = sum_phi*w[0]*w[0];
         sum_kphi = 0.0;
         n_twopi = 0;

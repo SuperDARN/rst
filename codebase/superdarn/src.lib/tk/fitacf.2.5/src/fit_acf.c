@@ -48,7 +48,7 @@
 #include "power_fits.h"
 #include "fit_mem_helpers.h"
 
-int fit_acf (complex *acf,int range, int *badlag, 
+int fit_acf (double complex *acf,int range, int *badlag, 
         struct FitACFBadSample *badsmp,int lag_lim, struct FitPrm *prm, 
         double noise_lev_in,char xflag,double xomega, struct FitRange *ptr) {
 
@@ -217,7 +217,7 @@ int fit_acf (complex *acf,int range, int *badlag,
     sum_p = w[0]*w[0]*pwr[0];
     sum_pk = 0;
     sum_pk2 = 0;
-    phi_loc = catan(acf[0]);
+    phi_loc = atan2(cimag(acf[0]), creal(acf[0]));
     sum_kphi = 0;
     t0 =  prm->mpinc * 1.0e-6;
     t2 = t0 * t0;

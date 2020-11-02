@@ -36,7 +36,7 @@
 #include "fitblk.h"
 #include "fit_acf.h"
 
-void fit_noise(complex *ncf,int *badlag,struct FitACFBadSample *badsmp,
+void fit_noise(double complex *ncf,int *badlag,struct FitACFBadSample *badsmp,
 			   double skynoise,struct FitPrm *prm,
 			   struct FitRange *ptr) {
  
