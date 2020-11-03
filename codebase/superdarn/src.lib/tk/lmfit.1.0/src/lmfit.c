@@ -223,19 +223,22 @@ int singlefit(int m, int n, double *p, double *deviates,
 {
 
   int i;
-  double tau,re,sig,wi,ti;
+  double tau,re,wi,ti;
+  //double sig;
 
   struct datapoints *v = (struct datapoints *) private;
   double lag0mag = v->mag;
   double *x, *y, *ey;
   x = v->x;
   y = v->y;
+  //TODO:  without sig this is also not used
   ey = v->ey;
   for (i=0; i<m; i++)
   {
     tau=x[i];
     re=y[i];
-    sig=ey[i];
+    // TODO: this is not used can I remove it? 
+    //sig=ey[i];
     ti=p[0];
     wi=p[1];
     lag0mag = p[2];
@@ -245,7 +248,9 @@ int singlefit(int m, int n, double *p, double *deviates,
 		else
 			deviates[i] = re-lag0mag*exp(-1.*tau/ti)*sin(wi*tau);
   }
-
+  free(ey);
+  free(x);
+  free(y);
   return 0;
 }
 
@@ -305,7 +310,8 @@ double getguessex(struct RadarParm *prm,struct RawData *raw,
   float *data_phi_pos,*data_phi_neg,data_phi;
   float *lagpwr=NULL,*logpwr=NULL,*good_lags=NULL;
   float lag0pwr,re,im,pwr,phi;
-  float fitted_width=0.0,fitted_power=0.0;
+  float fitted_width=0.0;
+  //float fitted_power=0.0;
   float delta_pos,delta_neg,error_neg=0,error_pos=0;
   int   *lag_avail=NULL,availcnt=0,goodcnt=0;
   int   mininx=0,lastlag,lag,i,j,p,L;
@@ -462,8 +468,11 @@ double getguessex(struct RadarParm *prm,struct RawData *raw,
       nrfit(good_lags,logpwr,goodcnt,sigma,1,&a,&b,&siga,&sigb,&chi2,&q);
       fitted_width = -2.9979e8*b/(prm->mpinc*1.e-6)/
                             (2*PI*1000.0*prm->tfreq);
-      if(fitted_width<=0.00) fitted_width = 1.e-2;
-			fitted_power = log(exp(a));
+      if(fitted_width<=0.00) {
+          fitted_width = 1.e-2;
+      }
+      // TODO: not used in this function
+	  //fitted_power = log(exp(a));
 
 
       /* Determine Doppler velocity by comparing the phase with models */
@@ -638,7 +647,8 @@ void lmfit(struct RadarParm *prm,struct RawData *raw,
   mp_par    parssingle[3];
   mp_result result;
   mp_config config;
-  double pdouble[6];
+  // TODO: this is not used
+  // double pdouble[6];
   double psingle[3];
   double w_limit,t_limit,t_if,w_if,lag0pwrf,v_if,f_if,lambda,tau,ref,imf;
   int status;
@@ -857,7 +867,7 @@ void lmfit(struct RadarParm *prm,struct RawData *raw,
 				mflg=0;
 			}
       /*initial velocity guess in angular Doppler frequency*/
-      pdouble[1] = w_limit*4.*PI/lambda;
+      //pdouble[1] = w_limit*4.*PI/lambda;
 
 
       /* Determine lambda power and decay time initial guesses from lsfit*/
@@ -919,7 +929,10 @@ void lmfit(struct RadarParm *prm,struct RawData *raw,
 
       /*run a single-component fit*/
       status = mpfit(singlefit,availcnt*2,3,psingle,parssingle,&config,(void *)data,&result);
-
+      if (status <= 0)
+      {
+          fprintf(stderr, "Error: mpfit returned error %d. Check mpfit.h to determine what the error means.\n", status);
+      }
       /*final params from single-component fit*/
       t_if = psingle[0];
       f_if = psingle[1];

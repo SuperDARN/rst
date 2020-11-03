@@ -247,6 +247,10 @@ int main(int argc,char *argv[]) {
   else decode_format(format);
   store[0]=PI;
   s=Eval(argv[arg],&val,decode_value,store,decode_function,store);
+  if (s == -1)
+  {
+      fprintf(stderr, "Warning: Eval function returned a negative may have an error\n");
+  }
   if (cast==NULL) fprintf(stdout,format,val);
   else if (cast[0]=='c') fprintf(stdout,format,(unsigned char) val);
   else if (cast[0]=='u') fprintf(stdout,format,(unsigned int) val);

@@ -46,8 +46,4 @@ struct Plot *PlotMake() {
 void PlotFree(struct Plot *ptr) {
   if (ptr==NULL) return;
   free(ptr);
-};
-
-
-
-
+}

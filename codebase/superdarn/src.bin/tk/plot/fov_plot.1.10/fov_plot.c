@@ -70,6 +70,7 @@
 
 #include "radar.h" 
 
+#include "griddata.h"
 #include "make_fov.h"
 #include "text_box.h"
 #include "plot_time_label.h"
@@ -121,12 +122,13 @@ struct FrameBufferClip *fbclp=NULL;
 struct RadarNetwork *network;
 
 double eqn_of_time(double mean_lon,int yr);
-int solar_loc(int yr,int t1,double *mean_lon,double *dec);
+int solar_loc(int yr,int t1,double *mean_lon, double *dec);
 
 int stream(char *buf,int sze,void *data) {
   FILE *fp;
   fp=(FILE *) data;
   fwrite(buf,sze,1,stdout);
+  fclose(fp);
   return 0;
 } 
 
@@ -395,7 +397,9 @@ int main(int argc,char *argv[]) {
 
 
 
-  double LsoT,LT,Hangle,dec,eqt;
+  double LsoT,LT,Hangle;
+  //doubledec;
+  double eqt;
   
   float dotr=2; 
  
@@ -701,7 +705,7 @@ int main(int argc,char *argv[]) {
   if (magflg) strcpy(tsfx,"MLT");
   else if (lstflg) strcpy(tsfx,"LST");
 
-  dec=SZASolarDec(yr,mo,dy,hr,mt,sc);
+  //dec=SZASolarDec(yr,mo,dy,hr,mt,sc);
   eqt=SZAEqOfTime(yr,mo,dy,hr,mt,sc);
 
   if (magflg) tme_shft=-(*MLTCnv)(yr,yrsec,0.0)*15.0;

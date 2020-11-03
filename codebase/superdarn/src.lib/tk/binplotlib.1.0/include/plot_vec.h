@@ -28,9 +28,15 @@
  
 */
 
-void plot_vec(struct Plot *plot,float px,float py,int or,double max,int magflg,
-              float xoff,float yoff,float wdt,float hgt,float sf,float rad,
-              int (*trnf)(int,void *,int,void *,void *data),void *data,
-              unsigned int color,char mask,float width, char *fntname,
-              float fntsize, void *textdata, int old_aacgm);
- 
+void plot_field_vec(struct Plot *plot,struct RadarBeam *sbm,
+                    struct GeoLocBeam *gbm,float latmin,int magflg,
+                    float xoff,float yoff,float wdt,float hgt,float sf,
+                    int (*trnf)(int,void *,int,void *,void *data),void *data,
+                    unsigned int(*cfn)(double,void *),void *cdata,
+                    unsigned int gscol,unsigned char gsflg,float width,float rad);
+
+void plot_grid_vec(struct Plot *plot,float px,float py,int or,double max,int magflg,
+                   float xoff,float yoff,float wdt,float hgt,float sf,float rad,
+                   int (*trnf)(int,void *,int,void *,void *data),void *data,
+                   unsigned int color,char mask,float width, char *fntname,
+                   float fntsize, void *textdata, int old_aacgm);

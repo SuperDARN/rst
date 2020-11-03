@@ -215,7 +215,12 @@ int RCDFReadZ(CDFid id,long recno,char **varname,struct RCDFData *ptr) {
   status=CDFlib(GET_,zVARs_RECDATA_,cnt,var,data,NULL_);
 
   if (status==CDF_OK) 
-    for (i=0;i<cnt;i++) memcpy(buffer[i],data+offset[i],size[i]);  
+  {
+    for (int i=0;i<cnt;i++) 
+    {
+        memcpy(buffer[i],(long*)data+offset[i],size[i]);  
+    }
+  }
   free(data);   
   free(var);
   free(buffer);
@@ -320,8 +325,13 @@ int RCDFReadR(CDFid id,long recno,char **varname,struct RCDFData *ptr) {
   status=CDFlib(GET_,rVARs_RECDATA_,cnt,var,data,NULL_);
 
  
-  if (status==CDF_OK) 
-    for (i=0;i<cnt;i++) memcpy(buffer[i],data+offset[i],size[i]);  
+  if (status==CDF_OK)
+  {
+    for (i=0;i<cnt;i++)
+    {
+        memcpy(buffer[i],(long*)data+offset[i],size[i]);  
+    }
+  }
   free(data);   
   free(var);
   free(buffer);

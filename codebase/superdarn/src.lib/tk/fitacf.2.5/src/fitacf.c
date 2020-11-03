@@ -194,6 +194,10 @@ int FitACF(struct RadarParm *prm, struct RawData *raw,struct FitBlock *input,
     goose = (prm->stid == GOOSEBAY);
 
     fnum = do_fit(input, 5, goose, fit->rng, fit->xrng, fit->elv, &fit->noise);
-
+    if (fnum == -1)
+    {
+        fprintf(stderr, "Error: do_fit returned an error\n");
+        return -1;
+    }
     return 0;
 }

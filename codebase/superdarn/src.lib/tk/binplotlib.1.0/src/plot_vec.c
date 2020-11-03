@@ -38,18 +38,100 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <sys/types.h>
+#include "rmath.h"
+#include "rtypes.h"
 #include "aacgm.h"
 #include "aacgmlib_v2.h"
 #include "rfbuffer.h"
 #include "iplot.h"
+#include "rfile.h"
+#include "radar.h"
 #include "calcvector.h"
+#include "griddata.h"
+#include "scandata.h"
+#include "geobeam.h"
+#include "plot_cell.h"
 #include "text_box.h"
 
-void plot_vec(struct Plot *plot,float px,float py,int or,double max, int magflg,
-              float xoff,float yoff,float wdt,float hgt,float sf,float rad,
-              int (*trnf)(int,void *,int,void *,void *data),void *data,
-              unsigned int color,char mask,float width,
-              char *fontname,float fontsize, void *txtdata, int old_aacgm)
+
+void plot_field_vec(struct Plot *plot,struct RadarBeam *sbm,
+                    struct GeoLocBeam *gbm,float latmin,int magflg,
+                    float xoff,float yoff,float wdt,float hgt,float sf,
+                    int (*trnf)(int,void *,int,void *,void *data),void *data,
+                    unsigned int(*cfn)(double,void *),void *cdata,
+                    unsigned int gscol,unsigned char gsflg,float width,float rad) {
+
+  int rng;
+  unsigned int color=0;
+  float ax=0,ay=0,bx=0,by=0;
+  int s=0;
+  float map[2],pnt[2];
+  double lat,lon;
+  for (rng=0;rng<sbm->nrang;rng++) {
+    if (sbm->sct[rng]==0) continue;
+
+    if (cfn !=NULL) color=(*cfn)(fabs(sbm->rng[rng].v),cdata);
+    if ((gsflg) && (sbm->rng[rng].gsct !=0)) color=gscol;
+     
+    if (magflg) {
+       map[0]=gbm->mlat[1][rng];
+       map[1]=gbm->mlon[1][rng];
+       s=(*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
+       if (s !=0) continue;
+       ax=xoff+wdt*pnt[0];
+       ay=yoff+hgt*pnt[1];     
+
+       if (sbm->rng[rng].gsct==0) {
+         RPosCalcVector(map[0],map[1],sbm->rng[rng].v*sf,
+                      gbm->mazm[rng],&lat,&lon);
+
+
+         map[0]=lat;
+         map[1]=lon;
+         s=(*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
+         if (s !=0) continue;
+         bx=xoff+wdt*pnt[0];
+         by=yoff+hgt*pnt[1];
+       }     
+     } else {
+       map[0]=gbm->glat[1][rng];
+       map[1]=gbm->glon[1][rng];
+       s=(*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
+       if (s !=0) continue;
+       ax=xoff+wdt*pnt[0];
+       ay=yoff+hgt*pnt[1];     
+       if (sbm->rng[rng].gsct==0) {
+      
+         RPosCalcVector(map[0],map[1],sbm->rng[rng].v*sf,
+                        gbm->gazm[rng],&lat,&lon);
+
+
+         map[0]=lat;
+         map[1]=lon;
+         s=(*trnf)(2*sizeof(float),map,2*sizeof(float),pnt,data);
+         if (s !=0) continue;
+         bx=xoff+wdt*pnt[0];
+         by=yoff+hgt*pnt[1];     
+       }
+
+    }
+   
+    if (sbm->rng[rng].gsct==0)
+      PlotLine(plot,ax,ay,bx,by,color,0x0f,width,NULL);    
+    PlotEllipse(plot,NULL,ax,ay,
+                 rad,rad,1,color,0x0f,0,NULL);
+    
+  } 
+}
+
+
+
+void plot_grid_vec(struct Plot *plot,float px,float py,int or,double max, int magflg,
+                   float xoff,float yoff,float wdt,float hgt,float sf,float rad,
+                   int (*trnf)(int,void *,int,void *,void *data),void *data,
+                   unsigned int color,char mask,float width,
+                   char *fontname,float fontsize, void *txtdata, int old_aacgm)
 {
   int s;
   char txt[256];
@@ -117,7 +199,7 @@ void plot_vec(struct Plot *plot,float px,float py,int or,double max, int magflg,
   sprintf(txt,"%g m/s",max);
   txtbox(fontname,fontsize,strlen(txt),txt,txbox,txtdata);
 
-  if (or==0) PlotText(plot,NULL,fontname,fontsize,px-4,py-(txbox[2]-txbox[1]),
+  if (or == 0) PlotText(plot,NULL,fontname,fontsize,px-4,py-(txbox[2]-txbox[1]),
                        strlen(txt),txt,color,mask,1);
 }
 

@@ -169,9 +169,29 @@ int main(int argc,char *argv[]) {
      if (fildes==-1) continue;
      rflock.l_type=F_RDLCK;
      status=fcntl(fildes,F_SETLKW,&rflock);
+     if (status == -1)
+     {
+         // TODO add errno to get more information
+         fprintf(stderr, "Error: fcntl returned an error\n");
+         return -1;
+     }
      rc=fstat(fildes,&buf);
+     if (rc == -1)
+     {
+         // TODO add errno to get more information
+         fprintf(stderr, "Error: fstat returned an error\n");
+         return -1;
+     }
+
      rflock.l_type=F_UNLCK;  
      status=fcntl(fildes,F_SETLKW,&rflock);
+     if (status == -1)
+     {
+         // TODO add errno to get more information
+         fprintf(stderr, "Error: fcntl returned an error\n");
+         return -1;
+     }
+
      close(fildes);
      if (buf.st_mtime !=tval) {
 
