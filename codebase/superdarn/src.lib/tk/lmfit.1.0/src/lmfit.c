@@ -9,6 +9,7 @@
 #include <time.h>
 #include <string.h>
 #include <math.h>
+#include <complex.h>
 #include <zlib.h>
 #include "rtypes.h"
 #include "rmath.h" 
@@ -89,23 +90,23 @@ void setup_fblk(struct RadarParm *prm, struct RawData *raw,struct FitBlock *inpu
   if (tmp==NULL) return;
   input->prm.pwr0=tmp;
 
-  if (input->acfd==NULL) tmp=malloc(sizeof(complex)*input->prm.nrang*
+  if (input->acfd==NULL) tmp=malloc(sizeof(double complex)*input->prm.nrang*
                                     input->prm.mplgs);
-  else tmp=realloc(input->acfd,sizeof(complex)*input->prm.nrang*
+  else tmp=realloc(input->acfd,sizeof(double complex)*input->prm.nrang*
                                    input->prm.mplgs);
   if (tmp==NULL) return;
   input->acfd=tmp;
 
-  if (input->xcfd==NULL) tmp=malloc(sizeof(complex)*input->prm.nrang*
+  if (input->xcfd==NULL) tmp=malloc(sizeof(double complex)*input->prm.nrang*
                                     input->prm.mplgs);
-  else tmp=realloc(input->xcfd,sizeof(complex)*input->prm.nrang*
+  else tmp=realloc(input->xcfd,sizeof(double complex)*input->prm.nrang*
                                    input->prm.mplgs);
   if (tmp==NULL) return;
   input->xcfd=tmp;
 
-  memset(input->acfd,0,sizeof(complex)*input->prm.nrang*
+  memset(input->acfd,0,sizeof(double complex)*input->prm.nrang*
                                    input->prm.mplgs);
-  memset(input->xcfd,0,sizeof(complex)*input->prm.nrang*
+  memset(input->xcfd,0,sizeof(double complex)*input->prm.nrang*
                                    input->prm.mplgs);
 
 
