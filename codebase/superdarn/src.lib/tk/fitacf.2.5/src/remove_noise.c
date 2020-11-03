@@ -47,7 +47,7 @@ void remove_noise(int mplgs, double complex *acf, double complex *ncf) {
       acf[i] -= ncf[i];	
     }
   else for (i=0; i < mplgs; i++) {
-    acf[i].x = CMPLX(0,0);
+    acf[i] = CMPLX(0,0);
   }
   return;
 }
