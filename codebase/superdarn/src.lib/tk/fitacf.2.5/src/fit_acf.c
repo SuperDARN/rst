@@ -52,15 +52,11 @@ int fit_acf (double complex *acf,int range, int *badlag,
         struct FitACFBadSample *badsmp,int lag_lim, struct FitPrm *prm, 
         double noise_lev_in,char xflag,double xomega, struct FitRange *ptr) {
 
-    double sum_np,sum_w,sum_wk,sum_wk2,*sum_wk2_arr=NULL,sum_wk4,
-<<<<<<< HEAD
-    sum_p,sum_pk,sum_pk2,sum_phi,sum_kphi, t0,t2,t4,*phi_res=NULL;
-=======
-            sum_p,sum_pk,sum_pk2;
+    double sum_np,sum_w,sum_wk,sum_wk2,*sum_wk2_arr=NULL,sum_wk4, 
+    sum_p,sum_pk,sum_pk2;
     //double sum_phi;
     //double sum_kphi;
     double t0,t2,t4,*phi_res=NULL;
->>>>>>> develop
     int j, npp, s = 0, last_good, status, *bad_pwr = NULL;
     long k;
     double *tau=NULL, *tau2=NULL, *phi_k=NULL, *w=NULL, *pwr=NULL,
@@ -225,8 +221,6 @@ int fit_acf (double complex *acf,int range, int *badlag,
     sum_pk = 0;
     sum_pk2 = 0;
     phi_loc = atan2(cimag(acf[0]), creal(acf[0]));
-    //sum_kphi = 0;
-    phi_loc = atan2(acf[0].y, acf[0].x);
     //sum_kphi = 0;
     t0 =  prm->mpinc * 1.0e-6;
     t2 = t0 * t0;
