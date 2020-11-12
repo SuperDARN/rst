@@ -549,7 +549,7 @@ struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
       if (m < 0) {
         k = l*(ptr->ltop+1)-m;
       }
-      else:
+      else
       {
         k = l*(ptr->ltop+1)+m;
       }
