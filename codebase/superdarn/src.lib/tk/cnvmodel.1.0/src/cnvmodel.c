@@ -20,6 +20,7 @@
 #include "shfconst.h" /* use the same constants as in fitting procedure */
 #include "cnvmodel.h"
 
+//TODO: address these notes?
 /*-----------------------------------------------------------------------------
  * Notes:
  *
@@ -133,6 +134,7 @@ float TS18_Kp_mod_levi[]  = {1, 2, 3, 4, 6, 8, -1};
 int mnum = 0;
 
 
+//TODO:
 /*-----------------------------------------------------------------------------
  *
  * function definitions
@@ -546,6 +548,11 @@ struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
     for (m=-l; m<=l; m++) {
       if (m < 0) {
         k = l*(ptr->ltop+1)-m;
+      }
+      else:
+      {
+        k = l*(ptr->ltop+1)+m;
+      }
 
         ptr->aoeff_n[k] = CMPLX(creal(An[k])*afp*mgp*dtp + 
                 creal(Bn[k])*afn*mgp*dtp + creal(Cn[k])*afp*mgn*dtp +
@@ -556,20 +563,20 @@ struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
                 cimag(Dn[k])*afn*mgn*dtp + cimag(En[k])*afp*mgp*dtn +
                 cimag(Fn[k])*afn*mgp*dtn + cimag(Gn[k])*afp*mgn*dtn +
                 cimag(Hn[k])*afn*mgn*dtn);
-      } else {
-        k = l*(ptr->ltop+1)+m;
+      // TODO: I think this is duplicate code which makes more susceptable bugs
+      //} else {
 
-        ptr->aoeff_p[k] = CMPLX(creal(Ap[k])*afp*mgp*dtp +
-                creal(Bp[k])*afn*mgp*dtp + creal(Cp[k])*afp*mgn*dtp +
-                creal(Dp[k])*afn*mgn*dtp + creal(Ep[k])*afp*mgp*dtn +
-                creal(Fp[k])*afn*mgp*dtn + creal(Gp[k])*afp*mgn*dtn +
-                creal(Hp[k])*afn*mgn*dtn, cimag(Ap[k])*afp*mgp*dtp +
-                cimag(Bp[k])*afn*mgp*dtp + cimag(Cp[k])*afp*mgn*dtp +
-                cimag(Dp[k])*afn*mgn*dtp + cimag(Ep[k])*afp*mgp*dtn +
-                cimag(Fp[k])*afn*mgp*dtn + cimag(Gp[k])*afp*mgn*dtn +
-                cimag(Hp[k])*afn*mgn*dtn);
+      //  ptr->aoeff_p[k] = CMPLX(creal(Ap[k])*afp*mgp*dtp +
+      //          creal(Bp[k])*afn*mgp*dtp + creal(Cp[k])*afp*mgn*dtp +
+      //          creal(Dp[k])*afn*mgn*dtp + creal(Ep[k])*afp*mgp*dtn +
+      //          creal(Fp[k])*afn*mgp*dtn + creal(Gp[k])*afp*mgn*dtn +
+      //          creal(Hp[k])*afn*mgn*dtn, cimag(Ap[k])*afp*mgp*dtp +
+      //          cimag(Bp[k])*afn*mgp*dtp + cimag(Cp[k])*afp*mgn*dtp +
+      //          cimag(Dp[k])*afn*mgn*dtp + cimag(Ep[k])*afp*mgp*dtn +
+      //          cimag(Fp[k])*afn*mgp*dtn + cimag(Gp[k])*afp*mgn*dtn +
+      //          cimag(Hp[k])*afn*mgn*dtn);
 
-      }
+      //}
     }
   }
 
@@ -787,11 +794,19 @@ double factorial(double n)
   return nfac;
 }
 
-
-void cmult(double complex a,double complex b,double complex c)
+/*
+ * complex multiplication b * c
+ * 
+ * returns the product of b * c
+ *
+ * Modified: 2020-11-12 Marina Schmidt - made it into a pure function
+ */
+double complex cmult(double complex b,double complex c)
 {
+  double complex a; 
   a = CMPLX(creal(b)*creal(c) - cimag(b)*cimag(c),
           creal(b)*cimag(c) + cimag(b)*creal(c));
+  return a;
 }
 
 
@@ -921,7 +936,7 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
 
       for (m=mlow;m<0;m++) {
 
-        cmult(t,mod->aoeff_n[l*(ltop+1)-m],
+        t = cmult(mod->aoeff_n[l*(ltop+1)-m],
               ylm_nx[i*(ltop+1)*(ltop+1)+l*(ltop+1)-m]);
 
         Ix += CMPLX(creal(t), cimag(t));
@@ -929,7 +944,7 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
 
       for (m=0;m<=mhgh;m++) {
 
-        cmult(t,mod->aoeff_p[l*(ltop+1)+m],
+        t = cmult(mod->aoeff_p[l*(ltop+1)+m],
               ylm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+m]);
         Ix += CMPLX(creal(t), cimag(t));
        }
@@ -937,7 +952,7 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
 
     pot[i] = creal(Ix);
     pot_arr[i] = creal(Ix);
-    xot_arr[i] = Ix;
+    xot_arr[i] = CMPLX(creal(Ix), cimag(Ix));
   }
 
   for (i=0;i<num;i++) {
@@ -950,7 +965,7 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
       mhgh=-mlow;
 
       for (m=mlow;m<0;m++) {
-        cmult(t,mod->aoeff_n[l*(ltop+1)-m],
+        t = cmult(mod->aoeff_n[l*(ltop+1)-m],
               ylm_nx[i*(ltop+1)*(ltop+1)+l*(ltop+1)-m]);
         Ix += CMPLX(m*creal(t), m*cimag(t));
 
@@ -958,7 +973,7 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
 
       for (m=0;m<=mhgh;m++) {
 
-         cmult(t,mod->aoeff_p[l*(ltop+1)+m],
+         t = cmult(mod->aoeff_p[l*(ltop+1)+m],
                ylm_px[i*(ltop+1)*(ltop+1)+l*(ltop+1)+m]);
          Ix += CMPLX(m*creal(t), m*cimag(t));
        }
@@ -989,7 +1004,7 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
                 cos(m*phi[i])*anorm[l*(ltop+1)-m], 
                 (cimag(T1)+cimag(T2))*pow(-1,m)*
                 sin(m*phi[i])*anorm[l*(ltop+1)-m]);
-        cmult(t,T1,mod->aoeff_n[l*(ltop+1)-m]);
+        t = cmult(T1,mod->aoeff_n[l*(ltop+1)-m]);
         Ix += CMPLX(creal(t), cimag(t));
       }
 
@@ -1006,7 +1021,7 @@ void slv_sph_kset(float latmin, int num, float *phi, float *the,
         }
         T1 = CMPLX((creal(T1)+creal(T2))*cos(m*phi[i])*anorm[l*(ltop+1)+m],
                 (cimag(T1)+cimag(T2))*sin(m*phi[i])*anorm[l*(ltop+1)+m]);
-        cmult(t,T1,mod->aoeff_p[l*(ltop+1)+m]);
+        t = cmult(T1,mod->aoeff_p[l*(ltop+1)+m]);
 
         Ix += CMPLX(creal(t), cimag(t));
       }
