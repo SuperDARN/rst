@@ -30,7 +30,7 @@ struct model *model[2][3][6][8]; /* [hemi][tilt][lev][ang] */
 /* prototypes */
 
 double factorial(double n);
-void cmult(double complex a, double complex b, double complex c);
+double complex cmult(double complex b, double complex c);
 void slv_ylm_mod(float theta, float phi, int order, double complex *ylm_p, 
         double complex *ylm_n, double *anorm, double *plm_p, double *apcnv);
 void slv_sph_kset(float latmin, int num, float *phi, float *the, 
