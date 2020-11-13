@@ -548,12 +548,8 @@ struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
     for (m=-l; m<=l; m++) {
       if (m < 0) {
         k = l*(ptr->ltop+1)-m;
-      }
-      else
-      {
-        k = l*(ptr->ltop+1)+m;
-      }
-
+        // note: aoeff_n[k]
+        // TODO: rest of this should probably be a function
         ptr->aoeff_n[k] = CMPLX(creal(An[k])*afp*mgp*dtp + 
                 creal(Bn[k])*afn*mgp*dtp + creal(Cn[k])*afp*mgn*dtp +
                 creal(Dn[k])*afn*mgn*dtp + creal(En[k])*afp*mgp*dtn + 
@@ -563,20 +559,20 @@ struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
                 cimag(Dn[k])*afn*mgn*dtp + cimag(En[k])*afp*mgp*dtn +
                 cimag(Fn[k])*afn*mgp*dtn + cimag(Gn[k])*afp*mgn*dtn +
                 cimag(Hn[k])*afn*mgn*dtn);
-      // TODO: I think this is duplicate code which makes more susceptable bugs
-      //} else {
+      } else {
+        k = l*(ptr->ltop+1)+m;
+        // Note: aoeff_p[k]
+        ptr->aoeff_p[k] = CMPLX(creal(Ap[k])*afp*mgp*dtp +
+                creal(Bp[k])*afn*mgp*dtp + creal(Cp[k])*afp*mgn*dtp +
+                creal(Dp[k])*afn*mgn*dtp + creal(Ep[k])*afp*mgp*dtn +
+                creal(Fp[k])*afn*mgp*dtn + creal(Gp[k])*afp*mgn*dtn +
+                creal(Hp[k])*afn*mgn*dtn, cimag(Ap[k])*afp*mgp*dtp +
+                cimag(Bp[k])*afn*mgp*dtp + cimag(Cp[k])*afp*mgn*dtp +
+                cimag(Dp[k])*afn*mgn*dtp + cimag(Ep[k])*afp*mgp*dtn +
+                cimag(Fp[k])*afn*mgp*dtn + cimag(Gp[k])*afp*mgn*dtn +
+                cimag(Hp[k])*afn*mgn*dtn);
 
-      //  ptr->aoeff_p[k] = CMPLX(creal(Ap[k])*afp*mgp*dtp +
-      //          creal(Bp[k])*afn*mgp*dtp + creal(Cp[k])*afp*mgn*dtp +
-      //          creal(Dp[k])*afn*mgn*dtp + creal(Ep[k])*afp*mgp*dtn +
-      //          creal(Fp[k])*afn*mgp*dtn + creal(Gp[k])*afp*mgn*dtn +
-      //          creal(Hp[k])*afn*mgn*dtn, cimag(Ap[k])*afp*mgp*dtp +
-      //          cimag(Bp[k])*afn*mgp*dtp + cimag(Cp[k])*afp*mgn*dtp +
-      //          cimag(Dp[k])*afn*mgn*dtp + cimag(Ep[k])*afp*mgp*dtn +
-      //          cimag(Fp[k])*afn*mgp*dtn + cimag(Gp[k])*afp*mgn*dtn +
-      //          cimag(Hp[k])*afn*mgn*dtn);
-
-      //}
+      }
     }
   }
 
