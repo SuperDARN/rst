@@ -1737,10 +1737,10 @@ int main(int argc,char *argv[]) {
       if (mapflg) {
         MapPlotPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,0,cstcol,0x0f,
                        0.5,NULL,rmap,1);
+        MapPlotOpenPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,cstcol,0x0f,
+                           0.5,NULL,rmap,2);
         MapPlotPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,0,cstcol,0x0f,
                        0.5,NULL,rmap,0);
-        MapPlotOpenPolygon(plot,NULL,0,0,wbox,hbox,cstcol,0x0f,
-                           0.5,NULL,pmap,2);
       }
 
       if (bndflg) MapPlotOpenPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,
