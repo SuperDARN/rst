@@ -249,9 +249,6 @@ int singlefit(int m, int n, double *p, double *deviates,
 		else
 			deviates[i] = re-lag0mag*exp(-1.*tau/ti)*sin(wi*tau);
   }
-  //free(ey);
-  //free(x);
-  //free(y);
   return 0;
 }
 
