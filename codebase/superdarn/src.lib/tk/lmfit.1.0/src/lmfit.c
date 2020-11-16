@@ -229,17 +229,13 @@ int singlefit(int m, int n, double *p, double *deviates,
 
   struct datapoints *v = (struct datapoints *) private;
   double lag0mag = v->mag;
-  double *x, *y, *ey;
+  double *x, *y;
   x = v->x;
   y = v->y;
-  //TODO:  without sig this is also not used
-  ey = v->ey;
   for (i=0; i<m; i++)
   {
     tau=x[i];
     re=y[i];
-    // TODO: this is not used can I remove it? 
-    //sig=ey[i];
     ti=p[0];
     wi=p[1];
     lag0mag = p[2];
@@ -249,9 +245,6 @@ int singlefit(int m, int n, double *p, double *deviates,
 		else
 			deviates[i] = re-lag0mag*exp(-1.*tau/ti)*sin(wi*tau);
   }
-  free(ey);
-  free(x);
-  free(y);
   return 0;
 }
 
