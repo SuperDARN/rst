@@ -19,6 +19,7 @@ The software is maintained by the SuperDARN Data Analysis Working Group (DAWG) o
   - SuperDARN Data:
     * [Accessing Data](user_guide/data.md)
     * [Citing Data](user_guide/citing.md)
+    * [Filename Formats](references/general/filename.md)
   -  RST Tutorials 
 	  - Data Processing
        * [RAWACF to FITACF](user_guide/make_fit.md)
