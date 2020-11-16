@@ -5,7 +5,7 @@ Disclaimer: License under GNU v3.0, the file is found in the root directory unde
 
 -->
 
-This information is sourced from the RFC: 0003 previously in the RST RFC documentation that was written by R.J. Barnes.
+This information is sourced from the RFC: 0003 and 0004 previously in the RST RFC documentation that was written by R.J. Barnes.
 
 # Radar Identifier
 
@@ -19,7 +19,7 @@ SupeDARN radars have always been identified by two methods.  Within the software
 
 When the number of radars was compartively small, this approach worked well with each radar receiving an appropriate ID letter such as "g" for Goose Bay and "k" for Kapuskasing.  However as the number of radars has increased the number of available letters has decreased and the codes have become less logical and harder to remember.  Before the number of radars exceeded 26, the radar identifier was changed to be a short text string that is easy to remember.
 
-## Format for the radar identifier
+## Format for the Radar Identifier
 
 The summary for format in files after July 1, 2006 is:
 
@@ -31,6 +31,29 @@ The summary for format in files after July 1, 2006 is:
 ### Aliases
 
 Radar identifiers will be allowed to have aliases.  For existing radars, the principal alias will be the existing single character identifier code.  This approach will allow backwards compatibility as a radar can be referenced either by the new identifier or the old.
+
+An alias map for radars that transitioned from the single character to the three character identifier is found below.
+
+| Station Number  | Radar Identifier | Single Character Alias | Name |
+| :-------------  | :--------------: | :--------------------: | :--- |
+| 01              |  gbr             |  g                     | Goose Bay |
+| 02              |  sch             |  s                     | Schefferville |
+| 03              |  kap             |  k                     | Kapuskasing |
+| 04              |  hal             |  h                     | Halley |
+| 05              |  sas             |  t                     | Saskatoon |
+| 06              |  pgr             |  b                     | Prince George |
+| 07              |  kod             |  a                     | Kodiak |
+| 08              |  sto             |  w                     | Stokkseyri |
+| 09              |  pyk             |  e                     | Pykkvibaer |
+| 10              |  han             |  f                     | Hankasalmi |
+| 11              |  san             |  d                     | Sanae |
+| 12              |  sys             |  j                     | Syowa South |
+| 13              |  sye             |  n                     | Syowa East |
+| 14              |  tig             |  r                     | TIGER |
+| 15              |  ker             |  p                     | Kerguelen |
+| 16              |  ksr             |  c                     | King Salmon |
+| 18              |  unw             |  u                     | Unwin |
+| 32              |  wal             |  i                     | Wallops Island |
 
 
 ## References
