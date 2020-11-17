@@ -189,6 +189,8 @@ int main(int argc,char *argv[])
 
   do
   {
+    //set origin code = 1 which  means produced not at a radar site
+    prm->origin.code = 1;
     ctime = time((time_t) 0);
     RadarParmSetOriginCommand(prm,command);
     strcpy(tmstr,asctime(gmtime(&ctime)));
@@ -213,7 +215,6 @@ int main(int argc,char *argv[])
 
   return 0;
 }
-
 
 
 
