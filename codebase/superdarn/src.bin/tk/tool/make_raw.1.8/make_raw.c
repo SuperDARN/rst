@@ -140,7 +140,6 @@ int main (int argc,char *argv[]) {
 
   // ctime - origin time from when the command was run to produce the file 
   time_t ctime;
-  int c;
   // origin command to create the file to be stored in the file 
   char command[128];
   // time string for the ctime to be copied into as a string
