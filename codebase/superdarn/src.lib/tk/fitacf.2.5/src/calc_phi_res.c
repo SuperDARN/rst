@@ -42,19 +42,18 @@
 */
 
 #include <math.h>
+#include <complex.h>
 #include "rmath.h"
 
 
-
-int calc_phi_res(struct complex *acf,int *badlag,
-                    double *phi_res,int mplgs) {
+int calc_phi_res(double complex *acf,int *badlag, double *phi_res,int mplgs) {
     int i, n_good_lags;
     for (i=0, n_good_lags=0; i< mplgs; ++i) { 
         if (badlag[i]){
             phi_res[i] = 0.0;
         }
         else {
-            phi_res[i] = atan2(acf[i].y, acf[i].x);
+            phi_res[i] = atan2(cimag(acf[i]), creal(acf[i]));
             n_good_lags++;
         }
     }

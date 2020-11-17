@@ -32,6 +32,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <complex.h>
 
 #include "rmath.h"
 #include "badsmp.h"
@@ -47,14 +48,12 @@
 #include "power_fits.h"
 #include "fit_mem_helpers.h"
 
-int fit_acf (struct complex *acf,int range,
-                int *badlag,struct FitACFBadSample *badsmp,int lag_lim,
-                struct FitPrm *prm,
-                double noise_lev_in,char xflag,double xomega,
-                struct FitRange *ptr) {
+int fit_acf (double complex *acf,int range, int *badlag, 
+        struct FitACFBadSample *badsmp,int lag_lim, struct FitPrm *prm, 
+        double noise_lev_in,char xflag,double xomega, struct FitRange *ptr) {
 
-    double sum_np,sum_w,sum_wk,sum_wk2,*sum_wk2_arr=NULL,sum_wk4,
-            sum_p,sum_pk,sum_pk2;
+    double sum_np,sum_w,sum_wk,sum_wk2,*sum_wk2_arr=NULL,sum_wk4, 
+    sum_p,sum_pk,sum_pk2;
     //double sum_phi;
     //double sum_kphi;
     double t0,t2,t4,*phi_res=NULL;
@@ -100,10 +99,6 @@ int fit_acf (struct complex *acf,int range,
     /* Save the original ACF in a new variable so we can try some
          preprocessing on it.
 
-        for (k=0; k < prm->mplgs; k++) {
-            orig_acf[k].x = acf[k].x;
-            orig_acf[k].y = acf[k].y;
-        }
     */
 
     /*
@@ -225,7 +220,7 @@ int fit_acf (struct complex *acf,int range,
     sum_p = w[0]*w[0]*pwr[0];
     sum_pk = 0;
     sum_pk2 = 0;
-    phi_loc = atan2(acf[0].y, acf[0].x);
+    phi_loc = atan2(cimag(acf[0]), creal(acf[0]));
     //sum_kphi = 0;
     t0 =  prm->mpinc * 1.0e-6;
     t2 = t0 * t0;

@@ -2,8 +2,6 @@
    ============
    Author: R.J.Barnes & K.Baker & P.Ponomarenko
 */
-
-
 /*
  LICENSE AND DISCLAIMER
  
@@ -24,14 +22,8 @@
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
  
- 
- 
  */
 
-
-
-double lag_power(struct complex *a);
-
+double lag_power(double complex *a);
 double noise_stat(double mnpwr,struct FitPrm *ptr,
-                  struct FitACFBadSample *badsmp,
-		  struct complex *acf);
+                  struct FitACFBadSample *badsmp, double complex *acf);

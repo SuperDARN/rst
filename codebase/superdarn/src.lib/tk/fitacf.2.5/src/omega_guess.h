@@ -29,6 +29,6 @@
 
 
 
-double omega_guess(struct complex *acf,double *tau,
+double omega_guess(double complex *acf,double *tau,
 	           int *badlag,double *phi_res,
                    double *omega_err,int mpinc,int mplgs);

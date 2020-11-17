@@ -30,7 +30,6 @@
 
 
 
-double noise_acf(double mnpwr,struct FitPrm *ptr,
-	         double *pwr, struct FitACFBadSample *badsmp,
-		 struct complex *raw,
-	         struct complex *n_acf);
+double noise_acf(double mnpwr,struct FitPrm *ptr, double *pwr, 
+        struct FitACFBadSample *badsmp, double complex *raw, 
+        double complex *n_acf);

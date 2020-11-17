@@ -29,5 +29,4 @@
 
 
 
-void remove_noise(int mplgs,struct complex *acf,
-		 struct complex *ncf);
+void remove_noise(int mplgs, double complex *acf, double complex *ncf);

@@ -30,14 +30,13 @@
 
 
 #include <math.h>
-
+#include <complex.h>
 #include "rmath.h"
 #include "badsmp.h"
 #include "fitblk.h"
 #include "noise_stat.h"
 
-void remove_noise(int mplgs,struct complex *acf,
-				  struct complex *ncf) {
+void remove_noise(int mplgs, double complex *acf, double complex *ncf) {
   int i;
   double pa, plim;
 
@@ -45,12 +44,10 @@ void remove_noise(int mplgs,struct complex *acf,
   pa = lag_power(&acf[0]);
 
   if( pa > plim ) for (i=0; i < mplgs; i++) {
-      acf[i].x -= ncf[i].x;	
-	  acf[i].y -= ncf[i].y;
+      acf[i] -= ncf[i];	
     }
   else for (i=0; i < mplgs; i++) {
-    acf[i].x = 0;
-	acf[i].y = 0;
+    acf[i] = CMPLX(0,0);
   }
   return;
 }

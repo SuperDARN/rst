@@ -8,6 +8,7 @@
 
 #ifndef _FITBLK_H
 #define _FITBLK_H
+#include <complex.h>
 
 struct FitPrm {
   int channel; /* zero=mono 1 or 2 is stereo */
@@ -40,8 +41,8 @@ struct FitPrm {
 
 struct FitBlock {
   struct FitPrm prm;
-  struct complex *acfd;
-  struct complex *xcfd;
+  double complex *acfd;
+  double complex *xcfd;
 };
 
 struct FitElv { /* elevation angle derived from the cross correlation */
