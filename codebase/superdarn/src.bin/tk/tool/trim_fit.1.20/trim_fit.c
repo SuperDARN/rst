@@ -157,9 +157,13 @@ int main (int argc,char *argv[]) {
   char *chnstr=NULL;
   char *cpstr=NULL;
 
+  // origin time for when the file is produced
   time_t ctime;
-  int c,n;
+  // counter for origin command length  
+  int n=0;
+  // origin command array to hold the string
   char command[128];
+  // string to hold the origin time 
   char tmstr[40];
 
   OptionAdd(&opt,"-help",'x',&help);
@@ -339,15 +343,17 @@ int main (int argc,char *argv[]) {
     fclose(fp);
   } else {
 
+    // initialize array to be empty?
     command[0]=0;
-    n=0;
-    for (c=0;c<argc;c++) {
+    for (int c=0; c<argc; c++) {
+      // check if the origin command is too long
       n+=strlen(argv[c])+1;
+      // if so cut it off
       if (n>127) break;
+      // add space between command line arguments and copy to origin command
       if (c !=0) strcat(command," ");
-      strcat(command,argv[c]);
+      strcat(command, argv[c]);
     }
-
     prm=RadarParmMake();
     fit=FitMake();
 
@@ -437,7 +443,9 @@ int main (int argc,char *argv[]) {
                          (int) sc,prm->channel,
                          prm->bmnum,prm->cp);
 
+      // origin  code 1 means it is not produced on site
       prm->origin.code=1;
+      // copy it over to the file
       ctime= time((time_t) 0);
       RadarParmSetOriginCommand(prm,command);
       strcpy(tmstr,asctime(gmtime(&ctime)));
@@ -452,4 +460,3 @@ int main (int argc,char *argv[]) {
 
   return 0;
 }
-

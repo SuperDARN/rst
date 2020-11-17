@@ -138,11 +138,14 @@ int main (int argc,char *argv[]) {
 
   char vstring[256];
 
+  // origin time for when the file is produced
   time_t ctime;
-  int c,n;
+  // counter for origin command length  
+  int n=0;
+  // origin command array to hold the string
   char command[128];
+  // string to hold the origin time 
   char tmstr[40];
-
   prm=RadarParmMake();
   raw=RawMake();
 
@@ -305,14 +308,17 @@ int main (int argc,char *argv[]) {
        exit(-1);
      }
    } else {
-     command[0]=0;
-     n=0;
-     for (c=0;c<argc;c++) {
-       n+=strlen(argv[c])+1;
-       if (n>127) break;
-       if (c !=0) strcat(command," ");
-       strcat(command,argv[c]);
-     }
+    // initialize array to be empty?
+    command[0]=0;
+    for (int c=0; c<argc; c++) {
+      // check if the origin command is too long
+      n+=strlen(argv[c])+1;
+      // if so cut it off
+      if (n>127) break;
+      // add space between command line arguments and copy to origin command
+      if (c !=0) strcat(command," ");
+      strcat(command, argv[c]);
+    }
    }
 
 
@@ -333,13 +339,14 @@ int main (int argc,char *argv[]) {
        recnum++;
        OldRawFwrite(fp,"rawwrite",prm,raw,recnum,NULL);
      } else {
-       prm->origin.code=1;
-       ctime = time((time_t) 0);
-       RadarParmSetOriginCommand(prm,command);
-       strcpy(tmstr,asctime(gmtime(&ctime)));
-       tmstr[24]=0;
-       RadarParmSetOriginTime(prm,tmstr);
-       RawFwrite(stdout,prm,raw);
+      // origin  code 1 means it is not produced on site
+      prm->origin.code=1;
+      // copy it over to the file
+      ctime= time((time_t) 0);
+      RadarParmSetOriginCommand(prm,command);
+      strcpy(tmstr,asctime(gmtime(&ctime)));
+      tmstr[24]=0;
+      RadarParmSetOriginTime(prm,tmstr);
      }
 
      TimeEpochToYMDHMS(atime,&yr,&mo,&dy,&hr,&mt,&sc);
@@ -353,4 +360,3 @@ int main (int argc,char *argv[]) {
   return 0;
 
 }
-

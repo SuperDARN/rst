@@ -75,6 +75,7 @@ void makeRadarParm(struct RadarParm * prm, char * argv[], int argc, int cpid, in
 
   prm->revision.major = 1;
   prm->revision.minor = 0;
+  // set to 1 as it is not produced on site 
   prm->origin.code = 1;
 
   RadarParmSetOriginTime(prm,asctime(timeinfo));

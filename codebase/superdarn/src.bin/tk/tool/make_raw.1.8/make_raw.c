@@ -138,9 +138,12 @@ int main (int argc,char *argv[]) {
   int chnnum=0;
   int offset;
 
+  // ctime - origin time from when the command was run to produce the file 
   time_t ctime;
   int c;
+  // origin command to create the file to be stored in the file 
   char command[128];
+  // time string for the ctime to be copied into as a string
   char tmstr[40];
 
   prm=RadarParmMake();
@@ -221,9 +224,11 @@ int main (int argc,char *argv[]) {
 
   command[0]=0;
   n=0;
-  for (c=0;c<argc;c++) {
+  for (int c=0; i<argc; i++) {
+    // if the commannd is too long just cut it off
     n+=strlen(argv[c])+1;
     if (n>127) break;
+    // add spaces between commands then copy the command over to the origin command
     if (c !=0) strcat(command," ");
     strcat(command,argv[c]);
   }
@@ -233,6 +238,7 @@ int main (int argc,char *argv[]) {
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
               prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
+    // set origin code to 1 as it is not being produced on site and copy it to file 
     prm->origin.code=1;
     ctime = time((time_t) 0);
     RadarParmSetOriginCommand(prm,command);
@@ -387,4 +393,3 @@ int main (int argc,char *argv[]) {
   }
   return 0;
 }
-

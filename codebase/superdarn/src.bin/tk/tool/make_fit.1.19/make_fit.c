@@ -412,6 +412,7 @@ int main(int argc,char *argv[]) {
   do {
 
 
+    //set origin code = 1 which  means produced not at a radar site
     prm->origin.code = 1;
     ctime = time((time_t) 0);
     if (RadarParmSetOriginCommand(prm,command) == -1) 
