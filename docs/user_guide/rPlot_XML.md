@@ -258,47 +258,36 @@ Draw a bezier line between <em>x1</em>,<em>x2</em> and <em>x4</em>,<em>x4</em>, 
 
 ### image
 ```
-<pre>&lt;image mask="<em>m</em>" smooth="<em>s</em>" position="<em>x</em> <em>y</em>" matrix="<em>a</em> <em>b</em> <em>c</em> <em>d</em>"&gt;
-<em>imagedata</em>
-&lt;/image&gt;
+<image mask="*m*" smooth="*s*" position="*x y*" matrix="*a b c d*">
+*imagedata*
+</image>
 ```
-</pre></td></tr></table>
-</center>
-<h4>Attributes</h4>
-<table>
 
-<tr><td valign="top">mask="<em>m</em>"</td><td>set the color channel mask to <em>m</em></td></tr>
+__Attributes__
 
-<tr><td valign="top">smooth="<em>n</em>"</td><td>If n is set to 1, the renderer will attempt to smooth the bitmap image.</td></tr>
+| mask="*m*"         | set the color channel mask to *m*    |
+| smooth="*n*"       | If n is set to 1, the renderer will attempt to smooth the bitmap image.    |
+| position="*x y*"   | positions the top left of the bitmap at the coordinates given by <em>x</em> and *y*. |
+| matrix="*a b c d*" | applies a two dimensional transform to the bitmap string. The tranformation matrix is constructed from <em>a</em>,<em>b</em>,<em>c</em> and <em>d</em>. |
 
-<tr><td valign="top">position="<em>x</em> <em>y</em>"</td><td>positions the top left of the bitmap at the coordinates given by <em>x</em> and <em>y</em>.</td></tr>
-<tr><td valign="top">matrix="<em>a</em> <em>b</em> <em>c</em> <em>d</em>"</td><td>applies a two dimensional transform to the bitmap string. The tranformation matrix is constructed from <em>a</em>,<em>b</em>,<em>c</em> and <em>d</em>.</td></tr>
-</table>
-<h4>Description</h4>
-<p>Plots the bitmap image <em>imagedata</em>. This must be a valid XML format bitmap.</p>
+__Description__
+Plots the bitmap image <em>imagedata</em>. This must be a valid XML format bitmap.
 
+### imagen
+```
+<imagen mask="*m*" smooth="*s*" position="*x y*" matrix="*a b c d*">
+<name>*imagename*</name>
+</imagen>
+```
 
-<h3>imagen</h3>
-<center>
-<table width="60%" cellspacing="3" bgcolor="e0e0e0">
-<tr><td>
-<pre>&lt;imagen mask="<em>m</em>" smooth="<em>s</em>" position="<em>x</em> <em>y</em>" matrix="<em>a</em> <em>b</em> <em>c</em> <em>d</em>"&gt;
-&lt;name&gt;<em>imagename</em>&lt;/name&gt;
-&lt;/imagen&gt;
-</pre></td></tr></table>
-</center>
-<h4>Attributes</h4>
-<table>
+__Attributes__
+| mask="*m*"         | set the color channel mask to *m*  |
+| smooth="*n*"       | If n is set to 1, the renderer will attempt to smooth the bitmap image.   |
+| position="*x y*"   | positions the top left of the bitmap at the coordinates given by *x* and *y*.  |
+| matrix="*a b c d*" | applies a two dimensional transform to the bitmap string. The tranformation matrix is constructed from <em>a</em>,<em>b</em>,<em>c</em> and <em>d</em>.   |
 
-<tr><td valign="top">mask="<em>m</em>"</td><td>set the color channel mask to <em>m</em></td></tr>
-
-<tr><td valign="top">smooth="<em>n</em>"</td><td>If n is set to 1, the renderer will attempt to smooth the bitmap image.</td></tr>
-
-<tr><td valign="top">position="<em>x</em> <em>y</em>"</td><td>positions the top left of the bitmap at the coordinates given by <em>x</em> and <em>y</em>.</td></tr>
-<tr><td valign="top">matrix="<em>a</em> <em>b</em> <em>c</em> <em>d</em>"</td><td>applies a two dimensional transform to the bitmap string. The tranformation matrix is constructed from <em>a</em>,<em>b</em>,<em>c</em> and <em>d</em>.</td></tr>
-</table>
-<h4>Description</h4>
-<p>Plots the bitmap image named <em>imagename</em>. The Renderer attempts to resolve <em>imagename</em> to a known bitmap. This may be translated to a filename or used to search a database of named bitmaps depending on the renderer.</p>
+_Description__
+Plots the bitmap image named <em>imagename</em>. The Renderer attempts to resolve <em>imagename</em> to a known bitmap. This may be translated to a filename or used to search a database of named bitmaps depending on the renderer.
 
 
 
