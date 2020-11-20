@@ -203,6 +203,7 @@ Temporarily redirects input to the file <em>filename</em>. The <code>include</co
        smooth="<em>s</em>" position="<em>x</em> <em>y</em>" matrix="<em>a</em> <em>b</em> <em>c</em> <em>d</em>"&gt;
 *text*
 </text>
+```
 
 __Attributes__
 | color="*aarrggbb*" | color the text string according to the hexadecimal number <em>aarrggbb</em>. The alpha value is given by <em>aa</em>, the red value by <em>rr</em>, the green value by <em>gg</em>, and the blue value by *bb*.  |
@@ -216,7 +217,7 @@ __Attributes__
 __Description__
 Plots the text string <em>text</em>. Special characters such as "<" and ">" must be replaced by their equivalent XML entities.
 
-__line__
+### line
 ```
 <line color="*aarrggbb*" mask="*m*" 
        width="*w*" dash="*phase dash....*">
