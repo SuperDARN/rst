@@ -161,7 +161,7 @@ __Attributes__
 __Description__
 The top level rPlot document tag. All subsequent tags are nested within this tag.
 
-__info__
+### info
 ```
 <info>
 .
@@ -180,13 +180,15 @@ This is the meta-data tag. The content of this tag is comprised of XML formatted
 </embed>
 ```
 __Attributes__
+
 | position="*x y*" | positions the top left of the embedded document at the coordinates given by <em>x</em> and *y*. |
 | matrix="*a b c d*" | applies a two dimensional transform to embedded document. The tranformation matrix is constructed from <em>a</em>,<em>b</em>,<em>c</em> and *d*. | 
 
 __Description__
+
 Embeds an rplot document. The content of this tag must be a valid rPlot document including the `rplot` root tag pair.
 
-__include__
+### include
 ```
 <include>
    <name>*filename*</name>
@@ -206,6 +208,7 @@ Temporarily redirects input to the file <em>filename</em>. The <code>include</co
 ```
 
 __Attributes__
+
 | color="*aarrggbb*" | color the text string according to the hexadecimal number <em>aarrggbb</em>. The alpha value is given by <em>aa</em>, the red value by <em>rr</em>, the green value by <em>gg</em>, and the blue value by *bb*.  |
 | mask="*m*"         | set the color channel mask to <em>m</em> |
 | font="*font*"      | use the font *fontname*.                 |
@@ -215,6 +218,7 @@ __Attributes__
 | matrix="*a b c d*" | applies a two dimensional transform to the text string. The tranformation matrix is constructed from *a*, *b*, *c* and *d*.  |
 
 __Description__
+
 Plots the text string <em>text</em>. Special characters such as "<" and ">" must be replaced by their equivalent XML entities.
 
 ### line
@@ -234,6 +238,7 @@ __Attributes__
 | dash="*phase dash...*"  | set the dash pattern for the line using the phase value <em>phase</em> and the space separated list of dash lengths *dash..* | 
 
 __Description__
+
 Draw a simple line between <em>startx</em>,<em>starty</em> and <em>endx</em>,<em>endy</em>.</p>
 
 
@@ -249,12 +254,14 @@ Draw a simple line between <em>startx</em>,<em>starty</em> and <em>endx</em>,<em
 ```
 
 __Attributes__
+
 | color="*aarrggbb*"    | color the line according to the hexadecimal number <em>aarrggbb</em>. The alpha value is given by <em>aa</em>, the red value by <em>rr</em>, the green value by <em>gg</em>, and the blue value by <em>bb</em>.  |
 | mask="*m*"            | set the color channel mask to *m*   |
 | width="*w*"           | set the line thickness to w. A value of zero will produce hairlines.   |
 | dash="*phase dash...*" | set the dash pattern for the line using the phase value <em>phase</em> and the space separated list of dash lengths <em>dash..</em>  |
 
 __Description__
+
 Draw a bezier line between <em>x1</em>,<em>x2</em> and <em>x4</em>,<em>x4</em>, with control points at *x2*,*y2*, and *x3*,*y3*.
 
 ### image
@@ -272,6 +279,7 @@ __Attributes__
 | matrix="*a b c d*" | applies a two dimensional transform to the bitmap string. The tranformation matrix is constructed from <em>a</em>,<em>b</em>,<em>c</em> and <em>d</em>. |
 
 __Description__
+
 Plots the bitmap image <em>imagedata</em>. This must be a valid XML format bitmap.
 
 ### imagen
@@ -282,12 +290,14 @@ Plots the bitmap image <em>imagedata</em>. This must be a valid XML format bitma
 ```
 
 __Attributes__
+
 | mask="*m*"         | set the color channel mask to *m*  |
 | smooth="*n*"       | If n is set to 1, the renderer will attempt to smooth the bitmap image.   |
 | position="*x y*"   | positions the top left of the bitmap at the coordinates given by *x* and *y*.  |
 | matrix="*a b c d*" | applies a two dimensional transform to the bitmap string. The tranformation matrix is constructed from <em>a</em>,<em>b</em>,<em>c</em> and <em>d</em>.   |
 
 _Description__
+
 Plots the bitmap image named <em>imagename</em>. The Renderer attempts to resolve <em>imagename</em> to a known bitmap. This may be translated to a filename or used to search a database of named bitmaps depending on the renderer.
 
 
