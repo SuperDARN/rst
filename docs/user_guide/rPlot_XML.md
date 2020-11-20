@@ -141,7 +141,7 @@ By combining the <code>embed</code> and <code>include</code> tags you can create
 <include><name>overlay.rp.xml</name></include>
 </embed>
 </rplot>
-
+```
 The example overlays the rplot document "overlay.rp.xml" onto the image "backround.ppm".
 
 ## rPlot Tags
@@ -223,56 +223,45 @@ __line__
 <s><p><x><em>startx</em></x><y><em>starty</em></y></p></s>
 <e><p><x><em>endx</em></x><y><em>endy</em></y></p></e>
 </line>
+```
 
 __Attributes__
 
-<tr><td valign="top">color="<em>aarrggbb</em>"</td><td>color the line according to the hexadecimal number <em>aarrggbb</em>. The alpha value is given by <em>aa</em>, the red value by <em>rr</em>, the green value by <em>gg</em>, and the blue value by <em>bb</em>.</td></tr>
+| color="*aarrggbb*"    | color the line according to the hexadecimal number <em>aarrggbb</em>. The alpha value is given by <em>aa</em>, the red value by <em>rr</em>, the green value by <em>gg</em>, and the blue value by *bb*.
+| mask="*m*"            | set the color channel mask to *m* |
+| width="*w*"           | set the line thickness to <em>w</em>. A value of zero will produce hairlines.  |
+| dash="*phase dash...*"  | set the dash pattern for the line using the phase value <em>phase</em> and the space separated list of dash lengths *dash..* | 
 
-<tr><td valign="top">mask="<em>m</em>"</td><td>set the color channel mask to <em>m</em></td></tr>
-<tr><td valign="top">width="<em>w</em>"</td><td>set the line thickness to <em>w</em>. A value of zero will produce hairlines.</td></tr>
-<tr><td valign="top">dash="<em>phase dash...</em>"</td><td>set the dash pattern for the line using the phase value <em>phase</em> and the space separated list of dash lengths <em>dash..</em></td></tr>
-</table>
-
-<h4>Description</h4>
-<p>Draw a simple line between <em>startx</em>,<em>starty</em> and <em>endx</em>,<em>endy</em>.</p>
+__Description__
+Draw a simple line between <em>startx</em>,<em>starty</em> and <em>endx</em>,<em>endy</em>.</p>
 
 
-<h3>bezier</h3>
-<center>
-<table width="60%" cellspacing="3" bgcolor="e0e0e0">
-<tr><td>
-<pre>&lt;bezier color="<em>aarrggbb</em>" mask="<em>m</em>" 
-       width="<em>w</em>" dash="<em>phase</em> <em>dash....</em>"&gt;
-&lt;a&gt;&lt;p&gt;&lt;x&gt;<em>x1</em>&lt;/x&gt;&lt;y&gt;<em>y1</em>&lt;/y&gt;&lt;/p&gt;&lt;/a&gt;
-&lt;b&gt;&lt;p&gt;&lt;x&gt;<em>x2</em>&lt;/x&gt;&lt;y&gt;<em>y2</em>&lt;/y&gt;&lt;/p&gt;&lt;/b&gt;
-&lt;c&gt;&lt;p&gt;&lt;x&gt;<em>x3</em>&lt;/x&gt;&lt;y&gt;<em>y3</em>&lt;/y&gt;&lt;/p&gt;&lt;/c&gt;
-&lt;d&gt;&lt;p&gt;&lt;x&gt;<em>x4</em>&lt;/x&gt;&lt;y&gt;<em>y4</em>&lt;/y&gt;&lt;/p&gt;&lt;/d&gt;
-&lt;/bezier&gt;
-</pre></td></tr></table>
-</center>
-<h4>Attributes</h4>
-<table>
+### bezier 
+```
+<bezier color="<em>aarrggbb</em>" mask="<em>m</em>" 
+       width="<em>w</em>" dash="<em>phase</em> <em>dash....</em>">
+<a><p><x><em>x1</em></x><y><em>y1</em></y></p></a>
+<b><p><x><em>x2</em></x><y><em>y2</em></y></p></b>
+<c><p><x><em>x3</em></x><y><em>y3</em></y></p></c>
+<d><p><x><em>x4</em></x><y><em>y4</em></y></p></d>
+</bezier>
+```
 
+__Attributes__
+| color="*aarrggbb*"    | color the line according to the hexadecimal number <em>aarrggbb</em>. The alpha value is given by <em>aa</em>, the red value by <em>rr</em>, the green value by <em>gg</em>, and the blue value by <em>bb</em>.  |
+| mask="*m*"            | set the color channel mask to *m*   |
+| width="*w*"           | set the line thickness to w. A value of zero will produce hairlines.   |
+| dash="*phase dash...*" | set the dash pattern for the line using the phase value <em>phase</em> and the space separated list of dash lengths <em>dash..</em>  |
 
-<tr><td valign="top">color="<em>aarrggbb</em>"</td><td>color the line according to the hexadecimal number <em>aarrggbb</em>. The alpha value is given by <em>aa</em>, the red value by <em>rr</em>, the green value by <em>gg</em>, and the blue value by <em>bb</em>.</td></tr>
+__Description__
+Draw a bezier line between <em>x1</em>,<em>x2</em> and <em>x4</em>,<em>x4</em>, with control points at *x2*,*y2*, and *x3*,*y3*.
 
-<tr><td valign="top">mask="<em>m</em>"</td><td>set the color channel mask to <em>m</em></td></tr>
-<tr><td valign="top">width="<em>w</em>"</td><td>set the line thickness to <em>w</em>. A value of zero will produce hairlines.</td></tr>
-<tr><td valign="top">dash="<em>phase dash...</em>"</td><td>set the dash pattern for the line using the phase value <em>phase</em> and the space separated list of dash lengths <em>dash..</em></td></tr>
-</table>
-
-<h4>Description</h4>
-<p>Draw a bezier line between <em>x1</em>,<em>x2</em> and <em>x4</em>,<em>x4</em>, with control points at <em>x2</em>,<em>y2</em>, and <em>x3</em><em>y3</em>.</p>
-
-
-
-<h3>image</h3>
-<center>
-<table width="60%" cellspacing="3" bgcolor="e0e0e0">
-<tr><td>
+### image
+```
 <pre>&lt;image mask="<em>m</em>" smooth="<em>s</em>" position="<em>x</em> <em>y</em>" matrix="<em>a</em> <em>b</em> <em>c</em> <em>d</em>"&gt;
 <em>imagedata</em>
 &lt;/image&gt;
+```
 </pre></td></tr></table>
 </center>
 <h4>Attributes</h4>
