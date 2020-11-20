@@ -56,9 +56,8 @@ In addition to the graphic primitive tags, the rPlot specification includes some
 
 ## Tag Contents and Attributes
 The contents of a tag define the primitive, its size and other characteristics. A tag can also have attributes that define physical properties of the primitive:</p>
-<center>
-<table width="60%" cellspacing="3" bgcolor="e0e0e0">
-<tr><td><pre>&lt;ellipse color="ffff0000" mask="0f" width="0" 
+```
+&lt;ellipse color="ffff0000" mask="0f" width="0" 
         position="270 270" fill="1"&gt;
   &lt;s&gt;
     &lt;d&gt;
@@ -67,16 +66,11 @@ The contents of a tag define the primitive, its size and other characteristics. 
     &lt;/d&gt;
   &lt;/s&gt;
 &lt;/ellipse&gt;
-</pre>
-</td></tr></table>
-</center>
-<p>In the above example a filled ellipse of width 220 units and height 150 units is plotted in red (color="ffff0000"), at position x=270, y=270.</p>
-<h3>2. A basic rPlot document "Hello World"</h3>
+```
+In the above example a filled ellipse of width 220 units and height 150 units is plotted in red (color="ffff0000"), at position x=270, y=270.
 
-<center>
-<table width="60%" cellspacing="3" bgcolor="e0e0e0">
-<tr><td><pre>
-
+## A basic rPlot document "Hello World"
+```
 &lt;rplot name="hellow.rp.xml" width="540" height="540" depth="24"&gt;
 &lt;info&gt;
 &lt;created&gt;Fri Nov  5 17:55:46 2004&lt;/created&gt;
@@ -91,6 +85,7 @@ The contents of a tag define the primitive, its size and other characteristics. 
 &lt;t&gt;Hello World&lt;/t&gt;
 &lt;/text&gt;
 &lt;/rplot&gt;
+```
 </pre>
 </td></tr></table>
 </center>
