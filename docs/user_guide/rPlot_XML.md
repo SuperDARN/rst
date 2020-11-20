@@ -57,15 +57,15 @@ In addition to the graphic primitive tags, the rPlot specification includes some
 ## Tag Contents and Attributes
 The contents of a tag define the primitive, its size and other characteristics. A tag can also have attributes that define physical properties of the primitive:</p>
 ```
-&lt;ellipse color="ffff0000" mask="0f" width="0" 
-        position="270 270" fill="1"&gt;
-  &lt;s&gt;
-    &lt;d&gt;
-      &lt;w&gt;220&lt;/w&gt;
-      &lt;h&gt;150&lt;/h&gt;
-    &lt;/d&gt;
-  &lt;/s&gt;
-&lt;/ellipse&gt;
+<ellipse color="ffff0000" mask="0f" width="0" 
+        position="270 270" fill="1">
+  <s>
+    <d>
+      <w>220</w>
+      <h>150</h>
+    </d>
+  </s>
+</ellipse>
 ```
 In the above example a filled ellipse of width 220 units and height 150 units is plotted in red (color="ffff0000"), at position x=270, y=270.
 
