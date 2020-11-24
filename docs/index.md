@@ -36,6 +36,8 @@ The software is maintained by the SuperDARN Data Analysis Working Group (DAWG) o
   - Developers Guide
     - [Copyrights and Licensing](developers_guide/copyright_license.md) 
     - Data Structures in C
+         * [cFit](developers_guide/cfit_struct_c.md)
+	 * [FitACF](developers_guide/fitacf_struct_c.md)
          * [Radar Parameter Block](developers_guide/radar_parameter_c.md)
          * [RawACF](developers_guide/rawacf_struct_c.md)
   - SuperDARN Data Formats
