@@ -82,11 +82,11 @@ int main(int argc,char *argv[]) {
 }
 ```
 
-The program first establishes a data structure to store plot parameters in by calling <code>RplotMake</code>. Next the program calls <code>RplotSetText</code> to tell the <code>Rplot</code> library that it should use the application supplied function <code>stream</code> to write the output. Then the plot is started by calling <code>RplotMakePlot</code>. A simple ellipse and some text are then plotted and then finally a call to <code>RplotEndPlot</code> closes the plot.
+The program first establishes a data structure to store plot parameters in by calling `RplotMake`. Next the program calls `RplotSetText` to tell the `Rplot` library that it should use the application supplied function `stream` to write the output. Then the plot is started by calling `RplotMakePlot`. A simple ellipse and some text are then plotted and then finally a call to `RplotEndPlot` closes the plot.
 
 ### Writing a Consumer (Renderer)
 
-Writing a Consumer or Renderer is slightly more complex. The Consumer must parse the XML and then, depending on the desired output, call a function in one of the graphics rendering libraries. The <a href="../../../base/src.lib/xml/xml/"><code>xml</code></a> library is used to parse the XML. The library extract XML tag pairs and any associated content and passes them onto an application supplied function that decodes them. The <a href="../src.lib/base/graphic/rplotin/"><code>rplotin</code></a> library provides such a decoding function for the rPlot graphics specification.
+Writing a Consumer or Renderer is slightly more complex. The Consumer must parse the XML and then, depending on the desired output, call a function in one of the graphics rendering libraries. The <a href="../../../base/src.lib/xml/xml/">`xml`</a> library is used to parse the XML. The library extract XML tag pairs and any associated content and passes them onto an application supplied function that decodes them. The <a href="../src.lib/base/graphic/rplotin/">`rplotin`</a> library provides such a decoding function for the rPlot graphics specification.
 
 Below is a simple Renderer that is partially implemented for clarity:
 ```
@@ -126,10 +126,10 @@ int plotshape(char *name,struct RplotInMatrix *matrix,
   if (img==NULL) return -1;
 
   if (matrix !=NULL) {
-      fbmatrix.a=matrix-&gt;a;
-      fbmatrix.b=matrix-&gt;b;
-      fbmatrix.c=matrix-&gt;c;
-      fbmatrix.d=matrix-&gt;d;
+      fbmatrix.a=matrix->a;
+      fbmatrix.b=matrix->b;
+      fbmatrix.c=matrix->c;
+      fbmatrix.d=matrix->d;
       mptr=&fbmatrix;
   }
 
@@ -202,17 +202,17 @@ int main(int argc,char *argv[]) {
 }
 ```
 
-This simple program first established a data structure for the XML parser by calling <code>XMLMakeData</code>. This is followed by a similar call for the rPlot decoder, <code>RplotInMake</code>. The next step is to supply the rPlot decoder with functions for implementing graphics commands; this is done using the calls to <code>RplotInSetMake</code>, <code>RplotInSetShape</code>, and <code>RplotInSetLine</code>.
+This simple program first established a data structure for the XML parser by calling `XMLMakeData`. This is followed by a similar call for the rPlot decoder, `RplotInMake`. The next step is to supply the rPlot decoder with functions for implementing graphics commands; this is done using the calls to `RplotInSetMake`, `RplotInSetShape`, and `RplotInSetLine`.
 
-The three functions <code>makeplot</code>,<code>plotshape</code> and <code>plotline</code> will subsequently be called by the rPlot decoder. The functions will receive a pointer to the variable <code>img</code> which is istself a pointer to a frame buffer data structure. This pointer allows the three functions to create and modify the frame buffer that will eventually be written out.
+The three functions `makeplot`,`plotshape` and `plotline` will subsequently be called by the rPlot decoder. The functions will receive a pointer to the variable `img` which is istself a pointer to a frame buffer data structure. This pointer allows the three functions to create and modify the frame buffer that will eventually be written out.
 
-The next few lines of code tell the XML parser which functions in the <code>rplotin</code> library it should call as it reads the document.
+The next few lines of code tell the XML parser which functions in the `rplotin` library it should call as it reads the document.
 
-The remainder of the program simply reads in a file line by line and calls the XML parser with <code>XMLDecode</code>. When the file has been read a check is made to see if the frame buffer <code>img</code> has been created, and if so, it is written to standard out as a Portable PixMap (PPM) file with <code>FrameBufferSavePPM</code>.
+The remainder of the program simply reads in a file line by line and calls the XML parser with `XMLDecode`. When the file has been read a check is made to see if the frame buffer `img` has been created, and if so, it is written to standard out as a Portable PixMap (PPM) file with `FrameBufferSavePPM`.
 
 ### Rendering Library
 
-The <code>fbpsrplot</code> library implements the the graphics functions required for the <code>rplotin</code> decoder for bitmap, PostScript and rPlot output. (an rPlot renderer might seem redundant, but it can be used to "flatten" and rplot document that relies on the <code>include</code> tag to incorporate other files).
+The `fbpsrplot` library implements the the graphics functions required for the `rplotin` decoder for bitmap, PostScript and rPlot output. (an rPlot renderer might seem redundant, but it can be used to "flatten" and rplot document that relies on the `include` tag to incorporate other files).
 
 The example below uses the library to implement an application for plotting both bitmap output:
 
@@ -282,7 +282,7 @@ int main(int argc,char *argv[]) {
     exit(0);
   }
 
-  if (fbplot-&gt;img !=NULL) FrameBufferSavePPM(fbplot-&gt;img,stdout);
+  if (fbplot->img !=NULL) FrameBufferSavePPM(fbplot->img,stdout);
   return 0;
 }
 ```
@@ -291,9 +291,9 @@ int main(int argc,char *argv[]) {
 
 Often an application is required to produce not just an rPlot XML document as output but also a finished rendered plot. One approach would be for the application to determine the type of output required and then for each graphic command call the appropriate function in the rendering library. However this approach is very inefficient and prone to error.
 
-An alternative approach is to write a program that acts as both producer and consumer. The application determines which type of output is required and sets up the <code>rplotin</code> library as a consumer. The stream handler for the <code>rplot</code> library is then set to point to the <code>XMLDecode</code> function.
+An alternative approach is to write a program that acts as both producer and consumer. The application determines which type of output is required and sets up the `rplotin` library as a consumer. The stream handler for the `rplot` library is then set to point to the `XMLDecode` function.
 
-Subsequent calls to the <code>rplot</code> library will then automatically be passed to the <code>rplotin</code> decoder for rendering.
+Subsequent calls to the `rplot` library will then automatically be passed to the `rplotin` decoder for rendering.
 
 Below is a more sophisticated program that produces, rPlot, PostScript and Portable PixMap format output:
 ```
@@ -303,9 +303,9 @@ Below is a more sophisticated program that produces, rPlot, PostScript and Porta
 */
 
 
-#include &lt;stdio.h&gt;
-#include &lt;stdlib.h&gt;
-#include &lt;string.h&gt;
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "rxml.h"
 #include "rfbuffer.h"
 #include "rps.h"
@@ -378,9 +378,9 @@ int main(int argc,char *argv[]) {
        PostScriptSetText(psdata,stream,stdout);
        psplot=PostScriptRplotMake(psdata,NULL);
        PostScriptRplotSetAll(rplotin,psplot);
-       psplot-&gt;land=0;
-       psplot-&gt;xoff=40;
-       psplot-&gt;yoff=40;
+       psplot->land=0;
+       psplot->xoff=40;
+       psplot->yoff=40;
     }
     XMLSetStart(xmldata,RplotInStart,rplotin);
     XMLSetEnd(xmldata,RplotInEnd,rplotin);
@@ -394,7 +394,7 @@ int main(int argc,char *argv[]) {
 
   RplotMakePlot(rplot,"hellow.rp.xml",540,540,24);
 
-  for (x=10;x&lt;220;x+=10) 
+  for (x=10;x<220;x+=10) 
   RplotEllipse(rplot,NULL,270,270,
             x,x,0,0xffff0000,0x0f,0,NULL);
 
@@ -404,7 +404,7 @@ int main(int argc,char *argv[]) {
   RplotEndPlot(rplot);  
 
   if (ppmflg) {
-    if (fbplot-&gt;img !=NULL) FrameBufferSavePPM(fbplot-&gt;img,stdout);
+    if (fbplot->img !=NULL) FrameBufferSavePPM(fbplot->img,stdout);
   }
   return 0;
 }
