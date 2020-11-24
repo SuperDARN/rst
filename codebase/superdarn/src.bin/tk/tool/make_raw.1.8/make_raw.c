@@ -223,7 +223,7 @@ int main (int argc,char *argv[]) {
 
   command[0]=0;
   n=0;
-  for (int c=0; i<argc; i++) {
+  for (int c=0; c<argc; c++) {
     // if the commannd is too long just cut it off
     n+=strlen(argv[c])+1;
     if (n>127) break;
