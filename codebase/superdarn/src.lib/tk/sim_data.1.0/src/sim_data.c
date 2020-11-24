@@ -23,6 +23,10 @@ THE SOFTWARE.
  MODIFICATION HISTORY:
  Written by AJ Ribeiro 06/16/2011
  Based on code orginally written by Pasha Ponomarenko
+ 
+ 2020-11-12 Marina Schmidt Converted RST complex -> C library complex
+
+
 */
 
 #include <errno.h>

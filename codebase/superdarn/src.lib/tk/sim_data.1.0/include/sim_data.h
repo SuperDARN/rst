@@ -1,5 +1,11 @@
 /* sim_data.h
    ==========
+  TODO: put in the correct copyright here
+ 
+  Modifications
+  =============
+    2020-11-12 Marina Schmidt Converted RST complex -> C library complex
+
 */
 
 #include "rmath.h"

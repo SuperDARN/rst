@@ -1,9 +1,7 @@
 /* calc_phi_res.c
      ==============
      Author: R.J.Barnes & K.Baker
-*/
 
-/*
  LICENSE AND DISCLAIMER
  
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
@@ -24,12 +22,9 @@
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
  
  
- 
-*/
+  Modifications
+  =============
 
-
-
-/*
     2003/09/04 Kile Baker
     changed the return type of this function from void to int
     the function now checks to see if all the phases turned out
@@ -39,8 +34,11 @@
     because all the phases were exactly 0.  This can happen when
     the power is low and we are reprocessing DAT files that have lost
     some precision.
-*/
 
+    2020-11-12 Marina Schmidt Converted RST complex -> C library complex
+          
+*/
+            
 #include <math.h>
 #include <complex.h>
 #include "rmath.h"

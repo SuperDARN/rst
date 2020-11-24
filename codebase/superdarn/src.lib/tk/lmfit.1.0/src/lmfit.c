@@ -1,6 +1,12 @@
 
 /* lmfit.c
    ==========
+  TODO: find author and put in the correct copyright 
+ 
+  Modifications
+  =============
+    2020-11-12 Marina Schmidt Converted RST complex -> C library complex
+
 */
 
 
