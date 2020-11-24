@@ -93,11 +93,11 @@ The root element of the rPlot document is the <code>rplot</code> tag. This defin
 The <code>position</code> attribute defines the position of an element on the page or screen. The position is given in terms of the X and Y offset from the top left-hand corner of the plot.
 
 `color="*aarrggbb*"`
-The <code>color</code> tag defines attribute defines the color of a primitive in terms of the red,green,blue and alpha (transparency) channels. The attribute value <em>aarrggbb</em> is in hex, <em>aa</em> gives the value of the alpha channel, <em>rr</em> gives the value of the red channel, <em>gg</em> gives the value of the green channel and <em>bb</em> gives the value of the blue channel. All values range between 0 (off) and ff  (fully on).
+The <code>color</code> tag defines attribute defines the color of a primitive in terms of the red,green,blue and alpha (transparency) channels. The attribute value *aarrggbb* is in hex, *aa* gives the value of the alpha channel, *rr* gives the value of the red channel, *gg* gives the value of the green channel and *bb* gives the value of the blue channel. All values range between 0 (off) and ff  (fully on).
 The alpha channel is implemented by the renderer and some output devices (PostScript), do not support it.
 
 `mask="*m*"`
-The <code>mask</code> attribute defines the RGBA color mask. The mask value *x* is a hexadecimal number and represents which color channels are enabled. The top (4th) bit of <em>x</em> controls the alpha channel, the third bit controls the red channel, the second bit controls the green channel and bottom (1st) bit controls the blue channel. If a bit is set, the channel is enabled otherwise the channel is masked out. A value of <code>f</code> enables all channels.
+The <code>mask</code> attribute defines the RGBA color mask. The mask value *x* is a hexadecimal number and represents which color channels are enabled. The top (4th) bit of *x* controls the alpha channel, the third bit controls the red channel, the second bit controls the green channel and bottom (1st) bit controls the blue channel. If a bit is set, the channel is enabled otherwise the channel is masked out. A value of <code>f</code> enables all channels.
 The <code>mask</code> attribute is closely coupled with the <code>color</code> attribute and allows you to control the output channels of a plot without having to modify the color directly.
  
 `width="*w*"`
@@ -107,7 +107,7 @@ The <code>width</code> attribute defines the line width of the primitive. A valu
 The <code>fill</code> attribute defines whether the primitive should be filled or not. A value of <code>1</code> will produce filled polygons and shapes. If this attribute is omitted then only object outlines will be drawn.
 
 `dash="*phase dash*"`
-The <code>dash</code> attribute defines a dot-dash pattern to use when drawing the primitive. The dash pattern is defined in the same way that PostScript dot-dash patterns are defined. The space seperated list of dash lengths given by <em>dash</em> is cycled through, the first element give the length of line to draw, the next element gives the length of the gap to leave. The renderer will continue alternating lines and gaps until all elements of <em>dash</em> are exhausted, it will the repeat at the beginning. The phase value given by <em>phase</em> is used as the initial offset into <em>dash</em> that the renderer starts from.
+The <code>dash</code> attribute defines a dot-dash pattern to use when drawing the primitive. The dash pattern is defined in the same way that PostScript dot-dash patterns are defined. The space seperated list of dash lengths given by *dash* is cycled through, the first element give the length of line to draw, the next element gives the length of the gap to leave. The renderer will continue alternating lines and gaps until all elements of *dash* are exhausted, it will the repeat at the beginning. The phase value given by *phase* is used as the initial offset into *dash* that the renderer starts from.
 
 `matrix="*a b c d*"`
 The <code>matrix</code> attribute applies a matrix transformation on the graphics primitive. The tranformation takes the form:
@@ -154,10 +154,10 @@ The example overlays the rplot document "overlay.rp.xml" onto the image "backrou
 ```
 __Attributes__
 
-| name="*name*" | assigns the string <em>name</em> as the document name or title. The renderer may or may not use this to reference the document.
-| width="*w*"   | sets the width of the plot to <em>w</em> graphics units. |
-| height="*h*"  | sets the height of the plot to <em>h</em> graphics units. |
-| depth="*d*"   | sets the color-depth of the plot to <em>d</em> bits. Currently only the 24-bit color depth is supported. |
+| name="*name*" | assigns the string *name* as the document name or title. The renderer may or may not use this to reference the document.
+| width="*w*"   | sets the width of the plot to *w* graphics units. |
+| height="*h*"  | sets the height of the plot to *h* graphics units. |
+| depth="*d*"   | sets the color-depth of the plot to *d* bits. Currently only the 24-bit color depth is supported. |
 
 __Description__
 
@@ -176,7 +176,7 @@ This is the meta-data tag. The content of this tag is comprised of XML formatted
 
 ### embed
 ```
-<embed position="<em>x</em> <em>y</em>" matrix="<em>a</em> <em>b</em> <em>c</em> <em>d</em>">
+<embed position="*x* *y*" matrix="*a* *b* *c* *d*">
   <rplot>
    .
   </rplot>
@@ -184,8 +184,8 @@ This is the meta-data tag. The content of this tag is comprised of XML formatted
 ```
 __Attributes__
 
-| position="*x y*" | positions the top left of the embedded document at the coordinates given by <em>x</em> and *y*. |
-| matrix="*a b c d*" | applies a two dimensional transform to embedded document. The tranformation matrix is constructed from <em>a</em>,<em>b</em>,<em>c</em> and *d*. | 
+| position="*x y*" | positions the top left of the embedded document at the coordinates given by *x* and *y*. |
+| matrix="*a b c d*" | applies a two dimensional transform to embedded document. The tranformation matrix is constructed from *a*,*b*,*c* and *d*. | 
 
 __Description__
 
@@ -200,72 +200,72 @@ Embeds an rplot document. The content of this tag must be a valid rPlot document
 
 __Description__
 
-Temporarily redirects input to the file <em>filename</em>. The <code>include</code> tag can be placed anywhere in the rPlot document, consequently the tag can be used to either include whole plots or just import a single value.
+Temporarily redirects input to the file *filename*. The <code>include</code> tag can be placed anywhere in the rPlot document, consequently the tag can be used to either include whole plots or just import a single value.
 
 ### text
 ```
 <text color="*aarrggbb*" mask="*m*" font="*fontname*" size="*fontsize*" 
-       smooth="<em>s</em>" position="<em>x</em> <em>y</em>" matrix="<em>a</em> <em>b</em> <em>c</em> <em>d</em>"&gt;
+       smooth="*s*" position="*x* *y*" matrix="*a* *b* *c* *d*"&gt;
 *text*
 </text>
 ```
 
 __Attributes__
 
-| color="*aarrggbb*" | color the text string according to the hexadecimal number <em>aarrggbb</em>. The alpha value is given by <em>aa</em>, the red value by <em>rr</em>, the green value by <em>gg</em>, and the blue value by *bb*.  |
-| mask="*m*"         | set the color channel mask to <em>m</em> |
+| color="*aarrggbb*" | color the text string according to the hexadecimal number *aarrggbb*. The alpha value is given by *aa*, the red value by *rr*, the green value by *gg*, and the blue value by *bb*.  |
+| mask="*m*"         | set the color channel mask to *m* |
 | font="*font*"      | use the font *fontname*.                 |
 | font="*size*"      | use a font size of *fontsize* points.    |
 | smooth="*n*"       | If n is set to 1, the renderer will attempt to smooth the font.  |
-| position="*x y*"   | positions the top left of the text at the coordinates given by <em>x</em> and *y*.  |
+| position="*x y*"   | positions the top left of the text at the coordinates given by *x* and *y*.  |
 | matrix="*a b c d*" | applies a two dimensional transform to the text string. The tranformation matrix is constructed from *a*, *b*, *c* and *d*.  |
 
 __Description__
 
-Plots the text string <em>text</em>. Special characters such as "<" and ">" must be replaced by their equivalent XML entities.
+Plots the text string *text*. Special characters such as "<" and ">" must be replaced by their equivalent XML entities.
 
 ### line
 ```
 <line color="*aarrggbb*" mask="*m*" 
        width="*w*" dash="*phase dash....*">
-<s><p><x><em>startx</em></x><y><em>starty</em></y></p></s>
-<e><p><x><em>endx</em></x><y><em>endy</em></y></p></e>
+<s><p><x>*startx*</x><y>*starty*</y></p></s>
+<e><p><x>*endx*</x><y>*endy*</y></p></e>
 </line>
 ```
 
 __Attributes__
 
-| color="*aarrggbb*"    | color the line according to the hexadecimal number <em>aarrggbb</em>. The alpha value is given by <em>aa</em>, the red value by <em>rr</em>, the green value by <em>gg</em>, and the blue value by *bb*.
+| color="*aarrggbb*"    | color the line according to the hexadecimal number *aarrggbb*. The alpha value is given by *aa*, the red value by *rr*, the green value by *gg*, and the blue value by *bb*.
 | mask="*m*"            | set the color channel mask to *m* |
-| width="*w*"           | set the line thickness to <em>w</em>. A value of zero will produce hairlines.  |
-| dash="*phase dash...*"  | set the dash pattern for the line using the phase value <em>phase</em> and the space separated list of dash lengths *dash..* | 
+| width="*w*"           | set the line thickness to *w*. A value of zero will produce hairlines.  |
+| dash="*phase dash...*"  | set the dash pattern for the line using the phase value *phase* and the space separated list of dash lengths *dash..* | 
 
 __Description__
 
-Draw a simple line between <em>startx</em>,<em>starty</em> and <em>endx</em>,<em>endy</em>.</p>
+Draw a simple line between *startx*,*starty* and *endx*,*endy*.</p>
 
 
 ### bezier 
 ```
-<bezier color="<em>aarrggbb</em>" mask="<em>m</em>" 
-       width="<em>w</em>" dash="<em>phase</em> <em>dash....</em>">
-<a><p><x><em>x1</em></x><y><em>y1</em></y></p></a>
-<b><p><x><em>x2</em></x><y><em>y2</em></y></p></b>
-<c><p><x><em>x3</em></x><y><em>y3</em></y></p></c>
-<d><p><x><em>x4</em></x><y><em>y4</em></y></p></d>
+<bezier color="*aarrggbb*" mask="*m*" 
+       width="*w*" dash="*phase* *dash....*">
+<a><p><x>*x1*</x><y>*y1*</y></p></a>
+<b><p><x>*x2*</x><y>*y2*</y></p></b>
+<c><p><x>*x3*</x><y>*y3*</y></p></c>
+<d><p><x>*x4*</x><y>*y4*</y></p></d>
 </bezier>
 ```
 
 __Attributes__
 
-| color="*aarrggbb*"    | color the line according to the hexadecimal number <em>aarrggbb</em>. The alpha value is given by <em>aa</em>, the red value by <em>rr</em>, the green value by <em>gg</em>, and the blue value by <em>bb</em>.  |
+| color="*aarrggbb*"    | color the line according to the hexadecimal number *aarrggbb*. The alpha value is given by *aa*, the red value by *rr*, the green value by *gg*, and the blue value by *bb*.  |
 | mask="*m*"            | set the color channel mask to *m*   |
 | width="*w*"           | set the line thickness to w. A value of zero will produce hairlines.   |
-| dash="*phase dash...*" | set the dash pattern for the line using the phase value <em>phase</em> and the space separated list of dash lengths <em>dash..</em>  |
+| dash="*phase dash...*" | set the dash pattern for the line using the phase value *phase* and the space separated list of dash lengths *dash..*  |
 
 __Description__
 
-Draw a bezier line between <em>x1</em>,<em>x2</em> and <em>x4</em>,<em>x4</em>, with control points at *x2*,*y2*, and *x3*,*y3*.
+Draw a bezier line between *x1*,*x2* and *x4*,*x4*, with control points at *x2*,*y2*, and *x3*,*y3*.
 
 ### image
 ```
@@ -278,12 +278,12 @@ __Attributes__
 
 | mask="*m*"         | set the color channel mask to *m*    |
 | smooth="*n*"       | If n is set to 1, the renderer will attempt to smooth the bitmap image.    |
-| position="*x y*"   | positions the top left of the bitmap at the coordinates given by <em>x</em> and *y*. |
-| matrix="*a b c d*" | applies a two dimensional transform to the bitmap string. The tranformation matrix is constructed from <em>a</em>,<em>b</em>,<em>c</em> and <em>d</em>. |
+| position="*x y*"   | positions the top left of the bitmap at the coordinates given by *x* and *y*. |
+| matrix="*a b c d*" | applies a two dimensional transform to the bitmap string. The tranformation matrix is constructed from *a*,*b*,*c* and *d*. |
 
 __Description__
 
-Plots the bitmap image <em>imagedata</em>. This must be a valid XML format bitmap.
+Plots the bitmap image *imagedata*. This must be a valid XML format bitmap.
 
 ### imagen
 ```
@@ -298,11 +298,11 @@ __Attributes__
 | mask="*m*"         | set the color channel mask to *m*  |
 | smooth="*n*"       | If n is set to 1, the renderer will attempt to smooth the bitmap image.   |
 | position="*x y*"   | positions the top left of the bitmap at the coordinates given by *x* and *y*.  |
-| matrix="*a b c d*" | applies a two dimensional transform to the bitmap string. The tranformation matrix is constructed from <em>a</em>,<em>b</em>,<em>c</em> and <em>d</em>.   |
+| matrix="*a b c d*" | applies a two dimensional transform to the bitmap string. The tranformation matrix is constructed from *a*,*b*,*c* and *d*.   |
 
-_Description__
+__Description__
 
-Plots the bitmap image named <em>imagename</em>. The Renderer attempts to resolve <em>imagename</em> to a known bitmap. This may be translated to a filename or used to search a database of named bitmaps depending on the renderer.
+Plots the bitmap image named *imagename*. The Renderer attempts to resolve *imagename* to a known bitmap. This may be translated to a filename or used to search a database of named bitmaps depending on the renderer.
 
 ### ellipse
 ```
@@ -315,14 +315,14 @@ Plots the bitmap image named <em>imagename</em>. The Renderer attempts to resolv
 __Attributes__
 
 |-|-|
-| color="*aarrggbb*" | color the ellipse according to the hexadecimal number *aarrggbb*. The alpha value is given by *aa*, the red value by *rr*, the green value by <em>gg</em>, and the blue value by <em>bb</em>. |
+| color="*aarrggbb*" | color the ellipse according to the hexadecimal number *aarrggbb*. The alpha value is given by *aa*, the red value by *rr*, the green value by *gg*, and the blue value by *bb*. |
 | mask="*m*" | set the color channel mask to *m* |
 | width="*w*" | set the line thickness to *w*. A value of zero will produce hairlines. |
-| dash="*phase dash...*" | set the dash pattern for the ellipse using the phase value <em>phase</em> and the space separated list of dash lengths <em>dash..</em> |
+| dash="*phase dash...*" | set the dash pattern for the ellipse using the phase value *phase* and the space separated list of dash lengths *dash..* |
 | fill="*f*" | fill the ellipse. |
 
 __Description__
-Draw an ellipse of width <em>width</em> and height *height*.
+Draw an ellipse of width *width* and height *height*.
 
 
 ### rectangle
@@ -336,50 +336,51 @@ Draw an ellipse of width <em>width</em> and height *height*.
 __Attributes__
 
 |-|-|
-| color="*aarrggbb*" | color the rectangle according to the hexadecimal number <em>aarrggbb</em>. The alpha value is given by <em>aa</em>, the red value by <em>rr</em>, the green value by <em>gg</em>, and the blue value by <em>bb</em>. |
-| mask="*m</em>"  | set the color channel mask to <em>m</em> |
-| width="<em>w</em>" | set the line thickness to <em>w</em>. A value of zero will produce hairlines. |
-| dash="<em>phase dash...</em>" | set the dash pattern for the rectangle using the phase value <em>phase</em> and the space separated list of dash lengths <em>dash..</em> | 
-| fill="<em>f</em>" | fill the rectangle. |
+| color="*aarrggbb*" | color the rectangle according to the hexadecimal number *aarrggbb*. The alpha value is given by *aa*, the red value by *rr*, the green value by *gg*, and the blue value by *bb*. |
+| mask="*m*"  | set the color channel mask to *m* |
+| width="*w*" | set the line thickness to *w*. A value of zero will produce hairlines. |
+| dash="*phase dash...*" | set the dash pattern for the rectangle using the phase value *phase* and the space separated list of dash lengths *dash..* | 
+| fill="*f*" | fill the rectangle. |
 
 __Description__
-Draw an rectangle of width <em>width</em> and height <em>height</em>.
+Draw an rectangle of width *width* and height *height*.
 
 ### polygon
 ```
-<polygon color="<em>aarrggbb</em>" mask="<em>m</em>" 
-       width="<em>w</em>" dash="<em>phase</em> <em>dash....</em>" fill="<em>f</em>">
-<pp><x><em>pntx</em></x><y><em>pnty</em></y><t>type</t></pp>
-<pp><x><em>pntx</em></x><y><em>pnty</em></y><t>type</t></pp>
-<pp><x><em>pntx</em></x><y><em>pnty</em></y><t>type</t></pp>
+<polygon color="*aarrggbb*" mask="*m*" 
+       width="*w*" dash="*phase* *dash....*" fill="*f*">
+<pp><x>*pntx*</x><y>*pnty*</y><t>type</t></pp>
+<pp><x>*pntx*</x><y>*pnty*</y><t>type</t></pp>
+<pp><x>*pntx*</x><y>*pnty*</y><t>type</t></pp>
 .
 .
 </polygon>
 ```
 
 __Attributes__
+
 |-|-|
-| color="<em>aarrggbb</em>" | color the polygon according to the hexadecimal number <em>aarrggbb</em>. The alpha value is given by <em>aa</em>, the red value by <em>rr</em>, the green value by <em>gg</em>, and the blue value by <em>bb</em>. |
-| mask="<em>m</em>" | set the color channel mask to <em>m</em> |
-| width="<em>w</em>" | set the line thickness to <em>w</em>. A value of zero will produce hairlines. |
-| dash="<em>phase dash...</em>" | set the dash pattern for the polygon using the phase value <em>phase</em> and the space separated list of dash lengths <em>dash..</em> |
-| fill="<em>f</em>" | fill the polygon. |
+| color="*aarrggbb*" | color the polygon according to the hexadecimal number *aarrggbb*. The alpha value is given by *aa*, the red value by *rr*, the green value by *gg*, and the blue value by *bb*. |
+| mask="*m*" | set the color channel mask to *m* |
+| width="*w*" | set the line thickness to *w*. A value of zero will produce hairlines. |
+| dash="*phase dash...*" | set the dash pattern for the polygon using the phase value *phase* and the space separated list of dash lengths *dash..* |
+| fill="*f*" | fill the polygon. |
 
 __Description__
-Draw a polygon. The vertices of the polygon are given by the set of sub-tags named <code>pp</code>. Each <code>pp</code> tag contains the X and Y coordinates of the vertex given by <em>pntx</em> and <em>pnty</em>, and a type code <em>type</em>. If the type code is zero (0), then the line linking this vertex to the previous one in straight. If the type code is one (1), then the previous three points make up the start point and control points for a bezier curve linked to this one.
+Draw a polygon. The vertices of the polygon are given by the set of sub-tags named <code>pp</code>. Each <code>pp</code> tag contains the X and Y coordinates of the vertex given by *pntx* and *pnty*, and a type code *type*. If the type code is zero (0), then the line linking this vertex to the previous one in straight. If the type code is one (1), then the previous three points make up the start point and control points for a bezier curve linked to this one.
 
 ### clip
 ```
 <clip>
-<pp><x><em>pntx</em></x><y><em>pnty</em></y><t>type</t></pp>
-<pp><x><em>pntx</em></x><y><em>pnty</em></y><t>type</t></pp>
-<pp><x><em>pntx</em></x><y><em>pnty</em></y><t>type</t></pp>
+<pp><x>*pntx*</x><y>*pnty*</y><t>type</t></pp>
+<pp><x>*pntx*</x><y>*pnty*</y><t>type</t></pp>
+<pp><x>*pntx*</x><y>*pnty*</y><t>type</t></pp>
 .
 .
 </clip>
 ```
 __Description__
-Defines a clipping polygon. The vertices of the polygon are given by the set of sub-tags named <code>pp</code>. Each <code>pp</code> tag contains the X and Y coordinates of the vertex given by <em>pntx</em> and <em>pnty</em>, and a type code <em>type</em>. If the type code is zero (0), then the line linking this vertex to the previous one in straight. If the type code is one (1), then the previous three points make up the start point and control points for a bezier curve linked to this one.
+Defines a clipping polygon. The vertices of the polygon are given by the set of sub-tags named <code>pp</code>. Each <code>pp</code> tag contains the X and Y coordinates of the vertex given by *pntx* and *pnty*, and a type code *type*. If the type code is zero (0), then the line linking this vertex to the previous one in straight. If the type code is one (1), then the previous three points make up the start point and control points for a bezier curve linked to this one.
 
 All subsequent operations will be clipped to this polygon. To remove the clipping polygon, use an empty <code>clip</code> tag.
 
