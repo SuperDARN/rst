@@ -153,12 +153,14 @@ The example overlays the rplot document "overlay.rp.xml" onto the image "backrou
 </rplot>
 ```
 __Attributes__
+
 | name="*name*" | assigns the string <em>name</em> as the document name or title. The renderer may or may not use this to reference the document.
 | width="*w*"   | sets the width of the plot to <em>w</em> graphics units. |
 | height="*h*"  | sets the height of the plot to <em>h</em> graphics units. |
 | depth="*d*"   | sets the color-depth of the plot to <em>d</em> bits. Currently only the 24-bit color depth is supported. |
 
 __Description__
+
 The top level rPlot document tag. All subsequent tags are nested within this tag.
 
 ### info
@@ -169,6 +171,7 @@ The top level rPlot document tag. All subsequent tags are nested within this tag
 ````
 
 __Description__
+
 This is the meta-data tag. The content of this tag is comprised of XML formatted meta-data. Currently there is no standard for the meta-data and the user is free to populate this tag as they see fit.
 
 ### embed
@@ -291,6 +294,8 @@ Plots the bitmap image <em>imagedata</em>. This must be a valid XML format bitma
 
 __Attributes__
 
+| | |
+|-|-|
 | mask="*m*"         | set the color channel mask to *m*  |
 | smooth="*n*"       | If n is set to 1, the renderer will attempt to smooth the bitmap image.   |
 | position="*x y*"   | positions the top left of the bitmap at the coordinates given by *x* and *y*.  |
@@ -300,37 +305,29 @@ _Description__
 
 Plots the bitmap image named <em>imagename</em>. The Renderer attempts to resolve <em>imagename</em> to a known bitmap. This may be translated to a filename or used to search a database of named bitmaps depending on the renderer.
 
+### ellipse
+```
+<ellipse color="*aarrggbb*" mask="*m*" 
+       width="*w*" dash="*phase dash....*" fill="*f*">
+<s><d><w>*width*</w><h>*height*</h></d></s>
+</ellipse>
+```
+
+__Attributes__
+
+| | |
+|-|-|
+| color="*aarrggbb*" | color the ellipse according to the hexadecimal number *aarrggbb*. The alpha value is given by *aa*, the red value by *rr*, the green value by <em>gg</em>, and the blue value by <em>bb</em>. |
+| mask="*m*" | set the color channel mask to *m* |
+| width="*w*" | set the line thickness to *w*. A value of zero will produce hairlines. |
+| dash="*phase dash...*" | set the dash pattern for the ellipse using the phase value <em>phase</em> and the space separated list of dash lengths <em>dash..</em> |
+| fill="*f*" | fill the ellipse. |
+
+__Description__
+Draw an ellipse of width <em>width</em> and height *height*.
 
 
-<h3>ellipse</h3>
-<center>
-<table width="60%" cellspacing="3" bgcolor="e0e0e0">
-<tr><td>
-<pre>&lt;ellipse color="<em>aarrggbb</em>" mask="<em>m</em>" 
-       width="<em>w</em>" dash="<em>phase</em> <em>dash....</em>" fill="<em>f</em>"&gt;
-&lt;s&gt;&lt;d&gt;&lt;w&gt;<em>width</em>&lt;/w&gt;&lt;h&gt;<em>height</em>&lt;/h&gt;&lt;/d&gt;&lt;/s&gt;
-&lt;/ellipse&gt;
-</pre></td></tr></table>
-</center>
-<h4>Attributes</h4>
-<table>
-
-
-<tr><td valign="top">color="<em>aarrggbb</em>"</td><td>color the ellipse according to the hexadecimal number <em>aarrggbb</em>. The alpha value is given by <em>aa</em>, the red value by <em>rr</em>, the green value by <em>gg</em>, and the blue value by <em>bb</em>.</td></tr>
-
-<tr><td valign="top">mask="<em>m</em>"</td><td>set the color channel mask to <em>m</em></td></tr>
-<tr><td valign="top">width="<em>w</em>"</td><td>set the line thickness to <em>w</em>. A value of zero will produce hairlines.</td></tr>
-<tr><td valign="top">dash="<em>phase dash...</em>"</td><td>set the dash pattern for the ellipse using the phase value <em>phase</em> and the space separated list of dash lengths <em>dash..</em></td></tr>
-<tr><td valign="top">fill="<em>f</em>"</td><td>fill the ellipse.</td></tr>
-
-</table>
-
-<h4>Description</h4>
-<p>Draw an ellipse of width <em>width</em> and height <em>height</em>.</p>
-
-
-
-<h3>rectangle</h3>
+###rectangle
 <center>
 <table width="60%" cellspacing="3" bgcolor="e0e0e0">
 <tr><td>
