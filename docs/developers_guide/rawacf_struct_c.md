@@ -9,7 +9,7 @@ This information is sourced from the RFC: 0013 previously in the RST RFC docment
 # Structure in C for the Raw ACF data
 
 ## Summary
->A description of the data structure in the C language used to store the Raw ACF Data.
+A description of the data structure in the C language used to store the Raw ACF Data.
 
 ## Description
 
