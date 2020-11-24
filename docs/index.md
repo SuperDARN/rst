@@ -34,7 +34,10 @@ The software is maintained by the SuperDARN Data Analysis Working Group (DAWG) o
          * [Convection Plots](user_guide/map_plot.md)
          * [Customizing Colors](user_guide/colors.md)
   - Developers Guide
-    * [Copyrights and Licensing](developers_guide/copyright_license.md) 
+    - [Copyrights and Licensing](developers_guide/copyright_license.md) 
+    - Data Structures in C
+         * [Radar Parameter Block](developers_guide/radar_parameter_c.md)
+         * [RawACF](developers_guide/rawacf_struct_c.md)
   - SuperDARN Data Formats
     * [Dmap Data](references/general/dmap_data.md)
     * [IQDAT Format](references/general/iqdat.md)
