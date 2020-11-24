@@ -415,7 +415,7 @@ function GridTableAddBeam, GridTable, RadarSite, alt, tval, RadarBeam, $
         return, -1
 
     ; Velocity correction as a function of radar geodetic latitude [m/s]
-    velco = (2*!pi/86400.0)*6356.779*1000*cos(RadarSite.geolat*!pi/180.0)
+    velco = (2*!pi/86400.0)*!CONST.R_earth*cos(RadarSite.geolat*!pi/180.0)
 
     ; Get current beam from the GridTable structure
     GridBm = (*GridTable).bm[(*GridTable).bnum]

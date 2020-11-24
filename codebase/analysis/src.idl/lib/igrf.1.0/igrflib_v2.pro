@@ -76,7 +76,7 @@ pro init_common, err=err
                   cl0:0.d, sl0:0.d}
 ; DTOR        = !const.pi/180.d
   DTOR        = !dpi/180.d
-  RE          = 6371.2d     ; magnetic reference spherical radius from IGRF
+  RE          = !CONST.R_earth/1000     ; magnetic reference spherical radius from IGRF
 ;  IGRF_FIRST_EPOCH = 1900  ; these get set in IGRF_loadcoeffs
 ;  IGRF_LAST_EPOCH  = 2015
 
@@ -1128,7 +1128,7 @@ end
 function geod2geoc, lat, lon, alt
   common IGRF_v2_Com
 
-  a = 6378.1370d;             /* semi-major axis */
+  a = !CONST.R_earth/1000;    /* semi-major axis */
   f = 1.d/298.257223563d;     /* flattening */
   b = a*(1.d -f);             /* semi-minor axis */
   a2 = a*a;
@@ -1396,7 +1396,7 @@ end
 function plh2xyz, lat, lon, alt
   common IGRF_v2_Com
 
-  a = 6378.1370d              ; semi-major axis
+  a = !CONST.R_earth/1000     ; semi-major axis
   f = 1.d/298.257223563d      ; flattening
   b = a*(1.d -f)              ; semi-minor axis
   ee = (2.d - f) * f
@@ -1450,7 +1450,7 @@ end
 function geoc2geod, lat,lon,r
   common IGRF_v2_Com
 
-  a = 6378.1370d              ; semi-major axis
+  a = !CONST.R_earth/1000     ; semi-major axis
   f = 1.d/298.257223563d      ; flattening
   b = a*(1.d -f)              ; semi-minor axis
   ee = (2.d - f) * f

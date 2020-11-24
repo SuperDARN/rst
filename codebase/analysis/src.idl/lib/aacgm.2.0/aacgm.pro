@@ -183,7 +183,7 @@ end
 ;
 
 pro AACGMAltitudeToCGM, r_height_in, r_lat_alt, r_lat_adj
-   eradius=6371.2
+   eradius=float(!CONST.R_earth/1000)
    eps=1e-9
    unim=0.9999999;
 
@@ -215,7 +215,7 @@ end
 ;
 
 pro AACGMCGMToAltitude, r_height_in,r_lat_in,  r_lat_adj, error
-  eradius=6371.2
+  eradius=float(!CONST.R_earth/1000)
   unim=1
   error=0
   r1 = cos(!PI*r_lat_in/180.0);
