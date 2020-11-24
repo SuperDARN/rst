@@ -43,4 +43,5 @@ The software is maintained by the SuperDARN Data Analysis Working Group (DAWG) o
     * [cFit Format](references/general/cfit.md)
     * [GRID Format](references/general/grid.md)
   - Legacy Software
+    * [rPlot Libraries](legacy_software/rPlot_lib.md)
     * [rPlot XML](legacy_software/rPlot_XML.md)
