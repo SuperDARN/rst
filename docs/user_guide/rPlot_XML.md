@@ -89,27 +89,27 @@ In the above example a filled ellipse of width 220 units and height 150 units is
 The root element of the rPlot document is the <code>rplot</code> tag. This defines document name, size and color depth. All subsequent tags are nested within this one. The next tag, <code>info</code> is the meta-data container. The meta-data for rPlot documents is not yet defined, so this tag can be used to contain any information about the plot that you want. rPlot renderers currently ignore the <code>info</code> tag and any nested sub-tags within it. In this example a simple set of meta-data defining the date the plot was generated, the author and version number are included. The remaining two tag pairs define a simple ellipse in red and the "Hello World" text in green.
 
 ## Common Attributes
-`position="*x y*"`
+- `position="*x y*"`
 The <code>position</code> attribute defines the position of an element on the page or screen. The position is given in terms of the X and Y offset from the top left-hand corner of the plot.
 
-`color="*aarrggbb*"`
+- `color="*aarrggbb*"`
 The <code>color</code> tag defines attribute defines the color of a primitive in terms of the red,green,blue and alpha (transparency) channels. The attribute value *aarrggbb* is in hex, *aa* gives the value of the alpha channel, *rr* gives the value of the red channel, *gg* gives the value of the green channel and *bb* gives the value of the blue channel. All values range between 0 (off) and ff  (fully on).
 The alpha channel is implemented by the renderer and some output devices (PostScript), do not support it.
 
-`mask="*m*"`
+- `mask="*m*"`
 The <code>mask</code> attribute defines the RGBA color mask. The mask value *x* is a hexadecimal number and represents which color channels are enabled. The top (4th) bit of *x* controls the alpha channel, the third bit controls the red channel, the second bit controls the green channel and bottom (1st) bit controls the blue channel. If a bit is set, the channel is enabled otherwise the channel is masked out. A value of <code>f</code> enables all channels.
 The <code>mask</code> attribute is closely coupled with the <code>color</code> attribute and allows you to control the output channels of a plot without having to modify the color directly.
  
-`width="*w*"`
+- `width="*w*"`
 The <code>width</code> attribute defines the line width of the primitive. A value of zero will produce hairlines - lines with the smallest width for designated output type.
 
-`fill="*f*"`
+- `fill="*f*"`
 The <code>fill</code> attribute defines whether the primitive should be filled or not. A value of <code>1</code> will produce filled polygons and shapes. If this attribute is omitted then only object outlines will be drawn.
 
-`dash="*phase dash*"`
+- `dash="*phase dash*"`
 The <code>dash</code> attribute defines a dot-dash pattern to use when drawing the primitive. The dash pattern is defined in the same way that PostScript dot-dash patterns are defined. The space seperated list of dash lengths given by *dash* is cycled through, the first element give the length of line to draw, the next element gives the length of the gap to leave. The renderer will continue alternating lines and gaps until all elements of *dash* are exhausted, it will the repeat at the beginning. The phase value given by *phase* is used as the initial offset into *dash* that the renderer starts from.
 
-`matrix="*a b c d*"`
+- `matrix="*a b c d*"`
 The <code>matrix</code> attribute applies a matrix transformation on the graphics primitive. The tranformation takes the form:
 <!--
 Let's see if this table works?
