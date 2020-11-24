@@ -294,7 +294,6 @@ Plots the bitmap image <em>imagedata</em>. This must be a valid XML format bitma
 
 __Attributes__
 
-| | |
 |-|-|
 | mask="*m*"         | set the color channel mask to *m*  |
 | smooth="*n*"       | If n is set to 1, the renderer will attempt to smooth the bitmap image.   |
@@ -315,7 +314,6 @@ Plots the bitmap image named <em>imagename</em>. The Renderer attempts to resolv
 
 __Attributes__
 
-| | |
 |-|-|
 | color="*aarrggbb*" | color the ellipse according to the hexadecimal number *aarrggbb*. The alpha value is given by *aa*, the red value by *rr*, the green value by <em>gg</em>, and the blue value by <em>bb</em>. |
 | mask="*m*" | set the color channel mask to *m* |
@@ -327,105 +325,70 @@ __Description__
 Draw an ellipse of width <em>width</em> and height *height*.
 
 
-###rectangle
-<center>
-<table width="60%" cellspacing="3" bgcolor="e0e0e0">
-<tr><td>
-<pre>&lt;rectangle color="<em>aarrggbb</em>" mask="<em>m</em>" 
-       width="<em>w</em>" dash="<em>phase</em> <em>dash....</em>" fill="<em>f</em>"&gt;
-&lt;s&gt;&lt;d&gt;&lt;w&gt;<em>width</em>&lt;/w&gt;&lt;h&gt;<em>height</em>&lt;/h&gt;&lt;/d&gt;&lt;/s&gt;
-&lt;/rectangle&gt;
-</pre></td></tr></table>
-</center>
-<h4>Attributes</h4>
-<table>
+### rectangle
+```
+<rectangle color="*aarrggbb*" mask="*m*" 
+       width="*w*" dash="*phase* *dash....*" fill="*f*">
+<s><d><w>*width*</w><h>*height*</h></d></s>
+</rectangle>
+```
 
+__Attributes__
 
-<tr><td valign="top">color="<em>aarrggbb</em>"</td><td>color the rectangle according to the hexadecimal number <em>aarrggbb</em>. The alpha value is given by <em>aa</em>, the red value by <em>rr</em>, the green value by <em>gg</em>, and the blue value by <em>bb</em>.</td></tr>
+|-|-|
+| color="*aarrggbb*" | color the rectangle according to the hexadecimal number <em>aarrggbb</em>. The alpha value is given by <em>aa</em>, the red value by <em>rr</em>, the green value by <em>gg</em>, and the blue value by <em>bb</em>. |
+| mask="*m</em>"  | set the color channel mask to <em>m</em> |
+| width="<em>w</em>" | set the line thickness to <em>w</em>. A value of zero will produce hairlines. |
+| dash="<em>phase dash...</em>" | set the dash pattern for the rectangle using the phase value <em>phase</em> and the space separated list of dash lengths <em>dash..</em> | 
+| fill="<em>f</em>" | fill the rectangle. |
 
-<tr><td valign="top">mask="<em>m</em>"</td><td>set the color channel mask to <em>m</em></td></tr>
-<tr><td valign="top">width="<em>w</em>"</td><td>set the line thickness to <em>w</em>. A value of zero will produce hairlines.</td></tr>
-<tr><td valign="top">dash="<em>phase dash...</em>"</td><td>set the dash pattern for the rectangle using the phase value <em>phase</em> and the space separated list of dash lengths <em>dash..</em></td></tr>
-<tr><td valign="top">fill="<em>f</em>"</td><td>fill the rectangle.</td></tr>
+__Description__
+Draw an rectangle of width <em>width</em> and height <em>height</em>.
 
-</table>
-
-<h4>Description</h4>
-<p>Draw an rectangle of width <em>width</em> and height <em>height</em>.</p>
-
-
-
-
-<h3>polygon</h3>
-<center>
-<table width="60%" cellspacing="3" bgcolor="e0e0e0">
-<tr><td>
-<pre>&lt;polygon color="<em>aarrggbb</em>" mask="<em>m</em>" 
-       width="<em>w</em>" dash="<em>phase</em> <em>dash....</em>" fill="<em>f</em>"&gt;
-&lt;pp&gt;&lt;x&gt;<em>pntx</em>&lt;/x&gt;&lt;y&gt;<em>pnty</em>&lt;/y&gt;&lt;t&gt;type&lt;/t&gt;&lt;/pp&gt;
-&lt;pp&gt;&lt;x&gt;<em>pntx</em>&lt;/x&gt;&lt;y&gt;<em>pnty</em>&lt;/y&gt;&lt;t&gt;type&lt;/t&gt;&lt;/pp&gt;
-&lt;pp&gt;&lt;x&gt;<em>pntx</em>&lt;/x&gt;&lt;y&gt;<em>pnty</em>&lt;/y&gt;&lt;t&gt;type&lt;/t&gt;&lt;/pp&gt;
+### polygon
+```
+<polygon color="<em>aarrggbb</em>" mask="<em>m</em>" 
+       width="<em>w</em>" dash="<em>phase</em> <em>dash....</em>" fill="<em>f</em>">
+<pp><x><em>pntx</em></x><y><em>pnty</em></y><t>type</t></pp>
+<pp><x><em>pntx</em></x><y><em>pnty</em></y><t>type</t></pp>
+<pp><x><em>pntx</em></x><y><em>pnty</em></y><t>type</t></pp>
 .
 .
-&lt;/polygon&gt;
-</pre></td></tr></table>
-</center>
-<h4>Attributes</h4>
-<table>
+</polygon>
+```
 
+__Attributes__
+|-|-|
+| color="<em>aarrggbb</em>" | color the polygon according to the hexadecimal number <em>aarrggbb</em>. The alpha value is given by <em>aa</em>, the red value by <em>rr</em>, the green value by <em>gg</em>, and the blue value by <em>bb</em>. |
+| mask="<em>m</em>" | set the color channel mask to <em>m</em> |
+| width="<em>w</em>" | set the line thickness to <em>w</em>. A value of zero will produce hairlines. |
+| dash="<em>phase dash...</em>" | set the dash pattern for the polygon using the phase value <em>phase</em> and the space separated list of dash lengths <em>dash..</em> |
+| fill="<em>f</em>" | fill the polygon. |
 
-<tr><td valign="top">color="<em>aarrggbb</em>"</td><td>color the polygon according to the hexadecimal number <em>aarrggbb</em>. The alpha value is given by <em>aa</em>, the red value by <em>rr</em>, the green value by <em>gg</em>, and the blue value by <em>bb</em>.</td></tr>
+__Description__
+Draw a polygon. The vertices of the polygon are given by the set of sub-tags named <code>pp</code>. Each <code>pp</code> tag contains the X and Y coordinates of the vertex given by <em>pntx</em> and <em>pnty</em>, and a type code <em>type</em>. If the type code is zero (0), then the line linking this vertex to the previous one in straight. If the type code is one (1), then the previous three points make up the start point and control points for a bezier curve linked to this one.
 
-<tr><td valign="top">mask="<em>m</em>"</td><td>set the color channel mask to <em>m</em></td></tr>
-<tr><td valign="top">width="<em>w</em>"</td><td>set the line thickness to <em>w</em>. A value of zero will produce hairlines.</td></tr>
-<tr><td valign="top">dash="<em>phase dash...</em>"</td><td>set the dash pattern for the polygon using the phase value <em>phase</em> and the space separated list of dash lengths <em>dash..</em></td></tr>
-<tr><td valign="top">fill="<em>f</em>"</td><td>fill the polygon.</td></tr>
-
-</table>
-
-<h4>Description</h4>
-<p>Draw a polygon. The vertices of the polygon are given by the set of sub-tags named <code>pp</code>. Each <code>pp</code> tag contains the X and Y coordinates of the vertex given by <em>pntx</em> and <em>pnty</em>, and a type code <em>type</em>. If the type code is zero (0), then the line linking this vertex to the previous one in straight. If the type code is one (1), then the previous three points make up the start point and control points for a bezier curve linked to this one.</p>
-
-
-
-<h3>clip</h3>
-<center>
-<table width="60%" cellspacing="3" bgcolor="e0e0e0">
-<tr><td>
-<pre>&lt;clip&gt;
-&lt;pp&gt;&lt;x&gt;<em>pntx</em>&lt;/x&gt;&lt;y&gt;<em>pnty</em>&lt;/y&gt;&lt;t&gt;type&lt;/t&gt;&lt;/pp&gt;
-&lt;pp&gt;&lt;x&gt;<em>pntx</em>&lt;/x&gt;&lt;y&gt;<em>pnty</em>&lt;/y&gt;&lt;t&gt;type&lt;/t&gt;&lt;/pp&gt;
-&lt;pp&gt;&lt;x&gt;<em>pntx</em>&lt;/x&gt;&lt;y&gt;<em>pnty</em>&lt;/y&gt;&lt;t&gt;type&lt;/t&gt;&lt;/pp&gt;
+### clip
+```
+<clip>
+<pp><x><em>pntx</em></x><y><em>pnty</em></y><t>type</t></pp>
+<pp><x><em>pntx</em></x><y><em>pnty</em></y><t>type</t></pp>
+<pp><x><em>pntx</em></x><y><em>pnty</em></y><t>type</t></pp>
 .
 .
-&lt;/clip&gt;
-</pre></td></tr></table>
-</center>
-<h4>Description</h4>
-<p>Defines a clipping polygon. The vertices of the polygon are given by the set of sub-tags named <code>pp</code>. Each <code>pp</code> tag contains the X and Y coordinates of the vertex given by <em>pntx</em> and <em>pnty</em>, and a type code <em>type</em>. If the type code is zero (0), then the line linking this vertex to the previous one in straight. If the type code is one (1), then the previous three points make up the start point and control points for a bezier curve linked to this one.</p>
-<p>All subsequent operations will be clipped to this polygon. To remove the clipping polygon, use an empty <code>clip</code> tag.</p>
+</clip>
+```
+__Description__
+Defines a clipping polygon. The vertices of the polygon are given by the set of sub-tags named <code>pp</code>. Each <code>pp</code> tag contains the X and Y coordinates of the vertex given by <em>pntx</em> and <em>pnty</em>, and a type code <em>type</em>. If the type code is zero (0), then the line linking this vertex to the previous one in straight. If the type code is one (1), then the previous three points make up the start point and control points for a bezier curve linked to this one.
 
+All subsequent operations will be clipped to this polygon. To remove the clipping polygon, use an empty <code>clip</code> tag.
 
-</td></tr>
-<tr><td class="docsubtitle"><h3>References</h3></td></tr>
-<tr><td></td><td>
-None<br>
-</td></tr>
-<tr><td class="docsubtitle"><h3>History</h3></td></tr>
-<tr><td></td><td>
-2004/11/05  Initial Revision.<br>
-</td></tr>
-</table>
-<br><br>
-</div>
+## References
 
-<div id="tail">
-</div>
+None
 
-</div>
+## History
 
-
-</body>
-
+2004/11/05  Initial Revision.
 
 
