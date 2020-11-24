@@ -21,7 +21,7 @@
  * 2020-11-12 Marina Schmidt switched out RST defined complex structs to complex.h
  * 2020-11-12 Marina Schmidt modified cmult
  *
- * /
+ */
 
 #ifndef _CNVMODEL_H
 #define _CNVMODEL_H
