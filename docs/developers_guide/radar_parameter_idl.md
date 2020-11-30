@@ -82,7 +82,7 @@ MAX_RANGE=300
     }
 ```
 
-### References
+## References
 
 [Radar Parameter Structure in C](developers_guide/radar_parameter_c.md)
 
