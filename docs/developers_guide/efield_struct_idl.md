@@ -3,6 +3,8 @@
 author: Kevin Sterne
 -->
 
+This information is sourced form the RFC: 0025 previously in the RST RFC documentation that was written by R.J. Barnes.
+
 # IDL Data Structure for Electric Field Data
 
 ## Summary
