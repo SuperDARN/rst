@@ -88,44 +88,62 @@ The following times refer to the start and end of the integration period.
  
 
 
-### Vectors 
+### Arrays 
+
+The array components of the map file format are listed below. The map format is a superset of the grid formt so it contains the same arrays.
 
 !!! Note
-    Let the number of radars in a given map record be defined as *numstid*, and let the number of gridded velocity vectors in a given record be defined as *numv*. 
+ - Let the number of radars in a given map record be defined as *numstid*
+ - Let the number of gridded velocity vectors in a given record be defined as *numv*
+ - Let the number of values for the spherical harmonic analysis be defined as *numft*
+ - Let the number of vectors output by the model used be defined as *nummd*
+ - Let the number of the Heppner-Maynard boundary outputs be defined as *numbd*
 
 | Field name  | Units           | Dimensionality | Data Type   | Description                                                                 |
 | :---------- | :-----:         | :-------:      | :---:       | :---                                                                        |
 | *stid*      |  **None**       |  *[numstid]*     | ***short*** | A list of of numeric station IDs that provided data for the record |
 | *channel*   |  **None**       |  *[numstid]*     | ***short*** | A list of channel numbers associated to the station id the record |
-| *nvec*      | **None** | *[numstid]*  | ***short*** | Number of velocity vectors for each station|
+| *nvec*      | **None** | *[numstid]*  | ***short*** | Number of velocity vectors for each station |
 | *freq*      | *kHz* | *[numstid]* | ***float*** | Transmitted frequency for each radar |
-| *major.revision* | **None** | *[numstid]* | ***short*** | Major `make_grid` version number                    |
+| *major.revision* | **None** | *[numstid]* | ***short*** | Major `make_grid` version number |
 | *minor.revision* | **None** | *[numstid]* | ***short*** | Minor `make_grid` version number |
 | *program.id*     | **None** | *[numstid]* | ***short*** | Control program ID | 
 | *noise.mean*      | **None** | *[numstid]* | ***float*** | Mean noise |
 | *noise.sd*        | **None** | *[numstid]* | ***float*** | Noise Standard deviation |
 | *gsct*            | **None** | *[numstid]* | ***short*** | Groundscatter flag |
 | *v.min*           | *m/s* | *[numstid]* | ***float*** | Minimum velocity threshold |
-| *v.max*           | *m/s* | *[numstid]* | ***float*** | Velocity maximum threshold |
-| *p.min*           | **None** | *[numstid]* | ***float*** | Power minimum threshold |
-| *p.max*           | **None** | *[numstid]* | ***float*** | Power maximum threshold |
-| *w.min*           | *m/s*  | *[numstid]* | ***float*** | Spectral width minimum threshold |
-| *w.max*           | *m/s*  | *[numstid]* | ***float*** | Spectral width maximum threshold |
+| *v.max*           | *m/s* | *[numstid]* | ***float*** | Maximum velocity threshold |
+| *p.min*           | **None** | *[numstid]* | ***float*** | Minimum power threshold |
+| *p.max*           | **None** | *[numstid]* | ***float*** | Maximum power threshold |
+| *w.min*           | *m/s*  | *[numstid]* | ***float*** | Minimum spectral width threshold |
+| *w.max*           | *m/s*  | *[numstid]* | ***float*** | Maximum spectral width threshold |
 | *ve.min*          | *m/s*  | *[numstid]* | ***float*** | Velocity error minimum threshold |
 | *ve.max*          | *m/s*  | *[numstid]* | ***float*** | Velocity error maximum threshold |
 | *vector.mlat*     | *degrees* | *[numv]* | ***float*** | Magnetic Latitude |
 | *vector.mlon*     | *degrees* | *[numv]* | ***float*** | Magnetic Longitude |
-| *vector.kvec*     | *degrees*  | *[numv]*   | ***float*** | Magnetic Azimuth |
+| *vector.kvect*    | *degrees* | *[numv]*   | ***float*** | Magnetic Azimuth |
 | *vector.stid*     | **None**  | *[numv]*   | ***short*** | Station identifier |
 | *vector.channel*  | **None**  | *[numv]*   | ***short*** | Channel number |  
 | *vector.index*    | **None**  | *[numv]*   | ***int***   | Grid cell index |
 | *vector.vel.median* | *m/s* | *[numv]*   | ***float*** | Weighted mean velocity magnitude |
-| *vector.vel.sd*     | *m/s*   | *[numv]*   | ***float*** | Velocity standard deviation |
-| *vector.pwr.median* | *dB*  | *[numv]*   | ***float*** | Weighted mean power|
-| *vector.pwr.sd*     | *dB*  | *[numv]*   | ***float*** | Power standard deviation|
-| *vector.wdt.median* | *m/s* | *[numv]*   | ***float*** | Weighted mean spectral width|
-| *vector.wdt.sd      | *m/s* | *[numv]*   | ***float*** | Standard deviation of spectral width|
+| *vector.vel.sd*     | *m/s* | *[numv]*   | ***float*** | Velocity standard deviation |
+| *vector.pwr.median* | *dB*  | *[numv]*   | ***float*** | Weighted mean power |
+| *vector.pwr.sd*     | *dB*  | *[numv]*   | ***float*** | Power standard deviation |
+| *vector.wdt.median* | *m/s* | *[numv]*   | ***float*** | Weighted mean spectral width |
+| *vector.wdt.sd      | *m/s* | *[numv]*   | ***float*** | Standard deviation of spectral width |
+| *N*               | **None** | *[numft]* | ***double*** | L value of the expansion between 0 and Lmax |
+| *N+1*             | **None** | *[numft]* | ***double*** | M value of the expansion between -L and +L, negative values indicating the sin(M*phi) term |
+| *N+2*             | **None** | *[numft]* | ***double*** | Value of the coefficient  |
+| *N+3*             | **None** | *[numft]* | ***double*** | Stimate of the 1-sigma error of the coefficient |
+| *model.mlat*      | *degrees* | [nummd] | ***float*** | Magnetic Latitudes of the model vectors |
+| *model.mlon*      | *degrees* | [nummd] | ***float*** | Magnetic Longitudes of the model vectors |
+| *model.kvect*     | *degrees* | [nummd] | ***float*** | Magnetic Azimuths of the model vectors |
+| *model.vel.median* | *m/s*    | [nummd] | ***float*** | Velocity medians of the model vectors |
+| *boundary.mlat*   | *degrees* | [numbd] | ***float*** | Magnetic Latitudes of the lower latitude boundary |
+| *boundary.mlon*   | *degrees* | [numbd] | ***float*** | Magnetic Longitudes of the lower latitude boundary |
+
+A map file does not necessarily contain a complete set of all the variables listed above. The processing is dvidied up into stages with variables added to the file as needed.  If the statistical model has been calculated the file will contain the arrays `model.mlat`, `model.mlon`, `model.kvect`, and `model.vel.median`.  If the loer boundary ha been found then the file will contain the arrays `boundary.mlat` and `boundary.mlon`.  If the spherical harmonic analysis has been performed, then the file will contain the arrays `N`, `N+1`, `N+2`, and `N+3`.
 
 ## File structure
 
-GRID files typically contain up to 24 hours of data. Individual records in a GRID file contain a record for each integration time period (default 120 seconds) from one or more radars.
+Map files typically contain up to 24 hours of data. Individual records in a map file contain a record for each integration time period (default 120 seconds) from one or more radars depending on the input grid file.
