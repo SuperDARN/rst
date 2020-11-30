@@ -61,7 +61,7 @@ The following times refer to the start and end of the integration period.
 | *IMF.By*        | *nT*       | ***double***  | IMF By component   |
 | *IMF.Bz*        | *nT*       | ***double***  | IMF Bz component   |
 | *IMF.Vx*        | *km/s*     | ***double***  | Solar wind speed, X-component, GSE |
-| *IMF.tilt*      | *degree*  | ***double***  |   |
+| *IMF.tilt*      | *degree*  | ***double***   | Dipole tilt angle  |
 | *IMF.Kp*        | **None**   | ***double***  | Kp index number |
 | *model.angle*   | **None**   | ***string***  | Statistical clock angle of B |
 | *model.level*   | **None**   | ***string***  | Statistical model level |
