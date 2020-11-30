@@ -27,7 +27,7 @@ struct GridData {
   double ed_time;              /* record end time */
  
   int stnum;                   /* number of stations */
-  int vcnum;
+  int vcnum;                   /* number of vectors  */
   unsigned char xtd;           /* extended data flag */
   struct GridSVec *sdata;      /* station data */
   struct GridGVec *data;       /* vector data */
@@ -76,7 +76,7 @@ struct GridSVec {
 ### `struct GridGVec`
 ```
 struct GridGVec {
-  double mlatl                  /* magnetic latittude */
+  double mlat;                  /* magnetic latittude */
   double mlon;                  /* magnetic longitude */
   double azm;                   /* magnetic azimuth */
   struct {
@@ -105,6 +105,6 @@ None
 
 ## History
 
-2004/11/19  Initial Revision.
+2004/11/19  Initial Revision from RFC
 
 
