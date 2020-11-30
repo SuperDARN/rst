@@ -87,7 +87,7 @@ The following times refer to the start and end of the integration period.
 | *ve.max*          | *m/s*  | *[numstid]* | ***float*** | Velocity error maximum threshold |
 | *vector.mlat*     | *degrees* | *[numv]* | ***float*** | Magnetic Latitude |
 | *vector.mlon*     | *degrees* | *[numv]* | ***float*** | Magnetic Longitude |
-| *vector.kvec*     | *degrees*  | *[numv]*   | ***float*** | Magnetic Azimuth |
+| *vector.kvect*    | *degrees* | *[numv]*   | ***float*** | Magnetic Azimuth |
 | *vector.stid*     | **None**  | *[numv]*   | ***short*** | Station identifier |
 | *vector.channel*  | **None**  | *[numv]*   | ***short*** | Channel number |  
 | *vector.index*    | **None**  | *[numv]*   | ***int***   | Grid cell index |
