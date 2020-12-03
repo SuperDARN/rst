@@ -13,7 +13,12 @@
 ## Replacement
 
 *Would anything replace this feature?*
+## Potential Issues 
 
+- [ ] Backwards compatibility - *Does this potentially influence any old file formats or old code? Does it change backward compatibility?*
+- [ ] reproducibility  - *Does this affect reproducibility between various RST versions?*
+
+*If this affects one or both of the possible issues how would you inform or ensure people are aware and why this is needed.*
 ## Details
 
 *Please provide any other details about the deprecation process and the future.*
