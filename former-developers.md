@@ -5,7 +5,6 @@ The SuperDARN Radar Software Toolkit (RST) was originally written by R.J Barnes 
 - R.J. Barnes, original JHUAPL author
 - D.D. Billett, documentation, testing
 - E.C. Bland, DAWG Co-Chair (2019-), documentation, testing
-- W.A. Bristow, `make_grid`
 - A.G. Burrell, documentation, bugfixes, testing
 - E.D.P. Cousins, CS10 and PSR10 convection models
 - R.A. Greenwald, `fitacfex`
