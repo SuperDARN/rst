@@ -55,7 +55,7 @@ void lag_0_pwr_in_dB(struct FitRange* fit_range_array,FITPRMS* fit_prms,double n
  *
  * @param fit_range_array: list of records from RAWACF 
  * @param fit_prms: Fitacf parameters
- * @param noise_pwr: noise power in dB
+ * @param noise_pwr: noise power
  *
  * @post: 
  *
