@@ -25,7 +25,7 @@
 -  [ ] Is this a major change?
 -  [ ] Do you need help developing it? 
 -  [ ] Have you created a RST project (github project) to reflect the process of developing it? 
-
+-  [ ] Does it follow GPL 3.0v License and has been copyrighted/authored to you? 
 ### Developement help
 
 *RST does not have a dedicated development team for full feature development. 
