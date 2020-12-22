@@ -36,10 +36,21 @@ The software is maintained by the SuperDARN Data Analysis Working Group (DAWG) o
   - Developers Guide
     - [Copyrights and Licensing](developers_guide/copyright_license.md) 
     - Data Structures in C
-         * [cFit](developers_guide/cfit_struct_c.md)
-	 * [FitACF](developers_guide/fitacf_struct_c.md)
+         * [cFit](developers_guide/cfit_struct_c.md
+         * [FitACF](developers_guide/fitacf_struct_c.md)
+         * [Grid](developers_guide/grid_struct_c.md)
+         * [IQDat](developers_guide/iqdat_struct_c.md)
+         * [Map (cnvmap)](developers_guide/cnvmap_struct_c.md)
          * [Radar Parameter Block](developers_guide/radar_parameter_c.md)
          * [RawACF](developers_guide/rawacf_struct_c.md)
+    - Data Structures in IDL
+         * [FitACF](developer_guide/fiatcf_struct_idl.md)
+         * [Grid](developers_guide/grid_struct_idl.md)
+         * [IQDat](developers_guide/iqdat_struct_idl.md)
+         * [Map (cnvmap)](developers_guide/cnvmap_struct_idl.md)
+         * [Radar Parameter Block](developers_guide/radar_parameter_idl.md)
+         * [RawACF](developers_guide/rawacf_struct_idl.md)
+
   - SuperDARN Data Formats
     * [Dmap Data](references/general/dmap_data.md)
     * [IQDAT Format](references/general/iqdat.md)
