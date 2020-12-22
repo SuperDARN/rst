@@ -5,7 +5,7 @@ author: Kevin Sterne
 
 This information is sourced from the RFC: 0028 previously in the RST RFC documentation that was written by R.J. Barnes
 
-#Structure in C for the raw I and Q data
+# Structure in C for the raw I and Q data
 
 ## Summary
 
