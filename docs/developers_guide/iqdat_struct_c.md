@@ -53,9 +53,8 @@ The raw I and Q data are stored in a one-dimensional array (vector) of type `int
 
 None
 
-## History
+## History from RFC Documenation
 
-2008/03/25  Initial Revision from RFC
-
+2008/03/25  Initial Revision
 
 
