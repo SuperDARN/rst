@@ -98,10 +98,10 @@ IQDat files are composed of records that contain scalar and vector fields.
 | *toff*                  | **None** | *[seqnum]*     | int        | Offset into the sample buffer for each pulse sequence.    |
 | *tsze*                  | **None** | *[seqnum]*     | int        | Number of words stored for this pulse sequence.           |
 | *tbadtr*                | **None** | *[seqnum]*     | int        |      |
-| *badtr*                 | **None** | *[2*mppul*seqnum]* | int    |      |
+| *badtr*                 | **None** | *[2\*mppul\*seqnum]* | int    |      |
 | *data*                  | **None** | *[totnum]*     | int        | Array of raw I and Q samples.                             |
 
 The extent of each dimension is determined by the radar operating parameters. For example a value of `mppul` of 7 would result in the array `ptab[7]`.
 
-The raw sample data is arranged in multiplexed I and Q sample order; so the first *smpnum*2* samples are the interleaved I and Q values for the first pulse sequence. If more than one channel is samples, the next *smpnum*2* samples represent the next channel. The total number of samples, *totnum*, is equal to *2*seqnum*chnnum*smpnum*.
+The raw sample data is arranged in multiplexed I and Q sample order; so the first *smpnum\*2* samples are the interleaved I and Q values for the first pulse sequence. If more than one channel is samples, the next *smpnum\*2* samples represent the next channel. The total number of samples, *totnum*, is equal to *2\*seqnum\*chnnum\*smpnum*.
 
