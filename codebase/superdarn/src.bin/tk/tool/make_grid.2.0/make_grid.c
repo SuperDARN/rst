@@ -584,7 +584,7 @@ int main(int argc,char *argv[]) {
 
                 /* Verify that the fit file was properly opened */
                 if (oldfitfp==NULL) {
-                    fprintf(stderr,"File not found. Error: %s\n", strerror(errno));
+                    fprintf(stderr,"Error: %s\n", strerror(errno));
                     continue;
                 }
 
@@ -604,7 +604,7 @@ int main(int argc,char *argv[]) {
 
                 /* Verify that the fitacf file was properly opened */
                 if (fitfp==NULL) {
-                    fprintf(stderr,"File not found. Error: %s\n", strerror(errno));
+                    fprintf(stderr,"Error: %s\n", strerror(errno));
                     continue;
                 }
                 /* Read first available radar scan in fitacf file (will use scan
