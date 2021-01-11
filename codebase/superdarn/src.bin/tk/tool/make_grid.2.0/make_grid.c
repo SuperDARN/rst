@@ -7,6 +7,9 @@
 
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 
+ Modifications:
+ 2021-01-11 Marina Schmidt fixing concatenation bug with start time
+
  This file is part of the Radar Software Toolkit (RST).
 
  RST is free software: you can redistribute it and/or modify
@@ -31,6 +34,7 @@
 #include <unistd.h>
 #include <ctype.h>
 #include <zlib.h>
+#include <errno.h>
 #include "rtypes.h"
 #include "dmap.h"
 #include "option.h"
@@ -309,6 +313,7 @@ int main(int argc,char *argv[]) {
     int tlen=0;
 
     double stime=-1;
+    double tmp_stime=stime;
     double etime=-1;
     double extime=0;
 
@@ -333,11 +338,8 @@ int main(int argc,char *argv[]) {
     int chisham=0;
     int old_aacgm=0;
 
-    unsigned char catflg=0;
-
     int s=0,i;
     int state=0;
-    char *dname=NULL,*iname=NULL;
     FILE *fitfp=NULL;
     struct OldFitFp *oldfitfp=NULL;
     struct CFitfp *cfitfp=NULL;
@@ -362,6 +364,8 @@ int main(int argc,char *argv[]) {
 
     unsigned char cfitflg=0;
     unsigned char fitflg=0;
+
+    int found_record=0;
 
     /* Initialize radar parameter and fit/cfit structures */
     prm=RadarParmMake();
@@ -468,8 +472,6 @@ int main(int argc,char *argv[]) {
     OptionAdd(&opt,"fit",'x',&fitflg);   /* Input file is in the fit format */
     OptionAdd(&opt,"cfit",'x',&cfitflg); /* Input file is in the cfit format */
 
-    OptionAdd(&opt,"c",'x',&catflg);  /* Concatenate multiple input files */
-
     /* Process command line options */
     farg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
@@ -564,112 +566,87 @@ int main(int argc,char *argv[]) {
     /* If not explicity working from cfit files then treat input as fit or fitacf */
     if (cfitflg==0) fitflg=1;
 
-    /* Big if statement to separate dealing with one input file or multiple input files */
-    /* -KTS 20150127 */
-    if (catflg==0) {
 
-        /* Here we'll deal with just one input file -KTS 20150127 */
-        if (argc-farg>1) {
-            dname=argv[argc-2];
-            iname=argv[argc-1];
-        } else dname=argv[argc-1];
+    index=0;
+    num=0;
 
-        /* Open the fit, fitacf, or cfit file and read the first scan */
+    /* Loop over number of input files */
+    for (fnum=farg;fnum<argc;fnum++) {
+
+        fprintf(stderr,"Opening file:%s\n",argv[fnum]);
+
         if (fitflg) {
             /* Input file is in fit or fitacf format */
-
+            // Read old fit file format 
             if (old) {
-                /* Input file is in fit format */
-
                 /* Open the fit file for reading */
-                oldfitfp=OldFitOpen(dname,iname);
+                oldfitfp=OldFitOpen(argv[fnum],NULL);
 
                 /* Verify that the fit file was properly opened */
                 if (oldfitfp==NULL) {
-                    fprintf(stderr,"File not found.\n");
-                    exit(-1);
+                    fprintf(stderr,"File not found. Error: %s\n", strerror(errno));
+                    continue;
                 }
 
                 /* Read first available radar scan in fit file (will use scan
                  * flag if tlen not provided) */
-                s=OldFitReadRadarScan(oldfitfp,&state,src[0],prm,
-                                      fit,tlen,syncflg,channel);
+                s=OldFitReadRadarScan(oldfitfp,&state,src[index],prm,fit,
+                                    tlen,syncflg,channel);
 
-                /* Verify that scan was properly read */
-                if (s==-1) {
-                    fprintf(stderr,"Error reading file.\n");
-                    exit(-1);
+                /* Close fit file if scan not properly read */
+                if (s !=0) {
+                    OldFitClose(oldfitfp);
+                    continue;
                 }
-
             } else {
-                /* Input file is in fitacf format */
-
-                /* Check if index file provided */
-                if (iname !=NULL) {
-
-                    /* Open the index file for reading */
-                    fp=fopen(iname,"r");
-
-                    if (fp==NULL) {
-                        fprintf(stderr,"Could not open index.\n");
-                    } else {
-                        inx=FitIndexFload(fp);
-                        fclose(fp);
-                        if (inx==NULL) {
-                            fprintf(stderr,"Error loading index.\n");
-                        }
-                    }
-
-                }
-
                 /* Open the fitacf file for reading */
-                fitfp=fopen(dname,"r");
+                fitfp=fopen(argv[fnum],"r");
 
                 /* Verify that the fitacf file was properly opened */
                 if (fitfp==NULL) {
-                    fprintf(stderr,"File not found.\n");
-                    exit(-1);
+                    fprintf(stderr,"File not found. Error: %s\n", strerror(errno));
+                    continue;
                 }
-
                 /* Read first available radar scan in fitacf file (will use scan
                  * flag if tlen not provided) */
-                s=FitFreadRadarScan(fitfp,&state,src[0],prm,fit,
+                s=FitFreadRadarScan(fitfp,&state,src[index],prm,fit,
                                     tlen,syncflg,channel);
-
-                /* Verify that scan was properly read */
-                if (s==-1) {
-                    fprintf(stderr,"Error reading file.\n");
-                    exit(-1);
+                
+                /* Close fitacf file if scan not properly read */
+                if (s !=0) {
+                    fclose(fitfp);
+                    continue;
                 }
-
             }
-
         } else {
-            /* Input file is in cfit or format */
+            /* Input file is in cfit format */
 
             /* Open the cfit file for reading */
-            cfitfp=CFitOpen(dname);
-            if (cfitfp==NULL) {
-                fprintf(stderr,"File not found.\n");
-                exit(-1);
-            }
+            cfitfp=CFitOpen(argv[fnum]);
 
             /* Verify that the cfit file was properly opened */
-            s=CFitReadRadarScan(cfitfp,&state,src[0],cfit,tlen,syncflg,channel);
-            if (s==-1) {
-                fprintf(stderr,"Error reading file.\n");
-                exit(-1);
+            if (cfitfp==NULL) {
+                fprintf(stderr,"File not found.\n");
+                continue;
             }
 
+            /* Read first available radar scan in cfit file (will use scan
+             * flag if tlen not provided) */
+            s=CFitReadRadarScan(cfitfp,&state,src[index],cfit,tlen,
+                                syncflg,channel);
+
+            /* Close cfit file if scan not properly read */
+            if (s !=0) {
+                CFitClose(cfitfp);
+                continue;
+            }
         }
-
-        /* If either start time or date not provided as input then determine it */
-        if ((stime !=-1) || (sdate !=-1)) {
-
+        /* If either start time or date provided as input then determine it */
+        if (((stime !=-1) || (sdate !=-1)) && found_record == 0) {
             /* we must skip the start of the files */
             int yr,mo,dy,hr,mt;
             double sc;
-
+            tmp_stime=stime;
             /* If start time not provided then use time of first record
              * in fit file */
             if (stime==-1) stime= ( (int) src[0]->st_time % (24*3600));
@@ -681,7 +658,7 @@ int main(int argc,char *argv[]) {
             else stime+=sdate;
 
             /* If median filter is going to be applied then we need to load data
-             * prior to the usuals tart time, so stime needs to be adjusted */
+             * prior to the usuals start time, so stime needs to be adjusted */
             if (bxcar==1) {
                 /* subtract one src */
                 if (tlen !=0) stime-=tlen;
@@ -689,9 +666,8 @@ int main(int argc,char *argv[]) {
             }
 
             /* Calculate year, month, day, hour, minute, and second of 
-             * grid start time */
+             * grid start time (needed to load AACGM_v2 coefficients) */
             TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
-
             /* Search for index of corresponding record in input file given
              * grid start time */
             if (fitflg) {
@@ -699,11 +675,11 @@ int main(int argc,char *argv[]) {
 
                 if (old) s=OldFitSeek(oldfitfp,yr,mo,dy,hr,mt,sc,NULL);
                 else s=FitFseek(fitfp,yr,mo,dy,hr,mt,sc,NULL,inx);
-
-                /* If a matching record could not be found then exit */
+                /* If a matching record could not be found then exit*/ 
                 if (s ==-1) {
-                    fprintf(stderr,"File does not contain the requested interval.\n");
-                    exit(-1);
+                    fprintf(stderr,"File does not contain the requested start time, ignoring this file.\n");
+                    stime = tmp_stime;
+                    continue;
                 }
 
                 /* If using scan flag instead of tlen then continue to read
@@ -734,8 +710,9 @@ int main(int argc,char *argv[]) {
 
                 /* If a matching record could not be found then exit */
                 if (s ==-1) {
-                    fprintf(stderr,"File does not contain the requested interval.\n");
-                    exit(-1);
+                    fprintf(stderr,"File does not contain the requested interval, ignoring this file.\n");
+                    stime = tmp_stime;
+                    continue;
                 }
 
                 /* If using scan flag instead of tlen then continue to read
@@ -751,7 +728,8 @@ int main(int argc,char *argv[]) {
                 s=CFitReadRadarScan(cfitfp,&state,src[0],cfit,tlen,syncflg,channel);
 
             }
-
+            
+            found_record = 1;
         } else stime=src[0]->st_time;   /* If start date and time not provided
                                          * then use time of first record in
                                          * input file */
@@ -776,7 +754,7 @@ int main(int argc,char *argv[]) {
             if (tlen !=0) etime+=tlen;
             else etime+=15+src[0]->ed_time-src[0]->st_time;
         }
-            
+
         /* Calculate year, month, day, hour, minute, and second of 
          * grid start time (needed to load AACGM_v2 coefficients) */
         TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
@@ -787,12 +765,7 @@ int main(int argc,char *argv[]) {
 
         /* This value tracks the number of radar scans which have been
          * loaded for gridding */
-        num=1;
-
-        /* This value tracks the radar scan position in the boxcar median filter;
-         * it will cycle between 0,1,2 if median filtering is applied or 
-         * remain 0 if not */
-        index=0;
+        num++;
 
         /* Continue gridding until input scan data is beyond end of gridding time
          * or end of input file is reached */
@@ -889,13 +862,13 @@ int main(int argc,char *argv[]) {
 
             /* Read next radar scan from input file */
             if (fitflg) {
-                if (old) s=OldFitReadRadarScan(oldfitfp,&state,src[index],prm,fit,
-                                            tlen,syncflg,channel);
-                else s=FitFreadRadarScan(fitfp,&state,src[index],prm,fit,
-                                        tlen,syncflg,channel);
+                if (old) s=OldFitReadRadarScan(oldfitfp,&state,src[index],
+                                                prm,fit,tlen,syncflg,channel);
+                else s=FitFreadRadarScan(fitfp,&state,src[index],
+                                                prm,fit,tlen,syncflg,channel);
             } else
-                s=CFitReadRadarScan(cfitfp,&state,src[index],
-                                    cfit,tlen,syncflg,channel);
+                s=CFitReadRadarScan(cfitfp,&state,src[index],cfit,tlen,
+                                    syncflg,channel);
 
             /* If scan data is beyond end of gridding time then break out of loop */
             if ((etime !=-1) && (src[index]->st_time>etime)) break;
@@ -911,225 +884,6 @@ int main(int argc,char *argv[]) {
             else fclose(fitfp);
         } else CFitClose(cfitfp);
 
-    } else {
-
-    /* Other part of the if statement from way above the else here notes multiple input files */
-    /* -KTS 20150127 */
-
-        index=0;
-        num=0;
-
-        /* Loop over number of input files */
-        for (fnum=farg;fnum<argc;fnum++) {
-
-            fprintf(stderr,"Opening file:%s\n",argv[fnum]);
-
-            if (fitflg) {
-                /* Input file is in fit or fitacf format */
-
-                if (old) {
-                    /* Input file is in fit format */
-
-                    /* Open the fit file for reading */
-                    oldfitfp=OldFitOpen(argv[fnum],NULL);
-
-                    /* Verify that the fit file was properly opened */
-                    if (oldfitfp==NULL) {
-                        fprintf(stderr,"File not found.\n");
-                        continue;
-                    }
-
-                    /* Read first available radar scan in fit file (will use scan
-                     * flag if tlen not provided) */
-                    s=OldFitReadRadarScan(oldfitfp,&state,src[index],prm,fit,
-                                        tlen,syncflg,channel);
-
-                    /* Close fit file if scan not properly read */
-                    if (s !=0) {
-                        OldFitClose(oldfitfp);
-                        continue;
-                    }
-
-                } else {
-                    /* Input file is in fit format */
-
-                    /* Open the fitacf file for reading */
-                    fitfp=fopen(argv[fnum],"r");
-
-                    /* Verify that the fitacf file was properly opened */
-                    if (fitfp==NULL) {
-                        fprintf(stderr,"File not found.\n");
-                        continue;
-                    }
-
-                    /* Read first available radar scan in fitacf file (will use scan
-                     * flag if tlen not provided) */
-                    s=FitFreadRadarScan(fitfp,&state,src[index],prm,fit,
-                                        tlen,syncflg,channel);
-
-                    /* Close fitacf file if scan not properly read */
-                    if (s !=0) {
-                        fclose(fitfp);
-                        continue;
-                    }
-
-                }
-
-            } else {
-                /* Input file is in cfit format */
-
-                /* Open the cfit file for reading */
-                cfitfp=CFitOpen(argv[fnum]);
-
-                /* Verify that the cfit file was properly opened */
-                if (cfitfp==NULL) {
-                    fprintf(stderr,"File not found.\n");
-                    continue;
-                }
-
-                /* Read first available radar scan in cfit file (will use scan
-                 * flag if tlen not provided) */
-                s=CFitReadRadarScan(cfitfp,&state,src[index],cfit,tlen,
-                                    syncflg,channel);
-
-                /* Close cfit file if scan not properly read */
-                if (s !=0) {
-                    CFitClose(cfitfp);
-                    continue;
-                }
-
-            }
-        
-            /* Calculate year, month, day, hour, minute, and second of 
-             * grid start time (needed to load AACGM_v2 coefficients) */
-            TimeEpochToYMDHMS(src[index]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
-
-            /* Load AACGM coefficients */
-            if (old_aacgm) AACGMInit(yr);
-            else AACGM_v2_SetDateTime(yr,mo,dy,0,0,0);
-
-            /* This value tracks the number of radar scans which have been
-             * loaded for gridding */
-            num++;
-
-            /* Continue gridding until input scan data is beyond end of gridding time
-             * or end of input file is reached */
-            do {
-
-                /* Exclude scatter in beams listed in ebm */
-                RadarScanResetBeam(src[index],ebmno,ebm);
-
-                /* If 'ns' option set then exclude data where scan flag = -1 */
-                if (nsflg) exclude_outofscan(src[index]);
-
-                /* Exclude scatter in range gates below minrng or beyond maxrng,
-                 * or below minsrng or beyond maxsrng */
-                exclude_range(src[index],minrng,maxrng,minsrng,maxsrng);
-
-                /* Exclude either ground or ionospheric scatter based on gsct flag */
-                FilterBoundType(src[index],grid->gsct);
-
-                /* Exclude scatter outside velocity, power, spectral width, and
-                 * velocity error boundaries */
-                if (bflg) FilterBound(15,src[index],min,max);
-
-                /* If enough radar scans have been loaded and the 'nlm' (no limit)
-                 * option has not been set, then check to make sure there has not
-                 * been a change in distance to first range, range separation, or
-                 * transmit frequency greater than fmax between the center and
-                 * adjacent scans in the boxcar median filter */
-                if ((num>=nbox) && (limit==1) && (mode !=-1))
-                        chk=FilterCheckOps(nbox,src,fmax);
-                else chk=0;
-
-                /* If the operations check succeeded and enough scans have been
-                 * loaded then proceed with the filtering and gridding */
-                if ((chk==0) && (num>=nbox)) {
-
-                    /* Apply the boxcar median filter to the radar scans included
-                     * in the src array */
-                    if (mode !=-1) FilterRadarScan(mode,nbox,index,src,dst,15,isort);
-                    else out=src[index];
-
-                    /* Calculate year, month, day, hour, minute and second of
-                     * output scan start time */
-                    TimeEpochToYMDHMS(out->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
-
-                    /* Load the appropriate radar hardware information for the day
-                     * and time of the radar scan (only done once) */
-                    if (site==NULL) {
-                        radar=RadarGetRadar(network,out->stid);
-                        if (radar==NULL) {
-                            fprintf(stderr,"Failed to get radar information.\n");
-                            exit(-1);
-                        }
-                        site=RadarYMDHMSGetSite(radar,yr,mo,dy,hr,mt,(int) sc);
-                    }
-
-                    /* Test whether gridded data should be written to a file; if so
-                     * returns weighted average velocity, power, and width values
-                     * for each grid cell */
-                    s=GridTableTest(grid,out);
-
-                    /* If no errors were returned by GridTableTest and the beginning
-                     * of the grid record is equal to or after stime then write
-                     * grid data to output file */
-                    if ((s==1) && (grid->st_time>=stime)) {
-
-                        /* Write grid record to either grd or grdmap format file */
-                        if (old) OldGridTableFwrite(stdout,grid,vbuf,xtd);
-                        else GridTableFwrite(stdout,grid,vbuf,xtd);
-
-                        if (vbuf !=NULL) fprintf(stderr,"Storing:%s\n",vbuf);
-
-                    }
-
-                    /* Map radar scan data in structure pointed to by 'out' to an
-                     * equi-area grid in magnetic coordinates, storing the output
-                     * in the grid GridTable structure */
-                    s=GridTableMap(grid,out,site,avlen,iflg,alt,chisham,old_aacgm);
-
-                    /* Return an error if mapping failed */
-                    if (s !=0) {
-                        fprintf(stderr,"Error mapping beams.\n");
-                        break;
-                    }
-
-                }
-
-                /* If median filtering, increment index of the 3-element RadarScan
-                 * structure */
-                if (bxcar) index++;
-
-                /* If median filtering, reset src (RadarScan) structure index if it
-                 * exceeds 2 */
-                if (index>2) index=0;
-
-                /* Read next radar scan from input file */
-                if (fitflg) {
-                    if (old) s=OldFitReadRadarScan(oldfitfp,&state,src[index],
-                                                    prm,fit,tlen,syncflg,channel);
-                    else s=FitFreadRadarScan(fitfp,&state,src[index],
-                                                    prm,fit,tlen,syncflg,channel);
-                } else
-                    s=CFitReadRadarScan(cfitfp,&state,src[index],cfit,tlen,
-                                        syncflg,channel);
-
-                /* If scan data is beyond end of gridding time then break out of loop */
-                if ((etime !=-1) && (src[index]->st_time>etime)) break;
-
-                /* Update the number of scans read in this big while loop */
-                num++;
-
-            } while (s!=-1);
-
-            /* Close the input file */
-            if (fitflg) {
-                if (old) OldFitClose(oldfitfp);
-                else fclose(fitfp);
-            } else CFitClose(cfitfp);
-
-        }
 
     }
 
