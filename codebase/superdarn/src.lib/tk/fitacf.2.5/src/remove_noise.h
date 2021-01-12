@@ -23,11 +23,14 @@
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
  
- 
+  
+  Modifications
+  =============
+    2020-11-12 Marina Schmidt Converted RST complex -> C library complex
+
  
 */
 
 
 
-void remove_noise(int mplgs,struct complex *acf,
-		 struct complex *ncf);
+void remove_noise(int mplgs, double complex *acf, double complex *ncf);

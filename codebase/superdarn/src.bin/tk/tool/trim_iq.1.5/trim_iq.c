@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <string.h>
 #include <time.h>
 #include <unistd.h>
 #include <sys/stat.h>
@@ -126,7 +127,14 @@ int main (int argc,char *argv[]) {
 
   FILE *fp=NULL;
 
-  int n;
+  // origin time for when the file is produced
+  time_t ctime;
+  // counter for origin command length  
+  int n=0;
+  // origin command array to hold the string
+  char command[128];
+  // string to hold the origin time 
+  char tmstr[40];
 
   prm=RadarParmMake();
   iq=IQMake();
@@ -198,7 +206,7 @@ int main (int argc,char *argv[]) {
                           prm->time.hr,prm->time.mt,
                           prm->time.sc+prm->time.us/1.0e6);
 
-   /* skip here */
+  /* skip here */
 
   if ((stime !=-1) || (sdate !=-1)) {
     /* we must skip the start of the files */
@@ -229,6 +237,17 @@ int main (int argc,char *argv[]) {
 
   if (extime !=0) etime=stime+extime;
 
+    // initialize array to be empty?
+    command[0]=0;
+    for (int c=0; c<argc; c++) {
+      // check if the origin command is too long
+      n+=strlen(argv[c])+1;
+      // if so cut it off
+      if (n>127) break;
+      // add space between command line arguments and copy to origin command
+      if (c !=0) strcat(command," ");
+      strcat(command, argv[c]);
+    }
   do {
 
     atime=TimeYMDHMSToEpoch(prm->time.yr,prm->time.mo,prm->time.dy,
@@ -238,17 +257,28 @@ int main (int argc,char *argv[]) {
     if ((etime !=-1) && (atime>=etime)) break;
 
     TimeEpochToYMDHMS(atime,&yr,&mo,&dy,&hr,&mt,&sc);
-    if (vb==1) fprintf(stderr,"%d-%d-%d %d:%d:%d\n",yr,mo,dy,hr,mt,(int) sc);
+    if (vb==1) {
+      fprintf(stderr,"%d-%d-%d %d:%d:%d\n",yr,mo,dy,hr,mt,(int) sc);
 
-    fprintf(stderr,"%s\n",prm->origin.time);
-    fprintf(stderr,"%s\n",prm->origin.command);
-    fprintf(stderr,"%s\n",prm->combf);
-    fprintf(stderr,"%d:",prm->mppul);
-    for (n=0;n<prm->mppul;n++) fprintf(stderr,"%d ",prm->pulse[n]);
-    fprintf(stderr,"\n");
-    fprintf(stderr,"%d\n",prm->mplgs);
-    for (n=0;n<=prm->mplgs;n++) fprintf(stderr,"%d,%d ",prm->lag[0][n],prm->lag[1][n]);
-    fprintf(stderr,"\n");
+      fprintf(stderr,"%s\n",prm->origin.time);
+      fprintf(stderr,"%s\n",prm->origin.command);
+      fprintf(stderr,"%s\n",prm->combf);
+      fprintf(stderr,"%d:",prm->mppul);
+      for (n=0;n<prm->mppul;n++) fprintf(stderr,"%d ",prm->pulse[n]);
+      fprintf(stderr,"\n");
+      fprintf(stderr,"%d\n",prm->mplgs);
+      for (n=0;n<=prm->mplgs;n++) fprintf(stderr,"%d,%d ",prm->lag[0][n],prm->lag[1][n]);
+      fprintf(stderr,"\n");
+    }
+
+      // origin  code 1 means it is not produced on site
+      prm->origin.code=1;
+      // copy it over to the file
+      ctime= time((time_t) 0);
+      RadarParmSetOriginCommand(prm,command);
+      strcpy(tmstr,asctime(gmtime(&ctime)));
+      tmstr[24]=0;
+      RadarParmSetOriginTime(prm,tmstr);
 
     IQFwrite(stdout,prm,iq,badtr,samples);
 
@@ -261,4 +291,3 @@ int main (int argc,char *argv[]) {
   return 0;
 
 }
-

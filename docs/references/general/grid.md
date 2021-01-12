@@ -41,6 +41,7 @@ For further Map Potential processing, separate GRID files should be produced for
 GRID files contain a record that contains scalar and vector fields. 
 
 ### Scalars
+
 The following times refer to the start and end of the integration period.
 
 

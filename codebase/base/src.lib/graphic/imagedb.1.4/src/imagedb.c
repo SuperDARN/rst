@@ -53,8 +53,7 @@ struct FrameBufferDB *FrameBufferDBMake() {
   ptr->num=0;
   ptr->img=NULL;
   return ptr;
-};
-
+}
 
 int FrameBufferDBAdd(struct FrameBufferDB *ptr,struct FrameBuffer *img) {
   struct FrameBuffer **tmp;

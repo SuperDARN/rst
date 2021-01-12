@@ -1,9 +1,7 @@
 /* fit_acf.h
    =========
    Author: R.J.Barnes & K.Baker
-*/
 
-/*
  LICENSE AND DISCLAIMER
  
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
@@ -23,15 +21,16 @@
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
  
- 
+  Modifications
+  =============
+    2020-11-12 Marina Schmidt Converted RST complex -> C library complex
+
  
 */
 
 
 
 
-int fit_acf (struct complex *acf,int range,int *badlag,
-	     struct FitACFBadSample *badsmp,int lag_lim,
-	     struct FitPrm *prm,
-	     double noise_lev_in,char xflag,double xomega,
-             struct FitRange *ptr);
+int fit_acf (double complex *acf,int range,int *badlag, 
+        struct FitACFBadSample *badsmp,int lag_lim, struct FitPrm *prm,
+        double noise_lev_in,char xflag,double xomega, struct FitRange *ptr);

@@ -46,7 +46,7 @@ struct PostScript *PostScriptMake() {
 void PostScriptFree(struct PostScript *ptr) {
   if (ptr==NULL) return;
   free(ptr);
-};
+}
 
 int PostScriptSetText(struct PostScript *ptr,
                       int (*text)(char *,int,void *),void *data) {
@@ -55,4 +55,3 @@ int PostScriptSetText(struct PostScript *ptr,
   ptr->text.data=data;
   return 0;
 }
-

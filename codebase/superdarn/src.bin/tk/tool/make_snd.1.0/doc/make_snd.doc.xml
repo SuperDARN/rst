@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>make_snd</name>
+<location>src.bin/tk/tool/make_snd</location>
+
+<syntax>make_snd --help</syntax>
+<syntax>make_snd [-vb] [-cp <ar>cpid</ar>] [-cn <ar>channel</ar>] <ar>fitacfname</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-cp <ar>cp</ar></on><od>extract only those records with the program identifier <ar>cp</ar>.</od>
+</option>
+<option><on>-cn <ar>channel</ar></on><od>extract only those records from channel <ar>channel</ar>.</od>
+</option>
+<option><on><ar>fitacfname</ar></on><od>filename of the <code>fitacf</code> format file.</od>
+</option>
+<synopsis><p>Creates a <code>snd</code> format file from a <code>fitacf</code> format file.</p></synopsis>
+<description><p>Creates a <code>snd</code> format file from a <code>fitacf</code> format file.</p>
+<p>The <code>snd</code> file is written to standard output.</p></description>
+
+<example>
+<command>make_snd 20040830.gbr.fitacf &gt 20040830.gbr.snd</command>
+<description>Create a <code>snd</code> format file from the <code>fitacf</code> file named "<code>20040830.gbr.fitacf</code>", the output file is called "<code>20040830.gbr.snd</code>".</description>
+</example>
+
+</binary>

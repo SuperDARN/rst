@@ -352,7 +352,11 @@ int main(int argc,char *argv[]) {
   /* set socket options */
   temp=setsockopt(sock,SOL_SOCKET,SO_REUSEADDR,&sc_reuseaddr,
                  sizeof(sc_reuseaddr));
-
+  if (temp == -1)
+  {
+      fprintf(stderr, "Error: setsocketopt was unsuccessful in setting options\n");
+      //TODO: read from errno here for more information
+  }
   /* name and bind socket to an address and port number */
 
   server.sin_family=AF_INET;

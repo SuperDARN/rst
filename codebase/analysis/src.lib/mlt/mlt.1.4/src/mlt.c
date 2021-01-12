@@ -81,7 +81,15 @@ double astmlt1(int t0,double solar_dec,double mlon,double *mslon) {
     */
 
     err=convert_geo_coord(solar_dec,slon1,height,&mslat1,&mslon1,0,4);
+    if (err == -1)
+    {
+        fprintf(stderr, "Warning, convert_geo_coord returned an error");
+    }
     err=convert_geo_coord(solar_dec,slon2,height,&mslat2,&mslon2,0,4);
+    if (err == -1)
+    {
+        fprintf(stderr, "Warning, convert_geo_coord returned an error");
+    }
 
     *mslon=mslon1;
   }

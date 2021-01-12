@@ -35,6 +35,7 @@ July 2015
 #include "llist.h"
 
 #define LN_TO_LOG 1/log(10) /*natural log to log conversion*/
+
 #define V_max 30.0 /*velocity in m/s, upper limit used in gsct determination*/
 #define W_max 90.0 /*spectral width in m/s, upper limit used in gsct determination*/
 #define CLOSE_GATE_HEIGHT 120.0 /*height of close range gates in km*/

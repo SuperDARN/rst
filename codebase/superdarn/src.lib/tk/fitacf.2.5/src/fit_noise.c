@@ -1,9 +1,7 @@
 /* fit_noise.c
    ===========
    Author: R.J.Barnes & K.Baker
-*/
 
-/*
  LICENSE AND DISCLAIMER
  
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
@@ -22,7 +20,11 @@
  
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
+  
+  Modifications
+  =============
+    2020-11-12 Marina Schmidt Converted RST complex -> C library complex
+
  
  
 */
@@ -30,12 +32,13 @@
 
 
 #include <math.h>
+#include <complex.h>
 #include "rmath.h"
 #include "badsmp.h"
 #include "fitblk.h"
 #include "fit_acf.h"
 
-void fit_noise(struct complex *ncf,int *badlag,struct FitACFBadSample *badsmp,
+void fit_noise(double complex *ncf,int *badlag,struct FitACFBadSample *badsmp,
 			   double skynoise,struct FitPrm *prm,
 			   struct FitRange *ptr) {
  
@@ -57,22 +60,21 @@ void fit_noise(struct complex *ncf,int *badlag,struct FitACFBadSample *badsmp,
       A = exp(ptr->p_s);
       for (j=0; j < prm->mplgs; ++j) {
         t = (prm->lag[1][j] - prm->lag[0][j])*tau;
-        ncf[j].x = A*exp(-ptr->w_l*t)*cos(ptr->v*t);
-        ncf[j].y = A*exp(-ptr->w_l*t)*sin(ptr->v*t);
+        ncf[j] = CMPLX(A*exp(-ptr->w_l*t)*cos(ptr->v*t), 
+                A*exp(-ptr->w_l*t)*sin(ptr->v*t));
       }
     } else {
       if (ptr->p_s > skynoise) ptr->p_s = skynoise;
       A = exp(ptr->p_s);
       for (j=0; j < prm->mplgs; ++j) {
         t = (prm->lag[1][j] - prm->lag[0][j])*tau;
-        ncf[j].x = A*exp(-(ptr->w_s*t)*(ptr->w_s*t))*cos(ptr->v*t);
-        ncf[j].y = A*exp(-(ptr->w_s*t)*(ptr->w_s*t))*sin(ptr->v*t);
+        ncf[j] = CMPLX( A*exp(-(ptr->w_s*t)*(ptr->w_s*t))*cos(ptr->v*t),
+                A*exp(-(ptr->w_s*t)*(ptr->w_s*t))*sin(ptr->v*t));
       }
     }
   } else
     for (j=0; j < prm->mplgs; ++j) {
-      ncf[j].x = 0;
-      ncf[j].y = 0;
+      ncf[j] = CMPLX(0, 0);
     }
   return;
 }

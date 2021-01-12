@@ -2,7 +2,6 @@
    ============
    Author: R.J.Barnes & K.Baker & P.Ponomarenko
 */
-
 /*
  LICENSE AND DISCLAIMER
  
@@ -23,7 +22,11 @@
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
  
- 
+  
+  Modifications
+  =============
+    2020-11-12 Marina Schmidt Converted RST complex -> C library complex
+
   
 */
 
@@ -33,6 +36,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <complex.h>
 #include "rmath.h"
 #include "fitblk.h"
 
@@ -43,14 +47,13 @@
 #define ROOT_3 1.7
 
 
-double lag_power(struct complex *a) {
-  return sqrt(a->x*a->x + a->y*a->y);
+double lag_power(double complex a) {
+  return sqrt(creal(a)*creal(a) + cimag(a)*cimag(a));
 }
 
 double noise_stat(double mnpwr,struct FitPrm *ptr,
                   struct FitACFBadSample *badsmp,
-		  struct complex *acf) {
-	         /* double *signal)  { */
+		  double complex *acf) {
   double plim;
   int i, j, np0, npt;
   int *bdlag;
@@ -70,17 +73,18 @@ double noise_stat(double mnpwr,struct FitPrm *ptr,
   memset(bdlag,0,sizeof(int)*ptr->mplgs);
 
   for (i=0; i < ptr->nrang; ++i) { 
-    if ((acf[i*ptr->mplgs].x > plim) || (acf[i*ptr->mplgs].x <= 0.0)) continue;
+    if ((creal(acf[i*ptr->mplgs]) > plim) || (creal(acf[i*ptr->mplgs]) <= 0.0)) 
+        continue;
 	FitACFCkRng((i+1), bdlag,badsmp, ptr);
 	++np0;
-	fluct = ((double) acf[i*ptr->mplgs].x)/sqrt(ptr->nave);
-	low_lim = acf[i*ptr->mplgs].x - 2.0*fluct;
+	fluct = ((double) creal(acf[i*ptr->mplgs]))/sqrt(ptr->nave);
+	low_lim = creal(acf[i*ptr->mplgs]) - 2.0*fluct;
 	if (low_lim < 0) low_lim = low_lim + fluct;
-	high_lim = acf[i*ptr->mplgs].x + fluct;
+	high_lim = creal(acf[i*ptr->mplgs]) + fluct;
 
 	for (j=1; j < ptr->mplgs; ++j) {
       if (bdlag[j]) continue;
-	  temp = lag_power(&acf[i*ptr->mplgs+j]);
+	  temp = lag_power(acf[i*ptr->mplgs+j]);
 	  if (temp < low_lim || temp > high_lim) continue;
 	  ++npt;
 	  P = P + temp;

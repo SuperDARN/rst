@@ -1,9 +1,7 @@
 /* calc_phi_res.c
      ==============
      Author: R.J.Barnes & K.Baker
-*/
 
-/*
  LICENSE AND DISCLAIMER
  
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
@@ -24,12 +22,9 @@
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
  
  
- 
-*/
+  Modifications
+  =============
 
-
-
-/*
     2003/09/04 Kile Baker
     changed the return type of this function from void to int
     the function now checks to see if all the phases turned out
@@ -39,22 +34,24 @@
     because all the phases were exactly 0.  This can happen when
     the power is low and we are reprocessing DAT files that have lost
     some precision.
-*/
 
+    2020-11-12 Marina Schmidt Converted RST complex -> C library complex
+          
+*/
+            
 #include <math.h>
+#include <complex.h>
 #include "rmath.h"
 
 
-
-int calc_phi_res(struct complex *acf,int *badlag,
-                    double *phi_res,int mplgs) {
+int calc_phi_res(double complex *acf,int *badlag, double *phi_res,int mplgs) {
     int i, n_good_lags;
     for (i=0, n_good_lags=0; i< mplgs; ++i) { 
         if (badlag[i]){
             phi_res[i] = 0.0;
         }
         else {
-            phi_res[i] = atan2(acf[i].y, acf[i].x);
+            phi_res[i] = atan2(cimag(acf[i]), creal(acf[i]));
             n_good_lags++;
         }
     }

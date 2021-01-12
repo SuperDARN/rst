@@ -272,6 +272,10 @@
 </option>
 <option><on><ar>cfitname</ar></on><od>filename of the <code>cfit</code> format file to plot.</od>
 </option>
+<option><on>-snd</on><od>file is in the <code>snd</code> format.</od>
+</option>
+<option><on><ar>sndname</ar></on><od>filename of the <code>snd</code> format file to plot.</od>
+</option>
 <option><on>-png</on><od>produce a Portable Network Graphics (PNG) image as the output.</od>
 </option>
 <option><on>-ps</on><od>produce a PostScript plot as the output.</od>

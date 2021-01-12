@@ -64,6 +64,10 @@ int downloadscan(int sock,struct RadarParm *prm,struct FitData *fit,
 
   while (prm->scan !=1) {  
     status=FitCnxRead(1,&sock,prm,fit,&flag,NULL);
+    if (status == -1)
+    {
+        fprintf(stderr, "Error: perror occured in FitCnxRead\n");
+    }
     fprintf(stderr,"+%d (%d)+",prm->bmnum,prm->scan); 
     fflush(stderr);
   } 
@@ -81,8 +85,14 @@ int downloadscan(int sock,struct RadarParm *prm,struct FitData *fit,
      fprintf(stderr,"%.2d.",prm->bmnum);
      fflush(stderr);
      if (prm->scan==0) FitToRadarScan(ptr,prm,fit);
-      status=FitCnxRead(1,&sock,prm,fit,&flag,NULL);
-     c++;
+     
+     status=FitCnxRead(1,&sock,prm,fit,&flag,NULL);
+     if (status == -1)
+     {
+        fprintf(stderr, "Error: perror occured in FitCnxRead\n");
+     }
+
+      c++;
    }
    ptr->st_time=TimeYMDHMSToEpoch(prm->time.yr,prm->time.mo,prm->time.dy,
                                  prm->time.hr,prm->time.mt,prm->time.sc+

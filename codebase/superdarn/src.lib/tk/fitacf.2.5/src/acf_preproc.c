@@ -1,9 +1,7 @@
 /* acf_preproc.c
    =============
    Author: R.J.Barnes & K.Baker
-*/
 
-/*
  LICENSE AND DISCLAIMER
  
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
@@ -22,7 +20,12 @@
  
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
+
+
+    Modifications
+    =============
+    2020-11-12 Marina Schmidt Converted RST complex -> C library complex
+
  
  
 */
@@ -31,20 +34,17 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <complex.h>
 
 #include "rmath.h"
 #include "acf_preproc.h"
 
-int acf_preproc(struct complex *acf,
-                struct complex *orig_acf,
-                double *noise_lev,
-                int range,int *badlag,
-                int mplgs) {
+int acf_preproc(double complex *acf, double complex *orig_acf, 
+        double *noise_lev, int range, int *badlag, int mplgs) {
   int k;
   
   for (k=0; k < mplgs; k++) {
-    acf[k].x = orig_acf[k].x;
-    acf[k].y = orig_acf[k].y;
+    acf[k] = orig_acf[k];
   }
   return ACF_UNMODIFIED; 
 }

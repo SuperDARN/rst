@@ -1,9 +1,7 @@
 /* do_phase_fit.h
    ==============
    Author: K.Baker
-*/
 
-/*
  LICENSE AND DISCLAIMER
  
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
@@ -23,7 +21,10 @@
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
  
- 
+  Modifications
+  =============
+    2020-11-12 Marina Schmidt Converted RST complex -> C library complex
+
  
 */
 
@@ -32,7 +33,7 @@
 int do_phase_fit(double omega_guess, 
 		  char xflag, 
 		  int mplgs,
-		  struct complex *acf,
+		  double complex *acf,
 		  double *tau,
 		  double *w,
 		  double *sum_wk2_arr,

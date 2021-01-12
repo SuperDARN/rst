@@ -251,6 +251,11 @@ double eval_expr(char *expr,
   data.rng=rng;
  
   s=Eval(expr,&value,decode_value,&data,decode_function,&data);
+  if (s == -1)
+  {
+      fprintf(stderr, "Error: Eval returned an error\n");
+      return -1;
+  }
   /* should report an error in here */
 
   return value;
