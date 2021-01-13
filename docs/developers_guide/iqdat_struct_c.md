@@ -3,8 +3,6 @@
 author: Kevin Sterne
 -->
 
-This information is sourced from the RFC: 0028 previously in the RST RFC documentation that was written by R.J. Barnes
-
 # Structure in C for the raw I and Q data
 
 ## Summary
@@ -51,7 +49,7 @@ The raw I and Q data are stored in a one-dimensional array (vector) of type `int
 
 ## References
 
-None
+This information is sourced from the RFC: 0028 previously in the RST RFC documentation that was written by R.J. Barnes
 
 ## History from RFC Documenation
 

@@ -3,8 +3,6 @@
 author: Kevin Sterne
 -->
 
-This information is sourced from the RFC: 0015 previously in the RST RFC documentation that was written by R.J. Barnes
-
 # Structure in C for the cFit compressed fitted ACF data
 
 ## Summary
@@ -76,7 +74,7 @@ struct CFitCell {
 
 ## References
 
-None
+This information is sourced from the RFC: 0015 previously in the RST RFC documentation that was written by R.J. Barnes
 
 ## History
 

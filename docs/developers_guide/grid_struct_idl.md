@@ -3,8 +3,6 @@
 author: Kevin Sterne
 -->
 
-This information is sourced from the RFC: 0023 previously in the RST RFC documentation that was written by R.J. Barnes
-
 # IDL Data Structure for Gridded data
 
 ## Summary
@@ -81,6 +79,7 @@ gvec={GridGVec, mlat:0.0, $      ; magnetic latitude
 ## References
 
 [Grid Structure in C](developers_guide/grid_struct_c.md)
+This information is sourced from the RFC: 0023 previously in the RST RFC documentation that was written by R.J. Barnes
 
 ## History from RFC Documentation
 

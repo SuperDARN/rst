@@ -3,8 +3,6 @@
 author: Kevin Sterne
 -->
 
-This information is sourced form the RFC: 0012 previously in the RST RFC documentation that was written by R.J. Barnes.
-
 # Structure in C for the Radar Parameter Block
 
 ## Summary
@@ -110,7 +108,8 @@ struct RadarParm {
 ``` 
 
 ## References
-None
+
+This information is sourced form the RFC: 0012 previously in the RST RFC documentation that was written by R.J. Barnes.
 
 ## History
 2004/11/19  Initial Revision.

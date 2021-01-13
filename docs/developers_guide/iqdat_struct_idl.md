@@ -3,8 +3,6 @@
 author: Kevin Sterne
 -->
 
-This information is sourced from the RFC: 0029 previously in the RST RFC documentation that was written by R.J. Barnes
-
 # IDL Data Structure for raw I and Q data</b>
 
 ## Summary
@@ -45,6 +43,7 @@ raw={IQData, $
 ## References
 
 [IQDat Structure in C](developers_guide/iqdat_struct_c.md)
+This information is sourced from the RFC: 0029 previously in the RST RFC documentation that was written by R.J. Barnes
 
 ## History from RFC Documenation
 
