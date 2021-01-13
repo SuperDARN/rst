@@ -44,7 +44,7 @@ The software is maintained by the SuperDARN Data Analysis Working Group (DAWG) o
          * [Radar Parameter Block](developers_guide/radar_parameter_c.md)
          * [RawACF](developers_guide/rawacf_struct_c.md)
     - Data Structures in IDL
-         * [FitACF](developer_guide/fiatcf_struct_idl.md)
+         * [FitACF](developer_guide/fitacf_struct_idl.md)
          * [Grid](developers_guide/grid_struct_idl.md)
          * [IQDat](developers_guide/iqdat_struct_idl.md)
          * [Map (cnvmap)](developers_guide/cnvmap_struct_idl.md)
