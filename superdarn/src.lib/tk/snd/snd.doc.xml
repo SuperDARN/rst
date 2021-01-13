@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>superdarn</project>
+<name>snd</name>
+<location>src.lib/tk/snd</location>
+
+<function>
+<name>FitToSnd</name>
+<location>src.lib/tk/snd</location>
+<header>superdarn/fitsnd.h</header>
+<syntax>int FitToSnd(<sn href="structSndData.html">struct SndData</sn> *ptr, <sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm, <sn href="&root;/superdarn/src.lib/tk/fit/structFitData.html">struct FitData</sn> *fit);</syntax>
+<description><p>The <fn href="FitToSnd.html">FitToSnd</fn> function encodes a <code>fitacf</code> data record into a <code>snd</code> data record.</p>
+<p>The <code>fit</code> data is encoded into the <code>snd</code> data structure pointed to by the argument <ar>ptr</ar>. The <code>snd</code> structure is encoded from the parameter block pointed to by the argument <ar>prm</ar> and the <code>fit</code> data structure pointed to by the argument <ar>fit</ar>.</p>  
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+</function>
+
+<function>
+<name>SndDecode</name>
+<location>src.lib/tk/snd</location>
+<header>superdarn/sndread.h</header>
+<syntax>int SndDecode(<sn href="&root;/general/src.lib/dmap/structDataMap.html">struct DataMap</sn> *ptr,<sn href="structSndData.html">struct SndData</sn> *snd);</syntax>
+<description><p>The <fn href="SndDecode.html">SndDecode</fn> function decodes a <code>snd</code> data record from a <code>DataMap</code> structure.</p>
+<p>The <code>DataMap</code> structure is pointed to by the argument <ar>ptr</ar>. The data is decoded and used to populate the <code>snd</code> data structure pointed to by the argument <ar>snd</ar>.</p>  
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+</function>
+
+<function>
+<name>SndFread</name>
+<location>src.lib/tk/snd</location>
+<header>superdarn/sndread.h</header>
+<syntax>int SndFread(FILE *fp, <sn href="structSndData.html">struct SndData</sn> *snd);</syntax>
+<description><p>The <fn href="SndFread.html">SndFread</fn> function reads a <code>snd</code> data record from an open stream.</p>
+<p>The data is read from the open stream pointed to by the argument <ar>fp</ar>. The data is decoded and used to populate the <code>snd</code> data structure pointed to by the argument <ar>snd</ar>.</p>  
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+</function>
+
+<function>
+<name>SndFree</name>
+<location>src.lib/tk/snd</location>
+<header>superdarn/snddata.h</header>
+<syntax>void SndFree(<sn href="structSndData.html">struct SndData</sn> *ptr);</syntax>
+<description><p>The <fn href="SndFree.html">SndFree</fn> function frees memory allocated to store a <code>snd</code> data structure.</p>
+<p>The <code>snd</code> data structure is pointed to by the argument <ar>ptr</ar>.</p>
+</description>
+</function>
+
+<function>
+<name>SndFseek</name>
+<location>src.lib/tk/snd</location>
+<header>superdarn/sndseek.h</header>
+<syntax>int SndFseek(FILE *fp, int yr,int mo,int dy,int hr,int mt,int sc,double *atme);</syntax>
+<description><p>The <fn href="SndFseek.html">SndFseek</fn> function searches for a <code>snd</code> data record for a specific time.</p>
+<p>The search is performed on the open stream pointed to by the argument <ar>fp</ar>. The time to search for is specified by the arguments <ar>yr</ar>, <ar>mo</ar>,<ar>dy</ar>,<ar>hr</ar>,<ar>mt</ar>,<ar>sc</ar> giving the year, month, day, hour, minute and second.</p>
+<p>The argument <ar>atme</ar> is a pointer to a double precision floating point number that is used to store the time of the closest record to the time requested expressed in seconds from 0:00UT January 1, 1970. If this argument is set to a <code>NULL</code> pointer then the time is not returned.</p>  
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+</function>
+
+<function>
+<name>SndFwrite</name>
+<location>src.lib/tk/snd</location>
+<header>superdarn/sndwrite.h</header>
+<syntax>int SndFwrite(FILE *fp, <sn href="structSndData.html">struct SndData</sn> *snd);</syntax>
+<description><p>The <fn href="SndFwrite.html">SndFwrite</fn> function writes a <code>snd</code> data record to an open stream.</p>
+<p>The data is written to the open stream pointed to by the argument <ar>fp</ar>. The data record is contructed from the <code>snd</code> data structure pointed to by the argument <ar>snd</ar>.</p>  
+</description>
+<returns>Returns the number of bytes written on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+</function>
+
+<function>
+<name>SndMake</name>
+<location>src.lib/tk/snd</location>
+<header>superdarn/snddata.h</header>
+<syntax><sn href="structSndData.html">struct SndData</sn> *SndMake();</syntax>
+<description><p>The <fn href="SndMake.html">SndMake</fn> function allocates memory to store a <code>snd</code> data structure.</p>
+</description>
+</function>
+
+<function>
+<name>SndRead</name>
+<location>src.lib/tk/snd</location>
+<header>superdarn/sndread.h</header>
+<syntax>int SndRead(int fid, <sn href="structSndData.html">struct SndData</sn> *snd);</syntax>
+<description><p>The <fn href="SndRead.html">SndRead</fn> function reads a <code>snd</code> data record from an open file.</p>
+<p>The data is read from the file with the descriptor given by the argument <ar>fid</ar>. The data is decoded and used to populate the <code>snd</code> data structure pointed to by the argument <ar>snd</ar>.</p>  
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+</function>
+
+<function>
+<name>SndSeek</name>
+<location>src.lib/tk/snd</location>
+<header>superdarn/sndseek.h</header>
+<syntax>int SndSeek(int fid, int yr,int mo,int dy,int hr,int mt,int sc,double *atme);</syntax>
+<description><p>The <fn href="SndSeek.html">SndSeek</fn> function searches for a <code>snd</code> data record for a specific time.</p>
+<p>The search is performed on the file with the descriptor given by the argument <ar>fid</ar>. The time to search for is specified by the arguments <ar>yr</ar>, <ar>mo</ar>,<ar>dy</ar>,<ar>hr</ar>,<ar>mt</ar>,<ar>sc</ar> giving the year, month, day, hour, minute and second.</p>
+<p>The argument <ar>atme</ar> is a pointer to a double precision floating point number that is used to store the time of the closest record to the time requested expressed in seconds from 0:00UT January 1, 1970. If this argument is set to a <code>NULL</code> pointer then the time is not returned.</p>  
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+</function>
+
+<function>
+<name>SndWrite</name>
+<location>src.lib/tk/snd</location>
+<header>superdarn/sndwrite.h</header>
+<syntax>int SndWrite(int fid, <sn href="structSndData.html">struct SndData</sn> *snd);</syntax>
+<description><p>The <fn href="SndWrite.html">SndWrite</fn> function writes a <code>snd</code> data record to an open file.</p>
+<p>The data is written to the file with the descriptor given by the argument <ar>fid</ar>. If <ar>fid</ar> is set to (-1) then the function will just calculate the number of bytes required to store the data. The data record is contructed from the <code>snd</code> data structure pointed to by the argument <ar>snd</ar>.</p>  
+</description>
+<returns>Returns the number of bytes written on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+</function>
+
+
+<structure>
+  <name>SndData</name>
+  <location>src.lib/tk/snd</location>
+  <header>superdarn/snddata.h</header>
+  <struct>
+
+    <member>
+      <struct>
+        <member>
+          <proto>char major;</proto>
+          <description>Radar major revision number.</description>
+        </member>
+        <member>
+          <proto>char minor;</proto>
+          <description>Radar minor revision number.</description>
+        </member>
+      </struct>
+      <proto>radar_revision;</proto>
+      <description>Radar revision number.</description>
+    </member>
+
+    <member>
+      <struct>
+        <member>
+          <proto>char code;</proto>
+          <description>Origin code, zero (0) if generated at the radar site, non-zero if generated by post processing.</description>
+        </member>
+        <member>
+          <proto>char *time;</proto>
+          <description>ASCII representation of the time at which the file was generated.</description>
+        </member>
+        <member>
+          <proto>char *command;</proto>
+          <description>The command line or the name of the control program that generated the file.</description>
+        </member>
+      </struct>
+      <proto>origin;</proto>
+      <description>Origin of the file.</description>
+    </member>
+
+    <member>
+      <proto>int16 cp;</proto>
+      <description>Control program identifier number.</description>
+    </member>
+
+    <member>
+      <proto>int16 stid;</proto>
+      <description>Station identifier number.</description>
+    </member>
+
+    <member>
+      <struct>
+        <member>
+          <proto>int16 yr;</proto>
+          <description>Year.</description>
+        </member>
+        <member>
+          <proto>int16 mo;</proto>
+          <description>Month.</description>
+        </member>
+        <member>
+          <proto>int16 dy;</proto>
+          <description>Day.</description>
+        </member>
+        <member>
+          <proto>int16 hr;</proto>
+          <description>Hour.</description>
+        </member>
+        <member>
+          <proto>int16 mt;</proto>
+          <description>Minute.</description>
+        </member>
+        <member>
+          <proto>int16 sc;</proto>
+          <description>Second.</description>
+        </member>
+        <member>
+          <proto>int32 us;</proto>
+          <description>Microsecond.</description>
+        </member>
+      </struct>
+      <proto>time;</proto>
+      <description>Timestamp.</description>
+    </member>
+ 
+    <member>
+      <proto>int16 nave;</proto>
+      <description>Number of pulse sequences transmitted.</description>
+    </member>
+
+    <member>
+      <proto>int16 lagfr;</proto>
+      <description>Lag to first range (microseconds).</description>
+    </member>
+
+    <member>
+      <proto>int16 smsep;</proto>
+      <description>Sample separation (microseconds).</description>
+    </member>
+
+    <member>
+      <struct>
+        <member>
+          <proto>float search;</proto>
+          <description>Calculated noise from clear frequency search.</description>
+        </member>
+        <member>
+          <proto>float mean;</proto>
+          <description>Average noise across frequency band.</description>
+        </member>
+      </struct>
+      <proto>noise;</proto>
+      <description>Noise statistics.</description>
+    </member>
+
+    <member>
+      <proto>int16 channel;</proto>
+      <description>Channel number for a stereo or other multi-channel radar.</description>
+    </member>
+
+    <member>
+      <proto>int16 bmnum;</proto>
+      <description>Beam number.</description>
+    </member>
+
+    <member>
+      <proto>float bmazm;</proto>
+      <description>Beam azimuth.</description>
+    </member>
+
+    <member>
+      <proto>int16 scan;</proto>
+      <description>Scan flag.</description>
+    </member>
+
+    <member>
+      <proto>int16 rxrise;</proto>
+      <description>Receiver rise time (microseconds).</description>
+    </member>
+
+    <member>
+      <struct>
+        <member>
+          <proto>int16 sc;</proto>
+          <description>Seconds.</description>
+        </member>
+        <member>
+          <proto>int32 us;</proto>
+          <description>Microseconds.</description>
+        </member>
+      </struct>
+      <proto>intt;</proto>
+      <description>Integration time.</description>
+    </member>
+
+    <member>
+      <proto>int16 nrang;</proto>
+      <description>Number of ranges.</description>
+    </member>
+
+    <member>
+      <proto>int16 frang;</proto>
+      <description>Distance to first range (kilometers).</description>
+    </member>
+
+    <member>
+      <proto>int16 rsep;</proto>
+      <description>Range separation (kilometers).</description>
+    </member>
+
+    <member>
+      <proto>int16 xcf;</proto>
+      <description>XCF flag.</description>
+    </member>
+
+    <member>
+      <proto>int16 tfreq;</proto>
+      <description>Transmitted frequency.</description>
+    </member>
+
+    <member>
+      <proto>double sky_noise;</proto>
+      <description>Sky noise.</description>
+    </member>
+
+    <member>
+      <proto>char *combf;</proto>
+      <description>Comment buffer.</description>
+    </member>
+
+    <member>
+      <struct>
+        <member>
+          <proto>char major;</proto>
+          <description>FITACF major revision number.</description>
+        </member>
+        <member>
+          <proto>char minor;</proto>
+          <description>FITACF minor revision number.</description>
+        </member>
+      </struct>
+      <proto>fitacf_revision;</proto>
+      <description>FITACF revision number.</description>
+    </member>
+
+    <member>
+      <struct>
+        <member>
+          <proto>char major;</proto>
+          <description>Major revision number.</description>
+        </member>
+        <member>
+          <proto>char minor;</proto>
+          <description>Minor revision number.</description>
+        </member>
+      </struct>
+      <proto>snd_revision;</proto>
+      <description>Revision number.</description>
+    </member>
+
+    <member>
+      <proto><sn href="structSndRange.html">struct SndRange</sn> *rng;</proto>
+      <description>Subset of fitted ACF and XCF parameters.</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structSndData.html">struct SndData</sn> structure stores a subset of the sounding radar operating parameters and fitted ACF and XCF data.</p>
+  </description>
+</structure>
+
+
+<structure>
+  <name>SndRange</name>
+  <location>src.lib/tk/snd</location>
+  <header>superdarn/snddata.h</header>
+  <struct>
+
+    <member>
+      <proto>int qflg;</proto>
+      <description>ACF quality flag.</description>
+    </member>
+
+    <member>
+      <proto>int gsct;</proto>
+      <description>Ground scatter flag.</description>
+    </member>
+
+    <member>
+      <proto>double v;</proto>
+      <description>Velocity from ACF.</description>
+    </member>
+
+    <member>
+      <proto>double v_err;</proto>
+      <description>Velocity error from ACF.</description>
+    </member>
+
+    <member>
+      <proto>double p_l;</proto>
+      <description>Power from lambda fit of ACF.</description>
+    </member>
+
+    <member>
+      <proto>double w_l;</proto>
+      <description>Spectral width from lambda fit of ACF.</description>
+    </member>
+
+    <member>
+      <proto>int x_qflg;</proto>
+      <description>XCF quality flag.</description>
+    </member>
+
+    <member>
+      <proto>double phi0;</proto>
+      <description>Phase determination at lag zero of the ACF.</description>
+    </member>
+
+    <member>
+      <proto>double phi0_err;</proto>
+      <description>Phase determination error at lag zero of the ACF.</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structSndRange.html">struct SndRange</sn> structure stores a subset of the fitted parameters for a single range.</p>
+ </description>
+</structure>
+
+
+</library>

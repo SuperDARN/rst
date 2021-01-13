@@ -115,12 +115,12 @@
     </member>
 
     <member>
-      <proto>struct complex *acfd[MAX_RANGE];</proto>
+      <proto>complex *acfd[MAX_RANGE];</proto>
       <description>An array of pointers to the raw ACF data.</description>
     </member>
 
     <member>
-      <proto>struct complex *xcfd[MAX_RANGE];</proto>
+      <proto>complex *xcfd[MAX_RANGE];</proto>
       <description>An array of pointers to the raw XCF data.</description>
     </member>
 
