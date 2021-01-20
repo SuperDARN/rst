@@ -21,18 +21,28 @@ The software is maintained by the SuperDARN Data Analysis Working Group (DAWG) o
     * [Citing Data](user_guide/citing.md)
   -  RST Tutorials 
 	  - Data Processing
-       * [RAWACF to FITACF](user_guide/make_fit.md)
-	     * [FITACF to GRID](user_guide/make_grid.md)
-	     * [GRID to MAP](user_guide/map_grid.md)
+        * [RAWACF to FITACF](user_guide/make_fit.md)
+	      * [FITACF to GRID](user_guide/make_grid.md)
+	      * [GRID to MAP](user_guide/map_grid.md)
 	  - Plotting Data
-         * [Range-time Plots](user_guide/time_plot.md)
-         * [Field of View Plots](user_guide/fov_plot.md)
-         * [Field Plots](user_guide/field_plot.md)
-         * [Grid Plots](user_guide/grid_plot.md)
-         * [Convection Plots](user_guide/map_plot.md)
-         * [Customizing Colors](user_guide/colors.md)
+        * [Range-time Plots](user_guide/time_plot.md)
+        * [Field of View Plots](user_guide/fov_plot.md)
+        * [Field Plots](user_guide/field_plot.md)
+        * [Grid Plots](user_guide/grid_plot.md)
+        * [Convection Plots](user_guide/map_plot.md)
+        * [Customizing Colors](user_guide/colors.md)
   - Developers Guide
-    * [Copyrights and Licensing](developers_guide/copyright_license.md) 
+    * [Copyrights and Licensing](dev/copyright_license.md) 
+    * [Communications Guidelines](dev/communication.md)
+    * [Adding a New Feature](dev/feature.md)
+    - Workflow
+        * [GitHub Projects](dev/projects.md)
+        * [Issues](dev/issues.md)
+        * [Creating a Branch](dev/branching.md)
+        * [Pull Requests](dev/pull_requests.md)
+        * [Testing Code](dev/testing.md)
+        * [Code Reviews](dev/code_reviews.md)
+        * [Releasing Code](dev/releases.md)
   - SuperDARN Data Formats
     * [Dmap Data](references/general/dmap_data.md)
     * [IQDAT Format](references/general/iqdat.md)
