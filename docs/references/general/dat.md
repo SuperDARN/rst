@@ -6,13 +6,13 @@ Disclaimer: License under GNU v3.0, the file is found in the root directory unde
 -->
 # DAT files 
 
-DAT files are an older version of raw files produced at radar sites between 1992-2006. 
+DAT files are a historical file format for raw SuperDARN data. They were produced at radar sites between 1992 and 2006. 
 
-They can be converted to RAWACF files for higher data products by using RST's `dattorawacf` command.
+They can be converted to the RAWACF file format using RST's `dattorawacf` command.
 
 ## Naming Conventions
 
-The common naming convention for DAT files is:
+The naming convention for DAT files is:
 
 > YYYYMMDDHH.<1-letter radar abbreviation>.dat
 
@@ -38,15 +38,15 @@ The common naming convention for DAT files is:
 | i                           | wal                   | Wallops Island |
 
 
-During this time if radars switched modes or stopped mid 2-hour period a new file would be created with a letter after the 1 letter radar abbreviation.
+DAT files usually contain 2 hours of data. If the radar restarted or changed to a different control program during a 2-hour interval, a new DAT file is created. When this occurs, a letter is appended to the filename after the 1-letter radar abbreviation.
 !!! Warning
-    Do not confuse this with RAWACF letters representing channels
+    Do not confuse the letters in DAT-format filenames with the letters representing channels in RAWACF-format filenames. 
 
 > YYYYMMDDHH.<1-letter radar abbreviation>[a-z].dat
 
 ## Fields
 
-DAT files contain a record that contains scalar and vector fields. 
+Each record in a DAT file contains a set of scalar and vector fields. 
 
 ### Scalars
 
@@ -71,15 +71,15 @@ DAT files contain a record that contains scalar and vector fields.
 | *stat.agc*             | *None*    | short     | Automatic gain control status word                                                                                                                                                               |
 | *stat.lopwr*           | *None*    | short     | Low power status word                                                                                                                                                                            |
 | *nbaud*                | *None*    | short     | The number of elements in the pulse code                                                                                                                                                         |
-| *noise*                | *None*    | float     | Calculated noise from clear frequency search                                                                                                                                                     |
-| *noise.mean*           | *None*    | float     | Average noise from clear frequency band                                                                                                                                                          |
+| *noise*                | *None*    | float     | Noise level measured during the clear frequency search                                                                                                                                                     |
+| *noise.mean*           | *None*    | float     | Average noise across the frequency band                                                                                                                                                          |
 | *channel*              | *None*    | short     | Channel number, used to denote different Tx/Rx channels on Stereo radars, and to denote changes in radar operating parameters between scans, e.g. alternating between 2 frequencies scan-to-scan |
 | *bmnum*                | *None*    | short     | Beam number, zero based indexing                                                                                                                                                                 |
 | *bmazm*                | *degrees* | float     | Beam azimuth                                                                                                                                                                                     |
 | *scan*                 | *None*    | short     | Scan flag, indicating the scan mode.                                                                                                                                                             |
 | *offset*               | *us*      | short     | Offset between channels for a stereo radar                                                                                                                                                       |
 | *rxrise*               | *us*      | short     | Receiver rise time                                                                                                                                                                               |
-| *intt*                 | *s*       | short     | Number of seconds of integration time                                                                                                                                                            |
+| *intt*                 | *s*       | short     | Integration period                                                                                                                                                            |
 | *txpl*                 | *us*      | short     | Transmitted pulse length                                                                                                                                                                         |
 | *mpinc*                | *us*      | short     | Multi-pulse increment (lag separation)                                                                                                                                                           |
 | *mppul*                | *None*    | short     | Number of pulses in the sequence                                                                                                                                                                 |
@@ -89,10 +89,10 @@ DAT files contain a record that contains scalar and vector fields.
 | *rsep*                 | *km*      | short     | Range separation                                                                                                                                                                                 |
 | *xcf*                  | *None*    | short     | XCF flag, indicating whether the power, velocity, spectral width and phi0 parameters fitted from the cross-correlation function are available (xcf=1) or not available (xcf=0)                   |
 | *tfreq*                | *kHz*     | short     | Transmitted frequency                                                                                                                                                                            |
-| *mxpwr*                | *dB*      | int       | Maximum power                                                                                                                                                                                    |
+| *mxpwr*                | *None*      | int       | Maximum power                                                                                                                                                                                    |
 | *lvmax*                | *None*    | int       | Maximum noise level allowed                                                                                                                                                                      |
 | usr_resL2              | *None*    | int       | User defined variable                                                                                                                                                                            |
-| CP                     | *Non*     | short     | Contorl Program number                                                                                                                                                                           |
+| cp                     | *None*     | short     | Control program number                                                                                                                                                                           |
 | usr_resS1              | *None*    | short     | User defined variable                                                                                                                                                                            |
 | usr_resS2              | *None*    | short     | User defined variable                                                                                                                                                                            |
 | usr_resS3              | *None*    | short     | User defined variable                                                                                                                                                                            |
@@ -102,7 +102,7 @@ DAT files contain a record that contains scalar and vector fields.
 ### Vectors 
 
 !!! Note
-    *slist* contains the range gates that obtained data points during the integration period of the beam. 
+    *slist* contains the range gates with lag zero power above the threshold level.
 
 | Field name  | Units    | Dimensionality | Data Type   | Description                                                                 |
 | :---------- | :-----:  | :-------:      | :---:       | :---                                                                        |
@@ -111,5 +111,4 @@ DAT files contain a record that contains scalar and vector fields.
 | *pwr0*      | *None*     | *[nrang]*      | float       | Lag zero power, estimated from voltage samples (not fitted)  |
 | *acfd*      | *None*   | *[2][mplgs][0-nrang]*    | float       | Calculated ACFs                                                             |
 | *xcfd*      | *None*   | *[2][mplgs][0-nrang]*    | float       | Calculated XCFs                                                             |
-
 
