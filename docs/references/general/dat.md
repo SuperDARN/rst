@@ -54,7 +54,7 @@ Each record in a DAT file contains a set of scalar and vector fields.
 | :----------            | :-----:   | :-------: | :---                                                                                                                                                                                             |
 | *radar.revision.major* | *None*    | char      | Major version number of the radar operating system                                                                                                                                               |
 | *radar.revision.minor* | *None*    | char      | Minor version number of the radar operating system                                                                                                                                               |
-| npr                    | *None*    | int       | Number of parameters                                                                                                                                                                             |
+Total number of scalar and vector fields in a DAT record   
 | *stid*                 | *None*    | short     | Station identifier                                                                                                                                                                               |
 | *year*                 | *None*    | short     | Year                                                                                                                                                                                             |
 | *month*                | *None*    | short     | Month number (not padded)                                                                                                                                                                        |
@@ -111,4 +111,3 @@ Each record in a DAT file contains a set of scalar and vector fields.
 | *pwr0*      | *None*     | *[nrang]*      | float       | Lag zero power, estimated from voltage samples (not fitted)  |
 | *acfd*      | *None*   | *[2][mplgs][0-nrang]*    | float       | Calculated ACFs                                                             |
 | *xcfd*      | *None*   | *[2][mplgs][0-nrang]*    | float       | Calculated XCFs                                                             |
-
