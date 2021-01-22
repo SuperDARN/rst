@@ -54,7 +54,7 @@ Each record in a DAT file contains a set of scalar and vector fields.
 | :----------            | :-----:   | :-------: | :---                                                                                                                                                                                             |
 | *radar.revision.major* | *None*    | char      | Major version number of the radar operating system                                                                                                                                               |
 | *radar.revision.minor* | *None*    | char      | Minor version number of the radar operating system                                                                                                                                               |
-Total number of scalar and vector fields in a DAT record   
+| npr | *None* | char | Total number of scalar and vector fields in a DAT record   |
 | *stid*                 | *None*    | short     | Station identifier                                                                                                                                                                               |
 | *year*                 | *None*    | short     | Year                                                                                                                                                                                             |
 | *month*                | *None*    | short     | Month number (not padded)                                                                                                                                                                        |
