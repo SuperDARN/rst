@@ -5,8 +5,6 @@ Disclaimer: License under GNU v3.0, the file is found in the root directory unde
 
 -->
 
-This information is sourced from the RFC: 0006 previously in the RST RFC documentation that was written by R.J. Barnes.
-
 # DataMap Self-Describing Format
 
 ## Summary
@@ -104,7 +102,7 @@ The array values stored so that the first dimension is the fastest varying.  For
 
 ## References
 
-None
+This information is sourced from the RFC: 0006 previously in the RST RFC documentation that was written by R.J. Barnes.
 
 ## History (from RFC)
 
