@@ -58,6 +58,7 @@ stvec={GridSVec,st_id:0, $    ; station identifier
             verr: {GridLimit,min:0.0, $    ; velocity error threshold minimum
                              max:0.0} $    ; velocity error threshold maximum
        }
+```
 
 ### Grid vectors data structure <code>GridGVec</code></h4>
 ```
