@@ -51,9 +51,6 @@ struct OldRawFp {
   int error; 
 };
 
-
-
-
 int OldRawRead(struct OldRawFp *fp,struct RadarParm *prm,struct RawData *raw);
 int OldRawReadData(struct OldRawFp *fp,struct RadarParm *prm,
 		   struct RawData *raw);

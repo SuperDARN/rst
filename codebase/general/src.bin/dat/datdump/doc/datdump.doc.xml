@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>general</project>
+<name>datdump</name>
+<location>src.bin/dmap/datdump</location>
+<syntax>datdump --help</syntax>
+<syntax>datdump [-d] [<ar>name</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-d</on><od>print the data values of the array variables.</od>
+</option>
+<option><on><ar>name</ar></on><od>filename of the Dat file, if this is omitted the document will be read from standard input.</od>
+</option>
+<synopsis><p>Dump the contents of a Dat file.</p></synopsis>
+<description><p>Dump the contents of a Dat file.</p>
+<p>The contents of the Dat file are written as plain ASCII to standard output.</p></description>
+
+<example>
+<command>datdump inp.dmap | more</command>
+<description>Dump the file "<code>inp.dmap</code>", paginating using the <code>more</code> command.
+</description>
+</example>
+
+</binary>

@@ -28,9 +28,6 @@
  
 */
 
-
-
-
 #ifdef SEC
 #undef SEC
 #endif
@@ -128,21 +125,3 @@ struct rawdata
 	float acfd[ORIG_MAX_RANGE][ORIG_LAG_TAB_LEN][2];
 	float xcfd[ORIG_MAX_RANGE][ORIG_LAG_TAB_LEN][2];
 	};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
