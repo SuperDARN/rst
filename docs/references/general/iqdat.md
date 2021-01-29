@@ -1,5 +1,5 @@
 <!--
-(C) copyright VT SuperDARN, Virginia Polytechnic Institute & State University
+(C) copyright 2020 VT SuperDARN, Virginia Polytechnic Institute & State University
 author: Kevin Sterne
 -->
 
