@@ -83,10 +83,10 @@ struct FitElv {
 
 ## References
 
-This information is sourced from the RFC: 0014 previously in the RST RFC documentation that was written by R.J. Barnes.
+- This information is sourced from the RFC: 0014 previously in the RST RFC documentation that was written by R.J. Barnes.
 
 ## History
 
-2007/03/26  Revision to reflect changes in array size. 
-2004/11/19  Initial Revision.
+- 2007/03/26  Revision to reflect changes in array size. 
+- 2004/11/19  Initial Revision.
 

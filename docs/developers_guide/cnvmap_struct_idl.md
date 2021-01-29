@@ -77,14 +77,13 @@ bvec={CnvMapBND, lat:0.0, $ ; boundary latitude
 
 ## References
 
-[Grid Structure in C](developers_guide/grid_struct_c.md)
-[`cnvmap` Variable Definitions](references/general/map.md)
-[Grid Structure in IDL](developers_guide/grid_struct_idl.md)
-
-This information is soruced from the RFC: 0024 previously in the RST RFC documentation that was written by R.J. Barnes
+- [Grid Structure in C](developers_guide/grid_struct_c.md)
+- [`cnvmap` Variable Definitions](references/general/map.md)
+- [Grid Structure in IDL](developers_guide/grid_struct_idl.md)
+- This information is soruced from the RFC: 0024 previously in the RST RFC documentation that was written by R.J. Barnes
 
 ## History
 
-2004/11/22  Initial Revision.
+- 2004/11/22  Initial Revision.
 
 

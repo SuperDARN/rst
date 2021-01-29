@@ -37,10 +37,10 @@ raw={RawData, $
 
 ## References
 
-[RawACF Structure in C](developers_guide/rawacf_struct_c.md)
-This information is sourced from the RFC: 0021 previously in the RST RFC documentation that was written by R.J. Barnes.
+- [RawACF Structure in C](developers_guide/rawacf_struct_c.md)
+- This information is sourced from the RFC: 0021 previously in the RST RFC documentation that was written by R.J. Barnes.
 
 ## History from RFC Documentation
 
-2007/03/26  Change in array sizes.
-2004/11/22  Initial Revision.
+- 2007/03/26  Change in array sizes.
+- 2004/11/22  Initial Revision.

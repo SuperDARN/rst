@@ -5,8 +5,6 @@ Disclaimer: License under GNU v3.0, the file is found in the root directory unde
 
 -->
 
-This information is sourced from the RFC: 0007 previously in the RST RFC documentation that was written by R.J. Barnes.
-
 # Compressed FitACF (cFit) data format
 
 A description of the compressed FitACF data format "cFit."
@@ -21,7 +19,6 @@ The advantage of cFit files is that they are considerably smaller and more conve
 
 A cFit file is divided up into blocks or records, each record has the same format but can have varying length depending on the scatter observed by the radar.  Each record is dvidided up in to a header and a data section.  The structure of a record is given below:
 
-```
 | __Byte Offset__ |__Size (Bytes)__|__Type__|__Content__|
 | :======         |  :=====        | :===== | :======   |
 | 0      | 8  | 64-bit double float  | Time in seconds form UNIX epoch (00:00:00 UTC, Jan. 1, 1970) |
@@ -44,11 +41,11 @@ A cFit file is divided up into blocks or records, each record has the same forma
 | 46     | 1  | byte                 | Number of stored ranges |
 | 47     | m  | m bytes              | Range table    |
 | 47+m   | n  | n bytes              | Data table     |
-```
+
 The remainder of the block consists of the data values for the stored ranges.  The range table indicates which range a data value corresponds to.  For example, if the first entry in the range table contains a value of 23, that indicates that the first set of data values in the data table came from range 23.
 
 Each entry in the data table has the same format shown below:
-```
+
 | __Byte Offset__ |__Size (Bytes)__|__Type__|__Content__|
 | :======         |  :=====        | :===== | :======   |
 | 0      | 1   | byte          | Ground scatter flag    |
@@ -60,14 +57,14 @@ Each entry in the data table has the same format shown below:
 | 21     | 4   | 32-bit float  | Velocity error         |
 | 25     | 4   | 32-bit float  | Lambda power error     |
 | 29     | 4   | 32-bit float  | Lambda spectral width error |
-```
+
 
 ## References
 
-None
+- This information is sourced from the RFC: 0007 previously in the RST RFC documentation that was written by R.J. Barnes.
 
 ## History (from RFC)
 
-2007/03/26 Update to reflect changes to file format, R.J. Barnes
-2004/07/27 Initial revision,  R.J. Barnes
+- 2007/03/26 Update to reflect changes to file format, R.J. Barnes
+- 2004/07/27 Initial revision,  R.J. Barnes
 

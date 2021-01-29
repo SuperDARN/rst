@@ -99,11 +99,11 @@ struct GridGVec {
 
 ## References
 
-This information is sourced from the RFC: 0017 previously in the RST RFC documentation that was written by R.J. Barnes
+- This information is sourced from the RFC: 0017 previously in the RST RFC documentation that was written by R.J. Barnes
 
 
 ## History
 
-2004/11/19  Initial Revision from RFC
+- 2004/11/19  Initial Revision from RFC
 
 

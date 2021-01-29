@@ -23,7 +23,6 @@ DataMap files or streams are comprised of blocks or records.  Each block represe
 
 A block is comprised of a header followed by the scalar and array variables.  The block header consists of an encoding identifier and the total block size.  The encoding identifier is a unique 32-bit integer that indicates how the block was constructed.  This value is used to differentiate between possible future changes to the DataMap format, currently only one encoding exists.  The second part of the header is the block size, also stored as a 32-bit integer; this size represents the total size of the block including both the header and the subsequent data elements.
 
-```
 | Byte Offset  | Size (Bytes) | Type | Content |
 |:=====|:====:|:=====:|:=====|
 | 0    | 4    | 32-bit integer | Encoding identifier |
@@ -32,7 +31,6 @@ A block is comprised of a header followed by the scalar and array variables.  Th
 | 12   | x    | multiple       | Scalar data         |
 | 12+x | 4    | 32-bit integer | Number of array variables |
 | 16+x | y    | multiple       | Array data          |
-```
 
 ### Names
 
@@ -42,7 +40,6 @@ Each variable has an associated name that uniquely identifies it.  The name can 
 
 Each item of data has an associated type.  The DataMap format currently defines the following types:
 
-```
 | Name | Data Size (Bytes) | Content |
 | :==== | :=====: | :===== |
 | DATACHAR   | 1  | Single character |
@@ -51,33 +48,30 @@ Each item of data has an associated type.  The DataMap format currently defines 
 | DATAFLOAT  | 4  | Single precision floating point number |
 | DATADOUBLE | 8  | Double precision floating point number |
 | DATASTRING | x  | String of characters terminated with a zero byte |
-```
 
 ### Scalar Data
 
 Scalar data consists of single discrete values.  To store a scalar value, the DataMap format only requires enough bytes to store the name, the type of data and the actual scalar value:
 
-```
 | Byte Offset | Size (Bytes) | Type | Value |
 | :==== | :=====: | :=====: | :===== |
 |  0    |  x      | Zero terminated string | Name |
 |  x    |  4      | 32-bit integer         | Type |
 |  x+4  |  y      | multiple               | Value |
-```
 
 ### Array Data
 
 An array is defined by the number of dimensions it posesses and the ranges of those dimensions.  The simplest form of an array is a vector, which consists of a one-dimensional array:
 
-```
+
 |v=(10.0 5.0 3.0) | A one-dimensional array |
 |v=(10.0 5.0 6.0) <br>    3.0 4.0 2.0 | A two-dimensional array |
-```
+
 Every dimension in an array has a range or extent which represents that maximum value an index along that dimension can have.  Array ranges start at zero and can never have a negative value.  For the two examples above, the range for the one-dimensional array is 3 and for the two dimensional array the ranges are 3 and 2.  Arrays are exactly analogous to arrays in a programming langugage.
 
 An array variable has a name, type, dimension, a set of ranges and the data values contained in the array:
 
-```
+
 | Byte Offset | Size(Bytes) | Type | Value |
 |:====|:====:|:=====|:======|
 | 0   |  x   | Zero terminated string | Name |
@@ -85,11 +79,11 @@ An array variable has a name, type, dimension, a set of ranges and the data valu
 | x+4 |  4   | 32-bit integer         | Dimension N |
 | x+8 | 4*N  | N 32-bit integers      | Dimension ranges |
 | x+8+4*N | y | multiple              | Array values |
-```
+
 
 The array values stored so that the first dimension is the fastest varying.  For a simple two dimension array with the range of the first dimension being 3 and the second being 2 the array data is ordered as follows:
 
-```
+
 | v(x,y) | Index into Array Values |
 |:====|:====:|
 | v(0,0) | 0 |
@@ -98,13 +92,13 @@ The array values stored so that the first dimension is the fastest varying.  For
 | v(0,1) | 3 |
 | v(1,1) | 4 |
 | v(2,1) | 5 |
-```
+
 
 ## References
 
-This information is sourced from the RFC: 0006 previously in the RST RFC documentation that was written by R.J. Barnes.
+- This information is sourced from the RFC: 0006 previously in the RST RFC documentation that was written by R.J. Barnes.
 
 ## History (from RFC)
 
-2004/06/22 Iniital Revision, RJB
+- 2004/06/22 Iniital Revision, RJB
 

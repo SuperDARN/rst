@@ -49,10 +49,10 @@ The raw I and Q data are stored in a one-dimensional array (vector) of type `int
 
 ## References
 
-This information is sourced from the RFC: 0028 previously in the RST RFC documentation that was written by R.J. Barnes
+- This information is sourced from the RFC: 0028 previously in the RST RFC documentation that was written by R.J. Barnes
 
 ## History from RFC Documenation
 
-2008/03/25  Initial Revision
+- 2008/03/25  Initial Revision
 
 

@@ -107,9 +107,10 @@ struct RadarParm {
 
 ## References
 
-This information is sourced form the RFC: 0012 previously in the RST RFC documentation that was written by R.J. Barnes.
+- This information is sourced form the RFC: 0012 previously in the RST RFC documentation that was written by R.J. Barnes.
 
 ## History
-2004/11/19  Initial Revision.
+
+- 2004/11/19  Initial Revision.
 
 

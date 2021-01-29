@@ -74,7 +74,7 @@ struct CFitCell {
 
 ## References
 
-This information is sourced from the RFC: 0015 previously in the RST RFC documentation that was written by R.J. Barnes
+- This information is sourced from the RFC: 0015 previously in the RST RFC documentation that was written by R.J. Barnes
 
 ## History
 

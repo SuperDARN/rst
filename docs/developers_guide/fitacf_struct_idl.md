@@ -72,10 +72,10 @@ fit={FitData, $
 ```
 
 ## References
-[FitACF Structure in C](developers_guide/fitacf_struct_c.md)
-This information is sourced from the RFC: 0022 previously in the RST RFC documentation that was written by R.J. Barnes.
+- [FitACF Structure in C](developers_guide/fitacf_struct_c.md)
+- This information is sourced from the RFC: 0022 previously in the RST RFC documentation that was written by R.J. Barnes.
 
 ## History from RFC Documentation
 
-2007/03/26  Change in array sizes.
-2004/11/22  Initial Revision.
+- 2007/03/26  Change in array sizes.
+- 2004/11/22  Initial Revision.
