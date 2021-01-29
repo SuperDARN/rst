@@ -17,8 +17,6 @@ The Radar Parameter block is used throughout SuperDARN software to store the rad
 ### Array Limits
 
 The array limits are defined as macros in the header `superdarn/limit.h`.
-<center>
-<table cellspacing="3" bgcolor="e0e0e0" width="100%">
 
 ```
 #define ORIGIN_TIME_SIZE 26
