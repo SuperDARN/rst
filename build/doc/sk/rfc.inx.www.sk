@@ -26,7 +26,8 @@
 </center>
 <br>
 <center>
-<h3>CAUTION: These Request for Comments documents have not been updated or maintained since the mid-2000s and may contain inaccurate or outdated information</h3>
+<h3>DEPRECATION NOTICE: The RFC documentation is being deprecated with RST version 4.6 and will be removed with RST 4.7.  This documentation has been moved to the <a href="https://radar-software-toolkit-rst.readthedocs.io/en/latest/">documentation website</a>. </h3>
+<h5>CAUTION: These Request for Comments documents have not been updated or maintained since the mid-2000s and may contain inaccurate or outdated information</h5>
 </center>
 <br>
 <center>
