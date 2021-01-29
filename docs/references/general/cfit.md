@@ -19,8 +19,8 @@ The advantage of cFit files is that they are considerably smaller and more conve
 
 A cFit file is divided up into blocks or records, each record has the same format but can have varying length depending on the scatter observed by the radar.  Each record is dvidided up in to a header and a data section.  The structure of a record is given below:
 
-| __Byte Offset__ |__Size (Bytes)__|__Type__|__Content__|
-| :======         |  :=====        | :===== | :======   |
+| Byte Offset | Size (Bytes) | Type | Content |
+| :---        |  :----:      | :--- | :---   |
 | 0      | 8  | 64-bit double float  | Time in seconds form UNIX epoch (00:00:00 UTC, Jan. 1, 1970) |
 | 8      | 2  | 16-bit short integer | Station identifier |
 | 10     | 2  | 16-bit short integer | Scan flag          |
@@ -46,8 +46,8 @@ The remainder of the block consists of the data values for the stored ranges.  T
 
 Each entry in the data table has the same format shown below:
 
-| __Byte Offset__ |__Size (Bytes)__|__Type__|__Content__|
-| :======         |  :=====        | :===== | :======   |
+| Byte Offset | Size (Bytes) | Type  | Content |
+| :----       |  :------:    | :---- | :-----  |
 | 0      | 1   | byte          | Ground scatter flag    |
 | 1      | 4   | 32-bit float  | Lag-zero power         |
 | 5      | 4   | 32-bit float  | Lag-zero power error   |
