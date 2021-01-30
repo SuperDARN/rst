@@ -44,9 +44,9 @@ An entry in the table looks like this:
 
 ## References
 
-[Radar Identifier](references/general/radar_id.md)
+- [Radar Identifier](references/general/radar_id.md)
 
 ## History (from RFC)
 
-2004/06/14 Iniital Revision, RJB
+- 2004/06/14 Iniital Revision, RJB
 

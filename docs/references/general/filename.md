@@ -132,9 +132,9 @@ A typical set of filenames in this format would look like:
 
 ## References
 
-[Specification for Radar Identifier](references/general/radar_id.md)
+-[Specification for Radar Identifier](references/general/radar_id.md)
 
 ## History (from RFC)
 
-2004/06/01 Iniital Revision, RJB
-2004/06/08 Extended definitions to deal with whole day, hemispheric or global files
+-2004/06/01 Iniital Revision, RJB
+-2004/06/08 Extended definitions to deal with whole day, hemispheric or global files

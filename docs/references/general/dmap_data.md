@@ -24,7 +24,7 @@ DataMap files or streams are comprised of blocks or records.  Each block represe
 A block is comprised of a header followed by the scalar and array variables.  The block header consists of an encoding identifier and the total block size.  The encoding identifier is a unique 32-bit integer that indicates how the block was constructed.  This value is used to differentiate between possible future changes to the DataMap format, currently only one encoding exists.  The second part of the header is the block size, also stored as a 32-bit integer; this size represents the total size of the block including both the header and the subsequent data elements.
 
 | Byte Offset  | Size (Bytes) | Type | Content |
-|:=====|:====:|:=====:|:=====|
+| :----------  | :-----:      | :--: | :----   |
 | 0    | 4    | 32-bit integer | Encoding identifier |
 | 4    | 4    | 32-bit integer | Block size          |
 | 8    | 4    | 32-bit integer | Number of scalar variables |
@@ -40,8 +40,8 @@ Each variable has an associated name that uniquely identifies it.  The name can 
 
 Each item of data has an associated type.  The DataMap format currently defines the following types:
 
-| Name | Data Size (Bytes) | Content |
-| :==== | :=====: | :===== |
+| Name       | Data Size (Bytes) | Content |
+| :----      | :------:          | :----   |
 | DATACHAR   | 1  | Single character |
 | DATASHORT  | 2  | 16-bit integer   |
 | DATAINT    | 4  | 32-bit integer   |
@@ -53,8 +53,8 @@ Each item of data has an associated type.  The DataMap format currently defines 
 
 Scalar data consists of single discrete values.  To store a scalar value, the DataMap format only requires enough bytes to store the name, the type of data and the actual scalar value:
 
-| Byte Offset | Size (Bytes) | Type | Value |
-| :==== | :=====: | :=====: | :===== |
+| Byte Offset | Size (Bytes) | Type  | Value |
+| :------     | :-----:      | :---: | :---- |
 |  0    |  x      | Zero terminated string | Name |
 |  x    |  4      | 32-bit integer         | Type |
 |  x+4  |  y      | multiple               | Value |
@@ -73,7 +73,7 @@ An array variable has a name, type, dimension, a set of ranges and the data valu
 
 
 | Byte Offset | Size(Bytes) | Type | Value |
-|:====|:====:|:=====|:======|
+| :---------  | :--------:  | :--- | :---- |
 | 0   |  x   | Zero terminated string | Name |
 | x   |  4   | 32-bit integer         | Type |
 | x+4 |  4   | 32-bit integer         | Dimension N |
@@ -85,7 +85,7 @@ The array values stored so that the first dimension is the fastest varying.  For
 
 
 | v(x,y) | Index into Array Values |
-|:====|:====:|
+| :----  | :---------------------: |
 | v(0,0) | 0 |
 | v(1,0) | 1 |
 | v(2,0) | 2 |

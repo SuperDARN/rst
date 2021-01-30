@@ -58,9 +58,9 @@ An alias map for radars that transitioned from the single character to the three
 
 ## References
 
-[Filename Format Definition](references/general/filename.md)
+- [Filename Format Definition](references/general/filename.md)
 
 ## History (from RFC)
 
-2004/06/02 Iniital Revision, RJB
+- 2004/06/02 Iniital Revision, RJB
 
