@@ -20,79 +20,72 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Issues 
 
-Issues on GitHub are a convenient way to notify DAWG members and other people about the problem/update at hand. 
-Issue are not just for bug reporting, other options are:
+GitHub Issues are a convenient way to communicate with RST developers about future changes to the RST. Issue are not just for bug reporting. They can also be used to:
 
-- New Feature announcement 
-- Deprecation of code announcement 
-- Discussion on something in RST
-- Question regarding installation or general use of RST 
+- Notify others that a new feature is being planned
+- Ask for help or advice on using/installing RST
+- Initiate open discussions about an RST-related topic
 
-In RST, these above categories of issue are templated to help anyone fill in the correct information to get insightful help.
+When opening a new issue on the RST Github page, you will be prompted to use a template to describe your issue. These templates are designed to help you provide enough detail for other developers to respond.
 
 ## Other Working Group Issues
 
-Before getting started please ensure this issue pertains to RST. Here are other working groups in SuperDARN that may be better at answering your issue:
+Please only open issues related to the RST. Questions on the following topics should be directed elsewhere:
 
-- [DDWG](https://github.com/SuperDARN/DDWG): Data Distribution Working Group, focuses on checking and distributing files. If you think your file is corrupt, or incorrect content wise starting at RAWACF level, then this file may need to be block listed. Create an issue there. 
-- [DSWG](https://github.com/SuperDARN/dswg): Data Standard Working Group, focuses on standards and standard formats in SuperDARN community. If you are:
-    - purposing a new format
-    - change to a format
-    - questioning a standard
-    - wondering about metadata - hardware files
-  Then create an new issue there. 
-- [SWG](https://github.com/SuperDARN/schedules): Scheduling Working Group, focuses on scheduling discretionary monthly times and documenting control program IDs. If you are wondering about control program IDs or schedule, then create an issue there.  
-- [DAWG](https://github.com/SuperDARN/dawg): Data Analysis Working Group, focuses on processing and analysis tools from FITACF and higher data products. If you have a question for general DAWG operations, new software support, or charter and general guidelines, then create an issue there. 
+- Corrupt or missing RAWACF files: [Data Distribution Working Group (DDWG)](https://github.com/SuperDARN/DDWG)
+- Radar data formats, hardware files and other metadata: [Data Standards Working Group (DSWG)](https://github.com/superdarn/dswg-published-docs)
+- Radar control programs and operating schedules: [Scheduling Working Group (SWG)](http://superdarn.thayer.dartmouth.edu/wg-scd.html)
+- General questions for the Data Analysis Working Group (DAWG) that are not specifically about the RST: open an issue on the [internal DAWG Github repo](https://github.com/SuperDARN/dawg) (requires access rights) or email the [DAWG mailing list](mailto:darn-dawg@isee.nagoya-u.ac.jp)
 
-## Getting Started 
+## Submit an Issue
 
-To make an issue go to the [RST repository](https://github.com/SuperDARN/rst)
+To open a new issue, follow these steps from the [RST repository](https://github.com/SuperDARN/rst)
 
-1. Go to [issues page](https://github.com/SuperDARN/rst/issues) top left side. 
-2. Then look at the currently open issues to see if you issue is already open. Also, you can use the search bar at the top of the list to find similar issues. 
-3. If the issue is not create then click on [New issue](https://github.com/SuperDARN/rst/issues/new/choose) button top right
-4. Select one of the appropriate issue templates or select *open a blank issue* at the bottom of the page if non of the template are appropriate for issue. 
-5. Fill out the template  information to provide enough information for insightful help from others. If you are using a blank issue please provide an appropriate:
-    - descriptive title 
-    - Scope: what is this issue focused on
-    - provide extra information like: code, expect output, computer specs, questions, and/or concerns. 
-* Fill out the side bar information for better awareness on the issue:  
-    - Assignees: this informs anyone the person(s) taking on dealing with the issue. This will inform other to not work on the issue. 
-    - Lables: categorizes issues for certain members with specific expertise can help you. You can have multiple labels. 
-    - Projects: organizes issues into tasks for given projects, see [projects](projects.md) 
-    - Milestone: indicates what release this issue should be solved by. Please do not fill out. Leaders, Chairs, or senior developers can fill this out by understanding the importance and timeline for this issue. 
-    - Linked Pull Request: this links pull requests to your issues to inform users the issue has been resolved in a pull request. This should be filled out when a pull requests is created, see [pull requests](pull_request.md)
-* Click *Submit new issue*, this will send an email to anyone who is subscribed to the repository. Depending on your notification settings for GitHub you should receive an email on the issue and the on going conversation. If not look into your settings as a user to see what you are subscribed to and notification settings. 
-
+1. Click the [issues tab](https://github.com/SuperDARN/rst/issues) on the top left side of the page 
+2. Check whether there is already an open issue on your topic. You can use the search bar to find similar issues. 
+3. If there are no similar issues, click the [New issue](https://github.com/SuperDARN/rst/issues/new/choose) button (top right)
+4. Choose an issue template, or select *open a blank issue* at the bottom of the page if none of the templates seem appropriate
+5. Fill out the template information, and add a descriptive title
+6. Fill out the side bar information:  
+    - Assignees: Assign yourself to the issue if you are planning to work on it yourself. Leave blank if you are not planning to work on it.
+    - Labels: these are used to categorize and filter issues (examples below). You can have multiple labels. 
+    - Projects: Indicate if this issue is part of a [project](projects.md)
+    - Milestone: Please leave this blank. The DAWG chairs will fill in this information later when a timeline emerges (e.g. working towards a new release)
+    - Linked Pull Request: Leave this blank for now. This can be filled out when a pull request that solves this issue is created (see [pull requests](pull_request.md))
+* Click *Submit new issue*. At this point, everyone who is subscribed to the RST repository will receieve an email. Depending on your notification settings, you may receive emails when others comment on the issue. Check your user settings to subscribe or unsubscripe to email notifications.
 
 
 ## Following The Issue
 
-It is important you follow the on going conversation of the issue if DAWG members need more information.
-If you do not respond for a while, the issue will go **stale** leading to a potential closure of your issue. However, DAWG tries to keep issues open and contact users on their issues if they have gone stale. 
+Please follow the ongoing conversation about your issue, especially if other developers request more information. 
+If you do not respond for a while, the issue will go **stale** and may be closed. DAWG tries to keep issues open and contact users if their issues have gone stale. 
 
-Please remember, DAWG members are trying to get all the information from you, so respect that may need a lot more information then you provided so you may need to follow up frequently. 
-Please also remember, DAWG members live in various parts around the world and may have other responsibilities so be patient on getting a response. 
-As a rule of thumb if a week has passed with no response and you need one sooner than later, please send out an ask in the conversation if someone can look at the issue. This will prevent the issue 
-going **stale** and a small request on help will notify everyone again. Don't be afraid to do this. 
+Please keep in mind that DAWG members have priorities other than the RST, and they live in many different time zones, so be patient while waiting for a response.  If nobody has responded in 1-2 weeks, it's fine to ask again.
 
-Likewise DAWG members may notify you to get a response so please be diligent in following up. 
+## Closing Issues
+
+Issues should be closed when:
+
+- A pull request that addresses the issue is merged
+- The original question raised in an issue has been answered
+
+If new issues emerge during a discussion, open a new issue and discuss it there. This is to avoid scope creep.
 
 ## Stale Issues
 
-If an issue goes stale (no progress for over 3 months) then a DAWG member should follow the following guidelines:
+If an issue goes stale (no progress for over 3 months), the DAWG may follow this procedure:
 
-1. Ask for other input or status of the issue in the conversation
-2. Contact the user via email 
-3. Request if we should discuss it in the next DAWG meeting (add label *telecon*) or placed in a project to be re-opened later?
-* Label the issue **stale** until progress can be made on it again 
-* Request to close it if non of the above steps warrant any response or information to keep it open
-* Leaders and Chairs of the software package/DAWG can approve or close **stale** issues 
+1. Ask about the issue's status in the conversation
+2. Email the user who opened the issue
+3. Request that we discuss the issue in the next DAWG meeting (add label *telecon*), or place it in a project to be re-opened later
+* Label the issue **stale** until progress can be made on it again
+* Request to close the issue if none of the above steps elicit any information to keep it open
+* DAWG chairs can close **stale** issues
 
 ## Assignees
 
-Assignees section of an issue is useful to ensure someone is looking into the issue and taking the responsibility for it. This avoids multiple people addressing the same issue.
-If someone has assigned themselves to the issue; However, minimal progress has been made, please contact them on this and request to change the assignee if you want to take it on for faster progress. 
+The Assignees section is used to indicate who (if anyone) is actively working on each issue. This helps to avoid duplicated work, and to identify issues that nobody is currently working on (if you are looking for something to do!)
+If you would like to offer assistance on an issue that someone else is assigned to, please ask them first. If you agree to take over the issue from them, assign yourself to it.
 
 ## Labels 
 
@@ -124,17 +117,17 @@ RST supports the following labels:
 
 To create an new label got [RST labels](https://github.com/SuperDARN/rst/labels) and click on [New label](https://github.com/SuperDARN/rst/labels)
 
-Give a concise name for the label then a description on what this label is reference to. A color can be randomly generated or chosen based on the hex value. Please avoid similar colors to other labels if possible. 
+Give a concise name for the label and provide a description. A color can be randomly generated or chosen based on the hex value. Please avoid similar colors to other labels if possible. 
 
 Then click on *Create Label*.
 
-Please note to do not create a new label while creating a new issue as this can delete the issue being created. 
+Avoid creating new labels when creating a new issue: this can delete the issue being created!
 
-## Open ended Issues 
+## Open-ended Issues 
 
-Sometimes Issues can be open ended especially discussion issues. Here are some steps to make progress on the issue and prevent it going **stale**:
+Sometimes Issues can be open-ended, especially discussion issues. Here are some steps to make progress on the issue and prevent it going **stale**:
 - Label it with *telecon* if needs to be further discussed in a telecon with DAWG members 
-- Once a general idea is established, close the issue and create a project to break into a defined tasks. Open the first task as an issue, see [projects](projects.md).
+- Once a general idea is established, close the issue and create a project to break it into a defined tasks. Open the first task as an issue, see [projects](projects.md).
 
 
 
