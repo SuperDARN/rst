@@ -1,5 +1,7 @@
-# (C) copyright 2019 SuperDARN Canada, University of Saskatchewan
-# author: Marina Schmidt, SuperDARN Canada
+# (C) copyrights 2019 SuperDARN Canada, University of Saskatchewan
+#                2021 SuperDARN, Virginia Polytechnic Institute & State University
+# authors: Marina Schmidt, SuperDARN Canada
+#          Kevin Sterne, VT
 site_name: RST Documentation
 repo_url: https://github.com/superdarn/rst
 theme: readthedocs
