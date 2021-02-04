@@ -97,6 +97,13 @@ int create_socket(int *port) {
  /* set socket options */
   temp=setsockopt(sock,SOL_SOCKET,SO_REUSEADDR,&sc_reuseaddr,
                  sizeof(sc_reuseaddr));
+  if (temp == -1)
+  {
+      fprintf(stderr, "Error: setsockopt is unable to read in all options\n");
+      // TODO: add errno here to get why it failed 
+      return -1; 
+
+  }
 
   /* name and bind socket to an address and port number */
 

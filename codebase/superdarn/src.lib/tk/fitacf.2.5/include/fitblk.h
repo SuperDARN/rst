@@ -1,6 +1,28 @@
 /* fitblk.h
    =========
    Author: R.J.Barnes
+
+   Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
+
+
+       This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+    Modifications
+    =============
+    2020-11-12 Marina Schmidt Converted RST complex -> C library complex
+
+
 */
 
 
@@ -8,6 +30,7 @@
 
 #ifndef _FITBLK_H
 #define _FITBLK_H
+#include <complex.h>
 
 struct FitPrm {
   int channel; 
@@ -40,8 +63,8 @@ struct FitPrm {
 
 struct FitBlock {
   struct FitPrm prm;
-  struct complex *acfd;
-  struct complex *xcfd;
+  double complex *acfd;
+  double complex *xcfd;
 };
 
 struct FitElv { /* elevation angle derived from the cross correlation */

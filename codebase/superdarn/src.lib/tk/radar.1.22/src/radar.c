@@ -359,5 +359,4 @@ struct RadarNetwork *RadarLoad(FILE *fp) {
   }
   ptr->rnum=num;
   return ptr;
-};
-
+}

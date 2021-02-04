@@ -1,3 +1,9 @@
+---
+name: Deprecation 
+about: Remove an option or a feature 
+
+---
+
 # !!!DEPRECATION!!!
 
 !!! warning !!!** You are suggesting on removing a binary/library/function from RST

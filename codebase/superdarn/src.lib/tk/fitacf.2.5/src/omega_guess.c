@@ -23,7 +23,11 @@
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
  
- 
+  
+  Modifications
+  =============
+    2020-11-12 Marina Schmidt Converted RST complex -> C library complex
+
  
 */
 
@@ -39,11 +43,11 @@
 */
 
 #include <math.h>
+#include <complex.h>
 #include "rmath.h"
 
-double omega_guess(struct complex *acf,double *tau,
-                   int *badlag,double *phi_res,
-                   double *omega_err,int mpinc,int mplgs) {
+double omega_guess(double complex *acf,double *tau, int *badlag,
+        double *phi_res, double *omega_err,int mpinc,int mplgs) {
 
     int i,j,nave=0;
     double delta_tau, delta_phi, omega=0.0, 

@@ -69,6 +69,8 @@
 #include "sza.h"
 #include "szamap.h"
 
+#include "scandata.h"	
+#include "geobeam.h"
 #include "plot_fit.h"
 #include "plot_cell.h"
 #include "plot_raw.h"
@@ -829,20 +831,20 @@ int main(int argc,char *argv[]) {
 
   if (lat>90) lat=90*rcmap->hemisphere;
   if ((fovflg || ffovflg) && !gfovflg) {
-    fov=make_fov(rgrid->st_time,network,chisham,old_aacgm);
+    fov=make_grid_fov(rgrid->st_time,network,chisham,old_aacgm);
     if (!magflg) {
       if (old_aacgm) MapModify(fov,AACGMtransform,&flg);
       else           MapModify(fov,AACGM_v2_transform,&flg);
     }
   }
 
-  if (grdflg) grd=make_grid(grdlon,grdlat);
-  if (igrdflg) igrd=make_grid(igrdlon,igrdlat);
+  if (grdflg) grd=make_grid(grdlon,grdlat,0);
+  if (igrdflg) igrd=make_grid(igrdlon,igrdlat,0);
 
   if (tmtick<1) tmtick=1;
   if (tmtick>6) tmtick=6;
 
-  if (tmkflg) tmk=make_grid(30*tmtick,10);
+  if (tmkflg) tmk=make_grid(30*tmtick,10,0);
 
   if (magflg) {
     if (old_aacgm) {
@@ -1168,7 +1170,7 @@ int main(int argc,char *argv[]) {
     if (avflg) GridAverage(rgrid,rgridavg,aval+cprm*(aval !=0));
 
     if ((fovflg || ffovflg) && gfovflg) {
-      fov=make_fov_data(rgrid,network,chisham,old_aacgm);
+      fov=make_grid_fov_data(rgrid,network,chisham,old_aacgm);
       if (!magflg) {
         if (old_aacgm) MapModify(fov,AACGMtransform,&flg);
         else           MapModify(fov,AACGM_v2_transform,&flg);
@@ -1370,11 +1372,11 @@ int main(int argc,char *argv[]) {
 
     if (celflg) {
       if (avflg)
-          plot_cell(plot,rgridavg,rcmap->latmin,magflg,pad,pad,wdt-2*pad,
-                    hgt-2*pad,tfunc,marg,mag_color,&xkey,cprm,old_aacgm);
+          plot_grid_cell(plot,rgridavg,rcmap->latmin,magflg,pad,pad,wdt-2*pad,
+                         hgt-2*pad,tfunc,marg,mag_color,&xkey,cprm,old_aacgm);
       else
-         plot_cell(plot,rgrid,rcmap->latmin,magflg,pad,pad,wdt-2*pad,
-                    hgt-2*pad,tfunc,marg,mag_color,&xkey,cprm,old_aacgm);
+         plot_grid_cell(plot,rgrid,rcmap->latmin,magflg,pad,pad,wdt-2*pad,
+                        hgt-2*pad,tfunc,marg,mag_color,&xkey,cprm,old_aacgm);
     }
 
     if (mapflg) {
@@ -1522,9 +1524,9 @@ int main(int argc,char *argv[]) {
 
     if (vecflg) {
       if (px==2) px+=10;
-      plot_vec(plot,px,1.8*apad,0,vmax,magflg, pad,pad,wdt-2*pad,hgt-2*pad,
-               vsf,vradius,tfunc,marg,txtcol,0x0f,0.5, "Helvetica",10.0,fontdb,
-               old_aacgm);
+      plot_grid_vec(plot,px,1.8*apad,0,vmax,magflg, pad,pad,wdt-2*pad,hgt-2*pad,
+                    vsf,vradius,tfunc,marg,txtcol,0x0f,0.5, "Helvetica",10.0,fontdb,
+                    old_aacgm);
     }
 
     if (modnflg)

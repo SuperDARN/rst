@@ -70,12 +70,14 @@ void IDLCopyRawDataToIDL(int nrang,int mplgs, int xcf,struct RawData *raw,
 
   for (n=0;n<nrang;n++) {
     iraw->pwr0[n]=raw->pwr0[n];
-    for (x=0;x<mplgs;x++) {
-      iraw->acfd[x*MAX_RANGE+n]=raw->acfd[0][n*mplgs+x];
-      iraw->acfd[LAG_SIZE*MAX_RANGE+MAX_RANGE*x+n]=raw->acfd[1][n*mplgs+x];
-      if ((xcf !=0) && (raw->xcfd !=NULL)) {
-        iraw->xcfd[x*MAX_RANGE+n]=raw->xcfd[0][n*mplgs+x];
-        iraw->xcfd[LAG_SIZE*MAX_RANGE+MAX_RANGE*x+n]=raw->xcfd[1][n*mplgs+x];
+    if (raw->acfd[0] !=NULL) {
+      for (x=0;x<mplgs;x++) {
+        iraw->acfd[x*MAX_RANGE+n]=raw->acfd[0][n*mplgs+x];
+        iraw->acfd[LAG_SIZE*MAX_RANGE+MAX_RANGE*x+n]=raw->acfd[1][n*mplgs+x];
+        if ((xcf !=0) && (raw->xcfd !=NULL)) {
+          iraw->xcfd[x*MAX_RANGE+n]=raw->xcfd[0][n*mplgs+x];
+          iraw->xcfd[LAG_SIZE*MAX_RANGE+MAX_RANGE*x+n]=raw->xcfd[1][n*mplgs+x];
+        }
       }
     }
   }

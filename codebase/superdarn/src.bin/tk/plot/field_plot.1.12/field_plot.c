@@ -106,6 +106,7 @@
 #include "sza.h"
 #include "szamap.h"
 
+#include "griddata.h"
 #include "geobeam.h"
 #include "plot_cell.h"
 #include "plot_vec.h"
@@ -707,7 +708,8 @@ int main(int argc,char *argv[]) {
 
   /* function pointer for MLT */
   double (*MLTCnv)(int, int, double);
-  double dec,eqt,LsoT,LT,Hangle;
+  //double dec;
+  double eqt,LsoT,LT,Hangle;
   
   prm=RadarParmMake();
   fit=FitMake();
@@ -1231,7 +1233,7 @@ int main(int argc,char *argv[]) {
   if ((lat<0) && (latmin>0)) latmin=-latmin;
   if ((lat>0) && (latmin<0)) latmin=-latmin;
 
-  if (fovflg || ffovflg) fov=make_fov(scn->st_time,network,scn->stid,chisham);
+  if (fovflg || ffovflg) fov=make_field_fov(scn->st_time,network,scn->stid,chisham);
   if ((fovflg || ffovflg) && magflg) {
     if (old_aacgm) MapModify(fov,AACGMtransform,NULL);
     else           MapModify(fov,AACGM_v2_transform,NULL);
@@ -1240,10 +1242,10 @@ int main(int argc,char *argv[]) {
   if (tmtick<1) tmtick=1;
   if (tmtick>6) tmtick=6;
 
-  if (grdflg) grd=make_grid(grdlon,grdlat);
-  if (igrdflg) igrd=make_grid(igrdlon,igrdlat);
+  if (grdflg) grd=make_grid(grdlon,grdlat,0);
+  if (igrdflg) igrd=make_grid(igrdlon,igrdlat,0);
 
-  if (tmkflg) tmk=make_grid(30*tmtick,10);
+  if (tmkflg) tmk=make_grid(30*tmtick,10,0);
 
   if (magflg) {
     if (old_aacgm) {
@@ -1574,7 +1576,7 @@ int main(int argc,char *argv[]) {
       if (magflg) tme_shft=-(*MLTCnv)(yr,yrsec,0.0)*15.0;
       else {
         if (lstflg) {
-          dec=SZASolarDec(yr,mo,dy,hr,mt,sc);
+          //dec=SZASolarDec(yr,mo,dy,hr,mt,sc);
           eqt=SZAEqOfTime(yr,mo,dy,hr,mt,sc);
           LsoT=(hr*3600+mt*60+sc)+eqt;
           Hangle=15*(LsoT/3600);
@@ -1719,13 +1721,13 @@ int main(int argc,char *argv[]) {
         if (ffanflg) plot_filled(plot,&scn->bm[c],&geol.bm[n],0,
                                  magflg,xbox+pad,ybox+pad,
                                  wbox-2*pad,hbox-2*pad,tfunc,marg,ffancol);
-        if (pprm !=0) plot_cell(plot,&scn->bm[c],&geol.bm[n],0,magflg,xbox+pad,ybox+pad,
-                                wbox-2*pad,hbox-2*pad,tfunc,marg,find_color,
-                                &key,pprm,gscol,gsflg);
+        if (pprm !=0) plot_field_cell(plot,&scn->bm[c],&geol.bm[n],0,magflg,xbox+pad,ybox+pad,
+                                      wbox-2*pad,hbox-2*pad,tfunc,marg,find_color,
+                                      &key,pprm,gscol,gsflg);
 
-        if (vecflg) plot_vec(plot,&scn->bm[c],&geol.bm[n],0,magflg,xbox+pad,ybox+pad,
-                             wbox-2*pad,hbox-2*pad,vsf,tfunc,marg,find_color,
-                             &vkey,gscol,gsflg,0.5,vecr);
+        if (vecflg) plot_field_vec(plot,&scn->bm[c],&geol.bm[n],0,magflg,xbox+pad,ybox+pad,
+                                   wbox-2*pad,hbox-2*pad,vsf,tfunc,marg,find_color,
+                                   &vkey,gscol,gsflg,0.5,vecr);
 
         if (fanflg) plot_outline(plot,&scn->bm[c],&geol.bm[n],0,
                                  magflg,site->maxbeam,xbox+pad,ybox+pad,
@@ -1735,10 +1737,10 @@ int main(int argc,char *argv[]) {
       if (mapflg) {
         MapPlotPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,0,cstcol,0x0f,
                        0.5,NULL,rmap,1);
+        MapPlotOpenPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,cstcol,0x0f,
+                           0.5,NULL,rmap,2);
         MapPlotPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,0,cstcol,0x0f,
                        0.5,NULL,rmap,0);
-        MapPlotOpenPolygon(plot,NULL,0,0,wbox,hbox,cstcol,0x0f,
-                           0.5,NULL,pmap,2);
       }
 
       if (bndflg) MapPlotOpenPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,

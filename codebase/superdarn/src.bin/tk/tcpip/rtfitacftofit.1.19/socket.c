@@ -74,6 +74,12 @@ void logtime(char *fname,int nbytes) {
   if (fid !=0) {
     sprintf(txt,"%d %d %d %d %d %d %d %d\n",yr,mo,dy,hr,mt,sc,us,nbytes);
     s=write(fid,txt,strlen(txt)+1);
+    if (s == -1)
+    {
+        fprintf(stderr, "Error: Write was not Successful\n");
+        //TODO: read errno for more information
+    }
+
     close(fid);
   }
 }
@@ -120,6 +126,13 @@ int createsocket(int *port) {
   /* set socket options */
   temp=setsockopt(sock,SOL_SOCKET,SO_REUSEADDR,&sc_reuseaddr,
                  sizeof(sc_reuseaddr));
+  if (temp == -1)
+  {
+      fprintf(stderr, "Error: setsockopt is unable to read in all options\n");
+      // TODO: add errno here to get why it failed 
+      return -1; 
+
+  }
 
   /* name and bind socket to an address and port number */
 

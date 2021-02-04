@@ -44,16 +44,17 @@ GRID files contain a record that contains scalar and vector fields.
 
 The following times refer to the start and end of the integration period.
 
+
 | Field name       | Units      | Data Type    | Description                                  |
 | :----------      | :-----:    | :-------:    | :---                                           |
-| *start.year*  | **None**   | ***short***  | Start Year |
-| *start.month*  | **None**   | ***short***  | Start Month number (not padded)                            |
-| *start.day*  | **None**   | ***short***  | Start Day (not padded)  |
-| *start.hour*  | *hrs*      | ***short***  | Start Hour   |
-| *start.minute*  | *min*      | ***short***  | Start Minute |
-| *start.second*  | *s*        | ***short***  | Start Seconds  |
-| *end.year*    | **None**   | ***short***  | End Year |
-| *end.month*    | **None**   | ***short***  | End Month (not padded) |
+| *start.year*     | **None**   | ***short***  | Start Year |
+| *start.month*    | **None**   | ***short***  | Start Month number (not padded)                            |
+| *start.day*      | **None**   | ***short***  | Start Day (not padded)  |
+| *start.hour*     | *hrs*      | ***short***  | Start Hour   |
+| *start.minute*   | *min*      | ***short***  | Start Minute |
+| *start.second*   | *s*        | ***short***  | Start Seconds  |
+| *end.year*       | **None**   | ***short***  | End Year |
+| *end.month*      | **None**   | ***short***  | End Month (not padded) |
 | *end.day*    | **None**   | ***short***  | End Day (not padded) |
 | *end.hour*    | *hrs*      | ***short***  | End Hour  |
 | *end.minute*    | *min*      | ***short***  | End Minute |

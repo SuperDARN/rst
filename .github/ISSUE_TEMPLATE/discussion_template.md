@@ -1,3 +1,9 @@
+---
+name: Discussion  
+about: initiate an open discussion with other developers
+
+---
+
 # Discussion 
 
 **Topic:**

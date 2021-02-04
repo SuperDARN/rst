@@ -23,12 +23,16 @@
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
  
- 
+  
+  Modifications
+  =============
+    2020-11-12 Marina Schmidt Converted RST complex -> C library complex
+
  
 */
 
 
 
-double omega_guess(struct complex *acf,double *tau,
+double omega_guess(double complex *acf,double *tau,
 	           int *badlag,double *phi_res,
                    double *omega_err,int mpinc,int mplgs);

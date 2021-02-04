@@ -438,7 +438,7 @@ int main(int argc,char *argv[]) {
   unsigned char hdr=0;
   unsigned char mode=0;
 
-  int dflg=0;
+  // int dflg=0;
 
   int pnum=0;
   double *ptme=NULL;
@@ -560,8 +560,9 @@ int main(int argc,char *argv[]) {
   TimeEpochToYMDHMS(etime,&yr,&mo,&dy,&hr,&mt,&sc);
   fprintf(stderr,"End time:%d-%d-%d %d:%d:%d\n",yr,mo,dy,hr,mt,(int) sc);
 
-
- if ((etime-stime)>=(24*3600)) dflg=1;
+    
+  // TODO: this flag is not used any where
+  //if ((etime-stime)>=(24*3600)) dflg=1;
  
  
   if (ace==1) load_ace();

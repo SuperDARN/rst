@@ -579,12 +579,11 @@ void calculate_alpha_at_lags(llist_node lag, llist_node range, double* lag_0_pwr
  * straight from FITACF 2.5.
  */
 void mark_bad_samples(FITPRMS *fit_prms, llist bad_samples){
-  int i,j, sample;
+  int j, sample;
   long ts, t1=0, t2=0;
   int *bad_sample, *pulse_us;
   int offset, channel;
   llist pulses_in_us, pulses_stereo;
-  i = -1;
   ts = (long) fit_prms->lagfr;
   offset = fit_prms->offset;
   channel = fit_prms->channel;
@@ -742,7 +741,7 @@ void phase_correction(PHASENODE* phase, double* slope_est, int* total_2pi_correc
  * model of the noise distribution with unit mean and standard deviation of 1/sqrt(Nave).
  */
 double cutoff_power_correction(FITPRMS *fit_prms){
-  double i=0;       /* Counter */
+  double i=0;
   double corr=1;    /* Correction factor */
   double x;     /* Normalized power for calculating model PDF (Gaussian)*/
   double pdf;     /* PDF */
@@ -847,7 +846,6 @@ double ACF_cutoff_pwr(FITPRMS *fit_prms){
  * Iterates over the ranges and prunes any range that has a lag 0 power lower than the noise power.
  */
 void Filter_Bad_ACFs(FITPRMS *fit_prms, llist ranges, double noise_pwr){
-/*int i=0;*/
   RANGENODE* range_node = NULL;
   PWRNODE* pwr_node = NULL;
   double tmp_pwr = 0.0;
@@ -981,10 +979,9 @@ void Filter_Bad_Fits(llist ranges) {
  * @param[in]  ranges    The list of ranges to add nodes.
  */
 void Fill_Range_List(FITPRMS *fit_prms, llist ranges){
-  int i;
   RANGENODE* temp;
 
-  for(i=0; i<fit_prms->nrang; i++){
+  for(int i=0; i<fit_prms->nrang; i++){
       if(fit_prms->pwr0[i] != 0.0){
     temp = new_range_node(i,fit_prms);
     llist_add_node(ranges,(llist_node)temp,0);
@@ -1173,13 +1170,14 @@ void ACF_Phase_Unwrap(llist_node range, FITPRMS* fit_prms){
 /*PHASENODE* phase_prev;*/
   PHASENODE* local_copy;
 
+  int i=0;
   double d_phi,sigma_bar,d_tau;
   double corr_slope_est = 0.0 ,slope_denom = 0.0,slope_num = 0.0, corr_slope_err = 0.0;
   double orig_slope_est = 0.0, orig_slope_err= 0.0;
   double piecewise_slope_est = 0.0;
   int *total_2pi_corrections;
   double S_xy = 0.0, S_xx = 0.0;
-  int i = 0, num_local_phases=0;;
+  int num_local_phases=0;
 
   range_node = (RANGENODE*) range;
 
@@ -1201,7 +1199,7 @@ void ACF_Phase_Unwrap(llist_node range, FITPRMS* fit_prms){
   }while(llist_go_next(range_node->phases) != LLIST_END_OF_LIST);
 
 
-  for (i=0; i<num_local_phases - 1; i++) {
+  for (int i=0; i<num_local_phases - 1; i++) {
     d_phi = local_copy[i+1].phi - local_copy[i].phi;
     sigma_bar = (local_copy[i+1].sigma + local_copy[i].sigma)/2;
     d_tau = local_copy[i+1].t - local_copy[i].t;
@@ -1216,7 +1214,7 @@ void ACF_Phase_Unwrap(llist_node range, FITPRMS* fit_prms){
   piecewise_slope_est = slope_num / slope_denom;
 
 
-  for (i=0; i<num_local_phases; i++) {
+  for (int i=0; i<num_local_phases; i++) {
     phase_correction(&local_copy[i], &piecewise_slope_est, total_2pi_corrections);
   }
 
@@ -1227,7 +1225,7 @@ void ACF_Phase_Unwrap(llist_node range, FITPRMS* fit_prms){
     /*Quickly fit unwrapped phase for slope and err. Needed to compare error*/
     S_xx = 0.0;
     S_xy = 0.0;
-    for (i=0; i<num_local_phases; i++){
+    for (int i=0; i<num_local_phases; i++){
       if (local_copy[i].sigma >0){
         S_xy += (local_copy[i].phi * local_copy[i].t) / (local_copy[i].sigma * local_copy[i].sigma);
         S_xx += (local_copy[i].t * local_copy[i].t) / (local_copy[i].sigma * local_copy[i].sigma);
@@ -1235,7 +1233,7 @@ void ACF_Phase_Unwrap(llist_node range, FITPRMS* fit_prms){
     }
 
     corr_slope_est = S_xy / S_xx;
-    for (i=0; i<num_local_phases; i++){
+    for (int i=0; i<num_local_phases; i++){
       if (local_copy[i].sigma > 0) {
         corr_slope_err += ((corr_slope_est * local_copy[i].t - local_copy[i].phi) *
                            (corr_slope_est * local_copy[i].t - local_copy[i].phi)) /
@@ -1243,6 +1241,7 @@ void ACF_Phase_Unwrap(llist_node range, FITPRMS* fit_prms){
       }
     }
 
+    i=0;
     /*Quick fit of original phase*/
     llist_reset_iter(range_node->phases);
     S_xx = 0.0;
@@ -1448,7 +1447,6 @@ void Fill_Data_Lists_For_Range(llist_node range,llist lags,FITPRMS *fit_prms){
   PHASENODE* elev_node;
   LAGNODE* lag;
   ALPHANODE* alpha_2;
-  int i;
 
   range_node = (RANGENODE*) range;
 
@@ -1459,7 +1457,7 @@ void Fill_Data_Lists_For_Range(llist_node range,llist lags,FITPRMS *fit_prms){
   llist_reset_iter(range_node->alpha_2);
   llist_reset_iter(lags);
 
-  for(i=0;i<fit_prms->mplgs;i++){
+  for(int i=0;i<fit_prms->mplgs;i++){
 
     llist_get_iter(range_node->alpha_2,(void**)&alpha_2);
     llist_get_iter(lags,(void**)&lag);
@@ -1480,6 +1478,5 @@ void Fill_Data_Lists_For_Range(llist_node range,llist lags,FITPRMS *fit_prms){
 
 
 }
-
 
 

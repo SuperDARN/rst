@@ -5,6 +5,7 @@
 Modifitcations:
     2020-03-11 Marina Schmidt added RST defined constants and changed _COMPLEX 
                               to _COMPLEX_H so complex.h can be used
+    2020-11-03 Marina Schmidt removed complex struct to introduce the C library complex
 */
 
 
@@ -37,15 +38,6 @@ Modifitcations:
 
 #ifndef _RMATH_H
 #define _RMATH_H
-
-/*Need to use _COMPLEX_H to not
- * override the complex.h definition*/
-#ifndef _COMPLEX_H
-struct complex {
-    double x,y;
-};
-#define cabs(a) sqrt((a.x*a.x)+(a.y*a.y))
-#endif
 
 /*Speed of Light in m/s*/
 #define C 2.99792458e+8

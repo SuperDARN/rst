@@ -24,13 +24,16 @@
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
  
- 
+  
+  Modifications
+  =============
+    2020-11-12 Marina Schmidt Converted RST complex -> C library complex
+
  
 */
 
 
 
-double noise_acf(double mnpwr,struct FitPrm *ptr,
-	         double *pwr, struct FitACFBadSample *badsmp,
-		 struct complex *raw,
-	         struct complex *n_acf);
+double noise_acf(double mnpwr,struct FitPrm *ptr, double *pwr, 
+        struct FitACFBadSample *badsmp, double complex *raw, 
+        double complex *n_acf);

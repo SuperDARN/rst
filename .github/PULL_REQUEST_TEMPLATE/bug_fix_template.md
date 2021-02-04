@@ -1,3 +1,9 @@
+---
+name: Bug Fix
+about: Fixing a known bug
+
+---
+
 # Bug Fix 
 **Name:** 
 
