@@ -7,74 +7,72 @@ Disclaimer:
 
 # Pull Requests 
 
-Pull Requests in GitHub are a nice means of allowing others to review and test your code. 
-This allows members of the community to know what is coming up in new releases of RST and be part of the collaboration.  
+Pull Requests in GitHub provide an interface for others to review and test your code. Testing pull releases is a good way to start contributing to the RST.
 
 
 ## Code Check List
 
-Before submitting a PR check the code check list first:
+Before submitting a PR, please check the following:
 
-- copyright and disclaimer, or modification line is added 
-- the code compiles and runs with no extra warnings
-- documentation is updated or in another PR for users 
-- unit tests or various testing has been added/done 
-- code is on its own *git* branch
-- all code is pushed to the branch 
+- copyright and disclaimer, or modification line is added
+- the code compiles and runs with no additional warnings
+- the new code has been tested on your own machine
+- user documentation has been included/updated
+- the code is on its own *git* branch
+- all code is pushed to the remote branch on Github
 
 ## Creating the PR 
 
-Once you have confirmed the above is done you can go to [RST's Pull Requests](https://github.com/SuperDARN/rst/pulls)
-and click on `New pull request`. If templates are available select which one is most appropriate. Otherwise make your own. 
+To create a PR, navigate to [RST's Pull Requests](https://github.com/SuperDARN/rst/pulls)
+and click on `New pull request`. If templates are available select which one is most appropriate.
 
 ### Merging Direction 
 
-When in doubt merge to `develop`! Otherwise here are some other options:
+In general, new code should be merged to `develop`. Possible exceptions to this rule are:
 
-- merge to another branch if you `checkout` from that branch this helps to break things into smaller parts for quicker review and testing
+- if a new feature/update will be added in several stages, merge to an intermediate branch (`git checkout -b` from the intermediate branch)
 - merge to `master` **ONLY** if it is a **HOTFIX** or **RELEASE** branch. 
 
     !!! Note
-        **HOTFIX** is a substantial fix for a bug that prevents users from installing or using RST or gives inaccurate data. Document fixes can 
-        also be seen as a **HOTFIX** as they do not require release and DOI'ing on the code. 
+        **HOTFIX** is a substantial fix for a bug that prevents users from installing or using RST or gives inaccurate data. Documentation fixes can 
+        also be seen as a **HOTFIX** as they do not require a new release or DOI.
 
-- In some cases, documentation can be merged to `master` if it is fixing some typos. 
+- Small changes to documentation can be merged to `master` (e.g. fixing typos)
 
 ### Writing a PR
 
-Follow the template to fill out the required sections. If there is no template, here is a check list to ensure you have all the information: 
+Follow the template to fill out the required sections. If there is no template, here is a checklist to ensure you provide all the information: 
 
 - Informative title 
 - Description of the changes you made 
-- Scope on what people should focus on 
+- Scope on what people should focus on in their review
 - How to install the code if there is any changes 
-- Code fragments showing how to test the code and expected output/plots
-- Extra details 
+- Code fragments showing how to test the code and the expected output/plots
+- Any extra details that might be useful during testing
 
 ### Extra Tidbits
 
-Pull requests on GitHub have other ways to help users know what your PR is all about. 
-Here are some things you can do to get more attention:
+Pull requests on GitHub provide several additional features to help you get a useful code review:
 
-- assign reviewers you want feedback from 
-- add labels
-- assign a project to it if applicable 
-- assign a milestone if applicable 
-- Linking issues if applicable
+- request a review from a specific person
+- add labels to categorize the PR (e.g. bugfix)
+- indicate that the PR is part of a project, if applicable
+- assign a milestone, if applicable
+- link the PR to an issue, if applicable
 
-### Draft or not to Draft? 
+### Draft Pull Requests
 
-Draft Pull Requests are a way to tell reviewers that this code is not intended to be `merged` right away. 
-These kinds of pull requestions are handy for the following situations:
+Draft Pull Requests are a way to tell reviewers that your code is not ready to be `merged` yet. This might be useful in the following situations:
 
-- It has multiple other PRs that are merging to it that needed to be tested/reviewed first 
-- Has a major bug or need further work but you are looking for input and want to show others the changes you have done
+- The draft PR is dependent on another PR being merged or tested first
+- The code has a major bug or needs further work, but you would like some feedback or assistance on what you have already done
 
-## Guidelines 
+## Guidelines
 
 Here are some general guidelines to follow with Pull Requests: 
 
-- Do not merge your own code unless you have 2 or more approvals (1 being testing and the other being a code review) and no one is responding to merge 
-- Make sure your code is fully complete before making a PR to avoid commit emails occurring frequently 
-- Make sure your code is tested on various operating systems if needed 
-- Optional code is reviewed in a Code Review 
+- Do not merge your own code!
+  - If at least 2 people have "approved" the code, anyone (including the code author) may merge it
+- Make sure your code is complete before creating a PR (to reduce additional commit emails)
+- Make sure your code is tested on various operating systems if needed
+- Optional code is reviewed in a Code Review
