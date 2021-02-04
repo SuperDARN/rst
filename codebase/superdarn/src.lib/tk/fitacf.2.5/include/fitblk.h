@@ -10,7 +10,7 @@
 #define _FITBLK_H
 
 struct FitPrm {
-  int channel; /* zero=mono 1 or 2 is stereo */
+  int channel; 
   int offset; /* used for stereo badlags */
   int cp;
   int xcf;
@@ -36,7 +36,7 @@ struct FitPrm {
   double phidiff;
   double tdiff;
   double vdir;
-};
+} FitPrm;
 
 struct FitBlock {
   struct FitPrm prm;

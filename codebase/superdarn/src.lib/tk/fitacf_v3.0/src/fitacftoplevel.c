@@ -163,9 +163,9 @@ void Copy_Fitting_Prms(struct RadarSite *radar_site, struct RadarParm *radar_prm
   fit_prms->old = 1 ? (radar_prms->time.yr < 1993) : 0;
 
   /* Initialise the radar parameters in the FitACF parameter structure */
-  fit_prms->interfer_x=radar_site->interfer[0];
-  fit_prms->interfer_y=radar_site->interfer[1];
-  fit_prms->interfer_z=radar_site->interfer[2];
+  fit_prms->interfer[0]=radar_site->interfer[0];
+  fit_prms->interfer[1]=radar_site->interfer[1];
+  fit_prms->interfer[2]=radar_site->interfer[2];
   fit_prms->bmsep=radar_site->bmsep;
   fit_prms->phidiff=radar_site->phidiff;
   fit_prms->tdiff=radar_site->tdiff;
@@ -274,7 +274,7 @@ void Copy_Fitting_Prms(struct RadarSite *radar_site, struct RadarParm *radar_prm
  *
  * @return     0 on success.
  */
-int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
+int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data, int elv_version) {
 
   llist ranges, lags;
   double noise_pwr;
@@ -365,7 +365,7 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
   XCF_Phase_Fit(ranges,fit_prms);
 
   /*Now the fits are completed, we can make our final determinations from those fits*/
-  ACF_Determinations(ranges, fit_prms, fit_data, noise_pwr);
+  ACF_Determinations(ranges, fit_prms, fit_data, noise_pwr, elv_version);
 
   llist_destroy(lags,TRUE,free);
   llist_destroy(ranges,TRUE,free_range_node);

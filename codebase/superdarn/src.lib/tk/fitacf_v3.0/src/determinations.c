@@ -27,12 +27,13 @@ ACF determinations from fitted parameters
 #include "llist.h"
 #include "rtypes.h"
 #include "determinations.h"
+#include "fitblk.h"
+#include "elevation.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "rmath.h"
-
 /**
  * Allocates space needed for final data parameters.
  *
@@ -77,8 +78,7 @@ void allocate_fit_data(struct FitData* fit_data, FITPRMS* fit_prms){
  *                        fitted data.
  * @param[in]  noise_pwr  The noise power.
  */
-void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data,double noise_pwr){
-
+void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data,double noise_pwr, int elv_version){
     int list_null_flag = LLIST_SUCCESS;
     fit_data->revision.major=3;
     fit_data->revision.minor=0;
@@ -110,7 +110,9 @@ void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data
     llist_get_iter(ranges, &node); 
     while(node != NULL && list_null_flag == LLIST_SUCCESS)
     {
-       find_elevation(node, fit_data, fit_prms);
+       find_elevation(node, fit_data, fit_prms, elv_version);
+       find_elevation_high(node, fit_data, fit_prms);
+       find_elevation_low(node, fit_data, fit_prms);
        list_null_flag = llist_go_next(ranges);
        llist_get_iter(ranges, &node); 
 
@@ -527,7 +529,121 @@ void set_nump(llist_node range, struct FitRange* fit_range_array){
  * @param      fit_prms         The FITPRM struct holding rawacf record info.
  *
  */
-void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms){
+void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms, int elv_version){
+
+    double azi_offset,phi_0;
+    RANGENODE* range_node;
+    range_node = (RANGENODE*) range;
+    struct FitPrm* fitprm;
+    fitprm = malloc(sizeof(struct FitPrm));
+    azi_offset = fit_prms->maxbeam/2 - 0.5;
+    phi_0 = fit_prms->bmsep * (fit_prms->bmnum - azi_offset) * PI/180;
+    
+    // need this elevation algorithms to work. 
+    // TODO: make consistent structs between fitacf versionss
+    // so we don't have this problem again
+    fitprm->interfer[0] = fit_prms->interfer[0];
+    fitprm->interfer[1] = fit_prms->interfer[1];
+    fitprm->interfer[2] = fit_prms->interfer[2];
+    fitprm->maxbeam = fit_prms->maxbeam;
+    fitprm->bmsep = fit_prms->bmsep;
+    fitprm->bmnum = fit_prms->bmnum;
+    fitprm->tfreq = fit_prms->tfreq;
+    fitprm->tdiff = fit_prms->tdiff;
+    fitprm->phidiff = fit_prms->phidiff;
+
+    // elv_version 2 is the Shepherd [2017] elevation calculation
+    // elv_version 1 is original elevation calculation
+    // elv_version 0 is specifically for the GBR radar when -old_elev is specified
+    if (elv_version == 2)
+    {
+        fit_data->elv[range_node->range].normal = elevation_v2( fitprm, fit_data->xrng[range_node->range].phi0);
+    }
+    else if (elv_version == 1)
+    {
+        fit_data->elv[range_node->range].normal = elevation( fitprm, fit_data->xrng[range_node->range].phi0);
+    }
+    else if (elv_version == 0)
+    {
+        fit_data->elv[range_node->range].normal = elev_goose(fitprm, fit_data->xrng[range_node->range].phi0);
+    }
+    else
+    {
+        fprintf(stderr, "Error: Elevation version does not exist\n");
+    }
+    free(fitprm);
+}
+
+void find_elevation_high(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms)
+{
+    
+    double x,y,z;
+    double antenna_sep,elev_corr;
+    int phi_sign;
+    double azi_offset,phi_0,c_phi_0;
+    double wave_num;
+    double cable_offset;
+    double phase_diff_max;
+    double psi_uncorrected;
+    double psi,theta,psi_kd;
+    double elevation;
+
+    RANGENODE* range_node;
+
+    range_node = (RANGENODE*) range;
+
+
+    x = fit_prms->interfer[0];
+    y = fit_prms->interfer[1];
+    z = fit_prms->interfer[2];
+
+    antenna_sep = sqrt(x*x + y*y + z*z);
+
+    elev_corr = asin(z/antenna_sep);
+    if (y > 0.0){
+        phi_sign = 1;
+    }
+    else{
+        phi_sign = -1;
+        elev_corr = -elev_corr;
+    }
+
+    azi_offset = fit_prms->maxbeam/2 - 0.5;
+    phi_0 = fit_prms->bmsep * (fit_prms->bmnum - azi_offset) * PI/180;
+    c_phi_0 = cos(phi_0);
+
+    wave_num = 2 * PI * fit_prms->tfreq * 1000/C;
+
+    cable_offset = -2 * PI * fit_prms->tfreq * 1000 * fit_prms->tdiff * 1.0e-6;
+
+    phase_diff_max = phi_sign * wave_num * antenna_sep * c_phi_0 + cable_offset;
+
+    psi_uncorrected = range_node->elev_fit->a + 2 * PI * floor((phase_diff_max-range_node->elev_fit->a)/(2*PI));
+
+    if(phi_sign < 0) 
+    {
+        psi_uncorrected += 2 * PI;
+    }
+
+    psi = psi_uncorrected - cable_offset;
+
+
+    psi_kd = psi/(wave_num * antenna_sep);
+    theta = c_phi_0 * c_phi_0 - psi_kd * psi_kd;
+    if( (theta < 0.0) || (fabs(theta) > 1.0) ){
+        elevation = -elev_corr;
+    }
+    else{
+        elevation = asin(sqrt(theta));
+    }
+
+
+    fit_data->elv[range_node->range].high = 180/PI * (elevation + elev_corr);
+}
+
+void find_elevation_low(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms)
+{
+    
     double x,y,z;
     double antenna_sep,elev_corr;
     int phi_sign;
@@ -537,17 +653,15 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
     double phase_diff_max;
     double psi_uncorrected;
     double psi,theta,psi_kd,psi_k2d2,df_by_dy;
-    double elevation;
-    double psi_uncorrected_unfitted;
 
     RANGENODE* range_node;
 
     range_node = (RANGENODE*) range;
 
 
-    x = fit_prms->interfer_x;
-    y = fit_prms->interfer_y;
-    z = fit_prms->interfer_z;
+    x = fit_prms->interfer[0];
+    y = fit_prms->interfer[1];
+    z = fit_prms->interfer[2];
 
     antenna_sep = sqrt(x*x + y*y + z*z);
 
@@ -576,40 +690,14 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
 
     psi = psi_uncorrected - cable_offset;
 
+
     psi_kd = psi/(wave_num * antenna_sep);
     theta = c_phi_0 * c_phi_0 - psi_kd * psi_kd;
-    if( (theta < 0.0) || (fabs(theta) > 1.0) ){
-        elevation = -elev_corr;
-    }
-    else{
-        elevation = asin(sqrt(theta));
-    }
-
-    fit_data->elv[range_node->range].high = 180/PI * (elevation + elev_corr);
-
     /*Elevation errors*/
     psi_k2d2 = psi/(wave_num * wave_num * antenna_sep * antenna_sep);
     df_by_dy = psi_k2d2/sqrt(theta * (1 - theta));
-    fit_data->elv[range_node->range].low = 180/PI * sqrt(range_node->elev_fit->sigma_2_a) * fabs(df_by_dy);
 
-    /*Experiment to compare fitted and measured elevation*/
-    psi_uncorrected_unfitted = fit_data->xrng[range_node->range].phi0 + 2 * PI * floor((phase_diff_max-fit_data->xrng[range_node->range].phi0)/(2*PI));
-
-
-    if(phi_sign < 0) psi_uncorrected_unfitted += 2 * PI;
-
-    psi = psi_uncorrected_unfitted - cable_offset;
-
-    psi_kd = psi/(wave_num * antenna_sep);
-    theta = c_phi_0 * c_phi_0 - psi_kd * psi_kd;
-
-    if( (theta < 0.0) || (fabs(theta) > 1.0) ){
-        elevation = -elev_corr;
-    }
-    else{
-        elevation = asin(sqrt(theta));
-    }
-    fit_data->elv[range_node->range].normal = 180/PI * (elevation + elev_corr);
+   fit_data->elv[range_node->range].low = 180/PI * sqrt(range_node->elev_fit->sigma_2_a) * fabs(df_by_dy);
 
 }
 
@@ -670,4 +758,3 @@ void set_xcf_sdev_phi(llist_node range, struct FitRange* fit_range_array){
     fit_range_array[range_node->range].sdev_phi = range_node->elev_fit->chi_2;
 
 }
-

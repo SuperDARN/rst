@@ -365,9 +365,6 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
       if (iptr->prm.phidiff != 0)
           xptr[k].phi0 = xptr[k].phi0*iptr->prm.phidiff;
 
-      /* changes which array is first */
-
-      /* range = 0.15*(iptr->prm.lagfr + iptr->prm.smsep*(k-1)); - this is never used EGT */
       if (iptr->prm.old_elev) {
         /* use old elevation angle routines */
         if (goose == 0) {

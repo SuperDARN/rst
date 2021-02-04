@@ -17,7 +17,7 @@
 
 /* SGS somehow need to pass in options for allowing:                         *
  *     negative elevation angles and residual phase                          */
-
+//TODO what do these parameters mean  like psi_obs? 
 double elevation_v2(struct FitPrm *prm, double psi_obs)
 {
   static double X,Y,Z;      /* interferometer offsets [m]                    */
@@ -135,4 +135,3 @@ double elevation_v2(struct FitPrm *prm, double psi_obs)
 
   return (180.*alpha/PI);
 }
-
