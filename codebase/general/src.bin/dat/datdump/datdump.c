@@ -52,7 +52,10 @@ int main(int argc,char *argv[]) {
 
 
   int c;
-  int x,n,s;
+  int x,n;
+  int value = 48;
+  int *nparm = &value;
+  // hard coded value in oldraw/rawwrite.c
 
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
@@ -102,6 +105,11 @@ int main(int argc,char *argv[]) {
           exit(-1);
       RadarParmEncode(ptr, scalars);
       RawEncode(ptr, scalars, arrays);
+      // Add extra dat values, other dat params are not read with oldraw
+      // TODO: get extra dat parameters if used.
+      DataMapAddScalar(ptr, "nparm", DATAINT, nparm); 
+      DataMapAddScalar(ptr, "usr_resL1", DATALONG, &scalars->offset); 
+
       fprintf(stdout,"scalars:\n");
       for (c=0; c<ptr->snum; c++) {
           scalar = ptr->scl[c];  
