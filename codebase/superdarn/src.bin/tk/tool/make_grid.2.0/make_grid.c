@@ -363,6 +363,7 @@ int main(int argc,char *argv[]) {
     unsigned char xtd=0;
 
     unsigned char cfitflg=0;
+    unsigned char catflg=0;
     unsigned char fitflg=0;
 
     int found_record=0;
@@ -471,7 +472,7 @@ int main(int argc,char *argv[]) {
 
     OptionAdd(&opt,"fit",'x',&fitflg);   /* Input file is in the fit format */
     OptionAdd(&opt,"cfit",'x',&cfitflg); /* Input file is in the cfit format */
-
+    OptionAdd(&opt, "c", 'x', &catflg);
     /* Process command line options */
     farg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
@@ -515,6 +516,9 @@ int main(int argc,char *argv[]) {
         if (tolower(chnstr_fix[0])=='c') channel_fix=3;
         if (tolower(chnstr_fix[0])=='d') channel_fix=4;
     }
+
+    if (catflg == 0) 
+        fprintf(stderr, "Deprecation Warning: -c option will removed next release. This will not change the functionality of make_grid and will be able to read multiple fitacf files of one radar still\n");
 
     if (bmstr !=NULL)  parse_ebeam(bmstr);
 
