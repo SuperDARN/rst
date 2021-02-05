@@ -1,6 +1,8 @@
 /* 
  Copyright (C) 2021 SuperDARN Canada, University of Saskatchewan
  Author: Marina Schmidt
+ Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
+ Copied code from dmapdump but modified to print dat file information.
 
  Modification:
 
