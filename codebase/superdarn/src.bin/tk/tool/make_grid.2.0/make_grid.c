@@ -677,7 +677,7 @@ int main(int argc,char *argv[]) {
                 else s=FitFseek(fitfp,yr,mo,dy,hr,mt,sc,NULL,inx);
                 /* If a matching record could not be found then exit*/ 
                 if (s ==-1) {
-                    fprintf(stderr,"File does not contain the requested start time, ignoring this file.\n");
+                    fprintf(stderr,"File ends before requested start time, ignoring this file.\n");
                     stime = tmp_stime;
                     continue;
                 }
