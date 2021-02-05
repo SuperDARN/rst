@@ -11,7 +11,7 @@ SRC=datdump.c hlpstr.h
 OBJS =datdump.o
 DSTPATH = $(BINPATH)
 OUTPUT = datdump
-LIBS= -lopt.1 -ldmap.1 -loldraw.1 -lrcnv.1 -lraw.1 -lradar.1 -lrtime.1
+LIBS= -g -lopt.1 -ldmap.1 -ldat.1 -lrcnv.1 -lrtime.1
 SLIB= -lm -lz
 
 include $(MAKEBIN).$(SYSTEM)

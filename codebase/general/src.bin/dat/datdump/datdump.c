@@ -15,14 +15,13 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include "rtypes.h"
+#include "lmt.h"
 #include "zlib.h"
 #include "dmap.h"
 #include "rtypes.h"
 #include "option.h"
-#include "rprm.h"
-#include "rawdata.h"
-#include "oldrawread.h"
-#include "rawwrite.h"
+#include "dat.h"
+#include "datread.h"
 #include "hlpstr.h"
 
 
@@ -36,10 +35,9 @@ int rst_opterr(char *txt) {
 }
 
 int main(int argc,char *argv[]) {
-  struct OldRawFp *datfp=NULL;
-  struct RadarParm *scalars=NULL;
-  struct RawData *arrays=NULL;
-  
+  struct Datfp *datfp=NULL;
+  struct DatData data;
+
   struct DataMap *ptr=NULL;
   struct DataMapScalar *scalar;
   struct DataMapArray *array;
@@ -53,8 +51,6 @@ int main(int argc,char *argv[]) {
 
   int c;
   int x,n;
-  int value = 48;
-  int *nparm = &value;
   // hard coded value in oldraw/rawwrite.c
 
   OptionAdd(&opt,"-help",'x',&help);
@@ -86,7 +82,7 @@ int main(int argc,char *argv[]) {
   }
 
   if (arg !=argc) {
-      datfp = OldRawOpen(argv[arg], NULL);
+      datfp = DatOpen(argv[arg], NULL);
       if (datfp==NULL) {
         fprintf(stderr,"File not found.\n");
         exit(-1);
@@ -96,19 +92,12 @@ int main(int argc,char *argv[]) {
       OptionPrintInfo(stdout,hlpstr);
       exit(0);
   }
-    
-  scalars=RadarParmMake();
-  arrays=RawMake();
-  while( OldRawRead(datfp, scalars, arrays) == 0) {
+   
+  while( DatRead(datfp, &data) == 0) {
       ptr=DataMapMake();
       if (ptr == NULL)
           exit(-1);
-      RadarParmEncode(ptr, scalars);
-      RawEncode(ptr, scalars, arrays);
-      // Add extra dat values, other dat params are not read with oldraw
-      // TODO: get extra dat parameters if used.
-      DataMapAddScalar(ptr, "nparm", DATAINT, nparm); 
-      DataMapAddScalar(ptr, "usr_resL1", DATALONG, &scalars->offset); 
+      DatToDmap(ptr, &data);
 
       fprintf(stdout,"scalars:\n");
       for (c=0; c<ptr->snum; c++) {
@@ -182,11 +171,11 @@ int main(int argc,char *argv[]) {
                   fprintf(stdout,"%lf",*(scalar->data.dptr));
                   break;
               case DATASTRING:
-	              tmp=(char **) scalar->data.vptr;
-                  if (*tmp !=NULL) 
-                      fprintf(stdout,"%c%s%c",'"',*tmp,'"');
-                  else 
-                      fprintf(stdout,"%c%c",'"','"');
+                  tmp=(char**) scalar->data.vptr;
+                  if (tmp != NULL)
+                      fprintf(stdout,"%c%s%c",'"',&data.COMBF[0],'"');
+                  else
+                      fprintf(stdout, "%c%c", '"','"');
                   break;
           }
           fprintf(stdout,"\n");
@@ -260,6 +249,6 @@ int main(int argc,char *argv[]) {
       }
       DataMapFree(ptr);
   }
-  OldRawClose(datfp);
+  DatClose(datfp);
   return 0;  
 }
