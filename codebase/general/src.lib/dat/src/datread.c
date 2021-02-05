@@ -33,9 +33,10 @@ Disclaimer:
  *      integer, -1 Fail, 0 Success
  */
 int DatRead(struct Datfp *fp,struct DatData *datdata) { 
-  if (fp==NULL) 
+  if (fp==NULL){ 
       fprintf(stderr, "Error: File pointer empty\n");
       return -1;
+  }
   return (fp->datread)(fp, datdata);
 }
  
@@ -58,7 +59,7 @@ int DatReadData(struct Datfp *fp,struct DatData *datdata) {
     dat_tmp=malloc(sizeof(struct DatData));
     if (dat_tmp==NULL) 
     {
-        fprintf(stderr, "Error: Malloc returned %d on allocating memory for dat_tmp, %s\n", errno, strerror(errnum));
+        fprintf(stderr, "Error: Malloc returned %d on allocating memory for dat_tmp, %s\n", errno, strerror(errno));
         return -1;
     }
     if ( (fp->datread)(fp,dat_tmp) !=0) 

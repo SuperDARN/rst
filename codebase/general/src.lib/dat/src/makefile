@@ -5,8 +5,7 @@
 #
 # Disclaimer:
 
- 
-*/include $(MAKECFG).$(SYSTEM)
+include $(MAKECFG).$(SYSTEM)
 
 INCLUDE= -g -I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/superdarn
 OBJS=datread.o datreadcurrent.o datopen.o dattodmap.o datclose.o 

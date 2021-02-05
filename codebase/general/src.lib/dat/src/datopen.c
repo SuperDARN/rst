@@ -15,6 +15,7 @@ Disclaimer:
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <zlib.h>
@@ -51,7 +52,7 @@ struct Datfp *DatOpen(char *datfile, char *inxfile) {
 
   inbuf=malloc(sizeof(struct DatData));
   if (inbuf==NULL) {
-    fprintf(stderr, "Error: Malloc returned %d on allocating memory for inbuf, %s\n", errno, strerror(errnum));
+    fprintf(stderr, "Error: Malloc returned %d on allocating memory for inbuf, %s\n", errno, strerror(errno));
     return NULL;
   }
 
@@ -59,7 +60,7 @@ struct Datfp *DatOpen(char *datfile, char *inxfile) {
   
   if (ptr==NULL) {
       free(inbuf);
-      fprintf(stderr, "Error: Malloc returned %d on allocating memory for inbuf, %s\n", errno, strerror(errnum));
+      fprintf(stderr, "Error: Malloc returned %d on allocating memory for inbuf, %s\n", errno, strerror(errno));
       return NULL;
   }
 
@@ -120,7 +121,7 @@ struct Datfp *DatOpen(char *datfile, char *inxfile) {
     close(ptr->datfp);
     free(ptr);
     free(inbuf);
-    fprintf(stderr, "Error: read returned %d while readig dat file, %s\n", errno, strerror(errnum));
+    fprintf(stderr, "Error: read returned %d while readig dat file, %s\n", errno, strerror(errno));
     return NULL;
   }
 
