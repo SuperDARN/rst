@@ -24,7 +24,7 @@ Before submitting a PR, please check the following:
 ## Creating the PR 
 
 To create a PR, navigate to [RST's Pull Requests](https://github.com/SuperDARN/rst/pulls)
-and click on `New pull request`. If templates are available select which one is most appropriate.
+and click on `New pull request`. If templates are available, select the one that is most appropriate.
 
 ### Merging Direction 
 
@@ -41,12 +41,12 @@ In general, new code should be merged to `develop`. Possible exceptions to this 
 
 ### Writing a PR
 
-Follow the template to fill out the required sections. If there is no template, here is a checklist to ensure you provide all the information: 
+Follow the template to fill out the required sections. If there is no template, please provide the following information: 
 
 - Informative title 
 - Description of the changes you made 
-- Scope on what people should focus on in their review
-- How to install the code if there is any changes 
+- What people should focus on when testing/reviewing the code
+- How to install the code if this has changed
 - Code fragments showing how to test the code and the expected output/plots
 - Any extra details that might be useful during testing
 
@@ -54,18 +54,19 @@ Follow the template to fill out the required sections. If there is no template, 
 
 Pull requests on GitHub provide several additional features to help you get a useful code review:
 
-- request a review from a specific person
-- add labels to categorize the PR (e.g. bugfix)
-- indicate that the PR is part of a project, if applicable
-- assign a milestone, if applicable
-- link the PR to an issue, if applicable
+- Request a review from a specific person
+- Add labels to categorize the PR (e.g. bugfix, enhancement)
+- Indicate that the PR is part of a project, if applicable
+- Assign a milestone, if applicable
+- Link the PR to an issue, if applicable
 
 ### Draft Pull Requests
 
 Draft Pull Requests are a way to tell reviewers that your code is not ready to be `merged` yet. This might be useful in the following situations:
 
 - The draft PR is dependent on another PR being merged or tested first
-- The code has a major bug or needs further work, but you would like some feedback or assistance on what you have already done
+- The code has a major bug and you would like some assistance to fix it
+- The code needs further work, but you would like some feedback on what you have already done
 
 ## Guidelines
 
