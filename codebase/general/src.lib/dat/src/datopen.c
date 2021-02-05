@@ -1,30 +1,14 @@
-/* DatOpen.c
-   ==========
-   Author: R.J.Barnes
-*/
-
-/*
- LICENSE AND DISCLAIMER
-
+/* 
+ Copyright (C) 2021 SuperDARN Canada, University of Saskatchewan
+ Author: Marina Schmidt
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
+ Copied code from raw_close.c in cmpraw modified for dat files
 
- This file is part of the Radar Software Toolkit (RST).
+ Modified
 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
+Disclaimer:
 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
-
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
-
-
-
+ 
 */
 
 #include <stdio.h>
@@ -34,6 +18,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <zlib.h>
+#include <errno.h>
 #include "rtypes.h"
 #include "rconvert.h"
 #include "rtime.h"
@@ -43,8 +28,16 @@
 #include "datread.h"
 #include "dat_versions.h"
 
-
-
+/* DatOpen
+ * opens the file pointer, allocates dat structure memory, and
+ * sets the datread to the function DatReadCurrent.
+ * Params:
+ *  char * datfile - datfile name
+ *  char * inxfile - indexfile name, not required
+ *  returns:
+ *      Datfp - dat file pointer
+ *      If NULL then an error occured. 
+ */
 struct Datfp *DatOpen(char *datfile, char *inxfile) {
 
   int DatParms_pat[]={1, 2, 2, 17, 4, 2, 2, 14, 4, 4, 2, 4, 0, 0};
@@ -57,13 +50,17 @@ struct Datfp *DatOpen(char *datfile, char *inxfile) {
   struct Datfp *ptr=NULL;
 
   inbuf=malloc(sizeof(struct DatData));
-  if (inbuf==NULL) return NULL;
+  if (inbuf==NULL) {
+    fprintf(stderr, "Error: Malloc returned %d on allocating memory for inbuf, %s\n", errno, strerror(errnum));
+    return NULL;
+  }
 
   ptr=malloc(sizeof(struct Datfp));
   
   if (ptr==NULL) {
-    free(inbuf);
-    return NULL;
+      free(inbuf);
+      fprintf(stderr, "Error: Malloc returned %d on allocating memory for inbuf, %s\n", errno, strerror(errnum));
+      return NULL;
   }
 
   ptr->datfp=open(datfile,O_RDONLY);
@@ -110,8 +107,6 @@ struct Datfp *DatOpen(char *datfile, char *inxfile) {
 
   /* read the first record so that we can determine the start time of
      the file */
-
-
  if (ConvertReadShort(ptr->datfp,&num_byte) !=0 || num_byte <= 0) {
     close(ptr->datfp);
     free(ptr);
@@ -125,13 +120,13 @@ struct Datfp *DatOpen(char *datfile, char *inxfile) {
     close(ptr->datfp);
     free(ptr);
     free(inbuf);
+    fprintf(stderr, "Error: read returned %d while readig dat file, %s\n", errno, strerror(errnum));
     return NULL;
   }
 
   ConvertToInt(inbuf,&rec_num);
 
   /* now decode the parameter block */
-
   ConvertBlock(inbuf+12,DatParms_pat);
   prm=(struct DatParms *) (inbuf+12);
 
@@ -139,7 +134,6 @@ struct Datfp *DatOpen(char *datfile, char *inxfile) {
 	  prm->HOUR,prm->MINUT,prm->SEC);
 
   /* rewind to the first record */
-
   lseek(ptr->datfp,ptr->frec,SEEK_SET);
 
   ptr->datread=DatReadCurrent;

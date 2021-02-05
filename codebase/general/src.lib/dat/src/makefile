@@ -1,7 +1,12 @@
-# Makefile for cmpraw
-# ===================
-# Author: R.J.Barnes
-include $(MAKECFG).$(SYSTEM)
+# Copyright (C) 2021 SuperDARN Canada, University of Saskatchewan
+# Author: Marina Schmidt
+#
+# Modified
+#
+# Disclaimer:
+
+ 
+*/include $(MAKECFG).$(SYSTEM)
 
 INCLUDE= -g -I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/superdarn
 OBJS=datread.o datreadcurrent.o datopen.o dattodmap.o datclose.o 

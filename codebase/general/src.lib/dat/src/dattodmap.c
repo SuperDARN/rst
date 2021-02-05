@@ -21,6 +21,12 @@
 #include "lmt.h"
 #include "dat.h"
 
+/* DatToDmap
+ * converts dat structure to DataMap structure
+ * Params:
+ *  DataMap ptr - Dmap structure found in dmap.h
+ *  DatData dat - Dat structure for storing all it fields found in dat.h
+ */
 int DatToDmap(struct DataMap *ptr, struct DatData *dat) {
     int tx;
     int c,d,x;
@@ -39,6 +45,7 @@ int DatToDmap(struct DataMap *ptr, struct DatData *dat) {
     lnum[0]=2;
     lnum[1]=dat->PARMS.MPLGS+1;
     
+    // Dat Scalar parameters
     DataMapAddScalar(ptr,"radar.revision.major",DATACHAR,&dat->PARMS.REV.MAJOR);
     DataMapAddScalar(ptr,"radar.revision.minor",DATACHAR,&dat->PARMS.REV.MINOR);
     DataMapAddScalar(ptr,"nparm",DATACHAR,&dat->PARMS.NPARM); 
@@ -89,7 +96,8 @@ int DatToDmap(struct DataMap *ptr, struct DatData *dat) {
     DataMapAddScalar(ptr,"mxpwr",DATAINT,&dat->PARMS.MXPWR);
     DataMapAddScalar(ptr,"lvmax",DATAINT,&dat->PARMS.LVMAX);
     DataMapAddScalar(ptr,"combf",DATASTRING,dat->COMBF);
-
+    
+    // Adding Dat array parameters
     pulse=(int16 *) DataMapStoreArray(ptr,"ptab",DATASHORT,1,&pnum,NULL);
     if (pulse==NULL) 
         return -1;
@@ -107,6 +115,7 @@ int DatToDmap(struct DataMap *ptr, struct DatData *dat) {
         }
     }
 
+    // number of scalars
     snum=0;
     tx=0;
 
@@ -117,6 +126,7 @@ int DatToDmap(struct DataMap *ptr, struct DatData *dat) {
     }
 
     p0num=dat->PARMS.NRANG;
+    // number of array
     anum[0]=2;
     anum[1]=dat->PARMS.MPLGS;
     anum[2]=snum;
