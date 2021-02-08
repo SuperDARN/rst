@@ -646,98 +646,103 @@ int main(int argc,char *argv[]) {
             }
         }
         /* If either start time or date provided as input then determine it */
-        if (((stime !=-1) || (sdate !=-1)) && found_record == 0) {
-            /* we must skip the start of the files */
-            int yr,mo,dy,hr,mt;
-            double sc;
-            tmp_stime=stime;
-            /* If start time not provided then use time of first record
-             * in fit file */
-            if (stime==-1) stime= ( (int) src[0]->st_time % (24*3600));
+        if ( found_record == 0 ) {
+            if ((stime !=-1) || (sdate !=-1)) {
+                /* we must skip the start of the files */
+                int yr,mo,dy,hr,mt;
+                double sc;
+                tmp_stime=stime;
+                /* If start time not provided then use time of first record
+                 * in fit file */
+                if (stime==-1) stime= ( (int) src[0]->st_time % (24*3600));
 
-            /* If start date not provided then use date of first record
-             * in fit file, otherwise use provided sdate */
-            if (sdate==-1) stime+=src[0]->st_time -
-                                    ( (int) src[0]->st_time % (24*3600));
-            else stime+=sdate;
+                /* If start date not provided then use date of first record
+                 * in fit file, otherwise use provided sdate */
+                if (sdate==-1) stime+=src[0]->st_time -
+                                        ( (int) src[0]->st_time % (24*3600));
+                else stime+=sdate;
 
-            /* If median filter is going to be applied then we need to load data
-             * prior to the usuals start time, so stime needs to be adjusted */
-            if (bxcar==1) {
-                /* subtract one src */
-                if (tlen !=0) stime-=tlen;
-                else stime-=15+src[0]->ed_time-src[0]->st_time; /* pad to make sure */
-            }
-
-            /* Calculate year, month, day, hour, minute, and second of 
-             * grid start time (needed to load AACGM_v2 coefficients) */
-            TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
-            /* Search for index of corresponding record in input file given
-             * grid start time */
-            if (fitflg) {
-                /* Input file is in fit or fitacf format */
-
-                if (old) s=OldFitSeek(oldfitfp,yr,mo,dy,hr,mt,sc,NULL);
-                else s=FitFseek(fitfp,yr,mo,dy,hr,mt,sc,NULL,inx);
-                /* If a matching record could not be found then exit*/ 
-                if (s ==-1) {
-                    fprintf(stderr,"File ends before requested start time, ignoring this file.\n");
-                    stime = tmp_stime;
-                    continue;
+                /* If median filter is going to be applied then we need to load data
+                 * prior to the usuals start time, so stime needs to be adjusted */
+                if (bxcar==1) {
+                    /* subtract one src */
+                    if (tlen !=0) stime-=tlen;
+                    else stime-=15+src[0]->ed_time-src[0]->st_time; /* pad to make sure */
                 }
 
-                /* If using scan flag instead of tlen then continue to read
-                 * fit records until reaching the beginning of a new scan */
-                if (tlen==0) {
-                    if (old) {
-                        while ((s=OldFitRead(oldfitfp,prm,fit)) !=-1) {
-                            if (abs(prm->scan)==1) break;
-                        }
-                    } else {
-                        while ((s=FitFread(fitfp,prm,fit)) !=-1) {
-                            if (abs(prm->scan)==1) break;
-                        }
+                /* Calculate year, month, day, hour, minute, and second of 
+                 * grid start time (needed to load AACGM_v2 coefficients) */
+                TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
+                /* Search for index of corresponding record in input file given
+                 * grid start time */
+                if (fitflg) {
+                    /* Input file is in fit or fitacf format */
+
+                    if (old) 
+                        s=OldFitSeek(oldfitfp,yr,mo,dy,hr,mt,sc,NULL);
+                    else 
+                        s=FitFseek(fitfp,yr,mo,dy,hr,mt,sc,NULL,inx);
+                    /* If a matching record could not be found then exit*/ 
+                    if (s ==-1) {
+                        fprintf(stderr,"File ends before requested start time, ignoring this file.\n");
+                        stime = tmp_stime;
+                        continue;
                     }
-                } else state=0;
+                    found_record = 1;
+                    /* If using scan flag instead of tlen then continue to read
+                     * fit records until reaching the beginning of a new scan */
+                    if (tlen==0) {
+                        if (old) {
+                            while ((s=OldFitRead(oldfitfp,prm,fit)) !=-1) {
+                                if (abs(prm->scan)==1) break;
+                            }
+                        } else {
+                            while ((s=FitFread(fitfp,prm,fit)) !=-1) {
+                                if (abs(prm->scan)==1) break;
+                            }
+                        }
+                    } else state=0;
 
-                /* Read the first full scan of data from open fit or fitacf file
-                 * corresponding to grid start date and time */
-                if (old) s=OldFitReadRadarScan(oldfitfp,&state,src[0],prm,fit,
-                                    tlen,syncflg,channel);
-                else s=FitFreadRadarScan(fitfp,&state,src[0],prm,fit,
-                                    tlen,syncflg,channel);
+                    /* Read the first full scan of data from open fit or fitacf file
+                     * corresponding to grid start date and time */
+                    if (old) s=OldFitReadRadarScan(oldfitfp,&state,src[0],prm,fit,
+                                        tlen,syncflg,channel);
+                    else s=FitFreadRadarScan(fitfp,&state,src[0],prm,fit,
+                                        tlen,syncflg,channel);
 
-            } else {
-                /* Input file is in cfit format */
+                } else {
+                    /* Input file is in cfit format */
 
-                s=CFitSeek(cfitfp,yr,mo,dy,hr,mt,sc,NULL,NULL);
+                    s=CFitSeek(cfitfp,yr,mo,dy,hr,mt,sc,NULL,NULL);
 
-                /* If a matching record could not be found then exit */
-                if (s ==-1) {
-                    fprintf(stderr,"File does not contain the requested interval, ignoring this file.\n");
-                    stime = tmp_stime;
-                    continue;
+                    /* If a matching record could not be found then exit */
+                    if (s ==-1) {
+                        fprintf(stderr,"File does not contain the requested interval, ignoring this file.\n");
+                        stime = tmp_stime;
+                        continue;
+                    }
+                    found_record = 1;
+                    /* If using scan flag instead of tlen then continue to read
+                     * cfit records until reaching the beginning of a new scan */
+                    if (tlen==0) {
+                        while ((s=CFitRead(cfitfp,cfit)) !=-1) {
+                            if (cfit->scan==1) break;
+                        }
+                    } else state=0;
+
+                    /* Read the first full scan of data from open cfit file
+                     * corresponding to grid start date and time */
+                    s=CFitReadRadarScan(cfitfp,&state,src[0],cfit,tlen,syncflg,channel);
+
                 }
-
-                /* If using scan flag instead of tlen then continue to read
-                 * cfit records until reaching the beginning of a new scan */
-                if (tlen==0) {
-                    while ((s=CFitRead(cfitfp,cfit)) !=-1) {
-                        if (cfit->scan==1) break;
-                    }
-                } else state=0;
-
-                /* Read the first full scan of data from open cfit file
-                 * corresponding to grid start date and time */
-                s=CFitReadRadarScan(cfitfp,&state,src[0],cfit,tlen,syncflg,channel);
-
+                
+            } 
+            else {
+                stime=src[0]->st_time;   // If start date and time not provided
+                found_record = 1;        // then use time of first record in
+                                         // input file
             }
-            
-            found_record = 1;
-        } else stime=src[0]->st_time;   /* If start date and time not provided
-                                         * then use time of first record in
-                                         * input file */
-
+        }
         /* If end time provided then determine end date */
         if (etime !=-1) {
 
