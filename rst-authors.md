@@ -15,7 +15,7 @@ The original RST package is credited to:
 
 The RST is now maintained collaboratively by the SuperDARN Data Analysis Working Group (DAWG). Members of the international SuperDARN community have contributed to the RST by adding new features, writing documentation, improving modularity, refactoring, fixing bugs, and testing the software. These contributions are credited to:
 
-- D.D. Billett, documentation, testing
+- D.D. Billett, documentation, testing, enhancements
 - E.C. Bland, DAWG Co-Chair (2019-), documentation, testing
 - A.G. Burrell, documentation, bugfixes, testing
 - E.D.P. Cousins, CS10 and PSR10 convection models
@@ -23,10 +23,10 @@ The RST is now maintained collaboratively by the SuperDARN Data Analysis Working
 - P.V. Ponomarenko, DAWG Chair (2013-2019), FITACF_v2, FITACF_v3, data simulator library
 - A.S. Reimer, refactorization, documentation, bugfixes
 - A.J. Ribeiro, FITEX2, LMFIT, data simulator library
-- M.T. Schmidt, refactorization, documentation
+- M.T. Schmidt, refactorization, documentation, enhancements, bugfixes
 - S.G. Shepherd, AACGM_v2, MLT_v2, IGRF_v2, elevation_v2, TS18 convection model
-- K.T. Sterne, DAWG Co-Chair (2019-), code comments
+- K.T. Sterne, DAWG Co-Chair (2019-), code comments, documentation
 - E.G. Thomas, TS18 convection model, IDL gridding library, sounding library, refactorization, modularization, code comments
-- M.-T. Walach, bugfixes, testing
+- M.-T. Walach, bugfixes, testing, documentation
 
 Please help us make this list as complete as possible! Suggestions for updates should be directed to the Data Analysis Working Group <darn-dawg@isee.nagoya-u.ac.jp>.
