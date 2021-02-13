@@ -79,7 +79,7 @@ According to the [GPL license documentation](https://www.gnu.org/licenses/gpl-3.
 
 ## License permissions
 
-When developing in RST you are granting permission for your code to be licensed under the GPL. This will be ok in almost all situations. Exceptions may arise if your employer wants to make your program into its own proprietary software, or if your funding agency has restrictions on the publication of research outputs (e.g. defense contracts). If you suspect that you won't allowed to contribute code to RST under the GPL, [it is recommended](https://www.gnu.org/licenses/gpl-faq.html#WhatIfSchool) that you negotiate this with your employer/funding agency at an early stage in developing the software. 
+When developing in RST you are granting permission for your code to be licensed under the GPL. This will be ok in almost all situations. Exceptions may arise if your employer wants to make your program into its own proprietary software, or if your funding agency has restrictions on the publication of research outputs (e.g. defense contracts). If you suspect that you won't be allowed to contribute code to RST under the GPL, [it is recommended](https://www.gnu.org/licenses/gpl-faq.html#WhatIfSchool) that you negotiate this with your employer/funding agency at an early stage in developing the software. 
 
 !!! IMPORTANT
     Please make sure to review the [license]((https://www.gnu.org/licenses/gpl-3.0.en.html)), and check with your employer/funding agency that you have permission to distribute your code under the GPLv3. 
@@ -149,7 +149,7 @@ No. JHUAPL gave permission for the RST to be re-licensed under the GPL in ~2012 
 
 
 __What happens if I don't include copyright information in my code?__<br/>
-In most countries, authors automatically hold the copyright to their own work even if they don't add a copyright notice. This is to protect the rights people who are not aware of the law. However, omitting copyright information means that:
+In most countries, authors automatically hold the copyright to their own work even if they don't add a copyright notice. This is to protect the rights of people who are not aware of the law. However, omitting copyright information means that:
 
 - You may be breaching your employment contract
 - You are not complying with the GPL requirement to include copyright information
@@ -178,11 +178,11 @@ __What are the licensing consequences of copying code from the RST into my own s
 - You are free to share the software outputs (data files, plots)
 - If you choose to share the binaries for your new software: 
     - You must also share the source code
-    - The source code must be licensed under GPLv3
+    - Your software must be licensed under GPL (v3 or later)
 
 
 __I've added code to the RST. Can I also release my code under a different license?__<br/>
-Yes, provided that you are the copyright owner of the code, you are free to license it under different non-exclusive licenses ([more info](https://www.gnu.org/licenses/gpl-faq.html#ReleaseUnderGPLAndNF)). Remember that:
+Yes, provided that you are the copyright holder of the code, you are free to license it under different non-exclusive licenses ([more info](https://www.gnu.org/licenses/gpl-faq.html#ReleaseUnderGPLAndNF)). Remember that:
 
 - Once your code is added to the RST, that version of the code is licensed under GPLv3, and you cannot revoke this
 - If your software includes other code from the RST (or other GPL-licensed code), your software can only be licensed under GPL. 
@@ -201,6 +201,6 @@ There's lots of helpful information [here](https://www.gnu.org/licenses/gpl-faq.
 
 RST was originally developed at the Johns Hopkins University Applied Physics Laboratory (JHUAPL). Around 2012, JHUAPL granted permission for RST to be re-licensed so that the SuperDARN community could continue maintaining the software collaboratively. This process has caused confusion over the years, since even scientists who are expert programmers may not be familiar with the intricacies of software licensing and copyright.
 
-A major source of confusion around the RST license is whether it was intended to be licensed under the [GNU General Public License](https://www.gnu.org/licenses/gpl-3.0.en.html) (GPL), or the [GNU __Lesser__ General Public License](https://www.gnu.org/licenses/lgpl-3.0.en.html) (LGPL). This confusion has arisen because, at some point, the LGPL license notice was attached to most of the RST source code. The `AstAlg` library is the exception to this, which has been [clearly marked](https://github.com/SuperDARN/rst-archive/blob/rst.3.1/codebase/analysis/src.lib/astalg/astalg.1.2/LICENSE.txt) with a GPL disclaimer since it was first added to the RST in v3.1. Since `AstAlg` is clearly licensed under the GPL, then it follows that the whole of the RST should also be licensed under the GPL. It is possible that the LGPL disclaimer text was added to the remaining RST source code in error, since it is very similar to the GPL disclaimer text. To add to this confusion, RST was not distributed with any license file for several releases (v3.5 to v4.3 inclusive). The GPL license file was added in [v4.3.1](https://doi.org/10.5281/zenodo.3634732). The license information across the whole package will be corrected in RST4.6.
+A major source of confusion around the RST license is whether it was intended to be licensed under the [GNU General Public License](https://www.gnu.org/licenses/gpl-3.0.en.html) (GPL), or the [GNU __Lesser__ General Public License](https://www.gnu.org/licenses/lgpl-3.0.en.html) (LGPL). This confusion has arisen because, at some point, the LGPL license notice was attached to most of the RST source code. The `AstAlg` library is the exception to this, which has been [clearly marked](https://github.com/SuperDARN/rst-archive/blob/rst.3.1/codebase/analysis/src.lib/astalg/astalg.1.2/LICENSE.txt) with a GPL disclaimer since it was first added to the RST in v3.1. Since `AstAlg` is clearly licensed under the GPL, it follows that the whole of the RST should also be licensed under the GPL. It is possible that the LGPL disclaimer text was added to the remaining RST source code in error, since it is very similar to the GPL disclaimer text. To add to this confusion, RST was not distributed with any license file for several releases (v3.5 to v4.3 inclusive). The GPL license file was added in [v4.3.1](https://doi.org/10.5281/zenodo.3634732). The license information across the whole package will be corrected in RST4.6.
 
 
