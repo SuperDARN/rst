@@ -7,14 +7,14 @@ Disclaimer:
 
 # Pull Requests 
 
-Pull Requests in GitHub provide an interface for others to review and test your code. Testing pull releases is a good way to start contributing to the RST.
+Pull Requests in GitHub provide an interface for others to review and test your code. Testing pull requests is a good way to start contributing to the RST.
 
 
 ## Code Check List
 
 Before submitting a PR, please check the following:
 
-- copyright and disclaimer, or modification line is added
+- copyright and disclaimer, or modification line is added (see [RST copyright & license](developers_guide/copyright_license.md))
 - the code compiles and runs with no additional warnings
 - the new code has been tested on your own machine
 - user documentation has been included/updated
@@ -76,4 +76,4 @@ Here are some general guidelines to follow with Pull Requests:
   - If at least 2 people have "approved" the code, anyone (including the code author) may merge it
 - Make sure your code is complete before creating a PR (to reduce additional commit emails)
 - Make sure your code is tested on various operating systems if needed
-- Optional code is reviewed in a Code Review
+- Optional: code is reviewed in a Code Review
