@@ -35,11 +35,12 @@ Code reviews can easily become tedious and time consuming, especially for new fe
     
     !!! Warning
         Making several single comments causes a lot of email notifications, so please use the `Start a review` option
-8. Once you are done, click on `Finish your review` or `Review changes` (if no comments made), and provide some general feedback in the text box. This should include what type of review you did and if you will be continuing your review at a later time/date.  Some examples include:
+
+* Once you are done, click on `Finish your review` or `Review changes` (if no comments made), and provide some general feedback in the text box. This should include what type of review you did and if you will be continuing your review at a later time/date.  Some examples include:
     - Testing and code review to find a bug 
     - Code review on style/formatting 
     - Partial code review 
-9. Select:  
+* Select:  
     - Comment: general comments to be fixed up but nothing major
       
         !!! Note
@@ -56,7 +57,7 @@ Code reviews can easily become tedious and time consuming, especially for new fe
         !!! Warning
             `Request changes` prevents others from merging the code. Generally you will need to approve the changes before the code can be merged. If you cannot do this then do not use Request changes.
 
-10. Submit! 
+* Submit! 
 
 !!! Note
     To make minor changes directly in the code like typos and grammar changes, you can edit the code directly on that branch (either on Github or on your [own machine](testing.md)), and then commit and push the changes to the branch.  The Developer can then review the changes in your commit.
