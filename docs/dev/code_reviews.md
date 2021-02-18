@@ -16,12 +16,8 @@ All new code is tested for functionality and integration with RST before it is m
 Reviewing code encourages collaboration, and it is an excellent opportunity to improve your own programming skills and knowledge of the software. Anyone can provide a code review, even if they are not familiar with the native language, which for RST is C and IDL.
 
 
-If you are more advanced in the native programming language or science being implemented in the code, a short code review on finding any mistakes, or bugs in the code is more than welcome. 
-This is not a requirement as it can be tedious and time consuming, and testing code should show these mistakes/bugs. If you wish to do this you can focus on one portion of the code to comb through. 
-
-Code reviews should not take more than an hour and Pull Requests should be less than 400 lines.
-However, these restrictions can be challenging for new features and major changes. 
-If this is the case, then you can code review parts of a file or specific files to reduce your time spent. 
+If you are more advanced in the native programming language or science being implemented in the code, a short code review to help find any mistakes or bugs in the code is more than welcome. 
+Code reviews can easily become tedious and time consuming, especially for new features and major changes. Therefore, consider focusing on one portion of the code when providing a review. In general, code reviews should not take more than an hour. 
 
 ## How to start a Code Review 
 
@@ -29,19 +25,17 @@ If this is the case, then you can code review parts of a file or specific files 
 2. Click on `files changed` at the top of the PR conversation below the title on the right side 
     
     !!! Note 
-        Before starting a code review always check for others comments, if something you have stated is already stated 
-        then you can leave it alone or give a "thumbs up :+1" to the comment to show support. 
+        Please read the previous comments on the PR before starting a code review. If something has already been mentioned in the conversation, then you can leave it alone or give a "thumbs up :+1" to the comment to show support. 
 
-3. Now review the changes that occurred in this PR - avoid commenting on other lines not included in the changes as this is `scope creep`.
+3. Review the changes in this PR. To prevent `scope creep`, avoid commenting on other lines that have not been modified in the PR (open a new issue instead).
 4. To comment on a single line of code, hover the cursor over the line numbers on the left side and click the **+** button that appears. To comment on several consecutive lines, hold the **+** button and drag the cursor down to select the relevant lines.
-5. Now write any feedback or questions in the box and hit `Start a review` on the bottom right in the pop up window. 
+5. Write any feedback or questions in the box. You can also suggest concrete changes to a line of code using the [suggestion](https://haacked.com/archive/2019/06/03/suggested-changes/) syntax
+
+6. Click `Start a review` on the bottom right in the pop up window. 
     
     !!! Warning
-        Do not make several single comments as this can cause a lot of email notifications
-
-6. If you want to change a line in the code use a [suggestion](https://haacked.com/archive/2019/06/03/suggested-changes/)
-7. If you wish to comment on several consecutive lines hold **+** down and drag the cursor down to select multiple lines
-8. Once you are done, click on `Finish your changes` or `Review changes` (if no comments made) then comment on any general feedback in the text box. This should include what type of review you did and if you will be continuing your review at a later time/date.  Some examples include:
+        Making several single comments causes a lot of email notifications, so please use the `Start a review` option
+8. Once you are done, click on `Finish your review` or `Review changes` (if no comments made), and provide some general feedback in the text box. This should include what type of review you did and if you will be continuing your review at a later time/date.  Some examples include:
     - Testing and code review to find a bug 
     - Code review on style/formatting 
     - Partial code review 
@@ -60,14 +54,12 @@ If this is the case, then you can code review parts of a file or specific files 
     - Request Changes: major changes to make
       
         !!! Warning
-            Request changes, prevents anyone from merging the code. Generally you will need to approve the changes that were addressed. 
-        If you cannot do this then do not use Request changes.
+            `Request changes` prevents others from merging the code. Generally you will need to approve the changes before the code can be merged. If you cannot do this then do not use Request changes.
 
 10. Submit! 
 
 !!! Note
-    If you want to make minor changes directly in the code like typos and grammar changes you can pull the code down described in [testing](testing.md)
-    and change the code as you want and then re-push the code back to the code. The Developer can review the changes in your commit. 
+    To make minor changes directly in the code like typos and grammar changes, you can edit the code directly on that branch (either on Github or on your [own machine](testing.md)), and then commit and push the changes to the branch.  The Developer can then review the changes in your commit.
 
 ### What to look for?
 
@@ -96,7 +88,7 @@ Here are some tips and tricks:
 - Focus on what has been changed 
 - If an issue repeats then make a comment for them to fix the rest and add in the general feedback when submitting the comments 
 - Do not get too pedantic!
-- Break up the reviews if you can only review a few files or functions then do it and mention it. 
+- Break up reviews into smaller parts that each focus on a few files or functions (and then comment that you have done a partial review)
 
 ## Reviewing a review 
   
@@ -112,10 +104,10 @@ then at the top in the middle there is `commit suggestions` and this commit all 
 
 ### Responding to Comments 
 
-If you don't agree with a suggestion try to find a compromise or acknowledge their effort and explain why you prefer your style.
+If you don't agree with a suggestion, try to find a compromise or acknowledge their effort and explain why you prefer your style.
 Remember to hit `Start a review` to prevent multiple email notifications. 
 
-If you made the change requested, then select `resolve conflict` so they know you addressed their comment.
+If you made the change requested, then select `resolve conversation` so they know you addressed their comment.
 
 If you are answering a question or responding to some feedback, remember to acknowledge their time and effort, then address it in collaborative manner. 
 Remember to hit `Start a review` to prevent multiple email notifications. 
@@ -142,7 +134,7 @@ If you find multiple issues in your review that are unable to be in a code revie
 Here are some general guidelines to follow when code reviewing or responding to one: 
 
 - Dedicate time to review in a given period, avoid being distracted 
-- Ask questions instead of stating 
+- Phrase comments as questions as much as possible
 - Remember to comment on the code 
 - Acknowledge time spent and say "Thank you" 
 - Suggest solutions or help
