@@ -33,7 +33,7 @@ The SuperDARN Radar Software Toolkit (RST) is licensed under the [GNU General Pu
 
 > *"Developers that use the GNU GPL protect your rights with two steps: (1) __assert copyright__ on the software, and (2) __offer you this License__ giving you legal permission to copy, distribute and/or modify it."*
 
-This license ensures that the scientific community (and everyone else) is legally permitted to use, copy, modify and redistribute the RST. In this way, the software can be maintained and improved over time to support the advancement of science. 
+This license ensures that the scientific community (and everyone else) is legally permitted to use, copy, modify and redistribute the RST software package. In this way, the software package can be maintained and improved over time to support the advancement of science. 
 
 
 ## License requirements
@@ -42,7 +42,7 @@ The GPL v3.0 License states that:
 
 - The RST source code must be distributed with the software
 - License and copyright information must be included at the top of each source code file (more info on copyright below)
-- If the code has been modified, there must be a notice stating that it has been modified and when
+- If the code has been modified, there must be a notice stating that it has been modified, by who, and when
 - Modifications must be released under the same license as RST (GPL v3.0 or later)
 
 
@@ -144,8 +144,8 @@ __Can RST be released with a different license?__<br/>
 To release RST with a different license, we would need permission from all of the copyright holders. This means that, in practice, it would be very difficult to re-license the software. This is by design of the GPL license--it ensures that the software can always be used freely. 
 
 
-__Can JHUAPL revoke the GPL license and take back control of RST?__<br/>
-No. JHUAPL gave permission for the RST to be re-licensed under the GPL in ~2012 (RST3.5), and they cannot revoke this permission. JHUAPL still owns the copyright to their own code, and RST versions 3.4 and earlier are still licensed by JHUAPL (not under GPL).
+__Can JHU/APL revoke the GPL license and take back control of RST?__<br/>
+No. JHU/APL gave permission for the RST to be re-licensed under the GPL in ~2012 (RST3.5), and they cannot revoke this permission. JHU/APL still owns the copyright to their own code, and RST versions 3.4 and earlier are still licensed by JHU/APL (not under GPL).
 
 
 __What happens if I don't include copyright information in my code?__<br/>
@@ -158,13 +158,13 @@ In most countries, authors automatically hold the copyright to their own work ev
 
 
 __Do I have to include my institution in the copyright line?__<br/>
-That depends on the terms of your employment. Check your employment contract or ask the research office. If you contribute to the RST in your free time, then just put your own name in the copyright line.
+That depends on the terms of your employment. Check your employment contract or ask the research office. If you contribute to the RST software package in your free time, then just put your own name in the copyright line.
 
 __Can I copyright code to a generic "SuperDARN" organization?__<br/>
-No, the copyright holder has to be a legal entity or a person. Your employer may also object to this. If you contribute to the RST in your free time, then just put your own name in the copyright line.
+No, the copyright holder has to be a legal entity or a person. Your employer may also object to this. If you contribute to the RST software package in your free time, then just put your own name in the copyright line.
 
 __Why does every RST source file have license notices at the top? Isn't it sufficient to include the license file in the top-level directory of RST?__<br/>
-Since the GPL allows users to modify and redistribute portions of the RST, it is possible that individual source files might become separated from the license file. If this happens, it will be unclear to users what their legal rights are to use/modify/distribute that version of the code (which is a violation of the GPL). Therefore, all source files should clearly indicate that they are licensed under the GPL (writing "see license.txt" is not sufficient).
+Since the GPL allows users to modify and redistribute portions of the RST software packages, it is possible that individual source files might become separated from the license file. If this happens, it will be unclear to users what their legal rights are to use/modify/distribute that version of the code (which is a violation of the GPL). Therefore, all source files should clearly indicate that they are licensed under the GPL (writing "see license.txt" is not sufficient).
 
 
 __If I add a new library to the RST, can that library have a different license?__<br/>
@@ -199,8 +199,7 @@ There's lots of helpful information [here](https://www.gnu.org/licenses/gpl-faq.
 
 ## History of RST licensing
 
-RST was originally developed at the Johns Hopkins University Applied Physics Laboratory (JHUAPL). Around 2012, JHUAPL granted permission for RST to be re-licensed so that the SuperDARN community could continue maintaining the software collaboratively. This process has caused confusion over the years, since even scientists who are expert programmers may not be familiar with the intricacies of software licensing and copyright.
+RST was originally developed at the Johns Hopkins University/Applied Physics Laboratory (JHU/APL). Around 2012, JHU/APL granted permission for RST to be re-licensed so that the SuperDARN community could continue maintaining the software collaboratively. This process has caused confusion over the years, since even scientists who are expert programmers may not be familiar with the intricacies of software licensing and copyright.
 
 A major source of confusion around the RST license is whether it was intended to be licensed under the [GNU General Public License](https://www.gnu.org/licenses/gpl-3.0.en.html) (GPL), or the [GNU __Lesser__ General Public License](https://www.gnu.org/licenses/lgpl-3.0.en.html) (LGPL). This confusion has arisen because, at some point, the LGPL license notice was attached to most of the RST source code. The `AstAlg` library is the exception to this, which has been [clearly marked](https://github.com/SuperDARN/rst-archive/blob/rst.3.1/codebase/analysis/src.lib/astalg/astalg.1.2/LICENSE.txt) with a GPL disclaimer since it was first added to the RST in v3.1. Since `AstAlg` is clearly licensed under the GPL, it follows that the whole of the RST should also be licensed under the GPL. It is possible that the LGPL disclaimer text was added to the remaining RST source code in error, since it is very similar to the GPL disclaimer text. To add to this confusion, RST was not distributed with any license file for several releases (v3.5 to v4.3 inclusive). The GPL license file was added in [v4.3.1](https://doi.org/10.5281/zenodo.3634732). The license information across the whole package will be corrected in RST4.6.
-
 
