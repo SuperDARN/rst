@@ -115,7 +115,7 @@ RST supports the following labels:
 
 ### Creating A New Label
 
-To create an new label got [RST labels](https://github.com/SuperDARN/rst/labels) and click on [New label](https://github.com/SuperDARN/rst/labels)
+To create a new label got [RST labels](https://github.com/SuperDARN/rst/labels) and click on [New label](https://github.com/SuperDARN/rst/labels)
 
 Give a concise name for the label and provide a description. A color can be randomly generated or chosen based on the hex value. Please avoid similar colors to other labels if possible. 
 
@@ -128,6 +128,5 @@ Avoid creating new labels when creating a new issue: this can delete the issue b
 Sometimes Issues can be open-ended, especially discussion issues. Here are some steps to make progress on the issue and prevent it going **stale**:
 - Label it with *telecon* if needs to be further discussed in a telecon with DAWG members 
 - Once a general idea is established, close the issue and create a project to break it into a defined tasks. Open the first task as an issue, see [projects](projects.md).
-
 
 
