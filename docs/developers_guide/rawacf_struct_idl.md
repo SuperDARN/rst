@@ -11,8 +11,6 @@ A description of the IDL data structure used to store Raw ACF data.
 
 ## Description
 
-### Introduction
-
 The raw ACF data is the primary (first order) data product from the SuperDARN radars. Within IDL a structure is used to store the ACF data.
 
 ### Constants

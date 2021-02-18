@@ -11,8 +11,6 @@ A description of the data structure in the C language used to store the raw I an
 
 ## Description
 
-### Introduction
-
 The raw I and Q data are the samples observed by the analogue to digital converter or the digital receiver. They can be used to completely characterize and reconstruct the observations at the radar  Listed below is the C data structure `struct FitData` used to store the raw  I and Q data.
 
 ### Array Limits

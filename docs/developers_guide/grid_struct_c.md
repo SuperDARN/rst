@@ -11,8 +11,6 @@ A description of the data structure in the C language used to store the gridded 
 
 ## Description
 
-### Introduction
-
 Gridded SuperDARN data consists of median filtered, geo-magnetically located ionospheric scatter, fitted to an equi-area grid.  Listed below is the C data structure <code>struct GridData</code> used to store the gridded data.
 
 ### `struct GridData`

@@ -11,8 +11,6 @@ A description of the data structure in the C language used to store the cFit Dat
 
 ## Description
 
-### Introduction
-
 The cFit format is a compressed format for storing a limited sub-set of data from the output of the FitACF algorithm. Listed below is the C data structure <code>struct CFitData</code> used to store the cFit data.
 
 ### Array Limits

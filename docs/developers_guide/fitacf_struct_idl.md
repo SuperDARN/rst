@@ -11,8 +11,6 @@ A description of the IDL data structure used to store Fitted ACF data.
 
 ## Description
 
-### Introduction
-
 The FitACF algorithm is used to derive doppler velocities, spectral widths and powers from the raw ACF data. Within IDL a structure is used to store the fitted ACF data.
 
 ### Constants

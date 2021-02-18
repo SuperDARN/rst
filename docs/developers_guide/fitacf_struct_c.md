@@ -11,8 +11,6 @@ A description of the data structure in the C language used to store the Fitted A
 
 ## Description
 
-### Introduction
-
 The FitACF algorithm is used to derive doppler velocities, spectral widths and powers from the raw ACF data.  Listed below is the C data structure <code>struct FitData</code> used to store the fitted ACF data.
 
 ### Array Limits

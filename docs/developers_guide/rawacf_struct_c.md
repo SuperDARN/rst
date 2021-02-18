@@ -12,8 +12,6 @@ A description of the data structure in the C language used to store the Raw ACF 
 
 ## Description
 
-### Introduction
-
 The raw ACF data is the primary (first order) data product from the SuperDARN radars.  Listed below is the C data structure <code>struct RawData</code> used to store the ACF data.
 
 ### Array Limits

@@ -11,8 +11,6 @@ A description of the IDL data structure used to store gridded data.
 
 ## Description
 
-### Introduction
-
 Gridded SuperDARN data consists of median filtered, geo-magnetically located ionospheric scatter, fitted to an equi-area grid. Within IDL three structures are used to store the gridded data.
 
 ### Grid parameters data structure `GridPrm`

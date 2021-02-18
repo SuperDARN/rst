@@ -11,8 +11,6 @@ A description of the data structure in the C language used to store the convecti
 
 ## Description
 
-### Introduction
-
 SuperDARN Convection map data consists of a superset of the gridded data. Listed below is the C data structure <code>struct CnvMapData</code> used to store the gridded data.
 
 ### `struct CnvMapData`

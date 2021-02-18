@@ -11,8 +11,6 @@ A description of the IDL data structure used to store raw I and Q data.
 
 ## Description
 
-### Introduction
-
 The raw ACF data is the lowest level (zero order) data product from the SuperDARN radars. Within IDL a structure is used to store the I and Q data.
 
 ### Constants

@@ -11,8 +11,6 @@ A description of the IDL data structure used to store convection map data.
 
 ## Description
 
-### Introduction
-
 SuperDARN Convection map data consists of a superset of the gridded data. Within IDL four structures are used to store the convection map data.
 
 ### Convection map parameters data structure `CnvMapPrm`

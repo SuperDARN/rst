@@ -11,8 +11,6 @@ A description of the IDL data structure used to store electric field data.
 
 ## Description
 
-### Introduction
-
 SuperDARN electric field data is derived from the global convection data. The data consists of a regular grid of derived electric field values. Within IDL a structure is used to store the parameters associated with the electric field data.
 
 ### Electric field parameters data structure `EFieldPrm`

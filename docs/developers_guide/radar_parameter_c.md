@@ -11,7 +11,6 @@ A description of the data structure in the C language used to store the Radar Pa
 
 ## Description
 
-### Introduction
 The Radar Parameter block is used throughout SuperDARN software to store the radar operating parameters. Listed below is the C data structure <code>struct RadarParm</code> used to store the block.
 
 ### Array Limits

@@ -12,8 +12,6 @@ A description of the IDL data structure used to store the radar parameter block.
 
 ## Description
 
-### Introduction
-
 The radar parameter block is used throughout SuperDARN software to store the radar operating parameters. Within IDL a structure is used to store the parameter block.
 
 ### Constants
