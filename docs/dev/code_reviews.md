@@ -33,7 +33,7 @@ If this is the case, then you can code review parts of a file or specific files 
         then you can leave it alone or give a "thumbs up :+1" to the comment to show support. 
 
 3. Now review the changes that occurred in this PR - avoid commenting on other lines not included in the changes as this is `scope creep`.
-4. If you want to make a comment hover the cursor over the line numbers on the left side and a **+** button will appear. Click it!
+4. To comment on a single line of code, hover the cursor over the line numbers on the left side and click the **+** button that appears. To comment on several consecutive lines, hold the **+** button and drag the cursor down to select the relevant lines.
 5. Now write any feedback or questions in the box and hit `Start a review` on the bottom right in the pop up window. 
     
     !!! Warning
