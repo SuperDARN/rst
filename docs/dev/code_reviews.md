@@ -7,16 +7,14 @@ Disclaimer:
 
 # Code Reviews 
 
-Reviewing code is like proof reading a paper, it is essential to ensure the following: 
+All new code is tested for functionality and integration with RST before it is merged into the main codebase. In addition to this testing, a *code review* may be useful, especially when new features or major changes are being proposed. Reviewing code is like copyediting a paper before publication. It helps to ensure that: 
 
-- code is user readable
-- enforces consistency
-- helps encourage collaboration
-- code has a proper structure
-- The algorithms and software are tested and verified 
+- the code is understandable to users
+- the code is consistent and structured appropriately
+- the algorithms and software function as intended
 
-Anyone can code review even if you don't program in the native language, which for RST is C. 
-Code reviewing is also an excellent learning experience which helps you better understand the software and how to program in general. 
+Reviewing code encourages collaboration, and it is an excellent opportunity to improve your own programming skills and knowledge of the software. Anyone can provide a code review, even if they are not familiar with the native language, which for RST is C and IDL.
+
 
 If you are more advanced in the native programming language or science being implemented in the code, a short code review on finding any mistakes, or bugs in the code is more than welcome. 
 This is not a requirement as it can be tedious and time consuming, and testing code should show these mistakes/bugs. If you wish to do this you can focus on one portion of the code to comb through. 
