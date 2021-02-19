@@ -113,7 +113,7 @@ If you made the change requested, then select `resolve conversation` so they kno
 If you are answering a question or responding to some feedback, remember to acknowledge their time and effort, then address it in collaborative manner. 
 Remember to hit `Start a review` to prevent multiple email notifications. 
 
-Once all comments are addressed then follow steps 9-10 in the `How to start a Code Review` section. 
+Once all comments are addressed then follow steps 8-9 in the `How to start a Code Review` section. 
 
 ## What If You Cannot Comment on a Specific Line of Code?
 
