@@ -547,6 +547,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"lndcol",'t',&lndcol_txt);
   OptionAdd(&opt,"seacol",'t',&seacol_txt);
   OptionAdd(&opt,"trmcol",'t',&trmcol_txt);
+  OptionAdd(&opt,"ftrmcol",'t',&ftrmcol_txt);
   OptionAdd(&opt,"tmkcol",'t',&tmkcol_txt);
  
   OptionAdd(&opt,"fovcol",'t',&fovcol_txt);
