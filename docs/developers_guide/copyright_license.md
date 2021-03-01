@@ -176,19 +176,12 @@ If the new library was originally developed outside of RST, the author of that l
 
 
 
-__Am I allowed to copy code from the RST into my own software project? What do I have to do to comply with RST's license?__<br/>
-
-- You are free to copy or modify any portion of the RST code
-- You are free to share the software outputs (data files, plots)
-- If you choose to share the binaries for your new software: 
-    - You must also share the source code
-    - Your software must be licensed under GPL (v3 or later)
 
 
 __I've added code to the RST. Can I also release my code under a different license?__<br/>
-Yes, provided that you are the copyright holder of the code, you are free to license it under different non-exclusive licenses ([more info](https://www.gnu.org/licenses/gpl-faq.html#ReleaseUnderGPLAndNF)). Remember that:
+Yes, provided that you are the copyright holder of the code, and that it is a standalone library (developed outside of RST), you are free to license it under different non-exclusive licenses ([more info](https://www.gnu.org/licenses/gpl-faq.html#ReleaseUnderGPLAndNF)). Remember that:
 
-- Once your code is added to the RST, that version of the code is licensed under GPLv3, and you cannot revoke this
+- Once your code is added to the RST, that version of the code is licensed under GPLv3 (or LGPL - see previous question), and you cannot revoke this
 - If your software includes other code from the RST (or other GPL-licensed code), your software can only be licensed under GPL. 
 
 __Am I allowed to copy code from the RST into my own software project? What do I have to do to comply with RST's license?__<br/>
