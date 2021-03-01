@@ -172,7 +172,7 @@ Since the GPL allows users to modify and redistribute portions of the RST softwa
 
 
 __If I add a new library to the RST, can that library have a different license?__<br/>
-No, the GPL requires that the whole "work" be released with the same license.
+If the new library was originally developed outside of RST, the author of that library can choose to license it under either GPL or LGPL when adding it to the RST. Code that has been developed within RST must be licensed under GPL.
 
 
 
