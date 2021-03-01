@@ -347,6 +347,7 @@ int main (int argc,char *argv[]) {
       strcpy(tmstr,asctime(gmtime(&ctime)));
       tmstr[24]=0;
       RadarParmSetOriginTime(prm,tmstr);
+      RawFwrite(stdout,prm,raw);
      }
 
      TimeEpochToYMDHMS(atime,&yr,&mo,&dy,&hr,&mt,&sc);
