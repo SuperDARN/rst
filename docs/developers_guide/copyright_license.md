@@ -191,7 +191,13 @@ Yes, provided that you are the copyright holder of the code, you are free to lic
 - Once your code is added to the RST, that version of the code is licensed under GPLv3, and you cannot revoke this
 - If your software includes other code from the RST (or other GPL-licensed code), your software can only be licensed under GPL. 
 
+__Am I allowed to copy code from the RST into my own software project? What do I have to do to comply with RST's license?__<br/>
 
+- You are free to copy or modify any portion of the RST code
+- You are free to share the software outputs (data files, plots)
+- If you choose to share the binaries for your new software: 
+    - You must also share the source code
+    - Your software must be licensed under GPL (v3 or later)
 __Who owns the outputs of RST (processed data files, plots)?__<br/>
 RST outputs belong to the end user who created them. The user is free to share them under any terms, and is not bound by the GPL.
 
