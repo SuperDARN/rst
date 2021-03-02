@@ -16,13 +16,6 @@ Every contribution helps!
 
 ## Setting up the testing environment
 
-If you haven't cloned RST before this will get you the correct branch installed to just test:
-`pip install git+https://github.com/superdarn/rst@<branchname>`
-Make sure to install any new instances of RST, or branches that are not master in a virtual environment to avoid mixing RST versions! 
-
-
-If you wish to clone RST for multi-branch comparison or testing in the future: 
-
 1. Clone the [RST repository](https://github.com/SuperDARN/rst.git) by typing 
 `git clone https://github.com/SuperDARN/rst.git` into the terminal or command line.
 
