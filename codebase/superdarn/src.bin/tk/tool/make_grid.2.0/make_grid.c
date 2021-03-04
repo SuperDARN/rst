@@ -518,7 +518,7 @@ int main(int argc,char *argv[]) {
     }
 
     if (catflg == 0) 
-        fprintf(stderr, "Deprecation Warning: -c option will removed next release. This will not change the functionality of make_grid and will be able to read multiple fitacf files of one radar still\n");
+        fprintf(stderr, "Deprecation Warning: -c option will be removed in the next release. This will not change the functionality of make_grid. Multiple input files from one radar are now detected and concatenated automatically.\n");
 
     if (bmstr !=NULL)  parse_ebeam(bmstr);
 
