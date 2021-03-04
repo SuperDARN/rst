@@ -744,25 +744,29 @@ int main(int argc,char *argv[]) {
             }
         }
         /* If end time provided then determine end date */
-        if (etime !=-1) {
+        if (found_record == 1){
+            if (etime !=-1){
 
             /* If end date not provided then use date of first record
              * in input file */
             if (edate==-1) etime+=src[0]->st_time -
                             ( (int) src[0]->st_time % (24*3600));
             else etime+=edate;
+            }
+            
+            /* If time extent provided then use that to calculate end time */
+            if (extime !=0) etime=stime+extime;
 
+            /* If end time is set and median filtering is to be applied then need
+             * to load data after the usual end time, so etime must be adjusted */
+            if ((etime !=-1) && (bxcar==1)) {
+                if (tlen !=0) etime+=tlen;
+                else etime+=15+src[0]->ed_time-src[0]->st_time;
+            }
+
+            found_record = 2;
         }
 
-        /* If time extent provided then use that to calculate end time */
-        if (extime !=0) etime=stime+extime;
-
-        /* If end time is set and median filtering is to be applied then need
-         * to load data after the usual end time, so etime must be adjusted */
-        if ((etime !=-1) && (bxcar==1)) {
-            if (tlen !=0) etime+=tlen;
-            else etime+=15+src[0]->ed_time-src[0]->st_time;
-        }
 
         /* Calculate year, month, day, hour, minute, and second of 
          * grid start time (needed to load AACGM_v2 coefficients) */
@@ -886,6 +890,8 @@ int main(int argc,char *argv[]) {
             num++;
 
         } while (s!=-1);
+        /* If scan data is beyond end of gridding time then break out of loop */
+        if ((etime !=-1) && (src[index]->st_time>etime)) break;
 
         /* Close the input file */
         if (fitflg) {
