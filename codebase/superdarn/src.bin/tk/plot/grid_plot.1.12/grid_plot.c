@@ -392,7 +392,7 @@ int main(int argc,char *argv[]) {
   int xdoff=-1;
   int ydoff=-1;
   struct timeval tmout;
-  float delay=0.1;
+  float delay=0;
   int xstat=0;
 #endif
 
