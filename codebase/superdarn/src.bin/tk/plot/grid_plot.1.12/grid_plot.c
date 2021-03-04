@@ -8,6 +8,9 @@
 
 /*
    See license.txt
+
+Modifications:
+    2021-03-04 Marina Schmidt chaged delay to 0 as a default
 */
 
 #include <stdio.h>
