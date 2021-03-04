@@ -1128,7 +1128,7 @@ end
 function geod2geoc, lat, lon, alt
   common IGRF_v2_Com
 
-  a = !CONST.R_earth/1000;    /* semi-major axis */
+  a = 6378.1370d;             /* semi-major axis */
   f = 1.d/298.257223563d;     /* flattening */
   b = a*(1.d -f);             /* semi-minor axis */
   a2 = a*a;
@@ -1396,7 +1396,7 @@ end
 function plh2xyz, lat, lon, alt
   common IGRF_v2_Com
 
-  a = !CONST.R_earth/1000     ; semi-major axis
+  a = 6378.1370d;             /* semi-major axis */
   f = 1.d/298.257223563d      ; flattening
   b = a*(1.d -f)              ; semi-minor axis
   ee = (2.d - f) * f
@@ -1450,7 +1450,7 @@ end
 function geoc2geod, lat,lon,r
   common IGRF_v2_Com
 
-  a = !CONST.R_earth/1000     ; semi-major axis
+  a = 6378.1370d;             /* semi-major axis */
   f = 1.d/298.257223563d      ; flattening
   b = a*(1.d -f)              ; semi-minor axis
   ee = (2.d - f) * f

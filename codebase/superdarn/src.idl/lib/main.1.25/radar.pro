@@ -445,7 +445,7 @@ end
 
 pro RadarGeoTGC,iopt,gdlat,gdlon,grho,glat,glon,del
 
-   a=!CONST.R_earth/1000
+   a = 6378.1370d;             /* semi-major axis */
    f=1.0D/298.257223563D
   
 
