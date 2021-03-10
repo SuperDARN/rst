@@ -66,7 +66,7 @@ void logtime(char *fname,int nbytes) {
   int mask=S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
   int fid;
   int yr,mo,dy,hr,mt,sc,us,s;
- 
+
   TimeReadClock(&yr,&mo,&dy,&hr,&mt,&sc,&us);
 
   fid=open(fname,O_WRONLY | O_TRUNC | O_CREAT,mask);
