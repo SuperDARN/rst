@@ -27,16 +27,7 @@ map_fit  20181001.model.map > 20181001.north.map
 
 ## Supplying IMF data
 
-IMF data from the ACE and WIND satellites can be supplied in CDF format using the `-ace` or `-wind` options in `map_addimf`. 
-```
-map_addimf -ace 20181001.hmb.map > 20181001.imf.map
-```
-The CDF files can be obtained from CDAWeb (https://cdaweb.gsfc.nasa.gov/). The ACE files have the form `ac_k1_mfi_[date]_v[xx].cdf` and should be placed in the directory `$ISTP_PATH/ace/[year]`. You can edit the `$ISTP_PATH` environment variable in `$RST_PATH/.profile/superdarn.bash`.
-
-!!! Warning
-    By default, RST loads 24 hours of IMF data. If you need to load data for a longer time period, use `-ex hr:mt`.
-
-IMF data can also be supplied as a text file to the `map_addimf` routine using `-if [imffile]` 
+IMF data can be supplied as a text file to the `map_addimf` routine using `-if [imffile]` 
 The file should have the columns shown below. The IMF values will change only when a subsequent line the IMF file alters it.
 
 ```
@@ -47,3 +38,26 @@ You can also add fixed IMF values for the entire map file, for example
 ```
 map_addimf -bx 1.5 -by -1.2 -bz 0.4 [file].map > [file].imf.map
 ```
+
+### CDF files
+IMF data from the ACE and WIND satellites can also be supplied in CDF format using the `-ace` or `-wind` options in `map_addimf`:
+
+```
+map_addimf -ace 20181001.hmb.map > 20181001.imf.map
+```
+The CDF files can be obtained from [CDAWeb](https://cdaweb.gsfc.nasa.gov/). ACE and WIND data should be placed in the directory `$ISTP_PATH/ace/[year]` and `$ISTP_PATH/wind/[year]` respectively. You can edit the `$ISTP_PATH` environment variable in `$RST_PATH/.profile/superdarn.bash` (or in your `.bashrc` file).
+
+For ACE data, RST searches for the following datasets:
+
+- Magnetic Field 16-Second Level 2 Data: `ac_H0_mfi_[date]_v[xx].cdf` (first preference)
+- Magnetic Field 16-Second Key Parameters: `ac_k1_mfi_[date]_v[xx].cdf`
+
+For WIND data, RST searches for datasets of the form: `wi_[level]_mfi_[date]_v[xx].cdf`
+
+
+
+
+!!! Warning
+    By default, RST loads 24 hours of IMF data. If you need to load data for a longer time period, use `-ex hr:mt`.
+
+
