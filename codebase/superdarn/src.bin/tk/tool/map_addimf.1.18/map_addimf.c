@@ -3,7 +3,7 @@
    Author: R.J.Barnes and others
 
 
-   This file is part of the Radar Software Toolkit (RST).
+This file is part of the Radar Software Toolkit (RST).
 
 RST is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -609,4 +609,3 @@ int load_ace()
   }
   return 0;
 }
-
