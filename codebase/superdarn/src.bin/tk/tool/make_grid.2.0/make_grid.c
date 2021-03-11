@@ -517,7 +517,7 @@ int main(int argc,char *argv[]) {
         if (tolower(chnstr_fix[0])=='d') channel_fix=4;
     }
 
-    if (catflg == 0) 
+    if (catflg == 1) 
         fprintf(stderr, "Deprecation Warning: -c option will be removed in the next release. This will not change the functionality of make_grid. Multiple input files from one radar are now detected and concatenated automatically.\n");
 
     if (bmstr !=NULL)  parse_ebeam(bmstr);
