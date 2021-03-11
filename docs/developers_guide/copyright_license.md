@@ -175,9 +175,6 @@ __If I add a new library to the RST, can that library have a different license?_
 If the new library was originally developed outside of RST, the author of that library can choose to license it under either GPL or LGPL when adding it to the RST. Code that has been developed within RST must be licensed under GPL.
 
 
-
-
-
 __I've added code to the RST. Can I also release my code under a different license?__<br/>
 Yes, provided that you are the copyright holder of the code, and that it is a standalone library (developed outside of RST), you are free to license it under different non-exclusive licenses ([more info](https://www.gnu.org/licenses/gpl-faq.html#ReleaseUnderGPLAndNF)). Remember that:
 
@@ -191,6 +188,7 @@ __Am I allowed to copy code from the RST into my own software project? What do I
 - If you choose to share the binaries for your new software: 
     - You must also share the source code
     - Your software must be licensed under GPL (v3 or later)
+
 __Who owns the outputs of RST (processed data files, plots)?__<br/>
 RST outputs belong to the end user who created them. The user is free to share them under any terms, and is not bound by the GPL.
 
