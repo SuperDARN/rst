@@ -21,12 +21,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ## Branching 
 
-In git, you can branch off other sources of code this allows you to change the code without affecting others. 
+In git, "branches" are used to make changes to the code without affecting the main codebase or the work of other developers. Once the changes on a new branch have been tested in a "pull request", the new branch is merged into the main codebase. 
 
 ## Getting Started 
 
 !!! Note
-    Please make sure there is an issue for the branch you are making for and you assigned the issue to you, see [issues](issues.md)
+    Before you start writing new code, please create a new issue to describe what you are planning to do, and "assign" the issue to yourself. This lets other developers know what you are working on. See [issues](issues.md)
 
 1. Clone the RST repo: 
 
@@ -61,10 +61,13 @@ In git, you can branch off other sources of code this allows you to change the c
    
         git checkout -b <prefix/><branch name>
 
-* Now you have created your own branch remotely. To have it appear on GitHub you need to push some code. Create a new file or change existing code then do the following commands:
+* Now you have created your own branch locally. Make the modifications to the code on this branch, and then run the following commands to commit the changes:
     
         git add <file changed>
-        git commit -m <message about what you have done>
+        git commit -m <brief description of the change>
+
+* Now "push" the changes to GitHub:
+
         git push origin <branch name>
 
 * Repeat the above commands above as you work on the code changes 
