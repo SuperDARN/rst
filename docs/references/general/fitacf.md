@@ -103,6 +103,8 @@ FITACF files contain a record that contains scalar and vector fields.
 !!! Note
     *slist* contains the range gates that obtained data points during the integration period of the beam. The length of *slist* determines the length of the following vector fields, let this be defined as *num_pts*.
 
+The arrays for the XCF fit will only be present in the record if an xcf is calculated.  This is indicated if the scalar `xcf` is set to 1.
+
 
 | Field name  | Units           | Dimensionality | Data Type   | Description                                                                 |
 | :---------- | :-----:         | :-------:      | :---:       | :---                                                                        |

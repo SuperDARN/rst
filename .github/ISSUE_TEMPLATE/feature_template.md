@@ -1,4 +1,10 @@
-# Requesting New Feature
+---
+name: New Feature
+about: Notify that a new feature is being planned
+
+---
+
+# New Feature
 
 **Name**: *Feature name*
 
@@ -25,6 +31,7 @@
 -  [ ] Is this a major change?
 -  [ ] Do you need help developing it? 
 -  [ ] Have you created a RST project (github project) to reflect the process of developing it? 
+-  [ ] Does it follow GPL 3.0v License and has been copyrighted/authored to you? 
 
 ### Developement help
 

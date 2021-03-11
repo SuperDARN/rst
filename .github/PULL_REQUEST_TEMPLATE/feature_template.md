@@ -1,3 +1,9 @@
+--- 
+name: New Feature
+about: Add a new feature 
+
+---
+
 # New Feature 
 **Name:**
 
@@ -17,21 +23,19 @@
 
 ### Requirements Checklist
 
-- [ ] tested
-- [ ] similar API (application programming interface) to the rest of RST
+- [ ] RST compiles cleanly (no additional warnings and without errors)
+- [ ] code runs as expected 
+- [ ] similar user interface to other RST binaries
+- [ ] similar code structure to other RST libraries 
 - [ ] Code documentation
-- [ ] readthedocs documentation
+- [ ] write user documentation 
 - [ ] merge to `develop`
 
 ## Test code
 
-*Please provide an example of **code** to show how to test it*
+*Please provide an example of how to test the code*
 
-*Please provide **expected output** of the code provided for testing*
-
-### Where to obtain test files
-
-*Please provide instructions if applicable on how to access files needed to test the code*
+*Please provide expected output of the test code*
 
 ## Extra notes
 
