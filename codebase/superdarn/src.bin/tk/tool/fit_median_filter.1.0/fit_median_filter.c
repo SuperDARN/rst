@@ -28,9 +28,10 @@
 #include "errstr.h"
 #include "hlpstr.h"
 
-
+#define tmax 2000
 #define maxbm 30
 #define maxch 3
+#define maxrng 250
 
 int fnum=0;
 
@@ -47,9 +48,17 @@ int rst_opterr (char *txt) {
 }
 
 
-int get_index(int a, int b, int c, int d, int aSize, int bSize, int cSize, int dSize) {
+int get_index(int a, int b, int c, int d, int aSize, int bSize, int cSize) {
     return (d * aSize * bSize * cSize) + (c * aSize * bSize) + (b * aSize) + a; 
 }
+
+typedef struct {
+  int *value;
+  size_t used;
+  size_t size;
+} qflgData;
+
+
 
 int main (int argc,char *argv[]) {
 
@@ -102,57 +111,38 @@ int main (int argc,char *argv[]) {
     fprintf(stderr,"Error reading file\n");
     exit(-1);
   }
-  
 
-  // Read the FITACF file to determine number records for each beam & channel
-  //   Also determine maximum number of range gates in the file
-  int maxrng=-1;
+  // Initial memory allocation  
+  qflgData *qflgs=malloc(sizeof(qflgData));
+  qflgs->value = malloc(tmax*maxrng*maxch*maxbm * sizeof(int));
+  qflgs->used = 0;
+  qflgs->size = tmax*maxrng*maxch*maxbm;
+  
+  
+  // Read the FITACF file to populate the qflg array
+  int index;
+  int maxindex=-1;
+  int rng,bm,ch;
   int tcnt[maxbm][maxch];
   memset(tcnt,0,sizeof(tcnt));
-
-  do {
-    
-    tcnt[prm->bmnum][prm->channel]++;
-    if (prm->nrang > maxrng) maxrng=prm->nrang;
-    
-  } while (FitFread(fp,prm,fit) !=-1);
   
-  
-  // Determine required array size for median filtering and allocate memory
-  int bm,ch;
-  int tmax=-1;
-  for (bm=0;bm<maxbm;bm++) {
-    for (ch=0;ch<maxch;ch++) {
-      if (tcnt[bm][ch] > tmax) tmax=tcnt[bm][ch];
-    }
-  }
-  int *qflg=malloc(tmax*maxrng*maxbm*maxch*sizeof(int));
-  int *qflg_filtered=malloc(tmax*maxrng*maxbm*maxch*sizeof(int));
-  
-
-  
-  // rewind the file pointer
-  rewind(fp); 
-  if (FitFread(fp,prm,fit)==-1) {
-    fprintf(stderr,"Error reading file\n");
-    exit(-1);
-  }
-  
-  // Read the FITACF file again to populate the qflg array
-  memset(tcnt,0,sizeof(tcnt));
-  int index;
-  int rng;
   do {
   
     bm=prm->bmnum;
     ch=prm->channel;
     for (rng=0;rng<prm->nrang;rng++) {
-      index=get_index(tcnt[bm][ch],rng,bm,ch,tmax,maxrng,maxbm,maxch);
-      qflg[index]=fit->rng[rng].qflg;
-      qflg_filtered[index]=fit->rng[rng].qflg;
+      index=get_index(rng,bm,ch,tcnt[bm][ch],maxrng,maxbm,maxch);
+      if (maxindex < index) maxindex=index;
+      if (qflgs->size < maxindex) {
+        qflgs->size += tmax*maxrng*maxch*maxbm;
+        qflgs->value = realloc(qflgs->value, qflgs->size * sizeof(int));
+      }
+      qflgs->value[index] = fit->rng[rng].qflg;
+      qflgs->used = maxindex;
+      
     }
+
     tcnt[bm][ch]++;
-  
   
   } while (FitFread(fp,prm,fit) !=-1);
   
@@ -161,57 +151,60 @@ int main (int argc,char *argv[]) {
   //   Since qflg can only be 0 or 1, the median of the neighbouring cells can be 
   //   calculated using the test ( #neighbour_cells > (#neighbour_cells-1)/2 ).
   //   The median calculation does not include the center cell
+
   int median=0;
-  int t;
   int index_list[9];  
   memset(index_list,-1,sizeof(index_list));
+  int *qflg_filtered=malloc(qflgs->size*sizeof(int));
+
+  
+  
+  int t=0;
   for (bm=0;bm<maxbm;bm++) {
     for (ch=0;ch<maxch;ch++) {
+      if (tcnt[bm][ch]==0) continue;
       for (rng=0;rng<maxrng;rng++) {
-        for (t=0;t<tcnt[bm][ch];t++) {
-        
-          // get the indices for the current 3x3 grid
-          index_list[0]=get_index(t,  rng,  bm,ch,tmax,maxrng,maxbm,maxch);
-          index_list[1]=get_index(t,  rng-1,bm,ch,tmax,maxrng,maxbm,maxch);
-          index_list[2]=get_index(t,  rng+1,bm,ch,tmax,maxrng,maxbm,maxch);
-          index_list[3]=get_index(t-1,rng,  bm,ch,tmax,maxrng,maxbm,maxch);
-          index_list[4]=get_index(t-1,rng-1,bm,ch,tmax,maxrng,maxbm,maxch);
-          index_list[5]=get_index(t-1,rng+1,bm,ch,tmax,maxrng,maxbm,maxch);
-          index_list[6]=get_index(t+1,rng,  bm,ch,tmax,maxrng,maxbm,maxch);
-          index_list[7]=get_index(t+1,rng-1,bm,ch,tmax,maxrng,maxbm,maxch);
-          index_list[8]=get_index(t+1,rng+1,bm,ch,tmax,maxrng,maxbm,maxch);
+        for (t=0;t<tcnt[bm][ch];t++) { 
           
+          // get the indices for the current 3x3 grid
+          index_list[0]=get_index(rng,  bm,ch,t,maxrng,maxbm,maxch);
+          index_list[1]=get_index(rng-1,bm,ch,t,maxrng,maxbm,maxch);
+          index_list[2]=get_index(rng+1,bm,ch,t,maxrng,maxbm,maxch);
+          index_list[3]=get_index(rng,  bm,ch,t-1,maxrng,maxbm,maxch);
+          index_list[4]=get_index(rng-1,bm,ch,t-1,maxrng,maxbm,maxch);
+          index_list[5]=get_index(rng+1,bm,ch,t-1,maxrng,maxbm,maxch);
+          index_list[6]=get_index(rng,  bm,ch,t+1,maxrng,maxbm,maxch);
+          index_list[7]=get_index(rng-1,bm,ch,t+1,maxrng,maxbm,maxch);
+          index_list[8]=get_index(rng+1,bm,ch,t+1,maxrng,maxbm,maxch);
           
           // skip if there's no scatter in this cell
-          if (qflg[index_list[0]]==0) continue;
+          if (qflgs->value[index_list[0]]==0) continue;
           
           
           // corners
           if (t==0 && rng==0)
-            median=(qflg[index_list[2]]+qflg[index_list[6]]+qflg[index_list[8]]) > 1;
+            median=(qflgs->value[index_list[2]]+qflgs->value[index_list[6]]+qflgs->value[index_list[8]]) > 1;
           else if (t==0 && rng==maxrng-1)
-            median=(qflg[index_list[1]]+qflg[index_list[6]]+qflg[index_list[7]]) > 1;
+            median=(qflgs->value[index_list[1]]+qflgs->value[index_list[6]]+qflgs->value[index_list[7]]) > 1;
           else if (t==tcnt[bm][ch] && rng==0)
-            median=(qflg[index_list[2]]+qflg[index_list[3]]+qflg[index_list[5]]) > 1;
+            median=(qflgs->value[index_list[2]]+qflgs->value[index_list[3]]+qflgs->value[index_list[5]]) > 1;
           else if (t==tcnt[bm][ch] && maxrng-1)
-            median=(qflg[index_list[1]]+qflg[index_list[3]]+qflg[index_list[4]]) > 1;
+            median=(qflgs->value[index_list[1]]+qflgs->value[index_list[3]]+qflgs->value[index_list[4]]) > 1;
           
           // edges
           else if (t==0)
-            median=(qflg[index_list[1]]+qflg[index_list[2]]+qflg[index_list[6]]+qflg[index_list[7]]+qflg[index_list[8]]) > 2;
+            median=(qflgs->value[index_list[1]]+qflgs->value[index_list[2]]+qflgs->value[index_list[6]]+qflgs->value[index_list[7]]+qflgs->value[index_list[8]]) > 2;
           else if (t==tcnt[bm][ch])
-            median=(qflg[index_list[1]]+qflg[index_list[2]]+qflg[index_list[3]]+qflg[index_list[4]]+qflg[index_list[5]]) > 2;
+            median=(qflgs->value[index_list[1]]+qflgs->value[index_list[2]]+qflgs->value[index_list[3]]+qflgs->value[index_list[4]]+qflgs->value[index_list[5]]) > 2;
           else if (rng==0)
-            median=(qflg[index_list[2]]+qflg[index_list[3]]+qflg[index_list[5]]+qflg[index_list[6]]+qflg[index_list[8]]) > 2;
+            median=(qflgs->value[index_list[2]]+qflgs->value[index_list[3]]+qflgs->value[index_list[5]]+qflgs->value[index_list[6]]+qflgs->value[index_list[8]]) > 2;
           else if (rng==maxrng-1)
-            median=(qflg[index_list[1]]+qflg[index_list[3]]+qflg[index_list[4]]+qflg[index_list[6]]+qflg[index_list[7]]) > 2;
+            median=(qflgs->value[index_list[1]]+qflgs->value[index_list[3]]+qflgs->value[index_list[4]]+qflgs->value[index_list[6]]+qflgs->value[index_list[7]]) > 2;
+            
+            // all other cells
+          else median=(qflgs->value[index_list[1]]+qflgs->value[index_list[2]]+qflgs->value[index_list[3]]+qflgs->value[index_list[4]]+qflgs->value[index_list[5]]+qflgs->value[index_list[6]]+qflgs->value[index_list[7]]+qflgs->value[index_list[8]]) > 3;
           
-          // all other cells
-          else median=(qflg[index_list[1]]+qflg[index_list[2]]+qflg[index_list[3]]+qflg[index_list[4]]
-                       +qflg[index_list[5]]+qflg[index_list[6]]+qflg[index_list[7]]+qflg[index_list[8]]) > 3;
-         
-         // reject cell if it has fewer than 4 neighbours (i.e. median qflg in the 3x3 window is zero)
-         if (median !=1 ) qflg_filtered[index_list[0]]=0;
+          qflg_filtered[index_list[0]]=median;
          
         }
       }
@@ -219,8 +212,7 @@ int main (int argc,char *argv[]) {
   }
   
   
-  
-  //** Read the file one last time to apply the median filter and write a new file
+  //** Read the file again to apply the median filter and write a new file
   // rewind the file pointer
   rewind(fp);
   if (FitFread(fp,prm,fit)==-1) {
@@ -241,7 +233,7 @@ int main (int argc,char *argv[]) {
     bm=prm->bmnum;
     ch=prm->channel;
     for (rng=0;rng<prm->nrang;rng++) {
-      index=get_index(tcnt[bm][ch],rng,bm,ch,tmax,maxrng,maxbm,maxch);
+      index=get_index(rng,bm,ch,tcnt[bm][ch],maxrng,maxbm,maxch);
       
       // Remove the data to be filtered
       if (fit->rng[rng].qflg==1 && qflg_filtered[index]==0) fit->rng[rng].qflg=0;
@@ -260,10 +252,14 @@ int main (int argc,char *argv[]) {
   } while (FitFread(fp,prm,fit) !=-1);
   if (fp !=stdin) fclose(fp);
   
-  free(qflg);
-  free(qflg_filtered);
+
+  // Free memory
   if (prm != NULL) RadarParmFree(prm);
-  if (fit != NULL) FitFree(fit);
+  if (fit != NULL) FitFree(fit); 
+  free(qflgs->value);
+  qflgs->value = NULL;
+  free(qflg_filtered);
+  
   
   return 0;
 }
