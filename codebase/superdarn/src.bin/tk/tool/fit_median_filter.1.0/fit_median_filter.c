@@ -154,7 +154,7 @@ int main (int argc,char *argv[]) {
     bm=prm->bmnum;
     ch=prm->channel;
     for (rng=0;rng<prm->nrang;rng++) {
-      index=get_index(rng,bm,ch,nrec[bm][ch],maxrng,maxbm,maxch);
+      index=get_index(bm,ch,rng,nrec[bm][ch],maxbm,maxch,maxrng);
       if (maxindex < index) maxindex=index;
       if (qflgs->size < maxindex) {
         qflgs->size += tmax*maxrng*maxch*maxbm;
@@ -201,15 +201,16 @@ int main (int argc,char *argv[]) {
     for (rng=0;rng<prm->nrang;rng++) {
       
       if (fit->rng[rng].qflg==1) {
-        index_list[0]=get_index(rng  ,bm,ch,t[bm][ch],maxrng,maxbm,maxch);
-        index_list[1]=get_index(rng-1,bm,ch,t[bm][ch],maxrng,maxbm,maxch);
-        index_list[2]=get_index(rng+1,bm,ch,t[bm][ch],maxrng,maxbm,maxch);
-        index_list[3]=get_index(rng,  bm,ch,t[bm][ch]-1,maxrng,maxbm,maxch);
-        index_list[4]=get_index(rng-1,bm,ch,t[bm][ch]-1,maxrng,maxbm,maxch);
-        index_list[5]=get_index(rng+1,bm,ch,t[bm][ch]-1,maxrng,maxbm,maxch);
-        index_list[6]=get_index(rng,  bm,ch,t[bm][ch]+1,maxrng,maxbm,maxch);
-        index_list[7]=get_index(rng-1,bm,ch,t[bm][ch]+1,maxrng,maxbm,maxch);
-        index_list[8]=get_index(rng+1,bm,ch,t[bm][ch]+1,maxrng,maxbm,maxch);
+ 
+        index_list[0]=get_index(bm,ch,rng  ,t[bm][ch]  ,maxbm,maxch,maxrng);
+        index_list[1]=get_index(bm,ch,rng-1,t[bm][ch]  ,maxbm,maxch,maxrng);
+        index_list[2]=get_index(bm,ch,rng+1,t[bm][ch]  ,maxbm,maxch,maxrng);
+        index_list[3]=get_index(bm,ch,rng,  t[bm][ch]-1,maxbm,maxch,maxrng);
+        index_list[4]=get_index(bm,ch,rng-1,t[bm][ch]-1,maxbm,maxch,maxrng);
+        index_list[5]=get_index(bm,ch,rng+1,t[bm][ch]-1,maxbm,maxch,maxrng);
+        index_list[6]=get_index(bm,ch,rng,  t[bm][ch]+1,maxbm,maxch,maxrng);
+        index_list[7]=get_index(bm,ch,rng-1,t[bm][ch]+1,maxbm,maxch,maxrng);
+        index_list[8]=get_index(bm,ch,rng+1,t[bm][ch]+1,maxbm,maxch,maxrng);
         
         // corners
         if (t[bm][ch]==0 && rng==0)
@@ -220,7 +221,7 @@ int main (int argc,char *argv[]) {
           sum=3*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[2]] + 2*qflgs->value[index_list[3]] + qflgs->value[index_list[5]];
         else if (t[bm][ch]==nrec[bm][ch] && rng==maxrng-1)
           sum=3*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[1]] + 2*qflgs->value[index_list[3]] + qflgs->value[index_list[4]];
-      
+        
         // edges
         else if (t[bm][ch]==0)
           sum=2*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[1]] + 2*qflgs->value[index_list[2]] + qflgs->value[index_list[6]] + qflgs->value[index_list[7]] + qflgs->value[index_list[8]];
