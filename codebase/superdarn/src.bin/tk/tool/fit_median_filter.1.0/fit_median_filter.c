@@ -1,8 +1,28 @@
 /* fit_median_filter.c
    ==========
-   Author: E.C.Bland
    
-   TODO add license notices
+Removes salt & pepper noise from a fitacf file using median filtering. Output is a fitacf file.
+
+(C) Copyright 2021 E.C.Bland
+author: E.C.Bland
+
+This file is part of the Radar Software Toolkit (RST).
+
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+       
+Modifications:
+
    
 */
 
@@ -100,7 +120,7 @@ int main (int argc,char *argv[]) {
   
   prm=RadarParmMake();
   fit=FitMake();
-
+  
   if (arg==argc) fp=stdin;
   else fp=fopen(argv[arg],"r");
   if (fp==NULL) {
