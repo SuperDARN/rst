@@ -156,60 +156,6 @@ int main (int argc,char *argv[]) {
   int index_list[9];  
   memset(index_list,-1,sizeof(index_list));
   int *qflg_filtered=malloc(qflgs->size*sizeof(int));
-
-  
-  
-  int t=0;
-  for (bm=0;bm<maxbm;bm++) {
-    for (ch=0;ch<maxch;ch++) {
-      if (tcnt[bm][ch]==0) continue;
-      for (rng=0;rng<maxrng;rng++) {
-        for (t=0;t<tcnt[bm][ch];t++) { 
-          
-          // get the indices for the current 3x3 grid
-          index_list[0]=get_index(rng,  bm,ch,t,maxrng,maxbm,maxch);
-          index_list[1]=get_index(rng-1,bm,ch,t,maxrng,maxbm,maxch);
-          index_list[2]=get_index(rng+1,bm,ch,t,maxrng,maxbm,maxch);
-          index_list[3]=get_index(rng,  bm,ch,t-1,maxrng,maxbm,maxch);
-          index_list[4]=get_index(rng-1,bm,ch,t-1,maxrng,maxbm,maxch);
-          index_list[5]=get_index(rng+1,bm,ch,t-1,maxrng,maxbm,maxch);
-          index_list[6]=get_index(rng,  bm,ch,t+1,maxrng,maxbm,maxch);
-          index_list[7]=get_index(rng-1,bm,ch,t+1,maxrng,maxbm,maxch);
-          index_list[8]=get_index(rng+1,bm,ch,t+1,maxrng,maxbm,maxch);
-          
-          // skip if there's no scatter in this cell
-          if (qflgs->value[index_list[0]]==0) continue;
-          
-          
-          // corners
-          if (t==0 && rng==0)
-            median=(qflgs->value[index_list[2]]+qflgs->value[index_list[6]]+qflgs->value[index_list[8]]) > 1;
-          else if (t==0 && rng==maxrng-1)
-            median=(qflgs->value[index_list[1]]+qflgs->value[index_list[6]]+qflgs->value[index_list[7]]) > 1;
-          else if (t==tcnt[bm][ch] && rng==0)
-            median=(qflgs->value[index_list[2]]+qflgs->value[index_list[3]]+qflgs->value[index_list[5]]) > 1;
-          else if (t==tcnt[bm][ch] && maxrng-1)
-            median=(qflgs->value[index_list[1]]+qflgs->value[index_list[3]]+qflgs->value[index_list[4]]) > 1;
-          
-          // edges
-          else if (t==0)
-            median=(qflgs->value[index_list[1]]+qflgs->value[index_list[2]]+qflgs->value[index_list[6]]+qflgs->value[index_list[7]]+qflgs->value[index_list[8]]) > 2;
-          else if (t==tcnt[bm][ch])
-            median=(qflgs->value[index_list[1]]+qflgs->value[index_list[2]]+qflgs->value[index_list[3]]+qflgs->value[index_list[4]]+qflgs->value[index_list[5]]) > 2;
-          else if (rng==0)
-            median=(qflgs->value[index_list[2]]+qflgs->value[index_list[3]]+qflgs->value[index_list[5]]+qflgs->value[index_list[6]]+qflgs->value[index_list[8]]) > 2;
-          else if (rng==maxrng-1)
-            median=(qflgs->value[index_list[1]]+qflgs->value[index_list[3]]+qflgs->value[index_list[4]]+qflgs->value[index_list[6]]+qflgs->value[index_list[7]]) > 2;
-            
-            // all other cells
-          else median=(qflgs->value[index_list[1]]+qflgs->value[index_list[2]]+qflgs->value[index_list[3]]+qflgs->value[index_list[4]]+qflgs->value[index_list[5]]+qflgs->value[index_list[6]]+qflgs->value[index_list[7]]+qflgs->value[index_list[8]]) > 3;
-          
-          qflg_filtered[index_list[0]]=median;
-         
-        }
-      }
-    }
-  }
   
   
   //** Read the file again to apply the median filter and write a new file
@@ -220,7 +166,8 @@ int main (int argc,char *argv[]) {
     exit(-1);
   }
   memset(tcnt,0,sizeof(tcnt));
-  
+  int t[maxbm][maxch];
+  memset(t,0,sizeof(t));
   do {
   
     if (vb) {
@@ -233,12 +180,46 @@ int main (int argc,char *argv[]) {
     bm=prm->bmnum;
     ch=prm->channel;
     for (rng=0;rng<prm->nrang;rng++) {
-      index=get_index(rng,bm,ch,tcnt[bm][ch],maxrng,maxbm,maxch);
       
-      // Remove the data to be filtered
-      if (fit->rng[rng].qflg==1 && qflg_filtered[index]==0) fit->rng[rng].qflg=0;
+      if (fit->rng[rng].qflg==1) {
+        index_list[0]=get_index(rng  ,bm,ch,t[bm][ch],maxrng,maxbm,maxch);
+        index_list[1]=get_index(rng-1,bm,ch,t[bm][ch],maxrng,maxbm,maxch);
+        index_list[2]=get_index(rng+1,bm,ch,t[bm][ch],maxrng,maxbm,maxch);
+        index_list[3]=get_index(rng,  bm,ch,t[bm][ch]-1,maxrng,maxbm,maxch);
+        index_list[4]=get_index(rng-1,bm,ch,t[bm][ch]-1,maxrng,maxbm,maxch);
+        index_list[5]=get_index(rng+1,bm,ch,t[bm][ch]-1,maxrng,maxbm,maxch);
+        index_list[6]=get_index(rng,  bm,ch,t[bm][ch]+1,maxrng,maxbm,maxch);
+        index_list[7]=get_index(rng-1,bm,ch,t[bm][ch]+1,maxrng,maxbm,maxch);
+        index_list[8]=get_index(rng+1,bm,ch,t[bm][ch]+1,maxrng,maxbm,maxch);
+        
+        // corners
+        if (t[bm][ch]==0 && rng==0)
+          median=(qflgs->value[index_list[2]]+qflgs->value[index_list[6]]+qflgs->value[index_list[8]]) > 1;
+        else if (t[bm][ch]==0 && rng==maxrng-1)
+          median=(qflgs->value[index_list[1]]+qflgs->value[index_list[6]]+qflgs->value[index_list[7]]) > 1;
+        else if (t[bm][ch]==tcnt[bm][ch] && rng==0)
+          median=(qflgs->value[index_list[2]]+qflgs->value[index_list[3]]+qflgs->value[index_list[5]]) > 1;
+        else if (t[bm][ch]==tcnt[bm][ch] && rng==maxrng-1)
+          median=(qflgs->value[index_list[1]]+qflgs->value[index_list[3]]+qflgs->value[index_list[4]]) > 1;
+      
+        // edges
+        else if (t[bm][ch]==0)
+          median=(qflgs->value[index_list[1]]+qflgs->value[index_list[2]]+qflgs->value[index_list[6]]+qflgs->value[index_list[7]]+qflgs->value[index_list[8]]) > 2;
+        else if (t[bm][ch]==tcnt[bm][ch])
+          median=(qflgs->value[index_list[1]]+qflgs->value[index_list[2]]+qflgs->value[index_list[3]]+qflgs->value[index_list[4]]+qflgs->value[index_list[5]]) > 2;
+        else if (rng==0)
+          median=(qflgs->value[index_list[2]]+qflgs->value[index_list[3]]+qflgs->value[index_list[5]]+qflgs->value[index_list[6]]+qflgs->value[index_list[8]]) > 2;
+        else if (rng==maxrng-1)
+          median=(qflgs->value[index_list[1]]+qflgs->value[index_list[3]]+qflgs->value[index_list[4]]+qflgs->value[index_list[6]]+qflgs->value[index_list[7]]) > 2;
+        
+        // all other cells
+        else median=(qflgs->value[index_list[1]]+qflgs->value[index_list[2]]+qflgs->value[index_list[3]]+qflgs->value[index_list[4]]+qflgs->value[index_list[5]]+qflgs->value[index_list[6]]+qflgs->value[index_list[7]]+qflgs->value[index_list[8]]) > 3;
+        
+        // Remove the data to be filtered
+        if (median==0) fit->rng[rng].qflg=0;
+      }
     }
-    tcnt[bm][ch]++;
+    t[bm][ch]++;
     
     // TODO Modify origin.command to indicate filtering has been performed 
     
