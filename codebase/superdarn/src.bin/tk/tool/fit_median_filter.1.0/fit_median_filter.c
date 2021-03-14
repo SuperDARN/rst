@@ -1,7 +1,9 @@
 /* fit_median_filter.c
    ==========
    
-Removes salt & pepper noise from a fitacf file using median filtering. Output is a fitacf file.
+Removes salt & pepper noise from a fitacf file using median filtering. 
+Filtering is performed separately for each beam and channel. 
+Output is a fitacf file.
 
 (C) Copyright 2021 E.C.Bland
 author: E.C.Bland
@@ -67,11 +69,12 @@ int rst_opterr (char *txt) {
   return(-1);
 }
 
-
+// function to return the index in an array
 int get_index(int a, int b, int c, int d, int aSize, int bSize, int cSize) {
     return (d * aSize * bSize * cSize) + (c * aSize * bSize) + (b * aSize) + a; 
 }
 
+// structure to store the qflgs. Can be dynamically resized
 typedef struct {
   int *value;
   size_t used;
@@ -132,7 +135,7 @@ int main (int argc,char *argv[]) {
     exit(-1);
   }
 
-  // Initial memory allocation  
+  // Initial memory allocation to store qflgs
   qflgData *qflgs=malloc(sizeof(qflgData));
   qflgs->value = malloc(tmax*maxrng*maxch*maxbm * sizeof(int));
   qflgs->used = 0;
@@ -143,15 +146,15 @@ int main (int argc,char *argv[]) {
   int index;
   int maxindex=-1;
   int rng,bm,ch;
-  int tcnt[maxbm][maxch];
-  memset(tcnt,0,sizeof(tcnt));
+  int nrec[maxbm][maxch]; // counts number of records for each beam/channel
+  memset(nrec,0,sizeof(nrec));
   
   do {
   
     bm=prm->bmnum;
     ch=prm->channel;
     for (rng=0;rng<prm->nrang;rng++) {
-      index=get_index(rng,bm,ch,tcnt[bm][ch],maxrng,maxbm,maxch);
+      index=get_index(rng,bm,ch,nrec[bm][ch],maxrng,maxbm,maxch);
       if (maxindex < index) maxindex=index;
       if (qflgs->size < maxindex) {
         qflgs->size += tmax*maxrng*maxch*maxbm;
@@ -161,31 +164,27 @@ int main (int argc,char *argv[]) {
       qflgs->used = maxindex;
       
     }
-
-    tcnt[bm][ch]++;
+    nrec[bm][ch]++;
   
   } while (FitFread(fp,prm,fit) !=-1);
   
   
   // Do the median filtering
-  //   Since qflg can only be 0 or 1, the median of the neighbouring cells can be 
-  //   calculated using the test ( #neighbour_cells > (#neighbour_cells-1)/2 ).
-  //   The median calculation does not include the center cell
-
-  int median=0;
+  //   Since qflg can only be 0 or 1, the median qflg of the 3x3 grid can be 
+  //   calculated using the test ( sum_of_qflgs >= 5 )
+  int sum;
   int index_list[9];  
   memset(index_list,-1,sizeof(index_list));
-  int *qflg_filtered=malloc(qflgs->size*sizeof(int));
   
   
-  //** Read the file again to apply the median filter and write a new file
+  //** Read the file again, apply the median filter, and write a new file
   // rewind the file pointer
   rewind(fp);
   if (FitFread(fp,prm,fit)==-1) {
     fprintf(stderr,"Error reading file\n");
     exit(-1);
   }
-  memset(tcnt,0,sizeof(tcnt));
+  memset(nrec,0,sizeof(nrec));
   int t[maxbm][maxch];
   memset(t,0,sizeof(t));
   do {
@@ -214,29 +213,29 @@ int main (int argc,char *argv[]) {
         
         // corners
         if (t[bm][ch]==0 && rng==0)
-          median=(qflgs->value[index_list[2]]+qflgs->value[index_list[6]]+qflgs->value[index_list[8]]) > 1;
+          sum=3*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[2]] + 2*qflgs->value[index_list[6]]+ qflgs->value[index_list[8]];
         else if (t[bm][ch]==0 && rng==maxrng-1)
-          median=(qflgs->value[index_list[1]]+qflgs->value[index_list[6]]+qflgs->value[index_list[7]]) > 1;
-        else if (t[bm][ch]==tcnt[bm][ch] && rng==0)
-          median=(qflgs->value[index_list[2]]+qflgs->value[index_list[3]]+qflgs->value[index_list[5]]) > 1;
-        else if (t[bm][ch]==tcnt[bm][ch] && rng==maxrng-1)
-          median=(qflgs->value[index_list[1]]+qflgs->value[index_list[3]]+qflgs->value[index_list[4]]) > 1;
+          sum=3*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[1]] + 2*qflgs->value[index_list[6]] + qflgs->value[index_list[7]];
+        else if (t[bm][ch]==nrec[bm][ch] && rng==0)
+          sum=3*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[2]] + 2*qflgs->value[index_list[3]] + qflgs->value[index_list[5]];
+        else if (t[bm][ch]==nrec[bm][ch] && rng==maxrng-1)
+          sum=3*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[1]] + 2*qflgs->value[index_list[3]] + qflgs->value[index_list[4]];
       
         // edges
         else if (t[bm][ch]==0)
-          median=(qflgs->value[index_list[1]]+qflgs->value[index_list[2]]+qflgs->value[index_list[6]]+qflgs->value[index_list[7]]+qflgs->value[index_list[8]]) > 2;
-        else if (t[bm][ch]==tcnt[bm][ch])
-          median=(qflgs->value[index_list[1]]+qflgs->value[index_list[2]]+qflgs->value[index_list[3]]+qflgs->value[index_list[4]]+qflgs->value[index_list[5]]) > 2;
+          sum=2*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[1]] + 2*qflgs->value[index_list[2]] + qflgs->value[index_list[6]] + qflgs->value[index_list[7]] + qflgs->value[index_list[8]];
+        else if (t[bm][ch]==nrec[bm][ch])
+          sum=2*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[1]] + 2*qflgs->value[index_list[2]] + qflgs->value[index_list[3]] + qflgs->value[index_list[4]] + qflgs->value[index_list[5]];
         else if (rng==0)
-          median=(qflgs->value[index_list[2]]+qflgs->value[index_list[3]]+qflgs->value[index_list[5]]+qflgs->value[index_list[6]]+qflgs->value[index_list[8]]) > 2;
+          sum=2*qflgs->value[index_list[0]] + qflgs->value[index_list[2]] + 2*qflgs->value[index_list[3]] + qflgs->value[index_list[5]] + 2*qflgs->value[index_list[6]] + qflgs->value[index_list[8]];
         else if (rng==maxrng-1)
-          median=(qflgs->value[index_list[1]]+qflgs->value[index_list[3]]+qflgs->value[index_list[4]]+qflgs->value[index_list[6]]+qflgs->value[index_list[7]]) > 2;
+          sum=2*qflgs->value[index_list[0]] + qflgs->value[index_list[1]] + 2*qflgs->value[index_list[3]] + qflgs->value[index_list[4]] + 2*qflgs->value[index_list[6]] + qflgs->value[index_list[7]];
         
         // all other cells
-        else median=(qflgs->value[index_list[1]]+qflgs->value[index_list[2]]+qflgs->value[index_list[3]]+qflgs->value[index_list[4]]+qflgs->value[index_list[5]]+qflgs->value[index_list[6]]+qflgs->value[index_list[7]]+qflgs->value[index_list[8]]) > 3;
+        else sum=qflgs->value[index_list[0]] + qflgs->value[index_list[1]] + qflgs->value[index_list[2]] + qflgs->value[index_list[3]] + qflgs->value[index_list[4]] + qflgs->value[index_list[5]] + qflgs->value[index_list[6]] + qflgs->value[index_list[7]] + qflgs->value[index_list[8]];
         
-        // Remove the data to be filtered
-        if (median==0) fit->rng[rng].qflg=0;
+        // Remove record if median=0 (sum of qflgs < 5)
+        if (sum < 5) fit->rng[rng].qflg=0;
       }
     }
     t[bm][ch]++;
@@ -259,7 +258,6 @@ int main (int argc,char *argv[]) {
   if (fit != NULL) FitFree(fit); 
   free(qflgs->value);
   qflgs->value = NULL;
-  free(qflg_filtered);
   
   
   return 0;
