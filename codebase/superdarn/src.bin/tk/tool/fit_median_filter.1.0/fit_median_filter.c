@@ -97,25 +97,6 @@ void free_parameters(struct RadarParm *prm, struct FitData *fit, FILE *fp, qflgD
 
 
 int main (int argc,char *argv[]) {
-
-  int arg;
-
-  int status=0;
-  FILE *fp=NULL;
-  
-  //set origin.command field
-  time_t ctime;
-  int c,n;
-  char command[128];
-  char tmstr[40];
-  command[0]=0;
-  n=0;
-  for (c=0;c<argc;c++) {
-    n+=strlen(argv[c])+1;
-    if (n>127) break;
-    if (c !=0) strcat(command," ");
-    strcat(command,argv[c]);
-  }
   
   unsigned char vb=0;
   unsigned char help=0;
@@ -127,6 +108,7 @@ int main (int argc,char *argv[]) {
   OptionAdd(&opt,"-version",'x',&version);
   OptionAdd(&opt,"vb",'x',&vb);
 
+  int arg;
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
   if (arg==-1) {
@@ -147,16 +129,31 @@ int main (int argc,char *argv[]) {
     exit(0);
   }
   
-  
-  prm=RadarParmMake();
-  fit=FitMake();
-  
+  FILE *fp=NULL;
   if (arg==argc) fp=stdin;
   else fp=fopen(argv[arg],"r");
   if (fp==NULL) {
     fprintf(stderr,"File not found.\n");
     exit(-1);
   }
+  
+  //set origin.command field
+  time_t ctime;
+  int c,n;
+  char command[128];
+  char tmstr[40];
+  command[0]=0;
+  n=0;
+  for (c=0;c<argc;c++) {
+    n+=strlen(argv[c])+1;
+    if (n>127) break;
+    if (c !=0) strcat(command," ");
+    strcat(command,argv[c]);
+  }
+  
+  
+  prm=RadarParmMake();
+  fit=FitMake();
   if (FitFread(fp,prm,fit)==-1) {
     fprintf(stderr,"Error reading file\n");
     exit(-1);
@@ -198,7 +195,8 @@ int main (int argc,char *argv[]) {
   
   // Do the median filtering
   //   Since qflg can only be 0 or 1, the median qflg of the 3x3 grid can be 
-  //   calculated using the test ( sum_of_qflgs >= 5 )
+  //     calculated using the test ( sum_of_qflgs >= 5 ).
+  //   Replicate padding is used to handle corner/edge cases
   int sum;
   int index_list[9];  
   memset(index_list,-1,sizeof(index_list));
@@ -211,6 +209,7 @@ int main (int argc,char *argv[]) {
     fprintf(stderr,"Error reading file\n");
     exit(-1);
   }
+  int status=0;
   memset(nrec,0,sizeof(nrec));
   int t[maxbm][maxch];
   memset(t,0,sizeof(t));
@@ -241,26 +240,42 @@ int main (int argc,char *argv[]) {
         
         // corners
         if (t[bm][ch]==0 && rng==0)
-          sum=3*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[2]] + 2*qflgs->value[index_list[6]]+ qflgs->value[index_list[8]];
+          sum = 3*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[2]] 
+              + 2*qflgs->value[index_list[6]] + qflgs->value[index_list[8]];
         else if (t[bm][ch]==0 && rng==maxrng-1)
-          sum=3*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[1]] + 2*qflgs->value[index_list[6]] + qflgs->value[index_list[7]];
+          sum = 3*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[1]] 
+              + 2*qflgs->value[index_list[6]] + qflgs->value[index_list[7]];
         else if (t[bm][ch]==nrec[bm][ch] && rng==0)
-          sum=3*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[2]] + 2*qflgs->value[index_list[3]] + qflgs->value[index_list[5]];
+          sum = 3*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[2]] 
+              + 2*qflgs->value[index_list[3]] + qflgs->value[index_list[5]];
         else if (t[bm][ch]==nrec[bm][ch] && rng==maxrng-1)
-          sum=3*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[1]] + 2*qflgs->value[index_list[3]] + qflgs->value[index_list[4]];
+          sum = 3*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[1]] 
+              + 2*qflgs->value[index_list[3]] + qflgs->value[index_list[4]];
         
         // edges
         else if (t[bm][ch]==0)
-          sum=2*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[1]] + 2*qflgs->value[index_list[2]] + qflgs->value[index_list[6]] + qflgs->value[index_list[7]] + qflgs->value[index_list[8]];
+          sum = 2*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[1]] 
+              + 2*qflgs->value[index_list[2]] + qflgs->value[index_list[6]] 
+              + qflgs->value[index_list[7]]   + qflgs->value[index_list[8]];
         else if (t[bm][ch]==nrec[bm][ch])
-          sum=2*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[1]] + 2*qflgs->value[index_list[2]] + qflgs->value[index_list[3]] + qflgs->value[index_list[4]] + qflgs->value[index_list[5]];
+          sum = 2*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[1]] 
+              + 2*qflgs->value[index_list[2]] + qflgs->value[index_list[3]] 
+              + qflgs->value[index_list[4]]   + qflgs->value[index_list[5]];
         else if (rng==0)
-          sum=2*qflgs->value[index_list[0]] + qflgs->value[index_list[2]] + 2*qflgs->value[index_list[3]] + qflgs->value[index_list[5]] + 2*qflgs->value[index_list[6]] + qflgs->value[index_list[8]];
+          sum = 2*qflgs->value[index_list[0]] + qflgs->value[index_list[2]] 
+              + 2*qflgs->value[index_list[3]] + qflgs->value[index_list[5]] 
+              + 2*qflgs->value[index_list[6]] + qflgs->value[index_list[8]];
         else if (rng==maxrng-1)
-          sum=2*qflgs->value[index_list[0]] + qflgs->value[index_list[1]] + 2*qflgs->value[index_list[3]] + qflgs->value[index_list[4]] + 2*qflgs->value[index_list[6]] + qflgs->value[index_list[7]];
+          sum = 2*qflgs->value[index_list[0]] + qflgs->value[index_list[1]] 
+              + 2*qflgs->value[index_list[3]] + qflgs->value[index_list[4]] 
+              + 2*qflgs->value[index_list[6]] + qflgs->value[index_list[7]];
         
         // all other cells
-        else sum=qflgs->value[index_list[0]] + qflgs->value[index_list[1]] + qflgs->value[index_list[2]] + qflgs->value[index_list[3]] + qflgs->value[index_list[4]] + qflgs->value[index_list[5]] + qflgs->value[index_list[6]] + qflgs->value[index_list[7]] + qflgs->value[index_list[8]];
+        else sum = qflgs->value[index_list[0]] + qflgs->value[index_list[1]] 
+                 + qflgs->value[index_list[2]] + qflgs->value[index_list[3]] 
+                 + qflgs->value[index_list[4]] + qflgs->value[index_list[5]] 
+                 + qflgs->value[index_list[6]] + qflgs->value[index_list[7]] 
+                 + qflgs->value[index_list[8]];
         
         // Remove record if median=0 (sum of qflgs < 5)
         if (sum < 5) fit->rng[rng].qflg=0;
