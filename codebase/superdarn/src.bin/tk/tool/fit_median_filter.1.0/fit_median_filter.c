@@ -90,6 +90,20 @@ int main (int argc,char *argv[]) {
   int status=0;
   FILE *fp=NULL;
   
+  //set origin.command field
+  time_t ctime;
+  int c,n;
+  char command[128];
+  char tmstr[40];
+  command[0]=0;
+  n=0;
+  for (c=0;c<argc;c++) {
+    n+=strlen(argv[c])+1;
+    if (n>127) break;
+    if (c !=0) strcat(command," ");
+    strcat(command,argv[c]);
+  }
+  
   unsigned char vb=0;
   unsigned char help=0;
   unsigned char option=0;
@@ -241,7 +255,29 @@ int main (int argc,char *argv[]) {
     }
     t[bm][ch]++;
     
-    // TODO Modify origin.command to indicate filtering has been performed 
+    
+    // Set origin fields
+    prm->origin.code = 1; // file was not generated at radar site
+    ctime = time((time_t) 0);
+    if (RadarParmSetOriginCommand(prm,command) == -1) 
+    {
+        fprintf(stderr,"Error: cannot set Origin Command\n");
+        free(prm);
+        free(fit);
+        free(fp);
+        exit(-1);
+    }
+
+    strcpy(tmstr,asctime(gmtime(&ctime)));
+    tmstr[24]=0;
+    if (RadarParmSetOriginTime(prm,tmstr) == -1)
+    {
+        fprintf(stderr,"Error: cannot set Origin Time\n");
+        free(prm);
+        free(fit);
+        free(fp);
+        exit(-1);
+    }
     
     // write the output file
     status=FitFwrite(stdout,prm,fit);
