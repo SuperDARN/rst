@@ -69,6 +69,7 @@ int rst_opterr (char *txt) {
   return(-1);
 }
 
+
 // function to return the index in an array
 int get_index(int a, int b, int c, int d, int aSize, int bSize, int cSize) {
     return (d * aSize * bSize * cSize) + (c * aSize * bSize) + (b * aSize) + a; 
@@ -80,6 +81,18 @@ typedef struct {
   size_t used;
   size_t size;
 } qflgData;
+
+
+void free_parameters(struct RadarParm *prm, struct FitData *fit, FILE *fp, qflgData *q)
+{
+  if (prm != NULL) RadarParmFree(prm);
+  if (fit != NULL) FitFree(fit);
+  if (fp !=NULL) free(fp);
+  if (q->value !=NULL) {
+    free(q->value);
+    q->value=NULL;
+  }
+}
 
 
 
@@ -262,9 +275,7 @@ int main (int argc,char *argv[]) {
     if (RadarParmSetOriginCommand(prm,command) == -1) 
     {
         fprintf(stderr,"Error: cannot set Origin Command\n");
-        free(prm);
-        free(fit);
-        free(fp);
+        free_parameters(prm, fit, fp, qflgs);
         exit(-1);
     }
 
@@ -273,9 +284,7 @@ int main (int argc,char *argv[]) {
     if (RadarParmSetOriginTime(prm,tmstr) == -1)
     {
         fprintf(stderr,"Error: cannot set Origin Time\n");
-        free(prm);
-        free(fit);
-        free(fp);
+        free_parameters(prm, fit, fp, qflgs);
         exit(-1);
     }
     
@@ -291,10 +300,7 @@ int main (int argc,char *argv[]) {
   
 
   // Free memory
-  if (prm != NULL) RadarParmFree(prm);
-  if (fit != NULL) FitFree(fit); 
-  free(qflgs->value);
-  qflgs->value = NULL;
+  free_parameters(prm, fit, NULL, qflgs);
   
   
   return 0;
