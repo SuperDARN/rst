@@ -20,7 +20,7 @@ The `make_grid` routine provides a lot of options for customizing the gridding p
 ## Full-day grid files
 The standard practice is to generate 24-hour grid files. If you have already made a concatenated 24-hour fitacf file, then use that file in the manner shown above. Otherwise, you can use the `-c` flag to get RST to concatenate the input fitacf files on-the-fly. This works only when the input files are all from the same radar; the method for combining data from multiple radars into a single grid file is shown in the next section.
 ```
-make_grid -vb -tl 60 -xtd -c 20181001.*.lyr.fitacf > 20181001.lyr.grd
+make_grid -vb -tl 60 -xtd 20181001.*.lyr.fitacf > 20181001.lyr.grd
 ```
 
 ## Multi-Channel Data 
@@ -65,8 +65,6 @@ do
 done
 ```
 
-*The `-c` flag will concatenate the `fitacf` files together during the gridding process.*
-
 *The `-f 4` option extracts the 3-letter radar code `rad` from the filename `YYYYMMDD.hhmm.ss.rad.fitacf`.*
 
 ```
@@ -77,7 +75,7 @@ radarlist="$(ls | cut -d "." -f 4 | sort -u)"
 
 for radar in $radarlist
 do
-  make_grid -tl 60 -xtd -vb -c 20181001*.$radar.fitacf > 20181001.$radar.grd
+  make_grid -tl 60 -xtd -vb 20181001*.$radar.fitacf > 20181001.$radar.grd
 done
 ```
 
