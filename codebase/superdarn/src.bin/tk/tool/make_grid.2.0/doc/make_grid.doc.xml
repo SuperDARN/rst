@@ -120,7 +120,7 @@
 <p>The algorithm optionally applies a median filter to the scan data to remove noise. Each range-beam cell together with its immediate neighbors in the current, preceding and following scans is examined. A weighted sum of all the cells containing scatter is calculated and if this sum exceeds a certain threshold, the median data value of the cells is substituted for the central cell. Various command line options control how the filter is applied.</p> 
 <p>Once the data has been filtered, the geo-magnetic location of each line of sight velocity measurement is calculated.  The vectors are then fixed to an equi-area grid to ensure that the data is not biased according to its location in the radar field of view.</p>
 <p>The vectors in each cell are averaged together over a fixed period of time to generate a data record, which is then written to standard output.</p>
-<p>The program operates in two modes. Note that only fit files from a single radar site may be concatenated with this second option; the "combine_grid" routine is still necessary for combining data from different radar sites into a single grid file.</p>
+<p>The program accepts multiple fit files as input. If more than one input file is provided, the program will concatenate them together for processing. Note that only fit files from a single radar site may be concatenated; the "combine_grid" routine is still necessary for combining data from different radar sites into a single grid file.</p>
 <p>In addition to the regular grid file output, the program can also produce "extended" grid files that contain information about the spectral width, power and composition of each data point by specifying the "<code>-xtd</code>" command line option.</p>
 </description>
 
