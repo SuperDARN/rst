@@ -8,7 +8,7 @@
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 
  Modifications:
- 2021-01-11 Marina Schmidt fixing concatenation bug with start time
+ 2021-01-11 Marina Schmidt fixing concatenation bug with start/end time, and deprecated -c flag
 
  This file is part of the Radar Software Toolkit (RST).
 
