@@ -73,7 +73,7 @@ int DatToDmap(struct DataMap *ptr, struct DatData *dat) {
     DataMapAddScalar(ptr,"rxrise",DATASHORT,&dat->PARMS.RXRISE);
     DataMapAddScalar(ptr,"bmnum",DATASHORT,&dat->PARMS.BMNUM);
 
-    DataMapAddScalar(ptr,"use_resL2",DATAFLOAT,&dat->PARMS.usr_resL1); 
+    DataMapAddScalar(ptr,"usr_resL2",DATAFLOAT,&dat->PARMS.usr_resL1); 
     DataMapAddScalar(ptr,"usr_resL1",DATAFLOAT,&dat->PARMS.usr_resL2);
     DataMapAddScalar(ptr,"intt",DATAINT,&dat->PARMS.INTT);
 
