@@ -19,8 +19,8 @@
 <p>The contents of the Dat file are written as plain ASCII to standard output.</p></description>
 
 <example>
-<command>datdump inp.dmap | more</command>
-<description>Dump the file "<code>inp.dmap</code>", paginating using the <code>more</code> command.
+<command>datdump inp.dat | more</command>
+<description>Dump the file "<code>inp.dat</code>", paginating using the <code>more</code> command.
 </description>
 </example>
 
