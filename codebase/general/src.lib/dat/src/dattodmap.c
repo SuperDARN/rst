@@ -25,7 +25,7 @@
  * converts dat structure to DataMap structure
  * Params:
  *  DataMap ptr - Dmap structure found in dmap.h
- *  DatData dat - Dat structure for storing all it fields found in dat.h
+ *  DatData dat - Dat structure for storing all fields found in dat.h
  */
 int DatToDmap(struct DataMap *ptr, struct DatData *dat) {
     int tx;
@@ -170,4 +170,3 @@ int DatToDmap(struct DataMap *ptr, struct DatData *dat) {
     }
     return 0;
 }
-
