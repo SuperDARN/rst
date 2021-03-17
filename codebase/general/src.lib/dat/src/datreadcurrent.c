@@ -53,7 +53,7 @@ int32 dcmpr(unsigned char *word) {
  *   Datfp *fp - file pointer
  *   DatData datdata - dat data structure found in dat.h
  * returns:
- *    -1 faie, 0 success
+ *    -1 fail, 0 success
  */
 int DatReadCurrent(struct Datfp *fp,struct DatData *datdata) {
     /* read dat data block from file */
