@@ -25,7 +25,7 @@ Disclaimer:
 
 
 /*DatRead
- * helper funnction that passes onto DatReadCurrent
+ * helper function that passes onto DatReadCurrent
  * Params: 
  *  Datfp fp - file pointer
  *  DatData datdata - Dat data structure found in dat.h
@@ -81,4 +81,3 @@ int DatReadData(struct Datfp *fp,struct DatData *datdata) {
     free(dat_tmp); 
     return 0;
 }
-

@@ -39,7 +39,7 @@
  * converts dat structure to DataMap structure
  * Params:
  *  DataMap ptr - Dmap structure found in dmap.h
- *  DatData dat - Dat structure for storing all it fields found in dat.h
+ *  DatData dat - Dat structure for storing all fields found in dat.h
  */
 int DatToDmap(struct DataMap *ptr, struct DatData *dat) {
     int tx;
@@ -87,7 +87,7 @@ int DatToDmap(struct DataMap *ptr, struct DatData *dat) {
     DataMapAddScalar(ptr,"rxrise",DATASHORT,&dat->PARMS.RXRISE);
     DataMapAddScalar(ptr,"bmnum",DATASHORT,&dat->PARMS.BMNUM);
 
-    DataMapAddScalar(ptr,"use_resL2",DATAFLOAT,&dat->PARMS.usr_resL1); 
+    DataMapAddScalar(ptr,"usr_resL2",DATAFLOAT,&dat->PARMS.usr_resL1); 
     DataMapAddScalar(ptr,"usr_resL1",DATAFLOAT,&dat->PARMS.usr_resL2);
     DataMapAddScalar(ptr,"intt",DATAINT,&dat->PARMS.INTT);
 
@@ -184,4 +184,3 @@ int DatToDmap(struct DataMap *ptr, struct DatData *dat) {
     }
     return 0;
 }
-
