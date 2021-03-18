@@ -1,6 +1,6 @@
 # GitHub Projects
 
-[Projects on GitHub](https://docs.github.com/en/github/managing-your-work-on-github/about-project-boards) is an easy way to organize task for a general or specific project/feature. 
+[Projects on GitHub](https://docs.github.com/en/github/managing-your-work-on-github/about-project-boards) are an easy way to organize task for a general or specific project/feature. 
 
 ## Getting Started 
 
@@ -23,7 +23,7 @@ Some projects can be open ended for easy organization for users to focus their a
 - Documentation 
 - Best practices 
 
-By assigning projects to issues and pull requests means user's can organize issues and pull requests by that project. Thus it is help for others to assign projects so they can focus on them.
+By assigning projects to issues and pull requests, users can organize issues and pull requests by that project. Thus it is helpful for others to assign projects so they can focus on them.
 
 ## Closing Projects 
 
