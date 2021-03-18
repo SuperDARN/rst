@@ -170,10 +170,12 @@ int DatToDmap(struct DataMap *ptr, struct DatData *dat) {
             if (dat->pwr0[c]<tx) 
                 continue;
             for (d=0; d<dat->PARMS.MPLGS; d++) { 
+                // Converting a 3 dimensional array to 1 dimensional by flattening
                 acfd[2*(c*dat->PARMS.MPLGS+d)] = dat->acfd[c][d][0];
                 acfd[2*(c*dat->PARMS.MPLGS+d)+1] = dat->acfd[c][d][1];
             }
             if (dat->PARMS.XCF !=0) {
+                // Converting a 3 dimensional array to 1 dimensional by flattening
                 for (d=0; d<dat->PARMS.MPLGS; d++) {
                     xcfd[2*(c*dat->PARMS.MPLGS+d)] = dat->xcfd[c][d][0];
                     xcfd[2*(c*dat->PARMS.MPLGS+d)+1] = dat->xcfd[c][d][1];
