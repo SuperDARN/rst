@@ -892,7 +892,7 @@ function RadarPos,center,bcrd,rcrd,site,frang,rsep,rxrise,$
 
     if (height lt 90) then $
       height=-re+sqrt((re*re)+2*d*re*sin(!PI*height/180.0)+(d*d));
-    RadarFldPnth,site.geolat,site.geolon,psi,site.boresite,height,d,rho,lat,lng 
+    RadarFldPnth,site.geolat,site.geolon,psi,site.boresite,height,d,rho,lat,lng,chisham=chisham
   endelse
 
   return, 0
