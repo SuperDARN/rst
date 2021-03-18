@@ -84,7 +84,7 @@ typedef enum {
 } INTERFER_POS;
 
 typedef struct fit_prms {
-  int channel; /* zero=mono 1 or 2 is stereo */
+  int channel; 
   int offset; /* used for stereo badlags */
   int cp;
   int xcf;
@@ -107,9 +107,7 @@ typedef struct fit_prms {
   double **xcfd;
   int maxbeam;
   double bmsep;
-  double interfer_x;
-  double interfer_y;
-  double interfer_z;
+  double interfer[3];
   double phidiff;
   double tdiff;
   double vdir;

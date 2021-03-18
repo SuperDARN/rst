@@ -182,6 +182,7 @@ __Am I allowed to copy code from the RST into my own software project? What do I
 - If you choose to share the binaries for your new software: 
     - You must also share the source code
     - Your software must be licensed under GPL (v3 or later)
+
 __Who owns the outputs of RST (processed data files, plots)?__<br/>
 RST outputs belong to the end user who created them. The user is free to share them under any terms, and is not bound by the GPL.
 

@@ -121,7 +121,7 @@ int main(int argc,char *argv[]) {
   int status;
   int arg;
   int return_value = 0; 
-
+  int elv_version = 2;
   unsigned char help=0;
   unsigned char option=0;
   unsigned char version=0;
@@ -189,6 +189,11 @@ int main(int argc,char *argv[]) {
     OptionPrintInfo(stdout,hlpstr);
     OptionFree(&opt);
     exit(0);
+  }
+  
+  if (old_elev == 1)
+  {
+      elv_version = 1;
   }
 
   if (fitacf_version_s != NULL) {
@@ -366,8 +371,12 @@ int main(int argc,char *argv[]) {
       /* If the allocation was successful, copy the parameters and */
       /* load the data into the FitACF structure.                  */
       if(fit_prms != NULL) {
-    	  Copy_Fitting_Prms(site,prm,raw,fit_prms);
-    	  Fitacf(fit_prms,fit);
+    	  if (prm->stid == 1 && elv_version == 1)
+          {
+              elv_version = 0;
+          }
+          Copy_Fitting_Prms(site,prm,raw,fit_prms);
+    	  Fitacf(fit_prms,fit, elv_version);
         /*FitacfFree(fit_prms);*/
     	}
       else {
@@ -380,7 +389,7 @@ int main(int argc,char *argv[]) {
   }
   else if (fitacf_version == 25) {
     fblk = FitACFMake(site,prm->time.yr);
-    fblk->prm.old_elev = old_elev;          /* passing in old_elev flag */
+    fblk->prm.old_elev = old_elev;        /* passing in old_elev flag */
     FitACF(prm,raw,fblk,fit);
   }
 
@@ -465,7 +474,7 @@ int main(int argc,char *argv[]) {
         /* load the data into the FitACF structure.                  */
         if(fit_prms != NULL) {
           Copy_Fitting_Prms(site,prm,raw,fit_prms);
-          Fitacf(fit_prms,fit);
+          Fitacf(fit_prms,fit, elv_version);
           /*FitacfFree(fit_prms);*/
         }
         else {
