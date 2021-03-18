@@ -80,8 +80,8 @@ int DatToDmap(struct DataMap *ptr, struct DatData *dat) {
     DataMapAddScalar(ptr,"stat.agc",DATASHORT,&dat->PARMS.AGC_STAT);
     DataMapAddScalar(ptr,"stat.lopwr",DATASHORT,&dat->PARMS.LOPWR_STAT);
     DataMapAddScalar(ptr,"nbaud",DATASHORT,&dat->PARMS.NBAUD);
-    DataMapAddScalar(ptr,"noise",DATAFLOAT,&dat->PARMS.NOISE);
-    DataMapAddScalar(ptr,"noise.mean",DATAFLOAT,&dat->PARMS.NOISE_MEAN);
+    DataMapAddScalar(ptr,"noise",DATAINT,&dat->PARMS.NOISE);
+    DataMapAddScalar(ptr,"noise.mean",DATAINT,&dat->PARMS.NOISE_MEAN);
 
     DataMapAddScalar(ptr,"channel",DATASHORT,&dat->PARMS.CHANNEL);
     DataMapAddScalar(ptr,"rxrise",DATASHORT,&dat->PARMS.RXRISE);
