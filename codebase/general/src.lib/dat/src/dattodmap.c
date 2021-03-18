@@ -47,8 +47,8 @@ int DatToDmap(struct DataMap *ptr, struct DatData *dat) {
     int32 p0num,snum;
     int32 anum[3],xnum[3];
 
-    int *acfd=NULL;
-    int *xcfd=NULL;
+    float *acfd=NULL;
+    float *xcfd=NULL;
 
     int n;
     int16 *pulse=NULL,*lag=NULL;
@@ -163,9 +163,9 @@ int DatToDmap(struct DataMap *ptr, struct DatData *dat) {
     
     DataMapStoreArray(ptr,"pwr0",DATAFLOAT,1,&p0num,dat->pwr0);
     if (snum !=0) {
-        acfd=DataMapStoreArray(ptr,"acfd",DATAINT,3,anum,NULL);
+        acfd=DataMapStoreArray(ptr,"acfd",DATAFLOAT,3,anum,NULL);
         if (dat->PARMS.XCF !=0) 
-            xcfd=DataMapStoreArray(ptr,"xcfd",DATAINT,3,xnum,NULL);
+            xcfd=DataMapStoreArray(ptr,"xcfd",DATAFLOAT,3,xnum,NULL);
         for (c=0;c<dat->PARMS.NRANG;c++) {
             if (dat->pwr0[c]<tx) 
                 continue;
