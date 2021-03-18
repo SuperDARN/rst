@@ -47,8 +47,8 @@ int DatToDmap(struct DataMap *ptr, struct DatData *dat) {
     int32 p0num,snum;
     int32 anum[3],xnum[3];
 
-    float *acfd=NULL;
-    float *xcfd=NULL;
+    int *acfd=NULL;
+    int *xcfd=NULL;
 
     int n;
     int16 *pulse=NULL,*lag=NULL;
@@ -163,23 +163,22 @@ int DatToDmap(struct DataMap *ptr, struct DatData *dat) {
     
     DataMapStoreArray(ptr,"pwr0",DATAFLOAT,1,&p0num,dat->pwr0);
     if (snum !=0) {
-        acfd=DataMapStoreArray(ptr,"acfd",DATAFLOAT,3,anum,NULL);
+        acfd=DataMapStoreArray(ptr,"acfd",DATAINT,3,anum,NULL);
         if (dat->PARMS.XCF !=0) 
-            xcfd=DataMapStoreArray(ptr,"xcfd",DATAFLOAT,3,xnum,NULL);
-        x=0;
+            xcfd=DataMapStoreArray(ptr,"xcfd",DATAINT,3,xnum,NULL);
         for (c=0;c<dat->PARMS.NRANG;c++) {
             if (dat->pwr0[c]<tx) 
                 continue;
-            for (d=0;d<dat->PARMS.MPLGS;d++) {
-                acfd[2*(x*dat->PARMS.MPLGS+d)]   = dat->acfd[c][dat->PARMS.MPLGS+d][0];
-                acfd[2*(x*dat->PARMS.MPLGS+d)+1] = dat->acfd[c][dat->PARMS.MPLGS+d][1];
+            for (d=0; d<dat->PARMS.MPLGS; d++) { 
+                acfd[2*(c*dat->PARMS.MPLGS+d)] = dat->acfd[c][d][0];
+                acfd[2*(c*dat->PARMS.MPLGS+d)+1] = dat->acfd[c][d][1];
             }
-            if (dat->PARMS.XCF !=0) 
-                for (d=0;d<dat->PARMS.MPLGS;d++) {
-                    xcfd[2*(x*dat->PARMS.MPLGS+d)]  = dat->xcfd[c][dat->PARMS.MPLGS+d][0];
-                    xcfd[2*(x*dat->PARMS.MPLGS+d)+1] = dat->xcfd[c][dat->PARMS.MPLGS+d][1];
+            if (dat->PARMS.XCF !=0) {
+                for (d=0; d<dat->PARMS.MPLGS; d++) {
+                    xcfd[2*(c*dat->PARMS.MPLGS+d)] = dat->xcfd[c][d][0];
+                    xcfd[2*(c*dat->PARMS.MPLGS+d)+1] = dat->xcfd[c][d][1];
+                }
             }
-            x++;
         }
     }
     return 0;
