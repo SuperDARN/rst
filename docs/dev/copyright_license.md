@@ -88,8 +88,6 @@ When developing in RST you are granting permission for your code to be licensed 
 !!! IMPORTANT
     Please make sure to review the [license]((https://www.gnu.org/licenses/gpl-3.0.en.html)), and check with your employer/funding agency that you have permission to distribute your code under the GPLv3. 
 
-
-
 ## Copyright
 
 The GPL license requires that all code includes a copyright notice. The purpose of the copyright notice is to __protect the rights of developers__ by:
@@ -98,8 +96,6 @@ The GPL license requires that all code includes a copyright notice. The purpose 
   2. Preventing their code from being distributed under a different license without their knowledge/permission
   3. Giving them the power to enforce the terms of the license<br>
      *e.g. take someone to court if they violate the license*
-
-
 
 ### How to copyright your code
 
@@ -139,8 +135,6 @@ Modifications:
 #### Minor modifications
 
 Adding copyright notices is appropriate only for __substantial__ modifications. If you make minor modifications to someone else's code (e.g. bug fixes), then you should document this in the modification history (example above), but do not add a new copyright line. 
-
-
 
 ## Frequently asked questions
 
@@ -193,9 +187,6 @@ RST outputs belong to the end user who created them. The user is free to share t
 
 __I have more questions about the GPL__<br/>
 There's lots of helpful information [here](https://www.gnu.org/licenses/gpl-faq.html).
-
-
-
 
 ## History of RST licensing
 
