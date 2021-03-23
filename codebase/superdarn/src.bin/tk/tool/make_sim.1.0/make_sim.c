@@ -501,9 +501,31 @@ int main(int argc,char *argv[])
     struct IQ *iq;
     iq=IQMake();
 
+    struct timeval tick;
+    struct timespec seqtval[nave];
+    int seqatten[nave];
+    float seqnoise[nave];
+    int seqoff[nave];
+    int seqsze[nave];
+
+    iq->seqnum = nave;
+    iq->chnnum = 1;
+    iq->smpnum = n_samples;
+    iq->skpnum = 4;
+
+    gettimeofday(&tick,NULL);
+
     int16 * samples = malloc(n_samples*nave*2*2*sizeof(int16));
     for(i=0;i<nave;i++)
     {
+      /*iq structure values*/
+      seqtval[i].tv_sec = tick.tv_sec + (int)(i*n_samples*smsep);
+      seqtval[i].tv_nsec = (tick.tv_usec + (i*n_samples*smsep-(int)(i*n_samples*smsep))*1e6)*1000;
+      seqatten[i] = 0;
+      seqnoise[i] = 0.;
+      seqoff[i] = i*n_samples*2*2;
+      seqsze[i] = n_samples*2*2;
+
       /*main array samples*/
       for(j=0;j<n_samples;j++)
       {
@@ -517,6 +539,12 @@ int main(int argc,char *argv[])
         samples[i*n_samples*2*2+j*2+1+n_samples] = 0;
       }
     }
+
+    IQSetTime(iq,nave,seqtval);
+    IQSetAtten(iq,nave,seqatten);
+    IQSetNoise(iq,nave,seqnoise);
+    IQSetOffset(iq,nave,seqoff);
+    IQSetSize(iq,nave,seqsze);
 
     unsigned int * badtr = malloc(nave*n_pul*2*sizeof(int));
 
@@ -563,7 +591,6 @@ int main(int argc,char *argv[])
   free(v_dop_arr);
   free(velo_arr);
   free(amp0_arr);
-
 
   return 0;
 }
