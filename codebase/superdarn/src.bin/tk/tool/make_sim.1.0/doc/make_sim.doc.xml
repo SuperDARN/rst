@@ -39,6 +39,8 @@
 </option>
 <option><on>-n_good <ar>n_good</ar></on><od>set the number of range gates with scatter to <ar>n_good</ar> (default is 40). WARNING: setting this above ~70 for katscan (or default) sequence will cause cross-range interference at lag0 from range gates ~70 and above (lag0 ~2x the value at other range gates).</od>
 </option>
+<option><on>-srng <ar>srng</ar></on><od>set the first range gate containing scatter to <ar>srng</ar> (default is 0).</od>
+</option>
 <option><on>-nave <ar>nave</ar></on><od>set the number of averages in the integration period to <ar>nave</ar> (default is 70/50/20 for oldscan/katscan/tauscan).</od>
 </option>
 <option><on>-amp <ar>amp</ar></on><od>set the average ACF amplitude to <ar>amp</ar> (default is 1).</od>

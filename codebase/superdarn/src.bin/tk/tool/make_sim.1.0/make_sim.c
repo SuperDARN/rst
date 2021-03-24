@@ -223,6 +223,7 @@ int main(int argc,char *argv[])
   int cri_flg = 0;                          /*cross-range interference flag*/
   int smp_flg = 0;                          /*output raw samples flag*/
   int decayflg = 0;
+  int srng = 0;                             /*first range gate containing scatter*/
 
   /*other variables*/
   long i,j;
@@ -252,6 +253,7 @@ int main(int argc,char *argv[])
   OptionAdd(&opt,"amp",'d',&amp0);              /* ACF amplitude */
   OptionAdd(&opt,"smsep",'d',&smsep);           /* sample separation [us] */
   OptionAdd(&opt,"n_good",'i',&n_good);         /* number of ranges with scatter */
+  OptionAdd(&opt,"srng",'i',&srng);             /* first range gate containing scatter */
   OptionAdd(&opt,"nocri",'x',&cri_flg);         /* remove cross-range interference */
   OptionAdd(&opt,"samples",'x',&smp_flg);       /* output raw samples (iqdat) */
 
@@ -401,7 +403,7 @@ int main(int argc,char *argv[])
 
   /*flags to tell which range gates contain scatter*/
   int * qflg = malloc(nrang*sizeof(int));
-  for(i=0;i<nrang;i++)
+  for(i=srng;i<nrang;i++)
     if(i < n_good)
       qflg[i] = 1;
     else
