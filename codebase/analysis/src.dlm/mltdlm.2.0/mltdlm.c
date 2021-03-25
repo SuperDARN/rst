@@ -532,7 +532,6 @@ static IDL_VPTR IDLMLTConvertEpoch(int argc,IDL_VPTR *argv) {
 static IDL_VPTR IDLMLTConvertYMDHMS_v2(int argc,IDL_VPTR *argv,char *argk) {
 
     int n;
-    IDL_VPTR outargv[1];
 
     static IDL_LONG inverse;
 
@@ -541,7 +540,7 @@ static IDL_VPTR IDLMLTConvertYMDHMS_v2(int argc,IDL_VPTR *argv,char *argk) {
         {NULL}};
 
     IDL_KWCleanup(IDL_KW_MARK);
-    IDL_KWGetParams(argc,argv,argk,kw_pars,outargv,1);
+    IDL_KWGetParams(argc,argv,argk,kw_pars,NULL,1);
 
     if (argv[0]->flags & IDL_V_ARR) {
         int nval;
@@ -786,7 +785,6 @@ static IDL_VPTR IDLMLTConvertYMDHMS_v2(int argc,IDL_VPTR *argv,char *argk) {
 static IDL_VPTR IDLMLTConvertYrsec_v2(int argc,IDL_VPTR *argv,char *argk) {
 
     int n;
-    IDL_VPTR outargv[1];
 
     static IDL_LONG inverse;
 
@@ -795,7 +793,7 @@ static IDL_VPTR IDLMLTConvertYrsec_v2(int argc,IDL_VPTR *argv,char *argk) {
         {NULL}};
 
     IDL_KWCleanup(IDL_KW_MARK);
-    IDL_KWGetParams(argc,argv,argk,kw_pars,outargv,1);
+    IDL_KWGetParams(argc,argv,argk,kw_pars,NULL,1);
 
     if (argv[1]->flags & IDL_V_ARR) {
         int nval;
@@ -947,7 +945,6 @@ static IDL_VPTR IDLMLTConvertYrsec_v2(int argc,IDL_VPTR *argv,char *argk) {
 static IDL_VPTR IDLMLTConvertEpoch_v2(int argc,IDL_VPTR *argv,char *argk) {
 
     int n;
-    IDL_VPTR outargv[1];
 
     static IDL_LONG inverse;
 
@@ -956,7 +953,7 @@ static IDL_VPTR IDLMLTConvertEpoch_v2(int argc,IDL_VPTR *argv,char *argk) {
         {NULL}};
 
     IDL_KWCleanup(IDL_KW_MARK);
-    IDL_KWGetParams(argc,argv,argk,kw_pars,outargv,1);
+    IDL_KWGetParams(argc,argv,argk,kw_pars,NULL,1);
 
     if (argv[0]->flags & IDL_V_ARR) {
         int nval;
