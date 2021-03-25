@@ -311,7 +311,10 @@ int main(int argc,char *argv[])
   t_c = 1e-3*t_c;
   smsep = 1e-6*smsep;
   if (nave) nave_flg = 1;
-  if (noise_lev != 0.) noise_flg = 1;
+  if (noise_lev != 0.) {
+    noise_flg = 1;
+    noise_lev = 1./pow(10.,noise_lev/10.);
+  }
   cri_flg = !cri_flg;
 
   double lambda = C/freq;
