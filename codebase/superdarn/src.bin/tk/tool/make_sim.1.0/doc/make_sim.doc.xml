@@ -29,7 +29,7 @@
 </option>
 <option><on>-t_c <ar>t_c</ar></on><od>set the precipitation time constant (lifetime) to <ar>t_c</ar> milliseconds (default is 1e6 ms, ie negligible).</od>
 </option>
-<option><on>-constant</on><od>use a constant irregularity lifetimem distribution (default is exponential).</od>
+<option><on>-constant</on><od>use a constant irregularity lifetime distribution (default is exponential).</od>
 </option>
 <option><on>-noise <ar>n</ar></on><od>add white noise level to produce SNR <ar>n</ar> dB (default is no noise).</od>
 </option>
@@ -49,7 +49,11 @@
 </option>
 <option><on>-decay</on><od>Set the ACFs to have a decaying ampliutde by a factor of 1/(r^2).</od>
 </option>
-<option><on>-samples</on><od>Output raw samples (in <code>iqdat</code> format) instead of ACFs (in <code>rawacf</code> format).</od>
+<option><on>-stid <ar>stid</ar></on><od>set the station identifier in the data records to <ar>stid</ar> (default is 0).</od>
+</option>
+<option><on>-beam <ar>beam</ar></on><od>set the radar beam number in the data records to <ar>beam</ar> (default is 7).</od>
+</option>
+<option><on>-iq</on><od>Output raw samples (in <code>iqdat</code> format) instead of ACFs (in <code>rawacf</code> format).</od>
 </option>
 <synopsis><p>Generates simulated single-component Lorentzian ACFs.</p></synopsis>
 <description><p>Generates simulated single-component Lorentzian ACFs in either <code>rawacf</code> (default) or <code>iqdat</code> format, which is then written to standard output.</p>

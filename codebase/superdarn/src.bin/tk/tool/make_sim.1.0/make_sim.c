@@ -38,6 +38,7 @@ THE SOFTWARE.
 #include <zlib.h>
 #include "rtypes.h"
 #include "option.h"
+#include "rtime.h"
 #include "rmath.h"
 #include "dmap.h"
 #include "sim_data.h"
@@ -53,6 +54,9 @@ THE SOFTWARE.
 #include "hlpstr.h"
 
 struct OptionData opt;
+struct RadarNetwork *network;
+struct Radar *radar;
+struct RadarSite *site;
 
 int rst_opterr(char *txt) {
   fprintf(stderr,"Option not recognized: %s\n",txt);
@@ -63,12 +67,16 @@ int rst_opterr(char *txt) {
 void makeRadarParm(struct RadarParm * prm, char * argv[], int argc, int cpid, int nave,
                     int lagfr, double smsep, double noise_lev, double amp0, int n_samples,
                     double dt, int n_pul, int n_lags, int nrang, double rngsep, double freq,
-                    int * pulse_t)
+                    int * pulse_t, int stid, int beam)
 {
   int i;
   time_t rawtime;
   struct tm * timeinfo;
   char tmstr[40];
+
+  char *envstr=NULL;
+  FILE *fp;
+  float offset;
 
   rawtime = time((time_t) 0);
   timeinfo = gmtime(&rawtime);
@@ -105,9 +113,8 @@ void makeRadarParm(struct RadarParm * prm, char * argv[], int argc, int cpid, in
   }
   RadarParmSetOriginCommand(prm,tempstr);
 
-
   prm->cp = (int16)cpid;
-  prm->stid = 0;
+  prm->stid = stid;
   prm->time.yr = (int16)(timeinfo->tm_year+1900);
   prm->time.mo = (int16)(timeinfo->tm_mon+1);
   prm->time.dy = (int16)timeinfo->tm_mday;
@@ -127,8 +134,24 @@ void makeRadarParm(struct RadarParm * prm, char * argv[], int argc, int cpid, in
   prm->noise.search = noise_lev;
   prm->noise.mean = 0.;
   prm->channel = 0;
-  prm->bmnum = 7;
-  prm->bmazm = 0;
+  prm->bmnum = beam;
+
+  envstr = getenv("SD_RADAR");
+  fp = fopen(envstr,"r");
+  network = RadarLoad(fp);
+  fclose(fp);
+  envstr = getenv("SD_HDWPATH");
+  RadarLoadHardware(envstr,network);
+  radar = RadarGetRadar(network,prm->stid);
+  site = RadarYMDHMSGetSite(radar,prm->time.yr,prm->time.mo,prm->time.dy,
+                            prm->time.hr,prm->time.mt,prm->time.sc);
+
+  if (site == NULL || stid == 0) prm->bmazm = 0;
+  else {
+    offset = site->maxbeam/2.0-0.5;
+    prm->bmazm = site->boresite + site->bmsep*(prm->bmnum-offset);
+  }
+
   prm->scan = 1;
   prm->rxrise = 100;
   prm->intt.sc = (int16)(smsep*n_samples*nave);
@@ -182,7 +205,7 @@ void makeRadarParm(struct RadarParm * prm, char * argv[], int argc, int cpid, in
   memcpy(prm->pulse,temp_pul,sizeof(int16)*n_pul);*/
   free(tempstr);
 }
-/*this is a driver program from the data simulator*/
+/*this is a driver program for the data simulator*/
 
 int main(int argc,char *argv[])
 {
@@ -191,6 +214,9 @@ int main(int argc,char *argv[])
   unsigned char help=0;
   unsigned char option=0;
   unsigned char version=0;
+
+  int stid = 0;
+  int beam = 7;
 
   int katscan = 0;
   int oldscan = 0;
@@ -227,7 +253,6 @@ int main(int argc,char *argv[])
 
   /*other variables*/
   long i,j;
-  /*int output = 0;*/
   double taus;
 
   OptionAdd(&opt,"-help",'x',&help);
@@ -255,7 +280,9 @@ int main(int argc,char *argv[])
   OptionAdd(&opt,"n_good",'i',&n_good);         /* number of ranges with scatter */
   OptionAdd(&opt,"srng",'i',&srng);             /* first range gate containing scatter */
   OptionAdd(&opt,"nocri",'x',&cri_flg);         /* remove cross-range interference */
-  OptionAdd(&opt,"samples",'x',&smp_flg);       /* output raw samples (iqdat) */
+  OptionAdd(&opt,"iq",'x',&smp_flg);            /* output raw samples (iqdat) */
+  OptionAdd(&opt,"stid",'i',&stid);             /* radar station ID number */
+  OptionAdd(&opt,"beam",'i',&beam);             /* radar beam number */
 
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
@@ -387,7 +414,6 @@ int main(int argc,char *argv[])
     tau[22] = 24;
   }
 
-
   /*control program dependent variables*/
   taus = dt/smsep;                                      /*lag time in samples*/
   n_samples = (pulse_t[n_pul-1]*taus+nrang+lagfr);      /*number of samples in 1 pulse sequence*/
@@ -453,14 +479,14 @@ int main(int argc,char *argv[])
 
   /*call the simulation function*/
   sim_data(t_d_arr, t_g_arr, t_c_arr, v_dop_arr, qflg, velo_arr, amp0_arr, freq, noise_lev,
-            noise_flg, nave, nrang, lagfr, smsep, cpid, life_dist,
-            n_pul, cri_flg, n_lags, pulse_t, tau, dt, raw_samples, acfs, decayflg);
+           noise_flg, nave, nrang, lagfr, smsep, cpid, life_dist,
+           n_pul, cri_flg, n_lags, pulse_t, tau, dt, raw_samples, acfs, decayflg);
 
   /*fill the parameter structure*/
   struct RadarParm * prm;
   prm = RadarParmMake();
   makeRadarParm(prm, argv, argc, cpid, nave, lagfr, smsep, noise_lev, amp0, n_samples,
-                    dt, n_pul, n_lags, nrang, rngsep, freq, pulse_t);
+                dt, n_pul, n_lags, nrang, rngsep, freq, pulse_t, stid, beam);
 
   if(!smp_flg)
   {
@@ -554,30 +580,6 @@ int main(int argc,char *argv[])
     free(samples);
     free(badtr);
   }
-
-  /*output ACFs to rawacf file
-  if(output == 0)
-  {
-  }
-
-  fprintf(stdout,"%d  %d  %d  %d  %d  %d  %d  %lf  %lf  %lf\n",
-                  cpid,nrang,n_lags,n_samples,nave,n_pul,n_lags,dt,smsep,freq);
-  fprintf(stdout,"%lf  %lf  %lf  %lf  %lf  %lf  %lf  %lf\n",
-                  amp0,v_dop*2./lambda,v_dop,t_d,lambda/(2.*PI*t_d),
-                  t_g,t_c,20.*log10(1./noise_lev));
-
-  for(i=0;i<n_samples*nave;i++)
-  {
-    fprintf(stdout,"%lf  %lf\n",creal(raw_samples[i]),cimag(raw_samples[i]));
-  }
-  print the ACFs
-  for(r=0;r<nrang;r++)
-  {
-    fprintf(stdout,"%d  %d\n",r,qflg[r]);
-    for(i=0;i<n_lags;i++)
-      fprintf(stdout,"%d  %lf  %lf\n",tau[i],creal(acfs[r][i]),cimag(acfs[r][i]));
-  }*/
-
 
   /*free dynamically allocated memory*/
   for(i=0;i<nrang;i++)
