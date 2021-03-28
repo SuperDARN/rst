@@ -130,8 +130,10 @@ int main (int argc,char *argv[]) {
   }
   
   FILE *fp=NULL;
-  if (arg==argc) fp=stdin;
-  else fp=fopen(argv[arg],"r");
+  if (arg==argc) 
+      fp=stdin;
+  else 
+      fp=fopen(argv[arg],"r");
   if (fp==NULL) {
     fprintf(stderr,"File not found.\n");
     exit(-1);
@@ -146,8 +148,10 @@ int main (int argc,char *argv[]) {
   n=0;
   for (c=0;c<argc;c++) {
     n+=strlen(argv[c])+1;
-    if (n>127) break;
-    if (c !=0) strcat(command," ");
+    if (n>127) 
+        break;
+    if (c !=0) 
+        strcat(command," ");
     strcat(command,argv[c]);
   }
   
@@ -179,7 +183,8 @@ int main (int argc,char *argv[]) {
     ch=prm->channel;
     for (rng=0;rng<prm->nrang;rng++) {
       index=get_index(bm,ch,rng,nrec[bm][ch],maxbm,maxch,maxrng);
-      if (maxindex < index) maxindex=index;
+      if (maxindex < index) 
+          maxindex=index;
       if (qflgs->size < maxindex) {
         qflgs->size += tmax*maxrng*maxch*maxbm;
         qflgs->value = realloc(qflgs->value, qflgs->size * sizeof(int));
@@ -224,10 +229,9 @@ int main (int argc,char *argv[]) {
     
     bm=prm->bmnum;
     ch=prm->channel;
-    for (rng=0;rng<prm->nrang;rng++) {
+    for (int rng = 0; rng<prm->nrang; rng++) {
       
       if (fit->rng[rng].qflg==1) {
- 
         index_list[0]=get_index(bm,ch,rng  ,t[bm][ch]  ,maxbm,maxch,maxrng);
         index_list[1]=get_index(bm,ch,rng-1,t[bm][ch]  ,maxbm,maxch,maxrng);
         index_list[2]=get_index(bm,ch,rng+1,t[bm][ch]  ,maxbm,maxch,maxrng);
@@ -271,14 +275,16 @@ int main (int argc,char *argv[]) {
               + 2*qflgs->value[index_list[6]] + qflgs->value[index_list[7]];
         
         // all other cells
-        else sum = qflgs->value[index_list[0]] + qflgs->value[index_list[1]] 
-                 + qflgs->value[index_list[2]] + qflgs->value[index_list[3]] 
-                 + qflgs->value[index_list[4]] + qflgs->value[index_list[5]] 
-                 + qflgs->value[index_list[6]] + qflgs->value[index_list[7]] 
-                 + qflgs->value[index_list[8]];
+        else 
+                sum = qflgs->value[index_list[0]] + qflgs->value[index_list[1]] 
+                        + qflgs->value[index_list[2]] + qflgs->value[index_list[3]] 
+                        + qflgs->value[index_list[4]] + qflgs->value[index_list[5]] 
+                        + qflgs->value[index_list[6]] + qflgs->value[index_list[7]] 
+                        + qflgs->value[index_list[8]];
         
         // Remove record if median=0 (sum of qflgs < 5)
-        if (sum < 5) fit->rng[rng].qflg=0;
+        if (sum < 5) 
+            fit->rng[rng].qflg=0;
       }
     }
     t[bm][ch]++;
@@ -311,12 +317,11 @@ int main (int argc,char *argv[]) {
     }
   
   } while (FitFread(fp,prm,fit) !=-1);
-  if (fp !=stdin) fclose(fp);
-  
+
+  if (fp !=stdin) 
+      fclose(fp);
 
   // Free memory
   free_parameters(prm, fit, NULL, qflgs);
-  
-  
   return 0;
 }
