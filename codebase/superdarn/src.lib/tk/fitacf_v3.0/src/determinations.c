@@ -562,11 +562,16 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
     psi_k2d2 = psi/(wave_num * wave_num * antenna_sep * antenna_sep);
     df_by_dy = psi_k2d2/sqrt(theta * (1 - theta));
     fit_data->elv[range_node->range].low = 180/PI * sqrt(range_node->elev_fit->sigma_2_a) * fabs(df_by_dy);
+    fprintf(stderr, "sigma 2a %f\n", range_node->elev_fit->sigma_2_a);
 
     /*Experiment to compare fitted and measured elevation*/
     psi_uncorrected_unfitted = fit_data->xrng[range_node->range].phi0 + 2 * PI * floor((phase_diff_max-fit_data->xrng[range_node->range].phi0)/(2*PI));
 
-
+    fprintf(stderr, "theta: %f\n", theta);
+    fprintf(stderr, "elv_a: %f\n", range_node->elev_fit->a);
+    fprintf(stderr, "c_phi_0: %f\n", c_phi_0);
+    fprintf(stderr, "psi_kd: %f\n", psi_kd);
+    fprintf(stderr, "phi_diff: %f\n", fit_prms->phidiff);
     if(phi_sign < 0) psi_uncorrected_unfitted += 2 * PI;
 
     psi = psi_uncorrected_unfitted - cable_offset;
@@ -605,7 +610,11 @@ void set_xcf_phi0(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms)
 
     /* Correct phase sign due to cable swapping */
     fit_data->xrng[range_node->range].phi0 = atan2(imag,real)*fit_prms->phidiff;
+    fprintf(stderr, "xcf_phi0 before elv_a: %f\n", range_node->elev_fit->a);
     range_node->elev_fit->a *= fit_prms->phidiff;
+    fprintf(stderr, "xcf_phi0 after elv_a: %f\n", range_node->elev_fit->a);
+    fprintf(stderr, "phidiff: %f\n", fit_prms->phidiff);
+
 }
 
 
