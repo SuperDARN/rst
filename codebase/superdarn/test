@@ -1,5 +1,5 @@
-grep -ril "Auhtor: R.J.Barnes \*/" . | xargs sed -i 
-'s/Auhtor: R.J.Barnes *\//Auhtor: R.J.Barnes\Copyright (C) <year>  <name of author>\\Copyright (C) <year>  <name of author>
+grep -ril "Author: R.J.Barnes \*/" . | xargs sed -i 
+'s/Author: R.J.Barnes *\//Author: R.J.Barnes\Copyright (C) <year>  <name of author>\\Copyright (C) <year>  <name of author>
 
 This file is part of the Radar Software Toolkit (RST).
 

@@ -1,6 +1,6 @@
 /* RadarGetRadar
    =============
-   Auhtor: R.J.Barnes
+   Author: R.J.Barnes
 Copyright (C) <year>  <name of author>
 
 Copyright (C) <year>  <name of author>
