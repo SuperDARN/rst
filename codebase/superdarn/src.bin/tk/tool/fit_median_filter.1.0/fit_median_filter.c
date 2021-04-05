@@ -53,9 +53,9 @@ Modifications:
 
 // Define maximum number of time records, beams, channels and range gates (used for memory allocation)
 #define tmax 2000     // initial number of time records
-#define maxbm 30      // max number of beams
-#define maxch 3       // max number of channels (0, 1, or 2)
-#define maxrng 250    // max number of range gates
+#define maxbeam 30    // max number of beams
+#define maxchannel 3  // max number of channels (0, 1, or 2)
+#define maxrange 250    // max number of range gates
 
 int fnum=0;
 
@@ -168,33 +168,33 @@ int main (int argc,char *argv[]) {
   
   // Initial memory allocation to store qflgs
   qflgData *qflgs=malloc(sizeof(qflgData));
-  qflgs->value = malloc(tmax*maxrng*maxch*maxbm * sizeof(int));
+  qflgs->value = malloc(tmax*maxrange*maxchannel*maxbeam * sizeof(int));
   if ((qflgs->value == NULL) || (errno > 1)) {
     fprintf(stderr,"Error: %s\n", strerror(errno));
     free_parameters(prm, fit, fp, NULL);
     exit(-1);
   }
   qflgs->used = 0;
-  qflgs->size = tmax*maxrng*maxch*maxbm;
+  qflgs->size = tmax*maxrange*maxchannel*maxbeam;
   
   
   // Read the FITACF file to populate the qflg array
   int index;
   int maxindex=-1;
-  int bm, ch;
-  int nrec[maxbm][maxch]; // counts number of records for each beam/channel
+  int beam, channel;
+  int nrec[maxbeam][maxchannel]; // counts number of records for each beam/channel
   memset(nrec,0,sizeof(nrec));
   
   do {
   
-    bm=prm->bmnum;
-    ch=prm->channel;
-    for (int rng=0;rng<prm->nrang;rng++) {
-      index=get_index(bm,ch,rng,nrec[bm][ch],maxbm,maxch,maxrng);
+    beam=prm->bmnum;
+    channel=prm->channel;
+    for (int range=0;range<prm->nrang;range++) {
+      index=get_index(beam,channel,range,nrec[beam][channel],maxbeam,maxchannel,maxrange);
       if (maxindex < index) 
           maxindex=index;
       if (qflgs->size < maxindex) {
-        qflgs->size += tmax*maxrng*maxch*maxbm;
+        qflgs->size += tmax*maxrange*maxchannel*maxbeam;
         qflgs->value = realloc(qflgs->value, qflgs->size * sizeof(int));
         
         // check that memory was reallocated successfully
@@ -204,11 +204,11 @@ int main (int argc,char *argv[]) {
           exit(-1);
         }
       }
-      qflgs->value[index] = fit->rng[rng].qflg;
+      qflgs->value[index] = fit->rng[range].qflg;
       qflgs->used = maxindex;
       
     }
-    nrec[bm][ch]++;
+    nrec[beam][channel]++;
   
   } while (FitFread(fp,prm,fit) !=-1);
   
@@ -231,8 +231,8 @@ int main (int argc,char *argv[]) {
   }
   int status=0;
   memset(nrec,0,sizeof(nrec));
-  int t[maxbm][maxch];
-  memset(t,0,sizeof(t));
+  int irec[maxbeam][maxchannel];
+  memset(irec,0,sizeof(irec));
   do {
   
     if (vb) {
@@ -242,49 +242,51 @@ int main (int argc,char *argv[]) {
               prm->channel,prm->bmnum);
     }
     
-    bm=prm->bmnum;
-    ch=prm->channel;
-    for (int rng = 0; rng<prm->nrang; rng++) {
+    beam=prm->bmnum;
+    channel=prm->channel;
+    for (int range = 0; range<prm->nrang; range++) {
       
-      if (fit->rng[rng].qflg==1) {
-        index_list[0]=get_index(bm,ch,rng  ,t[bm][ch]  ,maxbm,maxch,maxrng);
-        index_list[1]=get_index(bm,ch,rng-1,t[bm][ch]  ,maxbm,maxch,maxrng);
-        index_list[2]=get_index(bm,ch,rng+1,t[bm][ch]  ,maxbm,maxch,maxrng);
-        index_list[3]=get_index(bm,ch,rng,  t[bm][ch]-1,maxbm,maxch,maxrng);
-        index_list[4]=get_index(bm,ch,rng-1,t[bm][ch]-1,maxbm,maxch,maxrng);
-        index_list[5]=get_index(bm,ch,rng+1,t[bm][ch]-1,maxbm,maxch,maxrng);
-        index_list[6]=get_index(bm,ch,rng,  t[bm][ch]+1,maxbm,maxch,maxrng);
-        index_list[7]=get_index(bm,ch,rng-1,t[bm][ch]+1,maxbm,maxch,maxrng);
-        index_list[8]=get_index(bm,ch,rng+1,t[bm][ch]+1,maxbm,maxch,maxrng);
+      if (fit->rng[range].qflg==1) {
+        index_list[0]=get_index(beam,channel,range  ,irec[beam][channel]  ,maxbeam,maxchannel,maxrange);
+        index_list[1]=get_index(beam,channel,range-1,irec[beam][channel]  ,maxbeam,maxchannel,maxrange);
+        index_list[2]=get_index(beam,channel,range+1,irec[beam][channel]  ,maxbeam,maxchannel,maxrange);
+        index_list[3]=get_index(beam,channel,range,  irec[beam][channel]-1,maxbeam,maxchannel,maxrange);
+        index_list[4]=get_index(beam,channel,range-1,irec[beam][channel]-1,maxbeam,maxchannel,maxrange);
+        index_list[5]=get_index(beam,channel,range+1,irec[beam][channel]-1,maxbeam,maxchannel,maxrange);
+        index_list[6]=get_index(beam,channel,range,  irec[beam][channel]+1,maxbeam,maxchannel,maxrange);
+        index_list[7]=get_index(beam,channel,range-1,irec[beam][channel]+1,maxbeam,maxchannel,maxrange);
+        index_list[8]=get_index(beam,channel,range+1,irec[beam][channel]+1,maxbeam,maxchannel,maxrange);
         
         // corners
-        if (t[bm][ch]==0 && rng==0)
+        if (irec[beam][channel]==0 && range==0)
           sum = 3*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[2]] 
               + 2*qflgs->value[index_list[6]] + qflgs->value[index_list[8]];
-        else if (t[bm][ch]==0 && rng==maxrng-1)
+        else if (irec[beam][channel]==0 && range==maxrange-1)
           sum = 3*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[1]] 
               + 2*qflgs->value[index_list[6]] + qflgs->value[index_list[7]];
-        else if (t[bm][ch]==nrec[bm][ch] && rng==0)
+        else if (irec[beam][channel]==nrec[beam][channel] && range==0)
           sum = 3*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[2]] 
               + 2*qflgs->value[index_list[3]] + qflgs->value[index_list[5]];
-        else if (t[bm][ch]==nrec[bm][ch] && rng==maxrng-1)
+        else if (irec[beam][channel]==nrec[beam][channel] && range==maxrange-1)
           sum = 3*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[1]] 
               + 2*qflgs->value[index_list[3]] + qflgs->value[index_list[4]];
         
         // edges
-        else if (t[bm][ch]==0)
+        else if (irec[beam][channel]==0)
           sum = 2*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[1]] 
               + 2*qflgs->value[index_list[2]] + qflgs->value[index_list[6]] 
               + qflgs->value[index_list[7]]   + qflgs->value[index_list[8]];
-        else if (t[bm][ch]==nrec[bm][ch])
-          sum = 2*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[1]] 
+        else if (irec[beam][channel]==nrec[beam][channel])
+          {sum = 2*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[1]] 
               + 2*qflgs->value[index_list[2]] + qflgs->value[index_list[3]] 
               + qflgs->value[index_list[4]]   + qflgs->value[index_list[5]];
-        else if (rng==0)
+              fprintf(stderr,"%d %d\n",irec[beam][channel],nrec[beam][channel]);
+              }
+        else if (range==0)
           sum = 2*qflgs->value[index_list[0]] + qflgs->value[index_list[2]] 
               + 2*qflgs->value[index_list[3]] + qflgs->value[index_list[5]] 
               + 2*qflgs->value[index_list[6]] + qflgs->value[index_list[8]];
-        else if (rng==maxrng-1)
+        else if (range==maxrange-1)
           sum = 2*qflgs->value[index_list[0]] + qflgs->value[index_list[1]] 
               + 2*qflgs->value[index_list[3]] + qflgs->value[index_list[4]] 
               + 2*qflgs->value[index_list[6]] + qflgs->value[index_list[7]];
@@ -299,10 +301,10 @@ int main (int argc,char *argv[]) {
         
         // Remove record if median=0 (sum of qflgs < 5)
         if (sum < 5) 
-            fit->rng[rng].qflg=0;
+            fit->rng[range].qflg=0;
       }
     }
-    t[bm][ch]++;
+    irec[beam][channel]++;
     
     
     // Set origin fields
