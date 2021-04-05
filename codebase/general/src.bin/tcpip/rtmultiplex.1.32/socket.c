@@ -71,6 +71,7 @@ void logtime(char *fname,int nbytes) {
   int mask=S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
   int fid,s;
   time_t tval;
+  
  
   tval=time(NULL);
 
