@@ -1,8 +1,9 @@
-/* fit_median_filter.c
+/* fit_speck_removal.c
    ==========
    
-Removes salt & pepper noise from a fitacf file using median filtering. 
-Filtering is performed separately for each beam and channel. 
+Removes salt & pepper noise from a fitacf file using a median filtering procedure in range-time space.
+The quality flag (fit->qflg) in the center cell of a 3x3 range-time grid is set to zero if the median 
+of the quality flags in the 3x3 grid is zero. Filtering is performed separately for each beam and channel. 
 Output is a fitacf file.
 
 (C) Copyright 2021 E.C.Bland
