@@ -230,7 +230,6 @@ int main (int argc,char *argv[]) {
     exit(-1);
   }
   int status=0;
-  memset(nrec,0,sizeof(nrec));
   int irec[maxbeam][maxchannel];
   memset(irec,0,sizeof(irec));
   do {
