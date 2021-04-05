@@ -50,10 +50,11 @@ Modifications:
 #include "errstr.h"
 #include "hlpstr.h"
 
-#define tmax 2000
-#define maxbm 30
-#define maxch 3
-#define maxrng 250
+// Define maximum number of time records, beams, channels and range gates (used for memory allocation)
+#define tmax 2000     // initial number of time records (can be increased later)
+#define maxbm 30      // max number of beams
+#define maxch 3       // max number of channels (0, 1, or 2)
+#define maxrng 250    // max number of range gates
 
 int fnum=0;
 
@@ -160,6 +161,7 @@ int main (int argc,char *argv[]) {
   fit=FitMake();
   if (FitFread(fp,prm,fit)==-1) {
     fprintf(stderr,"Error reading file\n");
+    free_parameters(prm, fit, fp, NULL);
     exit(-1);
   }
 
@@ -173,7 +175,7 @@ int main (int argc,char *argv[]) {
   // Read the FITACF file to populate the qflg array
   int index;
   int maxindex=-1;
-  int rng,bm,ch;
+  int bm, ch;
   int nrec[maxbm][maxch]; // counts number of records for each beam/channel
   memset(nrec,0,sizeof(nrec));
   
@@ -212,6 +214,7 @@ int main (int argc,char *argv[]) {
   rewind(fp);
   if (FitFread(fp,prm,fit)==-1) {
     fprintf(stderr,"Error reading file\n");
+    free_parameters(prm, fit, fp, qflgs);
     exit(-1);
   }
   int status=0;
