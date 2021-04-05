@@ -36,6 +36,7 @@ Modifications:
 #include <string.h>
 #include <time.h>
 #include <zlib.h>
+#include <errno.h>
 
 #include "rtypes.h"
 #include "rtime.h"
@@ -51,7 +52,7 @@ Modifications:
 #include "hlpstr.h"
 
 // Define maximum number of time records, beams, channels and range gates (used for memory allocation)
-#define tmax 2000     // initial number of time records (can be increased later)
+#define tmax 2000     // initial number of time records
 #define maxbm 30      // max number of beams
 #define maxch 3       // max number of channels (0, 1, or 2)
 #define maxrng 250    // max number of range gates
@@ -83,7 +84,7 @@ typedef struct {
   size_t size;
 } qflgData;
 
-
+// function to free memory when program exits
 void free_parameters(struct RadarParm *prm, struct FitData *fit, FILE *fp, qflgData *q)
 {
   if (prm != NULL) RadarParmFree(prm);
@@ -164,10 +165,15 @@ int main (int argc,char *argv[]) {
     free_parameters(prm, fit, fp, NULL);
     exit(-1);
   }
-
+  
   // Initial memory allocation to store qflgs
   qflgData *qflgs=malloc(sizeof(qflgData));
   qflgs->value = malloc(tmax*maxrng*maxch*maxbm * sizeof(int));
+  if ((qflgs->value == NULL) || (errno > 1)) {
+    fprintf(stderr,"Error: %s\n", strerror(errno));
+    free_parameters(prm, fit, fp, NULL);
+    exit(-1);
+  }
   qflgs->used = 0;
   qflgs->size = tmax*maxrng*maxch*maxbm;
   
@@ -183,13 +189,20 @@ int main (int argc,char *argv[]) {
   
     bm=prm->bmnum;
     ch=prm->channel;
-    for (rng=0;rng<prm->nrang;rng++) {
+    for (int rng=0;rng<prm->nrang;rng++) {
       index=get_index(bm,ch,rng,nrec[bm][ch],maxbm,maxch,maxrng);
       if (maxindex < index) 
           maxindex=index;
       if (qflgs->size < maxindex) {
         qflgs->size += tmax*maxrng*maxch*maxbm;
         qflgs->value = realloc(qflgs->value, qflgs->size * sizeof(int));
+        
+        // check that memory was reallocated successfully
+        if (qflgs->value==NULL) {
+          fprintf(stderr,"Error: %s\n", strerror(errno));
+          free_parameters(prm, fit, fp, NULL);
+          exit(-1);
+        }
       }
       qflgs->value[index] = fit->rng[rng].qflg;
       qflgs->used = maxindex;
@@ -210,8 +223,7 @@ int main (int argc,char *argv[]) {
   
   
   //** Read the file again, apply the median filter, and write a new file
-  // rewind the file pointer
-  rewind(fp);
+  rewind(fp); // rewind the file pointer
   if (FitFread(fp,prm,fit)==-1) {
     fprintf(stderr,"Error reading file\n");
     free_parameters(prm, fit, fp, qflgs);
