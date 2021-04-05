@@ -1,10 +1,7 @@
 /* writemap.c
    ==========
    Author: R.J.Barnes
-*/
-
-/*
- Copyright (C) <year>  <name of author>
+ Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
  
 This file is part of the Radar Software Toolkit (RST).
 
@@ -23,7 +20,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
- 
+*/ 
 
 
 

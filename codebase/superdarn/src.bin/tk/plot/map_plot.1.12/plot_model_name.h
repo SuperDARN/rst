@@ -23,7 +23,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
- 
+*/ 
 
 void plot_model_name(struct Plot *plot, float xoff, float yoff, char *model,
                      char *orient, char *mag, char *tilt, unsigned int color,

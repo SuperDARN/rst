@@ -2,9 +2,7 @@
      ==============
      Author: R.J.Barnes & K.Baker
 
- Copyright (C) <year>  <name of author>
-
-Copyright (C) <year>  <name of author>
+ Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 
 RST is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -21,18 +19,6 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
-    changed the return type of this function from void to int
-    the function now checks to see if all the phases turned out
-    to be 0.  If so, it returns -1, otherwise it returns 0.
-
-    The return code of -1 indicates that you can't really do a fit
-    because all the phases were exactly 0.  This can happen when
-    the power is low and we are reprocessing DAT files that have lost
-    some precision.
-
     2020-11-12 Marina Schmidt Converted RST complex -> C library complex
           
 */

@@ -23,7 +23,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
- 
+*/ 
 
 /*Demonstration program that opens and reads fit files*/
 

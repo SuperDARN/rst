@@ -23,7 +23,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
- 
+*/ 
 
 double CnvMapFitVector(int num,struct CnvMapSHFVec *data,
                        double *coef,double *vel,int order,

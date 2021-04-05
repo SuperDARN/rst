@@ -20,8 +20,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
- * 
- * RST is free software: you can redistribute it and/or modify
+*/
 #ifndef _HMB_H
 #define _HMB_H
 

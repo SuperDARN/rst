@@ -2,14 +2,7 @@
    =======
    Author: R.J.Barnes
 
-Modifitcations:
-    2020-03-11 Marina Schmidt added RST defined constants and changed _COMPLEX 
-                              to _COMPLEX_H so complex.h can be used
-    2020-11-03 Marina Schmidt removed complex struct to introduce the C library complex
-*/
 
-
-/*
  LICENSE AND DISCLAIMER
  
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
@@ -29,7 +22,11 @@ Modifitcations:
  You should have received a copy of the GNU General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
  
- 
+ Modifitcations:
+    2020-03-11 Marina Schmidt added RST defined constants and changed _COMPLEX 
+                              to _COMPLEX_H so complex.h can be used
+    2020-11-03 Marina Schmidt removed complex struct to introduce the C library complex
+
  
 */
 

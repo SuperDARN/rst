@@ -23,7 +23,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
-
+*/
+#ifndef _GTABLEWRITE_H
 #define _GTABLEWRITE_H
 
 int GridTableWrite(int fp,struct GridTable *ptr,char *log,int xtd);

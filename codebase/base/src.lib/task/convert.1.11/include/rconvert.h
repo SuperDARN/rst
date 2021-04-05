@@ -1,8 +1,8 @@
 /* rconvert.h
    ==========
    Author: R.J.Barnes
-Copyright (C) <year>  <name of author>
 
+(c) 2011 JHU/APL & Others - Please Consult LICENSE.datamap.txt for more information.
 This file is part of the Radar Software Toolkit (RST).
 
 RST is free software: you can redistribute it and/or modify
@@ -21,11 +21,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
 
-
-
-
-/*
- (c) 2011 JHU/APL & Others - Please Consult LICENSE.datamap.txt for more information.
 */
 
 

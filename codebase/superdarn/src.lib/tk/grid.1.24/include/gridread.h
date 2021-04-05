@@ -23,7 +23,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
-
+*/
+#ifndef _GRIDREAD_H
 #define _GRIDREAD_H
 
 int GridRead(int fid,struct GridData *gp);

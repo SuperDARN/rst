@@ -1,6 +1,5 @@
 /* power_fits.c
      =========
-     refactored from fit_acf.c by Pasha and AJ
      Author: R.J.Barnes & K.Baker & P.Ponomarenko
 */
 
@@ -24,6 +23,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+     refactored from fit_acf.c by Pasha and AJ
 */
 
 #include <math.h>

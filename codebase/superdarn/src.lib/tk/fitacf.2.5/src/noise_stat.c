@@ -1,11 +1,7 @@
 /* noise_stat.c
    ============
    Author: R.J.Barnes & K.Baker & P.Ponomarenko
-*/
-/*
- Copyright (C) <year>  <name of author>
-
- Copyright (C) <year>  <name of author>
+ Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 
 RST is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -22,10 +18,6 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
- 
- RST is free software: you can redistribute it and/or modify
-
-  
 */
 
 

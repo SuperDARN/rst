@@ -2,10 +2,6 @@
    ==============
    Author: S.G. Shepherd
 
-*/
-
-/*
- Copyright (C) <year>  <name of author>
 
 Copyright (C) <year>  <name of author>
 

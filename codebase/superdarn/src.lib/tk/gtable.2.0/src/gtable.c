@@ -1,7 +1,6 @@
 /* gtable.c
    ========
    Author: R.J.Barnes & W.Bristow
-   Comments: E.G.Thomas (2016)
 */
 
 /*
@@ -24,6 +23,10 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+Comments: E.G.Thomas (2016)
+*/
+
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>

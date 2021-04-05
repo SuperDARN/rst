@@ -23,7 +23,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
-
+*/
 
 struct PolygonData *make_field_fov(double tval,struct RadarNetwork *network,
                                    int id,int chisham);

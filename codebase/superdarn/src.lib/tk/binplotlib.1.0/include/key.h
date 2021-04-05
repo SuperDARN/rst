@@ -1,7 +1,6 @@
 /* key.h
    =====
    Author: R.J.Barnes
-*/
 
 
 

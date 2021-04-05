@@ -1,15 +1,8 @@
 /* cnvtcoord.c
    ===========
    Author: R.J.Barnes
-   Comments: E.G.Thomas (2016)
-
-Modifications:
-    2020-03-11 Marina Schmidt removed earth's radius defined constant 
-along with this program. If not, see <https://www.gnu.org/licenses/>.
 
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
-
- Copyright (C) <year>  <name of author>
 
 This file is part of the Radar Software Toolkit (RST).
 
@@ -20,11 +13,17 @@ the Free Software Foundation, either version 3 of the License, or
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
+    Comments: E.G.Thomas (2016)
+    2020-03-11 Marina Schmidt removed earth's radius defined constant 
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
 */
 
 #include <math.h>

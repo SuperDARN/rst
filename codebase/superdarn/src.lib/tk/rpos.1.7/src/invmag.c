@@ -1,10 +1,6 @@
 /* invmag.c
    ========
    Author: R.J.Barnes
-   Comments: E.G.Thomas (2016)
-*/
-
-/*
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 
 This file is part of the Radar Software Toolkit (RST).
@@ -24,6 +20,10 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+   Comments: E.G.Thomas (2016)
+*/
+
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>

@@ -1,7 +1,8 @@
 /* grplotraw_key.c
    ===============
    Author: R.J.Barnes
-Copyright (C) <year>  <name of author>
+
+(c) 2010 JHU/APL & Others - Please Consult LICENSE.all-full.3.2-beta-7-g5a05191.txt for more information.
 
 This file is part of the Radar Software Toolkit (RST).
 
@@ -20,15 +21,12 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
-
-
-
-/*
- (c) 2010 JHU/APL & Others - Please Consult LICENSE.all-full.3.2-beta-7-g5a05191.txt for more information.
- 
- 
- 
 */
+
+
+ 
+ 
+ 
 
 
 #include <stdio.h>

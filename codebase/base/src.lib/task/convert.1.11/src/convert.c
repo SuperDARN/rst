@@ -1,7 +1,7 @@
 /* convert.c
    =========
    Author: R.J.Barnes
-Copyright (C) <year>  <name of author>
+(c) 2011 JHU/APL & Others - Please Consult LICENSE.datamap.txt for more information.                                                                 
 
 This file is part of the Radar Software Toolkit (RST).
 
@@ -20,11 +20,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
-
-
-
-/*                                                                                                                                                    
- (c) 2011 JHU/APL & Others - Please Consult LICENSE.datamap.txt for more information.                                                                 
+                                                                                                                                                    
 */
 
 
