@@ -2,7 +2,7 @@
 /* lmfit.c
    ==========
   TODO: find author and put in the correct copyright 
-  Copyright (C) <year>  <name of author>
+   Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 
 This file is part of the Radar Software Toolkit (RST).
 
