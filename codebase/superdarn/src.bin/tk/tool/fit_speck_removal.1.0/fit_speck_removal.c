@@ -172,7 +172,7 @@ int main (int argc,char *argv[]) {
   qflgs->value = malloc(tmax*maxrange*maxchannel*maxbeam * sizeof(int));
   if ((qflgs->value == NULL) || (errno > 1)) {
     fprintf(stderr,"Error: %s\n", strerror(errno));
-    free_parameters(prm, fit, fp, NULL);
+    free_parameters(prm, fit, fp, qflgs);
     exit(-1);
   }
   qflgs->used = 0;
@@ -185,6 +185,11 @@ int main (int argc,char *argv[]) {
   int beam, channel;
   int nrec[maxbeam][maxchannel]; // counts number of records for each beam/channel
   memset(nrec,0,sizeof(nrec));
+  if (nrec==NULL) {
+    fprintf(stderr,"Error: %s\n", strerror(errno));
+    free_parameters(prm, fit, fp, qflgs);
+    exit(-1);
+  }
   
   do {
   
@@ -221,6 +226,11 @@ int main (int argc,char *argv[]) {
   int sum;
   int index_list[9];  
   memset(index_list,-1,sizeof(index_list));
+  if (index_list==NULL) {
+    fprintf(stderr,"Error: %s\n", strerror(errno));
+    free_parameters(prm, fit, fp, qflgs);
+    exit(-1);
+  }
   
   
   //** Read the file again, apply the median filter, and write a new file
@@ -233,6 +243,11 @@ int main (int argc,char *argv[]) {
   int status=0;
   int irec[maxbeam][maxchannel];
   memset(irec,0,sizeof(irec));
+  if (irec==NULL) {
+    fprintf(stderr,"Error: %s\n", strerror(errno));
+    free_parameters(prm, fit, fp, qflgs);
+    exit(-1);
+  }
   do {
   
     if (vb) {
@@ -293,11 +308,11 @@ int main (int argc,char *argv[]) {
         
         // all other cells
         else 
-                sum = qflgs->value[index_list[0]] + qflgs->value[index_list[1]] 
-                        + qflgs->value[index_list[2]] + qflgs->value[index_list[3]] 
-                        + qflgs->value[index_list[4]] + qflgs->value[index_list[5]] 
-                        + qflgs->value[index_list[6]] + qflgs->value[index_list[7]] 
-                        + qflgs->value[index_list[8]];
+          sum = qflgs->value[index_list[0]] + qflgs->value[index_list[1]] 
+              + qflgs->value[index_list[2]] + qflgs->value[index_list[3]] 
+              + qflgs->value[index_list[4]] + qflgs->value[index_list[5]] 
+              + qflgs->value[index_list[6]] + qflgs->value[index_list[7]] 
+              + qflgs->value[index_list[8]];
         
         // Remove record if median=0 (sum of qflgs < 5)
         if (sum < 5) 
@@ -318,6 +333,11 @@ int main (int argc,char *argv[]) {
     }
 
     strcpy(tmstr,asctime(gmtime(&ctime)));
+    if (tmstr==NULL) {
+      fprintf(stderr,"Error: %s\n", strerror(errno));
+      free_parameters(prm, fit, fp, qflgs);
+      exit(-1);
+    }
     tmstr[24]=0;
     if (RadarParmSetOriginTime(prm,tmstr) == -1)
     {
