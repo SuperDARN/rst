@@ -79,11 +79,11 @@ Modifications:
 
 According to the [GPL license documentation](https://www.gnu.org/licenses/gpl-3.0.en.html): 
 
-> *"It is safest to attach them to the start of each source file to most effectively state the exclusion of warranty; each file should have at least the “copyright” line and a pointer to where the full notice is found.*"
+> *"It is safest to attach them to the start of each source file to most effectively state the exclusion of warranty; and each file should have at least the “copyright” line and a pointer to where the full notice is found.*"
 
 ## License permissions
 
-When developing in RST you are granting permission for your code to be licensed under the GPL. This will be ok in almost all situations. Exceptions may arise if your employer wants to make your program into its proprietary software, or if your funding agency has restrictions on the publication of research outputs (e.g. defense contracts). If you suspect that you won't be allowed to contribute code to RST under the GPL, [it is recommended](https://www.gnu.org/licenses/gpl-faq.html#WhatIfSchool) that you negotiate this with your employer/funding agency at an early stage in developing the software. 
+When developing in RST you are granting permission for your code to be licensed under the GPL. This will be ok in almost all situations. Exceptions may arise if your employer wants to make your program into proprietary software, or if your funding agency has restrictions on the publication of research outputs (e.g. defense contracts). If you suspect that you won't be allowed to contribute code to RST under the GPL, [it is recommended](https://www.gnu.org/licenses/gpl-faq.html#WhatIfSchool) that you negotiate this with your employer/funding agency at an early stage in developing the software. 
 
 !!! IMPORTANT
     Please make sure to review the [license]((https://www.gnu.org/licenses/gpl-3.0.en.html)), and check with your employer/funding agency that you have permission to distribute your code under the GPLv3. 
@@ -145,11 +145,11 @@ Adding copyright notices is appropriate only for __substantial__ modifications. 
 ## Frequently asked questions
 
 __Can RST be released with a different license?__<br/>
-To release RST with a different license, we would need permission from all of the copyright holders. This means that, in practice, it would be very difficult to re-license the software. This is by the design of the GPL license--it ensures that the software can always be used freely. 
+To release RST with a different license, we would need permission from all of the copyright holders. This means that, in practice, it would be very difficult to re-license the software. This is the intention of the GPL--it ensures that the software can always be used freely. 
 
 
 __Can JHU/APL revoke the GPL license and take back control of RST?__<br/>
-No. JHU/APL permitted for the RST to be re-licensed under the GPL in ~2012 (RST3.5), and they cannot revoke this permission. JHU/APL still owns the copyright to their code, and RST versions 3.4 and earlier are still licensed by JHU/APL (not under GPL).
+No. JHU/APL gave permission for the RST to be re-licensed under the GPL in ~2012 (RST3.5), and they cannot revoke this permission. JHU/APL still owns the copyright to their code, and RST versions 3.4 and earlier are still licensed by JHU/APL (not under GPL).
 
 
 __What happens if I don't include copyright information in my code?__<br/>
@@ -184,7 +184,7 @@ Yes, provided that you are the copyright holder of the code and that it is a sta
 - Once your code is added to the RST, that version of the code is licensed under GPLv3 (or LGPL - see the previous question), and you cannot revoke this
 - If your software includes other code from the RST (or other GPL-licensed code), your software can only be licensed under GPL. 
 
-__Am I allowed to copy code from the RST into my software project? What do I have to do to comply with RST's license?__<br/>
+__Am I allowed to copy code from the RST into my own software project? What do I have to do to comply with RST's license?__<br/>
 
 - You are free to copy or modify any portion of the RST code
 - You are free to share the software outputs (data files, plots)
