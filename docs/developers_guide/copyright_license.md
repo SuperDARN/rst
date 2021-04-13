@@ -144,6 +144,10 @@ Adding copyright notices is appropriate only for __substantial__ modifications. 
 
 ## Frequently asked questions
 
+__Is it possible to restrict RST to non-commercial use only?__<br/>
+No. The license prohibits us from placing any additional restrictions on the use of the software. 
+
+
 __Can RST be released with a different license?__<br/>
 To release RST with a different license, we would need permission from all of the copyright holders. This means that, in practice, it would be very difficult to re-license the software. This is the intention of the GPL--it ensures that the software can always be used freely. 
 
@@ -158,17 +162,19 @@ In most countries, authors automatically hold the copyright to their work even i
 - You may be breaching your employment contract
 - You are not complying with the GPL requirement to include copyright information
 - You may not get credit for your work
-- It is more difficult for you to prove that you are the copyright holder
+- It is more difficult to prove who is the copyright holder
 
 
 __Do I have to include my institution in the copyright line?__<br/>
 That depends on the terms of your employment. Check your employment contract or ask the research office. If you contribute to the RST software package in your free time, then just put your name in the copyright line.
 
+
 __Can I copyright code to a generic "SuperDARN" organization?__<br/>
 No, the copyright holder has to be a legal entity or a person. Your employer may also object to this. If you contribute to the RST software package in your free time, then just put your name in the copyright line.
 
+
 __Why does every RST source file have license notices at the top? Isn't it sufficient to include the license file in the top-level directory of RST?__<br/>
-Since the GPL allows users to modify and redistribute portions of the RST software packages, individual source files might become separated from the license file. If this happens, it will be unclear to users what their legal rights are to use/modify/distribute that version of the code (which is a violation of the GPL). Therefore, all source files should clearly indicate that they are licensed under the GPL (writing "see license.txt" is not sufficient).
+Since the GPL allows users to modify and redistribute portions of the RST software package, individual source files might become separated from the license file. If this happens, it will be unclear to users what their legal rights are to use/modify/distribute that version of the code (which is a violation of the GPL). Therefore, all source files should clearly indicate that they are licensed under the GPL (writing "see license.txt" is not sufficient).
 
 
 __If I add a new library to the RST, can that library have a different license?__<br/>
@@ -181,6 +187,7 @@ Yes, provided that you are the copyright holder of the code and that it is a sta
 - Once your code is added to the RST, that version of the code is licensed under GPLv3 (or LGPL - see the previous question), and you cannot revoke this
 - If your software includes other code from the RST (or other GPL-licensed code), your software can only be licensed under GPL. 
 
+
 __Am I allowed to copy code from the RST into my own software project? What do I have to do to comply with RST's license?__<br/>
 
 - You are free to copy or modify any portion of the RST code
@@ -189,8 +196,10 @@ __Am I allowed to copy code from the RST into my own software project? What do I
     - You must also share the source code
     - Your software must be licensed under GPL (v3 or later)
 
+
 __Who owns the outputs of RST (processed data files, plots)?__<br/>
-RST outputs belong to the end-user who created them. The user is free to share them under any terms and is not bound by the GPL.
+RST outputs belong to the end-user who created them. End-users are free to use and share these outputs, provided that they comply with the SuperDARN data policy. This includes respecting embargoes on Discretionary Time and Special Time data, and providing appropriate acknowledgement in publications. The data policy can be found in the [SuperDARN Principle Investigators' Agreement](https://superdarn.ca/piagreement).
+
 
 __I have more questions about the GPL__<br/>
 There's lots of helpful information [here](https://www.gnu.org/licenses/gpl-faq.html).
