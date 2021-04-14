@@ -145,7 +145,7 @@ Adding copyright notices is appropriate only for __substantial__ modifications. 
 ## Frequently asked questions
 
 __Is it possible to restrict RST to non-commercial use only?__<br/>
-No. The license prohibits us from placing any additional restrictions on the use of the software. 
+No. The license prohibits us from placing any additional restrictions on the use of the software. This is the key principle of free software -- "free" refers to "freedom" (not price), so the software must be available to anyone to use for any purpose. Adding a "non-commercial use only" restriction would require us to release RST under a different license (possibly a non-standard license), which would be very difficult in practice (see next question). Also, any change to the license would apply only to new releases; we cannot prevent commercial use of the previous versions of RST that are already licensed under GPL. 
 
 
 __Can RST be released with a different license?__<br/>
