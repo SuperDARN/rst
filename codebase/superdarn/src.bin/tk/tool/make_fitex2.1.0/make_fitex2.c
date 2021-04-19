@@ -4,7 +4,7 @@
 */
 
 /*
- (c) 2010 JHU/APL & Others 
+ (c) 2010 The Johns Hopkins University/Applied Physics Laboratory & Others 
 
 This file is part of the Radar Software Toolkit (RST).
 
@@ -286,7 +286,6 @@ int main(int argc,char *argv[])
   if (old) OldRawClose(rawfp);
   return 0;
 }
-
 
 
 

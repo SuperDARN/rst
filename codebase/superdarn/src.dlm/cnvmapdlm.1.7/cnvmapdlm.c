@@ -5,8 +5,6 @@
 /*
  Copyright (C) <year>  <name of author>
 
-Copyright (C) <year>  <name of author>
-
 This file is part of the Radar Software Toolkit (RST).
 
 RST is free software: you can redistribute it and/or modify

@@ -4,7 +4,7 @@
 */
 
 /*
- (c) 2011 JHU/APL & Others - Please Consult LICENSE.datamap.txt for more information.
+ (c) 2011 The Johns Hopkins University/Applied Physics Laboratory & Others
 
 This file is part of the Radar Software Toolkit (RST).
 

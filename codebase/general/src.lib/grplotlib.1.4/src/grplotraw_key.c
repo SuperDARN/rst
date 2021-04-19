@@ -2,7 +2,7 @@
    ===============
    Author: R.J.Barnes
 
-(c) 2010 JHU/APL & Others - Please Consult LICENSE.all-full.3.2-beta-7-g5a05191.txt for more information.
+(c) 2010 The Johns Hopkins University/Applied Physics Laboratory & Others
 
 This file is part of the Radar Software Toolkit (RST).
 
@@ -214,7 +214,6 @@ int GrplotRawKeyLog(struct Plot *ptr,
   FrameBufferFree(img);
   return s;
 }
-
 
 
 

@@ -4,7 +4,7 @@
 */
 
 /*
- (c) 2010 JHU/APL & Others 
+ (c) 2010 The Johns Hopkins University/Applied Physics Laboratory & Others 
 
 This file is part of the Radar Software Toolkit (RST).
 
@@ -23,7 +23,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
-2020-05-07 Marina Schmidt Added Free functioons
+  2020-05-07 Marina Schmidt Added Free functions
 */
 
 #include <stdio.h>

@@ -3,7 +3,7 @@
 
 
 /*
- Copyright (C) <year>  <name of author>
+ Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 
 This file is part of the Radar Software Toolkit (RST).
 
@@ -23,7 +23,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
  
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
  
  This file is part of the Radar Software Toolkit (RST).
  
@@ -259,4 +258,3 @@ struct DataMap *DataMapMerge(int num,struct DataMap **in) {
 
 
   
-
