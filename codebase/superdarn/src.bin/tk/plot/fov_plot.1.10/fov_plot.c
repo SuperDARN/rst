@@ -127,8 +127,7 @@ int solar_loc(int yr,int t1,double *mean_lon, double *dec);
 int stream(char *buf,int sze,void *data) {
   FILE *fp;
   fp=(FILE *) data;
-  fwrite(buf,sze,1,stdout);
-  fclose(fp);
+  fwrite(buf,sze,1,fp);
   return 0;
 } 
 
