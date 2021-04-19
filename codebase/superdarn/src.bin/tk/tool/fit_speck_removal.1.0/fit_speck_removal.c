@@ -292,11 +292,9 @@ int main (int argc,char *argv[]) {
               + 2*qflgs->value[index_list[2]] + qflgs->value[index_list[6]] 
               + qflgs->value[index_list[7]]   + qflgs->value[index_list[8]];
         else if (irec[beam][channel]==nrec[beam][channel])
-          {sum = 2*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[1]] 
+          sum = 2*qflgs->value[index_list[0]] + 2*qflgs->value[index_list[1]] 
               + 2*qflgs->value[index_list[2]] + qflgs->value[index_list[3]] 
               + qflgs->value[index_list[4]]   + qflgs->value[index_list[5]];
-              fprintf(stderr,"%d %d\n",irec[beam][channel],nrec[beam][channel]);
-              }
         else if (range==0)
           sum = 2*qflgs->value[index_list[0]] + qflgs->value[index_list[2]] 
               + 2*qflgs->value[index_list[3]] + qflgs->value[index_list[5]] 
