@@ -63,6 +63,7 @@ int load_key(FILE *fp,struct key *key) {
         memset(key->g,0,num);
         memset(key->b,0,num);
         key->num=num;
+        key->max=num;
         j=0;
       }
     } else if (j<num) {
