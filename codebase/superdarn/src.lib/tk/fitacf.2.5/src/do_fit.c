@@ -368,30 +368,30 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
           xptr[k].phi0 = xptr[k].phi0*iptr->prm.phidiff;
 
 
-      /* phi_sign indicates whether interferometer array is in front (+) or behind (-) main array
+      /* Y_offset_sign indicates whether interferometer array is in front (+) or behind (-) main array
          used for elv_low and elv_high calculation */
-      int phi_sign;
+      int interfer_sign;
       if (iptr->prm.interfer[1] > 0.0)
-        phi_sign= 1.0;
+        Y_offset_sign= 1.0;
       else
-        phi_sign= -1.0;
+        Y_offset_sign= -1.0;
 
       if (iptr->prm.old_elev) {
         /* use old elevation angle routines */
         if (goose == 0) {
           elv[k].normal = elevation(&iptr->prm, xptr[k].phi0);
-          elv[k].low = elevation(&iptr->prm, xptr[k].phi0 + phi_sign*xptr[k].phi0_err);
-          elv[k].high = elevation(&iptr->prm, xptr[k].phi0 - phi_sign*xptr[k].phi0_err);
+          elv[k].low = elevation(&iptr->prm, xptr[k].phi0 + Y_offset_sign*xptr[k].phi0_err);
+          elv[k].high = elevation(&iptr->prm, xptr[k].phi0 - Y_offset_sign*xptr[k].phi0_err);
         } else {
           elv[k].normal = elev_goose(&iptr->prm, xptr[k].phi0);
-          elv[k].low = elev_goose(&iptr->prm, xptr[k].phi0 + phi_sign*xptr[k].phi0_err);
-          elv[k].high = elev_goose(&iptr->prm, xptr[k].phi0 - phi_sign*xptr[k].phi0_err);
+          elv[k].low = elev_goose(&iptr->prm, xptr[k].phi0 + Y_offset_sign*xptr[k].phi0_err);
+          elv[k].high = elev_goose(&iptr->prm, xptr[k].phi0 - Y_offset_sign*xptr[k].phi0_err);
         }
       } else {
         /* use the correct elevation angle routine */
         elv[k].normal = elevation_v2(&iptr->prm, xptr[k].phi0);
-        elv[k].low = elevation_v2(&iptr->prm, xptr[k].phi0 + phi_sign*xptr[k].phi0_err);
-        elv[k].high = elevation_v2(&iptr->prm, xptr[k].phi0 - phi_sign*xptr[k].phi0_err);
+        elv[k].low = elevation_v2(&iptr->prm, xptr[k].phi0 + Y_offset_sign*xptr[k].phi0_err);
+        elv[k].high = elevation_v2(&iptr->prm, xptr[k].phi0 - Y_offset_sign*xptr[k].phi0_err);
       }
     }
     if (ptr[k].qflg == 1) i++;
