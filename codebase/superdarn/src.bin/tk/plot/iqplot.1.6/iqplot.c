@@ -24,7 +24,8 @@
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
  
  
- 
+Modifications:
+    2021-04-22 Marina Schmidt chaged delay to 0 as a default 
 */
 
 #include <stdio.h>
@@ -247,7 +248,7 @@ int main(int argc,char *argv[]) {
   float lne=0.5;
 
   struct timeval tmout;
-  float delay=0.001;
+  float delay=0;
 
   int xdf=0;
   struct XwinDisplay *dp;

@@ -6,6 +6,9 @@
 
 /*
    See license.txt
+
+   Modifications:
+    2021-04-22 Marina Schmidt chaged delay to 0 as a default
 */
 
 #include <stdio.h>
@@ -223,7 +226,7 @@ int main(int argc,char *argv[]) {
   int xdoff=-1;
   int ydoff=-1;
   struct timeval tmout;
-  float delay=0.1;
+  float delay=0;
   int xstat;
 #endif
 

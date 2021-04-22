@@ -24,7 +24,8 @@
  You should have received a copy of the GNU Lesser General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
  
- 
+Modifications:
+    2021-04-22 Marina Schmidt chaged delay to 0 as a default 
  
 */
 
@@ -448,7 +449,7 @@ int main(int argc,char *argv[]) {
   int xdoff=-1;
   int ydoff=-1;
   struct timeval tmout;
-  float delay=0.1;
+  float delay=0;
   int xstat=0;
 #endif
 
