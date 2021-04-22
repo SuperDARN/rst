@@ -718,6 +718,7 @@ int main(int argc,char *argv[]) {
   snd=SndMake();
   scn=RadarScanMake();
 
+
   envstr=getenv("SD_RADAR");
   if (envstr==NULL) {
     fprintf(stderr,"Environment variable 'SD_RADAR' must be defined.\n");
@@ -1117,6 +1118,11 @@ int main(int argc,char *argv[]) {
       exit(-1);
     }
   }
+
+  if (delay == 0){
+      fprintf(stderr, "Click to view next plot. Ctrl+c to exit. Use -delay option to cycle through all frames sequentially.\n");
+  }
+
   if ((ssec !=-1) || (sdte !=-1)) {
     /* we must skip the start of the files */
 

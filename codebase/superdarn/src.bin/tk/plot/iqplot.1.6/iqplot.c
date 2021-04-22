@@ -447,9 +447,14 @@ int main(int argc,char *argv[]) {
     exit(-1);
   }
 
+  if (delay == 0){
+      fprintf(stderr, "Click to view next plot. Ctrl+c to exit. Use -delay option to cycle through all frames sequentially.\n");
+  }
+
   if ((interfer) && (prm->xcf==0)) {
     fprintf(stderr,"Warning: Interferometer samples may not be present in this file.\n");
   }
+
 
   if ((wdt==0) || (hgt==0)) {
     fprintf(stderr,"Invalid plot size.\n");

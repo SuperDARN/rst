@@ -883,7 +883,12 @@ int main(int argc,char *argv[]) {
     fprintf(stderr,"Error opening grid file: %s\n",fname);
     exit(-1);
   }
- 
+  
+  if (delay == 0){
+      fprintf(stderr, "Click to view next plot. Ctrl+c to exit. Use -delay option to cycle through all frames sequentially.\n");
+  }
+
+
   if (magflg && old_aacgm) magflg = 2; /* set to 2 for old AACGM */
 
   /* set function pointer to compute MLT or MLT_v2 */
