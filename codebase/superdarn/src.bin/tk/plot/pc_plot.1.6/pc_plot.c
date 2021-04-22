@@ -144,8 +144,7 @@ double strtime(char *text) {
 int stream(char *buf,int sze,void *data) {
   FILE *fp;
   fp=(FILE *) data;
-  fwrite(buf,sze,1,stdout);
-  fclose(fp);
+  fwrite(buf,sze,1,fp);
   return 0;
 } 
 
@@ -798,10 +797,12 @@ int main(int argc,char *argv[]) {
     else FrameBufferSavePNG(img,stdout);
   #endif
 
-  free(fname);
+  if ((cfname !=NULL) && (arg<optf->argc)) {
+    free(fname);
+  }
   return 0;
 
 
- }
+}
 
 
