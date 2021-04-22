@@ -41,7 +41,7 @@ The software is maintained by the SuperDARN Data Analysis Working Group (DAWG) o
         * [GitHub Projects](dev/projects.md)
         * [Issues](dev/issues.md)
         * [Creating a Branch](dev/branching.md)
-        * [Pull Requests](dev/pull_requests.md)
+        * [Pull Requests](dev/pull_request.md)
         * [Testing Code](dev/testing.md)
         * [Code Reviews](dev/code_reviews.md)
         * [Releasing Code](dev/releases.m
