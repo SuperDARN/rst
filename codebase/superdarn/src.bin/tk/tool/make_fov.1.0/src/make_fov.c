@@ -1,6 +1,6 @@
 /* make_fov.c
    =============
-   Author: Angeline G. Burrell - NRL - 2019
+   Author: Angeline G. Burrell - NRL - 2020
 */
 
 /*
@@ -43,7 +43,8 @@ struct OptionData opt;
 
 int main(int argc, char *argv[])
 {
-  int inum, len, fnum, channel, channel_fix, ret_stat;
+  int inum, len, fnum, channel, channel_fix, ret_stat, nfbands;
+  int fbands[90][2];
 
   char vstr[256];
 
@@ -51,7 +52,8 @@ int main(int argc, char *argv[])
   struct MultRadarBSID *mult_bsid;
 
   /* Initialize input options */
-  int old=0, farg=0, tlen=0;
+  /* Default frequency limits set to the limits of the HF range */
+  int old=0, farg=0, tlen=0, freq_min=3000, freq_max=30000;
   
   double stime=-1.0, etime=-1.0, extime=0.0, sdate=-1.0, edate=-1.0;
 
@@ -69,7 +71,7 @@ int main(int argc, char *argv[])
 		      unsigned char *fitflg, unsigned char *catflg,
 		      unsigned char *nsflg, char *stmestr, char *etmestr,
 		      char *sdtestr, char *edtestr, char *exstr, char *chnstr,
-		      char *chnstr_fix);
+		      char *chnstr_fix, int *freq_min, int *freq_max);
   int set_stereo_channel(char *chnstr);
   int set_fix_channel(char *chnstr_fix);
   double strtime(char *text);
@@ -83,8 +85,8 @@ int main(int argc, char *argv[])
   
   /* Process the command line options */
   farg = command_options(argc, argv, &old, &tlen, &vb, &cfitflg, &fitflg,
-			 &catflg, &nsflg, stmestr, etmestr, sdtestr,
-			 edtestr, exstr, chnstr, chnstr_fix);
+			 &catflg, &nsflg, stmestr, etmestr, sdtestr, edtestr,
+			 exstr, chnstr, chnstr_fix, &freq_min, &freq_max);
 
   /* If 'cn' set then determine Stereo channel, either A or B */
   channel = set_stereo_channel(chnstr);
@@ -147,11 +149,19 @@ int main(int argc, char *argv[])
   /* Based off of DaViTpy routine:                                      */
   /*   pydarn.proc.fov.update_backscatter.update_bs_w_scan              */
   ret_stat = update_scan_bs(min_pnts, region_hmax, region_hmin, rg_box, vh_box,
-			    max_rg, max_hop, ptst, strict_gs, step, mult_scan,
-			    mult_bsid);
+   			    max_rg, max_hop, ptst, strict_gs, step, mult_scan,
+   			    mult_bsid);
 
   /* Dynamically establish transmission frequency bands for these scans */
-  ret_stat = get_radar_tfreq_bands(band_width, mult_scan, fbands);
+  /* unless a frequency range was specified                             */
+  if(freq_max - freq_min == 27000)
+    ret_stat = get_radar_tfreq_bands(band_width, mult_scan, &nfbands, fbands);
+  else
+    {
+      nfbands = 1;
+      fbands[0][0] = freq_min;
+      fbands[0][1] = freq_max;
+    }
 
   /* Examine the UT evolution and consistency of the elevation angles */
   ret_stat = test_ut_fov_struct(min_frac, frg_box, max_rg, ut_box, fbands, step,
@@ -168,9 +178,9 @@ int main(int argc, char *argv[])
 int command_options(int argc, char *argv[], int *old, int *tlen,
 		    unsigned char *vb, unsigned char *cfitflg,
 		    unsigned char *fitflg, unsigned char *catflg,
-		    unsigned char *nsflg, char *stmestr,
-		    char *etmestr, char *sdtestr, char *edtestr, char *exstr,
-		    char *chnstr, char *chnstr_fix)
+		    unsigned char *nsflg, char *stmestr, char *etmestr,
+		    char *sdtestr, char *edtestr, char *exstr, char *chnstr,
+		    char *chnstr_fix, int *freq_min, int *freq_max)
 {
   /* Initialize input options */
   int farg=0;
@@ -235,6 +245,10 @@ int command_options(int argc, char *argv[], int *old, int *tlen,
 
   /* Apply scan flag limit (ie exclude data with scan flag = -1) */
   OptionAdd(&opt, "ns", 'x', &nsflg);
+
+  /* Apply transmission frequency limits */
+  OptionAdd(&opt, "tfmin", 'x', freq_min); /* Minimum transmission frequency */
+  OptionAdd(&opt, "tfmax", 'x', freq_max); /* Maximum transmission frequency */
 
   /* Process command line options */
   farg = OptionProcess(1, argc, argv, &opt, rst_opterr);
