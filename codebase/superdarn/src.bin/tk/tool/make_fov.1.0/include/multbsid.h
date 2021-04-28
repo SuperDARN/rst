@@ -32,6 +32,15 @@
 #include "scandata.h"
 #endif
 
+#ifndef _FITBLK_H
+#include "fitblk.h"
+#endif
+
+#ifndef _RPRM_H
+#include "rprm.h"
+#endif
+
+
 struct CellBSIDFlgs
 {
   int fov;
@@ -42,10 +51,6 @@ struct CellBSIDFlgs
 
 struct CellBSIDLoc
 {
-  double elv;
-  double elv_e;
-  double phi0;
-  double phi0_e;
   double vh;
   double vh_e;
   char *vh_m;
@@ -56,30 +61,17 @@ struct CellBSIDLoc
 
 struct RadarBSIDBeam
 {
-    int scan;
-    int bm;
-    float bmazm;
-    double time;
-    int cpid;
-    struct
-    {
-        int sc;
-        int us;
-    } intt;
-    int nave;
-    int frang;
-    int rsep;
-    int rxrise;
-    int freq;
-    int noise;
-    int atten;
-    int channel;
-    int nrang;
-    unsigned char *sct;
-    struct RadarCell *rng;
-    struct RadarCell *med_rng;
-    struct CellBSIDFlgs *rng_flgs;
-    struct CellBSIDLoc *rng_loc;
+  double time;
+  struct RadarPrm prm;
+  struct FitNoise noise;
+  unsigned char *sct;
+  struct FitRange *rng;
+  struct FitRange *med_rng;
+  struct FitElv *front_elv;
+  struct FitElv *back_elv;
+  struct CellBSIDFlgs *rng_flgs;
+  struct CellBSIDLoc *front_loc;
+  struct CellBSIDLoc *back_loc;
 };
 
 struct RadarBSIDScan
