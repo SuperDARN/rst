@@ -2,6 +2,7 @@
 *.so
 *.o
 *~
+#*
 bin/
 build/bin/
 build/include/
