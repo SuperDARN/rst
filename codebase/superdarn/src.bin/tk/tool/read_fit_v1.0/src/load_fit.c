@@ -103,7 +103,7 @@ int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
     {
       /* Add to an existing multi-scan output */
       prev_ptr            = mult_scan->last_ptr;
-      prev_ptr->next_scan = RadarScanCyclMake();
+      prev_ptr->next_scan = *RadarScanCyclMake();
       data_ptr            = prev_ptr->next_scan;
       data_ptr->prev_scan = prev_ptr;
     }
