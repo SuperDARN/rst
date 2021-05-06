@@ -370,7 +370,7 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
 
       /* Y_offset_sign indicates whether interferometer array is in front (+) or behind (-) main array
          used for elv_low and elv_high calculation */
-      int interfer_sign;
+      int Y_offset_sign;
       if (iptr->prm.interfer[1] > 0.0)
         Y_offset_sign= 1.0;
       else
