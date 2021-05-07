@@ -28,5 +28,6 @@ The RST is now maintained collaboratively by the SuperDARN Data Analysis Working
 - K.T. Sterne, DAWG Co-Chair (2019-), code comments, documentation
 - E.G. Thomas, TS18 convection model, IDL gridding library, sounding library, refactorization, modularization, code comments
 - M.-T. Walach, bugfixes, testing, documentation
+- C.L. Waters, FITACF_v2
 
 Please help us make this list as complete as possible! Suggestions for updates should be directed to the Data Analysis Working Group <darn-dawg@isee.nagoya-u.ac.jp>.
