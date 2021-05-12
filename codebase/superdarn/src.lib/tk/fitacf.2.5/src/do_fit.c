@@ -8,9 +8,7 @@ This file is part of the Radar Software Toolkit (RST).
 RST is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
+(at your option) any la is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
@@ -363,7 +361,7 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
 
       /* Y_offset_sign indicates whether interferometer array is in front (+) or behind (-) main array
          used for elv_low and elv_high calculation */
-      int interfer_sign;
+      int Y_offset_sign;
       if (iptr->prm.interfer[1] > 0.0)
         Y_offset_sign= 1.0;
       else
@@ -396,4 +394,3 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
 
   return i;
 }
-

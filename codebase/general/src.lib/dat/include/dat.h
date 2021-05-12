@@ -1,35 +1,39 @@
-/* raw.h
-   =====
-   Author: R.J.Barnes
-*/
-
-
-/*
+/* 
+ Copyright (C) 2021 SuperDARN Canada, University of Saskatchewan
+ Author: Marina Schmidt
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
+ Copied code from raw.h in cmpraw modified for dat files
 
-This file is part of the Radar Software Toolkit (RST).
+ Modified
 
-RST is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ Disclaimer:
+ 
+ This file is part of the Radar Software Toolkit (RST).
+ 
+ RST is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ 
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ 
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Modifications:
+ 
 */
+
+
+
 
 #ifdef SEC
 #undef SEC
 #endif
 
-struct radar_parms {
+struct DatParms {
 
   struct {
     char MAJOR,MINOR;
@@ -61,7 +65,7 @@ struct radar_parms {
   /* These parameters can either be set manually or by a RADLANG program */
   /* There are a total of 24 words in this parameter list */
   int16 INTT,	/* the integration period */
-    TXPL,	/* the pulse length (in micro seconds) */
+	TXPL,	/* the pulse length (in micro seconds) */
 	MPINC,	/* the basic lag separation (in microseconds) */
 	MPPUL,	/* the number of pulses in the pulse pattern */
 	MPLGS,	/* the number of lags in the pulse pattern (note 1 below) */
@@ -112,13 +116,31 @@ struct radar_parms {
 	  no clear frequency condition.
 */
 
-struct rawdata
+struct DatData
 	{
-	struct radar_parms PARMS;
-	int16 PULSE_PATTERN[ORIG_PULSE_PAT_LEN];
-	int16 LAG_TABLE[2][ORIG_LAG_TAB_LEN];
+	struct DatParms PARMS;
+	int16 PULSE_PATTERN[PULSE_PAT_LEN];
+	int16 LAG_TABLE[2][LAG_TAB_LEN];
 	char COMBF[ORIG_COMBF_SIZE];
 	float pwr0[ORIG_MAX_RANGE];
-	float acfd[ORIG_MAX_RANGE][ORIG_LAG_TAB_LEN][2];
-	float xcfd[ORIG_MAX_RANGE][ORIG_LAG_TAB_LEN][2];
+	float acfd[ORIG_MAX_RANGE][LAG_TAB_LEN][2];
+	float xcfd[ORIG_MAX_RANGE][LAG_TAB_LEN][2];
 	};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

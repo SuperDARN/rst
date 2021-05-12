@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?ignore
+(C) Copyright 2021 SuperDARN Canada, University of Saskatchewan
+Author: Marina Schmidt 
+This file is part of the Radar Software Toolkit (RST).
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see https://www.gnu.org/licenses/.
+Modifications:
+?>
+<binary>
+<project>general</project>
+<name>datdump</name>
+<location>src.bin/dat/datdump</location>
+<syntax>datdump --help</syntax>
+<syntax>datdump [-d] [<ar>name</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-d</on><od>print the data values of the array variables.</od>
+</option>
+<option><on><ar>name</ar></on><od>filename of the Dat file, if this is omitted the document will be read from standard input.</od>
+</option>
+<synopsis><p>Dump the contents of a Dat file.</p></synopsis>
+<description><p>Dump the contents of a Dat file.</p>
+<p>The contents of the Dat file are written as plain ASCII to standard output.</p></description>
+
+<example>
+<command>datdump inp.dat | more</command>
+<description>Dump the file "<code>inp.dat</code>", paginating using the <code>more</code> command.
+</description>
+</example>
+
+</binary>
