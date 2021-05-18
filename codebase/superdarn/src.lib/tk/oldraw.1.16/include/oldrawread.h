@@ -16,7 +16,6 @@ the Free Software Foundation, either version 3 of the License, or
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
@@ -48,9 +47,6 @@ struct OldRawFp {
   int (*rawread)(struct OldRawFp *ptr,struct RadarParm *,struct RawData *);
   int error; 
 };
-
-
-
 
 int OldRawRead(struct OldRawFp *fp,struct RadarParm *prm,struct RawData *raw);
 int OldRawReadData(struct OldRawFp *fp,struct RadarParm *prm,

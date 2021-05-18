@@ -2,25 +2,27 @@
 ; ===========
 ; Author: K.Baker & R.J.Barnes
 ; 
-; copyright (c) 2012 the johns hopkins university/applied physics laboratory
-;
-; rst is free software: you can redistribute it and/or modify
-; it under the terms of the gnu general public license as published by
-; the free software foundation, either version 3 of the license, or
+; Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
+; 
+; This file is part of the Radar Software Toolkit (RST).
+; 
+; RST is free software: you can redistribute it and/or modify
+; it under the terms of the GNU General Public License as published by
+; the Free Software Foundation, either version 3 of the License, or
 ; (at your option) any later version.
 ; 
-; this program is distributed in the hope that it will be useful,
-; but without any warranty; without even the implied warranty of
+; This program is distributed in the hope that it will be useful,
+; but WITHOUT ANY WARRANTY; without even the implied warranty of
+; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+; GNU General Public License for more details.
 ; 
-; merchantability or fitness for a particular purpose. see the
-; gnu general public license for more details.
+; You should have received a copy of the GNU General Public License
+; along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ; 
-; you should have received a copy of the gnu general public license
-; along with this program. if not, see <https://www.gnu.org/licenses/>.
-; 
-; modifications:
+; Modifications:
 ;
-; Functions 
+;
+; PublicFunctions
 ; ---------------
 ; grid_openr
 ; grid_openw

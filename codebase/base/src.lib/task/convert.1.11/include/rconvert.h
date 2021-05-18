@@ -2,7 +2,7 @@
    ==========
    Author: R.J.Barnes
 
-(c) 2011 JHU/APL & Others - Please Consult LICENSE.datamap.txt for more information.
+(c) 2011 The Johns Hopkins University/Applied Physics Laboratory & Others
 This file is part of the Radar Software Toolkit (RST).
 
 RST is free software: you can redistribute it and/or modify
@@ -12,7 +12,6 @@ the Free Software Foundation, either version 3 of the License, or
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
@@ -98,6 +97,5 @@ int ConvertWriteUIntZ(gzFile file,uint32 val);
 int ConvertWriteUShortZ(gzFile file,uint16 val);
 
 #endif
-
 
 

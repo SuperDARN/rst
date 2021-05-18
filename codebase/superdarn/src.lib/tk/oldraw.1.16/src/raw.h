@@ -16,7 +16,6 @@ the Free Software Foundation, either version 3 of the License, or
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
@@ -25,9 +24,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
 */
-
-
-
 
 #ifdef SEC
 #undef SEC
@@ -65,7 +61,7 @@ struct radar_parms {
   /* These parameters can either be set manually or by a RADLANG program */
   /* There are a total of 24 words in this parameter list */
   int16 INTT,	/* the integration period */
-	TXPL,	/* the pulse length (in micro seconds) */
+    TXPL,	/* the pulse length (in micro seconds) */
 	MPINC,	/* the basic lag separation (in microseconds) */
 	MPPUL,	/* the number of pulses in the pulse pattern */
 	MPLGS,	/* the number of lags in the pulse pattern (note 1 below) */
@@ -126,21 +122,3 @@ struct rawdata
 	float acfd[ORIG_MAX_RANGE][ORIG_LAG_TAB_LEN][2];
 	float xcfd[ORIG_MAX_RANGE][ORIG_LAG_TAB_LEN][2];
 	};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

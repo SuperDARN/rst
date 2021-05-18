@@ -16,7 +16,6 @@ the Free Software Foundation, either version 3 of the License, or
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
@@ -125,8 +124,7 @@ int solar_loc(int yr,int t1,double *mean_lon, double *dec);
 int stream(char *buf,int sze,void *data) {
   FILE *fp;
   fp=(FILE *) data;
-  fwrite(buf,sze,1,stdout);
-  fclose(fp);
+  fwrite(buf,sze,1,fp);
   return 0;
 } 
 

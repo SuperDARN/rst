@@ -15,7 +15,6 @@ the Free Software Foundation, either version 3 of the License, or
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
@@ -142,8 +141,7 @@ double strtime(char *text) {
 int stream(char *buf,int sze,void *data) {
   FILE *fp;
   fp=(FILE *) data;
-  fwrite(buf,sze,1,stdout);
-  fclose(fp);
+  fwrite(buf,sze,1,fp);
   return 0;
 } 
 
@@ -796,10 +794,12 @@ int main(int argc,char *argv[]) {
     else FrameBufferSavePNG(img,stdout);
   #endif
 
-  free(fname);
+  if ((cfname !=NULL) && (arg<optf->argc)) {
+    free(fname);
+  }
   return 0;
 
 
- }
+}
 
 

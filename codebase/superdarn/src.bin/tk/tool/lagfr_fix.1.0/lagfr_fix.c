@@ -4,7 +4,7 @@
 */
 
 /*
- (c) 2010 JHU/APL & Others 
+ (c) 2010 The Johns Hopkins University/Applied Physics Laboratory & Others 
 
 This file is part of the Radar Software Toolkit (RST).
 
@@ -15,7 +15,6 @@ the Free Software Foundation, either version 3 of the License, or
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
@@ -230,7 +229,6 @@ int main(int argc,char *argv[])
 
   return 0;
 }
-
 
 
 

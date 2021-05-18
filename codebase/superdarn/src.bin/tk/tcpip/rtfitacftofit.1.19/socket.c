@@ -15,7 +15,6 @@ the Free Software Foundation, either version 3 of the License, or
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
@@ -64,7 +63,7 @@ void logtime(char *fname,int nbytes) {
   int mask=S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
   int fid;
   int yr,mo,dy,hr,mt,sc,us,s;
- 
+
   TimeReadClock(&yr,&mo,&dy,&hr,&mt,&sc,&us);
 
   fid=open(fname,O_WRONLY | O_TRUNC | O_CREAT,mask);
