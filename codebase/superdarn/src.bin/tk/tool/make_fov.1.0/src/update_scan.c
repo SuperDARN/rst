@@ -27,15 +27,13 @@
 #include <string.h>
 
 /**
- * Update_Scan_BS: Update scan backscatter propagation path, elevation angle,
- *                 backscatter type, structure flag, and origin field of view
- *                 for all backscatter observatoins in each bean for a scan of
- *                 data.  A full scan is not necessary, but if the number of
- *                 beams is less than the specified minimum, a less rigerous
- *                 evaluation method will be used.
+ * @brief Update scan backscatter propagation path, elevation angle,
+ *        backscatter type, structure flag, and origin field of view for all
+ *        backscatter observatoins in each bean for a scan of data.  A full
+ *        scan is not necessary, but if the number of beams is less than the
+ *        specified minimum, a less rigerous evaluation method will be used.
  *
- * Input: ptst (1/0) Test realism of propagation modes (rec=1)
- *        strict_gs (1/0) Remove indeterminate backscatter (rec=1)
+ * Input: strict_gs (1/0) Remove indeterminate backscatter (rec=1)
  *        step (1-6) Number of processing steps to perform: (rec=6)
  *              1, 2: Examine the elevation structure across each scan
  *              3: Add assignments for points with realistic heights in one FoV
@@ -60,16 +58,18 @@
  *        mult_bsid (*) Output scans with additional data
  **/
 
-int update_scan_bs(short int ptst, short int strict_gs, short int step,
-		   int min_pnts, int dreg_nrg, int ereg_nrg, int freg_nrg,
-		   int far_nrg, int dreg_rgmax, int ereg_rgmax, int freg_rgmax,
-		   int far_rgmax, float dreg_hmin, float ereg_hmin,
-		   float freg_hmin, float freg_hmax, float dreg_vh_box,
-		   float ereg_vh_box, float freg_vh_box, float far_vh_box,
-		   float max_hop, struct MultRadarScan *mult_scan,
-		   struct MultFoVScan *mult_bsid)
+int UpdateScanBSFoV(short int strict_gs, short int step, int min_pnts,
+		    int D_nrg, int E_nrg, int F_nrg, int far_nrg,
+		    int D_rgmax, int E_rgmax, int F_rgmax, int far_rgmax,
+		    float D_hmin, float D_hmax, float E_hmax, float F_hmax,
+		    float D_vh_box, float E_vh_box, float F_vh_box,
+		    float far_vh_box, float max_hop,
+		    struct MultRadarScan *mult_scan,
+		    struct MultFoVScan *mult_bsid)
 {
   int iscan, ibm, irg;
+
+  float near_rg;
 
   
   struct RadarCell rng;
@@ -80,6 +80,9 @@ int update_scan_bs(short int ptst, short int strict_gs, short int step,
   struct RadarScanCycl *scan_old;
   struct RadarBSIDCycl *scan_new, *prev_new;
 
+  void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
+		     float D_hmax, float E_hmax, float F_hmax,
+		     struct FitPrm *prm, struct RadarBSIDBeam *beam);
 
   /* Initialize the local pointers */
   scan_old = mult_scan->scan_ptr;
@@ -120,6 +123,13 @@ int update_scan_bs(short int ptst, short int strict_gs, short int step,
       for(ibm = 0; ibm < scan_old->num; ibm++)
 	{
 	  bm_old = scan_old->bm;
+
+	  if(ibm == 0)
+	    {
+	      /* Calculate oncee for each scan */
+	      near_rg = ((500.0 / (5.0e-10 * C) - bm_old->prm.lagfr)
+			 / bm_old->prm.smsep);
+	    }
  
 	  /* This corresponds to 
 	   * davitpy.pydarn.proc.fov.update_backscatter.update_beam_fit
@@ -162,7 +172,7 @@ int update_scan_bs(short int ptst, short int strict_gs, short int step,
 	  memset(bm_new->back_rng, 0, sizeof(struct CellBSIDLoc)
 		 * bm_new->nrang);
 
-	  for(irg = 0; irg < bm.new->nrang; irg++)
+	  for(irg = 0; irg < bm_new->nrang; irg++)
 	    {
 	      /* Load only for range gates with data */
 	      if(bm->sct[irg] == 1)
@@ -178,13 +188,18 @@ int update_scan_bs(short int ptst, short int strict_gs, short int step,
 		  bm_new->rng[irg].p_l = rng.p_l;
 		  bm_new->rng[irg].p_l_e = rng.p_l_e;
 	  
-		  
+		}
+	    }
 	  
-	  
-	  
-
-
+	  /* Take the initialized beam and update the front and back FoVs */
+	  UpdateBeamFit(strict_gs, max_hop, D_hmin, D_hmax, E_hmax, F_hmax,
+			prm, bm_new);
 	}
+
+     /* To determine the FoV, evaluate the elevation variations across all */
+     /* beams for a range gate and virtual height band, considering each   */
+     /* propagation path (region and hop) seperately.                      */
+     
     }
 
   return;
