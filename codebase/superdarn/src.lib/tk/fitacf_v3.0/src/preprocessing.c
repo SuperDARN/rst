@@ -823,7 +823,7 @@ double ACF_cutoff_pwr(FITPRMS *fit_prms){
     ni = (ni > 0) ? ni :  1;
     cpc = cutoff_power_correction(fit_prms);
     min_pwr = min_pwr/ni * cpc;
-    if (min_pwr < 1.0) min_pwr = fit_prms->noise;
+    /*if (min_pwr < 1.0) min_pwr = fit_prms->noise;*/
 
     free(pwr_levels);
     return min_pwr;
