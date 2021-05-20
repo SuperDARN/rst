@@ -54,15 +54,18 @@ struct CellBSIDLoc
   double vh;
   double vh_e;
   char *vh_m;
-  double lat;
-  double lon;
+  char *region;
+  double lat; /* Remove? */
+  double lon; /* Remove? */
   double hop;
+  double dist;
 };  
 
 struct RadarBSIDBeam
 {
+  int nrang;
   double time;
-  struct RadarPrm prm;
+  struct FitPrm prm;
   struct FitNoise noise;
   unsigned char *sct;
   struct FitRange *rng;
