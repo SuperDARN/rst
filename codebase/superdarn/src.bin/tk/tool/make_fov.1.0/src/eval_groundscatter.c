@@ -25,9 +25,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "multbsid.h"
+
 /**
  * EvalGroundScatter: Update the groundscatter flag 'gflg' for points already
  *                    flagged as groundscatter.
+ *
+ * Input: beam - radar beam structure
  *
  * Criteria
  * --------
@@ -37,11 +41,9 @@
  * - range gate below 10 and between 0.0-5.0 dB power
  * - at least half of backscatter in a 10 range gate box is groundscatter
  * - at least 3 groundscatter points are found in a 10 range gate box
- *
- * Input: beam - radar beam structure
  **/
 
-void EvalGroundScatter(struct CellBSIDLoc *beam)
+void EvalGroundScatter(struct RadarBSIDBeam *beam)
 {
   int irg, gflg, min_rg, max_rg, box_width, npnts, nmin;
 
@@ -50,7 +52,7 @@ void EvalGroundScatter(struct CellBSIDLoc *beam)
   int CheckGroundScatter(int rg, int gflg, float slant_dist, float power,
 			 int min_rg, int max_rg, float max_power);
   float CalcFracGroundScatter(int box_width, int icenter, int *npnts,
-			      struct CellBSIDLoc *beam);
+			      struct RadarBSIDBeam *beam);
 
   /* Set the evaluation defaults */
   min_rg    = 10;
@@ -65,8 +67,8 @@ void EvalGroundScatter(struct CellBSIDLoc *beam)
     {
       if(beam->sct[irg] == 1 && beam->rng[irng].gsct == 1)
 	{
-	  slant_dist = 100.0; /* Don't perform the slant distance test */
-	  gflg = CheckGroundScatter(irg, beam->rng[irng].gsct, slant_dist,
+	  gflg = CheckGroundScatter(irg, beam->rng[irng].gsct,
+				    beam->front_loc[irng].dist,
 				    beam->rng[irng].p_l, min_rg, max_rg,
 				    max_power);
 
@@ -143,14 +145,14 @@ int CheckGroundScatter(int rg, int gflg, float slant_dist, float power,
  *
  * Input: box_width - 1/2 size of box in range gates
  *        rg_center - range gate of central point
- *        beam - radar beam structure
+ *        beam - FitRange structured radar beam
  *
  * Returns: npnts - number of points with groundscatter in box
  *          frac - fraction of points in range gate box that are groundscatter
  **/
 
 float CalcFracGroundScatter(int box_width, int rg_center,
-			    struct CellBSIDLoc *beam, int *npnts)
+			    struct RadarBSIDBeam *beam, int *npnts)
 {
   int irg, num, min_rg, max_rg;
 
