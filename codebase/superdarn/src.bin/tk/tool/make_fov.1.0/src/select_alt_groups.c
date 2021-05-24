@@ -27,11 +27,11 @@
 #include <string.h>
 #include <math.h>
 
+#include "mpfit.h"
 #include "multbsid.h"
 
-
 /**
- * @brief A Gaussian function
+ * @brief A Gaussian function for MINPACK optimization
  *
  * @params[in] x     Independent variable value
  *             A     Amplitude
@@ -41,7 +41,7 @@
  * @params[out] y    Result of Gaussian calculation
  **/
 
-double gaussian(double x, double A, double mu, double sigma)
+mp_func gaussian(double x, double A, double mu, double sigma)
 {
   double y;
 
@@ -255,9 +255,13 @@ int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
 		      float *vh_box, int min_pnts, float *vh_mins,
 		      float *vh_maxs)
 {
-  int i, out_num, nbin, nmax, *hist_bins;
+  int i, j, out_num, nbin, nmax, *hist_bins;
 
   float *hist_edges, local_min, local_max, vmin;
+
+  double A, mu, sigma, *xdata;
+
+  struct mp_result result;
 
   void histogram(int nvals, float vals[], int nbin, float val_min,
 		 float val_max, int *hist_bins, float *leading_bin_val);
@@ -312,14 +316,67 @@ int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
     }
   else
     {
-      /* For each maxima, fit a Gaussian */
+      /* Cast the histogram bins as doubles for use by MINPACK */
+      xdata = (double *)calloc(nbin, sizeof(double));
+      for(i = 0; i < nbin; i++) xdata[i] = (double)hist_bins[i];
 
+      /* For each maxima, fit a Gaussian */
+      for(i = 0, j = 0; i < nmax && j < nbin; j++)
+	{
+	  if(ismax[j] == 1)
+	    {
+	      /* Initial amplitude is the number of points at the maximum */
+	      A = xdata[j];
+
+	      /* Initial mean is half the histogram box width */
+	      if(nbin == 1)
+		mu = (double)vh_box;
+	      else if(j >= 0)
+		mu = (double)(hist_edges[j + 1] - hist_edges[j]) / 2.0;
+	      else
+		mu = (double)(hist_edges[j] - hist_edges[j - 1]) / 2.0;
+
+	      /* Initial sigma is half the virtual height box width */
+	      sigma = 0.5 * vh_box;
+
+	      /* Use non-linear least-squares to fit a Gaussian to the */
+	      /* histogram.                                            */
+	      /* To make this work:
+	       * - redefine the gaussian routine to be the right format
+	       * - get the inputs below correct
+	       *
+	       * Examples:
+	       * codebase/superdarn/src.lib/tk/lmfit.1.0/src/lmfit.c
+	       * include/analysis/mpfit.h
+	       *
+	       * AS WRITTEN BELOW, THIS DOES NOT WORK
+	       */
+	      stat = mpfit(gaussian, m, npar, xdata, pars, config, private_data,
+			   &result);
+
+	      if(result.status > 0)
+		{
+		  /* Get the 3-sigma limits */
+	      
+		  /* Get the 2-sigma limits */
+
+		  /* Save the 3-sigma limits as the upper and lower virtual */
+		  /* height box limits if the detected peak is within the   */
+		  /* 2-sigma limits.  Also remove this peak from the xdata  */
+		  /* array to allow lower level peaks to be identified.     */
+		}
+	    }
+	}
+
+      /* Evaluate the current limits to see if the overlap each or have gaps */
     }
 	    
   
   /* Free the allocated memory */
   free(hist_bins);
   free(hist_edges);
+  free(xdata);
 
+  /* Return the number of virtual height bins as the routine status */
   return(out_num);
-}    
+}
