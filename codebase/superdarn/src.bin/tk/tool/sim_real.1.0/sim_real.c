@@ -1,5 +1,6 @@
  /*COPYRIGHT:
-Copyright (C) 2011 by Virginia Tech
+TODO: Find author and check with VT if we can change this to GPL or LGPL
+   Copyright (C) 2011 by Virginia Tech
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

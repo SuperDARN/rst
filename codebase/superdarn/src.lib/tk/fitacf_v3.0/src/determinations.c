@@ -1,13 +1,13 @@
 /*Copyright (C) 2015  SuperDARN Canada, University of Saskatchewan
 
-This program is free software: you can redistribute it and/or modify
+RST is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -641,6 +641,7 @@ void find_elevation_high(llist_node range, struct FitData* fit_data, FITPRMS* fi
     fit_data->elv[range_node->range].high = 180/PI * (elevation + elev_corr);
 }
 
+
 void find_elevation_low(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms)
 {
     
@@ -654,7 +655,9 @@ void find_elevation_low(llist_node range, struct FitData* fit_data, FITPRMS* fit
     double psi_uncorrected;
     double psi,theta,psi_kd,psi_k2d2,df_by_dy;
 
+
     RANGENODE* range_node;
+
 
     range_node = (RANGENODE*) range;
 
@@ -721,7 +724,11 @@ void set_xcf_phi0(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms)
 
     /* Correct phase sign due to cable swapping */
     fit_data->xrng[range_node->range].phi0 = atan2(imag,real)*fit_prms->phidiff;
+    fprintf(stderr, "xcf_phi0 before elv_a: %f\n", range_node->elev_fit->a);
     range_node->elev_fit->a *= fit_prms->phidiff;
+    fprintf(stderr, "xcf_phi0 after elv_a: %f\n", range_node->elev_fit->a);
+    fprintf(stderr, "phidiff: %f\n", fit_prms->phidiff);
+
 }
 
 

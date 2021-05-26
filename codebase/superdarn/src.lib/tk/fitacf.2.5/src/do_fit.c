@@ -1,35 +1,28 @@
 /* do_fit.c
      ========
-     Author: R.J.Barnes,K.Baker and D.Andre, P Ponomarenko
-*/
+Author: R.J.Barnes, K.Baker, D.Andre and P.Ponomarenko
+Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 
-/*
- LICENSE AND DISCLAIMER
+This file is part of the Radar Software Toolkit (RST).
 
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
- This file is part of the Radar Software Toolkit (RST).
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
-
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
-
-  Modifications:
+Modifications:
     Emma Bland, UNIS, 20/04/2021, Check whether interferometer array is in front or behind main array when calculating elv_low/elv_high
 
 
 */
-
-
 
 #include <math.h>
 #include <stdio.h>
@@ -403,4 +396,3 @@ int do_fit(struct FitBlock *iptr, int lag_lim, int goose,
 
   return i;
 }
-
