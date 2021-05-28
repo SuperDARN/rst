@@ -724,10 +724,7 @@ void set_xcf_phi0(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms)
 
     /* Correct phase sign due to cable swapping */
     fit_data->xrng[range_node->range].phi0 = atan2(imag,real)*fit_prms->phidiff;
-    fprintf(stderr, "xcf_phi0 before elv_a: %f\n", range_node->elev_fit->a);
     range_node->elev_fit->a *= fit_prms->phidiff;
-    fprintf(stderr, "xcf_phi0 after elv_a: %f\n", range_node->elev_fit->a);
-    fprintf(stderr, "phidiff: %f\n", fit_prms->phidiff);
 
 }
 
