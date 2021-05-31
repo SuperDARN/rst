@@ -21,6 +21,9 @@ Author(s): Keith Kotyk July 2015
 Modifications: 
     2020-03-11 Marina Schmidt (SuperDARN Canada) removed all defined 
                               constants and included rmath.h 
+    2021-05-26 Pasha Ponomarenko (SuperDARN Canada) commented out repacement of the
+                                skynoise by search noise as it caused problems with 
+                                processing BORELAIS data (no search noise)
 
 */
 
@@ -823,6 +826,12 @@ double ACF_cutoff_pwr(FITPRMS *fit_prms){
     ni = (ni > 0) ? ni :  1;
     cpc = cutoff_power_correction(fit_prms);
     min_pwr = min_pwr/ni * cpc;
+    
+    
+    /*  Commenting the line below out as it causes problems with processing
+            BOREALIS data by setting Inf values to SNR as the search noise is not 
+            estimated. */
+   
     /*if (min_pwr < 1.0) min_pwr = fit_prms->noise;*/
 
     free(pwr_levels);
