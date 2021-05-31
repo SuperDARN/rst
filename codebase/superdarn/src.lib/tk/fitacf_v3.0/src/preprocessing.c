@@ -773,8 +773,8 @@ double cutoff_power_correction(FITPRMS *fit_prms){
  *
  * This function determines the minimum power level for which an ACF is pure
  * noise. This is used to filter bad ACFs. 
- * IMPORTANT: The noise determination procedure in FITACF1-2 avaraged 10 lowest
- * values of the lag 0 power. It overestimated the noise level because these 
+ * IMPORTANT: FITACF1-2 determined the noise level as the average of the 10 lowest
+ * lag 0 power values. This method underestimated the noise level because these 
  * power values represent the low-power "tail" of the entire noise distribution. 
  * In FITACF3 we compenseate for this effect by using cutoff_power_correction function (above).
  */
