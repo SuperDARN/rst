@@ -575,7 +575,7 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
 
 
 
-void find_elevation_low(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms)
+void find_elevation_error(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms)
 {
     
     double x,y,z;
