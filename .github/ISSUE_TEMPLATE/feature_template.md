@@ -36,7 +36,7 @@ about: Notify other developers that you intend to add a new feature to the RST
 *If you need help please indicate what expertise you are looking for:*
 
 - [ ] developer help with design and integration of code
-- [ ] scientific help to ensure that the new feature is scientifically sound
+- [ ] scientific help to ensure that the new feature produces the expected results
 - [ ] project management to help organize the steps involved in adding the new feature to RST
 - [ ] other______
 
