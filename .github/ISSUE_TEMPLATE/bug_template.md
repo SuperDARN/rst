@@ -13,6 +13,13 @@ about: Report a problem or issue
 - [ ] Major - misrepresentation of data, failure in a common situation
 - [ ] Urgent - failure in usage, large misrepresentation of data
 
+## RST version
+
+*Does the bug occur in an official RST release?*
+
+- [ ] Yes. RST version: ______
+- [ ] No. Branch containing the bug (e.g. develop): ______
+
 ## Example of the bug
 
 *please provide **code** and **output** of the bug*
