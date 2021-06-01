@@ -18,7 +18,8 @@ modifications:
     2020-03-11 Marina Schmidt (SuperDARN Canada) removed all defined constants 
                               and include rmath.h
     2020-09-01 Marina Schmidt (SuperDARN Canada) removed map function for better decoupling abilities
-
+    2020-10-29 Marina Schmidt (SuperDARN Canada) & Emma Bland (UNIS) Changed default elevation calculation to elevation_v2()
+    2021-06-01 Emma Bland (UNIS) Consolidated elevation angle calculations into a single function
 */
 
 /*
