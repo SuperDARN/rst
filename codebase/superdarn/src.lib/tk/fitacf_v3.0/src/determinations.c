@@ -111,8 +111,7 @@ void ACF_Determinations(llist ranges, FITPRMS* fit_prms,struct FitData* fit_data
     while(node != NULL && list_null_flag == LLIST_SUCCESS)
     {
        find_elevation(node, fit_data, fit_prms, elv_version);
-       find_elevation_high(node, fit_data, fit_prms);
-       find_elevation_low(node, fit_data, fit_prms);
+       find_elevation_error(node, fit_data, fit_prms);
        list_null_flag = llist_go_next(ranges);
        llist_get_iter(ranges, &node); 
 
@@ -531,17 +530,13 @@ void set_nump(llist_node range, struct FitRange* fit_range_array){
  */
 void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms, int elv_version){
 
-    double azi_offset,phi_0;
     RANGENODE* range_node;
     range_node = (RANGENODE*) range;
     struct FitPrm* fitprm;
     fitprm = malloc(sizeof(struct FitPrm));
-    azi_offset = fit_prms->maxbeam/2 - 0.5;
-    phi_0 = fit_prms->bmsep * (fit_prms->bmnum - azi_offset) * PI/180;
     
-    // need this elevation algorithms to work. 
-    // TODO: make consistent structs between fitacf versionss
-    // so we don't have this problem again
+    // need this for elevation algorithms to work. 
+    // TODO: make consistent structs between fitacf versions so we don't have this problem again
     fitprm->interfer[0] = fit_prms->interfer[0];
     fitprm->interfer[1] = fit_prms->interfer[1];
     fitprm->interfer[2] = fit_prms->interfer[2];
@@ -558,88 +553,26 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
     if (elv_version == 2)
     {
         fit_data->elv[range_node->range].normal = elevation_v2( fitprm, fit_data->xrng[range_node->range].phi0);
+        fit_data->elv[range_node->range].high   = elevation_v2( fitprm, range_node->elev_fit->a);
     }
     else if (elv_version == 1)
     {
         fit_data->elv[range_node->range].normal = elevation( fitprm, fit_data->xrng[range_node->range].phi0);
+        fit_data->elv[range_node->range].high   = elevation( fitprm, range_node->elev_fit->a);
     }
     else if (elv_version == 0)
     {
-        fit_data->elv[range_node->range].normal = elev_goose(fitprm, fit_data->xrng[range_node->range].phi0);
+        fit_data->elv[range_node->range].normal = elev_goose( fitprm, fit_data->xrng[range_node->range].phi0);
+        fit_data->elv[range_node->range].high   = elev_goose( fitprm, range_node->elev_fit->a);
     }
     else
     {
         fprintf(stderr, "Error: Elevation version does not exist\n");
     }
     free(fitprm);
-}
-
-void find_elevation_high(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms)
-{
     
-    double x,y,z;
-    double antenna_sep,elev_corr;
-    int phi_sign;
-    double azi_offset,phi_0,c_phi_0;
-    double wave_num;
-    double cable_offset;
-    double phase_diff_max;
-    double psi_uncorrected;
-    double psi,theta,psi_kd;
-    double elevation;
-
-    RANGENODE* range_node;
-
-    range_node = (RANGENODE*) range;
-
-
-    x = fit_prms->interfer[0];
-    y = fit_prms->interfer[1];
-    z = fit_prms->interfer[2];
-
-    antenna_sep = sqrt(x*x + y*y + z*z);
-
-    elev_corr = asin(z/antenna_sep);
-    if (y > 0.0){
-        phi_sign = 1;
-    }
-    else{
-        phi_sign = -1;
-        elev_corr = -elev_corr;
-    }
-
-    azi_offset = fit_prms->maxbeam/2 - 0.5;
-    phi_0 = fit_prms->bmsep * (fit_prms->bmnum - azi_offset) * PI/180;
-    c_phi_0 = cos(phi_0);
-
-    wave_num = 2 * PI * fit_prms->tfreq * 1000/C;
-
-    cable_offset = -2 * PI * fit_prms->tfreq * 1000 * fit_prms->tdiff * 1.0e-6;
-
-    phase_diff_max = phi_sign * wave_num * antenna_sep * c_phi_0 + cable_offset;
-
-    psi_uncorrected = range_node->elev_fit->a + 2 * PI * floor((phase_diff_max-range_node->elev_fit->a)/(2*PI));
-
-    if(phi_sign < 0) 
-    {
-        psi_uncorrected += 2 * PI;
-    }
-
-    psi = psi_uncorrected - cable_offset;
-
-
-    psi_kd = psi/(wave_num * antenna_sep);
-    theta = c_phi_0 * c_phi_0 - psi_kd * psi_kd;
-    if( (theta < 0.0) || (fabs(theta) > 1.0) ){
-        elevation = -elev_corr;
-    }
-    else{
-        elevation = asin(sqrt(theta));
-    }
-
-
-    fit_data->elv[range_node->range].high = 180/PI * (elevation + elev_corr);
 }
+
 
 
 void find_elevation_low(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms)

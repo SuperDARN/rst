@@ -118,9 +118,7 @@ void set_gsct(llist_node range, struct FitRange* fit_range_array);
 void set_nump(llist_node range, struct FitRange* fit_range_array);
 
 void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms, int elv_version);
-void find_elevation_high(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms);
 void find_elevation_low(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms);
-
 
 void set_xcf_phi0(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms);
 void set_xcf_phi0_err(llist_node range, struct FitRange* fit_range_array);
