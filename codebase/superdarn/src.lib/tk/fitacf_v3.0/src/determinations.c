@@ -520,7 +520,7 @@ void set_nump(llist_node range, struct FitRange* fit_range_array){
 }
 
 /**
- * @brief      Determines the elevation angle from the fitted XCF phase.
+ * @brief      Determines the elevation angle from (1) lag zero phase and (2) fitted XCF phase.
  *
  * @param[in]  range            A RANGENODE struct.
  * @param      fit_range_array  This struct holds fit results and is used by RST to write out final
@@ -547,6 +547,8 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
     fitprm->tdiff = fit_prms->tdiff;
     fitprm->phidiff = fit_prms->phidiff;
 
+    // elevation angle calculated from the lag zero phase is stored in fit_data->elv[range_node->range].normal
+    // elevation angle calculated from the fitted phase is stored in fit_data->elv[range_node->range].high
     // elv_version 2 is the Shepherd [2017] elevation calculation
     // elv_version 1 is original elevation calculation
     // elv_version 0 is specifically for the GBR radar when -old_elev is specified
