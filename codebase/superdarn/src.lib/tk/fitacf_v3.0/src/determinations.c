@@ -578,7 +578,7 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
 }
 
 
-
+// TODO Integrate this calculation into find_elevation() - requires update to elevation library
 void find_elevation_error(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms)
 {
     
