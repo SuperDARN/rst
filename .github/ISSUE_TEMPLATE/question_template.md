@@ -6,35 +6,35 @@ about: Ask for help or advice on using RST
 
 # Question
 
-**Question:**
+*What is your question?*
 
 ## Category
 
-- [ ] Usage 
+- [ ] Usage
 - [ ] Troubleshooting
 - [ ] Software Design
 - [ ] Data related
 - [ ] Capabilities
-- [ ] Clarity 
+- [ ] Clarity
 - [ ] Workflow
 
 ## Details
 
-*Please provide any other details or desription around your question.*
+*Please provide any other details relating to your question.*
 
-## Example  
+## Example
 
-*If applicable fill in one of the following.*
+*If applicable, fill in one of the following.*
 
 ### Code
 
-*please provide **pseudocode/code** and **output** that the question is around.*
+*please provide any **pseudocode/code** and **output** that relates to the question.*
 
-### Installation Process 
+### Installation Process
 
 *Please provide the steps you took to install RST.*
 
-*Include your Operating System.* 
+*Include your Operating System.*
 
 ### Documentation
 

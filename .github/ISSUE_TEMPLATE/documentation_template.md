@@ -4,19 +4,19 @@ about: propose updates to documentation
 
 ---
 
-# Documentation 
+# Documentation
 
 *title or suggestion of documentation*
 
 ## Purpose
 
 - [ ] update
-- [ ] new 
+- [ ] new
 - [ ] remove
 - [ ] typo/grammar change
 - [ ] formatting improvement
 
-## Category 
+## Category
 
 - [ ] code documentation
 - [ ] wiki
@@ -24,14 +24,14 @@ about: propose updates to documentation
 - [ ] installation guide
     - [ ] OS specifics
     - [ ] dependency
-- [ ] Data products information 
+- [ ] data products information
 - [ ] tutorials
     - [ ] plotting
     - [ ] io
     - [ ] data products
 - [ ] examples
 - [ ] citing/licensing
-- [ ] trouble shooting
+- [ ] troubleshooting
     - [ ] installation
     - [ ] tutorials
 - [ ] history

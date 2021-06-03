@@ -1,6 +1,6 @@
 ---
 name: New Feature
-about: Notify that a new feature is being planned
+about: Notify other developers that you intend to add a new feature to the RST
 
 ---
 
@@ -8,50 +8,50 @@ about: Notify that a new feature is being planned
 
 **Name**: *Feature name*
 
-**function**:  *filename.c* 
+**function**:  *filename.c*
 
 **bin/lib**: */directory*
 
-## Scope
+## Description & User Interface
 
-*Create a check list using markdowns [checklist syntax](https://help.github.com/en/github/managing-your-work-on-github/about-task-lists) on the scope of the feature.*
+*Please provide a description of the new feature. What will the feature do/not do?*
 
-*What will the feature do?*
+*Please provide **pseudocode** to demonstrate the new feature's user interface*
 
-*What will the feature not do?* 
+## RST Checklist
 
-## Description
+- [ ] Does the feature fit within RST's scope?
+- Is this a major or minor change?
+    - [ ] Major (e.g. includes large amounts of new code, existing code significantly restructured, or impacts on other RST libraries/binaries)
+    - [ ] Minor (e.g. addition of a new self-contained library)
+-  [ ] Do you need help developing it?
+-  [ ] Have you created a (github project)[https://github.com/SuperDARN/rst/projects] to reflect the process of developing it? (optional)
+-  [ ] Can the code be released under the GPL v3.0 license?
+-  [ ] Does the source code include copyright and authorship information? (can be added later at the pull request stage)
 
-*Please provide a description of the new feature, and whether it will improve/solve a problem.*
+## Development help
 
-### RST Checklist 
-
--  [ ] Does this fit within RST's scope? 
--  [ ] Is this a minor change?
--  [ ] Is this a major change?
--  [ ] Do you need help developing it? 
--  [ ] Have you created a RST project (github project) to reflect the process of developing it? 
--  [ ] Does it follow GPL 3.0v License and has been copyrighted/authored to you? 
-
-### Developement help
-
-*RST does not have a dedicated development team for full feature development. 
-However, if you are able to provide some time and help, the community will try to aid you the best way they can in making your feature possible.*
+*RST does not have a dedicated team for full feature development. However, the community may be able to assist you with development.*
 
 *If you need help please indicate what expertise you are looking for:*
+
 - [ ] developer help with design and integration of code
-- [ ] scientific help with ensuring what you develop is scientifically correct/accurate
-- [ ] project management to help organize what steps need to be taken to make this possible 
+- [ ] scientific help to ensure that the new feature produces the expected results
+- [ ] project management to help organize the steps involved in adding the new feature to RST
+- [ ] other______
 
-*Please also provide any other information you may need help with (not including testing/reviewers of code)*
+*Note: all code will be tested/reviewed before being merged into the RST codebase.*
 
-## User Interface 
+## Timeline
 
-*Please provide **pseudocode** on how you see your new feature interacting with the code or user-interface*
+*When do you expect the code will be ready for testing?*
+
+*If you need help with development, when do you expect to need help?*
 
 ## Extra Notes
 
 *Please provide any other details about this feature*
-- *publications*
-- *GitHub link of code in another language*
-- *potential solutions to current/future problems*
+
+- *Publications*
+- *GitHub link to code in another language*
+- *Potential solutions to current/future problems*

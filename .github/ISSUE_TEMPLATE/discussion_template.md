@@ -1,10 +1,10 @@
 ---
-name: Discussion  
+name: Discussion
 about: initiate an open discussion with other developers
 
 ---
 
-# Discussion 
+# Discussion
 
 **Topic:**
 
@@ -14,26 +14,26 @@ about: initiate an open discussion with other developers
 
 ## Category
 
-- [ ] User-friendly  
+- [ ] User-friendly
 - [ ] Software Design
 - [ ] Data related
 - [ ] Capabilities
-- [ ] Clarity 
+- [ ] Clarity
 - [ ] Workflow
 
 ## Details
 
-*Please provide any other details or desription around your question.*
+*Please provide any other details or description around your question.*
 
-## Example  
+## Example
 
 *If applicable, fill in one of the following.*
 
 ### Code
 
-*Please provide **code** and **output** that the discussion is around.*
+*Please provide the **code** and **output** that you would like to discuss.*
 
-### Installation Process 
+### Installation Process
 
 *Please provide the steps you took to install RST.*
 
