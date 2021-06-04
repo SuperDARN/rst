@@ -24,10 +24,14 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 Modifications:
 */
 
+struct PolygonData *make_fov(double tval,struct RadarNetwork *network,
+                             float alt,int chisham);
+
 struct PolygonData *make_field_fov(double tval,struct RadarNetwork *network,
                                    int id,int chisham);
 
 struct PolygonData *make_grid_fov(double tval,struct RadarNetwork *network,
                                   int chisham,int old_aacgm);
+
 struct PolygonData *make_grid_fov_data(struct GridData *ptr,struct RadarNetwork *network,
                                        int chisham,int old_aacgm);
