@@ -218,7 +218,7 @@ int RCDFReadZ(CDFid id,long recno,char **varname,struct RCDFData *ptr) {
   {
     for (int i=0;i<cnt;i++) 
     {
-        memcpy(buffer[i],(long*)data+offset[i],size[i]);  
+        memcpy(buffer[i],(void*)data+offset[i],size[i]);  
     }
   }
   free(data);   
@@ -329,7 +329,7 @@ int RCDFReadR(CDFid id,long recno,char **varname,struct RCDFData *ptr) {
   {
     for (i=0;i<cnt;i++)
     {
-        memcpy(buffer[i],(long*)data+offset[i],size[i]);  
+        memcpy(buffer[i],(void*)data+offset[i],size[i]);  
     }
   }
   free(data);   
