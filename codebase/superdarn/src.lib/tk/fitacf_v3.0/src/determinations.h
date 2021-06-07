@@ -18,7 +18,8 @@ modifications:
     2020-03-11 Marina Schmidt (SuperDARN Canada) removed all defined constants 
                               and include rmath.h
     2020-09-01 Marina Schmidt (SuperDARN Canada) removed map function for better decoupling abilities
-
+    2020-10-29 Marina Schmidt (SuperDARN Canada) & Emma Bland (UNIS) Changed default elevation calculation to elevation_v2()
+    2021-06-01 Emma Bland (UNIS) Consolidated elevation angle calculations into a single function
 */
 
 /*
@@ -118,9 +119,7 @@ void set_gsct(llist_node range, struct FitRange* fit_range_array);
 void set_nump(llist_node range, struct FitRange* fit_range_array);
 
 void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms, int elv_version);
-void find_elevation_high(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms);
-void find_elevation_low(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms);
-
+void find_elevation_error(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms);
 
 void set_xcf_phi0(llist_node range, struct FitData* fit_data, FITPRMS* fit_prms);
 void set_xcf_phi0_err(llist_node range, struct FitRange* fit_range_array);
