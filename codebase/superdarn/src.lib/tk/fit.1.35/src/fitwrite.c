@@ -18,6 +18,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+2921-06-10 Marina Schmidt (SuperDARN Canada) removed the qflg check that
+causes partial records to be written
 */
 
 #include <stdio.h>
@@ -114,8 +116,9 @@ int FitEncode(struct DataMap *ptr,struct RadarParm *prm, struct FitData *fit) {
 
   snum=0;
   for (c=0;c<prm->nrang;c++) {
-    if ( (fit->rng[c].qflg==1) ||
-         ((fit->xrng !=NULL) && (fit->xrng[c].qflg==1))) snum++;
+    if (((fit->xrng !=NULL)) 
+            snum++;
+            break;
   }
 
   if (prm->xcf !=0) xnum=snum;
