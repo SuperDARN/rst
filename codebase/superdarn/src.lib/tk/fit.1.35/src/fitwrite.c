@@ -18,6 +18,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+2021-06-10 Marina Schmidt (SuperDARN Canada) Removal of quality flag check in fitwrite 
+to get rid of partial records 
 */
 
 #include <stdio.h>
@@ -114,14 +116,19 @@ int FitEncode(struct DataMap *ptr,struct RadarParm *prm, struct FitData *fit) {
 
   snum=0;
   for (c=0;c<prm->nrang;c++) {
-    if ( (fit->rng[c].qflg==1) ||
-         ((fit->xrng !=NULL) && (fit->xrng[c].qflg==1))) snum++;
+      if ( (fit->rng[c].qflg==1) ||
+              ((fit->xrng !=NULL) && (fit->xrng[c].qflg==1)))
+          snum++;
   }
 
-  if (prm->xcf !=0) xnum=snum;
-  else xnum=0;
+  if (prm->xcf !=0) 
+      xnum=snum;
+  else 
+      xnum=0;
 
-  if (snum==0) return 0;
+  if (snum==0){
+      return 0;
+  }
 
   slist=DataMapStoreArray(ptr,"slist",DATASHORT,1,&snum,NULL);
   nlag=DataMapStoreArray(ptr,"nlag",DATASHORT,1,&snum,NULL);
