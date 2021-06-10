@@ -119,7 +119,6 @@ int FitEncode(struct DataMap *ptr,struct RadarParm *prm, struct FitData *fit) {
     if (fit->xrng !=NULL)
     {
             snum++;
-            break;
     }
   }
 
