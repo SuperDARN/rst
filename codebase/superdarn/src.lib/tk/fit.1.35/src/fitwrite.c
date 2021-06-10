@@ -18,8 +18,6 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
-2021-06-10 Marina Schmidt (SuperDARN Canada) Removal of quality flag check in fitwrite 
-to get rid of partial records 
 */
 
 #include <stdio.h>
