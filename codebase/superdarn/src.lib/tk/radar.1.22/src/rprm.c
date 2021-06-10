@@ -82,12 +82,22 @@ int RadarParmSetOriginTime(struct RadarParm *ptr,char *str) {
 
 }
 
+/*
+ * GetRSTVersion 
+ * Get the rst version from the .rst_version file 
+ * 
+ * return:
+ *  rst_version char * of the version number of RST 
+ *  if the version is not found then NULL is returned 
+ *  and error message appears. 
+ */
 char* GetRSTVersion() {
 
   char *rst_path=NULL;
   char *rst_version = malloc(120 * sizeof(char));
   char vname[256];
   char buff[100];
+  // used the save the .rst_version file
   FILE *vfp=NULL;
 
   rst_path=getenv("RSTPATH");
@@ -97,11 +107,13 @@ char* GetRSTVersion() {
   vfp=fopen(vname, "r");
 
   if (vfp != NULL) {
+    // read the .rst_version file 
     while (fscanf(vfp,"%s",buff)==1); 
     strcat(rst_version, " RST Version: ");
     strcat(rst_version, buff);
     fclose(vfp);
   } else {
+    // could not find the .rst_version file! 
     fprintf(stderr, "RST version file %s not found\n", vname);
     return NULL;
   }
