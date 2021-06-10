@@ -81,10 +81,37 @@ int RadarParmSetOriginTime(struct RadarParm *ptr,char *str) {
 
 }
 
+char* GetRSTVersion() {
 
+  char *rst_path=NULL;
+  char *rst_version = malloc(120 * sizeof(char));
+  char vname[256];
+  char buff[100];
+  FILE *vfp=NULL;
+
+  rst_path=getenv("RSTPATH");
+  strcpy(vname, rst_path);
+  strcat(vname, "/.rst.version");
+
+  vfp=fopen(vname, "r");
+
+  if (vfp != NULL) {
+    while (fscanf(vfp,"%s",buff)==1); 
+    strcat(rst_version, " RST Version: ");
+    strcat(rst_version, buff);
+    fclose(vfp);
+  } else {
+    fprintf(stderr, "RST version file %s not found\n", vname);
+    return NULL;
+  }
+
+  return rst_version;
+
+}
 
 int RadarParmSetOriginCommand(struct RadarParm *ptr,char *str) {
   char *tmp=NULL;
+  char *rst_version;
   if (ptr==NULL) return -1;
 
   if (str==NULL) {
@@ -93,11 +120,17 @@ int RadarParmSetOriginCommand(struct RadarParm *ptr,char *str) {
     return 0;
   }
 
-  if (ptr->origin.command==NULL) tmp=malloc(strlen(str)+1);
-  else tmp=realloc(ptr->origin.command,strlen(str)+1);
+  rst_version = GetRSTVersion();
+  if (ptr->origin.command==NULL) 
+      tmp=malloc(strlen(str)+strlen(rst_version));
+  else 
+      tmp=realloc(ptr->origin.command,strlen(str)+strlen(rst_version));
 
-  if (tmp==NULL) return -1;
+  // TODO: add error code or message?
+  if (tmp==NULL) 
+      return -1;
   strcpy(tmp,str);
+  strcat(tmp, rst_version);
   ptr->origin.command=tmp;
   return 0;
 
