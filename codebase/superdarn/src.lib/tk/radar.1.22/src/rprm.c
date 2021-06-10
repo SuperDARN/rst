@@ -21,6 +21,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+2020-06-10 Marina Schmidt (SuperDARN Canada) Added GetRSTVersion function to append RST version to origin.command
 */
 
 
