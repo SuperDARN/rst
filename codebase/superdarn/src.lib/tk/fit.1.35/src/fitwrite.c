@@ -122,10 +122,14 @@ int FitEncode(struct DataMap *ptr,struct RadarParm *prm, struct FitData *fit) {
     }
   }
 
-  if (prm->xcf !=0) xnum=snum;
-  else xnum=0;
+  if (prm->xcf !=0) 
+      xnum=snum;
+  else 
+      xnum=0;
 
-  if (snum==0) return 0;
+  if (snum==0){
+      return 0;
+  }
 
   slist=DataMapStoreArray(ptr,"slist",DATASHORT,1,&snum,NULL);
   nlag=DataMapStoreArray(ptr,"nlag",DATASHORT,1,&snum,NULL);
