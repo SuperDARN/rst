@@ -94,7 +94,8 @@ int RadarParmSetOriginTime(struct RadarParm *ptr,char *str) {
 char* GetRSTVersion() {
 
   char *rst_path=NULL;
-  char *rst_version = malloc(120 * sizeof(char));
+  //fprintf(stderr, "rst_version\n");
+  char *rst_version = malloc(80);
   char vname[256];
   char buff[100];
   // used the save the .rst_version file
@@ -127,15 +128,20 @@ int RadarParmSetOriginCommand(struct RadarParm *ptr,char *str) {
   char *rst_version;
   if (ptr==NULL) return -1;
 
+  // is this a sensible check? 
   if (str==NULL) {
-    if (ptr->origin.command !=NULL) free(ptr->origin.command);
+    if (ptr->origin.command !=NULL) 
+        free(ptr->origin.command);
     ptr->origin.command=NULL;
     return 0;
   }
 
   rst_version = GetRSTVersion();
-  if (ptr->origin.command==NULL) 
+  if (ptr->origin.command==NULL) {
+      //fprintf(stderr, "before malloc\n");
       tmp=malloc(strlen(str)+strlen(rst_version));
+      //fprintf(stderr, "tmp extended\n");
+  }
   else 
       tmp=realloc(ptr->origin.command,strlen(str)+strlen(rst_version));
 
