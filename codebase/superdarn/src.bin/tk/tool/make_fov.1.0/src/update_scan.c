@@ -67,11 +67,18 @@ int UpdateScanBSFoV(short int strict_gs, short int step, int min_pnts,
 		    struct MultRadarScan *mult_scan,
 		    struct MultFoVScan *mult_bsid)
 {
-  int iscan, ibm, irg;
+  int iscan, ibm, irg, ifov, ipath, max_path;
+  int *scan_outnum_D[2], *scan_outnum_E[2], *scan_outnum_F[2];
+  int *scan_num_D[2], *scan_num_E[2], *scan_num_F[2];
+  int **scan_bm_D[2], **scan_bm_E[2], **scan_bm_F[2];
+  int **scan_rg_D[2], **scan_rg_E[2], **scan_rg_F[2];
 
   float near_rg;
+  float **scan_vh_D[2], **scan_vh_E[2], **scan_vh_F[2];
+  float **scan_vhmin_D[2], **scan_vhmin_E[2], **scan_vhmin_F[2];
+  float **scan_vhmax_D[2], **scan_vhmax_E[2], **scan_vhmax_F[2];
 
-  
+  struct CellBSIDLoc loc;
   struct RadarCell rng;
   struct RadarParm *prm;
   struct RadarSite *site=NULL;
@@ -86,7 +93,62 @@ int UpdateScanBSFoV(short int strict_gs, short int step, int min_pnts,
 
   /* Initialize the local pointers */
   scan_old = mult_scan->scan_ptr;
-  bm_new = (struct RadarBSIDBeam *)(malloc(sizeof(struct RadarBSIDBeam)))
+  bm_new = (struct RadarBSIDBeam *)(malloc(sizeof(struct RadarBSIDBeam)));
+
+  max_path = (int)(max_hop * 2.0);
+  for(ifov = 0; ifov < 2; ifov++)
+    {
+      scan_outnum_D[ifov] = (int *)calloc(sizeof(int) * max_path);
+      scan_outnum_E[ifov] = (int *)calloc(sizeof(int) * max_path);
+      scan_outnum_F[ifov] = (int *)calloc(sizeof(int) * max_path);
+
+      scan_num_D[ifov] = (int *)calloc(sizeof(int) * max_path);
+      scan_num_E[ifov] = (int *)calloc(sizeof(int) * max_path);
+      scan_num_F[ifov] = (int *)calloc(sizeof(int) * max_path);
+
+      scan_bm_D[ifov] = (int **)calloc(sizeof(int) * max_path);
+      scan_bm_E[ifov] = (int **)calloc(sizeof(int) * max_path);
+      scan_bm_F[ifov] = (int **)calloc(sizeof(int) * max_path);
+
+      scan_rg_D[ifov] = (int **)calloc(sizeof(int) * max_path);
+      scan_rg_E[ifov] = (int **)calloc(sizeof(int) * max_path);
+      scan_rg_F[ifov] = (int **)calloc(sizeof(int) * max_path);
+
+      scan_vh_D[ifov] = (float **)calloc(sizeof(float) * max_path);
+      scan_vh_E[ifov] = (float **)calloc(sizeof(float) * max_path);
+      scan_vh_F[ifov] = (float **)calloc(sizeof(float) * max_path);
+
+      scan_vhmin_D[ifov] = (float **)calloc(sizeof(float) * max_path);
+      scan_vhmin_E[ifov] = (float **)calloc(sizeof(float) * max_path);
+      scan_vhmin_F[ifov] = (float **)calloc(sizeof(float) * max_path);
+
+      scan_vhmax_D[ifov] = (float **)calloc(sizeof(float) * max_path);
+      scan_vhmax_E[ifov] = (float **)calloc(sizeof(float) * max_path);
+      scan_vhmax_F[ifov] = (float **)calloc(sizeof(float) * max_path);
+
+      for(ipath = 0; ipath < max_path; ipath++)
+	{
+	  scan_bm_D[ifov][ipath] = (int *)calloc(sizeof(int) * D_rgmax);
+	  scan_bm_E[ifov][ipath] = (int *)calloc(sizeof(int) * D_rgmax);
+	  scan_bm_F[ifov][ipath] = (int *)calloc(sizeof(int) * D_rgmax);
+
+	  scan_rg_D[ifov][ipath] = (int *)calloc(sizeof(int) * D_rgmax);
+	  scan_rg_E[ifov][ipath] = (int *)calloc(sizeof(int) * E_rgmax);
+	  scan_rg_F[ifov][ipath] = (int *)calloc(sizeof(int) * F_rgmax);
+
+	  scan_vh_D[ifov][ipath] = (float *)calloc(sizeof(float) * D_rgmax);
+	  scan_vh_E[ifov][ipath] = (float *)calloc(sizeof(float) * E_rgmax);
+	  scan_vh_F[ifov][ipath] = (float *)calloc(sizeof(float) * F_rgmax);
+
+	  scan_vhmin_D[ifov][ipath] = (float *)calloc(sizeof(float) * D_rgmax);
+	  scan_vhmin_E[ifov][ipath] = (float *)calloc(sizeof(float) * E_rgmax);
+	  scan_vhmin_F[ifov][ipath] = (float *)calloc(sizeof(float) * F_rgmax);
+
+	  scan_vhmax_D[ifov][ipath] = (float *)calloc(sizeof(float) * D_rgmax);
+	  scan_vhmax_E[ifov][ipath] = (float *)calloc(sizeof(float) * E_rgmax);
+	  scan_vhmax_F[ifov][ipath] = (float *)calloc(sizeof(float) * F_rgmax);
+	}
+    }
 
   /* Inititalize the output */
   if(mult_bsid->num_scans == 0)
@@ -187,19 +249,82 @@ int UpdateScanBSFoV(short int strict_gs, short int step, int min_pnts,
 		  bm_new->rng[irg].w_l_e = rng.w_l_e;
 		  bm_new->rng[irg].p_l = rng.p_l;
 		  bm_new->rng[irg].p_l_e = rng.p_l_e;
-	  
 		}
 	    }
 	  
 	  /* Take the initialized beam and update the front and back FoVs */
 	  UpdateBeamFit(strict_gs, max_hop, D_hmin, D_hmax, E_hmax, F_hmax,
 			prm, bm_new);
+
+	  /* Find the altitude bins for this scan by FoV, region, and path */
+	  for(ifov = 0; ifov < 2; ifov++)
+	    {
+	      for(ipath = 0; ipath < max_path; ipath++)
+		{
+		  scan_num_D[ifov][ipath] = 0;
+		  scan_num_E[ifov][ipath] = 0;
+		  scan_num_F[ifov][ipath] = 0;
+		  scan_num_far[ifov][ipath] = 0;
+		}
+	    }
+
+	  for(irg = 0; irg < bm_new->nrang; irg++)
+	    {
+	      if(bm_new->sct[irg] == 1)
+		{
+		  /* Assign this data to the correct region list for each  */
+		  /* field of view (ifov = 0 for back lobe and 1 for front */
+		  for(ifov = 0; ifov < 2; ifov++)
+		    {
+		      loc = (ifov == 0) ? bm_new->back_loc : bm_new->front_loc;
+		      ipath = (int)(loc->hop * 2.0);
+		      if(strstr(loc->region, "D") != NULL)
+			{
+			  scan_bm_D[ifov][ipath][scan_num_D[ifov][ipath]] = ibm;
+			  scan_rg_D[ifov][ipath][scan_num_D[ifov][ipath]] = irg;
+			  scan_vh_D[ifov][ipath][scan_num_D[ifov][ipath]] = (float)loc->vh;
+			  scan_num_D[ifov][ipath]++;
+			}
+		      else if(strstr(loc->region, "E") != NULL)
+			{
+			  scan_bm_E[ifov][ipath][scan_num_E[ifov][ipath]] = ibm;
+			  scan_rg_E[ifov][ipath][scan_num_E[ifov][ipath]] = irg;
+			  scan_vh_E[ifov][ipath][scan_num_E[ifov][ipath]] = (float)loc->vh;
+			  scan_num_E[ifov][ipath]++;
+			}
+		      else if(strstr(loc->region, "F") != NULL)
+			{
+			  scan_bm_F[ifov][ipath][scan_num_F[ifov][ipath]] = ibm;
+			  scan_rg_F[ifov][ipath][scan_num_F[ifov][ipath]] = irg;
+			  scan_vh_F[ifov][ipath][scan_num_F[ifov][ipath]] = (float)loc->vh;
+			  scan_num_F[ifov][ipath]++;
+			}
+		    }
+		}
+	    }			
 	}
 
-     /* To determine the FoV, evaluate the elevation variations across all */
-     /* beams for a range gate and virtual height band, considering each   */
-     /* propagation path (region and hop) seperately.                      */
-     
+      /* To determine the FoV, evaluate the elevation variations across all */
+      /* beams for a range gate and virtual height band, considering each   */
+      /* propagation path (region and hop) seperately.                      */
+      for(ifov = 0; ifov < 2; ifov++)
+	{
+	  for(ipath = 0; ipath < max_path; ipath++)
+	    {
+	      if(scan_num_D[ifov][ipath] >= min_pnts)
+		{
+		  /* Use select_alt_groups */
+		  out_num = select_alt_groups(scan_num_D[ifov][ipath], scan_rg_D[ifov][ipath], scan_vh_D[ifov][ipath], D_hmin, D_hmax, D_vh_box, min_pnts, vmins, vmaxs);
+
+		  /* For each virtual height bin, determine if this FoV has */
+		  /* a realistic azimuth variation.                         */
+		  for(ivh = 0; ivh < out_num; ivh++)
+		    {
+		      
+		    }
+		}
+	    }
+	}
     }
 
   return;
