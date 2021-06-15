@@ -110,7 +110,7 @@ char* GetRSTVersion() {
   if (vfp != NULL) {
     // read the .rst_version file 
     while (fscanf(vfp,"%s",buff)==1); 
-    strcat(rst_version, " RST Version: ");
+    strcat(rst_version, " -- RST Version: ");
     strcat(rst_version, buff);
     fclose(vfp);
   } else {
@@ -559,4 +559,3 @@ int RadarParmExpand(struct RadarParm *ptr,void *buffer) {
 
   return 0;
 }
-
