@@ -238,21 +238,21 @@ float float_absmin(int num, float vals[])
  *        distribution of the data and fit a Gaussian curve to the occurance
  *        peaks to establish appropriate limits.
  *
- * @params[in] num
- *             rg
- *             vh
- *             vh_min
- *             vh_max
- *             vh_box
- *             min_pnts
+ * @params[in] num - Number of points in `rg` and `vh` arrays
+ *             rg - Array of range gates to consider
+ *             vh - Array of virtual heights for each range gate
+ *             vh_min - Minimum allowable virtual height in km
+ *             vh_max - Maximum allowable virtual height in km
+ *             vh_box - Width of virtual height box in km
+ *             min_pnts - Minimum number of points allowed in a box
  *
- * @params[out] vh_mins
- *              vh_maxs
- *              out_num
+ * @params[out] vh_mins - Lower virtual height limit of each bin
+ *              vh_maxs - Upper virtual height limit of each bin
+ *              out_num - Number of virtual height bins
  **/
 
 int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
-		      float *vh_box, int min_pnts, float *vh_mins,
+		      float vh_box, int min_pnts, float *vh_mins,
 		      float *vh_maxs)
 {
   int i, j, out_num, nbin, nmax, *hist_bins;
