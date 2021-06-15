@@ -140,7 +140,6 @@ int RadarParmSetOriginCommand(struct RadarParm *ptr,char *str) {
   if (ptr->origin.command==NULL) {
       //fprintf(stderr, "before malloc\n");
       tmp=malloc(strlen(str)+strlen(rst_version));
-      //fprintf(stderr, "tmp extended\n");
   }
   else 
       tmp=realloc(ptr->origin.command,strlen(str)+strlen(rst_version));
