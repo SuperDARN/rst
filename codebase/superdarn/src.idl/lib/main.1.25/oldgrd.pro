@@ -168,6 +168,7 @@ function OldGridRead,unit,prm,stvec,gvec
       1: BEGIN
         prm.vcnum=npnt
         prm.xtd=1
+        if prm.vcnum eq 0 then break
         gvec=replicate(gvec,prm.vcnum)
         for n=0,npnt-1 do begin
           readf,unit,gmlon,gmlat,kvect,stid,chn,index,vlos,vlos_sd, $
@@ -190,6 +191,7 @@ function OldGridRead,unit,prm,stvec,gvec
       2: BEGIN
         prm.vcnum=npnt
         prm.xtd=0
+        if prm.vcnum eq 0 then break
         gvec=replicate(gvec,prm.vcnum)
         for n=0,npnt-1 do begin
           readf,unit,gmlon,gmlat,kvect,stid,chn,index,vlos,vlos_sd
