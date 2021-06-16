@@ -75,6 +75,8 @@ Modifications:
 #include "sza.h"
 #include "szamap.h"
 #include "clip.h"
+#include "plot_time.h"
+#include "plot_logo.h"
 
 
 #include "hlpstr.h"
@@ -335,6 +337,7 @@ int main(int argc,char *argv[]) {
   unsigned char grdontop=0;
 
   unsigned char dotflg=0;
+  unsigned char tmeflg=0;
 
   int tmtick=3;
 
@@ -520,8 +523,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"grd",'x',&grdflg);
   OptionAdd(&opt,"tmk",'x',&tmkflg);
 
- OptionAdd(&opt,"grdontop",'x',&grdontop);
-
+  OptionAdd(&opt,"grdontop",'x',&grdontop);
 
   OptionAdd(&opt,"fov",'x',&fovflg);
   OptionAdd(&opt,"ffov",'x',&ffovflg);
@@ -567,6 +569,8 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"dotr",'f',&dotr);
   OptionAdd(&opt,"dot",'x',&dotflg);
+
+  OptionAdd(&opt,"time",'x',&tmeflg);
 
   OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);
 
@@ -1072,6 +1076,12 @@ int main(int argc,char *argv[]) {
                            (wdt/2)-pad,6,
                            txtcol,0x0f,fontname,fontsize,fontdb);
   }
+
+  if (tmeflg) plot_time(plot,5,5,wdt-10,hgt-10,tval,
+                        txtcol,0x0f,"Helvetica",12.0,fontdb);
+
+  if (magflg) plot_aacgm(plot,4,4,wdt-8,wdt-8,txtcol,0x0f,"Helvetica",
+                         7.0,fontdb,old_aacgm);
 
   PlotPlotEnd(plot);  
   PlotDocumentEnd(plot);
