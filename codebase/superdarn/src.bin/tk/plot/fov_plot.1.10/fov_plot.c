@@ -1052,7 +1052,7 @@ int main(int argc,char *argv[]) {
                                 ptmk,1);
 
   if ((grdflg) && (grdontop)) {
-    MapPlotPolygon(plot,NULL,0,0,wdt-2*pad,hgt-2*pad,0,
+    MapPlotPolygon(plot,NULL,pad,pad,wdt-2*pad,hgt-2*pad,0,
                                 grdcol,0x0f,width,NULL,
                                 pgrd,1);
   }
