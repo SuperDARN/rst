@@ -953,6 +953,7 @@ int main(int argc,char *argv[]) {
        if (network->radar[i].id==stid) continue;
        if (network->radar[i].status !=0) continue;
        site=RadarYMDHMSGetSite(&(network->radar[i]),yr,mo,dy,hr,mt,sc);
+       if (site == NULL) continue;
        if (magflg) {
          if (old_aacgm) {
            s=AACGMConvert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
@@ -979,6 +980,7 @@ int main(int argc,char *argv[]) {
        if (network->radar[i].id==stid) continue;
        if (network->radar[i].status !=1) continue;
        site=RadarYMDHMSGetSite(&(network->radar[i]),yr,mo,dy,hr,mt,sc);
+       if (site == NULL) continue;
        if (magflg) {
          if (old_aacgm) {
            s=AACGMConvert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
@@ -1004,24 +1006,26 @@ int main(int argc,char *argv[]) {
    if (fovflg) {
      
      site=RadarYMDHMSGetSite(&(network->radar[stnum]),yr,mo,dy,hr,mt,sc);
-     if (magflg) {
-       if (old_aacgm) {
-         s=AACGMConvert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
-         pnt[0]=mlat;
-         pnt[1]=mlon;
+     if (site !=NULL) {
+       if (magflg) {
+         if (old_aacgm) {
+           s=AACGMConvert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
+           pnt[0]=mlat;
+           pnt[1]=mlon;
+         } else {
+           s=AACGM_v2_Convert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
+           pnt[0]=mlat;
+           pnt[1]=mlon;
+         }
        } else {
-         s=AACGM_v2_Convert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
-         pnt[0]=mlat;
-         pnt[1]=mlon;
+         pnt[0]=site->geolat;
+         pnt[1]=site->geolon;
        }
-     } else {
-       pnt[0]=site->geolat;
-       pnt[1]=site->geolon;
+       s=(*tfunc)(sizeof(float)*2,pnt,2*sizeof(float),pnt,marg);
+       if (s==0) PlotEllipse(plot,NULL,pad+pnt[0]*(wdt-2*pad),
+                      pad+pnt[1]*(hgt-2*pad),dotr,dotr,
+                      1,ffovcol,0x0f,0,NULL);
      }
-     s=(*tfunc)(sizeof(float)*2,pnt,2*sizeof(float),pnt,marg);
-     if (s==0) PlotEllipse(plot,NULL,pad+pnt[0]*(wdt-2*pad),
-                    pad+pnt[1]*(hgt-2*pad),dotr,dotr,
-                    1,ffovcol,0x0f,0,NULL);
    }
 
 
