@@ -269,7 +269,7 @@ int main(int argc,char *argv[]) {
   char *cfname=NULL;
   FILE *fp;
 
-
+  struct RadarSite *site;
 
   float wdt=540,hgt=540;
   float pad=0;
@@ -425,7 +425,7 @@ int main(int argc,char *argv[]) {
   bnd=MapBndFread(mapfp);
   fclose(mapfp);
 
- envstr=getenv("SD_RADAR");
+  envstr=getenv("SD_RADAR");
   if (envstr==NULL) {
     fprintf(stderr,"Environment variable 'SD_RADAR' must be defined.\n");
     exit(-1);
@@ -677,6 +677,17 @@ int main(int argc,char *argv[]) {
  
   if (tmkflg) tmk=make_grid(30*tmtick,10,cylind);
 
+  if (ststr !=NULL) stid=RadarGetID(network,ststr);
+  for (stnum=0;stnum<network->rnum;stnum++) {
+    if (network->radar[stnum].id==stid) {
+      if ((lat<0) != (network->radar[stnum].site[0].geolat<0)) {
+        lat=-lat;
+      }
+      break;
+    }
+  }
+  if (stnum==network->rnum) stnum=0;
+
   if ((lat<0) && (latmin>0)) latmin=-latmin;
   if ((lat>0) && (latmin<0)) latmin=-latmin;
 
@@ -814,14 +825,6 @@ int main(int argc,char *argv[]) {
    exit(-1);
   }
 
-
-  if (ststr !=NULL) stid=RadarGetID(network,ststr);
-  for (stnum=0;stnum<network->rnum;stnum++) 
-     if (stid==network->radar[stnum].id) break;  
-  if (stnum==network->rnum) stnum=0;
-
-
-
   /* now determine our output type */
 
   if (psflg) pflg=1;
@@ -949,7 +952,6 @@ int main(int argc,char *argv[]) {
 
  if (dotflg) {
    int s=0;
-   struct RadarSite *site;
    float pnt[2];
    double mlat,mlon,r;
    if (cfovflg | fcfovflg)  {
