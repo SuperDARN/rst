@@ -26,6 +26,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAX_BMS 25  /* Current maximum in hdw files */
+#define MAX_RG 225  /* Current maximum in hdw files */
+#define MIN_BMS 3  /* Minimum number of beams to find azimuthal variations */
+#define RG_INC 3
+
 /**
  * @brief Update scan backscatter propagation path, elevation angle,
  *        backscatter type, structure flag, and origin field of view for all
@@ -67,18 +72,20 @@ int UpdateScanBSFoV(short int strict_gs, short int step, int min_pnts,
 		    struct MultRadarScan *mult_scan,
 		    struct MultFoVScan *mult_bsid)
 {
-  int iscan, ibm, irg, ifov, ipath, max_path;
-  int *scan_outnum_D[2], *scan_outnum_E[2], *scan_outnum_F[2];
-  int *scan_num_D[2], *scan_num_E[2], *scan_num_F[2];
-  int **scan_bm_D[2], **scan_bm_E[2], **scan_bm_F[2];
-  int **scan_rg_D[2], **scan_rg_E[2], **scan_rg_F[2];
+  int iscan, ibm, irg, ifov, ipath, ireg, ivh;
+  int rmin, rmax, max_path, out_num, group_num, bm_num;
+  int group_bm[MAX_BMS * MAX_RG], group_rg[MAX_BMS * MAX_RG];
+  int group_num[MAX_BMS * MAX_RG];
+  int fovflg[MAX_BMS][MAX_RG], fovpast[MAX_BMS][MAX_RG];
+  int *scan_num[3][2], **scan_bm[3][2], **scan_rg[3][2];
 
-  float near_rg;
-  float **scan_vh_D[2], **scan_vh_E[2], **scan_vh_F[2];
-  float **scan_vhmin_D[2], **scan_vhmin_E[2], **scan_vhmin_F[2];
-  float **scan_vhmax_D[2], **scan_vhmax_E[2], **scan_vhmax_F[2];
+  float near_rg, hmin, hmax, hbox;
+  float group_elv[MAX_BMS * MAX_RG], group_vh[MAX_BMS * MAX_RG], *vmins, *vmaxs;
+  float fovstd[MAX_BMS][MAX_RG], fovscore[MAX_BMS][MAX_RG];
+  float **scan_vh[3][2], **scan_elv[3][2];
 
   struct CellBSIDLoc loc;
+  struct FitElv elv;
   struct RadarCell rng;
   struct RadarParm *prm;
   struct RadarSite *site=NULL;
@@ -90,65 +97,58 @@ int UpdateScanBSFoV(short int strict_gs, short int step, int min_pnts,
   void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
 		     float D_hmax, float E_hmax, float F_hmax,
 		     struct FitPrm *prm, struct RadarBSIDBeam *beam);
-
+  int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
+			float vh_box, int min_pnts, float *vh_mins,
+			float *vh_maxs);
+  int num_unique_int_vals(int num, int array[]);
+  void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
+			  int fovflg[][], int fovpast[][], float scan_vh[],
+			  float scan_elv[], float fovscore[][],
+			  float fovstd[][]);
+ 
   /* Initialize the local pointers */
   scan_old = mult_scan->scan_ptr;
   bm_new = (struct RadarBSIDBeam *)(malloc(sizeof(struct RadarBSIDBeam)));
+  memset(bm_new, 0, sizeof(struct RadarBSIDBeam));
 
-  max_path = (int)(max_hop * 2.0);
-  for(ifov = 0; ifov < 2; ifov++)
+  for(ibm = 0; ibm < MAX_BMS; ibm++)
     {
-      scan_outnum_D[ifov] = (int *)calloc(sizeof(int) * max_path);
-      scan_outnum_E[ifov] = (int *)calloc(sizeof(int) * max_path);
-      scan_outnum_F[ifov] = (int *)calloc(sizeof(int) * max_path);
-
-      scan_num_D[ifov] = (int *)calloc(sizeof(int) * max_path);
-      scan_num_E[ifov] = (int *)calloc(sizeof(int) * max_path);
-      scan_num_F[ifov] = (int *)calloc(sizeof(int) * max_path);
-
-      scan_bm_D[ifov] = (int **)calloc(sizeof(int) * max_path);
-      scan_bm_E[ifov] = (int **)calloc(sizeof(int) * max_path);
-      scan_bm_F[ifov] = (int **)calloc(sizeof(int) * max_path);
-
-      scan_rg_D[ifov] = (int **)calloc(sizeof(int) * max_path);
-      scan_rg_E[ifov] = (int **)calloc(sizeof(int) * max_path);
-      scan_rg_F[ifov] = (int **)calloc(sizeof(int) * max_path);
-
-      scan_vh_D[ifov] = (float **)calloc(sizeof(float) * max_path);
-      scan_vh_E[ifov] = (float **)calloc(sizeof(float) * max_path);
-      scan_vh_F[ifov] = (float **)calloc(sizeof(float) * max_path);
-
-      scan_vhmin_D[ifov] = (float **)calloc(sizeof(float) * max_path);
-      scan_vhmin_E[ifov] = (float **)calloc(sizeof(float) * max_path);
-      scan_vhmin_F[ifov] = (float **)calloc(sizeof(float) * max_path);
-
-      scan_vhmax_D[ifov] = (float **)calloc(sizeof(float) * max_path);
-      scan_vhmax_E[ifov] = (float **)calloc(sizeof(float) * max_path);
-      scan_vhmax_F[ifov] = (float **)calloc(sizeof(float) * max_path);
-
-      for(ipath = 0; ipath < max_path; ipath++)
+      for(irg = 0; irg < MAX_RG; irg++)
 	{
-	  scan_bm_D[ifov][ipath] = (int *)calloc(sizeof(int) * D_rgmax);
-	  scan_bm_E[ifov][ipath] = (int *)calloc(sizeof(int) * D_rgmax);
-	  scan_bm_F[ifov][ipath] = (int *)calloc(sizeof(int) * D_rgmax);
-
-	  scan_rg_D[ifov][ipath] = (int *)calloc(sizeof(int) * D_rgmax);
-	  scan_rg_E[ifov][ipath] = (int *)calloc(sizeof(int) * E_rgmax);
-	  scan_rg_F[ifov][ipath] = (int *)calloc(sizeof(int) * F_rgmax);
-
-	  scan_vh_D[ifov][ipath] = (float *)calloc(sizeof(float) * D_rgmax);
-	  scan_vh_E[ifov][ipath] = (float *)calloc(sizeof(float) * E_rgmax);
-	  scan_vh_F[ifov][ipath] = (float *)calloc(sizeof(float) * F_rgmax);
-
-	  scan_vhmin_D[ifov][ipath] = (float *)calloc(sizeof(float) * D_rgmax);
-	  scan_vhmin_E[ifov][ipath] = (float *)calloc(sizeof(float) * E_rgmax);
-	  scan_vhmin_F[ifov][ipath] = (float *)calloc(sizeof(float) * F_rgmax);
-
-	  scan_vhmax_D[ifov][ipath] = (float *)calloc(sizeof(float) * D_rgmax);
-	  scan_vhmax_E[ifov][ipath] = (float *)calloc(sizeof(float) * E_rgmax);
-	  scan_vhmax_F[ifov][ipath] = (float *)calloc(sizeof(float) * F_rgmax);
+	  fovflg[ibm][irg] = 0;
+	  fovpast[ibm][irg] = 0;
 	}
     }
+
+  max_path = (int)(max_hop * 2.0);
+  for(ireg = 0; ireg < 3; ireg++)
+    {
+      out_num = (ireg == 0) ? D_rgmax : ((ireg == 1) ? E_rgmax : F_rgmax);
+
+      for(ifov = 0; ifov < 2; ifov++)
+	{
+	  scan_num[ireg][ifov] = (int *)calloc(sizeof(int) * max_path);
+	  scan_bm[ireg][ifov] = (int **)calloc(sizeof(int) * max_path);
+	  scan_rg[ireg][ifov] = (int **)calloc(sizeof(int) * max_path);
+	  scan_vh[ireg][ifov] = (float **)calloc(sizeof(float) * max_path);
+	  scan_elv[ireg][ifov] = (float **)calloc(sizeof(float) * max_path);
+
+	  for(ipath = 0; ipath < max_path; ipath++)
+	    {
+	      scan_bm[ireg][ifov][ipath] = (int *)calloc(sizeof(int) * out_num);
+	      scan_rg[ireg][ifov][ipath] = (int *)calloc(sizeof(int) * out_num);
+	      scan_vh[ireg][ifov][ipath] = (float *)calloc(sizeof(float)
+							   * out_num);
+	      scan_elv[ireg][ifov][ipath] = (float *)calloc(sizeof(float)
+							    * out_num);
+	    }
+	}
+    }
+
+  out_num = (F_rgmax > E_rgmax) ? F_rgmax : E_rgmax;
+  if(D_rgmax > out_num) out_num = D_rgmax;
+  vmins = (float *)calloc(sizeof(float) * out_num);
+  vmaxs = (float *)calloc(sizeof(float) * out_num);
 
   /* Inititalize the output */
   if(mult_bsid->num_scans == 0)
@@ -277,27 +277,20 @@ int UpdateScanBSFoV(short int strict_gs, short int step, int min_pnts,
 		  for(ifov = 0; ifov < 2; ifov++)
 		    {
 		      loc = (ifov == 0) ? bm_new->back_loc : bm_new->front_loc;
+		      elv = (ifov == 0) ? bm_new->back_elv : bm_new->front_elv;
 		      ipath = (int)(loc->hop * 2.0);
-		      if(strstr(loc->region, "D") != NULL)
+		      if(strstr(loc->region, "D") != NULL)      ireg = 0;
+		      else if(strstr(loc->region, "E") != NULL) ireg = 1;
+		      else if(strstr(loc->region, "F") != NULL) ireg = 2;
+		      else                                      ireg = -1;
+
+		      if(ireg >= 0)
 			{
-			  scan_bm_D[ifov][ipath][scan_num_D[ifov][ipath]] = ibm;
-			  scan_rg_D[ifov][ipath][scan_num_D[ifov][ipath]] = irg;
-			  scan_vh_D[ifov][ipath][scan_num_D[ifov][ipath]] = (float)loc->vh;
-			  scan_num_D[ifov][ipath]++;
-			}
-		      else if(strstr(loc->region, "E") != NULL)
-			{
-			  scan_bm_E[ifov][ipath][scan_num_E[ifov][ipath]] = ibm;
-			  scan_rg_E[ifov][ipath][scan_num_E[ifov][ipath]] = irg;
-			  scan_vh_E[ifov][ipath][scan_num_E[ifov][ipath]] = (float)loc->vh;
-			  scan_num_E[ifov][ipath]++;
-			}
-		      else if(strstr(loc->region, "F") != NULL)
-			{
-			  scan_bm_F[ifov][ipath][scan_num_F[ifov][ipath]] = ibm;
-			  scan_rg_F[ifov][ipath][scan_num_F[ifov][ipath]] = irg;
-			  scan_vh_F[ifov][ipath][scan_num_F[ifov][ipath]] = (float)loc->vh;
-			  scan_num_F[ifov][ipath]++;
+			  scan_bm[ireg][ifov][ipath][scan_num[ireg][ifov][ipath]] = ibm;
+			  scan_rg[ireg][ifov][ipath][scan_num[ireg][ifov][ipath]] = irg;
+			  scan_vh[ireg][ifov][ipath][scan_num[ireg][ifov][ipath]] = (float)loc.vh;
+			  scan_elv[ireg][ifov][ipath][scan_num[ireg][ifov][ipath]] = (float)elv.normal;
+			  scan_num[ireg][ifov][ipath]++;
 			}
 		    }
 		}
@@ -307,25 +300,222 @@ int UpdateScanBSFoV(short int strict_gs, short int step, int min_pnts,
       /* To determine the FoV, evaluate the elevation variations across all */
       /* beams for a range gate and virtual height band, considering each   */
       /* propagation path (region and hop) seperately.                      */
-      for(ifov = 0; ifov < 2; ifov++)
+      for(ireg = 0; ireg < 3; ireg++)
 	{
-	  for(ipath = 0; ipath < max_path; ipath++)
+	  if(ireg == 0)
 	    {
-	      if(scan_num_D[ifov][ipath] >= min_pnts)
+	      hmin = D_hmin;
+	      hmax = D_hmax;
+	      hbox = D_vh_box;
+	    }
+	  else if(ireg == 1)
+	    {
+	      hmin = E_hmin;
+	      hmax = E_hmax;
+	      hbox = E_vh_box;
+	    }
+	  else if(ireg == 2)
+	    {
+	      hmin = F_hmin;
+	      hmax = F_hmax;
+	      hbox = F_vh_box;
+	    }
+	  
+	  for(ifov = 0; ifov < 2; ifov++)
+	    {
+	      for(ipath = 0; ipath < max_path; ipath++)
 		{
-		  /* Use select_alt_groups */
-		  out_num = select_alt_groups(scan_num_D[ifov][ipath], scan_rg_D[ifov][ipath], scan_vh_D[ifov][ipath], D_hmin, D_hmax, D_vh_box, min_pnts, vmins, vmaxs);
+		  if(ireg == 2 && ipath >= 3) hbox = far_vh_box;
 
-		  /* For each virtual height bin, determine if this FoV has */
-		  /* a realistic azimuth variation.                         */
-		  for(ivh = 0; ivh < out_num; ivh++)
+		  if(scan_num[ireg][ifov][ipath] >= min_pnts)
 		    {
-		      
+		      /* Use select_alt_groups */
+		      out_num = select_alt_groups(scan_num[ireg][ifov][ipath],
+						  scan_rg[ireg][ifov][ipath],
+						  scan_vh[ireg][ifov][ipath],
+						  hmin, hmax, hbox, min_pnts,
+						  vmins, vmaxs);
+
+		      /* For each virtual height bin, determine if this FoV */
+		      /* has a realistic azimuth variation.                 */
+		      for(ivh = 0; ivh < out_num; ivh++)
+			{
+			  for(group_num = 0, irg = 0;
+			      irg < scan_num[ireg][ifov][ipath]; irg++)
+			    {
+			      if(scan_vh[ireg][ifov][ipath][irg] >= vmins[irg]
+				 && scan_vh[ireg][ifov][ipath][irg] < vmaxs[irg])
+				{
+				  group_bm[group_num] = scan_bm[ireg][ifov][ipath][irg];
+				  group_rg[group_num] = scan_rg[ireg][ifov][ipath][irg];
+				  group_vh[group_num] = scan_vh[ireg][ifov][ipath][irg];
+				  group_elv[group_num] = scan_elv[ireg][ifov][ipath][irg];
+				  group_num++;
+				}
+			    }
+
+			  if(group_num >= min_pnts)
+			    {
+			      /* Test to see if there are enough beams */
+			      bm_num = num_unique_int_vals(group_num, scan_bm[ireg][ifov][ipath]);
+			      if(bm_num >= MIN_BMS)
+				{
+				  eval_az_var_in_elv(group_num, ifov, scan_bm,
+						     scan_rg, fovflg, fovpast,
+						     scan_vh, scan_elv,
+						     fovscore, fovstd);
+				}
+			    }
+			}
+		    }
+		}
+	    }
+	}
+
+      /* Evaluate the FoV flags, removing points that are surrounded by data */
+      /* assigned to the opposite FoV.                                       */
+      for(rmin = 0, rmax = 0, irg = 0; irg < max_rg; irg++)
+	{
+	  /* Get the half-width of the range gate box */
+	  if(irg < D_rgmax)      out_num = (D_nrg + RG_INC) / 2;
+	  else if(irg < E_rgmax) out_num = (E_nrg + RG_INC) / 2;
+	  else if(irg < F_rgmax) out_num = (F_nrg + RG_INC) / 2;
+	  else                   out_num = (far_nrg + RG_INC) / 2;
+
+	  /* Set the upper and lower box limits. This changes the logic    */
+	  /* from the davitpy implementation by allowing the limits of a   */
+	  /* range gate box to extend into range gates beyond their limit. */
+	  rmin = (irg - out_num < 0) ? 0 : irg - out_num;
+	  rmax = rmin + 2 * out_num;
+	  if(rmax > bm_new->nrang + 1) rmax = bm_new->nrang + 1;
+
+	  /* For each bean in the maximum possible range gate window, gather */
+	  /* the range gate, FoV flag, beam index, and range gate index by   */
+	  /* propagation path.                                               */
+	  for(ibm = 0; ibm < max_bm; ibm++)
+	    {
+	      // HERE; go define max_bm and max_rg
+	    }
+	}
+    }
+
+  return;
+}
+
+
+/**
+ * @brief Evaluate the azimuthal variations in a group of elevation angles
+ *
+ * @param[in] num - Number of points in the `scan_*` arrays
+ *            fov - Integer denoting field of view (0=back, 1=front)
+ *            scan_bm - Array holding the group's beam numbers
+ *            scan_rg - Array holding the group's range gates
+ *            fovflg  - Beam x RG array holding assigned FoVs (-1=back, 1=front)
+ *            fovpast - Beam x RG array holding previously assigned FoV flags
+ *            scan_vh - Array holding the group's virtual heights in km
+ *            scan_elv - Array holding the group's elevation angles in deg
+ *            fovscore - Beam x RG array holding previous z-score values
+ *            fovstd   - Beam x RG array holding previous standard deviations
+ **/
+
+void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
+			int fovflg[][], int fovpast[][], float scan_vh[],
+			float scan_elv[], float fovscore[][], float fovstd[][])
+{
+  int i, irg, ibm, reg_stat;
+  int get_fov[2] = {-1, 1};
+
+  float max_std, max_score, fov_frac, intercept, sig_intercept, slope;
+  float sig_slope, chi2, q, lstd, line_std;
+  float *lval, *ldev, *abs_ldev, *lscore, *line_dev, *sig;
+
+  int linear_regression(float x[], float y[], float sig[], int num, int mwt,
+			float *intercept, float *sig_intercept, float *slope,
+			float *sig_slope, float *chi2, float *q);
+  void zscore(int num, float array[], float *zscore);
+  float stdev_float(int num, float array[]);
+
+  /* Initalize the maximum statistics and reference variables */
+  max_std   = 3.0;
+  max_score = 3.0;
+  fov_frac  = 2.0 / 3.0;
+  
+  /* Initialize the evalutaion statistics to default values */
+  line_std = max_std + 100.0;
+  line_dev = (float *)calloc(sizeof(float) * num);
+  sig      = (float *)calloc(sizeof(float) * num);
+  lval     = (float *)calloc(sizeof(float) * num);
+  ldev     = (float *)calloc(sizeof(float) * num);
+  abs_ldev = (float *)calloc(sizeof(float) * num);
+  lscore   = (float *)calloc(sizeof(float) * num);
+  for(i = 0; i < num; i++)
+    {
+      line_dev[i] = line_std;
+      sig[i] = 0.0;
+    }
+
+  /* Get the linear regression of the elevation angles as a function of    */
+  /* range gate. The slope of this line must be flat or negative. Aliasing */
+  /* will cause positive jumps, but these should not be present in all     */
+  /* boxes, allowing data to be assigned at times when the aliasing jump   */
+  /* isn't present. A more robust method (such as RANSAC or Theil-Sen) was */
+  /* not used, since the number of points available are small.             */
+  reg_stat = linear_regression((float *)scan_rg, scan_elv, sig, num, 0,
+			       &intercept, &sig_intercept, &slope, &sig_slope,
+			       &chi2, &q);
+
+  if(reg_stat == 0)
+    {
+      /* If there were no calculation problems, calculate the linear values */
+      for(i = 0; i < num; i++)
+	{
+	  lval[i] = slope * (float)scan_rg[i] + intercept;
+	  ldev[i] = lval[i] - scan_elv[i];
+	  abs_ldev[i] = fabs(ldev[i])
+	}
+
+      lstd = stdev_float(num, ldev);
+      zscore(num, abs_ldev, lscore);
+
+      /* Use current and past z-scores to determine whether or not each */
+      /* point is well-characterized by the linear regression.          */
+      if(lstd <= max_std)
+	{
+	  for(i = 0; i < num; i++)
+	    {
+	      /* If this backscatter point's score is below the maximum and */
+	      /* lower than previous estimate's scores.                     */
+	      if(lscore[i] <= max_score)
+		{
+		  irg = scan_rg[i];
+		  ibm = scan_bm[i];
+
+		  /* Also update if this is the first evaluation */
+		  if(fovflg[ibm][irg] == 0 || (lscore[i] < fovscore[ibm][irg]
+					       && lstd < fovstd[ibm][irg]))
+		    {
+		      /* If the FoV is changing, note that here */
+		      if(fovflg[ibm][irg] != 0
+			 && fovflg[ibm][irg] != get_fov[fov])
+			fovpast[ibm][irg] = fovflg[ibm][irg];
+
+		      /* Update with the new good FoV stats and flag */
+		      fovflg[ibm][irg]   = get_fov[fov];
+		      fovstd[ibm][irg]   = lstd;
+		      fovscore[ibm][irg] = lscore[i];
 		    }
 		}
 	    }
 	}
     }
+
+  /* Free the pointers */
+  free(line_dev);
+  free(sig);
+  free(lval);
+  free(ldev);
+  free(abs_ldev);
+  free(lscore);
 
   return;
 }
