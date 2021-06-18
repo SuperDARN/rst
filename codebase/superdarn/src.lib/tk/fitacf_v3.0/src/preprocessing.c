@@ -830,10 +830,15 @@ double ACF_cutoff_pwr(FITPRMS *fit_prms){
     
     /*  Commenting the line below out as it causes problems with processing
             BOREALIS data by setting Inf values to SNR as the search noise is not 
-            estimated. */
+            estimated. Amending it temporarily with the check
+            for "skynoise" data to be nonzero. This is a quick fix that allows 
+            BOREALIS data to be processed properly but also makes no impact 
+            on the older data. A more elaborate/universal solution to this issue 
+            should be developed for th enext release. */
    
     /*if (min_pwr < 1.0) min_pwr = fit_prms->noise;*/
-
+    if ((min_pwr < 1.0) && (fit_prms->noise != 0.0)) min_pwr = fit_prms->noise;
+    
     free(pwr_levels);
     return min_pwr;
 
