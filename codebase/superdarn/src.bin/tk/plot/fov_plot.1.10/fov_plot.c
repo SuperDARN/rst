@@ -75,6 +75,8 @@ Modifications:
 #include "sza.h"
 #include "szamap.h"
 #include "clip.h"
+#include "plot_time.h"
+#include "plot_logo.h"
 
 
 #include "hlpstr.h"
@@ -267,7 +269,7 @@ int main(int argc,char *argv[]) {
   char *cfname=NULL;
   FILE *fp;
 
-
+  struct RadarSite *site;
 
   float wdt=540,hgt=540;
   float pad=0;
@@ -335,6 +337,7 @@ int main(int argc,char *argv[]) {
   unsigned char grdontop=0;
 
   unsigned char dotflg=0;
+  unsigned char tmeflg=0;
 
   int tmtick=3;
 
@@ -422,7 +425,7 @@ int main(int argc,char *argv[]) {
   bnd=MapBndFread(mapfp);
   fclose(mapfp);
 
- envstr=getenv("SD_RADAR");
+  envstr=getenv("SD_RADAR");
   if (envstr==NULL) {
     fprintf(stderr,"Environment variable 'SD_RADAR' must be defined.\n");
     exit(-1);
@@ -520,8 +523,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"grd",'x',&grdflg);
   OptionAdd(&opt,"tmk",'x',&tmkflg);
 
- OptionAdd(&opt,"grdontop",'x',&grdontop);
-
+  OptionAdd(&opt,"grdontop",'x',&grdontop);
 
   OptionAdd(&opt,"fov",'x',&fovflg);
   OptionAdd(&opt,"ffov",'x',&ffovflg);
@@ -567,6 +569,8 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"dotr",'f',&dotr);
   OptionAdd(&opt,"dot",'x',&dotflg);
+
+  OptionAdd(&opt,"time",'x',&tmeflg);
 
   OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);
 
@@ -672,6 +676,17 @@ int main(int argc,char *argv[]) {
   if (grdflg) grd=make_grid(15,10,cylind);   
  
   if (tmkflg) tmk=make_grid(30*tmtick,10,cylind);
+
+  if (ststr !=NULL) stid=RadarGetID(network,ststr);
+  for (stnum=0;stnum<network->rnum;stnum++) {
+    if (network->radar[stnum].id==stid) {
+      if ((lat<0) != (network->radar[stnum].site[0].geolat<0)) {
+        lat=-lat;
+      }
+      break;
+    }
+  }
+  if (stnum==network->rnum) stnum=0;
 
   if ((lat<0) && (latmin>0)) latmin=-latmin;
   if ((lat>0) && (latmin<0)) latmin=-latmin;
@@ -810,14 +825,6 @@ int main(int argc,char *argv[]) {
    exit(-1);
   }
 
-
-  if (ststr !=NULL) stid=RadarGetID(network,ststr);
-  for (stnum=0;stnum<network->rnum;stnum++) 
-     if (stid==network->radar[stnum].id) break;  
-  if (stnum==network->rnum) stnum=0;
-
-
-
   /* now determine our output type */
 
   if (psflg) pflg=1;
@@ -945,7 +952,6 @@ int main(int argc,char *argv[]) {
 
  if (dotflg) {
    int s=0;
-   struct RadarSite *site;
    float pnt[2];
    double mlat,mlon,r;
    if (cfovflg | fcfovflg)  {
@@ -1048,7 +1054,7 @@ int main(int argc,char *argv[]) {
                                 ptmk,1);
 
   if ((grdflg) && (grdontop)) {
-    MapPlotPolygon(plot,NULL,0,0,wdt-2*pad,hgt-2*pad,0,
+    MapPlotPolygon(plot,NULL,pad,pad,wdt-2*pad,hgt-2*pad,0,
                                 grdcol,0x0f,width,NULL,
                                 pgrd,1);
   }
@@ -1072,6 +1078,12 @@ int main(int argc,char *argv[]) {
                            (wdt/2)-pad,6,
                            txtcol,0x0f,fontname,fontsize,fontdb);
   }
+
+  if (tmeflg) plot_time(plot,5,5,wdt-10,hgt-10,tval,
+                        txtcol,0x0f,"Helvetica",12.0,fontdb);
+
+  if (magflg) plot_aacgm(plot,4,4,wdt-8,wdt-8,txtcol,0x0f,"Helvetica",
+                         7.0,fontdb,old_aacgm);
 
   PlotPlotEnd(plot);  
   PlotDocumentEnd(plot);
