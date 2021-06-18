@@ -1,13 +1,13 @@
 /*Copyright (C) 2016  SuperDARN Canada
 
-This program is free software: you can redistribute it and/or modify
+RST is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -22,6 +22,7 @@ July 2015
 */
 
 #include "rtypes.h"
+#include "llist.h"
 #include "preprocessing.h"
 #include "fitting.h"
 #include "fitacftoplevel.h"
@@ -162,9 +163,9 @@ void Copy_Fitting_Prms(struct RadarSite *radar_site, struct RadarParm *radar_prm
   fit_prms->old = 1 ? (radar_prms->time.yr < 1993) : 0;
 
   /* Initialise the radar parameters in the FitACF parameter structure */
-  fit_prms->interfer_x=radar_site->interfer[0];
-  fit_prms->interfer_y=radar_site->interfer[1];
-  fit_prms->interfer_z=radar_site->interfer[2];
+  fit_prms->interfer[0]=radar_site->interfer[0];
+  fit_prms->interfer[1]=radar_site->interfer[1];
+  fit_prms->interfer[2]=radar_site->interfer[2];
   fit_prms->bmsep=radar_site->bmsep;
   fit_prms->phidiff=radar_site->phidiff;
   fit_prms->tdiff=radar_site->tdiff;
@@ -273,11 +274,12 @@ void Copy_Fitting_Prms(struct RadarSite *radar_site, struct RadarParm *radar_prm
  *
  * @return     0 on success.
  */
-int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
+int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data, int elv_version) {
 
   llist ranges, lags;
   double noise_pwr;
-
+  int list_null_flag = LLIST_SUCCESS;
+  llist_node node;
   fit_data->revision.major=MAJOR;
   fit_data->revision.minor=MINOR;
 
@@ -289,45 +291,52 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
   */
   Determine_Lags(lags,fit_prms);
 
-  /*llist_for_each_arg(lags,(node_func_arg)print_lag_node, fit_prms, NULL);*/
-
   /*Here we determine the fluctuation level for which ACFs are pure noise*/
 
   /*Set this to 1 for processing simulated data without the noise.*/
   /*We check number of averages < 0 since this will cause invalid
   division in the noise calculation*/
   noise_pwr = (fit_prms->nave <= 0) ? 1.0 : ACF_cutoff_pwr(fit_prms);
-   /* noise_pwr = 1; */
 
   /*Here we fill the list of ranges with range nodes.*/
   Fill_Range_List(fit_prms, ranges);
 
   /*For each range we find the CRI of each pulse*/
   /*Comment this out for simulated data without CRI*/
-  llist_for_each_arg(ranges,(node_func_arg)Find_CRI,fit_prms,NULL);
-
+  llist_reset_iter(ranges);
+  llist_get_iter(ranges, &node);
+  while(node != NULL && list_null_flag == LLIST_SUCCESS)
+  {
+    Find_CRI(node, fit_prms);
+    Find_Alpha(node, lags, fit_prms);
+    Fill_Data_Lists_For_Range(node, lags, fit_prms);
+    list_null_flag = llist_go_next(ranges);
+    llist_get_iter(ranges, &node); 
+  }
+  llist_reset_iter(ranges);
+  list_null_flag = LLIST_SUCCESS;
   /*Now that we have CRI, we find alpha for each range*/
-  llist_for_each_arg(ranges,(node_func_arg)Find_Alpha,lags,fit_prms);
-
-  /*Each range node has its ACF power, ACF phase, and XCF phase(elevation) data lists filled*/
-  llist_for_each_arg(ranges,(node_func_arg)Fill_Data_Lists_For_Range,lags,fit_prms);
-
-  /*llist_for_each_arg(ranges,(node_func_arg)print_uncorrected_phase,fit_prms, NULL);*/
-  /*llist_for_each_arg(ranges,(node_func_arg)print_range_node,fit_prms,NULL);*/
-
 
   /*Tx overlapped data is removed from consideration*/
   /*Comment this out for simulated data without TX overlap*/
   Filter_TX_Overlap(ranges, lags, fit_prms);
 
-  /*llist_for_each_arg(ranges,(node_func_arg)print_range_node,fit_prms,NULL);*/
+  llist_reset_iter(ranges);
+  llist_get_iter(ranges, &node);
+  while(node != NULL && list_null_flag == LLIST_SUCCESS)
+  {
+    Filter_Low_Pwr_Lags(node, fit_prms);
+    list_null_flag = llist_go_next(ranges);
+    llist_get_iter(ranges, &node); 
+  }
+  llist_reset_iter(ranges);
+  list_null_flag = LLIST_SUCCESS;
+
   /*Criterion is applied to filter low power lags that are considered too close to
   statistical fluctuations*/
-  llist_for_each_arg(ranges,(node_func_arg)Filter_Low_Pwr_Lags,fit_prms,NULL);
 
   /*Criterion is applied to filter ranges that hold no merit*/
   Filter_Bad_ACFs(fit_prms,ranges,noise_pwr);
-  /*llist_for_each_arg(ranges,(node_func_arg)print_range_node,fit_prms,NULL);*/
 
   /*At this point all remaining data are meaningful so we perform power fits.
   The phase fitting stage is dependent on fitted power so that the power fits must be done first.
@@ -336,21 +345,27 @@ int Fitacf(FITPRMS *fit_prms, struct FitData *fit_data) {
   While the theoretical value of |R(tau)| never exceeds unity, its experimetnal estimate 
   can be larger than 1 due to either statistical fluctuations or contribution from 
   cros-range interference so that the variance estimate becomes imaginary, i.e. meaningless.*/
-  llist_for_each(ranges,(node_func)Power_Fits);
+  llist_reset_iter(ranges);
+  llist_get_iter(ranges, &node);
+  while(node != NULL && list_null_flag == LLIST_SUCCESS)
+  {
+    Power_Fits(node);
+    list_null_flag = llist_go_next(ranges);
+    llist_get_iter(ranges, &node); 
+  }
+  llist_reset_iter(ranges);
+  list_null_flag = LLIST_SUCCESS;
 
   /*We perform the phase fits for velocity and elevation. The ACF phase fit improves the
   fit of the XCF phase fit and must be done first*/
   ACF_Phase_Fit(ranges,fit_prms);
 
-  /*llist_for_each_arg(ranges,(node_func_arg)print_range_node,fit_prms,NULL);*/
-
   Filter_Bad_Fits(ranges);
 
   XCF_Phase_Fit(ranges,fit_prms);
 
-
   /*Now the fits are completed, we can make our final determinations from those fits*/
-  ACF_Determinations(ranges, fit_prms, fit_data, noise_pwr);
+  ACF_Determinations(ranges, fit_prms, fit_data, noise_pwr, elv_version);
 
   llist_destroy(lags,TRUE,free);
   llist_destroy(ranges,TRUE,free_range_node);

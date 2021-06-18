@@ -1,13 +1,13 @@
 /*Copyright (C) 2016  SuperDARN Canada
 
-This program is free software: you can redistribute it and/or modify
+RST is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -34,7 +34,6 @@ July 2015
  *
  * @param[in]  range    A range node(RANGENODE struct) stored in the list.
  *
- * The function is meant to be mapped to every range node via the list method llist_for_each.
  * The data for logarithm of ACF power are fitted using linear least squares for a two parameter straight line
  * fit (exponential decay) and a quadratic fit (Gaussian decay). 
  * Formally, weighting coefficients in the least square fit (variance) should have the 
@@ -48,6 +47,8 @@ July 2015
  */
 void Power_Fits(llist_node range){
     RANGENODE* range_node;
+    llist_node node; 
+    int list_null_flag = LLIST_SUCCESS;
 
     range_node = (RANGENODE*) range;
 
@@ -58,7 +59,16 @@ void Power_Fits(llist_node range){
 
     /*Here we fit for errors using log corrected sigma*/
 
-    llist_for_each(range_node->pwrs,calculate_log_pwr_sigma);
+    llist_reset_iter(range_node->pwrs);
+    llist_get_iter(range_node->pwrs, &node);
+    while(node != NULL && list_null_flag == LLIST_SUCCESS)
+    {
+       calculate_log_pwr_sigma(node);
+       list_null_flag = llist_go_next(range_node->pwrs);
+       llist_get_iter(range_node->pwrs, &node); 
+    }
+    list_null_flag = LLIST_SUCCESS;
+    llist_reset_iter(range_node->pwrs);
 
     two_param_straight_line_fit(range_node->l_pwr_fit_err,range_node->pwrs,1, 1);
 
@@ -81,14 +91,21 @@ void Power_Fits(llist_node range){
  */
 void ACF_Phase_Fit(llist ranges,FITPRMS *fit_prms){
     PHASETYPE acf = ACF;
+    llist_node node; 
+    int list_null_flag = LLIST_SUCCESS;
 
-    llist_for_each_arg(ranges,(node_func_arg)calculate_phase_sigma_for_range,fit_prms,&acf);
-
-    llist_for_each_arg(ranges,(node_func_arg)ACF_Phase_Unwrap, fit_prms, NULL);
-
-    llist_for_each_arg(ranges,(node_func_arg)phase_fit_for_range,&acf,NULL);
-
-
+    llist_reset_iter(ranges);
+    llist_get_iter(ranges, &node);
+    while(node != NULL && list_null_flag == LLIST_SUCCESS)
+    {
+       calculate_phase_sigma_for_range(node, fit_prms, &acf);
+       ACF_Phase_Unwrap(node, fit_prms);
+       phase_fit_for_range(node, &acf);
+       list_null_flag = llist_go_next(ranges);
+       llist_get_iter(ranges, &node); 
+    }
+    list_null_flag = LLIST_SUCCESS;
+    llist_reset_iter(ranges);
 }
 
 /**
@@ -112,13 +129,21 @@ void ACF_Phase_Fit(llist ranges,FITPRMS *fit_prms){
  */
 void XCF_Phase_Fit(llist ranges,FITPRMS *fit_prms){
     PHASETYPE xcf = XCF;
-    llist_for_each_arg(ranges,(node_func_arg)calculate_phase_sigma_for_range,fit_prms,&xcf);
+    llist_node node; 
+    int list_null_flag = LLIST_SUCCESS;
 
-    llist_for_each(ranges,(node_func)XCF_Phase_Unwrap);
-
-    llist_for_each_arg(ranges,(node_func_arg)phase_fit_for_range,&xcf,NULL);
-
-
+    llist_reset_iter(ranges);
+    llist_get_iter(ranges, &node);
+    while(node != NULL && list_null_flag == LLIST_SUCCESS)
+    {
+       calculate_phase_sigma_for_range(node, fit_prms, &xcf);
+       XCF_Phase_Unwrap(node);
+       phase_fit_for_range(node, &xcf);
+       list_null_flag = llist_go_next(ranges);
+       llist_get_iter(ranges, &node); 
+    }
+    list_null_flag = LLIST_SUCCESS;
+    llist_reset_iter(ranges);
 }
 
 /**
@@ -127,8 +152,7 @@ void XCF_Phase_Fit(llist ranges,FITPRMS *fit_prms){
  * @param[in]  range      A range node(RANGENODE struct) stored in the list.
  * @param      phasetype  An enum to select the type of fit to use.
  *
- * The function is meant to be mapped to every range node via the list method llist_for_each. Based
- * off the phase type, the one paramter or two parameter fit is done.
+ * Based off the phase type, the one paramter or two parameter fit is done.
  */
 void phase_fit_for_range(llist_node range,PHASETYPE *phasetype){
     RANGENODE* range_node;
@@ -152,23 +176,41 @@ void phase_fit_for_range(llist_node range,PHASETYPE *phasetype){
  * @param      fit_prms   A pointer to a fitting parameters struct.
  * @param      phasetype  An enum to switch between ACF or XCF data.
  *
- * The function is meant to be mapped to every range node via the list method llist_for_each. The
- * sigma values for all phase values are calculated. The fitted values of power are used to
+ * The sigma values for all phase values are calculated. The fitted values of power are used to
  * calculate phase sigma, so the fitting for power must be done first.
  */
 void calculate_phase_sigma_for_range(llist_node range,FITPRMS *fit_prms,PHASETYPE *phasetype){
     RANGENODE* range_node;
     PHASENODE* xcf0 = NULL,*xcf1 = NULL;
     range_node = (RANGENODE*) range;
+    llist_node node; 
+    int list_null_flag = LLIST_SUCCESS;
 
     switch(*phasetype){
         case ACF:
-            llist_for_each_arg(range_node->phases,(node_func_arg)calculate_phase_sigma,range_node,
-                (void*)fit_prms);
+            llist_reset_iter(range_node->phases);
+            llist_get_iter(range_node->phases, &node);
+            while(node != NULL && list_null_flag == LLIST_SUCCESS)
+            {
+               calculate_phase_sigma(node, range_node, (void*) fit_prms);
+               list_null_flag = llist_go_next(range_node->phases);
+               llist_get_iter(range_node->phases, &node); 
+            }
+            list_null_flag = LLIST_SUCCESS;
+            llist_reset_iter(range_node->phases);
+
             break;
         case XCF:
-            llist_for_each_arg(range_node->elev,(node_func_arg)calculate_phase_sigma,range_node,
-                (void*)fit_prms);
+            llist_reset_iter(range_node->elev);
+            llist_get_iter(range_node->elev, &node);
+            while(node != NULL && list_null_flag == LLIST_SUCCESS)
+            {
+               calculate_phase_sigma(node, range_node, (void*) fit_prms);
+               list_null_flag = llist_go_next(range_node->elev);
+               llist_get_iter(range_node->elev, &node); 
+            }
+            list_null_flag = LLIST_SUCCESS;
+
             llist_reset_iter(range_node->elev);
 
             /*Since lag 0 phase is included in the elevation fit but for ACF its variance is 0, 
@@ -220,16 +262,26 @@ void calculate_phase_sigma(llist_node phase, llist_node range, FITPRMS *fit_prms
  *
  * @param[in]  range  The range node(RANGENODE struct) associated with this phase value.
  *
- * The function is meant to be mapped to every range node via the list method llist_for_each.
  * Each range will have the sigma values calculated for the log power values.
  *
  */
 void calculate_log_pwr_sigma_for_range(llist_node range){
     RANGENODE* range_node;
+    llist_node node; 
+    int list_null_flag = LLIST_SUCCESS;
 
     range_node = (RANGENODE*) range;
 
-    llist_for_each(range_node->pwrs,calculate_log_pwr_sigma);
+    llist_reset_iter(range_node->pwrs);
+    llist_get_iter(range_node->pwrs, &node);
+    while(node != NULL && list_null_flag == LLIST_SUCCESS)
+    {
+       calculate_log_pwr_sigma(node);
+       list_null_flag = llist_go_next(range_node->pwrs);
+       llist_get_iter(range_node->pwrs, &node); 
+    }
+    list_null_flag = LLIST_SUCCESS;
+    llist_reset_iter(range_node->pwrs);
 }
 
 /**

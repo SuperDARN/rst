@@ -152,6 +152,8 @@
 </option>
 <option><on>-yoff <ar>yoff</ar></on><od>open the window <ar>ypad</ar> pixels from the top edge of the screen.</od>
 </option>
+<option><on>-time</on><od>plot the date and time of the plotted field of view.</od>
+</option>
 <option><on>-chisham</on><od>use the Chisham virtual height model.</od>
 </option>
 <synopsis><p>Plot the radar fields of view.</p></synopsis>

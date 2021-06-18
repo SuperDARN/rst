@@ -1,13 +1,13 @@
 /*Copyright (C) 2016  SuperDARN Canada
 
-This program is free software: you can redistribute it and/or modify
+RST is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -84,7 +84,7 @@ typedef enum {
 } INTERFER_POS;
 
 typedef struct fit_prms {
-  int channel; /* zero=mono 1 or 2 is stereo */
+  int channel; 
   int offset; /* used for stereo badlags */
   int cp;
   int xcf;
@@ -107,9 +107,7 @@ typedef struct fit_prms {
   double **xcfd;
   int maxbeam;
   double bmsep;
-  double interfer_x;
-  double interfer_y;
-  double interfer_z;
+  double interfer[3];
   double phidiff;
   double tdiff;
   double vdir;

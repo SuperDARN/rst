@@ -5,14 +5,12 @@
    Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 
 
-       This program is free software: you can redistribute it and/or modify
+       RST is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
@@ -33,7 +31,7 @@
 #include <complex.h>
 
 struct FitPrm {
-  int channel; /* zero=mono 1 or 2 is stereo */
+  int channel; 
   int offset; /* used for stereo badlags */
   int cp;
   int xcf;
@@ -59,7 +57,7 @@ struct FitPrm {
   double phidiff;
   double tdiff;
   double vdir;
-};
+} FitPrm;
 
 struct FitBlock {
   struct FitPrm prm;

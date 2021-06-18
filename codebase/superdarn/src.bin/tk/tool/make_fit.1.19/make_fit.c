@@ -4,12 +4,25 @@
 */
 
 /*
- (c) 2010 JHU/APL & Others - Please Consult LICENSE.superdarn-rst.3.2-beta-4-g32f7302.txt for more information.
+ (c) 2010 The Johns Hopkins University/Applied Physics Laboratory & Others 
 
-Modifitactions: 
-2020-05-07 Marina Schmidt Added Free functioons
+This file is part of the Radar Software Toolkit (RST).
 
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
+  2020-05-07 Marina Schmidt Added Free functions
 */
 
 #include <stdio.h>
@@ -121,7 +134,7 @@ int main(int argc,char *argv[]) {
   int status;
   int arg;
   int return_value = 0; 
-
+  int elv_version = 2;
   unsigned char help=0;
   unsigned char option=0;
   unsigned char version=0;
@@ -189,6 +202,11 @@ int main(int argc,char *argv[]) {
     OptionPrintInfo(stdout,hlpstr);
     OptionFree(&opt);
     exit(0);
+  }
+  
+  if (old_elev == 1)
+  {
+      elv_version = 1;
   }
 
   if (fitacf_version_s != NULL) {
@@ -366,8 +384,12 @@ int main(int argc,char *argv[]) {
       /* If the allocation was successful, copy the parameters and */
       /* load the data into the FitACF structure.                  */
       if(fit_prms != NULL) {
-    	  Copy_Fitting_Prms(site,prm,raw,fit_prms);
-    	  Fitacf(fit_prms,fit);
+    	  if (prm->stid == 1 && elv_version == 1)
+          {
+              elv_version = 0;
+          }
+          Copy_Fitting_Prms(site,prm,raw,fit_prms);
+    	  Fitacf(fit_prms,fit, elv_version);
         /*FitacfFree(fit_prms);*/
     	}
       else {
@@ -380,7 +402,7 @@ int main(int argc,char *argv[]) {
   }
   else if (fitacf_version == 25) {
     fblk = FitACFMake(site,prm->time.yr);
-    fblk->prm.old_elev = old_elev;          /* passing in old_elev flag */
+    fblk->prm.old_elev = old_elev;        /* passing in old_elev flag */
     FitACF(prm,raw,fblk,fit);
   }
 
@@ -465,7 +487,7 @@ int main(int argc,char *argv[]) {
         /* load the data into the FitACF structure.                  */
         if(fit_prms != NULL) {
           Copy_Fitting_Prms(site,prm,raw,fit_prms);
-          Fitacf(fit_prms,fit);
+          Fitacf(fit_prms,fit, elv_version);
           /*FitacfFree(fit_prms);*/
         }
         else {

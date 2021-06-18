@@ -13,23 +13,4 @@ DSTPATH=$(LIBPATH)
 OUTPUT = rpos
 LINK="1"
 
-
- 
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 include $(MAKELIB).$(SYSTEM)
