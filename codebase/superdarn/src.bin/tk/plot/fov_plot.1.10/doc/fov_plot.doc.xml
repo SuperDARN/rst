@@ -129,7 +129,7 @@
 </option>
 <option><on>-t <ar>hr:mn</ar></on><od>plot for the time <ar>hr:mn</ar>.</od>
 </option>
-<option><on>-st <ar>stid</ar></on><od>plot the field of view for the radar with the station identifier <ar>stid</ar>.</od>
+<option><on>-st <ar>stid...</ar></on><od>plot the fields of view for the radars listed in <ar>stid</ar> which is a comma separated list of station identifier codes.</od>
 </option>
 <option><on>-png</on><od>produce a Portable Network Graphics (PNG) image as the output.</od>
 </option>
