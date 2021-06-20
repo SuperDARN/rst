@@ -1,11 +1,8 @@
 /* time_plot.c
    ===========
-   Author: R.J.Barnes
-*/
+  Author: R.J.Barnes
 
-
-/*
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
+Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 
 This file is part of the Radar Software Toolkit (RST).
 
@@ -16,13 +13,17 @@ the Free Software Foundation, either version 3 of the License, or
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+        2017-09-17 Emma Bland (University Centre in Svalbard) Added option to plot elevation angles
+        2020-06-20 Emma Bland (UNIS) Auto-adjust time domain to match limits of the data
+        2021-02-03 Marina Schmidt (University of Saskatchewan) Fixed swapping of latitude cell limits when -geo or -mag option is used
+
 */
 
 
@@ -1407,9 +1408,8 @@ int main(int argc,char *argv[]) {
         }
 
         if ((geoflg) || (magflg)) {
-          // tmp was also used for a char array above this is why its bad to define within a if function
           double rho,blat,tlat,lon;
-          //double tmp_swap;
+          double tmp_swap;
           if (magflg) RPosMag(0,tplot.bmnum,rng-1,site,tplot.frang,
                               tplot.rsep,tplot.rxrise,300,&rho,
                               &blat,&lon,chisham,old_aacgm);
@@ -1422,10 +1422,9 @@ int main(int argc,char *argv[]) {
                        tplot.rxrise,300,&rho,&tlat,&lon,chisham);
 
           if (tlat<blat) {
-            // TODO: this isn't actually swapping things
-            // tmp_swap=blat;
+            tmp_swap=blat;
             blat=tlat;
-            tlat=blat;
+            tlat=tmp_swap;
           }
           btm=bhgt*(blat-latmin)/(latmax-latmin);
           top=bhgt*(tlat-latmin)/(latmax-latmin);
@@ -1900,4 +1899,3 @@ int main(int argc,char *argv[]) {
   #endif
   return 0;
 }
-
