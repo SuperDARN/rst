@@ -1411,7 +1411,6 @@ int main(int argc,char *argv[]) {
         }
 
         if ((geoflg) || (magflg)) {
-          // tmp was also used for a char array above this is why its bad to define within a if function
           double rho,blat,tlat,lon;
           double tmp_swap;
           if (magflg) RPosMag(0,tplot.bmnum,rng-1,site,tplot.frang,
@@ -1426,7 +1425,6 @@ int main(int argc,char *argv[]) {
                        tplot.rxrise,300,&rho,&tlat,&lon,chisham);
 
           if (tlat<blat) {
-            // TODO: this isn't actually swapping things
             tmp_swap=blat;
             blat=tlat;
             tlat=tmp_swap;
@@ -1904,4 +1902,3 @@ int main(int argc,char *argv[]) {
   #endif
   return 0;
 }
-
