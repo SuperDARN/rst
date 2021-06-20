@@ -1,7 +1,6 @@
 /* time_plot.c
    ===========
-   Author: R.J.Barnes
-
+  Author: R.J.Barnes
 
 Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 
@@ -24,7 +23,7 @@ Modifications:
         2017-09-17 Emma Bland (University Centre in Svalbard) Added option to plot elevation angles
         2020-06-20 Emma Bland (UNIS) Auto-adjust time domain to match limits of the data
         2021-02-03 Marina Schmidt (University of Saskatchewan) Fixed swapping of latitude cell limits when -geo or -mag option is used
- 
+
 */
 
 
@@ -212,8 +211,7 @@ char *label_freq(double val,double min,double max,void *data) {
 int stream(char *buf,int sze,void *data) {
   FILE *fp;
   fp=(FILE *) data;
-  fwrite(buf,sze,1,stdout);
-  fclose(fp);
+  fwrite(buf,sze,1,fp);
   return 0;
 }
 

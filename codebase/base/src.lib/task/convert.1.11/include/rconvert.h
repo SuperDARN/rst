@@ -1,11 +1,25 @@
 /* rconvert.h
    ==========
    Author: R.J.Barnes
-*/
 
+(c) 2011 The Johns Hopkins University/Applied Physics Laboratory & Others
+This file is part of the Radar Software Toolkit (RST).
 
-/*
- (c) 2011 JHU/APL & Others - Please Consult LICENSE.datamap.txt for more information.
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
+
 */
 
 
@@ -83,6 +97,5 @@ int ConvertWriteUIntZ(gzFile file,uint32 val);
 int ConvertWriteUShortZ(gzFile file,uint16 val);
 
 #endif
-
 
 

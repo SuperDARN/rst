@@ -5,27 +5,24 @@
 
 
 /*
- LICENSE AND DISCLAIMER
- 
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+
+This file is part of the Radar Software Toolkit (RST).
+
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
 */
 
 
@@ -78,6 +75,8 @@
 #include "sza.h"
 #include "szamap.h"
 #include "clip.h"
+#include "plot_time.h"
+#include "plot_logo.h"
 
 
 #include "hlpstr.h"
@@ -127,8 +126,7 @@ int solar_loc(int yr,int t1,double *mean_lon, double *dec);
 int stream(char *buf,int sze,void *data) {
   FILE *fp;
   fp=(FILE *) data;
-  fwrite(buf,sze,1,stdout);
-  fclose(fp);
+  fwrite(buf,sze,1,fp);
   return 0;
 } 
 
@@ -271,7 +269,7 @@ int main(int argc,char *argv[]) {
   char *cfname=NULL;
   FILE *fp;
 
-
+  struct RadarSite *site;
 
   float wdt=540,hgt=540;
   float pad=0;
@@ -339,6 +337,7 @@ int main(int argc,char *argv[]) {
   unsigned char grdontop=0;
 
   unsigned char dotflg=0;
+  unsigned char tmeflg=0;
 
   int tmtick=3;
 
@@ -426,7 +425,7 @@ int main(int argc,char *argv[]) {
   bnd=MapBndFread(mapfp);
   fclose(mapfp);
 
- envstr=getenv("SD_RADAR");
+  envstr=getenv("SD_RADAR");
   if (envstr==NULL) {
     fprintf(stderr,"Environment variable 'SD_RADAR' must be defined.\n");
     exit(-1);
@@ -524,8 +523,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"grd",'x',&grdflg);
   OptionAdd(&opt,"tmk",'x',&tmkflg);
 
- OptionAdd(&opt,"grdontop",'x',&grdontop);
-
+  OptionAdd(&opt,"grdontop",'x',&grdontop);
 
   OptionAdd(&opt,"fov",'x',&fovflg);
   OptionAdd(&opt,"ffov",'x',&ffovflg);
@@ -547,6 +545,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"lndcol",'t',&lndcol_txt);
   OptionAdd(&opt,"seacol",'t',&seacol_txt);
   OptionAdd(&opt,"trmcol",'t',&trmcol_txt);
+  OptionAdd(&opt,"ftrmcol",'t',&ftrmcol_txt);
   OptionAdd(&opt,"tmkcol",'t',&tmkcol_txt);
  
   OptionAdd(&opt,"fovcol",'t',&fovcol_txt);
@@ -570,6 +569,8 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"dotr",'f',&dotr);
   OptionAdd(&opt,"dot",'x',&dotflg);
+
+  OptionAdd(&opt,"time",'x',&tmeflg);
 
   OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);
 
@@ -675,6 +676,17 @@ int main(int argc,char *argv[]) {
   if (grdflg) grd=make_grid(15,10,cylind);   
  
   if (tmkflg) tmk=make_grid(30*tmtick,10,cylind);
+
+  if (ststr !=NULL) stid=RadarGetID(network,ststr);
+  for (stnum=0;stnum<network->rnum;stnum++) {
+    if (network->radar[stnum].id==stid) {
+      if ((lat<0) != (network->radar[stnum].site[0].geolat<0)) {
+        lat=-lat;
+      }
+      break;
+    }
+  }
+  if (stnum==network->rnum) stnum=0;
 
   if ((lat<0) && (latmin>0)) latmin=-latmin;
   if ((lat>0) && (latmin<0)) latmin=-latmin;
@@ -813,14 +825,6 @@ int main(int argc,char *argv[]) {
    exit(-1);
   }
 
-
-  if (ststr !=NULL) stid=RadarGetID(network,ststr);
-  for (stnum=0;stnum<network->rnum;stnum++) 
-     if (stid==network->radar[stnum].id) break;  
-  if (stnum==network->rnum) stnum=0;
-
-
-
   /* now determine our output type */
 
   if (psflg) pflg=1;
@@ -948,7 +952,6 @@ int main(int argc,char *argv[]) {
 
  if (dotflg) {
    int s=0;
-   struct RadarSite *site;
    float pnt[2];
    double mlat,mlon,r;
    if (cfovflg | fcfovflg)  {
@@ -956,6 +959,7 @@ int main(int argc,char *argv[]) {
        if (network->radar[i].id==stid) continue;
        if (network->radar[i].status !=0) continue;
        site=RadarYMDHMSGetSite(&(network->radar[i]),yr,mo,dy,hr,mt,sc);
+       if (site == NULL) continue;
        if (magflg) {
          if (old_aacgm) {
            s=AACGMConvert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
@@ -982,6 +986,7 @@ int main(int argc,char *argv[]) {
        if (network->radar[i].id==stid) continue;
        if (network->radar[i].status !=1) continue;
        site=RadarYMDHMSGetSite(&(network->radar[i]),yr,mo,dy,hr,mt,sc);
+       if (site == NULL) continue;
        if (magflg) {
          if (old_aacgm) {
            s=AACGMConvert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
@@ -1007,24 +1012,26 @@ int main(int argc,char *argv[]) {
    if (fovflg) {
      
      site=RadarYMDHMSGetSite(&(network->radar[stnum]),yr,mo,dy,hr,mt,sc);
-     if (magflg) {
-       if (old_aacgm) {
-         s=AACGMConvert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
-         pnt[0]=mlat;
-         pnt[1]=mlon;
+     if (site !=NULL) {
+       if (magflg) {
+         if (old_aacgm) {
+           s=AACGMConvert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
+           pnt[0]=mlat;
+           pnt[1]=mlon;
+         } else {
+           s=AACGM_v2_Convert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
+           pnt[0]=mlat;
+           pnt[1]=mlon;
+         }
        } else {
-         s=AACGM_v2_Convert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
-         pnt[0]=mlat;
-         pnt[1]=mlon;
+         pnt[0]=site->geolat;
+         pnt[1]=site->geolon;
        }
-     } else {
-       pnt[0]=site->geolat;
-       pnt[1]=site->geolon;
+       s=(*tfunc)(sizeof(float)*2,pnt,2*sizeof(float),pnt,marg);
+       if (s==0) PlotEllipse(plot,NULL,pad+pnt[0]*(wdt-2*pad),
+                      pad+pnt[1]*(hgt-2*pad),dotr,dotr,
+                      1,ffovcol,0x0f,0,NULL);
      }
-     s=(*tfunc)(sizeof(float)*2,pnt,2*sizeof(float),pnt,marg);
-     if (s==0) PlotEllipse(plot,NULL,pad+pnt[0]*(wdt-2*pad),
-                    pad+pnt[1]*(hgt-2*pad),dotr,dotr,
-                    1,ffovcol,0x0f,0,NULL);
    }
 
 
@@ -1047,7 +1054,7 @@ int main(int argc,char *argv[]) {
                                 ptmk,1);
 
   if ((grdflg) && (grdontop)) {
-    MapPlotPolygon(plot,NULL,0,0,wdt-2*pad,hgt-2*pad,0,
+    MapPlotPolygon(plot,NULL,pad,pad,wdt-2*pad,hgt-2*pad,0,
                                 grdcol,0x0f,width,NULL,
                                 pgrd,1);
   }
@@ -1071,6 +1078,12 @@ int main(int argc,char *argv[]) {
                            (wdt/2)-pad,6,
                            txtcol,0x0f,fontname,fontsize,fontdb);
   }
+
+  if (tmeflg) plot_time(plot,5,5,wdt-10,hgt-10,tval,
+                        txtcol,0x0f,"Helvetica",12.0,fontdb);
+
+  if (magflg) plot_aacgm(plot,4,4,wdt-8,wdt-8,txtcol,0x0f,"Helvetica",
+                         7.0,fontdb,old_aacgm);
 
   PlotPlotEnd(plot);  
   PlotDocumentEnd(plot);
