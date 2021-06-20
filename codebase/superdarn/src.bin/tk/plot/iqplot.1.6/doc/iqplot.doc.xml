@@ -66,7 +66,7 @@
 </option>
 <option><on>-yoff <ar>yoff</ar></on><od>open the window <ar>ypad</ar> pixels from the top edge of the screen.</od>
 </option>
-<option><on>-delay <ar>delay</ar></on><od>set the delay between frames to <ar>delay</ar> milliseconds, a value of 0 will pause the frame until a mouse button is pressed.</od>
+<option><on>-delay <ar>delay</ar></on><od>set the delay between frames to <ar>delay</ar> milliseconds, a value of 0 will pause the frame until a mouse button is pressed. Default: 0</od>
 </option>
 
 <synopsis><p>Plot raw I&Q samples from a <code>iqdat</code> format file.</p></synopsis>
