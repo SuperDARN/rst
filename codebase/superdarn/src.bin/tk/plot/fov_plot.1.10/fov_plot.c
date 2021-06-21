@@ -23,6 +23,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+  2021-06 E.G.Thomas (Dartmouth College), bug fixes, multi-radar FOVs, etc
 */
 
 
