@@ -23,6 +23,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+  2021-06 E.G.Thomas (Dartmouth College), bug fixes, multi-radar FOVs, etc
 */
 
 
@@ -403,8 +404,10 @@ int main(int argc,char *argv[]) {
   float dotr=2; 
  
   int stid=-1;
+  int st_cnt=0;
   char *ststr=NULL;
-  int stnum=0;
+  int stnum[64];
+  int *rad=NULL;
 
   char tsfx[16];
 
@@ -677,16 +680,29 @@ int main(int argc,char *argv[]) {
  
   if (tmkflg) tmk=make_grid(30*tmtick,10,cylind);
 
-  if (ststr !=NULL) stid=RadarGetID(network,ststr);
-  for (stnum=0;stnum<network->rnum;stnum++) {
-    if (network->radar[stnum].id==stid) {
-      if ((lat<0) != (network->radar[stnum].site[0].geolat<0)) {
-        lat=-lat;
+  rad=calloc(network->rnum,sizeof(int));
+
+  if (ststr !=NULL) {
+    char *tmp;
+    tmp=strtok(ststr,",");
+    do {
+      stid=RadarGetID(network,tmp);
+      if (stid !=-1) {
+        for (i=0;i<network->rnum;i++) {
+          if (network->radar[i].id==stid) {
+            if ((lat<0) != (network->radar[i].site[0].geolat<0)) {
+              lat=-lat;
+            }
+            rad[i]=1;
+            stnum[st_cnt]=i;
+            break;
+          }
+        }
+        if (i==network->rnum) stnum[st_cnt]=0;
+        st_cnt++;
       }
-      break;
-    }
+    } while ((tmp=strtok(NULL,",")) !=NULL);
   }
-  if (stnum==network->rnum) stnum=0;
 
   if ((lat<0) && (latmin>0)) latmin=-latmin;
   if ((lat>0) && (latmin<0)) latmin=-latmin;
@@ -892,7 +908,7 @@ int main(int argc,char *argv[]) {
   
   if (fofovflg) {
     for (i=0;i<network->rnum;i++) {
-      if (network->radar[i].id==stid) continue;
+      if (rad[i]==1) continue;
       if (network->radar[i].status !=1) continue;
       MapPlotPolygon(plot,NULL,pad,pad,
                    wdt-2*pad,hgt-2*pad,1,fofovcol,0x0f,0,NULL,pfov,i); 
@@ -901,7 +917,7 @@ int main(int argc,char *argv[]) {
 
   if (fcfovflg) {
     for (i=0;i<network->rnum;i++) {
-      if (network->radar[i].id==stid) continue;
+      if (rad[i]==1) continue;
       if (network->radar[i].status!=0) continue;
       MapPlotPolygon(plot,NULL,pad,pad,wdt-2*pad,hgt-2*pad,1,
                        fcfovcol,0x0f,0,NULL,pfov,i); 
@@ -910,8 +926,10 @@ int main(int argc,char *argv[]) {
 
 
    if (ffovflg) {
-    MapPlotPolygon(plot,NULL,pad,pad,
-                 wdt-2*pad,hgt-2*pad,1,ffovcol,0x0f,0,NULL,pfov,stnum); 
+     for (i=0;i<st_cnt;i++) {
+       MapPlotPolygon(plot,NULL,pad,pad,
+                      wdt-2*pad,hgt-2*pad,1,ffovcol,0x0f,0,NULL,pfov,stnum[i]);
+     }
    }
   
 
@@ -931,7 +949,7 @@ int main(int argc,char *argv[]) {
 
   if (ofovflg)  {
     for (i=0;i<network->rnum;i++) {
-      if (network->radar[i].id==stid) continue;
+      if (rad[i]==1) continue;
       if (network->radar[i].status !=1) continue;
       MapPlotPolygon(plot,NULL,pad,pad,wdt-2*pad,hgt-2*pad,0,
                     ofovcol,0x0f,width,NULL,
@@ -942,7 +960,7 @@ int main(int argc,char *argv[]) {
  if (cfovflg)  {
    
     for (i=0;i<network->rnum;i++) {
-      if (network->radar[i].id==stid) continue;
+      if (rad[i]==1) continue;
       if (network->radar[i].status !=0) continue;
       MapPlotPolygon(plot,NULL,pad,pad,wdt-2*pad,hgt-2*pad,0,
                     cfovcol,0x0f,width,NULL,
@@ -956,7 +974,7 @@ int main(int argc,char *argv[]) {
    double mlat,mlon,r;
    if (cfovflg | fcfovflg)  {
      for (i=0;i<network->rnum;i++) {
-       if (network->radar[i].id==stid) continue;
+       if (rad[i]==1) continue;
        if (network->radar[i].status !=0) continue;
        site=RadarYMDHMSGetSite(&(network->radar[i]),yr,mo,dy,hr,mt,sc);
        if (site == NULL) continue;
@@ -983,7 +1001,7 @@ int main(int argc,char *argv[]) {
    }
    if (ofovflg | fofovflg)  {
      for (i=0;i<network->rnum;i++) {
-       if (network->radar[i].id==stid) continue;
+       if (rad[i]==1) continue;
        if (network->radar[i].status !=1) continue;
        site=RadarYMDHMSGetSite(&(network->radar[i]),yr,mo,dy,hr,mt,sc);
        if (site == NULL) continue;
@@ -1010,36 +1028,41 @@ int main(int argc,char *argv[]) {
    }
 
    if (fovflg) {
-     
-     site=RadarYMDHMSGetSite(&(network->radar[stnum]),yr,mo,dy,hr,mt,sc);
-     if (site !=NULL) {
-       if (magflg) {
-         if (old_aacgm) {
-           s=AACGMConvert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
-           pnt[0]=mlat;
-           pnt[1]=mlon;
+     for (i=0;i<st_cnt;i++) {
+       site=RadarYMDHMSGetSite(&(network->radar[stnum[i]]),yr,mo,dy,hr,mt,sc);
+       if (site !=NULL) {
+         if (magflg) {
+           if (old_aacgm) {
+             s=AACGMConvert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
+             pnt[0]=mlat;
+             pnt[1]=mlon;
+           } else {
+             s=AACGM_v2_Convert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
+             pnt[0]=mlat;
+             pnt[1]=mlon;
+           }
          } else {
-           s=AACGM_v2_Convert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
-           pnt[0]=mlat;
-           pnt[1]=mlon;
+           pnt[0]=site->geolat;
+           pnt[1]=site->geolon;
          }
-       } else {
-         pnt[0]=site->geolat;
-         pnt[1]=site->geolon;
+         s=(*tfunc)(sizeof(float)*2,pnt,2*sizeof(float),pnt,marg);
+         if (s==0) PlotEllipse(plot,NULL,pad+pnt[0]*(wdt-2*pad),
+                        pad+pnt[1]*(hgt-2*pad),dotr,dotr,
+                        1,ffovcol,0x0f,0,NULL);
        }
-       s=(*tfunc)(sizeof(float)*2,pnt,2*sizeof(float),pnt,marg);
-       if (s==0) PlotEllipse(plot,NULL,pad+pnt[0]*(wdt-2*pad),
-                      pad+pnt[1]*(hgt-2*pad),dotr,dotr,
-                      1,ffovcol,0x0f,0,NULL);
      }
    }
 
 
  }
 
-  if (fovflg) MapPlotPolygon(plot,NULL,pad,pad,wdt-2*pad,hgt-2*pad,0,
-                    fovcol,0x0f,width,NULL,
-                    pfov,stnum);
+  if (fovflg) {
+    for (i=0;i<st_cnt;i++) {
+      MapPlotPolygon(plot,NULL,pad,pad,wdt-2*pad,hgt-2*pad,0,
+                     fovcol,0x0f,width,NULL,
+                     pfov,stnum[i]);
+    }
+  }
 
   if (bndflg) MapPlotOpenPolygon(plot,NULL,pad,pad,wdt-2*pad,hgt-2*pad,
                                 bndcol,0x0f,width,NULL,
