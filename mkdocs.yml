@@ -63,11 +63,13 @@ pages:
 - SuperDARN Data Formats:
      - cFit Format: reference/general/cfit.md
      - Dmap Data: references/general/dmap_data.md
+     - IQDat Format: references/general/iqdat.md
+     - RawACF Format: references/general/rawacf.md
+     - DAT Format: references/general/dat.md
      - FitACF Format: references/general/fitacf.md
      - Grid Format: references/general/grid.md
-     - IQDat Format: references/general/iqdat.md
      - Map Format: references/general/map.md
-     - RawACF Format: references/general/rawacf.md
+     
 - Legacy Software:
      - Electric Field Data Structure for IDL: legacy_software/efield_struct_idl.md
      - rPlot Libraries: legacy_software/rPlot_lib.md

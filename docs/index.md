@@ -62,12 +62,13 @@ The software is maintained by the SuperDARN Data Analysis Working Group (DAWG) o
          * [RawACF](dev/rawacf_struct_idl.md)
   - SuperDARN Data Formats
     * [cFit Format](references/general/cfit.md)
-    * [Dmap Data](references/general/dmap_data.md)
-    * [FitACF Format](references/general/fitacf.md)
-    * [Grid Format](references/general/grid.md)
-    * [IQDat Format](references/general/iqdat.md)
+    * [Dmap Data](references/general/dmap_data.md)  
+    * [IQDAT Format](references/general/iqdat.md)
+    * [RAWACF Format](references/general/rawacf.md)
+    * [DAT Format](references/general/dat.md)
+    * [FITACF Format](references/general/fitacf.md)
+    * [GRID Format](references/general/grid.md)
     * [Map Format](references/general/map.md)
-    * [RawACF Format](references/general/rawacf.md)
 
   - Legacy Software
     * [Electric Field Data Structure for IDL](legacy_software/efield_struct_idl.md)
