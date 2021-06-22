@@ -44,7 +44,7 @@ The software is maintained by the SuperDARN Data Analysis Working Group (DAWG) o
         * [Pull Requests](dev/pull_request.md)
         * [Testing Code](dev/testing.md)
         * [Code Reviews](dev/code_reviews.md)
-        * [Releasing Code](dev/releases.m
+        * [Releasing Code](dev/releases.md)
     - Data Structures in C
          * [cFit](dev/cfit_struct_c.md)
          * [FitACF](dev/fitacf_struct_c.md)
