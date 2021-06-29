@@ -4,11 +4,6 @@
             "name": "SuperDARN Data Analysis Working Group"
         },
         {
-            "affiliation": "Dartmouth College",
-            "name": "Thomas, E.G.",
-            "orcid": "0000-0001-8036-8793"
-        },
-        {
             "affiliation": "University of Saskatchewan",
             "name": "Schmidt, M.T.",
             "orcid": "0000-0002-3265-977X"
@@ -17,6 +12,11 @@
             "affiliation": "The Unviersity Centre in Svalbard",
             "name": "Bland, E.C.",
             "orcid": "0000-0002-0252-0400"
+        },
+        {
+            "affiliation": "Dartmouth College",
+            "name": "Thomas, E.G.",
+            "orcid": "0000-0001-8036-8793"
         },
         {
             "affiliation": "Naval Research Laboratory",
