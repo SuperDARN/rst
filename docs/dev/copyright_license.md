@@ -86,7 +86,7 @@ According to the [GPL license documentation](https://www.gnu.org/licenses/gpl-3.
 When developing in RST you are granting permission for your code to be licensed under the GPL. This will be ok in almost all situations. Exceptions may arise if your employer wants to make your program into proprietary software, or if your funding agency has restrictions on the publication of research outputs (e.g. defense contracts). If you suspect that you won't be allowed to contribute code to RST under the GPL, [it is recommended](https://www.gnu.org/licenses/gpl-faq.html#WhatIfSchool) that you negotiate this with your employer/funding agency at an early stage in developing the software. 
 
 !!! IMPORTANT
-    Please make sure to review the [license]((https://www.gnu.org/licenses/gpl-3.0.en.html)), and check with your employer/funding agency that you have permission to distribute your code under the GPLv3. 
+    Please make sure to review the [license](https://www.gnu.org/licenses/gpl-3.0.en.html), and check with your employer/funding agency that you have permission to distribute your code under the GPLv3. 
 
 ## Copyright
 
