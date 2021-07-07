@@ -44,6 +44,7 @@
 struct CellBSIDFlgs
 {
   int fov;
+  int fov_past;
   int grpflg;
   int grpnum;
   char *grpid;
