@@ -44,11 +44,11 @@ struct OptionData opt;
 
 int main(int argc, char *argv[])
 {
-  short int strict_gs;
-
-  int yr, mo, dy, hr, mt, sc, stid;
+  int yr, mo, dy, hr, mt, stid;
   int inum, len, fnum, channel, channel_fix, ret_stat, nfbands;
   int fbands[90][2];
+
+  double sc;
 
   char vstr[256];
 
@@ -56,11 +56,13 @@ int main(int argc, char *argv[])
   struct MultRadarScan *mult_scan;
   struct MultRadarBSID *mult_bsid;
 
-  /* Initialize input options ADD OPTION TO UPDATE TDIFF */
+  /* Initialize input options */
   /* Default frequency limits set to the limits of the HF range */
+  short int strict_gs=1, tdiff_flag=0;
+
   int old=0, farg=0, tlen=0, freq_min=3000, freq_max=30000;
 
-  double stime=-1.0, etime=-1.0, extime=0.0, sdate=-1.0, edate=-1.0;
+  double stime=-1.0, etime=-1.0, extime=0.0, sdate=-1.0, edate=-1.0, tdiff=0.0;
 
   unsigned char cfitflg=0, fitflg=0, vb=0, catflg=0, nsflg=0;
 
@@ -84,7 +86,9 @@ int main(int argc, char *argv[])
 		      unsigned char *fitflg, unsigned char *catflg,
 		      unsigned char *nsflg, char *stmestr, char *etmestr,
 		      char *sdtestr, char *edtestr, char *exstr, char *chnstr,
-		      char *chnstr_fix, int *freq_min, int *freq_max);
+		      char *chnstr_fix, int *freq_min, int *freq_max,
+		      short int *strict_gs, short int *tdiff_flag,
+		      double *tdiff);
   int set_stereo_channel(char *chnstr);
   int set_fix_channel(char *chnstr_fix);
   double strtime(char *text);
@@ -97,21 +101,22 @@ int main(int argc, char *argv[])
 	       unsigned char fitflg, unsigned char nsflg, unsigned char vb,
 	       char *vbuf, char *iname, char **dnames,
 	       struct MultRadarScan *mult_scan);
-  int get_radar_tfreq_bands(int band_width, struct MultRadarScan mult_scan,
+  int get_radar_tfreq_bands(int band_width, struct MultRadarScan *mult_scan,
 			    int fbands[90][2]);
-  void UpdateScanBSFoV(short int strict_gs, int min_pnts, int D_nrg, int E_nrg,
-		       int F_nrg, int far_nrg, int D_rgmax, int E_rgmax,
-		       int F_rgmax, float D_hmin, float D_hmax, float E_hmax,
-		       float F_hmax, float D_vh_box, float E_vh_box,
-		       float F_vh_box, float far_vh_box, float max_hop,
+  void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
+		       int min_pnts, int D_nrg, int E_nrg, int F_nrg,
+		       int far_nrg, int D_rgmax, int E_rgmax, int F_rgmax,
+		       float D_hmin, float D_hmax, float E_hmax, float F_hmax,
+		       float D_vh_box, float E_vh_box, float F_vh_box,
+		       float far_vh_box, float max_hop,
 		       struct MultRadarScan *mult_scan, struct RadarSite *hard,
-		       struct MultFoVScan *mult_bsid);
-  
+		       struct MultRadarBSID *mult_bsid);
+
   /* Process the command line options */
   farg = command_options(argc, argv, &old, &tlen, &vb, &cfitflg, &fitflg,
 			 &catflg, &nsflg, stmestr, etmestr, sdtestr, edtestr,
 			 exstr, chnstr, chnstr_fix, &freq_min, &freq_max,
-			 &strict_gs);
+			 &strict_gs, &tdiff_flag, &tdiff);
 
   /* If 'cn' set then determine Stereo channel, either A or B */
   channel = set_stereo_channel(chnstr);
@@ -175,8 +180,11 @@ int main(int argc, char *argv[])
   TimeEpochToYMDHMS(mult_scan->st_time, &yr, &mo, &dy, &hr, &mt, &sc);
   load_radar_site(yr, mo, dy, hr, mt, sc, mult_scan->stid, site);
 
+  /* Update tdiff if requested */
+  if(tdiff_flag) site->tdiff = tdiff;      
+
   /* Dynamically establish transmission frequency bands for these scans */
-  /* unless a frequency range was specified  HERE                          */
+  /* unless a frequency range was specified                             */
   if(freq_max - freq_min == 27000)
     {
       nfbands = get_radar_tfreq_bands(band_width, mult_scan, fbands);
@@ -206,9 +214,11 @@ int main(int argc, char *argv[])
 		      mult_bsid);
 
       /* Examine the UT evolution and consistency of the elevation angles HERE */
-      ret_stat = test_ut_fov_struct(min_frac, frg_box, max_rg, ut_box, fbands,
-				    step, mult_bsid);
+      //ret_stat = test_ut_fov_struct(min_frac, frg_box, max_rg, ut_box, fbands,
+      //			    step, mult_bsid);
     }
+
+  /* Write an output file HERE */
 
   return ret_stat;
 }
@@ -223,7 +233,8 @@ int command_options(int argc, char *argv[], int *old, int *tlen,
 		    unsigned char *fitflg, unsigned char *catflg,
 		    unsigned char *nsflg, char *stmestr, char *etmestr,
 		    char *sdtestr, char *edtestr, char *exstr, char *chnstr,
-		    char *chnstr_fix, int *freq_min, int *freq_max)
+		    char *chnstr_fix, int *freq_min, int *freq_max,
+		    short int *strict_gs, short int *tdiff_flag, double *tdiff)
 {
   /* Initialize input options */
   int farg=0;
@@ -294,7 +305,11 @@ int command_options(int argc, char *argv[], int *old, int *tlen,
   OptionAdd(&opt, "tfmax", 'x', freq_max); /* Maximum transmission frequency */
 
   /* Apply groundscatter strictness conditions (1=remove indeterminate GS) */
-  OptionAdd(&opt, "gs_strict", "i", strict_gs);
+  OptionAdd(&opt, "gs_strict", 's', strict_gs);
+
+  /* Process the tdiff options */
+  OptionAdd(&opt, "update_tdiff", 's', tdiff_flag);
+  OptionAdd(&opt, "tdiff", 'd', tdiff);
 
   /* Process command line options */
   farg = OptionProcess(1, argc, argv, &opt, rst_opterr);
@@ -309,4 +324,16 @@ int command_options(int argc, char *argv[], int *old, int *tlen,
     }
 
   return farg;
+}
+
+
+/**
+ * Outputs an error statement for an unrecognized input option
+ **/
+
+int rst_opterr(char *txt)
+{
+    fprintf(stderr,"Option not recognized: %s\n", txt);
+    fprintf(stderr,"Please try: make_fov --help\n");
+    return(-1);
 }

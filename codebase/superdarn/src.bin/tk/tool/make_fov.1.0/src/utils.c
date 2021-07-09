@@ -1,6 +1,6 @@
 /* utils.c
    =============
-   Author: Angeline G. Burrell - NRL - 2020
+   Author: Angeline G. Burrell - NRL - 2021
 */
 
 /*
@@ -24,10 +24,20 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #ifndef INFINITY
 #define INFINITY 9.99E7
 #endif
+
+/**
+ * @brief Calculate the number of unique values for an integer array
+ *
+ * @params[in] num   - Number of elements in `array`
+ *             array - Data array with `num` elements
+ *
+ * @params[out] num_unique  - Number of unique elements in `array`
+ **/
 
 int num_unique_int_vals(int num, int array[])
 {
@@ -54,6 +64,15 @@ int num_unique_int_vals(int num, int array[])
   return(num_unique);
 }
 
+/**
+ * @brief Calculate the standard deviation
+ *
+ * @params[in] num   - Number of elements in `array`
+ *             array - Data array with `num` elements
+ *
+ * @params[out] stdev - Standard deviation of the input data, or zero if
+ *                      there isn't enough data for a calculation
+ **/
 
 float stdev_float(int num, float array[])
 {
@@ -79,6 +98,16 @@ float stdev_float(int num, float array[])
   return(stdev);
 }
 
+/**
+ * @brief Calculate the mean and standard deviation
+ *
+ * @params[in] num   - Number of elements in `array`
+ *             array - Data array with `num` elements
+ *
+ * @params[out] mean  - Arithmatic mean of the input data, or zero if no data
+ *              stdev - Standard deviation of the input data, or zero if
+ *                      there isn't enough data for a calculation
+ **/
 
 void mean_stdev_float(int num, float array[], float *mean, float *stdev)
 {
@@ -110,6 +139,14 @@ void mean_stdev_float(int num, float array[], float *mean, float *stdev)
   return;
 }
 
+/**
+ * @brief Calculate the z-score
+ *
+ * @params[in] num   - Number of elements in `array`
+ *             array - Data array with `num` elements
+ *
+ * @params[out] zscore - z-score, a single float value
+ **/
 
 void zscore(int num, float array[], float *zscore)
 {
@@ -132,3 +169,39 @@ void zscore(int num, float array[], float *zscore)
   return;
 }
   
+
+/**
+ * @brief Take an array of strings and return an array of the unique strings
+ *
+ * @param[in] int_num    Number of strings contained within in_str
+ *            in_str     Array of strings to evaluate
+ *
+ * @param[out] out_num  Number of unique strings found within in_str
+ *             out_str  Array of unique strings
+ **/
+
+int get_unique_str(int in_num, char **in_str, ichar **out_str)
+{
+  int i, j, out_num, match;
+
+  out_num = 1;
+  strcpy(out_str[0], in_str[0]);
+
+  for(i = 1; i < in_num; i++)
+    {
+      /* Look for a matching string */
+      for(match = 0, j = 0; j < out_num && match == 0; j++)
+	{
+	  if(strcmp(out_str[j], in_str[i]) == 0) match = 1;
+	}
+
+      /* If there is no matching string, add this to the output */
+      if(match == 0)
+	{
+	  strcpy(out_str[out_num], in_str[i]);
+	  out_num++;
+	}
+    }
+
+  return(out_num);
+}

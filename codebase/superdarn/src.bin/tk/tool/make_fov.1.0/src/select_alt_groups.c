@@ -33,12 +33,12 @@
 /**
  * @brief A Gaussian function for MINPACK optimization
  *
- * @params[in] x     Independent variable value
- *             A     Amplitude
- *             mu    Mean
- *             sigma Standard deviation
+ * @params[in] x     - Independent variable value
+ *             A     - Amplitude
+ *             mu    - Mean
+ *             sigma - Standard deviation
  *
- * @params[out] y    Result of Gaussian calculation
+ * @params[out] y - Result of Gaussian calculation
  **/
 
 mp_func gaussian(double x, double A, double mu, double sigma)
@@ -53,15 +53,15 @@ mp_func gaussian(double x, double A, double mu, double sigma)
 /**
  * @brief A histogram function
  *
- * @params[in] nvals    Number of values in `vals` array
- *             vals     Array of values
- *             nbin     Number of bins to use in histogram
- *             val_min  Minimum value to consider
- *             val_max  Maximum value to consider
+ * @params[in] nvals   - Number of values in `vals` array
+ *             vals    - Array of values
+ *             nbin    - Number of bins to use in histogram
+ *             val_min - Minimum value to consider
+ *             val_max - Maximum value to consider
  *
- * @params[out] hist_bins        Array of counts for values in this bin
- *              leading_bin_val  Array of values corresponding to the leading
- *                               edge of the histogram bins
+ * @params[out] hist_bins       - Array of counts for values in this bin
+ *              leading_bin_val - Array of values corresponding to the leading
+ *                                edge of the histogram bins
  **/
 
 void histogram(int nvals, float vals[], int nbin, float val_min, float val_max,
@@ -101,16 +101,16 @@ void histogram(int nvals, float vals[], int nbin, float val_min, float val_max,
 /**
  * @brief Routine to find the relative maximum based on numpy _boolrelextrema
  *
- * @params[in] num    Number of samples in `vals`
- *             vals   Integer array of input values to be searched
- *             order  How many points to each side of a value to consider for
- *                    a comparison to be true
- *             clip   1 to treat the edge of the `vals` array as a hard edge,
- *                    any other value to wrap the `vals` array
+ * @params[in] num   - Number of samples in `vals`
+ *             vals  - Integer array of input values to be searched
+ *             order - How many points to each side of a value to consider for
+ *                     a comparison to be true
+ *             clip  - 1 to treat the edge of the `vals` array as a hard edge,
+ *                     any other value to wrap the `vals` array
  *
- * @params[out] ismax  Array of booleans specifying which vals indices are
- *                     a relative maxima
- *              nmax   Number of relative maxima identified
+ * @params[out] ismax - Array of booleans specifying which vals indices are
+ *                      a relative maxima
+ *              nmax  - Number of relative maxima identified
  **/
 
 int int_argrelmax(int num, int vals[], int order, int clip, int *ismax)
@@ -164,10 +164,10 @@ int int_argrelmax(int num, int vals[], int order, int clip, int *ismax)
 /**
  * @brief Routine to find the absolute maximum for int intput
  *
- * @params[in] num    Number of samples in `vals`
- *             vals   Integer array of input values to be searched
+ * @params[in] num  - Number of samples in `vals`
+ *             vals - Integer array of input values to be searched
  *
- * @params[out] imax  Index of absolute maximum
+ * @params[out] imax - Index of absolute maximum
  **/
 
 int int_argabsmax(int num, int vals[])
@@ -186,10 +186,10 @@ int int_argabsmax(int num, int vals[])
 /**
  * @brief Routine to find the absolute maximum for float input
  *
- * @params[in] num    Number of samples in `vals`
- *             vals   Integer array of input values to be searched
+ * @params[in] num  - Number of samples in `vals`
+ *             vals - Integer array of input values to be searched
  *
- * @params[out] max_val Index of absolute maximum
+ * @params[out] max_val - Index of absolute maximum
  **/
 
 float float_absmax(int num, float vals[])
@@ -211,10 +211,10 @@ float float_absmax(int num, float vals[])
 /**
  * @brief Routine to find the absolute minimum for float input
  *
- * @params[in] num    Number of samples in `vals`
- *             vals   Integer array of input values to be searched
+ * @params[in] num  - Number of samples in `vals`
+ *             vals - Integer array of input values to be searched
  *
- * @params[out] min_val Value absolute maximum
+ * @params[out] min_val - Value absolute maximum
  **/
 
 float float_absmin(int num, float vals[])
@@ -238,12 +238,12 @@ float float_absmin(int num, float vals[])
  *        distribution of the data and fit a Gaussian curve to the occurance
  *        peaks to establish appropriate limits.
  *
- * @params[in] num - Number of points in `rg` and `vh` arrays
- *             rg - Array of range gates to consider
- *             vh - Array of virtual heights for each range gate
- *             vh_min - Minimum allowable virtual height in km
- *             vh_max - Maximum allowable virtual height in km
- *             vh_box - Width of virtual height box in km
+ * @params[in] num      - Number of points in `rg` and `vh` arrays
+ *             rg       - Array of range gates to consider
+ *             vh       - Array of virtual heights for each range gate
+ *             vh_min   - Minimum allowable virtual height in km
+ *             vh_max   - Maximum allowable virtual height in km
+ *             vh_box   - Width of virtual height box in km
  *             min_pnts - Minimum number of points allowed in a box
  *
  * @params[out] vh_mins - Lower virtual height limit of each bin
@@ -351,8 +351,8 @@ int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
 	       *
 	       * AS WRITTEN BELOW, THIS DOES NOT WORK
 	       */
-	      stat = mpfit(gaussian, m, npar, xdata, pars, config, private_data,
-			   &result);
+	      //stat = mpfit(gaussian, m, npar, xdata, pars, config, private_data,
+	      //	   &result);
 
 	      if(result.status > 0)
 		{
