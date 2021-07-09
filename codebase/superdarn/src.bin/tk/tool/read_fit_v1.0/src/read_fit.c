@@ -228,3 +228,13 @@ int command_options(int argc, char *argv[], int *old, int *tlen,
 
   return farg;
 }
+
+/**
+ * Outputs an error statement for an unrecognized input option
+ **/
+
+int rst_opterr(char *txt) {
+    fprintf(stderr,"Option not recognized: %s\n",txt);
+    fprintf(stderr,"Please try: rxead_fit --help\n");
+    return(-1);
+}
