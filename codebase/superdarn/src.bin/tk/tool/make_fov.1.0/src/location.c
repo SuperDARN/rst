@@ -1,4 +1,4 @@
-/* elevation.c
+/* location.c
    ===========
    Author: S.G. Shepherd, Angeline G. Burrell - NRL - 2021
 */
@@ -42,8 +42,10 @@
  *
  * @param[out] alpha   Elevation angle [deg]
  *
- * Note: SGS somehow need to pass in options for allowing negative elevation
- *       angles and residual phase
+ * Note
+ * ----
+ * SGS somehow need to pass in options for allowing negative elevation
+ * angles and residual phase
  **/
 
 double elevation_v2_lobe(int lobe, struct FitPrm *prm, double psi_obs,
@@ -60,12 +62,10 @@ double elevation_v2_lobe(int lobe, struct FitPrm *prm, double psi_obs,
   double a0;                /* angle where phase is maximum [rad]            */
   int    sgn;               /* sign of Y offset                              */
   double dpsi;              /* delta phase [rad]                             */
-  double n2pi;              /* # of 2PI factors for correct mapping          */
-  double d2pi;              /* correct multiple value of 2PIs                */
   double E;                 /* factor for simplifying expression             */
   double alpha;             /* elevation angle [degrees]                     */
 
-  static double d = -9999.; /* separation of antenna arrays [m]              */
+  static double d = -9999.0; /* separation of antenna arrays [m]             */
 
   /* At first call, calculate the values that don't change. */
   if (d < -999.)
@@ -147,7 +147,7 @@ double elevation_v2_lobe(int lobe, struct FitPrm *prm, double psi_obs,
   /* Compute the number of 2pi factors necessary to map to correct region.  *
    * The lobe direction changes the sign of the observed phase difference,  *
    * phi_obs. (AGB)                                                         */
-  dpsi = (lobe * (psi_obs - psi_ele)) % (2.0 * PI);
+  dpsi = fmod((double)lobe * (psi_obs - psi_ele), 2.0 * PI);
 
   while(dpsi > psi_max) dpsi += sgn * 2.0 * PI;
   while(fabs(dpsi) < psi_min) dpsi += sgn * 2.0 * PI;
@@ -171,9 +171,9 @@ double elevation_v2_lobe(int lobe, struct FitPrm *prm, double psi_obs,
  * @brief Calculate the virtual height using hop number and elevation angle
  *
  * @param[in] slant_dist - slant distance in km
- *            hop - number of hops (0.5, 1.0, 1.5, etc)
- *            radius - radius of the Earth in km
- *            elv - elevation angle in degrees
+ *            hop        - number of hops (0.5, 1.0, 1.5, etc)
+ *            radius     - radius of the Earth in km
+ *            elv        - elevation angle in degrees
  *
  * @param[out] vheight - virtual height above the surface of the Earth in km
  */
@@ -188,8 +188,8 @@ float calc_elv_vheight(float slant_dist, float hop, float radius, float elv)
   slant_dist /= hop * 2.0;
 
   /* Calculate the virtual height */
-  vheight = sqrt(slant_dist**2 + radius**2
-		 + 2.0 * slant_dist * radius * sin(elv * PI / 180.0)) - radius
+  vheight = sqrt(slant_dist * slant_dist + radius * radius
+		 + 2.0 * slant_dist * radius * sin(elv * PI / 180.0)) - radius;
 
   return(vheight);
 }
@@ -198,12 +198,12 @@ float calc_elv_vheight(float slant_dist, float hop, float radius, float elv)
  * @brief Test the propagation path for realism using the basic properties of HF
  *         radars.
  *
- * @param[in] hop - number of hops (0.5, 1.0, 1.5, etc)
- *            vheight - virtual height in km
+ * @param[in] hop        - number of hops (0.5, 1.0, 1.5, etc)
+ *            vheight    - virtual height in km
  *            slant_dist - slant distance in km
- *            D_hmin - minimum height for D region in km
- *            D_hmax - maximum height for D region in km
- *            E_hmax - maximum height for E region in km
+ *            D_hmin     - minimum height for D region in km
+ *            D_hmax     - maximum height for D region in km
+ *            E_hmax     - maximum height for E region in km
  *
  * @param[out] good_path - 1 if good, 0 if bad
  **/
@@ -220,7 +220,7 @@ int TestPropagation(float hop, float vheight, float slant_dist, float D_hmin,
     }
   else if(vheight <= E_hmax)
     {
-      if(hop < 1.5 && dist > 900.0) good_path = 0;
+      if(hop < 1.5 && slant_dist > 900.0) good_path = 0;
     }
 
   return(good_path);
@@ -335,10 +335,10 @@ short int AdjustPropagation(int lobe, float radius, float D_hmin, float D_hmax,
 /**
  * @brief determine the ionospheric region
  *
- * @param[in] D_hmin - minimum height for D region in km
- *            D_hmax - maximum height for D region in km
- *            E_hmax - maximum height for E region in km
- *            F_hmax - maximum height for E region in km
+ * @param[in] D_hmin  - minimum height for D region in km
+ *            D_hmax  - maximum height for D region in km
+ *            E_hmax  - maximum height for E region in km
+ *            F_hmax  - maximum height for E region in km
  *            vheight - virtual height in km
  *
  * @param[out] region - "D", "E", "F", or "U" (unknown)

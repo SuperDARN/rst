@@ -37,7 +37,7 @@
  *              num    - Returned value, number of frequency bands or -1 if
  *                       `band_width` resulted in more than 90 frequency bands
  **/
-int get_radar_tfreq_bands(int band_width, struct MultRadarScan mult_scan,
+int get_radar_tfreq_bands(int band_width, struct MultRadarScan *mult_scan,
 			  int fbands[90][2])
 {
   int num, ibm, freq, band_tol, local_max, min_freq=-1, max_freq=-1;
