@@ -26,12 +26,13 @@
 char *hlpstr[]={
 "make_fov - Determines the return direction of backscatter.\n",
 "make_fov --help\n",
-"make_fov [-vb] [-old] [-sd yyyymmdd] [-st hr:mn] [-ed yyyymmdd] [-et hr:mn] [-ex hr:mn] [-cn a/b] [-cn_fix c] [-ns +/-1] [-tfmin] [-tfmax] [-gs_strict 0/1] [-update_tdiff 0/1] [-tdiff] [name]\n",
+"make_fov [-vb] [-old] [-tl] [-sd yyyymmdd] [-st hr:mn] [-ed yyyymmdd] [-et hr:mn] [-ex hr:mn] [-cn a/b] [-cn_fix c] [-ns +/-1] [-tfmin] [-tfmax] [-gs_strict 0/1] [-update_tdiff 0/1] [-tdiff] [name]\n",
 
 "--help\tprint the help message and exit.\n",
 "--version\tprint the RST version number and exit.\n",
 "-vb\tverbose. Log information to the console.\n",
 "-old\tthe input file is a map format file.\n",
+"-tl\tIgnore scan flag and use scan length of `tl` seconds.\n",
 "-sd yyyymmdd\textract starting from the date yyyymmdd.\n",
 "-st hr:mn\textract starting from the time hr:mn.\n",
 "-ed yyyymmdd\tstop extracting at the date yyyymmdd.\n",
@@ -46,5 +47,4 @@ char *hlpstr[]={
 "-update_tdiff 0/1\tUpdate hardware tdiff value with user-supplied value\n",
 "-tdiff\tUser supplied hardware value in microseconds, only used if -update_tdiff is 1\n",
 "name\tfilename of the fitacf (or equivalent) format file(s) to use when determining the origin field of view. If this is omitted, the file is read from standard input.\n",
-
 NULL};
