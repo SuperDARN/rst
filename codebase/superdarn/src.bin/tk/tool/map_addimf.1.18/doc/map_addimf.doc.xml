@@ -22,7 +22,7 @@
 </option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
-<option><on>-old</on><od>the input file is a <code>map</code> format file.</od></option>
+<option><on>-old</on><od>the input file is a <code>map</code> format file. NOTE: When using this option, the Kp value will not be read in when using the -if option.</od></option>
 <option><on>-omni</on><od>use data from OMNI. (Currently not functional)</od>
 </option>
 <option><on>-ace</on><od>use IMF data from ACE.</od>
@@ -39,7 +39,7 @@
 <option><on></on><od>  be read from standard input.</od></option>
 <option><on>-df <ar>delayname</ar></on><od>read the delay times from the ASCII text file <ar>delayname</ar>.</od>
 </option>
-<option><on>-if <ar>imfname</ar></on><od>read the IMF data from the ASCII text file <ar>imfname</ar>.</od>
+<option><on>-if <ar>imfname</ar></on><od>read the IMF data from the ASCII text file <ar>imfname</ar>. Kp will not be read in if using this option in combination with the -old option.</od>
 </option>
 <option><on>-bx <ar>bx</ar></on><od>set the X component of the magnetic field to <ar>bx</ar> [nT].</od>
 </option>
