@@ -98,7 +98,7 @@ int command_options(int argc, char *argv[], int *old, int *tlen,
   OptionAdd(&opt, "ns", 'x', &nsflg);
 
   /* Apply transmission frequency bandwidth in kHz */
-  OptionAdd(&opt, "band_width", 'x', band_width);
+  OptionAdd(&opt, "bandwidth", 'i', band_width);
 
   /* Process command line options */
   farg = OptionProcess(1, argc, argv, &opt, rst_opterr);
@@ -132,6 +132,8 @@ int command_options(int argc, char *argv[], int *old, int *tlen,
       OptionPrintInfo(stderr, errstr);
       exit(-1);
     }
+
+  
 
   /* If not explicity working from cfit files, treat input as fit or fitacf */
   if(cfitflg == 0) *fitflg = 1;
