@@ -46,7 +46,6 @@
 #include "cfitscan.h"
 #include "cfitseek.h"
 #include "multscan.h"
-/* #include "errstr.h" */
 
 int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
 	     double stime, double sdate, double etime, double edate,
