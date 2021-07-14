@@ -25,6 +25,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
+
+#include "rmath.h"
+#include "radar.h"
+#include "multscan.h"
+#include "multbsid.h"
 
 #define MAX_BMS 25  /* Current maximum in hdw files */
 #define MAX_RGS 225  /* Current maximum in hdw files */
@@ -71,62 +77,56 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 		     float D_hmax, float E_hmax, float F_hmax, float D_vh_box,
 		     float E_vh_box, float F_vh_box, float far_vh_box,
 		     float max_hop, struct MultRadarScan *mult_scan,
-		     struct RadarSite *hard, struct MultFoVScan *mult_bsid)
+		     struct RadarSite *hard, struct MultRadarBSID *mult_bsid)
 {
   int iscan, ibm, irg, ifov, ipath, ireg, ivh, igbm;
   int max_rg, max_path, out_num, group_num, bm_num, bmwidth, igood_num;
   int igood[MAX_BMS], group_bm[MAX_BMS * MAX_RGS], group_rg[MAX_BMS * MAX_RGS];
-  int group_num[MAX_BMS * MAX_RGS], fovflg[MAX_BMS][MAX_RGS];
-  int fovpast[MAX_BMS][MAX_RGS], fovbelong[MAX_BMS][MAX_RGS][3];
+  int fovflg[MAX_BMS][MAX_RGS], fovpast[MAX_BMS][MAX_RGS];
   int front_num[MAX_BMS][MAX_RGS], back_num[MAX_BMS][MAX_RGS];
+  int fovbelong[MAX_BMS][MAX_RGS][3];
   int *scan_num[3][2], **scan_bm[3][2], **scan_rg[3][2];
 
   float hmin, hmax, hbox, *vmins, *vmaxs;
   float group_elv[MAX_BMS * MAX_RGS], group_vh[MAX_BMS * MAX_RGS];
-  float fovstd[MAX_BMS][MAX_RGS], fovscore[MAX_BMS][MAX_RGS];
   float **scan_vh[3][2], **scan_elv[3][2];
 
   struct CellBSIDFlgs *rng_flgs;
   struct CellBSIDLoc loc;
   struct FitElv elv;
   struct FitNoise noise;
-  struct RadarCell rng;
-  struct RadarParm *prm;
-  struct RadarBeam *bm_old;
-  struct RadarBSIDBeam *bm_new;
-  struct RadarScanCycl *scan_old;
-  struct RadarBSIDCycl *scan_new, *prev_new;
+  struct FitRange rng;
+  struct RadarParm prm;
+  struct RadarBeam bm_old;
+  struct RadarBSIDBeam bm_new;
+  struct RadarScanScan *scan_old;
+  struct RadarBSIDScan *scan_new, *prev_new;
 
   void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
 		     float D_hmax, float E_hmax, float F_hmax,
-		     struct FitPrm *prm, struct RadarBSIDBeam *beam);
+		     struct RadarBSIDBeam *beam);
   int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
 			float vh_box, int min_pnts, float *vh_mins,
 			float *vh_maxs);
   int num_unique_int_vals(int num, int array[]);
   void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
-			  int fovflg[][], int fovpast[][], float scan_vh[],
-			  float scan_elv[], float fovscore[][],
-			  float fovstd[][]);
+			  int fovflg[MAX_BMS][MAX_RGS],
+			  int fovpast[MAX_BMS][MAX_RGS], float scan_vh[],
+			  float scan_elv[]);
   void eval_fov_flag_consistency(int max_rg, int bmwidth, int D_rgmax,
 				 int D_nrg, int E_rgmax, int E_nrg,
 				 int F_rgmax, int F_nrg, int far_nrg,
-				 int fovflg[][], int fovpast[][],
-				 int fovbelong[][][],
-				 struct RadarBSIDCycl *scan);
+				 int fovflg[MAX_BMS][MAX_RGS],
+				 int fovpast[MAX_BMS][MAX_RGS],
+				 int fovbelong[MAX_BMS][MAX_RGS][3],
+				 struct RadarBSIDScan *scan);
 
   /* Initialize the local pointers and variables */
   bmwidth = (int)((float)min_pnts * 0.75);
 
   scan_old = mult_scan->scan_ptr;
-  bm_old = (struct RadarBeam *)(malloc(sizeof(struct RadarBeam)));
-  memset(bm_old, 0, sizeof(struct RadarBeam));
-  bm_new = (struct RadarBSIDBeam *)(malloc(sizeof(struct RadarBSIDBeam)));
-  memset(bm_new, 0, sizeof(struct RadarBSIDBeam));
   rng_flgs = (struct CellBSIDFlgs *)(malloc(sizeof(struct CellBSIDFlgs)));
   memset(rng_flgs, 0, sizeof(struct CellBSIDFlgs));
-  prm = (struct struct RadarParm *)(malloc(sizeof(struct RadarParm)));
-  memset(prm, 0, sizeof(struct RadarParam));
 
   for(ibm = 0; ibm < MAX_BMS; ibm++)
     {
@@ -151,33 +151,33 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 
       for(ifov = 0; ifov < 2; ifov++)
 	{
-	  scan_num[ireg][ifov] = (int *)calloc(sizeof(int) * max_path);
-	  scan_bm[ireg][ifov] = (int **)calloc(sizeof(int) * max_path);
-	  scan_rg[ireg][ifov] = (int **)calloc(sizeof(int) * max_path);
-	  scan_vh[ireg][ifov] = (float **)calloc(sizeof(float) * max_path);
-	  scan_elv[ireg][ifov] = (float **)calloc(sizeof(float) * max_path);
+	  scan_num[ireg][ifov] = (int *)calloc(max_path, sizeof(int));
+	  scan_bm[ireg][ifov] = (int **)calloc(max_path, sizeof(int));
+	  scan_rg[ireg][ifov] = (int **)calloc(max_path, sizeof(int));
+	  scan_vh[ireg][ifov] = (float **)calloc(max_path, sizeof(float));
+	  scan_elv[ireg][ifov] = (float **)calloc(max_path, sizeof(float));
 
 	  for(ipath = 0; ipath < max_path; ipath++)
 	    {
-	      scan_bm[ireg][ifov][ipath] = (int *)calloc(sizeof(int) * out_num);
-	      scan_rg[ireg][ifov][ipath] = (int *)calloc(sizeof(int) * out_num);
-	      scan_vh[ireg][ifov][ipath] = (float *)calloc(sizeof(float)
-							   * out_num);
-	      scan_elv[ireg][ifov][ipath] = (float *)calloc(sizeof(float)
-							    * out_num);
+	      scan_bm[ireg][ifov][ipath] = (int *)calloc(max_path, sizeof(int));
+	      scan_rg[ireg][ifov][ipath] = (int *)calloc(max_path, sizeof(int));
+	      scan_vh[ireg][ifov][ipath] = (float *)calloc(out_num,
+							   sizeof(float));
+	      scan_elv[ireg][ifov][ipath] = (float *)calloc(out_num,
+							    sizeof(float));
 	    }
 	}
     }
 
   out_num = (F_rgmax > E_rgmax) ? F_rgmax : E_rgmax;
   if(D_rgmax > out_num) out_num = D_rgmax;
-  vmins = (float *)calloc(sizeof(float) * out_num);
-  vmaxs = (float *)calloc(sizeof(float) * out_num);
+  vmins = (float *)calloc(out_num, sizeof(float));
+  vmaxs = (float *)calloc(out_num, sizeof(float));
 
   /* Inititalize the output */
   if(mult_bsid->num_scans == 0)
     {
-      mult_bsid->scan = *RadarBSIDCyclMake();
+      mult_bsid->scan = *RadarBSIDScanMake();
       scan_new        = mult_bsid->scan_ptr;
 
       mult_bsid->stid          = mult_scan->stid;
@@ -189,7 +189,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
   else
     {
       prev_new            = mult_bsid->last_ptr;
-      prev_new->next_scan = *RadarBSIDCyclMake();
+      prev_new->next_scan = *RadarBSIDScanMake();
       scan_new            = prev_new->next_scan;
       scan_new->next_scan = prev_new;
       mult_bsid->ed_time  = mult_scan->ed_time;
@@ -201,12 +201,12 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
     {
       /* Before initializing this new scan data, make sure the frequency */
       /* for the beams are correct.                                      */
-      for(igood_num = 0; ibm = 0; ibm < scan_old->num; ibm++)
+      for(igood_num = 0, ibm = 0; ibm < scan_old->num; ibm++)
 	{
 	  bm_old = scan_old->bm[ibm];
-	  prm    = bm_old->prm;
+	  prm    = bm_old.prm;
 
-	  if(prm.tfreq <= min_freq && prm.tfreq > max_freq)
+	  if(prm.tfreq <= freq_min && prm.tfreq > freq_max)
 	    {
 	      igood[igood_num] = ibm;
 	      igood_num++;
@@ -227,115 +227,104 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 
 	  /* Cycle through each beam in the scan, but only update the beams */
 	  /* with appropriate frequencies.                                  */
-	  for(igbm = 0; ibm = 0; ibm < scan_new->num; ibm++)
+	  for(igbm = 0, ibm = 0; ibm < scan_new->num; ibm++)
 	    {
 	      if(igood_num[igbm] == ibm)
 		{
 		  bm_old = scan_old->bm[ibm];
 		  bm_new = scan_new->bm[ibm];
-		  prm    = bm_old->prm;
+		  prm    = bm_old.prm;
 
 		  /* This corresponds to 
 		   * davitpy.pydarn.proc.fov.update_backscatter.update_beam_fit
 		   *
 		   * Start by initializing new beams in the new scan */
-		  bm_new->time  = bm_old->time;
-		  bm_new->nrang = prm->nrang;
-		  strcpy(bm_new->sct, bm_old->sct);
+		  bm_new.time  = bm_old.time;
+		  bm_new.nrang = prm.nrang;
+		  strcpy(bm_new.sct, bm_old.sct);
 
 		  /* Set the RadarParam values */
-		  bm_new->prm.channel     = prm->channel;
-		  bm_new->prm.offset      = prm->offset;
-		  bm_new->prm.cp          = prm->cp;
-		  bm_new->prm.xcf         = prm->xcf;
-		  bm_new->prm.tfreq       = prm->tfreq;
-		  bm_new->prm.nrange      = prm->nrang;
-		  bm_new->prm.smsep       = prm->smsep;
-		  bm_new->prm.rsep        = prm->rsep;
-		  bm_new->prm.nave        = prm->nave;
-		  bm_new->prm.mplgs       = prm->mplgs;
-		  bm_new->prm.mpinc       = prm->mpinc;
-		  bm_new->prm.txpl        = prm->txpl;
-		  bm_new->prm.lagfr       = prm->lagfr;
-		  bm_new->prm.mppul       = prm->mppul;
-		  bm_new->prm.bmnum       = prm->bmnum;
-		  bm_new->prm.old         = 0;
-		  RadarParamSetLag(prm, prm->mplgs, (int16_t *)bm_new->prm.lag);
+		  bm_new.prm.channel     = prm.channel;
+		  bm_new.prm.offset      = prm.offset;
+		  bm_new.prm.cp          = prm.cp;
+		  bm_new.prm.xcf         = prm.xcf;
+		  bm_new.prm.tfreq       = prm.tfreq;
+		  bm_new.prm.nrang       = prm.nrang;
+		  bm_new.prm.smsep       = prm.smsep;
+		  bm_new.prm.rsep        = prm.rsep;
+		  bm_new.prm.nave        = prm.nave;
+		  bm_new.prm.mplgs       = prm.mplgs;
+		  bm_new.prm.mpinc       = prm.mpinc;
+		  bm_new.prm.txpl        = prm.txpl;
+		  bm_new.prm.lagfr       = prm.lagfr;
+		  bm_new.prm.mppul       = prm.mppul;
+		  bm_new.prm.bmnum       = prm.bmnum;
+		  bm_new.prm.old         = 0;
+		  RadarParamSetLag(prm, prm->mplgs, (int16_t *)bm_new.prm.lag);
 		  RadarParamSetPulse(prm, prm.mppul,
-				     (int16_t *)bm_new->prm.pulse);
+				     (int16_t *)bm_new.prm.pulse);
 
 		  /* Add the radar hardware information */
-		  bm_new->prm.maxbeam     = hard->maxbeam;
-		  bm_new->prm.interfer[0] = hard->interfer[0];
-		  bm_new->prm.interfer[1] = hard->interfer[1];
-		  bm_new->prm.interfer[2] = hard->interfer[2];
-		  bm_new->prm.bmsep       = hard->bmsep;
-		  bm_new->prm.phidiff     = hard->phidiff;
-		  bm_new->prm.tdiff       = hard->tdiff;
-		  bm_new->prm.vdir        = hard->vdir;
+		  bm_new.prm.maxbeam     = hard->maxbeam;
+		  bm_new.prm.interfer[0] = hard->interfer[0];
+		  bm_new.prm.interfer[1] = hard->interfer[1];
+		  bm_new.prm.interfer[2] = hard->interfer[2];
+		  bm_new.prm.bmsep       = hard->bmsep;
+		  bm_new.prm.phidiff     = hard->phidiff;
+		  bm_new.prm.tdiff       = hard->tdiff;
+		  bm_new.prm.vdir        = hard->vdir;
 
 		  /* Set the FitNoise values */
-		  noise                  = bm_old->noise;
-		  bm_new->noise.vel      = noise.vel;
-		  bm_new->noise.skynoise = noise.skynoise;
-		  bm_new->noise.lag0     = noise.lag0;
+		  noise                  = bm_old.noise;
+		  bm_new.noise.vel      = noise.vel;
+		  bm_new.noise.skynoise = noise.skynoise;
+		  bm_new.noise.lag0     = noise.lag0;
 
 		  /* Initialize the range-dependent variables */
-		  bm_new->rng       = (struct RadarCell *)
-		    (malloc(sizeof(struct RadarCell) * bm_new->nrang));
-		  bm_new->med_rng   = (struct RadarCell *)
-		    (malloc(sizeof(struct RadarCell) * bm_new->nrang));
-		  bm_new->rng_flgs  = (struct CellBSIDFlgs *)
-		    (malloc(sizeof(struct CellBSIDFlgs) * bm_new->nrang));
-		  bm_new->front_rng = (struct CellBSIDLoc *)
-		    (malloc(sizeof(struct CellBSIDLoc) * bm_new->nrang));
-		  bm_new->back_rng  = (struct CellBSIDLoc *)
-		    (malloc(sizeof(struct CellBSIDLoc) * bm_new->nrang));
+		  bm_new.rng       = (struct FitRange *)
+		    (calloc(bm_new.nrang, sizeof(struct FitRange)));
+		  bm_new.med_rng   = (struct FitRange *)
+		    (calloc(bm_new.nrang, sizeof(struct FitRange)));
+		  bm_new.rng_flgs  = (struct CellBSIDFlgs *)
+		    (calloc(bm_new.nrang, sizeof(struct CellBSIDFlgs)));
+		  bm_new.front_loc = (struct CellBSIDLoc *)
+		    (calloc(bm_new.nrang, sizeof(struct CellBSIDLoc)));
+		  bm_new.back_loc  = (struct CellBSIDLoc *)
+		    (calloc(bm_new.nrang, sizeof(struct CellBSIDLoc)));
 
-		  memset(bm_new->rng, 0,
-			 sizeof(struct RadarCell) * bm_new->nrang);
-		  memset(bm_new->med_rng, 0,
-			 sizeof(struct RadarCell) * bm_new->nrang);
-		  memset(bm_new->rng_flgs, 0, sizeof(struct CellBSIDFlgs)
-			 * bm_new->nrang);
-		  memset(bm_new->front_rng, 0, sizeof(struct CellBSIDLoc)
-			 * bm_new->nrang);
-		  memset(bm_new->back_rng, 0, sizeof(struct CellBSIDLoc)
-			 * bm_new->nrang);
+		  if(bm_new.nrang > max_rg) max_rg = bm_new.nrang;
 
-		  if(bm_new->nrange > max_rg) max_rg = bm_new->nrange;
-
-		  for(irg = 0; irg < bm_new->nrang; irg++)
+		  for(irg = 0; irg < bm_new.nrang; irg++)
 		    {
 		      /* Load only for range gates with data */
-		      if(bm_old->sct[irg] == 1)
+		      if(bm_old.sct[irg] == 1)
 			{
-			  rng = bm_old->rng[irg];
-			  bm_new->rng[irg].v        = rng.v;
-			  bm_new->rng[irg].v_err    = rng.v_err;
-			  bm_new->rng[irg].p_0      = rng.p_0;
-			  bm_new->rng[irg].p_l      = rng.p_l;
-			  bm_new->rng[irg].p_l_err  = rng.p_l_err;
-			  bm_new->rng[irg].p_s      = rng.p_s;
-			  bm_new->rng[irg].p_s_err  = rng.p_s_err;
-			  bm_new->rng[irg].w_l      = rng.w_l;
-			  bm_new->rng[irg].w_l_err  = rng.w_l_err;
-			  bm_new->rng[irg].w_s      = rng.w_s;
-			  bm_new->rng[irg].w_s_err  = rng.w_s_err;
-			  bm_new->rng[irg].phi0     = rng.phi0;
-			  bm_new->rng[irg].phi0_err = rng.phi0_err;
-			  bm_new->rng[irg].sdev_l   = rng.sdev_l;
-			  bm_new->rng[irg].sdev_s   = rng.sdev_s;
-			  bm_new->rng[irg].sdev_phi = rng.sdev_phi;
-			  bm_new->rng[irg].qflg     = rng.qflg;
-			  bm_new->rng[irg].gsct     = rng.gsct;
-			  strcpy(bm_new->rng[irg].nump, rng.nump);
+			  rng = bm_old.rng[irg];
+			  bm_new.rng[irg].v        = rng.v;
+			  bm_new.rng[irg].v_err    = rng.v_err;
+			  bm_new.rng[irg].p_0      = rng.p_0;
+			  bm_new.rng[irg].p_l      = rng.p_l;
+			  bm_new.rng[irg].p_l_err  = rng.p_l_err;
+			  bm_new.rng[irg].p_s      = rng.p_s;
+			  bm_new.rng[irg].p_s_err  = rng.p_s_err;
+			  bm_new.rng[irg].w_l      = rng.w_l;
+			  bm_new.rng[irg].w_l_err  = rng.w_l_err;
+			  bm_new.rng[irg].w_s      = rng.w_s;
+			  bm_new.rng[irg].w_s_err  = rng.w_s_err;
+			  bm_new.rng[irg].phi0     = rng.phi0;
+			  bm_new.rng[irg].phi0_err = rng.phi0_err;
+			  bm_new.rng[irg].sdev_l   = rng.sdev_l;
+			  bm_new.rng[irg].sdev_s   = rng.sdev_s;
+			  bm_new.rng[irg].sdev_phi = rng.sdev_phi;
+			  bm_new.rng[irg].qflg     = rng.qflg;
+			  bm_new.rng[irg].gsct     = rng.gsct;
+			  bm_new.rng[irg].nump     = rng.nump;
 			}
 		    }
 
 		  /* Update the front and back FoVs */
 		  UpdateBeamFit(strict_gs, max_hop, D_hmin, D_hmax, E_hmax,
-				F_hmax, bmprm, bm_new);
+				F_hmax, &bm_new);
 
 		  /* Find the altitude bins for this scan by FoV, region, and
 		   * path                                                     */
@@ -343,16 +332,14 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 		    {
 		      for(ipath = 0; ipath < max_path; ipath++)
 			{
-			  scan_num_D[ifov][ipath]   = 0;
-			  scan_num_E[ifov][ipath]   = 0;
-			  scan_num_F[ifov][ipath]   = 0;
-			  scan_num_far[ifov][ipath] = 0;
+			  for(ireg = 0; ireg < 3; ireg++)
+			    scan_num[0][ifov][ipath] = 0;
 			}
 		    }
 
-		  for(irg = 0; irg < bm_new->nrang; irg++)
+		  for(irg = 0; irg < bm_new.nrang; irg++)
 		    {
-		      if(bm_new->sct[irg] == 1)
+		      if(bm_new.sct[irg] == 1)
 			{
 			  /* Assign this data to the correct region list for */
 			  /* each field of view (ifov = 0 for back lobe and  */
@@ -361,13 +348,13 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 			    {
 			      if(ifov == 0)
 				{
-				  loc = bm_new->back_loc[irg];
-				  elv = bm_new->back_elv[irg];
+				  loc = bm_new.back_loc[irg];
+				  elv = bm_new.back_elv[irg];
 				}
 			      else
 				{
-				  loc = bm_new->front_loc[irg];
-				  elv = bm_new->front_elv[irg];
+				  loc = bm_new.front_loc[irg];
+				  elv = bm_new.front_elv[irg];
 				}
 
 			      ipath = (int)(loc.hop * 2.0);
@@ -403,13 +390,13 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 		}
 	      else if(ireg == 1)
 		{
-		  hmin = E_hmin;
+		  hmin = E_hmax;
 		  hmax = E_hmax;
 		  hbox = E_vh_box;
 		}
 	      else if(ireg == 2)
 		{
-		  hmin = F_hmin;
+		  hmin = E_hmax;
 		  hmax = F_hmax;
 		  hbox = F_vh_box;
 		}
@@ -450,10 +437,10 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 				  /* Test to see if there are enough beams */
 				  bm_num = num_unique_int_vals(group_num, scan_bm[ireg][ifov][ipath]);
 				  if(bm_num >= MIN_BMS)
-				    eval_az_var_in_elv(group_num, ifov, scan_bm,
-						       scan_rg, fovflg, fovpast,
-						       scan_vh, scan_elv,
-						       fovscore, fovstd);
+				    eval_az_var_in_elv(group_num, ifov,
+						       group_bm, group_rg,
+						       fovflg, fovpast,
+						       group_vh, group_elv);
 				}
 			    }
 			}
@@ -473,7 +460,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 	    {
 	      bm_new = scan_new->bm[ibm];
 
-	      for(irg = 0; irg < bm_new->num; irg++)
+	      for(irg = 0; irg < bm_new.nrang; irg++)
 		{
 		  /* Remove or change the FoV of any points flagged as        */
 		  /* outliers. Recall that in the last dimension of fovbelong */
@@ -496,19 +483,19 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 		    }
 
 		  /* Update the location values for this beam and range gate */
-		  rng_flgs           = bm_new->rng_flgs;
+		  rng_flgs           = bm_new.rng_flgs;
 		  rng_flgs->fov      = fovflg[ibm][irg];
 		  rng_flgs->fov_past = fovpast[ibm][irg];
 		}
 	    }
 
 	  /* Cycle to the next scan */
-	  scan_new->next_scan = (struct RadarBSIDCycl *)
-	    malloc(sizeof(struct RadarBSIDCycl));
-	  prev_new            = new_scan;
+	  scan_new->next_scan = (struct RadarBSIDScan *)
+	    malloc(sizeof(struct RadarBSIDScan));
+	  prev_new            = scan_new;
 	  scan_new            = scan_new->next_scan;
 	  scan_new->prev_scan = prev_new;
-	  scan_new->next_scan = (struct RadarBSIDCycl *)(NULL);
+	  scan_new->next_scan = (struct RadarBSIDScan *)(NULL);
 	  mult_bsid->num_scans++;
 	}
     }
@@ -517,9 +504,6 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
   free(vmins);
   free(vmaxs);
   free(rng_flgs);
-  free(prm);
-  free(bm_old);
-  free(bm_new);
   free(scan_old);
   free(scan_new);
   free(prev_new);
@@ -561,19 +545,19 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
  *            fovpast - Beam x RG array holding previously assigned FoV flags
  *            scan_vh - Array holding the group's virtual heights in km
  *            scan_elv - Array holding the group's elevation angles in deg
- *            fovscore - Beam x RG array holding previous z-score values
- *            fovstd   - Beam x RG array holding previous standard deviations
  **/
 
 void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
-			int fovflg[][], int fovpast[][], float scan_vh[],
-			float scan_elv[], float fovscore[][], float fovstd[][])
+			int fovflg[MAX_BMS][MAX_RGS],
+			int fovpast[MAX_BMS][MAX_RGS], float scan_vh[],
+			float scan_elv[])
 {
   int i, irg, ibm, reg_stat;
   int get_fov[2] = {-1, 1};
 
-  float max_std, max_score, intercept, sig_intercept, slope;
-  float sig_slope, chi2, q, lstd, line_std;
+  float max_std, max_score, intercept, sig_intercept, slope, chi2, q, lstd;
+  float sig_slope, line_std;
+  float fovstd[MAX_BMS][MAX_RGS], fovscore[MAX_BMS][MAX_RGS];
   float *lval, *ldev, *abs_ldev, *lscore, *line_dev, *sig;
 
   int linear_regression(float x[], float y[], float sig[], int num, int mwt,
@@ -585,15 +569,24 @@ void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
   /* Initalize the maximum statistics and reference variables */
   max_std   = 3.0;
   max_score = 3.0;
+
+  for(ibm = 0; ibm < MAX_BMS; ibm++)
+    {
+      for(irg = 0; irg < MAX_RGS; irg++)
+	{
+	  fovstd[ibm][irg] = 0.0;
+	  fovscore[ibm][irg] = 0.0;
+	}
+    }
   
   /* Initialize the evalutaion statistics to default values */
   line_std = max_std + 100.0;
-  line_dev = (float *)calloc(sizeof(float) * num);
-  sig      = (float *)calloc(sizeof(float) * num);
-  lval     = (float *)calloc(sizeof(float) * num);
-  ldev     = (float *)calloc(sizeof(float) * num);
-  abs_ldev = (float *)calloc(sizeof(float) * num);
-  lscore   = (float *)calloc(sizeof(float) * num);
+  line_dev = (float *)calloc(num, sizeof(float));
+  sig      = (float *)calloc(num, sizeof(float));
+  lval     = (float *)calloc(num, sizeof(float));
+  ldev     = (float *)calloc(num, sizeof(float));
+  abs_ldev = (float *)calloc(num, sizeof(float));
+  lscore   = (float *)calloc(num, sizeof(float));
   for(i = 0; i < num; i++)
     {
       line_dev[i] = line_std;
@@ -617,7 +610,7 @@ void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
 	{
 	  lval[i] = slope * (float)scan_rg[i] + intercept;
 	  ldev[i] = lval[i] - scan_elv[i];
-	  abs_ldev[i] = fabs(ldev[i])
+	  abs_ldev[i] = fabs(ldev[i]);
 	}
 
       lstd = stdev_float(num, ldev);
@@ -692,29 +685,22 @@ void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
 
 void eval_fov_flag_consistency(int max_rg, int bmwidth, int D_rgmax, int D_nrg,
 			       int E_rgmax, int E_nrg, int F_rgmax, int F_nrg,
-			       int far_nrg, int fovflg[][], int fovpast[][],
-			       int fovbelong[][][], struct RadarBSIDCycl *scan)
+			       int far_nrg, int fovflg[MAX_BMS][MAX_RGS],
+			       int fovpast[MAX_BMS][MAX_RGS],
+			       int fovbelong[MAX_BMS][MAX_RGS][3],
+			       struct RadarBSIDScan *scan)
 {
   int irg, ibm, irsel, ibsel, rmin, rmax, bmin, bmax, width, fnum, bnum;
   int bad_fov;
 
   float ffrac, fov_frac, near_rg;
 
-  struct RadarBSIDBeam *bm, *bm_ref;
-  struct CellBSIDLoc *loc, *ref_loc;
+  struct RadarBSIDBeam bm, bm_ref;
+  struct CellBSIDLoc loc, ref_loc;
 
   /* Initialize the variables */
   fov_frac = 2.0 / 3.0;
   near_rg  = -1.0;
-
-  bm = (struct RadarBSIDBeam *)(malloc(sizeof(struct RadarBSIDBeam)));
-  memset(bm, 0, sizeof(struct RadarBSIDBeam));
-  bm_ref = (struct RadarBSIDBeam *)(malloc(sizeof(struct RadarBSIDBeam)));
-  memset(bm_ref, 0, sizeof(struct RadarBSIDBeam));
-  loc = (struct CellBSIDLoc *)(malloc(sizeof(struct CellBSIDLoc)));
-  memset(loc, 0, sizeof(struct CellBSIDLoc));
-  loc_ref = (struct CellBSIDLoc *)(malloc(sizeof(struct CellBSIDLoc)));
-  memset(loc_ref, 0, sizeof(struct CellBSIDLoc));
 
   /* Cycle through all of the range gates, looking for consistency in the */
   /* neighboring backscatter fields of view.                              */
@@ -745,14 +731,14 @@ void eval_fov_flag_consistency(int max_rg, int bmwidth, int D_rgmax, int D_nrg,
 	  if(near_rg < 0.0)
 	    {
 	      /* Calculate once in the routine */
-	      near_rg = ((500.0 / (5.0e-10 * C) - bm->prm.lagfr)
-			 / bm->prm.smsep);
+	      near_rg = ((500.0 / (5.0e-10 * C) - bm.prm.lagfr)
+			 / bm.prm.smsep);
 	    }
  
-	  if(bm->sct[irg] == 1)
+	  if(bm.sct[irg] == 1)
 	    {
-	      if(fovflg[ibm][irg] == -1) ref_loc = bm->back_loc[irg];
-	      else                       ref_loc = bm->front_loc[irg];
+	      if(fovflg[ibm][irg] == -1) ref_loc = bm.back_loc[irg];
+	      else                       ref_loc = bm.front_loc[irg];
 
 	      /* Get the beam limits for the azimuthal box */
 	      bmin = ibm - bmwidth;
@@ -771,8 +757,8 @@ void eval_fov_flag_consistency(int max_rg, int bmwidth, int D_rgmax, int D_nrg,
 			{
 			  bm_ref = scan->bm[ibsel];
 			  if(fovflg[ibsel][irsel] == -1)
-			    loc = bm_ref->back_loc[irsel];
-			  else bm_ref->front_loc[irsel];
+			    loc = bm_ref.back_loc[irsel];
+			  else loc = bm_ref.front_loc[irsel];
 
 			  if(loc.hop == ref_loc.hop)
 			    {
@@ -791,7 +777,7 @@ void eval_fov_flag_consistency(int max_rg, int bmwidth, int D_rgmax, int D_nrg,
 		  ffrac = (float)fnum / (float)(fnum + bnum);
 		  if(ffrac >= fov_frac && bnum > 0)
 		    bad_fov = -1;
-		  else if((1.0 - ffrac) >= fov_frac && fnum > 0):
+		  else if((1.0 - ffrac) >= fov_frac && fnum > 0)
 		    bad_fov = 1;
 		  else
 		    bad_fov = 0;
@@ -807,8 +793,8 @@ void eval_fov_flag_consistency(int max_rg, int bmwidth, int D_rgmax, int D_nrg,
 			{
 			  bm_ref = scan->bm[ibsel];
 			  if(fovflg[ibsel][irsel] == -1)
-			    loc = bm_ref->back_loc[irsel];
-			  else bm_ref->front_loc[irsel];
+			    loc = bm_ref.back_loc[irsel];
+			  else loc = bm_ref.front_loc[irsel];
 
 			  if(loc.hop == ref_loc.hop)
 			    {
@@ -833,12 +819,6 @@ void eval_fov_flag_consistency(int max_rg, int bmwidth, int D_rgmax, int D_nrg,
 	    }
 	}
     }
-
-  /* Free the local pointers */
-  free(bm);
-  free(bm_ref);
-  free(loc);
-  free(loc_ref);
 
   return;
 }
