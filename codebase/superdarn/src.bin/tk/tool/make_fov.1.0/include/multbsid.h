@@ -52,14 +52,12 @@ struct CellBSIDFlgs
 
 struct CellBSIDLoc
 {
-  double vh;
-  double vh_e;
+  float vh;
+  float vh_e;
   char *vh_m;
   char *region;
-  double lat; /* Remove? */
-  double lon; /* Remove? */
-  double hop;
-  double dist;
+  float hop;
+  float dist;
 };  
 
 struct RadarBSIDBeam
@@ -84,13 +82,8 @@ struct RadarBSIDScan
   double ed_time;
   int num;
   struct RadarBSIDBeam *bm;
-};
-
-struct RadarBSIDCycl
-{
-  struct RadarBSIDScan *scan_data;
-  struct RadarBSIDCycl *next_scan;
-  struct RadarBSIDCycl *prev_scan;
+  struct RadarBSIDScan *next_scan;
+  struct RadarBSIDScan *prev_scan;
 };
 
 struct MultRadarBSID
@@ -106,9 +99,9 @@ struct MultRadarBSID
   double ed_time;
   int num_scans;
 
-  struct RadarBSIDCycl scan;
-  struct RadarBSIDCycl *scan_ptr;
-  struct RadarBSIDCycl *last_ptr;
+  struct RadarBSIDScan scan;
+  struct RadarBSIDScan *scan_ptr;
+  struct RadarBSIDScan *last_ptr;
 };
 
 /* struct MultRadarScan *MultRadarScanMake();
