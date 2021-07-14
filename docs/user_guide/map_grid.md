@@ -19,6 +19,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
     2021-03-10 Emma Bland (UNIS) updated instructions on how to add IMF data
+    2021-07-14 Kevin Sterne (VT) updated with option incompatibility related
+               to reading in Kp values.
 -->
 
 # GRID to MAP
@@ -55,6 +57,9 @@ You can also add fixed IMF values for the entire map file, for example
 ```
 map_addimf -bx 1.5 -by -1.2 -bz 0.4 [file].map > [file].imf.map
 ```
+
+**NOTE:** When supplying IMF data via a text file, **AND** using the `-old` option, the Kp values will not be read in and stored in the resulting file.
+
 
 ### CDF files
 IMF data from the ACE and WIND satellites can also be supplied in CDF format using the `-ace` or `-wind` options in `map_addimf`:
