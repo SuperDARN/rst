@@ -28,210 +28,9 @@
 #include <math.h>
 
 #include "mpfit.h"
+
 #include "multbsid.h"
-
-/**
- * @brief A Gaussian function for MINPACK optimization
- *
- * @params[in] x     - Independent variable value
- *             A     - Amplitude
- *             mu    - Mean
- *             sigma - Standard deviation
- *
- * @params[out] y - Result of Gaussian calculation
- **/
-
-mp_func gaussian(double x, double A, double mu, double sigma)
-{
-  double y;
-
-  y = A * exp(-power((x - mu), 2.0) / (2.0 * sigma * sigma));
-  return(y);
-}
-
-
-/**
- * @brief A histogram function
- *
- * @params[in] nvals   - Number of values in `vals` array
- *             vals    - Array of values
- *             nbin    - Number of bins to use in histogram
- *             val_min - Minimum value to consider
- *             val_max - Maximum value to consider
- *
- * @params[out] hist_bins       - Array of counts for values in this bin
- *              leading_bin_val - Array of values corresponding to the leading
- *                                edge of the histogram bins
- **/
-
-void histogram(int nvals, float vals[], int nbin, float val_min, float val_max,
-	       int *hist_bins, float *leading_bin_val)
-{
-  int i, ival;
-
-  float val_inc, trailing_bin_val;
-
-  /* Calculate the bin increment */
-  val_inc = (val_max - val_min) / (float)nbin;
-
-  /* Initalize the output */
-  for(i = 0; i < nbin; i++)
-    {
-      leading_bin_val[i] = min_val + (float)i * val_inc;
-      hist_bins[i]       = 0;
-    }
-
-  /* Cycle through each bin, identifying the number of points in each */
-  for(ival = 0; ival < nvals; ival++)
-    {
-      for(i = 0; i < nbin; i++)
-	{
-	  trailing_bin_val = leading_bin_val[i] + val_inc;
-	  if(leading_bin_val[i] <= vals[ival] && vals[ival] < trailing_bin_val)
-	    {
-	      hist_bins[i]++;
-	      break;
-	    }
-	}
-    }
-
-  return;
-}
-
-/**
- * @brief Routine to find the relative maximum based on numpy _boolrelextrema
- *
- * @params[in] num   - Number of samples in `vals`
- *             vals  - Integer array of input values to be searched
- *             order - How many points to each side of a value to consider for
- *                     a comparison to be true
- *             clip  - 1 to treat the edge of the `vals` array as a hard edge,
- *                     any other value to wrap the `vals` array
- *
- * @params[out] ismax - Array of booleans specifying which vals indices are
- *                      a relative maxima
- *              nmax  - Number of relative maxima identified
- **/
-
-int int_argrelmax(int num, int vals[], int order, int clip, int *ismax)
-{
-  int i, shift, iplus, iminus, nmax;
-
-  /* Test the order input */
-  if(order < 1) order = 1;
-
-  /* Initialize the output and working variables*/
-  for(i = 0; i < num; i++) ismax[i] = 0;
-  nmax = 0;
-
-  /* Cycle through each order of consideration */
-  for(shift = 1; shift <= order; shift++)
-    {
-      for(i = 0; i < num; i++)
-	{
-	  iminus = i - shift;
-	  iplus  = i + shift;
-
-	  /* If the plus/minus indices extend beyond the array limits, */
-	  /* either clip them (keep them at the edge) or wrap them.    */
-	  if(iminus < 0)
-	    {
-	      if(clip == 1) iminus  = 0;
-	      else          iminus += num;
-	    }
-	  if(iplus >= num)
-	    {
-	      if(clip == 1) iplus  = num - 1;
-	      else          iplus -= num;
-	    }
-
-	  /* Evaluate the values, looking for a relative maximum */
-	  if(vals[i] > vals[iplus] && vals[i] > vals[iminus])
-	    {
-	      nmax++;
-	      ismax[i] = 1;
-	    }
-	}
-
-      /* If all potential relative maxima have been eliminated, exit */
-      if(nmax == 0) return(nmax);
-    }
-
-  return(nmax);
-}
-      
-
-/**
- * @brief Routine to find the absolute maximum for int intput
- *
- * @params[in] num  - Number of samples in `vals`
- *             vals - Integer array of input values to be searched
- *
- * @params[out] imax - Index of absolute maximum
- **/
-
-int int_argabsmax(int num, int vals[])
-{
-  int i, imax;
-
-  for(imax = 0, i = 1; i < num; i++)
-    {
-      if(vals[imax] < vals[i]) imax = i;
-    }
-
-  return(imax);
-}
-
-
-/**
- * @brief Routine to find the absolute maximum for float input
- *
- * @params[in] num  - Number of samples in `vals`
- *             vals - Integer array of input values to be searched
- *
- * @params[out] max_val - Index of absolute maximum
- **/
-
-float float_absmax(int num, float vals[])
-{
-  int i;
-
-  float max_val;
-
-  max_val = vals[0];
-  for(imax = 0, i = 1; i < num; i++)
-    {
-      if(max_val < vals[i]) max_val = vals[i];
-    }
-
-  return(max_val);
-}
-
-
-/**
- * @brief Routine to find the absolute minimum for float input
- *
- * @params[in] num  - Number of samples in `vals`
- *             vals - Integer array of input values to be searched
- *
- * @params[out] min_val - Value absolute maximum
- **/
-
-float float_absmin(int num, float vals[])
-{
-  int i;
-
-  float min_val;
-
-  min_val = vals[0];
-  for(i = 1; i < num; i++)
-    {
-      if(min_val > vals[i]) min_val = vals[i];
-    }
-
-  return(min_val);
-}
-
+#include "utils.h"
 
 /**
  * @brief Get the alt limits for a select group of data.  Look at the
@@ -246,31 +45,39 @@ float float_absmin(int num, float vals[])
  *             vh_box   - Width of virtual height box in km
  *             min_pnts - Minimum number of points allowed in a box
  *
- * @params[out] vh_mins - Lower virtual height limit of each bin
- *              vh_maxs - Upper virtual height limit of each bin
- *              out_num - Number of virtual height bins
+ * @params[out] vh_mins  - Lower virtual height limit of each bin
+ *              vh_maxs  - Upper virtual height limit of each bin
+ *              npeaks   - Number of virtual height bins
  **/
 
 int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
 		      float vh_box, int min_pnts, float *vh_mins,
 		      float *vh_maxs)
 {
-  int i, j, out_num, nbin, nmax, *hist_bins;
+  int i, j, k, nbin, nmax, status, npeaks, *hist_bins, *ismax;
 
-  float *hist_edges, local_min, local_max, vmin;
+  float local_min, local_max, vmin, vmax, vlow, vhigh, hist_width;
+  float *hist_edges, *vh_peaks;
 
-  double A, mu, sigma, *xdata;
+  double params[3];
 
-  struct mp_result result;
+  struct gauss_data *private;
+  struct mp_result_struct *result;
 
-  void histogram(int nvals, float vals[], int nbin, float val_min,
-		 float val_max, int *hist_bins, float *leading_bin_val);
-  int int_argrelmax(int num, int vals[], int order, int clip, int *ismax);
-  int int_argabsmax(int num, int vals[]);
-  float float_absmin(int num, float vals[]);
-  float float_absmax(int num, float vals[]);
+  int sort_expand_boundaries(int num, float local_min, float local_max,
+			     float vh_min, float vh_max, float vh_box,
+			     float vh_mins[], float vh_maxs[],
+			     float *vh_peaks);
 
-  out_num = 0;
+  /* Initialize the structures and variables */
+  private = (struct gauss_data *)(malloc(sizeof(struct gauss_data)));
+  memset(private, 0, sizeof(struct gauss_data));
+  result = (struct mp_result_struct *)malloc(sizeof(struct mp_result_struct));
+  memset(result, 0, sizeof(struct mp_result_struct));
+  vh_peaks = (float *)calloc((int)(sizeof(vh_mins)/sizeof(vh_mins[0])),
+			     sizeof(float));
+
+  npeaks = 0;
 
   /* Create a histogram of the number of observations at each virtual height */
   nbin = (int)((vh_max - vh_min) / (vh_box * 0.25));
@@ -290,7 +97,7 @@ int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
       nmax = int_argabsmax(nbin, hist_bins);
 
       /* Only use the absolute maximum if it is significant */
-      if(hist_bins[nmax] >= min_points)
+      if(hist_bins[nmax] >= min_pnts)
 	{
 	  ismax[nmax] = 1;
 	  nmax = 1;
@@ -305,10 +112,10 @@ int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
   /* Without a significant maximum, set the limits using the suggested width */
   if(nmax == 0)
     {
-      out_num = (int)ceil((double)(local_max - local_min) / (double)vh_box);
-      vmin    = (local_max - local_min) / (float)out_num + local_min - vh_box;
+      npeaks = (int)ceil((double)(local_max - local_min) / (double)vh_box);
+      vmin   = (local_max - local_min) / (float)npeaks + local_min - vh_box;
 
-      for(i = 0; i < out_num; i++)
+      for(i = 0; i < npeaks; i++)
 	{
 	  vh_mins[i] = vmin + i * vh_box;
 	  vh_maxs[i] = vh_mins[i] + vh_box;
@@ -317,8 +124,18 @@ int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
   else
     {
       /* Cast the histogram bins as doubles for use by MINPACK */
-      xdata = (double *)calloc(nbin, sizeof(double));
-      for(i = 0; i < nbin; i++) xdata[i] = (double)hist_bins[i];
+      private->x       = (double *)calloc(nbin, sizeof(double));
+      private->y       = (double *)calloc(nbin, sizeof(double));
+      private->y_error = (double *)calloc(nbin, sizeof(double));
+
+      hist_width = (nbin >= 1) ? (hist_bins[1] - hist_bins[0]) / 2.0 : vh_box;
+
+      for(i = 0; i < nbin; i++)
+	{
+	  private->x[i] = (double)(hist_edges[i] + hist_width);
+	  private->y[i] = (double)hist_bins[i];
+	  private->y_error[i] = 1.0;  /* Unity is the same as no error */
+	}
 
       /* For each maxima, fit a Gaussian */
       for(i = 0, j = 0; i < nmax && j < nbin; j++)
@@ -326,57 +143,287 @@ int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
 	  if(ismax[j] == 1)
 	    {
 	      /* Initial amplitude is the number of points at the maximum */
-	      A = xdata[j];
+	      params[0] = (double)hist_bins[j];
 
 	      /* Initial mean is half the histogram box width */
-	      if(nbin == 1)
-		mu = (double)vh_box;
-	      else if(j >= 0)
-		mu = (double)(hist_edges[j + 1] - hist_edges[j]) / 2.0;
-	      else
-		mu = (double)(hist_edges[j] - hist_edges[j - 1]) / 2.0;
+	      params[1] = (double)hist_width;
 
 	      /* Initial sigma is half the virtual height box width */
-	      sigma = 0.5 * vh_box;
+	      params[2] = 0.5 * (double)vh_box;
 
 	      /* Use non-linear least-squares to fit a Gaussian to the */
 	      /* histogram.                                            */
-	      /* To make this work:
-	       * - redefine the gaussian routine to be the right format
-	       * - get the inputs below correct
-	       *
-	       * Examples:
-	       * codebase/superdarn/src.lib/tk/lmfit.1.0/src/lmfit.c
-	       * include/analysis/mpfit.h
-	       *
-	       * AS WRITTEN BELOW, THIS DOES NOT WORK
-	       */
-	      //stat = mpfit(gaussian, m, npar, xdata, pars, config, private_data,
-	      //	   &result);
+	      status = mpfit(gaussian_dev, nbin, 3, params, 0, 0, private,
+			     result);
 
-	      if(result.status > 0)
+	      if(status > 0)
 		{
 		  /* Get the 3-sigma limits */
+		  vmin = params[1] - 3.0 * params[2];
+		  if(vmin < vh_min) vmin = vh_min;
+
+		  vmax = params[1] + 3.0 * params[2];
+		  if(vmax > vh_max) vmax = vh_max;
 	      
 		  /* Get the 2-sigma limits */
+		  vlow = params[1] - 2.0 * params[2];
+		  if(vlow < vh_min) vlow = vh_min;
+
+		  vhigh = params[1] + 2.0 * params[2];
+		  if(vhigh > vh_max) vhigh = vh_max;
 
 		  /* Save the 3-sigma limits as the upper and lower virtual */
 		  /* height box limits if the detected peak is within the   */
 		  /* 2-sigma limits.  Also remove this peak from the xdata  */
 		  /* array to allow lower level peaks to be identified.     */
+		  if((private->y[j] >= vlow) && (private->y[j] <= vhigh))
+		    {
+		      /* Save this altitude bin */
+		      vh_mins[npeaks]  = vmin;
+		      vh_maxs[npeaks]  = vmax;
+		      vh_peaks[npeaks] = params[1];
+		      npeaks++;
+
+		      /* Remove this peak to allow secondary peaks to be fit */
+		      for(k = 0; k < nbin; k++)
+			{
+			  if((private->x[k] >= vmin) && (private->x[k] < vmax))
+			    private->y[k] = 0.0;
+			}
+		    }
 		}
 	    }
 	}
 
-      /* Evaluate the current limits to see if the overlap each or have gaps */
+      /* Evaluate the current limits to see if the overlap each or have gaps. */
+      /* Use the suggested width to set limits if done were found.            */
+      if(npeaks == 0)
+	{
+	  /* Get the expected number of peaks and set the first set of */
+	  /* boundary limits.                                          */
+	  j          = (int)ceil((double)((local_max - local_min) / vh_box));
+	  vh_mins[0] = (local_max
+			- local_min) / (float)npeaks + local_min - vh_box;
+	  if(vh_mins[0] < vh_min) vh_mins[0] = vh_min;
+	  vh_maxs[0] = vh_mins[0] + vh_box;
+	  if(vh_maxs[0] > vh_max) vh_maxs[0] = vh_max;
+
+	  /* Set each limit, stopping if the maximum height is reached */
+	  for(i = 1; i < j && vh_maxs[i-1] < vh_max; i++)
+	    {
+	      vh_mins[i] = vh_maxs[i - 1];
+	      vh_maxs[i] = vh_mins[i] + vh_box;
+	      if(vh_maxs[i] > vh_max) vh_maxs[i] = vh_max;
+	    }
+	  npeaks = i;
+	}
+      else
+	{
+	  /* Sorts the virtual height limits, eliminating overlaps and gaps */
+	  npeaks = sort_expand_boundaries(npeaks, local_min, local_max, vh_min,
+					  vh_max, vh_box, vh_mins, vh_maxs,
+					  vh_peaks);
+	}
     }
-	    
-  
+
   /* Free the allocated memory */
   free(hist_bins);
   free(hist_edges);
-  free(xdata);
+  free(vh_peaks);
+  free(private);
+  free(result);
 
   /* Return the number of virtual height bins as the routine status */
-  return(out_num);
+  return(npeaks);
+}
+
+/**
+ * @brief Sorts the virtual height limits, eliminating overlaps and gaps
+ *
+ * @params[in] num       - Number of values in vh_(mins/maxs/peaks) at input
+ *             local_min - Minimum of provided virtual height values in km
+ *             local_max - Maximum of provided virtual height values in km
+ *             vh_box    - Width of desired virtual height bin in km
+ *
+ * @params[in/out] vh_mins  - Lower limit of virtual height bins in km
+ *                 vh_maxs  - Upper limit of virtual height bins in km
+ *                 vh_peaks - Peak height for virtual height bins in km
+ *
+ * @reference Part of davitpy.proc.fov.update_backscatter.select_alt_groups
+ **/
+
+int sort_expand_boundaries(int num, float local_min, float local_max,
+			   float vh_min, float vh_max, float vh_box,
+			   float vh_mins[], float vh_maxs[], float *vh_peaks)
+{
+  int i, inew, vnum, *sortargs, *priority;
+
+  float hmin, vspan, *new_mins, *new_maxs, *new_peaks;
+
+  void smart_argsort_float(int num, float array[], int sortargs[]);
+
+  /* Initialize the local pointers */
+  new_mins  = (float *)calloc(num + 100, sizeof(float));
+  new_maxs  = (float *)calloc(num + 100, sizeof(float));
+  new_peaks = (float *)calloc(num + 100, sizeof(float));
+  priority  = (int *)calloc(num + 100, sizeof(int));
+  inew      = 0;
+
+  /* Get the indices for sorted Gaussian limits */
+  sortargs = (int *)calloc(num, sizeof(int));
+  smart_argsort_float(num, vh_mins, sortargs);
+
+  /* If there are points that fall below the lower limit, add more regions */
+  /* using the suggested width limits.                                     */
+  if(vh_mins[sortargs[0]] > local_min)
+    {
+      vnum = (int)((vh_mins[sortargs[0]] - local_min) / vh_box);
+      if(vnum == 0)
+	{
+	  /* The outlying points are close enough that the lower limit */
+	  /* should be extended.                                       */
+	  vh_mins[sortargs[0]] = floor(local_min);
+	  if(vh_mins[sortargs[0]] < vh_min)
+	    vh_mins[sortargs[0]] = vh_min;
+	}
+      else
+	{
+	  /* Create new virtual height bins and prioritize them. Low      */
+	  /* priority values indicate a higher priority to keep this bin. */
+	  vspan = (vh_mins[sortargs[0]] - local_min) / (float)vnum;
+
+	  for(i = 0; i < vnum; i++)
+	    {
+	      /* Calculate the lower limit of the virtual height bin */
+	      hmin = local_min + (float)i * vspan;
+	      if(hmin < local_min) hmin = local_min;
+
+	      /* Add the new virtual height bin to the start of the local */
+	      /* pointers, which need to be sorted from least to greatest */
+	      new_mins[inew]  = hmin;
+	      new_maxs[inew]  = hmin + vspan;
+	      new_peaks[inew] = hmin + 0.5 * vspan;
+	      priority[inew]  = inew + num;
+	      inew++;
+	    }
+	}
+    }
+
+  /* Add the Gaussian limits to the local pointers */
+  for(i = 0; i < num; i++)
+    {
+      /* Get the next lowest minimum virtual height bin value */
+      hmin = vh_mins[sortargs[i]];
+
+      /* Test for overlapping bins and gaps */
+      if(inew > 0)
+	{
+	  /* Test for overlaps or gaps with the previous height window */
+	  if((new_maxs[inew - 1] >= vh_peaks[sortargs[i]])
+	     || (hmin <= new_peaks[inew - 1]))
+	    {
+	      /* There is a significant overlap between the two regions. */
+	      /* Use the priority to decide which boundary to adjust.   */
+	      if(priority[inew - 1] < sortargs[i])
+		hmin = new_maxs[inew - 1];
+	      else
+		{
+		  /* If this adjustment places the previous maximum at or */
+		  /* below the previous minimum, remove that height bin.  */
+		  while(hmin <= new_mins[inew - 1] && inew > 0)
+		    inew--;
+
+		  /* Set the maximum of the new last window to the minimum */
+		  /* of the next window, removing any gap.                 */
+		  if(inew > 0) new_maxs[inew - 1] = hmin;
+		}
+	    }
+	  else if(new_maxs[inew - 1] < hmin)
+	    {
+	      /* There is a gap between the two height bins. Construct */
+	      /* bridging window(s) before adding the current height   */
+	      /* bin to the local pointers.                            */
+	      vnum = (int)((hmin - new_maxs[inew - 1]) / vh_box);
+
+	      if(vnum == 0)
+		{
+		  /* The outlying points are close enough that the last */
+		  /* upper limit should be expanded.                    */
+		  new_maxs[inew - 1] = hmin;
+		}
+	      else
+		{
+		  vspan = (hmin - new_maxs[inew - 1]) / (float)vnum;
+
+		  for(i = 0; i < vnum; i++)
+		    {
+		      /* Add the new virtual height bin to the local pointers */
+		      new_mins[inew]  = new_maxs[inew - 1];
+		      new_maxs[inew]  = new_mins[inew] + vspan;
+		      new_peaks[inew] = new_mins[inew] + 0.5 * vspan;
+		      priority[inew]  = inew + num;
+		      inew++;
+		    }
+		}
+	    }
+
+	  /* Add the current height bin, if it is wide enough to be sensible */
+	  if(hmin < vh_maxs[sortargs[i]])
+	    {
+	      new_mins[inew]  = hmin;
+	      new_maxs[inew]  = vh_maxs[sortargs[i]];
+	      new_peaks[inew] = vh_peaks[sortargs[i]];
+	      priority[inew]  = sortargs[i];
+	    }
+	}
+    }
+
+  /* If there are points that fall above the upper limit, add more regions */
+  if((num == 0) || (new_maxs[inew - 1] < local_max))
+    {
+      vnum = (int)((local_max - new_maxs[inew - 1]) / vh_box);
+
+      if(vnum == 0)
+	{
+	  /* The outlying points are close enough that the upper limit */
+	  /* should be expanded.                                       */
+	  new_maxs[inew - 1] = ceil(local_max);
+	  if(new_maxs[inew - 1] > vh_max) new_maxs[inew - 1] = vh_max;
+	}
+      else
+	{
+	  vspan = (local_max - new_maxs[inew - 1]) / (float)vnum;
+
+	  for(i = 0; i < vnum && new_maxs[inew - 1] < vh_max; i++)
+	    {
+	      /* Get the maximum, ensuring it doesn't extend too high */
+	      hmin = new_maxs[inew - 1] + vspan;
+	      if(hmin > vh_max) hmin = vh_max;
+	      
+	      /* Add the new virtual height bin to the local pointers */
+	      new_mins[inew]  = new_maxs[inew - 1];
+	      new_maxs[inew]  = hmin;
+	      new_peaks[inew] = 0.5 * (hmin - new_mins[inew]) + new_mins[inew];
+	      priority[inew]  = inew + num;
+	      inew++;
+	    }
+	}
+    }
+
+  /* Update the output with the sorted local values */
+  for(i = 0; i < inew; i++)
+    {
+      vh_mins[i]  = new_mins[i];
+      vh_maxs[i]  = new_maxs[i];
+      vh_peaks[i] = new_peaks[i];
+    }
+
+  /* Free the local pointers */
+  free(sortargs);
+  free(new_mins);
+  free(new_maxs);
+  free(new_peaks);
+  free(priority);
+
+  return(inew);
 }
