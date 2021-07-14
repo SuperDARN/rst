@@ -29,28 +29,30 @@
 
 #include "multbsid.h"
 
-#define MAX_SCAN 50
-#define MAX_RG 500
+#define MAX_SCAN 1440
+#define MAX_RG 225
 
 /**
  * @brief Evaluate the elevation angles in a scan to determine the FoV
  *
- * @param[in]
+ * @param[in] min_pnts - Minimum number of points needed for an evaluation
+ *            struct RadarBSIDScan *scan
  **/
 
-void EvalScanFoV(int D_nrg, int E_nrg, int F_nrg, int far_nrg,
-		 float D_vh_box, float E_vh_box, float F_vh_box,
-		 float far_vh_box,
-		 struct RadarBSIDScan *scan)
+void EvalScanFoV(int min_pnts, struct RadarBSIDScan *scan)
 {
-  int i, j, p, ibm, irng, nrng, min_rg, max_rg, max_box, rmin, rmax, pnum;
+  int i, j, p, ibm, irg, nrg, min_rg, max_rg, max_box, rmin, rmax, pnum;
   int fnum[MAX_RG], bnum[MAX_RG], floc[MAX_RG], bloc[MAX_RG];
+  int num[2][MAX_RG], bm_ind[2][MAX_RG][MAX_SCAN * MAX_RG];
+  int rg_ind[2][MAX_RG][MAX_SCAN * MAX_RG];
 
   float max_inc;
   float fvh[MAX_RG][MAX_SCAN * MAX_RG];
   float fhop[MAX_RG][MAX_SCAN * MAX_RG];
   float bvh[MAX_RG][MAX_SCAN * MAX_RG];
   float bhop[MAX_RG][MAX_SCAN * MAX_RG];
+  float vh[2][MAX_RG][MAX_SCAN * MAX_RG];
+  float elv[2][MAX_RG][MAX_SCAN * MAX_RG];
 
   double width;
   double felv[MAX_RG][MAX_SCAN * MAX_RG];
@@ -59,6 +61,7 @@ void EvalScanFoV(int D_nrg, int E_nrg, int F_nrg, int far_nrg,
   char freg[MAX_RG][MAX_SCAN * MAX_RG][1];
   char breg[MAX_RG][MAX_SCAN * MAX_RG][1];
   char unique_prop[MAX_SCAN * MAX_RG][5];
+  char reg[2][MAX_RG][MAX_SCAN * MAX_RG][5];
 
   struct RadarBSIDBeam *beams[MAX_SCAN];
 
@@ -86,17 +89,17 @@ void EvalScanFoV(int D_nrg, int E_nrg, int F_nrg, int far_nrg,
   /* Verify scan dimensions fit within expected limits */
   if(scan->num >= MAX_SCAN)
     {
-      printf("EvalScanFoV ERROR: too many beams in scan [{:d}>{:d}]\n",
+      printf("EvalScanFoV ERROR: too many beams in scan [%d > %d]\n",
 	     scan->num, MAX_SCAN);
       exit(1);
     }
 
   beams[0] = scan->bm;
-  nrng     = beams[0]->nrang;
-  if(nrng >= MAX_RG)
+  nrg      = beams[0]->nrang;
+  if(nrg >= MAX_RG)
     {
-      printf("EvalScanFoV ERROR: too many range gates per beam [{:d}>{:d}]\n",
-	     nrng, MAX_RG);
+      printf("EvalScanFoV ERROR: too many range gates per beam [%d > %d]\n",
+	     nrg, MAX_RG);
       exit(1);
     }
 
@@ -110,7 +113,7 @@ void EvalScanFoV(int D_nrg, int E_nrg, int F_nrg, int far_nrg,
  
       for(ibm = 0; ibm < MAX_SCAN; ibm++)
 	{
-	  fvh[irng][irg * MAX_SCAN + ibm]  = 0.0;
+	  fvh[irg][irg * MAX_SCAN + ibm]  = 0.0;
 	  fhop[irg][irg * MAX_SCAN + ibm] = 0.0;
 	  felv[irg][irg * MAX_SCAN + ibm] = 0.0;
 	  sprintf(freg[irg][irg * MAX_SCAN + ibm], "U");
@@ -124,7 +127,7 @@ void EvalScanFoV(int D_nrg, int E_nrg, int F_nrg, int far_nrg,
 	  if(irg == 0 && ibm + 1 < scan->num)
 	    {
 	      beams[ibm + 1] = scan->bm;
-	      if(beams[ibm + 1]->nrang != nrng)
+	      if(beams[ibm + 1]->nrang != nrg)
 		{
 		  printf("EvalScanFoV ERROR: change in range gates mid-scan");
 		  exit(1);
@@ -139,14 +142,14 @@ void EvalScanFoV(int D_nrg, int E_nrg, int F_nrg, int far_nrg,
   for(i = 0, irg = min_rg; irg <= max_rg; irg++)
     {
       /* Get the box limit index for this range gate */
-      while(i < 3 && irng >= rg_max[i]) i++;
+      while(i < 3 && irg >= rg_max[i]) i++;
 
       /* Determine the size of this range gate box */
       width = floor((double)rg_box[i] / 2.0);
-      rmin = irng - (int)width;
+      rmin = irg - (int)width;
       rmin = (rmin < 0) ? 0 : rmin;
-      rmax = irng + (int)width + rg_box[i] % 2;
-      rmax = (rmax <= nrang) ? rmax : ((nrang < max_rg) ? nrang : max_rg);
+      rmax = irg + (int)width + rg_box[i] % 2;
+      rmax = (rmax <= nrg) ? rmax : ((nrg < max_rg) ? nrg : max_rg);
 
       /* For each beam, load the data for this range gate window */
       for(ibm = 0; ibm < scan->num; ibm++)
@@ -195,6 +198,7 @@ void EvalScanFoV(int D_nrg, int E_nrg, int F_nrg, int far_nrg,
 	      for(p = 0; p < pnum; p++)
 		{
 		  /* Get the virtual height groups for this prop path */
+		  // HERE
 		}
 	    }
 	}
@@ -202,40 +206,4 @@ void EvalScanFoV(int D_nrg, int E_nrg, int F_nrg, int far_nrg,
 
   
   return;
-}
-
-/**
- * @brief Take an array of strings and return an array of the unique strings
- *
- * @param[in] int_num    Number of strings contained within in_str
- *            in_str     Array of strings to evaluate
- *
- * @param[out] out_num  Number of unique strings found within in_str
- *             out_str  Array of unique strings
- **/
-
-int get_unique_str(int in_num, char **in_str, ichar **out_str)
-{
-  int i, j, out_num, match;
-
-  out_num = 1;
-  strcpy(out_str[0], in_str[0]);
-
-  for(i = 1; i < in_num; i++)
-    {
-      /* Look for a matching string */
-      for(match = 0, j = 0; j < out_num && match == 0; j++)
-	{
-	  if(strcmp(out_str[j], in_str[i]) == 0) match = 1;
-	}
-
-      /* If there is no matching string, add this to the output */
-      if(match == 0)
-	{
-	  strcpy(out_str[out_num], in_str[i]);
-	  out_num++;
-	}
-    }
-
-  return(out_num);
 }
