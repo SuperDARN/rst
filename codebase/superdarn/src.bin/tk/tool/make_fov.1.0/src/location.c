@@ -26,6 +26,7 @@
 
 #include <math.h>
 #include <stdio.h>
+
 #include "fitblk.h"
 #include "rmath.h"
 
@@ -42,10 +43,8 @@
  *
  * @param[out] alpha   Elevation angle [deg]
  *
- * Note
- * ----
- * SGS somehow need to pass in options for allowing negative elevation
- * angles and residual phase
+ * @notes SGS somehow need to pass in options for allowing negative elevation
+ *        angles and residual phase
  **/
 
 double elevation_v2_lobe(int lobe, struct FitPrm *prm, double psi_obs,
@@ -352,4 +351,23 @@ void SetRegion(float D_hmin, float D_hmax, float E_hmax, float F_hmax,
   else if(vheight <= E_hmax)               sprintf(region, "E");
   else                                     sprintf(region, "F");
   return;
+}
+
+/**
+ * @brief Calculate the slant range path in km
+ *
+ * @params[in] smsep - Width of the range gate bins in km
+ *             lagfr - Distance to the first range in km
+ *             irg   - Zero-indexed range gate number
+ *
+ * @params[out] dist - slant distance in km
+ **/
+
+float slant_range(float smsep, float lagfr, int irg)
+{
+  float dist;
+
+  dist = 5.0e-10 * C * ((float)irg * smsep + lagfr);
+
+  return(dist);
 }
