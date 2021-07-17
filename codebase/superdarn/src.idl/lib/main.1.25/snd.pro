@@ -18,7 +18,6 @@
 ; 
 ; Modifications:
 ; 
-; Functions
 
 ; Public Functions
 ; ----------------
@@ -524,4 +523,3 @@ function SndClose,unit
   return,0
 
 end
-
