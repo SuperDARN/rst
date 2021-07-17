@@ -50,7 +50,7 @@ IMF data can be supplied as a text file to the `map_addimf` routine using `-if [
 The file should have the columns shown below. The IMF values will change only when a subsequent line the IMF file alters it.
 
 ```
-year month day hour minute second bx by bz
+year month day hour minute second bx by bz Vx Kp
 ```
 
 You can also add fixed IMF values for the entire map file, for example
