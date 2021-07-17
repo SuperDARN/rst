@@ -19,8 +19,8 @@
 ; 
 ; Modifications:
 ; 
-; Functions
-; ---------------
+; Public Functions
+; ----------------
 ;
 ; FitCnxRead               
 ;

@@ -19,7 +19,8 @@
 ; 
 ; Modifications:
 ; 
-; Functions
+; Public Functions
+; ----------------
 ;
 ; OldFitOpen
 ; OldFitClose
