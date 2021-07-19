@@ -11,20 +11,21 @@ INCLUDE = -I$(IPATH)/analysis -I$(IPATH)/base -I$(IPATH)/general \
 		-I$(IPATH)/superdarn -I../include/
 
 # Notes:
-# load_fit is copied from codebase/superdarn/src.bin/tk/tool/read_fit_v1.0
+# cnvtcoord, get_fit_tfreq_band, should likely be called through libraries
 SRC =	make_fov.c \
-	multbsid.c \
 	cnvtcoord.c \
 	eval_groundscatter.c \
 	leastsquares.c \
 	linear_regression.c \
+	load_fit_update_fov.c \
 	location.c \
+	multbsid.c \
+	read_fit_funcs.c \
 	select_alt_groups.c \
 	sort_rout.c \
 	update_beam.c \
 	update_scan.c \
-	utils.c \
-	load_fit_update_fov.c
+	utils.c
 
 OBJS =	$(SRC:.c=.o)
 

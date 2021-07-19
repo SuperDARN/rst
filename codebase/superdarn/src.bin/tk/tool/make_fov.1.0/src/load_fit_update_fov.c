@@ -31,6 +31,7 @@
 #include "rtypes.h"
 #include "rtime.h"
 #include "dmap.h" /* DMap library needs to go before rprm.h */
+#include "radar.h"
 #include "rprm.h"
 #include "scandata.h" /* scandata.h needs to go before the various fitdata.h */
 #include "fitindex.h"
@@ -103,17 +104,15 @@ int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
 			int F_rgmax, float D_hmin, float D_hmax, float E_hmax,
 			float F_hmax, float D_vh_box, float E_vh_box,
 			float F_vh_box, float far_vh_box, float max_hop,
-			struct MultRadarBSID *mult_bsid)
+			struct MultFitBSID *mult_bsid)
 {
-  int yr, mo, dy, hr, mt, inum, num, ibm, freq, band_tol, local_max;
-  int ret_flg=0, state=0, syncflg=1, min_freq=-1, max_freq=-1;
+  int yr, mo, dy, hr, mt, inum, ret_flg=0, state=0, syncflg=1;
 
   double sc;
 
   FILE *fp, *fitfp;
 
   struct RadarSite *site;
-  struct RadarBeam bm;
   struct RadarParm *prm;
   struct FitData *fit;
   struct CFitdata *cfit;
@@ -130,9 +129,8 @@ int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
 		       int far_nrg, int D_rgmax, int E_rgmax, int F_rgmax,
 		       float D_hmin, float D_hmax, float E_hmax, float F_hmax,
 		       float D_vh_box, float E_vh_box, float F_vh_box,
-		       float far_vh_box, float max_hop,
-		       struct MultRadarScan *mult_scan, struct RadarSite *hard,
-		       struct MultRadarBSID *mult_bsid);
+		       float far_vh_box, float max_hop, struct RadarScan *scan,
+		       struct RadarSite *hard, struct MultFitBSID *mult_bsid);
 
   /* Initialize radar parameter and fit/cfit structures */
   site = (struct RadarSite *)malloc(sizeof(struct RadarSite));
