@@ -28,10 +28,6 @@
 #ifndef _MULTBSID_H
 #define _MULTBSID_H
 
-#ifndef _SCANDATA_H
-#include "scandata.h"
-#endif
-
 #ifndef _FITBLK_H
 #include "fitblk.h"
 #endif
@@ -60,7 +56,7 @@ struct CellBSIDLoc
   float dist;
 };  
 
-struct RadarBSIDBeam
+struct FitBSIDBeam
 {
   int nrang;
   double time;
@@ -76,17 +72,17 @@ struct RadarBSIDBeam
   struct CellBSIDLoc *back_loc;
 };
 
-struct RadarBSIDScan
+struct FitBSIDScan
 {
   double st_time;
   double ed_time;
-  int num;
-  struct RadarBSIDBeam *bm;
-  struct RadarBSIDScan *next_scan;
-  struct RadarBSIDScan *prev_scan;
+  int num_bms;
+  struct FitBSIDBeam *bm;
+  struct FitBSIDScan *next_scan;
+  struct FitBSIDScan *prev_scan;
 };
 
-struct MultRadarBSID
+struct MultFitBSID
 {
   int stid;
   struct
@@ -99,16 +95,16 @@ struct MultRadarBSID
   double ed_time;
   int num_scans;
 
-  struct RadarBSIDScan scan;
-  struct RadarBSIDScan *scan_ptr;
-  struct RadarBSIDScan *last_ptr;
+  struct FitBSIDScan scan;
+  struct FitBSIDScan *scan_ptr;
+  struct FitBSIDScan *last_ptr;
 };
 
-/* struct MultRadarScan *MultRadarScanMake();
- * void MultRadarScanFree(struct MultRadarScan *ptr);
- * int MultRadarScanReset(struct MultRadarScan *ptr);
- * int MultRadarScanResetScan(struct MultRadarScan *ptr, int *scan_ptr);
- * struct RadarScan *MultRadarScanAddScan(struct MultRadarScan *ptr);
- */
+struct MultFitBSID *MultFitBSIDMake();
+void MultFitBSIDFree(struct MultFitBSID *ptr);
+int MultFitBSIDReset(struct MultFitBSID *ptr);
+int FitBSIDScanFreeNext(struct FitBSIDScan *ptr);
+void FitBSIDBeamFree(struct FitBSIDBeam *ptr);
+
 
 #endif
