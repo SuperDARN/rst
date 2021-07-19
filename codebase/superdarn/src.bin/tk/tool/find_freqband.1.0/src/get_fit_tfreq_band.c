@@ -385,6 +385,7 @@ int get_fit_tfreq_bands(int fnum, int channel, int channel_fix, int old,
 
       /* Cycle to the next possible frequency band */
       freq = local_max;
+      while((freq < max_freq) && (all_freq[freq] == 0)) freq++;
     }
 
   /* The band width was too small to split into 90 bands or less */
