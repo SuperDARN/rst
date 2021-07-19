@@ -38,6 +38,10 @@
 
 struct OptionData opt;
 
+#ifndef MAX_FREQ_KHZ
+#define MAX_FREQ_KHZ 30000
+#endif
+
 /**
  * Determines the backscatter origin field-of-view
  **/
@@ -46,14 +50,12 @@ int main(int argc, char *argv[])
 {
   int yr, mo, dy, hr, mt, stid;
   int inum, len, fnum, channel, channel_fix, ret_stat, nfbands;
-  int fbands[90][2];
+  int fbands[90][2], all_freq[MAX_FREQ_KHZ];
 
   double sc;
 
   char vstr[256];
 
-  struct RadarSite *site;
-  struct MultRadarScan *mult_scan;
   struct MultRadarBSID *mult_bsid;
 
   /* Initialize input options */
@@ -93,24 +95,24 @@ int main(int argc, char *argv[])
   int set_fix_channel(char *chnstr_fix);
   double strtime(char *text);
   double strdate(char *text);
-  void load_radar_site(int yr, int mo, int dy, int hr, int mt, int sc,
-		       int stid, struct RadarSite *site);
-  int load_fit(int fnum, int channel, int channel_fix, int old, int tlen,
-	       double stime, double sdate, double etime, double edate,
-	       double extime, unsigned char wrtflg, unsigned char cfitflg,
-	       unsigned char fitflg, unsigned char nsflg, unsigned char vb,
-	       char *vbuf, char *iname, char **dnames,
-	       struct MultRadarScan *mult_scan);
-  int get_radar_tfreq_bands(int band_width, struct MultRadarScan *mult_scan,
-			    int fbands[90][2]);
-  void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
-		       int min_pnts, int D_nrg, int E_nrg, int F_nrg,
-		       int far_nrg, int D_rgmax, int E_rgmax, int F_rgmax,
-		       float D_hmin, float D_hmax, float E_hmax, float F_hmax,
-		       float D_vh_box, float E_vh_box, float F_vh_box,
-		       float far_vh_box, float max_hop,
-		       struct MultRadarScan *mult_scan, struct RadarSite *hard,
-		       struct MultRadarBSID *mult_bsid);
+  int get_fit_tfreq_bands(int fnum, int channel, int channel_fix, int old,
+			  int tlen, double stime, double sdate, double etime,
+			  double edate, double extime, unsigned char fitflg,
+			  unsigned char nsflg, unsigned char vb, char *vbuf,
+			  char *iname, char **dnames,int band_width,
+			  int fbands[90][2], int all_freq[MAX_FREQ_KHZ]);
+  int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
+			  int tlen, double stime, double sdate, double etime,
+			  double edate, double extime, unsigned char fitflg,
+			  unsigned char nsflg, unsigned char vb, char *vbuf,
+			  char *iname, char **dnames, short_int tdiff_flag,
+			  double tdiff, short int strict_gs, int freq_min,
+			  int freq_max, int min_pnts, int D_nrg, int E_nrg,
+			  int F_nrg, int far_nrg, int D_rgmax, int E_rgmax,
+			  int F_rgmax, float D_hmin, float D_hmax, float E_hmax,
+			  float F_hmax, float D_vh_box, float E_vh_box,
+			  float F_vh_box, float far_vh_box, float max_hop,
+			  struct MultRadarBSID *mult_bsid);
 
   /* Process the command line options */
   farg = command_options(argc, argv, &old, &tlen, &vb, &cfitflg, &fitflg,
@@ -167,18 +169,7 @@ int main(int argc, char *argv[])
     }
 
   /* Initialize and load the fitted data */
-  mult_scan = (struct MultRadarScan *)malloc(sizeof(struct MultRadarScan));
-  memset(mult_scan, 0, sizeof(struct MultRadarScan));
-  mult_scan->num_scans = 0;
-  ret_stat = load_fit(fnum, channel, channel_fix, old, tlen, stime, sdate,
-		      etime, edate, extime, 0, cfitflg, fitflg, nsflg, vb, vbuf,
-		      iname, dnames, mult_scan);
-
-  /* Initialize and load the radar hardware data */
-  site = (struct RadarSite *)malloc(sizeof(struct RadarSite));
-  memset(site, 0, sizeof(struct RadarSite));
-  TimeEpochToYMDHMS(mult_scan->st_time, &yr, &mo, &dy, &hr, &mt, &sc);
-  load_radar_site(yr, mo, dy, hr, mt, sc, mult_scan->stid, site);
+  mult_bsid = MultFitBSIDMake();
 
   /* Update tdiff if requested */
   if(tdiff_flag) site->tdiff = tdiff;      
@@ -187,7 +178,10 @@ int main(int argc, char *argv[])
   /* unless a frequency range was specified                             */
   if(freq_max - freq_min == 27000)
     {
-      nfbands = get_radar_tfreq_bands(band_width, mult_scan, fbands);
+      nfbands = get_fit_tfreq_bands(fnum, channel, channel_fix, old, tlen,
+				    stime, sdate, etime, edate, extime, fitflg,
+				    nsflg, vb, vbuf, iname, dnames, band_width,
+				    fbands, all_freq);
       if(nfbands < 0)
 	{
 	  printf("make_fov ERROR: frequency band width too small");
@@ -207,11 +201,15 @@ int main(int argc, char *argv[])
       /* Cycle through the scans, updating the backscatter data in each one */
       /* Based off of DaViTpy routine:                                      */
       /*   pydarn.proc.fov.update_backscatter.update_bs_w_scan              */
-      UpdateScanBSFoV(strict_gs, fbands[inum][0], fbands[inum][1], min_pnts,
-		      D_nrg, E_nrg, F_nrg, far_nrg, D_rgmax, E_rgmax, F_rgmax,
-		      D_hmin, D_hmax, E_hmax, F_hmax, D_vh_box, E_vh_box,
-		      F_vh_box, far_vh_box, max_hop, mult_scan, site,
-		      mult_bsid);
+      
+      ret_stat = load_fit_update_fov(fnum, channel, channel_fix, old, tlen,
+				     stime, sdate, etime, edate, extime, fitflg,
+				     nsflg, vb, vbuf, iname, dnames, tdiff_flag,
+				     tdiff, strict_gs, freq_min, freq_max,
+				     min_pnts, D_nrg, E_nrg, F_nrg, far_nrg,
+				     D_rgmax, E_rgmax, F_rgmax, D_hmin, D_hmax,
+				     E_hmax, F_hmax, D_vh_box, E_vh_box,
+				     F_vh_box, far_vh_box, max_hop, mult_bsid);
 
       /* Examine the UT evolution and consistency of the elevation angles HERE */
       //ret_stat = test_ut_fov_struct(min_frac, frg_box, max_rg, ut_box, fbands,
