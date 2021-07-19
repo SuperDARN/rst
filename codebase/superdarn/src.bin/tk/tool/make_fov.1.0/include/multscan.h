@@ -37,10 +37,11 @@ struct FitBeam
   int nrang;
   double time;
   unsigned char *sct;
-  struct FitBlock *block;
-  struct FitElv *elv;
+  struct FitPrm prm;
   struct FitNoise noise;
   struct FitRange *rng;
+  struct FitRange *xrng;
+  struct FitElv *elv;
 };
 
 struct FitScan

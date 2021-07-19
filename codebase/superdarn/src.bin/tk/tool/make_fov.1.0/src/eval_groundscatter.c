@@ -1,6 +1,6 @@
 /* eval_groundscatter.c
-   =============
-   Author: Angeline G. Burrell - NRL - 2020
+   ====================
+   Author: Angeline G. Burrell - NRL - 2021
 */
 
 /*
@@ -42,7 +42,7 @@
  *  * at least 3 groundscatter points are found in a 10 range gate box
  **/
 
-void EvalGroundScatter(struct RadarBSIDBeam *beam)
+void EvalGroundScatter(struct FitBSIDBeam *beam)
 {
   int irg, gflg, min_rg, max_rg, box_width, npnts, nmin;
 
@@ -51,7 +51,7 @@ void EvalGroundScatter(struct RadarBSIDBeam *beam)
   int CheckGroundScatter(int rg, int gflg, float slant_dist, float power,
 			 int min_rg, int max_rg, float max_power);
   float CalcFracGroundScatter(int box_width, int icenter,
-			      struct RadarBSIDBeam *beam, int *npnts);
+			      struct FitBSIDBeam *beam, int *npnts);
 
   /* Set the evaluation defaults */
   min_rg    = 10;
@@ -95,23 +95,22 @@ void EvalGroundScatter(struct RadarBSIDBeam *beam)
 /**
  * @brief Single-point groundscatter quality evaluation
  *
- * @params[in] rg         - range gate index
- *             gflg       - GS flag (1=ground scatter, 0=ionospheric scatter)
- *             slant_dist - 1-hop slant distance in km
- *             power      - signal power in dB
- *             min_rg     - minimum range gate for D-region power considerations
- *             max_rg     - maximum range gate
- *             max_power  - maximum power for near-range gate groundscatter
+ * @param[in] rg         - range gate index
+ *            gflg       - GS flag (1=ground scatter, 0=ionospheric scatter)
+ *            slant_dist - 1-hop slant distance in km
+ *            power      - signal power in dB
+ *            min_rg     - minimum range gate for D-region power considerations
+ *            max_rg     - maximum range gate
+ *            max_power  - maximum power for near-range gate groundscatter
  *
- * @parrams[out] out_flag - Returns 0 if GS check fails, 1 if it passes
+ * @param[out] out_flag - Returns 0 if GS check fails, 1 if it passes
  *
- * Criteria
- * --------
- *  * power above 0
- *  * gflg of 1
- *  * 1/2 hop distances closer than 160 km <- re-evaluate for h' 100 km?
- *  * range gate above min_rg for any positive power
- *  * range gate below min_rg and between 0.0 and max_power
+ * @notes Routine uses the following criteria to evaluate groundscatter status:
+ *        * power above 0
+ *        * gflg of 1
+ *        * 1/2 hop distances closer than 160 km <- re-evaluate for h' 100 km?
+ *        * range gate above min_rg for any positive power
+ *        * range gate below min_rg and between 0.0 and max_power
  **/
 
 int CheckGroundScatter(int rg, int gflg, float slant_dist, float power,
@@ -142,16 +141,16 @@ int CheckGroundScatter(int rg, int gflg, float slant_dist, float power,
 /**
  * @brief Proximity test for groundscatter along a beam
  *
- * @params[in] box_width - 1/2 size of box in range gates
- *             rg_center - range gate of central point
- *             beam      - FitRange structured radar beam
+ * @param[in] box_width - 1/2 size of box in range gates
+ *            rg_center - range gate of central point
+ *            beam      - FitRange structured radar beam
  *
- * @params[out] npnts - number of points with groundscatter in box
- *              frac  - fraction of points in range gate box that are GS
+ * @param[out] npnts - number of points with groundscatter in box
+ *             frac  - fraction of points in range gate box that are GS
  **/
 
 float CalcFracGroundScatter(int box_width, int rg_center,
-			    struct RadarBSIDBeam *beam, int *npnts)
+			    struct FitBSIDBeam *beam, int *npnts)
 {
   int irg, num, min_box, max_box;
 
