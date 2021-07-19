@@ -28,16 +28,32 @@
 #ifndef _MULTBSID_H
 #define _MULTBSID_H
 
+#ifndef _ZLIB_H
+#include <zlib.h>
+#endif
+
+#ifndef _RTYPES_H
+#include "rtypes.h"
+#endif
+
+#ifndef _DMAP_H
+#include "dmap.h"
+#endif
+
+#ifndef _DMAP_H
+#include "dmap.h"
+#endif
+
+#ifndef _RPRM_H
+#include "rprm.h"
+#endif
+
 #ifndef _FITBLK_H
 #include "scandata.h"
 #endif
 
 #ifndef _FITBLK_H
 #include "fitblk.h"
-#endif
-
-#ifndef _RPRM_H
-#include "rprm.h"
 #endif
 
 
@@ -117,7 +133,6 @@ struct MultFitBSID
   double ed_time;
   int num_scans;
 
-  struct FitBSIDScan scan;
   struct FitBSIDScan *scan_ptr;
   struct FitBSIDScan *last_ptr;
 };
@@ -125,7 +140,7 @@ struct MultFitBSID
 struct MultFitBSID *MultFitBSIDMake();
 void MultFitBSIDFree(struct MultFitBSID *ptr);
 int MultFitBSIDReset(struct MultFitBSID *ptr);
-int FitBSIDScanFreeNext(struct FitBSIDScan *ptr);
+void FitBSIDScanFreeNext(struct FitBSIDScan *ptr);
 void FitBSIDBeamFree(struct FitBSIDBeam *ptr);
 
 

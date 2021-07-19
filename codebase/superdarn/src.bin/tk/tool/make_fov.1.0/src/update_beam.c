@@ -25,8 +25,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "radar.h"
 #include "shfconst.h"
-
 #include "multbsid.h"
 
 /**
@@ -53,6 +53,8 @@ void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
 
   float vh_low, vh_high;
 
+  double range_edge;
+
   void EvalGroundScatter(struct FitBSIDBeam *beam);
   double elevation_v2_lobe(int lobe, int bmnum, int tfreq,
 			   struct RadarSite *site, double psi_obs,
@@ -60,7 +62,7 @@ void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
   float calc_elv_vheight(float slant_dist, float hop, float radius, float elv);
   short int AdjustPropagation(int lobe, float radius, float D_hmin,
 			      float D_hmax, float E_hmax, float F_hmax,
-			      float max_hop, struct FitPrm *prm,
+			      float max_hop, int bmnum, int tfreq,
 			      struct RadarSite *site, double psi_obs,
 			      float *hop, float *vheight, double *elv,
 			      float *slant_dist);
@@ -74,8 +76,10 @@ void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
     {
       if(beam->sct[irg] == 1)
 	{
-	  beam->front_loc[irg].dist = slant_range(beam->prm.smsep,
-						   beam->prm.lagfr, irg);
+	  range_edge = -0.5 * beam->rsep * 20.0 / 3.0;
+	  beam->front_loc[irg].dist = slant_range(beam->frang, beam->rsep,
+						  (double)beam->rxrise,
+						  range_edge, irg);
 	  beam->back_loc[irg].dist = beam->front_loc[irg].dist;
 	}
     }
@@ -130,8 +134,8 @@ void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
 	    {
 	      /* Calculate the back lobe elevation, as front was assigned */
 	      /* during the beam initialization.                          */
-	      beam->back_elv[irg].normal = elevation_v2_lobe(-1, beam.bm,
-							     beam.freq, site,
+	      beam->back_elv[irg].normal = elevation_v2_lobe(-1, beam->bm,
+							     beam->freq, site,
 							     beam->rng[irg].phi0, 0.0);
 
 	      /* Calculate the virtual heights */
@@ -142,15 +146,15 @@ void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
 
 	      /* Test and adjust the virtual height and propagation path */
 	      falias = AdjustPropagation(1, Re, D_hmin, D_hmax, E_hmax,
-					 F_hmax, max_hop, &beam->prm, site,
-					 beam->rng[irg].phi0,
+					 F_hmax, max_hop, beam->bm, beam->freq,
+					 site, beam->rng[irg].phi0,
 					 &beam->front_loc[irg].hop,
 					 &beam->front_loc[irg].vh,
 					 &beam->front_elv[irg].normal,
 					 &beam->front_loc[irg].dist);
 	      balias = AdjustPropagation(-1, Re, D_hmin, D_hmax, E_hmax,
-					 F_hmax, max_hop, &beam->prm, site,
-					 beam->rng[irg].phi0,
+					 F_hmax, max_hop, beam->bm, beam->freq,
+					 site, beam->rng[irg].phi0,
 					 &beam->back_loc[irg].hop,
 					 &beam->back_loc[irg].vh,
 					 &beam->back_elv[irg].normal,

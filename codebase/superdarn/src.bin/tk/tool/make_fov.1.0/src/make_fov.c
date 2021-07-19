@@ -31,7 +31,6 @@
 #include "radar.h"
 #include "rpos.h"
 #include "scandata.h"
-#include "multscan.h"
 #include "multbsid.h"
 #include "hlpstr.h"
 #include "errstr.h"
@@ -48,15 +47,12 @@ struct OptionData opt;
 
 int main(int argc, char *argv[])
 {
-  int yr, mo, dy, hr, mt, stid;
   int inum, len, fnum, channel, channel_fix, ret_stat, nfbands;
   int fbands[90][2], all_freq[MAX_FREQ_KHZ];
 
-  double sc;
-
   char vstr[256];
 
-  struct MultRadarBSID *mult_bsid;
+  struct MultFitBSID *mult_bsid;
 
   /* Initialize input options */
   /* Default frequency limits set to the limits of the HF range */
@@ -105,14 +101,14 @@ int main(int argc, char *argv[])
 			  int tlen, double stime, double sdate, double etime,
 			  double edate, double extime, unsigned char fitflg,
 			  unsigned char nsflg, unsigned char vb, char *vbuf,
-			  char *iname, char **dnames, short_int tdiff_flag,
+			  char *iname, char **dnames, short int tdiff_flag,
 			  double tdiff, short int strict_gs, int freq_min,
 			  int freq_max, int min_pnts, int D_nrg, int E_nrg,
 			  int F_nrg, int far_nrg, int D_rgmax, int E_rgmax,
 			  int F_rgmax, float D_hmin, float D_hmax, float E_hmax,
 			  float F_hmax, float D_vh_box, float E_vh_box,
 			  float F_vh_box, float far_vh_box, float max_hop,
-			  struct MultRadarBSID *mult_bsid);
+			  struct MultFitBSID *mult_bsid);
 
   /* Process the command line options */
   farg = command_options(argc, argv, &old, &tlen, &vb, &cfitflg, &fitflg,
@@ -140,39 +136,36 @@ int main(int argc, char *argv[])
   if(catflg == 0)
     {
       /* For a single input file, an index file may also be provided */
-      dnames = (char **)malloc(sizeof(char*));
+      dnames = (char **)malloc(sizeof(char *));
 
       if(argc-farg > 1)
 	{
 	  iname = argv[argc-1];
-	  fnum = argc - 2;
+	  fnum  = argc - 2;
 	}
       else fnum = argc - 1;
 
-      len = strlen(argv[fnum]);
-      dnames[0] = (char *)malloc(sizeof(char) * (len+1));
+      len       = strlen(argv[fnum]);
+      dnames[0] = (char *)malloc(sizeof(char) * (len + 1));
       strcpy(dnames[0], argv[fnum]);
-      fnum = 1;
+      fnum      = 1;
     }
   else
     {
       /* For multiple input files, no index files are allowed */
-      fnum = argc - farg;
+      fnum   = argc - farg;
       dnames = (char **)malloc(sizeof(char*) * fnum);
 
-      for(inum=0; inum<fnum; inum++)
+      for(inum = 0; inum < fnum; inum++)
 	{
 	  len = strlen(argv[inum+argc]);
-	  dnames[inum] = (char *)malloc(sizeof(char) * (len+1));
-	  strcpy(dnames[inum], argv[inum+argc]);
+	  dnames[inum] = (char *)malloc(sizeof(char) * (len + 1));
+	  strcpy(dnames[inum], argv[inum + argc]);
 	}
     }
 
   /* Initialize and load the fitted data */
   mult_bsid = MultFitBSIDMake();
-
-  /* Update tdiff if requested */
-  if(tdiff_flag) site->tdiff = tdiff;      
 
   /* Dynamically establish transmission frequency bands for these scans */
   /* unless a frequency range was specified                             */
@@ -212,8 +205,8 @@ int main(int argc, char *argv[])
 				     F_vh_box, far_vh_box, max_hop, mult_bsid);
 
       /* Examine the UT evolution and consistency of the elevation angles HERE */
-      //ret_stat = test_ut_fov_struct(min_frac, frg_box, max_rg, ut_box, fbands,
-      //			    step, mult_bsid);
+      /* ret_stat = test_ut_fov_struct(min_frac, frg_box, max_rg, ut_box, fbands,
+       *			    step, mult_bsid); */
     }
 
   /* Write an output file HERE */

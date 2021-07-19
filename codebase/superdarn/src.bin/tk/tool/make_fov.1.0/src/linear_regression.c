@@ -25,7 +25,7 @@ int linear_regression(float x[], float y[], float sig[], int num, int mwt,
 		      float *intercept, float *sig_intercept, float *slope,
 		      float *sig_slope, float *chi2, float *q)
 {
-  int n, status;
+  int n, status = 1;
 
   float wt, t, sxoss, sx, sy, st2, ss, sigdat;
 

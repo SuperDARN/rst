@@ -28,8 +28,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
-#include "rtypes.h"
-#include "rtime.h"
+
 #include "multbsid.h"
 
 
@@ -40,9 +39,8 @@ struct MultFitBSID *MultFitBSIDMake()
   ptr = (struct MultFitBSID *)malloc(sizeof(struct MultFitBSID));
   memset(ptr, 0, sizeof(struct MultFitBSID));
   ptr->num_scans = 0;
-  ptr->scan      = (struct FitBSIDScan)(NULL);
-  ptr->scan_ptr  = &ptr->scan_data;
-  ptr->last_ptr  = (struct FitBSIDScan *)(NULL);
+  ptr->scan_ptr  = (struct FitBSIDScan *)(NULL);
+  ptr->last_ptr  = ptr->scan_ptr;
 
   return ptr;
 }
@@ -52,7 +50,7 @@ void MultFitBSIDFree(struct MultFitBSID *ptr)
     if(MultFitBSIDReset(ptr) == 0) return;
 
     free(ptr->scan_ptr);
-    free(ptr->prev_ptr);
+    free(ptr->last_ptr);
     free(ptr);
 }
 
@@ -68,13 +66,12 @@ int MultFitBSIDReset(struct MultFitBSID *ptr)
     FitBSIDScanFreeNext(scan);
 
   free(scan);
-  free(ptr->next_scan);
-  free(ptr->prev_scan);
+  free(ptr->scan_ptr);
+  free(ptr->last_ptr);
 
   ptr->num_scans = 0;
-  ptr->scan_data = (struct FitBSIDScan)(NULL);
-  ptr->next_scan = &ptr->scan_data;
-  ptr->prev_scan = (struct FitBSIDScan *)(NULL);
+  ptr->scan_ptr = (struct FitBSIDScan *)(NULL);
+  ptr->last_ptr = (struct FitBSIDScan *)(NULL);
   return(1);
 }
 
@@ -90,8 +87,8 @@ void FitBSIDScanFreeNext(struct FitBSIDScan *ptr)
   free(prev_ptr);
 
   /* If this is not the last pointer, close the reverse cycle */
-  if(ptr != (struct FitBSIDscan *)(NULL))
-    ptr->prev_ptr = (struct FitBSIDscan *)(NULL);
+  if(ptr != (struct FitBSIDScan *)(NULL))
+    ptr->prev_scan = (struct FitBSIDscan *)(NULL);
 
   return;
 }

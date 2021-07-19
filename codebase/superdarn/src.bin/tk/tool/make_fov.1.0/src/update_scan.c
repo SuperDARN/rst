@@ -76,7 +76,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 		     int D_rgmax, int E_rgmax, int F_rgmax, float D_hmin,
 		     float D_hmax, float E_hmax, float F_hmax, float D_vh_box,
 		     float E_vh_box, float F_vh_box, float far_vh_box,
-		     float max_hop, struct FitScan *scan,
+		     float max_hop, struct RadarScan *scan,
 		     struct RadarSite *hard, struct MultFitBSID *mult_bsid)
 {
   int iscan, ibm, irg, ifov, ipath, ireg, ivh, igbm;
