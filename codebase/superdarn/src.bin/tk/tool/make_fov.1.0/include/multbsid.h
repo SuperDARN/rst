@@ -29,6 +29,10 @@
 #define _MULTBSID_H
 
 #ifndef _FITBLK_H
+#include "scandata.h"
+#endif
+
+#ifndef _FITBLK_H
 #include "fitblk.h"
 #endif
 
@@ -58,13 +62,31 @@ struct CellBSIDLoc
 
 struct FitBSIDBeam
 {
-  int nrang;
+  /* Set the beam constants */
+  int cpid;
+  int bm;
+  float bmazm;
   double time;
-  struct FitPrm prm;
-  struct FitNoise noise;
+  struct {
+    int sc;
+    int us;
+  } intt;
+
+  /* Set the beam parameter values */
+  int nave;
+  int frang;
+  int rsep;
+  int rxrise;
+  int freq;
+  int noise;
+  int atten;
+  int channel;
+
+  /* Set the beam range-gate information */
+  int nrang;
   unsigned char *sct;
-  struct FitRange *rng;
-  struct FitRange *med_rng;
+  struct RadarCell *rng;
+  struct RadarCell *med_rng;
   struct FitElv *front_elv;
   struct FitElv *back_elv;
   struct CellBSIDFlgs *rng_flgs;
