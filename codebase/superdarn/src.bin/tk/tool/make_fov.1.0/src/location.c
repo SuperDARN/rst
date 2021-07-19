@@ -33,22 +33,24 @@
 /**
  * @brief Calculate elevation for the specified field of view
  *
- * @param[in] lobe     Field-of-view specifier: 1=front, -1=back
- *            prm      The FitPrm struct holding rawacf record info
- *            psi_obs  Phase lag value
- *            alias    Amount to offset the acceptable phase shifts by. An
- *                     alias of zero starts at the calculated max - 2 pi, any
- *                     (positive) alias will remove 2 pi from the minimum
- *                     allowable phase shift.
+ * @param[in] lobe    - Field-of-view specifier: 1=front, -1=back
+ *            bmnum   - Beam number (zero offset)
+ *            tfreq   - Transmission frequency in kHz
+ *            site    - Radar hardware site structure
+ *            psi_obs - Phase lag value
+ *            alias   - Amount to offset the acceptable phase shifts by. An
+ *                      alias of zero starts at the calculated max - 2 pi, any
+ *                      (positive) alias will remove 2 pi from the minimum
+ *                      allowable phase shift.
  *
- * @param[out] alpha   Elevation angle [deg]
+ * @param[out] alpha - Elevation angle [deg]
  *
  * @notes SGS somehow need to pass in options for allowing negative elevation
  *        angles and residual phase
  **/
 
-double elevation_v2_lobe(int lobe, struct FitPrm *prm, double psi_obs,
-			 double alias)
+double elevation_v2_lobe(int lobe, int bmnum, int tfreq, struct RadarSite *site,
+			 double psi_obs, double alias)
 {
   static double X, Y, Z;    /* interferometer offsets [m]                    */
   double k;                 /* wavenumber [rad/m]                            */
@@ -69,9 +71,9 @@ double elevation_v2_lobe(int lobe, struct FitPrm *prm, double psi_obs,
   /* At first call, calculate the values that don't change. */
   if (d < -999.)
     {
-      X = prm->interfer[0];
-      Y = prm->interfer[1];
-      Z = prm->interfer[2];
+      X = site->interfer[0];
+      Y = site->interfer[1];
+      Z = site->interfer[2];
 
       d = sqrt(X*X + Y*Y + Z*Z);
   }
@@ -94,17 +96,17 @@ double elevation_v2_lobe(int lobe, struct FitPrm *prm, double psi_obs,
 
   sgn = (Y < 0) ? -1 : 1;
 
-  boff = prm->maxbeam / 2.0 - 0.5;
-  phi0 = prm->bmsep * (prm->bmnum - boff) * PI / 180.0;
+  boff = site->maxbeam / 2.0 - 0.5;
+  phi0 = site->bmsep * (bmnum - boff) * PI / 180.0;
   cp0  = cos(phi0);
   sp0  = sin(phi0);
-  k    = 2.0 * PI * prm->tfreq * 1000.0 / C;
+  k    = 2.0 * PI * tfreq * 1000.0 / C;
 
   /* Phase delay [radians] due to electrical path difference.               *
    *   If the path length (cable and electronics) to the interferometer is  *
    *   shorter than that to the main antenna array, then the time for the   *
    *   to transit the interferometer electrical path is shorter: tdiff < 0  */
-  psi_ele = -2.0 * PI * prm->tfreq * prm->tdiff * 1.0e-3;
+  psi_ele = -2.0 * PI * tfreq * site->tdiff * 1.0e-3;
 
   /* Determine the elevation angle (a0) where the phase difference (psi) is *
    * at its maximum.  This occurs when k and d are anti-parallel. Using     *
@@ -230,41 +232,45 @@ int TestPropagation(float hop, float vheight, float slant_dist, float D_hmin,
  * @brief Test the propagation path for realism using the basic properties of HF
  *         radars.
  *
- * @param[in] lobe       Field-of-view specifier: 1=front, -1=back
- *            radius     Earth radius in km
- *            D_hmin     Minimum height for D region in km
- *            D_hmax     Maximum height for D region in km
- *            E_hmax     Maximum height for E region in km
- *            F_hmax     Maximum height for F region in km
- *            max_hop    Maximum number of realistic hops allowed
- *            prm        The FitPrm struct holding rawacf record info
- *            psi_obs    Phase lag value
- *            hop        Number of hops (0.5, 1.0, 1.5, etc)
- *            vheight    Virtual height in km
- *            elv        Elevation angle in degrees
- *            slant_dist Slant distance of entire path in km
+ * @param[in] lobe       - Field-of-view specifier: 1=front, -1=back
+ *            radius     - Earth radius in km
+ *            D_hmin     - Minimum height for D region in km
+ *            D_hmax     - Maximum height for D region in km
+ *            E_hmax     - Maximum height for E region in km
+ *            F_hmax     - Maximum height for F region in km
+ *            max_hop    - Maximum number of realistic hops allowed
+ *            bmnum      - Beam number (zero offset)
+ *            tfreq      - Transmission frequency in kHz
+ *            site       - Radar hardware site structure
+ *            psi_obs    - Phase lag value
+ *            hop        - Number of hops (0.5, 1.0, 1.5, etc)
+ *            vheight    - Virtual height in km
+ *            elv        - Elevation angle in degrees
+ *            slant_dist - Slant distance of entire path in km
  *
  * @param[out] is_aliased Input elevation angle was updated to have a 2pi alias
  **/
 
 short int AdjustPropagation(int lobe, float radius, float D_hmin, float D_hmax,
 			    float E_hmax, float F_hmax, float max_hop,
-			    struct FitPrm *prm, double psi_obs, float *hop,
-			    float *vheight, double *elv, float *slant_dist)
+			    int bmnum, int tfreq, struct RadarSite *site,
+			    double psi_obs, float *hop, float *vheight,
+			    double *elv, float *slant_dist)
 {
   short int is_aliased;
   int good_hop;
   float new_hop, leg_dist, aliased_vheight;
   double aliased_elv;
 
-  double elevation_v2_lobe(int lobe, struct FitPrm *prm, double psi_obs,
+  double elevation_v2_lobe(int lobe, int bmnum, int tfreq,
+			   struct RadarSite *site, double psi_obs,
 			   double alias);
   int TestPropagation(float hop, float vheight, float slant_dist, float D_hmin,
 		      float D_hmax, float E_hmax);
 
   /* Calculate the 2 pi aliased elevation angle and virtual height */
   /* for the original propagation path.                            */
-  aliased_elv     = elevation_v2_lobe(lobe, prm, psi_obs, 1.0);
+  aliased_elv     = elevation_v2_lobe(lobe, bmnum, tfreq, site, psi_obs, 1.0);
   aliased_vheight = calc_elv_vheight(*slant_dist, *hop, radius, *elv);
   is_aliased      = 0;
 
@@ -351,23 +357,4 @@ void SetRegion(float D_hmin, float D_hmax, float E_hmax, float F_hmax,
   else if(vheight <= E_hmax)               sprintf(region, "E");
   else                                     sprintf(region, "F");
   return;
-}
-
-/**
- * @brief Calculate the slant range path in km
- *
- * @params[in] smsep - Width of the range gate bins in km
- *             lagfr - Distance to the first range in km
- *             irg   - Zero-indexed range gate number
- *
- * @params[out] dist - slant distance in km
- **/
-
-float slant_range(float smsep, float lagfr, int irg)
-{
-  float dist;
-
-  dist = 5.0e-10 * C * ((float)irg * smsep + lagfr);
-
-  return(dist);
 }
