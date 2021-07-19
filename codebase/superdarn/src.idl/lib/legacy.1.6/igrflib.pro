@@ -22,8 +22,8 @@
 ; 
 ; Modifications:
 ; 
-; Functions
-; ---------------
+; Public Functions
+; ----------------
 ; magcmp
 ; igrfcall
 ;

@@ -20,8 +20,8 @@
 ;
 ; Modifications:
 ; 
-;
-; ---------------
+; Public Functions
+; ----------------
 ;
 ; FitACFNoiseStat
 

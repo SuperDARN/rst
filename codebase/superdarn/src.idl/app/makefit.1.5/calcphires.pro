@@ -19,8 +19,8 @@
 ;
 ; Modifications:
 ; 
-;
-; ---------------
+; Public Functions
+; ----------------
 ;
 ; FitACFCalcPhiRes
 

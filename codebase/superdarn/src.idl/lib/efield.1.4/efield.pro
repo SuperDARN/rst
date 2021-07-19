@@ -22,7 +22,7 @@
 ; 
 ;
 ; Public Functions
-; ---------------
+; ----------------
 ;
 ; EFieldRead        
 ; EFieldWrite        

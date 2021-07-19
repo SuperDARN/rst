@@ -21,7 +21,8 @@
 ; 
 ; Modifications:
 ;
-; ---------------
+; Public Functions
+; ----------------
 ; cnvcoord
 ; mlt
 ;

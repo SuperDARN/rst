@@ -19,8 +19,8 @@
 ; 
 ; Modifications:
 ; 
-; Publics Functions
-; -----------------
+; Public Functions
+; ----------------
 ;
 ; GridLoadInx          
 ; GridRead               
