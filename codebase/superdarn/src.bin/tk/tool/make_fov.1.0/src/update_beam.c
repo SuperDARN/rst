@@ -174,15 +174,15 @@ void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
 		      beam->front_elv[irg].low = elevation_v2_lobe(-1, beam->bm,
 								   beam->freq,
 								   site,
-								   beam->rng[irg].phi0 - beam->rng[irg].phi0_err, 1.0);
-		      beam->front_elv[irg].high = elevation_v2_lobe(-1, beam->bm,beam->freq, site, beam->rng[irg].phi0 + beam->rng[irg].phi0_err, 1.0);
+								   beam->rng[irg].phi0 - beam->rng[irg].phi0_e, 1.0);
+		      beam->front_elv[irg].high = elevation_v2_lobe(-1, beam->bm,beam->freq, site, beam->rng[irg].phi0 + beam->rng[irg].phi0_e, 1.0);
 		    }
 		  beam->back_elv[irg].low = elevation_v2_lobe(-1, beam->bm,
 							      beam->freq, site,
-							      beam->rng[irg].phi0 - beam->rng[irg].phi0_err, (float)balias);
+							      beam->rng[irg].phi0 - beam->rng[irg].phi0_e, (float)balias);
 		  beam->back_elv[irg].high = elevation_v2_lobe(-1, beam->bm,
 							       beam->freq, site,
-							       beam->rng[irg].phi0 + beam->rng[irg].phi0_err, (float)balias);
+							       beam->rng[irg].phi0 + beam->rng[irg].phi0_e, (float)balias);
 
 		  /* Add the virtual height errors */
 		  vh_low = beam->front_loc[irg].vh - calc_elv_vheight(beam->front_loc[irg].dist, beam->front_loc[irg].hop, Re, beam->front_elv[irg].low);

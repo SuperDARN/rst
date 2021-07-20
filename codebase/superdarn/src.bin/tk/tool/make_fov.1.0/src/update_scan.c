@@ -65,7 +65,7 @@
  *             F_vh_box   - h' range for near F-region box in km (50)
  *             far_vh_box - h' range for far F-region box in km (150)
  *             max_hop    - maximum number of hops to consider (3.0)
- *             mult_scan  - Input scans
+ *             scan       - Input radar scan
  *             hard       - Radar site information from hardware file
  *
  * @params[out] mult_bsid - Output scans with location and scan-assingned FoVs
@@ -96,7 +96,6 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
   struct FitElv elv;
   struct RadarBeam bm_old;
   struct FitBSIDBeam bm_new;
-  struct RadarScan *scan_old;
   struct FitBSIDScan *scan_new, *prev_new;
 
   void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
@@ -121,7 +120,6 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
   /* Initialize the local pointers and variables */
   bmwidth = (int)((float)min_pnts * 0.75);
 
-  scan_old = mult_scan->scan_ptr;
   rng_flgs = (struct CellBSIDFlgs *)(malloc(sizeof(struct CellBSIDFlgs)));
   memset(rng_flgs, 0, sizeof(struct CellBSIDFlgs));
 
@@ -172,13 +170,12 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
   vmaxs = (float *)calloc(out_num, sizeof(float));
 
   /* Inititalize the output scan */
+  scan_new = (struct FitBSIDScan *)malloc(sizeof(struct FitBSIDScan));
+  memset(mult_bsid->scan_ptr, 0, sizeof(struct FitBSIDScan));
+
   if(mult_bsid->num_scans == 0)
     {
-      mult_bsid->scan_ptr = (struct FitBSIDScan *)
-	malloc(sizeof(struct FitBSIDScan));
-      memset(mult_bsid->scan_ptr, 0, sizeof(struct FitBSIDScan));
-      mult_bsid->scan = *mult_bsid->scan_ptr;
-
+      mult_bsid->scan_ptr      = scan_new;
       mult_bsid->stid          = scan->stid;
       mult_bsid->st_time       = scan->st_time;
       mult_bsid->ed_time       = scan->ed_time;
@@ -187,21 +184,19 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
     }
   else
     {
-      scan_new            = (struct FitBSIDScan *)
-	malloc(sizeof(struct FitBSIDScan));
-      memset(mult_bsid->scan_ptr, 0, sizeof(struct FitBSIDScan));
       prev_new            = mult_bsid->last_ptr;
       prev_new->next_scan = scan_new;
       scan_new->prev_scan = prev_new;
       scan_new->next_scan = (struct FitBSIDScan *)(NULL);
       mult_bsid->ed_time  = scan->ed_time;
     }
+  mult_bsid->last_ptr = scan_new;
 
   /* Before initializing this new scan data, make sure the frequency */
   /* for the beams are correct.                                      */
-  for(igood_num = 0, ibm = 0; ibm < scan_old->num; ibm++)
+  for(igood_num = 0, ibm = 0; ibm < scan->num; ibm++)
     {
-      bm_old = scan_old->bm[ibm];
+      bm_old = scan->bm[ibm];
 
       if(bm_old.freq <= freq_min && bm_old.freq > freq_max)
 	{
@@ -213,9 +208,9 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
   /* If there are good beams in this scan, add it to the output structure */
   if(igood_num > 0)
     {
-      scan_new->st_time = scan_old->st_time;
-      scan_new->ed_time = scan_old->ed_time;
-      scan_new->num_bms = scan_old->num;
+      scan_new->st_time = scan->st_time;
+      scan_new->ed_time = scan->ed_time;
+      scan_new->num_bms = scan->num;
       scan_new->bm = (struct FitBSIDBeam *)
 	malloc(sizeof(struct FitBSIDBeam) * scan_new->num_bms);
       memset(scan_new->bm, 0, sizeof(struct FitBSIDBeam) * scan_new->num_bms);
@@ -224,11 +219,12 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 
       /* Cycle through each beam in the scan, but only update the beams */
       /* with appropriate frequencies.                                  */
-      for(igbm = 0, ibm = 0; ibm < scan_new->num; ibm++)
+      for(igbm = 0, ibm = 0; ibm < scan_new->num_bms; ibm++)
 	{
-	  if(igood_num[igbm] == ibm)
+	  if(igood[igbm] == ibm)
 	    {
-	      bm_old = scan_old->bm[ibm];
+	      igbm++;
+	      bm_old = scan->bm[ibm];
 	      bm_new = scan_new->bm[ibm];
 
 	      /* This corresponds to 
@@ -254,12 +250,12 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 
 	      /* Initialize the range-dependent variables */
 	      bm_new.nrang = bm_old.nrang;
-	      strcpy(bm_new.sct, bm_old.sct);
+	      memcpy(bm_new.sct, bm_old.sct, 1);
 
-	      bm_new.rng       = (struct FitRange *)
-		(calloc(bm_new.nrang, sizeof(struct FitRange)));
-	      bm_new.med_rng   = (struct FitRange *)
-		(calloc(bm_new.nrang, sizeof(struct FitRange)));
+	      bm_new.rng       = (struct RadarCell *)
+		(calloc(bm_new.nrang, sizeof(struct RadarCell)));
+	      bm_new.med_rng   = (struct RadarCell *)
+		(calloc(bm_new.nrang, sizeof(struct RadarCell)));
 	      bm_new.rng_flgs  = (struct CellBSIDFlgs *)
 		(calloc(bm_new.nrang, sizeof(struct CellBSIDFlgs)));
 	      bm_new.front_loc = (struct CellBSIDLoc *)
@@ -274,23 +270,24 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 		  /* Load only for range gates with data */
 		  if(bm_old.sct[irg] == 1)
 		    {
-		      bm_new.rng[irg].gsct  = bm_old.rng[irg].gsct;
-		      bm_new.rng[irg].p_0   = bm_old.rng[irg].p_0;
-		      bm_new.rng[irg].p_0_e = bm_old.rng[irg].p_0_e;
-		      bm_new.rng[irg].v     = bm_old.rng[irg].v;
-		      bm_new.rng[irg].v_e   = bm_old.rng[irg].v_e;
-		      bm_new.rng[irg].w_l   = bm_old.rng[irg].w_l;
-		      bm_new.rng[irg].w_l_e = bm_old.rng[irg].w_l_e;
-		      bm_new.rng[irg].p_l   = bm_old.rng[irg].p_l;
-		      bm_new.rng[irg].p_l_e = bm_old.rng[irg].p_l_e;
-		      bm_new.rng[irg].phi0  = bm_old.rng[irg].phi0;
-		      bm_new.rng[irg].elv   = bm_old.rng[irg].elv;
+		      bm_new.rng[irg].gsct    = bm_old.rng[irg].gsct;
+		      bm_new.rng[irg].p_0     = bm_old.rng[irg].p_0;
+		      bm_new.rng[irg].p_0_e   = bm_old.rng[irg].p_0_e;
+		      bm_new.rng[irg].v       = bm_old.rng[irg].v;
+		      bm_new.rng[irg].v_e     = bm_old.rng[irg].v_e;
+		      bm_new.rng[irg].w_l     = bm_old.rng[irg].w_l;
+		      bm_new.rng[irg].w_l_e   = bm_old.rng[irg].w_l_e;
+		      bm_new.rng[irg].p_l     = bm_old.rng[irg].p_l;
+		      bm_new.rng[irg].p_l_e   = bm_old.rng[irg].p_l_e;
+		      bm_new.rng[irg].phi0    = bm_old.rng[irg].phi0;
+		      bm_new.rng[irg].phi0_e  = bm_old.rng[irg].phi0_e;
+		      bm_new.rng[irg].elv     = bm_old.rng[irg].elv;
 		    }
 		}
 
 	      /* Update the front and back FoVs */
 	      UpdateBeamFit(strict_gs, max_hop, D_hmin, D_hmax, E_hmax,
-			    F_hmax, site, &bm_new);
+			    F_hmax, hard, &bm_new);
 
 	      /* Find the scan's altitude bins by FoV, region, and path */
 	      for(ifov = 0; ifov < 2; ifov++)
@@ -422,7 +419,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 
       /* Assign the appropriate virtual heights, regions, and elevation */
       /* angles to each point based on their FoV.                       */
-      for(ibm = 0; ibm < scan_new->num; ibm++)
+      for(ibm = 0; ibm < scan_new->num_bms; ibm++)
 	{
 	  bm_new = scan_new->bm[ibm];
 
@@ -470,7 +467,6 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
   free(vmins);
   free(vmaxs);
   free(rng_flgs);
-  free(scan_old);
   free(scan_new);
   free(prev_new);
 
@@ -688,7 +684,7 @@ void eval_fov_flag_consistency(int max_rg, int bmwidth, int D_rgmax, int D_nrg,
       /* For each beam in the maximum possible range gate window, gather */
       /* the range gate, FoV flag, beam index, and range gate index by   */
       /* propagation path.                                               */
-      for(ibm = 0; ibm < scan->num; ibm++)
+      for(ibm = 0; ibm < scan->num_bms; ibm++)
 	{
 	  /* Cycle the reference beam and evaluation beam to the */
 	  /* correct range gate                                  */
@@ -697,8 +693,8 @@ void eval_fov_flag_consistency(int max_rg, int bmwidth, int D_rgmax, int D_nrg,
 	  if(near_rg < 0.0)
 	    {
 	      /* Calculate once in the routine */
-	      near_rg = ((500.0 / (5.0e-10 * C) - bm.prm.lagfr)
-			 / bm.prm.smsep);
+	      near_rg = ((500.0 / (5.0e-10 * C) - (bm.frang * 20.0 / 3.0))
+			 / (bm.rsep * 20.0 / 3.0));
 	    }
  
 	  if(bm.sct[irg] == 1)
@@ -710,7 +706,7 @@ void eval_fov_flag_consistency(int max_rg, int bmwidth, int D_rgmax, int D_nrg,
 	      bmin = ibm - bmwidth;
 	      bmax = ibm + bmwidth;
 	      if(bmin < 0) bmin = 0;
-	      if(bmax > scan->num) bmax = scan->num;
+	      if(bmax > scan->num_bms) bmax = scan->num_bms;
 
 	      /* Cycle through each range gate and beam in the box, */
 	      /* getting the number of points for the same hop in   */
