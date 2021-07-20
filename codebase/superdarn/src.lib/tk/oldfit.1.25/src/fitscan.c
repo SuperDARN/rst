@@ -130,6 +130,7 @@ int OldFitReadRadarScan(struct OldFitFp *fp,int *state,
       else bm->rng[r].phi0=0;
       if (fit->elv !=NULL) bm->rng[r].elv=fit->elv[r].normal;
       else bm->rng[r].elv=0;
+      bm->rng[r].phi0_e=fit->rng[r].phi0_err;
     }
    
     ptr->ed_time=TimeYMDHMSToEpoch(prm->time.yr,prm->time.mo,
