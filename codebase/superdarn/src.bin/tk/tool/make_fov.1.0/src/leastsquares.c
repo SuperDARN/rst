@@ -25,11 +25,13 @@ pages 661-663
 
 */
 
-#include "leastsquares.h"
-#include "rtypes.h"
 #include <string.h>
 #include <math.h>
 #include <stdio.h>
+
+#include "llist.h"
+#include "leastsquares.h"
+#include "rtypes.h"
 
 #define ITMAX 100
 #define EPS 3.0e-7

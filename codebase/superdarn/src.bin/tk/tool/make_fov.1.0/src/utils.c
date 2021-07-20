@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #include "mpfit.h"
 
@@ -46,7 +47,7 @@ int num_unique_int_vals(int num, int array[])
 
   /* Initialize the sorted array and load it with the input data to */
   /* prevent the input array from being re-arranged.                */
-  sorted_array = (int *)calloc(sizeof(int) * num);
+  sorted_array = (int *)calloc(num, sizeof(int));
   for(i = 0; i < num; i++) sorted_array[i] = array[i];
 
   /* Sort the array */
@@ -130,7 +131,7 @@ void mean_stdev_float(int num, float array[], float *mean, float *stdev)
       *mean = sum / (float)num;
 
       for(sum = 0.0, i = 0; i < num; i++)
-	sum += pow(array[i] - mean, 2);
+	sum += pow(array[i] - *mean, 2);
 
       *stdev = sqrt(sum / (float)num);
     }
@@ -282,7 +283,7 @@ void histogram(int nvals, float vals[], int nbin, float val_min, float val_max,
   /* Initalize the output */
   for(i = 0; i < nbin; i++)
     {
-      leading_bin_val[i] = min_val + (float)i * val_inc;
+      leading_bin_val[i] = val_min + (float)i * val_inc;
       hist_bins[i]       = 0;
     }
 
@@ -402,8 +403,7 @@ float float_absmax(int num, float vals[])
 
   float max_val;
 
-  max_val = vals[0];
-  for(imax = 0, i = 1; i < num; i++)
+  for(max_val = vals[0], i = 1; i < num; i++)
     {
       if(max_val < vals[i]) max_val = vals[i];
     }
