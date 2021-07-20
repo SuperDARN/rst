@@ -23,7 +23,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
 2021-09-21 Angeline G. Burrell: added `exclude_outofscan` routine to header.
-
+AGB Jul 2021 - Added phase lag error to the RadarCell structure
 */
 #ifndef _SCANDATA_H
 #define _SCANDATA_H
@@ -39,6 +39,7 @@ struct RadarCell {
     double p_l;
     double p_l_e;
     double phi0;
+    double phi0_e;
     double elv;
 };
 
