@@ -1,4 +1,4 @@
-/* make_grid.c
+/* grid_utils.c
    ===========
 */
 
