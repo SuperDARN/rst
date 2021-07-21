@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>make_fov</name>
+<location>src.bin/tk/tool/make_fov</location>
+
+<syntax>make_fov --help</syntax>
+<syntax>make_fov [<ar>options</ar>] <ar>fitacfname</ar> [<ar>inxname</ar>]</syntax>
+<syntax>make_fov -old  [<ar>options</ar>] <ar>fitname</ar> [<ar>inxname</ar>]</syntax>
+<syntax>make_fov [<ar>options</ar>] <ar>fitacfnames...</ar></syntax>
+<syntax>make_fov  -old [<ar>options</ar>] <ar>fitnames...</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-sd <ar>yyyymmdd</ar></on><od>start from the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-st <ar>hr:mn</ar></on><od>start from the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ed <ar>yyyymmdd</ar></on><od>stop at the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-et <ar>hr:mn</ar></on><od>stop at the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ex <ar>hr:mn</ar></on><od>use the interval whose extent is <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-tl <ar>tlen</ar></on><od>ignore the scan flag and instead use a fixed length scan of <ar>tlen</ar> seconds.</od>
+</option>
+<option><on>-cn <ar>channel</ar></on><od>process data from channel <ar>channel</ar> for stereo mode data.</od>
+</option>
+<option><on>-cn_fix <ar>channel</ar></on><od>manually set <ar>channel</ar> information written to output file.</od>
+</option>
+<option><on>-ns</on><od>exclude data with scan flags less than zero.</od>
+</option>
+<option><on>-tfmin</on><od>manually specify the lowest allowed transmission frequency in kHz.</od>
+</option>
+<option><on>-tfmax</on><od>manually specify the upper limit for transmission frequencies in kHz.</od>
+</option>
+<option><on>-gs-strict</on><od>Remove indeterminate backscatter (groundscatter that may be slow-moving ionospheric scatter).</od>
+</option>
+<option><on>-update-tdiff</on><od>Replace the TDIFF hardware value with a user specified value in elevation angle calculations.</od>
+</option>
+<option><on>-tdiff</on><od>User specified value for TDIFF in microseconds.</od>
+</option>
+<option><on><ar>fitacfname</ar></on><od>filename of the <code>fitacf</code> format file.</od>
+</option>
+<option><on><ar>inxname</ar></on><od>filename of the index file.</od>
+</option>
+<option><on>-old</on><od>the input file is in the <code>fit</code> format, and the output should be in <code>grd</code> format. (If the input format is in <code>cfit</code> format as specified by the -cfit option, then the output will be in <code>grd</code> format).</od>
+</option>
+<option><on><ar>fitname</ar></on><od>filename of the <code>fit</code> format file.</od>
+</option>
+<option><on>-c</on><od>concatenate multiple input files (from the same radar site). WARNING: This option will be deprecated in the next RST release. Multiple input files from one radar are now detected and concatenated automatically.</od>
+</option>
+<option><on><ar>fitnames</ar></on><od>filenames of the <code>fit</code> format files.</od>
+</option>
+<option><on><ar>fitacfnames</ar></on><od>filenames of the <code>fitacf</code> format files.</od>
+</option>
+<synopsis><p>Creates an enhanced <code>fitacf</code> format file for a single radar site with the correct backscatter return direction from either a <code>fit</code> or <code>fitacf</code> format file.</p></synopsis>
+<description><p>Creates an <code>fitacf</code> format file with additional flags that denote the correct backscatter return direction and updated elevation angles for a single radar site from either a <code>fit</code> or <code>fitacf</code> format file.</p>
+<p>The return direction is determined by examining the variations in elevation angle across the field-of-view (FoV), with ground and ionospheric backscatter examined seperately.</p>
+<p>The algorithm (Burrell et al. 2015) optionally allows the user to specify the frequency bands, update the interferometer calibration (TDIFF), and specify whether badly identified groundscatter should be treated as ionospheric scatter for the purposes of calculating the origin FoV.  Most radars use either a 300 kHz or 500 kHz bandwidth, so if no frequency band is specified they will be determined using a 300 kHz band width.</p> 
+<p>After determining the return direction, text lines are written to standard output.</p>
+<p>The program accepts multiple fit files as input. If more than one input file is provided, the program will concatenate them together for processing. Note that only fit files from a single radar site may be concatenated.</p>
+</description>
+
+<example>
+<command>make_fov -vb -old 19991120.kap.fit &gt; 19991120.kap.fband</command>
+<description>Generate a frequency band file from the old fit file "<code>19991120.kap.fit</code>" and store it in the file "<code>19991120.kap.fband</code>". Report the status on standard error.</description>
+</example>
+
+<example>
+<command>make_fov -bandwidth 600 20000510.*.kod.fit &gt; 20000510.kod.fband</command>
+<description>Concatenate all the fit files in the current directory to create a frequency band file with 600 kHz frequency bands. Store the output in the file "<code>20000510.kod.fband</code>".</description>
+</example>
+
+<example>
+<command>make_fov -tl 120 -old 19981012.gbr.fit &gt; 19981012.gbr.fband</command>
+<description>Generate a frequency band file from the fit file "<code>19981012.gbr.fit</code>" using a fixed scan length of 120 seconds. This affects how the data is read in. Store an extended format grid file in "<code>19981012.gbr.fband</code>"
+</description>
+</example>
+
+</binary>
