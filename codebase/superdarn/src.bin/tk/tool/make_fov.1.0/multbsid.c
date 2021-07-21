@@ -88,7 +88,7 @@ void FitBSIDScanFreeNext(struct FitBSIDScan *ptr)
 
   /* If this is not the last pointer, close the reverse cycle */
   if(ptr != (struct FitBSIDScan *)(NULL))
-    ptr->prev_scan = (struct FitBSIDscan *)(NULL);
+    ptr->prev_scan = (struct FitBSIDScan *)(NULL);
 
   return;
 }
