@@ -1,9 +1,10 @@
-; readfitacf.pro
-; ==============
-; Author: R.J.Barnes
-; 
-;  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
+;readfitacf.pro
+;==============
+;Author: R.J.Barnes
 ;
+;Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
+;
+;This file is part of the Radar Software Toolkit (RST).
 ;
 ;RST is free software: you can redistribute it and/or modify
 ;it under the terms of the GNU General Public License as published by
@@ -19,19 +20,20 @@
 ;along with this program. If not, see <https://www.gnu.org/licenses/>.
 ;
 ;Modifications:
-; 
-; RST is free software: you can redistribute it and/or modify
-; it under the terms of the GNU General Public License as published by
+;
+;
+;
+;A simple demonstration program for reading fitacf files
 
 pro readfitacf
 
-; Open the fit index file and load it into the inx structure 
+; Open the index file and load it into the inx structure 
 
   openr,inp,'data/fitacf/test.fitinx',/GET_LUN,/STDIO,/SWAP_IF_BIG_ENDIAN
   s=FitLoadInx(inp,inx)
   free_lun,inp
 
-; Open the raw file for read only 
+; Open the fitacf file for read only 
  
   inp=FitOpen('data/fitacf/test.fitacf',/read)
  

@@ -1,9 +1,10 @@
-; readrawacf.pro
-; ==============
-; Author: R.J.Barnes
+;readrawacf.pro
+;==============
+;Author: R.J.Barnes
 ; 
+;Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 ;
-; Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
+;This file is part of the Radar Software Toolkit (RST).
 ;
 ;RST is free software: you can redistribute it and/or modify
 ;it under the terms of the GNU General Public License as published by
@@ -19,13 +20,14 @@
 ;along with this program. If not, see <https://www.gnu.org/licenses/>.
 ;
 ;Modifications:
-; 
-; RST is free software: you can redistribute it and/or modify
-; it under the terms of the GNU General Public License as published by
+;
+;
+;
+;A simple demonstration program for reading rawacf files
 
 pro readrawacf
 
-; Open the raw index file and load it into the inx structure 
+; Open the index file and load it into the inx structure 
 
   openr,inp,'data/rawacf/test.rawinx',/GET_LUN,/STDIO,/SWAP_IF_BIG_ENDIAN
   s=RawLoadInx(inp,inx)

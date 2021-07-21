@@ -1,9 +1,10 @@
-; readcnvmap.pro
-; ==============
-; Author: R.J.Barnes
+;readcnvmap.pro
+;==============
+;Author: R.J.Barnes
 ; 
+;Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 ;
-; Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
+;This file is part of the Radar Software Toolkit (RST).
 ;
 ;RST is free software: you can redistribute it and/or modify
 ;it under the terms of the GNU General Public License as published by
@@ -20,10 +21,13 @@
 ;
 ;Modifications:
 ; 
+;
+;
+;A simple demonstration program for reading cnvmap files
 
 pro readcnvmap
 
-; Open the raw index file and load it into the inx structure 
+; Open the index file and load it into the inx structure 
 
   openr,inp,'data/cnvmap/test.mapinx',/GET_LUN,/STDIO,/SWAP_IF_BIG_ENDIAN
   s=CnvMapLoadInx(inp,inx)
