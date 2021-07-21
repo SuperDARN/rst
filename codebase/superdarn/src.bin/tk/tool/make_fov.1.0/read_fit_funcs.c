@@ -36,7 +36,7 @@ int set_stereo_channel(char *chnstr)
       if(tolower(chnstr[0]) == 'a') channel = 1;
       else if(tolower(chnstr[0]) == 'b') channel = 2;
       else
-	printf(stderr, "Unknown Stereo channel %s, leaving unset\n", chnstr);
+	fprintf(stderr, "Unknown Stereo channel %s, leaving unset\n", chnstr);
     }
 
   return(channel);
@@ -53,7 +53,7 @@ int set_fix_channel(char *chnstr_fix)
       else if(tolower(chnstr_fix[0]) == 'c') channel_fix = 3;
       else if(tolower(chnstr_fix[0]) == 'd') channel_fix = 4;
       else
-	printf(stderr, "Unknown fix channel %s, leaving unset\n", chnstr_fix);
+	fprintf(stderr, "Unknown fix channel %s, leaving unset\n", chnstr_fix);
     }
 
   return(channel_fix);
