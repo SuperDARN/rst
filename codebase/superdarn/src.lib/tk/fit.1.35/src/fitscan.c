@@ -170,7 +170,8 @@ int FitReadRadarScan(int fid, int *state,
             else bm->rng[r].phi0=0;
             if (fit->elv != NULL) bm->rng[r].elv=fit->elv[r].normal;
             else bm->rng[r].elv=0;
-            bm->rng[r].phi0_e=fit->rng[r].phi0_err;
+	    if (fit->xrng != NULL) bm->rng[r].phi0_e=fit->rng[r].phi0_err;
+	    else bm->rng[r].phi0_e=0;
         }
 
         /* Calculate end time of radar scan */
