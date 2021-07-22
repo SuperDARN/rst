@@ -321,7 +321,7 @@ void histogram(int nvals, float vals[], int nbin, float val_min, float val_max,
 
 int int_argrelmax(int num, int vals[], int order, int clip, int *ismax)
 {
-  int i, shift, iplus, iminus, nmax;
+  int i, shift, iplus, iminus, nmax, val_plus, val_minus;
 
   /* Test the order input */
   if(order < 1) order = 1;
@@ -342,20 +342,28 @@ int int_argrelmax(int num, int vals[], int order, int clip, int *ismax)
 	  /* either clip them (keep them at the edge) or wrap them.    */
 	  if(iminus < 0)
 	    {
-	      if(clip == 1) iminus  = 0;
-	      else          iminus += num;
+	      if(clip == 1) val_minus = vals[i] - 1;
+	      else          val_minus = vals[iminus + num];
 	    }
+	  else val_minus = vals[iminus];
+
 	  if(iplus >= num)
 	    {
-	      if(clip == 1) iplus  = num - 1;
-	      else          iplus -= num;
+	      if(clip == 1) val_plus = vals[i] - 1;
+	      else          val_plus = vals[iplus - num];
 	    }
+	  else val_plus = vals[iplus];
 
 	  /* Evaluate the values, looking for a relative maximum */
-	  if(vals[i] > vals[iplus] && vals[i] > vals[iminus])
+	  if(vals[i] > val_plus && vals[i] > val_minus)
 	    {
 	      nmax++;
 	      ismax[i] = 1;
+	    }
+	  else if(ismax[i] == 1)
+	    {
+	      ismax[i] = 0;
+	      nmax--;
 	    }
 	}
 
