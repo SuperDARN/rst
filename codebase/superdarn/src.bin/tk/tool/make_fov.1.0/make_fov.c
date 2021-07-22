@@ -211,6 +211,7 @@ int main(int argc, char *argv[])
 			  float F_hmax, float D_vh_box, float E_vh_box,
 			  float F_vh_box, float far_vh_box, float max_hop,
 			  struct MultFitBSID *mult_bsid);
+  void write_multbsid_ascii(FILE *fp, struct MultFitBSID *mult_scan);
 
   /* Process the command line options */
   farg = command_options(argc, argv, &old, &tlen, &vb, &catflg, &nsflg,
@@ -312,6 +313,7 @@ int main(int argc, char *argv[])
     }
 
   /* Write an output file HERE */
+  write_multbsid_ascii(stdout, mult_bsid);
 
   return ret_stat;
 }

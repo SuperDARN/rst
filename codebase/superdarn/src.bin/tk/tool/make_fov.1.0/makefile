@@ -26,7 +26,8 @@ SRC =	make_fov.c \
 	sort_rout.c \
 	update_beam.c \
 	update_scan.c \
-	utils.c
+	utils.c \
+	write_scan.c
 
 OBJS =	$(SRC:.c=.o)
 
