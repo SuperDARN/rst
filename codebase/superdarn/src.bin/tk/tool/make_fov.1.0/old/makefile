@@ -8,12 +8,13 @@
 include $(MAKECFG).$(SYSTEM)
 
 INCLUDE = -I$(IPATH)/analysis -I$(IPATH)/base -I$(IPATH)/general \
-		-I$(IPATH)/superdarn -I../include/
+		-I$(IPATH)/superdarn -I../
 
 # Notes:
 # load_fit is copied from codebase/superdarn/src.bin/tk/tool/read_fit_v1.0
 SRC =	test.c \
-	read_fit_funcs.c
+	utils.c \
+	../sort_rout.c
 
 OBJS =	$(SRC:.c=.o)
 
