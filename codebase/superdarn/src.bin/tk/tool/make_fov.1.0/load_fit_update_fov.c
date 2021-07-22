@@ -100,9 +100,10 @@ int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
 			float far_vh_box, float max_hop,
 			struct MultFitBSID *mult_bsid)
 {
-  int yr, mo, dy, hr, mt, inum, ret_flg=0, state=0, syncflg=1;
+  int inum, yr=-1, mo=-1, dy=-1, hr=-1, mt=-1, ret_flg=0, state=0, syncflg=1;
+  int site_flg=0;
 
-  double sc;
+  double sc=0.0;
 
   FILE *fp, *fitfp;
 
@@ -114,8 +115,8 @@ int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
   struct RadarScan *scan;
 
   int exclude_outofscan(struct RadarScan *ptr);
-  void load_radar_site(int yr, int mo, int dy, int hr, int mt, int sc,
-		       int stid, struct RadarSite *site);
+  struct RadarSite *load_radar_site(int yr, int mo, int dy, int hr, int mt,
+				    int sc, int stid);
   void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 		       int min_pnts, int D_nrg, int E_nrg, int F_nrg,
 		       int far_nrg, int D_rgmax, int E_rgmax, int F_rgmax,
@@ -124,9 +125,8 @@ int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
 		       float far_vh_box, float max_hop, struct RadarScan *scan,
 		       struct RadarSite *hard, struct MultFitBSID *mult_bsid);
 
-  /* Initialize radar parameter and fit structures */
-  site = (struct RadarSite *)malloc(sizeof(struct RadarSite));
-  memset(site, 0, sizeof(struct RadarSite));
+  /* Initialize radar parameter and fit structures. If you initialize `site` */
+  /* it won't set properly.                                                  */
   scan = RadarScanMake();
   prm = RadarParmMake();
   fit = FitMake();
@@ -202,7 +202,7 @@ int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
 	{
 	  /* We must skip the start of the files. If start time not provided */
 	  /* then use time of first record in the fit file                   */
-	  if(stime==-1) stime = ((int)scan->st_time % (24*3600));
+	  if(stime==-1) stime = ((int)scan->st_time % (24 * 3600));
 
 	  /* If start date not provided then use date of first record */
 	  /* in fit file, otherwise use provided sdate                */
@@ -257,9 +257,16 @@ int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
 	    ret_flg = FitFreadRadarScan(fitfp, &state, scan, prm, fit, tlen,
 					syncflg, channel);
 	}
-      else stime = scan->st_time;   /* If the start date and time are not
-				       provided, use the time of the input
-				       file's first record */
+      else
+	{
+	  /* If the start date and time are not provided, use the time of */
+	  /* the input file's first record                                */
+	  stime = scan->st_time;   
+
+	  /* Calculate year, month, day, hour, minute, and second of the */
+	  /* scan start time.                                            */
+	  TimeEpochToYMDHMS(stime, &yr, &mo, &dy, &hr, &mt, &sc);
+	}
 
       /* If end time provided then determine end date */
       if(etime != -1)
@@ -283,20 +290,19 @@ int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
 
 	  /* Load the appropriate radar hardware information for the day
 	     and time of the radar scan (only done once) */
-	  if(site == NULL)
+	  if(site_flg == 0)
 	    {
-	      load_radar_site(yr, mo, dy, hr, mt, (int)sc, scan->stid, site);
+	      site = load_radar_site(yr, mo, dy, hr, mt, (int)sc, scan->stid);
+	      site_flg = 1;
 
 	      if(tdiff_flag) site->tdiff = tdiff;
 	    }
 
 	  /* Update the backscatter FoV data using only data from this scan */
-	  printf("TEST: UPDATE SCAN!\n");fflush(stdout);
 	  UpdateScanBSFoV(strict_gs, freq_min, freq_max, min_pnts, D_nrg, E_nrg,
-			  F_nrg, far_nrg, D_rgmax, E_rgmax, F_rgmax, D_hmin,
-			  D_hmax, E_hmax, F_hmax, D_vh_box, E_vh_box, F_vh_box,
-			  far_vh_box, max_hop, scan, site, mult_bsid);
-	  printf("TEST: SCAN UPDATED!\n");fflush(stdout);
+	  		  F_nrg, far_nrg, D_rgmax, E_rgmax, F_rgmax, D_hmin,
+	  		  D_hmax, E_hmax, F_hmax, D_vh_box, E_vh_box, F_vh_box,
+	  		  far_vh_box, max_hop, scan, site, mult_bsid);
 
 	  /* Read next radar scan from input file */
 	  if(old)
@@ -316,11 +322,9 @@ int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
       else fclose(fitfp);
     }
 
-  printf("TEST FREE SITE\n");fflush(stdout);
-  /* Free the local pointers */
-  free(site);
+  /* Free the local pointers. Freeing site here causes abort(6) */
+  RadarScanFree(scan);
 
   /* Return with the status flag */
-  printf("TEST RETURN SCAN: %d\n", ret_flg);fflush(stdout);
   return(ret_flg);
 }
