@@ -29,6 +29,10 @@
 #include "shfconst.h"
 #include "multbsid.h"
 
+#ifndef RE_KM
+#define RE_KM Re / 1000.0
+#endif
+
 /**
  * @brief Update the RadarBSIDBeam.
  *
@@ -59,7 +63,8 @@ void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
   double elevation_v2_lobe(int lobe, int bmnum, int tfreq,
 			   struct RadarSite *site, double psi_obs,
 			   double alias);
-  float calc_elv_vheight(float slant_dist, float hop, float radius, float elv);
+  double calc_elv_vheight(double slant_dist, double hop, double radius,
+			  double elv);
   short int AdjustPropagation(int lobe, float radius, float D_hmin,
 			      float D_hmax, float E_hmax, float F_hmax,
 			      float max_hop, int bmnum, int tfreq,
@@ -130,36 +135,43 @@ void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
 		}
 	    }
 
-	  if(beam->sct[irg] == 1)
+	  if(beam->sct[irg] == 1 && beam->rng[irg].phi0 == 0.0)
+	    beam->sct[irg] = 0.0;
+
+	  else if(beam->sct[irg] == 1)
 	    {
-	      /* Calculate the back lobe elevation, as front was assigned */
-	      /* during the beam initialization.                          */
+	      /* Calculate the elevation. Front must be assigned here */
+	      /* as well, since TDIFF may have been updated.          */
+	      beam->front_elv[irg].normal = elevation_v2_lobe(1, beam->bm,
+							     beam->freq, site,
+							     beam->rng[irg].phi0, 0.0);
 	      beam->back_elv[irg].normal = elevation_v2_lobe(-1, beam->bm,
 							     beam->freq, site,
 							     beam->rng[irg].phi0, 0.0);
 
 	      /* Calculate the virtual heights */
-	      beam->front_loc[irg].vh = calc_elv_vheight(beam->front_loc[irg].dist, beam->front_loc[irg].hop, Re, beam->front_elv[irg].normal);
-	      beam->back_loc[irg].vh = calc_elv_vheight(beam->back_loc[irg].dist, beam->back_loc[irg].hop, Re, beam->back_elv[irg].normal);
+	      beam->front_loc[irg].vh = calc_elv_vheight(beam->front_loc[irg].dist, beam->front_loc[irg].hop, RE_KM, beam->front_elv[irg].normal);
+	      beam->back_loc[irg].vh = calc_elv_vheight(beam->back_loc[irg].dist, beam->back_loc[irg].hop, RE_KM, beam->back_elv[irg].normal);
 	      sprintf(beam->front_loc[irg].vh_m, "E");
 	      sprintf(beam->back_loc[irg].vh_m, "E");
 
 	      /* Test and adjust the virtual height and propagation path */
-	      falias = AdjustPropagation(1, Re, D_hmin, D_hmax, E_hmax,
+	      falias = AdjustPropagation(1, RE_KM, D_hmin, D_hmax, E_hmax,
 					 F_hmax, max_hop, beam->bm, beam->freq,
 					 site, beam->rng[irg].phi0,
 					 &beam->front_loc[irg].hop,
 					 &beam->front_loc[irg].vh,
 					 &beam->front_elv[irg].normal,
 					 &beam->front_loc[irg].dist);
-	      balias = AdjustPropagation(-1, Re, D_hmin, D_hmax, E_hmax,
-					 F_hmax, max_hop, beam->bm, beam->freq,
-					 site, beam->rng[irg].phi0,
+	      balias = AdjustPropagation(-1, RE_KM, D_hmin, D_hmax,
+					 E_hmax, F_hmax, max_hop, beam->bm,
+					 beam->freq, site, beam->rng[irg].phi0,
 					 &beam->back_loc[irg].hop,
 					 &beam->back_loc[irg].vh,
 					 &beam->back_elv[irg].normal,
 					 &beam->back_loc[irg].dist);
 
+	      
 	      /* If a realistic propagtion path could not be found in  */
 	      /* either field of view, remove this positive scatter ID */
 	      if(beam->front_loc[irg].hop == 0.0
@@ -168,15 +180,12 @@ void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
 	      else
 		{
 		  /* Add the elevation angle errors */
-		  if(falias)
-		    {
-		      /* This step isn't necesssary if no changes made */
-		      beam->front_elv[irg].low = elevation_v2_lobe(-1, beam->bm,
-								   beam->freq,
-								   site,
-								   beam->rng[irg].phi0 - beam->rng[irg].phi0_e, 1.0);
-		      beam->front_elv[irg].high = elevation_v2_lobe(-1, beam->bm,beam->freq, site, beam->rng[irg].phi0 + beam->rng[irg].phi0_e, 1.0);
-		    }
+		  beam->front_elv[irg].low = elevation_v2_lobe(1, beam->bm,
+							       beam->freq, site,
+							       beam->rng[irg].phi0 - beam->rng[irg].phi0_e, (float)falias);
+		  beam->front_elv[irg].high = elevation_v2_lobe(1, beam->bm,
+								beam->freq,
+								site, beam->rng[irg].phi0 + beam->rng[irg].phi0_e, (float)falias);
 		  beam->back_elv[irg].low = elevation_v2_lobe(-1, beam->bm,
 							      beam->freq, site,
 							      beam->rng[irg].phi0 - beam->rng[irg].phi0_e, (float)balias);
@@ -185,18 +194,18 @@ void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
 							       beam->rng[irg].phi0 + beam->rng[irg].phi0_e, (float)balias);
 
 		  /* Add the virtual height errors */
-		  vh_low = beam->front_loc[irg].vh - calc_elv_vheight(beam->front_loc[irg].dist, beam->front_loc[irg].hop, Re, beam->front_elv[irg].low);
-		  vh_high = calc_elv_vheight(beam->back_loc[irg].dist, beam->back_loc[irg].hop, Re, beam->front_elv[irg].high) - beam->front_loc[irg].vh;
+		  vh_low = beam->front_loc[irg].vh - calc_elv_vheight(beam->front_loc[irg].dist, beam->front_loc[irg].hop, RE_KM, beam->front_elv[irg].low);
+		  vh_high = calc_elv_vheight(beam->back_loc[irg].dist, beam->back_loc[irg].hop, RE_KM, beam->front_elv[irg].high) - beam->front_loc[irg].vh;
 		  beam->front_loc[irg].vh_e = (vh_low > vh_high) ? vh_low : vh_high;
 
-		  vh_low = beam->back_loc[irg].vh - calc_elv_vheight(beam->back_loc[irg].dist, beam->back_loc[irg].hop, Re, beam->back_elv[irg].low);
-		  vh_high = calc_elv_vheight(beam->back_loc[irg].dist, beam->back_loc[irg].hop, Re, beam->back_elv[irg].high) - beam->back_loc[irg].vh;
+		  vh_low = beam->back_loc[irg].vh - calc_elv_vheight(beam->back_loc[irg].dist, beam->back_loc[irg].hop, RE_KM, beam->back_elv[irg].low);
+		  vh_high = calc_elv_vheight(beam->back_loc[irg].dist, beam->back_loc[irg].hop, RE_KM, beam->back_elv[irg].high) - beam->back_loc[irg].vh;
 		  beam->back_loc[irg].vh_e = (vh_low > vh_high) ? vh_low : vh_high;
 
 		  /* Add the region ID */
 		  SetRegion(D_hmin, D_hmax, E_hmax, F_hmax,
 			    beam->front_loc[irg].vh,
-			    beam->back_loc[irg].region);
+			    beam->front_loc[irg].region);
 		  SetRegion(D_hmin, D_hmax, E_hmax, F_hmax,
 			    beam->back_loc[irg].vh,
 			    beam->back_loc[irg].region);
