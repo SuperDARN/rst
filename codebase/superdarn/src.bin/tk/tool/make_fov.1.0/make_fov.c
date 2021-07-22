@@ -43,8 +43,8 @@ struct OptionData opt;
 
 int rst_opterr(char *txt)
 {
-    fprintf(stderr,"Option not recognized: %s\n", txt);
-    fprintf(stderr,"Please try: make_fov --help\n");
+    fprintf(stderr, "Option not recognized: %s\n", txt);
+    fprintf(stderr, "Please try: make_fov --help\n");
     return(-1);
 }
 
@@ -276,7 +276,7 @@ int main(int argc, char *argv[])
 				    fbands, all_freq);
       if(nfbands < 0)
 	{
-	  fprintf(stderr "make_fov ERROR: frequency band width too small");
+	  fprintf(stderr, "make_fov ERROR: frequency band width too small");
 	  return(1);
 	}
     }
