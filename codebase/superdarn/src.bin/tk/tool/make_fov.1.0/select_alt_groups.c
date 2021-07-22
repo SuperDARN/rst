@@ -82,8 +82,8 @@ int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
   /* Create a histogram of the number of observations at each virtual height */
   nbin = (int)((vh_max - vh_min) / (vh_box * 0.25));
   if(nbin > 10) nbin = 10;
-  hist_bins = (int *)calloc(num, sizeof(int));
-  hist_edges = (float *)calloc(num, sizeof(float));
+  hist_bins = (int *)calloc(nbin, sizeof(int));
+  hist_edges = (float *)calloc(nbin, sizeof(float));
   histogram(num, vh, nbin, vh_min, vh_max, hist_bins, hist_edges);
 
   /* Find the maxima in the histogram */
@@ -117,8 +117,9 @@ int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
 
       for(i = 0; i < npeaks; i++)
 	{
-	  vh_mins[i] = vmin + i * vh_box;
-	  vh_maxs[i] = vh_mins[i] + vh_box;
+	  vh_mins[i]  = vmin + i * vh_box;
+	  vh_maxs[i]  = vh_mins[i] + vh_box;
+	  vh_peaks[i] = vmin + 0.5 * vh_box;
 	}
     }
   else
@@ -128,7 +129,7 @@ int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
       private->y       = (double *)calloc(nbin, sizeof(double));
       private->y_error = (double *)calloc(nbin, sizeof(double));
 
-      hist_width = (nbin >= 1) ? (hist_bins[1] - hist_bins[0]) / 2.0 : vh_box;
+      hist_width = (nbin >= 1) ? (hist_edges[1] - hist_edges[0]) / 2.0 : vh_box;
 
       for(i = 0; i < nbin; i++)
 	{
@@ -145,8 +146,8 @@ int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
 	      /* Initial amplitude is the number of points at the maximum */
 	      params[0] = (double)hist_bins[j];
 
-	      /* Initial mean is half the histogram box width */
-	      params[1] = (double)hist_width;
+	      /* Initial mean is the x-value for this maxima */
+	      params[1] = private->x[j];
 
 	      /* Initial sigma is half the virtual height box width */
 	      params[2] = 0.5 * (double)vh_box;
@@ -156,7 +157,7 @@ int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
 	      status = mpfit(gaussian_dev, nbin, 3, params, 0, 0, private,
 			     result);
 
-	      if(status > 0)
+	      if(status == 1)
 		{
 		  /* Get the 3-sigma limits */
 		  vmin = params[1] - 3.0 * params[2];
@@ -176,7 +177,7 @@ int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
 		  /* height box limits if the detected peak is within the   */
 		  /* 2-sigma limits.  Also remove this peak from the xdata  */
 		  /* array to allow lower level peaks to be identified.     */
-		  if((private->y[j] >= vlow) && (private->y[j] <= vhigh))
+		  if((private->x[j] >= vlow) && (private->x[j] <= vhigh))
 		    {
 		      /* Save this altitude bin */
 		      vh_mins[npeaks]  = vmin;
@@ -201,12 +202,13 @@ int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
 	{
 	  /* Get the expected number of peaks and set the first set of */
 	  /* boundary limits.                                          */
-	  j          = (int)ceil((double)((local_max - local_min) / vh_box));
-	  vh_mins[0] = (local_max
-			- local_min) / (float)npeaks + local_min - vh_box;
+	  j           = (int)ceil((double)((local_max - local_min) / vh_box));
+	  vh_mins[0]  = (local_max
+			- local_min) / (float)j + local_min - vh_box;
 	  if(vh_mins[0] < vh_min) vh_mins[0] = vh_min;
-	  vh_maxs[0] = vh_mins[0] + vh_box;
+	  vh_maxs[0]  = vh_mins[0] + vh_box;
 	  if(vh_maxs[0] > vh_max) vh_maxs[0] = vh_max;
+	  vh_peaks[i] = 0.5 * (vh_maxs[i] - vh_mins[i]) + vh_mins[i];
 
 	  /* Set each limit, stopping if the maximum height is reached */
 	  for(i = 1; i < j && vh_maxs[i-1] < vh_max; i++)
@@ -214,6 +216,7 @@ int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
 	      vh_mins[i] = vh_maxs[i - 1];
 	      vh_maxs[i] = vh_mins[i] + vh_box;
 	      if(vh_maxs[i] > vh_max) vh_maxs[i] = vh_max;
+	      vh_peaks[i] = 0.5 * (vh_maxs[i] - vh_mins[i]) + vh_mins[i];
 	    }
 	  npeaks = i;
 	}
@@ -366,14 +369,29 @@ int sort_expand_boundaries(int num, float local_min, float local_max,
 		    }
 		}
 	    }
-
-	  /* Add the current height bin, if it is wide enough to be sensible */
+	  else
+	    {
+	      /* Add the current height bin, if it is a sensible width */
+	      if(hmin < vh_maxs[sortargs[i]])
+		{
+		  new_mins[inew]  = hmin;
+		  new_maxs[inew]  = vh_maxs[sortargs[i]];
+		  new_peaks[inew] = vh_peaks[sortargs[i]];
+		  priority[inew]  = sortargs[i];
+		  inew++;
+		}
+	    }
+	}
+      else
+	{
+	  /* Add the current height bin, if it is a sensible width */
 	  if(hmin < vh_maxs[sortargs[i]])
 	    {
 	      new_mins[inew]  = hmin;
 	      new_maxs[inew]  = vh_maxs[sortargs[i]];
 	      new_peaks[inew] = vh_peaks[sortargs[i]];
 	      priority[inew]  = sortargs[i];
+	      inew++;
 	    }
 	}
     }
