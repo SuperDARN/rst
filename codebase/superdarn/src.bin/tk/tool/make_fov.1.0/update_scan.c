@@ -79,7 +79,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 		     float max_hop, struct RadarScan *scan,
 		     struct RadarSite *hard, struct MultFitBSID *mult_bsid)
 {
-  int iscan, ibm, irg, ifov, ipath, ireg, ivh, igbm;
+  int iscan, ibm, irg, ifov, ipath, ireg, ivh, igbm, cpid, scan_chan;
   int max_rg, max_path, out_num, group_num, bm_num, bmwidth, igood_num;
   int igood[MAX_BMS], group_bm[MAX_BMS * MAX_RGS], group_rg[MAX_BMS * MAX_RGS];
   int fovflg[MAX_BMS][MAX_RGS], fovpast[MAX_BMS][MAX_RGS];
@@ -174,25 +174,44 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
     }
   mult_bsid->last_ptr = scan_new;
 
-  /* Before initializing this new scan data, make sure the frequency */
-  /* for the beams are correct.                                      */
+  /* Before initializing this new scan data, make sure the frequency for the */
+  /* beams are correct. Also test to ensure constant CPID and channel.       */
   for(igood_num = 0, ibm = 0; ibm < scan->num; ibm++)
     {
       bm_old = scan->bm[ibm];
 
+      if(ibm == 0)
+	{
+	  cpid      = bm_old.cpid;
+	  scan_chan = bm_old.channel;
+	}
+
       if(bm_old.freq >= freq_min && bm_old.freq < freq_max)
 	{
+	  /* Only verify CPID and channel for requested frequency range */
+	  if(cpid != bm_old.cpid)
+	    {
+	      fprintf(stderr,
+		      "CP changes in scan, try limiting channels [%d != %d]\n",
+		      cpid, bm_old.cpid);
+	      exit(1);
+	    }
+	  if(scan_chan != bm_old.channel)
+	    {
+	      fprintf(stderr,
+		      "channel changes in scan, try -cn option [%d != %d]\n",
+		      scan_chan, bm_old.channel);
+	      exit(1);
+	    }
+
 	  igood[igood_num] = ibm;
 	  igood_num++;
 	}
     }
 
-  printf("TEST GOT GOOD BEAMS FOR FREQ: %d/%d\n", igood_num, scan->num);
-
   /* If there are good beams in this scan, add it to the output structure */
   if(igood_num > 0)
     {
-      printf("GOING TO RUN THINGS!\n");fflush(stdout);
       scan_new->st_time = scan->st_time;
       scan_new->ed_time = scan->ed_time;
       scan_new->num_bms = scan->num;
@@ -202,15 +221,12 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 
       max_rg = 0;
 
-      printf("CYCLE THROUGH BEAMS\n");fflush(stdout);
       /* Cycle through each beam in the scan, but only update the beams */
       /* with appropriate frequencies.                                  */
       for(igbm = 0, ibm = 0; ibm < scan_new->num_bms; ibm++)
 	{
-	  printf("TEST GOOD BEAM %d ?= %d\n", igood[igbm], ibm);fflush(stdout);
 	  if(igood[igbm] == ibm)
 	    {
-	      printf("SET NEW/OLD BEAM\n");fflush(stdout);
 	      igbm++;
 	      bm_old = scan->bm[ibm];
 	      bm_new = scan_new->bm[ibm];
@@ -219,7 +235,6 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 	       * davitpy.pydarn.proc.fov.update_backscatter.update_beam_fit
 	       *
 	       * Start by initializing new beams in the new scan */
-	      printf("INITIALIZING BEAM/SCAN DETAILS\n");fflush(stdout);
 	      bm_new.cpid    = bm_old.cpid;
 	      bm_new.bm      = bm_old.bm;
 	      bm_new.bmazm   = bm_old.bmazm;
@@ -228,7 +243,6 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 	      bm_new.intt.us = bm_old.intt.us;
 
 	      /* Set the beam parameter values */
-	      printf("INITIALIZING PARAMS\n");fflush(stdout);
 	      bm_new.nave    = bm_old.nave;
 	      bm_new.frang   = bm_old.frang;
 	      bm_new.rsep    = bm_old.rsep;
@@ -239,51 +253,52 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 	      bm_new.channel = bm_old.channel;
 
 	      /* Initialize the range-dependent variables */
-	      printf("INITIALIZING RANGE VARIABLES\n");fflush(stdout);
 	      bm_new.nrang     = bm_old.nrang;
 	      bm_new.rng       = (struct RadarCell *)
 		calloc(bm_new.nrang, sizeof(struct RadarCell));
 	      bm_new.med_rng   = (struct RadarCell *)
 		calloc(bm_new.nrang, sizeof(struct RadarCell));
 	      bm_new.rng_flgs  = (struct CellBSIDFlgs *)
-		calloc(bm_new.nrang, sizeof(struct CellBSIDFlgs));
+		malloc(bm_new.nrang * sizeof(struct CellBSIDFlgs));
 	      bm_new.front_loc = (struct CellBSIDLoc *)
-		calloc(bm_new.nrang, sizeof(struct CellBSIDLoc));
+		malloc(bm_new.nrang * sizeof(struct CellBSIDLoc));
 	      bm_new.back_loc  = (struct CellBSIDLoc *)
-		calloc(bm_new.nrang, sizeof(struct CellBSIDLoc));
-	      bm_new.sct       = (unsigned char *)malloc(sizeof(bm_old.sct));
+		malloc(bm_new.nrang * sizeof(struct CellBSIDLoc));
+	      bm_new.front_elv = (struct FitElv *)
+		calloc(bm_new.nrang, sizeof(struct FitElv));
+	      bm_new.back_elv  = (struct FitElv *)
+		calloc(bm_new.nrang, sizeof(struct FitElv));
+	      if(bm_old.sct == NULL) bm_new.sct = (unsigned char *)(NULL);
+	      else bm_new.sct = (unsigned char *)
+		     calloc(bm_new.nrang, sizeof(char));
 
 	      if(bm_new.nrang > max_rg) max_rg = bm_new.nrang;
 
 	      for(irg = 0; irg < bm_new.nrang; irg++)
 		{
-		  printf("SET IF SCT: %d %d\n", irg, bm_old.sct[irg]);fflush(stdout);
 		  bm_new.sct[irg] = bm_old.sct[irg];
 
 		  /* Load only for range gates with data */
 		  if(bm_old.sct[irg] == 1)
 		    {
-		      printf("LOADING FOR %d\n", irg);fflush(stdout);
-		      bm_new.rng[irg].gsct    = bm_old.rng[irg].gsct;
-		      bm_new.rng[irg].p_0     = bm_old.rng[irg].p_0;
-		      bm_new.rng[irg].p_0_e   = bm_old.rng[irg].p_0_e;
-		      bm_new.rng[irg].v       = bm_old.rng[irg].v;
-		      bm_new.rng[irg].v_e     = bm_old.rng[irg].v_e;
-		      bm_new.rng[irg].w_l     = bm_old.rng[irg].w_l;
-		      bm_new.rng[irg].w_l_e   = bm_old.rng[irg].w_l_e;
-		      bm_new.rng[irg].p_l     = bm_old.rng[irg].p_l;
-		      bm_new.rng[irg].p_l_e   = bm_old.rng[irg].p_l_e;
-		      bm_new.rng[irg].phi0    = bm_old.rng[irg].phi0;
-		      bm_new.rng[irg].phi0_e  = bm_old.rng[irg].phi0_e;
-		      bm_new.rng[irg].elv     = bm_old.rng[irg].elv;
+		      bm_new.rng[irg].gsct   = bm_old.rng[irg].gsct;
+		      bm_new.rng[irg].p_0    = bm_old.rng[irg].p_0;
+		      bm_new.rng[irg].p_0_e  = bm_old.rng[irg].p_0_e;
+		      bm_new.rng[irg].v      = bm_old.rng[irg].v;
+		      bm_new.rng[irg].v_e    = bm_old.rng[irg].v_e;
+		      bm_new.rng[irg].w_l    = bm_old.rng[irg].w_l;
+		      bm_new.rng[irg].w_l_e  = bm_old.rng[irg].w_l_e;
+		      bm_new.rng[irg].p_l    = bm_old.rng[irg].p_l;
+		      bm_new.rng[irg].p_l_e  = bm_old.rng[irg].p_l_e;
+		      bm_new.rng[irg].phi0   = bm_old.rng[irg].phi0;
+		      bm_new.rng[irg].phi0_e = bm_old.rng[irg].phi0_e;
+		      bm_new.rng[irg].elv    = bm_old.rng[irg].elv;
 		    }
 		}
 
 	      /* Update the front and back FoVs */
-	      printf("TEST UPDATE BEAM FIT\n");fflush(stdout);
 	      UpdateBeamFit(strict_gs, max_hop, D_hmin, D_hmax, E_hmax,
 			    F_hmax, hard, &bm_new);
-	      printf("TEST UPDATED BEAM FIT!\n");fflush(stdout);
 
 	      /* Find the scan's altitude bins by FoV, region, and path */
 	      if(scan_num == NULL)
@@ -372,7 +387,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 
 			  if(ireg >= 0)
 			    {
-			      scan_bm[ireg][ifov][ipath][scan_num[ireg][ifov][ipath]] = ibm;
+			      scan_bm[ireg][ifov][ipath][scan_num[ireg][ifov][ipath]] = bm_new.bm;
 			      scan_rg[ireg][ifov][ipath][scan_num[ireg][ifov][ipath]] = irg;
 			      scan_vh[ireg][ifov][ipath][scan_num[ireg][ifov][ipath]] = (float)loc.vh;
 			      scan_elv[ireg][ifov][ipath][scan_num[ireg][ifov][ipath]] = (float)elv.normal;
@@ -387,7 +402,6 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
       /* To determine the FoV, evaluate the elevation variations across all */
       /* beams for a range gate and virtual height band, considering each   */
       /* propagation path (region and hop) seperately.                      */
-      printf("TEST ELV VARS\n");fflush(stdout);
       for(ireg = 0; ireg < 3; ireg++)
 	{
 	  if(ireg == 0)
@@ -418,13 +432,11 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 		  if(scan_num[ireg][ifov][ipath] >= min_pnts)
 		    {
 		      /* Use select_alt_groups */
-		      printf("TEST SEL ALT GROUPS\n");fflush(stdout);
 		      out_num = select_alt_groups(scan_num[ireg][ifov][ipath],
 						  scan_rg[ireg][ifov][ipath],
 						  scan_vh[ireg][ifov][ipath],
 						  hmin, hmax, hbox, min_pnts,
 						  vmins, vmaxs);
-		      printf("TEST SELECTED ALT GROUPS\n");fflush(stdout);
 
 		      /* For each virtual height bin, determine if this */
 		      /* FoV has a realistic azimuth variation.         */
@@ -433,9 +445,9 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 			  for(group_num = 0, irg = 0;
 			      irg < scan_num[ireg][ifov][ipath]; irg++)
 			    {
-			      if(scan_vh[ireg][ifov][ipath][irg] >= vmins[irg]
+			      if(scan_vh[ireg][ifov][ipath][irg] >= vmins[ivh]
 				 && scan_vh[ireg][ifov][ipath][irg]
-				 < vmaxs[irg])
+				 < vmaxs[ivh])
 				{
 				  group_bm[group_num] = scan_bm[ireg][ifov][ipath][irg];
 				  group_rg[group_num] = scan_rg[ireg][ifov][ipath][irg];
@@ -453,7 +465,6 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 				eval_az_var_in_elv(group_num, ifov, group_bm,
 						   group_rg, fovflg, fovpast,
 						   group_vh, group_elv);
-			      printf("TEST UPDATED ELV\n");fflush(stdout);
 			    }
 			}
 		    }
@@ -463,11 +474,9 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 
       /* Evaluate the FoV flags, removing points that are surrounded by */
       /* data assigned to the opposite FoV.                             */
-      printf("TEST EVAL FOV FLAG\n");fflush(stdout);
       eval_fov_flag_consistency(max_rg, bmwidth, D_rgmax, D_nrg, E_rgmax,
 				E_nrg, F_rgmax, F_nrg, far_nrg, fovflg,
 				fovpast, fovbelong, scan_new);
-      printf("TEST EVALED FOV FLAG\n");fflush(stdout);
 
       /* Assign the appropriate virtual heights, regions, and elevation */
       /* angles to each point based on their FoV.                       */
@@ -502,19 +511,21 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 	      rng_flgs->fov      = fovflg[ibm][irg];
 	      rng_flgs->fov_past = fovpast[ibm][irg];
 	    }
+
+	  /* Cycle to the next scan */
+	  scan_new->next_scan = (struct FitBSIDScan *)
+	    malloc(sizeof(struct FitBSIDScan));
+	  prev_new            = scan_new;
+	  scan_new            = scan_new->next_scan;
+	  scan_new->prev_scan = prev_new;
+	  mult_bsid->last_ptr = prev_new;
+	  scan_new->next_scan = (struct FitBSIDScan *)(NULL);
+	  mult_bsid->num_scans++;
 	}
 
-      printf("TEST CYCLE NEXT SCAN\n");fflush(stdout);
-
-      /* Cycle to the next scan */
-      mult_bsid->last_ptr = scan_new;
-      scan_new->next_scan = (struct FitBSIDScan *)
-	malloc(sizeof(struct FitBSIDScan));
-      prev_new            = scan_new;
-      scan_new            = scan_new->next_scan;
-      scan_new->prev_scan = prev_new;
-      scan_new->next_scan = (struct FitBSIDScan *)(NULL);
-      mult_bsid->num_scans++;
+      /* Close the scan structure */
+      prev_new->next_scan = (struct FitBSIDScan *)(NULL);
+      scan_new            = prev_new->next_scan;
     }
 
   /* Free the assigned memory */
@@ -522,11 +533,9 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
   free(vmaxs);
   free(rng_flgs);
   free(scan_new);
-  printf("TEST FREE PREV_NEW\n");fflush(stdout);
-  if(prev_new != NULL) free(prev_new);
+  if(prev_new != (struct FitBSIDScan *)(NULL)) free(prev_new);
 
-  printf("TEST FREE SCAN_BM\n");fflush(stdout);
-  if(scan_num != NULL)
+  if(scan_num != (int ***)(NULL))
     {
       for(ireg = 0; ireg < 3; ireg++)
 	{
@@ -534,28 +543,18 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 	    {
 	      for(ipath = 0; ipath < max_path; ipath++)
 		{
-		  printf("TEST FREE SCAN_BM PATH %d %d %d\n", ireg, ifov, ipath);fflush(stdout);
 		  free(scan_bm[ireg][ifov][ipath]);
-	      
-		  printf("TEST FREE SCAN_RG PATH %d %d %d\n", ireg, ifov, ipath);fflush(stdout);
 		  free(scan_rg[ireg][ifov][ipath]);
-	      
-		  printf("TEST FREE SCAN_VH PATH %d %d %d\n", ireg, ifov, ipath);fflush(stdout);
 		  free(scan_vh[ireg][ifov][ipath]);
-	      
-		  printf("TEST FREE SCAN_ELV PATH %d %d %d\n", ireg, ifov, ipath);fflush(stdout);
 		  free(scan_elv[ireg][ifov][ipath]);
-		  printf("HERE\n");fflush(stdout);
 		}
 	    }
 	}
 
-      printf("NEXT\n");fflush(stdout);
       for(ireg = 0; ireg < 3; ireg++)
 	{
 	  for(ifov = 0; ifov < 2; ifov++)
 	    {
-	      printf("TEST FREE SCAN_BM FOV %d %d\n", ireg, ifov);fflush(stdout);
 	      free(scan_num[ireg][ifov]);
 	      free(scan_bm[ireg][ifov]);
 	      free(scan_rg[ireg][ifov]);
@@ -563,9 +562,9 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 	      free(scan_elv[ireg][ifov]);
 	    }
 	}
+
       for(ireg = 0; ireg < 3; ireg++)
 	{
-	  printf("TEST FREE SCAN_BM REG %d\n", ireg);fflush(stdout);
 	  free(scan_num[ireg]);
 	  free(scan_bm[ireg]);
 	  free(scan_rg[ireg]);
@@ -573,17 +572,12 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 	  free(scan_elv[ireg]);
 	}
 
-      printf("TEST FREE SCAN_BM\n");fflush(stdout);
       free(scan_num);
       free(scan_bm);
       free(scan_rg);
       free(scan_vh);
       free(scan_elv);
     }
-  
-
-  printf("TEST EXITING SCAN\n");fflush(stdout);
-  exit(1);
 
   return;
 }
@@ -783,90 +777,96 @@ void eval_fov_flag_consistency(int max_rg, int bmwidth, int D_rgmax, int D_nrg,
 	  /* correct range gate                                  */
 	  bm = scan->bm[ibm];
 
-	  if(near_rg < 0.0)
+	  /* Ensure only good beams with data are used */
+	  if(bm.frang > 0 && bm.rsep > 0)
 	    {
-	      /* Calculate once in the routine */
-	      near_rg = ((500.0 / (5.0e-10 * C) - (bm.frang * 20.0 / 3.0))
-			 / (bm.rsep * 20.0 / 3.0));
-	    }
- 
-	  if(bm.sct[irg] == 1)
-	    {
-	      if(fovflg[ibm][irg] == -1) ref_loc = bm.back_loc[irg];
-	      else                       ref_loc = bm.front_loc[irg];
-
-	      /* Get the beam limits for the azimuthal box */
-	      bmin = ibm - bmwidth;
-	      bmax = ibm + bmwidth;
-	      if(bmin < 0) bmin = 0;
-	      if(bmax > scan->num_bms) bmax = scan->num_bms;
-
-	      /* Cycle through each range gate and beam in the box, */
-	      /* getting the number of points for the same hop in   */
-	      /* each field-of-view                                 */
-	      for(fnum = 0, bnum = 0, ibsel = bmin; ibsel < bmax; ibsel++)
+	      if(near_rg < 0.0)
 		{
-		  for(irsel = rmin; irsel < rmax; irsel++)
-		    {
-		      if(fovflg[ibsel][irsel] != 0)
-			{
-			  bm_ref = scan->bm[ibsel];
-			  if(fovflg[ibsel][irsel] == -1)
-			    loc = bm_ref.back_loc[irsel];
-			  else loc = bm_ref.front_loc[irsel];
+		  /* Calculate once in the routine */
+		  near_rg = ((500.0 / (5.0e-10 * C)
+			      - ((float)bm.frang * 20.0 / 3.0))
+			     / ((float)bm.rsep * 20.0 / 3.0));
+		}
+ 
+	      if(bm.sct[irg] == 1)
+		{
+		  if(fovflg[ibm][irg] == -1) ref_loc = bm.back_loc[irg];
+		  else                       ref_loc = bm.front_loc[irg];
 
-			  if(loc.hop == ref_loc.hop)
+		  /* Get the beam limits for the azimuthal box */
+		  bmin = ibm - bmwidth;
+		  bmax = ibm + bmwidth;
+		  if(bmin < 0) bmin = 0;
+		  if(bmax > scan->num_bms) bmax = scan->num_bms;
+
+		  /* Cycle through each range gate and beam in the box, */
+		  /* getting the number of points for the same hop in   */
+		  /* each field-of-view                                 */
+		  for(fnum = 0, bnum = 0, ibsel = bmin; ibsel < bmax; ibsel++)
+		    {
+		      for(irsel = rmin; irsel < rmax; irsel++)
+			{
+			  if(fovflg[ibsel][irsel] != 0)
 			    {
-			      if(fovflg[ibsel][irsel] == 1) fnum++;
-			      else                          bnum++;
+			      bm_ref = scan->bm[ibsel];
+			      if(fovflg[ibsel][irsel] == -1)
+				loc = bm_ref.back_loc[irsel];
+			      else loc = bm_ref.front_loc[irsel];
+
+			      if(loc.hop == ref_loc.hop)
+				{
+				  if(fovflg[ibsel][irsel] == 1) fnum++;
+				  else                          bnum++;
+				}
 			    }
 			}
 		    }
-		}
 
-	      /* Sum up the number of points in this range gate/beam box */
-	      /* and see if there is an overwhelming number of points in */
-	      /* either field-of-view.                                   */
-	      if(fnum + bnum > 0)
-		{
-		  ffrac = (float)fnum / (float)(fnum + bnum);
-		  if(ffrac >= fov_frac && bnum > 0)
-		    bad_fov = -1;
-		  else if((1.0 - ffrac) >= fov_frac && fnum > 0)
-		    bad_fov = 1;
-		  else
-		    bad_fov = 0;
-		}
-
-	      /* Tag all points whose FoV are or are not consistent with */
-	      /* the observed structure at this propagation path.        */
-	      for(ibsel = bmin; ibsel < bmax; ibsel++)
-		{
-		  for(irsel = rmin; irsel < rmax; irsel++)
+		  /* Sum up the number of points in this range gate/beam box */
+		  /* and see if there is an overwhelming number of points in */
+		  /* either field-of-view.                                   */
+		  if(fnum + bnum > 0)
 		    {
-		      if(fovflg[ibsel][irsel] != 0)
+		      ffrac = (float)fnum / (float)(fnum + bnum);
+		      if(ffrac >= fov_frac && bnum > 0)
+			bad_fov = -1;
+		      else if((1.0 - ffrac) >= fov_frac && fnum > 0)
+			bad_fov = 1;
+		      else
+			bad_fov = 0;
+		    }
+
+		  /* Tag all points whose FoV are or are not consistent with */
+		  /* the observed structure at this propagation path.        */
+		  for(ibsel = bmin; ibsel < bmax; ibsel++)
+		    {
+		      for(irsel = rmin; irsel < rmax; irsel++)
 			{
-			  bm_ref = scan->bm[ibsel];
-			  if(fovflg[ibsel][irsel] == -1)
-			    loc = bm_ref.back_loc[irsel];
-			  else loc = bm_ref.front_loc[irsel];
-
-			  if(loc.hop == ref_loc.hop)
+			  if(fovflg[ibsel][irsel] != 0)
 			    {
-			      if(bad_fov == 0) fovbelong[ibsel][irsel][2] += 1;
-			      else if(fovflg[ibsel][irsel] == bad_fov)
-				{
-				  /* If this point is not associated with a */
-				  /* structure that is dominated by points  */
-				  /* with the same FoV, and this is not the */
-				  /* only FoV capapble of producing a       */
-				  /* realistic elevation angle, flag this   */
-				  /* point as an outlier.                   */
-				  if(irsel < near_rg)
-				    fovbelong[ibsel][irsel][1] += 1;
+			      bm_ref = scan->bm[ibsel];
+			      if(fovflg[ibsel][irsel] == -1)
+				loc = bm_ref.back_loc[irsel];
+			      else loc = bm_ref.front_loc[irsel];
 
+			      if(loc.hop == ref_loc.hop)
+				{
+				  if(bad_fov == 0)
+				    fovbelong[ibsel][irsel][2] += 1;
+				  else if(fovflg[ibsel][irsel] == bad_fov)
+				    {
+				      /* If this point is not associated with */
+				      /* a structure that is dominated by     */
+				      /* points with the same FoV, and this   */
+				      /* is not the only FoV capapble of      */
+				      /* producing arealistic elevation       */
+				      /* angle, flag this point as an outlier */
+				      if(irsel < near_rg)
+					fovbelong[ibsel][irsel][1] += 1;
+
+				    }
+				  else fovbelong[ibsel][irsel][0] += 1;
 				}
-			      else fovbelong[ibsel][irsel][0] += 1;
 			    }
 			}
 		    }
@@ -874,6 +874,5 @@ void eval_fov_flag_consistency(int max_rg, int bmwidth, int D_rgmax, int D_nrg,
 	    }
 	}
     }
-
   return;
 }
