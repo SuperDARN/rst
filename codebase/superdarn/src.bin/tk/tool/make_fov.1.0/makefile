@@ -22,7 +22,6 @@ SRC =	make_fov.c \
 	load_radar_site.c \
 	location.c \
 	multbsid.c \
-	read_fit_funcs.c \
 	select_alt_groups.c \
 	sort_rout.c \
 	update_beam.c \
