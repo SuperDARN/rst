@@ -27,19 +27,121 @@
 #include <string.h>
 
 #include "option.h"
-#include "rtime.h"
-#include "radar.h"
-#include "rpos.h"
-#include "scandata.h"
 #include "multbsid.h"
 #include "hlpstr.h"
 #include "errstr.h"
 
-struct OptionData opt;
-
 #ifndef MAX_FREQ_KHZ
 #define MAX_FREQ_KHZ 30000
 #endif
+
+struct OptionData opt;
+
+/**
+ * Outputs an error statement for an unrecognized input option
+ **/
+
+int rst_opterr(char *txt)
+{
+    fprintf(stderr,"Option not recognized: %s\n", txt);
+    fprintf(stderr,"Please try: make_fov --help\n");
+    return(-1);
+}
+
+/**
+ * Load the command line options
+ **/
+
+int command_options(int argc, char *argv[], int *old, int *tlen,
+		    unsigned char *vb, unsigned char *catflg,
+		    unsigned char *nsflg, char **stmestr, char **etmestr,
+		    char **sdtestr, char **edtestr, char **exstr, char **chnstr,
+		    char **chnstr_fix, int *freq_min, int *freq_max,
+		    short int *strict_gs, short int *tdiff_flag, double *tdiff)
+{
+  /* Initialize input options */
+  int farg=0;
+  unsigned char help=0, option=0, version=0;
+
+  int rst_opterr(char *txt);
+
+  /* If only information is desired, print it out and exit */
+  OptionAdd(&opt, "-help", 'x', &help);
+  OptionAdd(&opt, "-option", 'x', &option);
+  OptionAdd(&opt, "-version", 'x', &version);
+
+  /* Determine input file format */
+  OptionAdd(&opt, "old", 'x', old);      /* Old fit format */
+
+  /* Concatenate multiple input files */
+  OptionAdd(&opt, "c", 'x', catflg); 
+
+  /* Verbose: log information to console */
+  OptionAdd(&opt, "vb", 'x', vb);
+
+  /* Set time information */
+  OptionAdd(&opt, "st", 't', stmestr);  /* Start time in HH:MM format */
+  OptionAdd(&opt, "et", 't', etmestr);  /* End time in HH:MM format */
+  OptionAdd(&opt, "sd", 't', sdtestr);  /* Start date in YYYYMMDD format */
+  OptionAdd(&opt, "ed", 't', edtestr);  /* End date in YYYYMMDD format */
+  OptionAdd(&opt, "ex", 't', exstr);    /* Use interval with extent HH:MM */
+
+  /* Ignore scan flag, use scan length of tl seconds */
+  OptionAdd(&opt, "tl", 'i', tlen);
+
+  /* Process channel options */
+  OptionAdd(&opt, "cn", 't', chnstr);         /* For stereo channel a or b   */
+  OptionAdd(&opt, "cn_fix", 't', chnstr_fix); /* User-defined channel number */
+
+  /* Apply scan flag limit (ie exclude data with scan flag = -1) */
+  OptionAdd(&opt, "ns", 'x', nsflg);
+
+  /* Apply transmission frequency limits */
+  OptionAdd(&opt, "tfmin", 'i', freq_min); /* Minimum transmission frequency */
+  OptionAdd(&opt, "tfmax", 'i', freq_max); /* Maximum transmission frequency */
+
+  /* Apply groundscatter strictness conditions (1=remove indeterminate GS) */
+  OptionAdd(&opt, "gs-strict", 'x', strict_gs);
+
+  /* Process the tdiff options */
+  OptionAdd(&opt, "update-tdiff", 'x', tdiff_flag);
+  OptionAdd(&opt, "tdiff", 'd', tdiff);
+
+  /* Process command line options */
+  farg = OptionProcess(1, argc, argv, &opt, rst_opterr);
+
+  /* If 'help' set then print help message */
+  if(help==1)
+    {
+      OptionPrintInfo(stdout, hlpstr);
+      exit(0);
+    }
+
+  /* If 'version' set, then print the version number */
+  if(version==1)
+    {
+      OptionVersion(stdout);
+      exit(0);
+    }
+
+  /* If 'option' set then print all command line options */
+  if(option==1)
+    {
+      OptionDump(stdout, &opt);
+      exit(0);
+    }
+
+  /* If command line option not recognized then print error and exit */
+  if(farg == -1) exit(-1);
+
+  if(farg == argc)
+    {
+      OptionPrintInfo(stderr, errstr);
+      exit(-1);
+    }
+
+  return farg;
+}
 
 /**
  * Determines the backscatter origin field-of-view
@@ -47,7 +149,7 @@ struct OptionData opt;
 
 int main(int argc, char *argv[])
 {
-  int inum, len, fnum, channel, channel_fix, ret_stat, nfbands;
+  int inum, len, fnum, ret_stat, nfbands;
   int fbands[90][2], all_freq[MAX_FREQ_KHZ];
 
   char vstr[256];
@@ -58,14 +160,15 @@ int main(int argc, char *argv[])
   /* Default frequency limits set to the limits of the HF range */
   short int strict_gs=1, tdiff_flag=0;
 
-  int old=0, farg=0, tlen=0, freq_min=3000, freq_max=30000;
+  int old=0, farg=0, tlen=0, channel=0, channel_fix=0;
+  int freq_min=3000, freq_max=30000;
 
   double stime=-1.0, etime=-1.0, extime=0.0, sdate=-1.0, edate=-1.0, tdiff=0.0;
 
   unsigned char vb=0, catflg=0, nsflg=0;
 
-  char *chnstr=NULL, *chnstr_fix=NULL, *exstr=NULL, *vbuf=NULL;
-  char *stmestr=NULL, *etmestr=NULL, *sdtestr=NULL, *edtestr=NULL;
+  char *vbuf=NULL, *chnstr=NULL, *chnstr_fix=NULL, *exstr=NULL, *etmestr=NULL;
+  char *edtestr=NULL, *sdtestr=NULL, *stmestr=NULL;
 
   /* Initialize file information */
   char **dnames=NULL, *iname=NULL;
@@ -81,11 +184,11 @@ int main(int argc, char *argv[])
   /* Declare local subroutines */
   int command_options(int argc, char *argv[], int *old, int *tlen,
 		      unsigned char *vb, unsigned char *catflg,
-		      unsigned char *nsflg, char *stmestr, char *etmestr,
-		      char *sdtestr, char *edtestr, char *exstr, char *chnstr,
-		      char *chnstr_fix, int *freq_min, int *freq_max,
-		      short int *strict_gs, short int *tdiff_flag,
-		      double *tdiff);
+		      unsigned char *nsflg, char **stmestr, char **etmestr,
+		      char **sdtestr, char **edtestr, char **exstr,
+		      char **chnstr, char **chnstr_fix, int *freq_min,
+		      int *freq_max, short int *strict_gs,
+		      short int *tdiff_flag, double *tdiff);
   int set_stereo_channel(char *chnstr);
   int set_fix_channel(char *chnstr_fix);
   double strtime(char *text);
@@ -110,20 +213,16 @@ int main(int argc, char *argv[])
 			  struct MultFitBSID *mult_bsid);
 
   /* Process the command line options */
-  farg = command_options(argc, argv, &old, &tlen, &vb, &catflg, &nsflg, stmestr,
-			 etmestr, sdtestr, edtestr, exstr, chnstr, chnstr_fix,
-			 &freq_min, &freq_max, &strict_gs, &tdiff_flag, &tdiff);
-
-  printf("TEST: %d %d %d %d %d %s %s %s %s %s %s %s %d %d %d %d %f\n", old,
-	 tlen, vb, catflg, nsflg, stmestr, etmestr, sdtestr, edtestr, exstr,
-	 chnstr, chnstr_fix, freq_min, freq_max, strict_gs, tdiff_flag, tdiff);
-  fflush(stdout);
+  farg = command_options(argc, argv, &old, &tlen, &vb, &catflg, &nsflg,
+			 &stmestr, &etmestr, &sdtestr, &edtestr, &exstr,
+			 &chnstr, &chnstr_fix, &freq_min, &freq_max, &strict_gs,
+			 &tdiff_flag, &tdiff);
 
   /* If 'cn' set then determine Stereo channel, either A or B */
-  channel = set_stereo_channel(chnstr);
+  if(chnstr != NULL) channel = set_stereo_channel(chnstr);
     
   /* If 'cn_fix' set then determine appropriate channel for output file */
-  channel_fix = set_fix_channel(chnstr_fix);
+  if(chnstr_fix != NULL) channel_fix = set_fix_channel(chnstr_fix);
 
   /* Format the time data */
   if(exstr   != NULL) extime = strtime(exstr);
@@ -171,14 +270,13 @@ int main(int argc, char *argv[])
   /* unless a frequency range was specified                             */
   if(freq_max - freq_min == 27000)
     {
-      printf("TEST GET FREQ: %d\n", band_width);fflush(stdout);
       nfbands = get_fit_tfreq_bands(fnum, channel, channel_fix, old, tlen,
 				    stime, sdate, etime, edate, extime, 1,
 				    nsflg, vb, vbuf, iname, dnames, band_width,
 				    fbands, all_freq);
       if(nfbands < 0)
 	{
-	  printf("make_fov ERROR: frequency band width too small");
+	  fprintf(stderr "make_fov ERROR: frequency band width too small");
 	  return(1);
 	}
     }
@@ -188,9 +286,6 @@ int main(int argc, char *argv[])
       fbands[0][0] = freq_min;
       fbands[0][1] = freq_max;
     }
-
-  printf("TEST FREQ: %d %d %d\n", nfbands, fbands[0][0], fbands[0][1]);
-  fflush(stdout);
 
   /* Initialize and load the fitted data */
   mult_bsid = MultFitBSIDMake();
@@ -219,113 +314,4 @@ int main(int argc, char *argv[])
   /* Write an output file HERE */
 
   return ret_stat;
-}
-
-
-/**
- * Load the command line options
- **/
-
-int command_options(int argc, char *argv[], int *old, int *tlen,
-		    unsigned char *vb, unsigned char *catflg,
-		    unsigned char *nsflg, char *stmestr, char *etmestr,
-		    char *sdtestr, char *edtestr, char *exstr, char *chnstr,
-		    char *chnstr_fix, int *freq_min, int *freq_max,
-		    short int *strict_gs, short int *tdiff_flag, double *tdiff)
-{
-  /* Initialize input options */
-  int farg=0;
-  unsigned char help=0, option=0, version=0;
-
-  int rst_opterr(char *txt);
-
-
-  /* If only information is desired, print it out and exit */
-  OptionAdd(&opt, "-help", 'x', &help);
-  OptionAdd(&opt, "-option", 'x', &option);
-  OptionAdd(&opt, "-version", 'x', &version);
-
-  /* If 'help' set then print help message */
-  if(help==1)
-    {
-      OptionPrintInfo(stdout, hlpstr);
-      exit(0);
-    }
-
-  /* If 'option' set then print all command line options */
-  if(option==1)
-    {
-      OptionDump(stdout, &opt);
-      exit(0);
-    }
-
-  /* If 'version' set, then print the version number */
-  if(version==1)
-    {
-      OptionVersion(stdout);
-      exit(0);
-    }
-
-  /* Determine input file format */
-  OptionAdd(&opt, "old", 'x', old);      /* Old fit format */
-
-  /* Concatenate multiple input files */
-  OptionAdd(&opt, "c", 'x', catflg); 
-
-  /* Verbose: log information to console */
-  OptionAdd(&opt, "vb", 'x', vb);
-
-  /* Set time information */
-  OptionAdd(&opt, "st", 't', stmestr);  /* Start time in HH:MM format */
-  OptionAdd(&opt, "et", 't', etmestr);  /* End time in HH:MM format */
-  OptionAdd(&opt, "sd", 't', sdtestr);  /* Start date in YYYYMMDD format */
-  OptionAdd(&opt, "ed", 't', edtestr);  /* End date in YYYYMMDD format */
-  OptionAdd(&opt, "ex", 't', exstr);    /* Use interval with extent HH:MM */
-
-  /* Ignore scan flag, use scan length of tl seconds */
-  OptionAdd(&opt, "tl", 'i', tlen);
-
-  /* Process channel options */
-  OptionAdd(&opt, "cn", 't', chnstr);         /* For stereo channel a or b   */
-  OptionAdd(&opt, "cn_fix", 't', chnstr_fix); /* User-defined channel number */
-
-  /* Apply scan flag limit (ie exclude data with scan flag = -1) */
-  OptionAdd(&opt, "ns", 'x', &nsflg);
-
-  /* Apply transmission frequency limits */
-  OptionAdd(&opt, "tfmin", 'i', freq_min); /* Minimum transmission frequency */
-  OptionAdd(&opt, "tfmax", 'i', freq_max); /* Maximum transmission frequency */
-
-  /* Apply groundscatter strictness conditions (1=remove indeterminate GS) */
-  OptionAdd(&opt, "gs-strict", 'x', strict_gs);
-
-  /* Process the tdiff options */
-  OptionAdd(&opt, "update-tdiff", 'x', tdiff_flag);
-  OptionAdd(&opt, "tdiff", 'd', tdiff);
-
-  /* Process command line options */
-  farg = OptionProcess(1, argc, argv, &opt, rst_opterr);
-
-  /* If command line option not recognized then print error and exit */
-  if(farg == -1) exit(-1);
-
-  if(farg == argc)
-    {
-      OptionPrintInfo(stderr, errstr);
-      exit(-1);
-    }
-
-  return farg;
-}
-
-
-/**
- * Outputs an error statement for an unrecognized input option
- **/
-
-int rst_opterr(char *txt)
-{
-    fprintf(stderr,"Option not recognized: %s\n", txt);
-    fprintf(stderr,"Please try: make_fov --help\n");
-    return(-1);
 }
