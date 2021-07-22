@@ -179,18 +179,18 @@ double elevation_v2_lobe(int lobe, int bmnum, int tfreq, struct RadarSite *site,
  * @param[out] vheight - virtual height above the surface of the Earth in km
  */
 
-float calc_elv_vheight(float slant_dist, float hop, float radius, float elv)
+double calc_elv_vheight(double slant_dist, double hop, double radius,
+			double elv)
 {
-  float vheight;
+  double vheight;
 
   /* Adjust the slant distance to find the length up to the ionosphere *
    * This assumes the propagation path can be evenly segmented, which  *
    * is mildly not correct, but very much not correct in some cases.   */
   slant_dist /= hop * 2.0;
 
-  /* Calculate the virtual height */
   vheight = sqrt(slant_dist * slant_dist + radius * radius
-		 + 2.0 * slant_dist * radius * sin(elv * PI / 180.0)) - radius;
+  		 + 2.0 * slant_dist * radius * sin(elv * PI / 180.0)) - radius;
 
   return(vheight);
 }
