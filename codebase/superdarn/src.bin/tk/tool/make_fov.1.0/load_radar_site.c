@@ -31,8 +31,8 @@
  * Load in radar parameter data
  **/
 
-void load_radar_site(int yr, int mo, int dy, int hr, int mt, int sc,
-		     int stid, struct RadarSite *site)
+struct RadarSite *load_radar_site(int yr, int mo, int dy, int hr, int mt,
+				  int sc, int stid)
 {
   char *envstr;
   
@@ -77,16 +77,15 @@ void load_radar_site(int yr, int mo, int dy, int hr, int mt, int sc,
   /* Load the hardware information for the radar network */
   RadarLoadHardware(envstr, network);
 
-  
   /* Load the appropriate radar hardware information for the day
      and time of the radar scan (only done once) */
   radar = RadarGetRadar(network, stid);
+
   if(radar == NULL)
     {
       fprintf(stderr,"Failed to get radar information for stid %d.\n", stid);
       exit(-1);
     }
-  site = RadarYMDHMSGetSite(radar, yr, mo, dy, hr, mt, sc);
 
-  return;
+  return RadarYMDHMSGetSite(radar, yr, mo, dy, hr, mt, sc);
 }
