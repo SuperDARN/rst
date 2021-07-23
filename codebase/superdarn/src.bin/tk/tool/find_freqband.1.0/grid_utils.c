@@ -81,3 +81,47 @@ int exclude_outofscan(struct RadarScan *ptr) {
     /* Return success */
     return 0;
 }
+
+/**
+ * Converts an input time from HHMM format to number of seconds.
+ **/
+double strtime(char *text) {
+
+    int hr,mn;
+    int i;
+
+    for (i=0;(text[i] !=':') && (text[i] !=0);i++);
+    if (text[i]==0) return atoi(text)*3600L;
+    text[i]=0;
+    hr=atoi(text);
+    mn=atoi(text+i+1);
+    return hr*3600L+mn*60L;
+
+}
+
+/**
+ * Converts an input date from YYYYMMDD format to an epoch time in number of
+ * seconds since 00:00 UT on January 1, 1970.
+ **/
+double strdate(char *text) {
+
+    double tme;
+    int val;
+    int yr,mo,dy;
+
+    /* Calculate day, month, and year from YYYYMMDD format date */
+    val=atoi(text);
+    dy=val % 100;
+    mo=(val / 100) % 100;
+    yr=(val / 10000);
+
+    /* If only 2-digit year provided then assume it was pre-2000 */
+    if (yr<1970) yr+=1900;
+
+    /* Calculate epoch time of input year, month, and day */
+    tme=TimeYMDHMSToEpoch(yr,mo,dy,0,0,0);
+
+    /* Return epoch time in number of seconds since 00:00UT on January 1, 1970 */
+    return tme;
+
+}
