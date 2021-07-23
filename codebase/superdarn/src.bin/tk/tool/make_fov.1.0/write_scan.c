@@ -53,6 +53,7 @@ void write_multbsid_ascii(FILE *fp, struct MultFitBSID *mult_scan)
 
   /* Cycle through all the scans */
   scan = mult_scan->scan_ptr;
+
   for(iscan = 0; iscan < mult_scan->num_scans; iscan++)
     {
       /* Write all the beams from this scan */
@@ -75,12 +76,12 @@ void write_multbsid_ascii(FILE *fp, struct MultFitBSID *mult_scan)
 
 void write_bsid_scan(FILE *fp, int stid, struct FitBSIDScan *scan)
 {
-  int snum, rg, yr, mo, dy, hr, mt;
+  int ibm, irg, yr, mo, dy, hr, mt;
   double sc;
   
   char scan_info[10], bm_info[1000], rng_info[3000];
 
-  struct FitBSIDBeam *bm;
+  struct FitBSIDBeam bm;
   struct RadarCell rng, med_rng;
   struct FitElv elv;
   struct CellBSIDLoc loc;
@@ -98,45 +99,45 @@ void write_bsid_scan(FILE *fp, int stid, struct FitBSIDScan *scan)
   else
     {
       /* Cycle through all the beams in this scan */
-      for(snum = 0; snum < scan->num_bms; snum++)
+      for(ibm = 0; ibm < scan->num_bms; ibm++)
 	{
 	  /* Write out the desired info that is the same for this scan */
 	  sprintf(scan_info, "%d", stid);
 
 	  /* Write out the desired info that is the same for this beam */
-	  bm = scan->bm;
-	  TimeEpochToYMDHMS(bm->time, &yr, &mo, &dy, &hr, &mt, &sc);
+	  bm = scan->bm[ibm];
+	  TimeEpochToYMDHMS(bm.time, &yr, &mo, &dy, &hr, &mt, &sc);
 
 	  sprintf(bm_info, "%04d-%02d-%02d %02d:%02d:%02.0f", yr, mo, dy, hr,
 		  mt, sc);
-	  sprintf(bm_info, "%s%d %0.3f %d %d %d %d %d %d %d %d %d %d %d %d",
-		  bm_info, bm->bm, bm->bmazm, bm->cpid, bm->intt.sc,
-                  bm->intt.us, bm->nave, bm->frang, bm->rsep, bm->rxrise,
-                  bm->freq, bm->noise, bm->atten, bm->channel, bm->nrang);
+	  sprintf(bm_info, "%s %d %0.3f %d %d %d %d %d %d %d %d %d %d %d %d",
+		  bm_info, bm.bm, bm.bmazm, bm.cpid, bm.intt.sc, bm.intt.us,
+		  bm.nave, bm.frang, bm.rsep, bm.rxrise, bm.freq, bm.noise,
+		  bm.atten, bm.channel, bm.nrang);
 
 	  /* Cycle through all the range gates */
-	  for(rg = 0; rg < bm->nrang; rg++)
+	  for(irg = 0; irg < bm.nrang; irg++)
 	    {
 	      /* Write out the range info */
-	      if(bm->sct[rg] == 1)
+	      if(bm.sct[irg] == 1)
 		{
-		  rng      = bm->rng[rg];
-		  med_rng  = bm->med_rng[rg];
-		  rng_flgs = bm->rng_flgs[rg];
+		  rng      = bm.rng[irg];
+		  med_rng  = bm.med_rng[irg];
+		  rng_flgs = bm.rng_flgs[irg];
 		  if(rng_flgs.fov == -1)
 		    {
-		      elv = bm->back_elv[rg];
-		      loc = bm->back_loc[rg];
+		      elv = bm.back_elv[irg];
+		      loc = bm.back_loc[irg];
 		    }
 		  else
 		    {
-		      elv = bm->front_elv[rg];
-		      loc = bm->front_loc[rg];
+		      elv = bm.front_elv[irg];
+		      loc = bm.front_loc[irg];
 		    }
       
 		  sprintf(rng_info,
 			  "%d %d %d %d %d %d %s %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %s %s %f %f %f %f %f %f %f %f %f %f %f %f",
-			  rg, rng.gsct, rng_flgs.fov, rng_flgs.fov_past,
+			  irg, rng.gsct, rng_flgs.fov, rng_flgs.fov_past,
 			  rng_flgs.grpflg, rng_flgs.grpnum, rng_flgs.grpid,
 			  rng.p_0, rng.p_0_e, rng.v, rng.v_e, rng.w_l,
 			  rng.w_l_e, rng.p_l, rng.p_l_e, rng.phi0, rng.phi0_e,
