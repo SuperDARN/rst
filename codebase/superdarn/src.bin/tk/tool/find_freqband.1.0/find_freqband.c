@@ -54,9 +54,10 @@ int rst_opterr(char *txt)
 
 int command_options(int argc, char *argv[], int *old, int *tlen,
 		    unsigned char *vb, unsigned char *fitflg,
-		    unsigned char *catflg, unsigned char *nsflg, char *stmestr,
-		    char *etmestr, char *sdtestr, char *edtestr, char *exstr,
-		    char *chnstr, char *chnstr_fix, int *band_width)
+		    unsigned char *catflg, unsigned char *nsflg, char **stmestr,
+		    char **etmestr, char **sdtestr, char **edtestr,
+		    char **exstr, char **chnstr, char **chnstr_fix,
+		    int *band_width)
 {
   /* Initialize input options */
   int farg=0;
@@ -133,8 +134,6 @@ int command_options(int argc, char *argv[], int *old, int *tlen,
       exit(-1);
     }
 
-  
-
   /* If not explicity working from cfit files, treat input as fit or fitacf */
   if(cfitflg == 0) *fitflg = 1;
 
@@ -147,14 +146,14 @@ int command_options(int argc, char *argv[], int *old, int *tlen,
 
 int main(int argc, char *argv[])
 {
-  int inum, len, fnum, channel, channel_fix, nfbands;
+  int inum, len, fnum, nfbands;
   int fbands[90][2], all_freq[MAX_FREQ_KHZ];
 
   char vstr[256];
 
   /* Initialize input options */
   /* Default frequency limits set to the limits of the HF range */
-  int old=0, farg=0, tlen=0, band_width=300;
+  int old=0, farg=0, tlen=0, channel=0, channel_fix=0, band_width=300;
 
   double stime=-1.0, etime=-1.0, extime=0.0, sdate=-1.0, edate=-1.0;
 
@@ -170,9 +169,9 @@ int main(int argc, char *argv[])
   int command_options(int argc, char *argv[], int *old, int *tlen,
 		      unsigned char *vb, unsigned char *fitflg,
 		      unsigned char *catflg, unsigned char *nsflg,
-		      char *stmestr, char *etmestr, char *sdtestr,
-		      char *edtestr, char *exstr, char *chnstr,
-		      char *chnstr_fix, int *band_width);
+		      char **stmestr, char **etmestr, char **sdtestr,
+		      char **edtestr, char **exstr, char **chnstr,
+		      char **chnstr_fix, int *band_width);
   int set_stereo_channel(char *chnstr);
   int set_fix_channel(char *chnstr_fix);
   double strtime(char *text);
@@ -188,14 +187,14 @@ int main(int argc, char *argv[])
 
   /* Process the command line options */
   farg = command_options(argc, argv, &old, &tlen, &vb, &fitflg, &catflg, &nsflg,
-			 stmestr, etmestr, sdtestr, edtestr, exstr, chnstr,
-			 chnstr_fix, &band_width);
+			 &stmestr, &etmestr, &sdtestr, &edtestr, &exstr,
+			 &chnstr, &chnstr_fix, &band_width);
 
   /* If 'cn' set then determine Stereo channel, either A or B */
-  channel = set_stereo_channel(chnstr);
+  if(chnstr != NULL) channel = set_stereo_channel(chnstr);
     
   /* If 'cn_fix' set then determine appropriate channel for output file */
-  channel_fix = set_fix_channel(chnstr_fix);
+  if(chnstr_fix != NULL) channel_fix = set_fix_channel(chnstr_fix);
 
   /* Format the time data */
   if(exstr   != NULL) extime = strtime(exstr);
