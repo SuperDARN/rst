@@ -83,8 +83,8 @@ void write_bsid_scan(FILE *fp, int stid, struct FitBSIDScan *scan)
 
   struct FitBSIDBeam bm;
   struct RadarCell rng, med_rng;
-  struct FitElv elv;
-  struct CellBSIDLoc loc;
+  struct FitElv elv, opp_elv;
+  struct CellBSIDLoc loc, opp_loc;
   struct CellBSIDFlgs rng_flgs;
 
   /* If there is no scan data, print the header information */
@@ -92,7 +92,7 @@ void write_bsid_scan(FILE *fp, int stid, struct FitBSIDScan *scan)
     {
       sprintf(scan_info, "#STID");
       sprintf(bm_info, "DATE TIME BMNUM BMAZM CPID INTT_SC INTT_US NAVE FRANG RSEP RXRISE FREQ NOISE ATTEN CHANNEL NRANG");
-      sprintf(rng_info, "RG GFLG FOVFLG GRPFLG GRPNUM GRPID P_0 P_0_ERR V V_ERR W_L W_L_ERR P_L P_L_ERR PHI0 PHI0_ERR ELV ELV_LOW ELV_HIGH VH VH_ERR VH_METHOD REGION HOP DIST MED_P_0 MED_P_0_ERR MED_V MED_V_ERR MED_W_L MED_W_L_ERR MED_P_L MED_P_L_ERR MED_PHI0 MED_PHI0_ERR");
+      sprintf(rng_info, "RG GFLG FOVFLG FOV_PAST GRPFLG GRPNUM GRPID P_0 P_0_ERR V V_ERR W_L W_L_ERR P_L P_L_ERR PHI0 PHI0_ERR ELV ELV_LOW ELV_HIGH VH VH_ERR VH_METHOD REGION HOP DIST MED_P_0 MED_P_0_ERR MED_V MED_V_ERR MED_W_L MED_W_L_ERR MED_P_L MED_P_L_ERR MED_PHI0 MED_PHI0_ERR OPP_ELV OPP_ELV_LOW OPP_ELV_HIGH OPP_VH OPP_VH_ERR OPP_VH_METHOD OPP_REGION OPP_HOP OPP_DIST");
 
       fprintf(fp, "%s %s %s\n", scan_info, bm_info, rng_info);
     }
@@ -128,11 +128,15 @@ void write_bsid_scan(FILE *fp, int stid, struct FitBSIDScan *scan)
 		    {
 		      elv = bm.back_elv[irg];
 		      loc = bm.back_loc[irg];
+		      opp_elv = bm.front_elv[irg];
+		      opp_loc = bm.front_loc[irg];
 		    }
 		  else
 		    {
 		      elv = bm.front_elv[irg];
 		      loc = bm.front_loc[irg];
+		      opp_elv = bm.back_elv[irg];
+		      opp_loc = bm.back_loc[irg];
 		    }
       
 		  sprintf(rng_info,
@@ -146,6 +150,11 @@ void write_bsid_scan(FILE *fp, int stid, struct FitBSIDScan *scan)
 			  med_rng.p_0_e, med_rng.v, med_rng.v_e, med_rng.w_l,
 			  med_rng.w_l_e, med_rng.p_l, med_rng.p_l_e,
 			  med_rng.phi0, med_rng.phi0_e);
+
+		  sprintf(rng_info, "%s %f %f %f %f %f %s %s %f %f", rng_info,
+			  opp_elv.normal, opp_elv.low, opp_elv.high, opp_loc.vh,
+			  opp_loc.vh_e, opp_loc.vh_m, opp_loc.region,
+			  opp_loc.hop, opp_loc.dist);
 	      
 		  fprintf(fp, "%s %s %s\n", scan_info, bm_info, rng_info);
 		}
