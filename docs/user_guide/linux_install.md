@@ -44,7 +44,7 @@ Table of Contents:
  libx11-dev 		 |  libx11-dev         | libx11-dev          |
  libxext-dev 		 |  libxext-dev        | libxext-dev         |
  netpbm (10.77.03_2+x11) |  netpbm (10.77.03_2+x11) | netpbm (10.77.03_2+x11) |
-                     |                     | build-essential     |
+ &nbsp;                  |  &nbsp;             | build-essential     |
 
 Installation line:
 **Ubuntu 16.04**
