@@ -10,7 +10,7 @@ markdown_extensions:
     - admonition
     - toc
 
-pages:
+nav:
 - Home: index.md
 - About: about.md
 - Installation:
