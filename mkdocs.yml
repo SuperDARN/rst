@@ -21,6 +21,7 @@ pages:
     - Citing Data: user_guide/citing.md
     - Filename Formats: references/general/filename.md
     - Radar Identifier: references/general/radar_id.md
+    - Radar Table: references/general/radar_table.md
 - RST Tutorials: 
     - Data Processing: 
             - RAWACF to FITACF: user_guide/make_fit.md
@@ -34,7 +35,7 @@ pages:
             - Convection Plots: user_guide/map_plot.md
             - Customized Colors: user_guide/colors.md
 - SuperDARN Data Formats:
-     - cFit Format: reference/general/cfit.md
+     - cFit Format: references/general/cfit.md
      - Dmap Data: references/general/dmap_data.md
      - IQDat Format: references/general/iqdat.md
      - RawACF Format: references/general/rawacf.md
@@ -52,6 +53,7 @@ pages:
     - Copyrights and Licensing: dev/copyright_license.md 
     - Communications Guideline: dev/communication.md
     - Add a New Feature: dev/feature.md
+    - Write Documentation: dev/documentation.md
     - Workflow:
         - GitHub Projects: dev/projects.md
         - Issues: dev/issues.md

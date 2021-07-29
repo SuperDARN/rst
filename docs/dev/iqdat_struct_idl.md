@@ -40,7 +40,7 @@ raw={IQData, $
 
 ## References
 
-- [IQDat Structure in C](developers_guide/iqdat_struct_c.md)
+- [IQDat Structure in C](iqdat_struct_c.md)
 - This information is sourced from the RFC: 0029 previously in the RST RFC documentation that was written by R.J. Barnes
 
 ## History from RFC Documenation

@@ -80,7 +80,7 @@ MAX_RANGE=300
 
 ## References
 
-- [Radar Parameter Structure in C](developers_guide/radar_parameter_c.md)
+- [Radar Parameter Structure in C](radar_parameter_c.md)
 - This information is sourced from the RFC: 0020 previously in the RST RFC documentation was written by R.J. Barnes.
 
 ## History from RFC Documentation
