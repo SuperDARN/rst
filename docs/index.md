@@ -35,14 +35,13 @@ The software is maintained by the SuperDARN Data Analysis Working Group (DAWG) o
          * [Customizing Colors](user_guide/colors.md)
   - SuperDARN Data Formats
     * [cFit Format](references/general/cfit.md)
-    * [Dmap Data](references/general/dmap_data.md)  
+    * [Dmap Data](references/general/dmap_data.md)
     * [IQDAT Format](references/general/iqdat.md)
     * [RAWACF Format](references/general/rawacf.md)
     * [DAT Format](references/general/dat.md)
     * [FITACF Format](references/general/fitacf.md)
     * [GRID Format](references/general/grid.md)
     * [Map Format](references/general/map.md)
-
   - Legacy Software
     * [Electric Field Data Structure for IDL](legacy_software/efield_struct_idl.md)
     * [rPlot Libraries](legacy_software/rPlot_lib.md)
