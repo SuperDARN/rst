@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
 
   /* Initialize input options */
   /* Default frequency limits set to the limits of the HF range */
-  short int strict_gs=1, tdiff_flag=0;
+  short int strict_gs=0, tdiff_flag=0;
 
   int old=0, farg=0, tlen=0, channel=0, channel_fix=0;
   int freq_min=3000, freq_max=30000;
@@ -177,7 +177,7 @@ int main(int argc, char *argv[])
   int min_pnts=3, band_width=300;
   int D_nrg=2, E_nrg=5, F_nrg=10, far_nrg=20;
   int D_rgmax=5, E_rgmax=25, F_rgmax=40;
-  float D_hmin=75, D_hmax=115, E_hmax=150, F_hmax=450;
+  float D_hmin=75, D_hmax=100, E_hmax=120, F_hmax=900;
   float D_vh_box=40, E_vh_box=35, F_vh_box=50, far_vh_box=150;
   float max_hop=3.0;
   
@@ -314,6 +314,9 @@ int main(int argc, char *argv[])
 
   /* Write an output file HERE */
   write_multbsid_ascii(stdout, mult_bsid);
+
+  /* Free the data structure pointer */
+  MultFitBSIDFree(mult_bsid);
 
   return ret_stat;
 }
