@@ -177,7 +177,7 @@ int main(int argc, char *argv[])
   int min_pnts=3, band_width=300;
   int D_nrg=2, E_nrg=5, F_nrg=10, far_nrg=20;
   int D_rgmax=5, E_rgmax=25, F_rgmax=40;
-  float D_hmin=75, D_hmax=100, E_hmax=120, F_hmax=900;
+  float D_hmin=75, D_hmax=100, E_hmax=120, F_hmax=750;
   float D_vh_box=40, E_vh_box=35, F_vh_box=50, far_vh_box=150;
   float max_hop=3.0;
   
