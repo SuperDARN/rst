@@ -29,7 +29,7 @@ Every contribution helps!
     !!! Note 
         If you cannot determine the name of the branch you should be testing, look at the top of the page below the Pull Request title. Here you will see the branch name and also the "base branch" that the changes  will be merged to.
 
-3. Build and compile the code using the normal RST [installation](../user/install.md) procedure.
+3. Build and compile the code using the normal RST [installation](../user_guide/linux_install.md) procedure.
       
         make.build && make.code
 
