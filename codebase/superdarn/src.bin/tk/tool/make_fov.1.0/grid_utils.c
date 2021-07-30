@@ -89,27 +89,6 @@ int exclude_outofscan(struct RadarScan *ptr) {
     return 0;
 }
 
-
-/**
- * Calculates the slant range to a range gate.
- **/
-double slant_range(int frang, int rsep,
-                   double rxris, double range_edge,
-                   int range_gate) {
-
-    int lagfr,smsep;
-
-    /* Calculate the lag to first range gate in microseconds */
-    lagfr=frang*20/3;
-
-    /* Calculate the sample separation in microseconds */
-    smsep=rsep*20/3;
-
-    /* Return the calculated slant range [km] */
-    return (lagfr-rxris+(range_gate-1)*smsep+range_edge)*0.15;
-
-}
-
 int set_stereo_channel(char *chnstr)
 {
   int channel = 0;
