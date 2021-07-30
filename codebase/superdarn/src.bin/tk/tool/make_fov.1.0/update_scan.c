@@ -57,8 +57,8 @@
  *             E_rgmax    - Maximum range gate for E-region box width (25)
  *             F_rgmax    - Maximum range gate for near F-region box width (40)
  *             D_hmin     - Minimum h' for D-region in km (75)
- *             D_hmax     - Maximum h' for D-region in km (115)
- *             E_hmax     - Maximum h' for E-region in km (150)
+ *             D_hmax     - Maximum h' for D-region in km (100)
+ *             E_hmax     - Maximum h' for E-region in km (120)
  *             F_hmax     - Minimum h' for F-region in km (450)
  *             D_vh_box   - h' range for D-region box in km (40)
  *             E_vh_box   - h' range for E-region box in km (35)
@@ -79,7 +79,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 		     float max_hop, struct RadarScan *scan,
 		     struct RadarSite *hard, struct MultFitBSID *mult_bsid)
 {
-  int iscan, ibm, irg, ifov, ipath, ireg, ivh, igbm, cpid, scan_chan;
+  int iscan, ibm, irg, ifov, ipath, ireg, ivh, igbm, cpid, scan_chan, max_vbin;
   int max_rg, max_path, out_num, group_num, bm_num, bmwidth, igood_num;
   int igood[MAX_BMS], group_bm[MAX_BMS * MAX_RGS], group_rg[MAX_BMS * MAX_RGS];
   int fovflg[MAX_BMS][MAX_RGS], fovpast[MAX_BMS][MAX_RGS];
@@ -101,8 +101,8 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 		     float D_hmax, float E_hmax, float F_hmax,
 		     struct RadarSite *site, struct FitBSIDBeam *beam);
   int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
-			float vh_box, int min_pnts, float *vh_mins,
-			float *vh_maxs);
+			float vh_box, int min_pnts, int max_vbin,
+			float *vh_mins, float *vh_maxs);
   int num_unique_int_vals(int num, int array[]);
   void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
 			  int fovflg[MAX_BMS][MAX_RGS],
@@ -142,10 +142,10 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
   scan_vh  = (float ****)(NULL);
   scan_elv = (float ****)(NULL);
 
-  out_num = (F_rgmax > E_rgmax) ? F_rgmax : E_rgmax;
-  if(D_rgmax > out_num) out_num = D_rgmax;
-  vmins = (float *)calloc(out_num, sizeof(float));
-  vmaxs = (float *)calloc(out_num, sizeof(float));
+  max_vbin = (F_rgmax > E_rgmax) ? F_rgmax : E_rgmax;
+  if(D_rgmax > max_vbin) max_vbin = D_rgmax;
+  vmins = (float *)calloc(max_vbin, sizeof(float));
+  vmaxs = (float *)calloc(max_vbin, sizeof(float));
 
   /* Inititalize the output scan */
   scan_new = (struct FitBSIDScan *)malloc(sizeof(struct FitBSIDScan));
@@ -415,7 +415,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 	    }
 	  else if(ireg == 1)
 	    {
-	      hmin = E_hmax;
+	      hmin = D_hmax;
 	      hmax = E_hmax;
 	      hbox = E_vh_box;
 	    }
@@ -439,7 +439,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 						  scan_rg[ireg][ifov][ipath],
 						  scan_vh[ireg][ifov][ipath],
 						  hmin, hmax, hbox, min_pnts,
-						  vmins, vmaxs);
+						  max_vbin, vmins, vmaxs);
 
 		      /* For each virtual height bin, determine if this */
 		      /* FoV has a realistic azimuth variation.         */
@@ -477,9 +477,9 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 
       /* Evaluate the FoV flags, removing points that are surrounded by */
       /* data assigned to the opposite FoV.                             */
-      eval_fov_flag_consistency(max_rg, bmwidth, D_rgmax, D_nrg, E_rgmax,
-				E_nrg, F_rgmax, F_nrg, far_nrg, fovflg,
-				fovpast, fovbelong, scan_new);
+      /* eval_fov_flag_consistency(max_rg, bmwidth, D_rgmax, D_nrg, E_rgmax, */
+      /* 				E_nrg, F_rgmax, F_nrg, far_nrg, fovflg, */
+      /* 				fovpast, fovbelong, scan_new); */
 
       /* Assign the appropriate virtual heights, regions, and elevation */
       /* angles to each point based on their FoV.                       */
@@ -513,21 +513,17 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 	      bm_new->rng_flgs[irg].fov      = fovflg[ibm][irg];
 	      bm_new->rng_flgs[irg].fov_past = fovpast[ibm][irg];
 	    }
-
-	  /* Cycle to the next scan */
-	  scan_new->next_scan = (struct FitBSIDScan *)
-	    malloc(sizeof(struct FitBSIDScan));
-	  prev_new            = scan_new;
-	  scan_new            = scan_new->next_scan;
-	  scan_new->prev_scan = prev_new;
-	  mult_bsid->last_ptr = prev_new;
-	  scan_new->next_scan = (struct FitBSIDScan *)(NULL);
-	  mult_bsid->num_scans++;
 	}
-
-      /* Close the scan structure */
-      prev_new->next_scan = (struct FitBSIDScan *)(NULL);
-      scan_new            = prev_new->next_scan;
+      
+      /* Cycle to the next scan, if a new scan was loaded */
+      scan_new->next_scan = (struct FitBSIDScan *)
+	malloc(sizeof(struct FitBSIDScan));
+      prev_new            = scan_new;
+      scan_new            = scan_new->next_scan;
+      scan_new->prev_scan = prev_new;
+      mult_bsid->last_ptr = prev_new;
+      scan_new->next_scan = (struct FitBSIDScan *)(NULL);
+      mult_bsid->num_scans++;
     }
 
   /* Free the assigned memory */

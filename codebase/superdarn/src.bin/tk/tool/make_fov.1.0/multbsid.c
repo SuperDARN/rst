@@ -47,11 +47,9 @@ struct MultFitBSID *MultFitBSIDMake()
 
 void MultFitBSIDFree(struct MultFitBSID *ptr)
 {
-    if(MultFitBSIDReset(ptr) == 0) return;
-
-    free(ptr->scan_ptr);
-    free(ptr->last_ptr);
-    free(ptr);
+  if(MultFitBSIDReset(ptr) == 0) return;
+  free(ptr);
+  return;
 }
 
 int MultFitBSIDReset(struct MultFitBSID *ptr)
@@ -65,10 +63,6 @@ int MultFitBSIDReset(struct MultFitBSID *ptr)
   for(n = 0; n < ptr->num_scans; n++)
     FitBSIDScanFreeNext(scan);
 
-  free(scan);
-  free(ptr->scan_ptr);
-  free(ptr->last_ptr);
-
   ptr->num_scans = 0;
   ptr->scan_ptr = (struct FitBSIDScan *)(NULL);
   ptr->last_ptr = (struct FitBSIDScan *)(NULL);
@@ -77,18 +71,21 @@ int MultFitBSIDReset(struct MultFitBSID *ptr)
 
 void FitBSIDScanFreeNext(struct FitBSIDScan *ptr)
 {
-  struct FitBSIDScan *prev_ptr;
-
+  int ibm;
+  struct FitBSIDBeam *bm;
+  
   /* Free the current pointer and cycle to the next one */
-  FitBSIDBeamFree(ptr->bm);
-  free(ptr->prev_scan);
-  prev_ptr = ptr;
-  ptr      = ptr->next_scan;
-  free(prev_ptr);
+  bm = ptr->bm;
+  for(ibm = 0; ibm < ptr->num_bms; ibm++)
+      FitBSIDBeamFree(&bm[ibm]);
 
-  /* If this is not the last pointer, close the reverse cycle */
-  if(ptr != (struct FitBSIDScan *)(NULL))
-    ptr->prev_scan = (struct FitBSIDScan *)(NULL);
+  if(ptr->num_bms > 0)
+    {
+      free(ptr->bm);
+      ptr->num_bms = 0;
+    }
+
+  ptr = ptr->next_scan;
 
   return;
 }
@@ -102,6 +99,5 @@ void FitBSIDBeamFree(struct FitBSIDBeam *ptr)
   free(ptr->rng_flgs);
   free(ptr->front_loc);
   free(ptr->back_loc);
-  free(ptr);
   return;
 }

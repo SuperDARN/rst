@@ -55,14 +55,14 @@ void EvalGroundScatter(struct FitBSIDBeam *beam)
 
   /* Set the evaluation defaults */
   min_rg    = 10;
-  max_rg    = beam->nrang + 1;
+  max_rg    = beam->nrang;
   max_power = 5.0;
   box_width = 5;
   gs_tol    = 0.5;
   nmin      = 3;
 
   /* Check each groundscatter flag, looking for bad values */
-  for(irg=0; irg<=beam->nrang; irg++)
+  for(irg = 0; irg < beam->nrang; irg++)
     {
       if(beam->sct[irg] == 1 && beam->rng[irg].gsct == 1)
 	{
@@ -78,7 +78,7 @@ void EvalGroundScatter(struct FitBSIDBeam *beam)
     }
 
   /* After the single point check, remove any isolated groundscatter points */
-  for(irg=0; irg<=beam->nrang; irg++)
+  for(irg = 0; irg < beam->nrang; irg++)
     {
       if(beam->sct[irg] == 1 && beam->rng[irg].gsct == 1)
 	{
@@ -161,10 +161,10 @@ float CalcFracGroundScatter(int box_width, int rg_center,
   max_box = rg_center + box_width;
 
   if(min_box < 0) min_box = 0;
-  if(max_box > beam->nrang) max_box = beam->nrang + 1;
+  if(max_box > beam->nrang) max_box = beam->nrang;
 
   /* Initialize the output */
-  num = 0;
+  num  = 0;
   frac = 0.0;
 
   /* Cycle through the range gates in the box, updating the total number of */

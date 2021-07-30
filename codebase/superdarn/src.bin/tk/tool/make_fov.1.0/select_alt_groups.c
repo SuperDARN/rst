@@ -1,5 +1,5 @@
 /* select_alt_groups.c
-   ===============
+   ===================
    Author: Angeline G. Burrell - NRL - 2021
 */
 
@@ -44,6 +44,7 @@
  *             vh_max   - Maximum allowable virtual height in km
  *             vh_box   - Width of virtual height box in km
  *             min_pnts - Minimum number of points allowed in a box
+ *             max_vbin - Maximum number of virtuaal height bins
  *
  * @params[out] vh_mins  - Lower virtual height limit of each bin
  *              vh_maxs  - Upper virtual height limit of each bin
@@ -51,7 +52,7 @@
  **/
 
 int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
-		      float vh_box, int min_pnts, float *vh_mins,
+		      float vh_box, int min_pnts, int max_vbin, float *vh_mins,
 		      float *vh_maxs)
 {
   int i, j, k, nbin, nmax, status, npeaks, *hist_bins, *ismax;
@@ -64,9 +65,9 @@ int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
   struct gauss_data *private;
   struct mp_result_struct *result;
 
-  int sort_expand_boundaries(int num, float local_min, float local_max,
-			     float vh_min, float vh_max, float vh_box,
-			     float vh_mins[], float vh_maxs[],
+  int sort_expand_boundaries(int num, int max_vbin, float local_min,
+			     float local_max, float vh_min, float vh_max,
+			     float vh_box, float vh_mins[], float vh_maxs[],
 			     float *vh_peaks);
 
   /* Initialize the structures and variables */
@@ -74,14 +75,24 @@ int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
   memset(private, 0, sizeof(struct gauss_data));
   result = (struct mp_result_struct *)malloc(sizeof(struct mp_result_struct));
   memset(result, 0, sizeof(struct mp_result_struct));
-  vh_peaks = (float *)calloc((int)(sizeof(vh_mins)/sizeof(vh_mins[0])),
-			     sizeof(float));
+  vh_peaks = (float *)calloc(max_vbin, sizeof(float));
 
   npeaks = 0;
 
   /* Create a histogram of the number of observations at each virtual height */
   nbin = (int)((vh_max - vh_min) / (vh_box * 0.25));
   if(nbin > 10) nbin = 10;
+  if(nbin <= 0)
+    {
+      fprintf(stderr, "vheight range too small for a histogram analysis: ");
+      fprintf(stderr, "%d = (%f - %f) / %f", nbin, vh_max, vh_min,
+	      vh_box * 0.25);
+      free(private);
+      free(result);
+      free(vh_peaks);
+      exit(1);
+    }
+
   hist_bins = (int *)calloc(nbin, sizeof(int));
   hist_edges = (float *)calloc(nbin, sizeof(float));
   histogram(num, vh, nbin, vh_min, vh_max, hist_bins, hist_edges);
@@ -114,6 +125,12 @@ int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
     {
       npeaks = (int)ceil((double)(local_max - local_min) / (double)vh_box);
       vmin   = (local_max - local_min) / (float)npeaks + local_min - vh_box;
+
+      if(npeaks > max_vbin)
+	{
+	  fprintf(stderr, "suggested width created too many vheight bins\n");
+	  exit(1);
+	}
 
       for(i = 0; i < npeaks; i++)
 	{
@@ -179,6 +196,13 @@ int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
 		  /* array to allow lower level peaks to be identified.     */
 		  if((private->x[j] >= vlow) && (private->x[j] <= vhigh))
 		    {
+		      /* Make sure there is enough memory for this peak */
+		      if(npeaks >= max_vbin)
+			{
+			  fprintf(stderr, "histogram fits created too many vheight bins\n");
+			  exit(1);
+			}
+
 		      /* Save this altitude bin */
 		      vh_mins[npeaks]  = vmin;
 		      vh_maxs[npeaks]  = vmax;
@@ -189,10 +213,19 @@ int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
 		      for(k = 0; k < nbin; k++)
 			{
 			  if((private->x[k] >= vmin) && (private->x[k] < vmax))
-			    private->y[k] = 0.0;
+			    {
+			      private->y[k] = 0.0;
+			      if(ismax[k])
+				{
+				  ismax[k] = 0;
+				  nmax--;
+				}
+			    }
 			}
 		    }
 		}
+
+	      i++;
 	    }
 	}
 
@@ -223,10 +256,18 @@ int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
       else
 	{
 	  /* Sorts the virtual height limits, eliminating overlaps and gaps */
-	  npeaks = sort_expand_boundaries(npeaks, local_min, local_max, vh_min,
-					  vh_max, vh_box, vh_mins, vh_maxs,
-					  vh_peaks);
+	  npeaks = sort_expand_boundaries(npeaks, max_vbin, local_min,
+					  local_max, vh_min, vh_max, vh_box,
+					  vh_mins, vh_maxs, vh_peaks);
 	}
+
+      /* Free the allocated sub-pointers */
+      free(private->x);
+      free(private->y);
+      free(private->y_error);
+      free(result->resid);
+      free(result->xerror);
+      free(result->covar);
     }
 
   /* Free the allocated memory */
@@ -255,9 +296,10 @@ int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
  * @reference Part of davitpy.proc.fov.update_backscatter.select_alt_groups
  **/
 
-int sort_expand_boundaries(int num, float local_min, float local_max,
-			   float vh_min, float vh_max, float vh_box,
-			   float vh_mins[], float vh_maxs[], float *vh_peaks)
+int sort_expand_boundaries(int num, int max_vbin, float local_min,
+			   float local_max, float vh_min, float vh_max,
+			   float vh_box, float vh_mins[], float vh_maxs[],
+			   float *vh_peaks)
 {
   int i, inew, vnum, *sortargs, *priority;
 
@@ -265,11 +307,13 @@ int sort_expand_boundaries(int num, float local_min, float local_max,
 
   void smart_argsort_float(int num, float array[], int sortargs[]);
 
+  if(num == 0) return(0);
+
   /* Initialize the local pointers */
-  new_mins  = (float *)calloc(num + 100, sizeof(float));
-  new_maxs  = (float *)calloc(num + 100, sizeof(float));
-  new_peaks = (float *)calloc(num + 100, sizeof(float));
-  priority  = (int *)calloc(num + 100, sizeof(int));
+  new_mins  = (float *)calloc(max_vbin, sizeof(float));
+  new_maxs  = (float *)calloc(max_vbin, sizeof(float));
+  new_peaks = (float *)calloc(max_vbin, sizeof(float));
+  priority  = (int *)calloc(max_vbin, sizeof(int));
   inew      = 0;
 
   /* Get the indices for sorted Gaussian limits */
@@ -308,6 +352,13 @@ int sort_expand_boundaries(int num, float local_min, float local_max,
 	      new_peaks[inew] = hmin + 0.5 * vspan;
 	      priority[inew]  = inew + num;
 	      inew++;
+
+	      if(inew >= max_vbin)
+		{
+		  fprintf(stderr,
+			  "exceeded new virtual height boundary limits\n");
+		  exit(1);
+		}
 	    }
 	}
     }
@@ -393,6 +444,12 @@ int sort_expand_boundaries(int num, float local_min, float local_max,
 	      priority[inew]  = sortargs[i];
 	      inew++;
 	    }
+	}
+
+      if(inew >= max_vbin)
+	{
+	  fprintf(stderr, "exceeded new virtual height boundary limits\n");
+	  exit(1);
 	}
     }
 
