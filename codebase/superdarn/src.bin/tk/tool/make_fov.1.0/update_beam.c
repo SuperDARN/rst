@@ -203,6 +203,20 @@ void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
 		}
 	    }
 	}
+      else
+	{
+	  /* Set defaults for the empty points */
+	  beam->front_loc[irg].hop    = 0.0;
+	  beam->front_loc[irg].dist   = 0.0;
+	  beam->front_elv[irg].normal = 0.0;
+	  beam->front_elv[irg].low    = 0.0;
+	  beam->front_elv[irg].high   = 0.0;
+	  beam->back_loc[irg].hop     = 0.0;
+	  beam->back_loc[irg].dist    = 0.0;
+	  beam->back_elv[irg].normal  = 0.0;
+	  beam->back_elv[irg].low     = 0.0;
+	  beam->back_elv[irg].high    = 0.0;
+	}
     }
 
   return;
