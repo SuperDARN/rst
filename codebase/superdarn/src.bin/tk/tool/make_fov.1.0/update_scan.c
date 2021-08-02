@@ -80,7 +80,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 		     struct RadarSite *hard, struct MultFitBSID *mult_bsid)
 {
   int iscan, ibm, irg, ifov, ipath, ireg, ivh, igbm, cpid, scan_chan, max_vbin;
-  int max_rg, max_path, out_num, group_num, bm_num, bmwidth, igood_num;
+  int bind, max_rg, max_path, out_num, group_num, bm_num, bmwidth, igood_num;
   int igood[MAX_BMS], group_bm[MAX_BMS * MAX_RGS], group_rg[MAX_BMS * MAX_RGS];
   int fovflg[MAX_BMS][MAX_RGS], fovpast[MAX_BMS][MAX_RGS];
   int front_num[MAX_BMS][MAX_RGS], back_num[MAX_BMS][MAX_RGS];
@@ -89,6 +89,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 
   float hmin, hmax, hbox, *vmins, *vmaxs;
   float group_elv[MAX_BMS * MAX_RGS], group_vh[MAX_BMS * MAX_RGS];
+  float fovstd[MAX_BMS][MAX_RGS], fovscore[MAX_BMS][MAX_RGS];
   float ****scan_vh, ****scan_elv;
 
   struct CellBSIDLoc loc;
@@ -107,9 +108,10 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
   void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
 			  int fovflg[MAX_BMS][MAX_RGS],
 			  int fovpast[MAX_BMS][MAX_RGS], float scan_vh[],
-			  float scan_elv[]);
-  void eval_fov_flag_consistency(int max_rg, int bmwidth, int D_rgmax,
-				 int D_nrg, int E_rgmax, int E_nrg,
+			  float scan_elv[], float fovstd[MAX_BMS][MAX_RGS],
+			  float fovscore[MAX_BMS][MAX_RGS]);
+  void eval_fov_flag_consistency(int max_rg, int max_bm, int bmwidth,
+				 int D_rgmax, int D_nrg, int E_rgmax, int E_nrg,
 				 int F_rgmax, int F_nrg, int far_nrg,
 				 int fovflg[MAX_BMS][MAX_RGS],
 				 int fovpast[MAX_BMS][MAX_RGS],
@@ -125,10 +127,12 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 
       for(irg = 0; irg < MAX_RGS; irg++)
 	{
-	  fovflg[ibm][irg] = 0;
-	  fovpast[ibm][irg] = 0;
+	  fovflg[ibm][irg]    = 0;
+	  fovpast[ibm][irg]   = 0;
+	  fovstd[ibm][irg]    = 0.0;
+	  fovscore[ibm][irg]  = 0.0;
 	  front_num[ibm][irg] = 0;
-	  back_num[ibm][irg] = 0;
+	  back_num[ibm][irg]  = 0;
 
 	  for(iscan = 0; iscan < 3; iscan++)
 	    fovbelong[ibm][irg][iscan] = 0;
@@ -320,13 +324,14 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 		      scan_vh[ireg]  = (float ***)malloc(2 * sizeof(float **));
 		      scan_elv[ireg] = (float ***)malloc(2 * sizeof(float **));
 
-		      if(ireg == 0) out_num = D_rgmax;
-		      else out_num = (ireg == 1) ? E_rgmax : F_rgmax;
+		      if(ireg == 0) out_num = D_rgmax * scan->num;
+		      else if(irg == 1) out_num = E_rgmax * scan->num;
+		      else out_num = F_rgmax * scan->num;
 
 		      for(ifov = 0; ifov < 2; ifov++)
 			{
 			  scan_num[ireg][ifov] = (int *)
-			    malloc(max_path * sizeof(int));
+			    calloc(max_path, sizeof(int));
 			  scan_bm[ireg][ifov]  = (int **)
 			    malloc(max_path * sizeof(int *));
 			  scan_rg[ireg][ifov]  = (int **)
@@ -338,27 +343,15 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 
 			  for(ipath = 0; ipath < max_path; ipath++)
 			    {
-			      scan_num[ireg][ifov][ipath] = 0;
 			      scan_bm[ireg][ifov][ipath] = (int *)
-				malloc(out_num * sizeof(int));
+				calloc(out_num, sizeof(int));
 			      scan_rg[ireg][ifov][ipath] = (int *)
-				malloc(out_num * sizeof(int));
+				calloc(out_num, sizeof(int));
 			      scan_vh[ireg][ifov][ipath] = (float *)
-				malloc(out_num * sizeof(float));
+				calloc(out_num, sizeof(float));
 			      scan_elv[ireg][ifov][ipath] = (float *)
-				malloc(out_num * sizeof(float));
+				calloc(out_num, sizeof(float));
 			    }
-			}
-		    }
-		}
-	      else
-		{
-		  for(ifov = 0; ifov < 2; ifov++)
-		    {
-		      for(ipath = 0; ipath < max_path; ipath++)
-			{
-			  for(ireg = 0; ireg < 3; ireg++)
-			    scan_num[ireg][ifov][ipath] = 0;
 			}
 		    }
 		}
@@ -388,8 +381,21 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 			  else if(strstr(loc.region, "F") != NULL) ireg = 2;
 			  else ireg = -1;
 
+			  
 			  if(ireg >= 0)
 			    {
+			      if(ipath == 0)
+				{
+				  fprintf(stderr, "bad hop encountered at ");
+				  fprintf(stderr, "beam [%d], range gate", ibm);
+				  fprintf(stderr, " [%d], FoV [", irg);
+				  fprintf(stderr, "%s], time %f\n",
+					  (ifov == 0) ? "back" : "front",
+					  scan_new->st_time);
+				  exit(1);
+				}
+
+			      
 			      scan_bm[ireg][ifov][ipath][scan_num[ireg][ifov][ipath]] = bm_new->bm;
 			      scan_rg[ireg][ifov][ipath][scan_num[ireg][ifov][ipath]] = irg;
 			      scan_vh[ireg][ifov][ipath][scan_num[ireg][ifov][ipath]] = (float)loc.vh;
@@ -428,7 +434,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 
 	  for(ifov = 0; ifov < 2; ifov++)
 	    {
-	      for(ipath = 0; ipath < max_path; ipath++)
+	      for(ipath = 1; ipath < max_path; ipath++)
 		{
 		  if(ireg == 2 && ipath >= 3) hbox = far_vh_box;
 
@@ -463,11 +469,13 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 			  if(group_num >= min_pnts)
 			    {
 			      /* Test to see if there are enough beams */
-			      bm_num = num_unique_int_vals(group_num, scan_bm[ireg][ifov][ipath]);
+			      bm_num = num_unique_int_vals(group_num, group_bm);
+
 			      if(bm_num >= MIN_BMS)
 				eval_az_var_in_elv(group_num, ifov, group_bm,
 						   group_rg, fovflg, fovpast,
-						   group_vh, group_elv);
+						   group_vh, group_elv, fovstd,
+						   fovscore);
 			    }
 			}
 		    }
@@ -477,15 +485,26 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 
       /* Evaluate the FoV flags, removing points that are surrounded by */
       /* data assigned to the opposite FoV.                             */
-      /* eval_fov_flag_consistency(max_rg, bmwidth, D_rgmax, D_nrg, E_rgmax, */
-      /* 				E_nrg, F_rgmax, F_nrg, far_nrg, fovflg, */
-      /* 				fovpast, fovbelong, scan_new); */
+      eval_fov_flag_consistency(max_rg, hard->maxbeam, bmwidth, D_rgmax, D_nrg,
+				E_rgmax, E_nrg, F_rgmax, F_nrg, far_nrg, fovflg,
+      				fovpast, fovbelong, scan_new);
 
+      /* if(mult_bsid->num_scans == 45) */
+      /* 	{ */
+      /* 	  for(irg = 0; irg < max_rg; irg++) */
+      /* 	    { */
+      /* 	      for(ibm = 0; ibm < scan_new->num_bms; ibm++) */
+      /* 		{ */
+      /* 		  printf("TST EVAL CONST: %d %d %d %d %d %d %d\n", ibm, irg, fovflg[ibm][irg], fovpast[ibm][irg], fovbelong[ibm][irg][0], fovbelong[ibm][irg][1], fovbelong[ibm][irg][2]);fflush(stdout); */
+      /* 		} */
+      /* 	    } */
+      /* 	} */
       /* Assign the appropriate virtual heights, regions, and elevation */
       /* angles to each point based on their FoV.                       */
       for(ibm = 0; ibm < scan_new->num_bms; ibm++)
 	{
 	  bm_new = &scan_new->bm[ibm];
+	  bind   = bm_new->bm;
 
 	  for(irg = 0; irg < bm_new->nrang; irg++)
 	    {
@@ -494,24 +513,27 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 	      /* records the times flagged as an inlier, the 1 index records */
 	      /* the times flagged as an outlier, and the index 2 records    */
 	      /* the times with mixed FoVs.                                  */
-	      if((fovbelong[ibm][irg][0] < fovbelong[ibm][irg][1]
-		  + fovbelong[ibm][irg][2]) && fovbelong[ibm][irg][1] > 0)
+	      if((fovbelong[bind][irg][0] < fovbelong[bind][irg][1]
+		  + fovbelong[bind][irg][2]) && fovbelong[bind][irg][1] > 0)
 		{
 		  /* This point is an outlier in a structure with the */
 		  /* opposite FoV. If this point fit the criteria for */
 		  /* a different FoV in the past, assign that FoV.    */
 		  /* Otherwise remove any FoV assignment.             */
-		  if((fovbelong[ibm][irg][1] > fovbelong[ibm][irg][2])
-		     && (fovbelong[ibm][irg][1] > fovbelong[ibm][irg][0]))
-		    fovflg[ibm][irg] = fovpast[ibm][irg];
-		  else fovflg[ibm][irg] = 0;
+		  if((fovbelong[bind][irg][1] > fovbelong[bind][irg][2])
+		     && (fovbelong[bind][irg][1] > fovbelong[bind][irg][0]))
+		    fovflg[bind][irg] = fovpast[bind][irg];
+		  else
+		    fovflg[bind][irg] = 0;
 
+		  /* Clear the past (former present), since it proved to */
+		  /* be unrealistic                                      */
 		  fovpast[ibm][irg] = 0;
 		}
 
 	      /* Update the location values for this beam and range gate */
-	      bm_new->rng_flgs[irg].fov      = fovflg[ibm][irg];
-	      bm_new->rng_flgs[irg].fov_past = fovpast[ibm][irg];
+	      bm_new->rng_flgs[irg].fov      = fovflg[bind][irg];
+	      bm_new->rng_flgs[irg].fov_past = fovpast[bind][irg];
 	    }
 	}
       
@@ -594,14 +616,14 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
 			int fovflg[MAX_BMS][MAX_RGS],
 			int fovpast[MAX_BMS][MAX_RGS], float scan_vh[],
-			float scan_elv[])
+			float scan_elv[], float fovstd[MAX_BMS][MAX_RGS],
+			float fovscore[MAX_BMS][MAX_RGS])
 {
   int i, irg, ibm, reg_stat;
   int get_fov[2] = {-1, 1};
 
   float max_std, max_score, intercept, sig_intercept, slope, chi2, q, lstd;
-  float sig_slope, line_std;
-  float fovstd[MAX_BMS][MAX_RGS], fovscore[MAX_BMS][MAX_RGS];
+  float sig_slope, line_std, *scan_x;
   float *lval, *ldev, *abs_ldev, *lscore, *line_dev, *sig;
 
   int linear_regression(float x[], float y[], float sig[], int num, int mwt,
@@ -613,15 +635,6 @@ void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
   /* Initalize the maximum statistics and reference variables */
   max_std   = 3.0;
   max_score = 3.0;
-
-  for(ibm = 0; ibm < MAX_BMS; ibm++)
-    {
-      for(irg = 0; irg < MAX_RGS; irg++)
-	{
-	  fovstd[ibm][irg] = 0.0;
-	  fovscore[ibm][irg] = 0.0;
-	}
-    }
   
   /* Initialize the evalutaion statistics to default values */
   line_std = max_std + 100.0;
@@ -631,10 +644,12 @@ void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
   ldev     = (float *)calloc(num, sizeof(float));
   abs_ldev = (float *)calloc(num, sizeof(float));
   lscore   = (float *)calloc(num, sizeof(float));
+  scan_x   = (float *)calloc(num, sizeof(float));
   for(i = 0; i < num; i++)
     {
+      scan_x[i]   = (float)scan_rg[i];
       line_dev[i] = line_std;
-      sig[i] = 0.0;
+      sig[i]      = 0.0;
     }
 
   /* Get the linear regression of the elevation angles as a function of    */
@@ -643,16 +658,16 @@ void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
   /* boxes, allowing data to be assigned at times when the aliasing jump   */
   /* isn't present. A more robust method (such as RANSAC or Theil-Sen) was */
   /* not used, since the number of points available are small.             */
-  reg_stat = linear_regression((float *)scan_rg, scan_elv, sig, num, 0,
-			       &intercept, &sig_intercept, &slope, &sig_slope,
-			       &chi2, &q);
+  reg_stat = linear_regression(scan_x, scan_elv, sig, num, 0, &intercept,
+			       &sig_intercept, &slope, &sig_slope, &chi2, &q);
 
-  if(reg_stat == 0)
+  if(reg_stat == 0 && slope < 0.0)
     {
-      /* If there were no calculation problems, calculate the linear values */
+      /* If there were no calculation problems, and the slope is decreasing, */
+      /* calculate the linear values                                         */
       for(i = 0; i < num; i++)
 	{
-	  lval[i] = slope * (float)scan_rg[i] + intercept;
+	  lval[i] = slope * scan_x[i] + intercept;
 	  ldev[i] = lval[i] - scan_elv[i];
 	  abs_ldev[i] = fabs(ldev[i]);
 	}
@@ -673,9 +688,12 @@ void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
 		  irg = scan_rg[i];
 		  ibm = scan_bm[i];
 
-		  /* Also update if this is the first evaluation */
-		  if(fovflg[ibm][irg] == 0 || (lscore[i] < fovscore[ibm][irg]
-					       && lstd < fovstd[ibm][irg]))
+		  /* Also update if this is the first evaluation. Removed the */
+		  /* requirement for this line's standard to be less than the */
+		  /* previous line's standard deviation as well as a lower    */
+		  /* z-score.                                                 */
+		  if(fovflg[ibm][irg] == 0
+		     || fabs(lscore[i]) < fovscore[ibm][irg])
 		    {
 		      /* If the FoV is changing, note that here */
 		      if(fovflg[ibm][irg] != 0
@@ -685,8 +703,10 @@ void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
 		      /* Update with the new good FoV stats and flag */
 		      fovflg[ibm][irg]   = get_fov[fov];
 		      fovstd[ibm][irg]   = lstd;
-		      fovscore[ibm][irg] = lscore[i];
+		      fovscore[ibm][irg] = fabs(lscore[i]);
 		    }
+		  else if(fovpast[ibm][irg] == 0)
+		    fovpast[ibm][irg] = get_fov[fov];  /* Other FoV is valid */
 		}
 	    }
 	}
@@ -699,6 +719,7 @@ void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
   free(ldev);
   free(abs_ldev);
   free(lscore);
+  free(scan_x);
 
   return;
 }
@@ -708,6 +729,7 @@ void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
  * @brief: Evaluate the FoV flags, removing and identifying outliers
  *
  * @params[in] max_rg    - Maximum number of range gates
+ *             max_bm    - Maximum number of beams/maximum beam index + 1
  *             bmwidth   - Beam half-width in beam numbers (75% of min_pnts)
  *             D_rgmax   - Maximum range gate for the D-region box width (5)
  *             D_nrg     - Number of range gates for D-region box (2)
@@ -727,20 +749,23 @@ void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
  * @note `*_rgmax` parameters are equivalent to `rg_max` in davitpy
  **/
 
-void eval_fov_flag_consistency(int max_rg, int bmwidth, int D_rgmax, int D_nrg,
-			       int E_rgmax, int E_nrg, int F_rgmax, int F_nrg,
-			       int far_nrg, int fovflg[MAX_BMS][MAX_RGS],
+void eval_fov_flag_consistency(int max_rg, int max_bm, int bmwidth, int D_rgmax,
+			       int D_nrg, int E_rgmax, int E_nrg, int F_rgmax,
+			       int F_nrg, int far_nrg,
+			       int fovflg[MAX_BMS][MAX_RGS],
 			       int fovpast[MAX_BMS][MAX_RGS],
 			       int fovbelong[MAX_BMS][MAX_RGS][3],
 			       struct FitBSIDScan *scan)
 {
   int irg, ibm, irsel, ibsel, rmin, rmax, bmin, bmax, width, fnum, bnum;
-  int bad_fov;
+  int bind, bad_fov;
 
   float ffrac, fov_frac, near_rg;
 
   struct FitBSIDBeam bm, bm_ref;
   struct CellBSIDLoc loc, ref_loc;
+
+  int get_bm_by_bmnum(int ibm, struct FitBSIDScan *scan);
 
   /* Initialize the variables */
   fov_frac = 2.0 / 3.0;
@@ -783,16 +808,16 @@ void eval_fov_flag_consistency(int max_rg, int bmwidth, int D_rgmax, int D_nrg,
 			     / ((float)bm.rsep * 20.0 / 3.0));
 		}
  
-	      if(bm.sct[irg] == 1)
+	      if(bm.sct[irg] == 1 && fovflg[bm.bm][irg] != 0)
 		{
-		  if(fovflg[ibm][irg] == -1) ref_loc = bm.back_loc[irg];
-		  else                       ref_loc = bm.front_loc[irg];
+		  if(fovflg[bm.bm][irg] == -1) ref_loc = bm.back_loc[irg];
+		  else                          ref_loc = bm.front_loc[irg];
 
 		  /* Get the beam limits for the azimuthal box */
-		  bmin = ibm - bmwidth;
-		  bmax = ibm + bmwidth;
-		  if(bmin < 0) bmin = 0;
-		  if(bmax > scan->num_bms) bmax = scan->num_bms;
+		  bmin = bm.bm - bmwidth;
+		  bmax = bm.bm + bmwidth;
+		  if(bmin < 0)      bmin = 0;
+		  if(bmax > max_bm) bmax = max_bm;
 
 		  /* Cycle through each range gate and beam in the box, */
 		  /* getting the number of points for the same hop in   */
@@ -803,7 +828,8 @@ void eval_fov_flag_consistency(int max_rg, int bmwidth, int D_rgmax, int D_nrg,
 			{
 			  if(fovflg[ibsel][irsel] != 0)
 			    {
-			      bm_ref = scan->bm[ibsel];
+			      bind   = get_bm_by_bmnum(ibsel, scan);
+			      bm_ref = scan->bm[bind];
 			      if(fovflg[ibsel][irsel] == -1)
 				loc = bm_ref.back_loc[irsel];
 			      else loc = bm_ref.front_loc[irsel];
@@ -823,44 +849,46 @@ void eval_fov_flag_consistency(int max_rg, int bmwidth, int D_rgmax, int D_nrg,
 		  if(fnum + bnum > 0)
 		    {
 		      ffrac = (float)fnum / (float)(fnum + bnum);
-		      if(ffrac >= fov_frac && bnum > 0)
+		      if(ffrac >= fov_frac)
 			bad_fov = -1;
-		      else if((1.0 - ffrac) >= fov_frac && fnum > 0)
+		      else if((1.0 - ffrac) >= fov_frac)
 			bad_fov = 1;
 		      else
 			bad_fov = 0;
-		    }
 
-		  /* Tag all points whose FoV are or are not consistent with */
-		  /* the observed structure at this propagation path.        */
-		  for(ibsel = bmin; ibsel < bmax; ibsel++)
-		    {
-		      for(irsel = rmin; irsel < rmax; irsel++)
+		      /* Tag all points whose FoV are or are not consistent   */
+		      /* with the observed structure at this propagation path */
+		      for(ibsel = bmin; ibsel < bmax; ibsel++)
 			{
-			  if(fovflg[ibsel][irsel] != 0)
+			  for(irsel = rmin; irsel < rmax; irsel++)
 			    {
-			      bm_ref = scan->bm[ibsel];
-			      if(fovflg[ibsel][irsel] == -1)
-				loc = bm_ref.back_loc[irsel];
-			      else loc = bm_ref.front_loc[irsel];
-
-			      if(loc.hop == ref_loc.hop)
+			      if(fovflg[ibsel][irsel] != 0)
 				{
-				  if(bad_fov == 0)
-				    fovbelong[ibsel][irsel][2] += 1;
-				  else if(fovflg[ibsel][irsel] == bad_fov)
-				    {
-				      /* If this point is not associated with */
-				      /* a structure that is dominated by     */
-				      /* points with the same FoV, and this   */
-				      /* is not the only FoV capapble of      */
-				      /* producing arealistic elevation       */
-				      /* angle, flag this point as an outlier */
-				      if(irsel < near_rg)
-					fovbelong[ibsel][irsel][1] += 1;
+				  bind   = get_bm_by_bmnum(ibsel, scan);
+				  bm_ref = scan->bm[bind];
+				  if(fovflg[ibsel][irsel] == -1)
+				    loc = bm_ref.back_loc[irsel];
+				  else loc = bm_ref.front_loc[irsel];
 
+				  if(loc.hop == ref_loc.hop)
+				    {
+				      if(bad_fov == 0)
+					fovbelong[ibsel][irsel][2]++;
+				      else if(fovflg[ibsel][irsel] == bad_fov)
+					{
+					  /* If this point is not associated  */
+					  /* with a structure dominated by    */
+					  /* points with the same FoV, and    */
+					  /* this is not the only FoV able to */
+					  /* produce a realistic elevation    */
+					  /* angle, flag this point as an     */
+					  /* outlier                          */
+					  if(irsel < near_rg)
+					    fovbelong[ibsel][irsel][1]++;
+
+					}
+				      else fovbelong[ibsel][irsel][0]++;
 				    }
-				  else fovbelong[ibsel][irsel][0] += 1;
 				}
 			    }
 			}
@@ -869,5 +897,54 @@ void eval_fov_flag_consistency(int max_rg, int bmwidth, int D_rgmax, int D_nrg,
 	    }
 	}
     }
+
   return;
+}
+
+/**
+ * @brief Cycle through scan, returning beam by beam number
+ *
+ * @param[in] ibm  - Zero-index beam number
+ *            scan - Scan data structure
+ *
+ * @param[out] bm - Pointer to the desired beam structure
+ **/
+
+int get_bm_by_bmnum(int ibm, struct FitBSIDScan *scan)
+{
+  int i;
+
+  struct FitBSIDBeam bm;
+
+  if(ibm < scan->num_bms)
+    {
+      /* This scan may be ordered by beam number */
+      i  = ibm;
+      bm = scan->bm[i];
+
+      /* This scan may be ordered by reverse beam order */
+      if(bm.bm != ibm)
+	{
+	  i  = scan->num_bms - (ibm + 1);
+	  bm = scan->bm[i];
+	}
+
+      if(bm.bm == ibm) return(i);
+    }
+
+  /* Not a clear relationship between beam index and beam number */
+  i  = 0;
+  bm = scan->bm[i];
+
+  while(bm.bm != ibm && i < scan->num_bms)
+    bm = scan->bm[++i];
+
+  if(i >= scan->num_bms)
+    {
+      fprintf(stderr, "can't find beam number [%d] in scan with time [%f]\n",
+	      ibm, scan->st_time);
+      exit(1);
+    }
+
+  return(i);
 }
