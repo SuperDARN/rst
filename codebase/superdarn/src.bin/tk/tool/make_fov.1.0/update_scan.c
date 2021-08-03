@@ -489,16 +489,6 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 				E_rgmax, E_nrg, F_rgmax, F_nrg, far_nrg, fovflg,
       				fovpast, fovbelong, scan_new);
 
-      /* if(mult_bsid->num_scans == 45) */
-      /* 	{ */
-      /* 	  for(irg = 0; irg < max_rg; irg++) */
-      /* 	    { */
-      /* 	      for(ibm = 0; ibm < scan_new->num_bms; ibm++) */
-      /* 		{ */
-      /* 		  printf("TST EVAL CONST: %d %d %d %d %d %d %d\n", ibm, irg, fovflg[ibm][irg], fovpast[ibm][irg], fovbelong[ibm][irg][0], fovbelong[ibm][irg][1], fovbelong[ibm][irg][2]);fflush(stdout); */
-      /* 		} */
-      /* 	    } */
-      /* 	} */
       /* Assign the appropriate virtual heights, regions, and elevation */
       /* angles to each point based on their FoV.                       */
       for(ibm = 0; ibm < scan_new->num_bms; ibm++)
