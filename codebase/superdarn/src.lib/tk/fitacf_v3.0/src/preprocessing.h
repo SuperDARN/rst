@@ -1,13 +1,13 @@
 /*Copyright (C) 2016  SuperDARN Canada
 
-This program is free software: you can redistribute it and/or modify
+RST is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -50,17 +50,6 @@ bool phase_node_eq(llist_node node,llist_node cmp);
 bool sample_node_eq(llist_node node,llist_node cmp);
 bool range_node_eq(llist_node node,llist_node cmp);
 bool alpha_node_eq(llist_node node,llist_node cmp);
-
-void print_node(llist_node node);
-void print_range_node(llist_node node, FITPRMS *fit_prms);
-void print_lag_node(llist_node node, FITPRMS *fit_prms);
-void print_pwr_node(llist_node node,FILE* fp);
-void print_alpha_node(llist_node node, FILE* fp);
-void print_phase_node(llist_node node,FILE* fp);
-void print_phase_node_to_file(llist_node node,FILE* fp);
-void print_uncorrected_phase(llist_node node, FITPRMS* fit_prms);
-
-
 
 void mark_bad_samples(FITPRMS *fit_prms, llist bad_samples);
 void filter_tx_overlapped_lags(llist_node range, llist lags, llist bad_samples);

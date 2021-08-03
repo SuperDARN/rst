@@ -4,11 +4,6 @@
             "name": "SuperDARN Data Analysis Working Group"
         },
         {
-            "affiliation": "Dartmouth College",
-            "name": "Thomas, E.G.",
-            "orcid": "0000-0001-8036-8793"
-        },
-        {
             "affiliation": "University of Saskatchewan",
             "name": "Schmidt, M.T.",
             "orcid": "0000-0002-3265-977X"
@@ -19,9 +14,19 @@
             "orcid": "0000-0002-0252-0400"
         },
         {
+            "affiliation": "Dartmouth College",
+            "name": "Thomas, E.G.",
+            "orcid": "0000-0001-8036-8793"
+        },
+        {
             "affiliation": "Naval Research Laboratory",
             "name": "Burrell, A.G.",
             "orcid": "0000-0001-8875-9326"
+        },
+        {
+            "affiliation": "Istituto Nazionale di Geofisica e Vulcanologia",
+            "name": "Coco, I.",
+            "orcid": "0000-0003-4070-6828"
         },
         {
             "affiliation": "University of Saskatchewan",

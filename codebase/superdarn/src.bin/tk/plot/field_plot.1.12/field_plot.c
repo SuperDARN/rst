@@ -5,26 +5,24 @@
 
 
 /*
- LICENSE AND DISCLAIMER
+Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
+
+This file is part of the Radar Software Toolkit (RST).
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
  
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
+Modifications:
+    2021-04-22 Marina Schmidt chaged delay to 0 as a default 
  
 */
 
@@ -448,7 +446,7 @@ int main(int argc,char *argv[]) {
   int xdoff=-1;
   int ydoff=-1;
   struct timeval tmout;
-  float delay=0.1;
+  float delay=0;
   int xstat=0;
 #endif
 
@@ -716,6 +714,7 @@ int main(int argc,char *argv[]) {
   cfit=CFitMake();
   snd=SndMake();
   scn=RadarScanMake();
+
 
   envstr=getenv("SD_RADAR");
   if (envstr==NULL) {
@@ -1116,6 +1115,11 @@ int main(int argc,char *argv[]) {
       exit(-1);
     }
   }
+
+  if (delay == 0){
+      fprintf(stderr, "Click to view next plot. Ctrl+c to exit. Use -delay option to cycle through all frames sequentially.\n");
+  }
+
   if ((ssec !=-1) || (sdte !=-1)) {
     /* we must skip the start of the files */
 

@@ -11,16 +11,16 @@
  This file is part of the Radar Software Toolkit (RST).
  
  RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
+ it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
  
- RST is distributed in the hope that it will be useful,
+ This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
  
- You should have received a copy of the GNU Lesser General Public License
+ You should have received a copy of the GNU General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
  
  
@@ -218,7 +218,7 @@ int RCDFReadZ(CDFid id,long recno,char **varname,struct RCDFData *ptr) {
   {
     for (int i=0;i<cnt;i++) 
     {
-        memcpy(buffer[i],(long*)data+offset[i],size[i]);  
+        memcpy(buffer[i],(void*)data+offset[i],size[i]);  
     }
   }
   free(data);   
@@ -329,7 +329,7 @@ int RCDFReadR(CDFid id,long recno,char **varname,struct RCDFData *ptr) {
   {
     for (i=0;i<cnt;i++)
     {
-        memcpy(buffer[i],(long*)data+offset[i],size[i]);  
+        memcpy(buffer[i],(void*)data+offset[i],size[i]);  
     }
   }
   free(data);   
