@@ -2,6 +2,7 @@
 <rfc>
 <id>0026</id>
 <title>Radar Operating System: Proposed System Architecture</title>
+<author>R.J.Barnes</author>
 <summary><p>An overview of the proposed system architecture for the Radar Operating System.</p></summary>
 <body>
 <h4>1. Introduction</h4>
@@ -22,6 +23,21 @@
       |                     |
       |                     |
       +---------------------+
+      |                     |
+      |                     |
+  2   |  Signal Processing  |
+      |                     |
+      |                     |
+      +---------------------+
+      |                     |
+      |                     |
+  1   |      Hardware       |
+      |                     |
+      |                     |
+      +---------------------+
+</pre></font></td></tr>
+</table>
+</center>
 <p>This model is very similar to the layered approach of the TCP/IP approach where each successive layer provides solves a particular set of problems and provides a well defined set of services to the layer above. The lowest layers are closest to the hardware, while the highest deal with the data delivered to the end user.</p>
 <h4>3. Hardware Differences</h4>
 <p>To solve the problems caused by differences in radar hardware it is proposed to modify the layer model by splitting the "Hardware" layer into a "Physical Hardware" layer and a "Virtual Hardware" layer. The "Physical Hardware" layer will consist of the low-level device drivers, while the "Virtual Hardware" layer which consists of software that presents a standard interface to the "Signal Processing" Layer regardless of the underlying hardware.</p> 
