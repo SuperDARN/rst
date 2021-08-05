@@ -114,6 +114,8 @@ int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
   struct OldFitFp *oldfitfp=NULL;
   struct RadarScan *scan;
 
+  struct FitBSIDScan *test_scan;
+  
   int exclude_outofscan(struct RadarScan *ptr);
   struct RadarSite *load_radar_site(int yr, int mo, int dy, int hr, int mt,
 				    int sc, int stid);
@@ -304,6 +306,13 @@ int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
 	  		  D_hmax, E_hmax, F_hmax, D_vh_box, E_vh_box, F_vh_box,
 	  		  far_vh_box, max_hop, scan, site, mult_bsid);
 
+	  if(mult_bsid->num_scans == 53)
+	    {
+	      test_scan = mult_bsid->last_ptr;
+	      printf("TEST: %d %s %f %d %d\n", test_scan->bm[7].bm, test_scan->bm[7].front_loc[45].region, test_scan->bm[7].front_loc[45].hop, test_scan->bm[7].rng_flgs[45].fov, test_scan->bm[7].rng_flgs[45].fov_past);fflush(stdout);
+	      exit(1);
+	    }
+	  
 	  /* Read next radar scan from input file */
 	  if(old)
 	    ret_flg = OldFitReadRadarScan(oldfitfp, &state, scan, prm, fit,
