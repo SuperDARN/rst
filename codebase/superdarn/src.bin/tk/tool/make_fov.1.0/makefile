@@ -24,6 +24,7 @@ SRC =	make_fov.c \
 	multbsid.c \
 	select_alt_groups.c \
 	sort_rout.c \
+	test_ut_fov_struct.c \
 	update_beam.c \
 	update_scan.c \
 	utils.c \
