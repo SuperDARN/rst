@@ -21,8 +21,8 @@
 ; 
 ; Modifications:
 ;
-; Functions
-; ---------------
+; Public Functions
+; ----------------
 ; map_openr
 ; map_openw
 ; map_close

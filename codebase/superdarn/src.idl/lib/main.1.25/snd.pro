@@ -18,12 +18,9 @@
 ; 
 ; Modifications:
 ; 
-; Functions
-
 ; Public Functions
 ; ----------------
 ;
-
 ; SndRead
 ; SndWrite
 ; SndSeek
@@ -33,10 +30,8 @@
 ; Private Functions
 ; ---------------
 ;
-
 ; SndMakeSndData
 ; SndGetTime
-
 ;
 ; ---------------------------------------------------------------
 
@@ -524,4 +519,3 @@ function SndClose,unit
   return,0
 
 end
-

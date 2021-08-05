@@ -21,7 +21,8 @@
 ; 
 ; Modifications:
 ;
-; ---------------
+; Public Functions
+; ----------------
 ; badlags
 ; interp_bad
 ; fix_acf

@@ -132,7 +132,7 @@ A typical set of filenames in this format would look like:
 
 ## References
 
--[Specification for Radar Identifier](references/general/radar_id.md)
+-[Specification for Radar Identifier](radar_id.md)
 
 ## History (from RFC)
 

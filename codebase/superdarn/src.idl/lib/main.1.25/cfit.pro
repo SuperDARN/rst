@@ -20,8 +20,8 @@
 ; 
 ; Modifications:
 ; 
-; Functions
-; ---------
+; Public Functions
+; ----------------
 ; CFitRead            
 ; CFitWrite          
 ; CFitSeek            

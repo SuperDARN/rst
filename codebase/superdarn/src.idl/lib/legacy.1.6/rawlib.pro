@@ -19,8 +19,8 @@
 ; 
 ; Modifications:
 ;
-; Functions
-; ---------------
+; Public Functions
+; ----------------
 ; rawropen
 ; raw_close
 ; pack_raw

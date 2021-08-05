@@ -22,6 +22,5 @@ Possible services:
 # Citing RST
 
 Click on DOI badge:
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3994968.svg)](https://doi.org/10.5281/zenodo.3994968)
-
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.801458.svg)](https://doi.org/10.5281/zenodo.801458)
 Scroll to the bottom and copy *Share Cite as* text or clicking on the preferred *Export* type. 
