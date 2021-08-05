@@ -179,8 +179,9 @@ int main(int argc, char *argv[])
   int D_rgmax=5, E_rgmax=25, F_rgmax=40;
   float D_hmin=75, D_hmax=100, E_hmax=120, F_hmax=750;
   float D_vh_box=40, E_vh_box=35, F_vh_box=50, far_vh_box=150;
-  float max_hop=3.0;
-  
+  float max_hop=3.0, min_frac=0.1;
+  double ut_box_sec=1200.0;  /* 20 minutes */
+
   /* Declare local subroutines */
   int command_options(int argc, char *argv[], int *old, int *tlen,
 		      unsigned char *vb, unsigned char *catflg,
@@ -211,6 +212,11 @@ int main(int argc, char *argv[])
 			  float F_hmax, float D_vh_box, float E_vh_box,
 			  float F_vh_box, float far_vh_box, float max_hop,
 			  struct MultFitBSID *mult_bsid);
+  void test_ut_fov_struct(unsigned char vb, char *vbuf, float min_frac,
+			  double ut_box_sec, int D_nrg, int E_nrg, int F_nrg,
+			  int far_nrg, int D_rgmax, int E_rgmax, int F_rgmax,
+			  float D_hmin, float D_hmax, float E_hmax,
+			  float F_hmax, struct MultFitBSID *mult_bsid);
   void write_multbsid_ascii(FILE *fp, struct MultFitBSID *mult_scan);
 
   /* Process the command line options */
@@ -307,9 +313,10 @@ int main(int argc, char *argv[])
 				     F_hmax, D_vh_box, E_vh_box, F_vh_box,
 				     far_vh_box, max_hop, mult_bsid);
 
-      /* Examine the UT evolution and consistency of the elevation angles HERE */
-      /* ret_stat = test_ut_fov_struct(min_frac, frg_box, max_rg, ut_box, fbands,
-       *			    step, mult_bsid); */
+      /* Examine the UT evolution and consistency of the elevation angles */
+      test_ut_fov_struct(vb, vbuf, min_frac, ut_box_sec, D_nrg, E_nrg, F_nrg,
+			 far_nrg, D_rgmax, E_rgmax, F_rgmax, D_hmin, D_hmax,
+			 E_hmax, F_hmax, mult_bsid);
     }
 
   /* Write an output file HERE */
