@@ -35,7 +35,6 @@
 #define MAX_BMS 25  /* Current maximum in hdw files */
 #define MAX_RGS 225  /* Current maximum in hdw files */
 #define MIN_BMS 3  /* Minimum number of beams to find azimuthal variations */
-#define RG_INC 3
 
 /**
  * @brief Update scan backscatter propagation path, elevation angle,
@@ -376,12 +375,11 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 			    }
 
 			  ipath = (int)(loc.hop * 2.0);
-			  if(strstr(loc.region, "D") != NULL) ireg = 0;
+			  if(strstr(loc.region, "D") != NULL)      ireg = 0;
 			  else if(strstr(loc.region, "E") != NULL) ireg = 1;
 			  else if(strstr(loc.region, "F") != NULL) ireg = 2;
-			  else ireg = -1;
+			  else                                     ireg = -1;
 
-			  
 			  if(ireg >= 0)
 			    {
 			      if(ipath == 0)
@@ -440,7 +438,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 
 		  if(scan_num[ireg][ifov][ipath] >= min_pnts)
 		    {
-		      /* Use select_alt_groups */
+		      /* Use select_alt_groups TEST HERE */
 		      out_num = select_alt_groups(scan_num[ireg][ifov][ipath],
 						  scan_rg[ireg][ifov][ipath],
 						  scan_vh[ireg][ifov][ipath],
@@ -485,6 +483,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 
       /* Evaluate the FoV flags, removing points that are surrounded by */
       /* data assigned to the opposite FoV.                             */
+      printf("START EVAL\n");fflush(stdout);
       eval_fov_flag_consistency(max_rg, hard->maxbeam, bmwidth, D_rgmax, D_nrg,
 				E_rgmax, E_nrg, F_rgmax, F_nrg, far_nrg, fovflg,
       				fovpast, fovbelong, scan_new);
@@ -524,6 +523,9 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 	      /* Update the location values for this beam and range gate */
 	      bm_new->rng_flgs[irg].fov      = fovflg[bind][irg];
 	      bm_new->rng_flgs[irg].fov_past = fovpast[bind][irg];
+	      
+	      if(mult_bsid->num_scans == 52 && irg == 45 && bm_new->bm == 7)
+		printf("TEST SCAN: %d : %d %d %d : %d %d\n", fovflg[bind][irg], fovbelong[bind][irg][0], fovbelong[bind][irg][1], fovbelong[bind][irg][2], bm_new->rng_flgs[irg].fov, bm_new->rng_flgs[irg].fov_past);fflush(stdout);
 	    }
 	}
       
@@ -697,6 +699,9 @@ void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
 		    }
 		  else if(fovpast[ibm][irg] == 0)
 		    fovpast[ibm][irg] = get_fov[fov];  /* Other FoV is valid */
+
+		  if(ibm == 7 && irg == 45)
+		    printf("TEST AZ: %d %d %f\n", fovflg[ibm][irg], fovpast[ibm][irg], lscore[i]);fflush(stdout);
 		}
 	    }
 	}
@@ -747,8 +752,7 @@ void eval_fov_flag_consistency(int max_rg, int max_bm, int bmwidth, int D_rgmax,
 			       int fovbelong[MAX_BMS][MAX_RGS][3],
 			       struct FitBSIDScan *scan)
 {
-  int irg, ibm, irsel, ibsel, rmin, rmax, bmin, bmax, width, fnum, bnum;
-  int bind, bad_fov;
+  int irg, ibm, irsel, ibsel, bind, rmin, rmax, bmin, bmax, fnum, bnum, bad_fov;
 
   float ffrac, fov_frac, near_rg;
 
@@ -756,8 +760,11 @@ void eval_fov_flag_consistency(int max_rg, int max_bm, int bmwidth, int D_rgmax,
   struct CellBSIDLoc loc, ref_loc;
 
   int get_bm_by_bmnum(int ibm, struct FitBSIDScan *scan);
+  void get_rg_box_limits(int rg, int max_rg, int D_rgmax, int E_rgmax,
+			 int F_rgmax, int D_nrg, int E_nrg, int F_nrg,
+			 int far_nrg, int *rg_min, int *rg_max);
 
-  /* Initialize the variables */
+  /* Initialize the variables */ /* TESTING HERE */
   fov_frac = 2.0 / 3.0;
   near_rg  = -1.0;
 
@@ -765,18 +772,9 @@ void eval_fov_flag_consistency(int max_rg, int max_bm, int bmwidth, int D_rgmax,
   /* neighboring backscatter fields of view.                              */
   for(rmin = 0, rmax = 0, irg = 0; irg < max_rg; irg++)
     {
-      /* Get the half-width of the range gate box */
-      if(irg < D_rgmax)      width = (D_nrg + RG_INC) / 2;
-      else if(irg < E_rgmax) width = (E_nrg + RG_INC) / 2;
-      else if(irg < F_rgmax) width = (F_nrg + RG_INC) / 2;
-      else                   width = (far_nrg + RG_INC) / 2;
-
-      /* Set the upper and lower box limits. This changes the logic    */
-      /* from the davitpy implementation by allowing the limits of a   */
-      /* range gate box to extend into range gates beyond their limit. */
-      rmin = (irg - width < 0) ? 0 : irg - width;
-      rmax = rmin + 2 * width;
-      if(rmax > max_rg + 1) rmax = max_rg + 1;
+      /* Get the range gate box limits */
+      get_rg_box_limits(irg, max_rg, D_rgmax, E_rgmax, F_rgmax, D_nrg,
+			E_nrg, F_nrg, far_nrg, &rmin, &rmax);
 
       /* For each beam in the maximum possible range gate window, gather */
       /* the range gate, FoV flag, beam index, and range gate index by   */
@@ -801,7 +799,7 @@ void eval_fov_flag_consistency(int max_rg, int max_bm, int bmwidth, int D_rgmax,
 	      if(bm.sct[irg] == 1 && fovflg[bm.bm][irg] != 0)
 		{
 		  if(fovflg[bm.bm][irg] == -1) ref_loc = bm.back_loc[irg];
-		  else                          ref_loc = bm.front_loc[irg];
+		  else                         ref_loc = bm.front_loc[irg];
 
 		  /* Get the beam limits for the azimuthal box */
 		  bmin = bm.bm - bmwidth;
@@ -885,6 +883,10 @@ void eval_fov_flag_consistency(int max_rg, int max_bm, int bmwidth, int D_rgmax,
 		    }
 		}
 	    }
+
+	  
+	  if(irg == 45 && bm.bm == 7)
+	    printf("TEST EVAL: %d : %d %d %d\n", fovflg[ibm][irg], fovbelong[ibm][irg][0], fovbelong[ibm][irg][1], fovbelong[ibm][irg][2]);fflush(stdout);
 	}
     }
 
@@ -937,4 +939,42 @@ int get_bm_by_bmnum(int ibm, struct FitBSIDScan *scan)
     }
 
   return(i);
+}
+
+
+/**
+ * @brief Get range gate limits for an input point and set regional guidelines
+ *
+ * @params[in] rg      - Zero-starting range gate index
+ *             max_rg  - Maximum transmission frequency limit in kH
+ *             D_rgmax - Maximum range gate for D-region box width (5)
+ *             E_rgmax - Maximum range gate for E-region box width (25)
+ *             F_rgmax - Maximum range gate for near F-region box width (40)z
+ *             D_nrg   - Number of range gates for D-region box (2)
+ *             E_nrg   - Number of range gates for E-region box (5)
+ *             F_nrg   - Number of range gates for near F-region box (10)
+ *             far_nrg - Number of range gates for far F-region box (20)
+ *
+ * @params[out] rg_min - minimum range gate in box
+ *              rg_max - maximum range gate in box
+ **/
+
+void get_rg_box_limits(int rg, int max_rg, int D_rgmax, int E_rgmax,
+		       int F_rgmax, int D_nrg, int E_nrg, int F_nrg,
+		       int far_nrg, int *rg_min, int *rg_max)
+{
+  int width;
+
+  /* Get the half-width of the range gate box */
+  if(rg < D_rgmax)      width = D_nrg / 2; /* (D_nrg   + inc) / 2; */
+  else if(rg < E_rgmax) width = E_nrg / 2; /* (E_nrg   + inc) / 2; */
+  else if(rg < F_rgmax) width = F_nrg / 2; /* (F_nrg   + inc) / 2; */
+  else                  width = far_nrg / 2; /* (far_nrg + inc) / 2; */
+
+  /* Set the upper and lower box limits, limiting them  */
+  /* to the possible upper and lower range gate limits. */
+  *rg_min = (rg - width < 0) ? 0 : rg - width;
+  *rg_max = (rg + width > max_rg) ? max_rg : rg + width;
+
+  return;
 }
