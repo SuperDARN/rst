@@ -1,6 +1,6 @@
 /* update_scan.c
    =============
-   Author: Angeline G. Burrell - NRL - 2020
+   Author: Angeline G. Burrell - NRL - 2021
 */
 
 /*
@@ -83,7 +83,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
   int igood[MAX_BMS], group_bm[MAX_BMS * MAX_RGS], group_rg[MAX_BMS * MAX_RGS];
   int fovflg[MAX_BMS][MAX_RGS], fovpast[MAX_BMS][MAX_RGS];
   int front_num[MAX_BMS][MAX_RGS], back_num[MAX_BMS][MAX_RGS];
-  int fovbelong[MAX_BMS][MAX_RGS][3];
+  int fovbelong[MAX_BMS][MAX_RGS][3], opp_in[MAX_BMS][MAX_RGS];
   int ***scan_num, ****scan_bm, ****scan_rg;
 
   float hmin, hmax, hbox, *vmins, *vmaxs;
@@ -115,6 +115,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 				 int fovflg[MAX_BMS][MAX_RGS],
 				 int fovpast[MAX_BMS][MAX_RGS],
 				 int fovbelong[MAX_BMS][MAX_RGS][3],
+				 int opp_in[MAX_BMS][MAX_RGS],
 				 struct FitBSIDScan *scan);
 
   /* Initialize the local pointers and variables */
@@ -132,6 +133,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 	  fovscore[ibm][irg]  = 0.0;
 	  front_num[ibm][irg] = 0;
 	  back_num[ibm][irg]  = 0;
+	  opp_in[ibm][irg]    = 0;
 
 	  for(iscan = 0; iscan < 3; iscan++)
 	    fovbelong[ibm][irg][iscan] = 0;
@@ -483,10 +485,9 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 
       /* Evaluate the FoV flags, removing points that are surrounded by */
       /* data assigned to the opposite FoV.                             */
-      printf("START EVAL\n");fflush(stdout);
       eval_fov_flag_consistency(max_rg, hard->maxbeam, bmwidth, D_rgmax, D_nrg,
 				E_rgmax, E_nrg, F_rgmax, F_nrg, far_nrg, fovflg,
-      				fovpast, fovbelong, scan_new);
+      				fovpast, fovbelong, opp_in, scan_new);
 
       /* Assign the appropriate virtual heights, regions, and elevation */
       /* angles to each point based on their FoV.                       */
@@ -517,15 +518,18 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 
 		  /* Clear the past (former present), since it proved to */
 		  /* be unrealistic                                      */
-		  fovpast[ibm][irg] = 0;
+		  fovpast[bind][irg] = 0;
+		}
+	      else if(opp_in[bind][irg] == 1)
+		{
+		  /* This point is a better inlier when swapped */
+		  fovflg[bind][irg]   = fovpast[bind][irg];
+		  fovpast[bind][irg] *= -1;
 		}
 
 	      /* Update the location values for this beam and range gate */
 	      bm_new->rng_flgs[irg].fov      = fovflg[bind][irg];
-	      bm_new->rng_flgs[irg].fov_past = fovpast[bind][irg];
-	      
-	      if(mult_bsid->num_scans == 52 && irg == 45 && bm_new->bm == 7)
-		printf("TEST SCAN: %d : %d %d %d : %d %d\n", fovflg[bind][irg], fovbelong[bind][irg][0], fovbelong[bind][irg][1], fovbelong[bind][irg][2], bm_new->rng_flgs[irg].fov, bm_new->rng_flgs[irg].fov_past);fflush(stdout);
+	      bm_new->rng_flgs[irg].fov_past = fovpast[bind][irg];	      
 	    }
 	}
       
@@ -653,10 +657,10 @@ void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
   reg_stat = linear_regression(scan_x, scan_elv, sig, num, 0, &intercept,
 			       &sig_intercept, &slope, &sig_slope, &chi2, &q);
 
-  if(reg_stat == 0 && slope < 0.0)
+  if(reg_stat == 0 && slope < 0.1)
     {
-      /* If there were no calculation problems, and the slope is decreasing, */
-      /* calculate the linear values                                         */
+      /* If there were no calculation problems, and the slope is flat or */
+      /* decreasing, calculate the linear values                         */
       for(i = 0; i < num; i++)
 	{
 	  lval[i] = slope * scan_x[i] + intercept;
@@ -699,9 +703,6 @@ void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
 		    }
 		  else if(fovpast[ibm][irg] == 0)
 		    fovpast[ibm][irg] = get_fov[fov];  /* Other FoV is valid */
-
-		  if(ibm == 7 && irg == 45)
-		    printf("TEST AZ: %d %d %f\n", fovflg[ibm][irg], fovpast[ibm][irg], lscore[i]);fflush(stdout);
 		}
 	    }
 	}
@@ -739,6 +740,10 @@ void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
  *                         indicating the point is an inlier (0), outlier (1),
  *                         or mixed-ID (2). Must be initialized outside of this
  *                         routine.
+ *             opp_in    - Beam x RG array holding True/False assignments
+ *                         indicating the point is a better inlier if the FoV
+ *                         for the central point is swapped. Must be
+ *                         initialized outside of this routine.
  *             scan      - Scan structure holding data by beam and range gate
  *
  * @note `*_rgmax` parameters are equivalent to `rg_max` in davitpy
@@ -750,27 +755,29 @@ void eval_fov_flag_consistency(int max_rg, int max_bm, int bmwidth, int D_rgmax,
 			       int fovflg[MAX_BMS][MAX_RGS],
 			       int fovpast[MAX_BMS][MAX_RGS],
 			       int fovbelong[MAX_BMS][MAX_RGS][3],
+			       int opp_in[MAX_BMS][MAX_RGS],
 			       struct FitBSIDScan *scan)
 {
-  int irg, ibm, irsel, ibsel, bind, rmin, rmax, bmin, bmax, fnum, bnum, bad_fov;
-
-  float ffrac, fov_frac, near_rg;
+  int irg, ibm, ifov, irsel, ibsel, bind, rmin, rmax, bmin, bmax, bad_fov;
+  int fnum[2], bnum[2];
+  
+  float ffrac, fov_frac, ffrac_opp, near_rg;
 
   struct FitBSIDBeam bm, bm_ref;
-  struct CellBSIDLoc loc, ref_loc;
+  struct CellBSIDLoc loc, ref_loc[2];
 
   int get_bm_by_bmnum(int ibm, struct FitBSIDScan *scan);
   void get_rg_box_limits(int rg, int max_rg, int D_rgmax, int E_rgmax,
 			 int F_rgmax, int D_nrg, int E_nrg, int F_nrg,
 			 int far_nrg, int *rg_min, int *rg_max);
 
-  /* Initialize the variables */ /* TESTING HERE */
+  /* Initialize the variables */
   fov_frac = 2.0 / 3.0;
   near_rg  = -1.0;
 
   /* Cycle through all of the range gates, looking for consistency in the */
   /* neighboring backscatter fields of view.                              */
-  for(rmin = 0, rmax = 0, irg = 0; irg < max_rg; irg++)
+  for(irg = 0; irg < max_rg; irg++)
     {
       /* Get the range gate box limits */
       get_rg_box_limits(irg, max_rg, D_rgmax, E_rgmax, F_rgmax, D_nrg,
@@ -798,8 +805,16 @@ void eval_fov_flag_consistency(int max_rg, int max_bm, int bmwidth, int D_rgmax,
  
 	      if(bm.sct[irg] == 1 && fovflg[bm.bm][irg] != 0)
 		{
-		  if(fovflg[bm.bm][irg] == -1) ref_loc = bm.back_loc[irg];
-		  else                         ref_loc = bm.front_loc[irg];
+		  if(fovflg[bm.bm][irg] == -1)
+		    {
+		      ref_loc[0] = bm.back_loc[irg];
+		      ref_loc[1] = bm.front_loc[irg];
+		    }
+		  else
+		    {
+		      ref_loc[0] = bm.front_loc[irg];
+		      ref_loc[1] = bm.back_loc[irg];
+		    }
 
 		  /* Get the beam limits for the azimuthal box */
 		  bmin = bm.bm - bmwidth;
@@ -810,7 +825,13 @@ void eval_fov_flag_consistency(int max_rg, int max_bm, int bmwidth, int D_rgmax,
 		  /* Cycle through each range gate and beam in the box, */
 		  /* getting the number of points for the same hop in   */
 		  /* each field-of-view                                 */
-		  for(fnum = 0, bnum = 0, ibsel = bmin; ibsel < bmax; ibsel++)
+		  for(ifov = 0; ifov < 2; ifov++)
+		    {
+		      fnum[ifov] = 0;
+		      bnum[ifov] = 0;
+		    }
+		  
+		  for(ibsel = bmin; ibsel < bmax; ibsel++)
 		    {
 		      for(irsel = rmin; irsel < rmax; irsel++)
 			{
@@ -822,10 +843,24 @@ void eval_fov_flag_consistency(int max_rg, int max_bm, int bmwidth, int D_rgmax,
 				loc = bm_ref.back_loc[irsel];
 			      else loc = bm_ref.front_loc[irsel];
 
-			      if(loc.hop == ref_loc.hop)
+			      if(loc.hop == ref_loc[0].hop)
 				{
-				  if(fovflg[ibsel][irsel] == 1) fnum++;
-				  else                          bnum++;
+				  if(fovflg[ibsel][irsel] == 1) fnum[0]++;
+				  else                          bnum[0]++;
+				}
+			      
+			      if(fovpast[bind][irg] != 0)
+				{
+				  if(irg == irsel && bm.bm == ibsel)
+				    {
+				      if(fovpast[ibsel][irsel] == 1) fnum[1]++;
+				      else                           bnum[1]++;
+				    }
+				  else if(loc.hop == ref_loc[1].hop)
+				    {
+				      if(fovflg[ibsel][irsel] == 1) fnum[1]++;
+				      else                          bnum[1]++;
+				    }
 				}
 			    }
 			}
@@ -834,18 +869,40 @@ void eval_fov_flag_consistency(int max_rg, int max_bm, int bmwidth, int D_rgmax,
 		  /* Sum up the number of points in this range gate/beam box */
 		  /* and see if there is an overwhelming number of points in */
 		  /* either field-of-view.                                   */
-		  if(fnum + bnum > 0)
+		  if(fnum[0] + bnum[0] > 0)
 		    {
-		      ffrac = (float)fnum / (float)(fnum + bnum);
+		      /* Get the bad field of view and test the opposite FoV */
+		      ffrac     = (float)fnum[0] / (float)(fnum[0] + bnum[0]);
+		      ffrac_opp = (float)fnum[1] / (float)(fnum[1] + bnum[1]);
 		      if(ffrac >= fov_frac)
-			bad_fov = -1;
-		      else if((1.0 - ffrac) >= fov_frac)
-			bad_fov = 1;
-		      else
-			bad_fov = 0;
+			{
+			  bad_fov = -1;
 
-		      /* Tag all points whose FoV are or are not consistent   */
-		      /* with the observed structure at this propagation path */
+			  if(ffrac_opp > ffrac) opp_in[bm.bm][irg] = 1;
+			}
+		      else if((1.0 - ffrac) >= fov_frac)
+			{
+			  bad_fov = 1;
+
+			  if(ffrac_opp < ffrac) opp_in[bm.bm][irg] = 1;
+			}
+		      else
+			{
+			  bad_fov = 0;
+
+			  if((ffrac_opp >= fov_frac)
+			     || ((1.0 - ffrac_opp) >= fov_frac))
+			    opp_in[bm.bm][irg] = 1;
+			  else opp_in[bm.bm][irg] = 0;
+			}
+
+		      if(opp_in[bm.bm][irg] == 1
+			 && fovpast[bm.bm][irg] == bad_fov)
+			opp_in[bm.bm][irg] = 0;
+
+		      /* Tag all points whose FoV are or are not */
+		      /* consistent with the observed structure  */
+		      /* at this propagation path                */
 		      for(ibsel = bmin; ibsel < bmax; ibsel++)
 			{
 			  for(irsel = rmin; irsel < rmax; irsel++)
@@ -858,22 +915,21 @@ void eval_fov_flag_consistency(int max_rg, int max_bm, int bmwidth, int D_rgmax,
 				    loc = bm_ref.back_loc[irsel];
 				  else loc = bm_ref.front_loc[irsel];
 
-				  if(loc.hop == ref_loc.hop)
+				  if(ifov == 0 && loc.hop == ref_loc[0].hop)
 				    {
 				      if(bad_fov == 0)
 					fovbelong[ibsel][irsel][2]++;
 				      else if(fovflg[ibsel][irsel] == bad_fov)
 					{
-					  /* If this point is not associated  */
-					  /* with a structure dominated by    */
-					  /* points with the same FoV, and    */
-					  /* this is not the only FoV able to */
-					  /* produce a realistic elevation    */
-					  /* angle, flag this point as an     */
-					  /* outlier                          */
+					  /* If this point is not          */
+					  /* associated with a structure   */
+					  /* dominated by points with the  */
+					  /* same FoV, and this is not     */
+					  /* the only FoV able to produce  */
+					  /* a realistic elevation angle,  */
+					  /* flag this point as an outlier */
 					  if(irsel < near_rg)
 					    fovbelong[ibsel][irsel][1]++;
-
 					}
 				      else fovbelong[ibsel][irsel][0]++;
 				    }
@@ -882,11 +938,7 @@ void eval_fov_flag_consistency(int max_rg, int max_bm, int bmwidth, int D_rgmax,
 			}
 		    }
 		}
-	    }
-
-	  
-	  if(irg == 45 && bm.bm == 7)
-	    printf("TEST EVAL: %d : %d %d %d\n", fovflg[ibm][irg], fovbelong[ibm][irg][0], fovbelong[ibm][irg][1], fovbelong[ibm][irg][2]);fflush(stdout);
+	    }	  
 	}
     }
 
