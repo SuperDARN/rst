@@ -1,6 +1,6 @@
-/* scandata.h
+/* multbsid.h
    ==========
-   Author: R.J.Barnes
+   Author: A.G. Burrell
 */
 
 /*
