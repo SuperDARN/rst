@@ -116,8 +116,6 @@ int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
   struct OldFitFp *oldfitfp=NULL;
   struct RadarScan *scan;
 
-  struct FitBSIDScan *test_scan;
-  
   int exclude_outofscan(struct RadarScan *ptr);
   struct RadarSite *load_radar_site(int yr, int mo, int dy, int hr, int mt,
 				    int sc, int stid);
