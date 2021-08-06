@@ -319,8 +319,9 @@ int main(int argc, char *argv[])
 			 E_hmax, F_hmax, mult_bsid);
     }
 
-  /* Write an output file HERE */
-  write_multbsid_ascii(stdout, mult_bsid);
+  /* Write an output file */
+  if(mult_bsid->num_scans > 0)
+    write_multbsid_ascii(stdout, mult_bsid);
 
   /* Free the data structure pointer */
   MultFitBSIDFree(mult_bsid);
