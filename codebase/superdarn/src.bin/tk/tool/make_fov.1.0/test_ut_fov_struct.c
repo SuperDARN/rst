@@ -69,9 +69,9 @@ void test_ut_fov_struct(unsigned char vb, char *vbuf, float min_frac,
   int iscan, ibm, irg, ireg, ihop, ibox, iwin, istime, ietime, ifov, bind;
   int max_pnts, num_bms, max_rg, max_reg, cpid, bmnum, num_rg;
   int good_fov, bad_fov, rmin, rmax, fnum[2], bnum[2];
-  int ***fovflg, ***region, ***hop, ***fov_in, ***fov_out, ***fov_mix;
+  int ***fovflg, ***region, ***hop, **fov_in, **fov_out, **fov_mix, **opp_in;
 
-  float fov_frac, near_rg, frac_num;
+  float fov_frac, frac_num, past_frac;
 
   double *stime;
 
@@ -94,12 +94,12 @@ void test_ut_fov_struct(unsigned char vb, char *vbuf, float min_frac,
 
   /* Initialize the local variables */
   fov_frac = 2.0 / 3.0;
-  near_rg  = -1.0;
   max_reg  = 3;
 
-  fov_in  = (int ***)NULL;
-  fov_out = (int ***)NULL;
-  fov_mix = (int ***)NULL;
+  opp_in  = (int **)NULL;
+  fov_in  = (int **)NULL;
+  fov_out = (int **)NULL;
+  fov_mix = (int **)NULL;
   fovflg  = (int ***)NULL;
   region  = (int ***)NULL;
   hop     = (int ***)NULL;
@@ -124,25 +124,20 @@ void test_ut_fov_struct(unsigned char vb, char *vbuf, float min_frac,
 	  fovflg  = (int ***)malloc(sizeof(int **) * 2);
 	  region  = (int ***)malloc(sizeof(int **) * 2);
 	  hop     = (int ***)malloc(sizeof(int **) * 2);
-	  fov_in  = (int ***)malloc(sizeof(int **) * 2);
-	  fov_out = (int ***)malloc(sizeof(int **) * 2);
-	  fov_mix = (int ***)malloc(sizeof(int **) * 2);
+	  fov_in  = (int **)malloc(sizeof(int *) * mult_bsid->num_scans);
+	  fov_out = (int **)malloc(sizeof(int *) * mult_bsid->num_scans);
+	  fov_mix = (int **)malloc(sizeof(int *) * mult_bsid->num_scans);
+	  opp_in  = (int **)malloc(sizeof(int *) * mult_bsid->num_scans);
 	  stime   = (double *)calloc(mult_bsid->num_scans, sizeof(double));
 
 	  for(ifov = 0; ifov < 2; ifov++)
 	    {
-	      fovflg[ifov]  = (int **)malloc(sizeof(int *)
-					     * mult_bsid->num_scans);
-	      region[ifov]  = (int **)malloc(sizeof(int *)
-					     * mult_bsid->num_scans);
-	      hop[ifov]     = (int **)malloc(sizeof(int *)
-					     * mult_bsid->num_scans);
-	      fov_in[ifov]  = (int **)malloc(sizeof(int *)
-					     * mult_bsid->num_scans);
-	      fov_out[ifov] = (int **)malloc(sizeof(int *)
-					     * mult_bsid->num_scans);
-	      fov_mix[ifov] = (int **)malloc(sizeof(int *)
-					     * mult_bsid->num_scans);
+	      fovflg[ifov] = (int **)malloc(sizeof(int *)
+					    * mult_bsid->num_scans);
+	      region[ifov] = (int **)malloc(sizeof(int *)
+					    * mult_bsid->num_scans);
+	      hop[ifov]    = (int **)malloc(sizeof(int *)
+					    * mult_bsid->num_scans);
 	    }
 	}
 
@@ -150,24 +145,26 @@ void test_ut_fov_struct(unsigned char vb, char *vbuf, float min_frac,
 	{
 	  if(max_rg == -1)
 	    {
-	      for(ifov = 0; ifov < 2; ifov++)
+	      for(iscan = 0; iscan < mult_bsid->num_scans; iscan++)
 		{
-		  for(iscan = 0; iscan < mult_bsid->num_scans; iscan++)
+		  for(ifov = 0; ifov < 2; ifov++)
 		    {
 		      fovflg[ifov][iscan] = (int *)malloc(sizeof(int) * num_rg);
 		      region[ifov][iscan] = (int *)malloc(sizeof(int) * num_rg);
-		      hop[ifov][iscan] = (int *)malloc(sizeof(int) * num_rg);
-		      fov_in[ifov][iscan] = (int *)malloc(sizeof(int) * num_rg);
-		      fov_out[ifov][iscan]= (int *)malloc(sizeof(int) * num_rg);
-		      fov_mix[ifov][iscan] = (int *)malloc(sizeof(int) * num_rg);
+		      hop[ifov][iscan]    = (int *)malloc(sizeof(int) * num_rg);
 		    }
+
+		  fov_in[iscan]  = (int *)malloc(sizeof(int) * num_rg);
+		  fov_out[iscan] = (int *)malloc(sizeof(int) * num_rg);
+		  fov_mix[iscan] = (int *)malloc(sizeof(int) * num_rg);
+		  opp_in[iscan]  = (int *)malloc(sizeof(int) * num_rg);
 		}
 	    }
 	  else
 	    {
-	      for(ifov = 0; ifov < 2; ifov++)
+	      for(iscan = 0; iscan < mult_bsid->num_scans; iscan++)
 		{
-		  for(iscan = 0; iscan < mult_bsid->num_scans; iscan++)
+		  for(ifov = 0; ifov < 2; ifov++)
 		    {
 		      fovflg[ifov][iscan]  = (int *)
 			realloc(fovflg[iscan], num_rg * sizeof(int));
@@ -175,13 +172,16 @@ void test_ut_fov_struct(unsigned char vb, char *vbuf, float min_frac,
 			realloc(region[iscan], num_rg * sizeof(int));
 		      hop[ifov][iscan]     = (int *)
 			realloc(hop[iscan], num_rg * sizeof(int));
-		      fov_in[ifov][iscan]  = (int *)
-			realloc(fov_in[iscan], num_rg * sizeof(int));
-		      fov_out[ifov][iscan] = (int *)
-			realloc(fov_out[iscan], num_rg * sizeof(int));
-		      fov_mix[ifov][iscan] = (int *)
-			realloc(fov_mix[iscan], num_rg * sizeof(int));
 		    }
+
+		  fov_in[iscan]  = (int *)
+		    realloc(fov_in[iscan], num_rg * sizeof(int));
+		  fov_out[iscan] = (int *)
+		    realloc(fov_out[iscan], num_rg * sizeof(int));
+		  fov_mix[iscan] = (int *)
+		    realloc(fov_mix[iscan], num_rg * sizeof(int));
+		  opp_in[iscan]  = (int *)
+		    realloc(fov_in[iscan], num_rg * sizeof(int));
 		}
 	    }
 
@@ -205,21 +205,18 @@ void test_ut_fov_struct(unsigned char vb, char *vbuf, float min_frac,
 	      /* Load the FoV data for this beam, sorting by path and RG bin */
 	      for(irg = 0; irg < num_rg; irg++)
 		{
-		  if(iscan == 52 && irg == 45 && bm->bm == 7)
-		    {
-		      printf("TEST SCAN: %d %d %d %d %d\n", iscan, irg, bm->bm, bm->rng_flgs[irg].fov, bm->rng_flgs[irg].fov_past);fflush(stdout);
-		      exit(1);
-		    }
 		  /* Initialize each scan/RG pointer to zero before setting */
 		  for(ifov = 0; ifov < 2; ifov++)
 		    {
-		      fovflg[ifov][iscan][irg]  = 0;
-		      region[ifov][iscan][irg]  = 0;
-		      hop[ifov][iscan][irg]     = 0;
-		      fov_in[ifov][iscan][irg]  = 0;
-		      fov_out[ifov][iscan][irg] = 0;
-		      fov_mix[ifov][iscan][irg] = 0;
+		      fovflg[ifov][iscan][irg] = 0;
+		      region[ifov][iscan][irg] = 0;
+		      hop[ifov][iscan][irg]    = 0;
 		    }
+
+		  fov_in[iscan][irg]  = 0;
+		  fov_out[iscan][irg] = 0;
+		  fov_mix[iscan][irg] = 0;
+		  opp_in[iscan][irg]  = 0;
 
 		  /* Only consider data with a FoV flag */
 		  if(bm->sct[irg] == 1 && bm->rng_flgs[irg].fov != 0)
@@ -272,17 +269,19 @@ void test_ut_fov_struct(unsigned char vb, char *vbuf, float min_frac,
 	  else
 	    {
 	      /* Set each scan/RG pointer to zero, ensuring no bad access */
-	      for(ifov = 0; ifov < 2; ifov++)
+	      for(irg = 0; irg < max_rg; irg++)
 		{
-		  for(irg = 0; irg < max_rg; irg++)
+		  for(ifov = 0; ifov < 2; ifov++)
 		    {
 		      fovflg[ifov][iscan][irg]  = 0;
 		      region[ifov][iscan][irg]  = 0;
 		      hop[ifov][iscan][irg]     = 0;
-		      fov_in[ifov][iscan][irg]  = 0;
-		      fov_out[ifov][iscan][irg] = 0;
-		      fov_mix[ifov][iscan][irg] = 0;
 		    }
+
+		  fov_in[iscan][irg]  = 0;
+		  fov_out[iscan][irg] = 0;
+		  fov_mix[iscan][irg] = 0;
+		  opp_in[iscan][irg]  = 0;
 		}
 	    }
 
@@ -351,10 +350,6 @@ void test_ut_fov_struct(unsigned char vb, char *vbuf, float min_frac,
 			    }
 			}
 
-		      if(iscan == 52 && irg == 45 && bm->bm == 7)
-			{
-			  printf("TEST SUM: %d (%d) %d %d\n", ifov, fovflg[ifov][iscan][irg], fnum[ifov], bnum[ifov]);fflush(stdout);
-			}
 		      /* See if there are enough points for an evaluation */
 		      frac_num = (float)(fnum[ifov] + bnum[ifov]);
 		      if(frac_num < (float)max_pnts * min_frac)
@@ -373,44 +368,68 @@ void test_ut_fov_struct(unsigned char vb, char *vbuf, float min_frac,
 			{
 			  /* Evaluate the fraction of points in each FoV */
 			  frac_num = (float)fnum[ifov] / frac_num;
-			  if(frac_num >= fov_frac)
-			    {
-			      good_fov = 1;
-			      bad_fov  = -1;
-			    }
-			  else if(1.0 - frac_num >= fov_frac)
-			    {
-			      good_fov = 1;
-			      bad_fov  = 1;
-			    }
-			  else good_fov = 0;
 
-			  if(iscan == 52 && irg == 45 && bm->bm == 7)
+			  if(ifov == 0)
 			    {
-			      printf("TEST EVAL: %d %f %d %d\n", ifov, frac_num, good_fov, bad_fov);fflush(stdout);
-			    }
-			  /* Update the inlier/outlier/mixed sum for each */
-			  /* point that went into this evaluation.        */
-			  for(iwin = istime; iwin < ietime; iwin++)
-			    {
-			      for(ibox = rmin; ibox < rmax; ibox++)
+			      if(frac_num >= fov_frac)
 				{
-				  if((hop[ifov][iwin][ibox]
-				      == hop[ifov][iscan][irg])
-				     && (region[ifov][iwin][ibox]
-					 == region[ifov][iscan][irg]))
+				  good_fov = 1;
+				  bad_fov  = -1;
+				}
+			      else if(1.0 - frac_num >= fov_frac)
+				{
+				  good_fov = 1;
+				  bad_fov  = 1;
+				}
+			      else good_fov = 0;
+
+			      /* Update the inlier/outlier/mixed sum for each */
+			      /* point that went into this evaluation.        */
+			      for(iwin = istime; iwin < ietime; iwin++)
+				{
+				  for(ibox = rmin; ibox < rmax; ibox++)
 				    {
-				      if(good_fov == 1)
+				      if((hop[ifov][iwin][ibox]
+					  == hop[ifov][iscan][irg])
+					 && (region[ifov][iwin][ibox]
+					     == region[ifov][iscan][irg]))
 					{
-					  if(fovflg[ifov][iwin][ibox]
-					     == bad_fov)
-					    fov_out[ifov][iwin][ibox]++;
-					  else fov_in[ifov][iwin][ibox]++;
+					  if(good_fov == 1)
+					    {
+					      if(fovflg[ifov][iwin][ibox]
+						 == bad_fov)
+						fov_out[iwin][ibox]++;
+					      else fov_in[iwin][ibox]++;
+					    }
+					  else if(fovflg[ifov][iwin][ibox] != 0)
+					    fov_mix[iwin][ibox]++;
 					}
-				      else if(fovflg[ifov][iwin][ibox] != 0)
-					fov_mix[ifov][iwin][ibox]++;
 				    }
 				}
+			    }
+			  else
+			    {
+			      /* Determine if swapping the FoV makes this */
+			      /* point an inlier.                         */
+			      past_frac = (float)fnum[0] / (float)(fnum[0]
+								   + bnum[0]);
+			      if(frac_num >= fov_frac
+				 && fovflg[ifov][iscan][irg] == 1)
+				{
+				  opp_in[iscan][irg] = 1;
+
+				  if(frac_num > past_frac)
+				    opp_in[iscan][irg]++;
+				}
+			      else if(1.0 - frac_num >= fov_frac
+				      && fovflg[ifov][iscan][irg] == -1)
+			      {
+				opp_in[iscan][irg] = 1;
+
+				if(frac_num < past_frac)
+				    opp_in[iscan][irg]++;
+				}
+			      else opp_in[iscan][irg] = 0;
 			    }
 			}
 		    }
@@ -443,19 +462,19 @@ void test_ut_fov_struct(unsigned char vb, char *vbuf, float min_frac,
 		      /* evaluation and can be updated if it is found  */
 		      /* to be an outlier, not clearly in either FoV,  */
 		      /* or a better inlier in the opposite FoV.       */     
-		      if(fov_in[0][iscan][irg] < (fov_out[0][iscan][irg]
-						  + fov_mix[0][iscan][irg])
-			 && fov_out[0][iscan][irg] > 0)
+		      if(fov_in[iscan][irg] < (fov_out[iscan][irg]
+					       + fov_mix[iscan][irg])
+			 && fov_out[iscan][irg] > 0)
 			{
 			  /* This point is not an inlier */
-			  if(fov_out[0][iscan][irg] > fov_mix[0][iscan][irg]
-			     && fov_out[0][iscan][irg] > fov_in[0][iscan][irg])
+			  if(fov_out[iscan][irg] > fov_mix[iscan][irg]
+			     && fov_out[iscan][irg] > fov_in[iscan][irg])
 			    /* This point is an outlier */
 			    bm->rng_flgs[irg].fov = bm->rng_flgs[irg].fov_past;
 
 			  else
 			    {
-			      if(fov_in[1][iscan][irg] > fov_in[0][iscan][irg])
+			      if(opp_in[iscan][irg] > 0)
 				/* This point is an inlier when swapped */
 				bm->rng_flgs[irg].fov = bm->rng_flgs[irg].fov_past;
 			      else
@@ -465,18 +484,11 @@ void test_ut_fov_struct(unsigned char vb, char *vbuf, float min_frac,
 
 			  bm->rng_flgs[irg].fov_past = fovflg[0][iscan][irg];
 			}
-		      else if(fov_in[1][iscan][irg] > fov_in[0][iscan][irg])
+		      else if(opp_in[iscan][irg] == 2)
 			{
 			  /* This point is a better inlier when swapped */
 			  bm->rng_flgs[irg].fov = bm->rng_flgs[irg].fov_past;
 			  bm->rng_flgs[irg].fov_past = fovflg[0][iscan][irg];
-			}
-
-		      if(iscan == 52 && irg == 45 && bm->bm == 7)
-			{
-			  printf("TEST SCAN: %d %d %d %d : %d %d %d %d\n",
-				 fovflg[0][iscan][irg], fov_in[0][iscan][irg], fov_out[0][iscan][irg], fov_mix[0][iscan][irg], fovflg[1][iscan][irg], fov_in[1][iscan][irg], fov_out[1][iscan][irg], fov_mix[1][iscan][irg]);fflush(stdout);
-			  exit(1);
 			}
 		    }
 		}
@@ -493,17 +505,19 @@ void test_ut_fov_struct(unsigned char vb, char *vbuf, float min_frac,
   /* Free the local pointers */
   if(fovflg != NULL)
     {
-      for(ifov = 0; ifov < 2; ifov++)
+      for(iscan = 0; iscan < mult_bsid->num_scans; iscan++)
 	{
-	  for(iscan = 0; iscan < mult_bsid->num_scans; iscan++)
+	  for(ifov = 0; ifov < 2; ifov++)
 	    {
 	      free(fovflg[ifov][iscan]);
 	      free(region[ifov][iscan]);
 	      free(hop[ifov][iscan]);
-	      free(fov_in[ifov][iscan]);
-	      free(fov_out[ifov][iscan]);
-	      free(fov_mix[ifov][iscan]);
 	    }
+
+	  free(fov_in[iscan]);
+	  free(fov_out[iscan]);
+	  free(fov_mix[iscan]);
+	  free(opp_in[iscan]);
 	}
 
       for(ifov = 0; ifov < 2; ifov++)
@@ -511,9 +525,6 @@ void test_ut_fov_struct(unsigned char vb, char *vbuf, float min_frac,
 	  free(fovflg[ifov]);
 	  free(region[ifov]);
 	  free(hop[ifov]);
-	  free(fov_in[ifov]);
-	  free(fov_out[ifov]);
-	  free(fov_mix[ifov]);
 	}
 
       free(fovflg);
@@ -522,6 +533,7 @@ void test_ut_fov_struct(unsigned char vb, char *vbuf, float min_frac,
       free(fov_in);
       free(fov_out);
       free(fov_mix);
+      free(opp_in);
     }
 
   return;
