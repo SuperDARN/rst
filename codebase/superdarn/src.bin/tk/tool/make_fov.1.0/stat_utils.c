@@ -29,7 +29,7 @@
 
 #include "mpfit.h"
 
-#include "utils.h"
+#include "stat_utils.h"
 #include "sort_rout.h"
 
 /**
