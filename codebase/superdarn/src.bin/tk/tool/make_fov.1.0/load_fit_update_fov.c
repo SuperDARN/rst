@@ -136,7 +136,6 @@ int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
   /* Cycle through all of the fit files */
   for(inum=0; inum < fnum; inum++)
     {
-
       /* Assign the input and index file names */
       fprintf(stderr, "Opening file:%s\n", dnames[inum]);
 
@@ -305,7 +304,7 @@ int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
 	  		  F_nrg, far_nrg, D_rgmax, E_rgmax, F_rgmax, D_hmin,
 	  		  D_hmax, E_hmax, F_hmax, D_vh_box, E_vh_box, F_vh_box,
 	  		  far_vh_box, max_hop, scan, site, mult_bsid);
-	  
+
 	  /* Read next radar scan from input file */
 	  if(old)
 	    ret_flg = OldFitReadRadarScan(oldfitfp, &state, scan, prm, fit,
