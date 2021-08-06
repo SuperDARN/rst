@@ -32,6 +32,8 @@
 #include "rtime.h"
 #include "dmap.h" /* DMap library needs to go before rprm.h */
 #include "rprm.h"
+#include "llist.h"
+#include "pthread.h"
 #include "scandata.h" /* scandata.h needs to go before the various fitdata.h */
 #include "fitindex.h"
 #include "fitdata.h"
