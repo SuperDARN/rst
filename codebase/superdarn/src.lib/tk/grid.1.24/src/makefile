@@ -20,6 +20,4 @@ OUTPUT = grd
 
 
 
-
-
 include $(MAKELIB).$(SYSTEM)
