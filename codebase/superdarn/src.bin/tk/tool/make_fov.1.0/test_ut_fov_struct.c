@@ -381,7 +381,11 @@ void test_ut_fov_struct(unsigned char vb, char *vbuf, float min_frac,
 				  good_fov = 1;
 				  bad_fov  = 1;
 				}
-			      else good_fov = 0;
+			      else
+				{
+				  good_fov = 0;
+				  bad_fov  = 0;
+				}
 
 			      /* Update the inlier/outlier/mixed sum for each */
 			      /* point that went into this evaluation.        */
