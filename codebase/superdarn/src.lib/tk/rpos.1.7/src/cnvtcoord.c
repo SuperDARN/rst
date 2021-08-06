@@ -1,40 +1,42 @@
 /* cnvtcoord.c
    ===========
    Author: R.J.Barnes
-   Comments: E.G.Thomas (2016)
-*/
-
-/*
- LICENSE AND DISCLAIMER
 
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 
- This file is part of the Radar Software Toolkit (RST).
+This file is part of the Radar Software Toolkit (RST).
 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Lesser General Public License for more details.
 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
+    Comments: E.G.Thomas (2016)
+    2020-03-11 Marina Schmidt removed earth's radius defined constant 
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
 */
 
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "rmath.h"
 #include "radar.h"
 #include "rpos.h"
 #include "aacgm.h"
 #include "aacgmlib_v2.h"
-
-
+#include "rmath.h"
+/*
+ *rmath.h provides the earth's radius (RE)
+ */
 
 /**
  * Calculates the slant range to a range gate.
@@ -96,7 +98,7 @@ void geodtgc(int iopt, double *gdlat, double *gdlon,
 
     }
 
-    /* Calculate the geocentric Earth radius at the geodetic latitue [km] */
+    /* Calculate the geocentric Earth radius at the geodetic latitude [km] */
     *grho=a/sqrt(1.0+e2*sind(*glat)*sind(*glat));
 
     /* Calculate the deviation of the vertical [deg] */
@@ -336,7 +338,6 @@ void RPosGeo(int center, int bcrd, int rcrd,
 
     double rx;
     double psi,d;
-    double re=6356.779;   /* radius of Earth (at 88N geodetic) [km] */
     double offset;
     double bm_edge=0;
     double range_edge=0;
@@ -361,7 +362,7 @@ void RPosGeo(int center, int bcrd, int rcrd,
 
     /* If the input height is less than 90 then it is actually an input
      * elevation angle [deg], so we calculat the field point height */
-    if (height < 90) height=-re+sqrt((re*re)+2*d*re*sind(height)+(d*d));
+    if (height < 90) height=-RE+sqrt((RE*RE)+2*d*RE*sind(height)+(d*d));
 
     /* Calculate the geocentric coordinates of the field point */
     fldpnth(pos->geolat,pos->geolon,psi,pos->boresite,
@@ -380,7 +381,6 @@ void RPosMag(int center,int bcrd,int rcrd,
     double rx;
     double radius;
     double psi,d;
-    double re=6356.779;
 
     double bm_edge=0;
     double range_edge=0;
@@ -397,7 +397,7 @@ void RPosMag(int center,int bcrd,int rcrd,
     offset=pos->maxbeam/2.0-0.5;
     psi=pos->bmsep*(bcrd-offset)+bm_edge;
     d=slant_range(frang,rsep,rx,range_edge,rcrd+1);
-    if (height < 90) height=-re+sqrt((re*re)+2*d*re*sind(height)+(d*d));
+    if (height < 90) height=-RE+sqrt((RE*RE)+2*d*RE*sind(height)+(d*d));
 
     fldpnth(pos->geolat,pos->geolon,psi,pos->boresite,
             height,d,rho,lat,lng,chisham);
@@ -418,7 +418,6 @@ void RPosCubic(int center,int bcrd,int rcrd,
     double rx;
     double psi,d;
     double rho,lat,lng;
-    double re=6356.779;
     double offset=0;
     double bm_edge=0;
     double range_edge=0;
@@ -437,16 +436,16 @@ void RPosCubic(int center,int bcrd,int rcrd,
     psi=pos->bmsep*(bcrd-offset)+bm_edge;
 
     d=slant_range(frang,rsep,rx,range_edge,rcrd+1);
-    if (height < 90) height=-re+sqrt((re*re)+2*d*re*sind(height)+(d*d));
+    if (height < 90) height=-RE+sqrt((RE*RE)+2*d*RE*sind(height)+(d*d));
     fldpnth(pos->geolat,pos->geolon,psi,pos->boresite,
             height,d,&rho,&lat,&lng,chisham);
 
     /* convert to x,y,z (normalized to the unit sphere) */
 
     lng=90-lng;
-    *x=rho*cos(lng*PI/180.0)*cos(lat*PI/180.0)/re;
-    *y=rho*sin(lat*PI/180.0)/re;
-    *z=rho*sin(lng*PI/180.0)*cos(lat*PI/180.0)/re;
+    *x=rho*cos(lng*PI/180.0)*cos(lat*PI/180.0)/RE;
+    *y=rho*sin(lat*PI/180.0)/RE;
+    *z=rho*sin(lng*PI/180.0)*cos(lat*PI/180.0)/RE;
 
 }
 
@@ -459,7 +458,6 @@ void RPosGeoGS(int center,int bcrd,int rcrd,
 
     double rx;
     double psi,d;
-    double re=6356.779;
     double offset=0;
     double bm_edge=0;
     double range_edge=0;
@@ -476,7 +474,7 @@ void RPosGeoGS(int center,int bcrd,int rcrd,
     psi=pos->bmsep*(bcrd-offset)+bm_edge;
 
     d=slant_range(frang,rsep,rx,range_edge,rcrd+1)/2;
-    if (height < 90) height=-re+sqrt((re*re)+2*d*re*sind(height)+(d*d));
+    if (height < 90) height=-RE+sqrt((RE*RE)+2*d*RE*sind(height)+(d*d));
 
     fldpnth_gs(pos->geolat,pos->geolon,psi,pos->boresite,
                height,d,rho,lat,lng);
@@ -492,7 +490,6 @@ void RPosMagGS(int center,int bcrd,int rcrd,
     double rx;
     double radius;
     double psi,d;
-    double re=6356.779;
     double offset=0;
     double bm_edge=0;
     double range_edge=0;
@@ -509,7 +506,7 @@ void RPosMagGS(int center,int bcrd,int rcrd,
     psi=pos->bmsep*(bcrd-offset)+bm_edge;
 
     d=slant_range(frang,rsep,rx,range_edge,rcrd+1)/2;
-    if (height < 90) height=-re+sqrt((re*re)+2*d*re*sind(height)+(d*d));
+    if (height < 90) height=-RE+sqrt((RE*RE)+2*d*RE*sind(height)+(d*d));
 
     fldpnth_gs(pos->geolat,pos->geolon,psi,pos->boresite,
                height,d,rho,lat,lng);
@@ -529,7 +526,6 @@ void RPosCubicGS(int center,int bcrd,int rcrd,
     double rx;
     double psi,d; 
     double rho,lat,lng;
-    double re=6356.779;
     double offset=0;
     double bm_edge=0;
     double range_edge=0;
@@ -546,15 +542,15 @@ void RPosCubicGS(int center,int bcrd,int rcrd,
     psi=pos->bmsep*(bcrd-offset)+bm_edge;
 
     d=slant_range(frang,rsep,rx,range_edge,rcrd+1)/2;
-    if (height < 90) height=-re+sqrt((re*re)+2*d*re*sind(height)+(d*d));
+    if (height < 90) height=-RE+sqrt((RE*RE)+2*d*RE*sind(height)+(d*d));
     fldpnth_gs(pos->geolat,pos->geolon,psi,pos->boresite,
                height,d,&rho,&lat,&lng);
 
     /* convert to x,y,z (normalized to the unit sphere) */
 
     lng=90-lng;
-    *x=rho*cos(lng*PI/180.0)*cos(lat*PI/180.0)/re;
-    *y=rho*sin(lat*PI/180.0)/re;
-    *z=rho*sin(lng*PI/180.0)*cos(lat*PI/180.0)/re;
+    *x=rho*cos(lng*PI/180.0)*cos(lat*PI/180.0)/RE;
+    *y=rho*sin(lat*PI/180.0)/RE;
+    *z=rho*sin(lng*PI/180.0)*cos(lat*PI/180.0)/RE;
 
 }

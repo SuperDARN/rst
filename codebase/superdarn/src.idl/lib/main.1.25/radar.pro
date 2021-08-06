@@ -2,30 +2,25 @@
 ; =======
 ; Author: R.J.Barnes & D.Andre
 ;
-; LICENSE AND DISCLAIMER
-; 
 ; Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 ; 
-; This file is part of the Radar Software Toolkit (RST).
-; 
 ; RST is free software: you can redistribute it and/or modify
-; it under the terms of the GNU Lesser General Public License as published by
+; it under the terms of the GNU General Public License as published by
 ; the Free Software Foundation, either version 3 of the License, or
-; any later version.
+; (at your option) any later version.
 ; 
-; RST is distributed in the hope that it will be useful,
+; This program is distributed in the hope that it will be useful,
 ; but WITHOUT ANY WARRANTY; without even the implied warranty of
-; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-; GNU Lesser General Public License for more details.
+; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+; GNU General Public License for more details.
 ; 
-; You should have received a copy of the GNU Lesser General Public License
-; along with RST.  If not, see <http://www.gnu.org/licenses/>.
+; You should have received a copy of the GNU General Public License
+; along with this program. If not, see <https://www.gnu.org/licenses/>.
 ; 
+; Modifications:
 ; 
-; 
-;
-; Public Functions:
-; -----------------
+; Public Functions
+; ----------------
 ;
 ;  RadarMakeSite
 ;  RadarMakeRadar
@@ -181,17 +176,13 @@ ON_IOERROR, iofail
       mo=(stnum/100) mod 100
       yr=stnum/10000
 
-       
       rad.st_time=TimeYMDHMSToEpoch(yr,mo,dy,0,0,0)
 
       dy=ednum mod 100;
       mo=(ednum/100) mod 100
       yr=ednum/10000
 
-       
       rad.ed_time=TimeYMDHMSToEpoch(yr,mo,dy,0,0,0)
-
-
 
       ; decode the text strings
       s=strpos(txt,'"')
@@ -212,6 +203,7 @@ ON_IOERROR, iofail
          rad.code[n]=strmid(txt,s+1,e-s-1)
          n=n+1
       endwhile   
+      rad.cnum=n
 
       if (c ne 0) then radar=[radar,rad] $
       else radar[0]=rad
@@ -895,7 +887,7 @@ function RadarPos,center,bcrd,rcrd,site,frang,rsep,rxrise,$
 
     if (height lt 90) then $
       height=-re+sqrt((re*re)+2*d*re*sin(!PI*height/180.0)+(d*d));
-    RadarFldPnth,site.geolat,site.geolon,psi,site.boresite,height,d,rho,lat,lng 
+    RadarFldPnth,site.geolat,site.geolon,psi,site.boresite,height,d,rho,lat,lng,chisham=chisham
   endelse
 
   return, 0

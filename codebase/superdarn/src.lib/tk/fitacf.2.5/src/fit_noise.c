@@ -1,41 +1,34 @@
 /* fit_noise.c
    ===========
    Author: R.J.Barnes & K.Baker
-*/
-
-/*
- LICENSE AND DISCLAIMER
- 
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
 */
 
 
 
 #include <math.h>
+#include <complex.h>
 #include "rmath.h"
 #include "badsmp.h"
 #include "fitblk.h"
 #include "fit_acf.h"
 
-void fit_noise(struct complex *ncf,int *badlag,struct FitACFBadSample *badsmp,
+void fit_noise(double complex *ncf,int *badlag,struct FitACFBadSample *badsmp,
 			   double skynoise,struct FitPrm *prm,
 			   struct FitRange *ptr) {
  
@@ -57,22 +50,21 @@ void fit_noise(struct complex *ncf,int *badlag,struct FitACFBadSample *badsmp,
       A = exp(ptr->p_s);
       for (j=0; j < prm->mplgs; ++j) {
         t = (prm->lag[1][j] - prm->lag[0][j])*tau;
-        ncf[j].x = A*exp(-ptr->w_l*t)*cos(ptr->v*t);
-        ncf[j].y = A*exp(-ptr->w_l*t)*sin(ptr->v*t);
+        ncf[j] = CMPLX(A*exp(-ptr->w_l*t)*cos(ptr->v*t), 
+                A*exp(-ptr->w_l*t)*sin(ptr->v*t));
       }
     } else {
       if (ptr->p_s > skynoise) ptr->p_s = skynoise;
       A = exp(ptr->p_s);
       for (j=0; j < prm->mplgs; ++j) {
         t = (prm->lag[1][j] - prm->lag[0][j])*tau;
-        ncf[j].x = A*exp(-(ptr->w_s*t)*(ptr->w_s*t))*cos(ptr->v*t);
-        ncf[j].y = A*exp(-(ptr->w_s*t)*(ptr->w_s*t))*sin(ptr->v*t);
+        ncf[j] = CMPLX( A*exp(-(ptr->w_s*t)*(ptr->w_s*t))*cos(ptr->v*t),
+                A*exp(-(ptr->w_s*t)*(ptr->w_s*t))*sin(ptr->v*t));
       }
     }
   } else
     for (j=0; j < prm->mplgs; ++j) {
-      ncf[j].x = 0;
-      ncf[j].y = 0;
+      ncf[j] = CMPLX(0, 0);
     }
   return;
 }

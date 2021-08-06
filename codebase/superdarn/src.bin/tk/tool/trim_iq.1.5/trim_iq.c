@@ -4,32 +4,30 @@
 */
 
 /*
- LICENSE AND DISCLAIMER
+  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
  
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
-*/
+This file is part of the Radar Software Toolkit (RST).
+
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
+*/ 
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <string.h>
 #include <time.h>
 #include <unistd.h>
 #include <sys/stat.h>
@@ -50,15 +48,11 @@
 #include "errstr.h"
 #include "hlpstr.h"
 
-
-
-
 struct RadarParm *prm=NULL;
 struct IQ *iq=NULL;
 struct IQIndex *inx=NULL;
 unsigned int *badtr=NULL;
 int16 *samples=NULL;
-
 
 struct OptionData opt;
 
@@ -70,7 +64,7 @@ double strdate(char *text) {
   dy=val % 100;
   mo=(val / 100) % 100;
   yr=(val / 10000);
-  if (yr<1970) yr+=1900;  
+  if (yr<1970) yr+=1900;
   tme=TimeYMDHMSToEpoch(yr,mo,dy,0,0,0);
 
   return tme;
@@ -93,7 +87,7 @@ double strtime(char *text) {
   mn=atoi(text+i+1);
   sc=atof(text+j+1);
   return (double) hr*3600L+mn*60L+sc;
-}   
+}
 
 int rst_opterr(char *txt) {
   fprintf(stderr,"Option not recognized: %s\n",txt);
@@ -104,7 +98,6 @@ int rst_opterr(char *txt) {
 int main (int argc,char *argv[]) {
 
   int arg=0;
-
 
   int status=0;
   double atime;
@@ -129,10 +122,16 @@ int main (int argc,char *argv[]) {
   unsigned char option=0;
   unsigned char version=0;
 
-
   FILE *fp=NULL;
 
-  int n;
+  // origin time for when the file is produced
+  time_t ctime;
+  // counter for origin command length  
+  int n=0;
+  // origin command array to hold the string
+  char command[128];
+  // string to hold the origin time 
+  char tmstr[40];
 
   prm=RadarParmMake();
   iq=IQMake();
@@ -140,8 +139,6 @@ int main (int argc,char *argv[]) {
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
   OptionAdd(&opt,"-version",'x',&version);
-
-
   OptionAdd(&opt,"vb",'x',&vb);
   OptionAdd(&opt,"st",'t',&stmestr);
   OptionAdd(&opt,"et",'t',&etmestr);
@@ -176,8 +173,6 @@ int main (int argc,char *argv[]) {
   if (sdtestr !=NULL) sdate=strdate(sdtestr);
   if (edtestr !=NULL) edate=strdate(edtestr);
 
-
-
   if ((argc-arg)>1) {
     fp=fopen(argv[arg+1],"r");
     if (fp==NULL) {
@@ -185,7 +180,7 @@ int main (int argc,char *argv[]) {
       exit(-1);
     }
     inx=IQIndexFload(fp);
-   
+
     fclose(fp);
     if (inx==NULL) {
       fprintf(stderr,"Error loading index.\n");
@@ -198,106 +193,98 @@ int main (int argc,char *argv[]) {
     fprintf(stderr,"File not found.\n");
     exit(-1);
   }
-  
 
-  if (IQFread(fp,prm,iq,&badtr,&samples)==-1)  {
+  if (IQFread(fp,prm,iq,&badtr,&samples)==-1) {
     fprintf(stderr,"Error reading file\n");
     exit(-1);
   }
 
-  atime=TimeYMDHMSToEpoch(prm->time.yr,
-	   	           prm->time.mo,
-                           prm->time.dy,
-                           prm->time.hr,
-		           prm->time.mt,
-                           prm->time.sc+prm->time.us/1.0e6);
+  atime=TimeYMDHMSToEpoch(prm->time.yr,prm->time.mo,prm->time.dy,
+                          prm->time.hr,prm->time.mt,
+                          prm->time.sc+prm->time.us/1.0e6);
 
-   /* skip here */
+  /* skip here */
 
-    if ((stime !=-1) || (sdate !=-1)) { 
-      /* we must skip the start of the files */
-      int yr,mo,dy,hr,mt;
-      double sc; 
-      if (stime==-1) stime= ( (int) atime % (24*3600));
-      if (sdate==-1) stime+=atime - ( (int) atime % (24*3600));
-      else stime+=sdate;
+  if ((stime !=-1) || (sdate !=-1)) {
+    /* we must skip the start of the files */
+    int yr,mo,dy,hr,mt;
+    double sc;
+    if (stime==-1) stime= ( (int) atime % (24*3600));
+    if (sdate==-1) stime+=atime - ( (int) atime % (24*3600));
+    else stime+=sdate;
 
-      TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
-      status=IQFseek(fp,yr,mo,dy,hr,mt,sc,NULL,inx); 
-    
-      if (status ==-1) {
-        fprintf(stderr,"File does not contain the requested interval.\n");
-        exit(-1);
-      }
-      if (IQFread(fp,prm,iq,&badtr,&samples)==-1)  {
-         fprintf(stderr,"Error reading file\n");
-         exit(-1);
-      }
-  
-    } else stime=atime;
-   
-    if (etime !=-1) {
-       if (edate==-1) etime+=atime - ( (int) atime % (24*3600));
-       else etime+=edate;
+    TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
+    status=IQFseek(fp,yr,mo,dy,hr,mt,sc,NULL,inx);
+
+    if (status ==-1) {
+      fprintf(stderr,"File does not contain the requested interval.\n");
+      exit(-1);
     }
 
-   if (extime !=0) etime=stime+extime;
- 
-   do {
+    if (IQFread(fp,prm,iq,&badtr,&samples)==-1) {
+      fprintf(stderr,"Error reading file\n");
+      exit(-1);
+    }
+  } else stime=atime;
 
-     fprintf(stderr,"%s\n",prm->origin.time);
-     fprintf(stderr,"%s\n",prm->origin.command);
-     fprintf(stderr,"%s\n",prm->combf);
-     fprintf(stderr,"%d:",prm->mppul);
-     for (n=0;n<prm->mppul;n++) fprintf(stderr,"%d ",prm->pulse[n]);
-     fprintf(stderr,"\n");
-     fprintf(stderr,"%d\n",prm->mplgs);
-     for (n=0;n<=prm->mplgs;n++) fprintf(stderr,"%d,%d ",
-          prm->lag[0][n],prm->lag[1][n]);
-     fprintf(stderr,"\n");
+  if (etime !=-1) {
+    if (edate==-1) etime+=atime - ( (int) atime % (24*3600));
+    else etime+=edate;
+  }
 
+  if (extime !=0) etime=stime+extime;
 
-         
-     IQFwrite(stdout,prm,iq,badtr,samples);
-     
-     atime=TimeYMDHMSToEpoch(prm->time.yr,
-		    prm->time.mo,
-                    prm->time.dy,
-                    prm->time.hr,
-		    prm->time.mt,
-                    prm->time.sc+prm->time.us/1.0e6);
-     TimeEpochToYMDHMS(atime,&yr,&mo,&dy,&hr,&mt,&sc);
-     if (vb==1) fprintf(stderr,"%d-%d-%d %d:%d:%d\n",yr,mo,dy,hr,mt,(int) sc);
+    // initialize array to be empty?
+    command[0]=0;
+    for (int c=0; c<argc; c++) {
+      // check if the origin command is too long
+      n+=strlen(argv[c])+1;
+      // if so cut it off
+      if (n>127) break;
+      // add space between command line arguments and copy to origin command
+      if (c !=0) strcat(command," ");
+      strcat(command, argv[c]);
+    }
+  do {
 
-      if ((etime !=-1) && (atime>=etime)) break;
-      status=IQFread(fp,prm,iq,&badtr,&samples);
- 
-  } while (status !=-1);  
- 
+    atime=TimeYMDHMSToEpoch(prm->time.yr,prm->time.mo,prm->time.dy,
+                            prm->time.hr,prm->time.mt,
+                            prm->time.sc+prm->time.us/1.0e6);
+
+    if ((etime !=-1) && (atime>=etime)) break;
+
+    TimeEpochToYMDHMS(atime,&yr,&mo,&dy,&hr,&mt,&sc);
+    if (vb==1) {
+      fprintf(stderr,"%d-%d-%d %d:%d:%d\n",yr,mo,dy,hr,mt,(int) sc);
+
+      fprintf(stderr,"%s\n",prm->origin.time);
+      fprintf(stderr,"%s\n",prm->origin.command);
+      fprintf(stderr,"%s\n",prm->combf);
+      fprintf(stderr,"%d:",prm->mppul);
+      for (n=0;n<prm->mppul;n++) fprintf(stderr,"%d ",prm->pulse[n]);
+      fprintf(stderr,"\n");
+      fprintf(stderr,"%d\n",prm->mplgs);
+      for (n=0;n<=prm->mplgs;n++) fprintf(stderr,"%d,%d ",prm->lag[0][n],prm->lag[1][n]);
+      fprintf(stderr,"\n");
+    }
+
+      // origin  code 1 means it is not produced on site
+      prm->origin.code=1;
+      // copy it over to the file
+      ctime= time((time_t) 0);
+      RadarParmSetOriginCommand(prm,command);
+      strcpy(tmstr,asctime(gmtime(&ctime)));
+      tmstr[24]=0;
+      RadarParmSetOriginTime(prm,tmstr);
+
+    IQFwrite(stdout,prm,iq,badtr,samples);
+
+    status=IQFread(fp,prm,iq,&badtr,&samples);
+
+  } while (status !=-1);
+
   if (fp !=stdin) fclose(fp);
+
   return 0;
 
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

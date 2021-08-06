@@ -4,32 +4,30 @@
 */
 
 /*
- LICENSE AND DISCLAIMER
+  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
+This file is part of the Radar Software Toolkit (RST).
 
- This file is part of the Radar Software Toolkit (RST).
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
-
-
-
+Modifications:
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <string.h>
 #include <time.h>
 #include <unistd.h>
 #include <sys/stat.h>
@@ -137,6 +135,14 @@ int main (int argc,char *argv[]) {
 
   char vstring[256];
 
+  // origin time for when the file is produced
+  time_t ctime;
+  // counter for origin command length  
+  int n=0;
+  // origin command array to hold the string
+  char command[128];
+  // string to hold the origin time 
+  char tmstr[40];
   prm=RadarParmMake();
   raw=RawMake();
 
@@ -196,7 +202,7 @@ int main (int argc,char *argv[]) {
     if (rawfp==NULL) {
       fprintf(stderr,"File not found.\n");
       exit(-1);
-    } else if (rawfp->rawread==-2) {
+    } else if (rawfp->error==-2) {
         /* Error case where num_bytes is less than 0 */
         free(rawfp);
         exit(-1);
@@ -238,10 +244,10 @@ int main (int argc,char *argv[]) {
    }
 
    atime=TimeYMDHMSToEpoch(prm->time.yr,
-	   	           prm->time.mo,
+                           prm->time.mo,
                            prm->time.dy,
                            prm->time.hr,
-		           prm->time.mt,
+                           prm->time.mt,
                            prm->time.sc+prm->time.us/1.0e6);
 
    /* skip here */
@@ -294,10 +300,22 @@ int main (int argc,char *argv[]) {
      }
      sprintf(vstring,"%d.%.3d",raw->revision.major,raw->revision.minor);
      if (OldRawHeaderFwrite(fp,"rawwrite",vstring,raw->thr,
-			    "trimmed with trim_raw") !=0) {
+                            "trimmed with trim_raw") !=0) {
        fprintf(stderr,"Could not write header.\n");
        exit(-1);
      }
+   } else {
+    // initialize array to be empty?
+    command[0]=0;
+    for (int c=0; c<argc; c++) {
+      // check if the origin command is too long
+      n+=strlen(argv[c])+1;
+      // if so cut it off
+      if (n>127) break;
+      // add space between command line arguments and copy to origin command
+      if (c !=0) strcat(command," ");
+      strcat(command, argv[c]);
+    }
    }
 
 
@@ -306,10 +324,10 @@ int main (int argc,char *argv[]) {
      if (thr !=-1) raw->thr=thr;
 
      atime=TimeYMDHMSToEpoch(prm->time.yr,
-		    prm->time.mo,
+                    prm->time.mo,
                     prm->time.dy,
                     prm->time.hr,
-		    prm->time.mt,
+                    prm->time.mt,
                     prm->time.sc+prm->time.us/1.0e6);
 
      if ((etime !=-1) && (atime>=etime)) break;
@@ -317,7 +335,17 @@ int main (int argc,char *argv[]) {
      if (old) {
        recnum++;
        OldRawFwrite(fp,"rawwrite",prm,raw,recnum,NULL);
-     } else RawFwrite(stdout,prm,raw);
+     } else {
+      // origin  code 1 means it is not produced on site
+      prm->origin.code=1;
+      // copy it over to the file
+      ctime= time((time_t) 0);
+      RadarParmSetOriginCommand(prm,command);
+      strcpy(tmstr,asctime(gmtime(&ctime)));
+      tmstr[24]=0;
+      RadarParmSetOriginTime(prm,tmstr);
+      RawFwrite(stdout,prm,raw);
+     }
 
      TimeEpochToYMDHMS(atime,&yr,&mo,&dy,&hr,&mt,&sc);
      if (vb==1) fprintf(stderr,"%d-%d-%d %d:%d:%d\n",yr,mo,dy,hr,mt,(int) sc);
@@ -329,27 +357,4 @@ int main (int argc,char *argv[]) {
   if (fp !=stdin) fclose(fp);
   return 0;
 
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

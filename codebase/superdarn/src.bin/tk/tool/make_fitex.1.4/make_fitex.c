@@ -4,27 +4,24 @@
 */
 
 /*
- LICENSE AND DISCLAIMER
+  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
+This file is part of the Radar Software Toolkit (RST).
 
- This file is part of the Radar Software Toolkit (RST).
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
-
-
-
+Modifications:
 */
 
 #include <stdio.h>
@@ -138,7 +135,7 @@ int main(int argc,char *argv[]) {
     if (rawfp==NULL) {
       fprintf(stderr,"File not found.\n");
       exit(-1);
-    } else if (rawfp->rawread==-2) {
+    } else if (rawfp->error==-2) {
         /* Error case where num_bytes is less than 0 */
         free(rawfp);
         exit(-1);
@@ -198,6 +195,8 @@ int main(int argc,char *argv[]) {
   do {
 
 
+    //set origin code = 1 which  means produced not at a radar site
+    prm->origin.code = 1;
     ctime = time((time_t) 0);
     RadarParmSetOriginCommand(prm,command);
     strcpy(tmstr,asctime(gmtime(&ctime)));
@@ -226,7 +225,6 @@ int main(int argc,char *argv[]) {
   if (old) OldRawClose(rawfp);
   return 0;
 }
-
 
 
 

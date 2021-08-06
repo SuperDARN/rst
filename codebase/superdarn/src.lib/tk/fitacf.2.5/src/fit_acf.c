@@ -1,30 +1,24 @@
 /* fit_acf.c
      =========
      Author: R.J.Barnes & K.Baker & P.Ponomarenko
-*/
 
-/*
- LICENSE AND DISCLAIMER
-
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
-
- This file is part of the Radar Software Toolkit (RST).
-
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
-
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
-
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
+Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 
 
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
 */
 
 
@@ -32,6 +26,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <complex.h>
 
 #include "rmath.h"
 #include "badsmp.h"
@@ -47,14 +42,15 @@
 #include "power_fits.h"
 #include "fit_mem_helpers.h"
 
-int fit_acf (struct complex *acf,int range,
-                int *badlag,struct FitACFBadSample *badsmp,int lag_lim,
-                struct FitPrm *prm,
-                double noise_lev_in,char xflag,double xomega,
-                struct FitRange *ptr) {
+int fit_acf (double complex *acf,int range, int *badlag, 
+        struct FitACFBadSample *badsmp,int lag_lim, struct FitPrm *prm, 
+        double noise_lev_in,char xflag,double xomega, struct FitRange *ptr) {
 
-    double sum_np,sum_w,sum_wk,sum_wk2,*sum_wk2_arr=NULL,sum_wk4,
-            sum_p,sum_pk,sum_pk2,sum_phi,sum_kphi, t0,t2,t4,*phi_res=NULL;
+    double sum_np,sum_w,sum_wk,sum_wk2,*sum_wk2_arr=NULL,sum_wk4, 
+    sum_p,sum_pk,sum_pk2;
+    //double sum_phi;
+    //double sum_kphi;
+    double t0,t2,t4,*phi_res=NULL;
     int j, npp, s = 0, last_good, status, *bad_pwr = NULL;
     long k;
     double *tau=NULL, *tau2=NULL, *phi_k=NULL, *w=NULL, *pwr=NULL,
@@ -97,10 +93,6 @@ int fit_acf (struct complex *acf,int range,
     /* Save the original ACF in a new variable so we can try some
          preprocessing on it.
 
-        for (k=0; k < prm->mplgs; k++) {
-            orig_acf[k].x = acf[k].x;
-            orig_acf[k].y = acf[k].y;
-        }
     */
 
     /*
@@ -222,8 +214,8 @@ int fit_acf (struct complex *acf,int range,
     sum_p = w[0]*w[0]*pwr[0];
     sum_pk = 0;
     sum_pk2 = 0;
-    phi_loc = atan2(acf[0].y, acf[0].x);
-    sum_kphi = 0;
+    phi_loc = atan2(cimag(acf[0]), creal(acf[0]));
+    //sum_kphi = 0;
     t0 =  prm->mpinc * 1.0e-6;
     t2 = t0 * t0;
     t4 = t2 * t2;
@@ -243,11 +235,11 @@ int fit_acf (struct complex *acf,int range,
         if (acf_stat == ACF_GROUND_SCAT) omega_loc = 0.0;
         else omega_loc = omega_guess(acf, tau, badlag, phi_res, &omega_err_loc,prm->mpinc,prm->mplgs);
         phi_k[0] = 0;
-        sum_phi = 0;
+        //sum_phi = 0;
     } else {
         /*if it's an XCF fit (not ACF)*/
         phi_k[0] = phi_loc;
-        sum_phi = phi_loc * w[0] * w[0];
+        //sum_phi = phi_loc * w[0] * w[0];
         omega_loc = xomega;
     }
 

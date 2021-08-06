@@ -4,28 +4,25 @@
 */
 
 /*
- LICENSE AND DISCLAIMER
+  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
  
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
-*/
+This file is part of the Radar Software Toolkit (RST).
+
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
+*/ 
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -187,21 +184,21 @@ void *RawFlatten(struct RawData *ptr,int nrang,int mplgs,size_t *size) {
   p=sizeof(struct RawData);
 
   if (ptr->pwr0 !=NULL) {
-    memcpy(buf+p,ptr->pwr0,nrang*sizeof(float));
+    memcpy((int *)buf+p,ptr->pwr0,nrang*sizeof(float));
     r->pwr0=(void *) p;
     p+=nrang*sizeof(float);
   }
 
   for (n=0;n<2;n++) {
     if (ptr->acfd[n]==NULL) continue; 
-    memcpy(buf+p,ptr->acfd[n],(nrang*mplgs)*sizeof(float));
+    memcpy((int *)buf+p,ptr->acfd[n],(nrang*mplgs)*sizeof(float));
     r->acfd[n]=(void *) p;
     p+=(nrang*mplgs)*sizeof(float); 
   }
 
   for (n=0;n<2;n++) {
     if (ptr->xcfd[n]==NULL) continue; 
-    memcpy(buf+p,ptr->xcfd[n],(nrang*mplgs)*sizeof(float));
+    memcpy((int *)buf+p,ptr->xcfd[n],(nrang*mplgs)*sizeof(float));
     r->xcfd[n]=(void *) p;
     p+=(nrang*mplgs)*sizeof(float); 
   }
@@ -223,21 +220,21 @@ int RawExpand(struct RawData *ptr,int nrang,int mplgs,void *buffer) {
   memcpy(ptr,buffer,sizeof(struct RawData));
 
   if (ptr->pwr0 !=NULL) {
-    p=buffer+(size_t) ptr->pwr0;
+    p=(int *)buffer+(size_t) ptr->pwr0;
     ptr->pwr0=malloc(nrang*sizeof(float));
     memcpy(ptr->pwr0,p,nrang*sizeof(float));
   }
 
   for (n=0;n<2;n++) {
     if (ptr->acfd[n]==NULL) continue;
-    p=buffer+(size_t) ptr->acfd[n]; 
+    p=(int *)buffer+(size_t) ptr->acfd[n]; 
     ptr->acfd[n]=malloc((nrang*mplgs)*sizeof(float));
     memcpy(ptr->acfd[n],p,(nrang*mplgs)*sizeof(float));
   }
 
   for (n=0;n<2;n++) {
     if (ptr->xcfd[n]==NULL) continue;
-    p=buffer+(size_t) ptr->xcfd[n]; 
+    p=(int *) buffer+(size_t) ptr->xcfd[n]; 
     ptr->xcfd[n]=malloc((nrang*mplgs)*sizeof(float));
     memcpy(ptr->xcfd[n],p,(nrang*mplgs)*sizeof(float));
   }

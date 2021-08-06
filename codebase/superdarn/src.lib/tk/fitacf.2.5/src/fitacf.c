@@ -1,29 +1,24 @@
 /* fitacf.c
      ========
      Author: R.J.Barnes & K.Baker
-*/
-
-/*
- LICENSE AND DISCLAIMER
 
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 
- This file is part of the Radar Software Toolkit (RST).
 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-
+Modifications:
 
 */
 
@@ -33,6 +28,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include <complex.h>
 #include <string.h>
 #include <unistd.h>
 #include <zlib.h>
@@ -58,14 +54,14 @@ void FitACFFree(struct FitBlock *fptr) {
 }
 
 
-struct FitBlock *FitACFMake(struct RadarSite *hd,
-                 int year) {
+struct FitBlock *FitACFMake(struct RadarSite *hd, int year) {
     int i;
     struct FitBlock *fptr;
-    fptr=malloc(sizeof(struct FitBlock));
+
+    fptr = malloc(sizeof(struct FitBlock));
     if (fptr==NULL) return NULL;
 
-    if (year < 1993) fptr->prm.old=1;
+    if (year < 1993) fptr->prm.old=1; /* needed for old pulse seq. */
     for (i=0;i<3;i++) fptr->prm.interfer[i]=hd->interfer[i];
     fptr->prm.bmsep=hd->bmsep;
     fptr->prm.phidiff=hd->phidiff;
@@ -82,7 +78,7 @@ struct FitBlock *FitACFMake(struct RadarSite *hd,
 }
 
 int fill_fit_block(struct RadarParm *prm, struct RawData *raw,
-                    struct FitBlock *input, struct FitData *fit){
+                   struct FitBlock *input, struct FitData *fit){
 
     int i, j, n;
     void *tmp=NULL;
@@ -127,23 +123,23 @@ int fill_fit_block(struct RadarParm *prm, struct RawData *raw,
     if (tmp==NULL) return -1;
     input->prm.pwr0=tmp;
 
-    if (input->acfd==NULL) tmp=malloc(sizeof(struct complex)*input->prm.nrang*
+    if (input->acfd==NULL) tmp=malloc(sizeof(double complex)*input->prm.nrang*
                                                                         input->prm.mplgs);
-    else tmp=realloc(input->acfd,sizeof(struct complex)*input->prm.nrang*
+    else tmp=realloc(input->acfd,sizeof(double complex)*input->prm.nrang*
                                                                      input->prm.mplgs); 
     if (tmp==NULL) return -1;
     input->acfd=tmp;
 
-    if (input->xcfd==NULL) tmp=malloc(sizeof(struct complex)*input->prm.nrang*
+    if (input->xcfd==NULL) tmp=malloc(sizeof(double complex)*input->prm.nrang*
                                                                         input->prm.mplgs);
-    else tmp=realloc(input->xcfd,sizeof(struct complex)*input->prm.nrang*
+    else tmp=realloc(input->xcfd,sizeof(double complex)*input->prm.nrang*
                                                                      input->prm.mplgs);
     if (tmp==NULL) return -1;
     input->xcfd=tmp;
 
-    memset(input->acfd,0,sizeof(struct complex)*input->prm.nrang*
+    memset(input->acfd,0,sizeof(double complex)*input->prm.nrang*
                                                                      input->prm.mplgs);
-    memset(input->xcfd,0,sizeof(struct complex)*input->prm.nrang*
+    memset(input->xcfd,0,sizeof(double complex)*input->prm.nrang*
                                                                      input->prm.mplgs);
 
     for (i=0;i<input->prm.nrang;i++) {
@@ -151,21 +147,22 @@ int fill_fit_block(struct RadarParm *prm, struct RawData *raw,
 
         if (raw->acfd[0] !=NULL) {
             for (j=0;j<input->prm.mplgs;j++) {
-                input->acfd[i*input->prm.mplgs+j].x=raw->acfd[0][i*input->prm.mplgs+j];
-                input->acfd[i*input->prm.mplgs+j].y=raw->acfd[1][i*input->prm.mplgs+j];
+                input->acfd[i*input->prm.mplgs+j] = CMPLX(raw->acfd[0][i*input->prm.mplgs+j], 
+                        raw->acfd[1][i*input->prm.mplgs+j]);
             }
         }
         if (raw->xcfd[0] !=NULL) {
             for (j=0;j<input->prm.mplgs;j++) {
-                input->xcfd[i*input->prm.mplgs+j].x=raw->xcfd[0][i*input->prm.mplgs+j];
-                input->xcfd[i*input->prm.mplgs+j].y=raw->xcfd[1][i*input->prm.mplgs+j];
+                input->xcfd[i*input->prm.mplgs+j] = CMPLX(raw->xcfd[0][i*input->prm.mplgs+j], 
+                        raw->xcfd[1][i*input->prm.mplgs+j]);
             }
         }
     }
 
     return 0;
 }
-int FitACF(struct RadarParm *prm, struct RawData *raw,struct FitBlock *input, struct FitData *fit) {
+int FitACF(struct RadarParm *prm, struct RawData *raw,struct FitBlock *input,
+           struct FitData *fit) {
 
     int fnum, goose, s;
 
@@ -192,6 +189,10 @@ int FitACF(struct RadarParm *prm, struct RawData *raw,struct FitBlock *input, st
     goose = (prm->stid == GOOSEBAY);
 
     fnum = do_fit(input, 5, goose, fit->rng, fit->xrng, fit->elv, &fit->noise);
-
+    if (fnum == -1)
+    {
+        fprintf(stderr, "Error: do_fit returned an error\n");
+        return -1;
+    }
     return 0;
 }

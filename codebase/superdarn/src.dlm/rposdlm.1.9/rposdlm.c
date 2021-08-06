@@ -2,9 +2,25 @@
    ========= 
    Author R.J.Barnes
 */
-
 /*
- $Licence$
+Copyright (C) <year>  <name of author>
+
+This file is part of the Radar Software Toolkit (RST).
+
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
 */
 
 
@@ -140,6 +156,7 @@ int IDLRadarCopyFromIDL(int rnum,int sze,char  *iptr,struct Radar *radar) {
         radar[r].site[s].boresite=iradar->site[s].boresite;
         radar[r].site[s].bmsep=iradar->site[s].bmsep;
         radar[r].site[s].vdir=iradar->site[s].vdir;
+        radar[r].site[s].atten=iradar->site[s].atten;
         radar[r].site[s].tdiff=iradar->site[s].tdiff;
         radar[r].site[s].phidiff=iradar->site[s].phidiff;
         radar[r].site[s].interfer[0]=iradar->site[s].interfer[0];
@@ -184,6 +201,7 @@ void IDLRadarCopyToIDL(int rnum,struct Radar *radar,int sze,
       iradar->site[s].boresite=radar[r].site[s].boresite;
       iradar->site[s].bmsep=radar[r].site[s].bmsep;
       iradar->site[s].vdir=radar[r].site[s].vdir;
+      iradar->site[s].atten=radar[r].site[s].atten;
       iradar->site[s].tdiff=radar[r].site[s].tdiff;
       iradar->site[s].phidiff=radar[r].site[s].phidiff;
       iradar->site[s].interfer[0]=radar[r].site[s].interfer[0];
@@ -436,6 +454,7 @@ static IDL_VPTR IDLRadarEpochGetSite(int argc,IDL_VPTR *argv) {
   isite->boresite=iradar->site[s].boresite;
   isite->bmsep=iradar->site[s].bmsep;
   isite->vdir=iradar->site[s].vdir;
+  isite->atten=iradar->site[s].atten;
   isite->tdiff=iradar->site[s].tdiff;
   isite->phidiff=iradar->site[s].phidiff;
   isite->interfer[0]=iradar->site[s].interfer[0];
@@ -499,6 +518,7 @@ static IDL_VPTR IDLRadarYMDHMSGetSite(int argc,IDL_VPTR *argv) {
   isite->boresite=iradar->site[s].boresite;
   isite->bmsep=iradar->site[s].bmsep;
   isite->vdir=iradar->site[s].vdir;
+  isite->atten=iradar->site[s].atten;
   isite->tdiff=iradar->site[s].tdiff;
   isite->phidiff=iradar->site[s].phidiff;
   isite->interfer[0]=iradar->site[s].interfer[0];
@@ -569,6 +589,7 @@ static IDL_VPTR IDLRadarGetRadar(int argc,IDL_VPTR *argv) {
     oradar->site[s].boresite=iradar->site[s].boresite;
     oradar->site[s].bmsep=iradar->site[s].bmsep;
     oradar->site[s].vdir=iradar->site[s].vdir;
+    oradar->site[s].atten=iradar->site[s].atten;
     oradar->site[s].tdiff=iradar->site[s].tdiff;
     oradar->site[s].phidiff=iradar->site[s].phidiff;
     oradar->site[s].interfer[0]=iradar->site[s].interfer[0];
@@ -620,6 +641,7 @@ static IDL_VPTR IDLRadarConvert(int type,int argc,IDL_VPTR *argv,char *argk) {
   site.boresite=isite->boresite;
   site.bmsep=isite->bmsep;
   site.vdir=isite->vdir;
+  site.atten=isite->atten;
   site.tdiff=isite->tdiff;
   site.phidiff=isite->phidiff;
   site.interfer[0]=isite->interfer[0];

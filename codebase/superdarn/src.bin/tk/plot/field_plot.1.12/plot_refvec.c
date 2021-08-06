@@ -5,27 +5,24 @@
 
 
 /*
- LICENSE AND DISCLAIMER
- 
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+
+This file is part of the Radar Software Toolkit (RST).
+
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
 */
 
 
@@ -58,12 +55,11 @@ void plot_refvec(struct Plot *plot,float px,float py,int or,double max,
   float map[2],pnt[2];
   float ax,ay,bx,by;
   float txbox[3];
-
+  double mlat,mlon,glat,glon,r;
+  
   lat=90.0;
   lon=0.0;
   if (!magflg) {
-    double mlat,mlon,glat,glon,r;
-    int s;
     mlat=lat;
     mlon=lon;
     if (old_aacgm) s=AACGMConvert(mlat,mlon,150,&glat,&glon,&r,1);
@@ -82,8 +78,6 @@ void plot_refvec(struct Plot *plot,float px,float py,int or,double max,
   RPosCalcVector(90.0,0.0,max*sf,0.0,&lat,&lon);
 
   if (!magflg) {
-    double mlat,mlon,glat,glon,r;
-    int s;
     mlat=lat;
     mlon=lon;
     if (old_aacgm) s=AACGMConvert(mlat,mlon,150,&glat,&glon,&r,1);

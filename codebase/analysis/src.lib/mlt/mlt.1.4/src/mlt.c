@@ -11,16 +11,16 @@
  This file is part of the Radar Software Toolkit (RST).
  
  RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
+ it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
  
- RST is distributed in the hope that it will be useful,
+ This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
  
- You should have received a copy of the GNU Lesser General Public License
+ You should have received a copy of the GNU General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
  
  
@@ -81,7 +81,15 @@ double astmlt1(int t0,double solar_dec,double mlon,double *mslon) {
     */
 
     err=convert_geo_coord(solar_dec,slon1,height,&mslat1,&mslon1,0,4);
+    if (err == -1)
+    {
+        fprintf(stderr, "Warning, convert_geo_coord returned an error");
+    }
     err=convert_geo_coord(solar_dec,slon2,height,&mslat2,&mslon2,0,4);
+    if (err == -1)
+    {
+        fprintf(stderr, "Warning, convert_geo_coord returned an error");
+    }
 
     *mslon=mslon1;
   }

@@ -4,28 +4,25 @@
 */
 
 /*
- LICENSE AND DISCLAIMER
+  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
  
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
-*/
+This file is part of the Radar Software Toolkit (RST).
+
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
+*/ 
 
 
 
@@ -64,6 +61,10 @@ int downloadscan(int sock,struct RadarParm *prm,struct FitData *fit,
 
   while (prm->scan !=1) {  
     status=FitCnxRead(1,&sock,prm,fit,&flag,NULL);
+    if (status == -1)
+    {
+        fprintf(stderr, "Error: perror occured in FitCnxRead\n");
+    }
     fprintf(stderr,"+%d (%d)+",prm->bmnum,prm->scan); 
     fflush(stderr);
   } 
@@ -81,8 +82,14 @@ int downloadscan(int sock,struct RadarParm *prm,struct FitData *fit,
      fprintf(stderr,"%.2d.",prm->bmnum);
      fflush(stderr);
      if (prm->scan==0) FitToRadarScan(ptr,prm,fit);
-      status=FitCnxRead(1,&sock,prm,fit,&flag,NULL);
-     c++;
+     
+     status=FitCnxRead(1,&sock,prm,fit,&flag,NULL);
+     if (status == -1)
+     {
+        fprintf(stderr, "Error: perror occured in FitCnxRead\n");
+     }
+
+      c++;
    }
    ptr->st_time=TimeYMDHMSToEpoch(prm->time.yr,prm->time.mo,prm->time.dy,
                                  prm->time.hr,prm->time.mt,prm->time.sc+

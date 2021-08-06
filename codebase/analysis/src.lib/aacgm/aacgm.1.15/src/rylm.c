@@ -11,19 +11,22 @@
  This file is part of the Radar Software Toolkit (RST).
  
  RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
+ it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
  
- RST is distributed in the hope that it will be useful,
+ This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
  
- You should have received a copy of the GNU Lesser General Public License
+ You should have received a copy of the GNU General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
  
- 
+
+ Modifications
+ =============
+ 2020-11-12 Marina Schmidt: added complex.h defined structures
  
 */
 
@@ -31,6 +34,7 @@
 
 
 #include <math.h>
+#include <complex.h>
 #include "rmath.h"
 
 
@@ -38,11 +42,11 @@ int rylm(double colat,double lon,int order,
 	  double *ylmval) {
    
     double d1;
-    struct complex z1, z2;
+    complex z1, z2;
 
     /* Local variables */
-    struct complex q_fac;
-    struct complex q_val;
+    complex q_fac;
+    complex q_val;
     int l, m;
     int la,lb,lc,ld,le,lf;
 
@@ -58,14 +62,11 @@ int rylm(double colat,double lon,int order,
     sin_lon = sin(lon);
 
     d1 = -sin_theta;
-    z2.x = cos_lon;
-    z2.y = sin_lon;
+    z2 = CMPLX(cos_lon, sin_lon);
 
-    z1.x = d1 * z2.x;
-    z1.y = d1 * z2.y;
+    z1 = CMPLX(d1 * creal(z2), d1 * cimag(z2));
 
-    q_fac.x = z1.x;
-    q_fac.y = z1.y;
+    q_fac = z1;
 
     ylmval[0] = 1;
     ylmval[2] = cos_theta;
@@ -81,26 +82,23 @@ int rylm(double colat,double lon,int order,
 	ylmval[lc-1] = ca * cos_theta * ylmval[lb-1] - cb * ylmval[la-1];
     }
 
-    q_val.x = q_fac.x;
-    q_val.y = q_fac.y;
+    q_val = q_fac;
 
-    ylmval[3] = q_val.x;
-    ylmval[1] = -q_val.y;
+    ylmval[3] = creal(q_val);
+    ylmval[1] = -cimag(q_val);
     for (l = 2; l <= order; l++) {
 
 	d1 = l*2 - 1.;
-	z2.x = d1 * q_fac.x;
-	z2.y = d1 * q_fac.y;
-	z1.x = z2.x * q_val.x - z2.y * q_val.y;
-	z1.y = z2.x * q_val.y + z2.y * q_val.x;
-	q_val.x = z1.x;
-	q_val.y = z1.y;
+	z2 = CMPLX(d1 * creal(q_fac), d1 * cimag(q_fac));
+	z1 = CMPLX(creal(z2) * creal(q_val) - cimag(z2) * cimag(q_val), 
+            creal(z2) * cimag(q_val) + cimag(z2) * creal(q_val));
+	q_val = z1;
 
 	la = l*l + (2*l) + 1;
 	lb = l*l + 1;
 
-	ylmval[la-1] = q_val.x;
-	ylmval[lb-1] = -q_val.y;
+	ylmval[la-1] = creal(q_val);
+	ylmval[lb-1] = -cimag(q_val);
     }
 
     for (l = 2; l <= order; l++) {

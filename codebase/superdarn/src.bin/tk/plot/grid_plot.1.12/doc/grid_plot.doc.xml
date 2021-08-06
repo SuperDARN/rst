@@ -112,6 +112,8 @@
 </option>
 <option><on>-ffov</on><od>plot the filled radar field of view.</od>
 </option>
+<option><on>-gfov</on><od>only plot fields of view of the radars contributing data (when using -fov and/or -ffov).</od>
+</option>
 <option><on>-tmtick <ar>tick</ar></on><od>set the grid interval for the time clock-dial to <ar>tick</ar> hours.</od>
 </option>
 <option><on>-lst</on><od>use local solar time rather than local time.</od>
@@ -229,7 +231,7 @@
 </option>
 <option><on>-yoff <ar>yoff</ar></on><od>open the window <ar>ypad</ar> pixels from the top edge of the screen.</od>
 </option>
-<option><on>-delay <ar>delay</ar></on><od>set the delay between frames to <ar>delay</ar> milliseconds, a value of 0 will pause the frame until a mouse button is pressed.</od>
+<option><on>-delay <ar>delay</ar></on><od>set the delay between frames to <ar>delay</ar> milliseconds, a value of 0 will pause the frame until a mouse button is pressed. Default: 0</od>
 </option>
 <option><on>-chisham</on><od>draw radar fields of view using the Chisham virtual height model.</od>
 </option>

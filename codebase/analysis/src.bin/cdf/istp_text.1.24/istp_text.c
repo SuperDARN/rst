@@ -11,16 +11,16 @@
  This file is part of the Radar Software Toolkit (RST).
  
  RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
+ it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
  
- RST is distributed in the hope that it will be useful,
+ This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
  
- You should have received a copy of the GNU Lesser General Public License
+ You should have received a copy of the GNU General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
  
  
@@ -438,7 +438,7 @@ int main(int argc,char *argv[]) {
   unsigned char hdr=0;
   unsigned char mode=0;
 
-  int dflg=0;
+  // int dflg=0;
 
   int pnum=0;
   double *ptme=NULL;
@@ -560,8 +560,9 @@ int main(int argc,char *argv[]) {
   TimeEpochToYMDHMS(etime,&yr,&mo,&dy,&hr,&mt,&sc);
   fprintf(stderr,"End time:%d-%d-%d %d:%d:%d\n",yr,mo,dy,hr,mt,(int) sc);
 
-
- if ((etime-stime)>=(24*3600)) dflg=1;
+    
+  // TODO: this flag is not used any where
+  //if ((etime-stime)>=(24*3600)) dflg=1;
  
  
   if (ace==1) load_ace();

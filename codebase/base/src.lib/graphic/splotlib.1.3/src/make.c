@@ -12,16 +12,16 @@
  This file is part of the Radar Software Toolkit (RST).
  
  RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
+ it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  any later version.
  
- RST is distributed in the hope that it will be useful,
+ This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
  
- You should have received a copy of the GNU Lesser General Public License
+ You should have received a copy of the GNU General Public License
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
  
  
@@ -115,39 +115,57 @@ int SplotSetPlot(struct Plot *plot,struct Splot *ptr) {
   if (plot==NULL) return -1;
   if (ptr==NULL) return -1;
 
-  plot->plot.start.func=(void *) SplotPlotStart;
+  plot->plot.start.func= (int (*)(void *,char *,float,float,int))SplotPlotStart;
   plot->plot.start.data=ptr;  
-  plot->plot.end.func=(void *) SplotPlotEnd;
-  plot->plot.end.data=ptr;  
+  plot->plot.end.func= (int (*)(void*))SplotPlotEnd;
+  plot->plot.end.data= ptr;  
 
-  plot->document.start.func=(void *) SplotDocumentStart;
+  plot->document.start.func= (int (*) (void *,char *,char *,float,float,int))SplotDocumentStart;
   plot->document.start.data=ptr;  
-  plot->document.end.func=(void *) SplotDocumentEnd;
+  plot->document.end.func= (int (*)(void*))SplotDocumentEnd;
   plot->document.end.data=ptr;  
 
-  plot->clip.func=(void *) SplotClip;
+  
+  plot->clip.func=(int (*)(void *,int, float *,float *,int *)) SplotClip;
   plot->clip.data=ptr;  
 
-  plot->line.func=(void *) SplotLine;
+  plot->line.func= (int (*)(void *,float,float,float,float,
+		unsigned int,unsigned char,float,
+		struct PlotDash *))SplotLine;
   plot->line.data=ptr;  
 
-  plot->bezier.func=(void *) SplotBezier;
+  plot->bezier.func= (int (*)(void *,float,float,float,float,
+                float,float,float,float,
+                unsigned int,unsigned char,float,
+                struct PlotDash *))SplotBezier;
   plot->bezier.data=ptr;  
 
 
-  plot->rectangle.func=(void *) SplotRectangle;
+  plot->rectangle.func= (int (*)(void *,struct PlotMatrix *,
+		float,float,float,float,
+		int,unsigned int,unsigned char,
+		float,struct PlotDash *))SplotRectangle;
   plot->rectangle.data=ptr;  
 
-  plot->ellipse.func=(void *) SplotEllipse;
+  plot->ellipse.func= (int (*)(void *,struct PlotMatrix *,
+                float,float,float,float,
+                int,unsigned int,unsigned char,
+                float,struct PlotDash *))SplotEllipse;
   plot->ellipse.data=ptr;  
 
-  plot->polygon.func=(void *) SplotPolygon;
+  plot->polygon.func= (int (*)(void *,struct PlotMatrix *,
+                float,float,int,float *,float *,int *,int,
+		unsigned int,unsigned char,float,struct PlotDash *))SplotPolygon;
   plot->polygon.data=ptr;  
 
-  plot->text.func=(void *) SplotText;
+  plot->text.func= (int (*)(void *,struct PlotMatrix *,
+		char *,float,float,float,
+		int,char *,unsigned int,unsigned char,int)) SplotText;
   plot->text.data=ptr;  
 
-  plot->image.func=(void *) SplotImage;
+  plot->image.func= (int (*)(void *,struct PlotMatrix *,
+                struct FrameBuffer *,
+                unsigned  char,float,float,int))SplotImage;
   plot->image.data=ptr;  
 
   return 0;
@@ -188,7 +206,4 @@ struct Splot *SplotMake() {
 void SplotFree(struct Splot *ptr) {
   if (ptr==NULL) return;
   free(ptr);
-};
-
-
-
+}

@@ -1,10 +1,22 @@
 /* rawidl.c
    ======== 
    Author R.J.Barnes
-*/
-
-/*
- $Licence$
+ Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
+ 
+ RST is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ 
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+ 
+ You should have received a copy of the GNU General Public License
+ along with this program. If not, see <https://www.gnu.org/licenses/>.
+ 
+ Modifications:
 */
 
 
@@ -70,12 +82,14 @@ void IDLCopyRawDataToIDL(int nrang,int mplgs, int xcf,struct RawData *raw,
 
   for (n=0;n<nrang;n++) {
     iraw->pwr0[n]=raw->pwr0[n];
-    for (x=0;x<mplgs;x++) {
-      iraw->acfd[x*MAX_RANGE+n]=raw->acfd[0][n*mplgs+x];
-      iraw->acfd[LAG_SIZE*MAX_RANGE+MAX_RANGE*x+n]=raw->acfd[1][n*mplgs+x];
-      if ((xcf !=0) && (raw->xcfd !=NULL)) {
-        iraw->xcfd[x*MAX_RANGE+n]=raw->xcfd[0][n*mplgs+x];
-        iraw->xcfd[LAG_SIZE*MAX_RANGE+MAX_RANGE*x+n]=raw->xcfd[1][n*mplgs+x];
+    if (raw->acfd[0] !=NULL) {
+      for (x=0;x<mplgs;x++) {
+        iraw->acfd[x*MAX_RANGE+n]=raw->acfd[0][n*mplgs+x];
+        iraw->acfd[LAG_SIZE*MAX_RANGE+MAX_RANGE*x+n]=raw->acfd[1][n*mplgs+x];
+        if ((xcf !=0) && (raw->xcfd !=NULL)) {
+          iraw->xcfd[x*MAX_RANGE+n]=raw->xcfd[0][n*mplgs+x];
+          iraw->xcfd[LAG_SIZE*MAX_RANGE+MAX_RANGE*x+n]=raw->xcfd[1][n*mplgs+x];
+        }
       }
     }
   }
@@ -131,4 +145,3 @@ struct RawIDLInx *IDLMakeRawInx(int num,IDL_VPTR *vptr) {
 
    return (struct RawIDLInx *) IDL_MakeTempStruct(s,1,idim,vptr,TRUE);
 }
-  

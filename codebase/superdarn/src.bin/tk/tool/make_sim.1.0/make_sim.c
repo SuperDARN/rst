@@ -37,6 +37,7 @@ THE SOFTWARE.
 #include <sys/time.h>
 #include <zlib.h>
 #include "rtypes.h"
+#include "rmath.h"
 #include "dmap.h"
 #include "sim_data.h"
 #include "rtypes.h"
@@ -74,7 +75,8 @@ void makeRadarParm(struct RadarParm * prm, char * argv[], int argc, int cpid, in
 
   prm->revision.major = 1;
   prm->revision.minor = 0;
-  prm->origin.code = 0;
+  // set to 1 as it is not produced on site 
+  prm->origin.code = 1;
 
   RadarParmSetOriginTime(prm,asctime(timeinfo));
   char *tempstr = malloc(argc*15);
@@ -176,7 +178,6 @@ int main(int argc,char *argv[])
   double t_g = 1e-6;                        /*irregularity growth time*/
   double t_c = 1000.;                       /*precipitation time constant*/
   double v_dop =450.;                       /*Background velocity (m/s)*/
-  double c = 3.e8;                          /*Speed of light (m/s)*/
   double freq = 12.e6;                      /*transmit frequency*/
   double amp0 = 1.;                         /*amplitude scaling factor*/
   int noise_flg = 0;                        /*flag to indicate whether white noise is included*/
@@ -329,7 +330,7 @@ int main(int argc,char *argv[])
     }
   }
 
-  double lambda = c/freq;
+  double lambda = C/freq;
   if(w != -9999.)
     t_d = lambda/(w*2.*PI);
 

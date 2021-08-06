@@ -1,32 +1,26 @@
 /* time.c
    ======
    Author: R.J.Barnes
-*/
-
-/*
- LICENSE AND DISCLAIMER
- 
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
-*/
 
+This file is part of the Radar Software Toolkit (RST).
+
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
+
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -167,7 +161,7 @@ double TimeYMDHMSToJulian(int yr,int mo,int dy,int hr,int mt,double sc) {
   jdoy=i+1720994.5+B;
 
   
-  dfrac=1+TimeYMDHMSToYrsec(yr+1,mo,dy,hr,mt,sc)/DAY_SEC;
+  dfrac=1.0+(double)TimeYMDHMSToYrsec(yr+1,mo,dy,hr,mt,sc)/DAY_SEC;
    
   return jdoy+dfrac; 
 

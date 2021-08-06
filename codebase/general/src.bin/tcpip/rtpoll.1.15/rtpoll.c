@@ -1,30 +1,24 @@
 /* rtpoll.c
    ========
    Author: R.J.Barnes
-*/
-
-/*
- LICENSE AND DISCLAIMER
- 
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+
+This file is part of the Radar Software Toolkit (RST).
+
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
 */
 
 
@@ -65,6 +59,7 @@ int main(int argc,char *argv[]) {
   FILE *fp;
   unsigned char help=0;  
   unsigned char option=0;
+  unsigned char version=0;
   
   pid_t pid;
 
@@ -93,6 +88,7 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
+  OptionAdd(&opt,"-version",'x',&version);
 
   OptionAdd(&opt,"L",'t',&logstr);
   OptionAdd(&opt,"d",'i',&dtime);
@@ -112,6 +108,11 @@ int main(int argc,char *argv[]) {
 
   if (option==1) {
     OptionDump(stdout,&opt);
+    exit(0);
+  }
+
+  if (version==1) {
+    OptionVersion(stdout);
     exit(0);
   }
 
@@ -162,9 +163,29 @@ int main(int argc,char *argv[]) {
      if (fildes==-1) continue;
      rflock.l_type=F_RDLCK;
      status=fcntl(fildes,F_SETLKW,&rflock);
+     if (status == -1)
+     {
+         // TODO add errno to get more information
+         fprintf(stderr, "Error: fcntl returned an error\n");
+         return -1;
+     }
      rc=fstat(fildes,&buf);
+     if (rc == -1)
+     {
+         // TODO add errno to get more information
+         fprintf(stderr, "Error: fstat returned an error\n");
+         return -1;
+     }
+
      rflock.l_type=F_UNLCK;  
      status=fcntl(fildes,F_SETLKW,&rflock);
+     if (status == -1)
+     {
+         // TODO add errno to get more information
+         fprintf(stderr, "Error: fcntl returned an error\n");
+         return -1;
+     }
+
      close(fildes);
      if (buf.st_mtime !=tval) {
 

@@ -1,10 +1,21 @@
 /* szamap.c
    ========
    Author: R.J.Barnes and others
-*/
 
-/*
-   See license.txt
+This file is part of the Radar Software Toolkit (RST).
+
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include <stdio.h>
@@ -90,8 +101,15 @@ struct PolygonData **SZAContour(int yr,int mo,int dy,int hr,int mt,int sc,
         if (mode==0) {
            tlat=lat;
            tlon=lon;
-        } else s = (*AACGM_Cnv)(lat,lon,0,&tlat,&tlon,&r,1);
-
+        } else
+        {
+            // TODO: comment what is going on here... 
+            s = (*AACGM_Cnv)(lat,lon,0,&tlat,&tlon,&r,1);
+            if (s == -1)
+            {
+                fprintf(stderr, "Error: AACGM convert returned an error\n");
+            }
+        }
         LsoT=(hr*3600+mt*60)+(tlon*4*60)+eqt;
         Hangle=15*((LsoT/3600)-12);
         Z=SZAAngle(tlon,tlat,dec,Hangle);

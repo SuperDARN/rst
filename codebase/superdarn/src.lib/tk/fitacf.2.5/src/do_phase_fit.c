@@ -1,30 +1,21 @@
 /* do_phase_fit.c
      ==============
      Author: K.Baker
-*/
 
-/*
- LICENSE AND DISCLAIMER
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
- This file is part of the Radar Software Toolkit (RST).
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
-
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
-
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
-
-
-
+Modifications:
 */
 
 
@@ -49,7 +40,7 @@
         omega_guess - (double) initial guess for the value of omega
         xflag - (char) flag to indicate this is an XCF fit
         mplgs - (int) number of lags in the acf
-        acf - (struct complex) the acf (or xcf) to be fitted
+        acf - (double complex) the acf (or xcf) to be fitted
         tau - (double) array of lag values
         w - (double) array of weights (powers) for each lag
         sum_wk2_arr - (double) array of sum of w*k^2
@@ -66,6 +57,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <complex.h>
 #include "rmath.h"
 
 #define determ(aa,bb,cc,dd) (((aa)*(dd)) - ((bb)*(cc)))
@@ -73,7 +65,7 @@
 int do_phase_fit (double omega_guess,
                     char xflag,
                     int mplgs,
-                    struct complex *acf,
+                    double complex *acf,
                     double *tau,
                     double *w,
                     double *sum_wk2_arr,
@@ -153,7 +145,7 @@ int do_phase_fit (double omega_guess,
 
         if (!xflag) phi_loc = 0.;
 
-        sum_phi = atan2(acf[0].y,acf[0].x);
+        sum_phi = atan2(cimag(acf[0]), creal(acf[0]));
         sum_phi = sum_phi*w[0]*w[0];
         sum_kphi = 0.0;
         n_twopi = 0;
