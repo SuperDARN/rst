@@ -30,7 +30,7 @@
 #include "mpfit.h"
 
 #include "multbsid.h"
-#include "utils.h"
+#include "stat_utils.h"
 
 /**
  * @brief Get the alt limits for a select group of data.  Look at the

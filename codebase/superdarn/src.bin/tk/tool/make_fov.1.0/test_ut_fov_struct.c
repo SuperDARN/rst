@@ -29,6 +29,7 @@
 #include "rtypes.h"
 #include "rtime.h"
 #include "multbsid.h"
+#include "scan_utils.h"
 
 /**
  * @brief Examine the FoV values assigned for scans as a function of time
@@ -78,11 +79,6 @@ void test_ut_fov_struct(unsigned char vb, char *vbuf, float min_frac,
   struct CellBSIDLoc loc, opp;
   struct FitBSIDBeam *bm;
   struct FitBSIDScan *scan;
-
-  int get_bm_by_bmnum(int ibm, struct FitBSIDScan *scan);
-  void get_rg_box_limits(int rg, int max_rg, int D_rgmax, int E_rgmax,
-			 int F_rgmax, int D_nrg, int E_nrg, int F_nrg,
-			 int far_nrg, int *rg_min, int *rg_max);
 
   /* Test the input structure length */
   if(mult_bsid->ed_time - mult_bsid->st_time < ut_box_sec)
