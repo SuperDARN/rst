@@ -29,7 +29,6 @@
 
 #include "rmath.h"
 #include "radar.h"
-#include "multscan.h"
 #include "multbsid.h"
 
 #define MAX_BMS 25  /* Current maximum in hdw files */
