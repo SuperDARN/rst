@@ -2,8 +2,9 @@
 
 #include<math.h>
 
-#include "leastsquares.h"
 #include "rtypes.h"
+#include "llist.h"
+#include "leastsquares.h"
 
 /****************************************************************************
  * Linear_Regression.c
