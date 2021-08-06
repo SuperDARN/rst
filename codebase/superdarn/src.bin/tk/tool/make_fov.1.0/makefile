@@ -22,12 +22,13 @@ SRC =	make_fov.c \
 	load_radar_site.c \
 	location.c \
 	multbsid.c \
+	scan_utils.c \
 	select_alt_groups.c \
 	sort_rout.c \
+	stat_utils.c \
 	test_ut_fov_struct.c \
 	update_beam.c \
 	update_scan.c \
-	utils.c \
 	write_scan.c
 
 OBJS =	$(SRC:.c=.o)
