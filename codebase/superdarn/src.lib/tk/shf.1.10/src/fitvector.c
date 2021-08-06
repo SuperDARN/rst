@@ -4,28 +4,25 @@
 */
 
 /*
- LICENSE AND DISCLAIMER
+  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
  
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
-*/
+This file is part of the Radar Software Toolkit (RST).
+
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
+*/ 
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -79,17 +76,39 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
   x=malloc(sizeof(double)*num);
   if (x==NULL) return NULL;
   y=malloc(sizeof(double)*num);
-  if (y==NULL) return NULL;
+  if (y==NULL) {
+    free(x);
+    return NULL;
+  }
   phi=malloc(sizeof(double)*num);
-  if (phi==NULL) return NULL;
+  if (phi==NULL) {
+    free(x);
+    free(y);
+    return NULL;
+  }
   theta=malloc(sizeof(double)*num);
-  if (theta==NULL) return NULL;
+  if (theta==NULL) {
+    free(x);
+    free(y);
+    free(phi);
+    return NULL;
+  }
   bmag=malloc(sizeof(double)*num);
-  if (bmag==NULL) return NULL;
+  if (bmag==NULL) {
+    free(x);
+    free(y);
+    free(phi);
+    free(theta);
+    return NULL;
+  }
 
   plm=malloc(sizeof(double)*(order+1)*(order+1)*num);
   if (plm==NULL) {
     free(x);
+    free(y);
+    free(phi);
+    free(theta);
+    free(bmag);
     return NULL;
   }
 
@@ -146,6 +165,7 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
     free(y);
     free(phi);
     free(theta);
+    free(bmag);
     return NULL;
   }
 
@@ -252,9 +272,39 @@ double CnvMapFitVector(int num,struct CnvMapSHFVec *data,
   }
 
   w=malloc(sizeof(double)*(kmax+1));
+  if (w==NULL) {
+    free(result);
+    free(soltn);
+    free(plm);
+    return -1;
+  }
   v=malloc(sizeof(double)*(kmax+1)*(kmax+1));
+  if (v==NULL) {
+    free(result);
+    free(soltn);
+    free(plm);
+    free(w);
+    return -1;
+  }
   var=malloc(sizeof(double)*(kmax+1)*(kmax+1));
+  if (var==NULL) {
+    free(result);
+    free(soltn);
+    free(plm);
+    free(w);
+    free(v);
+    return -1;
+  }
   a=malloc(sizeof(double)*num*(kmax+1)); 
+  if (a==NULL) {
+    free(result);
+    free(soltn);
+    free(plm);
+    free(w);
+    free(v);
+    free(var);
+    return -1;
+  }
 
   /* Compute the matrix describing the line-of-sight velocities */
 
@@ -263,6 +313,10 @@ double CnvMapFitVector(int num,struct CnvMapSHFVec *data,
     free(result);
     free(soltn);
     free(plm);
+    free(w);
+    free(v);
+    free(var);
+    free(a);
     return -1;
   }
 

@@ -2,9 +2,25 @@
    ========== 
    Author R.J.Barnes
 */
-
 /*
- $Licence$
+Copyright (C) <year>  <name of author>
+
+This file is part of the Radar Software Toolkit (RST).
+
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
 */
 
 
@@ -203,7 +219,8 @@ static IDL_VPTR IDLIQRead(int argc,IDL_VPTR *argv) {
 
   if (samples !=NULL) {
     int n=0;
-    adim[0]=iq->seqnum*iq->chnnum*iq->smpnum*2;
+    if (prm->xcf == 1) adim[0]=iq->seqnum*iq->smpnum*2*2;
+    else               adim[0]=iq->seqnum*iq->smpnum*2;
     isamples=(short *) 
            IDL_MakeTempArray(IDL_TYP_INT,1,adim,IDL_ARR_INI_ZERO,&vsamples);
     for (n=0;n<adim[0];n++) {

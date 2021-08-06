@@ -1,9 +1,6 @@
 /* png.c
    ===== 
    Author: R.J.Barnes
-*/
-
-/*
   LICENSE AND DISCLAIMER
   
   Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
@@ -11,16 +8,16 @@
   This file is part of the Radar Software Toolkit (RST).
   
   RST is free software: you can redistribute it and/or modify
-  it under the terms of the GNU Lesser General Public License as published by
+  it under the terms of the GNU General Public License as published by
   the Free Software Foundation, either version 3 of the License, or
   any later version.
   
-  RST is distributed in the hope that it will be useful,
+  This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU Lesser General Public License for more details.
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
   
-  You should have received a copy of the GNU Lesser General Public License
+  You should have received a copy of the GNU General Public License
   along with RST.  If not, see <http://www.gnu.org/licenses/>.
   
   
@@ -36,7 +33,7 @@
 #include "rfbuffer.h"
 
 struct FrameBuffer *FrameBufferLoadPNG(FILE *fp,char *name) {
-  int s=0,x,y,d=1,m=0,nump=0;
+  int s=0,x,y,d=1,m=0;
   int wdt,hgt,rowbytes;
 
   unsigned char hdr[8];
@@ -159,7 +156,7 @@ struct FrameBuffer *FrameBufferLoadPNG(FILE *fp,char *name) {
   if (m==0) memset(ptr->msk,255,wdt*hgt);
   memset(ptr->msk,255,wdt*hgt);
   
-  nump=png_set_interlace_handling(pngptr);
+  png_set_interlace_handling(pngptr);
 
   png_read_update_info(pngptr,infoptr);
 

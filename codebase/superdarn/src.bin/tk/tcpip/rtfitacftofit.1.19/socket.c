@@ -4,28 +4,25 @@
 */
 
 /*
- LICENSE AND DISCLAIMER
+  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
  
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
-*/
+This file is part of the Radar Software Toolkit (RST).
+
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
+*/ 
 
 
 
@@ -64,15 +61,8 @@ char mbuf[BUF_SIZE];
 void logtime(char *fname,int nbytes) {
   char txt[256];
   int mask=S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
-  struct flock flock;
   int fid;
   int yr,mo,dy,hr,mt,sc,us,s;
-  
-
-  flock.l_type=F_WRLCK;
-  flock.l_whence=SEEK_SET;
-  flock.l_start=0;
-  flock.l_len=0;
 
   TimeReadClock(&yr,&mo,&dy,&hr,&mt,&sc,&us);
 
@@ -81,6 +71,12 @@ void logtime(char *fname,int nbytes) {
   if (fid !=0) {
     sprintf(txt,"%d %d %d %d %d %d %d %d\n",yr,mo,dy,hr,mt,sc,us,nbytes);
     s=write(fid,txt,strlen(txt)+1);
+    if (s == -1)
+    {
+        fprintf(stderr, "Error: Write was not Successful\n");
+        //TODO: read errno for more information
+    }
+
     close(fid);
   }
 }
@@ -127,6 +123,13 @@ int createsocket(int *port) {
   /* set socket options */
   temp=setsockopt(sock,SOL_SOCKET,SO_REUSEADDR,&sc_reuseaddr,
                  sizeof(sc_reuseaddr));
+  if (temp == -1)
+  {
+      fprintf(stderr, "Error: setsockopt is unable to read in all options\n");
+      // TODO: add errno here to get why it failed 
+      return -1; 
+
+  }
 
   /* name and bind socket to an address and port number */
 

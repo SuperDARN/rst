@@ -1,6 +1,26 @@
 /* fitblk.h
    =========
    Author: R.J.Barnes
+
+   Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
+
+
+       RST is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+    Modifications
+    =============
+    2020-11-12 Marina Schmidt Converted RST complex -> C library complex
+
+
 */
 
 
@@ -8,9 +28,10 @@
 
 #ifndef _FITBLK_H
 #define _FITBLK_H
+#include <complex.h>
 
 struct FitPrm {
-  int channel; /* zero=mono 1 or 2 is stereo */
+  int channel; 
   int offset; /* used for stereo badlags */
   int cp;
   int xcf;
@@ -26,6 +47,7 @@ struct FitPrm {
   int mppul;
   int bmnum;
   int old;
+  int old_elev; /* set to use the old elevation angle routines SGS: 20170811 */
   int *lag[2];
   int *pulse;
   int *pwr0;
@@ -35,12 +57,12 @@ struct FitPrm {
   double phidiff;
   double tdiff;
   double vdir;
-};
+} FitPrm;
 
 struct FitBlock {
   struct FitPrm prm;
-  struct complex *acfd;
-  struct complex *xcfd;
+  double complex *acfd;
+  double complex *xcfd;
 };
 
 struct FitElv { /* elevation angle derived from the cross correlation */

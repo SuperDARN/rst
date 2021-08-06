@@ -4,28 +4,25 @@
 */
 
 /*
- LICENSE AND DISCLAIMER
+  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
  
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
-*/
+This file is part of the Radar Software Toolkit (RST).
+
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
+*/ 
 
 
 
@@ -73,6 +70,12 @@ int windmfi_imf(CDFid id,struct swdata *ptr,double stime,double etime) {
 
   if (ptr->BGSEc==NULL) ptr->BGSEc=malloc(3*sizeof(float)*max);
   else ptr->BGSEc=realloc(ptr->BGSEc,3*sizeof(float)*max);
+
+  if (ptr->Vx==NULL) ptr->Vx=malloc(sizeof(float)*max);
+  else ptr->Vx=realloc(ptr->Vx,sizeof(float)*max);
+
+  if (ptr->Kp==NULL) ptr->Kp=malloc(sizeof(float)*max);
+  else ptr->Kp=realloc(ptr->Kp,sizeof(float)*max);
 
   for (i=0;i<rmax;i++) {
     status=RCDFReadZ(id,i,varlist,data);

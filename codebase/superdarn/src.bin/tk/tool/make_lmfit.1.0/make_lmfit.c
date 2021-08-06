@@ -4,10 +4,24 @@
 */
 
 /*
- (c) 2010 JHU/APL & Others - Please Consult LICENSE.superdarn-rst.3.2-beta-4-g32f7302.txt for more information.
+ (c) 2010 The Johns Hopkins University/Applied Physics Laboratory & Others 
 
+This file is part of the Radar Software Toolkit (RST).
 
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
 */
 
 #include <stdio.h>
@@ -166,7 +180,7 @@ int main(int argc,char *argv[])
       if (rawfp==NULL) {
           fprintf(stderr,"File not found.\n");
           exit(-1);
-      } else if (rawfp->rawread==-2) {
+      } else if (rawfp->error==-2) {
           /* Error code for num_bytes less than 0 */
           free(rawfp);
           exit(-1);
@@ -236,6 +250,8 @@ int main(int argc,char *argv[])
 
   do
   {
+    //set origin code = 1 which  means produced not at a radar site
+    prm->origin.code = 1;
     ctime = time((time_t) 0);
     RadarParmSetOriginCommand(prm,command);
     strcpy(tmstr,asctime(gmtime(&ctime)));
@@ -275,8 +291,6 @@ int main(int argc,char *argv[])
   if (old) OldRawClose(rawfp);
   return 0;
 }
-
-
 
 
 

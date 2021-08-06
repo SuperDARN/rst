@@ -2,9 +2,25 @@
    =========== 
    Author R.J.Barnes
 */
-
 /*
- $Licence$
+Copyright (C) <year>  <name of author>
+
+This file is part of the Radar Software Toolkit (RST).
+
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
 */
 
 
@@ -183,7 +199,7 @@ static IDL_VPTR IDLOldRawRead(int argc,IDL_VPTR *argv) {
 
   int s=0;
 
-  IDL_VPTR vprm=NULL,vraw=NULL;;
+  IDL_VPTR vprm=NULL,vraw=NULL;
 
   IDL_FILE_STAT stat;
 
@@ -362,29 +378,18 @@ static IDL_VPTR IDLOldRawOpen(int argc,IDL_VPTR *argv) {
   void *s;
   int st;
 
-  static IDL_MEMINT hdim[]={1,80};
-  static IDL_MEMINT ddim[]={1,32};
-  static IDL_MEMINT edim[]={1,256};
-
   static IDL_STRUCT_TAG_DEF trawfp[]={
     {"RAWUNIT",0,(void *) IDL_TYP_LONG},
     {"INXUNIT",0,(void *) IDL_TYP_LONG},
-    {"RAW_RECL",0,(void *) IDL_TYP_LONG},
-    {"INX_RECL",0,(void *) IDL_TYP_LONG},
-    {"BLEN",0,(void *) IDL_TYP_LONG},
-    {"INX_SREC",0,(void *) IDL_TYP_LONG},
-    {"INX_EREC",0,(void *) IDL_TYP_LONG},
     {"CTIME",0,(void *) IDL_TYP_DOUBLE},
     {"STIME",0,(void *) IDL_TYP_DOUBLE},
-    {"ETIME",0,(void *) IDL_TYP_DOUBLE},
-    {"TIME",0,(void *) IDL_TYP_LONG},
-    {"HEADER",hdim,(void *) IDL_TYP_BYTE},
-    {"DATE",ddim,(void *) IDL_TYP_BYTE},
-    {"EXTRA",edim,(void *) IDL_TYP_BYTE},
-    {"MAJOR_REV",0,(void *) IDL_TYP_BYTE},
-    {"MINOR_REV",0,(void *) IDL_TYP_BYTE},
+    {"FREC",0,(void *) IDL_TYP_LONG},
+    {"RLEN",0,(void *) IDL_TYP_LONG},
+    {"PTR",0,(void *) IDL_TYP_LONG},
+    {"THR",0,(void *) IDL_TYP_LONG},
+    {"MAJOR_REV",0,(void *) IDL_TYP_LONG},
+    {"MINOR_REV",0,(void *) IDL_TYP_LONG},
     {"RAWREAD",0,(void *) IDL_TYP_LONG},
-    {"BNUM",0,(void *) IDL_TYP_LONG},
     {0}};
 
   static IDL_MEMINT ilDims[IDL_MAX_ARRAY_DIM];

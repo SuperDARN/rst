@@ -5,7 +5,10 @@
 <location>src.bin/dmap/dmaptoskeleton</location>
 <syntax>dmaptoskeleton --help</syntax>
 <syntax>dmaptoskeleton [-vb] <ar>datamap</ar> <ar>skeleton</ar> <ar>map</ar></syntax>
+
 <option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
 </option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
@@ -32,6 +35,5 @@
 <command>dmaptoskeleton 20021219.kap.fitacf fitacf.skeleton fitmacf.cdfmap</command>
 <description>Generate the skeleton table "<code>fitacf.skeleton</code>" and mapping table  "<code>fitacf.cdfmap</code>" from the file "<code>20021219.kap.fitacf</code>".</description>
 </example>
-
 
 </binary>

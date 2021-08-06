@@ -7,7 +7,7 @@
 # Linux (GCC)
 #
 
-CFLAGS = -Wall -O3 -ansi -D_GNU_SOURCE -D_DARWIN -I/opt/local/include $(INCLUDE)  
+CFLAGS = -Wall -pedantic -O3 -D_GNU_SOURCE -D_DARWIN -I/opt/local/include $(INCLUDE)  
 SUF=so
 
 VSTR=$(shell get.version ${CURDIR}/..)

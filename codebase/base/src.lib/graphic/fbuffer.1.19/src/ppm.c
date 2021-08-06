@@ -1,9 +1,6 @@
 /* ppm.c
    ===== 
    Author: R.J.Barnes
-*/
-
-/*
   LICENSE AND DISCLAIMER
   
   Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
@@ -11,16 +8,16 @@
   This file is part of the Radar Software Toolkit (RST).
   
   RST is free software: you can redistribute it and/or modify
-  it under the terms of the GNU Lesser General Public License as published by
+  it under the terms of the GNU General Public License as published by
   the Free Software Foundation, either version 3 of the License, or
   any later version.
   
-  RST is distributed in the hope that it will be useful,
+  This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU Lesser General Public License for more details.
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
   
-  You should have received a copy of the GNU Lesser General Public License
+  You should have received a copy of the GNU General Public License
   along with RST.  If not, see <http://www.gnu.org/licenses/>.
   
   
@@ -70,7 +67,7 @@ struct FrameBuffer *FrameBufferLoadPPM(FILE *fp,char *name) {
   while ((s==0) && (fgets(str,255,fp) !=NULL) && (str[0]=='#'));
   if ((s==0) && (sscanf(str,"%d %d",&wdt,&hgt) !=2)) s=-1;
   if ((s==0) && (fgets(str,255,fp)==NULL)) s=-1;
-  if ((s==0) && (sscanf(str,"%d",&max) !=1)) s=-1; 
+  if ((s==0) && (sscanf(str,"%u",&max) !=1)) s=-1; 
 
   ptr->wdt=wdt;
   ptr->hgt=hgt;
@@ -199,7 +196,7 @@ struct FrameBuffer *FrameBufferLoadPPMX(FILE *fp) {
   while ((s==0) && (fgets(str,255,fp) !=NULL) && (str[0]=='#'));
   if ((s==0) && (sscanf(str,"%d %d",&wdt,&hgt) !=2)) s=-1;
   if ((s==0) && (fgets(str,255,fp)==NULL)) s=-1;
-  if ((s==0) && (sscanf(str,"%d",&max) !=1)) s=-1; 
+  if ((s==0) && (sscanf(str,"%u",&max) !=1)) s=-1; 
   if ((s==0) && (fgets(str,255,fp)==NULL)) s=-1;
   if (s==0) {
     for (c=0;str[c] !=0;c++) if (!isspace(str[c])) break;

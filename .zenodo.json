@@ -1,0 +1,52 @@
+{
+    "creators":[
+        {
+            "name": "SuperDARN Data Analysis Working Group"
+        },
+        {
+            "affiliation": "University of Saskatchewan",
+            "name": "Schmidt, M.T.",
+            "orcid": "0000-0002-3265-977X"
+        },
+        {
+            "affiliation": "The Unviersity Centre in Svalbard",
+            "name": "Bland, E.C.",
+            "orcid": "0000-0002-0252-0400"
+        },
+        {
+            "affiliation": "Dartmouth College",
+            "name": "Thomas, E.G.",
+            "orcid": "0000-0001-8036-8793"
+        },
+        {
+            "affiliation": "Naval Research Laboratory",
+            "name": "Burrell, A.G.",
+            "orcid": "0000-0001-8875-9326"
+        },
+        {
+            "affiliation": "Istituto Nazionale di Geofisica e Vulcanologia",
+            "name": "Coco, I.",
+            "orcid": "0000-0003-4070-6828"
+        },
+        {
+            "affiliation": "University of Saskatchewan",
+            "name": "Ponomarenko, P.V.",
+            "orcid": "0000-0001-8407-0193"
+        },
+        {
+            "affiliation": "SRI International",
+            "name": "Reimer, A.S.",
+            "orcid": "0000-0002-4621-3453"
+        },
+        {
+            "affiliation": "Virginia Tech",
+            "name": "Sterne, K.T.",
+            "orcid": "0000-0002-1076-0009"
+        },
+        {
+            "affiliation": "Lancaster University",
+            "name": "Walach, M.-T.",
+            "orcid": "0000-0002-9352-0659"
+        }
+    ]
+}

@@ -3,9 +3,25 @@
 
 
 /*
- LICENSE AND DISCLAIMER
- 
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
+
+This file is part of the Radar Software Toolkit (RST).
+
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
+ 
  
  This file is part of the Radar Software Toolkit (RST).
  
@@ -14,9 +30,9 @@
  the Free Software Foundation, either version 3 of the License, or
  any later version.
  
- RST is distributed in the hope that it will be useful,
+ This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  GNU Lesser General Public License for more details.
  
  You should have received a copy of the GNU Lesser General Public License
@@ -154,7 +170,7 @@ struct DataMapArray *DataMapMergeArray(char *name,
   n=1;
   for (c=0;c<x->dim;c++)  n=n*x->rng[c];
   for (c=0;c<n;c++) { 
-    sp=x->data.vptr+wd*c;   
+    sp=(int*)x->data.vptr+wd*c;   
     t=c;
     for (cc=0;cc<x->dim;cc++) {
       inx[cc]=t % x->rng[cc];
@@ -165,14 +181,14 @@ struct DataMapArray *DataMapMergeArray(char *name,
       if (cc !=x->dim) t=t*rngbuf[cc];
       t+=inx[cc-1];
     }
-    dp=tmp+wd*t;
+    dp=(int*)tmp+wd*t;
     memcpy(dp,sp,wd);
   }     
 
   n=1;
   for (c=0;c<y->dim;c++)  n=n*y->rng[c];
   for (c=0;c<n;c++) { 
-    sp=y->data.vptr+wd*c;   
+    sp=(int*)y->data.vptr+wd*c;   
     t=c;
     for (cc=0;cc<y->dim;cc++) {
       inx[cc]=t % y->rng[cc];
@@ -184,7 +200,7 @@ struct DataMapArray *DataMapMergeArray(char *name,
       if (cc !=x->dim) t=t*rngbuf[cc];
       t+=inx[cc-1];
     }
-    dp=tmp+wd*t;
+    dp=(int*)tmp+wd*t;
     memcpy(dp,sp,wd);
   }     
   free(inx);  
@@ -241,4 +257,3 @@ struct DataMap *DataMapMerge(int num,struct DataMap **in) {
 
 
   
-

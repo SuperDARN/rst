@@ -42,6 +42,8 @@
 </option>
 <option><on>-old</on><od>the input file is a <code>map</code> format file instead of the default <code>cnvmap</code> format file.</od>
 </option>
+<option><on>-def</on><od>use a sensible set of default plot options</od>
+</option>
 <option><on>-sd <ar>yyyymmdd</ar></on><od>plot starting from the date <ar>yyyymmdd</ar>.</od>
 </option>
 <option><on>-st <ar>hr:mn</ar></on><od>plot starting from the time <ar>hr:mn</ar>.</od>
@@ -276,7 +278,7 @@
 </option>
 <option><on>-yoff <ar>yoff</ar></on><od>open the window <ar>ypad</ar> pixels from the top edge of the screen.</od>
 </option>
-<option><on>-delay <ar>delay</ar></on><od>set the delay between frames to <ar>delay</ar> milliseconds, a value of 0 will pause the frame until a mouse button is pressed.</od>
+<option><on>-delay <ar>delay</ar></on><od>set the delay between frames to <ar>delay</ar> milliseconds, a value of 0 will pause the frame until a mouse button is pressed. Default: 0</od>
 </option>
 <option><on>-chisham</on><od>draw radar fields of view using the Chisham virtual height model.</od>
 </option>

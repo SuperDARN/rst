@@ -129,7 +129,7 @@
 </option>
 <option><on>-t <ar>hr:mn</ar></on><od>plot for the time <ar>hr:mn</ar>.</od>
 </option>
-<option><on>-st <ar>stid</ar></on><od>plot the field of view for the radar with the station identifier <ar>stid</ar>.</od>
+<option><on>-st <ar>stid...</ar></on><od>plot the fields of view for the radars listed in <ar>stid</ar> which is a comma separated list of station identifier codes.</od>
 </option>
 <option><on>-png</on><od>produce a Portable Network Graphics (PNG) image as the output.</od>
 </option>
@@ -151,6 +151,8 @@
 <option><on>-xoff <ar>xoff</ar></on><od>open the window, <ar>xoff</ar> pixels from the left edge of the screen.</od>
 </option>
 <option><on>-yoff <ar>yoff</ar></on><od>open the window <ar>ypad</ar> pixels from the top edge of the screen.</od>
+</option>
+<option><on>-time</on><od>plot the date and time of the plotted field of view.</od>
 </option>
 <option><on>-chisham</on><od>use the Chisham virtual height model.</od>
 </option>

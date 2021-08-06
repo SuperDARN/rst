@@ -1,31 +1,25 @@
 /* fit.c
    ======== 
    Author: R.J.Barnes
-*/
-
-/*
- LICENSE AND DISCLAIMER
- 
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
  
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
-*/
+This file is part of the Radar Software Toolkit (RST).
+
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
+*/ 
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -137,23 +131,23 @@ void *FitFlatten(struct FitData *ptr,int nrang,size_t *size) {
 
   r=(struct FitData *) buf;
 
-  memcpy(buf,ptr,sizeof(struct FitData));
+  memcpy((int*)buf,ptr,sizeof(struct FitData));
   p=sizeof(struct FitData);
 
   if (ptr->rng !=NULL) {
-    memcpy(buf+p,ptr->rng,nrang*sizeof(struct FitRange));
+    memcpy((int*)buf+p,ptr->rng,nrang*sizeof(struct FitRange));
     r->rng=(void *) p;
     p+=nrang*sizeof(struct FitRange);
   }
 
   if (ptr->xrng !=NULL) {
-    memcpy(buf+p,ptr->xrng,nrang*sizeof(struct FitRange));
+    memcpy((int*)buf+p,ptr->xrng,nrang*sizeof(struct FitRange));
     r->xrng=(void *) p;
     p+=nrang*sizeof(struct FitRange);
   }
 
   if (ptr->elv !=NULL) {
-    memcpy(buf+p,ptr->elv,nrang*sizeof(struct FitElv));
+    memcpy((int*)buf+p,ptr->elv,nrang*sizeof(struct FitElv));
     r->elv=(void *) p;
     p+=nrang*sizeof(struct FitElv);
   }
@@ -173,19 +167,19 @@ int FitExpand(struct FitData *ptr,int nrang,void *buffer) {
   memcpy(ptr,buffer,sizeof(struct FitData));
 
   if (ptr->rng !=NULL) {
-    p=buffer+(size_t) ptr->rng;
+    p=(int*)buffer+(size_t) ptr->rng;
     ptr->rng=malloc(nrang*sizeof(struct FitRange));
     memcpy(ptr->rng,p,nrang*sizeof(struct FitRange));
   }
 
   if (ptr->xrng !=NULL) {
-    p=buffer+(size_t) ptr->xrng;
+    p=(int*)buffer+(size_t) ptr->xrng;
     ptr->xrng=malloc(nrang*sizeof(struct FitRange));
     memcpy(ptr->xrng,p,nrang*sizeof(struct FitRange));
   }
  
   if (ptr->elv !=NULL) {
-    p=buffer+(size_t) ptr->elv;
+    p=(int*)buffer+(size_t) ptr->elv;
     ptr->elv=malloc(nrang*sizeof(struct FitElv));
     memcpy(ptr->elv,p,nrang*sizeof(struct FitElv));
   }

@@ -5,27 +5,24 @@
 
 
 /*
- LICENSE AND DISCLAIMER
- 
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+
+This file is part of the Radar Software Toolkit (RST).
+
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
 */
 
 #include <stdlib.h>
@@ -162,11 +159,25 @@ void CnvMapEvalVelocity(int Lmax,double *coef,double *plm,
   double vx,vy;  
 
   theta=malloc(vptr->num*sizeof(double));
+  if (theta==NULL) return;
   phi=malloc(vptr->num*sizeof(double));
+  if (phi==NULL) {
+    free(theta);
+    return;
+  }
   ex=malloc(vptr->num*sizeof(double));
+  if (ex==NULL) {
+    free(theta);
+    free(phi);
+    return;
+  }
   ey=malloc(vptr->num*sizeof(double));
-
-  if ((theta==NULL) || (phi==NULL)) return;
+  if (ey==NULL) {
+    free(theta);
+    free(phi);
+    free(ex);
+    return;
+  }
 
   for (i=0;i<vptr->num;i++) {
      lat=fabs(vptr->lat[i]);

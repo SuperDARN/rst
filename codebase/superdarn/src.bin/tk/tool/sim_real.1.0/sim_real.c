@@ -1,5 +1,6 @@
  /*COPYRIGHT:
-Copyright (C) 2011 by Virginia Tech
+TODO: Find author and check with VT if we can change this to GPL or LGPL
+   Copyright (C) 2011 by Virginia Tech
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -37,6 +38,7 @@ THE SOFTWARE.
 #include <sys/time.h>
 #include <zlib.h>
 #include "rtypes.h"
+#include "rmath.h"
 #include "dmap.h"
 #include "sim_data.h"
 #include "rtypes.h"
@@ -82,7 +84,8 @@ void makeRadarParm2(struct RadarParm * prm, char * argv[], int argc, int cpid, i
 
   prm->revision.major = 1;
   prm->revision.minor = 0;
-  prm->origin.code = 0;
+  // set to 1 as it is not produced on site 
+  prm->origin.code = 1;
 
   RadarParmSetOriginTime(prm,asctime(timeinfo));
   RadarParmSetOriginCommand(prm,"sim_real");
@@ -174,7 +177,6 @@ int main(int argc,char *argv[])
   double t_d = .04;                         /*Irregualrity decay time s*/
   double w = -9999.;                        /*spectral width*/
   double v_dop =450.;                       /*Background velocity (m/s)*/
-  double c = 3.e8;                          /*Speed of light (m/s)*/
   double freq = 12.e6;                      /*transmit frequency*/
   double amp0 = 1.;                         /*amplitude scaling factor*/
   int noise_flg = 1;                        /*flag to indicate whether white noise is included*/
@@ -261,15 +263,25 @@ int main(int argc,char *argv[])
 	{
 
 		rt = fscanf(fitfp,"%hd  %hd  %hd  %hd  %hd  %hd\n",&prm->time.yr,&prm->time.mo,&prm->time.dy,&prm->time.hr,&prm->time.mt,&prm->time.sc);
-		fprintf(stderr,"%d  %d  %d  %d  %d  %d\n",prm->time.yr,prm->time.mo,prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc);
+		if (rt == 0)
+        {
+            fprintf(stderr, "Error: unable to read all variables\n");
+            exit(-1);
+        }
+        fprintf(stderr,"%d  %d  %d  %d  %d  %d\n",prm->time.yr,prm->time.mo,prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc);
 		rt = fscanf(fitfp,"%d  %lf  %hd  %lf  %d  %d  %lf  %lf  %lf  %d\n",&cpid,&freq,&prm->bmnum,&noise_lev,&nave,&lagfr,&dt,&smsep,&rngsep,&nrang);
-		lagfr /= smsep;
+		if (rt == 0)
+        {
+            fprintf(stderr, "Error: unable to read all variables\n");
+            exit(-1);
+        }
+        lagfr /= smsep;
 		rngsep *= 1.e3;
 		smsep *= 1.e-6;
 		dt *= 1.e-6;
 		freq *= 1.e3;
 
-		double lambda = c/freq;
+		double lambda = C/freq;
 		if(w != -9999.)
 			t_d = lambda/(w*2.*PI);
 
@@ -373,7 +385,12 @@ int main(int argc,char *argv[])
 		for(i=0;i<nrang;i++)
 		{
 			rt = fscanf(fitfp,"%*d  %d  %lf  %lf  %lf\n",&qflg[i],&v_dop,&amp0,&t_d);
-			t_d = lambda/(t_d*2.*PI);
+			if (rt == 0)
+            {
+                fprintf(stderr, "Error: unable to read all variables\n");
+                exit(-1);
+            }
+            t_d = lambda/(t_d*2.*PI);
 			if(t_d > 999999.) t_d = 0.;
 			t_d_arr[i] = t_d;
 

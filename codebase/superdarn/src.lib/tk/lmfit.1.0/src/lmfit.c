@@ -1,6 +1,28 @@
 
 /* lmfit.c
    ==========
+  TODO: find author and put in the correct copyright 
+   Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
+
+This file is part of the Radar Software Toolkit (RST).
+
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
+
+    2020-11-12 Marina Schmidt Converted RST complex -> C library complex
+
 */
 
 
@@ -9,6 +31,7 @@
 #include <time.h>
 #include <string.h>
 #include <math.h>
+#include <complex.h>
 #include <zlib.h>
 #include "rtypes.h"
 #include "rmath.h" 
@@ -89,23 +112,23 @@ void setup_fblk(struct RadarParm *prm, struct RawData *raw,struct FitBlock *inpu
   if (tmp==NULL) return;
   input->prm.pwr0=tmp;
 
-  if (input->acfd==NULL) tmp=malloc(sizeof(struct complex)*input->prm.nrang*
+  if (input->acfd==NULL) tmp=malloc(sizeof(double complex)*input->prm.nrang*
                                     input->prm.mplgs);
-  else tmp=realloc(input->acfd,sizeof(struct complex)*input->prm.nrang*
+  else tmp=realloc(input->acfd,sizeof(double complex)*input->prm.nrang*
                                    input->prm.mplgs);
   if (tmp==NULL) return;
   input->acfd=tmp;
 
-  if (input->xcfd==NULL) tmp=malloc(sizeof(struct complex)*input->prm.nrang*
+  if (input->xcfd==NULL) tmp=malloc(sizeof(double complex)*input->prm.nrang*
                                     input->prm.mplgs);
-  else tmp=realloc(input->xcfd,sizeof(struct complex)*input->prm.nrang*
+  else tmp=realloc(input->xcfd,sizeof(double complex)*input->prm.nrang*
                                    input->prm.mplgs);
   if (tmp==NULL) return;
   input->xcfd=tmp;
 
-  memset(input->acfd,0,sizeof(struct complex)*input->prm.nrang*
+  memset(input->acfd,0,sizeof(double complex)*input->prm.nrang*
                                    input->prm.mplgs);
-  memset(input->xcfd,0,sizeof(struct complex)*input->prm.nrang*
+  memset(input->xcfd,0,sizeof(double complex)*input->prm.nrang*
                                    input->prm.mplgs);
 
 
@@ -115,14 +138,12 @@ void setup_fblk(struct RadarParm *prm, struct RawData *raw,struct FitBlock *inpu
 
     if (raw->acfd[0] !=NULL) {
       for (j=0;j<input->prm.mplgs;j++) {
-        input->acfd[i*input->prm.mplgs+j].x=raw->acfd[0][i*input->prm.mplgs+j];
-        input->acfd[i*input->prm.mplgs+j].y=raw->acfd[1][i*input->prm.mplgs+j];
+        input->acfd[i*input->prm.mplgs+j] = CMPLX(raw->acfd[0][i*input->prm.mplgs+j], raw->acfd[1][i*input->prm.mplgs+j]);
       }
     }
     if (raw->xcfd[0] !=NULL) {
       for (j=0;j<input->prm.mplgs;j++) {
-        input->xcfd[i*input->prm.mplgs+j].x=raw->xcfd[0][i*input->prm.mplgs+j];
-        input->xcfd[i*input->prm.mplgs+j].y=raw->xcfd[1][i*input->prm.mplgs+j];
+        input->xcfd[i*input->prm.mplgs+j] = CMPLX(raw->xcfd[0][i*input->prm.mplgs+j], raw->xcfd[1][i*input->prm.mplgs+j]);
       }
     }
   }
@@ -224,19 +245,18 @@ int singlefit(int m, int n, double *p, double *deviates,
 {
 
   int i;
-  double tau,re,sig,wi,ti;
+  double tau,re,wi,ti;
+  //double sig;
 
   struct datapoints *v = (struct datapoints *) private;
   double lag0mag = v->mag;
-  double *x, *y, *ey;
+  double *x, *y;
   x = v->x;
   y = v->y;
-  ey = v->ey;
   for (i=0; i<m; i++)
   {
     tau=x[i];
     re=y[i];
-    sig=ey[i];
     ti=p[0];
     wi=p[1];
     lag0mag = p[2];
@@ -246,7 +266,6 @@ int singlefit(int m, int n, double *p, double *deviates,
 		else
 			deviates[i] = re-lag0mag*exp(-1.*tau/ti)*sin(wi*tau);
   }
-
   return 0;
 }
 
@@ -283,6 +302,7 @@ void lm_noise_stat(struct RadarParm *prm, struct RawData * raw,
   else
     *skynoise = prm->noise.search;
 
+  free(pwrd);
   return;
 }
 
@@ -305,7 +325,8 @@ double getguessex(struct RadarParm *prm,struct RawData *raw,
   float *data_phi_pos,*data_phi_neg,data_phi;
   float *lagpwr=NULL,*logpwr=NULL,*good_lags=NULL;
   float lag0pwr,re,im,pwr,phi;
-  float fitted_width=0.0,fitted_power=0.0;
+  float fitted_width=0.0;
+  //float fitted_power=0.0;
   float delta_pos,delta_neg,error_neg=0,error_pos=0;
   int   *lag_avail=NULL,availcnt=0,goodcnt=0;
   int   mininx=0,lastlag,lag,i,j,p,L;
@@ -462,8 +483,11 @@ double getguessex(struct RadarParm *prm,struct RawData *raw,
       nrfit(good_lags,logpwr,goodcnt,sigma,1,&a,&b,&siga,&sigb,&chi2,&q);
       fitted_width = -2.9979e8*b/(prm->mpinc*1.e-6)/
                             (2*PI*1000.0*prm->tfreq);
-      if(fitted_width<=0.00) fitted_width = 1.e-2;
-			fitted_power = log(exp(a));
+      if(fitted_width<=0.00) {
+          fitted_width = 1.e-2;
+      }
+      // TODO: not used in this function
+	  //fitted_power = log(exp(a));
 
 
       /* Determine Doppler velocity by comparing the phase with models */
@@ -598,8 +622,19 @@ double getguessex(struct RadarParm *prm,struct RawData *raw,
 
 
 		}
-		else
+		else {
+            free(model_phi);
+            free(model_vels);
+            free(model_errors);
+            free(lagpwr);
+            free(logpwr);
+            free(data_phi_pos);
+            free(data_phi_neg);
+            free(lag_avail);
+            free(sigma);
+            free(good_lags);
 			return -88888888.;
+        }
 
 
 
@@ -627,7 +662,8 @@ void lmfit(struct RadarParm *prm,struct RawData *raw,
   mp_par    parssingle[3];
   mp_result result;
   mp_config config;
-  double pdouble[6];
+  // TODO: this is not used
+  // double pdouble[6];
   double psingle[3];
   double w_limit,t_limit,t_if,w_if,lag0pwrf,v_if,f_if,lambda,tau,ref,imf;
   int status;
@@ -846,7 +882,7 @@ void lmfit(struct RadarParm *prm,struct RawData *raw,
 				mflg=0;
 			}
       /*initial velocity guess in angular Doppler frequency*/
-      pdouble[1] = w_limit*4.*PI/lambda;
+      //pdouble[1] = w_limit*4.*PI/lambda;
 
 
       /* Determine lambda power and decay time initial guesses from lsfit*/
@@ -908,7 +944,10 @@ void lmfit(struct RadarParm *prm,struct RawData *raw,
 
       /*run a single-component fit*/
       status = mpfit(singlefit,availcnt*2,3,psingle,parssingle,&config,(void *)data,&result);
-
+      if (status <= 0)
+      {
+          fprintf(stderr, "Error: mpfit returned error %d. Check mpfit.h to determine what the error means.\n", status);
+      }
       /*final params from single-component fit*/
       t_if = psingle[0];
       f_if = psingle[1];

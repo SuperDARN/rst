@@ -150,24 +150,22 @@ mkdir -p ${LOGPATH}
 makemodule hdr ${BUILD}/script/build.txt
 makemodule lib ${BUILD}/script/build.txt
 makemodule bin ${BUILD}/script/build.txt
-if [ -r ${IDL_IPATH}/idl_export.h ]
-then 
-  makemodule dlm ${BUILD}/script/build.txt
+if [ -r ${IDL_IPATH}/idl_export.h ]; then makemodule dlm ${BUILD}/script/build.txt; fi
 
-  mkdir -p ${RSTPATH}/idl
-  mkdir -p ${RSTPATH}/idl/lib
-  mkdir -p ${RSTPATH}/idl/app
+mkdir -p ${RSTPATH}/idl
+mkdir -p ${RSTPATH}/idl/lib
+mkdir -p ${RSTPATH}/idl/app
 
-  cd ${RSTPATH}/idl/lib
-  if ! [ -L analysis ]; then ln -svf ../../codebase/analysis/src.idl/lib analysis; fi
-  if ! [ -L general ]; then ln -svf ../../codebase/general/src.idl/lib general; fi
-  if ! [ -L superdarn ]; then  ln -svf ../../codebase/superdarn/src.idl/lib superdarn; fi
+cd ${RSTPATH}/idl/lib
+if ! [ -L analysis ]; then ln -svf ../../codebase/analysis/src.idl/lib analysis; fi
+if ! [ -L general ]; then ln -svf ../../codebase/general/src.idl/lib general; fi
+if ! [ -L superdarn ]; then  ln -svf ../../codebase/superdarn/src.idl/lib superdarn; fi
 
-  cd ${RSTPATH}/idl/app
-  if ! [ -L superdarn ]; then ln -svf ../../codebase/superdarn/src.idl/app superdarn; fi
+cd ${RSTPATH}/idl/app
+if ! [ -L superdarn ]; then ln -svf ../../codebase/superdarn/src.idl/app superdarn; fi
 
-  cd ${RSTPATH}/idl
-  if ! [ -L startup.pro ]; then ln -svf ../codebase/superdarn/src.idl/startup/startup.pro startup.pro; fi
-fi
+cd ${RSTPATH}/idl
+if ! [ -L startup.pro ]; then ln -svf ../codebase/superdarn/src.idl/startup/startup.pro startup.pro; fi
+
 exit 0
 

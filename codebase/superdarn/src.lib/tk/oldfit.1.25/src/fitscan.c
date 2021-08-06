@@ -5,27 +5,24 @@
 
 
 /*
- LICENSE AND DISCLAIMER
- 
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
+
+This file is part of the Radar Software Toolkit (RST).
+
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
 */
 
 #include <stdio.h>
@@ -130,11 +127,19 @@ int OldFitReadRadarScan(struct OldFitFp *fp,int *state,
       bm->rng[r].w_l=fit->rng[r].w_l;
       bm->rng[r].v_e=fit->rng[r].v_err;
 
-      if(fit->xrng != NULL)
-	{
-	  bm->rng[r].phi0=fit->xrng[r].phi0;
-	  bm->rng[r].phi0_e=fit->xrng[r].phi0_err;
-	}
+      /* Try to update phase lag and elv */
+      if (fit->xrng !=NULL)
+      {
+        bm->rng[r].phi0=fit->xrng[r].phi0;
+	      bm->rng[r].phi0_e=fit->xrng[r].phi0_err;
+      }
+      else
+      {
+        bm->rng[r].phi0=0;
+	      bm->rng[r].phi0_e=0;
+      }
+      if (fit->elv !=NULL) bm->rng[r].elv=fit->elv[r].normal;
+      else bm->rng[r].elv=0;
     }
    
     ptr->ed_time=TimeYMDHMSToEpoch(prm->time.yr,prm->time.mo,

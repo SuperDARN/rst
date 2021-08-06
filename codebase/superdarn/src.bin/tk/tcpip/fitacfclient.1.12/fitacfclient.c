@@ -4,28 +4,25 @@
 */
 
 /*
- LICENSE AND DISCLAIMER
+  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
  
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
- This file is part of the Radar Software Toolkit (RST).
- 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
- 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
- 
- 
- 
-*/
+This file is part of the Radar Software Toolkit (RST).
+
+RST is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Modifications:
+*/ 
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -61,7 +58,8 @@ int rst_opterr(char *txt) {
 }
 
 int main(int argc,char *argv[]) {
-  int arg;
+  int i,arg;
+  int nrng=75;
   unsigned char help=0;
   unsigned char option=0;
   unsigned char version=0;
@@ -80,6 +78,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
   OptionAdd(&opt,"-version",'x',&version);
+  OptionAdd(&opt,"nrange",'i',&nrng);
 
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
@@ -102,13 +101,11 @@ int main(int argc,char *argv[]) {
     exit(0);
   }
 
-
-
   if (argc-arg<2) {
     OptionPrintInfo(stdout,errstr);
     exit(-1);
   }
-  
+
   strcpy(host,argv[argc-2]);
   remote_port=atoi(argv[argc-1]);
 
@@ -123,69 +120,53 @@ int main(int argc,char *argv[]) {
 
    status=FitCnxRead(1,&sock,prm,fit,&flag,NULL);
 
-
    if (status==-1) break;
    if (flag !=-1) {
-      int i;
-      fprintf(stderr,"%d-%d-%d %d:%d:%d\n", 
-              prm->time.yr,prm->time.mo,prm->time.dy,
-	      prm->time.hr,prm->time.mt,prm->time.sc);
-      fprintf(stderr,"bmnum = %d\tbmazm = %f\tchannel = %d\tintt = %d\n",
-	                        prm->bmnum,prm->bmazm,
-                                prm->channel,prm->intt.sc);
-      fprintf(stderr,"frang = %d\ttfreq = %d\n",prm->frang,
-                                               prm->tfreq);
-      fprintf(stderr,"rsep = %d\tnoise.search = %g\n",prm->rsep,
+      fprintf(stderr,"%04d-%02d-%02d %02d:%02d:%02d\n",
+                      prm->time.yr,prm->time.mo,prm->time.dy,
+                      prm->time.hr,prm->time.mt,prm->time.sc);
+      fprintf(stderr,"stid  = %3d\n", prm->stid);
+      fprintf(stderr,"bmnum = %3d  bmazm = %.2f  channel = %2d  intt = %3.1f\n",
+                      prm->bmnum,prm->bmazm,prm->channel,prm->intt.sc+prm->intt.us/1.0e6);
+      fprintf(stderr,"frang = %3d  tfreq = %d\n", prm->frang,prm->tfreq);
+      fprintf(stderr,"rsep  = %3d  noise.search = %g\n", prm->rsep,
                                               prm->noise.search);
-      fprintf(stderr,"noise.mean = %g\tscan = %d\n",
-                      prm->noise.mean,prm->scan);
-      fprintf(stderr,"cpid = %d\n",
-                      prm->cp);
+      fprintf(stderr,"scan  = %3d  noise.mean   = %g\n", prm->scan,
+                                              prm->noise.mean);
+      fprintf(stderr,"cpid  = %d\n", prm->cp);
+      fprintf(stderr,"origin.code = %d\n", prm->origin.code);
 
-      fprintf(stderr,"origin.code=%d\n",prm->origin.code);
-
-      if (prm->origin.time !=NULL) 
-        fprintf(stderr,"origin.time=%s\n",prm->origin.time);
+      if (prm->origin.time != NULL)
+        fprintf(stderr,"origin.time = %s\n",prm->origin.time);
       if (prm->origin.command !=NULL) 
-        fprintf(stderr,"origin.command=%s\n",prm->origin.command);
-      
-    
+        fprintf(stderr,"origin.command = %s\n",prm->origin.command);
+
+      fprintf(stderr,"fitacf.revision = %d.%d\n",fit->revision.major,fit->revision.minor);
+
       if (fit->rng==NULL) continue;
-  
-      for (i=0;i<75; i++) {
-        if (fit->rng[i].qflg !=0) fprintf(stderr,"d");
-        else fprintf(stderr,"-");
+
+      fprintf(stderr,"\n");
+      for (i=0;i<nrng; i++) {
+        if (fit->rng[i].qflg !=0)
+          if (fit->rng[i].gsct != 0) fprintf(stderr,"g");
+          else                       fprintf(stderr,"i");
+        else                         fprintf(stderr,"-");
+      }
+      fprintf(stderr,"\n\n");
+
+      fprintf(stderr, "rng    vel      v_e     pow    wid\n");
+      fprintf(stderr, "gte   (m/s)    (m/s)   (dB)   (m/s)\n");
+      for (i=0;i<nrng; i++) {
+        if (fit->rng[i].qflg != 0)
+          fprintf(stderr,"%3d:%7.1f %7.1f %7.1f %7.1f\n", i+1, fit->rng[i].v,
+                          fit->rng[i].v_err, fit->rng[i].p_l, fit->rng[i].w_l);
       }
       fprintf(stderr,"\n");
-
-      for (i=0;i<75; i++) {
-        if (fit->rng[i].gsct !=0) fprintf(stderr,"g");
-        else fprintf(stderr,"-");
-      }
-      fprintf(stderr,"\n");
-
-      for (i=0;i<75; i++) {
-        if (fit->rng[i].qflg !=0) fprintf(stderr,"%d:%g\t%g\t%g\t%g\n",i,
-					 fit->rng[i].v,fit->rng[i].v_err,
-                                         fit->rng[i].p_l,fit->rng[i].w_l);
-      }
-      
    }           
   } while(1);
+
   fprintf(stderr,"Connection failed.\n");
 
   return 0;
 }
-   
-
- 
-
-
-
-
-
-
-
-
-
 

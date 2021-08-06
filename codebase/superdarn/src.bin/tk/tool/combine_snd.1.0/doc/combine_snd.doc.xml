@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>combine_snd</name>
+<location>src.bin/tk/tool/combine_snd</location>
+
+<syntax>combine_snd --help</syntax>
+<syntax>combine_snd [-vb] [-r] <ar>sndnames...</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on><ar>snddnames</ar></on><od>filenames of the <code>snd</code> format files.</od>
+</option>
+<synopsis><p>Combines together snd files from each slice of a Borealis-style radar.</p></synopsis>
+<description><p>Combines together multiple snd files from each slice of a Borealis-style radar to produce a single file written to standard output.</p>
+</description>
+
+<example>
+<command>combine_snd -vb 20201020.20.sas.?.snd &gt; 20201020.20.sas.snd</command>
+<description>Combines together all files called "<code>20201020.20.sas.?.snd</code>" to produce a file called "<code>19981020.20.sas.snd</code>". The status is logged to standard error.</description>
+</example>
+
+</binary>
