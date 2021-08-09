@@ -230,7 +230,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
   /* If there are good beams in this scan, add it to the output structure. */
   /* If there are too many good beams, this is a beam-switching mode and   */
   /* we can't currently process it.                                        */
-  if(igood_num > 0 && igood_num <= hard->maxbeam)
+  if(igood_num >= MAX_BMS && igood_num <= hard->maxbeam)
     {
       /* Test to see that there are no duplicate beams. This is something */
       /* that may be possible to process, but isn't at the moment.        */
@@ -563,7 +563,6 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 		}
 	    }
 
-	  printf("TEST CYCLE TO NEXT SCAN\n");fflush(stdout);
 	  /* Cycle to the next scan, if a new scan was loaded */
 	  scan_new->next_scan = (struct FitBSIDScan *)
 	    malloc(sizeof(struct FitBSIDScan));
