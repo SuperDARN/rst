@@ -327,7 +327,8 @@ int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
   RadarScanFree(scan);
 
   /* Close the scan structure */
-  mult_bsid->last_ptr->next_scan = (struct FitBSIDScan *)(NULL);
+  if(mult_bsid->num_scans > 0)
+    mult_bsid->last_ptr->next_scan = (struct FitBSIDScan *)(NULL);
 
   /* Return with the status flag */
   return(ret_flg);

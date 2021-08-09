@@ -313,10 +313,11 @@ int main(int argc, char *argv[])
 				     F_hmax, D_vh_box, E_vh_box, F_vh_box,
 				     far_vh_box, max_hop, mult_bsid);
 
-      /* Examine the UT evolution and consistency of the elevation angles */
-      test_ut_fov_struct(vb, vbuf, min_frac, ut_box_sec, D_nrg, E_nrg, F_nrg,
-			 far_nrg, D_rgmax, E_rgmax, F_rgmax, D_hmin, D_hmax,
-			 E_hmax, F_hmax, mult_bsid);
+      if(ret_stat < 0 && mult_bsid->num_scans > 0)
+	/* Examine the UT evolution and consistency of the elevation angles */
+	test_ut_fov_struct(vb, vbuf, min_frac, ut_box_sec, D_nrg, E_nrg, F_nrg,
+			   far_nrg, D_rgmax, E_rgmax, F_rgmax, D_hmin, D_hmax,
+			   E_hmax, F_hmax, mult_bsid);
     }
 
   /* Write an output file */
@@ -326,5 +327,5 @@ int main(int argc, char *argv[])
   /* Free the data structure pointer */
   MultFitBSIDFree(mult_bsid);
 
-  return ret_stat;
+  return(0);
 }
