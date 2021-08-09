@@ -157,29 +157,6 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
   vmins = (float *)calloc(max_vbin, sizeof(float));
   vmaxs = (float *)calloc(max_vbin, sizeof(float));
 
-  /* Inititalize the output scan */
-  scan_new = (struct FitBSIDScan *)malloc(sizeof(struct FitBSIDScan));
-
-  if(mult_bsid->num_scans == 0)
-    {
-      mult_bsid->scan_ptr      = scan_new;
-      mult_bsid->stid          = scan->stid;
-      mult_bsid->st_time       = scan->st_time;
-      mult_bsid->ed_time       = scan->ed_time;
-      mult_bsid->version.major = scan->version.major;
-      mult_bsid->version.minor = scan->version.minor;
-      prev_new                 = (struct FitBSIDScan *)(NULL);
-    }
-  else
-    {
-      prev_new            = mult_bsid->last_ptr;
-      prev_new->next_scan = scan_new;
-      scan_new->prev_scan = prev_new;
-      scan_new->next_scan = (struct FitBSIDScan *)(NULL);
-      mult_bsid->ed_time  = scan->ed_time;
-    }
-  mult_bsid->last_ptr = scan_new;
-
   /* Before initializing this new scan data, make sure the frequency for the */
   /* beams are correct. Also test to ensure constant CPID and channel.       */
   for(igood_num = 0, ibm = 0; ibm < scan->num && igood_num >= 0; ibm++)
@@ -230,7 +207,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
   /* If there are good beams in this scan, add it to the output structure. */
   /* If there are too many good beams, this is a beam-switching mode and   */
   /* we can't currently process it.                                        */
-  if(igood_num >= MAX_BMS && igood_num <= hard->maxbeam)
+  if(igood_num >= MIN_BMS && igood_num <= hard->maxbeam)
     {
       /* Test to see that there are no duplicate beams. This is something */
       /* that may be possible to process, but isn't at the moment.        */
@@ -241,6 +218,29 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 	}
       else
 	{
+	  /* Inititalize the output scan */
+	  scan_new = (struct FitBSIDScan *)malloc(sizeof(struct FitBSIDScan));
+
+	  if(mult_bsid->num_scans == 0)
+	    {
+	      mult_bsid->scan_ptr      = scan_new;
+	      mult_bsid->stid          = scan->stid;
+	      mult_bsid->st_time       = scan->st_time;
+	      mult_bsid->ed_time       = scan->ed_time;
+	      mult_bsid->version.major = scan->version.major;
+	      mult_bsid->version.minor = scan->version.minor;
+	      prev_new                 = (struct FitBSIDScan *)(NULL);
+	    }
+	  else
+	    {
+	      prev_new            = mult_bsid->last_ptr;
+	      prev_new->next_scan = scan_new;
+	      scan_new->prev_scan = prev_new;
+	      scan_new->next_scan = (struct FitBSIDScan *)(NULL);
+	      mult_bsid->ed_time  = scan->ed_time;
+	    }
+	  mult_bsid->last_ptr = scan_new;
+
 	  scan_new->st_time = scan->st_time;
 	  scan_new->ed_time = scan->ed_time;
 	  scan_new->num_bms = scan->num;
