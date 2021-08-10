@@ -1,5 +1,5 @@
-/* load_radar_params.c
-   ===================
+/* load_radar_site.c
+   =================
    Author: Angeline G. Burrell - NRL - 2019
 */
 
@@ -87,5 +87,7 @@ struct RadarSite *load_radar_site(int yr, int mo, int dy, int hr, int mt,
       exit(-1);
     }
 
+  /* Get the radar site */
   return RadarYMDHMSGetSite(radar, yr, mo, dy, hr, mt, sc);
+
 }
