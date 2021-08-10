@@ -444,9 +444,9 @@ void get_rg_box_limits(int rg, int max_rg, int D_rgmax, int E_rgmax,
   int width;
 
   /* Get the half-width of the range gate box */
-  if(rg < D_rgmax)      width = D_nrg / 2; /* (D_nrg   + inc) / 2; */
-  else if(rg < E_rgmax) width = E_nrg / 2; /* (E_nrg   + inc) / 2; */
-  else if(rg < F_rgmax) width = F_nrg / 2; /* (F_nrg   + inc) / 2; */
+  if(rg < D_rgmax)      width = D_nrg / 2;   /* (D_nrg   + inc) / 2; */
+  else if(rg < E_rgmax) width = E_nrg / 2;   /* (E_nrg   + inc) / 2; */
+  else if(rg < F_rgmax) width = F_nrg / 2;   /* (F_nrg   + inc) / 2; */
   else                  width = far_nrg / 2; /* (far_nrg + inc) / 2; */
 
   /* Set the upper and lower box limits, limiting them  */
