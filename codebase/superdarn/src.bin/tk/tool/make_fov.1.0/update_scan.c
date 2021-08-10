@@ -44,6 +44,10 @@
 #define MIN_BMS 3  /* Minimum number of beams to find azimuthal variations */
 #endif
 
+#ifndef MAX_PATH
+#define MAX_PATH 8  /* Minimum number of paths allowed */
+#endif
+
 /**
  * @brief Update scan backscatter propagation path, elevation angle,
  *        backscatter type, structure flag, and origin field of view for all
@@ -87,18 +91,20 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 		     struct RadarSite *hard, struct MultFitBSID *mult_bsid)
 {
   int iscan, ibm, irg, ifov, ipath, ireg, ivh, igbm, cpid, scan_chan, max_vbin;
-  int bind, max_rg, max_path, out_num, group_num, bm_num, bmwidth, igood_num;
+  int bind, max_rg, out_num, group_num, bm_num, bmwidth, igood_num;
   int igood[MAX_BMS], bgood[MAX_BMS];
   int group_bm[MAX_BMS * MAX_RGS], group_rg[MAX_BMS * MAX_RGS];
   int fovflg[MAX_BMS][MAX_RGS], fovpast[MAX_BMS][MAX_RGS];
   int front_num[MAX_BMS][MAX_RGS], back_num[MAX_BMS][MAX_RGS];
   int fovbelong[MAX_BMS][MAX_RGS][3], opp_in[MAX_BMS][MAX_RGS];
-  int ***scan_num, ****scan_bm, ****scan_rg;
+  int scan_num[3][2][MAX_PATH], scan_bm[3][2][MAX_PATH][MAX_BMS * MAX_RGS];
+  int scan_rg[3][2][MAX_PATH][MAX_BMS * MAX_RGS];
 
   float hmin, hmax, hbox, *vmins, *vmaxs;
   float group_elv[MAX_BMS * MAX_RGS], group_vh[MAX_BMS * MAX_RGS];
   float fovstd[MAX_BMS][MAX_RGS], fovscore[MAX_BMS][MAX_RGS];
-  float ****scan_vh, ****scan_elv;
+  float scan_vh[3][2][MAX_PATH][MAX_BMS * MAX_RGS];
+  float scan_elv[3][2][MAX_PATH][MAX_BMS * MAX_RGS];
 
   struct CellBSIDLoc loc;
   struct FitElv elv;
@@ -109,7 +115,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
   void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
 		     float D_hmax, float E_hmax, float F_hmax,
 		     struct RadarSite *site, struct FitBSIDBeam *beam);
-  int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
+  int select_alt_groups(int num, float vh[], float vh_min, float vh_max,
 			float vh_box, int min_pnts, int max_vbin,
 			float *vh_mins, float *vh_maxs);
 
@@ -145,13 +151,44 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 	}
     }
 
-  max_path = (int)(max_hop * 2.0);
-  scan_num = (int ***)(NULL);
-  scan_bm  = (int ****)(NULL);
-  scan_rg  = (int ****)(NULL);
-  scan_vh  = (float ****)(NULL);
-  scan_elv = (float ****)(NULL);
+  if(max_hop * 2.0 > MAX_PATH)
+    {
+      fprintf(stderr, "maximum hop greater than allowed limit (%f > %f)\n",
+	      max_hop, MAX_PATH / 2.0);
+      exit(1);
+    }
 
+  for(ireg = 0; ireg < 3; ireg++)
+    {
+      if(ireg == 0)      out_num = D_rgmax * scan->num;
+      else if(ireg == 1) out_num = E_rgmax * scan->num;
+      else               out_num = F_rgmax * scan->num;
+
+      if(out_num > MAX_BMS * MAX_RGS)
+	{
+	  fprintf(stderr,
+		  "Maximum range gates for region %s too big for %d beams\n",
+		  (ireg == 0) ? "D" : ((ireg == 1) ? "E" : "F"), scan->num);
+	  exit(1);
+	}
+		  
+      for(ifov = 0; ifov < 2; ifov++)
+	{
+	  for(ipath = 0; ipath < MAX_PATH; ipath++)
+	    {
+	      scan_num[ireg][ifov][ipath] = 0;
+
+	      for(ivh = 0; ivh < MAX_BMS * MAX_RGS; ivh++)
+		{
+		  scan_rg[ireg][ifov][ipath][ivh]  = -1;
+		  scan_bm[ireg][ifov][ipath][ivh]  = -1;
+		  scan_elv[ireg][ifov][ipath][ivh] = -1.0;
+		  scan_vh[ireg][ifov][ipath][ivh]  = -1.0;
+		}
+	    }
+	}
+    }
+		  
   max_vbin = (F_rgmax > E_rgmax) ? F_rgmax : E_rgmax;
   if(D_rgmax > max_vbin) max_vbin = D_rgmax;
   vmins = (float *)calloc(max_vbin, sizeof(float));
@@ -338,56 +375,6 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 				F_hmax, hard, bm_new);
 
 		  /* Find the scan's altitude bins by FoV, region, and path */
-		  if(scan_num == NULL)
-		    {
-		      scan_num = (int ***)malloc(3 * sizeof(int **));
-		      scan_bm  = (int ****)malloc(3 * sizeof(int ***));
-		      scan_rg  = (int ****)malloc(3 * sizeof(int ***));
-		      scan_vh  = (float ****)malloc(3 * sizeof(float ***));
-		      scan_elv = (float ****)malloc(3 * sizeof(float ***));
-
-		      for(ireg = 0; ireg < 3; ireg++)
-			{
-			  scan_num[ireg] = (int **)malloc(2 * sizeof(int *));
-			  scan_bm[ireg]  = (int ***)malloc(2 * sizeof(int **));
-			  scan_rg[ireg]  = (int ***)malloc(2 * sizeof(int **));
-			  scan_vh[ireg]  = (float ***)
-			    malloc(2 * sizeof(float **));
-			  scan_elv[ireg] = (float ***)
-			    malloc(2 * sizeof(float **));
-
-			  if(ireg == 0) out_num = D_rgmax * scan->num;
-			  else if(irg == 1) out_num = E_rgmax * scan->num;
-			  else out_num = F_rgmax * scan->num;
-
-			  for(ifov = 0; ifov < 2; ifov++)
-			    {
-			      scan_num[ireg][ifov] = (int *)
-				calloc(max_path, sizeof(int));
-			      scan_bm[ireg][ifov]  = (int **)
-				malloc(max_path * sizeof(int *));
-			      scan_rg[ireg][ifov]  = (int **)
-				malloc(max_path * sizeof(int *));
-			      scan_vh[ireg][ifov]  = (float **)
-				malloc(max_path * sizeof(float *));
-			      scan_elv[ireg][ifov] = (float **)
-				malloc(max_path * sizeof(float *));
-
-			      for(ipath = 0; ipath < max_path; ipath++)
-				{
-				  scan_bm[ireg][ifov][ipath] = (int *)
-				    calloc(out_num, sizeof(int));
-				  scan_rg[ireg][ifov][ipath] = (int *)
-				    calloc(out_num, sizeof(int));
-				  scan_vh[ireg][ifov][ipath] = (float *)
-				    calloc(out_num, sizeof(float));
-				  scan_elv[ireg][ifov][ipath] = (float *)
-				    calloc(out_num, sizeof(float));
-				}
-			    }
-			}
-		    }
-
 		  for(irg = 0; irg < bm_new->nrang; irg++)
 		    {
 		      if(bm_new->sct[irg] == 1)
@@ -464,14 +451,20 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 
 	      for(ifov = 0; ifov < 2; ifov++)
 		{
-		  for(ipath = 1; ipath < max_path; ipath++)
+		  for(ipath = 1; ipath < MAX_PATH; ipath++)
 		    {
 		      if(ireg == 2 && ipath >= 3) hbox = far_vh_box;
 
 		      if(scan_num[ireg][ifov][ipath] >= min_pnts)
 			{
 			  /* Use select_alt_groups */
-			  out_num = select_alt_groups(scan_num[ireg][ifov][ipath], scan_rg[ireg][ifov][ipath], scan_vh[ireg][ifov][ipath], hmin, hmax, hbox, min_pnts, max_vbin, vmins, vmaxs);
+			  out_num = select_alt_groups(scan_num[ireg][ifov][ipath], scan_vh[ireg][ifov][ipath], hmin, hmax, hbox, min_pnts, max_vbin, vmins, vmaxs);
+
+			  if(out_num > max_vbin)
+			    {
+			      fprintf(stderr, "too many virtual height bins\n");
+			      exit(1);
+			    }
 
 			  /* For each virtual height bin, determine if this */
 			  /* FoV has a realistic azimuth variation.         */
@@ -490,6 +483,13 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 				      group_vh[group_num] = scan_vh[ireg][ifov][ipath][irg];
 				      group_elv[group_num] = scan_elv[ireg][ifov][ipath][irg];
 				      group_num++;
+
+				      if(group_num >= MAX_BMS * MAX_RGS)
+					{
+					  fprintf(stderr,
+						  "too many points in group\n");
+					  exit(1);
+					}
 				    }
 				}
 
@@ -578,50 +578,6 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
   /* Free the assigned memory */
   free(vmins);
   free(vmaxs);
-
-  if(scan_num != (int ***)(NULL))
-    {
-      for(ireg = 0; ireg < 3; ireg++)
-	{
-	  for(ifov = 0; ifov < 2; ifov++)
-	    {
-	      for(ipath = 0; ipath < max_path; ipath++)
-		{
-		  free(scan_bm[ireg][ifov][ipath]);
-		  free(scan_rg[ireg][ifov][ipath]);
-		  free(scan_vh[ireg][ifov][ipath]);
-		  free(scan_elv[ireg][ifov][ipath]);
-		}
-	    }
-	}
-
-      for(ireg = 0; ireg < 3; ireg++)
-	{
-	  for(ifov = 0; ifov < 2; ifov++)
-	    {
-	      free(scan_num[ireg][ifov]);
-	      free(scan_bm[ireg][ifov]);
-	      free(scan_rg[ireg][ifov]);
-	      free(scan_vh[ireg][ifov]);
-	      free(scan_elv[ireg][ifov]);
-	    }
-	}
-
-      for(ireg = 0; ireg < 3; ireg++)
-	{
-	  free(scan_num[ireg]);
-	  free(scan_bm[ireg]);
-	  free(scan_rg[ireg]);
-	  free(scan_vh[ireg]);
-	  free(scan_elv[ireg]);
-	}
-
-      free(scan_num);
-      free(scan_bm);
-      free(scan_rg);
-      free(scan_vh);
-      free(scan_elv);
-    }
 
   return;
 }
