@@ -38,7 +38,6 @@
  *        peaks to establish appropriate limits.
  *
  * @params[in] num      - Number of points in `rg` and `vh` arrays
- *             rg       - Array of range gates to consider
  *             vh       - Array of virtual heights for each range gate
  *             vh_min   - Minimum allowable virtual height in km
  *             vh_max   - Maximum allowable virtual height in km
@@ -51,7 +50,7 @@
  *              npeaks   - Number of virtual height bins
  **/
 
-int select_alt_groups(int num, int *rg, float *vh, float vh_min, float vh_max,
+int select_alt_groups(int num, float vh[], float vh_min, float vh_max,
 		      float vh_box, int min_pnts, int max_vbin, float *vh_mins,
 		      float *vh_maxs)
 {
