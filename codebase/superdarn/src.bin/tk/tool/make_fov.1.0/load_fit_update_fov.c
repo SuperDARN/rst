@@ -102,18 +102,18 @@ int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
 			float far_vh_box, float max_hop,
 			struct MultFitBSID *mult_bsid)
 {
-  int inum, yr=-1, mo=-1, dy=-1, hr=-1, mt=-1, ret_flg=0, state=0, syncflg=1;
-  int site_flg=0;
+  int inum, yr = -1, mo = -1, dy = -1, hr = -1, mt = -1, ret_flg = 0, state = 0;
+  int syncflg = 1, site_flg = 0;
 
-  double sc=0.0;
+  double sc = 0.0;
 
   FILE *fp, *fitfp;
 
-  struct RadarSite *site;
+  struct RadarSite *site = NULL;
   struct RadarParm *prm;
   struct FitData *fit;
   struct FitIndex *inx;
-  struct OldFitFp *oldfitfp=NULL;
+  struct OldFitFp *oldfitfp = NULL;
   struct RadarScan *scan;
 
   int exclude_outofscan(struct RadarScan *ptr);
@@ -130,8 +130,8 @@ int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
   /* Initialize radar parameter and fit structures. If you initialize `site` */
   /* it won't set properly.                                                  */
   scan = RadarScanMake();
-  prm = RadarParmMake();
-  fit = FitMake();
+  prm  = RadarParmMake();
+  fit  = FitMake();
 
   /* Cycle through all of the fit files */
   for(inum=0; inum < fnum; inum++)
@@ -293,7 +293,8 @@ int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
 	     and time of the radar scan (only done once) */
 	  if(site_flg == 0)
 	    {
-	      site = load_radar_site(yr, mo, dy, hr, mt, (int)sc, scan->stid);
+	      /* Get the radar site */
+	      site     = load_radar_site(yr, mo, dy, hr, mt, sc, scan->stid);
 	      site_flg = 1;
 
 	      if(tdiff_flag) site->tdiff = tdiff;
@@ -324,7 +325,8 @@ int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
     }
 
   /* Free the local pointers. Freeing site here causes abort(6) */
-  RadarScanFree(scan);
+  if(scan != NULL) RadarScanFree(scan);
+  if(prm != NULL) RadarParmFree(prm);
 
   /* Close the scan structure */
   if(mult_bsid->num_scans > 0)
