@@ -1,8 +1,8 @@
-----
-name: Bug report
-about: Report a problem or issue
+---
+name: Bug Report
+about: Reporting a problem or issue with the code
 
-----
+---
 
 # BUG
 
