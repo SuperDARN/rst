@@ -440,7 +440,7 @@ end
 
 pro RadarGeoTGC,iopt,gdlat,gdlon,grho,glat,glon,del
 
-   a=6378.137D
+   a = 6378.1370d;             /* semi-major axis */
    f=1.0D/298.257223563D
   
 
@@ -792,7 +792,7 @@ function RadarPos,center,bcrd,rcrd,site,frang,rsep,rxrise,$
 
 
                 
-  re=6356.779D
+  re=!CONST.R_earth/1000
   bm_edge=0.0D;
   range_edge=0.0D
 
@@ -934,7 +934,7 @@ function RadarPosGS,center,bcrd,rcrd,site,frang,rsep,rxrise,$
 
 
                 
-  re=6356.779D
+  re=!CONST.R_earth/1000
   bm_edge=0.0D;
   range_edge=0.0D
 
