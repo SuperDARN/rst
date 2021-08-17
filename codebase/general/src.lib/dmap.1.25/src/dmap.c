@@ -1406,6 +1406,42 @@ struct DataMap *DataMapFread(FILE *fp) {
   return DataMapRead(fileno(fp));
 }
 
+struct DataMap *DataMapReadBlocBZ2(gzFile file,int *s) {
+  unsigned char *buf=NULL;
+  struct DataMap *ptr;
+  int32 code,sze,*iptr;
+  int size=0,cnt=0,num=0,st=0;   
+  st=ConvertReadIntZ(file,&code);
+  if (st==-1) return NULL;
+  st=ConvertReadIntZ(file,&sze);
+  if (st==-1) return NULL;
+  if (sze==0) return NULL;
+  size=sze;
+  buf=malloc(size);
+  if (buf==NULL) return NULL;
+  iptr=(int32 *) buf;
+  iptr[0]=code;
+  iptr[1]=sze;
+    
+  cnt=0;
+  num=size-2*sizeof(int32);
+  while (cnt<num) {
+    st=gzread(file,buf+2*sizeof(int32)+cnt,num-cnt);
+    if (st<=0) break;
+    cnt+=st;
+  }
+  if (cnt<num) {
+    free(buf);
+    return NULL;
+  }
+
+  ptr=DataMapDecodeBuffer(buf,size);
+  free(buf);
+  
+  if (s !=NULL) *s=size+2*sizeof(int32);
+  return ptr;
+}
+
 
 struct DataMap *DataMapReadBlockZ(gzFile file,int *s) {
   unsigned char *buf=NULL;
