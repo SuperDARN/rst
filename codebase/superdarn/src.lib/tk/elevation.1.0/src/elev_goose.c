@@ -76,7 +76,7 @@ double elev_goose(struct FitPrm *prm, double phi0) {
 
   /* compute phasing matrix cone angle */
   offset=prm->maxbeam/2.0-0.5;
-  psi = prm->bmsep*(prm->bmnum-offset)*PI/180.;
+  psi = (prm->bmoff+prm->bmsep*(prm->bmnum-offset))*PI/180.;
 
   /* compute wavenumber */
   k = 2 * PI * prm->tfreq * 1000.0/C;

@@ -60,7 +60,7 @@ double elevation(struct FitPrm *prm,double phi0) {
     }
   }
   offset=prm->maxbeam/2.0-0.5;
-  phi= prm->bmsep*(prm->bmnum - offset)* PI/ 180.0;
+  phi= (prm->bmoff + prm->bmsep*(prm->bmnum - offset))* PI/ 180.0;
   c_phi= cos( phi);
   k= 2 * PI * prm->tfreq * 1000.0/C;
 

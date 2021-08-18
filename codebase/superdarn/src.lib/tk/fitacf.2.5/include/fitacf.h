@@ -25,7 +25,7 @@ Modifications:
 #define _FITACF_H
 
 void FitACFFree(struct FitBlock *fptr); 
-struct FitBlock *FitACFMake(struct RadarSite *hd,int year);
+struct FitBlock *FitACFMake(struct RadarSite *hd,int year,int channel,int offset);
 void FitACF(struct RadarParm *prm,struct RawData *ptr,struct FitBlock *input,
 	    struct FitData *fit);
 

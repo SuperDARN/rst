@@ -53,6 +53,7 @@ struct FitPrm {
   int *pwr0;
   int maxbeam;
   double interfer[3];
+  double bmoff;
   double bmsep;
   double phidiff;
   double tdiff;

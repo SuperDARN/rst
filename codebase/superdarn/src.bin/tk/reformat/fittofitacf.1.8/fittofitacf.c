@@ -177,7 +177,7 @@ int main(int argc,char *argv[]) {
     /* calculate beam azimuth */
 
     offset=site->maxbeam/2.0-0.5;
-    rprm->bmazm=site->boresite+site->bmsep*(rprm->bmnum-offset);
+    rprm->bmazm=site->boresite+site->bmsep*(rprm->bmnum-offset)+site->bmoff;
 
     s=FitFwrite(stdout,rprm,fitacf); 
     if (s==-1) {
