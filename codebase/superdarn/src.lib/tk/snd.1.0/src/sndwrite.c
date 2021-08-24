@@ -128,10 +128,12 @@ int SndWrite(int fid, struct SndData *snd) {
     p_l=DataMapStoreArray(ptr,"p_l",DATAFLOAT,1,&snum,NULL);
     w_l=DataMapStoreArray(ptr,"w_l",DATAFLOAT,1,&snum,NULL);
 
-    x_qflg=DataMapStoreArray(ptr,"x_qflg",DATACHAR,1,&xnum,NULL);
+    if (snd->xcf !=0) {
+      x_qflg=DataMapStoreArray(ptr,"x_qflg",DATACHAR,1,&xnum,NULL);
 
-    phi0=DataMapStoreArray(ptr,"phi0",DATAFLOAT,1,&xnum,NULL);
-    phi0_e=DataMapStoreArray(ptr,"phi0_e",DATAFLOAT,1,&xnum,NULL);
+      phi0=DataMapStoreArray(ptr,"phi0",DATAFLOAT,1,&xnum,NULL);
+      phi0_e=DataMapStoreArray(ptr,"phi0_e",DATAFLOAT,1,&xnum,NULL);
+    }
 
     x=0;
 
