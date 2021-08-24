@@ -116,44 +116,45 @@ int SndWrite(int fid, struct SndData *snd) {
   if (snd->xcf !=0) xnum=snum;
   else xnum=0;
 
-  if (snum==0) return 0;
+  if (snum !=0) {
 
-  slist=DataMapStoreArray(ptr,"slist",DATASHORT,1,&snum,NULL);
+    slist=DataMapStoreArray(ptr,"slist",DATASHORT,1,&snum,NULL);
 
-  qflg=DataMapStoreArray(ptr,"qflg",DATACHAR,1,&snum,NULL);
-  gflg=DataMapStoreArray(ptr,"gflg",DATACHAR,1,&snum,NULL);
+    qflg=DataMapStoreArray(ptr,"qflg",DATACHAR,1,&snum,NULL);
+    gflg=DataMapStoreArray(ptr,"gflg",DATACHAR,1,&snum,NULL);
 
-  v=DataMapStoreArray(ptr,"v",DATAFLOAT,1,&snum,NULL);
-  v_e=DataMapStoreArray(ptr,"v_e",DATAFLOAT,1,&snum,NULL);
-  p_l=DataMapStoreArray(ptr,"p_l",DATAFLOAT,1,&snum,NULL);
-  w_l=DataMapStoreArray(ptr,"w_l",DATAFLOAT,1,&snum,NULL);
+    v=DataMapStoreArray(ptr,"v",DATAFLOAT,1,&snum,NULL);
+    v_e=DataMapStoreArray(ptr,"v_e",DATAFLOAT,1,&snum,NULL);
+    p_l=DataMapStoreArray(ptr,"p_l",DATAFLOAT,1,&snum,NULL);
+    w_l=DataMapStoreArray(ptr,"w_l",DATAFLOAT,1,&snum,NULL);
 
-  x_qflg=DataMapStoreArray(ptr,"x_qflg",DATACHAR,1,&xnum,NULL);
+    x_qflg=DataMapStoreArray(ptr,"x_qflg",DATACHAR,1,&xnum,NULL);
 
-  phi0=DataMapStoreArray(ptr,"phi0",DATAFLOAT,1,&xnum,NULL);
-  phi0_e=DataMapStoreArray(ptr,"phi0_e",DATAFLOAT,1,&xnum,NULL);
+    phi0=DataMapStoreArray(ptr,"phi0",DATAFLOAT,1,&xnum,NULL);
+    phi0_e=DataMapStoreArray(ptr,"phi0_e",DATAFLOAT,1,&xnum,NULL);
 
-  x=0;
+    x=0;
 
-  for (c=0;c<snd->nrang;c++) {
-    if ( (snd->rng[c].qflg==1) || (snd->rng[c].x_qflg==1)) {
-      slist[x]=c;
+    for (c=0;c<snd->nrang;c++) {
+      if ( (snd->rng[c].qflg==1) || (snd->rng[c].x_qflg==1)) {
+        slist[x]=c;
 
-      qflg[x]=snd->rng[c].qflg;
-      gflg[x]=snd->rng[c].gsct;
+        qflg[x]=snd->rng[c].qflg;
+        gflg[x]=snd->rng[c].gsct;
 
-      p_l[x]=snd->rng[c].p_l;
-      v[x]=snd->rng[c].v;
-      v_e[x]=snd->rng[c].v_err;
-      w_l[x]=snd->rng[c].w_l;
+        p_l[x]=snd->rng[c].p_l;
+        v[x]=snd->rng[c].v;
+        v_e[x]=snd->rng[c].v_err;
+        w_l[x]=snd->rng[c].w_l;
 
-      if (xnum !=0) {
-        x_qflg[x]=snd->rng[c].x_qflg;
+        if (xnum !=0) {
+          x_qflg[x]=snd->rng[c].x_qflg;
 
-        phi0[x]=snd->rng[c].phi0;
-        phi0_e[x]=snd->rng[c].phi0_err;
+          phi0[x]=snd->rng[c].phi0;
+          phi0_e[x]=snd->rng[c].phi0_err;
+        }
+        x++;
       }
-      x++;
     }
   }
 
