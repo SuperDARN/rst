@@ -56,7 +56,7 @@ Modifications:
 #define tmax 2000     // initial number of time records
 #define maxbeam 30    // max number of beams
 #define maxchannel 3  // max number of channels (0, 1, or 2)
-#define maxrange 250    // max number of range gates
+#define maxrange 250  // max number of range gates
 
 int fnum=0;
 
@@ -133,10 +133,7 @@ int main (int argc,char *argv[]) {
   }
   
   FILE *fp=NULL;
-  if (arg==argc) 
-      fp=stdin;
-  else 
-      fp=fopen(argv[arg],"r");
+  fp=fopen(argv[arg],"r");
   if (fp==NULL) {
     fprintf(stderr,"File not found.\n");
     exit(-1);
@@ -353,8 +350,7 @@ int main (int argc,char *argv[]) {
   
   } while (FitFread(fp,prm,fit) !=-1);
 
-  if (fp !=stdin) 
-      fclose(fp);
+  fclose(fp);
 
   // Free memory
   free_parameters(prm, fit, NULL, qflgs);
