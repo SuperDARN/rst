@@ -225,6 +225,68 @@ double gaussian(double x, double *params)
 }
 
 /**
+ * @brief A Multi-Gaussian function for MINPACK optimization
+ *
+ * @params[in] x      - Independent variable value
+ *             params - Pointer holding the number of gaussian peaks, followed
+ *                      by the amplitude, mean, and standard deviation for
+ *                      each peak.
+ *
+ * @params[out] y - Result of Gaussian calculation
+ **/
+
+double mult_gaussian(double x, double *params)
+{
+  int i, imax;
+
+  double y, nparams[3];
+
+  imax = (int)params[0];
+
+  for(y = 0.0, i = 0; i < imax; i++)
+    {
+      nparams[0] = params[1 + i * 3];
+      nparams[1] = params[2 + i * 3];
+      nparams[2] = params[3 + i * 3];
+      y += gaussian(x, nparams);
+    }
+
+  return y;
+}
+
+/**
+ * @brief Calculates the deviation of a multi-gaussian function for minimization
+ *
+ * @params[in] m - Number of samples in `private` data structure
+ *             n - Number of samples in `p` parameter pointer
+ *             p - Parameter pointer (see mult_gaussian)
+ *             private - Structure holding the input data
+ *
+ * @params[out] deviates - deviation between the model and data
+ *              derivs   - optional derivative values, not used 
+ **/
+
+int mult_gaussian_dev(int m, int n, double *p, double *deviates,
+		      double **derivs, void *private)
+{
+  int i;
+  double *x, *y, *y_err;
+
+  double mult_gaussian(double x, double *params);
+
+  struct gauss_data *gdat = (struct gauss_data *)private;
+
+  x     = gdat->x;
+  y     = gdat->y;
+  y_err = gdat->y_error;
+
+  for(i = 0; i < m; i++)
+    deviates[i] = (y[i] - mult_gaussian(x[i], p)) / y_err[i];
+
+  return(0);
+}
+
+/**
  * @brief Calculates the deviation of a gaussian function for minimization
  *
  * @params[in] m - Number of samples in `private` data structure
@@ -250,7 +312,7 @@ int gaussian_dev(int m, int n, double *p, double *deviates, double **derivs,
   y     = gdat->y;
   y_err = gdat->y_error;
 
-  for(i=0; i<m; i++)
+  for(i = 0; i < m; i++)
     deviates[i] = (y[i] - gaussian(x[i], p)) / y_err[i];
 
   return(0);
@@ -331,7 +393,7 @@ int int_argrelmax(int num, int vals[], int order, int clip, int *ismax)
   nmax = 0;
 
   /* Cycle through each order of consideration */
-  for(shift = 1; shift <= order; shift++)
+  for(shift = order; shift >= 1; shift--)
     {
       for(i = 0; i < num; i++)
 	{
@@ -357,8 +419,11 @@ int int_argrelmax(int num, int vals[], int order, int clip, int *ismax)
 	  /* Evaluate the values, looking for a relative maximum */
 	  if(vals[i] > val_plus && vals[i] > val_minus)
 	    {
-	      nmax++;
-	      ismax[i] = 1;
+	      if(ismax[i] == 0)
+		{
+		  nmax++;
+		  ismax[i] = 1;
+		}
 	    }
 	  else if(ismax[i] == 1)
 	    {
