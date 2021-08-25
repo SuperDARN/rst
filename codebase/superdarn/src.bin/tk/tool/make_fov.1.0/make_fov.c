@@ -57,7 +57,9 @@ int command_options(int argc, char *argv[], int *old, int *tlen,
 		    unsigned char *nsflg, char **stmestr, char **etmestr,
 		    char **sdtestr, char **edtestr, char **exstr, char **chnstr,
 		    char **chnstr_fix, int *freq_min, int *freq_max,
-		    short int *strict_gs, short int *tdiff_flag, double *tdiff)
+		    int *band_width, short int *strict_gs,
+		    short int *tdiff_flag, double *tdiff, float *D_hmin,
+		    float *D_hmax, float *E_hmax, float *F_hmax, int *nbms)
 {
   /* Initialize input options */
   int farg=0;
@@ -96,9 +98,10 @@ int command_options(int argc, char *argv[], int *old, int *tlen,
   /* Apply scan flag limit (ie exclude data with scan flag = -1) */
   OptionAdd(&opt, "ns", 'x', nsflg);
 
-  /* Apply transmission frequency limits */
+  /* Apply transmission frequency limits or options */
   OptionAdd(&opt, "tfmin", 'i', freq_min); /* Minimum transmission frequency */
   OptionAdd(&opt, "tfmax", 'i', freq_max); /* Maximum transmission frequency */
+  OptionAdd(&opt, "bandwidth", 'i', band_width); /* frequency bandwidth */
 
   /* Apply groundscatter strictness conditions (1=remove indeterminate GS) */
   OptionAdd(&opt, "gs-strict", 'x', strict_gs);
@@ -106,6 +109,15 @@ int command_options(int argc, char *argv[], int *old, int *tlen,
   /* Process the tdiff options */
   OptionAdd(&opt, "update-tdiff", 'x', tdiff_flag);
   OptionAdd(&opt, "tdiff", 'd', tdiff);
+
+  /* Process the region height limit options */
+  OptionAdd(&opt, "dhmin", 'f', D_hmin);
+  OptionAdd(&opt, "dhmax", 'f', D_hmax);
+  OptionAdd(&opt, "ehmax", 'f', E_hmax);
+  OptionAdd(&opt, "fhmax", 'f', F_hmax);
+
+  /* Number of beams to use in UT evaluation */
+  OptionAdd(&opt, "nbms", 'i', nbms);
 
   /* Process command line options */
   farg = OptionProcess(1, argc, argv, &opt, rst_opterr);
@@ -161,7 +173,9 @@ int main(int argc, char *argv[])
   short int strict_gs=0, tdiff_flag=0;
 
   int old=0, farg=0, tlen=0, channel=0, channel_fix=0;
-  int freq_min=3000, freq_max=30000;
+  int freq_min=3000, freq_max=30000, band_width=300, nbms=3;
+
+  float D_hmin=75, D_hmax=100, E_hmax=120, F_hmax=750;
 
   double stime=-1.0, etime=-1.0, extime=0.0, sdate=-1.0, edate=-1.0, tdiff=0.0;
 
@@ -174,10 +188,9 @@ int main(int argc, char *argv[])
   char **dnames=NULL, *iname=NULL;
 
   /* Set these parameters to davitpy defaults. Could be optional inputs */
-  int min_pnts=3, band_width=300;
+  int min_pnts=3;
   int D_nrg=2, E_nrg=5, F_nrg=10, far_nrg=20;
   int D_rgmax=5, E_rgmax=25, F_rgmax=40;
-  float D_hmin=75, D_hmax=100, E_hmax=120, F_hmax=750;
   float D_vh_box=40, E_vh_box=35, F_vh_box=50, far_vh_box=150;
   float max_hop=3.0, min_frac=0.1;
   double ut_box_sec=1200.0;  /* 20 minutes */
@@ -188,8 +201,9 @@ int main(int argc, char *argv[])
 		      unsigned char *nsflg, char **stmestr, char **etmestr,
 		      char **sdtestr, char **edtestr, char **exstr,
 		      char **chnstr, char **chnstr_fix, int *freq_min,
-		      int *freq_max, short int *strict_gs,
-		      short int *tdiff_flag, double *tdiff);
+		      int *freq_max, int *band_width, short int *strict_gs,
+		      short int *tdiff_flag, double *tdiff, float *D_hmin,
+		      float *D_hmax, float *E_hmax, float *F_hmax, int *nbms);
   int set_stereo_channel(char *chnstr);
   int set_fix_channel(char *chnstr_fix);
   double strtime(char *text);
@@ -198,7 +212,7 @@ int main(int argc, char *argv[])
 			  int tlen, double stime, double sdate, double etime,
 			  double edate, double extime, unsigned char fitflg,
 			  unsigned char nsflg, unsigned char vb, char *vbuf,
-			  char *iname, char **dnames,int band_width,
+			  char *iname, char **dnames, int band_width,
 			  int fbands[90][2], int all_freq[MAX_FREQ_KHZ]);
   int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
 			  int tlen, double stime, double sdate, double etime,
@@ -212,18 +226,20 @@ int main(int argc, char *argv[])
 			  float F_hmax, float D_vh_box, float E_vh_box,
 			  float F_vh_box, float far_vh_box, float max_hop,
 			  struct MultFitBSID *mult_bsid);
-  void test_ut_fov_struct(unsigned char vb, char *vbuf, float min_frac,
-			  double ut_box_sec, int D_nrg, int E_nrg, int F_nrg,
-			  int far_nrg, int D_rgmax, int E_rgmax, int F_rgmax,
-			  float D_hmin, float D_hmax, float E_hmax,
-			  float F_hmax, struct MultFitBSID *mult_bsid);
+  void test_ut_fov_struct(unsigned char vb, char *vbuf, int nbms,
+			  float min_frac, double ut_box_sec, int D_nrg,
+			  int E_nrg, int F_nrg, int far_nrg, int D_rgmax,
+			  int E_rgmax, int F_rgmax, float D_hmin, float D_hmax,
+			  float E_hmax, float F_hmax,
+			  struct MultFitBSID *mult_bsid);
   void write_multbsid_ascii(FILE *fp, struct MultFitBSID *mult_scan);
 
   /* Process the command line options */
   farg = command_options(argc, argv, &old, &tlen, &vb, &catflg, &nsflg,
 			 &stmestr, &etmestr, &sdtestr, &edtestr, &exstr,
-			 &chnstr, &chnstr_fix, &freq_min, &freq_max, &strict_gs,
-			 &tdiff_flag, &tdiff);
+			 &chnstr, &chnstr_fix, &freq_min, &freq_max,
+			 &band_width, &strict_gs, &tdiff_flag, &tdiff, &D_hmin,
+			 &D_hmax, &E_hmax, &F_hmax, &nbms);
 
   /* If 'cn' set then determine Stereo channel, either A or B */
   if(chnstr != NULL) channel = set_stereo_channel(chnstr);
@@ -314,10 +330,10 @@ int main(int argc, char *argv[])
 				     far_vh_box, max_hop, mult_bsid);
 
       if(ret_stat < 0 && mult_bsid->num_scans > 0)
-	/* Examine the UT evolution and consistency of the elevation angles */
-	test_ut_fov_struct(vb, vbuf, min_frac, ut_box_sec, D_nrg, E_nrg, F_nrg,
-			   far_nrg, D_rgmax, E_rgmax, F_rgmax, D_hmin, D_hmax,
-			   E_hmax, F_hmax, mult_bsid);
+      	/* Examine the UT evolution and consistency of the elevation angles */
+      	test_ut_fov_struct(vb, vbuf, nbms, min_frac, ut_box_sec, D_nrg, E_nrg,
+      			   F_nrg, far_nrg, D_rgmax, E_rgmax, F_rgmax, D_hmin,
+      			   D_hmax, E_hmax, F_hmax, mult_bsid);
     }
 
   /* Write an output file */
