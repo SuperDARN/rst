@@ -75,6 +75,34 @@ void smart_argsort_float(int num, float array[], int sortargs[])
 }
 
 /**
+ * @brief Returns the indices that would sort the input array
+ *
+ * @params[in] num   - number of values in input `array`
+ *             array - input data array of integer values with length `num`
+ *
+ * @params[out] sortargs - array of length `num` containing the zero-index
+ *                         integers needed to sort `array`
+ *
+ * @notes Does not sort the input array
+ *
+ * @reference Numerical Recipes in C, 2nd Ed.
+ **/
+
+void smart_argsort_int(int num, int array[], int sortargs[])
+{
+  int i;
+  double *sorted_array;
+
+  sorted_array = (double *)calloc(num, sizeof(double));
+  for(i = 0; i < num; i++) sorted_array[i] = (double)array[i];
+
+  if(num < MSTACK) straight_argsort((short int)num, sorted_array, sortargs);
+  else             quickargsort(num, sorted_array, sortargs);
+
+  return;
+}
+
+/**
  * @brief Sorts input using the most effecient of the available sort routines
  *
  * @params[in] num   - Number of values in input array
