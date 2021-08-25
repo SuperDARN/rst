@@ -48,6 +48,7 @@ void smart_sort_int(int num, int array[]);
 void straight_sort(short int num, double array[]);
 void straight_sort_int(short int num, int array[]);
 void straight_argsort(short int num, double array[], int argout[]);
+void smart_argsort_int(int num, int array[], int sortargs[]);
 void quicksort(int num, double array[]);
 void quicksort_int(int num, int array[]);
 void quickargsort(int num, double array[], int argout[]);
