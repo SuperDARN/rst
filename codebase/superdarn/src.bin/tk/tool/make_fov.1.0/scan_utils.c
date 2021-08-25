@@ -60,7 +60,7 @@ void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
 			float *sig_slope, float *chi2, float *q);
 
   /* Initalize the maximum statistics and reference variables */
-  max_std   = 3.0;
+  max_std   = 5.0;  /* Used to be 3.0, changed after INV tests */
   max_score = 3.0;
   
   /* Initialize the evalutaion statistics to default values */
@@ -88,7 +88,9 @@ void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
   reg_stat = linear_regression(scan_x, scan_elv, sig, num, 0, &intercept,
 			       &sig_intercept, &slope, &sig_slope, &chi2, &q);
 
-  if(reg_stat == 0 && slope < 0.1)
+  /* Don't check for slope being negative or flat, because flat can be     */
+  /* slightly positive and it's been too finicky finding a good threshold. */
+  if(reg_stat == 0)
     {
       /* If there were no calculation problems, and the slope is flat or */
       /* decreasing, calculate the linear values                         */
