@@ -74,18 +74,20 @@ union RadarIDLPtr {
 };
 
 struct RadarIDLSite {
+  IDL_LONG status;
   double tval;
   double geolat;
   double geolon;
   double alt;
   double boresite;
+  double bmoff;
   double bmsep;
   double vdir;
-  double atten;
-  double tdiff;
   double phidiff;
+  double tdiff[2];
   double interfer[3];
   double recrise;
+  double atten;
   IDL_LONG maxatten;
   IDL_LONG maxrange;
   IDL_LONG maxbeam;
@@ -149,20 +151,23 @@ int IDLRadarCopyFromIDL(int rnum,int sze,char  *iptr,struct Radar *radar) {
 
       if (radar[r].site==NULL) break;
       for (s=0;s<radar[r].snum;s++) {
+        radar[r].site[s].status=iradar->site[s].status;
         radar[r].site[s].tval=iradar->site[s].tval;
         radar[r].site[s].geolat=iradar->site[s].geolat;
         radar[r].site[s].geolon=iradar->site[s].geolon;
         radar[r].site[s].alt=iradar->site[s].alt;
         radar[r].site[s].boresite=iradar->site[s].boresite;
+        radar[r].site[s].bmoff=iradar->site[s].bmoff;
         radar[r].site[s].bmsep=iradar->site[s].bmsep;
         radar[r].site[s].vdir=iradar->site[s].vdir;
-        radar[r].site[s].atten=iradar->site[s].atten;
-        radar[r].site[s].tdiff=iradar->site[s].tdiff;
         radar[r].site[s].phidiff=iradar->site[s].phidiff;
+        radar[r].site[s].tdiff[0]=iradar->site[s].tdiff[0];
+        radar[r].site[s].tdiff[1]=iradar->site[s].tdiff[1];
         radar[r].site[s].interfer[0]=iradar->site[s].interfer[0];
         radar[r].site[s].interfer[1]=iradar->site[s].interfer[1];
         radar[r].site[s].interfer[2]=iradar->site[s].interfer[2];
         radar[r].site[s].recrise=iradar->site[s].recrise;
+        radar[r].site[s].atten=iradar->site[s].atten;
         radar[r].site[s].maxatten=iradar->site[s].maxatten;
         radar[r].site[s].maxrange=iradar->site[s].maxrange;
         radar[r].site[s].maxbeam=iradar->site[s].maxbeam;
@@ -194,20 +199,23 @@ void IDLRadarCopyToIDL(int rnum,struct Radar *radar,int sze,
     iradar->ed_time=radar[r].ed_time;
     iradar->snum=radar[r].snum;
     for (s=0;s<radar[r].snum;s++) {
+      iradar->site[s].status=radar[r].site[s].status;
       iradar->site[s].tval=radar[r].site[s].tval;
       iradar->site[s].geolat=radar[r].site[s].geolat;
       iradar->site[s].geolon=radar[r].site[s].geolon;
       iradar->site[s].alt=radar[r].site[s].alt;
       iradar->site[s].boresite=radar[r].site[s].boresite;
+      iradar->site[s].bmoff=radar[r].site[s].bmoff;
       iradar->site[s].bmsep=radar[r].site[s].bmsep;
       iradar->site[s].vdir=radar[r].site[s].vdir;
-      iradar->site[s].atten=radar[r].site[s].atten;
-      iradar->site[s].tdiff=radar[r].site[s].tdiff;
       iradar->site[s].phidiff=radar[r].site[s].phidiff;
+      iradar->site[s].tdiff[0]=radar[r].site[s].tdiff[0];
+      iradar->site[s].tdiff[1]=radar[r].site[s].tdiff[1];
       iradar->site[s].interfer[0]=radar[r].site[s].interfer[0];
       iradar->site[s].interfer[1]=radar[r].site[s].interfer[1];
       iradar->site[s].interfer[2]=radar[r].site[s].interfer[2];
       iradar->site[s].recrise=radar[r].site[s].recrise;
+      iradar->site[s].atten=radar[r].site[s].atten;
       iradar->site[s].maxatten=radar[r].site[s].maxatten;
       iradar->site[s].maxrange=radar[r].site[s].maxrange;
       iradar->site[s].maxbeam=radar[r].site[s].maxbeam;
@@ -220,21 +228,24 @@ struct RadarIDLSite *IDLRadarMakeSite(IDL_VPTR *vptr) {
  
   void *s;
  
+  static IDL_MEMINT tdim[]={1,2};
   static IDL_MEMINT idim[]={1,3};
 
   static IDL_STRUCT_TAG_DEF site[]={
+    {"STATUS",0,(void *) IDL_TYP_LONG},
     {"TVAL",0,(void *) IDL_TYP_DOUBLE},
     {"GEOLAT",0,(void *) IDL_TYP_DOUBLE},
     {"GEOLON",0,(void *) IDL_TYP_DOUBLE},
     {"ALT",0,(void *) IDL_TYP_DOUBLE},
     {"BORESITE",0,(void *) IDL_TYP_DOUBLE},
+    {"BMOFF",0,(void *) IDL_TYP_DOUBLE},
     {"BMSEP",0,(void *) IDL_TYP_DOUBLE},
     {"VDIR",0,(void *) IDL_TYP_DOUBLE},
-    {"ATTEN",0,(void *) IDL_TYP_DOUBLE},
-    {"TDIFF",0,(void *) IDL_TYP_DOUBLE},
     {"PHIDIFF",0,(void *) IDL_TYP_DOUBLE},
+    {"TDIFF",tdim,(void *) IDL_TYP_DOUBLE},
     {"INTERFER",idim,(void *) IDL_TYP_DOUBLE},
     {"RECRISE",0,(void *) IDL_TYP_DOUBLE},
+    {"ATTEN",0,(void *) IDL_TYP_DOUBLE},
     {"MAXATTEN",0,(void *) IDL_TYP_LONG},
     {"MAXRANGE",0,(void *) IDL_TYP_LONG},
     {"MAXBEAM",0,(void *) IDL_TYP_LONG},
@@ -254,23 +265,26 @@ struct RadarIDLRadar *IDLRadarMakeRadar(int num,IDL_VPTR *vptr) {
 
   void *s;
 
+  static IDL_MEMINT tdim[]={1,2};
   static IDL_MEMINT idim[]={1,3};
   static IDL_MEMINT cdim[]={1,8};
   static IDL_MEMINT sdim[]={1,32};
 
   static IDL_STRUCT_TAG_DEF site[]={
+    {"STATUS",0,(void *) IDL_TYP_LONG},
     {"TVAL",0,(void *) IDL_TYP_DOUBLE},
     {"GEOLAT",0,(void *) IDL_TYP_DOUBLE},
     {"GEOLON",0,(void *) IDL_TYP_DOUBLE},
     {"ALT",0,(void *) IDL_TYP_DOUBLE},
     {"BORESITE",0,(void *) IDL_TYP_DOUBLE},
+    {"BMOFF",0,(void *) IDL_TYP_DOUBLE},
     {"BMSEP",0,(void *) IDL_TYP_DOUBLE},
     {"VDIR",0,(void *) IDL_TYP_DOUBLE},
-    {"ATTEN",0,(void *) IDL_TYP_DOUBLE},
-    {"TDIFF",0,(void *) IDL_TYP_DOUBLE},
     {"PHIDIFF",0,(void *) IDL_TYP_DOUBLE},
+    {"TDIFF",tdim,(void *) IDL_TYP_DOUBLE},
     {"INTERFER",idim,(void *) IDL_TYP_DOUBLE},
     {"RECRISE",0,(void *) IDL_TYP_DOUBLE},
+    {"ATTEN",0,(void *) IDL_TYP_DOUBLE},
     {"MAXATTEN",0,(void *) IDL_TYP_LONG},
     {"MAXRANGE",0,(void *) IDL_TYP_LONG},
     {"MAXBEAM",0,(void *) IDL_TYP_LONG},
@@ -447,20 +461,23 @@ static IDL_VPTR IDLRadarEpochGetSite(int argc,IDL_VPTR *argv) {
 
   isite=IDLRadarMakeSite(&vsite);
 
+  isite->status=iradar->site[s].status;
   isite->tval=iradar->site[s].tval;
   isite->geolat=iradar->site[s].geolat;
   isite->geolon=iradar->site[s].geolon;
   isite->alt=iradar->site[s].alt;
   isite->boresite=iradar->site[s].boresite;
+  isite->bmoff=iradar->site[s].bmoff;
   isite->bmsep=iradar->site[s].bmsep;
   isite->vdir=iradar->site[s].vdir;
-  isite->atten=iradar->site[s].atten;
-  isite->tdiff=iradar->site[s].tdiff;
   isite->phidiff=iradar->site[s].phidiff;
+  isite->tdiff[0]=iradar->site[s].tdiff[0];
+  isite->tdiff[1]=iradar->site[s].tdiff[1];
   isite->interfer[0]=iradar->site[s].interfer[0];
   isite->interfer[1]=iradar->site[s].interfer[1];
   isite->interfer[2]=iradar->site[s].interfer[2];
   isite->recrise=iradar->site[s].recrise;
+  isite->atten=iradar->site[s].atten;
   isite->maxatten=iradar->site[s].maxatten;
   isite->maxrange=iradar->site[s].maxrange;
   isite->maxbeam=iradar->site[s].maxbeam;
@@ -511,20 +528,23 @@ static IDL_VPTR IDLRadarYMDHMSGetSite(int argc,IDL_VPTR *argv) {
 
   isite=IDLRadarMakeSite(&vsite);
 
+  isite->tval=status->site[s].status;
   isite->tval=iradar->site[s].tval;
   isite->geolat=iradar->site[s].geolat;
   isite->geolon=iradar->site[s].geolon;
   isite->alt=iradar->site[s].alt;
   isite->boresite=iradar->site[s].boresite;
+  isite->bmoff=iradar->site[s].bmoff;
   isite->bmsep=iradar->site[s].bmsep;
   isite->vdir=iradar->site[s].vdir;
-  isite->atten=iradar->site[s].atten;
-  isite->tdiff=iradar->site[s].tdiff;
   isite->phidiff=iradar->site[s].phidiff;
+  isite->tdiff[0]=iradar->site[s].tdiff[0];
+  isite->tdiff[1]=iradar->site[s].tdiff[1];
   isite->interfer[0]=iradar->site[s].interfer[0];
   isite->interfer[1]=iradar->site[s].interfer[1];
   isite->interfer[2]=iradar->site[s].interfer[2];
   isite->recrise=iradar->site[s].recrise;
+  isite->atten=iradar->site[s].atten;
   isite->maxatten=iradar->site[s].maxatten;
   isite->maxrange=iradar->site[s].maxrange;
   isite->maxbeam=iradar->site[s].maxbeam;
@@ -582,20 +602,23 @@ static IDL_VPTR IDLRadarGetRadar(int argc,IDL_VPTR *argv) {
   oradar->ed_time=iradar->ed_time;
   oradar->snum=iradar->snum;
   for (s=0;s<iradar->snum;s++) {
+    oradar->site[s].status=iradar->site[s].status;
     oradar->site[s].tval=iradar->site[s].tval;
     oradar->site[s].geolat=iradar->site[s].geolat;
     oradar->site[s].geolon=iradar->site[s].geolon;
     oradar->site[s].alt=iradar->site[s].alt;
     oradar->site[s].boresite=iradar->site[s].boresite;
+    oradar->site[s].bmoff=iradar->site[s].bmoff;
     oradar->site[s].bmsep=iradar->site[s].bmsep;
     oradar->site[s].vdir=iradar->site[s].vdir;
-    oradar->site[s].atten=iradar->site[s].atten;
-    oradar->site[s].tdiff=iradar->site[s].tdiff;
     oradar->site[s].phidiff=iradar->site[s].phidiff;
+    oradar->site[s].tdiff[0]=iradar->site[s].tdiff[0];
+    oradar->site[s].tdiff[1]=iradar->site[s].tdiff[1];
     oradar->site[s].interfer[0]=iradar->site[s].interfer[0];
     oradar->site[s].interfer[1]=iradar->site[s].interfer[1];
     oradar->site[s].interfer[2]=iradar->site[s].interfer[2];
     oradar->site[s].recrise=iradar->site[s].recrise;
+    oradar->site[s].atten=iradar->site[s].atten;
     oradar->site[s].maxatten=iradar->site[s].maxatten;
     oradar->site[s].maxrange=iradar->site[s].maxrange;
     oradar->site[s].maxbeam=iradar->site[s].maxbeam;
@@ -634,20 +657,23 @@ static IDL_VPTR IDLRadarConvert(int type,int argc,IDL_VPTR *argv,char *argk) {
 
   isite=(struct RadarIDLSite *) argv[3]->value.s.arr->data;
 
+  site.status=isite->status;
   site.tval=isite->tval;
   site.geolat=isite->geolat;
   site.geolon=isite->geolon;
   site.alt=isite->alt;
   site.boresite=isite->boresite;
+  site.bmoff=isite->bmoff;
   site.bmsep=isite->bmsep;
   site.vdir=isite->vdir;
-  site.atten=isite->atten;
-  site.tdiff=isite->tdiff;
   site.phidiff=isite->phidiff;
+  site.tdiff[0]=isite->tdiff[0];
+  site.tdiff[1]=isite->tdiff[1];
   site.interfer[0]=isite->interfer[0];
   site.interfer[1]=isite->interfer[1];
   site.interfer[2]=isite->interfer[2];
   site.recrise=isite->recrise;
+  site.atten=isite->atten;
   site.maxatten=isite->maxatten;
   site.maxrange=isite->maxrange;
   site.maxbeam=isite->maxbeam;

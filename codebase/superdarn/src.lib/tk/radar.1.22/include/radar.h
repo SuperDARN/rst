@@ -29,16 +29,17 @@ Modifications:
 #ifndef _RADAR_H
 #define _RADAR_H
 
-struct RadarSite { 
+struct RadarSite {
+  int status;
   double tval;
   double geolat,geolon,alt;
-  double boresite,bmsep;
+  double boresite,bmoff,bmsep;
   double vdir;
-  double atten;
-  double tdiff;
+  double tdiff[2];
   double phidiff;
   double interfer[3];
   double recrise;
+  double atten;
   int maxatten;
   int maxrange;
   int maxbeam;

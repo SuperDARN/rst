@@ -275,6 +275,16 @@
     </member>
 
     <member>
+      <proto>int old;</proto>
+      <description>Set to indicate old data that used the 16 lag, 7 pulse code (pre-1993).</description>
+    </member>
+
+    <member>
+      <proto>int old_elev;</proto>
+      <description>Set to use the old elevation angle routines.</description>
+    </member>
+
+    <member>
       <proto>int lag[LAG_SIZE][2];</proto>
       <description>Lag table.</description>
     </member>
@@ -292,6 +302,11 @@
     <member>
       <proto>double interfer[3];</proto>
       <description>the x, y, z position of the interferometer array with respect to the main array. The values are given in meters. X is in the direction parallel to the main array, with +X being to the right looking along the boresite. Y is in the boresite direction, with +Y in front of the array. Z is the vertical displacement, with +Z being up.</description>
+    </member>
+
+    <member>
+      <proto>double bmoff;</proto>
+      <description>Electronic beam offset angle.</description>
     </member>
 
     <member>

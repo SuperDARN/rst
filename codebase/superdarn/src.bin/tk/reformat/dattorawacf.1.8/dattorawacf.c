@@ -199,7 +199,7 @@ int main(int argc,char *argv[]) {
 
     /* calculate beam azimuth */
     offset=site->maxbeam/2.0-0.5;
-    rprm->bmazm=site->boresite+site->bmsep*(rprm->bmnum-offset);
+    rprm->bmazm=site->boresite+site->bmsep*(rprm->bmnum-offset)+site->bmoff;
     if (thr !=-1) rawacf->thr=thr;
     s=RawFwrite(stdout,rprm,rawacf);
     if (s==-1) {

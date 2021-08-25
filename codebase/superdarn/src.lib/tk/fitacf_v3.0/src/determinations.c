@@ -543,6 +543,7 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
     fitprm->interfer[1] = fit_prms->interfer[1];
     fitprm->interfer[2] = fit_prms->interfer[2];
     fitprm->maxbeam = fit_prms->maxbeam;
+    fitprm->bmoff = fit_prms->bmoff;
     fitprm->bmsep = fit_prms->bmsep;
     fitprm->bmnum = fit_prms->bmnum;
     fitprm->tfreq = fit_prms->tfreq;
@@ -615,7 +616,7 @@ void find_elevation_error(llist_node range, struct FitData* fit_data, FITPRMS* f
     }
 
     azi_offset = fit_prms->maxbeam/2 - 0.5;
-    phi_0 = fit_prms->bmsep * (fit_prms->bmnum - azi_offset) * PI/180;
+    phi_0 = (fit_prms->bmoff + fit_prms->bmsep * (fit_prms->bmnum - azi_offset)) * PI/180;
     c_phi_0 = cos(phi_0);
 
     wave_num = 2 * PI * fit_prms->tfreq * 1000/C;

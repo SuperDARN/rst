@@ -401,7 +401,7 @@ int main(int argc,char *argv[]) {
       }
   }
   else if (fitacf_version == 25) {
-    fblk = FitACFMake(site,prm->time.yr);
+    fblk = FitACFMake(site,prm->time.yr,prm->channel,prm->offset);
     fblk->prm.old_elev = old_elev;        /* passing in old_elev flag */
     FitACF(prm,raw,fblk,fit);
   }
