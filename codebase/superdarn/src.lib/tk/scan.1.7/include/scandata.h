@@ -81,5 +81,6 @@ void RadarScanFree(struct RadarScan *ptr);
 int RadarScanReset(struct RadarScan *ptr);
 int RadarScanResetBeam(struct RadarScan *ptr,int bmnum,int *bmptr);
 struct RadarBeam *RadarScanAddBeam(struct RadarScan *ptr,int nrang);
+int exclude_outofscan(struct RadarScan *ptr);
 
 #endif
