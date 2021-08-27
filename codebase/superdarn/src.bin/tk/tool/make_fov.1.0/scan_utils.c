@@ -117,12 +117,13 @@ void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
 		  irg = scan_rg[i];
 		  ibm = scan_bm[i];
 
-		  /* Also update if this is the first evaluation. Removed the */
+		  /* Also update if this is the first evaluation. Adapted the */
 		  /* requirement for this line's standard to be less than the */
 		  /* previous line's standard deviation as well as a lower    */
 		  /* z-score.                                                 */
 		  if(fovflg[ibm][irg] == 0
-		     || fabs(lscore[i]) < fovscore[ibm][irg])
+		     || (fabs(lscore[i]) < fovscore[ibm][irg]
+			 && lstd <= fovstd[ibm][irg]))
 		    {
 		      /* If the FoV is changing, note that here */
 		      if(fovflg[ibm][irg] != 0
