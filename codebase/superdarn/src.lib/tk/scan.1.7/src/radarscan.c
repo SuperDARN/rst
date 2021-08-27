@@ -20,12 +20,15 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+AGB - Moved exclude_outofscan routine here to allow access by multiple tools.
+
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
+
 #include "rtypes.h"
 #include "option.h"
 #include "rtime.h"
@@ -144,4 +147,62 @@ struct RadarBeam *RadarScanAddBeam(struct RadarScan *ptr,int nrang) {
     }
     ptr->num++;
     return bm;
+}
+
+/**
+ * @brief Exclude beams that are not part of a scan
+ *
+ * @param[in/out] ptr - RadarScan pointer
+ *
+ * @param[out] 0 upon success, -1 upon failure
+ **/
+int exclude_outofscan(struct RadarScan *ptr)
+{
+  int n, num=0;
+  struct RadarBeam *tmp;
+
+  /* Exit if there is no data in this radar scan */
+  if (ptr==NULL) return -1;
+  if (ptr->num==0) return -1;
+
+  /* Initialize a temporary structure, exiting if it ends up being null */
+  tmp=malloc(sizeof(struct RadarBeam)*ptr->num);
+  if (tmp==NULL) return -1;
+
+  /* Cycle through each beam in this scan */
+  for (n=0;n<ptr->num;n++) {
+
+    /* Exit if this beam is not part of a scan */
+    if (ptr->bm[n].scan<0) continue;
+
+    /* Save the beam to the temporary structure if it is part of a scan */
+    memcpy(&tmp[num],&ptr->bm[n],sizeof(struct RadarBeam));
+    num++;
+  }
+
+  free(ptr->bm);
+
+  /* If there are beams in a scan, assign the temporary data to the radar
+     structure.  Otherwise, merely free the temporary structure */
+  if (num>0)
+    {
+      ptr->bm=realloc(tmp,sizeof(struct RadarBeam)*num);
+      if (ptr->bm==NULL)
+	{
+	  free(tmp);
+	  ptr->num=0;
+	  return -1;
+        }
+    }
+  else
+    {
+      free(tmp);
+      ptr->bm=NULL;
+    }
+
+  /* Update the number of beams in the radar structure */
+  ptr->num=num;
+
+  /* Return success */
+  return 0;
 }

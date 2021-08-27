@@ -101,8 +101,6 @@ int get_fit_tfreq_bands(int fnum, int channel, int channel_fix, int old,
   struct CFitfp *cfitfp=NULL;
   struct RadarScan *scan;
 
-  int exclude_outofscan(struct RadarScan *ptr);
-
   /* Initialize radar parameter and fit/cfit structures */
   scan = RadarScanMake();
   prm = RadarParmMake();

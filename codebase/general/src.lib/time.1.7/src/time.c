@@ -20,6 +20,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
 
+AGB: Moved string-to-epoch-time routines here from make_grid.2.0 to allow
+     better access across all tools.
+
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -222,3 +225,55 @@ int TimeJulianToYMDHMS(double jd,int *yr,int *mo,
   return 0;
 }
 
+/**
+ * @brief Convert an input time from HHMM format to number of seconds.
+ *
+ * @param[in] text - String with the format HHMM
+ *
+ * @param[out] Seconds of day corresponding to input string
+ **/
+double strtime(char *text)
+{
+  int i, hr, mn;
+
+  /* Determine the location of a possible colon in the text string */
+  for(i = 0; (text[i] != ':') && (text[i] != 0); i++);
+
+  /* Only hours are specified, convert to seconds and return */
+  if(text[i] == 0) return atoi(text) * 3600L;
+
+  /* Extract both the minutes and seconds from the string */
+  text[i] = 0;
+  hr = atoi(text);
+  mn = atoi(text + i + 1);
+  return hr * 3600L + mn * 60L;
+}
+
+/**
+ * @brief Convert a formatted string to an epoch time
+ *
+ * @param[in] text - String with the format YYYYMMDD
+ *
+ * @param[out] tme - Number of seconds since 00:00 UT on January 1, 1970.
+ **/
+double strdate(char *text)
+{
+  double tme;
+  int val;
+  int yr,mo,dy;
+
+  /* Calculate day, month, and year from YYYYMMDD format date */
+  val=atoi(text);
+  dy=val % 100;
+  mo=(val / 100) % 100;
+  yr=(val / 10000);
+
+  /* If only 2-digit year provided then assume it was pre-2000 */
+  if (yr<1970) yr+=1900;
+
+  /* Calculate epoch time of input year, month, and day */
+  tme=TimeYMDHMSToEpoch(yr,mo,dy,0,0,0);
+
+  /* Return epoch time in number of seconds since 00:00UT on January 1, 1970 */
+  return tme;
+}
