@@ -74,5 +74,6 @@ void find_chi_2(llist_node data,FITDATA *fit_data,FIT_TYPE* fit_type);
 void calculate_sums(llist_node data,FITDATA *fit_data,FIT_TYPE* fit_type);
 
 void print_fit_data(FITDATA *fit_data,FILE* fp);
+double gammaq(double a, double x);
 
 #endif

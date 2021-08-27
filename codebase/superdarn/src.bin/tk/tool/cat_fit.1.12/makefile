@@ -13,6 +13,6 @@ DSTPATH = $(BINPATH)
 OUTPUT = cat_fit
 LIBS=-lfit.1 -lcfit.1 -lradar.1 -loldfit.1 -lrscan.1 -lopt.1 -ldmap.1 -lrtime.1 -lrcnv.1 
 SLIB=-lm -lz
- 
+
 
 include $(MAKEBIN).$(SYSTEM)

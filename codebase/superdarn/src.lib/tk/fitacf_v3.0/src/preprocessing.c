@@ -726,7 +726,7 @@ void phase_correction(PHASENODE* phase, double* slope_est, int* total_2pi_correc
 
   phase_node->phi += phi_corr * 2 * PI;
 
-  *total_2pi_corrections += abs(phi_corr);
+  *total_2pi_corrections += fabs(phi_corr);
 
 }
 

@@ -22,6 +22,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+
+  AGB Jul 2021 - Added phase lag error to the RadarCell structure
 */
 #ifndef _SCANDATA_H
 #define _SCANDATA_H
@@ -37,6 +39,7 @@ struct RadarCell {
     double p_l;
     double p_l_e;
     double phi0;
+    double phi0_e;
     double elv;
 };
 
