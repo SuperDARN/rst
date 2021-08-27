@@ -550,9 +550,12 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 		      /* be unrealistic                                      */
 		      fovpast[bind][irg] = 0;
 		    }
-		  else if(opp_in[bind][irg] == 1)
+		  else if(opp_in[bind][irg] == 1 &&
+			  (fovbelong[bind][irg][0] >= fovbelong[bind][irg][1]
+			   + fovbelong[bind][irg][2]))
 		    {
 		      /* This point is a better inlier when swapped */
+		      /* and not an inlier when it isn't swapped.   */
 		      fovflg[bind][irg]   = fovpast[bind][irg];
 		      fovpast[bind][irg] *= -1;
 		    }
