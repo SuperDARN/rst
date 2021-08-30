@@ -172,10 +172,6 @@ int main(int argc, char *argv[])
 		      char **stmestr, char **etmestr, char **sdtestr,
 		      char **edtestr, char **exstr, char **chnstr,
 		      char **chnstr_fix, int *band_width);
-  int set_stereo_channel(char *chnstr);
-  int set_fix_channel(char *chnstr_fix);
-  double strtime(char *text);
-  double strdate(char *text);
   int get_fit_tfreq_bands(int fnum, int channel, int channel_fix, int old,
 			  int tlen, double stime, double sdate, double etime,
 			  double edate, double extime, unsigned char fitflg,

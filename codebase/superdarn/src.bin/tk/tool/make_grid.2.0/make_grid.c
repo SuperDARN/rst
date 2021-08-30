@@ -69,6 +69,7 @@ Modifications:
 
 #include "hlpstr.h"
 #include "errstr.h"
+#include "channel.h"
 
 #include "aacgm.h"
 #include "aacgmlib_v2.h"
@@ -417,18 +418,10 @@ int main(int argc,char *argv[]) {
     }
 
     /* If 'cn' set then determine Stereo channel, either A or B */
-    if (chnstr !=NULL) {
-        if (tolower(chnstr[0])=='a') channel=1;
-        if (tolower(chnstr[0])=='b') channel=2;
-    }
+    if (chnstr != NULL) channel = set_stereo_channel(chnstr);
     
     /* If 'cn_fix' set then determine appropriate channel for output file */
-    if (chnstr_fix !=NULL) {
-        if (tolower(chnstr_fix[0])=='a') channel_fix=1;
-        if (tolower(chnstr_fix[0])=='b') channel_fix=2;
-        if (tolower(chnstr_fix[0])=='c') channel_fix=3;
-        if (tolower(chnstr_fix[0])=='d') channel_fix=4;
-    }
+    if (chnstr_fix != NULL) channel = set_fix_channel(chnstr_fix);
 
     if (catflg == 1) 
         fprintf(stderr, "Deprecation Warning: -c option will be removed in the next release. This will not change the functionality of make_grid. Multiple input files from one radar are now detected and concatenated automatically.\n");
