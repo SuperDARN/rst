@@ -579,7 +579,7 @@
 
     <member>
       <proto>double interfer[3];</proto>
-      <description>the x, y, z position of the interferometer array with respect to the main array. The values are given in meters. X is in the direction parallel to the main array, with +X being to the right looking along the boresite. Y is in the boresite direction, with +Y in front of the array. Z is the vertical displacement, with +Z being up.</description>
+      <description>The x, y, z position of the interferometer array with respect to the main array. The values are given in meters. X is in the direction parallel to the main array, with +X being to the right looking along the boresight. Y is in the boresight direction, with +Y in front of the array. Z is the vertical displacement, with +Z being up.</description>
     </member>
 
     <member>
