@@ -23,7 +23,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
 
-  AGB Jul 2021 - Added phase lag error to the RadarCell structure
+ Jul 2021 Angeline G. Burrell: Added phase lag error to the RadarCell structure
 */
 #ifndef _SCANDATA_H
 #define _SCANDATA_H
