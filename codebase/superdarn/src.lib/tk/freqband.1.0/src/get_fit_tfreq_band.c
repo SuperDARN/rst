@@ -1,6 +1,6 @@
 /* get_fit_tfreq_band.c
    ====================
-   Author: Angeline G. Burrell - NRL - 2021
+   Author: Angeline G. Burrell (AGB) - NRL - 2021
 */
 
 /*
@@ -45,10 +45,7 @@
 #include "cfitread.h"
 #include "cfitscan.h"
 #include "cfitseek.h"
-
-#ifndef MAX_FREQ_KHZ
-#define MAX_FREQ_KHZ 30000
-#endif
+#include "channel.h"
 
 /**
  * @brief Determine appropriate frequency bands for a fit* data set
