@@ -549,7 +549,7 @@
 
     <member>
       <proto>double boresite;</proto>
-      <description>Boresite angle.</description>
+      <description>Boresight angle.</description>
     </member>
 
     <member>
