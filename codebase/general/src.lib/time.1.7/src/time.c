@@ -232,7 +232,7 @@ int TimeJulianToYMDHMS(double jd,int *yr,int *mo,
  *
  * @param[out] Seconds of day corresponding to input string
  **/
-double strtime(char *text)
+double TimeStrToSOD(char *text)
 {
   int i, hr, mn;
 
@@ -256,7 +256,7 @@ double strtime(char *text)
  *
  * @param[out] tme - Number of seconds since 00:00 UT on January 1, 1970.
  **/
-double strdate(char *text)
+double TimeStrToEpoch(char *text)
 {
   double tme;
   int val;

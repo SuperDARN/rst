@@ -43,8 +43,8 @@ int TimeJulianToYMDHMS(double jd,int *yr,int *mo,
 void TimeReadClock(int *yr,int *month,int *day,int *hour,int *min,int *sec,
 		   int *usec);
 
-double strtime(char *text);
-double strdate(char *text);
+double TimeStrToSOD(char *text);
+double TimeStrToEpoch(char *text);
 
 
 #endif

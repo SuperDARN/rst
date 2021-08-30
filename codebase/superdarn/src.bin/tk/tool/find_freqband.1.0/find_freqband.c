@@ -185,11 +185,11 @@ int main(int argc, char *argv[])
   if(chnstr_fix != NULL) channel_fix = set_fix_channel(chnstr_fix);
 
   /* Format the time data */
-  if(exstr   != NULL) extime = strtime(exstr);
-  if(stmestr != NULL) stime  = strtime(stmestr);
-  if(etmestr != NULL) etime  = strtime(etmestr);
-  if(sdtestr != NULL) sdate  = strdate(sdtestr);
-  if(edtestr != NULL) edate  = strdate(edtestr);
+  if(exstr   != NULL) extime = TimeStrToSOD(exstr);
+  if(stmestr != NULL) stime  = TimeStrToSOD(stmestr);
+  if(etmestr != NULL) etime  = TimeStrToSOD(etmestr);
+  if(sdtestr != NULL) sdate  = TimeStrToEpoch(sdtestr);
+  if(edtestr != NULL) edate  = TimeStrToEpoch(edtestr);
 
   /* If verbose, set output */
   if(vb) vbuf = vstr;

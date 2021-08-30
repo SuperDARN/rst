@@ -428,11 +428,11 @@ int main(int argc,char *argv[]) {
 
     if (bmstr !=NULL)  parse_ebeam(bmstr);
 
-    if (exstr !=NULL) extime=strtime(exstr);
-    if (stmestr !=NULL) stime=strtime(stmestr);
-    if (etmestr !=NULL) etime=strtime(etmestr);
-    if (sdtestr !=NULL) sdate=strdate(sdtestr);
-    if (edtestr !=NULL) edate=strdate(edtestr);
+    if (exstr   != NULL) extime = TimeStrToSOD(exstr);
+    if (stmestr != NULL) stime  = TimeStrToSOD(stmestr);
+    if (etmestr != NULL) etime  = TimeStrToSOD(etmestr);
+    if (sdtestr != NULL) sdate  = TimeStrToEpoch(sdtestr);
+    if (edtestr != NULL) edate  = TimeStrToEpoch(edtestr);
 
     if (mode>0) mode--;
 
