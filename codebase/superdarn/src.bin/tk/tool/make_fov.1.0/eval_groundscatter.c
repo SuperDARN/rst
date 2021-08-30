@@ -184,7 +184,3 @@ float CalcFracGroundScatter(int box_width, int rg_center,
 
   return(frac);
 }
-			    
-	  
-
-  
