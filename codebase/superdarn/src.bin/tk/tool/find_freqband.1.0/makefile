@@ -13,9 +13,6 @@ INCLUDE = -I$(IPATH)/analysis -I$(IPATH)/base -I$(IPATH)/general \
 # Notes:
 # load_fit is copied from codebase/superdarn/src.bin/tk/tool/read_fit_v1.0
 SRC =	find_freqband.c \
-	get_fit_tfreq_band.c \
-	grid_utils.c \
-	read_fit_funcs.c \
 	write_tfreq_band.c
 
 OBJS =	$(SRC:.c=.o)
