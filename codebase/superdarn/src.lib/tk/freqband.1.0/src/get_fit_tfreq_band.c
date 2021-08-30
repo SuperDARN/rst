@@ -45,7 +45,7 @@
 #include "cfitread.h"
 #include "cfitscan.h"
 #include "cfitseek.h"
-#include "channel.h"
+#include "freqband.h"
 
 /**
  * @brief Determine appropriate frequency bands for a fit* data set
