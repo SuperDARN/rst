@@ -28,12 +28,10 @@
 
 #include "option.h"
 #include "rtime.h"
+#include "channel.h"
+#include "freqband.h"
 #include "hlpstr.h"
 #include "errstr.h"
-
-#ifndef MAX_FREQ_KHZ
-#define MAX_FREQ_KHZ 30000
-#endif
 
 struct OptionData opt;
 
@@ -172,12 +170,6 @@ int main(int argc, char *argv[])
 		      char **stmestr, char **etmestr, char **sdtestr,
 		      char **edtestr, char **exstr, char **chnstr,
 		      char **chnstr_fix, int *band_width);
-  int get_fit_tfreq_bands(int fnum, int channel, int channel_fix, int old,
-			  int tlen, double stime, double sdate, double etime,
-			  double edate, double extime, unsigned char fitflg,
-			  unsigned char nsflg, unsigned char vb, char *vbuf,
-			  char *iname, char **dnames,int band_width,
-			  int fbands[90][2], int all_freq[MAX_FREQ_KHZ]);
   void write_tfreq_band(int nfbands, int fbands[][2],
 			int all_freq[MAX_FREQ_KHZ], FILE *fout);
 
