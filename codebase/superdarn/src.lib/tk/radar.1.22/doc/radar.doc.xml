@@ -569,7 +569,7 @@
 
     <member>
       <proto>double tdiff[2];</proto>
-      <description>Time delay in microseconds of the signal from the interferometer array and the main array for each radar channel.</description>
+      <description>Time delay in microseconds of the signal from the interferometer array and the main array for each radar channel (up to two channels are allowed).</description>
     </member>
 
     <member>
