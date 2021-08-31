@@ -22,7 +22,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 Modifications:
     Comments: E.G.Thomas (2016)
     2020-03-11 Marina Schmidt removed earth's radius defined constant 
-along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 */
 
