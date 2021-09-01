@@ -3,12 +3,13 @@
 # 
 #
 lib_analysis = $(wildcard ./codebase/analysis/src.lib/*/*/src/)
+lib_base_rmxl = $(wildcard ./codebase/base/src.lib/*rxml*/*/src/)
 lib_base = $(wildcard ./codebase/base/src.lib/*/*/src/)
 lib_general = $(wildcard ./codebase/general/src.lib/*/src/)
 lib_imagery = $(wildcard ./codebase/imagery/src.lib/*/src/)
 lib_superdarn = $(wildcard ./codebase/superdarn/src.lib/tk/*/src/)
 
-libraries := $(lib_base) $(lib_general) $(lib_analysis) $(lib_imagery) $(lib_superdarn)
+libraries := $(lib_base) $(lib_base_rxml) $(lib_general) $(lib_analysis) $(lib_imagery) $(lib_superdarn)
 
 bin_analysis = $(wildcard ./codebase/analysis/src.bin/*/*/)
 bin_base = $(wildcard ./codebase/base/src.bin/*/*/)
@@ -32,6 +33,9 @@ $(rst) $(libraries):
 	$(MAKE) --directory=$@
 
 $(rst): $(libraries)
+
+$(lib_base): $(lib_base_rxml)
+$(lib_general): $(lib_base)
 $(lib_analysis): $(lib_general)
 $(lib_superdarn): $(lib_base) $(lib_analysis) $(lib_general) $(lib_imagery)
 
