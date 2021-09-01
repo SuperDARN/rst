@@ -3,7 +3,7 @@
 # 
 #
 lib_analysis = $(wildcard ./codebase/analysis/src.lib/*/*/src/)
-lib_base_rmxl = $(wildcard ./codebase/base/src.lib/*rxml*/*/src/)
+lib_base_rmxl = $(wildcard ./codebase/base/src.lib/xml/xml.1.8/src/)
 lib_base = $(wildcard ./codebase/base/src.lib/*/*/src/)
 lib_general = $(wildcard ./codebase/general/src.lib/*/src/)
 lib_imagery = $(wildcard ./codebase/imagery/src.lib/*/src/)
