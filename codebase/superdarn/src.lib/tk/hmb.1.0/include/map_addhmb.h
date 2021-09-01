@@ -23,6 +23,12 @@ Modifications:
 #ifndef _HMB_H
 #define _HMB_H
 
+/* the boundary array sizes correspond to the grid within which the HMB boundary
+ * is searched for when determining the HMB from the data: [24 MLT hours]
+ * and [36 Geomagnetic Latitudes, ranging from 40 to 76 degrees] */
+extern float bndarr[24][36];
+extern float lathmb[36];
+
 struct hmbtab *load_hmb(FILE *fp);
 void make_hmb(void);
 void add_hmb_grd(float latmin,int yr,int yrsec,struct CnvMapData *map,

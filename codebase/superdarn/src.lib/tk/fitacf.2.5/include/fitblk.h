@@ -57,7 +57,7 @@ struct FitPrm {
   double phidiff;
   double tdiff;
   double vdir;
-} FitPrm;
+};
 
 struct FitBlock {
   struct FitPrm prm;

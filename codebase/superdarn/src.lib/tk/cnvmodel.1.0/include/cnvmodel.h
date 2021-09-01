@@ -47,7 +47,7 @@ struct model {
   double complex *aoeff_p;
 };
 
-struct model *model[2][3][6][8]; /* [hemi][tilt][lev][ang] */
+extern struct model *model[2][3][6][8]; /* [hemi][tilt][lev][ang] */
 
 /* prototypes */
 
