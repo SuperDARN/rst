@@ -438,8 +438,10 @@ int main(int argc,char *argv[])
 
   /*flags to tell which range gates contain scatter*/
   int * qflg = malloc(nrang*sizeof(int));
+  for(i=0;i<srng;i++)
+    qflg[i] = 0;
   for(i=srng;i<nrang;i++)
-    if(i < n_good)
+    if(i < srng+n_good)
       qflg[i] = 1;
     else
       qflg[i] = 0;
