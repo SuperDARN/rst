@@ -160,7 +160,10 @@ void makeRadarParm(struct RadarParm * prm, char * argv[], int argc, int cpid, in
   prm->mpinc = (int16)(dt*1e6);
   prm->mppul = (int16)n_pul;
   prm->mplgs = (int16)n_lags;
-  prm->mplgexs = (int16)n_lags;
+
+  if (cpid == 503) prm->mplgexs = (int16)n_lags;
+  else             prm->mplgexs = 0;
+
   prm->nrang = (int16)nrang;
   prm->frang = (int16)(rngsep*lagfr*1e-3);
   prm->rsep = (int16)(rngsep*1e-3);
