@@ -53,6 +53,8 @@
 </option>
 <option><on>-beam <ar>beam</ar></on><od>set the radar beam number in the data records to <ar>beam</ar> (default is 7).</od>
 </option>
+<option><on>-mpinc <ar>mpinc</ar></on><od>set the multi-pulse increment of the pulse sequence to <ar>mpinc</ar> microseconds (default is 1500 us for katscan or 2400 us for oldscan/tauscan).</od>
+</option>
 <option><on>-iq</on><od>Output raw samples (in <code>iqdat</code> format) instead of ACFs (in <code>rawacf</code> format).</od>
 </option>
 <synopsis><p>Generates simulated single-component Lorentzian ACFs.</p></synopsis>

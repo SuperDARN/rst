@@ -217,6 +217,7 @@ int main(int argc,char *argv[])
 
   int stid = 0;
   int beam = 7;
+  int mpinc = -1;
 
   int katscan = 0;
   int oldscan = 0;
@@ -283,6 +284,7 @@ int main(int argc,char *argv[])
   OptionAdd(&opt,"iq",'x',&smp_flg);            /* output raw samples (iqdat) */
   OptionAdd(&opt,"stid",'i',&stid);             /* radar station ID number */
   OptionAdd(&opt,"beam",'i',&beam);             /* radar beam number */
+  OptionAdd(&opt,"mpinc",'i',&mpinc);           /* multi-pulse increment [us] */
 
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
@@ -418,6 +420,7 @@ int main(int argc,char *argv[])
   }
 
   /*control program dependent variables*/
+  if (mpinc != -1) dt = 1e-6*mpinc;                     /* allow user to override lag time */
   taus = dt/smsep;                                      /*lag time in samples*/
   n_samples = (pulse_t[n_pul-1]*taus+nrang+lagfr);      /*number of samples in 1 pulse sequence*/
 
