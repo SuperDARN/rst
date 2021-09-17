@@ -213,7 +213,7 @@ int main (int argc,char *argv[]) {
       }
       
       // Populate the qflg array using the values from the input file
-      // if qflg>1 (ref: fitacf2.5), we set qflg=0
+      // if fit->rng[range].qflg>1 (ref: fitacf2.5), we set qflg=0
       if (fit->rng[range].qflg==1) {
         qflgs->value[index] = 1;
       } else {      
