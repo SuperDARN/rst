@@ -227,9 +227,9 @@ int main (int argc,char *argv[]) {
   } while (FitFread(fp,prm,fit) !=-1);
   
   
-  // Do the median filtering
-  //   Since qflg can only be 0 or 1, the median qflg of the 3x3 grid can be 
-  //     calculated using the test ( sum_of_qflgs >= 5 ).
+  // Identify isolated points by calculating the median of the quality flags
+  //   in a 3x3 grid. Since qflg can only be 0 or 1, the median qflg of the 
+  //   3x3 grid can be calculated using the test ( sum_of_qflgs >= 5 ).
   //   Replicate padding is used to handle corner/edge cases
   int sum;
   int index_list[9];  
@@ -241,7 +241,7 @@ int main (int argc,char *argv[]) {
   }
   
   
-  //** Read the file again, apply the median filter, and write a new file
+  //** Read the file again, remove the isolated points, and write a new file
   rewind(fp); // rewind the file pointer
   if (FitFread(fp,prm,fit)==-1) {
     fprintf(stderr,"Error reading file\n");
