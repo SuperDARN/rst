@@ -15,7 +15,7 @@
 </option>
 <option><on>-tauscan</on><od>use Ray Greenwald's 13-pulse sequence.</od>
 </option>
-<option><on>-oldscan</on><od>use the old 7-pulse seqeuence.</od>
+<option><on>-oldscan</on><od>use the old 7-pulse sequence.</od>
 </option>
 <option><on>-freq <ar>f</ar></on><od>set the radar frequency to <ar>f</ar> MHz (default is 12 MHz).</od>
 </option>
@@ -47,7 +47,7 @@
 </option>
 <option><on>-nocri</on><od>Remove cross-range interference from the ACFs (default is CRI on). WARNING: removing cross-range interference will make the raw samples unusable, since each range gate will have to be integrated separately.</od>
 </option>
-<option><on>-decay</on><od>Set the ACFs to have a decaying ampliutde by a factor of 1/(r^2).</od>
+<option><on>-decay</on><od>Set the ACFs to have a decaying amplitude by a factor of 1/(r^2).</od>
 </option>
 <option><on>-stid <ar>stid</ar></on><od>set the station identifier in the data records to <ar>stid</ar> (default is 0).</od>
 </option>
