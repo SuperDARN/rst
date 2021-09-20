@@ -23,6 +23,10 @@ THE SOFTWARE.
  MODIFICATION HISTORY:
  Written by AJ Ribeiro 06/16/2011
  Based on code orginally written by Pasha Ponomarenko
+
+ Evan Thomas 2021
+ Modified to use standard RST documentation and command line options,
+ fixed iqdat-format output, and added several other user options
 */
 
 #include <errno.h>
