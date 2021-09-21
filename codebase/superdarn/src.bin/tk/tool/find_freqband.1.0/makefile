@@ -1,9 +1,12 @@
 # Makefile for find_freqband
 # ==========================
-# Author: AGB, NRL (2021)
+# Author: Angeline G. Burrell, NRL (2021)
+# This is a U.S. government work and not under copyright protection in the U.S.
 #
 # Disclaimer: This code is licensed under GPL v3.0 please LICENSE to 
-# 			  see the full license
+#             see the full license
+#
+# Modifications:
 
 include $(MAKECFG).$(SYSTEM)
 

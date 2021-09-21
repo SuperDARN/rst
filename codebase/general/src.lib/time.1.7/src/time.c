@@ -20,8 +20,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
 
-2021-08-27 Angeline G Burrell: Moved string-to-epoch-time routines here from make_grid.2.0
-     to allow better access across all tools.
+2021-08-27 Angeline G Burrell: Moved string-to-epoch-time routines here from
+           make_grid.2.0 to allow better access across all tools.
 
 */
 #include <stdio.h>

@@ -20,7 +20,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
-2021-08-27 Angeline G. Burrell: Moved exclude_outofscan routine here to allow access by multiple tools.
+2021-08-27 Angeline G. Burrell: Moved exclude_outofscan routine here to allow
+                                access by multiple tools.
 
 */
 

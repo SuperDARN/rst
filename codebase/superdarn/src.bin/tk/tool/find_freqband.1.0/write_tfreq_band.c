@@ -1,30 +1,22 @@
 /* write_tfreq_band.c
    ==================
    Author: Angeline G. Burrell - NRL - 2021
-*/
+   This is a U.S. government work and not under copyright protection in the U.S.
 
-/*
- LICENSE AND DISCLAIMER
+   This file is part of the Radar Software Toolkit (RST).
 
- This file is part of the Radar Software Toolkit (RST).
+   Disclaimer: This code is licensed under GPL v3.0 please LICENSE to see the
+               full license
 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
+   Modifications:
 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
-
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "freqband.h"
 
 #ifndef MAX_FREQ_KHZ
 #define MAX_FREQ_KHZ 30000
@@ -48,6 +40,7 @@ void write_tfreq_band(int nfbands, int fbands[][2], int all_freq[MAX_FREQ_KHZ],
   fprintf(fout,
 	  "# NBANDS BAND_MIN_KHZ BAND_MAX_KHZ TRANS_FREQ_KHZ NUM_TRANS_FREQ\n");
 
+  /* Print the data to the specified file pointer */
   for(i = 0; i < nfbands; i++)
     {
       for(j = fbands[i][0]; j < fbands[i][1]; j++)
