@@ -22,8 +22,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+2021-09-21 Angeline G. Burrell: added `exclude_outofscan` routine to header.
 
- Jul 2021 Angeline G. Burrell: Added phase lag error to the RadarCell structure
 */
 #ifndef _SCANDATA_H
 #define _SCANDATA_H
@@ -84,5 +84,6 @@ void RadarScanFree(struct RadarScan *ptr);
 int RadarScanReset(struct RadarScan *ptr);
 int RadarScanResetBeam(struct RadarScan *ptr,int bmnum,int *bmptr);
 struct RadarBeam *RadarScanAddBeam(struct RadarScan *ptr,int nrang);
+int exclude_outofscan(struct RadarScan *ptr);
 
 #endif

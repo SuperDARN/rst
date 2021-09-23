@@ -20,6 +20,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
 
+2021-08-27 Angeline G. Burrell: Moved string-to-epoch-time routines here from
+           make_grid.2.0 to allow better access across all tools.
 */
 
 
@@ -40,6 +42,9 @@ int TimeJulianToYMDHMS(double jd,int *yr,int *mo,
 
 void TimeReadClock(int *yr,int *month,int *day,int *hour,int *min,int *sec,
 		   int *usec);
+
+double TimeStrToSOD(char *text);
+double TimeStrToEpoch(char *text);
 
 
 #endif

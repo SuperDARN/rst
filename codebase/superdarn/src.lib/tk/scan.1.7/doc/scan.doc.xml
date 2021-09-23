@@ -31,6 +31,18 @@
 <example type="source">RadarScanResetBeam.c</example>
 </function>
 
+<function>
+<name>exclude_outofscan</name>
+<location>src.lib/tk/scan</location>
+<header>superdarn/scandata.h</header>
+<syntax>int exclude_outofscan(<sn href="structRadarScan.html">struct RadarScan </sn>*ptr)</syntax>
+<description><p>The <fn href="exclude_outofscan.html">exclude_outofscan</fn> function excludes beams that are not part of a scan.</p>
+<p>The structure containing the radar scan data is pointed to by the argument <ar>ptr</ar>.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+</function>
+
 <structure>
   <name>RadarBeam</name>
   <location>src.lib/tk/scan</location>

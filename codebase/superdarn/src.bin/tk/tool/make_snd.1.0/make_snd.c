@@ -139,7 +139,7 @@ int main(int argc,char *argv[]) {
 
   while ((s=FitFread(fp,prm,fit)) !=-1) {
 
-    if ((cpid !=-1) && (prm->cp !=cpid)) continue;
+    if ((cpid !=-1) && (abs(prm->cp) !=abs(cpid))) continue;
     if ((channel !=-1) && (prm->channel !=channel)) continue;
 
     snd->origin.code=1;
