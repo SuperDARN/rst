@@ -26,8 +26,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "rtime.h"
 #include "option.h"
 #include "multbsid.h"
+#include "channel.h"
+#include "freqband.h"
 #include "hlpstr.h"
 #include "errstr.h"
 
@@ -204,16 +207,6 @@ int main(int argc, char *argv[])
 		      int *freq_max, int *band_width, short int *strict_gs,
 		      short int *tdiff_flag, double *tdiff, float *D_hmin,
 		      float *D_hmax, float *E_hmax, float *F_hmax, int *nbms);
-  int set_stereo_channel(char *chnstr);
-  int set_fix_channel(char *chnstr_fix);
-  double strtime(char *text);
-  double strdate(char *text);
-  int get_fit_tfreq_bands(int fnum, int channel, int channel_fix, int old,
-			  int tlen, double stime, double sdate, double etime,
-			  double edate, double extime, unsigned char fitflg,
-			  unsigned char nsflg, unsigned char vb, char *vbuf,
-			  char *iname, char **dnames, int band_width,
-			  int fbands[90][2], int all_freq[MAX_FREQ_KHZ]);
   int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
 			  int tlen, double stime, double sdate, double etime,
 			  double edate, double extime, unsigned char nsflg,
@@ -248,11 +241,11 @@ int main(int argc, char *argv[])
   if(chnstr_fix != NULL) channel_fix = set_fix_channel(chnstr_fix);
 
   /* Format the time data */
-  if(exstr   != NULL) extime = strtime(exstr);
-  if(stmestr != NULL) stime  = strtime(stmestr);
-  if(etmestr != NULL) etime  = strtime(etmestr);
-  if(sdtestr != NULL) sdate  = strdate(sdtestr);
-  if(edtestr != NULL) edate  = strdate(edtestr);
+  if(exstr   != NULL) extime = TimeStrToSOD(exstr);
+  if(stmestr != NULL) stime  = TimeStrToSOD(stmestr);
+  if(etmestr != NULL) etime  = TimeStrToSOD(etmestr);
+  if(sdtestr != NULL) sdate  = TimeStrToEpoch(sdtestr);
+  if(edtestr != NULL) edate  = TimeStrToEpoch(edtestr);
 
   /* If verbose, set output */
   if(vb) vbuf = vstr;
