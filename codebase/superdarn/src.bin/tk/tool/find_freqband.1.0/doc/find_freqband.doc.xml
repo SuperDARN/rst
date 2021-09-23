@@ -48,7 +48,7 @@
 </option>
 <option><on><ar>inxname</ar></on><od>filename of the index file.</od>
 </option>
-<option><on>-old</on><od>the input file is in the <code>fit</code> format, and the output should be in <code>grd</code> format. (If the input format is in <code>cfit</code> format as specified by the -cfit option, then the output will be in <code>grd</code> format).</od>
+<option><on>-old</on><od>the input file is in the <code>fit</code> format.</od>
 </option>
 <option><on><ar>fitname</ar></on><od>filename of the <code>fit</code> format file.</od>
 </option>
