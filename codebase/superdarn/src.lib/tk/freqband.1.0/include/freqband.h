@@ -5,8 +5,8 @@
 
    This file is part of the Radar Software Toolkit (RST).
 
-   Disclaimer: This code is licensed under GPL v3.0 please LICENSE to see the
-               full license
+   Disclaimer: RST is licensed under GPL v3.0. Please visit 
+               <https://www.gnu.org/licenses/> to see the full license
 
    Modifications:
 
