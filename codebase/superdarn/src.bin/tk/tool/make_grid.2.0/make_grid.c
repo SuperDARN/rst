@@ -101,10 +101,11 @@ struct GridTable *grid;
 
 
 /**
- * Exclude scatter in range gates below minrng or beyond maxrng,
- * or from slant ranges below minsrng or beyond maxsrng. If range
- * gate and slant range thresholds are both provided, only the
- * slant range thresholds are considered.
+ * Exclude scatter in range gates below minrng or beyond maxrng (the minimum
+ * and maximum range gates, respectively), or from slant ranges below
+ * minsrng or beyond maxsrng (the minimum and maximum slant ranges,
+ * respectively). If range gate and slant range thresholds are both provided,
+ * only the slant range thresholds are considered.
  **/
 void exclude_range(struct RadarScan *ptr,int minrng,int maxrng,
                    double minsrng,double maxsrng) {
@@ -155,7 +156,7 @@ void exclude_range(struct RadarScan *ptr,int minrng,int maxrng,
 
 
 /**
- *
+ * Parse the comma separated list of beams to exclude
  **/
 void parse_ebeam(char *str) {
 
@@ -179,7 +180,9 @@ void parse_ebeam(char *str) {
 
 }
 
-
+/**
+ * Outputs an error statement for an unrecognized input option
+ **/
 int rst_opterr(char *txt) {
     fprintf(stderr,"Option not recognized: %s\n",txt);
     fprintf(stderr,"Please try: make_grid --help\n");
