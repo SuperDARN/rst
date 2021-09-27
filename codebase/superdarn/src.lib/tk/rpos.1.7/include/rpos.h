@@ -20,6 +20,8 @@ You should have received a copy of the GNU Lesser General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+2021-09-27 Angeline G. Burrell: Added new routines that support make_fov.
+
 */
 
 #ifndef _RPOS_H
@@ -36,6 +38,11 @@ struct RPos {
 double slant_range(int frang,int rsep,
                    double rxris,double range_edge,
                    int rang_gate);
+
+double slant_range_no_edge(int frang, int rsep, double rxris, int irg);
+
+double calc_elv_vheight(double slant_dist, double hop, double radius,
+			double elv);
 
 void RPosGeo(int center,int bcrd,int rcrd,
              struct RadarSite *pos,
