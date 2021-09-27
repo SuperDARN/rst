@@ -29,7 +29,9 @@ Modifications:
 
 #include <math.h>
 #include <stdio.h>
+
 #include "fitblk.h"
+#include "radar.h"
 #include "rmath.h"
 
 /* SGS somehow need to pass in options for allowing:                         *
