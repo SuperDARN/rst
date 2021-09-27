@@ -13,23 +13,4 @@ LINK="1"
 DSTPATH=$(LIBPATH)
 OUTPUT = rscan
 
-
- 
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 include $(MAKELIB).$(SYSTEM)
