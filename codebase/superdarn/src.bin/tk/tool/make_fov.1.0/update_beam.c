@@ -29,6 +29,7 @@
 #include "rpos.h"
 #include "shfconst.h"
 #include "elevation.h"
+#include "propagation.h"
 #include "multbsid.h"
 
 #ifndef RE_KM
@@ -60,13 +61,6 @@ void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
   double range_edge;
 
   void EvalGroundScatter(struct FitBSIDBeam *beam);
-  void AdjustPropagation(int lobe, float radius, float D_hmin, float D_hmax,
-			 float E_hmax, float F_hmax, float max_hop, int bmnum,
-			 int tfreq, struct RadarSite *site, double psi_obs,
-			 float *hop, float *vheight, double *elv,
-			 float *slant_dist);
-  void SetRegion(float hop, float D_hmin, float D_hmax, float E_hmax,
-		 float F_hmax, float vheight, char *region);
 
   /* Calculate the 1/2 hop distance and initialize the hop values */
   for(irg=0; irg<beam->nrang; irg++)
