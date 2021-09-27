@@ -26,6 +26,7 @@
 #include <stdlib.h>
 
 #include "radar.h"
+#include "rpos.h"
 #include "shfconst.h"
 #include "elevation.h"
 #include "multbsid.h"
@@ -59,8 +60,6 @@ void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
   double range_edge;
 
   void EvalGroundScatter(struct FitBSIDBeam *beam);
-  double calc_elv_vheight(double slant_dist, double hop, double radius,
-			  double elv);
   void AdjustPropagation(int lobe, float radius, float D_hmin, float D_hmax,
 			 float E_hmax, float F_hmax, float max_hop, int bmnum,
 			 int tfreq, struct RadarSite *site, double psi_obs,
@@ -68,7 +67,6 @@ void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
 			 float *slant_dist);
   void SetRegion(float hop, float D_hmin, float D_hmax, float E_hmax,
 		 float F_hmax, float vheight, char *region);
-  double slant_range(int frang, int rsep, double rxris, int irg);
 
   /* Calculate the 1/2 hop distance and initialize the hop values */
   for(irg=0; irg<beam->nrang; irg++)
@@ -76,8 +74,10 @@ void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
       if(beam->sct[irg] == 1)
 	{
 	  range_edge = -0.5 * beam->rsep * 20.0 / 3.0;
-	  beam->front_loc[irg].dist = slant_range(beam->frang, beam->rsep,
-						  (double)beam->rxrise, irg);
+	  beam->front_loc[irg].dist = slant_range_no_edge(beam->frang,
+							  beam->rsep,
+							  (double)beam->rxrise,
+							  irg);
 	  beam->back_loc[irg].dist = beam->front_loc[irg].dist;
 	}
     }

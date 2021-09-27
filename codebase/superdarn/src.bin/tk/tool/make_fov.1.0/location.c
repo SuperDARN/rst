@@ -22,40 +22,11 @@
  along with RST.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* TODO: add to rst/codebase/superdarn/src.lib/tk/elevation.1.0 */
-
 #include <math.h>
 #include <stdio.h>
 
 #include "radar.h"
 #include "rmath.h"
-
-/**
- * @brief Calculate the virtual height using hop number and elevation angle
- *
- * @param[in] slant_dist - slant distance in km
- *            hop        - number of hops (0.5, 1.0, 1.5, etc)
- *            radius     - radius of the Earth in km
- *            elv        - elevation angle in degrees
- *
- * @param[out] vheight - virtual height above the surface of the Earth in km
- */
-
-double calc_elv_vheight(double slant_dist, double hop, double radius,
-			double elv)
-{
-  double vheight;
-
-  /* Adjust the slant distance to find the length up to the ionosphere *
-   * This assumes the propagation path can be evenly segmented, which  *
-   * is mildly not correct, but very much not correct in some cases.   */
-  slant_dist /= (2.0 * hop);
-
-  vheight = sqrt(slant_dist * slant_dist + radius * radius
-  		 + 2.0 * slant_dist * radius * sin(elv * PI / 180.0)) - radius;
-
-  return(vheight);
-}
 
 /**
  * @brief Test the propagation path for realism using the basic properties of HF
@@ -199,32 +170,4 @@ void SetRegion(float hop, float D_hmin, float D_hmax, float E_hmax,
     }
   else sprintf(region, "F");
   return;
-}
-
-/**
- * @brief Calculates the slant range to a range gate.
- *
- * @param[in] frang - distance to first range gate in km
- *            rsep  - range gate size in km
- *            rxris - receiver rise time in microseconds
- *            irg   - zero offset range gate index
- *
- * @param[out] sdist - slant distance in km
- **/
-double slant_range(int frang, int rsep, double rxris, int irg)
-{
-
-    int lagfr, smsep;
-    double sdist;
-
-    /* Calculate the lag to first range gate in microseconds */
-    lagfr = frang * 20 / 3;
-
-    /* Calculate the sample separation in microseconds */
-    smsep = rsep * 20 / 3;
-
-    /* Return the calculated slant range distance [km] */
-    sdist = C * 5.0e-10 * (lagfr - rxris + irg * smsep);
-
-    return sdist;
 }
