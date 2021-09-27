@@ -27,6 +27,7 @@
 
 #include "radar.h"
 #include "shfconst.h"
+#include "elevation.h"
 #include "multbsid.h"
 
 #ifndef RE_KM
@@ -58,8 +59,6 @@ void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
   double range_edge;
 
   void EvalGroundScatter(struct FitBSIDBeam *beam);
-  double elevation_v2_lobe(int lobe, int bmnum, int tfreq,
-			   struct RadarSite *site, double psi_obs);
   double calc_elv_vheight(double slant_dist, double hop, double radius,
 			  double elv);
   void AdjustPropagation(int lobe, float radius, float D_hmin, float D_hmax,
