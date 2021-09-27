@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>superdarn</project>
+<name>propagation</name>
+<location>src.lib/tk/propagation</location>
+
+
+<function>
+<name>TestPropagation</name>
+<location>src.lib/tk/propagation</location>
+<header>superdarn/propagation.h</header>
+<syntax>int TestPropagation(float hop, float vheight, float slant_dist, float D_hmin, float D_hmax, float E_hmax);</syntax>
+<description><p>The <fn href="TestPropagation.html">TestPropagation</fn> function takes the hop, virtual height, slant distance, and regional limits and tests the propagation path for realism.</p>
+</description>
+<returns>Returns 1 for a good path and 0 for a bad path.</returns>
+</function>
+
+
+<function>
+<name>AdjustPropagation</name>
+<location>src.lib/tk/propagation</location>
+<header>superdarn/propagation.h</header>
+<syntax>void AdjustPropagation(int lobe, float radius, float D_hmin, float D_hmax, float E_hmax, float F_hmax, float max_hop, int bmnum, int tfreq, struct RadarSite *site, double psi_obs, float *hop, float *vheight, double *elv, float *slant_dist);</syntax>
+<description><p>The <fn href="AdjustPropagation.html">AdjustPropagation</fn> function tests the propagation path for backscatter with the specified characteristics against the provided ionospheric regional limits for realism and adjusts the hop if needed.</p>
+</description>
+</function>
+
+
+<function>
+<name>SetRegion</name>
+<location>src.lib/tk/propagation</location>
+<header>superdarn/propagation.h</header>
+<syntax>void SetRegion(float hop, float D_hmin, float D_hmax, float E_hmax, float F_hmax, float vheight, char *region);</syntax>
+<description><p>The <fn href="SetRegion.html">SetRegion</fn> function determines the ionospheric region using a set of provided virtual height limits, the hop, and the virtual height for a backscatter observation. </p>
+</description>
+</function>
+
+
+</library>
