@@ -27,6 +27,18 @@ Modifications:
                                 that accounts for lobe direction.
 */
 
+#ifndef _RMATH_H
+#include "rmath.h"
+#endif
+
+#ifndef _RADAR_H
+#include "radar.h"
+#endif
+
+#ifndef _FITBLK_H
+#include "fitblk.h"
+#endif
+
 #ifndef _ELEVATION_H
 #define _ELEVATION_H
 
