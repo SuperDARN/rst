@@ -1,25 +1,15 @@
 /* eval_groundscatter.c
    ====================
    Author: Angeline G. Burrell - NRL - 2021
-*/
+   This is a U.S. government work and not under copyright protection in the U.S.
 
-/*
- LICENSE AND DISCLAIMER
+   This file is part of the Radar Software Toolkit (RST).
 
- This file is part of the Radar Software Toolkit (RST).
+   Disclaimer: RST is licensed under GPL v3.0. Please visit 
+               <https://www.gnu.org/licenses/> to see the full license
 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
+   Modifications:
 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
-
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <stdio.h>
@@ -32,14 +22,13 @@
  *
  * @param[in] beam - radar beam structure
  *
- * Criteria
- * --------
- *  * power above 0
- *  * gflg of 1
- *  * range gate above 10 for any positive power
- *  * range gate below 10 and between 0.0-5.0 dB power
- *  * at least half of backscatter in a 10 range gate box is groundscatter
- *  * at least 3 groundscatter points are found in a 10 range gate box
+ * @notes Criteria:
+ *        - power above 0
+ *        - gflg of 1
+ *        - range gate above 10 for any positive power
+ *        - range gate below 10 and between 0.0-5.0 dB power
+ *        - at least half of backscatter in a 10 range gate box is groundscatter
+ *        - at least 3 groundscatter points are found in a 10 range gate box
  **/
 
 void EvalGroundScatter(struct FitBSIDBeam *beam)
@@ -106,11 +95,11 @@ void EvalGroundScatter(struct FitBSIDBeam *beam)
  * @param[out] out_flag - Returns 0 if GS check fails, 1 if it passes
  *
  * @notes Routine uses the following criteria to evaluate groundscatter status:
- *        * power above 0
- *        * gflg of 1
- *        * 1/2 hop distances closer than 160 km <- re-evaluate for h' 100 km?
- *        * range gate above min_rg for any positive power
- *        * range gate below min_rg and between 0.0 and max_power
+ *        - power above 0
+ *        - gflg of 1
+ *        - 1/2 hop distances closer than 160 km <- re-evaluate for h' 100 km?
+ *        - range gate above min_rg for any positive power
+ *        - range gate below min_rg and between 0.0 and max_power
  **/
 
 int CheckGroundScatter(int rg, int gflg, float slant_dist, float power,
