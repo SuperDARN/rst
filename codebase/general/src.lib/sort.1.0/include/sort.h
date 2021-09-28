@@ -1,26 +1,19 @@
-/* sort_rout.h
-   ===========
+/* sort.h
+   ======
    Author: Angeline G. Burrell - NRL - 2021
+   This is a U.S. government work and not under copyright protection in the U.S.
+
+   This file is part of the Radar Software Toolkit (RST).
+
+   Disclaimer: RST is licensed under GPL v3.0. Please visit 
+               <https://www.gnu.org/licenses/> to see the full license
+
+   Modifications:
+
 */
 
-/*
- LICENSE AND DISCLAIMER
-
- This file is part of the Radar Software Toolkit (RST).
-
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
-
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
-
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
-*/
+#ifndef _SORT_H
+#define _SORT_H
 
 #ifndef SWAP
 #define SWAP(a,b) temp=(a);(a)=(b);(b)=temp;
@@ -52,3 +45,5 @@ void smart_argsort_int(int num, int array[], int sortargs[]);
 void quicksort(int num, double array[]);
 void quicksort_int(int num, int array[]);
 void quickargsort(int num, double array[], int argout[]);
+
+#endif

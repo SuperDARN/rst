@@ -26,11 +26,11 @@
 #include <stdlib.h>
 
 #include "radar.h"
+#include "multbsid.h"
 #include "rpos.h"
 #include "shfconst.h"
 #include "elevation.h"
 #include "propagation.h"
-#include "multbsid.h"
 
 #ifndef RE_KM
 #define RE_KM Re / 1000.0
