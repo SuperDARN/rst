@@ -1,31 +1,21 @@
-/* sort_rout.c
-   ===========
+/* sort.c
+   ======
    Author: Angeline G. Burrell - UTDallas, NRL - 2021
-*/
+   This is a U.S. government work and not under copyright protection in the U.S.
 
-/*
- LICENSE AND DISCLAIMER
+   This file is part of the Radar Software Toolkit (RST).
 
- This file is part of the Radar Software Toolkit (RST).
+   Disclaimer: RST is licensed under GPL v3.0. Please visit 
+               <https://www.gnu.org/licenses/> to see the full license
 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
+   Modifications:
 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
-
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "sort_rout.h"
+#include "sort.h"
 
 /**
  * @brief Sorts input using the most effecient of the available sort routines
@@ -323,7 +313,7 @@ void quicksort(int num, double array[])
 	    {
 	      printf("%s ERROR: stack size of subarray too small [%d < %d]\n",
 		     "quicksort", NSTACK, jstack);
-	      exit(1);
+	      exit(-1);
 	    }
 
 	  if(ir - i + 1 >= j - 1)
@@ -433,7 +423,7 @@ void quicksort_int(int num, int array[])
 	    {
 	      printf("%s ERROR: stack size of subarray too small [%d < %d]\n",
 		     "quicksort_int", NSTACK, jstack);
-	      exit(1);
+	      exit(-1);
 	    }
 
 	  if(ir - i + 1 >= j - 1)
@@ -561,7 +551,7 @@ void quickargsort(int num, double array[], int argout[])
 	    {
 	      printf("%s ERROR: stack size of subarray too small [%d < %d]\n",
 		     "quicksort", NSTACK, jstack);
-	      exit(1);
+	      exit(-1);
 	    }
 
 	  if(ir - i + 1 >= j - 1)

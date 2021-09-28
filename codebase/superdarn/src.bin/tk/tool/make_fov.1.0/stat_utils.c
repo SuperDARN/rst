@@ -30,7 +30,7 @@
 #include "mpfit.h"
 
 #include "stat_utils.h"
-#include "sort_rout.h"
+#include "sort.h"
 
 /**
  * @brief Calculate the number of unique values for an integer array
