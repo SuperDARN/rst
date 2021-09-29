@@ -1,25 +1,16 @@
 /* load_fit_update_fov.c
    =====================
    Author: Angeline G. Burrell - NRL - 2021
-*/
+   Author: Angeline G. Burrell - NRL - 2021
+   This is a U.S. government work and not under copyright protection in the U.S.
 
-/*
- LICENSE AND DISCLAIMER
+   This file is part of the Radar Software Toolkit (RST).
 
- This file is part of the Radar Software Toolkit (RST).
+   Disclaimer: RST is licensed under GPL v3.0. Please visit 
+               <https://www.gnu.org/licenses/> to see the full license
 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
+   Modifications:
 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
-
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <stdio.h>
@@ -43,7 +34,7 @@
 #include "fitseek.h"
 #include "oldfitread.h"
 #include "oldfitscan.h"
-#include "multbsid.h"
+#include "fitmultbsid.h"
 
 /**
  * @brief Load the fit data and determine the return direction
@@ -100,7 +91,7 @@ int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
 			float D_hmin, float D_hmax, float E_hmax, float F_hmax,
 			float D_vh_box, float E_vh_box, float F_vh_box,
 			float far_vh_box, float max_hop,
-			struct MultFitBSID *mult_bsid)
+			struct FitMultBSID *mult_bsid)
 {
   int inum, yr = -1, mo = -1, dy = -1, hr = -1, mt = -1, ret_flg = 0, state = 0;
   int syncflg = 1, site_flg = 0;
@@ -124,7 +115,7 @@ int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
 		       float D_hmin, float D_hmax, float E_hmax, float F_hmax,
 		       float D_vh_box, float E_vh_box, float F_vh_box,
 		       float far_vh_box, float max_hop, struct RadarScan *scan,
-		       struct RadarSite *hard, struct MultFitBSID *mult_bsid);
+		       struct RadarSite *hard, struct FitMultBSID *mult_bsid);
 
   /* Initialize radar parameter and fit structures. If you initialize `site` */
   /* it won't set properly.                                                  */

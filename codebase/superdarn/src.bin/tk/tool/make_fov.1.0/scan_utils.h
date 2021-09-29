@@ -30,8 +30,8 @@
 #include "stat_utils.h"
 #endif
 
-#ifndef _MULTBSID_H
-#include "multbsid.h"
+#ifndef _FITMULTBSID_H
+#include "fitmultbsid.h"
 #endif
 
 #ifndef MAX_BMS
@@ -55,7 +55,6 @@ void eval_fov_flag_consistency(int max_rg, int max_bm, int bmwidth, int D_rgmax,
 			       int fovbelong[MAX_BMS][MAX_RGS][3],
 			       int opp_in[MAX_BMS][MAX_RGS],
 			       struct FitBSIDScan *scan);
-int get_bm_by_bmnum(int ibm, struct FitBSIDScan *scan);
 void get_rg_box_limits(int rg, int max_rg, int D_rgmax, int E_rgmax,
 		       int F_rgmax, int D_nrg, int E_nrg, int F_nrg,
 		       int far_nrg, int *rg_min, int *rg_max);

@@ -1,25 +1,15 @@
 /* make_fov.c
-   =============
-   Author: Angeline G. Burrell - NRL - 2020
-*/
+   ==========
+   Author: Angeline G. Burrell - NRL - 2021
+   This is a U.S. government work and not under copyright protection in the U.S.
 
-/*
- LICENSE AND DISCLAIMER
+   This file is part of the Radar Software Toolkit (RST).
 
- This file is part of the Radar Software Toolkit (RST).
+   Disclaimer: RST is licensed under GPL v3.0. Please visit 
+               <https://www.gnu.org/licenses/> to see the full license
 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
+   Modifications:
 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
-
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <stdio.h>
@@ -28,7 +18,7 @@
 
 #include "rtime.h"
 #include "option.h"
-#include "multbsid.h"
+#include "fitmultbsid.h"
 #include "channel.h"
 #include "freqband.h"
 #include "hlpstr.h"
@@ -169,7 +159,7 @@ int main(int argc, char *argv[])
 
   char vstr[256];
 
-  struct MultFitBSID *mult_bsid;
+  struct FitMultBSID *mult_bsid;
 
   /* Initialize input options */
   /* Default frequency limits set to the limits of the HF range */
@@ -218,14 +208,13 @@ int main(int argc, char *argv[])
 			  float D_hmin, float D_hmax, float E_hmax,
 			  float F_hmax, float D_vh_box, float E_vh_box,
 			  float F_vh_box, float far_vh_box, float max_hop,
-			  struct MultFitBSID *mult_bsid);
+			  struct FitMultBSID *mult_bsid);
   void test_ut_fov_struct(unsigned char vb, char *vbuf, int nbms,
 			  float min_frac, double ut_box_sec, int D_nrg,
 			  int E_nrg, int F_nrg, int far_nrg, int D_rgmax,
 			  int E_rgmax, int F_rgmax, float D_hmin, float D_hmax,
 			  float E_hmax, float F_hmax,
-			  struct MultFitBSID *mult_bsid);
-  void write_multbsid_ascii(FILE *fp, struct MultFitBSID *mult_scan);
+			  struct FitMultBSID *mult_bsid);
 
   /* Process the command line options */
   farg = command_options(argc, argv, &old, &tlen, &vb, &catflg, &nsflg,
@@ -304,7 +293,7 @@ int main(int argc, char *argv[])
     }
 
   /* Initialize and load the fitted data */
-  mult_bsid = MultFitBSIDMake();
+  mult_bsid = FitMultBSIDMake();
 
   /* Treat each frequency band seperately */
   for(inum = 0; inum < nfbands; inum++)
@@ -331,10 +320,10 @@ int main(int argc, char *argv[])
 
   /* Write an output file */
   if(mult_bsid->num_scans > 0)
-    write_multbsid_ascii(stdout, mult_bsid);
+    WriteFitMultBSIDASCII(stdout, mult_bsid);
 
   /* Free the data structure pointer */
-  MultFitBSIDFree(mult_bsid);
+  FitMultBSIDFree(mult_bsid);
 
   return(0);
 }

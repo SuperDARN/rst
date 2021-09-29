@@ -1,33 +1,21 @@
-/* multbsid.h
-   ==========
-   Author: A.G. Burrell
-*/
+/* fitmultbsid.h
+   =============
+   Author: Angeline G. Burrell - NRL - 2021
+   This is a U.S. government work and not under copyright protection in the U.S.
 
-/*
- LICENSE AND DISCLAIMER
+   This file is part of the Radar Software Toolkit (RST).
 
- Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
+   Disclaimer: RST is licensed under GPL v3.0. Please visit 
+               <https://www.gnu.org/licenses/> to see the full license
 
- This file is part of the Radar Software Toolkit (RST).
-
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
-
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
-
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
+   Modifications:
 
 */
 
-#ifndef _MULTBSID_H
-#define _MULTBSID_H
+#ifndef _FITMULTBSID_H
+#define _FITMULTBSID_H
 
+/* Ensure the neccessary library headers are included */
 #ifndef _ZLIB_H
 #include <zlib.h>
 #endif
@@ -120,7 +108,7 @@ struct FitBSIDScan
   struct FitBSIDScan *prev_scan;
 };
 
-struct MultFitBSID
+struct FitMultBSID
 {
   int stid;
   struct
@@ -137,11 +125,14 @@ struct MultFitBSID
   struct FitBSIDScan *last_ptr;
 };
 
-struct MultFitBSID *MultFitBSIDMake();
-void MultFitBSIDFree(struct MultFitBSID *ptr);
-int MultFitBSIDReset(struct MultFitBSID *ptr);
+struct FitMultBSID *FitMultBSIDMake();
+void FitMultBSIDFree(struct FitMultBSID *ptr);
+int FitMultBSIDReset(struct FitMultBSID *ptr);
 void FitBSIDScanFreeNext(struct FitBSIDScan *ptr);
 void FitBSIDBeamFree(struct FitBSIDBeam *ptr);
+int get_bm_by_bmnum(int ibm, struct FitBSIDScan *scan);
 
+void WriteFitMultBSIDASCII(FILE *fp, struct FitMultBSID *mult_scan);
+void WriteFitBSIDScanASCII(FILE *fp, int stid, struct FitBSIDScan *scan);
 
 #endif

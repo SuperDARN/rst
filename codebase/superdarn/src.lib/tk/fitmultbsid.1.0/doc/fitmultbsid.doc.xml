@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>superdarn</project>
+<name>fitmultbsid</name>
+<location>src.lib/tk/fitmultbsid</location>
+
+<function>
+<name>FitMultBSIDMake</name>
+<location>src.lib/tk/fitmultbsid</location>
+<header>superdarn/fitmultbsid.h</header>
+<syntax><sn href="structFitMultBSID.html">struct FitMultBSID</sn> *FitMultBSIDMake();</syntax>
+<description>
+  <p>The <fn href="FitMultBSIDMake.html">FitMultBSIDMake</fn> function initializes the <em>FitMultBSID</em> data structure.</p>
+</description>
+<example type="source">fitmultbsid.c</example>
+</function>
+
+<function>
+<name>FitMultBSIDFree</name>
+<location>src.lib/tk/fitmultbsid</location>
+<header>superdarn/fitmultbsid.h</header>
+<syntax>void FitMultBSIDFree(<sn href="structFitMultBSID.html">struct FitMultBSID</sn> *ptr);</syntax>
+<description>
+  <p>The <fn href="FitMultBSIDFree.html">FitMultBSIDFree</fn> function frees the memory assigned to the <em>FitMultBSID</em> pointer, <ar>ptr</ar>.</p>
+</description>
+<example type="source">fitmultbsid.c</example>
+</function>
+
+<function>
+<name>FitMultBSIDReset</name>
+<location>src.lib/tk/fitmultbsid</location>
+<header>superdarn/fitmultbsid.h</header>
+<syntax>void FitMultBSIDReset(<sn href="structFitMultBSID.html">struct FitMultBSID</sn> *ptr);</syntax>
+<description>
+  <p>The <fn href="FitMultBSIDFree.html">FitMultBSIDReset</fn> function frees the memory assigned to the <em>FitMultBSID</em> pointer, <ar>ptr</ar>, before initializing the structure for use with new data.</p>
+</description>
+<example type="source">fitmultbsid.c</example>
+</function>
+
+
+<function>
+<name>FitBSIDScanFreeNext</name>
+<location>src.lib/tk/fitmultbsid</location>
+<header>superdarn/fitmultbsid.h</header>
+<syntax>void FitBSIDScanFreeNext(<sn href="structFitBSIDScan.html">struct FitBSIDScan</sn> *ptr);</syntax>
+<description>
+  <p>The <fn href="FitBSIDScanFreeNext.html">FitBSIDScanFreeNext</fn> function frees the memory assigned to the current <em>FitBSIDScan</em> pointer, <ar>ptr</ar>, and cycles to the next pointer in the scan data structure.</p>
+</description>
+<example type="source">fitmultbsid.c</example>
+</function>
+
+<function>
+<name>FitBSIDBeamFree</name>
+<location>src.lib/tk/fitmultbsid</location>
+<header>superdarn/fitmultbsid.h</header>
+<syntax>void FitBSIDBeamFree(<sn href="structFitBSIDBeam.html">struct FitBSIDBeam</sn> *ptr);</syntax>
+<description>
+  <p>The <fn href="structFitBSIDBeamFree.html">FitBSIDBeamFree</fn> function frees the memory assigned to the <em>FitBSIDBeam</em> pointer, <ar>ptr</ar>.</p>
+</description>
+<example type="source">fitmultbsid.c</example>
+</function>
+
+<function>
+<name>get_bm_by_bmnum</name>
+<location>src.lib/tk/fitmultbsid</location>
+<header>superdarn/fitmultbsid.h</header>
+<syntax>int get_bm_by_bmnum(int ibm, <sn href="structFitBSIDScan.html">struct FitBSIDScan</sn> *scan);</syntax>
+<description>
+  <p>The <fn href="get_bm_by_bmnum.html">get_bm_by_bmnum</fn> cycles through the <ar>scan</ar>, looking for the index that corresponds to the radar beam number, <ar>ibm</ar>.</p>
+</description>
+<example type="source">fitmultbsid.c</example>
+</function>
+
+<function>
+<name>WriteFitMultBSIDASCII</name>
+<location>src.lib/tk/fitmultbsid</location>
+<header>superdarn/fitmultbsid.h</header>
+<syntax>void WriteFitMultBSIDASCII(FILE *fp, <sn href="structFitMultBSID.html">struct FitMultBSID</sn> *mult_scan);</syntax>
+<description>
+  <p>The <fn href="WriteFitMultBSIDASCII.html">WriteFitMultBSIDASCII</fn> cycle through the <ar>mult_scan</ar> data and write the data to the file pointer in an ASCII format.</p>
+</description>
+<example type="source">fitmultbsid.c</example>
+</function>
+
+<function>
+<name>WriteFitBSIDScanASCII</name>
+<location>src.lib/tk/fitmultbsid</location>
+<header>superdarn/fitmultbsid.h</header>
+<syntax>void WriteFitBSIDScanASCII(FILE *fp, int stid, <sn href="structFitBSIDScan.html">struct FitBSIDScan</sn> *scan);</syntax>
+<description>
+  <p>The <fn href="WriteFitBSIDScanASCII.html">WriteFitBSIDScanASCII</fn> cycle through the beams and range gates in the <ar>scan</ar> data, writing the data to the file pointer in an ASCII format.  If no scan data is provided (NULL), writes the header information.</p>
+</description>
+<example type="source">fitmultbsid.c</example>
+</function>
+
+
+<structure>
+  <name>CellBSIDFlgs</name>
+  <location>src.lib/tk/fitmultbsid</location>
+  <header>superdarn/fitmultbsid.h</header>
+  <struct>
+
+    <member>
+      <proto>int fov;</proto>
+      <description>Radar field of view flag, 1 if front, -1 if rear, 0 if unknown or unset.</description>
+    </member>
+
+    <member>
+      <proto>int fov_past;</proto>
+      <description>Previous value for <ar>fov</ar>.</description>
+    </member>
+
+    <member>
+      <proto>int grpflg;</proto>
+      <description>Flag that indicates a group of nearest-neighbors has been identified (0 if not a part of a group, 1 if part of a group).</description>
+    </member>
+
+    <member>
+      <proto>int grpnum;</proto>
+      <description>Number of nearest-neighbors in a group.</description>
+    </member>
+
+    <member>
+      <proto>char grpid[100];</proto>
+      <description>String ID for this group, facilitating group identification across multiple files.</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structCellBSIDFlgs.html">struct CellBSIDFlgs</sn> structure stores the flags needed for field-of-view identification and re-classification of backscatter type.</p>
+  </description>
+</structure>
+
+
+<structure>
+  <name>CellBSIDLoc</name>
+  <location>src.lib/tk/fitmultbsid</location>
+  <header>superdarn/fitmultbsid.h</header>
+  <struct>
+
+    <member>
+      <proto>float vh;</proto>
+      <description>Virtual height in km.</description>
+    </member>
+
+    <member>
+      <proto>float vh_e;</proto>
+      <description>Virtual height error in km.</description>
+    </member>
+
+    <member>
+      <proto>char vh_m[5];</proto>
+      <description>Short character flag indicating of method used to calculate virtual height.  Uses 'E' for elevation, 'C' for the Chisham virtual height model, and 'S' for the standard virtual height model.</description>
+    </member>
+
+    <member>
+      <proto>char region[20];</proto>
+      <description>Character indicating the ionospheric region.</description>
+    </member>
+
+    <member>
+      <proto>float hop;</proto>
+      <description>Number of hops for the propagation path.</description>
+    </member>
+
+    <member>
+      <proto>float dist;</proto>
+      <description>Slant distance in km.</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structCellBSIDLoc.html">struct CellBSIDLoc</sn> structure stores the location information needed for field-of-view identification and re-classification of backscatter type.</p>
+  </description>
+</structure>
+
+
+<structure>
+  <name>FitBSIDBeam</name>
+  <location>src.lib/tk/fitmultbsid</location>
+  <header>superdarn/fitmultbsid.h</header>
+  <struct>
+
+    <member>
+      <proto>int cpid;</proto>
+      <description>Radar programme mode.</description>
+    </member>
+
+    <member>
+      <proto>int bm;</proto>
+      <description>Radar beam number.</description>
+    </member>
+
+    <member>
+      <proto>float bmazm;</proto>
+      <description>Beam azimuth in degrees.</description>
+    </member>
+
+    <member>
+      <proto>double time;</proto>
+      <description>Epoch time of backscatter observation.</description>
+    </member>
+
+    <member>
+      <proto>int intt.sc;</proto>
+      <description>Integer seconds of backscatter observation.</description>
+    </member>
+
+    <member>
+      <proto>int intt.us;</proto>
+      <description>Integer micro-seconds of backscatter observation.</description>
+    </member>
+
+    <member>
+      <proto>int nave;</proto>
+      <description>Number of pulse sequences transmitted.</description>
+    </member>
+
+    <member>
+      <proto>int frang;</proto>
+      <description>Distance to the first range gate in km.</description>
+    </member>
+
+    <member>
+      <proto>int rsep;</proto>
+      <description>Range separation in km.</description>
+    </member>
+
+    <member>
+      <proto>int rxrise;</proto>
+      <description>Receiver rise time in microseconds.</description>
+    </member>
+
+    <member>
+      <proto>int freq;</proto>
+      <description>Transmission frequency in kHz.</description>
+    </member>
+
+    <member>
+      <proto>int noise;</proto>
+      <description>Noise from Fit files</description>
+    </member>
+
+    <member>
+      <proto>int atten;</proto>
+      <description>Attenuation level (unitless)</description>
+    </member>
+
+    <member>
+      <proto>int channel;</proto>
+      <description>Channel number, used to denote different Tx/Rx channels on Stereo radars, and to denote changes in radar operating parameters between scans, e.g. alternating between 2 frequencies scan-to-scan</description>
+    </member>
+
+    <member>
+      <proto>int nrang;</proto>
+      <description>Number of range gates in this beam.  For each structure below, the range gate index corresponds to the actual range gate.</description>
+    </member>
+
+    <member>
+      <proto>unsigned char *sct;</proto>
+      <description>Flag that indicates whether there is backscatter data for each range gate (i.e., if sct[4] == 1, the zero-offset range gate 4 has backscatter and if sct[74] == 0, the zero-offset range gate 74 does not have backscatter).</description>
+    </member>
+
+    <member>
+      <proto><sn href="&root;/superdarn/src.lib/tk/radar/structRadarCell.html">struct RadarCell</sn> *rng;</proto>
+      <description>Pointer with <sn href="&root;/superdarn/src.lib/tk/radar/structRadarCell.html">RadarCell</sn> data for each range gate.</description>
+    </member>
+
+    <member>
+      <proto><sn href="&root;/superdarn/src.lib/tk/radar/structRadarCell.html">struct RadarCell</sn> *med_rng;</proto>
+      <description>Pointer with median values of the <sn href="&root;/superdarn/src.lib/tk/radar/structRadarCell.html">RadarCell</sn> data for each range gate.</description>
+    </member>
+
+    <member>
+      <proto><sn href="&root;/superdarn/src.lib/tk/fitacf.2.5/structFitElv.html">struct FitElv</sn> *front_elv;</proto>
+      <description>Pointer with elevation values corresponding to the front field-of-view for each range gate.</description>
+    </member>
+
+    <member>
+      <proto><sn href="&root;/superdarn/src.lib/tk/fitacf.2.5/structFitElv.html">struct FitElv</sn> *back_elv;</proto>
+      <description>Pointer with elevation values corresponding to the rear field-of-view for each range gate.</description>
+    </member>
+
+    <member>
+      <proto><sn href="structCellBSIDFlgs.html">struct CellBSIDFlgs</sn> *rng_flgs;</proto>
+      <description>Flags that identify the field-of-view and nearest-neighbor groups for each range gate.</description>
+    </member>
+
+    <member>
+      <proto><sn href="structCellBSIDLoc.html">struct CellBSIDLoc</sn> *front_loc;</proto>
+      <description>Location information for backscatter from the front field-of-view at each range gate.</description>
+    </member>
+
+    <member>
+      <proto><sn href="structCellBSIDLoc.html">struct CellBSIDLoc</sn> *back_loc;</proto>
+      <description>Location information for backscatter from the rear field-of-view at each range gate.</description>
+    </member>
+    
+  </struct>
+
+  <description>
+  <p>The <sn href="structFitBSIDBeam.html">struct FitBSIDBeam</sn> structure stores the FitACF, field-of-view, and updated backscatter ID information, and the information needed for the field-of-view identification and re-classification of backscatter type for a radar beam.</p>
+  </description>
+</structure>
+
+
+<structure>
+  <name>FitBSIDScan</name>
+  <location>src.lib/tk/fitmultbsid</location>
+  <header>superdarn/fitmultbsid.h</header>
+  <struct>
+
+    <member>
+      <proto>double st_time;</proto>
+      <description>Epoch time corresponding to the start of the scan.</description>
+    </member>
+
+    <member>
+      <proto>double ed_time;</proto>
+      <description>Epoch time corresponding to the end of the scan.</description>
+    </member>
+
+    <member>
+      <proto>int num_bms;</proto>
+      <description>Number of beams in the scan.</description>
+    </member>
+
+    <member>
+      <proto><sn href="structFitBSIDBeam.html">struct FitBSIDBeam</sn> *bm;</proto>
+      <description>Pointer with beam information for each beam in this scan.  Beam index does not necessarily correspond to the beam number.</description>
+    </member>
+
+    <member>
+      <proto><sn href="structFitBSIDScan.html">struct FitBSIDScan</sn> *next_scan;</proto>
+      <description>Pointer to the next scan in this structure.</description>
+    </member>
+
+    <member>
+      <proto><sn href="structFitBSIDScan.html">struct FitBSIDScan</sn> *prev_scan;</proto>
+      <description>Pointer to the previous scan in this structure.</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structFitBSIDScan.html">struct FitBSIDScan</sn> structure stores the FitACF and additional data needed for Field-of-View identification and updating the backscatter type.  Uses a linked list to cycle through the scans loaded for the specified file(s).</p>
+  </description>
+</structure>
+
+<structure>
+  <name>FitMultBSID</name>
+  <location>src.lib/tk/fitmultbsid</location>
+  <header>superdarn/fitmultbsid.h</header>
+  <struct>
+
+    <member>
+      <proto>int stid;</proto>
+      <description>Numerical radar station ID.</description>
+    </member>
+
+    <member>
+      <proto>int version.major;</proto>
+      <description>Major version number.</description>
+    </member>
+
+    <member>
+      <proto>int version.minor;</proto>
+      <description>Minor version number.</description>
+    </member>
+
+    <member>
+      <proto>double st_time;</proto>
+      <description>Epoch time corresponding to the start of the file(s).</description>
+    </member>
+
+    <member>
+      <proto>double ed_time;</proto>
+      <description>Epoch time corresponding to the end of the file(s).</description>
+    </member>
+
+    <member>
+      <proto>int num_scans;</proto>
+      <description>Number of loaded scans.</description>
+    </member>
+
+    <member>
+      <proto><sn href="structFitBSIDScan.html">struct FitBSIDScan</sn> *scan_ptr;</proto>
+      <description>Pointer to the first scan in this structure.</description>
+    </member>
+
+    <member>
+      <proto><sn href="structFitBSIDScan.html">struct FitBSIDScan</sn> *last_scan;</proto>
+      <description>Pointer to the last scan in this structure.</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structFitBSIDScan.html">struct FitMultBSID</sn> structure stores the FitACF and additional data needed for Field-of-View identification and updating the backscatter type.  Uses a linked list to cycle through the scans loaded for the specified file(s).</p>
+  </description>
+</structure>
+
+
+</library>

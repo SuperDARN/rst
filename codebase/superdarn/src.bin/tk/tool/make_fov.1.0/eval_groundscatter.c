@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "multbsid.h"
+#include "fitmultbsid.h"
 
 /**
  * @brief Update the groundscatter flag 'gflg' for points already flagged as GS
