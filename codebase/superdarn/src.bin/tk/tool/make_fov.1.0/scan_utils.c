@@ -1,25 +1,15 @@
 /* update_scan.c
    =============
    Author: Angeline G. Burrell - NRL - 2021
-*/
+   This is a U.S. government work and not under copyright protection in the U.S.
 
-/*
- LICENSE AND DISCLAIMER
+   This file is part of the Radar Software Toolkit (RST).
 
- This file is part of the Radar Software Toolkit (RST).
+   Disclaimer: RST is licensed under GPL v3.0. Please visit 
+               <https://www.gnu.org/licenses/> to see the full license
 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
+   Modifications:
 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
-
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <stdio.h>
@@ -373,55 +363,6 @@ void eval_fov_flag_consistency(int max_rg, int max_bm, int bmwidth, int D_rgmax,
 
   return;
 }
-
-/**
- * @brief Cycle through scan, returning beam by beam number
- *
- * @param[in] ibm  - Zero-index beam number
- *            scan - Scan data structure
- *
- * @param[out] bm - Pointer to the desired beam structure
- **/
-
-int get_bm_by_bmnum(int ibm, struct FitBSIDScan *scan)
-{
-  int i;
-
-  struct FitBSIDBeam bm;
-
-  if(ibm < scan->num_bms)
-    {
-      /* This scan may be ordered by beam number */
-      i  = ibm;
-      bm = scan->bm[i];
-
-      /* This scan may be ordered by reverse beam order */
-      if(bm.bm != ibm)
-	{
-	  i  = scan->num_bms - (ibm + 1);
-	  bm = scan->bm[i];
-	}
-
-      if(bm.bm == ibm) return(i);
-    }
-
-  /* Not a clear relationship between beam index and beam number */
-  i  = 0;
-  bm = scan->bm[i];
-
-  while(bm.bm != ibm && i < scan->num_bms)
-    bm = scan->bm[++i];
-
-  if(i >= scan->num_bms)
-    {
-      fprintf(stderr, "can't find beam number [%d] in scan with time [%f]\n",
-	      ibm, scan->st_time);
-      exit(1);
-    }
-
-  return(i);
-}
-
 
 /**
  * @brief Get range gate limits for an input point and set regional guidelines

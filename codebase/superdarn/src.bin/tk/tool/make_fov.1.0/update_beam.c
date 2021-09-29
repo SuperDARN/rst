@@ -1,32 +1,22 @@
 /* update_beam.c
    =============
    Author: Angeline G. Burrell - NRL - 2021
-*/
+   This is a U.S. government work and not under copyright protection in the U.S.
 
-/*
- LICENSE AND DISCLAIMER
+   This file is part of the Radar Software Toolkit (RST).
 
- This file is part of the Radar Software Toolkit (RST).
+   Disclaimer: RST is licensed under GPL v3.0. Please visit 
+               <https://www.gnu.org/licenses/> to see the full license
 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
+   Modifications:
 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
-
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "radar.h"
-#include "multbsid.h"
+#include "fitmultbsid.h"
 #include "rpos.h"
 #include "shfconst.h"
 #include "elevation.h"

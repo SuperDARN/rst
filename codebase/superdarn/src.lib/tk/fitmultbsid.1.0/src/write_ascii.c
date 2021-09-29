@@ -1,25 +1,15 @@
-/* write_scan.c
-   ============
+/* write_ascii.c
+   =============
    Author: Angeline G. Burrell - NRL - 2021
-*/
+   This is a U.S. government work and not under copyright protection in the U.S.
 
-/*
- LICENSE AND DISCLAIMER
+   This file is part of the Radar Software Toolkit (RST).
 
- This file is part of the Radar Software Toolkit (RST).
+   Disclaimer: RST is licensed under GPL v3.0. Please visit 
+               <https://www.gnu.org/licenses/> to see the full license
 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
+   Modifications:
 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
-
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <stdio.h>
@@ -31,7 +21,7 @@
 
 #include "rtypes.h"
 #include "rtime.h"
-#include "multbsid.h"
+#include "fitmultbsid.h"
 
 /**
  * @brief Cycle through and write multiple scans of radar data
@@ -40,16 +30,14 @@
  *            mult_scan - Cyclable scan structure
  **/
 
-void write_multbsid_ascii(FILE *fp, struct MultFitBSID *mult_scan)
+void WriteFitMultBSIDASCII(FILE *fp, struct FitMultBSID *mult_scan)
 {
   int iscan;
 
   struct FitBSIDScan *scan;
 
-  void write_bsid_scan(FILE *fp, int stid, struct FitBSIDScan *scan);
-
   /* Write the header */
-  write_bsid_scan(fp, mult_scan->stid, NULL);
+  WriteFitBSIDScanASCII(fp, mult_scan->stid, NULL);
 
   /* Cycle through all the scans */
   scan = mult_scan->scan_ptr;
@@ -57,7 +45,7 @@ void write_multbsid_ascii(FILE *fp, struct MultFitBSID *mult_scan)
   for(iscan = 0; iscan < mult_scan->num_scans; iscan++)
     {
       /* Write all the beams from this scan */
-      write_bsid_scan(fp, mult_scan->stid, scan);
+      WriteFitBSIDScanASCII(fp, mult_scan->stid, scan);
 
       /* Cycle to the next scan */
       scan = scan->next_scan;
@@ -74,7 +62,7 @@ void write_multbsid_ascii(FILE *fp, struct MultFitBSID *mult_scan)
  *            scan - BSID scan structure
  **/
 
-void write_bsid_scan(FILE *fp, int stid, struct FitBSIDScan *scan)
+void WriteFitBSIDScanASCII(FILE *fp, int stid, struct FitBSIDScan *scan)
 {
   int ibm, irg, yr, mo, dy, hr, mt;
   double sc;
