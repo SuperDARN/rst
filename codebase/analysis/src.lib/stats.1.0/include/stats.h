@@ -1,27 +1,27 @@
-/* utils.h
-   =============
+/* stats.h
+   =======
    Author: Angeline G. Burrell - NRL - 2021
+   This is a U.S. government work and not under copyright protection in the U.S.
+
+   This file is part of the Radar Software Toolkit (RST).
+
+   Disclaimer: RST is licensed under GPL v3.0. Please visit 
+               <https://www.gnu.org/licenses/> to see the full license
+
+   Modifications:
+
 */
 
-/*
- LICENSE AND DISCLAIMER
+#ifndef _STATS_H
+#define _STATS_H
 
- This file is part of the Radar Software Toolkit (RST).
+#ifndef _MPFIT_H
+#import "mpfit.h"
+#endif
 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
-
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
-
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+#ifndef _SORT_H
+#import "sort.h"
+#endif
 
 #ifndef INFINITY
 #define INFINITY 9.99E7
@@ -35,10 +35,10 @@ struct gauss_data
 };
 
 int num_unique_int_vals(int num, int array[]);
+int get_unique_str(int in_num, char **in_str, char **out_str);
 float stdev_float(int num, float array[]);
 void mean_stdev_float(int num, float array[], float *mean, float *stdev);
 void zscore(int num, float array[], float *zscore);
-int get_unique_str(int in_num, char **in_str, char **out_str);
 double gaussian(double x, double *params);
 double mult_gaussian(double x, double *params);
 int gaussian_dev(int m, int n, double *p, double *deviates, double **derivs,
@@ -51,3 +51,5 @@ int int_argrelmax(int num, int vals[], int order, int clip, int *ismax);
 int int_argabsmax(int num, int vals[]);
 float float_absmax(int num, float vals[]);
 float float_absmin(int num, float vals[]);
+
+#endif

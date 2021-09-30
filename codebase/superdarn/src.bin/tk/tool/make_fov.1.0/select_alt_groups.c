@@ -18,9 +18,8 @@
 #include <math.h>
 
 #include "mpfit.h"
-
 #include "fitmultbsid.h"
-#include "stat_utils.h"
+#include "stats.h"
 #include "sort.h"
 
 /**
