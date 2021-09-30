@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>analysis</project>
+<name>stats</name>
+<location>src.lib/stats</location>
+
+
+<function>
+<name>num_unique_int_vals</name>
+<location>src.lib/stats</location>
+<header>analysis/stats.h</header>
+<syntax>int num_unique_int_vals(int num, int array[]);</syntax>
+<description><p>The <fn href="num_unique_int_vals.html">num_unique_int_vals</fn> function calculates the number of unique elements in <ar>array</ar>.  The input array of integers is not modified in any way.</p>
+</description>
+<returns><p>Returns the number of unique values in <ar>array</ar>.</p></returns>
+<error>If there are problems assigning data to the subarrays when performing the sorting, the routine will exit with -1.</error>
+</function>
+
+<function>
+<name>get_unique_str</name>
+<location>src.lib/stats</location>
+<header>analysis/stats.h</header>
+<syntax>int get_unique_str(int in_num, char **in_str, char **out_str)</syntax>
+<description><p>Identify and obtain the unique strings from an array of strings, <ar>in_str</ar></p>
+</description>
+<returns><p>Returns a pointer containing all of the unique strings and the number of unique strings as the output.</p></returns>
+</function>
+
+<function>
+<name>stdev_float</name>
+<location>src.lib/stats</location>
+<header>analysis/stats.h</header>
+<syntax>float stdev_float(int num, float array[]);</syntax>
+<description><p>The <fn href="stdev_float.html">stdev_float</fn> function calculates the standard deviation of the values in the floating point decimal array, <ar>array</ar>.</p>
+</description>
+<returns><p>Returns the standard deviation.</p></returns>
+<error>If there are not enough values to calculate the standard deviation, a value of 0.0 is returned.</error>
+</function>
+
+<function>
+<name>mean_stdev_float</name>
+<location>src.lib/stats</location>
+<header>analysis/stats.h</header>
+<syntax>void mean_stdev_float(int num, float array[], float *mean, float *stdev);</syntax>
+<description><p>The <fn href="mean_stdev_float.html">mean_stdev_float</fn> function calculates the arithmatic mean and standard deviation of the values in the floating point decimal array, <ar>array</ar>.</p>
+</description>
+<returns><p>Returns the mean and standard deviation as pointers.</p></returns>
+<error>If there are not enough values to calculate the mean or standard deviation, a value of 0.0 is returned.</error>
+</function>
+
+<function>
+<name>zscore</name>
+<location>src.lib/stats</location>
+<header>analysis/stats.h</header>
+<syntax>void zscore(int num, float array[], float *zscore);</syntax>
+<description><p>Calculate the z-score for each value in <ar>array</ar></p>
+</description>
+<returns><p>Returns the z-score as a pointer equal in size to the input array</p></returns>
+<error>If the standard deviation could not be calculated (is zero), a z-score of infinity is assigned for every value.</error>
+</function>
+
+<function>
+<name>gaussian</name>
+<location>src.lib/stats</location>
+<header>analysis/stats.h</header>
+<syntax>double gaussian(double x, double *params);</syntax>
+<description><p>A function that calculates the value for a Gaussian at <ar>x</ar> using the amplitude, mean, and standard deviation of the distribution provided in that order through <ar>params</ar>. This function is formatted for use in MINPACK optimization.</p>
+</description>
+<returns><p>Returns the result of amplitude * e^(-(x-mean)^2 / (2 * standard_deviation^2)).</p></returns>
+</function>
+
+<function>
+<name>mult_gaussian</name>
+<location>src.lib/stats</location>
+<header>analysis/stats.h</header>
+<syntax>double mult_gaussian(double x, double *params);</syntax>
+<description><p>A function that calculates the value for a multi-peaked Gaussian at <ar>x</ar> using the number of distributions, and amplitudes, means, and standard deviations for each of these of the distributions provided in that order through <ar>params</ar>. If the number of distributions is one, the results are the same as <fn href="gaussian.html">gaussian</fn>. This function is formatted for use in MINPACK optimization.</p>
+</description>
+<returns><p>Returns the result of SUM(amplitude_i * e^(-(x-mean_i)^2 / (2 * standard_deviation_i^2))).</p></returns>
+</function>
+
+<function>
+<name>gaussian_dev</name>
+<location>src.lib/stats</location>
+<header>analysis/stats.h</header>
+<syntax>double gaussian_dev(int m, int n, double *p, double *deviates, double **derivs, void *private);</syntax>
+<description><p>A function that calculates the deviation between the values of a data set and a fitted Gaussian function. This function is formatted for use in MINPACK optimization.</p>
+</description>
+<returns><p>Returns a value of zero and updates the <ar>deviates</ar> pointer.  The <ar>derivs</ar> pointer is not used.</p></returns>
+</function>
+
+<function>
+<name>mult_gaussian_dev</name>
+<location>src.lib/stats</location>
+<header>analysis/stats.h</header>
+<syntax>double mult_gaussian_dev(int m, int n, double *p, double *deviates, double **derivs, void *private);</syntax>
+<description><p>A function that calculates the deviation between the values of a data set and a fitted multi-peaked Gaussian function. This function is formatted for use in MINPACK optimization.</p>
+</description>
+<returns><p>Returns a value of zero and updates the <ar>deviates</ar> pointer.  The <ar>derivs</ar> pointer is not used.</p></returns>
+</function>
+
+
+<function>
+<name>histogram</name>
+<location>src.lib/stats</location>
+<header>analysis/stats.h</header>
+<syntax>void histogram(int nvals, float vals[], int nbin, float val_min, float val_max, int *hist_bins, float *leading_bin_val);</syntax>
+<description><p>The <fn href="histogram.html">histogram</fn> function determines the number of values, provided by <ar>vals</ar> in a set of <ar>nbin</ar> bins. The maximum and minimum values to consider are constrained by <ar>val_min</ar> and <ar>val_max</ar>.</p>
+</description>
+<returns><p>Returns the number of values in each bin through the <ar>hist_bins</ar> pointer and the value for the leading edge of each bin through the <ar>leading_bin_val</ar> pointer.</p></returns>
+</function>
+
+<function>
+<name>int_argrelmax</name>
+<location>src.lib/stats</location>
+<header>analysis/stats.h</header>
+<syntax>int int_argrelmax(int num, int vals[], int order, int clip, int *ismax);</syntax>
+<description><p>The <fn href="int_argrelmax">int_argrelmax</fn> function finds the relative maxima in a data set, <ar>vals</ar>.  <ar>order</ar> specifies how many points on each side of a value should be considered for a comparison to be true and <ar>clip</ar> specifies how the edges of the data set should be treated. This routine expects evenly spaced data as input, such as the results of a function like <fn href="histogram.html">histogram</fn>.</p>
+</description>
+<returns><p>Returns the number of relative maxima as output and an array of booleans (True is 1 and False is 0) through the <ar>ismax</ar> pointer.</p></returns>
+<reference><p>Based off of, but not identical to, the Python scipy hidden function <fn href="https://github.com/scipy/scipy/blob/47bb6febaa10658c72962b9615d5d5aa2513fa3a/scipy/signal/_peak_finding.py#L22">_boolrelextrema</fn>.</p>
+</reference>
+</function>
+
+<function>
+<name>int_argabsmax</name>
+<location>src.lib/stats</location>
+<header>analysis/stats.h</header>
+<syntax>int int_argabsmax(int num, int vals[]);</syntax>
+<description><p>The <fn href="int_argabsmax">int_argabsmax</fn> function finds the index of the absolute maximum for the integers in <ar>vals</ar>.</p>
+</description>
+<returns><p>Returns the zero-ordered index of the maximum in <ar>vals</ar>.</p>
+</returns>
+</function>
+
+<function>
+<name>float_absmax</name>
+<location>src.lib/stats</location>
+<header>analysis/stats.h</header>
+<syntax>float float_absmax(int num, float vals[])</syntax>
+<description><p>The <fn href="float_absmax">float_absmax</fn> function finds the absolute maximum for the floating point decimals in <ar>vals</ar>.</p>
+</description>
+<returns><p>Returns the the maximum from <ar>vals</ar>.</p>
+</returns>
+</function>
+
+<function>
+<name>float_absmin</name>
+<location>src.lib/stats</location>
+<header>analysis/stats.h</header>
+<syntax>float float_absmin(int num, float vals[])</syntax>
+<description><p>The <fn href="float_absmin">float_absmin</fn> function finds the absolute minimum for the floating point decimals in <ar>vals</ar>.</p>
+</description>
+<returns><p>Returns the the minimum from <ar>vals</ar>.</p>
+</returns>
+</function>
+
+<structure>
+  <name>gauss_data</name>
+  <location>src.lib/stats</location>
+  <header>analysis/stats.h</header>
+  <struct>
+
+    <member>
+      <proto>double *x;</proto>
+      <description>Pointer of independent data values.</description>
+    </member>
+
+    <member>
+      <proto>double *y;</proto>
+      <description>Pointer of dependent data values.</description>
+    </member>
+
+    <member>
+      <proto>double *y_error;</proto>
+      <description>Pointer of dependent data errors.</description>
+    </member>
+
+  </struct>
+
+  <description>
+    <p>The <sn href="structgauss_data.html">struct gauss_data</sn> structure stores the data and errors used to fit a specified function using MINPACK.</p>
+  </description>
+</structure>
+
+</library>

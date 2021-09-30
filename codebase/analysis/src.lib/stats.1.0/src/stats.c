@@ -1,25 +1,15 @@
-/* utils.c
-   =============
+/* stats.c
+   =======
    Author: Angeline G. Burrell - NRL - 2021
-*/
+   This is a U.S. government work and not under copyright protection in the U.S.
 
-/*
- LICENSE AND DISCLAIMER
+   This file is part of the Radar Software Toolkit (RST).
 
- This file is part of the Radar Software Toolkit (RST).
+   Disclaimer: RST is licensed under GPL v3.0. Please visit 
+               <https://www.gnu.org/licenses/> to see the full license
 
- RST is free software: you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- any later version.
+   Modifications:
 
- RST is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Lesser General Public License for more details.
-
- You should have received a copy of the GNU Lesser General Public License
- along with RST.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <stdio.h>
@@ -28,9 +18,8 @@
 #include <math.h>
 
 #include "mpfit.h"
-
-#include "stat_utils.h"
 #include "sort.h"
+#include "stats.h"
 
 /**
  * @brief Calculate the number of unique values for an integer array
@@ -62,6 +51,42 @@ int num_unique_int_vals(int num, int array[])
 
   free(sorted_array);
   return(num_unique);
+}
+
+/**
+ * @brief Take an array of strings and return an array of the unique strings
+ *
+ * @param[in] int_num    Number of strings contained within in_str
+ *            in_str     Array of strings to evaluate
+ *
+ * @param[out] out_num  Number of unique strings found within in_str
+ *             out_str  Array of unique strings
+ **/
+
+int get_unique_str(int in_num, char **in_str, char **out_str)
+{
+  int i, j, out_num, match;
+
+  out_num = 1;
+  strcpy(out_str[0], in_str[0]);
+
+  for(i = 1; i < in_num; i++)
+    {
+      /* Look for a matching string */
+      for(match = 0, j = 0; j < out_num && match == 0; j++)
+	{
+	  if(strcmp(out_str[j], in_str[i]) == 0) match = 1;
+	}
+
+      /* If there is no matching string, add this to the output */
+      if(match == 0)
+	{
+	  strcpy(out_str[out_num], in_str[i]);
+	  out_num++;
+	}
+    }
+
+  return(out_num);
 }
 
 /**
@@ -154,8 +179,6 @@ void zscore(int num, float array[], float *zscore)
 
   float mean, stdev;
 
-  void mean_stdev_float(int num, float array[], float *mean, float *stdev);
-
   /* Get the mean and standard deviation */
   mean_stdev_float(num, array, &mean, &stdev);
 
@@ -167,43 +190,6 @@ void zscore(int num, float array[], float *zscore)
     }
 
   return;
-}
-  
-
-/**
- * @brief Take an array of strings and return an array of the unique strings
- *
- * @param[in] int_num    Number of strings contained within in_str
- *            in_str     Array of strings to evaluate
- *
- * @param[out] out_num  Number of unique strings found within in_str
- *             out_str  Array of unique strings
- **/
-
-int get_unique_str(int in_num, char **in_str, char **out_str)
-{
-  int i, j, out_num, match;
-
-  out_num = 1;
-  strcpy(out_str[0], in_str[0]);
-
-  for(i = 1; i < in_num; i++)
-    {
-      /* Look for a matching string */
-      for(match = 0, j = 0; j < out_num && match == 0; j++)
-	{
-	  if(strcmp(out_str[j], in_str[i]) == 0) match = 1;
-	}
-
-      /* If there is no matching string, add this to the output */
-      if(match == 0)
-	{
-	  strcpy(out_str[out_num], in_str[i]);
-	  out_num++;
-	}
-    }
-
-  return(out_num);
 }
 
 /**
@@ -272,8 +258,6 @@ int mult_gaussian_dev(int m, int n, double *p, double *deviates,
   int i;
   double *x, *y, *y_err;
 
-  double mult_gaussian(double x, double *params);
-
   struct gauss_data *gdat = (struct gauss_data *)private;
 
   x     = gdat->x;
@@ -303,8 +287,6 @@ int gaussian_dev(int m, int n, double *p, double *deviates, double **derivs,
 {
   int i;
   double *x, *y, *y_err;
-
-  double gaussian(double x, double *params);
 
   struct gauss_data *gdat = (struct gauss_data *)private;
 
@@ -367,7 +349,7 @@ void histogram(int nvals, float vals[], int nbin, float val_min, float val_max,
 }
 
 /**
- * @brief Routine to find the relative maximum based on numpy _boolrelextrema
+ * @brief Routine to find the relative maxima based on numpy _boolrelextrema
  *
  * @params[in] num   - Number of samples in `vals`
  *             vals  - Integer array of input values to be searched

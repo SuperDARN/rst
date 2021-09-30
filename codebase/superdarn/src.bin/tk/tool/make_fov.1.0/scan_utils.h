@@ -27,7 +27,7 @@
 #endif
 
 #ifndef _STAT_UTILS_H
-#include "stat_utils.h"
+#include "stats.h"
 #endif
 
 #ifndef _FITMULTBSID_H
