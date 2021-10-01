@@ -1,6 +1,7 @@
 /* stats.h
    =======
-   Author: Angeline G. Burrell - NRL - 2021
+   Authors: Keith Kotyk - ISAS - 2015 and Angeline G. Burrell - NRL - 2021
+   Copyright (C) 2016  SuperDARN Canada (gamma functions)
    This is a U.S. government work and not under copyright protection in the U.S.
 
    This file is part of the Radar Software Toolkit (RST).
@@ -27,6 +28,18 @@
 #define INFINITY 9.99E7
 #endif
 
+#ifndef ITMAX
+#define ITMAX 100
+#endif
+
+#ifndef EPS
+#define EPS 3.0e-7
+#endif
+
+#ifndef FPMIN
+#define FPMIN 1.0e-30
+#endif
+
 struct gauss_data
 {
   double *x;
@@ -51,5 +64,9 @@ int int_argrelmax(int num, int vals[], int order, int clip, int *ismax);
 int int_argabsmax(int num, int vals[]);
 float float_absmax(int num, float vals[]);
 float float_absmin(int num, float vals[]);
+double gammaq(double a, double x);
+void gamma_series_rep(double *gamser, double a, double x, double *gln);
+void gamma_continued_frac(double *gammcf, double a, double x, double *gln);
+double gammln(double xx);
 
 #endif
