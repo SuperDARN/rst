@@ -18,7 +18,6 @@ INCLUDE = -I$(IPATH)/analysis -I$(IPATH)/base -I$(IPATH)/general \
 # grid_utils, get_fit_tfreq_band, should likely be called through libraries
 SRC =	make_fov.c \
 	eval_groundscatter.c \
-	leastsquares.c \
 	linear_regression.c \
 	load_fit_update_fov.c \
 	load_radar_site.c \
