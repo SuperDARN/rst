@@ -151,8 +151,60 @@
 <syntax>float float_absmin(int num, float vals[])</syntax>
 <description><p>The <fn href="float_absmin">float_absmin</fn> function finds the absolute minimum for the floating point decimals in <ar>vals</ar>.</p>
 </description>
-<returns><p>Returns the the minimum from <ar>vals</ar>.</p>
+<returns><p>Returns the minimum from <ar>vals</ar>.</p>
 </returns>
+</function>
+
+<function>
+<name>gammaq</name>
+<location>src.lib/stats</location>
+<header>analysis/stats.h</header>
+<syntax>double gammaq(double a, double x);</syntax>
+<description><p>The <fn href="gammaq">gammaq</fn> function computes the incomplete upper gamma function using the most efficient method.</p>
+</description>
+<returns><p>Returns the incomplete upper gamma function.</p>
+</returns>
+<reference><p>NUMERICAL RECIPES IN C: THE ART OF SCIENTIFIC COMPUTING.</p>
+</reference>
+</function>
+
+<function>
+<name>gamma_series_rep</name>
+<location>src.lib/stats</location>
+<header>analysis/stats.h</header>
+<syntax>void gamma_series_rep(double *gamser, double a, double x, double *gln);</syntax>
+<description><p>The <fn href="gamma_series_rep">gamma_series_rep</fn> function computes the incomplete upper gamma function using a series representation.</p>
+</description>
+<returns><p>Returns the incomplete upper gamma function through the <ar>gamser</ar> pointer.</p>
+</returns>
+<reference><p>NUMERICAL RECIPES IN C: THE ART OF SCIENTIFIC COMPUTING.</p>
+</reference>
+</function>
+
+<function>
+<name>gamma_continued_frac</name>
+<location>src.lib/stats</location>
+<header>analysis/stats.h</header>
+<syntax>void gamma_continued_frac(double *gammcf, double a, double x, double *gln);</syntax>
+<description><p>The <fn href="gamma_continued_frac">gamma_continued_frac</fn> function computes the incomplete upper gamma function as continued fractions.</p>
+</description>
+<returns><p>Returns the incomplete upper gamma function through the <ar>gammcf</ar> pointer.</p>
+</returns>
+<reference><p>NUMERICAL RECIPES IN C: THE ART OF SCIENTIFIC COMPUTING.</p>
+</reference>
+</function>
+
+<function>
+<name>gammln</name>
+<location>src.lib/stats</location>
+<header>analysis/stats.h</header>
+<syntax>double gammln(double xx;</syntax>
+<description><p>The <fn href="gammln">gammln</fn> function computes the log of the gamma function, preventing overflows in the gamma calcuation.</p>
+</description>
+<returns><p>Returns the log of the gamma function.</p>
+</returns>
+<reference><p>NUMERICAL RECIPES IN C: THE ART OF SCIENTIFIC COMPUTING.</p>
+</reference>
 </function>
 
 <structure>

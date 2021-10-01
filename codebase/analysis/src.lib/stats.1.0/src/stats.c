@@ -490,3 +490,136 @@ float float_absmin(int num, float vals[])
 
   return(min_val);
 }
+
+/**
+ * @brief Computes the incomplete upper gamma function.
+ *
+ * Computes the incomplete upper gamma function using either series
+ * representation or continued fractions, depending on which will be faster.
+ * Directly taken from Numerical Recipies in C.  Refer to text for more
+ * description.
+ * 
+ * @references NUMERICAL RECIPES IN C: THE ART OF SCIENTIFIC COMPUTING.
+ **/
+
+double gammaq(double a, double x)
+{
+  double gamser = 0.0, gammcf = 0.0, gln = 0.0;
+ 
+  if (x < 0.0 || a <= 0.0) return -1.0;
+
+  if (x < (a + 1.0))
+    {
+      gamma_series_rep(&gamser, a, x, &gln);
+      return 1.0 - gamser;
+    }
+  else
+    {
+      gamma_continued_frac(&gammcf, a, x, &gln);
+      return gammcf;
+    }
+}
+
+/**
+ * @brief Computes the gamma function as a series representation
+ *
+ * Computes the gamma function as a series representation. Directly taken from
+ * Numerical Recipies in C.  Refer to text for more description.
+ * 
+ * @references NUMERICAL RECIPES IN C: THE ART OF SCIENTIFIC COMPUTING.
+ **/
+
+void gamma_series_rep(double *gamser, double a, double x, double *gln)
+{
+  int n;
+  double sum, del, ap;
+
+  *gln = gammln(a);
+
+  if (x <= 0.0)
+    {
+      if (x < 0.0) *gamser = 0.0;
+      return;
+    }
+  else
+    {
+      ap = a;
+      del = sum = 1.0 / a;
+      for (n = 1;n <= ITMAX; n++)
+	{
+	  ++ap;
+	  del *= x / ap;
+	  sum += del;
+	  if (fabs(del) < fabs(sum) * EPS)
+	    {
+	      *gamser = sum * exp(-x + a * log(x) - (*gln));
+	      return;
+	    }
+	}
+      return;
+    }
+}
+
+/**
+ * @brief Computes the gamma function as continued fractions
+ *
+ * Computes the gamma function as continued fractions. Directly taken from
+ * Numerical Recipies in C.  Refer to text for more description.
+ * 
+ * @references NUMERICAL RECIPES IN C: THE ART OF SCIENTIFIC COMPUTING.
+ **/
+
+void gamma_continued_frac(double *gammcf, double a, double x, double *gln)
+{
+  int i;
+  double an,b,c,d,del,h;
+
+  *gln = gammln(a);
+  b = x + 1.0 - a;
+  c = 1.0 / FPMIN;
+  d = 1.0 / b;
+  h = d;
+
+  for (i = 1; i <= ITMAX; i++)
+    {
+      an = -i * (i - a);
+      b += 2.0;
+      d = an * d + b;
+      if (fabs(d) < FPMIN) d = FPMIN;
+      c = b + an / c;
+      if (fabs(c) < FPMIN) c = FPMIN;
+      d = 1.0 / d;
+      del = d * c;
+      h *= del;
+      if (fabs(del-1.0) < EPS) break;
+    }
+  if (i > ITMAX)
+    *gammcf = exp(-x + a * log(x) - (*gln)) * h;
+}
+
+/**
+ * @brief Computes log of gamma function.
+ *
+ * Computes the log of a gamma function to prevent overflows. Directely taken
+ * from Numerical Recipies in C.  Refer to text for more description.
+ * 
+ * @references NUMERICAL RECIPES IN C: THE ART OF SCIENTIFIC COMPUTING.
+ **/
+
+double gammln(double xx)
+{
+  double x, y, tmp, ser;
+
+  static double cof[6] = {76.18009172947146, -86.50532032941677,
+			  24.01409824083091, -1.231739572450155,
+			  0.1208650973866179e-2, -0.5395239384953e-5};
+  int j;
+
+  y = x = xx;
+  tmp = x + 5.5;
+  tmp -= (x + 0.5) * log(tmp);
+  ser = 1.000000000190015;
+
+  for (j = 0;j <= 5; j++) ser += cof[j] / ++y;
+  return -tmp + log(2.5066282746310005 * ser / x);
+}
