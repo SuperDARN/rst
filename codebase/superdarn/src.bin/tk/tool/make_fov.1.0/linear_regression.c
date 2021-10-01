@@ -3,8 +3,7 @@
 #include<math.h>
 
 #include "rtypes.h"
-#include "llist.h"
-#include "leastsquares.h"
+#include "stats.h"
 
 /****************************************************************************
  * Linear_Regression.c
