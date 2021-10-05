@@ -17,11 +17,11 @@
 #define _STATS_H
 
 #ifndef _MPFIT_H
-#import "mpfit.h"
+#include "mpfit.h"
 #endif
 
 #ifndef _SORT_H
-#import "sort.h"
+#include "sort.h"
 #endif
 
 #ifndef INFINITY
