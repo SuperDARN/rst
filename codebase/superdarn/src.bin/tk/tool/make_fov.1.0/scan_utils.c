@@ -17,6 +17,7 @@
 #include <string.h>
 #include <math.h>
 
+#include "linearfit.h"
 #include "scan_utils.h"
 
 /**
@@ -44,10 +45,6 @@ void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
   float max_std, max_score, intercept, sig_intercept, slope, chi2, q, lstd;
   float sig_slope, line_std, *scan_x;
   float *lval, *ldev, *abs_ldev, *lscore, *line_dev, *sig;
-
-  int linear_regression(float x[], float y[], float sig[], int num, int mwt,
-			float *intercept, float *sig_intercept, float *slope,
-			float *sig_slope, float *chi2, float *q);
 
   /* Initalize the maximum statistics and reference variables */
   max_std   = 5.0;  /* Used to be 3.0, changed after INV tests */
