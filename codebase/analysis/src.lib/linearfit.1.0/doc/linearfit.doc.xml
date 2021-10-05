@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>analysis</project>
+<name>linearfit</name>
+<location>src.lib/linearfit</location>
+
+
+<function>
+<name>linear_regression</name>
+<location>src.lib/linearfit</location>
+<header>analysis/linearfit.h</header>
+<syntax>int linear_regression(float x[], float y[], float sig[], int num, int mwt, float *intercept, float *sig_intercept, float *slope, float *sig_slope, float *chi2, float *q);</syntax>
+<description><p>The <fn href="linear_regression.html">linear_regression</fn> function calculates linear regression for an array of independent and dependent variables, with optional errors.</p>
+</description>
+<returns><p>Returns the fitted slope and intercept (<ar>slope</ar>, <ar>intercept</ar>), their errors (<ar>sig_slope</ar>, <ar>sig_intercept</ar>), as well as the chi-squared and gamma results for the fit (<ar>chi2</ar>, <ar>q</ar>).</p>
+</returns>
+<error>If there are problems assigning data to the subarrays when performing the sorting, the routine will exit with 0.</error>
+</function>
+
+</library>

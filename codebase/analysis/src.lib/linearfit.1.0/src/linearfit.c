@@ -1,25 +1,40 @@
-#include<stdio.h>
+/* linearfit.c
+   ===========
+   Author: Angeline G. Burrell - NRL - 2021
+   This is a U.S. government work and not under copyright protection in the U.S.
 
-#include<math.h>
+   This file is part of the Radar Software Toolkit (RST).
 
-#include "rtypes.h"
-#include "stats.h"
+   Disclaimer: RST is licensed under GPL v3.0. Please visit 
+               <https://www.gnu.org/licenses/> to see the full license
 
-/****************************************************************************
- * Linear_Regression.c
+   Modifications:
+
+*/
+
+#include <stdio.h>
+#include <math.h>
+
+#include "linearfit.h"
+
+/**
+ * @brief perform a linear regression
  *
- * Author: Angeline G. Burrell, UTDallas, March 2008
+ * @params[in] x   - independent variable array
+ *             y   - dependent variable array
+ *             sig - error of the dependent variable array
+ *             num - number of variables in x, y, and sig
+ *             mwt - boolean, if true sig is used to calculate weights
  *
- * Comments: Linear regression subroutines. Using gammaq from
- *           codebase/superdarn/src.lib/tk/fitacf_v3.0/src/leastsquares.c
+ * @params[out] intercept     - pointer to the fitted intercept
+ *              sig_intercept - pointer to the error of the intercept
+ *              slope         - pointer to the fitted slope
+ *              sig_slope     - pointer to the error of the slope
+ *              chi2          - pointer to the Chi-squared value
+ *              q             - pointer to the gamma function output
  *
- * Reference: Numerical Recipes in C, 2nd Edition
- ****************************************************************************/
-
-static float sqrarg;
-#define SQR(a) ((sqrarg = (a)) == 0.0 ? 0.0 : sqrarg * sqrarg);
-
-#define MINSIG 1.0e-5
+ * @references Numerical Recipes in C, 2nd Edition
+ **/
 
 int linear_regression(float x[], float y[], float sig[], int num, int mwt,
 		      float *intercept, float *sig_intercept, float *slope,
