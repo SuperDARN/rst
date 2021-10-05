@@ -23,6 +23,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 Modifications:
   E.G.Thomas 2021-08: added support for new hdw file fields
   E.G.Thomas 2022-03: added support for tdiff calibration files
+  2021-10-05 - Angeline G. Burrell (NRL) - Added load_radar_site routine.
 */ 
 
 
@@ -103,5 +104,7 @@ int RadarLoadTdiff(char *tdiffpath,struct RadarNetwork *ptr);
 struct RadarSite *RadarGetSite(struct RadarNetwork *ptr,
                                int yr,int mo,int dy,int hr,int mt,int sc,
                                int stid);
+struct RadarSite *load_radar_site(int yr, int mo, int dy, int hr, int mt,
+				  int sc, int stid);
 
 #endif

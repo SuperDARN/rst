@@ -107,8 +107,6 @@ int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
   struct OldFitFp *oldfitfp = NULL;
   struct RadarScan *scan;
 
-  struct RadarSite *load_radar_site(int yr, int mo, int dy, int hr, int mt,
-				    int sc, int stid);
   void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 		       int min_pnts, int D_nrg, int E_nrg, int F_nrg,
 		       int far_nrg, int D_rgmax, int E_rgmax, int F_rgmax,
