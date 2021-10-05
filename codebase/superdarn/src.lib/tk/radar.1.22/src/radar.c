@@ -20,6 +20,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+2021-10-05 - Angeline G. Burrell (NRL) - Added load_radar_site routine.
+
 */
 
 
@@ -356,4 +358,79 @@ struct RadarNetwork *RadarLoad(FILE *fp) {
   }
   ptr->rnum=num;
   return ptr;
+}
+
+/**
+ * @brief Load in radar parameter data for a specified time and radar ID
+ *
+ * @param[in] yr   - integer year
+ *            mo   - integer month
+ *            dy   - integer day of month
+ *            hr   - integer hour of day
+ *            mt   - integer minute of hour
+ *            sc   - integer second of minute
+ *            stid - integer station identification
+ *
+ * @param[out] Returns a RadarSite structure pointer.
+ **/
+
+struct RadarSite *load_radar_site(int yr, int mo, int dy, int hr, int mt,
+				  int sc, int stid)
+{
+  char *envstr;
+  
+  FILE *fp;
+
+  struct RadarNetwork *network;
+  struct Radar *radar;
+
+  /* Make sure the SD_RADAR environment variable is set */
+  envstr = getenv("SD_RADAR");
+  if(envstr==NULL)
+    {
+      fprintf(stderr, "Environment variable 'SD_RADAR' must be defined.\n");
+      exit(-1);
+    }
+
+  /* Open the radar information file */
+  fp = fopen(envstr, "r");
+  if(fp == NULL)
+    {
+      fprintf(stderr, "Could not locate radar information file.\n");
+      exit(-1);
+    }
+  
+  /* Load the radar network information */
+  network = RadarLoad(fp);
+  fclose(fp);
+  if(network == NULL)
+    {
+      fprintf(stderr,"Failed to read radar information.\n");
+      exit(-1);
+    }
+
+  /* Make sure the SD_HDWPATH environment variable is set */
+  envstr = getenv("SD_HDWPATH");
+  if(envstr == NULL)
+    {
+      fprintf(stderr, "Environment variable 'SD_HDWPATH' must be defined.\n");
+      exit(-1);
+    }
+
+  /* Load the hardware information for the radar network */
+  RadarLoadHardware(envstr, network);
+
+  /* Load the appropriate radar hardware information for the day
+     and time of the radar scan (only done once) */
+  radar = RadarGetRadar(network, stid);
+
+  if(radar == NULL)
+    {
+      fprintf(stderr,"Failed to get radar information for stid %d.\n", stid);
+      exit(-1);
+    }
+
+  /* Get the radar site */
+  return RadarYMDHMSGetSite(radar, yr, mo, dy, hr, mt, sc);
+
 }

@@ -84,8 +84,6 @@ struct RadarScan *out;
 
 struct FitIndex *inx;
 
-struct RadarNetwork *network;
-struct Radar *radar;
 struct RadarSite *site;
 
 int nbox;
@@ -237,9 +235,6 @@ int main(int argc,char *argv[]) {
     double sdate=-1;
     double edate=-1;
 
-    char *envstr;
-    FILE *fp;
-
     int bxcar=0;
     int limit=0;
     int bflg=0;
@@ -296,38 +291,6 @@ int main(int argc,char *argv[]) {
 
     /* Initialize GridTable structure */
     grid=GridTableMake();
-
-    /* Make sure the SD_RADAR environment variable is set */
-    envstr=getenv("SD_RADAR");
-    if (envstr==NULL) {
-        fprintf(stderr,"Environment variable 'SD_RADAR' must be defined.\n");
-        exit(-1);
-    }
-
-    /* Open the radar information file */
-    fp=fopen(envstr,"r");
-    if (fp==NULL) {
-        fprintf(stderr,"Could not locate radar information file.\n");
-        exit(-1);
-    }
-
-    /* Load the radar network information */
-    network=RadarLoad(fp);
-    fclose(fp);
-    if (network==NULL) {
-        fprintf(stderr,"Failed to read radar information.\n");
-        exit(-1);
-    }
-
-    /* Make sure the SD_HDWPATH environment variable is set */
-    envstr=getenv("SD_HDWPATH");
-    if (envstr==NULL) {
-        fprintf(stderr,"Environment variable 'SD_HDWPATH' must be defined.\n");
-        exit(-1);
-    }
-
-    /* Load the hardware information for the radar network */
-    RadarLoadHardware(envstr,network);
 
     /* Set up command line options */
     OptionAdd(&opt,"-help",'x',&help);     /* Print the help message and exit */
@@ -734,14 +697,9 @@ int main(int argc,char *argv[]) {
 
                 /* Load the appropriate radar hardware information for the day
                  * and time of the radar scan (only done once) */
-                if (site==NULL) {
-                    radar=RadarGetRadar(network,out->stid);
-                    if (radar==NULL) {
-                        fprintf(stderr,"Failed to get radar information.\n");
-                        exit(-1);
-                    }
-                    site=RadarYMDHMSGetSite(radar,yr,mo,dy,hr,mt,(int) sc);
-                }
+                if (site==NULL)
+		  site = load_radar_site(yr, mo, dy, hr, mt, (int)sc,
+					 out->stid);
 
                 /* Test whether gridded data should be written to a file; if so
                  * returns weighted average velocity, power, and width values

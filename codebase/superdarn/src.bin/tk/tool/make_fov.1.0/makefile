@@ -19,7 +19,6 @@ INCLUDE = -I$(IPATH)/analysis -I$(IPATH)/base -I$(IPATH)/general \
 SRC =	make_fov.c \
 	eval_groundscatter.c \
 	load_fit_update_fov.c \
-	load_radar_site.c \
 	scan_utils.c \
 	select_alt_groups.c \
 	test_ut_fov_struct.c \
