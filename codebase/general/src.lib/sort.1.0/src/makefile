@@ -21,21 +21,3 @@ OBJS = $(SRC:.c=.o)
 LINK = "1"
 
 include $(MAKELIB).$(SYSTEM)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-include $(MAKELIB).$(SYSTEM)

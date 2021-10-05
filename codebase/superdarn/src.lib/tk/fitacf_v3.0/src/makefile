@@ -5,7 +5,7 @@
 #              <https://www.gnu.org/licenses/> to see the full license
 #
 # Modifications:
-#  Angeline G. Burrell - Modified to use new stats library
+#  2021-10-04 Angeline G. Burrell - Modified to use new stats library
 
 include $(MAKECFG).$(SYSTEM)
 

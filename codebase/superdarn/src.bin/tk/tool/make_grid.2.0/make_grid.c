@@ -26,6 +26,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 Modifications:
  2021-01-11 Marina Schmidt fixing concatenation bug with start/end time, and deprecated -c flag
  2021-08-27 Angeline G Burrell removed duplicate code now present in libraries
+ 2021-10-04 Angeline G Burrell removed duplicate code now present in radar librarie
 
 */
 
