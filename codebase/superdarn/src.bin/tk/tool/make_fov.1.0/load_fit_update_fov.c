@@ -1,7 +1,6 @@
 /* load_fit_update_fov.c
    =====================
    Author: Angeline G. Burrell - NRL - 2021
-   Author: Angeline G. Burrell - NRL - 2021
    This is a U.S. government work and not under copyright protection in the U.S.
 
    This file is part of the Radar Software Toolkit (RST).
