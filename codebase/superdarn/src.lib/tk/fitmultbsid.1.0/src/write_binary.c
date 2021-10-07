@@ -1,0 +1,304 @@
+/* write_binary.c
+   ==============
+   Author Angeline G. Burrell - NRL - 2021
+   This is a U.S. government work and not under copyright protection in the U.S.
+
+   This file is part of the Radar Software Toolkit (RST).
+
+   Disclaimer: RST is licensed under GPL v3.0. Please visit 
+               <https://www.gnu.org/licenses/> to see the full license
+
+   Modifications:
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <zlib.h>
+
+#include "rtypes.h"
+#include "fitmultbsid.h"
+
+/**
+ *  @brief Encode the header data from the fit fov/bsid structure
+ *
+ * @param[in] ptr       - pointer to the DataMap binary writing structure
+ *            mult_scan - pointer to the FitMultBSID structure
+ *
+ * @param[out] Returns zero upon success
+ **/
+
+int FitMultBSIDEncodeHeader(struct DataMap *ptr, struct FitMultBSID *mult_scan)
+{
+  /* Add the header data */
+  DataMapAddScalar(ptr, "fitmultbsid.version.major", DATAINT,
+		   &mult_scan->version.major);
+  DataMapAddScalar(ptr, "fitmultbsid.version.minor", DATAINT,
+		   &mult_scan->version.minor);
+  DataMapAddScalar(ptr, "stid", DATASHORT, &mult_scan->stid);
+
+  return(0);
+}
+
+/* HERE: need to combine data from all scans and all beams into arrays */
+int FitBSIDScanEncodeScans(int grp_flg, int med_flg, struct DataMap *ptr,
+			   struct FitBSIDMult *mult_scan)
+{
+  int c, x;
+  int32 snum, xnum;
+  int32 p0num;
+
+  int iscan;
+  struct FitBSIDScan *scan;
+
+  int cpid, bm;
+  float bmazm;
+  double time;
+
+  int16 *slist=NULL;
+  float *pwr0=NULL;
+
+  int16 *nlag=NULL;
+
+  char *qflg=NULL;
+  char *gflg=NULL;
+
+  float *p_l=NULL;
+  float *p_l_e=NULL;
+  float *p_s=NULL;
+  float *p_s_e=NULL;
+
+  float *v=NULL;
+  float *v_e=NULL;
+
+  float *w_l=NULL;
+  float *w_l_e=NULL;
+  float *w_s=NULL;
+  float *w_s_e=NULL;
+
+  float *sd_l=NULL;
+  float *sd_s=NULL;
+  float *sd_phi=NULL;
+
+  char *x_qflg=NULL;
+  char *x_gflg=NULL;
+
+  float *x_p_l=NULL;
+  float *x_p_l_e=NULL;
+  float *x_p_s=NULL;
+  float *x_p_s_e=NULL;
+
+  float *x_v=NULL;
+  float *x_v_e=NULL;
+
+  float *x_w_l=NULL;
+  float *x_w_l_e=NULL;
+  float *x_w_s=NULL;
+  float *x_w_s_e=NULL;
+
+  float *phi0=NULL;
+  float *phi0_e=NULL;
+  float *elv=NULL;
+  float *elv_low=NULL;
+  float *elv_high=NULL;
+
+  float *x_sd_l=NULL;
+  float *x_sd_s=NULL;
+  float *x_sd_phi=NULL;
+
+  float sky_noise;
+  float lag0_noise;
+  float vel_noise;
+
+  sky_noise=fit->noise.skynoise;
+  lag0_noise=fit->noise.lag0;
+  vel_noise=fit->noise.vel;
+
+  DataMapStoreScalar(ptr,"noise.sky",DATAFLOAT,&sky_noise);
+  DataMapStoreScalar(ptr,"noise.lag0",DATAFLOAT,&lag0_noise);
+  DataMapStoreScalar(ptr,"noise.vel",DATAFLOAT,&vel_noise);
+
+
+  p0num=prm->nrang;
+  pwr0=DataMapStoreArray(ptr,"pwr0",DATAFLOAT,1,&p0num,NULL);
+  for (c=0;c<p0num;c++) pwr0[c]=fit->rng[c].p_0;
+
+  snum=0;
+  for (c=0;c<prm->nrang;c++) {
+      if ( (fit->rng[c].qflg==1) ||
+              ((fit->xrng !=NULL) && (fit->xrng[c].qflg==1)))
+          snum++;
+  }
+
+  if (prm->xcf !=0) 
+      xnum=snum;
+  else 
+      xnum=0;
+
+  if (snum==0){
+      return 0;
+  }
+
+  slist=DataMapStoreArray(ptr,"slist",DATASHORT,1,&snum,NULL);
+  nlag=DataMapStoreArray(ptr,"nlag",DATASHORT,1,&snum,NULL);
+
+  qflg=DataMapStoreArray(ptr,"qflg",DATACHAR,1,&snum,NULL);
+  gflg=DataMapStoreArray(ptr,"gflg",DATACHAR,1,&snum,NULL);
+  
+  p_l=DataMapStoreArray(ptr,"p_l",DATAFLOAT,1,&snum,NULL);
+  p_l_e=DataMapStoreArray(ptr,"p_l_e",DATAFLOAT,1,&snum,NULL);
+
+  p_s=DataMapStoreArray(ptr,"p_s",DATAFLOAT,1,&snum,NULL);
+  p_s_e=DataMapStoreArray(ptr,"p_s_e",DATAFLOAT,1,&snum,NULL);
+  v=DataMapStoreArray(ptr,"v",DATAFLOAT,1,&snum,NULL);
+  v_e=DataMapStoreArray(ptr,"v_e",DATAFLOAT,1,&snum,NULL);
+
+  w_l=DataMapStoreArray(ptr,"w_l",DATAFLOAT,1,&snum,NULL);
+  w_l_e=DataMapStoreArray(ptr,"w_l_e",DATAFLOAT,1,&snum,NULL);
+  w_s=DataMapStoreArray(ptr,"w_s",DATAFLOAT,1,&snum,NULL);
+  w_s_e=DataMapStoreArray(ptr,"w_s_e",DATAFLOAT,1,&snum,NULL);
+
+  sd_l=DataMapStoreArray(ptr,"sd_l",DATAFLOAT,1,&snum,NULL);
+  sd_s=DataMapStoreArray(ptr,"sd_s",DATAFLOAT,1,&snum,NULL);
+  sd_phi=DataMapStoreArray(ptr,"sd_phi",DATAFLOAT,1,&snum,NULL);
+
+  if (prm->xcf !=0) {
+    x_qflg=DataMapStoreArray(ptr,"x_qflg",DATACHAR,1,&xnum,NULL); 
+    x_gflg=DataMapStoreArray(ptr,"x_gflg",DATACHAR,1,&xnum,NULL); 
+  
+    x_p_l=DataMapStoreArray(ptr,"x_p_l",DATAFLOAT,1,&xnum,NULL);   
+    x_p_l_e=DataMapStoreArray(ptr,"x_p_l_e",DATAFLOAT,1,&xnum,NULL); 
+    x_p_s=DataMapStoreArray(ptr,"x_p_s",DATAFLOAT,1,&xnum,NULL); 
+    x_p_s_e=DataMapStoreArray(ptr,"x_p_s_e",DATAFLOAT,1,&xnum,NULL); 
+  
+    x_v=DataMapStoreArray(ptr,"x_v",DATAFLOAT,1,&xnum,NULL); 
+    x_v_e=DataMapStoreArray(ptr,"x_v_e",DATAFLOAT,1,&xnum,NULL); 
+ 
+    x_w_l=DataMapStoreArray(ptr,"x_w_l",DATAFLOAT,1,&xnum,NULL); 
+    x_w_l_e=DataMapStoreArray(ptr,"x_w_l_e",DATAFLOAT,1,&xnum,NULL);   
+    x_w_s=DataMapStoreArray(ptr,"x_w_s",DATAFLOAT,1,&xnum,NULL); 
+    x_w_s_e=DataMapStoreArray(ptr,"x_w_s_e",DATAFLOAT,1,&xnum,NULL); 
+  
+    phi0=DataMapStoreArray(ptr,"phi0",DATAFLOAT,1,&xnum,NULL); 
+    phi0_e=DataMapStoreArray(ptr,"phi0_e",DATAFLOAT,1,&xnum,NULL); 
+    elv=DataMapStoreArray(ptr,"elv",DATAFLOAT,1,&xnum,NULL); 
+    elv_low=DataMapStoreArray(ptr,"elv_low",DATAFLOAT,1,&xnum,NULL); 
+    elv_high=DataMapStoreArray(ptr,"elv_high",DATAFLOAT,1,&xnum,NULL); 
+
+    x_sd_l=DataMapStoreArray(ptr,"x_sd_l",DATAFLOAT,1,&xnum,NULL); 
+    x_sd_s=DataMapStoreArray(ptr,"x_sd_s",DATAFLOAT,1,&xnum,NULL); 
+    x_sd_phi=DataMapStoreArray(ptr,"x_sd_phi",DATAFLOAT,1,&xnum,NULL);   
+  }
+  x=0;
+  for (c=0;c<prm->nrang;c++) {
+    if ( (fit->rng[c].qflg==1) ||
+         ((fit->xrng !=NULL) && (fit->xrng[c].qflg==1))) {
+      slist[x]=c;
+      nlag[x]=fit->rng[c].nump;
+      
+      qflg[x]=fit->rng[c].qflg;
+      gflg[x]=fit->rng[c].gsct;
+        
+      p_l[x]=fit->rng[c].p_l;
+      p_l_e[x]=fit->rng[c].p_l_err;
+      p_s[x]=fit->rng[c].p_s;
+      p_s_e[x]=fit->rng[c].p_s_err;
+        
+      v[x]=fit->rng[c].v;
+      v_e[x]=fit->rng[c].v_err;
+
+      w_l[x]=fit->rng[c].w_l;
+      w_l_e[x]=fit->rng[c].w_l_err;
+      w_s[x]=fit->rng[c].w_s;
+      w_s_e[x]=fit->rng[c].w_s_err;
+
+      sd_l[x]=fit->rng[c].sdev_l;
+      sd_s[x]=fit->rng[c].sdev_s;
+      sd_phi[x]=fit->rng[c].sdev_phi;
+
+      if (xnum !=0) {
+        x_qflg[x]=fit->xrng[c].qflg;
+        x_gflg[x]=fit->xrng[c].gsct;
+    
+        x_qflg[x]=fit->xrng[c].qflg;
+        x_gflg[x]=fit->xrng[c].gsct;
+        
+        x_p_l[x]=fit->xrng[c].p_l;
+        x_p_l_e[x]=fit->xrng[c].p_l_err;
+        x_p_s[x]=fit->xrng[c].p_s;
+        x_p_s_e[x]=fit->xrng[c].p_s_err;
+        
+        x_v[x]=fit->xrng[c].v;
+        x_v_e[x]=fit->xrng[c].v_err;
+
+  
+        x_w_l[x]=fit->xrng[c].w_l;
+        x_w_l_e[x]=fit->xrng[c].w_l_err;
+        x_w_s[x]=fit->xrng[c].w_s;
+        x_w_s_e[x]=fit->xrng[c].w_s_err;
+
+        phi0[x]=fit->xrng[c].phi0;
+        phi0_e[x]=fit->xrng[c].phi0_err;
+        elv[x]=fit->elv[c].normal;
+        elv_low[x]=fit->elv[c].low;
+        elv_high[x]=fit->elv[c].high;
+
+        x_sd_l[x]=fit->xrng[c].sdev_l;
+        x_sd_s[x]=fit->xrng[c].sdev_s;
+        x_sd_phi[x]=fit->xrng[c].sdev_phi;
+      }
+      x++;
+    }
+  }      
+  return 0;
+}
+
+/**
+ * @brief Write a binary file containing the Fit, FoV, and BSID data
+ *
+ * @param[in] fp        - open file pointer
+ *            grp_flg   - boolean flag, 0 to exclude or 1 to include group IDs
+ *            med_flg   - boolean flag, 0 to exclude or 1 to include median data
+ *            mult_scan - FitMultBSID structure with data to write
+ *
+ * @param[out] status - 0 if a file with data is written, 1 if there is no
+ *                      data to write, and -1 if there is an error writing data
+ **/
+
+int WriteFitMultBSIDBin(FILE *fp, int grp_flg, int med_flg,
+			struct FitMultBSIDScan *mult_scan)
+{
+  int fid, status;
+
+  struct DataMap *ptr = NULL;
+
+  /* Initialize the binary data mapping structure */
+  if((ptr = DataMapMake()) == NULL) return -1;
+
+  /* Get the file ID */
+  fid = fileno(fp);
+
+  /* Add the header info */
+  status = FitMultBSIDEncodeHeader(ptr, mult_scan);
+
+  /* Add the binary data for each scan */
+  if(status == 0)
+    {
+      if(mult_scan->num_scans > 0)
+	status = FitBSIDEncodeScans(grp_flg, med_flg, ptr, mult_scan);
+      else status = 1;
+    }
+  
+  /* Write the scan data */
+  if(status == 0)
+    {
+      if(fid != -1) status = DataMapWrite(fid, ptr);
+      else status = DataMapSize(ptr);
+    }
+
+  DataMapFree(ptr);
+  return status;
+}
+
+
