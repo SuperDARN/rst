@@ -13,245 +13,229 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <zlib.h>
 
 #include "rtypes.h"
+#include "rtime.h"
 #include "fitmultbsid.h"
 
 /**
- *  @brief Encode the header data from the fit fov/bsid structure
+ *  @brief Encode the beam data from the fit fov/bsid structure
  *
- * @param[in] ptr       - pointer to the DataMap binary writing structure
- *            mult_scan - pointer to the FitMultBSID structure
+ * @param[in] grp_flg - boolean flag, 0 to exclude or 1 to include group IDs
+ *            med_flg - boolean flag, 0 to exclude or 1 to include median data
+ *            ptr     - pointer to the DataMap binary writing structure
+ *            bm      - pointer to the FitBSIDBeam structure
  *
- * @param[out] Returns zero upon success
+ * @param[out] status - returns zero upon success
  **/
 
-int FitMultBSIDEncodeHeader(struct DataMap *ptr, struct FitMultBSID *mult_scan)
+int FitBSIDBeamEncode(int grp_flg, int med_flg, struct DataMap *ptr,
+		      struct FitBSIDBeam bm)
 {
-  /* Add the header data */
-  DataMapAddScalar(ptr, "fitmultbsid.version.major", DATAINT,
-		   &mult_scan->version.major);
-  DataMapAddScalar(ptr, "fitmultbsid.version.minor", DATAINT,
-		   &mult_scan->version.minor);
-  DataMapAddScalar(ptr, "stid", DATASHORT, &mult_scan->stid);
+  short int has_fov;
+  int igood, irg;
 
-  return(0);
-}
-
-/* HERE: need to combine data from all scans and all beams into arrays */
-int FitBSIDScanEncodeScans(int grp_flg, int med_flg, struct DataMap *ptr,
-			   struct FitBSIDMult *mult_scan)
-{
-  int c, x;
-  int32 snum, xnum;
-  int32 p0num;
-
-  int iscan;
-  struct FitBSIDScan *scan;
-
-  int cpid, bm;
+  int cpid, bmnum, yr, mo, dy, hr, mt, sc, us;
+  int nave, frang, rsep, rxrise, freq, noise, atten, channel, nrang;
   float bmazm;
-  double time;
+  double seconds;
 
-  int16 *slist=NULL;
-  float *pwr0=NULL;
+  int16 *slist=NULL, *gflg=NULL, *med_gflg=NULL;
+  int16 *fov=NULL, *fov_past=NULL, *grpflg=NULL, *grpnum=NULL;
+  float *pwr0=NULL, *pwr0_e=NULL, *v=NULL, *v_e=NULL;
+  float *p_l=NULL, *p_l_e=NULL, *w_l=NULL, *w_l_e=NULL;
+  float *phi0=NULL, *phi0_e=NULL, *elv=NULL, *elv_low=NULL, *elv_high=NULL;
+  float *med_pwr0=NULL, *med_pwr0_e=NULL, *med_v=NULL, *med_v_e=NULL;
+  float *med_p_l=NULL, *med_p_l_e=NULL, *med_w_l=NULL, *med_w_l_e=NULL;
+  float *med_phi0=NULL, *med_phi0_e=NULL, *med_elv=NULL; 
+  float *vh=NULL, *vh_e=NULL, *hop=NULL, *dist=NULL;
+  char *sct=NULL, **grpid=NULL, **vh_m=NULL, **region=NULL;
 
-  int16 *nlag=NULL;
+  struct FitElv bm_elv;
+  struct CellBSIDLoc bm_loc;
 
-  char *qflg=NULL;
-  char *gflg=NULL;
+  /* Add the general beam data */
+  cpid = bm.cpid;
+  bmnum = bm.bm;
+  bmazm = bm.bmazm;
 
-  float *p_l=NULL;
-  float *p_l_e=NULL;
-  float *p_s=NULL;
-  float *p_s_e=NULL;
+  TimeEpochToYMDHMS(bm.time, &yr, &mo, &dy, &hr, &mt, &seconds);
+  sc = bm.intt.sc;
+  us = bm.intt.us;
 
-  float *v=NULL;
-  float *v_e=NULL;
+  DataMapStoreScalar(ptr, "cpid", DATAINT, &cpid);
+  DataMapStoreScalar(ptr, "bmnum", DATASHORT, &bmnum);
+  DataMapStoreScalar(ptr, "bmazm", DATAFLOAT, &bmazm);
+  DataMapStoreScalar(ptr, "yr", DATAINT, &yr);
+  DataMapStoreScalar(ptr, "mo", DATAINT, &mo);
+  DataMapStoreScalar(ptr, "dy", DATAINT, &dy);
+  DataMapStoreScalar(ptr, "hr", DATAINT, &hr);
+  DataMapStoreScalar(ptr, "mt", DATAINT, &mt);
+  DataMapStoreScalar(ptr, "sc", DATAINT, &sc);
+  DataMapStoreScalar(ptr, "us", DATAINT, &us);
 
-  float *w_l=NULL;
-  float *w_l_e=NULL;
-  float *w_s=NULL;
-  float *w_s_e=NULL;
+  /* Add the beam parameter values */
+  nave    = bm.nave;
+  frang   = bm.frang;
+  rsep    = bm.rsep;
+  rxrise  = bm.rxrise;
+  freq    = bm.freq;
+  noise   = bm.noise;
+  atten   = bm.atten;
+  channel = bm.channel;
+  nrang   = bm.nrang;
 
-  float *sd_l=NULL;
-  float *sd_s=NULL;
-  float *sd_phi=NULL;
+  DataMapStoreScalar(ptr, "nave", DATAINT, &nave);
+  DataMapStoreScalar(ptr, "frang", DATAINT, &frang);
+  DataMapStoreScalar(ptr, "rsep", DATAINT, &rsep);
+  DataMapStoreScalar(ptr, "rxrise", DATAINT, &rxrise);
+  DataMapStoreScalar(ptr, "freq", DATAINT, &freq);
+  DataMapStoreScalar(ptr, "noise", DATAINT, &noise);
+  DataMapStoreScalar(ptr, "atten", DATAINT, &atten);
+  DataMapStoreScalar(ptr, "channel", DATAINT, &channel);
+  DataMapStoreScalar(ptr, "nrang", DATAINT, &nrang);
 
-  char *x_qflg=NULL;
-  char *x_gflg=NULL;
+  /* Initiallize the range gate information */
+  sct      = DataMapStoreArray(ptr,"sct", DATACHAR, 1, &nrang, NULL);
+  slist    = DataMapStoreArray(ptr,"slist", DATASHORT, 1, &nrang, NULL);
+  gflg     = DataMapStoreArray(ptr, "gsct", DATASHORT, 1, &nrang, NULL);
+  fov      = DataMapStoreArray(ptr, "fov", DATASHORT, 1, &nrang, NULL);
+  fov_past = DataMapStoreArray(ptr, "fov_past", DATASHORT, 1, &nrang, NULL);
+  pwr0     = DataMapStoreArray(ptr, "pwr0", DATAFLOAT, 1, &nrang, NULL);
+  pwr0_e   = DataMapStoreArray(ptr, "pwr0_e", DATAFLOAT, 1, &nrang, NULL);
+  p_l      = DataMapStoreArray(ptr, "p_l", DATAFLOAT, 1, &nrang, NULL);
+  p_l_e    = DataMapStoreArray(ptr, "p_l_e", DATAFLOAT, 1, &nrang, NULL);
+  w_l      = DataMapStoreArray(ptr, "p_l", DATAFLOAT, 1, &nrang, NULL);
+  w_l_e    = DataMapStoreArray(ptr, "p_l_e", DATAFLOAT, 1, &nrang, NULL);
+  v        = DataMapStoreArray(ptr, "v", DATAFLOAT, 1, &nrang, NULL);
+  v_e      = DataMapStoreArray(ptr, "v_e", DATAFLOAT, 1, &nrang, NULL);
+  phi0     = DataMapStoreArray(ptr, "phi0", DATAFLOAT, 1, &nrang, NULL); 
+  phi0_e   = DataMapStoreArray(ptr, "phi0_e", DATAFLOAT, 1, &nrang, NULL); 
+  elv      = DataMapStoreArray(ptr, "elv", DATAFLOAT, 1, &nrang, NULL);
+  elv_low  = DataMapStoreArray(ptr, "elv_low", DATAFLOAT, 1, &nrang, NULL); 
+  elv_high = DataMapStoreArray(ptr, "elv_high", DATAFLOAT, 1, &nrang, NULL);
+  vh       = DataMapStoreArray(ptr, "vh", DATAFLOAT, 1, &nrang, NULL);
+  vh_e     = DataMapStoreArray(ptr, "vh_e", DATAFLOAT, 1, &nrang, NULL);
+  vh_m     = DataMapStoreArray(ptr, "vh_m", DATACHAR, 5, &nrang, NULL);
+  region   = DataMapStoreArray(ptr, "region", DATACHAR, 20, &nrang, NULL);
+  hop      = DataMapStoreArray(ptr, "hop", DATAFLOAT, 1, &nrang, NULL);
+  dist     = DataMapStoreArray(ptr, "dist", DATAFLOAT, 1, &nrang, NULL);
 
-  float *x_p_l=NULL;
-  float *x_p_l_e=NULL;
-  float *x_p_s=NULL;
-  float *x_p_s_e=NULL;
-
-  float *x_v=NULL;
-  float *x_v_e=NULL;
-
-  float *x_w_l=NULL;
-  float *x_w_l_e=NULL;
-  float *x_w_s=NULL;
-  float *x_w_s_e=NULL;
-
-  float *phi0=NULL;
-  float *phi0_e=NULL;
-  float *elv=NULL;
-  float *elv_low=NULL;
-  float *elv_high=NULL;
-
-  float *x_sd_l=NULL;
-  float *x_sd_s=NULL;
-  float *x_sd_phi=NULL;
-
-  float sky_noise;
-  float lag0_noise;
-  float vel_noise;
-
-  sky_noise=fit->noise.skynoise;
-  lag0_noise=fit->noise.lag0;
-  vel_noise=fit->noise.vel;
-
-  DataMapStoreScalar(ptr,"noise.sky",DATAFLOAT,&sky_noise);
-  DataMapStoreScalar(ptr,"noise.lag0",DATAFLOAT,&lag0_noise);
-  DataMapStoreScalar(ptr,"noise.vel",DATAFLOAT,&vel_noise);
-
-
-  p0num=prm->nrang;
-  pwr0=DataMapStoreArray(ptr,"pwr0",DATAFLOAT,1,&p0num,NULL);
-  for (c=0;c<p0num;c++) pwr0[c]=fit->rng[c].p_0;
-
-  snum=0;
-  for (c=0;c<prm->nrang;c++) {
-      if ( (fit->rng[c].qflg==1) ||
-              ((fit->xrng !=NULL) && (fit->xrng[c].qflg==1)))
-          snum++;
-  }
-
-  if (prm->xcf !=0) 
-      xnum=snum;
-  else 
-      xnum=0;
-
-  if (snum==0){
-      return 0;
-  }
-
-  slist=DataMapStoreArray(ptr,"slist",DATASHORT,1,&snum,NULL);
-  nlag=DataMapStoreArray(ptr,"nlag",DATASHORT,1,&snum,NULL);
-
-  qflg=DataMapStoreArray(ptr,"qflg",DATACHAR,1,&snum,NULL);
-  gflg=DataMapStoreArray(ptr,"gflg",DATACHAR,1,&snum,NULL);
-  
-  p_l=DataMapStoreArray(ptr,"p_l",DATAFLOAT,1,&snum,NULL);
-  p_l_e=DataMapStoreArray(ptr,"p_l_e",DATAFLOAT,1,&snum,NULL);
-
-  p_s=DataMapStoreArray(ptr,"p_s",DATAFLOAT,1,&snum,NULL);
-  p_s_e=DataMapStoreArray(ptr,"p_s_e",DATAFLOAT,1,&snum,NULL);
-  v=DataMapStoreArray(ptr,"v",DATAFLOAT,1,&snum,NULL);
-  v_e=DataMapStoreArray(ptr,"v_e",DATAFLOAT,1,&snum,NULL);
-
-  w_l=DataMapStoreArray(ptr,"w_l",DATAFLOAT,1,&snum,NULL);
-  w_l_e=DataMapStoreArray(ptr,"w_l_e",DATAFLOAT,1,&snum,NULL);
-  w_s=DataMapStoreArray(ptr,"w_s",DATAFLOAT,1,&snum,NULL);
-  w_s_e=DataMapStoreArray(ptr,"w_s_e",DATAFLOAT,1,&snum,NULL);
-
-  sd_l=DataMapStoreArray(ptr,"sd_l",DATAFLOAT,1,&snum,NULL);
-  sd_s=DataMapStoreArray(ptr,"sd_s",DATAFLOAT,1,&snum,NULL);
-  sd_phi=DataMapStoreArray(ptr,"sd_phi",DATAFLOAT,1,&snum,NULL);
-
-  if (prm->xcf !=0) {
-    x_qflg=DataMapStoreArray(ptr,"x_qflg",DATACHAR,1,&xnum,NULL); 
-    x_gflg=DataMapStoreArray(ptr,"x_gflg",DATACHAR,1,&xnum,NULL); 
-  
-    x_p_l=DataMapStoreArray(ptr,"x_p_l",DATAFLOAT,1,&xnum,NULL);   
-    x_p_l_e=DataMapStoreArray(ptr,"x_p_l_e",DATAFLOAT,1,&xnum,NULL); 
-    x_p_s=DataMapStoreArray(ptr,"x_p_s",DATAFLOAT,1,&xnum,NULL); 
-    x_p_s_e=DataMapStoreArray(ptr,"x_p_s_e",DATAFLOAT,1,&xnum,NULL); 
-  
-    x_v=DataMapStoreArray(ptr,"x_v",DATAFLOAT,1,&xnum,NULL); 
-    x_v_e=DataMapStoreArray(ptr,"x_v_e",DATAFLOAT,1,&xnum,NULL); 
- 
-    x_w_l=DataMapStoreArray(ptr,"x_w_l",DATAFLOAT,1,&xnum,NULL); 
-    x_w_l_e=DataMapStoreArray(ptr,"x_w_l_e",DATAFLOAT,1,&xnum,NULL);   
-    x_w_s=DataMapStoreArray(ptr,"x_w_s",DATAFLOAT,1,&xnum,NULL); 
-    x_w_s_e=DataMapStoreArray(ptr,"x_w_s_e",DATAFLOAT,1,&xnum,NULL); 
-  
-    phi0=DataMapStoreArray(ptr,"phi0",DATAFLOAT,1,&xnum,NULL); 
-    phi0_e=DataMapStoreArray(ptr,"phi0_e",DATAFLOAT,1,&xnum,NULL); 
-    elv=DataMapStoreArray(ptr,"elv",DATAFLOAT,1,&xnum,NULL); 
-    elv_low=DataMapStoreArray(ptr,"elv_low",DATAFLOAT,1,&xnum,NULL); 
-    elv_high=DataMapStoreArray(ptr,"elv_high",DATAFLOAT,1,&xnum,NULL); 
-
-    x_sd_l=DataMapStoreArray(ptr,"x_sd_l",DATAFLOAT,1,&xnum,NULL); 
-    x_sd_s=DataMapStoreArray(ptr,"x_sd_s",DATAFLOAT,1,&xnum,NULL); 
-    x_sd_phi=DataMapStoreArray(ptr,"x_sd_phi",DATAFLOAT,1,&xnum,NULL);   
-  }
-  x=0;
-  for (c=0;c<prm->nrang;c++) {
-    if ( (fit->rng[c].qflg==1) ||
-         ((fit->xrng !=NULL) && (fit->xrng[c].qflg==1))) {
-      slist[x]=c;
-      nlag[x]=fit->rng[c].nump;
-      
-      qflg[x]=fit->rng[c].qflg;
-      gflg[x]=fit->rng[c].gsct;
-        
-      p_l[x]=fit->rng[c].p_l;
-      p_l_e[x]=fit->rng[c].p_l_err;
-      p_s[x]=fit->rng[c].p_s;
-      p_s_e[x]=fit->rng[c].p_s_err;
-        
-      v[x]=fit->rng[c].v;
-      v_e[x]=fit->rng[c].v_err;
-
-      w_l[x]=fit->rng[c].w_l;
-      w_l_e[x]=fit->rng[c].w_l_err;
-      w_s[x]=fit->rng[c].w_s;
-      w_s_e[x]=fit->rng[c].w_s_err;
-
-      sd_l[x]=fit->rng[c].sdev_l;
-      sd_s[x]=fit->rng[c].sdev_s;
-      sd_phi[x]=fit->rng[c].sdev_phi;
-
-      if (xnum !=0) {
-        x_qflg[x]=fit->xrng[c].qflg;
-        x_gflg[x]=fit->xrng[c].gsct;
-    
-        x_qflg[x]=fit->xrng[c].qflg;
-        x_gflg[x]=fit->xrng[c].gsct;
-        
-        x_p_l[x]=fit->xrng[c].p_l;
-        x_p_l_e[x]=fit->xrng[c].p_l_err;
-        x_p_s[x]=fit->xrng[c].p_s;
-        x_p_s_e[x]=fit->xrng[c].p_s_err;
-        
-        x_v[x]=fit->xrng[c].v;
-        x_v_e[x]=fit->xrng[c].v_err;
-
-  
-        x_w_l[x]=fit->xrng[c].w_l;
-        x_w_l_e[x]=fit->xrng[c].w_l_err;
-        x_w_s[x]=fit->xrng[c].w_s;
-        x_w_s_e[x]=fit->xrng[c].w_s_err;
-
-        phi0[x]=fit->xrng[c].phi0;
-        phi0_e[x]=fit->xrng[c].phi0_err;
-        elv[x]=fit->elv[c].normal;
-        elv_low[x]=fit->elv[c].low;
-        elv_high[x]=fit->elv[c].high;
-
-        x_sd_l[x]=fit->xrng[c].sdev_l;
-        x_sd_s[x]=fit->xrng[c].sdev_s;
-        x_sd_phi[x]=fit->xrng[c].sdev_phi;
-      }
-      x++;
+  /* Initialize the optional structures */
+  if(med_flg == 1)
+    {
+      med_gflg = DataMapStoreArray(ptr, "med_gsct", DATASHORT, 1, &nrang, NULL);
+      med_pwr0 = DataMapStoreArray(ptr, "med_pwr0", DATAFLOAT, 1, &nrang, NULL);
+      med_pwr0_e = DataMapStoreArray(ptr, "med_pwr0_e", DATAFLOAT, 1, &nrang,
+				     NULL);
+      med_p_l = DataMapStoreArray(ptr, "med_p_l", DATAFLOAT, 1, &nrang, NULL);
+      med_p_l_e = DataMapStoreArray(ptr, "med_p_l_e", DATAFLOAT, 1, &nrang,
+				    NULL);
+      med_w_l = DataMapStoreArray(ptr, "med_p_l", DATAFLOAT, 1, &nrang, NULL);
+      med_w_l_e = DataMapStoreArray(ptr, "med_p_l_e", DATAFLOAT, 1, &nrang,
+				    NULL);
+      med_v = DataMapStoreArray(ptr, "med_v", DATAFLOAT, 1, &nrang, NULL);
+      med_v_e = DataMapStoreArray(ptr, "med_v_e", DATAFLOAT, 1, &nrang, NULL);
+      med_phi0 = DataMapStoreArray(ptr, "med_phi0", DATAFLOAT, 1, &nrang,
+				   NULL); 
+      med_phi0_e = DataMapStoreArray(ptr, "med_phi0_e", DATAFLOAT, 1, &nrang,
+				     NULL); 
+      med_elv = DataMapStoreArray(ptr, "med_elv", DATAFLOAT, 1, &nrang, NULL);
     }
-  }      
-  return 0;
+
+  if(grp_flg == 1)
+    {
+      grpflg = DataMapStoreArray(ptr, "grpflg", DATASHORT, 1, &nrang, NULL);
+      grpnum = DataMapStoreArray(ptr, "grpnum", DATAINT, 1, &nrang, NULL);
+      grpid  = DataMapStoreArray(ptr,"grpid", DATACHAR, 100, &nrang, NULL);
+    }
+
+  /* Set the data for all of the initialized arrays */
+  for(igood = 0, irg = 0; irg < nrang; irg++)
+    {
+      sct[irg] = bm.sct[irg];
+      if(bm.sct[irg] == 1)
+	{
+	  /* Assign the basic data at this range gate */
+	  slist[igood]    = irg;
+	  gflg[igood]     = bm.rng[irg].gsct;
+	  fov[igood]      = bm.rng_flgs[irg].fov;
+	  fov_past[igood] = bm.rng_flgs[irg].fov_past;
+	  pwr0[igood]     = bm.rng[irg].p_0;
+	  pwr0_e[igood]   = bm.rng[irg].p_0_e;
+	  p_l[igood]      = bm.rng[irg].p_l;
+	  p_l_e[igood]    = bm.rng[irg].p_l_e;
+	  w_l[igood]      = bm.rng[irg].w_l;
+	  w_l_e[igood]    = bm.rng[irg].w_l_e;
+	  v[igood]        = bm.rng[irg].v;
+	  v_e[igood]      = bm.rng[irg].v_e;
+	  phi0[igood]     = bm.rng[irg].phi0;
+	  phi0_e[igood]   = bm.rng[irg].phi0_e;
+
+	  /* Assign the FoV dependent information at this range gate */
+	  if(fov[igood] == 1)
+	    {
+	      bm_elv  = bm.front_elv[irg];
+	      bm_loc  = bm.front_loc[irg];
+	      has_fov = 1;
+	    }
+	  else if(fov[igood] == -1)
+	    {
+	      bm_elv  = bm.back_elv[irg];
+	      bm_loc  = bm.back_loc[irg];
+	      has_fov = 1;
+	    }
+	  else has_fov = 0;
+
+	  if(has_fov == 1)
+	    {
+	      elv[igood]      = bm_elv.normal;
+	      elv_low[igood]  = bm_elv.low; 
+	      elv_high[igood] = bm_elv.high;
+	      vh[igood]       = bm_loc.vh;
+	      vh_e[igood]     = bm_loc.vh_e;
+	      hop[igood]      = bm_loc.hop;
+	      dist[igood]     = bm_loc.dist;
+
+	      strcpy(vh_m[igood], bm_loc.vh_m);
+	      strcpy(region[igood], bm_loc.region);
+	    }
+
+	  /* Assign the median data, if desired */
+	  if(med_flg == 1)
+	    {
+	      med_gflg[igood]   = bm.med_rng[irg].gsct;
+	      med_pwr0 [igood]  = bm.med_rng[irg].p_0;
+	      med_pwr0_e[igood] = bm.med_rng[irg].p_0_e;
+	      med_p_l[igood]    = bm.med_rng[irg].p_l;
+	      med_p_l_e[igood]  = bm.med_rng[irg].p_l_e;
+	      med_w_l[igood]    = bm.med_rng[irg].w_l;
+	      med_w_l_e[igood]  = bm.med_rng[irg].w_l_e;
+	      med_v[igood]      = bm.med_rng[irg].v;
+	      med_v_e[igood]    = bm.med_rng[irg].v_e;
+	      med_phi0[igood]   = bm.med_rng[irg].phi0;
+	      med_phi0_e[igood] = bm.med_rng[irg].phi0_e;
+	      med_elv[igood]    = bm.med_rng[irg].elv;
+	    }
+
+	  /* Assign the group data, if desired */
+	  if(grp_flg == 1)
+	    {
+	      grpflg[igood] = bm.rng_flgs[irg].grpflg;
+	      grpnum[igood] = bm.rng_flgs[irg].grpnum;
+	      strcpy(grpid[igood], bm.rng_flgs[irg].grpid);
+	    }
+
+	  /* Cycle to the next good index */
+	  igood++;
+	}
+    }
+    
+  return(0);
 }
 
 /**
@@ -262,43 +246,54 @@ int FitBSIDScanEncodeScans(int grp_flg, int med_flg, struct DataMap *ptr,
  *            med_flg   - boolean flag, 0 to exclude or 1 to include median data
  *            mult_scan - FitMultBSID structure with data to write
  *
- * @param[out] status - 0 if a file with data is written, 1 if there is no
- *                      data to write, and -1 if there is an error writing data
+ * @param[out] status - 0 if a file with data is written and -1 if there is an
+ *                      error writing data
  **/
 
 int WriteFitMultBSIDBin(FILE *fp, int grp_flg, int med_flg,
-			struct FitMultBSIDScan *mult_scan)
+			struct FitMultBSID *mult_scan)
 {
-  int fid, status;
+  int fid, status, iscan, ibm;
 
+  struct FitBSIDScan *scan;
   struct DataMap *ptr = NULL;
 
-  /* Initialize the binary data mapping structure */
-  if((ptr = DataMapMake()) == NULL) return -1;
+  /* Get the file ID and set (or return) the status */
+  if((fid = fileno(fp)) == -1) return(-1);
 
-  /* Get the file ID */
-  fid = fileno(fp);
+  status = 0;
+
+  /* Initialize the binary data mapping structure */
+  if((ptr = DataMapMake()) == NULL) return(-1);
 
   /* Add the header info */
-  status = FitMultBSIDEncodeHeader(ptr, mult_scan);
+  DataMapAddScalar(ptr, "fitmultbsid.version.major", DATAINT,
+		   &mult_scan->version.major);
+  DataMapAddScalar(ptr, "fitmultbsid.version.minor", DATAINT,
+		   &mult_scan->version.minor);
+  DataMapAddScalar(ptr, "stid", DATASHORT, &mult_scan->stid);
 
-  /* Add the binary data for each scan */
-  if(status == 0)
+  /* Cycle through all the scans, encoding the binary data */
+  scan = mult_scan->scan_ptr;
+
+  for(iscan = 0; iscan < mult_scan->num_scans && status == 0; iscan++)
     {
-      if(mult_scan->num_scans > 0)
-	status = FitBSIDEncodeScans(grp_flg, med_flg, ptr, mult_scan);
-      else status = 1;
+      /* Cycle through all the beams in this scan */
+      for(ibm = 0; ibm < scan->num_bms && status == 0; ibm++)
+	status = FitBSIDBeamEncode(grp_flg, med_flg, ptr, scan->bm[ibm]);
+
+      scan = scan->next_scan;
     }
   
   /* Write the scan data */
   if(status == 0)
     {
       if(fid != -1) status = DataMapWrite(fid, ptr);
-      else status = DataMapSize(ptr);
+      else          status = DataMapSize(ptr);
     }
 
   DataMapFree(ptr);
-  return status;
+  return(status);
 }
 
 

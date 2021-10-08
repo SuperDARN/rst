@@ -134,5 +134,9 @@ int get_bm_by_bmnum(int ibm, struct FitBSIDScan *scan);
 
 void WriteFitMultBSIDASCII(FILE *fp, struct FitMultBSID *mult_scan);
 void WriteFitBSIDScanASCII(FILE *fp, int stid, struct FitBSIDScan *scan);
+int WriteFitMultBSIDBin(FILE *fp, int grp_flg, int med_flg,
+			struct FitMultBSID *mult_scan);
+int FitBSIDBeamEncode(int grp_flg, int med_flg, struct DataMap *ptr,
+		      struct FitBSIDBeam bm);
 
 #endif
