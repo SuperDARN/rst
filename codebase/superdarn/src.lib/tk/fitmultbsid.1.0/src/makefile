@@ -16,7 +16,8 @@ DSTPATH = $(LIBPATH)
 OUTPUT = fitmultbsid
 
 SRC =	fitmultbsid.c \
-	write_ascii.c
+	write_ascii.c  \
+	write_binary.c
 
 OBJS = $(SRC:.c=.o)
 
