@@ -47,12 +47,17 @@ int rst_opterr(char *txt)
 
 int command_options(int argc, char *argv[], int *old, int *tlen,
 		    unsigned char *vb, unsigned char *catflg,
-		    unsigned char *nsflg, char **stmestr, char **etmestr,
-		    char **sdtestr, char **edtestr, char **exstr, char **chnstr,
-		    char **chnstr_fix, int *freq_min, int *freq_max,
-		    int *band_width, short int *strict_gs,
-		    short int *tdiff_flag, double *tdiff, float *D_hmin,
-		    float *D_hmax, float *E_hmax, float *F_hmax, int *nbms)
+		    unsigned char *nsflg, unsigned char *txtflg, char **stmestr,
+		    char **etmestr, char **sdtestr, char **edtestr,
+		    char **exstr, char **chnstr, char **chnstr_fix,
+		    int *freq_min, int *freq_max, int *band_width,
+		    short int *strict_gs, short int *tdiff_flag, double *tdiff,
+		    float *D_hmin, float *D_hmax, float *E_hmax, float *F_hmax,
+		    int *nbms, int *min_pnts, int *D_nrg, int *E_nrg,
+		    int *F_nrg, int *far_nrg, int *D_rgmax, int *E_rgmax,
+		    int *F_rgmax, float *D_vh_box, float *E_vh_box,
+		    float *F_vh_box, float *far_vh_box, float *max_hop,
+		    float *min_frac, double *ut_box_sec)
 {
   /* Initialize input options */
   int farg=0;
@@ -91,6 +96,9 @@ int command_options(int argc, char *argv[], int *old, int *tlen,
   /* Apply scan flag limit (ie exclude data with scan flag = -1) */
   OptionAdd(&opt, "ns", 'x', nsflg);
 
+  /* Provide ASCII output instead of binary output */
+  OptionAdd(&opt, "ascii", 'x', txtflg);
+
   /* Apply transmission frequency limits or options */
   OptionAdd(&opt, "tfmin", 'i', freq_min); /* Minimum transmission frequency */
   OptionAdd(&opt, "tfmax", 'i', freq_max); /* Maximum transmission frequency */
@@ -111,6 +119,36 @@ int command_options(int argc, char *argv[], int *old, int *tlen,
 
   /* Number of beams to use in UT evaluation */
   OptionAdd(&opt, "nbms", 'i', nbms);
+
+  /* Minimum number of points to consider for multi-point evaluations */
+  OptionAdd(&opt, "minpnts", 'i', min_pnts);
+
+  /* Number of range gates to consider for groups in each ionospheric region */
+  OptionAdd(&opt, "dnrg", 'i', D_nrg);
+  OptionAdd(&opt, "enrg", 'i', E_nrg);
+  OptionAdd(&opt, "fnrg", 'i', F_nrg);
+  OptionAdd(&opt, "farnrg", 'i', far_nrg);
+
+  /* Maximum range gate that 1/2 hop backscatter from an ionospheric region */
+  /* can be found in.                                                       */
+  OptionAdd(&opt, "drgmax", 'i', D_rgmax);
+  OptionAdd(&opt, "ergmax", 'i', E_rgmax);
+  OptionAdd(&opt, "frgmax", 'i', F_rgmax);
+
+  /* Size of the virtual height box to use in each ionospheric region */
+  OptionAdd(&opt, "dhbox", 'f', D_vh_box);
+  OptionAdd(&opt, "ehbox", 'f', E_vh_box);
+  OptionAdd(&opt, "fhbox", 'f', F_vh_box);
+  OptionAdd(&opt, "farhbox", 'f', far_vh_box);
+  
+  /* Maximum number of hops possible */
+  OptionAdd(&opt, "maxhop", 'f', max_hop);
+
+  /* Minimum fraction of points needed to perform a UT evaluation */
+  OptionAdd(&opt, "minfrac", 'f', min_frac);
+
+  /* Number of seconds for the UT evaluation box */
+  OptionAdd(&opt, "utbox", 'd', ut_box_sec);
 
   /* Process command line options */
   farg = OptionProcess(1, argc, argv, &opt, rst_opterr);
@@ -162,17 +200,24 @@ int main(int argc, char *argv[])
   struct FitMultBSID *mult_bsid;
 
   /* Initialize input options */
-  /* Default frequency limits set to the limits of the HF range */
   short int strict_gs=0, tdiff_flag=0;
 
+  /* Default frequency limits set to the limits of the HF range */
   int old=0, farg=0, tlen=0, channel=0, channel_fix=0;
-  int freq_min=3000, freq_max=30000, band_width=300, nbms=3;
+  int freq_min=3000, freq_max=30000, band_width=300, nbms=3, min_pnts=3;
+  int D_nrg=2, E_nrg=5, F_nrg=10, far_nrg=20;
+  int D_rgmax=5, E_rgmax=25, F_rgmax=40;
 
-  float D_hmin=75, D_hmax=100, E_hmax=120, F_hmax=750;
+  /* Default ionospheric region height limits, especially the F-region may */
+  /* be radar dependent.  INV uses 750 km, HAN uses 900 km.                */
+  float D_hmin=75.0, D_hmax=100.0, E_hmax=120.0, F_hmax=750.0;
+  float D_vh_box=40.0, E_vh_box=35.0, F_vh_box=50.0, far_vh_box=150.0;
+  float max_hop=3.0, min_frac=0.1;
 
   double stime=-1.0, etime=-1.0, extime=0.0, sdate=-1.0, edate=-1.0, tdiff=0.0;
+  double ut_box_sec=1200.0;  /* 20 minutes */
 
-  unsigned char vb=0, catflg=0, nsflg=0;
+  unsigned char vb=0, catflg=0, nsflg=0, txtflg=0;
 
   char *vbuf=NULL, *chnstr=NULL, *chnstr_fix=NULL, *exstr=NULL, *etmestr=NULL;
   char *edtestr=NULL, *sdtestr=NULL, *stmestr=NULL;
@@ -180,23 +225,21 @@ int main(int argc, char *argv[])
   /* Initialize file information */
   char **dnames=NULL, *iname=NULL;
 
-  /* Set these parameters to davitpy defaults. Could be optional inputs */
-  int min_pnts=3;
-  int D_nrg=2, E_nrg=5, F_nrg=10, far_nrg=20;
-  int D_rgmax=5, E_rgmax=25, F_rgmax=40;
-  float D_vh_box=40, E_vh_box=35, F_vh_box=50, far_vh_box=150;
-  float max_hop=3.0, min_frac=0.1;
-  double ut_box_sec=1200.0;  /* 20 minutes */
-
   /* Declare local subroutines */
   int command_options(int argc, char *argv[], int *old, int *tlen,
 		      unsigned char *vb, unsigned char *catflg,
-		      unsigned char *nsflg, char **stmestr, char **etmestr,
-		      char **sdtestr, char **edtestr, char **exstr,
-		      char **chnstr, char **chnstr_fix, int *freq_min,
-		      int *freq_max, int *band_width, short int *strict_gs,
+		      unsigned char *nsflg, unsigned char *txtflg,
+		      char **stmestr, char **etmestr, char **sdtestr,
+		      char **edtestr, char **exstr, char **chnstr,
+		      char **chnstr_fix, int *freq_min, int *freq_max,
+		      int *band_width, short int *strict_gs,
 		      short int *tdiff_flag, double *tdiff, float *D_hmin,
-		      float *D_hmax, float *E_hmax, float *F_hmax, int *nbms);
+		      float *D_hmax, float *E_hmax, float *F_hmax, int *nbms,
+		      int *min_pnts, int *D_nrg, int *E_nrg, int *F_nrg,
+		      int *far_nrg, int *D_rgmax, int *E_rgmax, int *F_rgmax,
+		      float *D_vh_box, float *E_vh_box, float *F_vh_box,
+		      float *far_vh_box, float *max_hop, float *min_frac,
+		      double *ut_box_sec);
   int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
 			  int tlen, double stime, double sdate, double etime,
 			  double edate, double extime, unsigned char nsflg,
@@ -217,11 +260,14 @@ int main(int argc, char *argv[])
 			  struct FitMultBSID *mult_bsid);
 
   /* Process the command line options */
-  farg = command_options(argc, argv, &old, &tlen, &vb, &catflg, &nsflg,
+  farg = command_options(argc, argv, &old, &tlen, &vb, &catflg, &nsflg, &txtflg,
 			 &stmestr, &etmestr, &sdtestr, &edtestr, &exstr,
 			 &chnstr, &chnstr_fix, &freq_min, &freq_max,
 			 &band_width, &strict_gs, &tdiff_flag, &tdiff, &D_hmin,
-			 &D_hmax, &E_hmax, &F_hmax, &nbms);
+			 &D_hmax, &E_hmax, &F_hmax, &nbms, &min_pnts, &D_nrg,
+			 &E_nrg, &F_nrg, &far_nrg, &D_rgmax, &E_rgmax, &F_rgmax,
+			 &D_vh_box, &E_vh_box, &F_vh_box, &far_vh_box, &max_hop,
+			 &min_frac, &ut_box_sec);
 
   /* If 'cn' set then determine Stereo channel, either A or B */
   if(chnstr != NULL) channel = set_stereo_channel(chnstr);
@@ -318,12 +364,15 @@ int main(int argc, char *argv[])
       			   D_hmax, E_hmax, F_hmax, mult_bsid);
     }
 
-  /* Write an output file */
+  /* Write the output, which will be binary unless ASCII is requested */
   if(mult_bsid->num_scans > 0)
-    WriteFitMultBSIDASCII(stdout, mult_bsid);
+    {
+      if(txtflg == 1) WriteFitMultBSIDASCII(stdout, mult_bsid);
+      else ret_stat = WriteFitMultBSIDBin(stdout, 0, 0, mult_bsid);
+    }
 
   /* Free the data structure pointer */
   FitMultBSIDFree(mult_bsid);
 
-  return(0);
+  return(ret_stat);
 }

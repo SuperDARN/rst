@@ -10,7 +10,7 @@
 <syntax>make_fov -old  [<ar>options</ar>] <ar>fitname</ar> [<ar>inxname</ar>]</syntax>
 <syntax>make_fov [<ar>options</ar>] <ar>fitacfnames...</ar></syntax>
 <syntax>make_fov  -old [<ar>options</ar>] <ar>fitnames...</ar></syntax>
-<syntax>make_fov [-vb] [-sd <ar>yyyymmdd</ar>] [-st <ar>hr:mn</ar>] [-ed <ar>yyyymmdd</ar>] [-et <ar>hr:mn</ar>] [-ex <ar>hr:mn</ar>] [-tl <ar>tlen</ar>] [-cn <ar>a/b</ar>] [-cn_fix <ar>channel</ar>] [-ns] [-tfmin <ar>frequency</ar>] [-tfmax <ar>frequency</ar>] [-bandwidth <ar>frequency band width</ar>] [-tdiff-update -tdiff <ar>calibration</ar>] [-dhmin <ar>D region height min</ar>] [-dhmax <ar>D region height max</ar>] [-ehmax <ar>E region height max</ar>] [-fhmax <ar>F region height max</ar>] <ar>filenames</ar></syntax>
+<syntax>make_fov -vb -ascii -ns -sd <ar>yyyymmdd</ar> -st <ar>hr:mn</ar> -ed <ar>yyyymmdd</ar> -et <ar>hr:mn</ar> -ex <ar>hr:mn</ar> -tl <ar>tlen</ar> -cn <ar>a/b</ar> -tfmin <ar>frequency</ar> -tfmax <ar>frequency</ar> -tdiff-update -tdiff <ar>calibration</ar> -dhmin <ar>D region height min</ar> -dhmax <ar>D region height max</ar> -ehmax <ar>E region height max</ar> -fhmax <ar>F region height max</ar> <ar>filenames</ar></syntax>
 <syntax></syntax>
 
 <option><on>--help</on><od>print the help message and exit.</od>
@@ -37,6 +37,8 @@
 </option>
 <option><on>-ns</on><od>exclude data with scan flags less than zero.</od>
 </option>
+<option><on>-ascii</on><od>output plain text instead of binary data.</od>
+</option>
 <option><on>-tfmin <ar>frequency minimum</ar></on><od>manually specify the lowest allowed transmission frequency in kHz.</od>
 </option>
 <option><on>-tfmax <ar>frequency maximum</ar></on><od>manually specify the upper limit for transmission frequencies in kHz.</od>
@@ -44,6 +46,8 @@
 <option><on>-bandwidth <ar>frequency band-width</ar></on><od>manually specify the width of transmission frequency bands in kHz (default 300 kHz, ignored if tfmax and tfmin supplied).</od>
 </option>
 <option><on>-gs-strict</on><od>Remove indeterminate backscatter (groundscatter that may be slow-moving ionospheric scatter).</od>
+</option>
+<option><on>-minpnts <ar>Minimum number of points for evaluations</ar></on><od>User specified minimum number of backscatter points needed for range and azimuth evaluations (default of 3).</od>
 </option>
 <option><on>-update-tdiff</on><od>Replace the TDIFF hardware value with a user specified value in elevation angle calculations.</od>
 </option>
@@ -56,6 +60,34 @@
 <option><on>-ehmax <ar>E region height max</ar></on><od>User specified upper limit for the 1/2E virtual heights in km (default of 120 km).</od>
 </option>
 <option><on>-fhmax <ar>F region height max</ar></on><od>User specified upper limit for 1/2F virtual heights in km (default of 750 km).</od>
+</option>
+<option><on>-dnrg <ar>D region range gate box size</ar></on><od>User specified upper number of range gates to use in range evaluations in the D-region (default of 2).</od>
+</option>
+<option><on>-enrg <ar>E region range gate box size</ar></on><od>User specified upper number of range gates to use in range evaluations in the E-region (default of 5).</od>
+</option>
+<option><on>-fnrg <ar>F region range gate box size</ar></on><od>User specified upper number of range gates to use in range evaluations in the F-region (default of 10).</od>
+</option>
+<option><on>-farnrg <ar>High-range gate F region range gate box size</ar></on><od>User specified upper number of range gates to use in range evaluations in the F-region at range gates far from the radar (default of 20).</od>
+</option>
+<option><on>-drgmax <ar>D region maximum range gate</ar></on><od>User specified maximum range gate from which D-region scatter may return (default of 5).</od>
+</option>
+<option><on>-ergmax <ar>E region maximum range gate</ar></on><od>User specified maximum range gate from which E-region scatter may return (default of 25).</od>
+</option>
+<option><on>-frgmax <ar>F region maximum range gate</ar></on><od>User specified range gate that separates near and far F-region backscatter (default of 40).</od>
+</option>
+<option><on>-dhbox <ar>D region box size</ar></on><od>User specified virtual height box size for the D-region in km (default of 40 km).</od>
+</option>
+<option><on>-ehbox <ar>E region box size</ar></on><od>User specified virtual height box size for the E-region in km (default of 35 km).</od>
+</option>
+<option><on>-fhbox <ar>Near range gate F region box size</ar></on><od>User specified virtual height box size for the near-range gate F-region in km (default of 50 km).</od>
+</option>
+<option><on>-farhbox <ar>Far range gate F region box size</ar></on><od>User specified virtual height box size for the far-range gate F-region in km (default of 150 km).</od>
+</option>
+<option><on>-maxhop <ar>Maximum number of hops</ar></on><od>User specified hop maximum for propagation path determination (default of 3.0).</od>
+</option>
+<option><on>-minfrac <ar>Minimum fraction of points for UT evaluation</ar></on><od>User specified minimum fraction of points needed to perform the UT evaluation (default of 0.1).</od>
+</option>
+<option><on>-utbox <ar>Size of UT evaluation box</ar></on><od>User specified width of the UT evaluation box in seconds (default of 1200 s (20 min)).</od>
 </option>
 <option><on><ar>fitacfname</ar></on><od>filename of the <code>fitacf</code> format file.</od>
 </option>
