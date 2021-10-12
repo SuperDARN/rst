@@ -100,8 +100,8 @@ int FitBSIDBeamEncode(int grp_flg, int med_flg, struct DataMap *ptr,
   DataMapStoreScalar(ptr, "nrang", DATAINT, &nrang);
 
   /* Initiallize the range gate information */
-  sct      = DataMapStoreArray(ptr,"sct", DATACHAR, 1, &nrang, NULL);
-  slist    = DataMapStoreArray(ptr,"slist", DATASHORT, 1, &nrang, NULL);
+  sct      = DataMapStoreArray(ptr, "sct", DATACHAR, 1, &nrang, NULL);
+  slist    = DataMapStoreArray(ptr, "slist", DATASHORT, 1, &nrang, NULL);
   gflg     = DataMapStoreArray(ptr, "gsct", DATASHORT, 1, &nrang, NULL);
   fov      = DataMapStoreArray(ptr, "fov", DATASHORT, 1, &nrang, NULL);
   fov_past = DataMapStoreArray(ptr, "fov_past", DATASHORT, 1, &nrang, NULL);
@@ -151,7 +151,7 @@ int FitBSIDBeamEncode(int grp_flg, int med_flg, struct DataMap *ptr,
     {
       grpflg = DataMapStoreArray(ptr, "grpflg", DATASHORT, 1, &nrang, NULL);
       grpnum = DataMapStoreArray(ptr, "grpnum", DATAINT, 1, &nrang, NULL);
-      grpid  = DataMapStoreArray(ptr,"grpid", DATACHAR, 100, &nrang, NULL);
+      grpid  = DataMapStoreArray(ptr, "grpid", DATACHAR, 100, &nrang, NULL);
     }
 
   /* Set the data for all of the initialized arrays */
