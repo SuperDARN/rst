@@ -356,7 +356,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 			  bm_new->rng_flgs[irg].fov_past = 0;
 			  bm_new->rng_flgs[irg].grpflg   = 0;
 			  bm_new->rng_flgs[irg].grpnum   = 0;
-			  sprintf(bm_new->rng_flgs[irg].grpid, "UNSET");
+			  sprintf(bm_new->rng_flgs[irg].grpid, "U");
 			}
 		    }
 
