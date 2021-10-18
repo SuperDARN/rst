@@ -51,15 +51,15 @@ struct CellBSIDFlgs
   int fov_past;
   int grpflg;
   int grpnum;
-  char grpid[100];
+  char grpid[2];
 };
 
 struct CellBSIDLoc
 {
   float vh;
   float vh_e;
-  char vh_m[5];
-  char region[20];
+  char vh_m[2];
+  char region[2];
   float hop;
   float dist;
 };  
