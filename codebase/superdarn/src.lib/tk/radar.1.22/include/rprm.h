@@ -106,6 +106,7 @@ struct RadarParm {
 
 struct RadarParm *RadarParmMake();
 void RadarParmFree(struct RadarParm *ptr);
+void RadarParmReset(struct RadarParm *ptr);
 
 int RadarParmSetOriginTime(struct RadarParm *ptr,char *str);
 
