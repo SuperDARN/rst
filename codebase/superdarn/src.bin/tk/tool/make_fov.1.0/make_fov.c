@@ -374,5 +374,9 @@ int main(int argc, char *argv[])
   /* Free the data structure pointer */
   FitMultBSIDFree(mult_bsid);
 
+  /* Free the remaining pointers */
+  for(inum = 0; inum < fnum; inum++) free(dnames[inum]);
+  free(dnames);
+
   return(ret_stat);
 }
