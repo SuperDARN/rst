@@ -292,7 +292,7 @@ void test_ut_fov_struct(unsigned char vb, char *vbuf, int nbms, float min_frac,
 			      if(strstr(opp.region, "D") != NULL)      ireg = 0;
 			      else if(strstr(opp.region, "E") != NULL) ireg = 1;
 			      else if(strstr(opp.region, "F") != NULL) ireg = 2;
-			      else ireg = -1;
+			      else                       ireg = -1;
 			      ihop = (int)(2.0 * opp.hop);
 
 			      if(ireg >= 0 && ihop > 0)
