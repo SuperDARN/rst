@@ -42,7 +42,7 @@ struct RadarScan *RadarScanMake() {
     ptr=malloc(sizeof(struct RadarScan));
     if (ptr==NULL) return NULL;
     memset(ptr,0,sizeof(struct RadarScan));
-    ptr->bm=NULL;
+    ptr->bm = (struct RadarBeam *)(NULL);
     return ptr;
 }
 
@@ -50,6 +50,7 @@ void RadarScanFree(struct RadarScan *ptr) {
     if (ptr==NULL) return;
     RadarScanReset(ptr);
     free(ptr);
+    return;
 }
 
 int RadarScanReset(struct RadarScan *ptr) {
@@ -100,7 +101,7 @@ int RadarScanResetBeam(struct RadarScan *ptr,int bmnum,int *bmptr) {
         }
     } else {
         free(tmp);
-        ptr->bm=NULL;
+        ptr->bm = (struct RadarBeam *)(NULL);
     }
     ptr->num=num;
     return 0;
