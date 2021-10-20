@@ -132,10 +132,17 @@ void FitBSIDScanFreeNext(struct FitBSIDScan *ptr);
 void FitBSIDBeamFree(struct FitBSIDBeam *ptr);
 int get_bm_by_bmnum(int ibm, struct FitBSIDScan *scan);
 
+int FitMultBSIDHeaderDecode(struct DataMap *ptr, struct FitMultBSID *mult_scan);
+int FitBSIDScanDecode(struct DataMap *ptr, struct FitBSIDScan *scan);
+int FitBSIDBeamDecode(struct DataMap *ptr, struct FitBSIDBeam *bm);
+int ReadFitMultBSIDBin(FILE *fp, struct FitMultBSID *mult_scan);
+
 void WriteFitMultBSIDASCII(FILE *fp, struct FitMultBSID *mult_scan);
 void WriteFitBSIDScanASCII(FILE *fp, int stid, struct FitBSIDScan *scan);
 int WriteFitMultBSIDBin(FILE *fp, int grp_flg, int med_flg,
 			struct FitMultBSID *mult_scan);
+int WriteFitBSIDBeamBin(int fid, int grp_flg, int med_flg,
+			struct FitBSIDBeam bm);
 int FitBSIDBeamEncode(int grp_flg, int med_flg, struct DataMap *ptr,
 		      struct FitBSIDBeam bm);
 

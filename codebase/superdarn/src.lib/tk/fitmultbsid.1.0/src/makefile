@@ -16,6 +16,7 @@ DSTPATH = $(LIBPATH)
 OUTPUT = fitmultbsid
 
 SRC =	fitmultbsid.c \
+	read_binary.c \
 	write_ascii.c  \
 	write_binary.c
 
