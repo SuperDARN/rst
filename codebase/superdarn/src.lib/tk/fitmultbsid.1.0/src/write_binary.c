@@ -119,8 +119,8 @@ int FitBSIDBeamEncode(int grp_flg, int med_flg, struct DataMap *ptr,
   pwr0_e   = DataMapStoreArray(ptr, "pwr0_e", DATAFLOAT, 1, &ngood, NULL);
   p_l      = DataMapStoreArray(ptr, "p_l", DATAFLOAT, 1, &ngood, NULL);
   p_l_e    = DataMapStoreArray(ptr, "p_l_e", DATAFLOAT, 1, &ngood, NULL);
-  w_l      = DataMapStoreArray(ptr, "p_l", DATAFLOAT, 1, &ngood, NULL);
-  w_l_e    = DataMapStoreArray(ptr, "p_l_e", DATAFLOAT, 1, &ngood, NULL);
+  w_l      = DataMapStoreArray(ptr, "w_l", DATAFLOAT, 1, &ngood, NULL);
+  w_l_e    = DataMapStoreArray(ptr, "w_l_e", DATAFLOAT, 1, &ngood, NULL);
   v        = DataMapStoreArray(ptr, "v", DATAFLOAT, 1, &ngood, NULL);
   v_e      = DataMapStoreArray(ptr, "v_e", DATAFLOAT, 1, &ngood, NULL);
   phi0     = DataMapStoreArray(ptr, "phi0", DATAFLOAT, 1, &ngood, NULL); 
@@ -355,6 +355,11 @@ int WriteFitMultBSIDBin(FILE *fp, int grp_flg, int med_flg,
 
   for(iscan = 0; iscan < mult_scan->num_scans && status >= 0; iscan++)
     {
+      /* Record the number of beams in this scan */
+      if((ptr = DataMapMake()) == NULL) return(-1);
+      DataMapAddScalar(ptr, "num_bms", DATAINT, &scan->num_bms);
+      DataMapFree(ptr);
+
       /* Cycle through all the beams in this scan */
       for(ibm = 0; ibm < scan->num_bms && status >= 0; ibm++)
 	status = WriteFitBSIDBeamBin(fid, grp_flg, med_flg, scan->bm[ibm]);
