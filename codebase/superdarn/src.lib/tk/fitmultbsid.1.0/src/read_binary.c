@@ -54,7 +54,7 @@ int FitMultBSIDHeaderDecode(struct DataMap *ptr, struct FitMultBSID *mult_scan)
 
 int FitBSIDScanDecode(struct DataMap *ptr, struct FitBSIDScan *scan)
 {
-  int i, status, snum, ibm;
+  int i, status, ibm;
   struct DataMapScalar *sptr;
 
   /* Decode the number of beams in this scan */
@@ -482,13 +482,13 @@ int ReadFitMultBSIDBin(FILE *fp, struct FitMultBSID *mult_scan)
 
   status = 0;
 
-  /* Read in the binary data mapping structure */
-  if((ptr = DataMapRead(fid)) == NULL) return(-1);
-
   /* Initialize the output structure */
   if(mult_scan == NULL) mult_scan = FitMultBSIDMake();
 
   /* Decode the header */
+  fprintf(stderr, "LOAD POINTER\n");fflush(stderr);
+  ptr    = DataMapRead(fid);
+  fprintf(stderr, "DECODE HEADER\n");fflush(stderr);
   status = FitMultBSIDHeaderDecode(ptr, mult_scan);
 
   if(status != 0)
@@ -497,13 +497,21 @@ int ReadFitMultBSIDBin(FILE *fp, struct FitMultBSID *mult_scan)
       return(status);
     }
 
+  fprintf(stderr, "SET SCAN\n");fflush(stderr);
   /* Cycle through all the scans, decoding the binary data */
-  scan = (struct FitBSIDScan *)malloc(sizeof(struct FitBSIDScan));
-  mult_scan->scan_ptr = scan;
-  prev = (struct FitBSIDScan *)(NULL);
+  scan            = (struct FitBSIDScan *)malloc(sizeof(struct FitBSIDScan));
+  scan->next_scan = (struct FitBSIDScan *)(NULL);
+  if(mult_scan->num_scans == 0)
+    {
+      mult_scan->scan_ptr = scan;
+      prev = (struct FitBSIDScan *)(NULL);
+    }
+  else prev = mult_scan->last_ptr;
+  scan->prev_scan = prev;
 
   for(iscan = 0; iscan < mult_scan->num_scans && status >= 0; iscan++)
     {
+      fprintf(stderr, "DECODE SCAN\n");fflush(stderr);
       status = FitBSIDScanDecode(ptr, scan);
 
       scan->next_scan = (struct FitBSIDScan *)
@@ -515,6 +523,7 @@ int ReadFitMultBSIDBin(FILE *fp, struct FitMultBSID *mult_scan)
     }
 
   /* Close out the linked structure */
+  fprintf(stderr, "CLOSE MULT STRUCT\n");fflush(stderr);
   scan                = (struct FitBSIDScan *)(NULL);
   prev->next_scan     = scan;
   mult_scan->last_ptr = prev;
