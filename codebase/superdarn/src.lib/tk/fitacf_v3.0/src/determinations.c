@@ -20,6 +20,7 @@ modifications:
     2020-08-12 Marina Schmidt (SuperDARN Canada) removed map function for better decoupling abilities
     2020-10-29 Marina Schmidt (SuperDARN Canada) & Emma Bland (UNIS) Changed default elevation calculation to elevation_v2()
     2021-06-01 Emma Bland (UNIS) Consolidated elevation angle calculations into a single function
+    2021-11-12 Emma Bland (UNIS) Changed elevation angle field names (elv.high --> elv.fitted, elv.low --> elv.error)
 */
 
 /*
@@ -550,24 +551,24 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
     fitprm->phidiff = fit_prms->phidiff;
 
     // elevation angle calculated from the lag zero phase is stored in fit_data->elv[range_node->range].normal
-    // elevation angle calculated from the fitted phase is stored in fit_data->elv[range_node->range].high
+    // elevation angle calculated from the fitted phase is stored in fit_data->elv[range_node->range].fitted
     // elv_version 2 is the Shepherd [2017] elevation calculation
     // elv_version 1 is original elevation calculation
     // elv_version 0 is specifically for the GBR radar when -old_elev is specified
     if (elv_version == 2)
     {
         fit_data->elv[range_node->range].normal = elevation_v2( fitprm, fit_data->xrng[range_node->range].phi0);
-        fit_data->elv[range_node->range].high   = elevation_v2( fitprm, range_node->elev_fit->a);
+        fit_data->elv[range_node->range].fitted = elevation_v2( fitprm, range_node->elev_fit->a);
     }
     else if (elv_version == 1)
     {
         fit_data->elv[range_node->range].normal = elevation( fitprm, fit_data->xrng[range_node->range].phi0);
-        fit_data->elv[range_node->range].high   = elevation( fitprm, range_node->elev_fit->a);
+        fit_data->elv[range_node->range].fitted = elevation( fitprm, range_node->elev_fit->a);
     }
     else if (elv_version == 0)
     {
         fit_data->elv[range_node->range].normal = elev_goose( fitprm, fit_data->xrng[range_node->range].phi0);
-        fit_data->elv[range_node->range].high   = elev_goose( fitprm, range_node->elev_fit->a);
+        fit_data->elv[range_node->range].fitted = elev_goose( fitprm, range_node->elev_fit->a);
     }
     else
     {
@@ -637,7 +638,7 @@ void find_elevation_error(llist_node range, struct FitData* fit_data, FITPRMS* f
     psi_k2d2 = psi/(wave_num * wave_num * antenna_sep * antenna_sep);
     df_by_dy = psi_k2d2/sqrt(theta * (1 - theta));
 
-   fit_data->elv[range_node->range].low = 180/PI * sqrt(range_node->elev_fit->sigma_2_a) * fabs(df_by_dy);
+   fit_data->elv[range_node->range].error = 180/PI * sqrt(range_node->elev_fit->sigma_2_a) * fabs(df_by_dy);
 
 }
 

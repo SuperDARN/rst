@@ -5,21 +5,21 @@
    Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 
 
-       RST is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+   RST is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful,
+   GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-    Modifications
-    =============
-    2020-11-12 Marina Schmidt Converted RST complex -> C library complex
-
+   Modifications
+   =============
+   2020-11-12 Marina Schmidt Converted RST complex -> C library complex
+   2021-11-12 Emma Bland (UNIS): Added "error" and "fitted" fields to FitElv structure to support FitACF v3
 
 */
 
@@ -69,6 +69,8 @@ struct FitElv { /* elevation angle derived from the cross correlation */
   double normal;
   double low;
   double high;
+  double fitted;
+  double error;
 };
 
 struct FitNoise { /* noise statistics */

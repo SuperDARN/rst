@@ -19,6 +19,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+    2021-11-12 Emma Bland (UNIS): Added "elv_error" and "elv_fitted" fields for compatability with FitACF3.0
+
 */
 
 #include <stdio.h>
@@ -278,6 +280,17 @@ int FitDecode(struct DataMap *ptr,
     if ((strcmp(a->name,"elv_high")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) {
       for (x=0;x<a->rng[0];x++) fit->elv[slist[x]].high=a->data.fptr[x];
+    }
+
+    if ((strcmp(a->name,"elv_fitted")==0) && (a->type==DATAFLOAT) &&
+        (a->dim==1)) {
+        fprintf(stderr,"fitted\n");
+      for (x=0;x<a->rng[0];x++) fit->elv[slist[x]].fitted=a->data.fptr[x];
+    }
+
+    if ((strcmp(a->name,"elv_error")==0) && (a->type==DATAFLOAT) &&
+        (a->dim==1)) {
+      for (x=0;x<a->rng[0];x++) fit->elv[slist[x]].error=a->data.fptr[x];
     }
 
     if ((strcmp(a->name,"x_sd_l")==0) && (a->type==DATAFLOAT) &&
