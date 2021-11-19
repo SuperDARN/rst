@@ -28,10 +28,6 @@
 #include "dmap.h"
 #endif
 
-#ifndef _DMAP_H
-#include "dmap.h"
-#endif
-
 #ifndef _RPRM_H
 #include "rprm.h"
 #endif

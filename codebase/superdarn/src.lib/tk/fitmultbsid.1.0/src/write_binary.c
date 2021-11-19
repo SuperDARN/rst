@@ -346,8 +346,6 @@ int WriteFitMultBSIDBin(FILE *fp, int grp_flg, int med_flg,
       if(fid != -1) status = DataMapWrite(fid, ptr);
       else          status = DataMapSize(ptr);
     }
-
-  /* Free the header data pointer */
   DataMapFree(ptr);
 
   /* Cycle through all the scans, encoding the binary data */
@@ -358,6 +356,13 @@ int WriteFitMultBSIDBin(FILE *fp, int grp_flg, int med_flg,
       /* Record the number of beams in this scan */
       if((ptr = DataMapMake()) == NULL) return(-1);
       DataMapAddScalar(ptr, "num_bms", DATAINT, &scan->num_bms);
+
+      /* Write the scan-header data */
+      if(status >= 0)
+	{
+	  if(fid != -1) status = DataMapWrite(fid, ptr);
+	  else          status = DataMapSize(ptr);
+	}
       DataMapFree(ptr);
 
       /* Cycle through all the beams in this scan */
