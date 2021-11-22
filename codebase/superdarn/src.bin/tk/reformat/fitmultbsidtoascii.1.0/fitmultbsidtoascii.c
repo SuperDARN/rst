@@ -95,7 +95,6 @@ int main(int argc, char *argv[])
 {
   int inum, len, fnum, farg, status;
 
-  struct DataMap *ptr;
   FILE *fp=NULL;
 
   struct FitMultBSID *mult_bsid;
@@ -134,18 +133,12 @@ int main(int argc, char *argv[])
   /* Read in each file */
   for(status = 0, inum = 0; inum < fnum && status >= 0; inum++)
     {
-      fprintf(stderr, "LOADING FILE %s (%d/%d)\n",dnames[inum], inum, fnum);fflush(stderr);
       if((fp = fopen(dnames[inum], "r")) == NULL)
 	{
 	  fprintf(stderr, "unable to open input file [%s]\n", dnames[inum]);
 	  exit(1);
 	}
-      fprintf(stderr, "PLEASE LOAD POINTER\n");fflush(stderr);
-      ptr=DataMapFread(fp);
-      /* status = ReadFitMultBSIDBin(fp, mult_bsid); */
-
-      fprintf(stderr, "LOADED FILE %s (%d scans)\n", dnames[inum], mult_bsid->num_scans);fflush(stderr);
-      exit(1);
+      status = ReadFitMultBSIDBin(fp, mult_bsid);
     }
 
   /* Write the output in ASCII format */
