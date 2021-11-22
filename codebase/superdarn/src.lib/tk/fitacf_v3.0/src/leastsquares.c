@@ -28,6 +28,7 @@ Modifications:
 
 */
 
+#include "sort.h"
 #include "stats.h"
 #include "leastsquares.h"
 #include "rtypes.h"
