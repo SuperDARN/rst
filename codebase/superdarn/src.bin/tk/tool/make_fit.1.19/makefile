@@ -23,7 +23,7 @@
 
 include $(MAKECFG).$(SYSTEM)
 
-INCLUDE=-I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/superdarn
+INCLUDE=-I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/analysis -I$(IPATH)/superdarn
 OBJS = make_fit.o
 
 SRC=hlpstr.h errstr.h make_fit.c
