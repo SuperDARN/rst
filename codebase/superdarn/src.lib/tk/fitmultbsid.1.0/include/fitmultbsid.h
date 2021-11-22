@@ -20,8 +20,16 @@
 #include <zlib.h>
 #endif
 
+#ifndef _RTIME_H
+#include "rtime.h"
+#endif
+
 #ifndef _RTYPES_H
 #include "rtypes.h"
+#endif
+
+#ifndef _RCONVERT_H
+#include "rconvert.h"
 #endif
 
 #ifndef _DMAP_H
