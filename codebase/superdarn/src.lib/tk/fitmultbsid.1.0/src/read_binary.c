@@ -52,12 +52,15 @@ int FitMultBSIDHeaderDecode(struct DataMap *ptr, struct FitMultBSID *mult_scan)
   return(status);
 }
 
-int FitBSIDScanDecode(struct DataMap *ptr, struct FitBSIDScan *scan)
+int FitBSIDScanDecode(FILE *fp, struct FitBSIDScan *scan)
 {
   int i, status, ibm;
+
+  struct DataMap *ptr;
   struct DataMapScalar *sptr;
 
   /* Decode the number of beams in this scan */
+  ptr = DataMapFread(fp);
   for(status = 0, i = 0; i < ptr->snum; i++)
     {
       sptr = ptr->scl[i];
@@ -70,7 +73,8 @@ int FitBSIDScanDecode(struct DataMap *ptr, struct FitBSIDScan *scan)
 	  status = -1;
 	}
     }
-
+  DataMapFree(ptr);
+  
   /* Initialize the beam data */
   scan->bm = (struct FitBSIDBeam *)malloc(sizeof(struct FitBSIDBeam)
 					  * scan->num_bms);
@@ -78,7 +82,7 @@ int FitBSIDScanDecode(struct DataMap *ptr, struct FitBSIDScan *scan)
 
   /* Decode the beam data for this scan */
   for(ibm = 0; ibm < scan->num_bms && status >= 0; ibm++)
-    status = FitBSIDBeamDecode(ptr, &scan->bm[ibm]);
+    status = FitBSIDBeamDecode(fp, &scan->bm[ibm]);
 
   scan->st_time = scan->bm[0].time;
   scan->ed_time = scan->bm[scan->num_bms-1].time;
@@ -86,23 +90,25 @@ int FitBSIDScanDecode(struct DataMap *ptr, struct FitBSIDScan *scan)
   return(status);
 }
 
-int FitBSIDBeamDecode(struct DataMap *ptr, struct FitBSIDBeam *bm)
+int FitBSIDBeamDecode(FILE *fp, struct FitBSIDBeam *bm)
 {
   int i, j, yr=-1, mo=-1, dy=-1, hr=-1, mt=-1, *slist=NULL, *fov=NULL;
 
   char **vstr=NULL;
 
+  struct DataMap *ptr;
   struct DataMapScalar *sptr;
   struct DataMapArray *aptr;
 
   /* Decode the number of beams in this scan */
+  ptr = DataMapFread(fp);
   for(i = 0; i < ptr->snum; i++)
     {
       sptr = ptr->scl[i];
 
       if((strcmp(sptr->name, "cpid") == 0) && (sptr->type == DATAINT))
 	bm->cpid = *(sptr->data.iptr);
-      else if((strcmp(sptr->name, "bm") == 0) && (sptr->type == DATASHORT))
+      else if((strcmp(sptr->name, "bmnum") == 0) && (sptr->type == DATASHORT))
 	bm->bm = *(sptr->data.sptr);
       else if((strcmp(sptr->name, "bmazm") == 0) && (sptr->type == DATAFLOAT))
 	bm->bmazm = *(sptr->data.fptr);
@@ -170,7 +176,7 @@ int FitBSIDBeamDecode(struct DataMap *ptr, struct FitBSIDBeam *bm)
   bm->back_elv  = (struct FitElv *)calloc(bm->nrang, sizeof(struct FitElv));
 
   /* Decode the range gate data for this scan */
-  for(i = 0; i < ptr->anum && slist == NULL && fov == NULL; i++)
+  for(i = 0; i < ptr->anum && (slist == NULL || fov == NULL); i++)
     {
       aptr = ptr->arr[i];
 
@@ -200,7 +206,7 @@ int FitBSIDBeamDecode(struct DataMap *ptr, struct FitBSIDBeam *bm)
   for(i = 0; i < ptr->anum; i++)
     {
       aptr = ptr->arr[i];
-  
+
       if((strcmp(aptr->name, "gsct") == 0) && (aptr->type == DATASHORT)
 	 && (aptr->dim == 1))
 	{
@@ -382,8 +388,8 @@ int FitBSIDBeamDecode(struct DataMap *ptr, struct FitBSIDBeam *bm)
 	  for(j = 0; j < aptr->rng[0]; j++)
 	    bm->med_rng[slist[j]].p_0 = aptr->data.fptr[j];
 	}
-      else if((strcmp(aptr->name, "med_pwr0_e") == 0) && (aptr->type == DATAFLOAT)
-	 && (aptr->dim == 1))
+      else if((strcmp(aptr->name, "med_pwr0_e") == 0)
+	      && (aptr->type == DATAFLOAT) && (aptr->dim == 1))
 	{
 	  for(j = 0; j < aptr->rng[0]; j++)
 	    bm->med_rng[slist[j]].p_0_e = aptr->data.fptr[j];
@@ -394,8 +400,8 @@ int FitBSIDBeamDecode(struct DataMap *ptr, struct FitBSIDBeam *bm)
 	  for(j = 0; j < aptr->rng[0]; j++)
 	    bm->med_rng[slist[j]].p_l = aptr->data.fptr[j];
 	}
-      else if((strcmp(aptr->name, "med_p_l_e") == 0) && (aptr->type == DATAFLOAT)
-	 && (aptr->dim == 1))
+      else if((strcmp(aptr->name, "med_p_l_e") == 0)
+	      && (aptr->type == DATAFLOAT) && (aptr->dim == 1))
 	{
 	  for(j = 0; j < aptr->rng[0]; j++)
 	    bm->med_rng[slist[j]].p_l_e = aptr->data.fptr[j];
@@ -406,8 +412,8 @@ int FitBSIDBeamDecode(struct DataMap *ptr, struct FitBSIDBeam *bm)
 	  for(j = 0; j < aptr->rng[0]; j++)
 	    bm->med_rng[slist[j]].w_l = aptr->data.fptr[j];
 	}
-      else if((strcmp(aptr->name, "med_w_l_e") == 0) && (aptr->type == DATAFLOAT)
-	 && (aptr->dim == 1))
+      else if((strcmp(aptr->name, "med_w_l_e") == 0)
+	      && (aptr->type == DATAFLOAT) && (aptr->dim == 1))
 	{
 	  for(j = 0; j < aptr->rng[0]; j++)
 	    bm->med_rng[slist[j]].w_l_e = aptr->data.fptr[j];
@@ -430,8 +436,8 @@ int FitBSIDBeamDecode(struct DataMap *ptr, struct FitBSIDBeam *bm)
 	  for(j = 0; j < aptr->rng[0]; j++)
 	    bm->med_rng[slist[j]].phi0 = aptr->data.fptr[j];
 	}
-      else if((strcmp(aptr->name, "med_phi0_e") == 0) && (aptr->type == DATAFLOAT)
-	 && (aptr->dim == 1))
+      else if((strcmp(aptr->name, "med_phi0_e") == 0)
+	      && (aptr->type == DATAFLOAT) && (aptr->dim == 1))
 	{
 	  for(j = 0; j < aptr->rng[0]; j++)
 	    bm->med_rng[slist[j]].phi0_e = aptr->data.fptr[j];
@@ -466,6 +472,7 @@ int FitBSIDBeamDecode(struct DataMap *ptr, struct FitBSIDBeam *bm)
   /* Free the pointers */
   free(slist);
   free(fov);
+  DataMapFree(ptr);
 
   return(0);
 }
@@ -482,56 +489,52 @@ int ReadFitMultBSIDBin(FILE *fp, struct FitMultBSID *mult_scan)
   if(mult_scan == NULL) mult_scan = FitMultBSIDMake();
 
   /* Decode the header */
-  fprintf(stderr, "LOAD POINTER\n");fflush(stderr);
-  ptr    = DataMapFread(fp);
-  fprintf(stderr, "DECODE HEADER\n");fflush(stderr);
-  /* exit(1); */
-  /* status = FitMultBSIDHeaderDecode(ptr, mult_scan); */
+  ptr = DataMapFread(fp);
 
-  /* if(status != 0) */
-  /*   { */
-  /*     DataMapFree(ptr); */
-  /*     return(status); */
-  /*   } */
+  /* Cycle through all the scans, decoding the binary data */
+  scan            = (struct FitBSIDScan *)malloc(sizeof(struct FitBSIDScan));
+  scan->next_scan = (struct FitBSIDScan *)(NULL);
+  if(mult_scan->num_scans == 0)
+    {
+      mult_scan->scan_ptr = scan;
+      status              = FitMultBSIDHeaderDecode(ptr, mult_scan);
+      prev                = (struct FitBSIDScan *)(NULL);
+    }
+  else
+    {
+      prev            = mult_scan->last_ptr;
+      prev->next_scan = scan;
+    }
+  scan->prev_scan = prev;
+  DataMapFree(ptr);
 
-  /* fprintf(stderr, "SET SCAN\n");fflush(stderr); */
-  /* /\* Cycle through all the scans, decoding the binary data *\/ */
-  /* scan            = (struct FitBSIDScan *)malloc(sizeof(struct FitBSIDScan)); */
-  /* scan->next_scan = (struct FitBSIDScan *)(NULL); */
-  /* if(mult_scan->num_scans == 0) */
-  /*   { */
-  /*     mult_scan->scan_ptr = scan; */
-  /*     prev = (struct FitBSIDScan *)(NULL); */
-  /*   } */
-  /* else prev = mult_scan->last_ptr; */
-  /* scan->prev_scan = prev; */
+  if(status != 0) return(status);
 
-  /* for(iscan = 0; iscan < mult_scan->num_scans && status >= 0; iscan++) */
-  /*   { */
-  /*     fprintf(stderr, "DECODE SCAN\n");fflush(stderr); */
-  /*     status = FitBSIDScanDecode(ptr, scan); */
+  for(iscan = 0; iscan < mult_scan->num_scans && status >= 0; iscan++)
+    {
+      status = FitBSIDScanDecode(fp, scan);
 
-  /*     scan->next_scan = (struct FitBSIDScan *) */
-  /* 	malloc(sizeof(struct FitBSIDScan)); */
-  /*     prev            = scan; */
-  /*     scan            = scan->next_scan; */
-  /*     scan->prev_scan = prev; */
-  /*     prev->next_scan = scan; */
-  /*   } */
+      if(status >= 0)
+	{
+	  mult_scan->ed_time = scan->ed_time;
+	  if(iscan == 0 && status >= 0)
+	    mult_scan->st_time = scan->st_time;
+	}
 
-  /* /\* Close out the linked structure *\/ */
-  /* fprintf(stderr, "CLOSE MULT STRUCT\n");fflush(stderr); */
-  /* scan                = (struct FitBSIDScan *)(NULL); */
-  /* prev->next_scan     = scan; */
-  /* mult_scan->last_ptr = prev; */
+      scan->next_scan = (struct FitBSIDScan *)
+  	malloc(sizeof(struct FitBSIDScan));
+      prev            = scan;
+      scan            = scan->next_scan;
+      scan->prev_scan = prev;
+      prev->next_scan = scan;
+    }
 
-  /* /\* Check the number of scans and set the start and end time *\/ */
-  /* if(iscan != mult_scan->num_scans) status = -1; */
-  /* else */
-  /*   { */
-  /*     mult_scan->st_time = mult_scan->scan_ptr->st_time; */
-  /*     mult_scan->ed_time = prev->ed_time; */
-  /*   } */
+  /* Close out the linked structure */
+  prev->next_scan     = (struct FitBSIDScan *)(NULL);
+  mult_scan->last_ptr = prev;
+
+  /* Check the number of scans and set the start and end time */
+  if(iscan != mult_scan->num_scans) status = -1;
 
   return(status);
 }
