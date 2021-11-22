@@ -16,9 +16,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "rtime.h"
-#include "option.h"
 #include "fitmultbsid.h"
+#include "option.h"
 #include "hlpstr.h"
 #include "errstr.h"
 
