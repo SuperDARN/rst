@@ -202,6 +202,16 @@ int FitBSIDBeamDecode(FILE *fp, struct FitBSIDBeam *bm)
 
   if(slist == NULL || fov == NULL) return(-1);
 
+  /* Initialize the group ID name */
+  for(j = 0; j < bm->nrang; j++)
+    {
+      sprintf(bm->rng_flgs[j].grpid, "U");
+      sprintf(bm->front_loc[j].vh_m, "U");
+      sprintf(bm->back_loc[j].vh_m, "U");
+      sprintf(bm->front_loc[j].region, "U");
+      sprintf(bm->back_loc[j].region, "U");
+    } 
+
   /* Decode the range gate dependant data for this scan */
   for(i = 0; i < ptr->anum; i++)
     {
