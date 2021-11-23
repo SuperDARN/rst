@@ -79,7 +79,7 @@ void WriteFitBSIDScanASCII(FILE *fp, int stid, struct FitBSIDScan *scan)
   if(scan == NULL)
     {
       sprintf(scan_info, "#STID");
-      sprintf(bm_info, "DATE TIME BMNUM BMAZM CPID INTT_SC INTT_US NAVE FRANG RSEP RXRISE FREQ NOISE ATTEN CHANNEL NRANG");
+      sprintf(bm_info, "DATE TIME INTT_US BMNUM BMAZM CPID NAVE FRANG RSEP RXRISE FREQ NOISE ATTEN CHANNEL NRANG");
       sprintf(rng_info, "RG GFLG FOVFLG FOV_PAST GRPFLG GRPNUM GRPID P_0 P_0_ERR V V_ERR W_L W_L_ERR P_L P_L_ERR PHI0 PHI0_ERR ELV ELV_LOW ELV_HIGH VH VH_ERR VH_METHOD REGION HOP DIST MED_P_0 MED_P_0_ERR MED_V MED_V_ERR MED_W_L MED_W_L_ERR MED_P_L MED_P_L_ERR MED_PHI0 MED_PHI0_ERR OPP_ELV OPP_ELV_LOW OPP_ELV_HIGH OPP_VH OPP_VH_ERR OPP_VH_METHOD OPP_REGION OPP_HOP OPP_DIST");
 
       fprintf(fp, "%s %s %s\n", scan_info, bm_info, rng_info);
@@ -96,12 +96,11 @@ void WriteFitBSIDScanASCII(FILE *fp, int stid, struct FitBSIDScan *scan)
 	  bm = scan->bm[ibm];
 	  TimeEpochToYMDHMS(bm.time, &yr, &mo, &dy, &hr, &mt, &sc);
 
-	  sprintf(bm_info, "%04d-%02d-%02d %02d:%02d:%02.0f", yr, mo, dy, hr,
-		  mt, sc);
-	  sprintf(bm_info, "%s %d %0.3f %d %d %d %d %d %d %d %d %d %d %d %d",
-		  bm_info, bm.bm, bm.bmazm, bm.cpid, bm.intt.sc, bm.intt.us,
-		  bm.nave, bm.frang, bm.rsep, bm.rxrise, bm.freq, bm.noise,
-		  bm.atten, bm.channel, bm.nrang);
+	  sprintf(bm_info, "%04d-%02d-%02d %02d:%02d:%02d %d", yr, mo, dy, hr,
+		  mt, bm.intt.sc, bm.intt.us);
+	  sprintf(bm_info, "%s %d %0.3f %d %d %d %d %d %d %d %d %d %d",
+		  bm_info, bm.bm, bm.bmazm, bm.cpid, bm.nave, bm.frang, bm.rsep,
+		  bm.rxrise, bm.freq, bm.noise, bm.atten, bm.channel, bm.nrang);
 
 	  /* Cycle through all the range gates */
 	  for(irg = 0; irg < bm.nrang; irg++)
