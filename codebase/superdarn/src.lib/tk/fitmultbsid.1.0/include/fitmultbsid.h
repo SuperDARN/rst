@@ -66,7 +66,7 @@ struct CellBSIDLoc
   char region[2];
   float hop;
   float dist;
-};  
+};
 
 struct FitBSIDBeam
 {
