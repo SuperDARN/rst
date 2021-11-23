@@ -28,7 +28,7 @@
  *             vbuf       - Verbosity buffer
  *             nbms       - Number of beams used in each time eval (1)
  *             min_frac   - Minimum fraction of possible backscatter points
-                            needed in the RG/UT box to test the FoV (0.1)
+ *                          needed in the RG/UT box to test the FoV (0.1)
  *             ut_box_sec - UT box size in decimal seconds (1200.0)
  *             D_nrg      - Number of range gates for D-region box (2)
  *             E_nrg      - Number of range gates for E-region box (5)
