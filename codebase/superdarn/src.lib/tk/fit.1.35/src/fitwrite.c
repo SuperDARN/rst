@@ -226,9 +226,6 @@ int FitEncode(struct DataMap *ptr,struct RadarParm *prm, struct FitData *fit) {
           x_qflg[x]=fit->xrng[c].qflg;
           x_gflg[x]=fit->xrng[c].gsct;
 
-          x_qflg[x]=fit->xrng[c].qflg;
-          x_gflg[x]=fit->xrng[c].gsct;
-
           x_p_l[x]=fit->xrng[c].p_l;
           x_p_l_e[x]=fit->xrng[c].p_l_err;
           x_p_s[x]=fit->xrng[c].p_s;

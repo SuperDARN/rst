@@ -89,7 +89,7 @@ int FitDecode(struct DataMap *ptr,
 
     if ((strcmp(a->name,"pwr0")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) nrang=a->rng[0];
-    if ((strcmp(a->name,"x_v")==0) && (a->type==DATAFLOAT) &&
+    if ((strcmp(a->name,"phi0")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) xcf=1;
   }
 
@@ -284,7 +284,6 @@ int FitDecode(struct DataMap *ptr,
 
     if ((strcmp(a->name,"elv_fitted")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) {
-        fprintf(stderr,"fitted\n");
       for (x=0;x<a->rng[0];x++) fit->elv[slist[x]].fitted=a->data.fptr[x];
     }
 
