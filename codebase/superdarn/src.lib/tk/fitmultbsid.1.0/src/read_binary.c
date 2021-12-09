@@ -41,7 +41,7 @@ int FitMultBSIDHeaderDecode(struct DataMap *ptr, struct FitMultBSID *mult_scan)
       else if((strcmp(sptr->name, "stid") == 0) && (sptr->type == DATASHORT))
 	mult_scan->stid = *(sptr->data.iptr);
       else if((strcmp(sptr->name, "num_scans") == 0) && (sptr->type == DATAINT))
-	mult_scan->num_scans = *(sptr->data.iptr);
+	mult_scan->num_scans += *(sptr->data.iptr);
       else
 	{
 	  fprintf(stderr, "unexpected line reached, not header data\n");
@@ -504,10 +504,11 @@ int ReadFitMultBSIDBin(FILE *fp, struct FitMultBSID *mult_scan)
   /* Cycle through all the scans, decoding the binary data */
   scan            = (struct FitBSIDScan *)malloc(sizeof(struct FitBSIDScan));
   scan->next_scan = (struct FitBSIDScan *)(NULL);
+  iscan           = mult_scan->num_scans;
+
   if(mult_scan->num_scans == 0)
     {
       mult_scan->scan_ptr = scan;
-      status              = FitMultBSIDHeaderDecode(ptr, mult_scan);
       prev                = (struct FitBSIDScan *)(NULL);
     }
   else
@@ -516,11 +517,12 @@ int ReadFitMultBSIDBin(FILE *fp, struct FitMultBSID *mult_scan)
       prev->next_scan = scan;
     }
   scan->prev_scan = prev;
+  status          = FitMultBSIDHeaderDecode(ptr, mult_scan);
   DataMapFree(ptr);
 
   if(status != 0) return(status);
 
-  for(iscan = 0; iscan < mult_scan->num_scans && status >= 0; iscan++)
+  for(; iscan < mult_scan->num_scans && status >= 0; iscan++)
     {
       status = FitBSIDScanDecode(fp, scan);
 

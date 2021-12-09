@@ -121,9 +121,9 @@ int main(int argc, char *argv[])
 
       for(inum = 0; inum < fnum; inum++)
 	{
-	  len = strlen(argv[inum + argc - 1]);
+	  len = strlen(argv[inum + argc - fnum]);
 	  dnames[inum] = (char *)malloc(sizeof(char) * (len + 1));
-	  strcpy(dnames[inum], argv[inum + argc - 1]);
+	  strcpy(dnames[inum], argv[argc - fnum + inum]);
 	}
     }
 
