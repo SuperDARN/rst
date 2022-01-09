@@ -23,6 +23,7 @@ void RPosGeo_v2(int center, int bcrd, int rcrd, struct RadarSite *pos,
   double rrad,rlat,rlon,del;
   double hop=0.5;
   double range_edge=0;
+  int pseudo=0;
 
   if (center==0) range_edge=-0.5*rsep*20/3;
 
@@ -39,6 +40,7 @@ void RPosGeo_v2(int center, int bcrd, int rcrd, struct RadarSite *pos,
   } else {
     if (model==1) {
       vh = calc_chisham_vhm(d,&hop);
+      if (hop==1.5) pseudo = 1;
     } else if (model==2) {
       vh = calc_cv_vhm(d,gs,&hop);
     } else {
@@ -46,7 +48,11 @@ void RPosGeo_v2(int center, int bcrd, int rcrd, struct RadarSite *pos,
     }
   
     /* Calculate elevation angle for slant range, virtual height, and number of hops [deg] */
-    elv = calc_elevation_angle(d,vh,hop);
+    elv = calc_elevation_angle(d,vh,hop,pseudo);
+
+    /* If using the Chisham pseudo virtual height, reset the number of hops back to 0.5
+     * to get the correct ground range */
+    if (pseudo) hop=0.5;
   }
 
   /* Calculate ground range for slant range, virtual height, and number of hops [km] */
@@ -157,9 +163,19 @@ double calc_virtual_height(double r, double elv, double hop) {
 
 /* Calculate the elevation angle for a given slant range, virtual height,
  * and number of hops */
-double calc_elevation_angle(double r, double xh, double hop) {
+double calc_elevation_angle(double r, double xh, double hop, int pseudo) {
 
-  return asind(((RE+xh)*(RE+xh) - (r*0.5/hop)*(r*0.5/hop) - RE*RE)/(2.0*r*(0.5/hop)*RE));
+  double gmma,beta;
+
+  if (pseudo) {
+    /* If using a pseudo virtual height from the Chisham et al VHM, need to calculate the
+     * elevation angle to the true virtual height for a 1.5-hop propagation mode */
+    gmma = acosd((RE*RE + (RE+xh)*(RE+xh) - r*r)/(2.0*RE*(RE+xh)));
+    beta = asind(RE*sind(gmma/3.0)/(r/3.0));
+    return 90.0 - beta - (gmma/3.0);
+  } else {
+    return asind(((RE+xh)*(RE+xh) - (r*0.5/hop)*(r*0.5/hop) - RE*RE)/(2.0*r*(0.5/hop)*RE));
+  }
 }
 
 

@@ -16,7 +16,7 @@ double calc_chisham_vhm(double r, double *hop);
 double calc_cv_vhm(double r, int gs, double *hop);
 
 double calc_virtual_height(double r, double elv, double hop);
-double calc_elevation_angle(double r, double xh, double hop);
+double calc_elevation_angle(double r, double xh, double hop, int pseudo);
 double calc_coning_angle(struct RadarSite *pos, int bmnum, double elv,
                          int center, int rear);
 double calc_ground_range(double r, double xh, double hop);
