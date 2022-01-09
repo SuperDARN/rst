@@ -121,6 +121,10 @@ int main (int argc,char *argv[]) {
   radar=RadarGetRadar(network,stid);
   site=RadarYMDHMSGetSite(radar,yr,mo,dy,0,0,0);
 
+  if (standard) model=0;
+  else if (chisham) model=1;
+  else if (midlat) model=2;
+
   RPosGeo_v2(1,bm,rn,site,frang,rsep,rx,height,&frho,&flat,&flon,model,gs,rear);
 
   fprintf(stderr,"flat: %lf, flon: %lf\n",flat,flon);
