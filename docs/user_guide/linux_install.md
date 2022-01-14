@@ -220,7 +220,6 @@ Error: curses.h not found
 
 1. Obtaining RST software:
     - Download the official release with a citable DOI from [Zenodo](https://doi.org/10.5281/zenodo.801458) (**recommended for most users**)
-    - Download the official release from [Github](https://github.com/SuperDARN/rst/releases)
     - Clone from Github (for developers): ```git clone https://github.com/superdarn/rst/```
 
 2. Check RST environment variables:
