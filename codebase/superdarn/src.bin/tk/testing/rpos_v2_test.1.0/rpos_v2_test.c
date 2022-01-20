@@ -1,3 +1,7 @@
+/* rpos_v2_test.c
+   ==============
+   Author: E.G.Thomas
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,6 +11,7 @@
 #include <sys/stat.h>
 #include "rtypes.h"
 #include "option.h"
+#include "rtime.h"
 #include "radar.h"
 #include "rpos_v2.h"
 
@@ -18,11 +23,28 @@ struct Radar *radar;
 struct RadarSite *site;
 struct OptionData opt;
 
+
+double strdate(char *text) {
+  double tme;
+  int val;
+  int yr,mo,dy;
+  val=atoi(text);
+  dy=val % 100;
+  mo=(val / 100) % 100;
+  yr=(val / 10000);
+  if (yr<1970) yr+=1900;
+  tme=TimeYMDHMSToEpoch(yr,mo,dy,0,0,0);
+
+  return tme;
+}
+
+
 int rst_opterr(char *txt) {
   fprintf(stderr,"Option not recognized: %s\n",txt);
   fprintf(stderr,"Please try: rpos_v2_test --help\n");
   return(-1);
 }
+
 
 int main (int argc,char *argv[]) {
 
@@ -34,12 +56,13 @@ int main (int argc,char *argv[]) {
   FILE *fp;
   char *envstr;
 
-  int yr=2020;
-  int mo=1;
-  int dy=1;
+  char *dtetxt=NULL;
+  double dval=0;
+  int yr,mo,dy,hr,mt,isc,usc;
+  double sc;
 
   int stid=1;
-  int bm=15;
+  int bm=7;
   int rn=20;
   double height=300;
   int frang=180;
@@ -57,7 +80,9 @@ int main (int argc,char *argv[]) {
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
   OptionAdd(&opt,"-version",'x',&version);
-  
+
+  OptionAdd(&opt,"d",'t',&dtetxt);
+
   OptionAdd(&opt,"stid",'i',&stid);
   OptionAdd(&opt,"bm",'i',&bm);
   OptionAdd(&opt,"rn",'i',&rn);
@@ -116,6 +141,13 @@ int main (int argc,char *argv[]) {
     fprintf(stderr,"Environment variable 'SD_HDWPATH' must be defined.\n");
     exit(-1);
   }
+
+  if (dtetxt !=NULL) dval=strdate(dtetxt);
+
+  if (dval !=0) {
+    TimeEpochToYMDHMS(dval,&yr,&mo,&dy,&hr,&mt,&sc);
+    isc=sc;
+  } else TimeReadClock(&yr,&mo,&dy,&hr,&mt,&isc,&usc);
 
   RadarLoadHardware(envstr,network);
   radar=RadarGetRadar(network,stid);
