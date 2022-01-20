@@ -52,7 +52,7 @@ int main (int argc,char *argv[]) {
 
   int standard=0;
   int chisham=0;
-  int midlat=0;
+  int cv=0;
 
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
@@ -65,7 +65,7 @@ int main (int argc,char *argv[]) {
 
   OptionAdd(&opt,"standard",'x',&standard);
   OptionAdd(&opt,"chisham",'x',&chisham);
-  OptionAdd(&opt,"midlat",'x',&midlat);
+  OptionAdd(&opt,"cv",'x',&cv);
 
   OptionAdd(&opt,"gs",'x',&gs);
   OptionAdd(&opt,"rear",'x',&rear);
@@ -123,7 +123,7 @@ int main (int argc,char *argv[]) {
 
   if (standard) model=0;
   else if (chisham) model=1;
-  else if (midlat) model=2;
+  else if (cv) model=2;
 
   RPosGeo_v2(1,bm,rn,site,frang,rsep,rx,height,&frho,&flat,&flon,model,gs,rear);
 

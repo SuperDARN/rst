@@ -112,7 +112,7 @@ double calc_chisham_vhm(double r, double *hop) {
 }
 
 
-/* Thomas et al [2022] virtual height model */
+/* Thomas et al [2022] Christmas Valley virtual height model */
 double calc_cv_vhm(double r, int gs, double *hop) {
 
   double xh;
