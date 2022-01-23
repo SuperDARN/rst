@@ -19,6 +19,7 @@
 ; along with this program. If not, see <https://www.gnu.org/licenses/>.
 ;
 ; Modifications:
+;      2022-01-23 Emma Bland (UNIS): Added "error" and "fitted" fields for FitACF v3
 ; 
 ; Public Functions
 ; ----------------
@@ -54,7 +55,9 @@ pro FitACFMakeFitElv,elv
   elv={FitElv, $
        normal:0.0D, $
        low:0.0D, $
-       high:0.0D $
+       high:0.0D, $
+       error:0.0D, $
+       fitted:0.0D $
       }
 end
 

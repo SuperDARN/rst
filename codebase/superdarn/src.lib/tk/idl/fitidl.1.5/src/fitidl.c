@@ -17,6 +17,7 @@
  along with this program. If not, see <https://www.gnu.org/licenses/>.
  
  Modifications:
+     2022-01-23 Emma Bland (UNIS): Added "elv_error" and "elv_fitted" fields to support FitACF v3
  
 
 */
@@ -79,6 +80,8 @@ void IDLCopyFitDataFromIDL(int nrang,int xcf,struct FitIDLData *ifit,
       fit->elv[n].low=ifit->elv_low[n];
       fit->elv[n].normal=ifit->elv[n];
       fit->elv[n].high=ifit->elv_high[n];
+      fit->elv[n].error=ifit->elv_error[n];
+      fit->elv[n].fitted=ifit->elv_fitted[n];
       fit->xrng[n].qflg=ifit->x_qflg[n];
       fit->xrng[n].gsct=ifit->x_gflg[n];
       fit->xrng[n].p_l=ifit->x_p_l[n];
@@ -137,6 +140,8 @@ void IDLCopyFitDataToIDL(int nrang,int xcf,struct FitData *fit,
       ifit->elv_low[n]=fit->elv[n].low;
       ifit->elv[n]=fit->elv[n].normal;
       ifit->elv_high[n]=fit->elv[n].high;
+      ifit->elv_fitted[n]=fit->elv[n].fitted;
+      ifit->elv_error[n]=fit->elv[n].error;
       ifit->x_qflg[n]=fit->xrng[n].qflg;
       ifit->x_gflg[n]=fit->xrng[n].gsct;
       ifit->x_p_l[n]=fit->xrng[n].p_l;
@@ -213,9 +218,11 @@ struct FitIDLData *IDLMakeFitData(IDL_VPTR *vptr) {
     {"ELV",rdim,(void *) IDL_TYP_FLOAT}, /* 33 */  
     {"ELV_LOW",rdim,(void *) IDL_TYP_FLOAT}, /* 34 */
     {"ELV_HIGH",rdim,(void *) IDL_TYP_FLOAT}, /* 35 */
-    {"X_SD_L",rdim,(void *) IDL_TYP_FLOAT}, /* 36 */
-    {"X_SD_S",rdim,(void *) IDL_TYP_FLOAT}, /* 37 */
-    {"X_SD_PHI",rdim,(void *) IDL_TYP_FLOAT}, /* 38 */
+    {"ELV_FITTED",rdim,(void *) IDL_TYP_FLOAT}, /* 36 */  
+    {"ELV_ERROR",rdim,(void *) IDL_TYP_FLOAT}, /* 37 */  
+    {"X_SD_L",rdim,(void *) IDL_TYP_FLOAT}, /* 38 */
+    {"X_SD_S",rdim,(void *) IDL_TYP_FLOAT}, /* 39 */
+    {"X_SD_PHI",rdim,(void *) IDL_TYP_FLOAT}, /* 40 */
  
     {0}};
 
