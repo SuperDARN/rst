@@ -60,12 +60,14 @@ fit={FitData, $
       x_w_s_e: fltarr(MAX_RANGE), $   ; XCF spectral width error from sigma fit
       phi0: fltarr(MAX_RANGE), $      ; phase determination
       phi0_e: fltarr(MAX_RANGE), $    ; phase determination error  
-      elv: fltarr(MAX_RANGE), $       ; angle of arrival estimate
-      elv_low: fltarr(MAX_RANGE), $   ; lowest estimate of angle of arrival
-      elv_high: fltarr(MAX_RANGE), $  ; highest estimate of angle of arrival
+      elv: fltarr(MAX_RANGE), $       ; angle of arrival estimate recommended for scientific use
+      elv_fitted(MAX_RANGE), $        ; Alternative elevation angle determined from fitted phase (FitACF v3 only)
+      elv_error(MAX_RANGE), $         ; Least-square elevation angle error (FitACF v3 only)
+      elv_low: fltarr(MAX_RANGE), $   ; lowest estimate of angle of arrival (FitACF v1-2 only)
+      elv_high: fltarr(MAX_RANGE), $  ; highest estimate of angle of arrival (FitACF v1-2 only)
       x_sd_l: fltarr(MAX_RANGE), $    ; XCF standard deviation of lambda fit
       x_sd_s: fltarr(MAX_RANGE), $    ; XCF standard deviation of sigma fit
-       x_sd_phi: fltarr(MAX_RANGE) $   ; XCF standard deviation of phase fit 
+      x_sd_phi: fltarr(MAX_RANGE) $   ; XCF standard deviation of phase fit 
    }
 ```
 
