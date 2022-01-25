@@ -93,6 +93,7 @@ int main (int argc,char *argv[]) {
   int gs=0;
   int rear=0;
   double frho,flat,flon;
+  double hop=0.5;
 
   int standard=0;
   int chisham=0;
@@ -108,6 +109,7 @@ int main (int argc,char *argv[]) {
   OptionAdd(&opt,"bm",'i',&bm);
   OptionAdd(&opt,"rn",'i',&rn);
   OptionAdd(&opt,"fh",'d',&height);
+  OptionAdd(&opt,"hop",'d',&hop);
 
   OptionAdd(&opt,"standard",'x',&standard);
   OptionAdd(&opt,"chisham",'x',&chisham);
@@ -178,7 +180,7 @@ int main (int argc,char *argv[]) {
   else if (chisham) model=1;
   else if (cv) model=2;
 
-  RPosGeo_v2(1,bm,rn,site,frang,rsep,rx,height,&frho,&flat,&flon,model,gs,rear);
+  RPosGeo_v2(1,bm,rn,site,frang,rsep,rx,height,&frho,&flat,&flon,hop,model,gs,rear);
 
   fprintf(stderr,"flat: %lf, flon: %lf\n",flat,flon);
 

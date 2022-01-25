@@ -20,7 +20,9 @@
 </option>
 <option><on>-rn <ar>gate</ar></on><od>set the range gate number to <ar>gate</ar> (default is 20).</od>
 </option>
-<option><on>-fh <ar>height</ar></on><od>set the F-region virtual height for the standard model to <ar>height</ar> (default is 300 km).</od>
+<option><on>-fh <ar>height</ar></on><od>set the F-region virtual height for the standard model to <ar>height</ar> (default is 300 km). If <ar>height</ar> is less than 90 then it is assumed to be an elevation angle instead.</od>
+</option>
+<option><on>-hop <ar>hop</ar></on><od>set the number of hops to <ar>hop</ar> when using an input elevation angle (default is 0.5).</od>
 </option>
 <option><on>-standard</on><od>use the standard virtual height model (default).</od>
 </option>

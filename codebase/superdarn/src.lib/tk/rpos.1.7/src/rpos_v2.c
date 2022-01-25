@@ -33,15 +33,26 @@ Modifications:
 #include "rmath.h"
 
 
+/**
+ * This function converts a gate/beam coordinate to geographic
+ * position. The height of the transformation is given by height -
+ * if this value is less than 90 then it is assumed to be the
+ * elevation angle from the radar. If center is not equal to zero, then
+ * the calculation is assumed to be for the center of the cell, not the
+ * edge. The calculated values are returned in geocentric spherical
+ * coordinates (rho,lat,long). If model is equal to one the Chisham
+ * et al [2008] virtual height model is used; if model is equal to
+ * two the Thomas and Shepherd [2022] virtual height model is used;
+ * otherwise,the standard virtual height model is used.
+ **/
 void RPosGeo_v2(int center, int bcrd, int rcrd, struct RadarSite *pos,
                 int frang, int rsep, int rxrise, double height,
                 double *rho, double *lat, double *lng,
-                int model, int gs, int rear) {
+                double hop, int model, int gs, int rear) {
 
   double d,rx;
   double azi,elv,vh,grng;
   double rrad,rlat,rlon,del;
-  double hop=0.5;
   double range_edge=0;
   int pseudo=0;
 

@@ -30,7 +30,7 @@ Modifications:
 void RPosGeo_v2(int center, int bcrd, int rcrd, struct RadarSite *pos,
                 int frang, int rsep, int rxrise, double height,
                 double *rho, double *lat, double *lng,
-                int model, int gs, int rear);
+                double hop, int model, int gs, int rear);
 
 double calc_standard_vhm(double r, double fh);
 double calc_chisham_vhm(double r, double *hop);
