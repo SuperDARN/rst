@@ -20,6 +20,8 @@ Keith Kotyk
 ISAS
 July 2015
 
+Modifications:
+  E.G.Thomas 2021-08: added support for bmoff parameter
 */
 
 

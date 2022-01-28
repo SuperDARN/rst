@@ -23,6 +23,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
   2020-05-07 Marina Schmidt Added Free functions
+  E.G.Thomas 2021-08: added support for multi-channel tdiff values
 */
 
 #include <stdio.h>

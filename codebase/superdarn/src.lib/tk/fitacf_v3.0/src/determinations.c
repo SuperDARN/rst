@@ -20,6 +20,7 @@ modifications:
     2020-08-12 Marina Schmidt (SuperDARN Canada) removed map function for better decoupling abilities
     2020-10-29 Marina Schmidt (SuperDARN Canada) & Emma Bland (UNIS) Changed default elevation calculation to elevation_v2()
     2021-06-01 Emma Bland (UNIS) Consolidated elevation angle calculations into a single function
+    E.G.Thomas 2021-08: added support for bmoff parameter
 */
 
 /*

@@ -18,6 +18,7 @@
 ; along with this program. If not, see <https://www.gnu.org/licenses/>.
 ; 
 ; Modifications:
+;   E.G.Thomas 2021-08: added support for new hdw file fields
 ; 
 ; Public Functions:
 ; -----------------

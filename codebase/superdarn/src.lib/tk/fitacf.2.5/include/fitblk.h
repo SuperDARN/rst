@@ -19,7 +19,7 @@
     Modifications
     =============
     2020-11-12 Marina Schmidt Converted RST complex -> C library complex
-
+    E.G.Thomas 2021-08: added support for bmoff parameter
 
 */
 
