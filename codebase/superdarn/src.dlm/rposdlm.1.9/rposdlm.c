@@ -528,7 +528,7 @@ static IDL_VPTR IDLRadarYMDHMSGetSite(int argc,IDL_VPTR *argv) {
 
   isite=IDLRadarMakeSite(&vsite);
 
-  isite->tval=status->site[s].status;
+  isite->tval=iradar->site[s].status;
   isite->tval=iradar->site[s].tval;
   isite->geolat=iradar->site[s].geolat;
   isite->geolon=iradar->site[s].geolon;
