@@ -411,8 +411,8 @@ end
 
 
 function RadarSlantRange,frang,rsep,rxrise,range_edge,range_gate
-   lagfr=frang*20/3
-   smsep=rsep*20/3
+   lagfr=frang*20/3.D
+   smsep=rsep*20/3.D
    return, (lagfr-rxrise+(range_gate-1)*smsep+range_edge)*0.15D
 end
 
