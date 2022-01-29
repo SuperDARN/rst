@@ -20,6 +20,8 @@ Keith Kotyk
 ISAS
 July 2015
 
+Modifications:
+  E.G.Thomas 2021-08: added support for bmoff parameter
 */
 
 
@@ -106,6 +108,7 @@ typedef struct fit_prms {
   double **acfd;
   double **xcfd;
   int maxbeam;
+  double bmoff;
   double bmsep;
   double interfer[3];
   double phidiff;
