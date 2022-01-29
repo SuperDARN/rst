@@ -223,7 +223,7 @@ double calc_coning_angle(struct RadarSite *pos, int bmnum, double elv,
   offset=pos->maxbeam/2.0-0.5;
 
   /* Beam direction relative to boresite at zero elevation angle */
-  psi=pos->bmsep*(bmnum-offset)+bm_edge;
+  psi=pos->bmsep*(bmnum-offset)+bm_edge+pos->bmoff;
 
   azi=asind(sind(psi)/cosd(elv));
 
