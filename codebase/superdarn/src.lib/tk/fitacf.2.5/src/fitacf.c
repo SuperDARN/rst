@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
-
+  E.G.Thomas 2021-08: added support for multi-channel tdiff values
 */
 
 
@@ -54,7 +54,7 @@ void FitACFFree(struct FitBlock *fptr) {
 }
 
 
-struct FitBlock *FitACFMake(struct RadarSite *hd, int year) {
+struct FitBlock *FitACFMake(struct RadarSite *hd, int year, int channel, int offset) {
     int i;
     struct FitBlock *fptr;
 
@@ -63,9 +63,14 @@ struct FitBlock *FitACFMake(struct RadarSite *hd, int year) {
 
     if (year < 1993) fptr->prm.old=1; /* needed for old pulse seq. */
     for (i=0;i<3;i++) fptr->prm.interfer[i]=hd->interfer[i];
+    fptr->prm.bmoff=hd->bmoff;
     fptr->prm.bmsep=hd->bmsep;
     fptr->prm.phidiff=hd->phidiff;
-    fptr->prm.tdiff=hd->tdiff;
+    if ((offset == 0) || (channel < 2)) {
+      fptr->prm.tdiff=hd->tdiff[0];
+    } else {
+      fptr->prm.tdiff=hd->tdiff[1];
+    }
     fptr->prm.vdir=hd->vdir;
     fptr->prm.maxbeam=hd->maxbeam;
     fptr->prm.pulse=NULL;

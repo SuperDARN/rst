@@ -23,6 +23,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
   2020-05-07 Marina Schmidt Added Free functions
+  E.G.Thomas 2021-08: added support for multi-channel tdiff values
 */
 
 #include <stdio.h>
@@ -401,7 +402,7 @@ int main(int argc,char *argv[]) {
       }
   }
   else if (fitacf_version == 25) {
-    fblk = FitACFMake(site,prm->time.yr);
+    fblk = FitACFMake(site,prm->time.yr,prm->channel,prm->offset);
     fblk->prm.old_elev = old_elev;        /* passing in old_elev flag */
     FitACF(prm,raw,fblk,fit);
   }

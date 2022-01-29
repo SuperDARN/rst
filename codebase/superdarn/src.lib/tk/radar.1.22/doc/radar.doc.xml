@@ -521,84 +521,94 @@
   <location>src.lib/tk/radar</location>
   <header>superdarn/radar.h</header>
   <struct>
-      
+
+    <member>
+      <proto>int status;</proto>
+      <description>Status code of radar site (1 operational, -1 decomissioned).</description>
+    </member>
+
     <member>
       <proto>double tval;</proto>
-      <description>time at which this .</description>
+      <description>Time at which this hardware entry became valid.</description>
     </member>
-    
+
     <member>
       <proto>double geolat;</proto>
       <description>Geographic latitude of site.</description>
     </member>
-    
+
     <member>
       <proto>double geolon;</proto>
       <description>Geographic longitude of site.</description>
     </member>
-    
+
     <member>
       <proto>double alt;</proto>
       <description>Altitude of site.</description>
     </member>
-    
+
     <member>
       <proto>double boresite;</proto>
-      <description>Boresite angle.</description>
+      <description>Boresight angle.</description>
     </member>
-    
+
+    <member>
+      <proto>double bmoff;</proto>
+      <description>Electronic beam offset angle.</description>
+    </member>
+
     <member>
       <proto>double bmsep;</proto>
       <description>Beam separation angle.</description>
     </member>
-    
+
     <member>
       <proto>double vdir;</proto>
       <description>Definition of velocity direction. (+1.0 is normal, -1.0 indicates that the I & Q inputs to the receiver are reversed).</description>
     </member>
-    
+
     <member>
-      <proto>double atten;</proto>
-      <description>Attenuation step in decibels.</description>
+      <proto>double tdiff[2];</proto>
+      <description>Time delay in microseconds of the signal from the interferometer array and the main array for each radar channel (up to two channels are allowed).</description>
     </member>
-    
-    <member>
-      <proto>double tdiff;</proto>
-      <description>Time delay in microseconds of the signal from the interferometer array and the main array.</description>
-    </member>
-    
+
     <member>
       <proto>double phidiff;</proto>
       <description>Sign of the phase shift of the interferometer array (+1 indicates the inteferometer is in front of the main array).</description>
     </member>
-    
+
     <member>
       <proto>double interfer[3];</proto>
-      <description>the x, y, z position of the interferometer array with respect to the main array. The values are given in meters. X is in the direction parallel to the main array, with +X being to the right looking along the boresite. Y is in the boresite direction, with +Y in front of the array. Z is the vertical displacement, with +Z being up.</description>           
+      <description>The x, y, z position of the interferometer array with respect to the main array. The values are given in meters. X is in the direction parallel to the main array, with +X being to the right looking along the boresight. Y is in the boresight direction, with +Y in front of the array. Z is the vertical displacement, with +Z being up.</description>
     </member>
-    
+
     <member>
       <proto>double recrise;</proto>
       <description>Receiver rise time in microseconds.</description>
     </member>
-    
+
+    <member>
+      <proto>double atten;</proto>
+      <description>Attenuation step in decibels.</description>
+    </member>
+
     <member>
       <proto>int maxatten;</proto>
       <description>Maximum number of attenuators.</description>
     </member>
-    
+
     <member>
       <proto>int maxrange;</proto>
       <description>Maximum theoretical range.</description>
     </member>
-    
+
     <member>
       <proto>int maxbeam;</proto>
       <description>Maximum theoretical number of beams.</description>
     </member>
 
   </struct>
-  
+
   <description>
   <p>The <sn href="structRadarSite.html">struct RadarSite</sn> structure stores information about the radar hardware.</p>
   </description>
