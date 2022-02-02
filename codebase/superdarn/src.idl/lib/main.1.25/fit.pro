@@ -18,7 +18,7 @@
 ; along with this program. If not, see <https://www.gnu.org/licenses/>.
 ; 
 ; Modifications:
-;      2022-01-23 Emma Bland (UNIS): Added "elv_error" and "elv_fitted" fields to support FitACF v3
+;      2022-02-02 Emma Bland (UNIS): Added "elv_error" and "elv_fitted" fields to support FitACF v3
 ; 
 ; Public Functions
 ; ----------------
@@ -168,7 +168,7 @@ function FitRead,unit,prm,fit
            'w_s_e','sd_l','sd_s','sd_phi', $
            'x_qflg','x_gflg','x_p_l','x_p_l_e','x_p_s','x_p_s_e','x_v', $
            'x_v_e','x_w_l','x_w_l_e','x_w_s','x_w_s_e','phi0','phi0_e', $
-           'elv','elv_low','elv_high','elv_fitted','elv_error','x_sd_l','x_sd_s','x_sd_phi']
+           'elv','elv_fitted','elv_error','elv_low','elv_high','x_sd_l','x_sd_s','x_sd_phi']
 
 
   arrtype=[2,4,2,1,1,4,4,4,4,4,4,4,4,4,4,4,4,4,1,1,4,4,4,4,4, $
@@ -241,8 +241,11 @@ function FitRead,unit,prm,fit
   fit.sd_l[slist]= (*(arrvec[arrid[15]].ptr))[*]
   fit.sd_s[slist]= (*(arrvec[arrid[16]].ptr))[*]
   fit.sd_phi[slist]= (*(arrvec[arrid[17]].ptr))[*]
-      
-  if (prm.xcf ne 0) and (arrid[18] ne -1) then begin
+  
+  if (prm.xcf ne 0) then begin
+    
+    ; XCF fitted parameters for FitACF 1-2 
+    if (arrid[18] ne -1) and (fit.revision.major le 2) then begin
       fit.x_qflg[slist]= (*(arrvec[arrid[18]].ptr))[*]
       fit.x_gflg[slist]= (*(arrvec[arrid[19]].ptr))[*]
       fit.x_p_l[slist]= (*(arrvec[arrid[20]].ptr))[*]
@@ -258,13 +261,26 @@ function FitRead,unit,prm,fit
       fit.phi0[slist]= (*(arrvec[arrid[30]].ptr))[*]
       fit.phi0_e[slist]= (*(arrvec[arrid[31]].ptr))[*]
       fit.elv[slist]= (*(arrvec[arrid[32]].ptr))[*]
-      fit.elv_low[slist]= (*(arrvec[arrid[33]].ptr))[*]
-      fit.elv_high[slist]= (*(arrvec[arrid[34]].ptr))[*]
-      fit.elv_fitted[slist]= (*(arrvec[arrid[35]].ptr))[*]
-      fit.elv_error[slist]= (*(arrvec[arrid[36]].ptr))[*]
+      fit.elv_low[slist]= (*(arrvec[arrid[35]].ptr))[*]
+      fit.elv_high[slist]= (*(arrvec[arrid[36]].ptr))[*]
       fit.x_sd_l[slist]= (*(arrvec[arrid[37]].ptr))[*]
       fit.x_sd_s[slist]= (*(arrvec[arrid[38]].ptr))[*]
       fit.x_sd_phi[slist]= (*(arrvec[arrid[39]].ptr))[*]
+    endif
+    
+    ; XCF fitted parameters for FitACF 3
+    if (fit.revision.major ge 3) then begin
+      fit.phi0[slist]= (*(arrvec[arrid[30]].ptr))[*]
+      fit.phi0_e[slist]= (*(arrvec[arrid[31]].ptr))[*]
+      fit.elv[slist]= (*(arrvec[arrid[32]].ptr))[*]
+      fit.elv_fitted[slist]= (*(arrvec[arrid[33]].ptr))[*]
+      fit.elv_error[slist]= (*(arrvec[arrid[34]].ptr))[*]     
+      fit.x_sd_l[slist]= (*(arrvec[arrid[37]].ptr))[*]
+      fit.x_sd_s[slist]= (*(arrvec[arrid[38]].ptr))[*]
+      fit.x_sd_phi[slist]= (*(arrvec[arrid[39]].ptr))[*]
+    endif
+    
+
   endif
   st=DataMapFreeScalar(sclvec)
   st=DataMapFreeArray(arrvec)
@@ -349,13 +365,15 @@ function FitWrite,unit,prm,fit
       s=DataMapMakeArray('phi0',fit.phi0[slist],arrvec)
       s=DataMapMakeArray('phi0_e',fit.phi0_e[slist],arrvec)
       s=DataMapMakeArray('elv',fit.elv[slist],arrvec)
+      s=DataMapMakeArray('elv_fitted',fit.elv_fitted[slist],arrvec)
+      s=DataMapMakeArray('elv_error',fit.elv_error[slist],arrvec)
       s=DataMapMakeArray('elv_low',fit.elv_low[slist],arrvec)
       s=DataMapMakeArray('elv_high',fit.elv_high[slist],arrvec)
       s=DataMapMakeArray('x_sd_l',fit.x_sd_l[slist],arrvec)
       s=DataMapMakeArray('x_sd_s',fit.x_sd_s[slist],arrvec)
       s=DataMapMakeArray('x_sd_phi',fit.x_sd_phi[slist],arrvec)
     endif
-endif
+  endif
 
   s=DataMapWrite(unit,sclvec,arrvec)
 
