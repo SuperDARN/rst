@@ -19,6 +19,8 @@ Keith Kotyk
 ISAS
 July 2015
 
+Modifications:
+  E.G.Thomas 2021-08: added support for bmoff parameter and multi-channel tdiff values
 */
 
 #include "rtypes.h"
@@ -166,9 +168,14 @@ void Copy_Fitting_Prms(struct RadarSite *radar_site, struct RadarParm *radar_prm
   fit_prms->interfer[0]=radar_site->interfer[0];
   fit_prms->interfer[1]=radar_site->interfer[1];
   fit_prms->interfer[2]=radar_site->interfer[2];
+  fit_prms->bmoff=radar_site->bmoff;
   fit_prms->bmsep=radar_site->bmsep;
   fit_prms->phidiff=radar_site->phidiff;
-  fit_prms->tdiff=radar_site->tdiff;
+  if ((radar_prms->offset == 0) || (radar_prms->channel < 2)) {
+    fit_prms->tdiff=radar_site->tdiff[0];
+  } else {
+    fit_prms->tdiff=radar_site->tdiff[1];
+  }
   fit_prms->vdir=radar_site->vdir;
   fit_prms->maxbeam=radar_site->maxbeam;
   fit_prms->xcf=radar_prms->xcf;

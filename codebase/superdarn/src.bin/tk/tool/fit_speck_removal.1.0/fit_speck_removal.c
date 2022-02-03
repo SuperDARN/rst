@@ -1,10 +1,10 @@
 /* fit_speck_removal.c
    ==========
    
-Removes salt & pepper noise from a fitacf file using a median filtering procedure in range-time space.
+Removes salt & pepper noise from a fitacf file. 
 The quality flag (fit->qflg) in the center cell of a 3x3 range-time grid is set to zero if the median 
-of the quality flags in the 3x3 grid is zero. Filtering is performed separately for each beam and channel. 
-Output is a fitacf file.
+of the quality flags in the 3x3 grid is zero. This procedure is performed separately for each beam and channel. 
+The output is a fitacf file with the salt & pepper noise removed, but otherwise identical to the input file.
 
 (C) Copyright 2021 E.C.Bland
 author: E.C.Bland
@@ -25,8 +25,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
        
 Modifications:
+	E.C.Bland, University Centre in Svalbard, 2021-09-17: fix handling of qflg>1 data from fitacf2.5, 
+	           which in rare cases might include values other than qflg=0 for rejected ACFs.
 
-   
 */
 
 
@@ -53,9 +54,9 @@ Modifications:
 #include "hlpstr.h"
 
 // Define maximum number of time records, beams, channels and range gates (used for memory allocation)
-#define tmax 2000     // initial number of time records
-#define maxbeam 30    // max number of beams
-#define maxchannel 3  // max number of channels (0, 1, or 2)
+#define tmax 2000       // initial number of time records
+#define maxbeam 30      // max number of beams
+#define maxchannel 3    // max number of channels (0, 1, or 2)
 #define maxrange 250    // max number of range gates
 
 int fnum=0;
@@ -210,7 +211,14 @@ int main (int argc,char *argv[]) {
           exit(-1);
         }
       }
-      qflgs->value[index] = fit->rng[range].qflg;
+      
+      // Populate the qflg array using the values from the input file
+      // if fit->rng[range].qflg>1 (ref: fitacf2.5), we set qflg=0
+      if (fit->rng[range].qflg==1) {
+        qflgs->value[index] = 1;
+      } else {      
+        qflgs->value[index] = 0;
+      }
       qflgs->used = maxindex;
       
     }
@@ -219,9 +227,9 @@ int main (int argc,char *argv[]) {
   } while (FitFread(fp,prm,fit) !=-1);
   
   
-  // Do the median filtering
-  //   Since qflg can only be 0 or 1, the median qflg of the 3x3 grid can be 
-  //     calculated using the test ( sum_of_qflgs >= 5 ).
+  // Identify isolated points by calculating the median of the quality flags
+  //   in a 3x3 grid. Since qflg can only be 0 or 1, the median qflg of the 
+  //   3x3 grid can be calculated using the test ( sum_of_qflgs >= 5 ).
   //   Replicate padding is used to handle corner/edge cases
   int sum;
   int index_list[9];  
@@ -233,7 +241,7 @@ int main (int argc,char *argv[]) {
   }
   
   
-  //** Read the file again, apply the median filter, and write a new file
+  //** Read the file again, remove the isolated points, and write a new file
   rewind(fp); // rewind the file pointer
   if (FitFread(fp,prm,fit)==-1) {
     fprintf(stderr,"Error reading file\n");

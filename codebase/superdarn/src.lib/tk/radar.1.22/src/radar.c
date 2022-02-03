@@ -20,6 +20,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+E.G.Thomas 2021-08: added support for new hdw file fields
 2021-10-05 - Angeline G. Burrell (NRL) - Added load_radar_site routine.
 
 */
@@ -44,11 +45,10 @@ struct RadarSite *RadarEpochGetSite(struct Radar *ptr,double tval) {
   /* If tval is after the radar.dat end time of the radar
      then return NULL */
   if ((ptr->ed_time !=-1) && (tval>ptr->ed_time)) return NULL;
-  for (s=0;(s<ptr->snum) && (ptr->site[s].tval !=-1) &&
-      (ptr->site[s].tval<tval);s++);
-  if (s==ptr->snum) return NULL;
-  return &(ptr->site[s]);
 
+  for (s=0;(s<ptr->snum) && (ptr->site[s].tval<=tval);s++);
+
+  return &(ptr->site[s-1]);
 }
 
 struct RadarSite *RadarYMDHMSGetSite(struct Radar *ptr,int yr,
@@ -146,12 +146,12 @@ int RadarLoadHardware(char *hdwpath,struct RadarNetwork *ptr) {
   FILE *fp;
   char fname[256];
   char line[256];
-  int snum;
-  int stid,yr,mo,dy,hr,mt,sc,yrsec;
+  int snum,stat;
+  int stid,date,yr,mo,dy,hr,mt,sc;
   double tval;
   double geolat, geolon, alt;
-  double boresite, bmsep;
-  double vdir,atten,tdiff,phidiff;
+  double boresite, bmoff, bmsep;
+  double vdir,atten,tdiff[2],phidiff;
   double interfer[3];
   double recrise;
   int maxatten,maxrange,maxbeam;
@@ -170,15 +170,14 @@ int RadarLoadHardware(char *hdwpath,struct RadarNetwork *ptr) {
       if (line[i]==0) continue;
       if (line[i]=='#') continue;
       status=sscanf(line+i,
-                  "%d%d%d%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%d%d%d",
-	          &stid, &yr, &yrsec, &geolat, &geolon,
-	          &alt, &boresite, &bmsep,
-	          &vdir, &atten, &tdiff, &phidiff,
-	          &interfer[0], &interfer[1],
-	          &interfer[2],
-		  &recrise,&maxatten,&maxrange,&maxbeam);
+                  "%d %d %d %d:%d:%d %lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%d%d%d",
+                  &stid, &stat, &date, &hr, &mt, &sc,
+                  &geolat, &geolon, &alt, &boresite, &bmoff, &bmsep,
+                  &vdir, &phidiff, &tdiff[0], &tdiff[1],
+                  &interfer[0], &interfer[1], &interfer[2],
+                  &recrise, &atten, &maxatten, &maxrange, &maxbeam);
 
-      if (status<16) continue;
+      if (status<24) continue;
       if (stid !=ptr->radar[n].id) continue;
 
       if (ptr->radar[n].site==NULL)
@@ -187,33 +186,31 @@ int RadarLoadHardware(char *hdwpath,struct RadarNetwork *ptr) {
                                       sizeof(struct RadarSite)*(snum+1));
       if (ptr->radar[n].site==NULL) break;
 
+      yr = (date / 10000);
+      mo = (date / 100) % 100;
+      dy = date % 100;
+      tval=TimeYMDHMSToEpoch(yr,mo,dy,hr,mt,sc);
 
-      if (yr==2999) tval=-1;
-      else {
-        TimeYrsecToYMDHMS(yrsec,yr,&mo,&dy,&hr,&mt,&sc);
-        tval=TimeYMDHMSToEpoch(yr,mo,dy,hr,mt,sc);
-      }
-
+      ptr->radar[n].site[snum].status=stat;
       ptr->radar[n].site[snum].tval=tval;
       ptr->radar[n].site[snum].geolat=geolat;
       ptr->radar[n].site[snum].geolon=geolon;
       ptr->radar[n].site[snum].alt=alt;
       ptr->radar[n].site[snum].boresite=boresite;
+      ptr->radar[n].site[snum].bmoff=bmoff;
       ptr->radar[n].site[snum].bmsep=bmsep;
       ptr->radar[n].site[snum].vdir=vdir;
-      ptr->radar[n].site[snum].atten=atten;
-      ptr->radar[n].site[snum].tdiff=tdiff;
+      ptr->radar[n].site[snum].tdiff[0]=tdiff[0];
+      ptr->radar[n].site[snum].tdiff[1]=tdiff[1];
       ptr->radar[n].site[snum].phidiff=phidiff;
       ptr->radar[n].site[snum].interfer[0]=interfer[0];
       ptr->radar[n].site[snum].interfer[1]=interfer[1];
       ptr->radar[n].site[snum].interfer[2]=interfer[2];
       ptr->radar[n].site[snum].recrise=recrise;
-      if (status>=17) ptr->radar[n].site[snum].maxatten=maxatten;
-      else ptr->radar[n].site[snum].maxatten=3;
-      if (status>=18) ptr->radar[n].site[snum].maxrange=maxrange;
-      else ptr->radar[n].site[snum].maxrange=75;
-      if (status>=19) ptr->radar[n].site[snum].maxbeam=maxbeam;
-      else ptr->radar[n].site[snum].maxbeam=16;
+      ptr->radar[n].site[snum].atten=atten;
+      ptr->radar[n].site[snum].maxatten=maxatten;
+      ptr->radar[n].site[snum].maxrange=maxrange;
+      ptr->radar[n].site[snum].maxbeam=maxbeam;
       snum++;
       ptr->radar[n].snum=snum;
     }

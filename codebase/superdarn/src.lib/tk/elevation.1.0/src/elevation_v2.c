@@ -22,6 +22,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+E.G.Thomas 2021-08: added support for bmoff parameter
 2021-09-27 Angeline G. Burrell: Added a version of the elevation angle routine
                                 that accounts for lobe direction.
  
@@ -36,7 +37,6 @@ Modifications:
 
 /* SGS somehow need to pass in options for allowing:                         *
  *     negative elevation angles and residual phase                          */
-//TODO what do these parameters mean  like psi_obs? 
 double elevation_v2(struct FitPrm *prm, double psi_obs)
 {
   static double X,Y,Z;      /* interferometer offsets [m]                    */
@@ -94,7 +94,7 @@ double elevation_v2(struct FitPrm *prm, double psi_obs)
   sgn = (Y < 0) ? -1 : 1;
 
   boff   = prm->maxbeam/2. - 0.5;
-  phi0   = prm->bmsep*(prm->bmnum - boff)* PI/ 180.;
+  phi0   = (prm->bmoff + prm->bmsep*(prm->bmnum - boff))* PI/ 180.;
   cp0    = cos(phi0);
   sp0    = sin(phi0);
 
