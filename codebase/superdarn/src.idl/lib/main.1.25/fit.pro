@@ -274,9 +274,7 @@ function FitRead,unit,prm,fit
       fit.phi0_e[slist]= (*(arrvec[arrid[31]].ptr))[*]
       fit.elv[slist]= (*(arrvec[arrid[32]].ptr))[*]
       fit.elv_fitted[slist]= (*(arrvec[arrid[33]].ptr))[*]
-      fit.elv_error[slist]= (*(arrvec[arrid[34]].ptr))[*]     
-      fit.x_sd_l[slist]= (*(arrvec[arrid[37]].ptr))[*]
-      fit.x_sd_s[slist]= (*(arrvec[arrid[38]].ptr))[*]
+      fit.elv_error[slist]= (*(arrvec[arrid[34]].ptr))[*]
       fit.x_sd_phi[slist]= (*(arrvec[arrid[39]].ptr))[*]
     endif
     
