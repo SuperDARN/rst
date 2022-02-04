@@ -23,6 +23,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+  E.G.Thomas 2021-08: added support for bmoff parameter
 */
 
 #include <stdio.h>
@@ -177,7 +178,7 @@ int main(int argc,char *argv[]) {
     /* calculate beam azimuth */
 
     offset=site->maxbeam/2.0-0.5;
-    rprm->bmazm=site->boresite+site->bmsep*(rprm->bmnum-offset);
+    rprm->bmazm=site->boresite+site->bmsep*(rprm->bmnum-offset)+site->bmoff;
 
     s=FitFwrite(stdout,rprm,fitacf); 
     if (s==-1) {

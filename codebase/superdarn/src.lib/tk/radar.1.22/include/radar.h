@@ -21,6 +21,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+  E.G.Thomas 2021-08: added support for new hdw file fields
 */ 
 
 
@@ -29,16 +30,17 @@ Modifications:
 #ifndef _RADAR_H
 #define _RADAR_H
 
-struct RadarSite { 
+struct RadarSite {
+  int status;
   double tval;
   double geolat,geolon,alt;
-  double boresite,bmsep;
+  double boresite,bmoff,bmsep;
   double vdir;
-  double atten;
-  double tdiff;
+  double tdiff[2];
   double phidiff;
   double interfer[3];
   double recrise;
+  double atten;
   int maxatten;
   int maxrange;
   int maxbeam;
