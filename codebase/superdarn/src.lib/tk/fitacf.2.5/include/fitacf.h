@@ -19,13 +19,14 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+  E.G.Thomas 2021-08: added support for multi-channel tdiff values
 */
 
 #ifndef _FITACF_H
 #define _FITACF_H
 
 void FitACFFree(struct FitBlock *fptr); 
-struct FitBlock *FitACFMake(struct RadarSite *hd,int year);
+struct FitBlock *FitACFMake(struct RadarSite *hd,int year,int channel,int offset);
 void FitACF(struct RadarParm *prm,struct RawData *ptr,struct FitBlock *input,
 	    struct FitData *fit);
 

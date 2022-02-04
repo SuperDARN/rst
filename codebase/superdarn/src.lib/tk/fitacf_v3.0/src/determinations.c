@@ -20,6 +20,7 @@ modifications:
     2020-08-12 Marina Schmidt (SuperDARN Canada) removed map function for better decoupling abilities
     2020-10-29 Marina Schmidt (SuperDARN Canada) & Emma Bland (UNIS) Changed default elevation calculation to elevation_v2()
     2021-06-01 Emma Bland (UNIS) Consolidated elevation angle calculations into a single function
+    E.G.Thomas 2021-08: added support for bmoff parameter
     2021-11-12 Emma Bland (UNIS) Changed elevation angle field names (elv.high --> elv.fitted, elv.low --> elv.error)
 */
 
@@ -544,6 +545,7 @@ void find_elevation(llist_node range, struct FitData* fit_data, FITPRMS* fit_prm
     fitprm->interfer[1] = fit_prms->interfer[1];
     fitprm->interfer[2] = fit_prms->interfer[2];
     fitprm->maxbeam = fit_prms->maxbeam;
+    fitprm->bmoff = fit_prms->bmoff;
     fitprm->bmsep = fit_prms->bmsep;
     fitprm->bmnum = fit_prms->bmnum;
     fitprm->tfreq = fit_prms->tfreq;
@@ -616,7 +618,7 @@ void find_elevation_error(llist_node range, struct FitData* fit_data, FITPRMS* f
     }
 
     azi_offset = fit_prms->maxbeam/2 - 0.5;
-    phi_0 = fit_prms->bmsep * (fit_prms->bmnum - azi_offset) * PI/180;
+    phi_0 = (fit_prms->bmoff + fit_prms->bmsep * (fit_prms->bmnum - azi_offset)) * PI/180;
     c_phi_0 = cos(phi_0);
 
     wave_num = 2 * PI * fit_prms->tfreq * 1000/C;
