@@ -25,7 +25,7 @@ fit_speck_removal [inputfile].fitacf > [outputfile].despeck.fitacf
 
 Users are encouraged to view the fitted data before applying the despecking procedure. Note that `fit_speck_removal` is likely to remove considerable amounts of **meteor scatter** and other small populations of backscatter that have a limited temporal and spatial extent. 
 
-It is also not recommended to use this routine with **multi-frequency data** that have not been separated into different frequency channels.
+It is also not recommended to use this routine with **multi-frequency data** that have not been separated into different frequency channels (e.g., **two-frequency data** from SAS, PGR, RKN, INV and CLY generated before December 2016).
 
 
 ## Example
