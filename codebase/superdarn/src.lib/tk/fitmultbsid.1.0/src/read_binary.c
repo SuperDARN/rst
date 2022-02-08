@@ -25,9 +25,15 @@
 
 int FitMultBSIDHeaderDecode(struct DataMap *ptr, struct FitMultBSID *mult_scan)
 {
+  short int stid, isnew;
   int i, status;
   struct DataMapScalar *sptr;
 
+  /* Determine whether or not this is a new structure */
+  isnew = 0 ? (mult_scan->num_scans == 0) : 1;
+  stid = -1;
+  
+  /* Load the data header */
   for(status = 0, i = 0; i < ptr->snum; i++)
     {
       sptr = ptr->scl[i];
@@ -39,7 +45,7 @@ int FitMultBSIDHeaderDecode(struct DataMap *ptr, struct FitMultBSID *mult_scan)
 	 && (sptr->type == DATAINT))
 	mult_scan->version.minor = *(sptr->data.iptr);
       else if((strcmp(sptr->name, "stid") == 0) && (sptr->type == DATASHORT))
-	mult_scan->stid = *(sptr->data.iptr);
+	stid = *(sptr->data.iptr);
       else if((strcmp(sptr->name, "num_scans") == 0) && (sptr->type == DATAINT))
 	mult_scan->num_scans += *(sptr->data.iptr);
       else
@@ -47,6 +53,24 @@ int FitMultBSIDHeaderDecode(struct DataMap *ptr, struct FitMultBSID *mult_scan)
 	  fprintf(stderr, "unexpected line reached, not header data\n");
 	  status = -1;
 	}
+    }
+
+  /* Ensure there is is a radar station ID and that it doesn't change */
+  if(isnew == 1)
+    {
+      if(stid == -1)
+	{
+	  fprintf(stderr, "radar STID missing from file\n");
+	  exit(1);
+	}
+
+      mult_scan->stid = stid;
+    }
+  else if(mult_scan->stid != stid)
+    {
+      fprintf(stderr, "radar change detected (%d != %d), can't load files\n",
+	      mult_scan->stid, stid);
+      exit(1);
     }
 
   return(status);
