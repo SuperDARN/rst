@@ -96,11 +96,11 @@ void WriteFitBSIDScanASCII(FILE *fp, int stid, struct FitBSIDScan *scan)
 	  bm = scan->bm[ibm];
 	  TimeEpochToYMDHMS(bm.time, &yr, &mo, &dy, &hr, &mt, &sc);
 
-	  sprintf(bm_info, "%04d-%02d-%02d %02d:%02d:%02d %d", yr, mo, dy, hr,
-		  mt, bm.intt.sc, bm.intt.us);
-	  sprintf(bm_info, "%s %d %0.3f %d %d %d %d %d %d %d %d %d %d",
-		  bm_info, bm.bm, bm.bmazm, bm.cpid, bm.nave, bm.frang, bm.rsep,
-		  bm.rxrise, bm.freq, bm.noise, bm.atten, bm.channel, bm.nrang);
+	  sprintf(bm_info,
+		  "%04d-%02d-%02d %02d:%02d:%02d %d %d %0.3f %d %d %d %d %d %d %d %d %d %d",
+		  yr, mo, dy, hr, mt, bm.intt.sc, bm.intt.us, bm.bm,
+		  bm.bmazm, bm.cpid, bm.nave, bm.frang, bm.rsep, bm.rxrise,
+		  bm.freq, bm.noise, bm.atten, bm.channel, bm.nrang);
 
 	  /* Cycle through all the range gates */
 	  for(irg = 0; irg < bm.nrang; irg++)
@@ -127,7 +127,7 @@ void WriteFitBSIDScanASCII(FILE *fp, int stid, struct FitBSIDScan *scan)
 		    }
       
 		  sprintf(rng_info,
-			  "%d %d %d %d %d %d %s %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %s %s %f %f %f %f %f %f %f %f %f %f %f %f",
+			  "%d %d %d %d %d %d %s %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %s %s %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %s %s %f %f",
 			  irg, rng.gsct, rng_flgs.fov, rng_flgs.fov_past,
 			  rng_flgs.grpflg, rng_flgs.grpnum, rng_flgs.grpid,
 			  rng.p_0, rng.p_0_e, rng.v, rng.v_e, rng.w_l,
@@ -136,13 +136,11 @@ void WriteFitBSIDScanASCII(FILE *fp, int stid, struct FitBSIDScan *scan)
 			  loc.vh_m, loc.region, loc.hop, loc.dist, med_rng.p_0,
 			  med_rng.p_0_e, med_rng.v, med_rng.v_e, med_rng.w_l,
 			  med_rng.w_l_e, med_rng.p_l, med_rng.p_l_e,
-			  med_rng.phi0, med_rng.phi0_e);
+			  med_rng.phi0, med_rng.phi0_e, opp_elv.normal,
+			  opp_elv.low, opp_elv.high, opp_loc.vh, opp_loc.vh_e,
+			  opp_loc.vh_m, opp_loc.region, opp_loc.hop,
+			  opp_loc.dist);
 
-		  sprintf(rng_info, "%s %f %f %f %f %f %s %s %f %f", rng_info,
-			  opp_elv.normal, opp_elv.low, opp_elv.high, opp_loc.vh,
-			  opp_loc.vh_e, opp_loc.vh_m, opp_loc.region,
-			  opp_loc.hop, opp_loc.dist);
-	      
 		  fprintf(fp, "%s %s %s\n", scan_info, bm_info, rng_info);
 		}
 	    }
