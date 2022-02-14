@@ -23,6 +23,10 @@ THE SOFTWARE.
  MODIFICATION HISTORY:
  Written by AJ Ribeiro 06/16/2011
  Based on code orginally written by Pasha Ponomarenko
+
+ Evan Thomas 2021
+ Modified to use standard RST documentation and command line options,
+ fixed iqdat-format output, and added several other user options
 */
 
 #include <errno.h>
@@ -37,6 +41,8 @@ THE SOFTWARE.
 #include <sys/time.h>
 #include <zlib.h>
 #include "rtypes.h"
+#include "option.h"
+#include "rtime.h"
 #include "rmath.h"
 #include "dmap.h"
 #include "sim_data.h"
@@ -48,16 +54,39 @@ THE SOFTWARE.
 #include "iq.h"
 #include "iqwrite.h"
 
+#include "errstr.h"
+#include "hlpstr.h"
+
+struct OptionData opt;
+struct RadarNetwork *network;
+struct Radar *radar;
+struct RadarSite *site;
+
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: make_sim --help\n");
+  return(-1);
+}
+
 void makeRadarParm(struct RadarParm * prm, char * argv[], int argc, int cpid, int nave,
                     int lagfr, double smsep, double noise_lev, double amp0, int n_samples,
                     double dt, int n_pul, int n_lags, int nrang, double rngsep, double freq,
-                    int * pulse_t)
+                    int * pulse_t, int stid, int beam)
 {
   int i;
   time_t rawtime;
   struct tm * timeinfo;
-  time (&rawtime);
+  char tmstr[40];
+
+  char *envstr=NULL;
+  FILE *fp;
+  float offset;
+
+  rawtime = time((time_t) 0);
   timeinfo = gmtime(&rawtime);
+
+  strcpy(tmstr,asctime(timeinfo));
+  tmstr[24]=0;
 
   if (prm->origin.time !=NULL) free(prm->origin.time);
   if (prm->origin.command !=NULL) free(prm->origin.command);
@@ -78,7 +107,7 @@ void makeRadarParm(struct RadarParm * prm, char * argv[], int argc, int cpid, in
   // set to 1 as it is not produced on site 
   prm->origin.code = 1;
 
-  RadarParmSetOriginTime(prm,asctime(timeinfo));
+  RadarParmSetOriginTime(prm,tmstr);
   char *tempstr = malloc(argc*15);
   strcpy(tempstr,argv[0]);
   for(i=1;i<argc;i++)
@@ -88,9 +117,8 @@ void makeRadarParm(struct RadarParm * prm, char * argv[], int argc, int cpid, in
   }
   RadarParmSetOriginCommand(prm,tempstr);
 
-
   prm->cp = (int16)cpid;
-  prm->stid = 0;
+  prm->stid = stid;
   prm->time.yr = (int16)(timeinfo->tm_year+1900);
   prm->time.mo = (int16)(timeinfo->tm_mon+1);
   prm->time.dy = (int16)timeinfo->tm_mday;
@@ -110,17 +138,36 @@ void makeRadarParm(struct RadarParm * prm, char * argv[], int argc, int cpid, in
   prm->noise.search = noise_lev;
   prm->noise.mean = 0.;
   prm->channel = 0;
-  prm->bmnum = 7;
-  prm->bmazm = 0;
+  prm->bmnum = beam;
+
+  envstr = getenv("SD_RADAR");
+  fp = fopen(envstr,"r");
+  network = RadarLoad(fp);
+  fclose(fp);
+  envstr = getenv("SD_HDWPATH");
+  RadarLoadHardware(envstr,network);
+  radar = RadarGetRadar(network,prm->stid);
+  site = RadarYMDHMSGetSite(radar,prm->time.yr,prm->time.mo,prm->time.dy,
+                            prm->time.hr,prm->time.mt,prm->time.sc);
+
+  if (site == NULL || stid == 0) prm->bmazm = 0;
+  else {
+    offset = site->maxbeam/2.0-0.5;
+    prm->bmazm = site->boresite + site->bmsep*(prm->bmnum-offset);
+  }
+
   prm->scan = 1;
   prm->rxrise = 100;
   prm->intt.sc = (int16)(smsep*n_samples*nave);
   prm->intt.us = (int)(((smsep*n_samples*nave)-(int)(smsep*n_samples*nave))*1e6);
-  prm->txpl = 300;
+  prm->txpl = (int16)((rngsep*20)/3*1e-3);
   prm->mpinc = (int16)(dt*1e6);
   prm->mppul = (int16)n_pul;
   prm->mplgs = (int16)n_lags;
-  prm->mplgexs = (int16)n_lags;
+
+  if (cpid == 503) prm->mplgexs = (int16)n_lags;
+  else             prm->mplgexs = 0;
+
   prm->nrang = (int16)nrang;
   prm->frang = (int16)(rngsep*lagfr*1e-3);
   prm->rsep = (int16)(rngsep*1e-3);
@@ -165,178 +212,128 @@ void makeRadarParm(struct RadarParm * prm, char * argv[], int argc, int cpid, in
   memcpy(prm->pulse,temp_pul,sizeof(int16)*n_pul);*/
   free(tempstr);
 }
-/*this is a driver program from the data simulator*/
+/*this is a driver program for the data simulator*/
 
 int main(int argc,char *argv[])
 {
 
+  int arg;
+  unsigned char help=0;
+  unsigned char option=0;
+  unsigned char version=0;
+
+  int stid = 0;
+  int beam = 7;
+  int mpinc = -1;
+
+  int katscan = 0;
+  int oldscan = 0;
+  int tauscan = 0;
+
   /********************************************************
   ** definitions of variables needed for data generation **
   ********************************************************/
-  double t_d = .04;                         /*Irregualrity decay time s*/
+  double t_d = 40.;                         /*Irregualrity decay time (ms)*/
   double w = -9999.;                        /*spectral width*/
-  double t_g = 1e-6;                        /*irregularity growth time*/
-  double t_c = 1000.;                       /*precipitation time constant*/
-  double v_dop =450.;                       /*Background velocity (m/s)*/
-  double freq = 12.e6;                      /*transmit frequency*/
+  double t_g = 1.;                          /*irregularity growth time (us)*/
+  double t_c = 1e6;                         /*precipitation time constant (ms)*/
+  double v_dop = 450.;                      /*Background velocity (m/s)*/
+  double freq = 12.;                        /*transmit frequency (MHz)*/
   double amp0 = 1.;                         /*amplitude scaling factor*/
   int noise_flg = 0;                        /*flag to indicate whether white noise is included*/
   double noise_lev = 0.;                    /*white noise level (ratio)*/
-  int nave = 50;                            /*number of pulse sequences in an integration period*/
+  int nave = 0;                             /*number of pulse sequences in an integration period*/
   int nrang = 100;                          /*number of range gates*/
   int lagfr = 4;                            /*lag to first range*/
   int n_good = 40;                          /*number of range gates containing scatter*/
   int life_dist = 0;                        /*lifetime distribution*/
-  double smsep = 300.e-6;                   /*sample spearation*/
-  double rngsep = 45.e3;                    /*range gate spearation*/
-  int cpid = 150;                             /*control program ID number*/
+  double smsep = 300.;                      /*sample spearation (us)*/
+  double rngsep = 45.e3;                    /*range gate spearation (m)*/
+  int cpid = 150;                           /*control program ID number*/
   int n_samples;                            /*Number of datapoints in a single pulse sequence*/
   int n_pul,n_lags,*pulse_t,*tau,nave_flg=0;
   double dt;                                /*basic lag time*/
   double velo = 0.;                         /*standard devation of gaussian velocity spread*/
-  int cri_flg = 1;                          /*cross-range interference flag*/
+  int cri_flg = 0;                          /*cross-range interference flag*/
   int smp_flg = 0;                          /*output raw samples flag*/
   int decayflg = 0;
+  int srng = 0;                             /*first range gate containing scatter*/
 
   /*other variables*/
   long i,j;
-  /*int output = 0;*/
   double taus;
 
-  char helpstr[] =
-  "\nmake_sim:  generates simulated single-component lorentzian ACFs\n\n"
-  "Calling Sequence:  ./sim_fitacf [-options] > output.txt\n"
-  "Options:\n"
-  "--help: show this information\n"
-  "-katscan: use Kathryn McWilliams' 8 pulse sequence (default)\n"
-  "-tauscan: use Ray Greenwald's 13 pulse sequence\n"
-  "-oldscan: use old 7 pulse sequence\n"
-  "-freq f: set radar frequency to f (in kHz)\n"
-  "         default is 12000 kHz\n"
-  "-vel v: set Doppler velocity to v (in m/s)\n"
-  "         default is 400 m/s\n"
-  "-v_spread v: set gaussian Doppler velocity spread (standard devation) to v\n"
-  "         default is 0\n"
-  "-t_d t: set decay time to t (in milliseconds)\n"
-  "         default is 40 ms\n"
-  "-t_g t: set growth time to t (in microseconds)\n"
-  "         default is 1 us (negligible)\n"
-  "-t_c t: set precipitation time constant (lifetime) to t (in microseconds)\n"
-  "         default is 1e6 ms (negligible)\n"
-  "-constant: set irregularity lifetime distribution constant\n"
-  "         default is exponential\n"
-  "-smsep s: set sample separation to s (in microseconds)\n"
-  "         default is 300 us\n"
-  "-noise n: add in white noise level to produce SNR n (in dB)\n"
-  "         default is no noise\n"
-  "-nave n: set number of averages in the integration period to n\n"
-  "         default is 70/50/20 for oldscan/katscan/tauscan\n"
-  "-nrang n: set number of range gates to n\n"
-  "         default is 100\n"
-  "-amp a: set average ACF amplitude to a\n"
-  "         default is 1\n"
-  "-nocri: remove cross range interference from the ACFs\n"
-  "         default is CRI on\n"
-  "         WARNING: removing cross-range interference will make\n"
-  "         the raw samples unuseable, since each range gate will\n"
-  "         have to be integrated seperately\n"
-  "-n_good n: set number of range gates with scatter to n\n"
-  "         default is 40\n"
-  "         WARNING: setting this above ~70 for katscan or default\n"
-  "         sequence will cause cross-range interference at lag 0\n"
-  "         from range gates ~70 and above (lag 0 ~ twice the value\n"
-  "         at other range gates)\n"
-  "-samples: output raw samples (to iqdat file) instead of ACFs\n"
-  "         default is output ACFs (to rawacf file)\n"
-  "-decay: set ACFs to have a decaying amplitude by a\n"
-  "         factor of 1/r^2\n"
-  "\nNOTE: all option inputs must be integers\n";
+  OptionAdd(&opt,"-help",'x',&help);
+  OptionAdd(&opt,"-option",'x',&option);
+  OptionAdd(&opt,"-version",'x',&version);
 
+  OptionAdd(&opt,"katscan",'x',&katscan);       /* control program */
+  OptionAdd(&opt,"oldscan",'x',&oldscan);
+  OptionAdd(&opt,"tauscan",'x',&tauscan);
 
+  OptionAdd(&opt,"constant",'x',&life_dist);    /* irregularity distribution */
+  OptionAdd(&opt,"freq",'d',&freq);             /* frequency [MHz] */
+  OptionAdd(&opt,"vel",'d',&v_dop);             /* velocity [m/s] */
+  OptionAdd(&opt,"v_spread",'d',&velo);         /* velocity spread [m/s] */
+  OptionAdd(&opt,"width",'d',&w);               /* spectral width [m/s] */
+  OptionAdd(&opt,"t_d",'d',&t_d);               /* decorrelation time [ms] */
+  OptionAdd(&opt,"t_g",'d',&t_g);               /* growth time [us] */
+  OptionAdd(&opt,"t_c",'d',&t_c);               /* precipitation time constant [ms] */
+  OptionAdd(&opt,"nrang",'i',&nrang);           /* number of range gates */
+  OptionAdd(&opt,"decay",'x',&decayflg);        /* set ACFs to have decaying amplitude */
+  OptionAdd(&opt,"nave",'i',&nave);             /* number of averages */
+  OptionAdd(&opt,"noise",'d',&noise_lev);       /* white noise level [db] */
+  OptionAdd(&opt,"amp",'d',&amp0);              /* ACF amplitude */
+  OptionAdd(&opt,"smsep",'d',&smsep);           /* sample separation [us] */
+  OptionAdd(&opt,"n_good",'i',&n_good);         /* number of ranges with scatter */
+  OptionAdd(&opt,"srng",'i',&srng);             /* first range gate containing scatter */
+  OptionAdd(&opt,"nocri",'x',&cri_flg);         /* remove cross-range interference */
+  OptionAdd(&opt,"iq",'x',&smp_flg);            /* output raw samples (iqdat) */
+  OptionAdd(&opt,"stid",'i',&stid);             /* radar station ID number */
+  OptionAdd(&opt,"beam",'i',&beam);             /* radar beam number */
+  OptionAdd(&opt,"mpinc",'i',&mpinc);           /* multi-pulse increment [us] */
 
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
-  /*process command line options*/
-  for (i = 1; i < argc; i++)
-  {
-    /*command line control program*/
-    if (strcmp(argv[i], "-katscan") == 0)
-      cpid = 150;
-    if (strcmp(argv[i], "-oldscan") == 0)
-      cpid = 1;
-    else if (strcmp(argv[i], "-tauscan") == 0)
-      cpid = 503;
-    /*command line irregularity distribution*/
-    else if (strcmp(argv[i], "-constant") == 0)
-      life_dist = 1;
-    /*command line frequency*/
-    else if (strcmp(argv[i], "-freq") == 0)
-      freq = atoi(argv[i+1])*1e3;
-    /*command line velocity*/
-    else if (strcmp(argv[i], "-vel") == 0)
-      v_dop = (double)atoi(argv[i+1]);
-    /*command line velocity spread*/
-    else if (strcmp(argv[i], "-v_spread") == 0)
-      velo = (double)atoi(argv[i+1]);
-    /*command line spectral width*/
-    else if (strcmp(argv[i], "-width") == 0)
-      w = ((double)atoi(argv[i+1]));
-    /*command line decorrelation time*/
-    else if (strcmp(argv[i], "-t_d") == 0)
-      t_d = 1e-3*atoi(argv[i+1]);
-    /*command line growth time*/
-    else if (strcmp(argv[i], "-t_g") == 0)
-      t_g = 1e-6*atoi(argv[i+1]);
-    /*command line precipitation time constant*/
-    else if (strcmp(argv[i], "-t_c") == 0)
-      t_c = 1e-3*atoi(argv[i+1]);
-    /*command line number of range gates*/
-    else if (strcmp(argv[i], "-nrang") == 0)
-      nrang = atoi(argv[i+1]);
-		/*command line power decay with range*/
-    else if (strcmp(argv[i], "-decay") == 0)
-      decayflg = 1;
-    /*command line nave*/
-    else if (strcmp(argv[i], "-nave") == 0)
-    {
-      nave_flg = 1;
-      nave = atoi(argv[i+1]);
-    }
-    /*command line noise*/
-    else if (strcmp(argv[i], "-noise") == 0)
-    {
-      noise_flg = 1;
-      noise_lev = 1./pow(10.,((double)atoi(argv[i+1]))/10.);
-    }
-    /*command line amplitude*/
-    else if (strcmp(argv[i], "-amp") == 0)
-      amp0 = (double)atoi(argv[i+1]);
-    /*command line sample separation*/
-    else if (strcmp(argv[i], "-smsep") == 0)
-      smsep = 1e-6*atoi(argv[i+1]);
-    /*command line range gates with scatter*/
-    else if (strcmp(argv[i], "-n_good") == 0)
-      n_good = atoi(argv[i+1]);
-    /*command line CRI flag*/
-    else if (strcmp(argv[i], "-nocri") == 0)
-      cri_flg = 0;
-    /*command line output samples*/
-    else if (strcmp(argv[i], "-samples") == 0)
-      smp_flg = 1;
-    /*display help*/
-    else if (strcmp(argv[i], "--help") == 0)
-    {
-      fprintf(stderr,"%s\n",helpstr);
-      exit(0);
-    }
+  if (arg==-1) {
+    exit(-1);
   }
+
+  if (help==1) {
+    OptionPrintInfo(stdout,hlpstr);
+    exit(0);
+  }
+
+  if (option==1) {
+    OptionDump(stdout,&opt);
+    exit(0);
+  }
+
+  if (version==1) {
+    OptionVersion(stdout);
+    exit(0);
+  }
+
+  freq = 1e6*freq;
+  t_d = 1e-3*t_d;
+  t_g = 1e-6*t_g;
+  t_c = 1e-3*t_c;
+  smsep = 1e-6*smsep;
+  if (nave) nave_flg = 1;
+  if (noise_lev != 0.) {
+    noise_flg = 1;
+    noise_lev = 1./pow(10.,noise_lev/10.);
+  }
+  cri_flg = !cri_flg;
 
   double lambda = C/freq;
   if(w != -9999.)
     t_d = lambda/(w*2.*PI);
 
   /*oldscan*/
-  if(cpid == 1)
+  if(oldscan)
   {
+    cpid = 1;
     dt = 2.4e-3;                          /*basic lag time*/
     n_pul = 7;                            /*number of pulses*/
     n_lags = 18;                          /*number of lags in the ACFs*/
@@ -363,8 +360,9 @@ int main(int argc,char *argv[])
     tau[17] += 1;
   }
   /*tauscan*/
-  else if(cpid == 503)
+  else if(tauscan)
   {
+    cpid = 503;
     dt = 2.4e-3;                          /*basic lag time*/
     n_pul = 13;                           /*number of pulses*/
     n_lags = 17;                          /*number of lags in the ACFs*/
@@ -428,8 +426,8 @@ int main(int argc,char *argv[])
     tau[22] = 24;
   }
 
-
   /*control program dependent variables*/
+  if (mpinc != -1) dt = 1e-6*mpinc;                     /* allow user to override lag time */
   taus = dt/smsep;                                      /*lag time in samples*/
   n_samples = (pulse_t[n_pul-1]*taus+nrang+lagfr);      /*number of samples in 1 pulse sequence*/
 
@@ -444,8 +442,10 @@ int main(int argc,char *argv[])
 
   /*flags to tell which range gates contain scatter*/
   int * qflg = malloc(nrang*sizeof(int));
-  for(i=0;i<nrang;i++)
-    if(i < n_good)
+  for(i=0;i<srng;i++)
+    qflg[i] = 0;
+  for(i=srng;i<nrang;i++)
+    if(i < srng+n_good)
       qflg[i] = 1;
     else
       qflg[i] = 0;
@@ -490,18 +490,18 @@ int main(int argc,char *argv[])
   for(i=0;i<nrang;i++)
     amp0_arr[i] = amp0;
 	
-	if(noise_flg) noise_lev *= amp0;
+  if(noise_flg) noise_lev *= amp0;
 
   /*call the simulation function*/
   sim_data(t_d_arr, t_g_arr, t_c_arr, v_dop_arr, qflg, velo_arr, amp0_arr, freq, noise_lev,
-            noise_flg, nave, nrang, lagfr, smsep, cpid, life_dist,
-            n_pul, cri_flg, n_lags, pulse_t, tau, dt, raw_samples, acfs, decayflg);
+           noise_flg, nave, nrang, lagfr, smsep, cpid, life_dist,
+           n_pul, cri_flg, n_lags, pulse_t, tau, dt, raw_samples, acfs, decayflg);
 
-  /*pill the parameter structure*/
+  /*fill the parameter structure*/
   struct RadarParm * prm;
   prm = RadarParmMake();
   makeRadarParm(prm, argv, argc, cpid, nave, lagfr, smsep, noise_lev, amp0, n_samples,
-                    dt, n_pul, n_lags, nrang, rngsep, freq, pulse_t);
+                dt, n_pul, n_lags, nrang, rngsep, freq, pulse_t, stid, beam);
 
   if(!smp_flg)
   {
@@ -544,9 +544,31 @@ int main(int argc,char *argv[])
     struct IQ *iq;
     iq=IQMake();
 
+    struct timeval tick;
+    struct timespec seqtval[nave];
+    int seqatten[nave];
+    float seqnoise[nave];
+    int seqoff[nave];
+    int seqsze[nave];
+
+    iq->seqnum = nave;
+    iq->chnnum = 1;
+    iq->smpnum = n_samples;
+    iq->skpnum = 4;
+
+    gettimeofday(&tick,NULL);
+
     int16 * samples = malloc(n_samples*nave*2*2*sizeof(int16));
     for(i=0;i<nave;i++)
     {
+      /*iq structure values*/
+      seqtval[i].tv_sec = tick.tv_sec + (int)(i*n_samples*smsep);
+      seqtval[i].tv_nsec = (tick.tv_usec + (i*n_samples*smsep-(int)(i*n_samples*smsep))*1e6)*1000;
+      seqatten[i] = 0;
+      seqnoise[i] = 0.;
+      seqoff[i] = i*n_samples*2*2;
+      seqsze[i] = n_samples*2*2;
+
       /*main array samples*/
       for(j=0;j<n_samples;j++)
       {
@@ -561,36 +583,18 @@ int main(int argc,char *argv[])
       }
     }
 
+    IQSetTime(iq,nave,seqtval);
+    IQSetAtten(iq,nave,seqatten);
+    IQSetNoise(iq,nave,seqnoise);
+    IQSetOffset(iq,nave,seqoff);
+    IQSetSize(iq,nave,seqsze);
+
     unsigned int * badtr = malloc(nave*n_pul*2*sizeof(int));
 
     IQFwrite(stdout,prm,iq,badtr,samples);
     free(samples);
     free(badtr);
   }
-
-  /*output ACFs to rawacf file
-  if(output == 0)
-  {
-  }
-
-  fprintf(stdout,"%d  %d  %d  %d  %d  %d  %d  %lf  %lf  %lf\n",
-                  cpid,nrang,n_lags,n_samples,nave,n_pul,n_lags,dt,smsep,freq);
-  fprintf(stdout,"%lf  %lf  %lf  %lf  %lf  %lf  %lf  %lf\n",
-                  amp0,v_dop*2./lambda,v_dop,t_d,lambda/(2.*PI*t_d),
-                  t_g,t_c,20.*log10(1./noise_lev));
-
-  for(i=0;i<n_samples*nave;i++)
-  {
-    fprintf(stdout,"%lf  %lf\n",creal(raw_samples[i]),cimag(raw_samples[i]));
-  }
-  print the ACFs
-  for(r=0;r<nrang;r++)
-  {
-    fprintf(stdout,"%d  %d\n",r,qflg[r]);
-    for(i=0;i<n_lags;i++)
-      fprintf(stdout,"%d  %lf  %lf\n",tau[i],creal(acfs[r][i]),cimag(acfs[r][i]));
-  }*/
-
 
   /*free dynamically allocated memory*/
   for(i=0;i<nrang;i++)
@@ -606,7 +610,6 @@ int main(int argc,char *argv[])
   free(v_dop_arr);
   free(velo_arr);
   free(amp0_arr);
-
 
   return 0;
 }

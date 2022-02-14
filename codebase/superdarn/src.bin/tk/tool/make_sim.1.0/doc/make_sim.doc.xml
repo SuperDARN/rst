@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>make_sim</name>
+<location>src.bin/tk/tool/make_sim</location>
+
+<syntax>make_sim --help</syntax>
+<syntax>make_sim [<ar>options</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-katscan</on><od>use Kathrn McWilliams' 8-pulse sequence (default).</od>
+</option>
+<option><on>-tauscan</on><od>use Ray Greenwald's 13-pulse sequence.</od>
+</option>
+<option><on>-oldscan</on><od>use the old 7-pulse sequence.</od>
+</option>
+<option><on>-freq <ar>f</ar></on><od>set the radar frequency to <ar>f</ar> MHz (default is 12 MHz).</od>
+</option>
+<option><on>-vel <ar>v</ar></on><od>set the background Doppler velocity to <ar>v</ar> m/s (default is 450 m/s).</od>
+</option>
+<option><on>-v_spread <ar>v_s</ar></on><od>set the Gaussian Doppler velocity spread (standard deviation) to <ar>v_s</ar> m/s (default is 0 m/s).</od>
+</option>
+<option><on>-t_d <ar>t_d</ar></on><od>set the irregularity decay time to <ar>t_d</ar> milliseconds (default is 40 ms).</od>
+</option>
+<option><on>-t_g <ar>t_g</ar></on><od>set the irregularity growth time to <ar>t_d</ar> microseconds (default is 1 us, ie negligible).</od>
+</option>
+<option><on>-t_c <ar>t_c</ar></on><od>set the precipitation time constant (lifetime) to <ar>t_c</ar> milliseconds (default is 1e6 ms, ie negligible).</od>
+</option>
+<option><on>-constant</on><od>use a constant irregularity lifetime distribution (default is exponential).</od>
+</option>
+<option><on>-noise <ar>n</ar></on><od>add white noise level to produce SNR <ar>n</ar> dB (default is no noise).</od>
+</option>
+<option><on>-smsep <ar>smsep</ar></on><od>set the sample separation to <ar>smsep</ar> microseconds (default is 300 us).</od>
+</option>
+<option><on>-nrang <ar>nrang</ar></on><od>set the number of range gates to <ar>nrang</ar> (default is 100).</od>
+</option>
+<option><on>-n_good <ar>n_good</ar></on><od>set the number of range gates with scatter to <ar>n_good</ar> (default is 40). WARNING: setting this above ~70 for katscan (or default) sequence will cause cross-range interference at lag0 from range gates ~70 and above (lag0 ~2x the value at other range gates).</od>
+</option>
+<option><on>-srng <ar>srng</ar></on><od>set the first range gate containing scatter to <ar>srng</ar> (default is 0).</od>
+</option>
+<option><on>-nave <ar>nave</ar></on><od>set the number of averages in the integration period to <ar>nave</ar> (default is 70/50/20 for oldscan/katscan/tauscan).</od>
+</option>
+<option><on>-amp <ar>amp</ar></on><od>set the average ACF amplitude to <ar>amp</ar> (default is 1).</od>
+</option>
+<option><on>-nocri</on><od>Remove cross-range interference from the ACFs (default is CRI on). WARNING: removing cross-range interference will make the raw samples unusable, since each range gate will have to be integrated separately.</od>
+</option>
+<option><on>-decay</on><od>Set the ACFs to have a decaying amplitude by a factor of 1/(r^2).</od>
+</option>
+<option><on>-stid <ar>stid</ar></on><od>set the station identifier in the data records to <ar>stid</ar> (default is 0).</od>
+</option>
+<option><on>-beam <ar>beam</ar></on><od>set the radar beam number in the data records to <ar>beam</ar> (default is 7).</od>
+</option>
+<option><on>-mpinc <ar>mpinc</ar></on><od>set the multi-pulse increment of the pulse sequence to <ar>mpinc</ar> microseconds (default is 1500 us for katscan or 2400 us for oldscan/tauscan).</od>
+</option>
+<option><on>-iq</on><od>Output raw samples (in <code>iqdat</code> format) instead of ACFs (in <code>rawacf</code> format).</od>
+</option>
+<synopsis><p>Generates simulated single-component Lorentzian ACFs.</p></synopsis>
+<description><p>Generates simulated single-component Lorentzian ACFs in either <code>rawacf</code> (default) or <code>iqdat</code> format, which is then written to standard output.</p>
+</description>
+
+<example>
+<command>make_sim &gt; output.rawacf</command>
+<description>Generates simulated single-component Lorentzian ACFs in <code>rawacf</code> format.</description>
+</example>
+
+</binary>
