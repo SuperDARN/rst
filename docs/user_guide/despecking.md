@@ -56,6 +56,9 @@ It is also not recommended to use this routine with **multi-frequency data** tha
 
 The plots below show the fitted data before and after the despecking procedure. Notice that the isolated points in range gates ~40 and above have been removed, as well as a large amount of the meteor scatter at near ranges. 
 
+**Before despecking:**
 ![!](figures/timeplot_pwr_20180308_cly.fitacf3.png)
+
+**After despecking:**
 ![!](figures/timeplot_pwr_20180308_cly.despeck.fitacf3.png)
 
