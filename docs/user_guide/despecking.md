@@ -37,6 +37,13 @@ After generating a `fitacf` file using `make_fit`, the despecking routine can be
 fit_speck_removal [inputfile].fitacf > [outputfile].despeck.fitacf
 ```
 
+You can view the data before and after despecking using a range-time plot, for example:
+
+```
+time_plot -x -a -b 7 [inputfile].fitacf               # before despecking
+time_plot -x -a -b 7 [outputfile].despeck.fitacf      # after despecking
+```
+
 
 ## Considerations for use
 
