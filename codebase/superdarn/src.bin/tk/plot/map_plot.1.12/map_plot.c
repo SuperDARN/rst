@@ -2,10 +2,7 @@
    ==========
    Author: R.J.Barnes and others
 
-*/
-
-/*
-    Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
+Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 
 This file is part of the Radar Software Toolkit (RST).
 
@@ -23,6 +20,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+    2021-04-22 Marina Schmidt chaged delay to 0 as a default
 */
 
 #include <stdio.h>
@@ -240,7 +238,7 @@ int main(int argc,char *argv[]) {
   int xdoff=-1;
   int ydoff=-1;
   struct timeval tmout;
-  float delay=0.1;
+  float delay=0;
   int xstat;
 #endif
 
@@ -810,6 +808,11 @@ int main(int argc,char *argv[]) {
     fprintf(stderr,"Error opening map file: %s\n",fname);
     exit(-1);
   }
+
+  if (delay == 0){
+      fprintf(stderr, "Click to view next plot. Ctrl+c to exit. Use -delay option to cycle through all frames sequentially.\n");
+  }
+
 
   if (magflg && old_aacgm) magflg = 2; /* set to 2 for old AACGM */
 

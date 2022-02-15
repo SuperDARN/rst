@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>superdarn</project>
+<name>channel</name>
+<location>src.lib/tk/channel</location>
+
+
+<function>
+<name>set_stereo_channel</name>
+<location>src.lib/tk/channel</location>
+<header>superdarn/channel.h</header>
+<syntax>int set_stereo_channel(char *chnstr);</syntax>
+<description><p>The <fn href="set_stereo_channel.html">set_stereo_channel</fn> function takes a string specifying the stereo channel and returns the integer flag value.</p>
+</description>
+<returns>Returns 1 for a and 2 for b. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+</function>
+
+
+<function>
+<name>set_fix_channel</name>
+<location>src.lib/tk/channel</location>
+<header>superdarn/channel.h</header>
+<syntax>int set_fix_channel(char *chnstr_fix);</syntax>
+<description><p>The <fn href="set_fix_channel.html">set_fix_channel</fn> function takes a string specifying the channel and returns the integer flag value.</p>
+</description>
+<returns>Returns 1-4 for a-d input strings. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+</function>
+
+</library>

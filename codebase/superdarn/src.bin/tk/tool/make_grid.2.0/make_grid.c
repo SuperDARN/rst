@@ -25,6 +25,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
  2021-01-11 Marina Schmidt fixing concatenation bug with start/end time, and deprecated -c flag
+ 2021-08-27 Angeline G Burrell removed duplicate code now present in libraries
 
 */
 
@@ -68,6 +69,7 @@ Modifications:
 
 #include "hlpstr.h"
 #include "errstr.h"
+#include "channel.h"
 
 #include "aacgm.h"
 #include "aacgmlib_v2.h"
@@ -96,50 +98,6 @@ double minsrng=-1;
 double maxsrng=-1;
 
 struct GridTable *grid;
-
-
-
-/**
- *
- **/
-int exclude_outofscan(struct RadarScan *ptr) {
-
-    int n,num=0;
-    struct RadarBeam *tmp;
-
-    if (ptr==NULL) return -1;
-    if (ptr->num==0) return -1;
-    tmp=malloc(sizeof(struct RadarBeam)*ptr->num);
-    if (tmp==NULL) return -1;
-
-    for (n=0;n<ptr->num;n++) {
-
-        if (ptr->bm[n].scan<0) continue;
-
-        memcpy(&tmp[num],&ptr->bm[n],sizeof(struct RadarBeam));
-        num++;
-
-    }
-
-    free(ptr->bm);
-
-    if (num>0) {
-        ptr->bm=realloc(tmp,sizeof(struct RadarBeam)*num);
-        if (ptr->bm==NULL) {
-            free(tmp);
-            ptr->num=0;
-            return -1;
-        }
-    } else {
-        free(tmp);
-        ptr->bm=NULL;
-    }
-
-    ptr->num=num;
-  
-    return 0;
-}
-
 
 
 /**
@@ -221,52 +179,6 @@ void parse_ebeam(char *str) {
 
 }
 
-
-
-/**
- * Converts an input date from YYYYMMDD format to an epoch time in number of
- * seconds since 00:00 UT on January 1, 1970.
- **/
-double strdate(char *text) {
-
-    double tme;
-    int val;
-    int yr,mo,dy;
-
-    /* Calculate day, month, and year from YYYYMMDD format date */
-    val=atoi(text);
-    dy=val % 100;
-    mo=(val / 100) % 100;
-    yr=(val / 10000);
-
-    /* If only 2-digit year provided then assume it was pre-2000 */
-    if (yr<1970) yr+=1900;
-
-    /* Calculate epoch time of input year, month, and day */
-    tme=TimeYMDHMSToEpoch(yr,mo,dy,0,0,0);
-
-    /* Return epoch time in number of seconds since 00:00UT on January 1, 1970 */
-    return tme;
-
-}
-
-
-/**
- * Converts an input time from HHMM format to number of seconds.
- **/
-double strtime(char *text) {
-
-    int hr,mn;
-    int i;
-
-    for (i=0;(text[i] !=':') && (text[i] !=0);i++);
-    if (text[i]==0) return atoi(text)*3600L;
-    text[i]=0;
-    hr=atoi(text);
-    mn=atoi(text+i+1);
-    return hr*3600L+mn*60L;
-
-}
 
 int rst_opterr(char *txt) {
     fprintf(stderr,"Option not recognized: %s\n",txt);
@@ -506,29 +418,21 @@ int main(int argc,char *argv[]) {
     }
 
     /* If 'cn' set then determine Stereo channel, either A or B */
-    if (chnstr !=NULL) {
-        if (tolower(chnstr[0])=='a') channel=1;
-        if (tolower(chnstr[0])=='b') channel=2;
-    }
+    if (chnstr != NULL) channel = set_stereo_channel(chnstr);
     
     /* If 'cn_fix' set then determine appropriate channel for output file */
-    if (chnstr_fix !=NULL) {
-        if (tolower(chnstr_fix[0])=='a') channel_fix=1;
-        if (tolower(chnstr_fix[0])=='b') channel_fix=2;
-        if (tolower(chnstr_fix[0])=='c') channel_fix=3;
-        if (tolower(chnstr_fix[0])=='d') channel_fix=4;
-    }
+    if (chnstr_fix != NULL) channel = set_fix_channel(chnstr_fix);
 
     if (catflg == 1) 
         fprintf(stderr, "Deprecation Warning: -c option will be removed in the next release. This will not change the functionality of make_grid. Multiple input files from one radar are now detected and concatenated automatically.\n");
 
     if (bmstr !=NULL)  parse_ebeam(bmstr);
 
-    if (exstr !=NULL) extime=strtime(exstr);
-    if (stmestr !=NULL) stime=strtime(stmestr);
-    if (etmestr !=NULL) etime=strtime(etmestr);
-    if (sdtestr !=NULL) sdate=strdate(sdtestr);
-    if (edtestr !=NULL) edate=strdate(edtestr);
+    if (exstr   != NULL) extime = TimeStrToSOD(exstr);
+    if (stmestr != NULL) stime  = TimeStrToSOD(stmestr);
+    if (etmestr != NULL) etime  = TimeStrToSOD(etmestr);
+    if (sdtestr != NULL) sdate  = TimeStrToEpoch(sdtestr);
+    if (edtestr != NULL) edate  = TimeStrToEpoch(edtestr);
 
     if (mode>0) mode--;
 

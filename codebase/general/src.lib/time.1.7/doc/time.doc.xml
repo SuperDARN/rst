@@ -107,4 +107,24 @@
 
 
 </function>
+
+<function>
+<name>TimeStrToSOD</name>
+<location>src.lib/time</location>
+<header>general/rtime.h</header>
+<syntax>double TimeStrToSOD(char *text);</syntax>
+
+<description><p>The <fn href="TimeStrToSOD.html">TimeStrToSOD</fn> function converts a string containing the hours and minutes of the day into a double containing the seconds of day.</p>
+</description>
+</function>
+
+<function>
+<name>TimeStrToEpoch</name>
+<location>src.lib/time</location>
+<header>general/rtime.h</header>
+<syntax>double TimeStrToEpoch(char *text);</syntax>
+
+<description><p>The <fn href="TimeStrToEpoch.html">TimeStrToEpoch</fn> function converts a string containing the year, month, and day into a double containing the epoch seconds since 00:00 T on 1 January 1970.</p>
+</description>
+</function>
 </library>

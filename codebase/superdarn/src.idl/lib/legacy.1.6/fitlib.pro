@@ -20,8 +20,9 @@
 ; along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ; 
 ; Modifications:
-; 
-; ---------------
+;
+; Public Functions
+; ----------------
 ; fitropen
 ; fit_close
 ; find_fit_rec

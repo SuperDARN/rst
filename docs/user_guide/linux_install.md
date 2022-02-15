@@ -1,6 +1,9 @@
 <!--
 (C) copyright 2019 SuperDARN Canada, University of Saskatchewan
 author: Marina Schmidt, SuperDARN Canada
+Modified:
+        Kevin Sterne, Virginia Tech, 20210728: Addition of Ubuntu 20 dependencies
+
 -->
 
 # Linux 
@@ -32,15 +35,16 @@ Table of Contents:
 
 ### Ubuntu 
 
-   16.04 		 |     18.04   |
- ------------------------|-------------| 		
- libhdf5-serial-dev	 |  libhdf5-serial-dev	 | 
- libncurses-dev 	 |  libncurses-dev 	 |
- libnetcdf-dev 		 |  libnetcdf-dev 		 |
- libpng12-dev 		 |  libpng-dev 		 |
- libx11-dev 		 |  libx11-dev 		 |
- libxext-dev 		 |  libxext-dev 		 |
- netpbm (10.77.03_2+x11) |  netpbm (10.77.03_2+x11) |
+   16.04 		 |     18.04   |          20.04         |
+ ------------------------|-------------|------------|
+ libhdf5-serial-dev	 |  libhdf5-serial-dev | libhdf5-serial-dev  |
+ libncurses-dev 	 |  libncurses-dev     | libncurses-dev      |
+ libnetcdf-dev 		 |  libnetcdf-dev      | libnetcdf-dev       |
+ libpng12-dev 		 |  libpng-dev         | libpng-dev          |
+ libx11-dev 		 |  libx11-dev         | libx11-dev          |
+ libxext-dev 		 |  libxext-dev        | libxext-dev         |
+ netpbm (10.77.03_2+x11) |  netpbm (10.77.03_2+x11) | netpbm (10.77.03_2+x11) |
+ &nbsp;                  |  &nbsp;             | build-essential     |
 
 Installation line:
 **Ubuntu 16.04**
@@ -51,6 +55,11 @@ Installation line:
 **Ubuntu 18.04**
 
     sudo apt-get install libhdf5-serial-dev libncurses-dev libnetcdf-dev libpng-dev libx11-dev libxext-dev netpbm
+
+**Ubuntu 20.04**
+
+    sudo apt install libhdf5-serial-dev libncurses-dev libnetcdf-dev libpng-dev libx11-dev libxext-dev netpbm build-essential
+
 
 Now install the [CDF library](#cdf-library) 
 
@@ -211,7 +220,6 @@ Error: curses.h not found
 
 1. Obtaining RST software:
     - Download the official release with a citable DOI from [Zenodo](https://doi.org/10.5281/zenodo.801458) (**recommended for most users**)
-    - Download the official release from [Github](https://github.com/SuperDARN/rst/releases)
     - Clone from Github (for developers): ```git clone https://github.com/superdarn/rst/```
 
 2. Check RST environment variables:

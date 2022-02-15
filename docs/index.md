@@ -33,6 +33,19 @@ The software is maintained by the SuperDARN Data Analysis Working Group (DAWG) o
          * [Grid Plots](user_guide/grid_plot.md)
          * [Convection Plots](user_guide/map_plot.md)
          * [Customizing Colors](user_guide/colors.md)
+  - SuperDARN Data Formats
+    * [cFit Format](references/general/cfit.md)
+    * [Dmap Data](references/general/dmap_data.md)
+    * [IQDAT Format](references/general/iqdat.md)
+    * [RAWACF Format](references/general/rawacf.md)
+    * [DAT Format](references/general/dat.md)
+    * [FITACF Format](references/general/fitacf.md)
+    * [GRID Format](references/general/grid.md)
+    * [Map Format](references/general/map.md)
+  - Legacy Software
+    * [Electric Field Data Structure for IDL](legacy_software/efield_struct_idl.md)
+    * [rPlot Libraries](legacy_software/rPlot_lib.md)
+    * [rPlot XML](legacy_software/rPlot_XML.md)
   - Developers Guide
     * [Copyrights and Licensing](dev/copyright_license.md) 
     * [Communications Guidelines](dev/communication.md)
@@ -44,7 +57,7 @@ The software is maintained by the SuperDARN Data Analysis Working Group (DAWG) o
         * [Pull Requests](dev/pull_request.md)
         * [Testing Code](dev/testing.md)
         * [Code Reviews](dev/code_reviews.md)
-        * [Releasing Code](dev/releases.m
+        * [Releasing Code](dev/releases.md)
     - Data Structures in C
          * [cFit](dev/cfit_struct_c.md)
          * [FitACF](dev/fitacf_struct_c.md)
@@ -60,16 +73,4 @@ The software is maintained by the SuperDARN Data Analysis Working Group (DAWG) o
          * [Map (cnvmap)](dev/cnvmap_struct_idl.md)
          * [Radar Parameter Block](dev/radar_parameter_idl.md)
          * [RawACF](dev/rawacf_struct_idl.md)
-  - SuperDARN Data Formats
-    * [cFit Format](references/general/cfit.md)
-    * [Dmap Data](references/general/dmap_data.md)
-    * [FitACF Format](references/general/fitacf.md)
-    * [Grid Format](references/general/grid.md)
-    * [IQDat Format](references/general/iqdat.md)
-    * [Map Format](references/general/map.md)
-    * [RawACF Format](references/general/rawacf.md)
 
-  - Legacy Software
-    * [Electric Field Data Structure for IDL](legacy_software/efield_struct_idl.md)
-    * [rPlot Libraries](legacy_software/rPlot_lib.md)
-    * [rPlot XML](legacy_software/rPlot_XML.md)

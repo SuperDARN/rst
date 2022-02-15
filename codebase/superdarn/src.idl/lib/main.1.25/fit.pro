@@ -19,10 +19,9 @@
 ; 
 ; Modifications:
 ; 
-; Functions
-; ---------------
+; Public Functions
+; ----------------
 ;
-
 ; FitLoadInx          
 ; FitRead               
 ; FitWrite             

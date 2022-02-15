@@ -1,7 +1,7 @@
 /* combine_snd.c
    =============
    Author: E.G.Thomas
-Copyright (C) <year>  <name of author>
+
 Copyright (C) <year>  <name of author>
 
 This file is part of the Radar Software Toolkit (RST).

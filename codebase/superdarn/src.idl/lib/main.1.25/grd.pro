@@ -19,7 +19,7 @@
 ; 
 ; Modifications:
 ; 
-; Functions
+; Public Functions
 ; ----------------
 ;
 ; GridLoadInx          

@@ -4,25 +4,26 @@
 */
 
 /*
-  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
-This file is part of the Radar Software Toolkit (RST).
+Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 
+This file is part of the Radar Software Toolkit (RST).
+ 
 RST is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
-
+ 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
-
+ 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
-*/ 
+    2021-04-22 Marina Schmidt chaged delay to 0 as a default 
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -244,7 +245,7 @@ int main(int argc,char *argv[]) {
   float lne=0.5;
 
   struct timeval tmout;
-  float delay=0.001;
+  float delay=0;
 
   int xdf=0;
   struct XwinDisplay *dp;
@@ -443,9 +444,14 @@ int main(int argc,char *argv[]) {
     exit(-1);
   }
 
+  if (delay == 0){
+      fprintf(stderr, "Click to view next plot. Ctrl+c to exit. Use -delay option to cycle through all frames sequentially.\n");
+  }
+
   if ((interfer) && (prm->xcf==0)) {
     fprintf(stderr,"Warning: Interferometer samples may not be present in this file.\n");
   }
+
 
   if ((wdt==0) || (hgt==0)) {
     fprintf(stderr,"Invalid plot size.\n");

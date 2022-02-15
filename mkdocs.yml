@@ -10,7 +10,7 @@ markdown_extensions:
     - admonition
     - toc
 
-pages:
+nav:
 - Home: index.md
 - About: about.md
 - Installation:
@@ -21,6 +21,7 @@ pages:
     - Citing Data: user_guide/citing.md
     - Filename Formats: references/general/filename.md
     - Radar Identifier: references/general/radar_id.md
+    - Radar Table: references/general/radar_table.md
 - RST Tutorials: 
     - Data Processing: 
             - RAWACF to FITACF: user_guide/make_fit.md
@@ -33,10 +34,26 @@ pages:
             - Grid Plots: user_guide/grid_plot.md
             - Convection Plots: user_guide/map_plot.md
             - Customized Colors: user_guide/colors.md
+- SuperDARN Data Formats:
+     - cFit Format: references/general/cfit.md
+     - Dmap Data: references/general/dmap_data.md
+     - IQDat Format: references/general/iqdat.md
+     - RawACF Format: references/general/rawacf.md
+     - DAT Format: references/general/dat.md
+     - FitACF Format: references/general/fitacf.md
+     - Grid Format: references/general/grid.md
+     - Map Format: references/general/map.md
+     
+- Legacy Software:
+     - Electric Field Data Structure for IDL: legacy_software/efield_struct_idl.md
+     - rPlot Libraries: legacy_software/rPlot_lib.md
+     - rPlot XML: legacy_software/rPlot_XML.md
+     
 - RST Developers Guide:
     - Copyrights and Licensing: dev/copyright_license.md 
     - Communications Guideline: dev/communication.md
     - Add a New Feature: dev/feature.md
+    - Write Documentation: dev/documentation.md
     - Workflow:
         - GitHub Projects: dev/projects.md
         - Issues: dev/issues.md
@@ -60,15 +77,4 @@ pages:
             - Map (cnvmap): dev/cnvmap_struct_idl.md
             - Radar Parameter Block: dev/radar_parameter_idl.md
             - RawACF: dev/rawacf_struct_idl.md
-- SuperDARN Data Formats:
-     - cFit Format: reference/general/cfit.md
-     - Dmap Data: references/general/dmap_data.md
-     - FitACF Format: references/general/fitacf.md
-     - Grid Format: references/general/grid.md
-     - IQDat Format: references/general/iqdat.md
-     - Map Format: references/general/map.md
-     - RawACF Format: references/general/rawacf.md
-- Legacy Software:
-     - Electric Field Data Structure for IDL: legacy_software/efield_struct_idl.md
-     - rPlot Libraries: legacy_software/rPlot_lib.md
-     - rPlot XML: legacy_software/rPlot_XML.md
+

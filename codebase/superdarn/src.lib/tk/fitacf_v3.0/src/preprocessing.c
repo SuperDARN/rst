@@ -21,6 +21,8 @@ Author(s): Keith Kotyk July 2015
 Modifications: 
     2020-03-11 Marina Schmidt (SuperDARN Canada) removed all defined 
                               constants and included rmath.h 
+    2021-05-26 Pasha Ponomarenko (SuperDARN Canada) check that the search noise
+               is nonzero before using it to replace the skynoise when min_pwr < 1
 
 */
 
@@ -823,8 +825,18 @@ double ACF_cutoff_pwr(FITPRMS *fit_prms){
     ni = (ni > 0) ? ni :  1;
     cpc = cutoff_power_correction(fit_prms);
     min_pwr = min_pwr/ni * cpc;
-    if (min_pwr < 1.0) min_pwr = fit_prms->noise;
-
+    
+    
+    /*  The commented line below causes Inf values of the SNR when the search noise 
+        is zero. Therefore, we introduce an additional condition that the search noise 
+        must be nonzero. This is a temporary fix that allows the affected data to be 
+        processed properly while not affecting the processing of any other data. 
+        A more universal solution to this issue should be developed for the 
+        next release. */
+   
+    /*if (min_pwr < 1.0) min_pwr = fit_prms->noise;*/
+    if ((min_pwr < 1.0) && (fit_prms->noise != 0.0)) min_pwr = fit_prms->noise;
+    
     free(pwr_levels);
     return min_pwr;
 
@@ -1478,5 +1490,4 @@ void Fill_Data_Lists_For_Range(llist_node range,llist lags,FITPRMS *fit_prms){
 
 
 }
-
 

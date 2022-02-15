@@ -426,6 +426,14 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
       map->model[n].mlon=adata[35]->data.fptr[n];
       map->model[n].azm=adata[36]->data.fptr[n];
       map->model[n].vel.median=adata[37]->data.fptr[n];
+      map->model[n].vel.sd=0;
+      map->model[n].pwr.median=0;
+      map->model[n].pwr.sd=0;
+      map->model[n].wdt.median=0;
+      map->model[n].wdt.sd=0;
+      map->model[n].st_id=0;
+      map->model[n].chn=0;
+      map->model[n].index=0;
     }
   }
 

@@ -4,7 +4,24 @@
 */
 
 /*
- $Licence$
+  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
+
+  This file is part of the Radar Software Toolkit (RST).
+
+  RST is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+  Modifications:
 */
 
 
@@ -529,9 +546,18 @@ static IDL_VPTR IDLMLTConvertEpoch(int argc,IDL_VPTR *argv) {
 
 
 
-static IDL_VPTR IDLMLTConvertYMDHMS_v2(int argc,IDL_VPTR *argv) {
+static IDL_VPTR IDLMLTConvertYMDHMS_v2(int argc,IDL_VPTR *argv,char *argk) {
 
     int n;
+
+    static IDL_LONG inverse;
+
+    static IDL_KW_PAR kw_pars[]={IDL_KW_FAST_SCAN,
+        {"MLT2MLON",IDL_TYP_LONG,1,IDL_KW_ZERO,0,IDL_CHARA(inverse)},
+        {NULL}};
+
+    IDL_KWCleanup(IDL_KW_MARK);
+    IDL_KWGetParams(argc,argv,argk,kw_pars,NULL,1);
 
     if (argv[0]->flags & IDL_V_ARR) {
         int nval;
@@ -727,10 +753,12 @@ static IDL_VPTR IDLMLTConvertYMDHMS_v2(int argc,IDL_VPTR *argv) {
                 }
             }
 
-            mlt=MLTConvertYMDHMS_v2(yrtmp,motmp,dytmp,hrtmp,mttmp,sctmp,mlon);
+            if (inverse) mlt=inv_MLTConvertYMDHMS_v2(yrtmp,motmp,dytmp,hrtmp,mttmp,sctmp,mlon);
+            else         mlt=MLTConvertYMDHMS_v2(yrtmp,motmp,dytmp,hrtmp,mttmp,sctmp,mlon);
             mltptr[n]=mlt;
         }
 
+        IDL_KWCleanup(IDL_KW_CLEAN);
         return (vmlt);
 
     } else {
@@ -755,22 +783,34 @@ static IDL_VPTR IDLMLTConvertYMDHMS_v2(int argc,IDL_VPTR *argv) {
 
         mlon=IDL_DoubleScalar(argv[6]);
 
-        mlt=MLTConvertYMDHMS_v2(yr,mo,dy,hr,mt,sc,mlon);
+        if (inverse) mlt=inv_MLTConvertYMDHMS_v2(yr,mo,dy,hr,mt,sc,mlon);
+        else         mlt=MLTConvertYMDHMS_v2(yr,mo,dy,hr,mt,sc,mlon);
 
         vmlt=IDL_Gettmp();
         vmlt->type=IDL_TYP_DOUBLE;
         vmlt->value.d=mlt;
 
+        IDL_KWCleanup(IDL_KW_CLEAN);
         return (vmlt);
     }
 
+    IDL_KWCleanup(IDL_KW_CLEAN);
     return (IDL_GettmpLong(0));
 }
 
 
-static IDL_VPTR IDLMLTConvertYrsec_v2(int argc,IDL_VPTR *argv) {
+static IDL_VPTR IDLMLTConvertYrsec_v2(int argc,IDL_VPTR *argv,char *argk) {
 
     int n;
+
+    static IDL_LONG inverse;
+
+    static IDL_KW_PAR kw_pars[]={IDL_KW_FAST_SCAN,
+        {"MLT2MLON",IDL_TYP_LONG,1,IDL_KW_ZERO,0,IDL_CHARA(inverse)},
+        {NULL}};
+
+    IDL_KWCleanup(IDL_KW_MARK);
+    IDL_KWGetParams(argc,argv,argk,kw_pars,NULL,1);
 
     if (argv[1]->flags & IDL_V_ARR) {
         int nval;
@@ -881,10 +921,12 @@ static IDL_VPTR IDLMLTConvertYrsec_v2(int argc,IDL_VPTR *argv) {
                 }
             }
 
-            mlt=MLTConvertYrsec_v2(yrtmp,yrsec,mlon);
+            if (inverse) mlt=inv_MLTConvertYrsec_v2(yrtmp,yrsec,mlon);
+            else         mlt=MLTConvertYrsec_v2(yrtmp,yrsec,mlon);
             mltptr[n]=mlt;
         }
 
+        IDL_KWCleanup(IDL_KW_CLEAN);
         return (vmlt);
 
     } else {
@@ -901,22 +943,34 @@ static IDL_VPTR IDLMLTConvertYrsec_v2(int argc,IDL_VPTR *argv) {
         yrsec=IDL_LongScalar(argv[1]);
         mlon=IDL_DoubleScalar(argv[2]);
 
-        mlt=MLTConvertYrsec_v2(yr,yrsec,mlon);
+        if (inverse) mlt=inv_MLTConvertYrsec_v2(yr,yrsec,mlon);
+        else         mlt=MLTConvertYrsec_v2(yr,yrsec,mlon);
 
         vmlt=IDL_Gettmp();
         vmlt->type=IDL_TYP_DOUBLE;
         vmlt->value.d=mlt;
 
+        IDL_KWCleanup(IDL_KW_CLEAN);
         return (vmlt);
     }
 
+    IDL_KWCleanup(IDL_KW_CLEAN);
     return (IDL_GettmpLong(0));
 }
 
 
-static IDL_VPTR IDLMLTConvertEpoch_v2(int argc,IDL_VPTR *argv) {
+static IDL_VPTR IDLMLTConvertEpoch_v2(int argc,IDL_VPTR *argv,char *argk) {
 
     int n;
+
+    static IDL_LONG inverse;
+
+    static IDL_KW_PAR kw_pars[]={IDL_KW_FAST_SCAN,
+        {"MLT2MLON",IDL_TYP_LONG,1,IDL_KW_ZERO,0,IDL_CHARA(inverse)},
+        {NULL}};
+
+    IDL_KWCleanup(IDL_KW_MARK);
+    IDL_KWGetParams(argc,argv,argk,kw_pars,NULL,1);
 
     if (argv[0]->flags & IDL_V_ARR) {
         int nval;
@@ -975,10 +1029,12 @@ static IDL_VPTR IDLMLTConvertEpoch_v2(int argc,IDL_VPTR *argv) {
             }
 
             epoch=((double *) argv[0]->value.arr->data)[n];
-            mlt=MLTConvertEpoch_v2(epoch,mlon);
+            if (inverse) mlt=inv_MLTConvertEpoch_v2(epoch,mlon);
+            else         mlt=MLTConvertEpoch_v2(epoch,mlon);
             mltptr[n]=mlt;
         }
 
+        IDL_KWCleanup(IDL_KW_CLEAN);
         return (vmlt);
 
     } else {
@@ -992,15 +1048,18 @@ static IDL_VPTR IDLMLTConvertEpoch_v2(int argc,IDL_VPTR *argv) {
         epoch=IDL_DoubleScalar(argv[0]);
         mlon=IDL_DoubleScalar(argv[1]);
 
-        mlt=MLTConvertEpoch_v2(epoch,mlon);
+        if (inverse) mlt=inv_MLTConvertEpoch_v2(epoch,mlon);
+        else         mlt=MLTConvertEpoch_v2(epoch,mlon);
 
         vmlt=IDL_Gettmp();
         vmlt->type=IDL_TYP_DOUBLE;
         vmlt->value.d=mlt;
 
+        IDL_KWCleanup(IDL_KW_CLEAN);
         return (vmlt);
     }
 
+    IDL_KWCleanup(IDL_KW_CLEAN);
     return (IDL_GettmpLong(0));
 }
 
@@ -1012,9 +1071,9 @@ int IDL_Load(void) {
         { {IDLMLTConvertEpoch},"MLTCONVERTEPOCH",2,2,0,0},
         { {IDLMLTConvertYrsec},"MLTCONVERTYRSEC",3,3,0,0},
         { {IDLMLTConvertYMDHMS},"MLTCONVERTYMDHMS",7,7,0,0},
-        { {IDLMLTConvertEpoch_v2},"MLTCONVERTEPOCH_V2",2,2,0,0},
-        { {IDLMLTConvertYrsec_v2},"MLTCONVERTYRSEC_V2",3,3,0,0},
-        { {IDLMLTConvertYMDHMS_v2},"MLTCONVERTYMDHMS_V2",7,7,0,0},
+        { {IDLMLTConvertEpoch_v2},"MLTCONVERTEPOCH_V2",2,2,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+        { {IDLMLTConvertYrsec_v2},"MLTCONVERTYRSEC_V2",3,3,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+        { {IDLMLTConvertYMDHMS_v2},"MLTCONVERTYMDHMS_V2",7,7,IDL_SYSFUN_DEF_F_KEYWORDS,0},
     };
 
     if (!(msg_block = IDL_MessageDefineBlock("mlt",

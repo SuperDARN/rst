@@ -18,8 +18,10 @@
 ; along with this program. If not, see <https://www.gnu.org/licenses/>.
 ; 
 ; Modifications:
+;   E.G.Thomas 2021-08: added support for new hdw file fields
 ; 
-; Functions
+; Public Functions:
+; -----------------
 ;
 ;  RadarMakeSite
 ;  RadarMakeRadar
@@ -64,15 +66,17 @@
 pro RadarMakeSite,site
 
   site={RadarSite, $
+         status: 0L, $
          tval: 0.0D, $
          geolat: 0.0D, $
          geolon: 0.0D, $
          alt: 0.0D, $
          boresite: 0.0D, $
+         bmoff:0.0D, $
          bmsep:0.0D, $
          vdir: 0.0D, $
          atten: 0.0D, $
-         tdiff: 0.0D, $
+         tdiff: dblarr(2), $
          phidiff: 0.0D, $
          interfer: dblarr(3), $
          recrise: 0.0D, $
@@ -249,33 +253,34 @@ function RadarLoadHardware,radar,path=path
         s=strpos(txt,'#')
         if (s ne -1) then continue
         if (strlen(txt) eq 0) then continue
-        tmp=dblarr(19)
-        reads,txt,tmp
-        if (tmp[0] eq radar[n].id) then begin
-          if (tmp[1] eq 2999) then radar[n].site[x].tval=-1 $
-          else begin
-            yr=tmp[1]
-            s=TimeYrsecToYMDHMS(yr,mo,dy,hr,mt,sc,tmp[2])
-            radar[n].site[x].tval=TimeYMDHMSToEpoch(yr,mo,dy,hr,mt,sc)
-            
-          endelse
+        tmp = strsplit(txt, ' ', /extract)
+        if (long(tmp[0]) eq radar[n].id) then begin
+          yr = long(tmp[2]) / 10000
+          mo = (long(tmp[2]) / 100) mod 100
+          dy = long(tmp[2]) mod 100
 
-          radar[n].site[x].geolat=tmp[3]
-          radar[n].site[x].geolon=tmp[4]
-          radar[n].site[x].alt=tmp[5]
-          radar[n].site[x].boresite=tmp[6]
-          radar[n].site[x].bmsep=tmp[7]
-          radar[n].site[x].vdir=tmp[8]
-          radar[n].site[x].atten=tmp[9]
-          radar[n].site[x].tdiff=tmp[10]
-          radar[n].site[x].phidiff=tmp[11]
-          radar[n].site[x].interfer[0]=tmp[12]
-          radar[n].site[x].interfer[1]=tmp[13] 
-          radar[n].site[x].interfer[2]=tmp[14]
-          radar[n].site[x].recrise=tmp[15]
-          radar[n].site[x].maxatten=tmp[16]
-          radar[n].site[x].maxrange=tmp[17]
-          radar[n].site[x].maxbeam=tmp[18]
+          time = fix(strsplit(tmp[3], ':', /extract))
+
+          radar[n].site[x].status=double(tmp[1])
+          radar[n].site[x].tval=TimeYMDHMSToEpoch(yr,mo,dy,time[0],time[1],time[2])
+          radar[n].site[x].geolat=double(tmp[4])
+          radar[n].site[x].geolon=double(tmp[5])
+          radar[n].site[x].alt=double(tmp[6])
+          radar[n].site[x].boresite=double(tmp[7])
+          radar[n].site[x].bmoff=double(tmp[8])
+          radar[n].site[x].bmsep=double(tmp[9])
+          radar[n].site[x].vdir=double(tmp[10])
+          radar[n].site[x].phidiff=double(tmp[11])
+          radar[n].site[x].tdiff[0]=double(tmp[12])
+          radar[n].site[x].tdiff[1]=double(tmp[13])
+          radar[n].site[x].interfer[0]=double(tmp[14])
+          radar[n].site[x].interfer[1]=double(tmp[15] )
+          radar[n].site[x].interfer[2]=double(tmp[16])
+          radar[n].site[x].recrise=double(tmp[17])
+          radar[n].site[x].atten=double(tmp[18])
+          radar[n].site[x].maxatten=long(tmp[19])
+          radar[n].site[x].maxrange=long(tmp[20])
+          radar[n].site[x].maxbeam=long(tmp[21])
           x=x+1
         endif 
       endwhile    
@@ -318,15 +323,10 @@ function RadarEpochGetSite,radar,tval
   if (radar.ed_time ne -1) && (tval gt radar.ed_time) then return,0 
 
   for s=0,radar.snum do begin
-    if  (radar.site[s].tval eq -1) then break
-    if  (radar.site[s].tval ge tval) then break
+    if  (radar.site[s].tval gt tval) then break
   endfor
 
-  if (s eq radar.snum) then return, 0
-
-  return, radar.site[s]
-
-
+  return, radar.site[s-1]
 
 end
 
@@ -411,8 +411,8 @@ end
 
 
 function RadarSlantRange,frang,rsep,rxrise,range_edge,range_gate
-   lagfr=frang*20/3
-   smsep=rsep*20/3
+   lagfr=frang*20/3.D
+   smsep=rsep*20/3.D
    return, (lagfr-rxrise+(range_gate-1)*smsep+range_edge)*0.15D
 end
 
@@ -851,7 +851,7 @@ function RadarPos,center,bcrd,rcrd,site,frang,rsep,rxrise,$
         if N_ELEMENTS(height) ne 1 then hgt=height[i]
       
 
-       psi=site.bmsep*(bcrd[i]-offset)+bm_edge
+       psi=site.bmsep*(bcrd[i]-offset)+bm_edge+site.bmoff
        d=RadarSlantRange(fr,rs,rx,range_edge,rcrd[i]+1)
 
        if (hgt lt 90) then $
@@ -881,7 +881,7 @@ function RadarPos,center,bcrd,rcrd,site,frang,rsep,rxrise,$
     lng=0.0D 
 
 
-    psi=site.bmsep*(bcrd-offset)+bm_edge
+    psi=site.bmsep*(bcrd-offset)+bm_edge+site.bmoff
     d=RadarSlantRange(frang,rsep,rx,range_edge,rcrd+1)
 
     if (height lt 90) then $
@@ -993,7 +993,7 @@ function RadarPosGS,center,bcrd,rcrd,site,frang,rsep,rxrise,$
         if N_ELEMENTS(height) ne 1 then hgt=height[i]
       
 
-       psi=site.bmsep*(bcrd[i]-offset)+bm_edge
+       psi=site.bmsep*(bcrd[i]-offset)+bm_edge+site.bmoff
        d=RadarSlantRange(fr,rs,rx,range_edge,rcrd[i]+1)/2.0D
 
        if (hgt lt 90) then $
@@ -1023,7 +1023,7 @@ function RadarPosGS,center,bcrd,rcrd,site,frang,rsep,rxrise,$
     lng=0.0D 
 
 
-    psi=site.bmsep*(bcrd-offset)+bm_edge
+    psi=site.bmsep*(bcrd-offset)+bm_edge+site.bmoff
     d=RadarSlantRange(frang,rsep,rx,range_edge,rcrd+1)/2.0D
 
     if (height lt 90) then $

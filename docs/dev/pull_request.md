@@ -27,7 +27,7 @@ Pull Requests in GitHub provide an interface for others to review and test your 
 
 Before submitting a PR, please check the following:
 
-- copyright and disclaimer, or modification line is added (see [RST copyright & license](developers_guide/copyright_license.md))
+- copyright and disclaimer, or modification line is added (see [RST copyright & license](copyright_license.md))
 - the code compiles and runs with no additional warnings
 - the new code has been tested on your own machine
 - user documentation has been included/updated

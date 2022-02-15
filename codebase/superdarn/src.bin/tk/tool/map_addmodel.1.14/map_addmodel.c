@@ -475,8 +475,8 @@ void add_model(struct CnvMapData *map,int num,struct GridGVec *ptr)
     if (map->hemisphere==-1) map->model[i].mlat=-map->model[i].mlat;
     if (map->hemisphere==-1) map->model[i].azm=-map->model[i].azm;
 
-     map->model[i].mlon-=map->mlt.av*15.0;
-     if (map->model[i].mlon<-180) map->model[i].mlon+=360;
-     if (map->model[i].mlon>180) map->model[i].mlon-=360;
+    map->model[i].mlon-=map->mlt.av*15.0;
+    while (map->model[i].mlon<0) map->model[i].mlon+=360;
+    while (map->model[i].mlon>360) map->model[i].mlon-=360;
   }
 }

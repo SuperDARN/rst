@@ -18,6 +18,7 @@ The RST is now maintained collaboratively by the SuperDARN Data Analysis Working
 - D.D. Billett, documentation, testing, enhancements
 - E.C. Bland, DAWG Co-Chair (2019-), fit_speck_removal, documentation, testing
 - A.G. Burrell, documentation, bugfixes, testing
+- I. Coco, testing
 - E.D.P. Cousins, CS10 and PSR10 convection models
 - K. Kotyk, FITACF_v3
 - P.V. Ponomarenko, DAWG Chair (2013-2019), FITACF_v2, FITACF_v3, data simulator library
