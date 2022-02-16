@@ -134,10 +134,7 @@ int main (int argc,char *argv[]) {
   }
   
   FILE *fp=NULL;
-  if (arg==argc) 
-      fp=stdin;
-  else 
-      fp=fopen(argv[arg],"r");
+  fp=fopen(argv[arg],"r");
   if (fp==NULL) {
     fprintf(stderr,"File not found.\n");
     exit(-1);
@@ -361,8 +358,7 @@ int main (int argc,char *argv[]) {
   
   } while (FitFread(fp,prm,fit) !=-1);
 
-  if (fp !=stdin) 
-      fclose(fp);
+  fclose(fp);
 
   // Free memory
   free_parameters(prm, fit, NULL, qflgs);
