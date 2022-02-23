@@ -25,9 +25,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
        
 Modifications:
-	E.C.Bland, University Centre in Svalbard, 2021-09-17: fix handling of qflg>1 data from fitacf2.5, 
+    2021-09-17 E.C.Bland, University Centre in Svalbard (UNIS): fix handling of qflg>1 data from fitacf2.5, 
 	           which in rare cases might include values other than qflg=0 for rejected ACFs.
-
+    2022-02-23 E.C.Bland, (UNIS): add statistics on number of rejected ACFs
 */
 
 
@@ -253,6 +253,8 @@ int main (int argc,char *argv[]) {
     free_parameters(prm, fit, fp, qflgs);
     exit(-1);
   }
+  int echoes_total=0;
+  int echoes_removed=0;
   do {
   
     if (vb) {
@@ -319,7 +321,11 @@ int main (int argc,char *argv[]) {
         
         // Remove record if median=0 (sum of qflgs < 5)
         if (sum < 5) 
+        {
             fit->rng[range].qflg=0;
+            echoes_removed+=1;
+        }
+        echoes_total+=1;
       }
     }
     irec[beam][channel]++;
@@ -359,6 +365,9 @@ int main (int argc,char *argv[]) {
   } while (FitFread(fp,prm,fit) !=-1);
 
   fclose(fp);
+  
+  // Print statistics
+  fprintf(stderr,"Number of echoes removed: %d of %d (%4.1f%%)\n",echoes_removed,echoes_total,100*(float)(echoes_removed)/(float)(echoes_total));
 
   // Free memory
   free_parameters(prm, fit, NULL, qflgs);
