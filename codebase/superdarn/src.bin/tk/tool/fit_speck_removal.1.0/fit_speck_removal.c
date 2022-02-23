@@ -103,6 +103,7 @@ void free_parameters(struct RadarParm *prm, struct FitData *fit, FILE *fp, qflgD
 int main (int argc,char *argv[]) {
   
   unsigned char vb=0;
+  unsigned char quiet=0;
   unsigned char help=0;
   unsigned char option=0;
   unsigned char version=0;
@@ -111,6 +112,7 @@ int main (int argc,char *argv[]) {
   OptionAdd(&opt,"-option",'x',&option);
   OptionAdd(&opt,"-version",'x',&version);
   OptionAdd(&opt,"vb",'x',&vb);
+  OptionAdd(&opt,"quiet",'x',&quiet);
 
   int arg;
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
@@ -367,7 +369,8 @@ int main (int argc,char *argv[]) {
   fclose(fp);
   
   // Print statistics
-  fprintf(stderr,"Number of echoes removed: %d of %d (%4.1f%%)\n",echoes_removed,echoes_total,100*(float)(echoes_removed)/(float)(echoes_total));
+  if (quiet==0) 
+     fprintf(stderr,"Number of echoes removed: %d of %d (%4.1f%%)\n",echoes_removed,echoes_total,100*(float)(echoes_removed)/(float)(echoes_total));
 
   // Free memory
   free_parameters(prm, fit, NULL, qflgs);
