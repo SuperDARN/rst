@@ -17,7 +17,7 @@
 </option>
 
 <synopsis><p>Removes salt and pepper noise from a <code>fitacf</code> file.</p></synopsis>
-<description><p>Removes salt and pepper noise from a fitacf. The quality flag in the center cell of a 3x3 range-time grid is set to zero if the median 
+<description><p>Removes salt and pepper noise from a fitacf file. The quality flag in the center cell of a 3x3 range-time grid is set to zero if the median 
 of the quality flags in the 3x3 grid is zero. This procedure is performed separately for each beam and channel. 
 The output is a fitacf file with the salt and pepper noise removed, but otherwise identical to the input file.</p></description>
 

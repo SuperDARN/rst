@@ -27,9 +27,10 @@ suggestions can be provided by submitting an
     * [Radar Identifier](references/general/radar_id.md)
   -  RST Tutorials 
     - Data Processing
-        * [RAWACF to FITACF](user_guide/make_fit.md)
-        * [FITACF to GRID](user_guide/make_grid.md)
-        * [GRID to MAP](user_guide/map_grid.md)
+         * [RAWACF to FITACF](user_guide/make_fit.md)
+         * [Despecking FITACF files](user_guide/despecking.md)
+         * [FITACF to GRID](user_guide/make_grid.md)
+         * [GRID to MAP](user_guide/map_grid.md)
     - Plotting Data
         * [Range-time Plots](user_guide/time_plot.md)
         * [Field of View Plots](user_guide/fov_plot.md)
