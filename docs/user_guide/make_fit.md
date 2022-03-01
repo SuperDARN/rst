@@ -45,6 +45,22 @@ cat 20181001.*.lyr.fitacf > 20181001.lyr.fitacf
 !!! Warning
     When concatenating `fitacf` files, it is important that the files are in chronological order. Usually the shell sorts the filenames in the correct order automatically, but if you do the listing with wildcards (e.g. system call from another program), you may need to do the sorting yourself.
 
+### GNU Parallel 
+
+[GNU `parallel`](https://www.gnu.org/software/parallel/) is a UNIX command that can run various RST binaries. 
+
+Here is an example using it with `make_fit` for mass processing of data files:
+
+```bash 
+parallel -j1 make_fit {} ">" {.}.fitacf ::: *.rawacf
+```
+
+`-j`: indicates the number of processes to use
+
+!!! Note
+    Use `nproc` to determine how many processors your machine has. 
+
+
 
 
 
