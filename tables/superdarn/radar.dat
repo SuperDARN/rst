@@ -36,7 +36,7 @@
 1    1 19831001 25000101 "Goose Bay"               "Virginia Tech"                       "hdw.dat.gbr" "gbr" "g"
 2   -1 19861001 19950930 "Schefferville"           "CNRS/LPC2E"                          "hdw.dat.sch" "sch" "s"
 3    1 19930901 25000101 "Kapuskasing"             "Virginia Tech"                       "hdw.dat.kap" "kap" "k"
-4   -1 19880101 20160119 "Halley"                  "British Antarctic Survey"            "hdw.dat.hal" "hal" "h"
+4   -1 19880101 20160120 "Halley"                  "British Antarctic Survey"            "hdw.dat.hal" "hal" "h"
 5    1 19930929 25000101 "Saskatoon"               "University of Saskatchewan"          "hdw.dat.sas" "sas" "t"
 6    1 20000303 25000101 "Prince George"           "University of Saskatchewan"          "hdw.dat.pgr" "pgr" "b"
 7    1 20000108 25000101 "Kodiak"                  "Penn State University"               "hdw.dat.kod" "kod" "a"
