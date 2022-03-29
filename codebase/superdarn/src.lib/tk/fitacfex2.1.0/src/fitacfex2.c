@@ -48,6 +48,7 @@ Modifications:
 #include "nrfit.h"
 #include "dmap.h"
 #include "rprm.h"
+#include "radar.h"
 #include "rawdata.h"
 #include "fitdata.h"
 #include "fitblk.h"
@@ -144,8 +145,9 @@ maxiter = 100;
   }
 }
 
-void fitacfex2(struct RadarParm *prm,struct RawData *raw,
-              struct FitData *fit, struct FitBlock *fblk, int print)
+void fitacfex2(struct RadarParm *prm, struct RawData *raw,
+               struct FitData *fit, struct FitBlock *fblk,
+               struct RadarSite *hd, int print)
 {
   float minpwr  = 3.0;
   double skynoise = 0.;
@@ -224,7 +226,7 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
   }
 
   /*setup fitblock parameter*/
-  setup_fblk(prm, raw, fblk);
+  setup_fblk(prm, raw, fblk, hd);
  
   FitSetRng(fit,fblk->prm.nrang);
   FitSetXrng(fit,fblk->prm.nrang);
