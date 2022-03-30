@@ -28,6 +28,6 @@ Modifications:
 void FitACFFree(struct FitBlock *fptr); 
 struct FitBlock *FitACFMake(struct RadarSite *hd,int year);
 void FitACF(struct RadarParm *prm,struct RawData *ptr,struct FitBlock *input,
-	    struct FitData *fit,struct RadarSite *hd);
+	    struct FitData *fit,struct RadarSite *hd,double tdiff_fix);
 
 #endif

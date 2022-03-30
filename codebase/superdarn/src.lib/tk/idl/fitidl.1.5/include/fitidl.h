@@ -38,6 +38,7 @@ struct FitIDLData {
     float lag0;
     float vel;
   } noise;
+  float tdiff;
   float pwr0[MAX_RANGE];
   short nlag[MAX_RANGE]; 
   UCHAR qflg[MAX_RANGE]; 

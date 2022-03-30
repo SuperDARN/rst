@@ -20,6 +20,8 @@
 </option>
 <option><on><ar>version_number</ar></on><od>Valid choices are 3.0 or 2.5.</od>
 </option>
+<option><on>-tdiff <ar>tdiff</ar></on><od>Use a fixed value of <ar>tdiff</ar> (in units of microseconds) when calculating elevation angles.</od>
+</option>
 <option><on>-old</on><od>input file is in <code>raw</code> (<code>dat</code>) file format and the output should be in <code>fit</code> file format.</od>
 </option>
 <option><on>-old_elev</on><od>use old elevation angle algorithm(s).</od>

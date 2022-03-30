@@ -167,8 +167,8 @@ int fill_fit_block(struct RadarParm *prm, struct RawData *raw,
 
     return 0;
 }
-int FitACF(struct RadarParm *prm, struct RawData *raw,struct FitBlock *input,
-           struct FitData *fit, struct RadarSite *hd) {
+int FitACF(struct RadarParm *prm, struct RawData *raw, struct FitBlock *input,
+           struct FitData *fit, struct RadarSite *hd, double tdiff_fix) {
 
     int fnum, goose, s;
 
@@ -184,6 +184,11 @@ int FitACF(struct RadarParm *prm, struct RawData *raw,struct FitBlock *input,
     if (s == -1){
         return -1;
     }
+
+    if (tdiff_fix !=-999) {
+      input->prm.tdiff = tdiff_fix;
+    }
+    fit->tdiff=input->prm.tdiff;
 
     FitSetRng(fit,input->prm.nrang);
     if (input->prm.xcf) {

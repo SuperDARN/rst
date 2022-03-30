@@ -142,6 +142,7 @@ int main(int argc,char *argv[]) {
 
   unsigned char vb=0;
   unsigned char old_elev=0;
+  double tdiff_fix=-999;
 
   FILE *fp=NULL;
   struct OldRawFp *rawfp=NULL;
@@ -172,6 +173,8 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"old",'x',&old);
 
   OptionAdd(&opt,"fitacf-version",'t',&fitacf_version_s);
+
+  OptionAdd(&opt,"tdiff",'d',&tdiff_fix);
 
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
@@ -390,6 +393,9 @@ int main(int argc,char *argv[]) {
               elv_version = 0;
           }
           Copy_Fitting_Prms(site,prm,raw,fit_prms);
+          if (tdiff_fix != -999) {
+              fit_prms->tdiff = tdiff_fix;
+          }
     	  Fitacf(fit_prms,fit, elv_version);
         /*FitacfFree(fit_prms);*/
     	}
@@ -404,7 +410,7 @@ int main(int argc,char *argv[]) {
   else if (fitacf_version == 25) {
     fblk = FitACFMake(site,prm->time.yr);
     fblk->prm.old_elev = old_elev;        /* passing in old_elev flag */
-    FitACF(prm,raw,fblk,fit,site);
+    FitACF(prm,raw,fblk,fit,site,tdiff_fix);
   }
 
   if (old) {
@@ -488,6 +494,9 @@ int main(int argc,char *argv[]) {
         /* load the data into the FitACF structure.                  */
         if(fit_prms != NULL) {
           Copy_Fitting_Prms(site,prm,raw,fit_prms);
+          if (tdiff_fix != -999) {
+              fit_prms->tdiff = tdiff_fix;
+          }
           Fitacf(fit_prms,fit, elv_version);
           /*FitacfFree(fit_prms);*/
         }
@@ -500,7 +509,7 @@ int main(int argc,char *argv[]) {
         }
       }
       else if (fitacf_version == 25) {
-        FitACF(prm,raw,fblk,fit,site);
+        FitACF(prm,raw,fblk,fit,site,tdiff_fix);
       }
       else {
             fprintf(stderr, "The requested fitacf version does not exist\n");

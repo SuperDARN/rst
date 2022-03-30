@@ -40,6 +40,7 @@ struct FitData {
   struct FitRange *rng;
   struct FitRange *xrng;
   struct FitElv  *elv;
+  float tdiff;
 };
 
 struct FitData *FitMake();
