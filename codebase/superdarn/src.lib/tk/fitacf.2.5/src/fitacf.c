@@ -99,7 +99,7 @@ int fill_fit_block(struct RadarParm *prm, struct RawData *raw,
     input->prm.cp=prm->cp;
     input->prm.channel=prm->channel;
     input->prm.offset=prm->offset;  /* stereo offset */
-    if ((input->prm.offset == 0) || (input->prm.channel < 2)) {
+    if (input->prm.channel < 2) {
       input->prm.tdiff=hd->tdiff[0];
     } else {
       input->prm.tdiff=hd->tdiff[1];
