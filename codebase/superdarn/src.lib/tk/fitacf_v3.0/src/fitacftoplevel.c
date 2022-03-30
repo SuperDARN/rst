@@ -171,7 +171,7 @@ void Copy_Fitting_Prms(struct RadarSite *radar_site, struct RadarParm *radar_prm
   fit_prms->bmoff=radar_site->bmoff;
   fit_prms->bmsep=radar_site->bmsep;
   fit_prms->phidiff=radar_site->phidiff;
-  if ((radar_prms->offset == 0) || (radar_prms->channel < 2)) {
+  if (radar_prms->channel < 2) {
     fit_prms->tdiff=radar_site->tdiff[0];
   } else {
     fit_prms->tdiff=radar_site->tdiff[1];
