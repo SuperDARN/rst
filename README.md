@@ -41,6 +41,8 @@ For all usage of SuperDARN data, users are asked to include the following standa
 
 When data from an individual radar or radars are used, users must contact the principal investigator(s) of those radar(s) to obtain the appropriate acknowledgement information and to offer collaboration, where appropriate. PI contact information can be found [here](https://superdarn.ca/radar-info).
 
+For more information, please read [citing SuperDARN data](https://radar-software-toolkit-rst.readthedocs.io/en/latest/user_guide/citing.md).
+
 ## Contribute to the RST
 
 The DAWG welcomes new testers and developers to join the team. Here are some ways to contribute:

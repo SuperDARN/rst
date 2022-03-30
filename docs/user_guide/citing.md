@@ -20,7 +20,7 @@ For all usage of SuperDARN data, users are asked to include the following standa
 
 While SuperDARN has an open data use policy, i.e., prior permission to access and analyse the data is not required, the data user is strongly encouraged to establish early contact with any Principal Investigator whose data are involved in the project to discuss the intended usage and collaboration. Data can be subject to limitations that are not immediately evident to users. In addition, some data are embargoed for use by designated Principal Investigators for a period of one year. SuperDARN and the organizations that contributed data must be acknowledged in all reports and publications that use SuperDARN data.
 
-The SuperDARN Executive Council (see list below) must be notified before data are redistributed through another database. The data are not to be used for commercial purposes.  If you have any questions about appropriate use of these data, contact any SuperDARN Principal Investigator. PI contact information can be found [here](https://superdarn.ca/radar-info).
+The [SuperDARN Executive Council](https://superdarn.ca/radar-info) must be notified before data are redistributed through another database. The data are not to be used for commercial purposes.  If you have any questions about appropriate use of these data, contact any SuperDARN Principal Investigator.
 
 The following review papers are recommended for general information about the network's scientific achievements and for citing SuperDARN in publications:
 
