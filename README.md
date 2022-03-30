@@ -2,39 +2,50 @@
 
 Radar Software Toolkit
 ========
-The Radar Software Toolkit (RST) is maintained by the SuperDARN Data Analysis Working Group (DAWG). For general information and updates from the DAWG, visit our website at https://superdarn.github.io/dawg/
+The Radar Software Toolkit (RST) is maintained by the SuperDARN Data Analysis Working Group (DAWG). For general information and updates from the DAWG, visit our [website](https://superdarn.github.io/dawg/).
 
 ## Documentation
+
 RST's documentation is currently hosted on two sites:
-- RST readthedocs includes the installation guide, RST Tutorials, and SuperDARN data formats (coming soon):
+
+- RST readthedocs includes the installation guide, RST Tutorials, and SuperDARN data formats:
   https://radar-software-toolkit-rst.readthedocs.io/en/latest/
 - RST API documentation includes the software structure and binary command line description and options: 
   https://superdarn.github.io/rst/
 
+
 ## Installation
 
 Installation guide for:
+
   - [Linux](https://radar-software-toolkit-rst.readthedocs.io/en/latest/user_guide/linux_install/)
   - [MacOSX](https://radar-software-toolkit-rst.readthedocs.io/en/latest/user_guide/mac_install/)
   - <font color="grey">Windows </font> yet to be implemented
 
-## Citing SuperDARN Data 
-The Super Dual Auroral Radar Network (SuperDARN) consists of more than 30 radars operated by institutions in 10 different countries. The following review papers are recommended for general information about the network's scientific achievements, and for citing SuperDARN in publications:
 
-Greenwald, R.A., Baker, K.B., Dudeney, J.R. et al. Space Sci Rev (1995) 71: 761. doi:10.1007/BF00751350
+## How to cite the RST
 
-Chisham, G., Lester, M., Milan, S.E. et al. A decade of the Super Dual Auroral Radar Network (SuperDARN): scientific achievements, new techniques and future directions. Surv Geophys 28, 33–109 (2007) doi:10.1007/s10712-007-9017-8
+Instructions for citing the RST are available on Zenodo. Click on DOI badge:
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.801458.svg)](https://doi.org/10.5281/zenodo.801458)
+Scroll to the bottom and copy the *Share Cite as* text or download the citation in your prefered format under *Export*.
 
-Nishitani, N., Ruohoniemi, J.M., Lester, M. et al. Review of the accomplishments of mid-latitude Super Dual Auroral Radar Network (SuperDARN) HF radars. Prog Earth Planet Sci 6, 27 (2019) doi:10.1186/s40645-019-0270-5
+## Data access and usage policy
 
-During your study, if using data from individual radars only, **please contact the Principal Investigator (PI) of that radar about potential co-authorship**. A list of radars, institutions, and their PI's information can be found [here](https://superdarn.ca/radar-info)
+SuperDARN data are published on [FRDR](https://www.frdr-dfdr.ca/repo/collection/superdarn) in the `rawacf`/`dat` format. These data are licensed under the [Creative Commons Attribution-NonCommercial 4.0 (CC BY-NC 4.0) license](https://creativecommons.org/licenses/by-nc/4.0/).
 
-For more information please read [citing SuperDARN data](https://radar-software-toolkit-rst.readthedocs.io/en/latest/user_guide/citing.md)
+**Please read the [SuperDARN data policy](https://g-772fa5.cd4fe.0ec8.data.globus.org/7/published/publication_285/submitted_data/2018RAWACF.readme.txt) when downloading data from FRDR.**
 
-## Contribute to RST
+For all usage of SuperDARN data, users are asked to include the following standard acknowledgement text:
+
+> The authors acknowledge the use of SuperDARN data. SuperDARN is a collection of radars funded by national scientific funding agencies of Australia, Canada, China, France, Italy, Japan, Norway, South Africa, United Kingdom and the United States of America.
+
+When data from an individual radar or radars are used, users must contact the principal investigator(s) of those radar(s) to obtain the appropriate acknowledgement information and to offer collaboration, where appropriate. PI contact information can be found [here](https://superdarn.ca/radar-info).
+
+## Contribute to the RST
+
 The DAWG welcomes new testers and developers to join the team. Here are some ways to contribute:
 
   - Test pull requests: to determine which [pull requests](https://github.com/SuperDARN/rst/pulls) need to be tested right away, filter them by their milestones
   - Get involved in projects: the [projects](https://github.com/SuperDARN/rst/projects) page is used to organize our priority areas. Each project board shows items which are in progress, ready for testing/review, and completed.
  - Discuss [issues](https://github.com/SuperDARN/rst/issues) and answer questions
- - Become a developer: if you would like to contribute code to RST, please contact us at darn-dawg *at* isee *dot* nagoya-u *dot* ac *dot* jp or submit a new [issue](https://github.com/SuperDARN/rst/issues) on Github.
+ - Become a developer: if you would like to contribute code to the RST, please submit a new [issue](https://github.com/SuperDARN/rst/issues) on Github, or contact us at darn-dawg *at* isee *dot* nagoya-u *dot* ac *dot* jp.
