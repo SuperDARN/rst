@@ -396,6 +396,7 @@ int main(int argc,char *argv[]) {
           if (tdiff_fix != -999) {
               fit_prms->tdiff = tdiff_fix;
           }
+          fit->tdiff = fit_prms->tdiff;
     	  Fitacf(fit_prms,fit, elv_version);
         /*FitacfFree(fit_prms);*/
     	}
@@ -497,6 +498,7 @@ int main(int argc,char *argv[]) {
           if (tdiff_fix != -999) {
               fit_prms->tdiff = tdiff_fix;
           }
+          fit->tdiff = fit_prms->tdiff;
           Fitacf(fit_prms,fit, elv_version);
           /*FitacfFree(fit_prms);*/
         }
