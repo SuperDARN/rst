@@ -361,8 +361,8 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 		    }
 
 		  /* Update the front and back FoVs */
-		  UpdateBeamFit(strict_gs, max_hop, D_hmin, D_hmax, E_hmax,
-				F_hmax, hard, bm_new);
+		  UpdateBeamFit(strict_gs, max_hop, D_hmin, D_hmax,
+				E_hmax, F_hmax, hard, bm_new);
 
 		  /* Find the scan's altitude bins by FoV, region, and path */
 		  for(irg = 0; irg < bm_new->nrang; irg++)
