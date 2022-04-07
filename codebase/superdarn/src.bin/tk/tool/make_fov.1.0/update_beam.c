@@ -120,10 +120,14 @@ void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
 	      /* Calculate the elevation. Front must be assigned here */
 	      /* as well, since TDIFF may have been updated.          */
 	      beam->front_elv[irg].normal = elevation_v2_lobe(1, beam->bm,
-							      beam->freq, site,
+							      beam->freq,
+							      beam->channel,
+							      site,
 							      beam->rng[irg].phi0);
 	      beam->back_elv[irg].normal = elevation_v2_lobe(-1, beam->bm,
-							     beam->freq, site,
+							     beam->freq,
+							     beam->channel,
+							     site,
 							     beam->rng[irg].phi0);
 
 	      /* Calculate the virtual heights */
@@ -155,16 +159,24 @@ void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
 		{
 		  /* Add the elevation angle errors */
 		  beam->front_elv[irg].low = elevation_v2_lobe(1, beam->bm,
-							       beam->freq, site,
+							       beam->freq,
+							       beam->channel,
+							       site,
 							       beam->rng[irg].phi0 - beam->rng[irg].phi0_e);
 		  beam->front_elv[irg].high = elevation_v2_lobe(1, beam->bm,
 								beam->freq,
-								site, beam->rng[irg].phi0 + beam->rng[irg].phi0_e);
+								beam->channel,
+								site,
+								beam->rng[irg].phi0 + beam->rng[irg].phi0_e);
 		  beam->back_elv[irg].low = elevation_v2_lobe(-1, beam->bm,
-							      beam->freq, site,
+							      beam->freq,
+							      beam->channel,
+							      site,
 							      beam->rng[irg].phi0 - beam->rng[irg].phi0_e);
 		  beam->back_elv[irg].high = elevation_v2_lobe(-1, beam->bm,
-							       beam->freq, site,
+							       beam->freq,
+							       beam->channel,
+							       site,
 							       beam->rng[irg].phi0 + beam->rng[irg].phi0_e);
 
 		  /* Add the virtual height errors */

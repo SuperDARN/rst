@@ -42,8 +42,8 @@ Modifications:
 #ifndef _ELEVATION_H
 #define _ELEVATION_H
 
-double elevation_v2_lobe(int lobe, int bmnum, int tfreq, struct RadarSite *site,
-			 double psi_obs);
+double elevation_v2_lobe(int lobe, int bmnum, int tfreq, int channel,
+			 struct RadarSite *site, double psi_obs);
 double elevation_v2(struct FitPrm *prm, double psi_obs);
 double elevation(struct FitPrm *prm, double phi0);
 double elev_goose(struct FitPrm *prm, double phi0);

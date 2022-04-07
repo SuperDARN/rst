@@ -284,7 +284,7 @@ int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
 	      site     = load_radar_site(yr, mo, dy, hr, mt, sc, scan->stid);
 	      site_flg = 1;
 
-	      if(tdiff_flag) site->tdiff = tdiff;
+	      if(tdiff_flag) site->tdiff[channel] = tdiff;
 	    }
 
 	  /* Update the backscatter FoV data using only data from this scan */

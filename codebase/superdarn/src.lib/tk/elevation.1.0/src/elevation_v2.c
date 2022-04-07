@@ -170,8 +170,8 @@ double elevation_v2(struct FitPrm *prm, double psi_obs)
  *        angles and residual phase
  **/
 
-double elevation_v2_lobe(int lobe, int bmnum, int tfreq, struct RadarSite *site,
-			 double psi_obs)
+double elevation_v2_lobe(int lobe, int bmnum, int tfreq, int channel,
+			 struct RadarSite *site, double psi_obs)
 {
   static double X, Y, Z; /* interferometer offsets [m]                       */
   double k;              /* wavenumber [rad/m]                               */
@@ -258,7 +258,7 @@ double elevation_v2_lobe(int lobe, int bmnum, int tfreq, struct RadarSite *site,
    *   If the path length (cable and electronics) to the interferometer is  *
    *   shorter than that to the main antenna array, then the time for the   *
    *   to transit the interferometer electrical path is shorter: tdiff < 0  */
-  psi_ele = -2.0 * PI * tfreq * site->tdiff * 1.0e-3;
+  psi_ele = -2.0 * PI * tfreq * site->tdiff[channel] * 1.0e-3;
 
   /* maximum phase = psi_ele + psi_geo(a0)                                  */
   psi_max = psi_ele + k * (X * sp0 + Y * sqrt(ca0 * ca0 - sp0 * sp0) + Z * sa0);
@@ -273,7 +273,7 @@ double elevation_v2_lobe(int lobe, int bmnum, int tfreq, struct RadarSite *site,
   psi_obs += d2pi;
 
   /* Evaluate the phase shift and solve for the elevation angle, alpha      */
-  E = (psi_obs / (k * C) + site->tdiff * 1.0e-6) * C -  X * sp0;
+  E = (psi_obs / (k * C) + site->tdiff[channel] * 1.0e-6) * C -  X * sp0;
   alpha = asin((E * Z + sqrt(E * E * Z * Z - (Y * Y + Z * Z)
 			     * (E * E - Y * Y * cp0 * cp0)))
 	       / (Y * Y + Z * Z));

@@ -17,6 +17,7 @@
 
 #include "radar.h"
 #include "rmath.h"
+#include "rpos.h"
 #include "elevation.h"
 #include "propagation.h"
 
