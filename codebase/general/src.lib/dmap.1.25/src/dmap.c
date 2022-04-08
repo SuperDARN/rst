@@ -79,7 +79,6 @@ void DataMapFreeScalar(struct DataMapScalar *ptr) {
       (ptr->type==DATAMAP) && (*ptr->data.mptr !=NULL)) 
     DataMapFree(*ptr->data.mptr);
 
-
   if ((ptr->mode !=0) && (ptr->data.vptr !=NULL)) free(ptr->data.vptr);
   free(ptr);
   return;
@@ -294,7 +293,7 @@ void DataMapFreeArray(struct DataMapArray *ptr) {
     char **v=NULL;
     for (n=0;n<ptr->dim;n++) s=s*ptr->rng[n];
     v=((char **) ptr->data.vptr);
-    for (n=0;n<s;n++) if (v[n] !=NULL) free(v[n]);    
+    for (n=0;n<s;n++) if (v[n] !=NULL) free(v[n]);
   }
 
   if ((ptr->mode & 0x04) && (ptr->data.mptr !=NULL) && 
@@ -302,7 +301,7 @@ void DataMapFreeArray(struct DataMapArray *ptr) {
     int s=1,n;
     for (n=0;n<ptr->dim;n++) s=s*ptr->rng[n];
     for (n=0;n<s;n++) if (ptr->data.mptr[n] !=NULL) 
-      DataMapFree(ptr->data.mptr[n]);    
+      DataMapFree(ptr->data.mptr[n]);
   }
 
 
@@ -883,13 +882,13 @@ void DataMapFree(struct DataMap *ptr) {
   if (ptr==NULL) return;
   if (ptr->scl !=NULL) {  
     for (s=0;s<ptr->snum;s++) {
-      DataMapFreeScalar(ptr->scl[s]);
+       DataMapFreeScalar(ptr->scl[s]);
     }
     free(ptr->scl);
   }
   if (ptr->arr !=NULL) {
-    for (a=0;a<ptr->anum;a++) {
-      DataMapFreeArray(ptr->arr[a]);
+     for (a=0;a<ptr->anum;a++) {
+       DataMapFreeArray(ptr->arr[a]);
     }
     free(ptr->arr);
   }

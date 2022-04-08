@@ -23,6 +23,9 @@ Modifications:
     Comments: E.G.Thomas (2016)
     2020-03-11 Marina Schmidt removed earth's radius defined constant 
     E.G.Thomas 2021-08: added support for new hdw file fields
+    2021-09-27 Angeline G. Burrell: Added a slant range routine that doesn't
+                                    require specifying a range_edge value.
+
 */
 
 #include <math.h>
@@ -58,6 +61,33 @@ double slant_range(int frang, int rsep,
 }
 
 
+/**
+ * @brief Calculates the slant range to a range gate without using range_edge.
+ *
+ * @param[in] frang - distance to first range gate in km
+ *            rsep  - range gate size in km
+ *            rxris - receiver rise time in microseconds
+ *            irg   - zero offset range gate index
+ *
+ * @param[out] sdist - slant distance in km
+ **/
+double slant_range_no_edge(int frang, int rsep, double rxris, int irg)
+{
+
+    int lagfr, smsep;
+    double sdist;
+
+    /* Calculate the lag to first range gate in microseconds */
+    lagfr = frang * 20 / 3;
+
+    /* Calculate the sample separation in microseconds */
+    smsep = rsep * 20 / 3;
+
+    /* Return the calculated slant range distance [km] */
+    sdist = C * 5.0e-10 * (lagfr - rxris + irg * smsep);
+
+    return sdist;
+}
 
 /**
  * Converts from geodetic coordinates (gdlat,gdlon) to geocentric spherical

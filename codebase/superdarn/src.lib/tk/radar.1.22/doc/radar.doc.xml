@@ -164,6 +164,16 @@
 <example type="source">RadarYMDHMSGetSite.c</example>
 </function>
 
+<function>
+<name>load_radar_site</name>
+<location>src.lib/tk/radar</location>
+<header>superdarn/radar.h</header>
+<syntax><sn href="structRadarSite.html">struct RadarSite</sn> *load_radar_site(int yr, int mo, int dy, int hr, int mt, int sc, int stid);</syntax>
+<description><p>The <fn href="load_radar_site.html">load_radar_site</fn> function initalizes the radar hardware network, and returns the hardware data for the specified time and radar station.</p>
+</description>
+<returns>Returns a pointer to the radar hardware information for the desired time. On error loading the site data for a specific time, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error loading the network or the radar site hardware data, the function with exit with -1.</errors>
+</function>
 
 <structure>
   <name>Radar</name>

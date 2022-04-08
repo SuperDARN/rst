@@ -50,6 +50,29 @@ struct RadarParm *RadarParmMake() {
   return ptr;
 }
 
+void RadarParmReset(struct RadarParm *ptr)
+{
+  if (ptr==NULL) ptr = RadarParmMake();
+  else
+    {
+      if (ptr->origin.time != NULL) free(ptr->origin.time);
+      if (ptr->origin.command != NULL) free(ptr->origin.command);
+      if (ptr->pulse != NULL) free(ptr->pulse);
+      if (ptr->lag[0] != NULL) free(ptr->lag[0]);
+      if (ptr->lag[1] != NULL) free(ptr->lag[1]);
+      if (ptr->combf != NULL) free(ptr->combf);
+
+      memset(ptr, 0, sizeof(struct RadarParm));
+      ptr->origin.time = NULL;
+      ptr->origin.command = NULL;
+      ptr->pulse = NULL;
+      ptr->lag[0] = NULL;
+      ptr->lag[1] = NULL;
+      ptr->combf = NULL;
+    }
+  return;
+}
+
 void RadarParmFree(struct RadarParm *ptr) {
   if (ptr==NULL) return;
   if (ptr->origin.time !=NULL) free(ptr->origin.time);
@@ -59,6 +82,7 @@ void RadarParmFree(struct RadarParm *ptr) {
   if (ptr->lag[1] !=NULL) free(ptr->lag[1]);
   if (ptr->combf !=NULL) free(ptr->combf);
   free(ptr);
+  return;
 }
 
 int RadarParmSetOriginTime(struct RadarParm *ptr,char *str) {
@@ -172,27 +196,16 @@ int RadarParmSetLag(struct RadarParm *ptr,int mplgs,int16 *lag) {
 
 
 
-int RadarParmDecode(struct DataMap *ptr,struct RadarParm *prm) {
+int RadarParmDecode(struct DataMap *ptr, struct RadarParm *prm) {
 
-  int n,c;
+  int c;
   struct DataMapScalar *s;
   struct DataMapArray *a;
 
   if (ptr==NULL) return -1;
   if (prm==NULL) return -2;
 
-  if (prm->origin.time !=NULL) free(prm->origin.time);
-  if (prm->origin.command !=NULL) free(prm->origin.command);
-  if (prm->pulse !=NULL) free(prm->pulse);
-  for (n=0;n<2;n++) if (prm->lag[n] !=NULL) free(prm->lag[n]);
-
-  memset(prm,0,sizeof(struct RadarParm));
-  prm->origin.time=NULL;
-  prm->origin.command=NULL;
-  prm->pulse=NULL;
-  prm->lag[0]=NULL;
-  prm->lag[1]=NULL;
-  prm->combf=NULL;
+  RadarParmReset(prm);
 
   prm->ifmode=-1;
 

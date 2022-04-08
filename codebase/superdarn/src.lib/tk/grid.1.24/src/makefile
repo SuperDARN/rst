@@ -14,9 +14,7 @@ INC=$(IPATH)/superdarn
 LINK="1"
 DSTPATH=$(LIBPATH)
 OUTPUT = grd
- 
 
- 
 
 
 

@@ -26,6 +26,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 Modifications:
  2021-01-11 Marina Schmidt fixing concatenation bug with start/end time, and deprecated -c flag
  2021-08-27 Angeline G Burrell removed duplicate code now present in libraries
+ 2021-10-04 Angeline G Burrell removed duplicate code now present in radar library
 
 */
 
@@ -84,8 +85,6 @@ struct RadarScan *out;
 
 struct FitIndex *inx;
 
-struct RadarNetwork *network;
-struct Radar *radar;
 struct RadarSite *site;
 
 int nbox;
@@ -101,10 +100,11 @@ struct GridTable *grid;
 
 
 /**
- * Exclude scatter in range gates below minrng or beyond maxrng,
- * or from slant ranges below minsrng or beyond maxsrng. If range
- * gate and slant range thresholds are both provided, only the
- * slant range thresholds are considered.
+ * Exclude scatter in range gates below minrng or beyond maxrng (the minimum
+ * and maximum range gates, respectively), or from slant ranges below
+ * minsrng or beyond maxsrng (the minimum and maximum slant ranges,
+ * respectively). If range gate and slant range thresholds are both provided,
+ * only the slant range thresholds are considered.
  **/
 void exclude_range(struct RadarScan *ptr,int minrng,int maxrng,
                    double minsrng,double maxsrng) {
@@ -155,7 +155,7 @@ void exclude_range(struct RadarScan *ptr,int minrng,int maxrng,
 
 
 /**
- *
+ * Parse the comma separated list of beams to exclude
  **/
 void parse_ebeam(char *str) {
 
@@ -179,7 +179,9 @@ void parse_ebeam(char *str) {
 
 }
 
-
+/**
+ * Outputs an error statement for an unrecognized input option
+ **/
 int rst_opterr(char *txt) {
     fprintf(stderr,"Option not recognized: %s\n",txt);
     fprintf(stderr,"Please try: make_grid --help\n");
@@ -233,9 +235,6 @@ int main(int argc,char *argv[]) {
 
     double sdate=-1;
     double edate=-1;
-
-    char *envstr;
-    FILE *fp;
 
     int bxcar=0;
     int limit=0;
@@ -293,38 +292,6 @@ int main(int argc,char *argv[]) {
 
     /* Initialize GridTable structure */
     grid=GridTableMake();
-
-    /* Make sure the SD_RADAR environment variable is set */
-    envstr=getenv("SD_RADAR");
-    if (envstr==NULL) {
-        fprintf(stderr,"Environment variable 'SD_RADAR' must be defined.\n");
-        exit(-1);
-    }
-
-    /* Open the radar information file */
-    fp=fopen(envstr,"r");
-    if (fp==NULL) {
-        fprintf(stderr,"Could not locate radar information file.\n");
-        exit(-1);
-    }
-
-    /* Load the radar network information */
-    network=RadarLoad(fp);
-    fclose(fp);
-    if (network==NULL) {
-        fprintf(stderr,"Failed to read radar information.\n");
-        exit(-1);
-    }
-
-    /* Make sure the SD_HDWPATH environment variable is set */
-    envstr=getenv("SD_HDWPATH");
-    if (envstr==NULL) {
-        fprintf(stderr,"Environment variable 'SD_HDWPATH' must be defined.\n");
-        exit(-1);
-    }
-
-    /* Load the hardware information for the radar network */
-    RadarLoadHardware(envstr,network);
 
     /* Set up command line options */
     OptionAdd(&opt,"-help",'x',&help);     /* Print the help message and exit */
@@ -731,14 +698,9 @@ int main(int argc,char *argv[]) {
 
                 /* Load the appropriate radar hardware information for the day
                  * and time of the radar scan (only done once) */
-                if (site==NULL) {
-                    radar=RadarGetRadar(network,out->stid);
-                    if (radar==NULL) {
-                        fprintf(stderr,"Failed to get radar information.\n");
-                        exit(-1);
-                    }
-                    site=RadarYMDHMSGetSite(radar,yr,mo,dy,hr,mt,(int) sc);
-                }
+                if (site==NULL)
+		  site = load_radar_site(yr, mo, dy, hr, mt, (int)sc,
+					 out->stid);
 
                 /* Test whether gridded data should be written to a file; if so
                  * returns weighted average velocity, power, and width values

@@ -166,11 +166,21 @@ int FitReadRadarScan(int fid, int *state,
             bm->rng[r].p_l=fit->rng[r].p_l;
             bm->rng[r].w_l=fit->rng[r].w_l;
             bm->rng[r].v_e=fit->rng[r].v_err;
-            if (fit->xrng !=NULL) bm->rng[r].phi0=fit->xrng[r].phi0;
-            else bm->rng[r].phi0=0;
+
+            /* Update the phase lag and elevation angle */
+            /* if the necessary data is present         */
+            if (fit->xrng !=NULL)
+            {
+              bm->rng[r].phi0=fit->xrng[r].phi0;
+              bm->rng[r].phi0_e=fit->xrng[r].phi0_err;
+            }
+            else
+            {
+              bm->rng[r].phi0=0;
+              bm->rng[r].phi0_e=0;
+            }
             if (fit->elv !=NULL) bm->rng[r].elv=fit->elv[r].normal;
             else bm->rng[r].elv=0;
-
         }
 
         /* Calculate end time of radar scan */

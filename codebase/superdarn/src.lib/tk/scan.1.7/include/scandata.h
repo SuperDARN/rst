@@ -39,6 +39,7 @@ struct RadarCell {
     double p_l;
     double p_l_e;
     double phi0;
+    double phi0_e;
     double elv;
 };
 
