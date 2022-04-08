@@ -62,22 +62,27 @@ double noise_stat(double mnpwr,struct FitPrm *ptr,
   memset(bdlag,0,sizeof(int)*ptr->mplgs);
 
   for (i=0; i < ptr->nrang; ++i) { 
-    if ((creal(acf[i*ptr->mplgs]) > plim) || (creal(acf[i*ptr->mplgs]) <= 0.0)) 
-        continue;
+  	if ((creal(acf[i*ptr->mplgs]) > plim) || (creal(acf[i*ptr->mplgs]) <= 0.0)) 
+    	{
+		continue;
+	}
 	FitACFCkRng((i+1), bdlag,badsmp, ptr);
 	++np0;
 	fluct = ((double) creal(acf[i*ptr->mplgs]))/sqrt(ptr->nave);
 	low_lim = creal(acf[i*ptr->mplgs]) - 2.0*fluct;
-	if (low_lim < 0) low_lim = low_lim + fluct;
+	if (low_lim < 0) 
+		low_lim = low_lim + fluct;
 	high_lim = creal(acf[i*ptr->mplgs]) + fluct;
 
 	for (j=1; j < ptr->mplgs; ++j) {
-      if (bdlag[j]) continue;
-	  temp = lag_power(acf[i*ptr->mplgs+j]);
-	  if (temp < low_lim || temp > high_lim) continue;
-	  ++npt;
-	  P = P + temp;
-	  P2 = P2 + temp*temp;
+      	if (bdlag[j])
+		continue;
+	temp = lag_power(acf[i*ptr->mplgs+j]);
+	if (temp < low_lim || temp > high_lim)
+		continue;
+	++npt;
+	P = P + temp;
+	P2 = P2 + temp*temp;
     }
   }
 

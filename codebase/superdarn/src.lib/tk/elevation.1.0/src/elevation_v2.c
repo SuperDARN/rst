@@ -31,12 +31,13 @@ E.G.Thomas 2021-08: added support for bmoff parameter
 #include <math.h>
 #include <stdio.h>
 
+#include "rmath.h"
 #include "fitblk.h"
 #include "radar.h"
-#include "rmath.h"
 
 /* SGS somehow need to pass in options for allowing:                         *
  *     negative elevation angles and residual phase                          */
+//TODO what do these parameters mean  like psi_obs? 
 double elevation_v2(struct FitPrm *prm, double psi_obs)
 {
   static double X,Y,Z;      /* interferometer offsets [m]                    */

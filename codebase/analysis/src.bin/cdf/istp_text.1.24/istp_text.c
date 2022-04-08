@@ -205,7 +205,6 @@ int load_ace() {
   if ((pst !=0) || (swe !=0)) {
     fprintf(stderr,"Calling locate files.\n");
     fptr=locate_files(path,"h0_swe",stime,etime);
-    fprintf(stderr,"got here.\n");
     for (i=0;i<fptr->cnt;i++) {
       fprintf(stderr,"%s\n",fptr->fname[i]);
 
