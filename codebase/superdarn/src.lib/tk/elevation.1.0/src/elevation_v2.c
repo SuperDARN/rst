@@ -158,11 +158,12 @@ double elevation_v2(struct FitPrm *prm, double psi_obs)
 /**
  * @brief Calculate elevation for the specified field of view
  *
- * @param[in] lobe    - Field-of-view specifier: 1=front, -1=back
- *            bmnum   - Beam number (zero offset)
- *            tfreq   - Transmission frequency in kHz
- *            site    - Radar hardware site structure
- *            psi_obs - Phase lag value
+ * @param[in] lobe     - Field-of-view specifier: 1=front, -1=back
+ *            bmnum    - Beam number (zero offset)
+ *            tfreq    - Transmission frequency in kHz
+ *            channel  - Channel index for tdiff
+ *            site     - Radar hardware site structure
+ *            psi_obs  - Phase lag value
  *
  * @param[out] alpha - Elevation angle [deg]
  *
