@@ -28,8 +28,8 @@ Modifications:
 #ifndef _ELEVATION_H
 #define _ELEVATION_H
 
-double elevation(struct FitPrm * prm, double phi0);
-double elevation_v2(struct FitPrm * prm, double psi_obs);
-double elev_goose(struct FitPrm * prm, double phi0);
+double elevation(struct FitPrm *prm, double phi0);
+double elevation_v2(struct FitPrm *prm, double psi_obs);
+double elev_goose(struct FitPrm *prm, double phi0);
 
 #endif
