@@ -19,16 +19,17 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+  E.G.Thomas 2021-08: added support for bmoff parameter
 */ 
 
 
 
 #include <math.h>
 #include <stdio.h>
-#include "fitblk.h"
 #include "rmath.h"
+#include "fitblk.h"
 
-double elevation(struct FitPrm *prm,double phi0) {
+double elevation(struct FitPrm *prm, double phi0) {
  
   double k;          /* wave number; 1/m */
   double phi;        /* beam direction off boresight; rad */
@@ -60,7 +61,7 @@ double elevation(struct FitPrm *prm,double phi0) {
     }
   }
   offset=prm->maxbeam/2.0-0.5;
-  phi= prm->bmsep*(prm->bmnum - offset)* PI/ 180.0;
+  phi= (prm->bmoff + prm->bmsep*(prm->bmnum - offset))* PI/ 180.0;
   c_phi= cos( phi);
   k= 2 * PI * prm->tfreq * 1000.0/C;
 

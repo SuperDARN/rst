@@ -90,7 +90,7 @@ int DatReadCurrent(struct Datfp *fp,struct DatData *datdata) {
     inbuf=malloc(sizeof(struct DatData));
     if (inbuf==NULL) {
         fprintf(stderr, "Error: Malloc returned %d on allocating memory for inbuf, %s\n", errno, strerror(errno));
-        return NULL;
+        return -1;
     }
     /* zero out the dat data buffer */
     memset(datdata, 0, sizeof(struct DatData));

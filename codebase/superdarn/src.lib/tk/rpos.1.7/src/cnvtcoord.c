@@ -22,8 +22,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 Modifications:
     Comments: E.G.Thomas (2016)
     2020-03-11 Marina Schmidt removed earth's radius defined constant 
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
+    E.G.Thomas 2021-08: added support for new hdw file fields
 */
 
 #include <math.h>
@@ -355,7 +354,7 @@ void RPosGeo(int center, int bcrd, int rcrd,
     offset=pos->maxbeam/2.0-0.5;
 
     /* Calculate deviation from boresite [deg] */
-    psi=pos->bmsep*(bcrd-offset)+bm_edge;
+    psi=pos->bmsep*(bcrd-offset)+bm_edge+pos->bmoff;
 
     /* Calculate the slant range to the range gate [km] */
     d=slant_range(frang,rsep,rx,range_edge,rcrd+1);
@@ -395,7 +394,7 @@ void RPosMag(int center,int bcrd,int rcrd,
     else rx=rxrise;
 
     offset=pos->maxbeam/2.0-0.5;
-    psi=pos->bmsep*(bcrd-offset)+bm_edge;
+    psi=pos->bmsep*(bcrd-offset)+bm_edge+pos->bmoff;
     d=slant_range(frang,rsep,rx,range_edge,rcrd+1);
     if (height < 90) height=-RE+sqrt((RE*RE)+2*d*RE*sind(height)+(d*d));
 
@@ -433,7 +432,7 @@ void RPosCubic(int center,int bcrd,int rcrd,
     else rx=rxrise;
 
     offset=pos->maxbeam/2.0-0.5;
-    psi=pos->bmsep*(bcrd-offset)+bm_edge;
+    psi=pos->bmsep*(bcrd-offset)+bm_edge+pos->bmoff;
 
     d=slant_range(frang,rsep,rx,range_edge,rcrd+1);
     if (height < 90) height=-RE+sqrt((RE*RE)+2*d*RE*sind(height)+(d*d));
@@ -471,7 +470,7 @@ void RPosGeoGS(int center,int bcrd,int rcrd,
     else rx=rxrise;
 
     offset=pos->maxbeam/2.0-0.5;
-    psi=pos->bmsep*(bcrd-offset)+bm_edge;
+    psi=pos->bmsep*(bcrd-offset)+bm_edge+pos->bmoff;
 
     d=slant_range(frang,rsep,rx,range_edge,rcrd+1)/2;
     if (height < 90) height=-RE+sqrt((RE*RE)+2*d*RE*sind(height)+(d*d));
@@ -503,7 +502,7 @@ void RPosMagGS(int center,int bcrd,int rcrd,
     else rx=rxrise;
 
     offset=pos->maxbeam/2.0-0.5;
-    psi=pos->bmsep*(bcrd-offset)+bm_edge;
+    psi=pos->bmsep*(bcrd-offset)+bm_edge+pos->bmoff;
 
     d=slant_range(frang,rsep,rx,range_edge,rcrd+1)/2;
     if (height < 90) height=-RE+sqrt((RE*RE)+2*d*RE*sind(height)+(d*d));
@@ -539,7 +538,7 @@ void RPosCubicGS(int center,int bcrd,int rcrd,
     else rx=rxrise;
 
     offset=pos->maxbeam/2.0-0.5;
-    psi=pos->bmsep*(bcrd-offset)+bm_edge;
+    psi=pos->bmsep*(bcrd-offset)+bm_edge+pos->bmoff;
 
     d=slant_range(frang,rsep,rx,range_edge,rcrd+1)/2;
     if (height < 90) height=-RE+sqrt((RE*RE)+2*d*RE*sind(height)+(d*d));

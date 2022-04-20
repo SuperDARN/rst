@@ -5,8 +5,6 @@
    Issues:
      - Assumes 300 km altitude for AACGM transformations.
 
-/*
-
 Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 
 This file is part of the Radar Software Toolkit (RST).

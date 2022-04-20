@@ -19,7 +19,7 @@
     Modifications
     =============
     2020-11-12 Marina Schmidt Converted RST complex -> C library complex
-
+    E.G.Thomas 2021-08: added support for bmoff parameter
 
 */
 
@@ -53,11 +53,12 @@ struct FitPrm {
   int *pwr0;
   int maxbeam;
   double interfer[3];
+  double bmoff;
   double bmsep;
   double phidiff;
   double tdiff;
   double vdir;
-} FitPrm;
+};
 
 struct FitBlock {
   struct FitPrm prm;

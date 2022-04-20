@@ -22,6 +22,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+  E.G.Thomas 2021-08: added support for multi-channel tdiff values
+
 */
 
 #include <stdio.h>
@@ -233,7 +235,7 @@ int main(int argc,char *argv[])
 
   fblk=FitACFMake(site,prm->time.yr);
 
-  fitacfex2(prm,raw,fit,fblk,0);
+  fitacfex2(prm,raw,fit,fblk,site,0);
 
   if (old)
   {
@@ -277,7 +279,7 @@ int main(int argc,char *argv[])
 
 
     if (status==0)
-			fitacfex2(prm,raw,fit,fblk,0);
+			fitacfex2(prm,raw,fit,fblk,site,0);
 
   } while (status==0);
 

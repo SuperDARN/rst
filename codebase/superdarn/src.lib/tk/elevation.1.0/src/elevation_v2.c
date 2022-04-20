@@ -22,13 +22,13 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
- 
+  E.G.Thomas 2021-08: added support for bmoff parameter
 */
 
 #include <math.h>
 #include <stdio.h>
-#include "fitblk.h"
 #include "rmath.h"
+#include "fitblk.h"
 
 /* SGS somehow need to pass in options for allowing:                         *
  *     negative elevation angles and residual phase                          */
@@ -90,7 +90,7 @@ double elevation_v2(struct FitPrm *prm, double psi_obs)
   sgn = (Y < 0) ? -1 : 1;
 
   boff   = prm->maxbeam/2. - 0.5;
-  phi0   = prm->bmsep*(prm->bmnum - boff)* PI/ 180.;
+  phi0   = (prm->bmoff + prm->bmsep*(prm->bmnum - boff))* PI/ 180.;
   cp0    = cos(phi0);
   sp0    = sin(phi0);
 
