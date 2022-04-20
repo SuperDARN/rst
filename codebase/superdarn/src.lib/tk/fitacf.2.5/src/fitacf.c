@@ -54,7 +54,7 @@ void FitACFFree(struct FitBlock *fptr) {
 }
 
 
-struct FitBlock *FitACFMake(struct RadarSite *hd, int year, int channel, int offset) {
+struct FitBlock *FitACFMake(struct RadarSite *hd, int year) {
     int i;
     struct FitBlock *fptr;
 
@@ -66,11 +66,6 @@ struct FitBlock *FitACFMake(struct RadarSite *hd, int year, int channel, int off
     fptr->prm.bmoff=hd->bmoff;
     fptr->prm.bmsep=hd->bmsep;
     fptr->prm.phidiff=hd->phidiff;
-    if ((offset == 0) || (channel < 2)) {
-      fptr->prm.tdiff=hd->tdiff[0];
-    } else {
-      fptr->prm.tdiff=hd->tdiff[1];
-    }
     fptr->prm.vdir=hd->vdir;
     fptr->prm.maxbeam=hd->maxbeam;
     fptr->prm.pulse=NULL;
@@ -83,7 +78,8 @@ struct FitBlock *FitACFMake(struct RadarSite *hd, int year, int channel, int off
 }
 
 int fill_fit_block(struct RadarParm *prm, struct RawData *raw,
-                   struct FitBlock *input, struct FitData *fit){
+                   struct FitBlock *input, struct FitData *fit,
+                   struct RadarSite *hd){
 
     int i, j, n;
     void *tmp=NULL;
@@ -103,6 +99,11 @@ int fill_fit_block(struct RadarParm *prm, struct RawData *raw,
     input->prm.cp=prm->cp;
     input->prm.channel=prm->channel;
     input->prm.offset=prm->offset;  /* stereo offset */
+    if ((input->prm.offset == 0) || (input->prm.channel < 2)) {
+      input->prm.tdiff=hd->tdiff[0];
+    } else {
+      input->prm.tdiff=hd->tdiff[1];
+    }
 
     /* need to incorporate Sessai's code for setting the offset
          for legacy data here.
@@ -167,7 +168,7 @@ int fill_fit_block(struct RadarParm *prm, struct RawData *raw,
     return 0;
 }
 int FitACF(struct RadarParm *prm, struct RawData *raw,struct FitBlock *input,
-           struct FitData *fit) {
+           struct FitData *fit, struct RadarSite *hd) {
 
     int fnum, goose, s;
 
@@ -179,7 +180,7 @@ int FitACF(struct RadarParm *prm, struct RawData *raw,struct FitBlock *input,
     fit->revision.minor=FITACF_MINOR_REVISION;
 
     /*initialize the fitblock with prm*/
-    s = fill_fit_block(prm, raw, input, fit);
+    s = fill_fit_block(prm, raw, input, fit, hd);
     if (s == -1){
         return -1;
     }

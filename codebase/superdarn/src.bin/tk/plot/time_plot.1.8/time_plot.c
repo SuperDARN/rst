@@ -1385,7 +1385,7 @@ int main(int argc,char *argv[]) {
         eprng=erng;
       }
 
-      for (rng=sprng;rng<=eprng;rng++) {
+      for (rng=sprng;rng<eprng;rng++) {
         if ((expr !=NULL) && (eval_expr(expr,&tplot,rng)==0)) continue;
         if ((tplot.qflg[rng]==0) && (n !=7)) continue;
         if ((tplot.gsct[rng]==1) && (gmflg)) continue;
