@@ -1,0 +1,83 @@
+<head>
+<title>make_sim</title>
+<link rel=stylesheet href="../../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../../superdarn/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/tool/index.html>tool</a></td><td>|</td>
+<td>make_sim</td>
+<td width=100% align=right><a href=../../../../../superdarn/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">make_sim</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+make_sim --help<br>make_sim [<em>options</em>]<br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Generates simulated single-component Lorentzian ACFs.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-katscan</code></td><td valign="top">use Kathrn McWilliams' 8-pulse sequence (default).</td></tr>
+<tr><td width="150" valign="top"><code>-tauscan</code></td><td valign="top">use Ray Greenwald's 13-pulse sequence.</td></tr>
+<tr><td width="150" valign="top"><code>-oldscan</code></td><td valign="top">use the old 7-pulse sequence.</td></tr>
+<tr><td width="150" valign="top"><code>-freq <em>f</em></code></td><td valign="top">set the radar frequency to <em>f</em> MHz (default is 12 MHz).</td></tr>
+<tr><td width="150" valign="top"><code>-vel <em>v</em></code></td><td valign="top">set the background Doppler velocity to <em>v</em> m/s (default is 450 m/s).</td></tr>
+<tr><td width="150" valign="top"><code>-v_spread <em>v_s</em></code></td><td valign="top">set the Gaussian Doppler velocity spread (standard deviation) to <em>v_s</em> m/s (default is 0 m/s).</td></tr>
+<tr><td width="150" valign="top"><code>-t_d <em>t_d</em></code></td><td valign="top">set the irregularity decay time to <em>t_d</em> milliseconds (default is 40 ms).</td></tr>
+<tr><td width="150" valign="top"><code>-t_g <em>t_g</em></code></td><td valign="top">set the irregularity growth time to <em>t_d</em> microseconds (default is 1 us, ie negligible).</td></tr>
+<tr><td width="150" valign="top"><code>-t_c <em>t_c</em></code></td><td valign="top">set the precipitation time constant (lifetime) to <em>t_c</em> milliseconds (default is 1e6 ms, ie negligible).</td></tr>
+<tr><td width="150" valign="top"><code>-constant</code></td><td valign="top">use a constant irregularity lifetime distribution (default is exponential).</td></tr>
+<tr><td width="150" valign="top"><code>-noise <em>n</em></code></td><td valign="top">add white noise level to produce SNR <em>n</em> dB (default is no noise).</td></tr>
+<tr><td width="150" valign="top"><code>-smsep <em>smsep</em></code></td><td valign="top">set the sample separation to <em>smsep</em> microseconds (default is 300 us).</td></tr>
+<tr><td width="150" valign="top"><code>-nrang <em>nrang</em></code></td><td valign="top">set the number of range gates to <em>nrang</em> (default is 100).</td></tr>
+<tr><td width="150" valign="top"><code>-n_good <em>n_good</em></code></td><td valign="top">set the number of range gates with scatter to <em>n_good</em> (default is 40). WARNING: setting this above ~70 for katscan (or default) sequence will cause cross-range interference at lag0 from range gates ~70 and above (lag0 ~2x the value at other range gates).</td></tr>
+<tr><td width="150" valign="top"><code>-srng <em>srng</em></code></td><td valign="top">set the first range gate containing scatter to <em>srng</em> (default is 0).</td></tr>
+<tr><td width="150" valign="top"><code>-nave <em>nave</em></code></td><td valign="top">set the number of averages in the integration period to <em>nave</em> (default is 70/50/20 for oldscan/katscan/tauscan).</td></tr>
+<tr><td width="150" valign="top"><code>-amp <em>amp</em></code></td><td valign="top">set the average ACF amplitude to <em>amp</em> (default is 1).</td></tr>
+<tr><td width="150" valign="top"><code>-nocri</code></td><td valign="top">Remove cross-range interference from the ACFs (default is CRI on). WARNING: removing cross-range interference will make the raw samples unusable, since each range gate will have to be integrated separately.</td></tr>
+<tr><td width="150" valign="top"><code>-decay</code></td><td valign="top">Set the ACFs to have a decaying amplitude by a factor of 1/(r^2).</td></tr>
+<tr><td width="150" valign="top"><code>-stid <em>stid</em></code></td><td valign="top">set the station identifier in the data records to <em>stid</em> (default is 0).</td></tr>
+<tr><td width="150" valign="top"><code>-beam <em>beam</em></code></td><td valign="top">set the radar beam number in the data records to <em>beam</em> (default is 7).</td></tr>
+<tr><td width="150" valign="top"><code>-mpinc <em>mpinc</em></code></td><td valign="top">set the multi-pulse increment of the pulse sequence to <em>mpinc</em> microseconds (default is 1500 us for katscan or 2400 us for oldscan/tauscan).</td></tr>
+<tr><td width="150" valign="top"><code>-iq</code></td><td valign="top">Output raw samples (in <code>iqdat</code> format) instead of ACFs (in <code>rawacf</code> format).</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Generates simulated single-component Lorentzian ACFs in either <code>rawacf</code> (default) or <code>iqdat</code> format, which is then written to standard output.</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">make_sim &gt; output.rawacf</pre></td></tr></table>
+<p>Generates simulated single-component Lorentzian ACFs in <code>rawacf</code> format.</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

@@ -34,13 +34,13 @@
 <table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
 <tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
 <tr><td width="150" valign="top"><code>-vb</code></td><td valign="top">verbose. Log information to the console.</td></tr>
-<tr><td width="150" valign="top"><code>-old</code></td><td valign="top">the input file is a <code>map</code> format file.</td></tr><tr><td width="150" valign="top"><code>-omni</code></td><td valign="top">use data from OMNI. (Currently not functional)</td></tr>
+<tr><td width="150" valign="top"><code>-old</code></td><td valign="top">the input file is a <code>map</code> format file. NOTE: When using this option, the Kp value will not be read in when using the -if option.</td></tr><tr><td width="150" valign="top"><code>-omni</code></td><td valign="top">use data from OMNI. (Currently not functional)</td></tr>
 <tr><td width="150" valign="top"><code>-ace</code></td><td valign="top">use IMF data from ACE.</td></tr>
 <tr><td width="150" valign="top"><code>-wind</code></td><td valign="top">use IMF data from wind.</td></tr>
 <tr><td width="150" valign="top"><code>-p <em>pathname</em></code></td><td valign="top">set the directory path to search for the IMF data in to <em>pathname</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-d <em>hr:mn</em></code></td><td valign="top">set the IMF delay time to  <em>hr:mn</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-ex <em>hr:mn</em></code></td><td valign="top">read <em>hr</em> hours and <em>mn</em> minutes of IMF data. By default, 24 hours</td></tr><tr><td width="150" valign="top"><code></code></td><td valign="top">  of data is read.</td></tr><tr><td width="150" valign="top"><code><em>mapname</em></code></td><td valign="top">filename of the <code>cnvmap</code> format file. If this is omitted, the file will</td></tr><tr><td width="150" valign="top"><code></code></td><td valign="top">  be read from standard input.</td></tr><tr><td width="150" valign="top"><code>-df <em>delayname</em></code></td><td valign="top">read the delay times from the ASCII text file <em>delayname</em>.</td></tr>
-<tr><td width="150" valign="top"><code>-if <em>imfname</em></code></td><td valign="top">read the IMF data from the ASCII text file <em>imfname</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-if <em>imfname</em></code></td><td valign="top">read the IMF data from the ASCII text file <em>imfname</em>. Kp will not be read in if using this option in combination with the -old option.</td></tr>
 <tr><td width="150" valign="top"><code>-bx <em>bx</em></code></td><td valign="top">set the X component of the magnetic field to <em>bx</em> [nT].</td></tr>
 <tr><td width="150" valign="top"><code>-by <em>by</em></code></td><td valign="top">set the Y component of the magnetic field to <em>by</em> [nT].</td></tr>
 <tr><td width="150" valign="top"><code>-bz <em>bz</em></code></td><td valign="top">set the Z component of the magnetic field to <em>bz</em> [nT].</td></tr>

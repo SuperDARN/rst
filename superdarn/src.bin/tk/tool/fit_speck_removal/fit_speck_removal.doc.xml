@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>fit_speck_removal</name>
+<location>src.bin/tk/tool/fit_speck_removal</location>
+
+<syntax>fit_speck_removal --help</syntax>
+<syntax>fit_speck_removal [-vb] [-quiet] <ar>fitacfname</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>print extra information in the terminal.</od>
+</option>
+<option><on>-quiet</on><od>prevent statistics from being printed in the terminal.</od>
+</option>
+<option><on><ar>fitacfname</ar></on><od>filename of the input <code>fitacf</code>-format file.</od>
+</option>
+
+<synopsis><p>Removes salt and pepper noise from a <code>fitacf</code> file.</p></synopsis>
+<description><p>Removes salt and pepper noise from a fitacf file. The quality flag in the center cell of a 3x3 range-time grid is set to zero if the median 
+of the quality flags in the 3x3 grid is zero. This procedure is performed separately for each beam and channel. 
+The output is a fitacf file with the salt and pepper noise removed, but otherwise identical to the input file.</p></description>
+
+<example>
+<command>fit_speck_removal 20170825.gbr.fitacf &gt 20170825.gbr.despeck.fitacf</command>
+<description>Perform the speck removal procedure on the <code>fitacf</code>-format file named "<code>20170825.gbr.fitacf</code>". The output file is called "<code>20170825.gbr.despeck.fitacf</code>".</description>
+</example>
+
+</binary>

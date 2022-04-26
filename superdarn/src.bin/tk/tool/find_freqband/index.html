@@ -1,0 +1,92 @@
+<head>
+<title>find_freqband</title>
+<link rel=stylesheet href="../../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../../superdarn/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/tool/index.html>tool</a></td><td>|</td>
+<td>find_freqband</td>
+<td width=100% align=right><a href=../../../../../superdarn/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">find_freqband</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+find_freqband --help<br>find_freqband [<em>options</em>] <em>fitacfname</em> [<em>inxname</em>]<br>find_freqband -old  [<em>options</em>] <em>fitname</em> [<em>inxname</em>]<br>find_freqband -cfit [<em>options</em>] <em>cfitname</em><br>find_freqband -cfit -old [<em>options</em>] <em>cfitname</em><br>find_freqband [<em>options</em>] <em>fitacfnames...</em><br>find_freqband  -old [<em>options</em>] <em>fitnames...</em><br>find_freqband  -cfit [<em>options</em>] <em>cfitnames...</em><br>find_freqband  -cfit -old [<em>options</em>] <em>cfitnames...</em><br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Creates an <code>ascii</code> format file for a single radar site from either a <code>fit</code>, <code>fitacf</code> or <code>cfit</code> format file.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-vb</code></td><td valign="top">verbose. Log information to the console.</td></tr>
+<tr><td width="150" valign="top"><code>-sd <em>yyyymmdd</em></code></td><td valign="top">start from the date <em>yyyymmdd</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-st <em>hr:mn</em></code></td><td valign="top">start from the time <em>hr:mn</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-ed <em>yyyymmdd</em></code></td><td valign="top">stop at the date <em>yyyymmdd</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-et <em>hr:mn</em></code></td><td valign="top">stop at the time <em>hr:mn</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-ex <em>hr:mn</em></code></td><td valign="top">use the interval whose extent is <em>hr:mn</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-tl <em>tlen</em></code></td><td valign="top">ignore the scan flag and instead use a fixed length scan of <em>tlen</em> seconds.</td></tr>
+<tr><td width="150" valign="top"><code>-cn <em>channel</em></code></td><td valign="top">process data from channel <em>channel</em> for stereo mode data.</td></tr>
+<tr><td width="150" valign="top"><code>-cn_fix <em>channel</em></code></td><td valign="top">manually set <em>channel</em> information written to output file.</td></tr>
+<tr><td width="150" valign="top"><code>-ns</code></td><td valign="top">exclude data with scan flags less than zero.</td></tr>
+<tr><td width="150" valign="top"><code>-bandwidth</code></td><td valign="top">manually specify the desired bandwidth in kHz (default=300 kHz).</td></tr>
+<tr><td width="150" valign="top"><code><em>fitacfname</em></code></td><td valign="top">filename of the <code>fitacf</code> format file.</td></tr>
+<tr><td width="150" valign="top"><code><em>inxname</em></code></td><td valign="top">filename of the index file.</td></tr>
+<tr><td width="150" valign="top"><code>-old</code></td><td valign="top">the input file is in the <code>fit</code> format.</td></tr>
+<tr><td width="150" valign="top"><code><em>fitname</em></code></td><td valign="top">filename of the <code>fit</code> format file.</td></tr>
+<tr><td width="150" valign="top"><code>-cfit</code></td><td valign="top">the input file is in the <code>cfit</code> format.</td></tr>
+<tr><td width="150" valign="top"><code><em>cfitfname</em></code></td><td valign="top">filename of the <code>cfit</code> format file.</td></tr>
+<tr><td width="150" valign="top"><code>-c</code></td><td valign="top">concatenate multiple input files (from the same radar site). WARNING: This option will be deprecated in the next RST release. Multiple input files from one radar are now detected and concatenated automatically.</td></tr>
+<tr><td width="150" valign="top"><code><em>fitnames</em></code></td><td valign="top">filenames of the <code>fit</code> format files.</td></tr>
+<tr><td width="150" valign="top"><code><em>fitacfnames</em></code></td><td valign="top">filenames of the <code>fitacf</code> format files.</td></tr>
+<tr><td width="150" valign="top"><code><em>cfitnames</em></code></td><td valign="top">filenames of the <code>cfit</code> format files.</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Creates an <code>ascii</code> format file with the transmitted frequencies, occurence numbers for these frequencies, and frequency bands for a single radar site from either a <code>fit</code>, <code>fitacf</code> or <code>cfit</code> format file.</p>
+<p>This text file with transmission frequency data is designed to inform the radar operations and assist data analysis processes that require different transmission frequencies to be processed seperately.</p>
+<p>The algorithm optionally allows the user to specify the desired width for frequency bands.  Most radars use either a 300 kHz or 500 kHz bandwidth, so 300 kHz is the default.</p> 
+<p>After processing the frequency information, text lines are written to standard output.</p>
+<p>The program accepts multiple fit files as input. If more than one input file is provided, the program will concatenate them together for processing. Note that only fit files from a single radar site may be concatenated.</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">find_freqband -vb -old 19991120.kap.fit &gt; 19991120.kap.fband</pre></td></tr></table>
+<p>Generate a frequency band file from the old fit file "<code>19991120.kap.fit</code>" and store it in the <code>ascii</code> format file "<code>19991120.kap.fband</code>". Report the status on standard error.</p>
+
+<table ><tr><td class="docbox" ><pre width="80">find_freqband -bandwidth 600 20000510.*.kod.fit &gt; 20000510.kod.fband</pre></td></tr></table>
+<p>Concatenate all the fit files in the current directory to create a frequency band file with 600 kHz frequency bands. Store the output in the <code>ascii</code> format file "<code>20000510.kod.fband</code>".</p>
+
+<table ><tr><td class="docbox" ><pre width="80">find_freqband -tl 120 -old 19981012.gbr.fit &gt; 19981012.gbr.fband</pre></td></tr></table>
+<p>Generate a frequency band file from the fit file "<code>19981012.gbr.fit</code>" using a fixed scan length of 120 seconds. This affects how the data is read in. Store an <code>ascii</code> file in "<code>19981012.gbr.fband</code>"
+</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

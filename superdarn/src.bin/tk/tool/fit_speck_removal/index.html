@@ -1,0 +1,64 @@
+<head>
+<title>fit_speck_removal</title>
+<link rel=stylesheet href="../../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../../superdarn/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/tool/index.html>tool</a></td><td>|</td>
+<td>fit_speck_removal</td>
+<td width=100% align=right><a href=../../../../../superdarn/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">fit_speck_removal</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+fit_speck_removal --help<br>fit_speck_removal [-vb] [-quiet] <em>fitacfname</em><br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Removes salt and pepper noise from a <code>fitacf</code> file.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-vb</code></td><td valign="top">print extra information in the terminal.</td></tr>
+<tr><td width="150" valign="top"><code>-quiet</code></td><td valign="top">prevent statistics from being printed in the terminal.</td></tr>
+<tr><td width="150" valign="top"><code><em>fitacfname</em></code></td><td valign="top">filename of the input <code>fitacf</code>-format file.</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Removes salt and pepper noise from a fitacf file. The quality flag in the center cell of a 3x3 range-time grid is set to zero if the median 
+of the quality flags in the 3x3 grid is zero. This procedure is performed separately for each beam and channel. 
+The output is a fitacf file with the salt and pepper noise removed, but otherwise identical to the input file.</p></td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">fit_speck_removal 20170825.gbr.fitacf &gt 20170825.gbr.despeck.fitacf</pre></td></tr></table>
+<p>Perform the speck removal procedure on the <code>fitacf</code>-format file named "<code>20170825.gbr.fitacf</code>". The output file is called "<code>20170825.gbr.despeck.fitacf</code>".</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

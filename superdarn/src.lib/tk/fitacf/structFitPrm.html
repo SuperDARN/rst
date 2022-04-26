@@ -108,6 +108,16 @@
     </tr>
 
     <tr>
+      <td valign="top"><font size=-1 face="courier">int old;</font></td>
+      <td valign="top">Set to indicate old data that used the 16 lag, 7 pulse code (pre-1993).</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int old_elev;</font></td>
+      <td valign="top">Set to use the old elevation angle routines.</td>
+    </tr>
+
+    <tr>
       <td valign="top"><font size=-1 face="courier">int lag[LAG_SIZE][2];</font></td>
       <td valign="top">Lag table.</td>
     </tr>
@@ -125,6 +135,11 @@
     <tr>
       <td valign="top"><font size=-1 face="courier">double interfer[3];</font></td>
       <td valign="top">the x, y, z position of the interferometer array with respect to the main array. The values are given in meters. X is in the direction parallel to the main array, with +X being to the right looking along the boresite. Y is in the boresite direction, with +Y in front of the array. Z is the vertical displacement, with +Z being up.</td>
+    </tr>
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double bmoff;</font></td>
+      <td valign="top">Electronic beam offset angle.</td>
     </tr>
 
     <tr>
