@@ -31,7 +31,7 @@ Modifications:
 #include "rmath.h"
 #include "fitblk.h"
 
-double elev_goose(struct FitPrm * prm, double phi0) {
+double elev_goose(struct FitPrm *prm, double phi0) {
   int n;
   int cnt=0;
   double k, psi, dchi_cable, temp, sn2_alpha_min, cs_alpha_min;
