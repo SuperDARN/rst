@@ -25,6 +25,7 @@ nav:
 - RST Tutorials: 
     - Data Processing: 
             - RAWACF to FITACF: user_guide/make_fit.md
+            - Despecking FITACF files: user_guide/despecking.md
             - FITACF to GRID: user_guide/make_grid.md
             - GRID to MAP: user_guide/map_grid.md
     - Plotting Data: 

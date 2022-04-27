@@ -2,7 +2,7 @@
  * Author: Marina Schmidt
  *
  * Modifications:
- *
+ *      2022-03-01 Marina Schmidt (USASK), switching intt to int 16  
  * Disclaimer:
  * 
  * This file is part of the Radar Software Toolkit (RST).
@@ -89,7 +89,7 @@ int DatToDmap(struct DataMap *ptr, struct DatData *dat) {
 
     DataMapAddScalar(ptr,"usr_resL2",DATAINT,&dat->PARMS.usr_resL1); 
     DataMapAddScalar(ptr,"usr_resL1",DATAINT,&dat->PARMS.usr_resL2);
-    DataMapAddScalar(ptr,"intt",DATAINT,&dat->PARMS.INTT);
+    DataMapAddScalar(ptr,"intt",DATASHORT,&dat->PARMS.INTT);
 
     DataMapAddScalar(ptr,"usr_resS1",DATASHORT,&dat->PARMS.usr_resS1);
     DataMapAddScalar(ptr,"usr_resS2",DATASHORT,&dat->PARMS.usr_resS2);

@@ -28,8 +28,8 @@ Modifications:
 #include <math.h>
 #include <stdio.h>
 
-#include "fitblk.h"
 #include "rmath.h"
+#include "fitblk.h"
 
 double elev_goose(struct FitPrm *prm, double phi0) {
   int n;

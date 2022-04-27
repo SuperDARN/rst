@@ -185,7 +185,7 @@ struct file_list *locate_files(char *fpath,char *prefix,
   
   for (yr=syr;yr<=eyr;yr++) {
     
-    sprintf(dir,"%s/%.4d",fpath,yr);
+    sprintf(dir,"%s/%.4d",fpath,(double) yr);
    
     status=scandir(dir,&dlist,dsel,alphasort);
     

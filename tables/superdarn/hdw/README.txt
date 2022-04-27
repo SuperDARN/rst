@@ -34,7 +34,7 @@ parameters, their units, and a brief description of their meaning.
     Doppler velocities while backscattered signals with frequencies below
     the transmitted frequency are assigned negative Doppler velocity. This
     convention can be reversed by changes in receiver design or in the
-    data samping rate. This parameter is set to +1 or -1 to maintain the
+    data sampling rate. This parameter is set to +1 or -1 to maintain the
     convention.)
 
 In order to obtain information on the vertical angle of arrival of
