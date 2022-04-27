@@ -31,77 +31,87 @@
 <tr><td class="docsubtitle" valign=top>Members</td></tr>
 <tr><td></td><td width=80% class="docbox"><table>
 
-      
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">int status;</font></td>
+      <td valign="top">Status code of radar site (1 operational, -1 decomissioned).</td>
+    </tr>
+
     <tr>
       <td valign="top"><font size=-1 face="courier">double tval;</font></td>
-      <td valign="top">time at which this .</td>
+      <td valign="top">Time at which this hardware entry became valid.</td>
     </tr>
-    
+
     <tr>
       <td valign="top"><font size=-1 face="courier">double geolat;</font></td>
       <td valign="top">Geographic latitude of site.</td>
     </tr>
-    
+
     <tr>
       <td valign="top"><font size=-1 face="courier">double geolon;</font></td>
       <td valign="top">Geographic longitude of site.</td>
     </tr>
-    
+
     <tr>
       <td valign="top"><font size=-1 face="courier">double alt;</font></td>
       <td valign="top">Altitude of site.</td>
     </tr>
-    
+
     <tr>
       <td valign="top"><font size=-1 face="courier">double boresite;</font></td>
-      <td valign="top">Boresite angle.</td>
+      <td valign="top">Boresight angle.</td>
     </tr>
-    
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double bmoff;</font></td>
+      <td valign="top">Electronic beam offset angle.</td>
+    </tr>
+
     <tr>
       <td valign="top"><font size=-1 face="courier">double bmsep;</font></td>
       <td valign="top">Beam separation angle.</td>
     </tr>
-    
+
     <tr>
       <td valign="top"><font size=-1 face="courier">double vdir;</font></td>
       <td valign="top">Definition of velocity direction. (+1.0 is normal, -1.0 indicates that the I & Q inputs to the receiver are reversed).</td>
     </tr>
-    
+
     <tr>
-      <td valign="top"><font size=-1 face="courier">double atten;</font></td>
-      <td valign="top">Attenuation step in decibels.</td>
+      <td valign="top"><font size=-1 face="courier">double tdiff[2];</font></td>
+      <td valign="top">Time delay in microseconds of the signal from the interferometer array and the main array for each radar channel (up to two channels are allowed).</td>
     </tr>
-    
-    <tr>
-      <td valign="top"><font size=-1 face="courier">double tdiff;</font></td>
-      <td valign="top">Time delay in microseconds of the signal from the interferometer array and the main array.</td>
-    </tr>
-    
+
     <tr>
       <td valign="top"><font size=-1 face="courier">double phidiff;</font></td>
       <td valign="top">Sign of the phase shift of the interferometer array (+1 indicates the inteferometer is in front of the main array).</td>
     </tr>
-    
+
     <tr>
       <td valign="top"><font size=-1 face="courier">double interfer[3];</font></td>
-      <td valign="top">the x, y, z position of the interferometer array with respect to the main array. The values are given in meters. X is in the direction parallel to the main array, with +X being to the right looking along the boresite. Y is in the boresite direction, with +Y in front of the array. Z is the vertical displacement, with +Z being up.</td>           
+      <td valign="top">The x, y, z position of the interferometer array with respect to the main array. The values are given in meters. X is in the direction parallel to the main array, with +X being to the right looking along the boresight. Y is in the boresight direction, with +Y in front of the array. Z is the vertical displacement, with +Z being up.</td>
     </tr>
-    
+
     <tr>
       <td valign="top"><font size=-1 face="courier">double recrise;</font></td>
       <td valign="top">Receiver rise time in microseconds.</td>
     </tr>
-    
+
+    <tr>
+      <td valign="top"><font size=-1 face="courier">double atten;</font></td>
+      <td valign="top">Attenuation step in decibels.</td>
+    </tr>
+
     <tr>
       <td valign="top"><font size=-1 face="courier">int maxatten;</font></td>
       <td valign="top">Maximum number of attenuators.</td>
     </tr>
-    
+
     <tr>
       <td valign="top"><font size=-1 face="courier">int maxrange;</font></td>
       <td valign="top">Maximum theoretical range.</td>
     </tr>
-    
+
     <tr>
       <td valign="top"><font size=-1 face="courier">int maxbeam;</font></td>
       <td valign="top">Maximum theoretical number of beams.</td>

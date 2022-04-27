@@ -25,7 +25,7 @@
 <table>
 <tr><td class="docsubtitle" valign=top>Syntax</td></tr>
 <tr><td></td><td width=80% class="docbox" style="font-family: courier;">
-make_grid --help<br>make_grid [<em>options</em>] <em>fitacfname</em> [<em>inxname</em>]<br>make_grid -old  [<em>options</em>] <em>fitname</em> [<em>inxname</em>]<br>make_grid -cfit [<em>options</em>] <em>cfitname</em><br>make_grid -cfit -old [<em>options</em>] <em>cfitname</em><br>make_grid -c [<em>options</em>] <em>fitacfnames...</em><br>make_grid -c -old [<em>options</em>] <em>fitnames...</em><br>make_grid -c -cfit [<em>options</em>] <em>cfitnames...</em><br>make_grid -c -cfit -old [<em>options</em>] <em>cfitnames...</em><br></td></tr>
+make_grid --help<br>make_grid [<em>options</em>] <em>fitacfname</em> [<em>inxname</em>]<br>make_grid -old  [<em>options</em>] <em>fitname</em> [<em>inxname</em>]<br>make_grid -cfit [<em>options</em>] <em>cfitname</em><br>make_grid -cfit -old [<em>options</em>] <em>cfitname</em><br>make_grid [<em>options</em>] <em>fitacfnames...</em><br>make_grid  -old [<em>options</em>] <em>fitnames...</em><br>make_grid  -cfit [<em>options</em>] <em>cfitnames...</em><br>make_grid  -cfit -old [<em>options</em>] <em>cfitnames...</em><br></td></tr>
 <tr><td class="docsubtitle">Synopsis</td></tr>
 <tr><td></td><td><p>Creates a <code>grid</code> format file for a single radar site from either a <code>fit</code>, <code>fitacf</code> or <code>cfit</code> format file.</p></td></tr>
 
@@ -77,7 +77,7 @@ make_grid --help<br>make_grid [<em>options</em>] <em>fitacfname</em> [<em>inxnam
 <tr><td width="150" valign="top"><code><em>fitname</em></code></td><td valign="top">filename of the <code>fit</code> format file.</td></tr>
 <tr><td width="150" valign="top"><code>-cfit</code></td><td valign="top">the input file is in the <code>cfit</code> format.</td></tr>
 <tr><td width="150" valign="top"><code><em>cfitfname</em></code></td><td valign="top">filename of the <code>cfit</code> format file.</td></tr>
-<tr><td width="150" valign="top"><code>-c</code></td><td valign="top">concatenate multiple input files (from the same radar site).</td></tr>
+<tr><td width="150" valign="top"><code>-c</code></td><td valign="top">concatenate multiple input files (from the same radar site). WARNING: This option will be deprecated in the next RST release. Multiple input files from one radar are now detected and concatenated automatically.</td></tr>
 <tr><td width="150" valign="top"><code><em>fitnames</em></code></td><td valign="top">filenames of the <code>fit</code> format files.</td></tr>
 <tr><td width="150" valign="top"><code><em>fitacfnames</em></code></td><td valign="top">filenames of the <code>fitacf</code> format files.</td></tr>
 <tr><td width="150" valign="top"><code><em>cfitnames</em></code></td><td valign="top">filenames of the <code>cfit</code> format files.</td></tr>
@@ -88,7 +88,7 @@ make_grid --help<br>make_grid [<em>options</em>] <em>fitacfname</em> [<em>inxnam
 <p>The algorithm optionally applies a median filter to the scan data to remove noise. Each range-beam cell together with its immediate neighbors in the current, preceding and following scans is examined. A weighted sum of all the cells containing scatter is calculated and if this sum exceeds a certain threshold, the median data value of the cells is substituted for the central cell. Various command line options control how the filter is applied.</p> 
 <p>Once the data has been filtered, the geo-magnetic location of each line of sight velocity measurement is calculated.  The vectors are then fixed to an equi-area grid to ensure that the data is not biased according to its location in the radar field of view.</p>
 <p>The vectors in each cell are averaged together over a fixed period of time to generate a data record, which is then written to standard output.</p>
-<p>The program operates in two modes. The first operates on a single fit file. The second, specified by the "<code>-c</code>" option will concatenate multiple fit files together for processing. Note that only fit files from a single radar site may be concatenated with this second option; the "combine_grid" routine is still necessary for combining data from different radar sites into a single grid file.</p>
+<p>The program accepts multiple fit files as input. If more than one input file is provided, the program will concatenate them together for processing. Note that only fit files from a single radar site may be concatenated; the "combine_grid" routine is still necessary for combining data from different radar sites into a single grid file.</p>
 <p>In addition to the regular grid file output, the program can also produce "extended" grid files that contain information about the spectral width, power and composition of each data point by specifying the "<code>-xtd</code>" command line option.</p>
 </td></tr>
 <tr><td class="docsubtitle">Examples</td></tr>
@@ -96,7 +96,7 @@ make_grid --help<br>make_grid [<em>options</em>] <em>fitacfname</em> [<em>inxnam
 <table ><tr><td class="docbox" ><pre width="80">make_grid -vb -old 19991120.kap.fit &gt; 19991120.kap.grd</pre></td></tr></table>
 <p>Generate a grid file from the fit file "<code>19991120.kap.fit</code>" and store it in the file "<code>19991120.kap.grd</code>". Report the status on standard error.</p>
 
-<table ><tr><td class="docbox" ><pre width="80">make_grid -c -i 240 -old 20000510.*.kod.fit &gt; 20000510.kod.grd</pre></td></tr></table>
+<table ><tr><td class="docbox" ><pre width="80">make_grid -i 240 -old 20000510.*.kod.fit &gt; 20000510.kod.grd</pre></td></tr></table>
 <p>Concatenate all the fit files in the current directory to create a grid file with a 4-minute record length. Store the output in the file "<code>20000510.kod.grd</code>".</p>
 
 <table ><tr><td class="docbox" ><pre width="80">make_grid -tl 120 -vemax 500 -both -xtd -old 19981012.gbr.fit &gt; 19981012.gbr.grd</pre></td></tr></table>
