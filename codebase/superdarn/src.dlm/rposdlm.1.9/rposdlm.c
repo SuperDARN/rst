@@ -456,9 +456,8 @@ static IDL_VPTR IDLRadarEpochGetSite(int argc,IDL_VPTR *argv) {
     return (IDL_GettmpLong(0));
   if ((iradar->ed_time !=-1) && (tval>iradar->ed_time)) 
     return (IDL_GettmpLong(0));
-  for (s=0;(s<iradar->snum) && (iradar->site[s].tval !=-1) && 
-      (iradar->site[s].tval<tval);s++);
-  if (s==iradar->snum) return (IDL_GettmpLong(0));
+  for (s=0;(s<iradar->snum) && (iradar->site[s].tval<=tval);s++);
+  s=s-1;
 
   isite=IDLRadarMakeSite(&vsite);
 
@@ -523,9 +522,8 @@ static IDL_VPTR IDLRadarYMDHMSGetSite(int argc,IDL_VPTR *argv) {
     return (IDL_GettmpLong(0));
   if ((iradar->ed_time !=-1) && (tval>iradar->ed_time)) 
     return (IDL_GettmpLong(0));
-  for (s=0;(s<iradar->snum) && (iradar->site[s].tval !=-1) && 
-      (iradar->site[s].tval<tval);s++);
-  if (s==iradar->snum) return (IDL_GettmpLong(0));
+  for (s=0;(s<iradar->snum) && (iradar->site[s].tval<=tval);s++);
+  s=s-1;
 
   isite=IDLRadarMakeSite(&vsite);
 

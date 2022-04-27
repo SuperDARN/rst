@@ -38,6 +38,7 @@ Modifications:
 #include "nrfit.h" 
 #include "dmap.h"
 #include "rprm.h"
+#include "radar.h"
 #include "rawdata.h" 
 #include "fitdata.h"
 #include "fitblk.h"
@@ -62,7 +63,7 @@ int lm_dbl_cmp(const void *x,const void *y)
 }
 
 
-void setup_fblk(struct RadarParm *prm, struct RawData *raw,struct FitBlock *input)
+void setup_fblk(struct RadarParm *prm, struct RawData *raw,struct FitBlock *input,struct RadarSite *hd)
 {
   int i,j,n;
   void *tmp=NULL;
@@ -84,6 +85,11 @@ void setup_fblk(struct RadarParm *prm, struct RawData *raw,struct FitBlock *inpu
   input->prm.cp=prm->cp;
   input->prm.channel=prm->channel;
   input->prm.offset=prm->offset; /* stereo offset */
+  if ((input->prm.offset == 0) || (input->prm.channel < 2)) {
+    input->prm.tdiff=hd->tdiff[0];
+  } else {
+    input->prm.tdiff=hd->tdiff[1];
+  }
 
 
   /* need to incorporate Sessai's code for setting the offset
@@ -643,7 +649,8 @@ double getguessex(struct RadarParm *prm,struct RawData *raw,
 }
 
 void lmfit(struct RadarParm *prm,struct RawData *raw,
-              struct FitData *fit, struct FitBlock *fblk, int print)
+           struct FitData *fit, struct FitBlock *fblk,
+           struct RadarSite *hd, int print)
 {
   float minpwr  = 3.0;
   double skynoise = 0.;
@@ -700,7 +707,7 @@ void lmfit(struct RadarParm *prm,struct RawData *raw,
 
 
   /*setup fitblock parameter*/
-  setup_fblk(prm, raw, fblk);
+  setup_fblk(prm, raw, fblk, hd);
 
   FitSetRng(fit,fblk->prm.nrang);
   if(fblk->prm.xcf)

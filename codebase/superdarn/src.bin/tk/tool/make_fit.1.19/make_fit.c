@@ -402,9 +402,9 @@ int main(int argc,char *argv[]) {
       }
   }
   else if (fitacf_version == 25) {
-    fblk = FitACFMake(site,prm->time.yr,prm->channel,prm->offset);
+    fblk = FitACFMake(site,prm->time.yr);
     fblk->prm.old_elev = old_elev;        /* passing in old_elev flag */
-    FitACF(prm,raw,fblk,fit);
+    FitACF(prm,raw,fblk,fit,site);
   }
 
   if (old) {
@@ -500,7 +500,7 @@ int main(int argc,char *argv[]) {
         }
       }
       else if (fitacf_version == 25) {
-        FitACF(prm,raw,fblk,fit);
+        FitACF(prm,raw,fblk,fit,site);
       }
       else {
             fprintf(stderr, "The requested fitacf version does not exist\n");

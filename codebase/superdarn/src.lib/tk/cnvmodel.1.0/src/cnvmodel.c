@@ -54,7 +54,7 @@ char *mod_hemi[6] = {"north","south",0};
 char *mod_tilt[] = {"DP-","DP0","DP+",0};
 char *mod_tilts[] = {"negative","neutral","positive"};
 int   mod_tlti[]  = {-10,10,-1};
-
+struct model *model[2][3][6][8];
 /*
  * RG96 Model bins
  * ---------------
@@ -454,7 +454,7 @@ struct model *interp_coeffs(int ih, float tilt, float mag, float cang, int imod)
   ptr = malloc(sizeof(struct model));
   if (ptr==NULL) return NULL;
 
-  for (i=0; i<3; i++) strcpy(ptr->str[i],model[0][0][0][0]->str[i]);
+  for (i=0; i<3; i++) strcpy(ptr->str[i], model[0][0][0][0]->str[i]);
   ptr->ltop = model[0][0][0][0]->ltop;
   ptr->mtop = model[0][0][0][0]->mtop;
 

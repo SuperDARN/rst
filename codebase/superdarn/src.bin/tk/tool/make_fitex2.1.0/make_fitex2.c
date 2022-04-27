@@ -233,9 +233,9 @@ int main(int argc,char *argv[])
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
 
-  fblk=FitACFMake(site,prm->time.yr,prm->channel,prm->offset);
+  fblk=FitACFMake(site,prm->time.yr);
 
-  fitacfex2(prm,raw,fit,fblk,0);
+  fitacfex2(prm,raw,fit,fblk,site,0);
 
   if (old)
   {
@@ -279,7 +279,7 @@ int main(int argc,char *argv[])
 
 
     if (status==0)
-			fitacfex2(prm,raw,fit,fblk,0);
+			fitacfex2(prm,raw,fit,fblk,site,0);
 
   } while (status==0);
 

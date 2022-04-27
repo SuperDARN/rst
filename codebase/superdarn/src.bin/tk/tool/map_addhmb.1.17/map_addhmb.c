@@ -50,8 +50,7 @@ Modifications:
 struct CnvMapData *map[3];
 struct GridData *grd[3];
 
-float bndarr[24][36]; /* the boundary array sizes correspond to the grid within which the HMB boundary is searched for when determining the HMB from the data: [24 MLT hours] and [36 Geomagnetic Latitudes, ranging from 40 to 76 degrees] */
-float lathmb[36];
+
 int latcnt[36];
 
 struct OptionData opt;
