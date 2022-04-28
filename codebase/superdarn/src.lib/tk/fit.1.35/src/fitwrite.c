@@ -153,7 +153,21 @@ int FitEncode(struct DataMap *ptr,struct RadarParm *prm, struct FitData *fit) {
 
   if (prm->xcf !=0) {
   
-    if (fit->revision.major <= 2) {
+    /* fit.revision.major has values of 4 and 5 in some historical data. 
+       The logic of the if statements below should be changed if a new major
+       version of FitACF is created in the future */
+    
+    if (fit->revision.major==3) {
+      //XCF fitted parameters for FitACF 3
+      phi0=DataMapStoreArray(ptr,"phi0",DATAFLOAT,1,&xnum,NULL);
+      phi0_e=DataMapStoreArray(ptr,"phi0_e",DATAFLOAT,1,&xnum,NULL);
+      elv=DataMapStoreArray(ptr,"elv",DATAFLOAT,1,&xnum,NULL);
+      elv_fitted=DataMapStoreArray(ptr,"elv_fitted",DATAFLOAT,1,&xnum,NULL);
+      elv_error=DataMapStoreArray(ptr,"elv_error",DATAFLOAT,1,&xnum,NULL);
+      
+      x_sd_phi=DataMapStoreArray(ptr,"x_sd_phi",DATAFLOAT,1,&xnum,NULL);
+    } else {
+      //XCF fitted parameters for FitACF 1-2
       x_qflg=DataMapStoreArray(ptr,"x_qflg",DATACHAR,1,&xnum,NULL);
       x_gflg=DataMapStoreArray(ptr,"x_gflg",DATACHAR,1,&xnum,NULL);
   
@@ -179,14 +193,7 @@ int FitEncode(struct DataMap *ptr,struct RadarParm *prm, struct FitData *fit) {
       x_sd_l=DataMapStoreArray(ptr,"x_sd_l",DATAFLOAT,1,&xnum,NULL);
       x_sd_s=DataMapStoreArray(ptr,"x_sd_s",DATAFLOAT,1,&xnum,NULL);
       x_sd_phi=DataMapStoreArray(ptr,"x_sd_phi",DATAFLOAT,1,&xnum,NULL);
-    } else {
-      phi0=DataMapStoreArray(ptr,"phi0",DATAFLOAT,1,&xnum,NULL);
-      phi0_e=DataMapStoreArray(ptr,"phi0_e",DATAFLOAT,1,&xnum,NULL);
-      elv=DataMapStoreArray(ptr,"elv",DATAFLOAT,1,&xnum,NULL);
-      elv_fitted=DataMapStoreArray(ptr,"elv_fitted",DATAFLOAT,1,&xnum,NULL);
-      elv_error=DataMapStoreArray(ptr,"elv_error",DATAFLOAT,1,&xnum,NULL);
-      
-      x_sd_phi=DataMapStoreArray(ptr,"x_sd_phi",DATAFLOAT,1,&xnum,NULL);
+
     }
   }
   
@@ -221,8 +228,18 @@ int FitEncode(struct DataMap *ptr,struct RadarParm *prm, struct FitData *fit) {
         
       /* FitACF v3 does not determine XCF fitted parameters, so only 
          write these data to file for FitACF v1-2. The elevation field 
-         names have also changed */
-        if (fit->revision.major <= 2) {
+         names have also changed. 
+         NB: update if statement logic if new major revision of FitACF
+             is created in the future*/
+        if (fit->revision.major==3) {
+          phi0[x]=fit->xrng[c].phi0;
+          phi0_e[x]=fit->xrng[c].phi0_err;
+          elv[x]=fit->elv[c].normal;
+          elv_fitted[x]=fit->elv[c].fitted;
+          elv_error[x]=fit->elv[c].error;
+
+          x_sd_phi[x]=fit->xrng[c].sdev_phi;
+        } else {
           x_qflg[x]=fit->xrng[c].qflg;
           x_gflg[x]=fit->xrng[c].gsct;
 
@@ -247,14 +264,6 @@ int FitEncode(struct DataMap *ptr,struct RadarParm *prm, struct FitData *fit) {
 
           x_sd_l[x]=fit->xrng[c].sdev_l;
           x_sd_s[x]=fit->xrng[c].sdev_s;
-          x_sd_phi[x]=fit->xrng[c].sdev_phi;
-        } else {
-          phi0[x]=fit->xrng[c].phi0;
-          phi0_e[x]=fit->xrng[c].phi0_err;
-          elv[x]=fit->elv[c].normal;
-          elv_fitted[x]=fit->elv[c].fitted;
-          elv_error[x]=fit->elv[c].error;
-
           x_sd_phi[x]=fit->xrng[c].sdev_phi;
         }
       }

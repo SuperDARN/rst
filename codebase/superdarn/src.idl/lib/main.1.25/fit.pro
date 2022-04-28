@@ -244,41 +244,45 @@ function FitRead,unit,prm,fit
   
   if (prm.xcf ne 0) then begin
     
-    ; XCF fitted parameters for FitACF 1-2 
-    if (arrid[18] ne -1) and (fit.revision.major le 2) then begin
-      fit.x_qflg[slist]= (*(arrvec[arrid[18]].ptr))[*]
-      fit.x_gflg[slist]= (*(arrvec[arrid[19]].ptr))[*]
-      fit.x_p_l[slist]= (*(arrvec[arrid[20]].ptr))[*]
-      fit.x_p_l_e[slist]= (*(arrvec[arrid[21]].ptr))[*]
-      fit.x_p_s[slist]= (*(arrvec[arrid[22]].ptr))[*]
-      fit.x_p_s_e[slist]= (*(arrvec[arrid[23]].ptr))[*]
-      fit.x_v[slist]= (*(arrvec[arrid[24]].ptr))[*]
-      fit.x_v_e[slist]= (*(arrvec[arrid[25]].ptr))[*]
-      fit.x_w_l[slist]= (*(arrvec[arrid[26]].ptr))[*]
-      fit.x_w_l_e[slist]= (*(arrvec[arrid[27]].ptr))[*]
-      fit.x_w_s[slist]= (*(arrvec[arrid[28]].ptr))[*]
-      fit.x_w_s_e[slist]= (*(arrvec[arrid[29]].ptr))[*]
-      fit.phi0[slist]= (*(arrvec[arrid[30]].ptr))[*]
-      fit.phi0_e[slist]= (*(arrvec[arrid[31]].ptr))[*]
-      fit.elv[slist]= (*(arrvec[arrid[32]].ptr))[*]
-      fit.elv_low[slist]= (*(arrvec[arrid[35]].ptr))[*]
-      fit.elv_high[slist]= (*(arrvec[arrid[36]].ptr))[*]
-      fit.x_sd_l[slist]= (*(arrvec[arrid[37]].ptr))[*]
-      fit.x_sd_s[slist]= (*(arrvec[arrid[38]].ptr))[*]
-      fit.x_sd_phi[slist]= (*(arrvec[arrid[39]].ptr))[*]
-    endif
-    
     ; XCF fitted parameters for FitACF 3
-    if (fit.revision.major ge 3) then begin
+    ;   NB: fit.revision.major has values of 4 and 5 in 
+    ;       some historical data. The logic of the if
+    ;       statement below should be changed if a new major
+    ;       version of FitACF is created in the future
+    if (fit.revision.major eq 3) then begin
       fit.phi0[slist]= (*(arrvec[arrid[30]].ptr))[*]
       fit.phi0_e[slist]= (*(arrvec[arrid[31]].ptr))[*]
       fit.elv[slist]= (*(arrvec[arrid[32]].ptr))[*]
       fit.elv_fitted[slist]= (*(arrvec[arrid[33]].ptr))[*]
       fit.elv_error[slist]= (*(arrvec[arrid[34]].ptr))[*]
       fit.x_sd_phi[slist]= (*(arrvec[arrid[39]].ptr))[*]
-    endif
+    endif else begin
     
-
+    ; XCF fitted parameters for FitACF 1-2
+      if (arrid[18] ne -1) then begin
+        fit.x_qflg[slist]= (*(arrvec[arrid[18]].ptr))[*]
+        fit.x_gflg[slist]= (*(arrvec[arrid[19]].ptr))[*]
+        fit.x_p_l[slist]= (*(arrvec[arrid[20]].ptr))[*]
+        fit.x_p_l_e[slist]= (*(arrvec[arrid[21]].ptr))[*]
+        fit.x_p_s[slist]= (*(arrvec[arrid[22]].ptr))[*]
+        fit.x_p_s_e[slist]= (*(arrvec[arrid[23]].ptr))[*]
+        fit.x_v[slist]= (*(arrvec[arrid[24]].ptr))[*]
+        fit.x_v_e[slist]= (*(arrvec[arrid[25]].ptr))[*]
+        fit.x_w_l[slist]= (*(arrvec[arrid[26]].ptr))[*]
+        fit.x_w_l_e[slist]= (*(arrvec[arrid[27]].ptr))[*]
+        fit.x_w_s[slist]= (*(arrvec[arrid[28]].ptr))[*]
+        fit.x_w_s_e[slist]= (*(arrvec[arrid[29]].ptr))[*]
+        fit.phi0[slist]= (*(arrvec[arrid[30]].ptr))[*]
+        fit.phi0_e[slist]= (*(arrvec[arrid[31]].ptr))[*]
+        fit.elv[slist]= (*(arrvec[arrid[32]].ptr))[*]
+        fit.elv_low[slist]= (*(arrvec[arrid[35]].ptr))[*]
+        fit.elv_high[slist]= (*(arrvec[arrid[36]].ptr))[*]
+        fit.x_sd_l[slist]= (*(arrvec[arrid[37]].ptr))[*]
+        fit.x_sd_s[slist]= (*(arrvec[arrid[38]].ptr))[*]
+        fit.x_sd_phi[slist]= (*(arrvec[arrid[39]].ptr))[*]
+      endif
+    endelse
+    
   endif
   st=DataMapFreeScalar(sclvec)
   st=DataMapFreeArray(arrvec)
