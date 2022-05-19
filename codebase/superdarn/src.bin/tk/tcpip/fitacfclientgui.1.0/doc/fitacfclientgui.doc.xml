@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>fitacfclientgui</name>
+<location>src.bin/tk/tcpip/fitacfclientgui</location>
+
+<syntax>fitacfclientgui --help</syntax>
+<syntax>fitacfclientgui <ar>host</ar> <ar>port</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-nrange <ar>nrng</ar></on><od>set the maximum number of range gates to display to <ar>nrng</ar> (default is 75).</od>
+</option>
+<option><on>-color</on><od>display the data stream in color according to the selected parameter (default is power).</od>
+</option>
+<option><on>-p</on><od>plot power.</od>
+</option>
+<option><on>-v</on><od>plot velocity.</od>
+</option>
+<option><on>-w</on><od>plot spectral width.</od>
+</option>
+<option><on>-pmin <ar>pmin</ar></on><od>set the minimum value of the power scale to <ar>pmin</ar>.</od>
+</option>
+<option><on>-pmax <ar>pmax</ar></on><od>set the maximum value of the power scale to <ar>pmax</ar>.</od>
+</option>
+<option><on>-vmin <ar>vmin</ar></on><od>set the minimum value of the velocity scale to <ar>vmin</ar>.</od>
+</option>
+<option><on>-vmax <ar>vmax</ar></on><od>set the maximum value of the velocity scale to <ar>vmax</ar>.</od>
+</option>
+<option><on>-wmin <ar>wmin</ar></on><od>set the minimum value of the spectral width scale to <ar>wmin</ar>.</od>
+</option>
+<option><on>-wmax <ar>wmax</ar></on><od>set the maximum value of the spectral width scale to <ar>wmax</ar>.</od>
+</option>
+<option><on><ar>host</ar></on><od>hostname or IP address of the system to connect to.</od>
+</option>
+<option><on><ar>port</ar></on><od>port number to connect to on the system.</od></option>
+<synopsis><p>Graphical client program for <code>fitacf</code> TCP/IP data streams.</p></synopsis>
+<description><p>Graphical client program for <code>fitacf</code> TCP/IP data streams.</p>
+<p>The program dumps an ASCII representation of the <code>fitacf</code> data stream to standard output.</p>
+</description>
+
+<example>
+<command>fitacfclientgui peanut.jhuapl.edu 1024</command>
+<description>Connect to the host <code>peanut.jhuapl.edu</code> at port 1024 and display the data stream.</description>
+</example>
+
+</binary>
