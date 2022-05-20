@@ -143,16 +143,16 @@ double calc_chisham_vhm(double r, double *hop) {
 }
 
 
-/* Thomas et al [2022] Christmas Valley virtual height model */
+/* Thomas and Shepherd [2022] Christmas Valley virtual height model */
 double calc_cv_vhm(double r, int gs, double *hop) {
 
   double xh;
 
   if (gs) {
     /* Ground scatter virtual height model */
-    double A_const[3]={111.393,378.022,-76.2406};
-    double B_const[3]={-1.65773e-4,-0.14738,0.06854};
-    double C_const[3]={4.26675e-5,6.99712e-5,1.23078e-5};
+    double A_const[3]={111.393,377.059,-98.3996};
+    double B_const[3]={-1.65773e-4,-0.14654,0.08004};
+    double C_const[3]={4.26675e-5,6.97736e-5,1.08429e-5};
 
     *hop=1.0;
 
@@ -164,9 +164,9 @@ double calc_cv_vhm(double r, int gs, double *hop) {
     }
   } else {
     /* Ionospheric scatter virtual height model */
-    double A_const[3]={108.873,341.005,92.9665};
-    double B_const[3]={-0.01444,-0.17484,0.03967};
-    double C_const[3]={1.57806e-4,1.99144e-4,1.59501e-5};
+    double A_const[3]={107.946,344.032,93.6802};
+    double B_const[3]={-0.01041,-0.18124,0.04002};
+    double C_const[3]={1.53713e-4,2.02043e-4,1.57375e-5};
 
     *hop=0.5;
 

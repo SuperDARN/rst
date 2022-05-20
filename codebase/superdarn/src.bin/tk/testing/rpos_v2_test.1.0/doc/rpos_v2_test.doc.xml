@@ -28,7 +28,7 @@
 </option>
 <option><on>-chisham</on><od>use the Chisham et al. [2008] Saskatoon virtual height model.</od>
 </option>
-<option><on>-cv</on><od>use the Thomas et al. [2022] Christmas Valley virtual height model.</od>
+<option><on>-cv</on><od>use the Thomas and Shepherd [2022] Christmas Valley virtual height model.</od>
 </option>
 <option><on>-gs</on><od>use the ground scatter component of the Thomas et al. [2022] Christmas Valley virtual height model.</od>
 </option>
