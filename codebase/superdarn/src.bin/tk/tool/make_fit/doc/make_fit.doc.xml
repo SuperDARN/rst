@@ -5,10 +5,9 @@
 <location>src.bin/tk/tool/make_fit</location>
 
 <syntax>make_fit --help</syntax>
-<syntax>make_fit [<ar>rawacfname</ar>]</syntax>
-<syntax>make_fit [-fitacf-version <ar>version_number</ar>] [<ar>rawacfname</ar>]</syntax>
-<syntax>make_fit -old <ar>rawname</ar> <ar>fitname</ar> [<ar>inxname</ar>]</syntax>
-<syntax>make_fit -old [-fitacf-version <ar>version_number</ar>] <ar>rawname</ar> <ar>fitname</ar> [<ar>inxname</ar>]</syntax>
+<syntax>make_fit -fitting-algorithm <ar>fitting_algorithm</ar> [<ar>rawacfname</ar>]</syntax>
+<syntax>make_fit -old -fitting-algorithm <ar>fitting_algorithm</ar> <ar>rawname</ar> <ar>fitname</ar> [<ar>inxname</ar>]</syntax>
+<syntax>make_fit -old -fitting-algorithm <ar>fitting_algorithm</ar> <ar>rawname</ar> <ar>fitname</ar> [<ar>inxname</ar>]</syntax>
 
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
@@ -16,10 +15,7 @@
 </option>
 <option><on><ar>rawacfname</ar></on><od>filename of the <code>rawacf</code> format file. If this is omitted the file is read from standard input.</od>
 </option>
-<option><on>-fitacf-version</on><od>Select fitacf version.</od>
-</option>
-<option><on><ar>version_number</ar></on><od>Valid choices are 3.0 or 2.5.</od>
-</option>
+<option><on>-fitting-algorithm</on><od>Select which fitting algorithm to use. Valid options are <code>fitacf3</code>, <code>fitacf2</code>, <code>fitex2</code>, <code>fitex1</code>, <code>lmfit1</code></od></option>
 <option><on>-old</on><od>input file is in <code>raw</code> (<code>dat</code>) file format and the output should be in <code>fit</code> file format.</od>
 </option>
 <option><on>-old_elev</on><od>use old elevation angle algorithm(s).</od>
@@ -30,19 +26,35 @@
 </option>
 <option><on>[<ar>inxname</ar>]</on><od>filename of the associated index file to create.</od>
 </option>
-<synopsis><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file.</p></synopsis>
-<description><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file.</p>
-<p>If the "<code>-old</code>" option is not specified then the <code>fitacf</code> format file is written to standard output.</p>
+
+<synopsis><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file using one of the SuperDARN fitting algorithms.</p></synopsis>
+<description><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file. If the "<code>-old</code>" option is not specified then the <code>fitacf</code> format file is written to standard output.</p>
+<p><b>The available fitting algorithms are:</b></p>
+<p><code>fitacf3</code>: Standard SuperDARN fitting algorithm released in 2017. For more detail see https://superdarn.github.io/dawg/files/sup_material/FITACF3_white_paper.pdf and doi:10.1002/essoar.10510616.1</p>
+<p><code>fitacf2</code>: Standard SuperDARN fitting algorithm released in 2006. Ref: ANNALES GEOPHYSICAE, 24, 115–128, doi:10.5194/angeo-24-115-2006, 2006.</p>
+<p><code>fitex2</code>: Phase fitting performed with 120 phase variation models. Ref: RADIO SCIENCE, VOL. 48, 274–282, doi:10.1002/rds.20031, 2013.</p>
+<p><code>fitex1</code>: Phase fitting performed with 120 phase variation models. Ref: RADIO SCIENCE, VOL. 48, 274–282, doi:10.1002/rds.20031, 2013.</p>
+<p><code>lmfit1</code>: A model complex ACF (single component, exponential decay) is fitted to the observed one using the Levenberg-Marquardt algorithm in order to obtain lag 0 power, velocity and spectral width. Ref: RADIO SCIENCE, VOL. 48, 274–282, doi:10.1002/rds.20031, 2013.</p>
 </description>
 
 <example>
-<command>make_fit -vb 19981105.kap.rawacf &gt; 19981105.kap.fitacf</command>
-<description>Generates a fitacf file from the <code>rawacf</code> file "<code>19981105.kap.rawacf</code>" to produce a file called "<code>19981105.kap.fitacf</code>". Status is logged on standard error.</description>
+<command>make_fit -fitting-algorithm fitacf3 -vb 19981105.kap.rawacf &gt; 19981105.kap.fitacf</command>
+<description>Generates a fitacf file using FitACF3.0 from the <code>rawacf</code> file "<code>19981105.kap.rawacf</code>" to produce a file called "<code>19981105.kap.fitacf</code>". Status is logged on standard error.</description>
 </example>
 
 <example>
-<command>make_fit -old 19971020.gbr.dat 19971020gbr.fit 19971020.gbr.inx</command>
-<description>Generates a <code>fit</code> file from the <code>dat</code> file "<code>19971020.gbr.dat</code>" to produce a file called "<code>19971020.gbr.fit</code>" and an index file called "<code>19971020.gbr.inx</code>".</description>
+<command>make_fit -fitting-algorithm fitacf2 19981105.kap.rawacf &gt; 19981105.kap.fitacf</command>
+<description>Generates a fitacf file using FitACF2.5 from the <code>rawacf</code> file "<code>19981105.kap.rawacf</code>" to produce a file called "<code>19981105.kap.fitacf</code>". Status is logged on standard error.</description>
+</example>
+
+<example>
+<command>make_fit -fitting-algorithm fitex2 19981105.kap.rawacf &gt; 19981105.kap.fitacf</command>
+<description>Generates a fitacf file using FitEx2.1 from the <code>rawacf</code> file "<code>19981105.kap.rawacf</code>" to produce a file called "<code>19981105.kap.fitacf</code>". Status is logged on standard error.</description>
+</example>
+
+<example>
+<command>make_fit -fitting-algorithm fitacf2 -old 19971020.gbr.dat 19971020gbr.fit 19971020.gbr.inx</command>
+<description>Generates a <code>fit</code> file using FitACF2.5 from the <code>dat</code> file "<code>19971020.gbr.dat</code>" to produce a file called "<code>19971020.gbr.fit</code>" and an index file called "<code>19971020.gbr.inx</code>".</description>
 </example>
 
 </binary>
