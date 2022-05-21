@@ -24,6 +24,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 Modifications:
   2020-05-07 Marina Schmidt Added Free functions
   E.G.Thomas 2021-08: added support for multi-channel tdiff values
+  2022-05-21 Emma Bland (University Centre in Svalbard) Added support for fitex & lmfit
 */
 
 #include <stdio.h>
@@ -43,9 +44,13 @@ Modifications:
 #include "fitdata.h"
 #include "radar.h"
 
-#include "fitacf.h"
 #include "rawread.h"
 #include "fitwrite.h"
+
+#include "lmfit.h"
+#include "fitacfex2.h"
+#include "fitacfex.h"
+#include "fitacf.h"
 
 #include "oldrawread.h"
 #include "oldfitwrite.h"
@@ -156,8 +161,7 @@ int main(int argc,char *argv[]) {
   char command[128];
   char tmstr[40];
 
-  char* fitacf_version_s = NULL;
-  int fitacf_version = 25;
+  char* fitting_algorithm = NULL;
   FITPRMS *fit_prms = NULL;
 
   /*feenableexcept(FE_INVALID | FE_OVERFLOW);*/
@@ -171,7 +175,7 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"old",'x',&old);
 
-  OptionAdd(&opt,"fitacf-version",'t',&fitacf_version_s);
+  OptionAdd(&opt,"fitting-algorithm",'t',&fitting_algorithm);
 
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
@@ -209,27 +213,36 @@ int main(int argc,char *argv[]) {
   {
       elv_version = 1;
   }
-
-  if (fitacf_version_s != NULL) {
-    if (strcmp(fitacf_version_s, "3.0") == 0){
-      fitacf_version = 30;
-    }
-    else if (strcmp(fitacf_version_s, "2.5") == 0) {
-      fitacf_version = 25;
-    }
-    else {
-      fprintf(stderr, "The requested fitacf version does not exist\n");
-      OptionFree(&opt);
+  
+  
+  /* Check that a valid fitting algorithm has been provided
+     Valid options are: 
+      - fitacf3: FitACF 3.0 (Standard SuperDARN fitting algorithm, actively developed)
+      - fitacf3: FitACF 2.5 (Standard SuperDARN fitting algorithm, maintained but not developed)
+      - lmfit1: (ref: )
+      - fitex2 (ref: )
+      - fitex1 (ref:)
+  */
+  if (fitting_algorithm == NULL) {
+    fprintf(stderr,"Please specify a fitting algorithm\n");
+    OptionFree(&opt);
       exit(-1);
-    }
   }
-
-  if (vb) {
-    fprintf(stderr, "Using fitacf version: %0.1f\n", (float)fitacf_version/10);
+  else if ((strcmp(fitting_algorithm, "fitacf3") == 0) || 
+           (strcmp(fitting_algorithm, "fitacf2") == 0) ||
+           (strcmp(fitting_algorithm, "lmfit1" ) == 0) ||
+           (strcmp(fitting_algorithm, "fitex2" ) == 0) ||
+           (strcmp(fitting_algorithm, "fitex1" ) == 0))
+  {
+    if (vb) fprintf(stderr, "Using fitting algorithm: %s\n", fitting_algorithm);
   }
+  else {
+    fprintf(stderr, "The requested fitting algorithm does not exist\n");
+    OptionFree(&opt);
+      exit(-1);
+  }
+  
 
- 
-  OptionFree(&opt);
   envstr=getenv("SD_RADAR");
   if (envstr==NULL) {
     fprintf(stderr,"Environment variable 'SD_RADAR' must be defined.\n");
@@ -237,7 +250,6 @@ int main(int argc,char *argv[]) {
   }
 
   fp=fopen(envstr,"r");
-
   if (fp==NULL) {
     fprintf(stderr,"Could not locate radar information file.\n");
     exit(-1);
@@ -265,7 +277,6 @@ int main(int argc,char *argv[]) {
       free(envstr);
       exit(-1);
   }
-
 
   prm=RadarParmMake();
   if (prm == NULL)
@@ -341,7 +352,6 @@ int main(int argc,char *argv[]) {
   if (vb)
       fprintf(stderr,"%d-%d-%d %d:%d:%d beam=%d\n",prm->time.yr,prm->time.mo,
 	     prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
-
   fit=FitMake();
   if (fit == NULL)
   {
@@ -351,7 +361,8 @@ int main(int argc,char *argv[]) {
     exit(-1);
   }
 
-  if (fitacf_version == 30){
+  if (strcmp(fitting_algorithm, "fitacf3") == 0) {
+  
       /* Allocate the memory for the FIT parameter structure */
       /* and initialise the values to zero.                  */
       fit_prms = malloc(sizeof(*fit_prms));
@@ -401,10 +412,21 @@ int main(int argc,char *argv[]) {
           exit(-1);
       }
   }
-  else if (fitacf_version == 25) {
+  else if (strcmp(fitting_algorithm, "fitacf2") == 0) {
     fblk = FitACFMake(site,prm->time.yr);
     fblk->prm.old_elev = old_elev;        /* passing in old_elev flag */
     FitACF(prm,raw,fblk,fit,site);
+  }
+  else if (strcmp(fitting_algorithm, "lmfit1") == 0) {
+    fblk=FitACFMake(site,prm->time.yr);
+    lmfit(prm,raw,fit,fblk,site,0);
+  }
+  else if (strcmp(fitting_algorithm, "fitex2") == 0) {
+    fblk=FitACFMake(site,prm->time.yr);
+    fitacfex2(prm,raw,fit,fblk,site,0);
+  }
+  else if (strcmp(fitting_algorithm, "fitex1") == 0) {
+    FitACFex(prm,raw,fit);
   }
 
   if (old) {
@@ -474,7 +496,7 @@ int main(int argc,char *argv[]) {
 
 
     if (status==0){
-      if (fitacf_version == 30) {
+      if (strcmp(fitting_algorithm,"fitacf3") == 0) {
 
         if (Allocate_Fit_Prm(prm, fit_prms) == -1) {
             fprintf(stderr,"Error: cannot allocate space for fitacf record\n");
@@ -499,18 +521,24 @@ int main(int argc,char *argv[]) {
             exit(-1);
         }
       }
-      else if (fitacf_version == 25) {
+      else if (strcmp(fitting_algorithm,"fitacf2") == 0) {
         FitACF(prm,raw,fblk,fit,site);
       }
+      else if (strcmp(fitting_algorithm, "lmfit1") == 0) {
+        lmfit(prm,raw,fit,fblk,site,0);
+      }
+      else if (strcmp(fitting_algorithm, "fitex2") == 0) {
+        fitacfex2(prm,raw,fit,fblk,site,0);
+      }
+      else if (strcmp(fitting_algorithm, "fitex1") == 0) {
+        FitACFex(prm,raw,fit);
+      }
       else {
-            fprintf(stderr, "The requested fitacf version does not exist\n");
-            free_radarstructs(network, prm, raw);
-            free_files(rawfp, fp, NULL, inxfp);
-            free_fitstructs(fit_prms, fit, fblk);
-            exit(-1);
+      fprintf(stderr, "The requested fitting algorithm does not exist\n");
+      OptionFree(&opt);
+      exit(-1);
       }
     }
-
 
   } while (status==0);
 

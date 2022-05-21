@@ -20,6 +20,7 @@
 #along with this program. If not, see <https://www.gnu.org/licenses/>.
 #
 #Modifications:
+#   2022-05-21 Emma Bland (University Centre in Svalbard) Added support for fitex & lmfit
 
 include $(MAKECFG).$(SYSTEM)
 
@@ -30,7 +31,7 @@ SRC=hlpstr.h errstr.h make_fit.c
 
 DSTPATH = $(BINPATH)
 OUTPUT = make_fit
-LIBS=-loldraw.1 -loldfit.1 -lcfit.1 -lrscan.1 -lradar.1 -lfitacf.1 -lfitacf.3.0 -lelevation.1 -lraw.1 -lfit.1 -ldmap.1 -lopt.1 -lrtime.1 -lrcnv.1 
+LIBS=-loldraw.1 -loldfit.1 -lcfit.1 -lrscan.1 -lradar.1 -lfitacf.1 -lfitacf.3.0 -lfitacfex2.1 -lfitacfex.1 -llmfit.1 -lelevation.1 -lraw.1 -lfit.1 -ldmap.1 -lopt.1 -lrtime.1 -lrcnv.1 -lrmath.1 -lmpfit.1
 SLIB=-lm -lz -lpthread
  
 
