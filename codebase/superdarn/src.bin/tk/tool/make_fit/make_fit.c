@@ -423,6 +423,7 @@ int main(int argc,char *argv[]) {
   }
   else if (strcmp(fitting_algorithm, "fitex2") == 0) {
     fblk=FitACFMake(site,prm->time.yr);
+    fblk->prm.old_elev = old_elev;
     fitacfex2(prm,raw,fit,fblk,site,0);
   }
   else if (strcmp(fitting_algorithm, "fitex1") == 0) {
