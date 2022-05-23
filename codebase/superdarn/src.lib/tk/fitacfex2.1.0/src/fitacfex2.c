@@ -2,7 +2,7 @@
 /* fitacfex2.c
 ==========
 TODO: Add copyright statment 
-Algorithm: R.A.Greenwald, K.Oskavik
+Algorithm: R.A.Greenwald, K.Oksavik
 Implementation: R.J.Barnes, R.A.Greenwald
 
 Copyright (C) <year>  <name of author>
