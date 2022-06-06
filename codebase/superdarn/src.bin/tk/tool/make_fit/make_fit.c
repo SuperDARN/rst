@@ -25,6 +25,7 @@ Modifications:
   2020-05-07 Marina Schmidt Added Free functions
   E.G.Thomas 2021-08: added support for multi-channel tdiff values
   2022-05-21 Emma Bland (University Centre in Svalbard) Added support for fitex & lmfit
+  2022-06-06 Emma Bland (UNIS) Changed command line implementation for calling fitting algorithms
 */
 
 #include <stdio.h>
@@ -161,7 +162,12 @@ int main(int argc,char *argv[]) {
   char command[128];
   char tmstr[40];
 
-  char* fitting_algorithm = NULL;
+  int fitacf3 = 0;
+  int fitacf2 = 0;
+  int lmfit1 = 0;
+  int fitex2 = 0;
+  int fitex1 = 0;
+  
   FITPRMS *fit_prms = NULL;
 
   /*feenableexcept(FE_INVALID | FE_OVERFLOW);*/
@@ -175,8 +181,11 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"old",'x',&old);
 
-  OptionAdd(&opt,"fitting-algorithm",'t',&fitting_algorithm);
-
+  OptionAdd(&opt,"fitacf3",'x',&fitacf3);
+  OptionAdd(&opt,"fitacf2",'x',&fitacf2);
+  OptionAdd(&opt,"lmfit1",'x',&lmfit1);
+  OptionAdd(&opt,"fitex2",'x',&fitex2);
+  OptionAdd(&opt,"fitex1",'x',&fitex1);
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
   if (arg==-1) {
@@ -215,33 +224,18 @@ int main(int argc,char *argv[]) {
   }
   
   
-  /* Check that a valid fitting algorithm has been provided
-     Valid options are: 
-      - fitacf3: FitACF 3.0 (Standard SuperDARN fitting algorithm, actively developed)
-      - fitacf3: FitACF 2.5 (Standard SuperDARN fitting algorithm, maintained but not developed)
-      - lmfit1: (ref: )
-      - fitex2 (ref: )
-      - fitex1 (ref:)
-  */
-  if (fitting_algorithm == NULL) {
+  // Check that a valid fitting algorithm has been provided
+  if (!fitacf3 && !fitacf2 && !lmfit1 && !fitex2 && !fitex1) {
     fprintf(stderr,"Please specify a fitting algorithm\n");
     OptionFree(&opt);
       exit(-1);
   }
-  else if ((strcmp(fitting_algorithm, "fitacf3") == 0) || 
-           (strcmp(fitting_algorithm, "fitacf2") == 0) ||
-           (strcmp(fitting_algorithm, "lmfit1" ) == 0) ||
-           (strcmp(fitting_algorithm, "fitex2" ) == 0) ||
-           (strcmp(fitting_algorithm, "fitex1" ) == 0))
-  {
-    if (vb) fprintf(stderr, "Using fitting algorithm: %s\n", fitting_algorithm);
-  }
-  else {
-    fprintf(stderr, "The requested fitting algorithm does not exist\n");
+  // Check that only one fitting algorithm has been provided
+  if ((fitacf3 + fitacf2 + lmfit1 + fitex2 + fitex1) > 1) {
+    fprintf(stderr,"Please specify only one fitting algorithm\n");
     OptionFree(&opt);
       exit(-1);
   }
-  
 
   envstr=getenv("SD_RADAR");
   if (envstr==NULL) {
@@ -361,7 +355,7 @@ int main(int argc,char *argv[]) {
     exit(-1);
   }
 
-  if (strcmp(fitting_algorithm, "fitacf3") == 0) {
+  if (fitacf3) {
   
       /* Allocate the memory for the FIT parameter structure */
       /* and initialise the values to zero.                  */
@@ -412,20 +406,20 @@ int main(int argc,char *argv[]) {
           exit(-1);
       }
   }
-  else if (strcmp(fitting_algorithm, "fitacf2") == 0) {
+  else if (fitacf2) {
     fblk = FitACFMake(site,prm->time.yr);
     fblk->prm.old_elev = old_elev;        /* passing in old_elev flag */
     FitACF(prm,raw,fblk,fit,site);
   }
-  else if (strcmp(fitting_algorithm, "lmfit1") == 0) {
+  else if (lmfit1) {
     fblk=FitACFMake(site,prm->time.yr);
     lmfit(prm,raw,fit,fblk,site,0);
   }
-  else if (strcmp(fitting_algorithm, "fitex2") == 0) {
+  else if (fitex2) {
     fblk=FitACFMake(site,prm->time.yr);
     fitacfex2(prm,raw,fit,fblk,site,0);
   }
-  else if (strcmp(fitting_algorithm, "fitex1") == 0) {
+  else if (fitex1) {
     FitACFex(prm,raw,fit);
   }
 
@@ -496,7 +490,7 @@ int main(int argc,char *argv[]) {
 
 
     if (status==0){
-      if (strcmp(fitting_algorithm,"fitacf3") == 0) {
+      if (fitacf3) {
 
         if (Allocate_Fit_Prm(prm, fit_prms) == -1) {
             fprintf(stderr,"Error: cannot allocate space for fitacf record\n");
@@ -521,16 +515,16 @@ int main(int argc,char *argv[]) {
             exit(-1);
         }
       }
-      else if (strcmp(fitting_algorithm,"fitacf2") == 0) {
+      else if (fitacf2) {
         FitACF(prm,raw,fblk,fit,site);
       }
-      else if (strcmp(fitting_algorithm, "lmfit1") == 0) {
+      else if (lmfit1) {
         lmfit(prm,raw,fit,fblk,site,0);
       }
-      else if (strcmp(fitting_algorithm, "fitex2") == 0) {
+      else if (fitex2) {
         fitacfex2(prm,raw,fit,fblk,site,0);
       }
-      else if (strcmp(fitting_algorithm, "fitex1") == 0) {
+      else if (fitex1) {
         FitACFex(prm,raw,fit);
       }
       else {
