@@ -23,7 +23,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
-
+    2022-06-06 Emma Bland (UNIS): Updated fit_prms->tdiff to match new hardware file format
 
 */
 
@@ -151,7 +151,11 @@ void Copy_Fitting_Prms(struct RadarSite *radar_site, struct RadarParm *radar_prm
     fit_prms->interfer_z=radar_site->interfer[2];
     fit_prms->bmsep=radar_site->bmsep;
     fit_prms->phidiff=radar_site->phidiff;
-    fit_prms->tdiff=radar_site->tdiff;
+    if ((radar_prms->offset == 0) || (radar_prms->channel < 2)) {
+      fit_prms->tdiff=radar_site->tdiff[0];
+    } else {
+      fit_prms->tdiff=radar_site->tdiff[1];
+    }
     fit_prms->vdir=radar_site->vdir;
     fit_prms->maxbeam=radar_site->maxbeam;
     fit_prms->xcf=radar_prms->xcf;
