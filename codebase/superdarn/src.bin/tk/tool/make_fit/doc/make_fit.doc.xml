@@ -24,12 +24,7 @@
 
 <synopsis><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file using one of the SuperDARN fitting algorithms.</p></synopsis>
 <description><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file. If the "<code>-old</code>" option is not specified then the <code>fitacf</code> format file is written to standard output.</p>
-<p><b>The available fitting algorithms are:</b></p>
-<p><code>fitacf3</code>: Standard SuperDARN fitting algorithm released in 2017. Ref: https://superdarn.github.io/dawg/files/sup_material/FITACF3_white_paper.pdf and doi:10.1002/essoar.10510616.1</p>
-<p><code>fitacf2</code>: Standard SuperDARN fitting algorithm released in 2006. Ref: ANNALES GEOPHYSICAE, 24, 115–128, doi:10.5194/angeo-24-115-2006, 2006.</p>
-<p><code>fitex2</code>: Phase fitting performed with 120 phase variation models. Ref: RADIO SCIENCE, VOL. 48, 274–282, doi:10.1002/rds.20031, 2013.</p>
-<p><code>fitex1</code>: Phase fitting performed with 120 phase variation models. Ref: RADIO SCIENCE, VOL. 48, 274–282, doi:10.1002/rds.20031, 2013.</p>
-<p><code>lmfit1</code>: A model complex ACF (single component, exponential decay) is fitted to the observed one using the Levenberg-Marquardt algorithm in order to obtain lag 0 power, velocity and spectral width. Ref: RADIO SCIENCE, VOL. 48, 274–282, doi:10.1002/rds.20031, 2013.</p>
+<p><b>More information about each fitting algorithm is available at https://radar-software-toolkit-rst.readthedocs.io/en/latest/user_guide/make_fit/</b></p>
 </description>
 
 <example>
