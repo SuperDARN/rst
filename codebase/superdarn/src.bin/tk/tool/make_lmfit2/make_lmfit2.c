@@ -25,7 +25,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
-
+    2022-06-06 Emma Bland (UNIS) Replaced -new command line option with -old
 */
 
 #include <stdio.h>
@@ -70,17 +70,7 @@ struct OptionData opt;
 
 int main(int argc,char *argv[]) {
 
-  /* File format transistion
-   * ------------------------
-   * 
-   * When we switch to the new file format remove any reference
-   * to "new". Change the command line option "new" to "old" and
-   * remove "old=!new".
-   */
-
-
   unsigned char old=0;
-  unsigned char new=0;
 
   char *envstr;
   int status;
@@ -115,11 +105,9 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"vb",'x',&vb);
 
-  OptionAdd(&opt,"new",'x',&new);
+  OptionAdd(&opt,"old",'x',&old);
 
   arg=OptionProcess(1,argc,argv,&opt,NULL);
-
-  old=!new;
 
   if (help==1) {
     OptionPrintInfo(stdout,hlpstr);
