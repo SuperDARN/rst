@@ -21,7 +21,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 Modifications:
 
 
-/
+*/
 
 #ifndef _error_estimates_H
 #define _error_estimates_H
