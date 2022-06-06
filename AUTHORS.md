@@ -22,7 +22,7 @@ The RST is now maintained collaboratively by the SuperDARN Data Analysis Working
 - E.D.P. Cousins, CS10 and PSR10 convection models
 - K. Kotyk, FITACF_v3
 - P.V. Ponomarenko, DAWG Chair (2013-2019), FITACF_v2, FITACF_v3, data simulator library
-- A.S. Reimer, refactorization, documentation, bugfixes
+- A.S. Reimer, LMFIT_v2, refactorization, documentation, bugfixes
 - A.J. Ribeiro, FITEX2, LMFIT, data simulator library
 - M.T. Schmidt, refactorization, documentation, enhancements, bugfixes
 - S.G. Shepherd, AACGM_v2, MLT_v2, IGRF_v2, elevation_v2, TS18 convection model
