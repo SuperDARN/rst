@@ -22,9 +22,8 @@
 <option><on><ar>fitname</ar></on><od>filename of the <code>fit</code> format file to create.</od></option>
 <option><on>[<ar>inxname</ar>]</on><od>filename of the associated index file to create.</od></option>
 
-<synopsis><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file using one of the SuperDARN fitting algorithms.</p></synopsis>
+<synopsis><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file using one of the SuperDARN fitting algorithms. A description of each fitting algorithm is available at https://radar-software-toolkit-rst.readthedocs.io/en/latest/user_guide/make_fit/</p></synopsis>
 <description><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file. If the "<code>-old</code>" option is not specified then the <code>fitacf</code> format file is written to standard output.</p>
-<p><b>More information about each fitting algorithm is available at https://radar-software-toolkit-rst.readthedocs.io/en/latest/user_guide/make_fit/</b></p>
 </description>
 
 <example>
