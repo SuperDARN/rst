@@ -366,9 +366,16 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
       grd->data[n].vel.sd=adata[25]->data.fptr[n];
 
       if (adata[26] !=NULL) grd->data[n].pwr.median=adata[26]->data.fptr[n];
+      else                  grd->data[n].pwr.median=0;
+
       if (adata[27] !=NULL) grd->data[n].pwr.sd=adata[27]->data.fptr[n];
+      else                  grd->data[n].pwr.sd=0;
+
       if (adata[28] !=NULL) grd->data[n].wdt.median=adata[28]->data.fptr[n];
+      else                  grd->data[n].wdt.median=0;
+
       if (adata[29] !=NULL) grd->data[n].wdt.sd=adata[29]->data.fptr[n];
+      else                  grd->data[n].wdt.sd=0;
     }
   }
 
