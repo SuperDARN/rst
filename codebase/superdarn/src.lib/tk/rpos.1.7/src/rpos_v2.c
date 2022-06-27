@@ -53,10 +53,10 @@ void RPosGeo_v2(int center, int bcrd, int rcrd, struct RadarSite *pos,
   double d,rx;
   double azi,elv,vh,grng;
   double rrad,rlat,rlon,del;
-  double range_edge=0;
+  double range_edge=0.0;
   int pseudo=0;
 
-  if (center==0) range_edge=-0.5*rsep*20/3;
+  if (center==0) range_edge=-0.5*rsep*20.0/3.0;
 
   if (rxrise==0) rx=pos->recrise;
   else rx=rxrise;
@@ -216,7 +216,7 @@ double calc_coning_angle(struct RadarSite *pos, int bmnum, double elv,
                          int center, int rear) {
 
   double azi,offset,psi;
-  double bm_edge=0;
+  double bm_edge=0.0;
 
   if (center==0) bm_edge=-pos->bmsep*0.5;
 
