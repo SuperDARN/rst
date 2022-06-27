@@ -40,10 +40,10 @@ Modifications:
  * elevation angle from the radar. If center is not equal to zero, then
  * the calculation is assumed to be for the center of the cell, not the
  * edge. The calculated values are returned in geocentric spherical
- * coordinates (rho,lat,long). If model is equal to one the Chisham
- * et al [2008] virtual height model is used; if model is equal to
- * two the Thomas and Shepherd [2022] virtual height model is used;
- * otherwise,the standard virtual height model is used.
+ * coordinates (rho,lat,long). If model is equal to
+ *   1 : the Chisham et al [2008] virtual height model is used;
+ *   2 : the Thomas and Shepherd [2022] virtual height model is used;
+ *   otherwise, the standard virtual height model is used.
  **/
 void RPosGeo_v2(int center, int bcrd, int rcrd, struct RadarSite *pos,
                 int frang, int rsep, int rxrise, double height,
@@ -119,7 +119,7 @@ double calc_standard_vhm(double r, double fh) {
 }
 
 
-/* Chisham et al [2008] virtual height model */
+/* Chisham et al [2008] Saskatoon virtual height model */
 double calc_chisham_vhm(double r, double *hop) {
 
   double xh;
@@ -245,7 +245,7 @@ double calc_ground_range(double r, double xh, double hop) {
 
 
 /* Calculate the destination latitude and longitude for a great circle
- * path with a given start lattiude/longitude position, distance, and
+ * path with a given start latitude/longitude position, distance, and
  * azimuth */
 void gc_destination(double lat1, double lon1, double d, double azi,
                     double *lat2, double *lon2) {
