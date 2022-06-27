@@ -85,7 +85,7 @@ int main (int argc,char *argv[]) {
   int stid=1;
   int bm=7;
   int rn=20;
-  double height=300;
+  double height=300.0;
   int frang=180;
   int rsep=45;
   int rx=0;
