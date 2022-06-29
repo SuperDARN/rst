@@ -176,6 +176,11 @@ int main (int argc,char *argv[]) {
   radar=RadarGetRadar(network,stid);
   site=RadarYMDHMSGetSite(radar,yr,mo,dy,0,0,0);
 
+  if (site==NULL) {
+    fprintf(stderr,"Radar station ID (%d) and date (%4d%02d%02d) combination not valid.\n",stid,yr,mo,dy);
+    exit(-1);
+  }
+
   if (standard) model=0;
   else if (chisham) model=1;
   else if (cv) model=2;
