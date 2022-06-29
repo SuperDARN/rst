@@ -149,7 +149,7 @@ double calc_cv_vhm(double r, int gs, double *hop) {
   double xh;
 
   if (gs) {
-    /* Ground scatter virtual height model */
+    /* Ground scatter virtual height model (1E, 1F, 2F) */
     double A_const[3]={111.393,377.059,-98.3996};
     double B_const[3]={-1.65773e-4,-0.14654,0.08004};
     double C_const[3]={4.26675e-5,6.97736e-5,1.08429e-5};
@@ -163,7 +163,7 @@ double calc_cv_vhm(double r, int gs, double *hop) {
       *hop=2.0;
     }
   } else {
-    /* Ionospheric scatter virtual height model */
+    /* Ionospheric scatter virtual height model (0.5E, 0.5F, 1.5F) */
     double A_const[3]={107.946,344.032,93.6802};
     double B_const[3]={-0.01041,-0.18124,0.04002};
     double C_const[3]={1.53713e-4,2.02043e-4,1.57375e-5};
