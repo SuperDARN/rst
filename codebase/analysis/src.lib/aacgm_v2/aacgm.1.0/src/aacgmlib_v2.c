@@ -37,6 +37,8 @@
 ; AACGM_v2_SetDateTime
 ; AACGM_v2_GetDateTime
 ; AACGM_v2_SetNow
+; AACGM_v2_SetLock
+; AACGM_v2_GetLock
 ; AACGM_v2_errmsg
 ;
 
@@ -69,7 +71,8 @@ static struct {
   int second;
   int dayno;
   int daysinyear;
-} aacgm_date = {-1,-1,-1,-1,-1,-1,-1,-1};
+  int lock;
+} aacgm_date = {-1,-1,-1,-1,-1,-1,-1,-1,-1};
 
 static int myear = 0;       /* model year: 5-year epoch */
 static double fyear = 0.;   /* floating point year */
@@ -1205,6 +1208,62 @@ int AACGM_v2_SetNow(void)
   err = AACGM_v2_TimeInterp();
 
   return err;
+}
+
+/*-----------------------------------------------------------------------------
+;
+; NAME:
+;       AACGM_v2_SetLock
+;
+; PURPOSE:
+;       Function to set lock, which can be used to prevent extra date and time
+;       checks when performing MLT_v2 conversions.
+;
+; CALLING SEQUENCE:
+;       err = AACGM_v2_SetLock(lock);
+;
+;     Input Arguments:
+;       lock          - lock [-1 or 1]
+;
+;     Return Value:
+;       error code
+;
+;+-----------------------------------------------------------------------------
+*/
+
+int AACGM_v2_SetLock(int lock)
+{
+  aacgm_date.lock = lock;
+
+  return 0;
+}
+
+/*-----------------------------------------------------------------------------
+;
+; NAME:
+;       AACGM_v2_GetLock
+;
+; PURPOSE:
+;       Function to get lock, which can be used to prevent extra date and time
+;       checks when performing MLT_v2 conversions.
+;
+; CALLING SEQUENCE:
+;       err = AACGM_v2_GetLock(lock);
+;
+;     Output Arguments (integer pointer):
+;       lock          - lock [-1 or 1]
+;
+;     Return Value:
+;       error code
+;
+;+-----------------------------------------------------------------------------
+*/
+
+int AACGM_v2_GetLock(int *lock)
+{
+  *lock = aacgm_date.lock;
+
+  return 0;
 }
 
 /*-----------------------------------------------------------------------------

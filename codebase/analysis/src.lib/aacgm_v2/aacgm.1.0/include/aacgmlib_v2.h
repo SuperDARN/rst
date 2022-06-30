@@ -63,6 +63,8 @@ int AACGM_v2_SetDateTime(int year, int month, int day,
                          int hour, int minute, int second);
 int AACGM_v2_GetDateTime(int *year, int *month, int *day,
                          int *hour, int *minute, int *second, int *dayno);
+int AACGM_v2_SetLock(int lock);
+int AACGM_v2_GetLock(int *lock);
 int AACGM_v2_SetNow(void);
 
 #endif

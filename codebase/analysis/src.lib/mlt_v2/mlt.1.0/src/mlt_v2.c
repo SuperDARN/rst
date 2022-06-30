@@ -87,7 +87,7 @@ struct {
 double MLTConvert_v2(int yr, int mo, int dy, int hr, int mt ,int sc,
                       double mlon)
 {
-  int err;
+  int err,lock;
   int ayr,amo,ady,ahr,amt,asc,adyn;
   double dd,jd,eqt,dec,ut,at;
   double slon,mlat,r;
@@ -101,14 +101,17 @@ double MLTConvert_v2(int yr, int mo, int dy, int hr, int mt ,int sc,
     err = AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,sc);
     if (err != 0) return (err);
   } else {
-    /* If date/time passed into function differs from AACGM data/time by more
-     * than 30 days, recompute the AACGM-v2 coefficients */
-    ajd = TimeYMDHMSToJulian(ayr,amo,ady,ahr,amt,asc);
-    jd =  TimeYMDHMSToJulian(yr,mo,dy,hr,mt,sc);
-    if (abs((int)(jd-ajd)) > 30) {
-      err = AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,sc);
+    AACGM_v2_GetLock(&lock);
+    if (lock != 1) {
+      /* If date/time passed into function differs from AACGM data/time by more
+       * than 30 days, recompute the AACGM-v2 coefficients */
+      ajd = TimeYMDHMSToJulian(ayr,amo,ady,ahr,amt,asc);
+      jd =  TimeYMDHMSToJulian(yr,mo,dy,hr,mt,sc);
+      if (abs((int)(jd-ajd)) > 30) {
+        err = AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,sc);
+      }
+      if (err != 0) return (err);
     }
-    if (err != 0) return (err);
   }
 
 /* check for bad input, which can come from undefined region, and return NAN */
