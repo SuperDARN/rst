@@ -240,6 +240,8 @@ int main(int argc,char *argv[]) {
   if (old_aacgm) MLTCnv = &MLTConvertYrsec;
   else           MLTCnv = &MLTConvertYrsec_v2;
 
+  if (!old_aacgm) AACGM_v2_Lock();
+
   if (sh==1) map->hemisphere=-1;
 
   if (empty) {
