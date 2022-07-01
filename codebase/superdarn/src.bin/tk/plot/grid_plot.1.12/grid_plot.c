@@ -931,7 +931,10 @@ int main(int argc,char *argv[]) {
     s = (*Grid_Read)(fp,rgrid);
   }
  
-  if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc); /* required */
+  if (!old_aacgm) {
+    AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc); /* required */
+    if (magflg) AACGM_v2_Lock();
+  }
 
   if (!sqflg) clip=MapCircleClip(10);
   else clip=MapSquareClip();

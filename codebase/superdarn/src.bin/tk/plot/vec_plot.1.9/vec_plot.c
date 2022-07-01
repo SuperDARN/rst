@@ -630,7 +630,10 @@ int main(int argc,char *argv[]) {
 
       yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,sc);
 
-      if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc); /* required */
+      if (!old_aacgm) {
+        AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc); /* required */
+        AACGM_v2_Lock();
+      }
 
       if (mlon_av_cnt !=0) {
         mlon_av_val=mlon_av_val/mlon_av_cnt;

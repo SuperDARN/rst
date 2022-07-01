@@ -844,7 +844,10 @@ int main(int argc,char *argv[]) {
 
   noigrf = rcmap->noigrf;
   if (!noigrf)    IGRF_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
-  if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc); /* required */
+  if (!old_aacgm) {
+    AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc); /* required */
+    if (magflg) AACGM_v2_Lock();
+  }
 
   if (!sqflg) clip=MapCircleClip(10);
   else clip=MapSquareClip();
