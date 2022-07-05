@@ -39,7 +39,7 @@
 ; AACGM_v2_SetNow
 ; AACGM_v2_Lock
 ; AACGM_v2_Unlock
-; AACGM_v2_GetLock
+; AACGM_v2_Locked
 ; AACGM_v2_errmsg
 ;
 
@@ -1264,14 +1264,14 @@ int AACGM_v2_Unlock(void)
 /*-----------------------------------------------------------------------------
 ;
 ; NAME:
-;       AACGM_v2_GetLock
+;       AACGM_v2_Locked
 ;
 ; PURPOSE:
 ;       Function to get lock status, which can be used to either enforce or
 ;       prevent extra date and time checks when performing MLT_v2 conversions.
 ;
 ; CALLING SEQUENCE:
-;       locked = AACGM_v2_GetLock();
+;       locked = AACGM_v2_Locked();
 ;
 ;     Return Value:
 ;       lock status
@@ -1279,7 +1279,7 @@ int AACGM_v2_Unlock(void)
 ;+-----------------------------------------------------------------------------
 */
 
-int AACGM_v2_GetLock(void)
+int AACGM_v2_Locked(void)
 {
   return (aacgm_date.locked);
 }

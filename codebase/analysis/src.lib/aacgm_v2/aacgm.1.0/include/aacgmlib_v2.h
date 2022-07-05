@@ -66,7 +66,7 @@ int AACGM_v2_GetDateTime(int *year, int *month, int *day,
 int AACGM_v2_SetNow(void);
 int AACGM_v2_Lock(void);
 int AACGM_v2_Unlock(void);
-int AACGM_v2_GetLock(void);
+int AACGM_v2_Locked(void);
 
 #endif
 
