@@ -300,7 +300,8 @@ int main(int argc,char *argv[])
         for (j=0; j<nlat; j++) latcnt[j] = 0;
         for (i=0; i<grd[buf]->vcnum; i++) {
         
-          if (fabs(grd[buf]->data[i].vel.median) < vel_min || grd[buf]->data[i].wdt.median < wdt_min) continue;
+          if ( (fabs(grd[buf]->data[i].vel.median) < vel_min) ||
+               ((grd[buf]->xtd) && (grd[buf]->data[i].wdt.median < wdt_min)) ) continue;
 
           /* if on the exclusion list ignore this data */
 
