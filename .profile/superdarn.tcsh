@@ -4,6 +4,7 @@
 setenv ISTP_PATH "/data/istp"
 
 setenv SD_HDWPATH "${RSTPATH}/tables/superdarn/hdw/"
+setenv SD_TDIFFPATH "${RSTPATH}/tables/superdarn/tdiff/"
 setenv SD_RADAR "${RSTPATH}/tables/superdarn/radar.dat"
 
 setenv AACGM_DAT_PREFIX ${RSTPATH}"/tables/analysis/aacgm/aacgm_coeffs"
