@@ -611,11 +611,8 @@ void fitacfex2(struct RadarParm *prm, struct RawData *raw,
           /* use old elevation angle routines 
              NB: elev_goose() has never been used in fitacfex2 */
              fit->elv[R].normal = elevation(&fblk->prm,phi0);
-           
-          /* TODO This is just calculating the elevation angle again. 
-             Need to determine phi0_error.*/
-             fit->elv[R].high = elevation(&fblk->prm,phi0);
-             fit->elv[R].low = elevation(&fblk->prm,phi0);
+             fit->elv[R].high = 0.; // no error calculation since we don't have phi0_error
+             fit->elv[R].low = 0.;  // no error calculation since we don't have phi0_error
           }
           else {
             /* use the Shepherd elevation angle routine */
