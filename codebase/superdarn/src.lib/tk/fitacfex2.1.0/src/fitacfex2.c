@@ -1,11 +1,11 @@
 
 /* fitacfex2.c
-   ==========
-   TODO: Add copyright statment 
-   Algorithm: R.A.Greenwald, K.Oskavik
-   Implementation: R.J.Barnes, R.A.Greenwald
+==========
+TODO: Add copyright statment 
+Algorithm: R.A.Greenwald, K.Oksavik
+Implementation: R.J.Barnes, R.A.Greenwald
 
-   Copyright (C) <year>  <name of author>
+Copyright (C) <year>  <name of author>
 
 This file is part of the Radar Software Toolkit (RST).
 
@@ -23,17 +23,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
-
-   RST is free software: you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
-   
-   This program is distributed in the hope that it will be useful,
-   GNU General Public License for more details.
-   
-   You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+    Emma Bland 22-05-2022 (University Centre in Svalbard) Added Shepherd elevation angle algorithm
 
 */
 
@@ -614,10 +604,22 @@ void fitacfex2(struct RadarParm *prm, struct RawData *raw,
 
           }
           phi0 = calc_phi0(good_lags,xcf_phases, w_guess, goodcnt)*PI/180.;
+          //TODO calculate phi0_error
           fit->xrng[R].phi0 = phi0;
-          fit->elv[R].normal = elevation(&fblk->prm,phi0);
-          fit->elv[R].high = elevation(&fblk->prm,phi0);
-          fit->elv[R].low = elevation(&fblk->prm,phi0);
+          
+          if (fblk->prm.old_elev) {
+          /* use old elevation angle routines 
+             NB: elev_goose() has never been used in fitacfex2 */
+             fit->elv[R].normal = elevation(&fblk->prm,phi0);
+             fit->elv[R].high = 0.; // no error calculation since we don't have phi0_error
+             fit->elv[R].low = 0.;  // no error calculation since we don't have phi0_error
+          }
+          else {
+            /* use the Shepherd elevation angle routine */
+            fit->elv[R].normal = elevation_v2(&fblk->prm,phi0);
+            fit->elv[R].high = 0.; // no error calculation since we don't have phi0_error
+            fit->elv[R].low = 0.;  // no error calculation since we don't have phi0_error
+          }
         }
         else
           {
