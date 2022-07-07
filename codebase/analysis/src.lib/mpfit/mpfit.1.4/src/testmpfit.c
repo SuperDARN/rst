@@ -12,7 +12,7 @@
  *
  * To test the function of the mpfit library, 
  *   1. Build testmpfit   ("make testmpfit")
- *   2. Run testmpfit     ("./mpfit")
+ *   2. Run testmpfit     ("./testmpfit")
  *   3. Compare results of your run with the distributed file testmpfit.log
  *
  * This file contains several test user functions:
@@ -32,7 +32,7 @@
  */
 
 /* Test routines for mpfit library
-   $Id: testmpfit.c,v 1.6 2010/11/13 08:18:02 craigm Exp $
+   $Id$
 */
 
 #include "mpfit.h"
@@ -99,7 +99,7 @@ int linfunc(int m, int n, double *p, double *dy, double **dvec, void *vars)
   ey = v->ey;
 
   for (i=0; i<m; i++) {
-    f = p[0] - p[1]*x[i];     /* Linear fit function; note f = a - b*x */
+    f = p[0] + p[1]*x[i];     /* Linear fit function; note f = a + b*x */
     dy[i] = (y[i] - f)/ey[i];
   }
 
