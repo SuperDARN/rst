@@ -207,6 +207,11 @@
   <struct>
 
     <member>
+      <proto>char *algorithm;</proto>
+      <description>The fitting algorithm used to generate the file.</description>
+    </member>
+
+    <member>
       <struct>
         <member>
           <proto>char major;</proto>

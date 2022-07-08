@@ -32,6 +32,7 @@ Modifications:
 #endif
 
 struct FitData {
+  char *algorithm;
   struct {
     int major;
     int minor;
@@ -39,7 +40,7 @@ struct FitData {
   struct FitNoise noise;
   struct FitRange *rng;
   struct FitRange *xrng;
-  struct FitElv  *elv;
+  struct FitElv *elv;
 };
 
 struct FitData *FitMake();
