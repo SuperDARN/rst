@@ -112,7 +112,7 @@ void IDLCopyFitDataToIDL(int nrang,int xcf,struct FitData *fit,
 
   int n;
 
-  char algorithmtmp[ALGORITHM_SIZE+1]
+  char algorithmtmp[ALGORITHM_SIZE+1];
 
   memset(&algorithmtmp,0,ALGORITHM_SIZE+1);
 
@@ -191,7 +191,7 @@ struct FitIDLData *IDLMakeFitData(IDL_VPTR *vptr) {
 
   
   static IDL_STRUCT_TAG_DEF fitdata[]={    
-    {"ALGORITHM",0,NULL},  /* 0 */
+    {"ALGORITHM",0,(void *) IDL_TYP_STRING},  /* 0 */
     {"REVISION",0,NULL},   /* 1 */
     {"NOISE",0,NULL},   /* 2 */ 
     {"PWR0",rdim,(void *) IDL_TYP_FLOAT}, /* 3 */
@@ -237,8 +237,8 @@ struct FitIDLData *IDLMakeFitData(IDL_VPTR *vptr) {
   static IDL_MEMINT ilDims[IDL_MAX_ARRAY_DIM];
  
     
-  fitdata[0].type=IDL_MakeStruct("RLSTR",revision);
-  fitdata[1].type=IDL_MakeStruct("NFSTR",noise);
+  fitdata[1].type=IDL_MakeStruct("RLSTR",revision);
+  fitdata[2].type=IDL_MakeStruct("NFSTR",noise);
 
   s=IDL_MakeStruct("FITDATA",fitdata);
            

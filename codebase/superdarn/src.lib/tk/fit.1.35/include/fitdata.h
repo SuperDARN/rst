@@ -45,6 +45,7 @@ struct FitData {
 
 struct FitData *FitMake();
 void FitFree(struct FitData *ptr);
+int FitSetAlgorithm(struct FitData *ptr,char *str);
 int FitSetRng(struct FitData *ptr,int nrang);
 int FitSetXrng(struct FitData *ptr,int nrang);
 int FitSetElv(struct FitData *ptr,int nrang);
