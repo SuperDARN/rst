@@ -27,11 +27,11 @@ Modifications:
 
 */
 
-#include "preprocessing.h"
-#include "fitting.h"
+#include "lmfit_preprocessing.h"
+#include "lmfit_fitting.h"
 #include "lmfit2toplevel.h"
-#include "leastsquares.h"
-#include "determinations.h"
+#include "lmfit_leastsquares.h"
+#include "lmfit_determinations.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

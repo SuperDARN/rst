@@ -30,9 +30,9 @@ Modifications:
 */
 
 #include <math.h>
-#include "fitting.h"
-#include "preprocessing.h"
-#include "leastsquares.h"
+#include "lmfit_fitting.h"
+#include "lmfit_preprocessing.h"
+#include "lmfit_leastsquares.h"
 #include <stdio.h>
 
 /* TODO, IMPLEMENT QUADRATIC ENVELOPE AND XCF FITTING */

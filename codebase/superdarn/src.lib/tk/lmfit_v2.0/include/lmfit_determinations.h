@@ -32,7 +32,7 @@ Modifications:
 #ifndef _ACFDETERMINATIONS_H
 #define _ACFDETERMINATIONS_H
 
-#include "fit_structures.h"
+#include "lmfit_structures.h"
 #include "fitdata.h"
 #include "fitblk.h"
 #include "llist.h"

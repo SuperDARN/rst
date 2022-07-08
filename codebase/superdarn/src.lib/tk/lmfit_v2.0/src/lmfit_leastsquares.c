@@ -29,12 +29,12 @@ Modifications:
 
 */
 
-#include "leastsquares.h"
+#include "lmfit_leastsquares.h"
 #include <string.h>
 #include <math.h>
 #include <stdio.h>
 #include "mpfit.h"
-#include "fit_structures.h"
+#include "lmfit_structures.h"
 
 #define ITMAX 100 
 #define EPS 3.0e-7 

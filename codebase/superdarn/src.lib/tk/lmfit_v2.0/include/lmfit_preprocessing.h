@@ -33,8 +33,8 @@ Modifications:
 #define _ACFPROC_H
 
 #include "llist.h"
-#include "leastsquares.h"
-#include "fit_structures.h"
+#include "lmfit_leastsquares.h"
+#include "lmfit_structures.h"
 
 #define MIN_LAGS 3
 #define ACF_SNR_CUTOFF 10.0

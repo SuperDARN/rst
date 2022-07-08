@@ -37,7 +37,7 @@ Modifications:
 #ifndef _FITSTRUCT_H
 #define _FITSTRUCT_H
 
-#include "leastsquares.h"
+#include "lmfit_leastsquares.h"
 
 typedef struct rangenode{
 	int range;

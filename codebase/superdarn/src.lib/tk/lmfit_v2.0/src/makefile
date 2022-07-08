@@ -6,8 +6,8 @@ include $(MAKECFG).$(SYSTEM)
 
 INCLUDE= -I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/superdarn -I$(IPATH)/analysis
 
-SRC = determinations.c error_estimates.c fitting.c leastsquares.c llist.c lmfit2toplevel.c mpfit.c preprocessing.c selfclutter.c determinations.h error_estimates.h fitting.h leastsquares.h llist.h lmfit2toplevel.h mpfit.h preprocessing.h selfclutter.h
-OBJS = determinations.o error_estimates.o fitting.o leastsquares.o llist.o lmfit2toplevel.o mpfit.o preprocessing.o selfclutter.o
+SRC = lmfit_determinations.c error_estimates.c lmfit_fitting.c lmfit_leastsquares.c llist.c lmfit2toplevel.c mpfit.c lmfit_preprocessing.c selfclutter.c lmfit_determinations.h error_estimates.h lmfit_fitting.h lmfit_leastsquares.h llist.h lmfit2toplevel.h mpfit.h lmfit_preprocessing.h selfclutter.h
+OBJS = lmfit_determinations.o error_estimates.o lmfit_fitting.o lmfit_leastsquares.o llist.o lmfit2toplevel.o mpfit.o lmfit_preprocessing.o selfclutter.o
 INC=$(IPATH)/superdarn
 DSTPATH=$(LIBPATH)
 OUTPUT=lmfit

@@ -27,7 +27,7 @@ Modifications:
 
 */
 
-#include "determinations.h"
+#include "lmfit_determinations.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>

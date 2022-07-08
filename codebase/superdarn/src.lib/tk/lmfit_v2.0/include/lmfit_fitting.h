@@ -33,7 +33,7 @@ Modifications:
 #define _ACFFIT_H
 
 #include "llist.h"
-#include "fit_structures.h"
+#include "lmfit_structures.h"
 
 typedef enum{
 	ACF,

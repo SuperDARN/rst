@@ -29,7 +29,7 @@ Modifications:
 
 */
 
-#include "preprocessing.h"
+#include "lmfit_preprocessing.h"
 #include "selfclutter.h"
 #include <stdlib.h>
 #include <stdio.h>

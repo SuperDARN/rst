@@ -36,7 +36,7 @@ Modifications:
 #include <string.h>
 #include <unistd.h>
 #include <zlib.h>
-#include "fit_structures.h"
+#include "lmfit_structures.h"
 #include "rtypes.h"
 #include "dmap.h"
 #include "rprm.h"
