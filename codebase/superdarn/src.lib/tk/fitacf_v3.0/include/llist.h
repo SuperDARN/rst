@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  */
 
 /**
@@ -25,9 +25,9 @@ Keith Kotyk
 
 #ifndef LLIST_H_
 #define LLIST_H_
-#include "rtypes.h"
-#include <stdbool.h>
 
+#include <stdbool.h>
+#include "rtypes.h"
 
 /** E_LLIST
 * This is the return values most of the llist API return,
@@ -180,7 +180,7 @@ int llist_sort ( llist list, int flags );
 
 /**
  * @brief Returns the head node of the list
- * @param[in] list the list to operate on 
+ * @param[in] list the list to operate on
  * @return the head node, NULL on error
  */
 llist_node llist_get_head ( llist list );
@@ -203,28 +203,28 @@ int llist_push ( llist list, llist_node node );
 
 /**
  * @brief peek at the head of the list
- * @param[in] list the list to operate on 
+ * @param[in] list the list to operate on
  * @return llist_node the head node
  */
 llist_node llist_peek( llist list );
 
 /**
  * @brief pop the head of the list
- * @param[in] list the list to operate on 
+ * @param[in] list the list to operate on
  * @return llist_node the head node
  */
 llist_node llist_pop( llist list );
 
 /**
  * @brief return the number of elements in the list
- * @param[in] list the list to operate on 
+ * @param[in] list the list to operate on
  * @return int  number of elements in the list or -1 if error
  */
 int llist_size( llist list );
 
 /**
  * @brief concatenate the second list to the first list
- * @param[in] first the list to operate on 
+ * @param[in] first the list to operate on
  * @param[in] second the list to operate on.
  * @warning The nodes from the second list will be deleted and concatenated to the first list
  *          Remember to call llist_destroy() on  the second list (if it was created by llist_create())
@@ -241,7 +241,6 @@ int llist_concat( llist first, llist second );
  * @return int LLIST_SUCCESS if success
  */
 int llist_merge( llist first, llist second );
-
 
 /**
  * @brief get the maximum node in a given list
@@ -273,8 +272,32 @@ int llist_reverse( llist list );
  */
 bool llist_is_empty( llist list );
 
+/**
+ * @brief      Resets iterator to head of the list
+ *
+ * @param[in]  list  The list to operate on.
+ *
+ * @return     LLIST_SUCCESS if successful.
+ */
 int llist_reset_iter(llist list);
+
+/**
+ * @brief      Moves the iterator down the list by one.
+ *
+ * @param[in]  list  The list to operate on.
+ *
+ * @return     LLIST_SUCCESS if successful.
+ */
 int llist_go_next(llist list);
+
+/**
+ * @brief      Gets a pointer to the item at the iterator in the output parameter.
+ *
+ * @param[in]  list  The list to operate on.
+ * @param[out] item  A pointer to a pointer to put the list iterator into.
+ *
+ * @return     LLIST_SUCCESS if successful.
+ */
 int llist_get_iter(llist list,void** item);
 
 #endif /* LLIST_H_ */
