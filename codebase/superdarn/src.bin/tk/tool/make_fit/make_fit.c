@@ -396,7 +396,8 @@ int main(int argc,char *argv[]) {
           }
           Copy_Fitting_Prms(site,prm,raw,fit_prms);
     	  Fitacf(fit_prms,fit, elv_version);
-        /*FitacfFree(fit_prms);*/
+          FitSetAlgorithm(fit,"fitacf3");
+          /*FitacfFree(fit_prms);*/
     	}
       else {
           fprintf(stderr, "Unable to allocate fit_prms!\n");
@@ -410,18 +411,22 @@ int main(int argc,char *argv[]) {
     fblk = FitACFMake(site,prm->time.yr);
     fblk->prm.old_elev = old_elev;        /* passing in old_elev flag */
     FitACF(prm,raw,fblk,fit,site);
+    FitSetAlgorithm(fit,"fitacf2");
   }
   else if (lmfit1) {
     fblk=FitACFMake(site,prm->time.yr);
     lmfit(prm,raw,fit,fblk,site,0);
+    FitSetAlgorithm(fit,"lmfit1");
   }
   else if (fitex2) {
     fblk=FitACFMake(site,prm->time.yr);
     fblk->prm.old_elev = old_elev;
     fitacfex2(prm,raw,fit,fblk,site,0);
+    FitSetAlgorithm(fit,"fitex2");
   }
   else if (fitex1) {
     FitACFex(prm,raw,fit);
+    FitSetAlgorithm(fit,"fitex1");
   }
 
   if (old) {
@@ -506,6 +511,7 @@ int main(int argc,char *argv[]) {
         if(fit_prms != NULL) {
           Copy_Fitting_Prms(site,prm,raw,fit_prms);
           Fitacf(fit_prms,fit, elv_version);
+          FitSetAlgorithm(fit,"fitacf3");
           /*FitacfFree(fit_prms);*/
         }
         else {
@@ -518,20 +524,24 @@ int main(int argc,char *argv[]) {
       }
       else if (fitacf2) {
         FitACF(prm,raw,fblk,fit,site);
+        FitSetAlgorithm(fit,"fitacf2");
       }
       else if (lmfit1) {
         lmfit(prm,raw,fit,fblk,site,0);
+        FitSetAlgorithm(fit,"lmfit1");
       }
       else if (fitex2) {
         fitacfex2(prm,raw,fit,fblk,site,0);
+        FitSetAlgorithm(fit,"fitex2");
       }
       else if (fitex1) {
         FitACFex(prm,raw,fit);
+        FitSetAlgorithm(fit,"fitex1");
       }
       else {
-      fprintf(stderr, "The requested fitting algorithm does not exist\n");
-      OptionFree(&opt);
-      exit(-1);
+        fprintf(stderr, "The requested fitting algorithm does not exist\n");
+        OptionFree(&opt);
+        exit(-1);
       }
     }
 

@@ -1161,8 +1161,12 @@ int main(int argc,char *argv[]) {
     stid=prm->stid;
     cptab[0]=prm->cp;
     cpnum=1;
-    sprintf(revtxt,"Revision:%d.%d",fit->revision.major,
-            fit->revision.minor);
+    if (fit->algorithm !=NULL) {
+      sprintf(revtxt,"%s",fit->algorithm);
+    } else {
+      sprintf(revtxt,"Revision:%d.%d",fit->revision.major,
+              fit->revision.minor);
+    }
   }
   if (sndflg) {
     stid=snd->stid;
