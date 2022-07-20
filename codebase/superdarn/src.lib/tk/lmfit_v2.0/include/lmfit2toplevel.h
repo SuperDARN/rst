@@ -26,8 +26,8 @@ Modifications:
 
 */
 
-#ifndef _FITACF_H
-#define _FITACF_H
+#ifndef _LMFIT2TOPLEVEL_H
+#define _LMFIT2TOPLEVEL_H
 
 #include <stdio.h>
 #include <stdlib.h>
