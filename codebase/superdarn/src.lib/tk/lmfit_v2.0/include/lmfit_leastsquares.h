@@ -28,8 +28,8 @@ Modifications:
 
 */
 
-#ifndef _LEASTSQUARES_H
-#define _LEASTSQUARES_H
+#ifndef _LMFITLEASTSQUARES_H
+#define _LMFITLEASTSQUARES_H
 
 #include <stddef.h>
 #include <stdlib.h>

@@ -34,8 +34,8 @@ Modifications:
 
 
 
-#ifndef _FITSTRUCT_H
-#define _FITSTRUCT_H
+#ifndef _LMFITSTRUCT_H
+#define _LMFITSTRUCT_H
 
 #include "lmfit_leastsquares.h"
 
