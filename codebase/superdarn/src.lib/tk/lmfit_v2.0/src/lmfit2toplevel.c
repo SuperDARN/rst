@@ -149,6 +149,7 @@ void Copy_Fitting_Prms(struct RadarSite *radar_site, struct RadarParm *radar_prm
     fit_prms->interfer_x=radar_site->interfer[0];
     fit_prms->interfer_y=radar_site->interfer[1];
     fit_prms->interfer_z=radar_site->interfer[2];
+    fit_prms->bmoff=radar_site->bmoff;
     fit_prms->bmsep=radar_site->bmsep;
     fit_prms->phidiff=radar_site->phidiff;
     if ((radar_prms->offset == 0) || (radar_prms->channel < 2)) {
