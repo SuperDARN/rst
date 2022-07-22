@@ -75,7 +75,6 @@ Modifications:
 #include "make_grid.h"
 #include "sza.h"
 #include "szamap.h"
-#include "clip.h"
 #include "plot_time.h"
 #include "plot_logo.h"
 
@@ -116,8 +115,6 @@ struct PolygonData *nfov;
 struct PolygonData *pfov;
 
 struct PolygonData *clip;
-
-struct FrameBufferClip *fbclp=NULL;
 
 struct RadarNetwork *network;
 
