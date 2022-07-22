@@ -5,7 +5,7 @@
 
 /*
   Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
- 
+
 This file is part of the Radar Software Toolkit (RST).
 
 RST is free software: you can redistribute it and/or modify
@@ -25,10 +25,30 @@ Modifications:
 */ 
 
 
-
 void plot_time(struct Plot *plot,
                float xoff,float yoff,float wdt,float hgt,
-               double stime,double etime,
+               double time,
                unsigned int color,unsigned char mask,
                char *fontname,float fontsize,
                void *txtdata);
+
+void plot_time_range(struct Plot *plot,
+                     float xoff,float yoff,float wdt,float hgt,
+                     double stime,double etime,
+                     unsigned int color,unsigned char mask,
+                     char *fontname,float fontsize,
+                     void *txtdata);
+
+void plot_field_time(struct Plot *plot,
+                     float xoff,float yoff,float wdt,float hgt,int flg,
+                     double stime,double etime,
+                     unsigned int color,unsigned char mask,
+                     char *fontname,float fontsize,
+                     void *txtdata);
+
+void plot_vec_time(struct Plot *plot,
+                   float xoff,float yoff,float wdt,float hgt,
+                   unsigned int color,unsigned char mask,
+                   char *fontname,float fontsize,
+                   void *txtdata);
+

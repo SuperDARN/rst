@@ -7,14 +7,14 @@ INCLUDE = -I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/analysis \
           -I$(IPATH)/imagery -I$(IPATH)/superdarn -I$(IPATH)/
 
 SRC = plot_extra.c plot_extra.h plot_model.c plot_model.h \
-      plot_model_name.c plot_model_name.h hlpstr.h plot_time.c plot_time.h \
+      plot_model_name.c plot_model_name.h hlpstr.h \
       errstr.h plot_imf_delay.c plot_imf_delay.h \
       map_plot.c plot_excluded.c plot_excluded.h \
       plot_chi.c plot_chi.h plot_maxmin.c plot_maxmin.h plot_fit.c plot_fit.h \
       plot_imf.c plot_imf.h make_vgrid.c make_vgrid.h \
       make_pgrid.c make_pgrid.h make_hmb.c make_hmb.h
 
-OBJS = plot_chi.o plot_extra.o plot_time.o plot_imf_delay.o plot_imf.o \
+OBJS = plot_chi.o plot_extra.o plot_imf_delay.o plot_imf.o \
        plot_model_name.o plot_maxmin.o plot_excluded.o plot_model.o \
        plot_fit.o make_hmb.o make_pgrid.o make_vgrid.o map_plot.o 
 
