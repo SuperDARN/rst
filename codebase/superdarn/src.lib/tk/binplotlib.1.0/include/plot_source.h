@@ -25,14 +25,14 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 Modifications:
 */
 
-
-
-
-
+#ifndef _PLOTSOURCE_H
+#define _PLOTSOURCE_H
 
 void plot_source(struct Plot *plot,
-		 float xoff,float yoff,
+                 float xoff,float yoff,
                  char *source,int major,int minor,
-  	         unsigned int color,unsigned char mask,
+                 unsigned int color,unsigned char mask,
                  char *fontname,float fontsize,
                  void *txtdata);
+
+#endif

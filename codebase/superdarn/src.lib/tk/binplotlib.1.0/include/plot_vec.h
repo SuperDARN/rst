@@ -25,6 +25,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 Modifications:
 */
 
+#ifndef _PLOTVEC_H
+#define _PLOTVEC_H
+
 void plot_field_vec(struct Plot *plot,struct RadarBeam *sbm,
                     struct GeoLocBeam *gbm,float latmin,int magflg,
                     float xoff,float yoff,float wdt,float hgt,float sf,
@@ -37,3 +40,5 @@ void plot_grid_vec(struct Plot *plot,float px,float py,int or,double max,int mag
                    int (*trnf)(int,void *,int,void *,void *data),void *data,
                    unsigned int color,char mask,float width, char *fntname,
                    float fntsize, void *textdata, int old_aacgm);
+
+#endif

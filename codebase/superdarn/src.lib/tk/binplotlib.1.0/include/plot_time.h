@@ -24,6 +24,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 Modifications:
 */ 
 
+#ifndef _PLOTTIME_H
+#define _PLOTTIME_H
 
 void plot_time(struct Plot *plot,
                float xoff,float yoff,float wdt,float hgt,
@@ -52,3 +54,4 @@ void plot_vec_time(struct Plot *plot,
                    char *fontname,float fontsize,
                    void *txtdata);
 
+#endif

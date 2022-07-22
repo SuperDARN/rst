@@ -24,6 +24,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 Modifications:
 */
 
+#ifndef _MAKEFOV_H
+#define _MAKEFOV_H
+
 struct PolygonData *make_fov(double tval,struct RadarNetwork *network,
                              float alt,int chisham);
 
@@ -35,3 +38,5 @@ struct PolygonData *make_grid_fov(double tval,struct RadarNetwork *network,
 
 struct PolygonData *make_grid_fov_data(struct GridData *ptr,struct RadarNetwork *network,
                                        int chisham,int old_aacgm);
+
+#endif
