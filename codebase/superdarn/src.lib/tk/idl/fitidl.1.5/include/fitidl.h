@@ -29,6 +29,7 @@ Modifications:
 
 
 struct FitIDLData {
+  IDL_STRING algorithm;
   struct {
     IDL_LONG major;
     IDL_LONG minor;
