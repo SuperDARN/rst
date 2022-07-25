@@ -361,6 +361,8 @@ void set_nump(llist_node range, struct FitRange* fit_range_array){
 
 /**
 Determines the elevation angle from the fitted XCF phase
+//TODO Modify this function to call elevation_v2()/elevation() from the elevation library
+       (see equivalent function in fitacf_v3:determinations.c)
 */
 void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fit_prms){
 	double x,y,z;
@@ -398,7 +400,7 @@ void find_elevation(llist_node range, struct FitElv* fit_elev_array, FITPRMS* fi
 	}
 
 	azi_offset = fit_prms->maxbeam/2 - 0.5;
-	phi_0 = fit_prms->bmsep * (fit_prms->bmnum - azi_offset) * M_PI/180;
+	phi_0 = (fit_prms->bmoff + fit_prms->bmsep * (fit_prms->bmnum - azi_offset)) * M_PI/180;
 	c_phi_0 = cos(phi_0);
 
 	wave_num = 2 * M_PI * fit_prms->tfreq * 1000/C;
