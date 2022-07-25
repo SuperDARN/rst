@@ -435,7 +435,6 @@ int main(int argc,char *argv[]) {
       }
       fit->tdiff = fit_prms->tdiff;
 
-      fprintf(stderr,"fit->tdiff: %f\n",fit->tdiff);
       Fitacf(fit_prms,fit,elv_version);
       FitSetAlgorithm(fit,"fitacf3");
     } else {
