@@ -37,6 +37,7 @@ Modifications:
 
 void fitacfex2(struct RadarParm *prm,struct RawData *raw,
                struct FitData *fit,struct FitBlock *fblk,
-               struct RadarSite *hd,int print);
+               struct RadarSite *hd,struct RadarTdiff *tdiff,
+               double tdiff_fix,int print);
 
 #endif

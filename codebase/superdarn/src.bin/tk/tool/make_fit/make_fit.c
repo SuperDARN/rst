@@ -454,13 +454,13 @@ int main(int argc,char *argv[]) {
   }
   else if (lmfit1) {
     fblk=FitACFMake(site,prm->time.yr);
-    lmfit(prm,raw,fit,fblk,site,0);
+    lmfit(prm,raw,fit,fblk,site,tdiff,tdiff_fix,0);
     FitSetAlgorithm(fit,"lmfit1");
   }
   else if (fitex2) {
     fblk=FitACFMake(site,prm->time.yr);
     fblk->prm.old_elev = old_elev;
-    fitacfex2(prm,raw,fit,fblk,site,0);
+    fitacfex2(prm,raw,fit,fblk,site,tdiff,tdiff_fix,0);
     FitSetAlgorithm(fit,"fitex2");
   }
   else if (fitex1) {
@@ -585,11 +585,11 @@ int main(int argc,char *argv[]) {
         FitSetAlgorithm(fit,"fitacf2");
       }
       else if (lmfit1) {
-        lmfit(prm,raw,fit,fblk,site,0);
+        lmfit(prm,raw,fit,fblk,site,tdiff,tdiff_fix,0);
         FitSetAlgorithm(fit,"lmfit1");
       }
       else if (fitex2) {
-        fitacfex2(prm,raw,fit,fblk,site,0);
+        fitacfex2(prm,raw,fit,fblk,site,tdiff,tdiff_fix,0);
         FitSetAlgorithm(fit,"fitex2");
       }
       else if (fitex1) {

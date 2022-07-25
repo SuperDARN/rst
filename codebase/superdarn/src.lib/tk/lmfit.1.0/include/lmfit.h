@@ -58,7 +58,8 @@ struct exdatapoints
 
 void lmfit(struct RadarParm *prm,struct RawData *ptr,
            struct FitData *fit,struct FitBlock *fblk,
-           struct RadarSite *hd,int print);
+           struct RadarSite *hd,struct RadarTdiff *tdiff,
+           double tdiff_fix,int print);
 double getguessex(struct RadarParm *prm,struct RawData *raw,
               struct FitData *fit, struct FitBlock *fblk, int rang, double skynoise);
 int singlefit(int m, int n, double *p, double *deviates,
