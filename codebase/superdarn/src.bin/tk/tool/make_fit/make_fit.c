@@ -423,17 +423,19 @@ int main(int argc,char *argv[]) {
         elv_version = 0;
       }
 
+      Copy_Fitting_Prms(site,prm,raw,fit_prms);
+
       /* Assign the tdiff value either from the hardware file,
        * calibration file, or user input (if no calibration value
        * available) */
       if (tdiff != NULL) {
-          fit_prms->tdiff = tdiff->tdiff;
+        fit_prms->tdiff = tdiff->tdiff;
       } else if (tdiff_fix != -999) {
-          fit_prms->tdiff = tdiff_fix;
+        fit_prms->tdiff = tdiff_fix;
       }
       fit->tdiff = fit_prms->tdiff;
 
-      Copy_Fitting_Prms(site,prm,raw,fit_prms);
+      fprintf(stderr,"fit->tdiff: %f\n",fit->tdiff);
       Fitacf(fit_prms,fit,elv_version);
       FitSetAlgorithm(fit,"fitacf3");
     } else {
@@ -562,9 +564,9 @@ int main(int argc,char *argv[]) {
            * calibration file, or user input (if no calibration value
            * available) */
           if (tdiff != NULL) {
-              fit_prms->tdiff = tdiff->tdiff;
+            fit_prms->tdiff = tdiff->tdiff;
           } else if (tdiff_fix != -999) {
-              fit_prms->tdiff = tdiff_fix;
+            fit_prms->tdiff = tdiff_fix;
           }
           fit->tdiff = fit_prms->tdiff;
 
