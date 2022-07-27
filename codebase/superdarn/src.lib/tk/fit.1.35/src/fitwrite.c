@@ -97,7 +97,9 @@ int FitEncode(struct DataMap *ptr,struct RadarParm *prm, struct FitData *fit) {
   float sky_noise=fit->noise.skynoise;
   float lag0_noise=fit->noise.lag0;
   float vel_noise=fit->noise.vel;
-  
+
+  DataMapAddScalar(ptr,"algorithm",DATASTRING,&fit->algorithm);
+
   DataMapAddScalar(ptr,"fitacf.revision.major",DATAINT,
 		    &fit->revision.major);
   DataMapAddScalar(ptr,"fitacf.revision.minor",DATAINT,

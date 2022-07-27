@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>rpos_v2_test</name>
+<location>src.bin/tk/testing/rpos_v2_test</location>
+
+<syntax>rpos_v2_test --help</syntax>
+<syntax>rpos_v2_test [-d <ar>yyyymmdd</ar>] [-stid <ar>stid</ar>] [-bm <ar>beam</ar>] [-rn <ar>gate</ar>]</syntax>
+<syntax>rpos_v2_test [-standard] [-chisham] [-cv] [-gs] [-rear]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-d <ar>yyyymmdd</ar></on><od>calculate for the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-stid <ar>stid</ar></on><od>set the station identifier code to <ar>stid</ar> (default is 1 for GBR).</od>
+</option>
+<option><on>-bm <ar>beam</ar></on><od>set the radar beam number to <ar>beam</ar> (default is 7).</od>
+</option>
+<option><on>-rn <ar>gate</ar></on><od>set the range gate number to <ar>gate</ar> (default is 20).</od>
+</option>
+<option><on>-fh <ar>height</ar></on><od>set the F-region virtual height for the standard model to <ar>height</ar> (default is 300 km). If <ar>height</ar> is less than 90 then it is assumed to be an elevation angle instead.</od>
+</option>
+<option><on>-hop <ar>hop</ar></on><od>set the number of hops to <ar>hop</ar> when using an input elevation angle (default is 0.5).</od>
+</option>
+<option><on>-standard</on><od>use the standard virtual height model (default).</od>
+</option>
+<option><on>-chisham</on><od>use the Chisham et al. [2008] Saskatoon virtual height model.</od>
+</option>
+<option><on>-cv</on><od>use the Thomas and Shepherd [2022] Christmas Valley virtual height model.</od>
+</option>
+<option><on>-gs</on><od>use the ground scatter component of the Thomas et al. [2022] Christmas Valley virtual height model.</od>
+</option>
+<option><on>-rear</on><od>calculate position for the rear field of view (FOV).</od>
+</option>
+<synopsis><p>Calculates the latitude and longitude of a beam and range gate cell.</p></synopsis>
+<description><p>Calculates the latitude and longitude of a beam and range gate cell.</p>
+<p>The latitude and longitude are written to standard output.</p></description>
+
+<example>
+<command>rpos_v2_test -stid 206 -d 20200101 -bm 21 -rn 57 -chisham</command>
+<description>Calculates the latitude and longitude of beam 21 and range gate 57 for the Christmas Valley West (CVW) radar on 20200101 using the Chisham et al. [2008] virtual height model.</description>
+</example>
+
+</binary>

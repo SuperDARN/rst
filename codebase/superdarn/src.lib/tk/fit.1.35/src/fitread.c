@@ -63,6 +63,9 @@ int FitDecode(struct DataMap *ptr,
   for (c=0;c<ptr->snum;c++) {
     s=ptr->scl[c];
 
+    if ((strcmp(s->name,"algorithm")==0) && (s->type=DATASTRING))
+      FitSetAlgorithm(fit,*((char **) s->data.vptr));
+
     if ((strcmp(s->name,"fitacf.revision.major")==0) && (s->type==DATAINT))
       fit->revision.major=*(s->data.iptr);
     if ((strcmp(s->name,"fitacf.revision.minor")==0) && (s->type==DATAINT))
