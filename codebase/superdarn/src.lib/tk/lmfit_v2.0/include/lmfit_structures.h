@@ -124,6 +124,7 @@ typedef struct fit_prms {
   double **acfd;
   double **xcfd;
   int maxbeam;
+  double bmoff;
   double bmsep;
   double interfer_x;
   double interfer_y;
