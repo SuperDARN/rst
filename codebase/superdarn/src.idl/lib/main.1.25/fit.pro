@@ -67,6 +67,7 @@ pro FitMakeFitData,fit
   MAX_RANGE=300
 
   fit={FitData, $
+         algorithm: ' ', $
          revision: {rlstr, major: 0L, minor: 0L}, $ 
          noise: {nfstr, sky: 0.0, lag0: 0.0, vel: 0.0}, $
          pwr0: fltarr(MAX_RANGE), $
@@ -152,10 +153,10 @@ function FitRead,unit,prm,fit
    return,s
   endif
 
-  sclname=['fitacf.revision.major','fitacf.revision.minor', $
+  sclname=['algorithm','fitacf.revision.major','fitacf.revision.minor', $
            'noise.sky','noise.lag0','noise.vel']
 
-  scltype=[3,3,4,4,4]
+  scltype=[9,3,3,4,4,4]
   
   sclid=intarr(n_elements(sclname))
   sclid[*]=-1
@@ -195,11 +196,12 @@ function FitRead,unit,prm,fit
  
   ; populate the structures
 
-  fit.revision.major=*(sclvec[sclid[0]].ptr)
-  fit.revision.minor=*(sclvec[sclid[1]].ptr)
-  fit.noise.sky=*(sclvec[sclid[2]].ptr)
-  fit.noise.lag0=*(sclvec[sclid[3]].ptr)
-  fit.noise.vel=*(sclvec[sclid[4]].ptr)
+  if (sclid[0] ne -1) then fit.algorithm=*(sclvec[sclid[0]].ptr)
+  fit.revision.major=*(sclvec[sclid[1]].ptr)
+  fit.revision.minor=*(sclvec[sclid[2]].ptr)
+  fit.noise.sky=*(sclvec[sclid[3]].ptr)
+  fit.noise.lag0=*(sclvec[sclid[4]].ptr)
+  fit.noise.vel=*(sclvec[sclid[5]].ptr)
 
   if (prm.nrang gt 0) then fit.pwr0[0:prm.nrang-1]=*(arrvec[arrid[1]].ptr)
 
@@ -294,6 +296,7 @@ function FitWrite,unit,prm,fit
 
   s=RadarEncodeRadarPrm(prm,sclvec,arrvec,/new)
 
+  s=DataMapMakeScalar('algorithm',fit.algorithm,sclvec)
   s=DataMapMakeScalar('fitacf.revision.major',fit.revision.major,sclvec)
   s=DataMapMakeScalar('fitacf.revision.minor',fit.revision.minor,sclvec)
   s=DataMapMakeScalar('noise.sky',fit.noise.sky,sclvec)

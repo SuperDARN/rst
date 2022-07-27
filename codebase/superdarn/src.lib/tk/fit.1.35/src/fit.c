@@ -38,6 +38,7 @@ struct FitData *FitMake() {
   ptr=malloc(sizeof(struct FitData));
   if (ptr==NULL) return NULL;
   memset(ptr,0,sizeof(struct FitData));
+  ptr->algorithm=NULL;
   ptr->rng=NULL;
   ptr->xrng=NULL;
   ptr->elv=NULL;
@@ -47,12 +48,34 @@ struct FitData *FitMake() {
 void FitFree(struct FitData *ptr) {
 
   if (ptr==NULL) return;
+  if (ptr->algorithm !=NULL) free(ptr->algorithm);
   if (ptr->rng !=NULL) free(ptr->rng);
   if (ptr->xrng !=NULL) free(ptr->xrng);
   if (ptr->elv !=NULL) free(ptr->elv);
   free(ptr);
   return;
 }
+
+
+int FitSetAlgorithm(struct FitData *ptr,char *str) {
+  char *tmp=NULL;
+  if (ptr==NULL) return -1;
+
+  if (str==NULL) {
+    if (ptr->algorithm !=NULL) free(ptr->algorithm);
+    ptr->algorithm=NULL;
+    return 0;
+  }
+
+  if (ptr->algorithm==NULL) tmp=malloc(strlen(str+1));
+  else tmp=realloc(ptr->algorithm,strlen(str)+1);
+
+  if (tmp==NULL) return -1;
+  strcpy(tmp,str);
+  ptr->algorithm=tmp;
+  return 0;
+}
+
 
 int FitSetRng(struct FitData *ptr,int nrang) {
   void *tmp=NULL;
