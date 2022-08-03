@@ -22,7 +22,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
-*/ 
+    E.G. Thomas (2022-07): consolidated plot_time functions from several different plotting binaries
+*/
 
 #ifndef _PLOTTIME_H
 #define _PLOTTIME_H
