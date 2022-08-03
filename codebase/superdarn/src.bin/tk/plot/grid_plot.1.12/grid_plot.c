@@ -1444,8 +1444,8 @@ int main(int argc,char *argv[]) {
       else PlotRectangle(plot,NULL,pad,pad,wdt-2*pad,hgt-2*pad,
                               0,grdcol,0x0f,0.5,NULL);
     }
-    if (tmeflg) plot_time(plot,5,5,wdt-10,hgt-10,rgrid->st_time,rgrid->ed_time,
-                           txtcol,0x0f,"Helvetica",12.0,fontdb);
+    if (tmeflg) plot_time_range(plot,5,5,wdt-10,hgt-10,rgrid->st_time,rgrid->ed_time,
+                                txtcol,0x0f,"Helvetica",12.0,fontdb);
     px=2;
     if ((vkeyflg) && (vkey.num !=0)) {
       double kstp;

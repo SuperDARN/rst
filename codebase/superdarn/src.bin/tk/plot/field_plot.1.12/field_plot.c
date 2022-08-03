@@ -1784,12 +1784,12 @@ int main(int argc,char *argv[]) {
                            0,grdcol,0x0f,0.5,NULL);
       }
       if (tmeflg) {
-        if (repeat==0) plot_time(plot,xbox+5,ybox+5,wbox-10,hbox-10,0,
-                                 scn->st_time,scn->ed_time,
-                                 txtcol,0x0f,"Helvetica",12.0,fontdb);
-        else plot_time(plot,xbox+2,ybox+2,wbox-4,hbox-4,1,
-                       scn->st_time,scn->ed_time,
-                       txtcol,0x0f,"Helvetica",10.0,fontdb);
+        if (repeat==0) plot_field_time(plot,xbox+5,ybox+5,wbox-10,hbox-10,0,
+                                       scn->st_time,scn->ed_time,
+                                       txtcol,0x0f,"Helvetica",12.0,fontdb);
+        else plot_field_time(plot,xbox+2,ybox+2,wbox-4,hbox-4,1,
+                             scn->st_time,scn->ed_time,
+                             txtcol,0x0f,"Helvetica",10.0,fontdb);
       }
       px=2;
       if ((repeat==0) || ((repeat!=0) && (cnt==0))) {
@@ -2000,9 +2000,9 @@ int main(int argc,char *argv[]) {
     txtbox("Helvetica",12.0,strlen(txt),txt,box,fontdb);
     lnehgt=1.5*(box[2]-box[1]);
 
-    plot_time(plot,0,24,wdt,tpad-18,2, 
-              ssec,scn->ed_time,
-              txtcol,0x0f,"Helvetica",12.0,fontdb);
+    plot_field_time(plot,0,24,wdt,tpad-18,2, 
+                    ssec,scn->ed_time,
+                    txtcol,0x0f,"Helvetica",12.0,fontdb);
 
     sprintf(txt,"Station:%s (%s)",RadarGetName(network,stid),
             RadarGetCode(network,stid,0));

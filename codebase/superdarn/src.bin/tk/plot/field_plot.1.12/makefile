@@ -6,10 +6,9 @@ include $(MAKECFG).$(SYSTEM)
 INCLUDE=-I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/analysis \
         -I$(IPATH)/imagery -I$(IPATH)/superdarn
 
-OBJS = plot_time.o plot_outline.o plot_refvec.o \
-       expr.o field_plot.o
+OBJS = plot_outline.o plot_refvec.o expr.o field_plot.o
 
-SRC = hlpstr.h plot_time.c plot_time.h expr.c expr.h \
+SRC = hlpstr.h expr.c expr.h \
       field_plot.c errstr.h plot_refvec.c plot_outline.c \
       plot_outline.h plot_refvec.h
 
