@@ -153,7 +153,7 @@ void makeRadarParm(struct RadarParm * prm, char * argv[], int argc, int cpid, in
   if (site == NULL || stid == 0) prm->bmazm = 0;
   else {
     offset = site->maxbeam/2.0-0.5;
-    prm->bmazm = site->boresite + site->bmsep*(prm->bmnum-offset);
+    prm->bmazm = site->boresite + site->bmsep*(prm->bmnum-offset) + site->bmoff;
   }
 
   prm->scan = 1;
