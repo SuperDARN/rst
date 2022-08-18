@@ -68,14 +68,14 @@ int rst_opterr(char *txt) {
   return(-1);
 }
 
-void makeRadarParm(struct RadarParm * prm, char * argv[], int argc, int cpid, int nave,
+void makeRadarParm(struct RadarParm *prm, char *argv[], int argc, int cpid, int nave,
                     int lagfr, double smsep, double noise_lev, double amp0, int n_samples,
                     double dt, int n_pul, int n_lags, int nrang, double rngsep, double freq,
-                    int * pulse_t, int stid, int beam)
+                    int *pulse_t, int stid, int beam)
 {
   int i;
   time_t rawtime;
-  struct tm * timeinfo;
+  struct tm *timeinfo;
   char tmstr[40];
 
   char *envstr=NULL;
@@ -110,8 +110,7 @@ void makeRadarParm(struct RadarParm * prm, char * argv[], int argc, int cpid, in
   RadarParmSetOriginTime(prm,tmstr);
   char *tempstr = malloc(argc*15);
   strcpy(tempstr,argv[0]);
-  for(i=1;i<argc;i++)
-  {
+  for (i=1;i<argc;i++) {
     strcat(tempstr," ");
     strcat(tempstr,argv[i]);
   }
@@ -179,26 +178,21 @@ void makeRadarParm(struct RadarParm * prm, char * argv[], int argc, int cpid, in
 
   int16 temp_pul[n_pul];
 
-  for(i=0;i<n_pul;i++)
+  for (i=0;i<n_pul;i++)
     temp_pul[i] = (int16)pulse_t[i];
 
   RadarParmSetPulse(prm,n_pul,temp_pul);
 
 
-  if(cpid == 1)
-  {
+  if (cpid == 1) {
     int16 temp_lag[100] = {0,0,26,27,20,22,9,12,22,26,22,27,20,26,20,27,12,20,0,9,
                                 12,22,9,20,0,12,9,22,12,26,12,27,9,26,9,27};
     RadarParmSetLag(prm,n_lags,temp_lag);
-  }
-  else if(cpid == 503)
-  {
+  } else if (cpid == 503) {
     int16 temp_lag[100] = {0,0,15,16,27,29,29,32,23,27,27,32,23,29,16,23,15,23,
                             23,32,16,27,15,27,16,29,15,29,32,47,16,32,15,32};
     RadarParmSetLag(prm,n_lags,temp_lag);
-  }
-  else
-  {
+  } else {
     int16 temp_lag[100] = {0,0,42,43,22,24,24,27,27,31,22,27,24,31,14,22,22,
                                 31,14,24,31,42,31,43,14,27,0,14,27,42,27,43,14,31,
                                 24,42,24,43,22,42,22,43,0,22,0,24};
@@ -207,9 +201,6 @@ void makeRadarParm(struct RadarParm * prm, char * argv[], int argc, int cpid, in
 
   RadarParmSetCombf(prm,tempstr);
 
-  /*
-  prm->pulse = malloc(n_pul*sizeof(int16));
-  memcpy(prm->pulse,temp_pul,sizeof(int16)*n_pul);*/
   free(tempstr);
 }
 /*this is a driver program for the data simulator*/
@@ -327,18 +318,17 @@ int main(int argc,char *argv[])
   cri_flg = !cri_flg;
 
   double lambda = C/freq;
-  if(w != -9999.)
+  if (w != -9999.)
     t_d = lambda/(w*2.*PI);
 
   /*oldscan*/
-  if(oldscan)
-  {
+  if (oldscan) {
     cpid = 1;
     dt = 2.4e-3;                          /*basic lag time*/
     n_pul = 7;                            /*number of pulses*/
     n_lags = 18;                          /*number of lags in the ACFs*/
     /*if the user did not set nave*/
-    if(!nave_flg)
+    if (!nave_flg)
       nave = 70;                          /*number of averages*/
 
     /*fill the pulse table*/
@@ -353,21 +343,20 @@ int main(int argc,char *argv[])
 
     /*Creating lag array*/
     tau = malloc(n_lags*sizeof(int));
-    for(i=0;i<n_lags;i++)
+    for (i=0;i<n_lags;i++)
       tau[i] = i;
     /*no lag 16*/
     tau[16] += 1;
     tau[17] += 1;
   }
   /*tauscan*/
-  else if(tauscan)
-  {
+  else if (tauscan) {
     cpid = 503;
     dt = 2.4e-3;                          /*basic lag time*/
     n_pul = 13;                           /*number of pulses*/
     n_lags = 17;                          /*number of lags in the ACFs*/
     /*if the user did not set nave*/
-    if(!nave_flg)
+    if (!nave_flg)
       nave = 20;                          /*number of averages*/
 
     /*fill the pulse table*/
@@ -388,20 +377,19 @@ int main(int argc,char *argv[])
 
     /*Creating lag array*/
     tau = malloc(n_lags*sizeof(int));
-    for(i=0;i<10;i++)
+    for (i=0;i<10;i++)
       tau[i] = i;
     /*no lag 10*/
-    for(i=10;i<18;i++)
+    for (i=10;i<18;i++)
       tau[i] = (i+1);
   }
   /*katscan (default)*/
-  else
-  {
+  else {
     dt = 1.5e-3;                          /*basic lag time*/
     n_pul = 8;                            /*number of pulses*/
     n_lags = 23;                          /*number of lags in the ACFs*/
     /*if the user did not set nave*/
-    if(!nave_flg)
+    if (!nave_flg)
       nave = 50;                          /*number of averages*/
 
     /*fill the pulse table*/
@@ -417,10 +405,10 @@ int main(int argc,char *argv[])
 
     /*Creating lag array*/
     tau = malloc(n_lags*sizeof(int));
-    for(i=0;i<6;i++)
+    for (i=0;i<6;i++)
       tau[i] = i;
     /*no lag 6*/
-    for(i=6;i<22;i++)
+    for (i=6;i<22;i++)
       tau[i] = (i+1);
     /*no lag 23*/
     tau[22] = 24;
@@ -432,20 +420,19 @@ int main(int argc,char *argv[])
   n_samples = (pulse_t[n_pul-1]*taus+nrang+lagfr);      /*number of samples in 1 pulse sequence*/
 
   /*Creating the output array for ACFs*/
-  complex double ** acfs = malloc(nrang*sizeof(complex double *));
-  for(i=0;i<nrang;i++)
-  {
+  complex double **acfs = malloc(nrang*sizeof(complex double *));
+  for (i=0;i<nrang;i++) {
     acfs[i] = malloc(n_lags*sizeof(complex double));
-    for(j=0;j<n_lags;j++)
+    for (j=0;j<n_lags;j++)
       acfs[i][j] = 0.+I*0.;
   }
 
   /*flags to tell which range gates contain scatter*/
-  int * qflg = malloc(nrang*sizeof(int));
-  for(i=0;i<srng;i++)
+  int *qflg = malloc(nrang*sizeof(int));
+  for (i=0;i<srng;i++)
     qflg[i] = 0;
-  for(i=srng;i<nrang;i++)
-    if(i < srng+n_good)
+  for (i=srng;i<nrang;i++)
+    if (i < srng+n_good)
       qflg[i] = 1;
     else
       qflg[i] = 0;
@@ -453,44 +440,43 @@ int main(int argc,char *argv[])
 
 
   /*create a structure to store the raw samples from each pulse sequence*/
-  complex double * raw_samples = malloc(n_samples*nave*sizeof(complex double));
+  complex double *raw_samples = malloc(n_samples*nave*sizeof(complex double));
 
   /**********************************************************
   ****FILL THESE ARRAYS WITH THE SIMULATION PARAMETERS*******
   **********************************************************/
 
   /*array with the irregularity decay time for each range gate*/
-  double * t_d_arr = malloc(nrang*sizeof(double));
-  for(i=0;i<nrang;i++)
+  double *t_d_arr = malloc(nrang*sizeof(double));
+  for (i=0;i<nrang;i++)
     t_d_arr[i] = t_d;
 
   /*array with the irregularity growth time for each range gate*/
-  double * t_g_arr = malloc(nrang*sizeof(double));
-  for(i=0;i<nrang;i++)
+  double *t_g_arr = malloc(nrang*sizeof(double));
+  for (i=0;i<nrang;i++)
     t_g_arr[i] = t_g;
 
   /*array with the irregularity lifetime for each range gate*/
-  double * t_c_arr = malloc(nrang*sizeof(double));
-  for(i=0;i<nrang;i++)
+  double *t_c_arr = malloc(nrang*sizeof(double));
+  for (i=0;i<nrang;i++)
     t_c_arr[i] = t_c;
 
   /*array with the irregularity doppler velocity for each range gate*/
-  double * v_dop_arr = malloc(nrang*sizeof(double));
-  for(i=0;i<nrang;i++)
+  double *v_dop_arr = malloc(nrang*sizeof(double));
+  for (i=0;i<nrang;i++)
     v_dop_arr[i] = v_dop;
 
   /*array with the irregularity doppler velocity for each range gate*/
-  double * velo_arr = malloc(nrang*sizeof(double));
-  for(i=0;i<nrang;i++)
+  double *velo_arr = malloc(nrang*sizeof(double));
+  for (i=0;i<nrang;i++)
     velo_arr[i] = velo;
 
-
   /*array with the ACF amplitude for each range gate*/
-  double * amp0_arr = malloc(nrang*sizeof(double));
-  for(i=0;i<nrang;i++)
+  double *amp0_arr = malloc(nrang*sizeof(double));
+  for (i=0;i<nrang;i++)
     amp0_arr[i] = amp0;
 	
-  if(noise_flg) noise_lev *= amp0;
+  if (noise_flg) noise_lev *= amp0;
 
   /*call the simulation function*/
   sim_data(t_d_arr, t_g_arr, t_c_arr, v_dop_arr, qflg, velo_arr, amp0_arr, freq, noise_lev,
@@ -498,30 +484,27 @@ int main(int argc,char *argv[])
            n_pul, cri_flg, n_lags, pulse_t, tau, dt, raw_samples, acfs, decayflg);
 
   /*fill the parameter structure*/
-  struct RadarParm * prm;
+  struct RadarParm *prm;
   prm = RadarParmMake();
   makeRadarParm(prm, argv, argc, cpid, nave, lagfr, smsep, noise_lev, amp0, n_samples,
                 dt, n_pul, n_lags, nrang, rngsep, freq, pulse_t, stid, beam);
 
-  if(!smp_flg)
-  {
+  if (!smp_flg) {
     /*fill the rawdata structure*/
-    struct RawData * raw;
+    struct RawData *raw;
     raw = RawMake();
 
     raw->revision.major = 1;
     raw->revision.minor = 1;
     raw->thr=0.0;
-    int * slist = malloc(nrang*sizeof(int));
-    float * pwr0 = malloc(nrang*sizeof(float));
-    float * acfd = malloc(nrang*n_lags*2*sizeof(float));
-    float * xcfd = malloc(nrang*n_lags*2*sizeof(float));
-    for(i=0;i<nrang;i++)
-    {
+    int *slist = malloc(nrang*sizeof(int));
+    float *pwr0 = malloc(nrang*sizeof(float));
+    float *acfd = malloc(nrang*n_lags*2*sizeof(float));
+    float *xcfd = malloc(nrang*n_lags*2*sizeof(float));
+    for (i=0;i<nrang;i++) {
       slist[i] = i;
       pwr0[i] = creal(acfs[i][0]);
-      for(j=0;j<n_lags;j++)
-      {
+      for (j=0;j<n_lags;j++) {
         acfd[i*n_lags*2+j*2] = creal(acfs[i][j]);
         acfd[i*n_lags*2+j*2+1] = cimag(acfs[i][j]);
         xcfd[i*n_lags*2+j*2] = 0.;
@@ -537,9 +520,7 @@ int main(int argc,char *argv[])
     free(pwr0);
     free(acfd);
     free(xcfd);
-  }
-  else
-  {
+  } else {
     /*fill the iqdata structure*/
     struct IQ *iq;
     iq=IQMake();
@@ -558,9 +539,8 @@ int main(int argc,char *argv[])
 
     gettimeofday(&tick,NULL);
 
-    int16 * samples = malloc(n_samples*nave*2*2*sizeof(int16));
-    for(i=0;i<nave;i++)
-    {
+    int16 *samples = malloc(n_samples*nave*2*2*sizeof(int16));
+    for (i=0;i<nave;i++) {
       /*iq structure values*/
       seqtval[i].tv_sec = tick.tv_sec + (int)(i*n_samples*smsep);
       seqtval[i].tv_nsec = (tick.tv_usec + (i*n_samples*smsep-(int)(i*n_samples*smsep))*1e6)*1000;
@@ -570,14 +550,12 @@ int main(int argc,char *argv[])
       seqsze[i] = n_samples*2*2;
 
       /*main array samples*/
-      for(j=0;j<n_samples;j++)
-      {
+      for (j=0;j<n_samples;j++) {
         samples[i*n_samples*2*2+j*2] = (int16)(creal(raw_samples[i*n_samples+j]));
         samples[i*n_samples*2*2+j*2+1] = (int16)(cimag(raw_samples[i*n_samples+j]));
       }
       /*interferometer array samples*/
-      for(j=0;j<n_samples;j++)
-      {
+      for (j=0;j<n_samples;j++) {
         samples[i*n_samples*2*2+j*2+n_samples] = 0;
         samples[i*n_samples*2*2+j*2+1+n_samples] = 0;
       }
@@ -589,7 +567,7 @@ int main(int argc,char *argv[])
     IQSetOffset(iq,nave,seqoff);
     IQSetSize(iq,nave,seqsze);
 
-    unsigned int * badtr = malloc(nave*n_pul*2*sizeof(int));
+    unsigned int *badtr = malloc(nave*n_pul*2*sizeof(int));
 
     IQFwrite(stdout,prm,iq,badtr,samples);
     free(samples);
@@ -597,7 +575,7 @@ int main(int argc,char *argv[])
   }
 
   /*free dynamically allocated memory*/
-  for(i=0;i<nrang;i++)
+  for (i=0;i<nrang;i++)
     free(acfs[i]);
   free(acfs);
   free(pulse_t);
