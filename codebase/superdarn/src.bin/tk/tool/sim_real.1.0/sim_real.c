@@ -38,6 +38,7 @@ THE SOFTWARE.
 #include <sys/time.h>
 #include <zlib.h>
 #include "rtypes.h"
+#include "option.h"
 #include "rmath.h"
 #include "dmap.h"
 #include "sim_data.h"
@@ -49,6 +50,16 @@ THE SOFTWARE.
 #include "iq.h"
 #include "iqwrite.h"
 
+#include "errstr.h"
+#include "hlpstr.h"
+
+struct OptionData opt;
+
+int rst_opterr(char *txt) {
+  fprintf(stderr,"Option not recognized: %s\n",txt);
+  fprintf(stderr,"Please try: sim_real --help\n");
+  return(-1);
+}
 
 void makeRadarParm2(struct RadarParm * prm, char * argv[], int argc, int cpid, int nave,
                     int lagfr, double smsep, double noise_lev, double amp0, int n_samples,
@@ -151,17 +162,30 @@ void makeRadarParm2(struct RadarParm * prm, char * argv[], int argc, int cpid, i
   RadarParmSetCombf(prm,"sim_real");
 
 }
-/*this is a driver program from the data simulator*/
+/*this is a driver program for the data simulator*/
 
 int main(int argc,char *argv[])
 {
+
+  int arg;
+  unsigned char help=0;
+  unsigned char option=0;
+  unsigned char version=0;
+
+  int katscan = 0;
+  int oldscan = 0;
+  int tauscan = 0;
+
+  OptionAdd(&opt,"katscan",'x',&katscan);       /* control program */
+  OptionAdd(&opt,"oldscan",'x',&oldscan);
+  OptionAdd(&opt,"tauscan",'x',&tauscan);
 
   /********************************************************
   ** definitions of variables needed for data generation **
   ********************************************************/
   double t_d = .04;                         /*Irregualrity decay time s*/
   double w = -9999.;                        /*spectral width*/
-  double v_dop =450.;                       /*Background velocity (m/s)*/
+  double v_dop = 450.;                      /*Background velocity (m/s)*/
   double freq = 12.e6;                      /*transmit frequency*/
   double amp0 = 1.;                         /*amplitude scaling factor*/
   int noise_flg = 1;                        /*flag to indicate whether white noise is included*/
@@ -172,7 +196,7 @@ int main(int argc,char *argv[])
   int life_dist = 0;                        /*lifetime distribution*/
   double smsep = 300.e-6;                   /*sample spearation*/
   double rngsep = 45.e3;                    /*range gate spearation*/
-  int cpid = 150;                             /*control program ID number*/
+  int cpid = 150;                           /*control program ID number*/
   int n_samples;                            /*Number of datapoints in a single pulse sequence*/
   int n_pul,n_lags,*pulse_t,*tau;
   double dt;                                /*basic lag time*/
@@ -188,6 +212,31 @@ int main(int argc,char *argv[])
   /*other variables*/
   long i,j;
   double taus;
+
+  OptionAdd(&opt,"-help",'x',&help);
+  OptionAdd(&opt,"-option",'x',&option);
+  OptionAdd(&opt,"-version",'x',&version);
+
+  arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
+
+  if (arg==-1) {
+    exit(-1);
+  }
+
+  if (help==1) {
+    OptionPrintInfo(stdout,hlpstr);
+    exit(0);
+  }
+
+  if (option==1) {
+    OptionDump(stdout,&opt);
+    exit(0);
+  }
+
+  if (version==1) {
+    OptionVersion(stdout);
+    exit(0);
+  }
 
   /*fit file to recreate*/
   char * filename = argv[argc-1];
@@ -269,7 +318,8 @@ int main(int argc,char *argv[])
       t_d = lambda/(w*2.*PI);
 
     /*oldscan*/
-    if(cpid == 1) {
+    if(oldscan) {
+      cpid = 1;
       n_pul = 7;                            /*number of pulses*/
       n_lags = 18;                          /*number of lags in the ACFs*/
 
@@ -292,7 +342,8 @@ int main(int argc,char *argv[])
       tau[17] += 1;
     }
     /*tauscan*/
-    else if(cpid == 503 || cpid == -3310) {
+    else if(tauscan) {
+      cpid = 503;
       n_pul = 13;                           /*number of pulses*/
       n_lags = 17;                          /*number of lags in the ACFs*/
 
@@ -346,7 +397,6 @@ int main(int argc,char *argv[])
       /*no lag 23*/
       tau[22] = 24;
     }
-
 
 
     /*control program dependent variables*/
@@ -424,8 +474,30 @@ int main(int argc,char *argv[])
       struct IQ *iq;
       iq=IQMake();
 
+      struct timeval tick;
+      struct timespec seqtval[nave];
+      int seqatten[nave];
+      float seqnoise[nave];
+      int seqoff[nave];
+      int seqsze[nave];
+
+      iq->seqnum = nave;
+      iq->chnnum = 1;
+      iq->smpnum = n_samples;
+      iq->skpnum = 4;
+
+      gettimeofday(&tick,NULL);
+
       int16 * samples = malloc(n_samples*nave*2*2*sizeof(int16));
       for(i=0;i<nave;i++) {
+        /*iq structure values*/
+        seqtval[i].tv_sec = tick.tv_sec + (int)(i*n_samples*smsep);
+        seqtval[i].tv_nsec = (tick.tv_usec + (i*n_samples*smsep-(int)(i*n_samples*smsep))*1e6)*1000;
+        seqatten[i] = 0;
+        seqnoise[i] = 0.;
+        seqoff[i] = i*n_samples*2*2;
+        seqsze[i] = n_samples*2*2;
+  
         /*main array samples*/
         for(j=0;j<n_samples;j++) {
           samples[i*n_samples*2*2+j*2] = (int16)(creal(raw_samples[i*n_samples+j]));
@@ -437,6 +509,12 @@ int main(int argc,char *argv[])
           samples[i*n_samples*2*2+j*2+1+n_samples] = 0;
         }
       }
+
+      IQSetTime(iq,nave,seqtval);
+      IQSetAtten(iq,nave,seqatten);
+      IQSetNoise(iq,nave,seqnoise);
+      IQSetOffset(iq,nave,seqoff);
+      IQSetSize(iq,nave,seqsze);
 
       unsigned int * badtr = malloc(nave*n_pul*2*sizeof(int));
 
