@@ -13,6 +13,7 @@
 <option><on><ar>rawacfname</ar></on><od>filename of the <code>rawacf</code> format file. If this is omitted the file is read from standard input.</od></option>
 <option><on>-fitacf3</on><od>Uses FitACF 3.0 fitting algorithm</od></option>
 <option><on>-fitacf2</on><od>Uses FitACF 2.5 fitting algorithm</od></option>
+<option><on>-lmfit2</on><od>Uses LMFit 2.0 fitting algorithm (Not yet implemented: use make_lmfit2 binary)</od></option>
 <option><on>-lmfit1</on><od>Uses LMFit 1.0 fitting algorithm</od></option>
 <option><on>-fitex2</on><od>Uses FitEx 2.0 fitting algorithm</od></option>
 <option><on>-fitex1</on><od>Uses FitEx 1.0 fitting algorithm</od></option>

@@ -163,6 +163,7 @@ int main(int argc,char *argv[]) {
 
   int fitacf3 = 0;
   int fitacf2 = 0;
+  int lmfit2 = 0;
   int lmfit1 = 0;
   int fitex2 = 0;
   int fitex1 = 0;
@@ -180,6 +181,7 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"fitacf3",'x',&fitacf3);
   OptionAdd(&opt,"fitacf2",'x',&fitacf2);
+  OptionAdd(&opt,"lmfit2",'x',&lmfit2);
   OptionAdd(&opt,"lmfit1",'x',&lmfit1);
   OptionAdd(&opt,"fitex2",'x',&fitex2);
   OptionAdd(&opt,"fitex1",'x',&fitex1);
@@ -217,6 +219,13 @@ int main(int argc,char *argv[]) {
 
   if (old_elev == 1) {
     elv_version = 1;
+  }
+
+  // If lmfit2 fitting algorithm is provided, direct user to the separate binary
+  if (lmfit2) {
+    fprintf(stderr,"The lmfit2 fitting algorithm must be called using the separate binary, make_lmfit2\n");
+    OptionFree(&opt);
+    exit(-1);
   }
 
   // Check that a valid fitting algorithm has been provided
