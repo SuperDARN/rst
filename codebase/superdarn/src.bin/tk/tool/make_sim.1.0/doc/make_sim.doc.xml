@@ -19,6 +19,8 @@
 </option>
 <option><on>-oldscan</on><od>use the old 7-pulse sequence.</od>
 </option>
+<option><on>-xcf</on><od>calculate XCFs (using a virtual height model).</od>
+</option>
 <option><on>-freq <ar>f</ar></on><od>set the radar frequency to <ar>f</ar> MHz (default is 12 MHz).</od>
 </option>
 <option><on>-vel <ar>v</ar></on><od>set the background Doppler velocity to <ar>v</ar> m/s (default is 450 m/s).</od>

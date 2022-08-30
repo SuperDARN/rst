@@ -53,6 +53,8 @@ THE SOFTWARE.
 #include "radar.h"
 #include "iq.h"
 #include "iqwrite.h"
+#include "rpos.h"
+#include "rpos_v2.h"
 
 #include "errstr.h"
 #include "hlpstr.h"
@@ -71,7 +73,7 @@ int rst_opterr(char *txt) {
 void makeRadarParm(struct RadarParm *prm, char *argv[], int argc, int cpid, int nave,
                     int lagfr, double smsep, double noise_lev, double amp0, int n_samples,
                     double dt, int n_pul, int n_lags, int nrang, double rngsep, double freq,
-                    int *pulse_t, int stid, int beam)
+                    int *pulse_t, int stid, int beam, int xcf)
 {
   int i;
   time_t rawtime;
@@ -170,7 +172,7 @@ void makeRadarParm(struct RadarParm *prm, char *argv[], int argc, int cpid, int 
   prm->nrang = (int16)nrang;
   prm->frang = (int16)(rngsep*lagfr*1e-3);
   prm->rsep = (int16)(rngsep*1e-3);
-  prm->xcf = 0;
+  prm->xcf = (int16)xcf;
   prm->tfreq = (int16)(freq*1e-3);
   prm->offset = 0;
   prm->mxpwr = 1070000000;
@@ -231,6 +233,7 @@ int main(int argc,char *argv[])
   int stid = 0;
   int beam = 7;
   int mpinc = -1;
+  int xcf = 0;
 
   int katscan = 0;
   int oldscan = 0;
@@ -278,6 +281,8 @@ int main(int argc,char *argv[])
   OptionAdd(&opt,"oldscan",'x',&oldscan);
   OptionAdd(&opt,"tauscan",'x',&tauscan);
   OptionAdd(&opt,"spaletascan",'x',&spaletascan);
+
+  OptionAdd(&opt,"xcf",'x',&xcf);
 
   OptionAdd(&opt,"constant",'x',&life_dist);    /* irregularity distribution */
   OptionAdd(&opt,"freq",'d',&freq);             /* frequency [MHz] */
@@ -531,7 +536,11 @@ int main(int argc,char *argv[])
   double *amp0_arr = malloc(nrang*sizeof(double));
   for (i=0;i<nrang;i++)
     amp0_arr[i] = amp0;
-	
+
+  double *psi_obs = malloc(nrang*sizeof(double));
+  for (i=0;i<nrang;i++)
+    psi_obs[i] = 0.;
+
   if (noise_flg) noise_lev *= amp0;
 
   /*call the simulation function*/
@@ -543,7 +552,40 @@ int main(int argc,char *argv[])
   struct RadarParm *prm;
   prm = RadarParmMake();
   makeRadarParm(prm, argv, argc, cpid, nave, lagfr, smsep, noise_lev, amp0, n_samples,
-                dt, n_pul, n_lags, nrang, rngsep, freq, pulse_t, stid, beam);
+                dt, n_pul, n_lags, nrang, rngsep, freq, pulse_t, stid, beam, xcf);
+
+  if (xcf) {
+    /* Calculate the observed phase difference between the main and
+     * interferometer antenna arrays, using a virtual height model */
+    double rng;
+    double xh;
+    double hop;
+
+    double X,Y,Z;
+    double boff;
+    double phi0;
+    double cp0,sp0;
+    double alpha;
+    double sa;
+
+    X = site->interfer[0];
+    Y = site->interfer[1];
+    Z = site->interfer[2];
+
+    boff = site->maxbeam/2.-0.5;
+    phi0 = (site->bmoff + site->bmsep*(beam - boff))*PI/180.;
+    cp0 = cos(phi0);
+    sp0 = sin(phi0);
+
+    for (i=0;i<nrang;i++) {
+      rng = slant_range(rngsep*lagfr*1e-3, rngsep*1e-3, 0, 0, i+1);
+      xh = calc_cv_vhm(rng, 0, &hop);
+      alpha = calc_elevation_angle(rng, xh, hop, 0)*PI/180.;
+      sa = sin(alpha);
+
+      psi_obs[i] = 2*PI*freq*((1/C)*(X*sp0 + Y*sqrt(cp0*cp0-sa*sa) + Z*sa) - site->tdiff[0]*1e-6);
+    }
+  }
 
   if (!smp_flg) {
     /*fill the rawdata structure*/
@@ -563,8 +605,8 @@ int main(int argc,char *argv[])
       for (j=0;j<n_lags;j++) {
         acfd[i*n_lags*2+j*2] = creal(acfs[i][j]);
         acfd[i*n_lags*2+j*2+1] = cimag(acfs[i][j]);
-        xcfd[i*n_lags*2+j*2] = 0.;
-        xcfd[i*n_lags*2+j*2+1] = 0.;
+        xcfd[i*n_lags*2+j*2] = xcf*creal(acfs[i][j]*(cos(psi_obs[i])+I*sin(psi_obs[i])));
+        xcfd[i*n_lags*2+j*2+1] = xcf*cimag(acfs[i][j]*(cos(psi_obs[i])+I*sin(psi_obs[i])));
       }
     }
 
@@ -612,8 +654,8 @@ int main(int argc,char *argv[])
       }
       /*interferometer array samples*/
       for (j=0;j<n_samples;j++) {
-        samples[i*n_samples*2*2+j*2+n_samples] = 0;
-        samples[i*n_samples*2*2+j*2+1+n_samples] = 0;
+        samples[i*n_samples*2*2+j*2+n_samples] = (int16)(xcf*creal(raw_samples[i*n_samples+j])*(cos(psi_obs[i])+I*sin(psi_obs[i])));
+        samples[i*n_samples*2*2+j*2+1+n_samples] = (int16)(xcf*cimag(raw_samples[i*n_samples+j])*(cos(psi_obs[i])+I*sin(psi_obs[i])));
       }
     }
 
@@ -644,6 +686,7 @@ int main(int argc,char *argv[])
   free(v_dop_arr);
   free(velo_arr);
   free(amp0_arr);
+  free(psi_obs);
 
   return 0;
 }
