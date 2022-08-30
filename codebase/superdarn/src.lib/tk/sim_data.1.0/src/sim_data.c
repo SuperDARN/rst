@@ -1,6 +1,5 @@
  /*COPYRIGHT:
 Copyright (C) 2011 by Virginia Tech
-TODO: Whose the author?
 TODO: Disclaimer is different as well... Kevin S?
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -135,8 +134,7 @@ float gasdev(long *idum)
 
 void acf_27(double complex * aa, double complex * rr, int cpid)
 {
-  if(cpid == 1)
-  {
+  if (cpid == 1) {
     rr[0]=aa[0]*conj(aa[0]);
     rr[1]=aa[5]*conj(aa[6]);
     rr[2]=aa[3]*conj(aa[4]);
@@ -156,8 +154,7 @@ void acf_27(double complex * aa, double complex * rr, int cpid)
     rr[16]=aa[1]*conj(aa[5]);
     rr[17]=aa[1]*conj(aa[6]);
   }
-  if(cpid == 150)
-  {
+  if (cpid == 150) {
     rr[0]=aa[0]*conj(aa[0]);
     rr[1]=aa[6]*conj(aa[7]);
     rr[2]=aa[2]*conj(aa[3]);
@@ -182,8 +179,7 @@ void acf_27(double complex * aa, double complex * rr, int cpid)
     rr[21]=aa[0]*conj(aa[2]);
     rr[22]=aa[0]*conj(aa[3]);
   }
-  if(cpid == 503)
-  {
+  if (cpid == 503) {
     double complex * temp = malloc(17*sizeof(double complex));
     int i;
     rr[0]=aa[0]*conj(aa[0]);
@@ -203,7 +199,6 @@ void acf_27(double complex * aa, double complex * rr, int cpid)
     rr[14]=aa[0]*conj(aa[1]);
     rr[15]=aa[2]*conj(aa[6]);
     rr[16]=aa[1]*conj(aa[6]);
-
 
     temp[0]=aa[0]*conj(aa[0]);
     temp[1]=aa[11]*conj(aa[12]);
@@ -227,6 +222,129 @@ void acf_27(double complex * aa, double complex * rr, int cpid)
       rr[i] = (rr[i]+temp[i])/2.;
 
     free(temp);
+  }
+  if (cpid == 9100) {
+    rr[0]=aa[15]*conj(aa[15]);
+    rr[1]=aa[0]*conj(aa[1]);
+    rr[2]=aa[1]*conj(aa[2]);
+    rr[3]=aa[0]*conj(aa[2]);
+    rr[4]=aa[2]*conj(aa[3]);
+    rr[5]=aa[3]*conj(aa[4]);
+    rr[6]=aa[1]*conj(aa[3]);
+    rr[7]=aa[0]*conj(aa[3]);
+    rr[8]=aa[4]*conj(aa[5]);
+    rr[9]=aa[2]*conj(aa[4]);
+    rr[10]=aa[5]*conj(aa[6]);
+    rr[11]=aa[1]*conj(aa[4]);
+    rr[12]=aa[0]*conj(aa[4]);
+    rr[13]=aa[6]*conj(aa[7]);
+    rr[14]=aa[3]*conj(aa[5]);
+    rr[15]=aa[7]*conj(aa[8]);
+    rr[16]=aa[2]*conj(aa[5]);
+    rr[17]=aa[8]*conj(aa[9]);
+    rr[18]=aa[4]*conj(aa[6]);
+    rr[19]=aa[1]*conj(aa[5]);
+    rr[20]=aa[9]*conj(aa[10]);
+    rr[21]=aa[0]*conj(aa[5]);
+    rr[22]=aa[5]*conj(aa[7]);
+    rr[23]=aa[10]*conj(aa[11]);
+    rr[24]=aa[3]*conj(aa[6]);
+    rr[25]=aa[11]*conj(aa[12]);
+    rr[26]=aa[6]*conj(aa[8]);
+    rr[27]=aa[2]*conj(aa[6]);
+    rr[28]=aa[12]*conj(aa[13]);
+    rr[29]=aa[1]*conj(aa[6]);
+    rr[30]=aa[0]*conj(aa[6]);
+    rr[31]=aa[4]*conj(aa[7]);
+    rr[32]=aa[13]*conj(aa[14]);
+    rr[33]=aa[7]*conj(aa[9]);
+    rr[34]=aa[14]*conj(aa[15]);
+    rr[35]=aa[3]*conj(aa[7]);
+    rr[36]=aa[5]*conj(aa[8]);
+    rr[37]=aa[8]*conj(aa[10]);
+    rr[38]=aa[2]*conj(aa[7]);
+    rr[39]=aa[1]*conj(aa[7]);
+    rr[40]=aa[0]*conj(aa[7]);
+    rr[41]=aa[9]*conj(aa[11]);
+    rr[42]=aa[6]*conj(aa[9]);
+    rr[43]=aa[4]*conj(aa[8]);
+    rr[44]=aa[10]*conj(aa[12]);
+    rr[45]=aa[3]*conj(aa[8]);
+    rr[46]=aa[7]*conj(aa[10]);
+    rr[47]=aa[11]*conj(aa[13]);
+    rr[48]=aa[2]*conj(aa[8]);
+    rr[49]=aa[5]*conj(aa[9]);
+    rr[50]=aa[1]*conj(aa[8]);
+    rr[51]=aa[0]*conj(aa[8]);
+    rr[52]=aa[12]*conj(aa[14]);
+    rr[53]=aa[8]*conj(aa[11]);
+    rr[54]=aa[4]*conj(aa[9]);
+    rr[55]=aa[6]*conj(aa[10]);
+    rr[56]=aa[13]*conj(aa[15]);
+    rr[57]=aa[9]*conj(aa[12]);
+    rr[58]=aa[3]*conj(aa[9]);
+    rr[59]=aa[2]*conj(aa[9]);
+    rr[60]=aa[1]*conj(aa[9]);
+    rr[61]=aa[5]*conj(aa[10]);
+    rr[62]=aa[0]*conj(aa[9]);
+    rr[63]=aa[7]*conj(aa[11]);
+    rr[64]=aa[10]*conj(aa[13]);
+    rr[65]=aa[4]*conj(aa[10]);
+    rr[66]=aa[11]*conj(aa[14]);
+    rr[67]=aa[8]*conj(aa[12]);
+    rr[68]=aa[6]*conj(aa[11]);
+    rr[69]=aa[3]*conj(aa[10]);
+    rr[70]=aa[2]*conj(aa[10]);
+    rr[71]=aa[12]*conj(aa[15]);
+    rr[72]=aa[1]*conj(aa[10]);
+    rr[73]=aa[0]*conj(aa[10]);
+    rr[74]=aa[9]*conj(aa[13]);
+    rr[75]=aa[5]*conj(aa[11]);
+    rr[76]=aa[7]*conj(aa[12]);
+    rr[77]=aa[4]*conj(aa[11]);
+    rr[78]=aa[10]*conj(aa[14]);
+    rr[79]=aa[3]*conj(aa[11]);
+    rr[80]=aa[6]*conj(aa[12]);
+    rr[81]=aa[8]*conj(aa[13]);
+    rr[82]=aa[2]*conj(aa[11]);
+    rr[83]=aa[1]*conj(aa[11]);
+    rr[84]=aa[0]*conj(aa[11]);
+    rr[85]=aa[11]*conj(aa[15]);
+    rr[86]=aa[5]*conj(aa[12]);
+    rr[87]=aa[9]*conj(aa[14]);
+    rr[88]=aa[7]*conj(aa[13]);
+    rr[89]=aa[4]*conj(aa[12]);
+    rr[90]=aa[3]*conj(aa[12]);
+    rr[91]=aa[2]*conj(aa[12]);
+    rr[92]=aa[6]*conj(aa[13]);
+    rr[93]=aa[10]*conj(aa[15]);
+    rr[94]=aa[1]*conj(aa[12]);
+    rr[95]=aa[0]*conj(aa[12]);
+    rr[96]=aa[8]*conj(aa[14]);
+    rr[97]=aa[5]*conj(aa[13]);
+    rr[98]=aa[4]*conj(aa[13]);
+    rr[99]=aa[7]*conj(aa[14]);
+    rr[100]=aa[9]*conj(aa[15]);
+    rr[101]=aa[3]*conj(aa[13]);
+    rr[102]=aa[2]*conj(aa[13]);
+    rr[103]=aa[1]*conj(aa[13]);
+    rr[104]=aa[0]*conj(aa[13]);
+    rr[105]=aa[6]*conj(aa[14]);
+    rr[106]=aa[8]*conj(aa[15]);
+    rr[107]=aa[5]*conj(aa[14]);
+    rr[108]=aa[4]*conj(aa[14]);
+    rr[109]=aa[7]*conj(aa[15]);
+    rr[110]=aa[3]*conj(aa[14]);
+    rr[111]=aa[2]*conj(aa[14]);
+    rr[112]=aa[1]*conj(aa[14]);
+    rr[113]=aa[0]*conj(aa[14]);
+    rr[114]=aa[6]*conj(aa[15]);
+    rr[115]=aa[5]*conj(aa[15]);
+    rr[116]=aa[4]*conj(aa[15]);
+    rr[117]=aa[3]*conj(aa[15]);
+    rr[118]=aa[2]*conj(aa[15]);
+    rr[119]=aa[0]*conj(aa[15]);
+    rr[120]=aa[15]*conj(aa[15]);
   }
   return;
 }

@@ -15,6 +15,8 @@
 </option>
 <option><on>-tauscan</on><od>use Ray Greenwald's 13-pulse sequence.</od>
 </option>
+<option><on>-spaletascan</on><od>use Mrinal Balaji / Jef Spaleta's 16-pulse sequence.</od>
+</option>
 <option><on>-oldscan</on><od>use the old 7-pulse sequence.</od>
 </option>
 <option><on>-freq <ar>f</ar></on><od>set the radar frequency to <ar>f</ar> MHz (default is 12 MHz).</od>

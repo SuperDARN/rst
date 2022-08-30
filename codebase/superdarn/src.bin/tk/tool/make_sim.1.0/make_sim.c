@@ -192,6 +192,21 @@ void makeRadarParm(struct RadarParm *prm, char *argv[], int argc, int cpid, int 
     int16 temp_lag[100] = {0,0,15,16,27,29,29,32,23,27,27,32,23,29,16,23,15,23,
                             23,32,16,27,15,27,16,29,15,29,32,47,16,32,15,32};
     RadarParmSetLag(prm,n_lags,temp_lag);
+  } else if (cpid == 9100) {
+    int16 temp_lag[244] = {1495,1495,0,4,4,19,0,19,19,42,42,78,4,42,0,42,78,127,19,78,
+                           127,191,4,78,0,78,191,270,42,127,270,364,19,127,364,474,78,191,4,127,
+                           474,600,0,127,127,270,600,745,42,191,745,905,191,364,19,191,905,1083,4,191,
+                           0,191,78,270,1083,1280,270,474,1280,1495,42,270,127,364,364,600,19,270,4,270,
+                           0,270,474,745,191,474,78,364,600,905,42,364,270,600,745,1083,19,364,127,474,
+                           4,364,0,364,905,1280,364,745,78,474,191,600,1083,1495,474,905,42,474,19,474,
+                           4,474,127,600,0,474,270,745,600,1083,78,600,745,1280,364,905,191,745,42,600,
+                           19,600,905,1495,4,600,0,600,474,1083,127,745,270,905,78,745,600,1280,42,745,
+                           191,905,364,1083,19,745,4,745,0,745,745,1495,127,905,474,1280,270,1083,78,905,
+                           42,905,19,905,191,1083,600,1495,4,905,0,905,364,1280,127,1083,78,1083,270,1280,
+                           474,1495,42,1083,19,1083,4,1083,0,1083,191,1280,364,1495,127,1280,78,1280,270,1495,
+                           42,1280,19,1280,4,1280,0,1280,191,1495,127,1495,78,1495,42,1495,19,1495,4,1495,
+                           0,1495,1495,1495};
+    RadarParmSetLag(prm,n_lags,temp_lag);
   } else {
     int16 temp_lag[100] = {0,0,42,43,22,24,24,27,27,31,22,27,24,31,14,22,22,
                                 31,14,24,31,42,31,43,14,27,0,14,27,42,27,43,14,31,
@@ -220,6 +235,7 @@ int main(int argc,char *argv[])
   int katscan = 0;
   int oldscan = 0;
   int tauscan = 0;
+  int spaletascan = 0;
 
   /********************************************************
   ** definitions of variables needed for data generation **
@@ -261,6 +277,7 @@ int main(int argc,char *argv[])
   OptionAdd(&opt,"katscan",'x',&katscan);       /* control program */
   OptionAdd(&opt,"oldscan",'x',&oldscan);
   OptionAdd(&opt,"tauscan",'x',&tauscan);
+  OptionAdd(&opt,"spaletascan",'x',&spaletascan);
 
   OptionAdd(&opt,"constant",'x',&life_dist);    /* irregularity distribution */
   OptionAdd(&opt,"freq",'d',&freq);             /* frequency [MHz] */
@@ -382,6 +399,45 @@ int main(int argc,char *argv[])
     /*no lag 10*/
     for (i=10;i<18;i++)
       tau[i] = (i+1);
+  }
+  /*spaletascan*/
+  else if (spaletascan) {
+    cpid = 9100;
+    dt = 0.1e-3;                          /*basic lag time*/
+    n_pul = 16;                           /*number of pulses*/
+    n_lags = 121;                         /*number of lags in the ACFs*/
+    /*if the user did not set nave*/
+    if (!nave_flg)
+      nave = 16;                          /*number of averages*/
+
+    smsep = 100.e-6;
+    rngsep = 15.0e3;
+    lagfr = 12;
+    nrang = 225;
+
+    /*fill the pulse table*/
+    pulse_t = malloc(n_pul*sizeof(int));
+    pulse_t[0] = 0;
+    pulse_t[1] = 4;
+    pulse_t[2] = 19;
+    pulse_t[3] = 42;
+    pulse_t[4] = 78;
+    pulse_t[5] = 127;
+    pulse_t[6] = 191;
+    pulse_t[7] = 270;
+    pulse_t[8] = 364;
+    pulse_t[9] = 474;
+    pulse_t[10] = 600;
+    pulse_t[11] = 745;
+    pulse_t[12] = 905;
+    pulse_t[13] = 1083;
+    pulse_t[14] = 1280;
+    pulse_t[15] = 1495;
+
+    /*Creating lag array*/
+    tau = malloc(n_lags*sizeof(int));
+    for (i=0;i<n_lags;i++)
+      tau[i] = i;
   }
   /*katscan (default)*/
   else {
