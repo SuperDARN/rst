@@ -654,8 +654,8 @@ int main(int argc,char *argv[])
       }
       /*interferometer array samples*/
       for (j=0;j<n_samples;j++) {
-        samples[i*n_samples*2*2+j*2+n_samples] = (int16)(xcf*creal(raw_samples[i*n_samples+j])*(cos(psi_obs[i])+I*sin(psi_obs[i])));
-        samples[i*n_samples*2*2+j*2+1+n_samples] = (int16)(xcf*cimag(raw_samples[i*n_samples+j])*(cos(psi_obs[i])+I*sin(psi_obs[i])));
+        samples[i*n_samples*2*2+j*2+n_samples] = (int16)(xcf*creal(raw_samples[i*n_samples+j]*(cos(psi_obs[i])+I*sin(psi_obs[i]))));
+        samples[i*n_samples*2*2+j*2+1+n_samples] = (int16)(xcf*cimag(raw_samples[i*n_samples+j]*(cos(psi_obs[i])+I*sin(psi_obs[i]))));
       }
     }
 
