@@ -270,6 +270,7 @@ int main(int argc,char *argv[])
   int srng = 0;                             /*first range gate containing scatter*/
   double elv = -9999.;                      /*elevation angle*/
   double vht = -9999.;                      /*virtual height*/
+  double tdiff = -9999.;                    /*tdiff*/
 
   /*other variables*/
   long i,j;
@@ -287,6 +288,7 @@ int main(int argc,char *argv[])
   OptionAdd(&opt,"xcf",'x',&xcf);               /* calculate interferometer samples / XCFs */
   OptionAdd(&opt,"elv",'d',&elv);               /* elevation angle [deg] */
   OptionAdd(&opt,"vht",'d',&vht);               /* virtual height [km] */
+  OptionAdd(&opt,"tdiff",'d',&tdiff);           /* tdiff [us] */
 
   OptionAdd(&opt,"constant",'x',&life_dist);    /* irregularity distribution */
   OptionAdd(&opt,"freq",'d',&freq);             /* frequency [MHz] */
@@ -572,6 +574,10 @@ int main(int argc,char *argv[])
     double alpha;
     double sa;
 
+    if (tdiff == -9999.) {
+      tdiff = site->tdiff[0];
+    }
+
     X = site->interfer[0];
     Y = site->interfer[1];
     Z = site->interfer[2];
@@ -596,7 +602,7 @@ int main(int argc,char *argv[])
       }
       sa = sin(alpha);
 
-      psi_obs[i] = 2*PI*freq*((1/C)*(X*sp0 + Y*sqrt(cp0*cp0-sa*sa) + Z*sa) - site->tdiff[0]*1e-6);
+      psi_obs[i] = 2*PI*freq*((1/C)*(X*sp0 + Y*sqrt(cp0*cp0-sa*sa) + Z*sa) - tdiff*1e-6);
     }
   }
 

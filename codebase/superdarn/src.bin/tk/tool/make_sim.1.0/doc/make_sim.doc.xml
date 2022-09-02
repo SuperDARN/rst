@@ -21,9 +21,11 @@
 </option>
 <option><on>-xcf</on><od>calculate interferometer samples and XCFs (default is to use a virtual height model).</od>
 </option>
-<option><on>-elv <ar>elv</ar></on><od>set the elevation angle to <ar>elv</ar> degrees (instead of using a virtual height model).</od>
+<option><on>-elv <ar>elv</ar></on><od>set the elevation angle to <ar>elv</ar> degrees for all ranges (instead of using a virtual height model).</od>
 </option>
-<option><on>-vht <ar>vht</ar></on><od>set the virtual height to <ar>vht</ar> degrees (instead of using a virtual height model).</od>
+<option><on>-vht <ar>vht</ar></on><od>set the virtual height to <ar>vht</ar> km for all ranges (instead of using a virtual height model).</od>
+</option>
+<option><on>-tdiff <ar>tdiff</ar></on><od>set the tdiff value to <ar>tdiff</ar> microseconds when calculating interferometer samples and XCFs (default is to use hardware value).</od>
 </option>
 <option><on>-freq <ar>f</ar></on><od>set the radar frequency to <ar>f</ar> MHz (default is 12 MHz).</od>
 </option>
