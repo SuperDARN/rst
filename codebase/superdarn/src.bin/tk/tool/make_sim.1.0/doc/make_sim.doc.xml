@@ -33,6 +33,8 @@
 </option>
 <option><on>-v_spread <ar>v_s</ar></on><od>set the Gaussian Doppler velocity spread (standard deviation) to <ar>v_s</ar> m/s (default is 0 m/s).</od>
 </option>
+<option><on>-width <ar>w</ar></on><od>set the spectral width to <ar>w</ar> m/s (default is 120 m/s).</od>
+</option>
 <option><on>-t_d <ar>t_d</ar></on><od>set the irregularity decay time to <ar>t_d</ar> milliseconds (default is 40 ms).</od>
 </option>
 <option><on>-t_g <ar>t_g</ar></on><od>set the irregularity growth time to <ar>t_d</ar> microseconds (default is 1 us, ie negligible).</od>
