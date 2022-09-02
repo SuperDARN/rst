@@ -268,6 +268,8 @@ int main(int argc,char *argv[])
   int smp_flg = 0;                          /*output raw samples flag*/
   int decayflg = 0;
   int srng = 0;                             /*first range gate containing scatter*/
+  double elv = -9999.;                      /*elevation angle*/
+  double vht = -9999.;                      /*virtual height*/
 
   /*other variables*/
   long i,j;
@@ -282,7 +284,9 @@ int main(int argc,char *argv[])
   OptionAdd(&opt,"tauscan",'x',&tauscan);
   OptionAdd(&opt,"spaletascan",'x',&spaletascan);
 
-  OptionAdd(&opt,"xcf",'x',&xcf);
+  OptionAdd(&opt,"xcf",'x',&xcf);               /* calculate interferometer samples / XCFs */
+  OptionAdd(&opt,"elv",'d',&elv);               /* elevation angle [deg] */
+  OptionAdd(&opt,"vht",'d',&vht);               /* virtual height [km] */
 
   OptionAdd(&opt,"constant",'x',&life_dist);    /* irregularity distribution */
   OptionAdd(&opt,"freq",'d',&freq);             /* frequency [MHz] */
@@ -578,9 +582,18 @@ int main(int argc,char *argv[])
     sp0 = sin(phi0);
 
     for (i=0;i<nrang;i++) {
-      rng = slant_range(rngsep*lagfr*1e-3, rngsep*1e-3, 0, 0, i+1);
-      xh = calc_cv_vhm(rng, 0, &hop);
-      alpha = calc_elevation_angle(rng, xh, hop, 0)*PI/180.;
+      if (elv != -9999.) {
+        alpha = elv*PI/180.;
+      } else {
+        rng = slant_range(rngsep*lagfr*1e-3, rngsep*1e-3, 0, 0, i+1);
+        if (vht != -9999.) {
+          xh = vht;
+          hop = 0.5;
+        } else {
+          xh = calc_cv_vhm(rng, 0, &hop);
+        }
+        alpha = calc_elevation_angle(rng, xh, hop, 0)*PI/180.;
+      }
       sa = sin(alpha);
 
       psi_obs[i] = 2*PI*freq*((1/C)*(X*sp0 + Y*sqrt(cp0*cp0-sa*sa) + Z*sa) - site->tdiff[0]*1e-6);

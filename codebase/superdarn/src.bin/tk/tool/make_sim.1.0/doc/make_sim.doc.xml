@@ -19,7 +19,11 @@
 </option>
 <option><on>-oldscan</on><od>use the old 7-pulse sequence.</od>
 </option>
-<option><on>-xcf</on><od>calculate XCFs (using a virtual height model).</od>
+<option><on>-xcf</on><od>calculate interferometer samples and XCFs (default is to use a virtual height model).</od>
+</option>
+<option><on>-elv <ar>elv</ar></on><od>set the elevation angle to <ar>elv</ar> degrees (instead of using a virtual height model).</od>
+</option>
+<option><on>-vht <ar>vht</ar></on><od>set the virtual height to <ar>vht</ar> degrees (instead of using a virtual height model).</od>
 </option>
 <option><on>-freq <ar>f</ar></on><od>set the radar frequency to <ar>f</ar> MHz (default is 12 MHz).</od>
 </option>
