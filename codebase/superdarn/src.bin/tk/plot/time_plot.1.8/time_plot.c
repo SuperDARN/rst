@@ -91,7 +91,7 @@ Modifications:
 
 #define HEIGHT 640
 #define WIDTH  540
-#define MAX_RANGE 300
+#define MAX_RANGE 600
 
 struct OptionData opt;
 struct OptionFile *optf=NULL;
