@@ -1656,6 +1656,7 @@ int main(int argc,char *argv[]) {
   if (ymajor==0) {
     if (kmflg) ymajor=(erang-frang)/ytick;
     else if ((geoflg) || (magflg)) ymajor=(latmax-latmin)/ytick;
+    else if ((erng-srng)>150) ymajor=(erng-srng)/ytick;
     else ymajor=15;
   }
   if (yminor==0) yminor=5;
