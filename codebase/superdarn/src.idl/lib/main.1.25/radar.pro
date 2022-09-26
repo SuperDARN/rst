@@ -154,7 +154,7 @@ pro RadarMakeRadar,radar
           st_time: 0.0D, $
           ed_time: 0.0D, $
           snum: 0L, $
-          site: replicate(site,32) $
+          site: replicate(site,32), $
           tnum: 0L, $
           tdiff: replicate(tdiff,32) $
         }
