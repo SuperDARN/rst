@@ -65,7 +65,7 @@
 
 pro FitMakeFitData,fit
 
-  MAX_RANGE=300
+  MAX_RANGE=800
 
   fit={FitData, $
          algorithm: ' ', $

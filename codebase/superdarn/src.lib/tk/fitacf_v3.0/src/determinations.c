@@ -1,32 +1,35 @@
-/*Copyright (C) 2015  SuperDARN Canada, University of Saskatchewan
-
-RST is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-author(s): Keith Kotyk
-modifications: 
-    2020-03-11 Marina Schmidt (SuperDARN Canada) removed all defined constants 
-                              and include rmath.h
-    2020-08-12 Marina Schmidt (SuperDARN Canada) removed map function for better decoupling abilities
-    2020-10-29 Marina Schmidt (SuperDARN Canada) & Emma Bland (UNIS) Changed default elevation calculation to elevation_v2()
-    2021-06-01 Emma Bland (UNIS) Consolidated elevation angle calculations into a single function
-    E.G.Thomas 2021-08: added support for bmoff parameter
-    2021-11-12 Emma Bland (UNIS) Changed elevation angle field names (elv.high --> elv.fitted, elv.low --> elv.error)
-*/
-
 /*
-ACF determinations from fitted parameters
+ ACF determinations from fitted parameters
+
+ Copyright (c) 2015 University of Saskatchewan
+ author: Keith Kotyk
+
+
+ This file is part of the Radar Software Toolkit (RST).
+
+ RST is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+ Modifications: 
+     2020-03-11 Marina Schmidt (University of Saskatchewan) removed all defined constants and include rmath.h
+     2020-08-12 Marina Schmidt (University of Saskatchewan) removed map function for better decoupling abilities
+     2020-10-29 Marina Schmidt (University of Saskatchewan) & Emma Bland (UNIS) 
+                Changed default elevation calculation to elevation_v2()
+     2021-06-01 Emma Bland (UNIS) Consolidated elevation angle calculations into a single function
+     E.G.Thomas 2021-08: added support for bmoff parameter
+     2021-11-12 Emma Bland (UNIS) Changed elevation angle field names (elv.high --> elv.fitted, elv.low --> elv.error)
 */
+
 
 #include "llist.h"
 #include "rtypes.h"

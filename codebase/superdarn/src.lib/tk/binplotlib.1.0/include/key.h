@@ -1,9 +1,6 @@
 /* key.h
    =====
    Author: R.J.Barnes
-
-
-
  
   Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 
@@ -25,7 +22,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
  
 */
 
-
+#ifndef _KEY_H
+#define _KEY_H
 
 struct key {
   int num;
@@ -38,3 +36,5 @@ struct key {
 };
 
 int load_key(FILE *fp,struct key *key);
+
+#endif

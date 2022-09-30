@@ -683,8 +683,8 @@ int main(int argc,char *argv[]) {
                 strlen("1000m/s"),"1000m/s",
                 txtcol,0x0f,1);
 
-      plot_time(plot,xoff+pad,yoff+pad,pwdt-2*pad,pwdt-2*pad,
-                txtcol,0x0f,tme_fnt_nme,tme_fnt_sze,fontdb);
+      plot_vec_time(plot,xoff+pad,yoff+pad,pwdt-2*pad,pwdt-2*pad,
+                    txtcol,0x0f,tme_fnt_nme,tme_fnt_sze,fontdb);
 
 
 

@@ -26,7 +26,8 @@ Modifications:
 */
 
 
-
+#ifndef _PLOTCELL_H
+#define _PLOTCELL_H
 
 void plot_field_cell(struct Plot *plot,struct RadarBeam *sbm,
                      struct GeoLocBeam *gbm,float latmin,int magflg,
@@ -41,3 +42,4 @@ void plot_grid_cell(struct Plot *plot,struct GridData *ptr,float latmin,int magf
                     unsigned int(*cfn)(double,void *),void *cdata,int cprm,
                     int old_aacgm);
 
+#endif
