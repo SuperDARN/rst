@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>sim_real</name>
+<location>src.bin/tk/tool/sim_real</location>
+
+<syntax>sim_real --help</syntax>
+<syntax>sim_real [-vb] <ar>fitacfname</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-katscan</on><od>use Kathrn McWilliams' 8-pulse sequence (default).</od>
+</option>
+<option><on>-tauscan</on><od>use Ray Greenwald's 13-pulse sequence.</od>
+</option>
+<option><on>-oldscan</on><od>use the old 7-pulse sequence.</od>
+</option>
+<option><on>-constant</on><od>use a constant irregularity lifetime distribution (default is exponential).</od>
+</option>
+<option><on>-nocri</on><od>Remove cross-range interference from the ACFs (default is CRI on). WARNING: removing cross-range interference will make the raw samples unusable, since each range gate will have to be integrated separately.</od>
+</option>
+<option><on>-iq</on><od>Output raw samples (in <code>iqdat</code> format) instead of ACFs (in <code>rawacf</code> format).</od>
+</option>
+<synopsis><p>Generates simulated single-component Lorentzian ACFs based on an input <code>fitacf</code> file.</p></synopsis>
+<description><p>Reads a <code>fitacf</code> format file and generates simulated single-component Lorentzian ACFs at ranges where scatter was observed in either <code>rawacf</code> (default) or <code>iqdat</code> format, which is then written to standard output.</p>
+</description>
+
+<example>
+<command>sim_real input.fitacf &gt; output.rawacf</command>
+<description>Generates simulated single-component Lorentzian ACFs in <code>rawacf</code> format.</description>
+</example>
+
+</binary>
