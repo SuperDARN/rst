@@ -25,7 +25,7 @@ THE SOFTWARE.
  Based on code orginally written by Pasha Ponomarenko
  
  2020-11-12 Marina Schmidt Converted RST complex -> C library complex
-
+ E.G.Thomas 2022-08: added support for extended 16-pulse sequence
 
 */
 

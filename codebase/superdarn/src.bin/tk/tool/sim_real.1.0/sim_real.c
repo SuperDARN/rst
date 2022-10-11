@@ -24,6 +24,8 @@ THE SOFTWARE.
  MODIFICATION HISTORY:
  Written by AJ Ribeiro 06/16/2011
  Based on code orginally written by Pasha Ponomarenko
+
+ E.G.Thomas 2022-08: modified to use FITACF files as input and follow RST conventions
 */
 
 #include <errno.h>

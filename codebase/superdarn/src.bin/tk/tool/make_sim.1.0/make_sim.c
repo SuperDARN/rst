@@ -27,6 +27,8 @@ THE SOFTWARE.
  Evan Thomas 2021
  Modified to use standard RST documentation and command line options,
  fixed iqdat-format output, and added several other user options
+
+ E.G.Thomas 2022-08: added support for bmoff parameter, XCFs, extended pulse sequence
 */
 
 #include <errno.h>
