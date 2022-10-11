@@ -20,7 +20,7 @@
     =============
     2020-11-12 Marina Schmidt Converted RST complex -> C library complex
     E.G.Thomas 2021-08: added support for bmoff parameter
-
+    2022-02-04 Emma Bland (UNIS): Added "error" and "fitted" fields to FitElv structure to support FitACF v3
 */
 
 
@@ -70,6 +70,8 @@ struct FitElv { /* elevation angle derived from the cross correlation */
   double normal;
   double low;
   double high;
+  double fitted;
+  double error;
 };
 
 struct FitNoise { /* noise statistics */

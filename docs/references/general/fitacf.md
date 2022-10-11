@@ -142,9 +142,11 @@ The arrays for the XCF fit will only be present in the record if an xcf is calcu
 | *x_w_s_e* | *m/s* | *[num_pts]* | ***float*** | Spectral width error from sigma fit of XCF | 
 | *phi0* | *radians* | *[num_pts]* | ***float*** | Phase determination at lag zero of the ACF | 
 | *phi0_e* | *radians* | *[num_pts]* | ***float*** | Phase determination error at lag zero of the ACF | 
-| *elv* | *degrees* | *[num_pts]* | ***float*** | Elevation angle estimate |
-| *elv_low* | *degrees* | *[num_pts]* | ***float*** | Lowest estimate of elevation angle |
-| *elv_high* | *degrees* | *[num_pts]* | ***float*** | Highest estimate of elevation angle |
+| *elv* | *degrees* | *[num_pts]* | ***float*** | Elevation angle estimate recommended for scientific use |
+| *elv_fitted* | *degrees* | *[num_pts]* | ***float*** | Alternative elevation angle determined from fitted phase (FitACF v3 only) |
+| *elv_error* | *degrees* | *[num_pts]* | ***float*** | Least-square elevation angle error (FitACF v3 only) |
+| *elv_low* | *degrees* | *[num_pts]* | ***float*** | Lowest estimate of elevation angle (FitACF v1-2 only) |
+| *elv_high* | *degrees* | *[num_pts]* | ***float*** | Highest estimate of elevation angle (FitACF v1-2 only) |
 | *x_sd_l* | **None** | *[num_pts]* | ***float*** | Standard deviation of lambda fit of XCF|
 | *x_sd_s* | **None** | *[num_pts]* | ***float*** | Standard deviation of sigma fit of XCF |
 | *x_sd_phi* | **None** | *[num_pts]* | ***float*** | Standard deviation of phase fit of XCF |
