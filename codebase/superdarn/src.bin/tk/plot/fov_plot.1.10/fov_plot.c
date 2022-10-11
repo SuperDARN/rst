@@ -648,7 +648,10 @@ int main(int argc,char *argv[]) {
   TimeEpochToYMDHMS(tval,&yr,&mo,&dy,&hr,&mt,&sc);
   yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,sc);
 
-  if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc); /* required */
+  if (!old_aacgm) {
+    AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc); /* required */
+    if (magflg) AACGM_v2_Lock();
+  }
 
   if (magflg) {
     if (old_aacgm) {

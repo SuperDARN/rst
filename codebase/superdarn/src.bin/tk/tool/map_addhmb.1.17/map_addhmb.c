@@ -275,6 +275,7 @@ int main(int argc,char *argv[])
         tme=(grd[buf]->st_time+grd[buf]->ed_time)/2.0;
         TimeEpochToYMDHMS(tme,&yr,&mo,&dy,&hr,&mt,&sc);
         AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
+        AACGM_v2_Lock();
       }
     }
 

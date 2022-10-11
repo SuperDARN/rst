@@ -1228,7 +1228,10 @@ int main(int argc,char *argv[]) {
   radar=RadarGetRadar(network,scn->stid);
   site=RadarYMDHMSGetSite(radar,yr,mo,dy,hr,mt,(int) sc);
 
-  if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc); /* required */
+  if (!old_aacgm) {
+    AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc); /* required */
+    if (magflg) AACGM_v2_Lock();
+  }
 
   if (site->geolat>0) hemisphere=1;
   else hemisphere=-1;

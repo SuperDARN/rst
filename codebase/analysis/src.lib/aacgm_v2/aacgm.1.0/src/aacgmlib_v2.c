@@ -37,6 +37,9 @@
 ; AACGM_v2_SetDateTime
 ; AACGM_v2_GetDateTime
 ; AACGM_v2_SetNow
+; AACGM_v2_Lock
+; AACGM_v2_Unlock
+; AACGM_v2_Locked
 ; AACGM_v2_errmsg
 ;
 
@@ -69,7 +72,8 @@ static struct {
   int second;
   int dayno;
   int daysinyear;
-} aacgm_date = {-1,-1,-1,-1,-1,-1,-1,-1};
+  int locked;
+} aacgm_date = {-1,-1,-1,-1,-1,-1,-1,-1,0};
 
 static int myear = 0;       /* model year: 5-year epoch */
 static double fyear = 0.;   /* floating point year */
@@ -1206,6 +1210,80 @@ int AACGM_v2_SetNow(void)
 
   return err;
 }
+
+/*-----------------------------------------------------------------------------
+;
+; NAME:
+;       AACGM_v2_Lock
+;
+; PURPOSE:
+;       Function to set lock, which will prevent extra date and time checks
+;       when performing MLT_v2 conversions.
+;
+; CALLING SEQUENCE:
+;       err = AACGM_v2_Lock();
+;
+;     Return Value:
+;       error code
+;
+;+-----------------------------------------------------------------------------
+*/
+
+int AACGM_v2_Lock(void)
+{
+  aacgm_date.locked = 1;
+
+  return 0;
+}
+
+/*-----------------------------------------------------------------------------
+;
+; NAME:
+;       AACGM_v2_Unlock
+;
+; PURPOSE:
+;       Function to remove lock, which will enforce date and time checks when
+;       performing MLT_v2 conversions (default behavior).
+;
+; CALLING SEQUENCE:
+;       err = AACGM_v2_Unlock();
+;
+;     Return Value:
+;       error code
+;
+;+-----------------------------------------------------------------------------
+*/
+
+int AACGM_v2_Unlock(void)
+{
+  aacgm_date.locked = 0;
+
+  return 0;
+}
+
+/*-----------------------------------------------------------------------------
+;
+; NAME:
+;       AACGM_v2_Locked
+;
+; PURPOSE:
+;       Function to get lock status, which can be used to either enforce or
+;       prevent extra date and time checks when performing MLT_v2 conversions.
+;
+; CALLING SEQUENCE:
+;       locked = AACGM_v2_Locked();
+;
+;     Return Value:
+;       lock status
+;
+;+-----------------------------------------------------------------------------
+*/
+
+int AACGM_v2_Locked(void)
+{
+  return (aacgm_date.locked);
+}
+
 
 /*-----------------------------------------------------------------------------
 ;
