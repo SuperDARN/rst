@@ -1,29 +1,28 @@
 /*
-LMFIT2 main routine
+ LMFIT2 main routine
 
-Adapted by: Ashton Reimer
-From code by: Keith Kotyk
+ Copyright (c) 2016 University of Saskatchewan
+ Adapted by: Ashton Reimer
+ From code by: Keith Kotyk
 
-ISAS
-August 2016
 
-This file is part of the Radar Software Toolkit (RST).
+ This file is part of the Radar Software Toolkit (RST).
 
-RST is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ RST is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
+ You should have received a copy of the GNU General Public License
+ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-Modifications:
-    2022-06-06 Emma Bland (UNIS): Updated fit_prms->tdiff to match new hardware file format
+ Modifications:
+     2022-06-06 Emma Bland (UNIS): Updated fit_prms->tdiff to match new hardware file format
 
 */
 

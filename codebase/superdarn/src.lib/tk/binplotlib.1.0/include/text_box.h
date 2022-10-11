@@ -24,7 +24,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 Modifications:
 */ 
 
-
-
+#ifndef _TEXTBOX_H
+#define _TEXTBOX_H
 
 int txtbox(char *fntname,float sze,int num,char *txt,float *box,void *data);
+
+#endif

@@ -1,9 +1,6 @@
-# Copyright (C) 2021 SuperDARN Canada, University of Saskatchewan
+# Copyright (c) 2021 University of Saskatchewan
 # Author: Marina Schmidt
 #
-# Modified
-#
-# Disclaimer:
 #
 # This file is part of the Radar Software Toolkit (RST).
 # 
@@ -20,6 +17,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
+# Modifications:
+# 
+
 include $(MAKECFG).$(SYSTEM)
 
 INCLUDE= -g -I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/superdarn

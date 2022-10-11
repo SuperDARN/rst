@@ -17,6 +17,7 @@
  along with this program. If not, see <https://www.gnu.org/licenses/>.
  
  Modifications:
+     2022-01-23 Emma Bland (UNIS): Added "elv_error" and "elv_fitted" fields to support FitACF v3
  
 
 */
@@ -85,6 +86,8 @@ void IDLCopyFitDataFromIDL(int nrang,int xcf,struct FitIDLData *ifit,
       fit->elv[n].low=ifit->elv_low[n];
       fit->elv[n].normal=ifit->elv[n];
       fit->elv[n].high=ifit->elv_high[n];
+      fit->elv[n].error=ifit->elv_error[n];
+      fit->elv[n].fitted=ifit->elv_fitted[n];
       fit->xrng[n].qflg=ifit->x_qflg[n];
       fit->xrng[n].gsct=ifit->x_gflg[n];
       fit->xrng[n].p_l=ifit->x_p_l[n];
@@ -153,6 +156,8 @@ void IDLCopyFitDataToIDL(int nrang,int xcf,struct FitData *fit,
       ifit->elv_low[n]=fit->elv[n].low;
       ifit->elv[n]=fit->elv[n].normal;
       ifit->elv_high[n]=fit->elv[n].high;
+      ifit->elv_fitted[n]=fit->elv[n].fitted;
+      ifit->elv_error[n]=fit->elv[n].error;
       ifit->x_qflg[n]=fit->xrng[n].qflg;
       ifit->x_gflg[n]=fit->xrng[n].gsct;
       ifit->x_p_l[n]=fit->xrng[n].p_l;
@@ -193,7 +198,7 @@ struct FitIDLData *IDLMakeFitData(IDL_VPTR *vptr) {
 
   
   static IDL_STRUCT_TAG_DEF fitdata[]={    
-    {"ALGORITHM",0,(void *) IDL_TYP_STRING},  /* 0 */
+    {"ALGORITHM",0,(void *) IDL_TYP_STRING}, /* 0 */
     {"REVISION",0,NULL},   /* 1 */
     {"NOISE",0,NULL},   /* 2 */ 
     {"TDIFF",0,(void *) IDL_TYP_FLOAT}, /* 3 */
@@ -231,10 +236,12 @@ struct FitIDLData *IDLMakeFitData(IDL_VPTR *vptr) {
     {"ELV",rdim,(void *) IDL_TYP_FLOAT}, /* 35 */
     {"ELV_LOW",rdim,(void *) IDL_TYP_FLOAT}, /* 36 */
     {"ELV_HIGH",rdim,(void *) IDL_TYP_FLOAT}, /* 37 */
-    {"X_SD_L",rdim,(void *) IDL_TYP_FLOAT}, /* 38 */
-    {"X_SD_S",rdim,(void *) IDL_TYP_FLOAT}, /* 39 */
-    {"X_SD_PHI",rdim,(void *) IDL_TYP_FLOAT}, /* 40 */
- 
+    {"ELV_FITTED",rdim,(void *) IDL_TYP_FLOAT}, /* 38 */  
+    {"ELV_ERROR",rdim,(void *) IDL_TYP_FLOAT}, /* 39 */ 
+    {"X_SD_L",rdim,(void *) IDL_TYP_FLOAT}, /* 40 */
+    {"X_SD_S",rdim,(void *) IDL_TYP_FLOAT}, /* 41 */
+    {"X_SD_PHI",rdim,(void *) IDL_TYP_FLOAT}, /* 42 */
+    
     {0}};
 
   static IDL_MEMINT ilDims[IDL_MAX_ARRAY_DIM];

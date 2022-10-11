@@ -24,6 +24,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 Modifications:
 */ 
 
-
+#ifndef _MAKEGRID_H
+#define _MAKEGRID_H
 
 struct PolygonData *make_grid(float lonspc,float latspc,int max);
+
+#endif

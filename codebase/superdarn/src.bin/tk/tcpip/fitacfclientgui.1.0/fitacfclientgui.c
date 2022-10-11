@@ -65,6 +65,9 @@ int main(int argc,char *argv[]) {
   unsigned char option=0;
   unsigned char version=0;
 
+  int min_beam=100;
+  int max_beam=-100;
+
   unsigned char colorflg=0;
   double nlevels=5;
   double smin=0;
@@ -233,10 +236,21 @@ int main(int argc,char *argv[]) {
       move(11, 0);
       printw("B\\G 0         10        20        30        40        50        60        70\n");
 
+      if (colorflg) {
+        if (prm->bmnum < min_beam) min_beam = prm->bmnum;
+        if (prm->bmnum > max_beam) max_beam = prm->bmnum;
+        for (i=min_beam;i<max_beam+1; i++) {
+          move(i+12, 0);
+          printw("%02d:",i);
+        }
+      }
+
       /* Draw each range gate for beam */
       move(prm->bmnum+12, 0);
       clrtoeol();
+      if (colorflg) attron(COLOR_PAIR(6));
       printw("%02d: ",prm->bmnum);
+      if (colorflg) attroff(COLOR_PAIR(6));
       for (i=0;i<nrng; i++) {
         if (fit->rng[i].qflg == 1) {
           if (colorflg) {
