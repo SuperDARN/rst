@@ -17,7 +17,7 @@
 <option><on>-fitex2</on><od>Uses FitEx 2.0 fitting algorithm</od></option>
 <option><on>-fitex1</on><od>Uses FitEx 1.0 fitting algorithm</od></option>
 <option><on>-tdiff <ar>tdiff</ar></on><od>Use a fixed value of <ar>tdiff</ar> (in units of microseconds) when calculating elevation angles.</od></option>
-<option><on>-tdiff_method <ar>method</ar></on><od>Use a tdiff values from the calibration method of <ar>method</ar> when calculating elevation angles (0: Ponomarenko-2015; 1: Burrell-2016; 2: Ponomarenko-2018; 3: Chisham-2018; 4: Chisham-2021).</od></option>
+<option><on>-tdiff_method <ar>method</ar></on><od>Use tdiff values from the calibration method of <ar>method</ar> when calculating elevation angles (0: Ponomarenko-2015; 1: Burrell-2016; 2: Ponomarenko-2018; 3: Chisham-2018; 4: Chisham-2021). Note: this option overrides -tdiff</od></option>
 <option><on>-old</on><od>input file is in <code>raw</code> (<code>dat</code>) file format and the output should be in <code>fit</code> file format.</od></option>
 <option><on>-old_elev</on><od>use old elevation angle algorithm(s).</od></option>
 <option><on><ar>rawname</ar></on><od>filename of the <code>raw</code> (<code>dat</code>) format file.</od></option>
