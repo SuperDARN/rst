@@ -1229,8 +1229,8 @@ struct DataMap *DataMapDecodeBuffer(unsigned char *buf,int size) {
     case DATAINT:
       a->data.vptr=malloc(sizeof(int32)*n);
       if (a->data.vptr==NULL) {
-        break;
         e=1;
+        break;
       }
       for (x=0;x<n;x++) {
         ConvertToInt(buf+off,&a->data.iptr[x]);
