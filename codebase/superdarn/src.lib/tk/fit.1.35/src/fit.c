@@ -144,6 +144,7 @@ void *FitFlatten(struct FitData *ptr,int nrang,size_t *size) {
   if (size==NULL) return NULL;
 
   s=sizeof(struct FitData);
+  if (ptr->algorithm !=NULL) s+=strlen(ptr->algorithm)+1;
   if (ptr->rng !=NULL) s+=nrang*sizeof(struct FitRange);
   if (ptr->xrng !=NULL) s+=nrang*sizeof(struct FitRange);    
   if (ptr->elv !=NULL) s+=nrang*sizeof(struct FitElv);
@@ -156,6 +157,12 @@ void *FitFlatten(struct FitData *ptr,int nrang,size_t *size) {
 
   memcpy(buf,ptr,sizeof(struct FitData));
   p=sizeof(struct FitData);
+
+  if (ptr->algorithm !=NULL) {
+    strcpy(buf+p,ptr->algorithm);
+    r->algorithm=(void *) p;
+    p+=strlen(ptr->algorithm)+1;
+  }
 
   if (ptr->rng !=NULL) {
     memcpy(buf+p,ptr->rng,nrang*sizeof(struct FitRange));
@@ -183,11 +190,18 @@ int FitExpand(struct FitData *ptr,int nrang,void *buffer) {
   if (ptr==NULL) return -1;
   if (buffer==NULL) return -1;
 
+  if (ptr->algorithm !=NULL) free(ptr->algorithm);
   if (ptr->rng !=NULL) free(ptr->rng);
   if (ptr->xrng !=NULL) free(ptr->xrng);
   if (ptr->elv !=NULL) free(ptr->elv);
 
   memcpy(ptr,buffer,sizeof(struct FitData));
+
+  if (ptr->algorithm !=NULL) {
+    p=buffer+(size_t) ptr->algorithm;
+    ptr->algorithm=malloc(strlen(p)+1);
+    strcpy(ptr->algorithm,p);
+  }
 
   if (ptr->rng !=NULL) {
     p=buffer+(size_t) ptr->rng;
