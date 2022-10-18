@@ -154,6 +154,9 @@ int main(int argc,char *argv[]) {
 
   signal(SIGWINCH, NULL);
 
+  /* Make getch a non-blocking call */
+  nodelay(stdscr,TRUE);
+
   /* Hide the cursor */
   curs_set(0);
 
@@ -196,6 +199,9 @@ int main(int argc,char *argv[]) {
 
   do {
 
+    /* Check for key press to exit */
+    if ((getch()) != ERR) break;
+
     status=FitCnxRead(1,&sock,prm,fit,&flag,NULL);
 
     if (status==-1) break;
@@ -208,12 +214,14 @@ int main(int argc,char *argv[]) {
              prm->time.yr,prm->time.mo,prm->time.dy,
              prm->time.hr,prm->time.mt,prm->time.sc);
       clrtoeol();
-      printw("stid  = %3d  cpid = %d  channel = %2d\n", prm->stid,prm->cp,prm->channel);
+      printw("stid  = %3d  cpid  = %d  channel = %d\n", prm->stid,prm->cp,prm->channel);
       clrtoeol();
-      printw("bmnum = %3d  bmazm = %.2f  intt = %3.1f\n",
-             prm->bmnum,prm->bmazm,prm->intt.sc+prm->intt.us/1.0e6);
+      printw("bmnum = %3d  bmazm = %.2f  xcf = %d\n", prm->bmnum,prm->bmazm,prm->xcf);
       clrtoeol();
-      printw("frang = %3d  nrang = %3d  tfreq = %d\n", prm->frang,prm->nrang,prm->tfreq);
+      printw("intt  = %3.1f  nave  = %3d  tfreq = %d\n",
+             prm->intt.sc+prm->intt.us/1.0e6,prm->nave,prm->tfreq);
+      clrtoeol();
+      printw("frang = %3d  nrang = %3d\n", prm->frang,prm->nrang);
       clrtoeol();
       printw("rsep  = %3d  noise.search = %g\n", prm->rsep,prm->noise.search);
       clrtoeol();
@@ -233,20 +241,20 @@ int main(int argc,char *argv[]) {
       }
 
       /* Draw beam and gate labels */
-      move(11, 0);
+      move(12, 0);
       printw("B\\G 0         10        20        30        40        50        60        70\n");
 
       if (colorflg) {
         if (prm->bmnum < min_beam) min_beam = prm->bmnum;
         if (prm->bmnum > max_beam) max_beam = prm->bmnum;
         for (i=min_beam;i<max_beam+1; i++) {
-          move(i+12, 0);
+          move(i+13, 0);
           printw("%02d:",i);
         }
       }
 
       /* Draw each range gate for beam */
-      move(prm->bmnum+12, 0);
+      move(prm->bmnum+13, 0);
       clrtoeol();
       if (colorflg) attron(COLOR_PAIR(6));
       printw("%02d: ",prm->bmnum);
@@ -275,7 +283,7 @@ int main(int argc,char *argv[]) {
 
       /* Draw a color bar */
       if (colorflg) {
-        move(10, nrng+4);
+        move(11, nrng+4);
         if (pwrflg)      printw("Pow [dB]");
         else if (velflg) printw("Vel [m/s]");
         else if (widflg) printw("Wid [m/s]");
