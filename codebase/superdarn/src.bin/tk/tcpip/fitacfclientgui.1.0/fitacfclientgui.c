@@ -154,6 +154,9 @@ int main(int argc,char *argv[]) {
 
   signal(SIGWINCH, NULL);
 
+  /* Make getch a non-blocking call */
+  nodelay(stdscr,TRUE);
+
   /* Hide the cursor */
   curs_set(0);
 
@@ -195,6 +198,9 @@ int main(int argc,char *argv[]) {
   }
 
   do {
+
+    /* Check for key press to exit */
+    if ((getch()) != ERR) break;
 
     status=FitCnxRead(1,&sock,prm,fit,&flag,NULL);
 
