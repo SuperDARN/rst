@@ -1,5 +1,5 @@
-# Filename: tdiff.dat.han
-# Description: Hankasalmi phase calibration values (tdiff)
+# Filename: tdiff.dat.tst
+# Description: Sample phase calibration values (tdiff)
 #
 # References
 #-------------------------------------------------------------------------------
