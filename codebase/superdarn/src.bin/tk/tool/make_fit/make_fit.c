@@ -24,6 +24,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 Modifications:
   2020-05-07 Marina Schmidt Added Free functions
   E.G.Thomas 2021-08: added support for multi-channel tdiff values
+  E.G.Thomas 2022-03: added support for tdiff calibration files
   2022-05-21 Emma Bland (University Centre in Svalbard) Added support for fitex & lmfit
   2022-06-06 Emma Bland (UNIS) Changed command line implementation for calling fitting algorithms
 */
@@ -70,6 +71,7 @@ struct FitBlock *fblk;
 struct RadarNetwork *network;
 struct Radar *radar;
 struct RadarSite *site;
+struct RadarTdiff *tdiff;
 
 struct OptionData opt;
 
@@ -147,6 +149,9 @@ int main(int argc,char *argv[]) {
 
   unsigned char vb=0;
   unsigned char old_elev=0;
+  double tdiff_fix=-999;
+  int method=-1;
+  int channel=-1;
 
   FILE *fp=NULL;
   struct OldRawFp *rawfp=NULL;
@@ -185,6 +190,10 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"lmfit1",'x',&lmfit1);
   OptionAdd(&opt,"fitex2",'x',&fitex2);
   OptionAdd(&opt,"fitex1",'x',&fitex1);
+
+  OptionAdd(&opt,"tdiff",'d',&tdiff_fix);
+  OptionAdd(&opt,"tdiff_method",'i',&method);
+
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
   if (arg==-1) {
@@ -276,6 +285,22 @@ int main(int argc,char *argv[]) {
     exit(-1);
   }
 
+  envstr=getenv("SD_TDIFFPATH");
+  if (envstr==NULL) {
+    fprintf(stderr,"Environment variable 'SD_TDIFFPATH' must be defined.\n");
+    RadarFree(network);
+    exit(-1);
+  }
+
+  return_value = RadarLoadTdiff(envstr,network);
+  if (return_value == -1) {
+    fprintf(stderr,"Could not load tdiff file\n");
+    RadarFree(network);
+    free(envstr);
+    exit(-1);
+  }
+
+
   prm=RadarParmMake();
   if (prm == NULL) {
     RadarFree(network);
@@ -336,6 +361,20 @@ int main(int argc,char *argv[]) {
     exit(-1);
   }
 
+  if (method !=-1) {
+    /* Check for multi-frequency data from a mono-channel radar */
+    if (prm->offset == 0) {
+      channel = 0;
+    } else {
+      channel = prm->channel;
+    }
+
+    /* Load tdiff information from calibration file */
+    tdiff=RadarYMDHMSGetTdiff(radar,prm->time.yr,prm->time.mo,prm->time.dy,
+                              prm->time.hr,prm->time.mt,prm->time.sc,
+                              method,channel,prm->tfreq);
+  }
+
   command[0]=0;
   n=0;
   for (c=0;c<argc;c++) {
@@ -392,7 +431,19 @@ int main(int argc,char *argv[]) {
       if (prm->stid == 1 && elv_version == 1) {
         elv_version = 0;
       }
+
       Copy_Fitting_Prms(site,prm,raw,fit_prms);
+
+      /* Assign the tdiff value either from the hardware file,
+       * calibration file, or user input (if no calibration value
+       * available) */
+      if (tdiff != NULL) {
+        fit_prms->tdiff = tdiff->tdiff;
+      } else if (tdiff_fix != -999) {
+        fit_prms->tdiff = tdiff_fix;
+      }
+      fit->tdiff = fit_prms->tdiff;
+
       Fitacf(fit_prms,fit,elv_version);
       FitSetAlgorithm(fit,"fitacf3");
     } else {
@@ -406,18 +457,18 @@ int main(int argc,char *argv[]) {
   else if (fitacf2) {
     fblk = FitACFMake(site,prm->time.yr);
     fblk->prm.old_elev = old_elev;        /* passing in old_elev flag */
-    FitACF(prm,raw,fblk,fit,site);
+    FitACF(prm,raw,fblk,fit,site,tdiff,tdiff_fix);
     FitSetAlgorithm(fit,"fitacf2");
   }
   else if (lmfit1) {
     fblk=FitACFMake(site,prm->time.yr);
-    lmfit(prm,raw,fit,fblk,site,0);
+    lmfit(prm,raw,fit,fblk,site,tdiff,tdiff_fix,0);
     FitSetAlgorithm(fit,"lmfit1");
   }
   else if (fitex2) {
     fblk=FitACFMake(site,prm->time.yr);
     fblk->prm.old_elev = old_elev;
-    fitacfex2(prm,raw,fit,fblk,site,0);
+    fitacfex2(prm,raw,fit,fblk,site,tdiff,tdiff_fix,0);
     FitSetAlgorithm(fit,"fitex2");
   }
   else if (fitex1) {
@@ -489,6 +540,20 @@ int main(int argc,char *argv[]) {
               prm->time.dy,prm->time.hr,prm->time.mt,prm->time.sc,prm->bmnum);
 
     if (status==0) {
+      if (method !=-1) {
+        /* Check for multi-frequency data from a mono-channel radar */
+        if (prm->offset == 0) {
+          channel = 0;
+        } else {
+          channel = prm->channel;
+        }
+
+        /* Load tdiff information from calibration file */
+        tdiff=RadarYMDHMSGetTdiff(radar,prm->time.yr,prm->time.mo,prm->time.dy,
+                                  prm->time.hr,prm->time.mt,prm->time.sc,
+                                  method,channel,prm->tfreq);
+      }
+
       if (fitacf3) {
         if (Allocate_Fit_Prm(prm, fit_prms) == -1) {
           fprintf(stderr,"Error: cannot allocate space for fitacf record\n");
@@ -502,6 +567,17 @@ int main(int argc,char *argv[]) {
         /* load the data into the FitACF structure.                  */
         if(fit_prms != NULL) {
           Copy_Fitting_Prms(site,prm,raw,fit_prms);
+
+          /* Assign the tdiff value either from the hardware file,
+           * calibration file, or user input (if no calibration value
+           * available) */
+          if (tdiff != NULL) {
+            fit_prms->tdiff = tdiff->tdiff;
+          } else if (tdiff_fix != -999) {
+            fit_prms->tdiff = tdiff_fix;
+          }
+          fit->tdiff = fit_prms->tdiff;
+
           Fitacf(fit_prms,fit,elv_version);
           FitSetAlgorithm(fit,"fitacf3");
         } else {
@@ -513,15 +589,15 @@ int main(int argc,char *argv[]) {
         }
       }
       else if (fitacf2) {
-        FitACF(prm,raw,fblk,fit,site);
+        FitACF(prm,raw,fblk,fit,site,tdiff,tdiff_fix);
         FitSetAlgorithm(fit,"fitacf2");
       }
       else if (lmfit1) {
-        lmfit(prm,raw,fit,fblk,site,0);
+        lmfit(prm,raw,fit,fblk,site,tdiff,tdiff_fix,0);
         FitSetAlgorithm(fit,"lmfit1");
       }
       else if (fitex2) {
-        fitacfex2(prm,raw,fit,fblk,site,0);
+        fitacfex2(prm,raw,fit,fblk,site,tdiff,tdiff_fix,0);
         FitSetAlgorithm(fit,"fitex2");
       }
       else if (fitex1) {

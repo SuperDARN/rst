@@ -109,6 +109,7 @@ int FitEncode(struct DataMap *ptr,struct RadarParm *prm, struct FitData *fit) {
   DataMapStoreScalar(ptr,"noise.lag0",DATAFLOAT,&lag0_noise);
   DataMapStoreScalar(ptr,"noise.vel",DATAFLOAT,&vel_noise);
 
+  DataMapStoreScalar(ptr,"tdiff",DATAFLOAT,&fit->tdiff);
 
   p0num=prm->nrang;
   pwr0=DataMapStoreArray(ptr,"pwr0",DATAFLOAT,1,&p0num,NULL);

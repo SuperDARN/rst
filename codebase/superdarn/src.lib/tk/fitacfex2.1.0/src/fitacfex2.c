@@ -137,7 +137,8 @@ maxiter = 100;
 
 void fitacfex2(struct RadarParm *prm, struct RawData *raw,
                struct FitData *fit, struct FitBlock *fblk,
-               struct RadarSite *hd, int print)
+               struct RadarSite *hd, struct RadarTdiff *tdiff,
+               double tdiff_fix, int print)
 {
   float minpwr  = 3.0;
   double skynoise = 0.;
@@ -217,7 +218,17 @@ void fitacfex2(struct RadarParm *prm, struct RawData *raw,
 
   /*setup fitblock parameter*/
   setup_fblk(prm, raw, fblk, hd);
- 
+
+  /* Assign the tdiff value either from the hardware file,
+   * calibration file, or user input (if no calibration value
+   * available) */
+  if (tdiff !=NULL) {
+    fblk->prm.tdiff = tdiff->tdiff;
+  } else if (tdiff_fix !=-999) {
+    fblk->prm.tdiff = tdiff_fix;
+  }
+  fit->tdiff=fblk->prm.tdiff;
+
   FitSetRng(fit,fblk->prm.nrang);
   FitSetXrng(fit,fblk->prm.nrang);
   FitSetElv(fit,fblk->prm.nrang);

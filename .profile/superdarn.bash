@@ -4,6 +4,7 @@
 export ISTP_PATH="/data/istp"
 
 export SD_HDWPATH="${RSTPATH}/tables/superdarn/hdw/"
+export SD_TDIFFPATH="${RSTPATH}/tables/superdarn/tdiff/"
 export SD_RADAR="${RSTPATH}/tables/superdarn/radar.dat"
 
 export AACGM_DAT_PREFIX=${RSTPATH}"/tables/analysis/aacgm/aacgm_coeffs"

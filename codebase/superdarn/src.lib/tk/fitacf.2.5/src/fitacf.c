@@ -20,6 +20,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
   E.G.Thomas 2021-08: added support for multi-channel tdiff values
+  E.G.Thomas 2022-03: added support for tdiff calibration files
 */
 
 
@@ -99,6 +100,8 @@ int fill_fit_block(struct RadarParm *prm, struct RawData *raw,
     input->prm.cp=prm->cp;
     input->prm.channel=prm->channel;
     input->prm.offset=prm->offset;  /* stereo offset */
+
+    /* Check for multi-frequency data from a mono-channel radar */
     if ((input->prm.offset == 0) || (input->prm.channel < 2)) {
       input->prm.tdiff=hd->tdiff[0];
     } else {
@@ -167,8 +170,9 @@ int fill_fit_block(struct RadarParm *prm, struct RawData *raw,
 
     return 0;
 }
-int FitACF(struct RadarParm *prm, struct RawData *raw,struct FitBlock *input,
-           struct FitData *fit, struct RadarSite *hd) {
+int FitACF(struct RadarParm *prm, struct RawData *raw, struct FitBlock *input,
+           struct FitData *fit, struct RadarSite *hd, struct RadarTdiff *tdiff,
+           double tdiff_fix) {
 
     int fnum, goose, s;
 
@@ -184,6 +188,16 @@ int FitACF(struct RadarParm *prm, struct RawData *raw,struct FitBlock *input,
     if (s == -1){
         return -1;
     }
+
+    /* Assign the tdiff value either from the hardware file,
+     * calibration file, or user input (if no calibration value
+     * available) */
+    if (tdiff !=NULL) {
+      input->prm.tdiff = tdiff->tdiff;
+    } else if (tdiff_fix !=-999) {
+      input->prm.tdiff = tdiff_fix;
+    }
+    fit->tdiff=input->prm.tdiff;
 
     FitSetRng(fit,input->prm.nrang);
     if (input->prm.xcf) {

@@ -62,6 +62,7 @@ void IDLCopyFitDataFromIDL(int nrang,int xcf,struct FitIDLData *ifit,
   fit->noise.skynoise=ifit->noise.sky;
   fit->noise.lag0=ifit->noise.lag0;
   fit->noise.vel=ifit->noise.vel;
+  fit->tdiff=ifit->tdiff;
  
   for (n=0;n<nrang;n++) {
     fit->rng[n].p_0=ifit->pwr0[n];
@@ -131,6 +132,7 @@ void IDLCopyFitDataToIDL(int nrang,int xcf,struct FitData *fit,
   ifit->noise.sky=fit->noise.skynoise;
   ifit->noise.lag0=fit->noise.lag0;
   ifit->noise.vel=fit->noise.vel;
+  ifit->tdiff=fit->tdiff;
 
   for (n=0;n<nrang;n++) {
     ifit->pwr0[n]=fit->rng[n].p_0;
@@ -199,46 +201,47 @@ struct FitIDLData *IDLMakeFitData(IDL_VPTR *vptr) {
     {"ALGORITHM",0,(void *) IDL_TYP_STRING}, /* 0 */
     {"REVISION",0,NULL},   /* 1 */
     {"NOISE",0,NULL},   /* 2 */ 
-    {"PWR0",rdim,(void *) IDL_TYP_FLOAT}, /* 3 */
-    {"NLAG",rdim,(void *) IDL_TYP_INT}, /* 4 */
-    {"QFLG",rdim,(void *) IDL_TYP_BYTE}, /* 5 */
-    {"GFLG",rdim,(void *) IDL_TYP_BYTE}, /* 6 */
-    {"P_L",rdim,(void *) IDL_TYP_FLOAT}, /* 7 */
-    {"P_L_E",rdim,(void *) IDL_TYP_FLOAT}, /* 8 */
-    {"P_S",rdim,(void *) IDL_TYP_FLOAT}, /* 9 */
-    {"P_S_E",rdim,(void *) IDL_TYP_FLOAT}, /* 10 */
-    {"V",rdim,(void *) IDL_TYP_FLOAT}, /* 11 */
-    {"V_E",rdim,(void *) IDL_TYP_FLOAT}, /* 12 */
-    {"W_L",rdim,(void *) IDL_TYP_FLOAT}, /* 13 */
-    {"W_L_E",rdim,(void *) IDL_TYP_FLOAT}, /* 14 */
-    {"W_S",rdim,(void *) IDL_TYP_FLOAT}, /* 15 */
-    {"W_S_E",rdim,(void *) IDL_TYP_FLOAT}, /* 16 */
-    {"SD_L",rdim,(void *) IDL_TYP_FLOAT}, /* 17 */
-    {"SD_S",rdim,(void *) IDL_TYP_FLOAT}, /* 18 */
-    {"SD_PHI",rdim,(void *) IDL_TYP_FLOAT}, /* 19 */
-    {"X_QFLG",rdim,(void *) IDL_TYP_BYTE}, /* 20 */
-    {"X_GFLG",rdim,(void *) IDL_TYP_BYTE}, /* 21 */
-    {"X_P_L",rdim,(void *) IDL_TYP_FLOAT}, /* 22 */
-    {"X_P_L_E",rdim,(void *) IDL_TYP_FLOAT}, /* 23 */
-    {"X_P_S",rdim,(void *) IDL_TYP_FLOAT}, /* 24 */
-    {"X_P_S_E",rdim,(void *) IDL_TYP_FLOAT}, /* 25 */
-    {"X_V",rdim,(void *) IDL_TYP_FLOAT}, /* 26 */
-    {"X_V_E",rdim,(void *) IDL_TYP_FLOAT}, /* 27 */
-    {"X_W_L",rdim,(void *) IDL_TYP_FLOAT}, /* 28 */
-    {"X_W_L_E",rdim,(void *) IDL_TYP_FLOAT}, /* 29 */
-    {"X_W_S",rdim,(void *) IDL_TYP_FLOAT}, /* 30 */
-    {"X_W_S_E",rdim,(void *) IDL_TYP_FLOAT}, /* 31 */
-    {"PHI0",rdim,(void *) IDL_TYP_FLOAT}, /* 32 */
-    {"PHI0_E",rdim,(void *) IDL_TYP_FLOAT}, /* 33 */
-    {"ELV",rdim,(void *) IDL_TYP_FLOAT}, /* 34 */  
-    {"ELV_LOW",rdim,(void *) IDL_TYP_FLOAT}, /* 35 */
-    {"ELV_HIGH",rdim,(void *) IDL_TYP_FLOAT}, /* 36 */
-    {"ELV_FITTED",rdim,(void *) IDL_TYP_FLOAT}, /* 37 */  
-    {"ELV_ERROR",rdim,(void *) IDL_TYP_FLOAT}, /* 38 */ 
-    {"X_SD_L",rdim,(void *) IDL_TYP_FLOAT}, /* 39 */
-    {"X_SD_S",rdim,(void *) IDL_TYP_FLOAT}, /* 40 */
-    {"X_SD_PHI",rdim,(void *) IDL_TYP_FLOAT}, /* 41 */
- 
+    {"TDIFF",0,(void *) IDL_TYP_FLOAT}, /* 3 */
+    {"PWR0",rdim,(void *) IDL_TYP_FLOAT}, /* 4 */
+    {"NLAG",rdim,(void *) IDL_TYP_INT}, /* 5 */
+    {"QFLG",rdim,(void *) IDL_TYP_BYTE}, /* 6 */
+    {"GFLG",rdim,(void *) IDL_TYP_BYTE}, /* 7 */
+    {"P_L",rdim,(void *) IDL_TYP_FLOAT}, /* 8 */
+    {"P_L_E",rdim,(void *) IDL_TYP_FLOAT}, /* 9 */
+    {"P_S",rdim,(void *) IDL_TYP_FLOAT}, /* 10 */
+    {"P_S_E",rdim,(void *) IDL_TYP_FLOAT}, /* 11 */
+    {"V",rdim,(void *) IDL_TYP_FLOAT}, /* 12 */
+    {"V_E",rdim,(void *) IDL_TYP_FLOAT}, /* 13 */
+    {"W_L",rdim,(void *) IDL_TYP_FLOAT}, /* 14 */
+    {"W_L_E",rdim,(void *) IDL_TYP_FLOAT}, /* 15 */
+    {"W_S",rdim,(void *) IDL_TYP_FLOAT}, /* 16 */
+    {"W_S_E",rdim,(void *) IDL_TYP_FLOAT}, /* 17 */
+    {"SD_L",rdim,(void *) IDL_TYP_FLOAT}, /* 18 */
+    {"SD_S",rdim,(void *) IDL_TYP_FLOAT}, /* 19 */
+    {"SD_PHI",rdim,(void *) IDL_TYP_FLOAT}, /* 20 */
+    {"X_QFLG",rdim,(void *) IDL_TYP_BYTE}, /* 21 */
+    {"X_GFLG",rdim,(void *) IDL_TYP_BYTE}, /* 22 */
+    {"X_P_L",rdim,(void *) IDL_TYP_FLOAT}, /* 23 */
+    {"X_P_L_E",rdim,(void *) IDL_TYP_FLOAT}, /* 24 */
+    {"X_P_S",rdim,(void *) IDL_TYP_FLOAT}, /* 25 */
+    {"X_P_S_E",rdim,(void *) IDL_TYP_FLOAT}, /* 26 */
+    {"X_V",rdim,(void *) IDL_TYP_FLOAT}, /* 27 */
+    {"X_V_E",rdim,(void *) IDL_TYP_FLOAT}, /* 28 */
+    {"X_W_L",rdim,(void *) IDL_TYP_FLOAT}, /* 29 */
+    {"X_W_L_E",rdim,(void *) IDL_TYP_FLOAT}, /* 30 */
+    {"X_W_S",rdim,(void *) IDL_TYP_FLOAT}, /* 31 */
+    {"X_W_S_E",rdim,(void *) IDL_TYP_FLOAT}, /* 32 */
+    {"PHI0",rdim,(void *) IDL_TYP_FLOAT}, /* 33 */
+    {"PHI0_E",rdim,(void *) IDL_TYP_FLOAT}, /* 34 */
+    {"ELV",rdim,(void *) IDL_TYP_FLOAT}, /* 35 */
+    {"ELV_LOW",rdim,(void *) IDL_TYP_FLOAT}, /* 36 */
+    {"ELV_HIGH",rdim,(void *) IDL_TYP_FLOAT}, /* 37 */
+    {"ELV_FITTED",rdim,(void *) IDL_TYP_FLOAT}, /* 38 */  
+    {"ELV_ERROR",rdim,(void *) IDL_TYP_FLOAT}, /* 39 */ 
+    {"X_SD_L",rdim,(void *) IDL_TYP_FLOAT}, /* 40 */
+    {"X_SD_S",rdim,(void *) IDL_TYP_FLOAT}, /* 41 */
+    {"X_SD_PHI",rdim,(void *) IDL_TYP_FLOAT}, /* 42 */
+    
     {0}};
 
   static IDL_MEMINT ilDims[IDL_MAX_ARRAY_DIM];

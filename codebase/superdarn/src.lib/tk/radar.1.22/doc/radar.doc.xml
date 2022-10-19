@@ -8,13 +8,25 @@
 <name>RadarEpochGetSite</name>
 <location>src.lib/tk/radar</location>
 <header>superdarn/radar.h</header>
-<syntax>struct RadarSite *RadarEpochGetSite(<sn href="structRadar.html">struct Radar</sn> *ptr,double tval);</syntax>
+<syntax><sn href="structRadarSite.html">struct RadarSite</sn> *RadarEpochGetSite(<sn href="structRadar.html">struct Radar</sn> *ptr,double tval);</syntax>
 <description><p>The <fn href="RadarEpochGetSite.html">RadarEpochGetSite</fn> function locates the hardware information for one of the radars.</p>
-<p>The argument <ar>ptr</ar> is a pointer to the structure containing the radar information block. The radar hardware parameters can vary over time, so the time for which the hardware information is requested is given by the argument <ar>tval</ar>, expressed inseconds from 0:00UT January 1, 1970.</p>
+<p>The argument <ar>ptr</ar> is a pointer to the structure containing the radar information block. The radar hardware parameters can vary over time, so the time for which the hardware information is requested is given by the argument <ar>tval</ar>, expressed in seconds from 0:00UT January 1, 1970.</p>
 </description>
 <returns>Returns a pointer to the radar hardware information for the desired time. On error, a <code>NULL</code> pointer is returned.</returns>
 <errors>On error, a <code>NULL</code> pointer is returned.</errors>
 <example type="source">RadarEpochGetSite.c</example>
+</function>
+
+<function>
+<name>RadarEpochGetTdiff</name>
+<location>src.lib/tk/radar</location>
+<header>superdarn/radar.h</header>
+<syntax><sn href="structRadarTdiff.html">struct RadarTdiff</sn> *RadarEpochGetTdiff(<sn href="structRadar.html">struct Radar</sn> *ptr,double tval,int method,int channel,int tfreq);</syntax>
+<description><p>The <fn href="RadarEpochGetTdiff.html">RadarEpochGetTdiff</fn> function locates the calibrated tdiff information for one of the radars.</p>
+<p>The argument <ar>ptr</ar> is a pointer to the structure containing the radar information block. The radar tdiff parameters can vary over time, channel, frequency, and calibration method; so the time for which the tdiff information is requested is given by the arguments <ar>tval</ar>, expressed in seconds from 0:00UT January 1, 1970, and <ar>method</ar>, <ar>channel</ar>, and <ar>tfreq</ar> give the method, channel, and frequency.</p>
+</description>
+<returns>Returns a pointer to the radar tdiff information for the desired time and conditions. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
 </function>
 
 <function>
@@ -152,16 +164,40 @@
 </function>
 
 <function>
+<name>RadarLoadTdiff</name>
+<location>src.lib/tk/radar</location>
+<header>superdarn/radar.h</header>
+<syntax>int RadarLoadTdiff(char *tdiffpath,<sn href="structRadarNetwork.html">struct RadarNetwork</sn> *ptr);</syntax>
+<description><p>The <fn href="RadarLoadTdiff.html">RadarLoadTdiff</fn> function loads the calibrated tdiff information for the radar network.</p>
+<p>The tdiff files are assumed to be located in the directory given by the argument <ar>tdiffpath</ar>. The argument <ar>ptr</ar> is a pointer to a structure containing the information for the entire network and must be populated prior to calling this function.</p>
+</description>
+<returns>Returns zero on success. On error, (-1) is returned.</returns>
+<errors>On error, (-1) is returned.</errors>
+</function>
+
+<function>
 <name>RadarYMDHMSGetSite</name>
 <location>src.lib/tk/radar</location>
 <header>superdarn/radar.h</header>
 <syntax><sn href="structRadarSite.html">struct RadarSite</sn> *RadarYMDHMSGetSite(<sn href="structRadar.html">struct Radar</sn> *ptr,int yr, int mo,int dy,int hr,int mt,int sc);</syntax>
-<description><p>The <fn href="RadarEpochGetSite.html">RadarEpochGetSite</fn> function locates the hardware information for one of the radars.</p>
+<description><p>The <fn href="RadarYMDHMSGetSite.html">RadarYMDHMSGetSite</fn> function locates the hardware information for one of the radars.</p>
 <p>The argument <ar>ptr</ar> is a pointer to the structure containing the radar information block. The radar hardware parameters can vary over time, so the time for which the hardware information is requested is specified by the arguments <ar>yr</ar>, <ar>mo</ar>,<ar>dy</ar>,<ar>hr</ar>,<ar>mt</ar>,<ar>sc</ar> giving the year, month, day, hour, minute and second.</p>
 </description>
 <returns>Returns a pointer to the radar hardware information for the desired time. On error, a <code>NULL</code> pointer is returned.</returns>
 <errors>On error, a <code>NULL</code> pointer is returned.</errors>
 <example type="source">RadarYMDHMSGetSite.c</example>
+</function>
+
+<function>
+<name>RadarYMDHMSGetTdiff</name>
+<location>src.lib/tk/radar</location>
+<header>superdarn/radar.h</header>
+<syntax><sn href="structRadarTdiff.html">struct RadarTdiff</sn> *RadarYMDHMSGetTdiff(<sn href="structRadar.html">struct Radar</sn> *ptr,int yr,int mo,int dy,int hr,int mt,int sc,int method,int channel,int tfreq);</syntax>
+<description><p>The <fn href="RadarYMDHMSGetTdiff.html">RadarYMDHMSGetTdiff</fn> function locates the calibrated tdiff information for one of the radars.</p>
+<p>The argument <ar>ptr</ar> is a pointer to the structure containing the radar information block. The radar tdiff parameters can vary over time, channel, frequency, and calibration method; so the conditions for which the tdiff information is requested is specified by the arguments <ar>yr</ar>, <ar>mo</ar>, <ar>dy</ar>, <ar>hr</ar>, <ar>mt</ar>, <ar>sc</ar>, <ar>method</ar>, <ar>channel</ar>, and <ar>tfreq</ar> giving the year, month, day, hour, minute, second, method, channel, and frequency.</p>
+</description>
+<returns>Returns a pointer to the radar tdiff information for the desired time and conditions. On error, a <code>NULL</code> pointer is returned.</returns>
+<errors>On error, a <code>NULL</code> pointer is returned.</errors>
 </function>
 
 
@@ -213,7 +249,17 @@
 
     <member>
       <proto><sn href="structRadarSite.html">struct RadarSite</sn> *site;</proto>
-      <description>Pointer to an Array containing the entries in the hardware table.</description>
+      <description>Pointer to an array containing the entries in the hardware table.</description>
+    </member>
+
+    <member>
+      <proto>int tnum;</proto>
+      <description>Number of entries in the tdiff table.</description>
+    </member>
+
+    <member>
+      <proto><sn href="structRadarTdiff.html">struct RadarTdiff</sn> *tdiff;</proto>
+      <description>Pointer to an array containing the entries in the tdiff table.</description>
     </member>
 
   </struct>
@@ -513,6 +559,51 @@
   <description>
   <p>The <sn href="structRadarParm.html">struct RadarParm</sn> structure stores the radar parameter block. It contains the various operating parameters that the radar is using when gathering data.</p>
   </description>
+</structure>
+
+
+<structure>
+  <name>RadarTdiff</name>
+  <location>src.lib/tk/radar</location>
+  <header>superdarn/radar.h</header>
+  <struct>
+
+    <member>
+      <proto>int method;</proto>
+      <description>Flag indicating which tdiff calibration method was used.</description>
+    </member>
+
+    <member>
+      <proto>int channel;</proto>
+      <description>Channel number for which this tdiff entry is valid (1 or 2 for Stereo radars, 0 for all others).</description>
+    </member>
+
+    <member>
+      <proto>double freq[2];</proto>
+      <description>Start and end frequencies in kHz for which this tdiff entry is valid.</description>
+    </member>
+
+    <member>
+      <proto>double tval[2];</proto>
+      <description>Start and end times for which this tdiff entry is valid.</description>
+    </member>
+
+    <member>
+      <proto>double tdiff;</proto>
+      <description>Time delay in microseconds of the signal from the interferometer array and the main array.</description>
+    </member>
+
+    <member>
+      <proto>double tdiff_err;</proto>
+      <description>Error estimate in microseconds of the time delay (tdiff).</description>
+    </member>
+
+  </struct>
+
+  <description>
+  <p>The <sn href="structRadarTdiff.html">struct RadarTdiff</sn> structure stores information about the calibrated radar tdiff values.</p>
+  </description>
+
 </structure>
 
 

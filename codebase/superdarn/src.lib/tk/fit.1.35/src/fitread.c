@@ -77,6 +77,9 @@ int FitDecode(struct DataMap *ptr,
       fit->noise.lag0=*(s->data.fptr);
     if ((strcmp(s->name,"noise.vel")==0) && (s->type==DATAFLOAT))
       fit->noise.vel=*(s->data.fptr);
+
+    if ((strcmp(s->name,"tdiff")==0) && (s->type==DATAFLOAT))
+      fit->tdiff=*(s->data.fptr);
   }
 
   for (c=0;c<ptr->anum;c++) {

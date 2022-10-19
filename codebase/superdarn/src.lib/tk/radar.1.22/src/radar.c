@@ -21,6 +21,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
   E.G.Thomas 2021-08: added support for new hdw file fields
+  E.G.Thomas 2022-03: added support for tdiff calibration files
 */
 
 
@@ -49,6 +50,7 @@ struct RadarSite *RadarEpochGetSite(struct Radar *ptr,double tval) {
   return &(ptr->site[s-1]);
 }
 
+
 struct RadarSite *RadarYMDHMSGetSite(struct Radar *ptr,int yr,
                                int mo,int dy,int hr,int mt,int sc) {
 
@@ -58,12 +60,42 @@ struct RadarSite *RadarYMDHMSGetSite(struct Radar *ptr,int yr,
 }
 
 
+struct RadarTdiff *RadarEpochGetTdiff(struct Radar *ptr,double tval,
+                                      int method,int channel,int tfreq) {
+
+  int s;
+
+  for (s=0;(s<ptr->tnum);s++) {
+    if (ptr->tdiff[s].method !=method) continue;
+    if (ptr->tdiff[s].channel !=channel) continue;
+    if (ptr->tdiff[s].freq[0] > tfreq) continue;
+    if (ptr->tdiff[s].freq[1] < tfreq) continue;
+    if (ptr->tdiff[s].tval[0] > tval) continue;
+    if (ptr->tdiff[s].tval[1] < tval) continue;
+    return &(ptr->tdiff[s]);
+  }
+
+  return NULL;
+}
+
+
+struct RadarTdiff *RadarYMDHMSGetTdiff(struct Radar *ptr,int yr,
+                               int mo,int dy,int hr,int mt,int sc,
+                               int method,int channel,int tfreq) {
+
+  double tval;
+  tval=TimeYMDHMSToEpoch(yr,mo,dy,hr,mt,sc);
+  return RadarEpochGetTdiff(ptr,tval,method,channel,tfreq);
+}
+
+
 struct Radar *RadarGetRadar(struct RadarNetwork *ptr,int stid) {
   int r=0;
   for (r=0;(r<ptr->rnum) && (ptr->radar[r].id!=stid);r++);
   if (r==ptr->rnum) return NULL;
   return &ptr->radar[r];
 }
+
 
 int RadarGetID(struct RadarNetwork *ptr,char *code) {
   int r=0,c=0;
@@ -89,6 +121,7 @@ int RadarGetCodeNum(struct RadarNetwork *ptr,int stid) {
   return ptr->radar[r].cnum;
 }
 
+
 char *RadarGetCode(struct RadarNetwork *ptr,int stid,int cnum) {
   int r=0;
   if (ptr==NULL) return NULL;
@@ -98,6 +131,7 @@ char *RadarGetCode(struct RadarNetwork *ptr,int stid,int cnum) {
   return ptr->radar[r].code[cnum];
 }
 
+
 char *RadarGetName(struct RadarNetwork *ptr,int stid) {
   int r=0;
   if (ptr==NULL) return NULL;
@@ -105,6 +139,7 @@ char *RadarGetName(struct RadarNetwork *ptr,int stid) {
   if (r==ptr->rnum) return NULL;
   return ptr->radar[r].name;
 }
+
 
 char *RadarGetOperator(struct RadarNetwork *ptr,int stid) {
   int r=0;
@@ -114,13 +149,13 @@ char *RadarGetOperator(struct RadarNetwork *ptr,int stid) {
   return ptr->radar[r].operator;
 }
 
+
 int RadarGetStatus(struct RadarNetwork *ptr,int stid) {
   int r=0;
   for (r=0;(r<ptr->rnum) && (ptr->radar[r].id!=stid);r++);
   if (r==ptr->rnum) return -1;
   return ptr->radar[r].status;
 }
-
 
 
 void RadarFree(struct RadarNetwork *ptr) {
@@ -134,10 +169,12 @@ void RadarFree(struct RadarNetwork *ptr) {
     if (ptr->radar[r].operator !=NULL) free(ptr->radar[r].operator);
     if (ptr->radar[r].hdwfname !=NULL) free(ptr->radar[r].hdwfname);
     if (ptr->radar[r].site !=NULL) free(ptr->radar[r].site);
+    if (ptr->radar[r].tdiff !=NULL) free(ptr->radar[r].tdiff);
   }
   free(ptr->radar);
   free(ptr);
 }
+
 
 int RadarLoadHardware(char *hdwpath,struct RadarNetwork *ptr) {
   int i,n;
@@ -215,6 +252,74 @@ int RadarLoadHardware(char *hdwpath,struct RadarNetwork *ptr) {
   return 0;
 }
 
+
+int RadarLoadTdiff(char *tdiffpath,struct RadarNetwork *ptr) {
+  int i,n;
+  FILE *fp;
+  char fname[256];
+  char line[256];
+  int tnum,status;
+  int method,channel,freq[2];
+  int sdate,syr,smo,sdy,shr,smt,ssc;
+  int edate,eyr,emo,edy,ehr,emt,esc;
+  double tval[2];
+  double tdiff,tdiff_err;
+
+  if (ptr==NULL) return -1;
+  if (tdiffpath==NULL) return -1;
+
+  for (n=0;n<ptr->rnum;n++) {
+    sprintf(fname,"%s/tdiff.dat.%s",tdiffpath,ptr->radar[n].code[0]);
+    fp=fopen(fname,"r");
+    if (fp==NULL) continue;
+    tnum=0;
+    while(fgets(line,256,fp) !=NULL) {
+      for (i=0;(line[i] !=0) && ((line[i]=='\n') || (line[i]==' '));i++);
+      if (line[i]==0) continue;
+      if (line[i]=='#') continue;
+      status=sscanf(line+i,
+                  "%d %d %d %d %d %d:%d:%d %d %d:%d:%d %lf %lf",
+                  &method, &channel, &freq[0], &freq[1],
+                  &sdate, &shr, &smt, &ssc, &edate, &ehr, &emt, &esc,
+                  &tdiff, &tdiff_err);
+
+      if (status<14) continue;
+
+      if (ptr->radar[n].tdiff==NULL)
+          ptr->radar[n].tdiff=malloc(sizeof(struct RadarTdiff));
+      else ptr->radar[n].tdiff=realloc(ptr->radar[n].tdiff,
+                                      sizeof(struct RadarTdiff)*(tnum+1));
+      if (ptr->radar[n].tdiff==NULL) break;
+
+      syr = (sdate / 10000);
+      smo = (sdate / 100) % 100;
+      sdy = sdate % 100;
+      tval[0]=TimeYMDHMSToEpoch(syr,smo,sdy,shr,smt,ssc);
+
+      eyr = (edate / 10000);
+      emo = (edate / 100) % 100;
+      edy = edate % 100;
+      tval[1]=TimeYMDHMSToEpoch(eyr,emo,edy,ehr,emt,esc);
+
+      ptr->radar[n].tdiff[tnum].method=method;
+      ptr->radar[n].tdiff[tnum].channel=channel;
+      ptr->radar[n].tdiff[tnum].tval[0]=tval[0];
+      ptr->radar[n].tdiff[tnum].tval[1]=tval[1];
+      ptr->radar[n].tdiff[tnum].freq[0]=freq[0];
+      ptr->radar[n].tdiff[tnum].freq[1]=freq[1];
+      ptr->radar[n].tdiff[tnum].tdiff=tdiff;
+      ptr->radar[n].tdiff[tnum].tdiff_err=tdiff_err;
+
+      tnum++;
+      ptr->radar[n].tnum=tnum;
+    }
+    fclose(fp);
+  }
+
+  return 0;
+}
+
+
 struct RadarNetwork *RadarLoad(FILE *fp) {
 
   struct RadarNetwork *ptr=NULL;
@@ -240,6 +345,8 @@ struct RadarNetwork *RadarLoad(FILE *fp) {
 
     ptr->radar[num].snum=0;
     ptr->radar[num].site=NULL;
+    ptr->radar[num].tnum=0;
+    ptr->radar[num].tdiff=NULL;
     ptr->radar[num].cnum=0;
     ptr->radar[num].code=NULL;
     ptr->radar[num].operator=NULL;

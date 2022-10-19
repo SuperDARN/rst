@@ -8,11 +8,12 @@
 <name>FitACF</name>
 <location>src.lib/tk/fitacf</location>
 <header>superdarn/fitacf.h</header>
-<syntax>void FitACF(<sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm,<sn href="&root;/superdarn/src.lib/tk/raw/structRawData.html">struct RawData</sn> *ptr,<sn href="structFitBlock.html">struct FitBlock</sn> *input,<sn href="&root;/superdarn/src.lib/tk/fit/structFitData.html">struct FitData</sn> *fit);</syntax>
+<syntax>void FitACF(<sn href="&root;/superdarn/src.lib/tk/radar/structRadarParm.html">struct RadarParm</sn> *prm,<sn href="&root;/superdarn/src.lib/tk/raw/structRawData.html">struct RawData</sn> *ptr,<sn href="structFitBlock.html">struct FitBlock</sn> *input,<sn href="&root;/superdarn/src.lib/tk/fit/structFitData.html">struct FitData</sn> *fit,<sn href="&root;/superdarn/src.lib/tk/radar/structRadarSite.html">struct RadarSite</sn> *hd,<sn href="&root;/superdarn/src.lib/tk/radar/structRadarTdiff.html">struct RadarTdiff</sn> *tdiff,double tdiff_fix);</syntax>
 <description><p>The <fn href="FitACF.html">FitACF</fn> function applies the <em>fitacf</em> algorithm to raw ACF data.</p>
 <p>The argument <ar>prm</ar> points to the radar parameter block of the data to process and the argument <ar>raw</ar> points to the raw ACF data.</p>
 <p>The configuration used by the algorithm is stored in the structure pointed to by the argument <ar>input</ar>.</p>
 <p>The calculated, fitted parameters are stored in the structure pointed to by the argument <ar>fit</ar>.</p>
+<p>The tdiff information needed for the elevation angle calculation is stored in either the hardware table pointed to by <ar>hd</ar>, the calibrated tdiff table pointed to by <ar>tdiff</ar>, or a user-provided argument <ar>tdiff_fix</ar>.</p>
 </description>
 <example type="source">FitACF.c</example>
 </function>
