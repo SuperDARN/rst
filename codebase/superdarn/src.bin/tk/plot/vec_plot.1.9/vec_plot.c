@@ -630,7 +630,10 @@ int main(int argc,char *argv[]) {
 
       yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,sc);
 
-      if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc); /* required */
+      if (!old_aacgm) {
+        AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc); /* required */
+        AACGM_v2_Lock();
+      }
 
       if (mlon_av_cnt !=0) {
         mlon_av_val=mlon_av_val/mlon_av_cnt;
@@ -683,8 +686,8 @@ int main(int argc,char *argv[]) {
                 strlen("1000m/s"),"1000m/s",
                 txtcol,0x0f,1);
 
-      plot_time(plot,xoff+pad,yoff+pad,pwdt-2*pad,pwdt-2*pad,
-                txtcol,0x0f,tme_fnt_nme,tme_fnt_sze,fontdb);
+      plot_vec_time(plot,xoff+pad,yoff+pad,pwdt-2*pad,pwdt-2*pad,
+                    txtcol,0x0f,tme_fnt_nme,tme_fnt_sze,fontdb);
 
 
 

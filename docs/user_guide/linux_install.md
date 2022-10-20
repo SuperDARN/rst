@@ -85,20 +85,20 @@ Now install the [CDF library](#cdf-library)
 
 ### Mint 
 
-Mint 18.1 	|
+Mint 20.2 	|
 --------- 	|
 libc6-dev 	|
 libncurses5-dev |
 libnetcdf-dev 	|
-libpng16-dev 	|
+libpng-dev 	|
 libx11-dev 	|
 libxext-dev 	|
 netcdf 		|
 netcdf-devel 	|
 
-**Mint 18.1**
+**Mint 20.2**
     
-    sudo apt-get install libc6-dev libncurses5-dev libnetcdf-dev libpng16-dev libx11-dev libxext-dev
+    apt install libc6-dev libncurses5-dev libnetcdf-dev libpng-dev libx11-dev libxext-dev
 
 
 

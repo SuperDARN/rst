@@ -22,6 +22,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+    2022-01-23 Emma Bland (UNIS): Added "elv_error" and "elv_fitted" fields to support FitACF v3
+ 
 */ 
 
 #ifndef _FITIDL_H
@@ -29,6 +31,7 @@ Modifications:
 
 
 struct FitIDLData {
+  IDL_STRING algorithm;
   struct {
     IDL_LONG major;
     IDL_LONG minor;
@@ -38,6 +41,7 @@ struct FitIDLData {
     float lag0;
     float vel;
   } noise;
+  float tdiff;
   float pwr0[MAX_RANGE];
   short nlag[MAX_RANGE]; 
   UCHAR qflg[MAX_RANGE]; 
@@ -72,6 +76,8 @@ struct FitIDLData {
   float elv[MAX_RANGE];
   float elv_low[MAX_RANGE];
   float elv_high[MAX_RANGE];
+  float elv_fitted[MAX_RANGE];
+  float elv_error[MAX_RANGE];
   float x_sd_l[MAX_RANGE];
   float x_sd_s[MAX_RANGE];
   float x_sd_phi[MAX_RANGE];   

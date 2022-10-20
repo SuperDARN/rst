@@ -6,9 +6,9 @@ include $(MAKECFG).$(SYSTEM)
 INCLUDE = -I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/analysis \
           -I$(IPATH)/imagery -I$(IPATH)/superdarn 
  
-SRC = hlpstr.h fov_plot.c errstr.h clip.c clip.h plot_time.c plot_time.h
+SRC = hlpstr.h fov_plot.c errstr.h
  
-OBJS = clip.o plot_time.o fov_plot.o  
+OBJS = fov_plot.o  
 DSTPATH = $(BINPATH)
 OUTPUT = fov_plot
 LIBS = -lbinplot.1 -lrpos.1 -lradar.1 -lsza.1 -lszamap.1 -laacgm.1 -lmlt.1 -lastalg.1 \

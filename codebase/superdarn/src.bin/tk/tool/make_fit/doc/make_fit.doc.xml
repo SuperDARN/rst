@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>make_fit</name>
+<location>src.bin/tk/tool/make_fit</location>
+
+<syntax>make_fit --help</syntax>
+<syntax>make_fit -fitacf3|-fitacf2|-lmfit1|-fitex2|-fitex1 [<ar>rawacfname</ar>]</syntax>
+<syntax>make_fit -old -fitacf3|-fitacf2|-lmfit1|-fitex2|-fitex1 <ar>rawname</ar> <ar>fitname</ar> [<ar>inxname</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od></option>
+<option><on>--version</on><od>print the RST version number and exit.</od></option>
+<option><on><ar>rawacfname</ar></on><od>filename of the <code>rawacf</code> format file. If this is omitted the file is read from standard input.</od></option>
+<option><on>-fitacf3</on><od>Uses FitACF 3.0 fitting algorithm</od></option>
+<option><on>-fitacf2</on><od>Uses FitACF 2.5 fitting algorithm</od></option>
+<option><on>-lmfit2</on><od>Uses LMFit 2.0 fitting algorithm (Not yet implemented: use make_lmfit2 binary)</od></option>
+<option><on>-lmfit1</on><od>Uses LMFit 1.0 fitting algorithm</od></option>
+<option><on>-fitex2</on><od>Uses FitEx 2.0 fitting algorithm</od></option>
+<option><on>-fitex1</on><od>Uses FitEx 1.0 fitting algorithm</od></option>
+<option><on>-tdiff <ar>tdiff</ar></on><od>Use a fixed value of <ar>tdiff</ar> (in units of microseconds) when calculating elevation angles.</od></option>
+<option><on>-tdiff_method <ar>method</ar></on><od>Use tdiff values from the calibration method of <ar>method</ar> when calculating elevation angles (0: Ponomarenko-2015; 1: Burrell-2016; 2: Ponomarenko-2018; 3: Chisham-2018; 4: Chisham-2021). Note: this option overrides -tdiff</od></option>
+<option><on>-old</on><od>input file is in <code>raw</code> (<code>dat</code>) file format and the output should be in <code>fit</code> file format.</od></option>
+<option><on>-old_elev</on><od>use old elevation angle algorithm(s).</od></option>
+<option><on><ar>rawname</ar></on><od>filename of the <code>raw</code> (<code>dat</code>) format file.</od></option>
+<option><on><ar>fitname</ar></on><od>filename of the <code>fit</code> format file to create.</od></option>
+<option><on>[<ar>inxname</ar>]</on><od>filename of the associated index file to create.</od></option>
+
+<synopsis><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file using one of the SuperDARN fitting algorithms. A description of each fitting algorithm is available at https://radar-software-toolkit-rst.readthedocs.io/en/latest/user_guide/make_fit/</p></synopsis>
+<description><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file. If the "<code>-old</code>" option is not specified then the <code>fitacf</code> format file is written to standard output.</p>
+</description>
+
+<example>
+<command>make_fit -fitacf3 -vb 19981105.kap.rawacf &gt; 19981105.kap.fitacf3</command>
+<description>Generates a fitacf file using FitACF3.0 from the <code>rawacf</code> file "<code>19981105.kap.rawacf</code>" to produce a file called "<code>19981105.kap.fitacf</code>". Status is logged on standard error.</description>
+</example>
+
+<example>
+<command>make_fit -fitacf2 19981105.kap.rawacf &gt; 19981105.kap.fitacf2</command>
+<description>Generates a fitacf file using FitACF2.5 from the <code>rawacf</code> file "<code>19981105.kap.rawacf</code>" to produce a file called "<code>19981105.kap.fitacf</code>". Status is logged on standard error.</description>
+</example>
+
+<example>
+<command>make_fit -fitacf2 -old 19971020.gbr.dat 19971020.gbr.fit 19971020.gbr.inx</command>
+<description>Generates a <code>fit</code> file using FitACF2.5 from the <code>dat</code> file "<code>19971020.gbr.dat</code>" to produce a file called "<code>19971020.gbr.fit</code>" and an index file called "<code>19971020.gbr.inx</code>".</description>
+</example>
+
+</binary>

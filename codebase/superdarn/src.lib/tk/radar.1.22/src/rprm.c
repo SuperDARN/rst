@@ -442,14 +442,14 @@ void *RadarParmFlatten(struct RadarParm *ptr,size_t *size) {
   }
 
   if (ptr->pulse !=NULL) {
-    memcpy((int*)buf+p,ptr->pulse,ptr->mppul*sizeof(int16));
+    memcpy(buf+p,ptr->pulse,ptr->mppul*sizeof(int16));
     r->pulse=(void *) p;
     p+=ptr->mppul*sizeof(int16);
   }
 
   for (n=0;n<2;n++) {
     if (ptr->lag[n]==NULL) continue;
-    memcpy((int*)buf+p,ptr->lag[n],lnum*sizeof(int16));
+    memcpy(buf+p,ptr->lag[n],lnum*sizeof(int16));
     r->lag[n]=(void *) p;
     p+=lnum*sizeof(int16);
   }
@@ -472,25 +472,25 @@ int RadarParmExpand(struct RadarParm *ptr,void *buffer) {
 
   memcpy(ptr,buffer,sizeof(struct RadarParm));
   if (ptr->origin.time !=NULL) {
-    p=(int*)buffer+(size_t) ptr->origin.time;
+    p=buffer+(size_t) ptr->origin.time;
     ptr->origin.time=malloc(strlen(p)+1);
     strcpy(ptr->origin.time,p);
   }
 
   if (ptr->origin.command !=NULL) {
-    p=(int*)buffer+(size_t) ptr->origin.command;
+    p=buffer+(size_t) ptr->origin.command;
     ptr->origin.command=malloc(strlen(p)+1);
     strcpy(ptr->origin.command,p);
   }
 
   if (ptr->combf !=NULL) {
-    p=(int*)buffer+(size_t) ptr->combf;
+    p=buffer+(size_t) ptr->combf;
     ptr->combf=malloc(strlen(p)+1);
     strcpy(ptr->combf,p);
   }
 
   if (ptr->pulse !=NULL) {
-    p=(int*)buffer+(size_t) ptr->pulse;
+    p=buffer+(size_t) ptr->pulse;
     ptr->pulse=malloc(ptr->mppul*sizeof(int16));
     memcpy(ptr->pulse,p,ptr->mppul*sizeof(int16));
   }
@@ -499,7 +499,7 @@ int RadarParmExpand(struct RadarParm *ptr,void *buffer) {
     if (ptr->lag[n]==NULL) continue;
     if (ptr->mplgexs !=0) lnum=ptr->mplgexs+1;
     else lnum=ptr->mplgs+1;
-    p=(int*)buffer+(size_t) ptr->lag[n];
+    p=buffer+(size_t) ptr->lag[n];
     ptr->lag[n]=malloc(lnum*sizeof(int16));
     memcpy(ptr->lag[n],p,lnum*sizeof(int16));
   }

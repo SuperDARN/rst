@@ -91,7 +91,7 @@ Modifications:
 
 #define HEIGHT 640
 #define WIDTH  540
-#define MAX_RANGE 300
+#define MAX_RANGE 600
 
 struct OptionData opt;
 struct OptionFile *optf=NULL;
@@ -1161,8 +1161,12 @@ int main(int argc,char *argv[]) {
     stid=prm->stid;
     cptab[0]=prm->cp;
     cpnum=1;
-    sprintf(revtxt,"Revision:%d.%d",fit->revision.major,
-            fit->revision.minor);
+    if (fit->algorithm !=NULL) {
+      sprintf(revtxt,"%s",fit->algorithm);
+    } else {
+      sprintf(revtxt,"Revision:%d.%d",fit->revision.major,
+              fit->revision.minor);
+    }
   }
   if (sndflg) {
     stid=snd->stid;
@@ -1652,6 +1656,7 @@ int main(int argc,char *argv[]) {
   if (ymajor==0) {
     if (kmflg) ymajor=(erang-frang)/ytick;
     else if ((geoflg) || (magflg)) ymajor=(latmax-latmin)/ytick;
+    else if ((erng-srng)>150) ymajor=(erng-srng)/ytick;
     else ymajor=15;
   }
   if (yminor==0) yminor=5;
