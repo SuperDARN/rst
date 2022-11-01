@@ -67,7 +67,7 @@ int FitSetAlgorithm(struct FitData *ptr,char *str) {
     return 0;
   }
 
-  if (ptr->algorithm==NULL) tmp=malloc(strlen(str+1));
+  if (ptr->algorithm==NULL) tmp=malloc(strlen(str)+1);
   else tmp=realloc(ptr->algorithm,strlen(str)+1);
 
   if (tmp==NULL) return -1;
