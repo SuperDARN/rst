@@ -2,22 +2,24 @@
 *.so
 *.o
 *~
-bin/
-build/bin/
-build/include/
-build/lib/
-dlm/
-/doc/
-/idl/
-/include/
-lib/
-log/
+
+bin
+/build/include
+/build/lib
+/dlm
+/doc
+/idl
+/include
+/lib
+/log
 
 codebase/general/src.lib/stdkey.1.5/src/make_palette
 
 *errstr.h
 *hlpstr.h
 *version.h
+!fitacfversion.h
+
 site/
 docs/xml
 docs/latex/
