@@ -29,7 +29,7 @@ Sometimes modes like `twofsound` will write data into a single file. In this cas
 RST includes several fitting algorithms which are used to determine the physical properties of the received backscatter (power, velocity, spectral width, elevation) from the mean autocorrelation and crosscorrelation function estimates. 
 RST includes the following fitting algorithms:
 
-- FITACF 2.5 (default)
+- FITACF 2.5 (optional)
 - FITACF 3.0 (optional)
 - [FITEX2](https://doi.org/10.1002/rds.20031) (optional)
 - [LMFIT](https://doi.org/10.1002/rds.20031) (optional)
