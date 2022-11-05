@@ -91,11 +91,13 @@ FITACF files contain a record that contains scalar and vector fields.
 | *mxpwr*                 | *dB*       | ***int***    | Maximum power  
 | *lvmax*                 | **None**         | ***int***    | Maximum noise level allowed                                                             |
 | *combf*                 | **None**         | ***string*** | Control program name or command line, or comment buffer                                 |
+| *algorithm*             | **None**         | ***string*** | Name of the fitting algorithm used to fit the ACFs                                |
 | *fitacf.revision.major* | **None**         | ***int***    | Major version number of the FITACF algorithm                                            |
 | *fitacf.revision.minor* | **None**         | ***int***    | Minor version number of the FITACF algorithm                                            |
 | *noise.sky*             | **None**         | ***float***  | Sky noise                                                                               |
 | *noise.lag0*            | **None**         | ***float***  | Lag zero power of noise ACF                                                             |
 | *noise.vel*             | **None**         | ***float***  | Velocity from fitting the noise ACF                                                     |
+| *tdiff*                 | **us**           | ***float***  | Value of time differential used when calculating elevation angles                 |
 
 
 ### Vectors 
