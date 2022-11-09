@@ -24,19 +24,6 @@ Each file contains data from a different frequency channel.
 !!! Note
 Sometimes modes like `twofsound` will write data into a single file. In this case the two frequencies are marked as two separate channels, denoted using the `channel` parameter. However, it is important to note that some SuperDARN radars have stereo capability (transmitting and receiving on 2 frequencies simultaneously), which was the original intended usage of the `channel` parameter.
 
-## Fitting Algorithms
-
-RST includes several fitting algorithms which are used to determine the physical properties of the received backscatter (power, velocity, spectral width, elevation) from the mean autocorrelation and crosscorrelation function estimates. 
-RST includes the following fitting algorithms:
-
-- FITACF 2.5 (optional)
-- FITACF 3.0 (optional)
-- [FITEX2](https://doi.org/10.1002/rds.20031) (optional)
-- [LMFIT](https://doi.org/10.1002/rds.20031) (optional)
-
-Other fitting algorithms that are not yet implemented in RST:
-- [lmfit2](https://doi.org/10.1002/2017RS006450)
-
 ## Fields
 
 FITACF files contain a record that contains scalar and vector fields. 
