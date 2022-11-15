@@ -87,13 +87,19 @@ int main(int argc,char *argv[]) {
   double wmin=0;
   double wmax=250;
 
+  unsigned char elvflg=0;
+  double emin=0;
+  double emax=40;
+
   int sock;
   int remote_port=0;
   char host[256];
   int flag,status;
   struct RadarParm *prm;
   struct FitData *fit;
- 
+
+  int c=0;
+
   prm=RadarParmMake();
   fit=FitMake();
 
@@ -112,6 +118,9 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"w",'x',&widflg);
   OptionAdd(&opt,"wmin",'d',&wmin);
   OptionAdd(&opt,"wmax",'d',&wmax);
+  OptionAdd(&opt,"e",'x',&elvflg);
+  OptionAdd(&opt,"emin",'d',&emin);
+  OptionAdd(&opt,"emax",'d',&emax);
 
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
@@ -157,6 +166,9 @@ int main(int argc,char *argv[]) {
   /* Make getch a non-blocking call */
   nodelay(stdscr,TRUE);
 
+  cbreak();
+  noecho();
+
   /* Hide the cursor */
   curs_set(0);
 
@@ -183,7 +195,7 @@ int main(int argc,char *argv[]) {
     init_pair(11, COLOR_YELLOW, COLOR_YELLOW);
     init_pair(12, COLOR_RED, COLOR_RED);
 
-    if ((!pwrflg) && (!velflg) && (!widflg)) pwrflg=1;
+    if ((!pwrflg) && (!velflg) && (!widflg) && (!elvflg)) pwrflg=1;
 
     if (pwrflg) {
       smin=pmin;
@@ -194,13 +206,47 @@ int main(int argc,char *argv[]) {
     } else if (widflg) {
       smin=wmin;
       smax=wmax;
+    } else if (elvflg) {
+      smin=emin;
+      smax=emax;
     }
   }
 
   do {
 
     /* Check for key press to exit */
-    if ((getch()) != ERR) break;
+    c = getch();
+    if (colorflg) {
+      if (c == 'p') {
+        pwrflg=1;
+        velflg=0;
+        widflg=0;
+        elvflg=0;
+        smin=pmin;
+        smax=pmax;
+      } else if (c == 'v') {
+        pwrflg=0;
+        velflg=1;
+        widflg=0;
+        elvflg=0;
+        smin=vmin;
+        smax=vmax;
+      } else if (c == 'w') {
+        pwrflg=0;
+        velflg=0;
+        widflg=1;
+        elvflg=0;
+        smin=wmin;
+        smax=wmax;
+      } else if (c == 'e') {
+        pwrflg=0;
+        velflg=0;
+        widflg=0;
+        elvflg=1;
+        smin=emin;
+        smax=emax;
+      } else if (c != ERR) break;
+    } else if (c != ERR) break;
 
     status=FitCnxRead(1,&sock,prm,fit,&flag,NULL);
 
@@ -265,6 +311,7 @@ int main(int argc,char *argv[]) {
             if (pwrflg)      val = (int)((fit->rng[i].p_l-smin)/(smax-smin)*nlevels)+1;
             else if (velflg) val = (int)((fit->rng[i].v-smin)/(smax-smin)*nlevels)+1;
             else if (widflg) val = (int)((fit->rng[i].w_l-smin)/(smax-smin)*nlevels)+1;
+            else if (elvflg) val = (int)((fit->elv[i].normal-smin)/(smax-smin)*nlevels)+1;
 
             if (val < 1) val=1;
             if (val > nlevels+1) val=nlevels+1;
@@ -287,6 +334,7 @@ int main(int argc,char *argv[]) {
         if (pwrflg)      printw("Pow [dB]");
         else if (velflg) printw("Vel [m/s]");
         else if (widflg) printw("Wid [m/s]");
+        else if (elvflg) printw("Elv [deg]");
         start=12;
         for (j=12;j>6;j--) {
           attron(COLOR_PAIR(j));
@@ -296,6 +344,7 @@ int main(int argc,char *argv[]) {
           }
           attroff(COLOR_PAIR(j));
           move(i-1, nrng+7);
+          clrtoeol();
           printw("%d",(int)((j-7)*(smax-smin)/nlevels+smin));
           start=start+2;
         }
