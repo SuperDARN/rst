@@ -602,6 +602,7 @@ int main(int argc,char *argv[]) {
     if (resetflg==1) loginfo(logname,"Connection timed out.");
     if (resetflg==2) loginfo(logname,"Connection reset by signal.");
     ConnexClose(sock);
+    sleep(5);
   } while(1);
 
   return 0;
