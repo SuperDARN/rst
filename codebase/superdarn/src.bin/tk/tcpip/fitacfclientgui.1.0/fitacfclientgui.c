@@ -77,7 +77,7 @@ int main(int argc,char *argv[]) {
 
   unsigned char pwrflg=0;
   double pmin=0;
-  double pmax=40;
+  double pmax=30;
 
   unsigned char velflg=0;
   double vmin=-500;
