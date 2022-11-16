@@ -288,7 +288,9 @@ int main(int argc,char *argv[]) {
 
       /* Draw beam and gate labels */
       move(12, 0);
-      printw("B\\G 0         10        20        30        40        50        60        70\n");
+      printw("B\\G 0         ");
+      for (i=1;i*10<nrng;i++) printw("%d        ",i*10);
+      printw("\n");
 
       if (colorflg) {
         if (prm->bmnum < min_beam) min_beam = prm->bmnum;
