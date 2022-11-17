@@ -528,10 +528,10 @@ int main(int argc,char *argv[]) {
         TimeEpochToYMDHMS(src[inx]->st_time,
           &yr,&mo,&dy,&hr,&mt,&sc);
         if (dataflg==1) sprintf(logbuf,
-          "%d:%d:%d:Processing scan %d (data received)",
+          "%02d:%02d:%02d : Processing scan %d (data received)",
           hr,mt,(int) sc,num);
         else sprintf(logbuf,
-          "%d:%d:%d:Processing scan %d (no data received)",
+          "%02d:%02d:%02d : Processing scan %d (no data received)",
           hr,mt,(int) sc,num);
         dataflg=0;
         loginfo(logname,logbuf);
