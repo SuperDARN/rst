@@ -70,15 +70,19 @@ void logtime(char *fname,int nbytes) {
   int mask=S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
   int fid,s;
   time_t tval;
-  
- 
-  tval=time(NULL);
+  struct tm *time_of_day;
+  char *date;
+
+  time(&tval);
+  time_of_day=localtime(&tval);
+  date=asctime(time_of_day);
+  date[strlen(date)-1]=0;
 
   fid=open(fname,O_WRONLY | O_TRUNC | O_CREAT,mask);
 
   if (fid !=0) {
-    sprintf(txt,"%d %d\n",(int) tval,nbytes);
-    s=write(fid,txt,strlen(txt)+1);
+    sprintf(txt,"%s : %d",date,nbytes);
+    s=write(fid,txt,strlen(txt));
     if (s == -1)
     {
         fprintf(stderr, "Error: Write was not Successful\n");

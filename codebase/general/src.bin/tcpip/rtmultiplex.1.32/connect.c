@@ -50,7 +50,7 @@ extern int msgmax;
 void closesock(int i) {
   if ((i<msgmax) && (client[i].sock !=-1)) {
     char logbuf[256];
-    sprintf(logbuf,"%s : Close Connection.",client[i].host);
+    sprintf(logbuf,"%s : Close Connection (%d/%d).",client[i].host,i,CLIENT_MAX);
     loginfo(logfname,logbuf);
     close(client[i].sock);
     client[i].sock=-1;
@@ -61,6 +61,7 @@ void closesock(int i) {
 int opensock(int sock,fd_set *fdset) {
   int i,status;
   char logbuf[256];
+  char hostbuf[256];
   int temp;
   socklen_t clength;
 
@@ -72,9 +73,13 @@ int opensock(int sock,fd_set *fdset) {
   if (i>=CLIENT_MAX) { 
     /* dequeue the request here */
 
-    loginfo(logfname,"Too many clients attached - refusing connection.");
+    clength=sizeof(caddr);
+    temp=accept(sock,(struct sockaddr *) &caddr,&clength);
 
-    temp=accept(sock,0,0);
+    sprintf(hostbuf,"[%s]",inet_ntoa(caddr.sin_addr));
+    sprintf(logbuf,"%s : Too many clients attached - refusing connection.",hostbuf);
+    loginfo(logfname,logbuf);
+
     if (temp !=-1) close(temp);
     return -1;
   }
@@ -103,7 +108,7 @@ int opensock(int sock,fd_set *fdset) {
     return -1;
   } 
 
-  sprintf(logbuf,"%s : Open Connection.",client[i].host);
+  sprintf(logbuf,"%s : Open Connection (%d/%d).",client[i].host,i,CLIENT_MAX);
   loginfo(logfname,logbuf);
 
   if (i==msgmax) msgmax++;

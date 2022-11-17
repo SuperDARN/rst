@@ -1,6 +1,7 @@
 /* loginfo.c
    =========
    Author: R.J.Barnes
+
  Copyright (c) 2012 The Johns Hopkins University/Applied Physics Laboratory
 
 This file is part of the Radar Software Toolkit (RST).
@@ -34,7 +35,6 @@ Modifications:
 void loginfo(char *fname,char *str) {
   FILE *fp;
   char *date;
-  char pid[128];
   char logpath[1024];
   time_t ltime;
   struct tm *time_of_day;
@@ -44,13 +44,9 @@ void loginfo(char *fname,char *str) {
 
   date=asctime(time_of_day);  
 
-  date[strlen(date)-1]=':';
+  date[strlen(date)-1]=0;
   
-  sprintf(pid,"(%d):",getpid());
-  fprintf(stderr,"%s",date);
-  fprintf(stderr,"%s",pid);
-  fprintf(stderr,"%s",str);
-  fprintf(stderr,"\n");
+  fprintf(stderr,"%s : (%d) : %s\n",date,getpid(),str);
 
   sprintf(logpath,"%s.%.4d%.2d%.2d",fname,1900+
           time_of_day->tm_year,time_of_day->tm_mon+1,
@@ -62,19 +58,7 @@ void loginfo(char *fname,char *str) {
     return;
   }
 
-  fprintf(fp,"%s",date);
-  fprintf(fp,"%s",pid);
-  fprintf(fp,"%s",str);
-  fprintf(fp,"\n");
+  fprintf(fp,"%s : (%d) : %s\n",date,getpid(),str);
   fclose(fp);
 }
-
-
-
-
-
-
-
-
-
 
