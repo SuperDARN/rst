@@ -7,7 +7,7 @@
 # Darwin (GCC)
 #
 
-CFLAGS = -Wall -pedantic -O3 -D_GNU_SOURCE -D_DARWIN -I/opt/local/include
+CFLAGS = -Wall -pedantic -O3 -D_GNU_SOURCE -D_DARWIN -I$(XPATH)/include
 
 ifdef XPATH
   ifdef XLIB
@@ -27,7 +27,7 @@ endif
 CFLAGS += $(INCLUDE)
 
 LFLAGS =  -Wl,-rpath,@loader_path/../lib/ -Wl,-rpath,@loader_path/../../lib/ \
-          -L/opt/local/lib -L$(LIBPATH)
+          -L$(XPATH)/lib -L$(LIBPATH)
 
 .c.o:
 	$(CC) $(CFLAGS) -c $<    
