@@ -26,7 +26,7 @@
 </option>
 <option><on>-lp <ar>lport</ar></on><od>force the server to listen on the local port number <ar>port</ar>. By default, the server requests a port number from the Operating System.</od></option>
 <option><on><ar>host</ar></on><od>hostname or IP number of the system to connect to.</od></option>
-<option><on><ar>rport</ar></on><od>port numbers to connect to on the server.</od></option>
+<option><on><ar>rport</ar></on><od>port number to connect to on the server.</od></option>
 <synopsis><p>TCP/IP stream mulitplexer.</p></synopsis>
 <description><p>The task acts as both server and client attaching to a remote host and relaying the data stream to the client tasks.</p>
 </description>
