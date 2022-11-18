@@ -38,14 +38,14 @@ void loginfo(char *fname,char *str) {
   char logpath[1024];
   time_t ltime;
   struct tm *time_of_day;
- 
-  time(&ltime);  
+
+  time(&ltime);
   time_of_day=localtime(&ltime);
 
-  date=asctime(time_of_day);  
+  date=asctime(time_of_day);
 
   date[strlen(date)-1]=0;
-  
+
   fprintf(stderr,"%s : (%d) : %s\n",date,getpid(),str);
 
   sprintf(logpath,"%s.%.4d%.2d%.2d",fname,1900+

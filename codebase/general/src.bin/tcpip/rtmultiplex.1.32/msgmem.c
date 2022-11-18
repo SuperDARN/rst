@@ -47,7 +47,8 @@ Modifications:
 extern struct client client[CLIENT_MAX];
 extern int msgmax;
 
-int writeraw(unsigned char *buf,int sze) { 
+
+int writeraw(unsigned char *buf,int sze) {
   /* this bit adds a message onto the end of the write buffer */
   int i;
   for (i=0;i<msgmax;i++) {
@@ -65,6 +66,7 @@ int writeraw(unsigned char *buf,int sze) {
   }
   return 0;
 }
+
 
 void readsock(fd_set *fdset,unsigned char *tmp_buf,int tmp_sze) {
   /* reads in a message from a client */
@@ -84,7 +86,7 @@ void readsock(fd_set *fdset,unsigned char *tmp_buf,int tmp_sze) {
         int delta;
         delta=byte+client[i].in_sze-BUF_SIZE;
         memmove(client[i].in_buf,client[i].in_buf+delta,
-              client[i].in_sze-delta);
+                client[i].in_sze-delta);
         client[i].out_sze=BUF_SIZE-byte;
       }
       memcpy(client[i].in_buf+client[i].in_sze,tmp_buf,byte);
@@ -93,10 +95,11 @@ void readsock(fd_set *fdset,unsigned char *tmp_buf,int tmp_sze) {
   }
 }
 
+
 int writesock() {
   int i;
   int byte,cnt=0;
-  for (i=0;i<msgmax;i++) 
+  for (i=0;i<msgmax;i++)
     if ((client[i].sock !=-1) && (client[i].out_sze !=0)) {
 
     byte=write(client[i].sock,client[i].out_buf,client[i].out_sze);

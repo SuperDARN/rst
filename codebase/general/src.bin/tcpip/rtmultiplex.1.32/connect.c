@@ -47,6 +47,7 @@ extern char logfname[256];
 extern struct client client[CLIENT_MAX];
 extern int msgmax;
 
+
 void closesock(int i) {
   if ((i<msgmax) && (client[i].sock !=-1)) {
     char logbuf[256];
@@ -55,8 +56,9 @@ void closesock(int i) {
     close(client[i].sock);
     client[i].sock=-1;
     if (i==msgmax-1) msgmax--;
-  } 
+  }
 }
+
 
 int opensock(int sock,fd_set *fdset) {
   int i,status;
@@ -65,12 +67,11 @@ int opensock(int sock,fd_set *fdset) {
   int temp;
   socklen_t clength;
 
-  
   struct sockaddr_in caddr;
- 
+
   if (FD_ISSET(sock,fdset)==0) return -1;
   for (i=0;(i<msgmax) && (client[i].sock !=-1);i++);
-  if (i>=CLIENT_MAX) { 
+  if (i>=CLIENT_MAX) {
     /* dequeue the request here */
 
     clength=sizeof(caddr);
@@ -89,7 +90,7 @@ int opensock(int sock,fd_set *fdset) {
       (struct sockaddr *) &caddr,&clength))==-1) {
     loginfo(logfname,"Accept failed.");
 
-     return -1;
+    return -1;
   }
 
   sprintf(client[i].host,"[%s]",inet_ntoa(caddr.sin_addr));
@@ -106,7 +107,7 @@ int opensock(int sock,fd_set *fdset) {
     client[i].sock=-1;
     loginfo(logfname,"Failed to write file control block.");
     return -1;
-  } 
+  }
 
   sprintf(logbuf,"%s : Open Connection (%d/%d).",client[i].host,i,CLIENT_MAX);
   loginfo(logfname,logbuf);
@@ -114,8 +115,4 @@ int opensock(int sock,fd_set *fdset) {
   if (i==msgmax) msgmax++;
   return client[i].sock;
 }
-
-
-
-
 
