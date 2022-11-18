@@ -121,7 +121,7 @@ function rbpos,range,height=height,beam=beam,lagfr=first_lag,smsep=smsp, $
   if (keyword_set(station)) then st_id = station else st_id = dp.p.st_id
 
   if (keyword_set(yr)) then year=yr else year=dp.p.year
-  if (keyword_set(yrs)) then yrsec=yrs else $
+  if (n_elements(yrs)) then yrsec=yrs else $
       yrsec=TimeYMDHMSToYrsec(dp.p.year,dp.p.month,dp.p.day,dp.p.hour, $
                                   dp.p.minut,dp.p.sec)
 
