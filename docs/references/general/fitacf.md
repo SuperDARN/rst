@@ -3,6 +3,9 @@ author(s): Marina Schmidt
 
 Disclaimer: License under GNU v3.0, the file is found in the root directory under LICENSE 
 
+Modifications:
+    2022-11-23 Emma Bland (UNIS) Updated field names and descriptions
+     
 -->
 # FITACF Files 
 
@@ -114,27 +117,26 @@ The field [a-d] is used to separate data sampled at different frequencies into s
 | *sd_l* | **None** | *[num_pts]* | ***float*** | Standard deviation of lambda fit | 
 | *sd_s* | **None** | *[num_pts]* | ***float*** | Standard deviation of sigma fit | 
 | *sd_phi* | **None** | *[num_pts]* | ***float*** | Standard deviation of phase fit of ACF | 
-| *x_qflg* | **None** | *[num_pts]* | ***char*** | Quality flag of XCF (FitACF v2 only) | 
-| *x_gflg* | **None** | *[num_pts]* | ***char*** | Ground scatter flag of XCF (FitACF v2 only) | 
-| *x_p_l* | *dB* | *[num_pts]* | ***float*** | Power from lambda fit of XCF (FitACF v2 only) | 
-| *x_p_l_e* | *dB* | *[num_pts]* | ***float*** | Power error from lambda fit of XCF (FitACF v2 only) | 
-| *x_p_s* | *dB* | *[num_pts]* | ***float*** | Power from sigma fit of XCF (FitACF v2 only) | 
-| *x_p_s_e* | *dB* | *[num_pts]* |  ***float*** | Power error from sigma fit of XCF (FitACF v2 only) | 
-| *x_v* | *m/s* | *[num_pts]* | ***float*** | Velocity from fit of XCF (FitACF v2 only) | 
-| *x_v_e* | *m/s* | *[num_pts]* | ***float*** | Velocity error from fit of XCF (FitACF v2 only) | 
-| *x_w_l* | *m/s* | *[num_pts]* | ***float*** | Spectral width from lambda fit of XCF (FitACF v2 only) | 
-| *x_w_l_e* | *m/s* | *[num_pts]* | ***float*** | Spectral width error from lambda fit of XCF (FitACF v2 only) | 
-| *x_w_s* | *m/s* | *[num_pts]* | ***float*** | Spectral width from sigma fit of XCF (FitACF v2 only) | 
-| *x_w_s_e* | *m/s* | *[num_pts]* | ***float*** | Spectral width error from sigma fit of XCF (FitACF v2 only) | 
+| *x_qflg* | **None** | *[num_pts]* | ***char*** | Quality flag of XCF | 
+| *x_gflg* | **None** | *[num_pts]* | ***char*** | Ground scatter flag of XCF | 
+| *x_p_l* | *dB* | *[num_pts]* | ***float*** | Power from lambda fit of XCF | 
+| *x_p_l_e* | *dB* | *[num_pts]* | ***float*** | Power error from lambda fit of XCF | 
+| *x_p_s* | *dB* | *[num_pts]* | ***float*** | Power from sigma fit of XCF | 
+| *x_p_s_e* | *dB* | *[num_pts]* |  ***float*** | Power error from sigma fit of XCF | 
+| *x_v* | *m/s* | *[num_pts]* | ***float*** | Velocity from fit of XCF | 
+| *x_v_e* | *m/s* | *[num_pts]* | ***float*** | Velocity error from fit of XCF | 
+| *x_w_l* | *m/s* | *[num_pts]* | ***float*** | Spectral width from lambda fit of XCF | 
+| *x_w_l_e* | *m/s* | *[num_pts]* | ***float*** | Spectral width error from lambda fit of XCF | 
+| *x_w_s* | *m/s* | *[num_pts]* | ***float*** | Spectral width from sigma fit of XCF | 
+| *x_w_s_e* | *m/s* | *[num_pts]* | ***float*** | Spectral width error from sigma fit of XCF | 
 | *phi0* | *radians* | *[num_pts]* | ***float*** | Phase determination at lag zero of the ACF | 
 | *phi0_e* | *radians* | *[num_pts]* | ***float*** | Phase determination error at lag zero of the ACF | 
 | *elv* | *degrees* | *[num_pts]* | ***float*** | Elevation angle estimate recommended for scientific use |
-| *elv_fitted* | *degrees* | *[num_pts]* | ***float*** | Alternative elevation angle determined from fitted phase (FitACF v3 only) |
-| *elv_error* | *degrees* | *[num_pts]* | ***float*** | Least-square elevation angle error (FitACF v3 only) |
-| *elv_low* | *degrees* | *[num_pts]* | ***float*** | Lowest estimate of elevation angle (FitACF v2 only) |
-| *elv_high* | *degrees* | *[num_pts]* | ***float*** | Highest estimate of elevation angle (FitACF v2 only) |
+| *elv_fitted* | *degrees* | *[num_pts]* | ***float*** | Alternative elevation angle determined from fitted phase |
+| *elv_error* | *degrees* | *[num_pts]* | ***float*** | Least-square elevation angle error |
+| *elv_low* | *degrees* | *[num_pts]* | ***float*** | Lowest estimate of elevation angle |
+| *elv_high* | *degrees* | *[num_pts]* | ***float*** | Highest estimate of elevation angle |
 | *x_sd_l* | **None** | *[num_pts]* | ***float*** | Standard deviation of lambda fit of XCF |
 | *x_sd_s* | **None** | *[num_pts]* | ***float*** | Standard deviation of sigma fit of XCF |
 | *x_sd_phi* | **None** | *[num_pts]* | ***float*** | Standard deviation of phase fit of XCF |
-
 
