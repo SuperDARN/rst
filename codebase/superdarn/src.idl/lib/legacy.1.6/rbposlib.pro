@@ -126,8 +126,6 @@ function rbpos,range,height=height,beam=beam,lagfr=first_lag,smsep=smsp, $
                                   dp.p.minut,dp.p.sec)
 
   yr=year
-  s=TimeYrsecToYMDHMS(yr,mo,dy,hr,mt,sc,yrsec)
-
   rid=RadarGetRadar(network,st_id)
   s=TimeYrsecToYMDHMS(yr,mo,dy,hr,mt,sc,yrsec)
   site=RadarYMDHMSGetSite(rid,yr,mo,dy,hr,mt,sc)
