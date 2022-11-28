@@ -5,7 +5,7 @@ Disclaimer: License under GNU v3.0, the file is found in the root directory unde
 
 -->
 
-This information is sourced from the RFC: 0002 previously in the RST RFC documentation that was written by R.J. Barnes.  For the filenaming convention, it is expected the Data Standards Working Group documentation will make information presented here obsolete.
+This information is sourced from the RFC: 0002 previously in the RST RFC documentation that was written by R.J. Barnes.
 
 # Filename Format Definition
 
@@ -28,7 +28,7 @@ The original specification (from 1990s) for SuperDARN filenames was as follows:
 *ttt* | A three letter filetype (fit, inx, dat, smr, etc.)
 ```
 
-In 1999, the two digit year specification was replaced by a full four digit year to deal with the millenium:
+In 1999, the two digit year specification was replaced by a full four digit year to deal with the millennium:
 ```
 *yyyymmddhhi[c].ttt*
 ```
@@ -41,7 +41,7 @@ A typical set of filenames would look like:
 2002111412g.dat
 ```
 
-Due to the increase in the number of radars, the single letter radar indentifier can no longer be used.  Consequently, the file format must be changed and this opportunity was used to make the filename format easier to understand.
+Due to the increase in the number of radars, the single letter radar identifier can no longer be used.  Consequently, the file format must be changed and this opportunity was used to make the filename format easier to understand.
 
 ## "Proposed" Filename Format
 (Proposed as this appears to have been widely adapted in post 7/1/2006)
@@ -70,7 +70,7 @@ A typical set of filenames in the new format would look like:
 
 ### Concatenated Files
 
-Often the user will need to concatenate together multiple files when working on longer periods of data.  The RST software allow the user to pick any arbitrary name for the concatenated files, but for convenience it is recommnded that the following format is used:
+Often the user will need to concatenate together multiple files when working on longer periods of data.  The RST software allow the user to pick any arbitrary name for the concatenated files, but for convenience it is recommended that the following format is used:
 ```
 *yyyymmdd.hhMM.ss.iii.ttt[ttt].C*
 *yyyy*    | Four digit year (eg 2004)
@@ -136,5 +136,5 @@ A typical set of filenames in this format would look like:
 
 ## History (from RFC)
 
--2004/06/01 Iniital Revision, RJB
+-2004/06/01 Initial Revision, RJB
 -2004/06/08 Extended definitions to deal with whole day, hemispheric or global files
