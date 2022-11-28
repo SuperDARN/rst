@@ -30,6 +30,7 @@ Modifications:
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <unistd.h>
 
 
 void loginfo(char *fname,char *str) {
@@ -44,11 +45,9 @@ void loginfo(char *fname,char *str) {
 
   date=asctime(time_of_day);  
 
-  date[strlen(date)-1]=':';
+  date[strlen(date)-1]=0;
   
-  fprintf(stderr,"%s",date);
-  fprintf(stderr,"%s",str);
-  fprintf(stderr,"\n");
+  fprintf(stderr,"%s : (%d) : %s\n",date,getpid(),str);
 
    sprintf(logpath,"%s.%.4d%.2d%.2d",fname,1900+
           time_of_day->tm_year,time_of_day->tm_mon+1,
@@ -59,18 +58,7 @@ void loginfo(char *fname,char *str) {
     fprintf(stderr,"WARNING:Log failed.\n");
     return;
   }
-  fprintf(fp,"%s",date);
-  fprintf(fp,"%s",str);
-  fprintf(fp,"\n");
+  fprintf(fp,"%s : (%d) : %s\n",date,getpid(),str);
   fclose(fp);
 }
-
-
-
-
-
-
-
-
-
 

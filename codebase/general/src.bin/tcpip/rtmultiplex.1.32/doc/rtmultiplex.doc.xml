@@ -4,7 +4,7 @@
 <name>rtmultiplex</name>
 <location>src.bin/tcpip/rtmultiplex</location>
 <syntax>rtmultiplex --help</syntax>
-<syntax>rtmultiplex [-vb] [-t <ar>timeout</ar>] [-L <ar>logname</ar>] [-T <ar>timename</ar>] [-pf <ar>portname</ar>] [-if <ar>pidname</ar>] [-lp <ar>lport</ar>] [-f] <ar>hostnames...</ar> <ar>rports...</ar></syntax>
+<syntax>rtmultiplex [-vb] [-t <ar>timeout</ar>] [-L <ar>logname</ar>] [-T <ar>timename</ar>] [-pf <ar>portname</ar>] [-if <ar>pidname</ar>] [-lp <ar>lport</ar>] <ar>hostname</ar> <ar>rport</ar></syntax>
 
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>
@@ -13,6 +13,8 @@
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
 <option><on>-t <ar>timeout</ar></on><od>reset the connection if no packets are received in <ar>timeout</ar> seconds. By default, the timeout is 20 seconds.</od>
+</option>
+<option><on>-r <ar>resetclk</ar></on><od>attempt to restart the connection on failure after <ar>resetclk</ar> seconds. By default, the resetclk is 1 second.</od>
 </option>
 <option><on>-L <ar>logname</ar></on><od>log connections and information in the file <ar>logname</ar>. By default, connections are recorded in <code>log.rt</code>.</od>
 </option>
@@ -23,23 +25,20 @@
 <option><on>-if <ar>pidname</ar></on><od>record the process Identifier (PID) of the server in the file <ar>pidname</ar>. By default, the PID is recorded in <code>pid.id</code>.</od>
 </option>
 <option><on>-lp <ar>lport</ar></on><od>force the server to listen on the local port number <ar>port</ar>. By default, the server requests a port number from the Operating System.</od></option>
-<option><on>-f</on><od>allow stream filtering. Each data stream is assigned a numeric identifier.</od>
-</option>
-<option><on><ar>hosts</ar></on><od>space separated hostnames or IP numbers of the systems to connect to.</od></option>
-<option><on><ar>rport</ar></on><od>space separated list of port numbers to connect to on the servers.</od></option>
+<option><on><ar>host</ar></on><od>hostname or IP number of the system to connect to.</od></option>
+<option><on><ar>rport</ar></on><od>port number to connect to on the server.</od></option>
 <synopsis><p>TCP/IP stream mulitplexer.</p></synopsis>
-<description><p>The task acts as both server and client attaching to multiple remote hosts and multiplexing the data streams together into a single stream that is relayed to the client tasks.</p>
-<p>Each remote data stream is assigned a stream number based on the position that the server name appears in the command line. The clients connecting to the <code>rtmultiplex</code> task can select the stream they wish to receive by sending a single byte back to the server.</p>
+<description><p>The task acts as both server and client attaching to a remote host and relaying the data stream to the client tasks.</p>
 </description>
 
 <example>
-<command>rtmultiplex -f port.id -lf log peanut.jhuapl.edu 1024 almond.jhuapl.edu 1024</command>
-<description>Connects to the remote host <code>peanut.jhuapl.edu</code> at port 1024, and to host <code>almond.jhuapl.edu</code> at port 1024. Relay data from a port allocated by the operating system. The port number is recorded in the file "<code>port.id</code>" and logs of all transactions are recorded in the file "<code>log.rt</code>".</description>
+<command>rtmultiplex port.id -lf log peanut.jhuapl.edu 1024</command>
+<description>Connects to the remote host <code>peanut.jhuapl.edu</code> at port 1024. Relay data from a port allocated by the operating system. The port number is recorded in the file "<code>port.id</code>" and logs of all transactions are recorded in the file "<code>log.rt</code>".</description>
 </example>
 
 <example>
-<command>rtmultiplex -l 5000 -f port.id -lf log peanut.jhuapl.edu 1200 peanut.jhuapl.edu 1201</command>
-<description>Connects to the remote host <code>peanut.jhuapl.edu</code> at ports 1200 and 1201. Relay data from the port 5000. The port number is recorded in the file "<code>port.id</code>" and logs of all transactions are recorded in the file "<code>log.rt</code>".</description>
+<command>rtmultiplex -l 5000 port.id -lf log peanut.jhuapl.edu 1200</command>
+<description>Connects to the remote host <code>peanut.jhuapl.edu</code> at port 1200. Relay data from the port 5000. The port number is recorded in the file "<code>port.id</code>" and logs of all transactions are recorded in the file "<code>log.rt</code>".</description>
 </example>
 
 </binary>
