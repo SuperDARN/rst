@@ -430,7 +430,7 @@ function RadarEpochGetSite,radar,tval
   if (radar.st_time ne -1) && (tval lt radar.st_time) then return,0
   if (radar.ed_time ne -1) && (tval gt radar.ed_time) then return,0 
 
-  for s=0,radar.snum-1 do begin
+  for s=0,radar.snum do begin
     if  (radar.site[s].tval gt tval) then break
   endfor
 
