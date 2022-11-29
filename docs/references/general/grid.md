@@ -25,6 +25,9 @@ When the gridded data from multiple radars have been combined, the files are nam
 
 *In both cases, the grid files contain 24-hours of data.*
 
+!!! Note
+    Combined grid files should contain data from a single hemisphere only.
+
 
 ## Scalar Fields
 
