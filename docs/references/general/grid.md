@@ -19,9 +19,9 @@ The community standard for naming GRID files containing data from only one radar
 
 When the gridded data from multiple radars have been combined, the files are named as:
 
-> YYYYMMDD.north.grid
+> YYYYMMDD.north.grd
 
-> YYYYMMDD.south.grid
+> YYYYMMDD.south.grd
 
 *In both cases, the grid files contain 24-hours of data.*
 
