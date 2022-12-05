@@ -12,6 +12,8 @@
 </option>
 <option><on>--version</on><od>print the RST version number and exit.</od>
 </option>
+<option><on>-name <ar>stid</ar></on><od>specify the radar code <ar>stid</ar> to use for the output filename (the default value is taken from the radar parameter block but can sometimes become corrupted and set to tst).</od>
+</option>
 <option><on>-tl <ar>tlen</ar></on><od>ignore the scan flag and instead use a fixed length scan of  <ar>tlen</ar> seconds.</od>
 </option>
 <option><on>-i <ar>intt</ar></on><od>integrate the grid data into records of length <ar>intt</ar> seconds.</od>
