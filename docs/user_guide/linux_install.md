@@ -259,8 +259,7 @@ Error: curses.h not found
    This runs a script to find all of the source codes and compile them into binaries.
    A log of this compilation is stored in `$RSTPATH/log`.
 
-### Compiling Old Documentation
-**Warning documentation may be outdated**
+### Compiling HTML Documentation
 
 To compile the html documentation, run `make.doc` from the command line. You may need
 to modify the `URLBASE` environment variable in `$RSTPATH/.profile/rst.bash` for the
