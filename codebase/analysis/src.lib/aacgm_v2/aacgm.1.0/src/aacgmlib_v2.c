@@ -1020,7 +1020,7 @@ int AACGM_v2_Convert(double in_lat, double in_lon, double height,
 
   /* height > 2000 km not allowed for coefficients */
   if (height > MAXALT && !(code & (TRACE|ALLOWTRACE|BADIDEA))) {
-    fprintf(stderr, "ERROR: coefficients are not valid for altitudes "
+    fprintf(stderr, "AACGM-v2 ERROR: coefficients are not valid for altitudes "
                     "above %d km: %lf.\n", MAXALT, height);
     fprintf(stderr, "       You must either use field-line tracing "
                     "(TRACE or ALLOWTRACE) or\n"
