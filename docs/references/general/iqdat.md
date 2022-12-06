@@ -16,7 +16,7 @@ The community standard for naming IQDAT files is:
 
 > YYYYMMDD.HH.mm.ss.<3-letter radar code>.[a-d].iqdat
 
-The field [a-d] is used to separate data sampled at different frequencies into separate files. This field may not be used if all the available data are provided in a single file.
+The field [a-d] is used when the data have been separated into multiple files based on a particular operating parameter (e.g. frequency, beam pattern, control program). This field may not be used if all the available data are provided in a single file.
 
 
 ## Fields
