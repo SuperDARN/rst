@@ -126,6 +126,12 @@
 </option>
 <option><on>-ffan</on><od>plot the filled radar field of view.</od>
 </option>
+<option><on>-minbeam <ar>minbeam</ar></on><od>set the minimum beam number to draw for the radar field of view outline to <ar>minbeam</ar>.</od>
+</option>
+<option><on>-maxbeam <ar>maxbeam</ar></on><od>set the maximum number of beams to draw for the radar field of view outline to <ar>maxbeam</ar>.</od>
+</option>
+<option><on>-lst</on><od>use local solar time rather than local time.</od>
+</option>
 <option><on>-tmtick <ar>tick</ar></on><od>set the grid interval for the time clock-dial to <ar>tick</ar> hours.</od>
 </option>
 <option><on>-lst</on><od>use local solar time rather than local time.</od>
@@ -331,7 +337,7 @@
 <example>
 <command>field_plot -wdt 540 -hgt 540 -mag -st 1:00 -lat 90 -lon 0 -tmk -time -latmin 55 -rotate -grd -fcoast -coast -keyp -ffov -fov -r 0 -fan -p</command>
 <description>
-Generate rPlot xml plots of power data from the file "<code>20021219.han.fit</code>". Store the plots in files named "<code>xxxx</code>.xml", starting at 01:00UTC. Use magnetic coordinates, rotated so that magnetic local noon is at the top of the plot.Plot filled coastlines, terminator, a clockdial representing time, and the time.</description>
+Generate rPlot xml plots of power data from the file "<code>20021219.han.fit</code>". Store the plots in files named "<code>xxxx</code>.xml", starting at 01:00UTC. Use magnetic coordinates, rotated so that magnetic local noon is at the top of the plot.Plot filled coastlines, terminator, a clockdial representing time, and the time.
 </description>
 </example>
 <example type="rplot">example2</example>
