@@ -125,6 +125,7 @@ int main(int argc,char *argv[]) {
   char *pidstr=NULL;
 
   char *envstr;
+  char *stcode=NULL;
 
   int sock;
 
@@ -200,6 +201,8 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
   OptionAdd(&opt,"-version",'x',&version);
+
+  OptionAdd(&opt,"name",'t',&stcode);
 
   OptionAdd(&opt,"noscan",'x',&noscan);
   OptionAdd(&opt,"cn",'t',&chnstr);
@@ -366,15 +369,17 @@ int main(int argc,char *argv[]) {
         if (hstart==0) {
           hstart=now-(int) now % (2*3600); /* start of 2-hour block */
           TimeEpochToYMDHMS(hstart,&yr,&mo,&dy,&hr,&mt,&sc);
+          if (stcode==NULL) stcode=RadarGetCode(network,snd->stid,0);
           sprintf(dname,"%s/%.4d%.2d%.2d.%.2d.%s.snd",
-                  path,yr,mo,dy,(hr/2)*2,RadarGetCode(network,snd->stid,0));
+                  path,yr,mo,dy,(hr/2)*2,stcode);
         }
 
         if ((now-hstart) >= 2*3600) { /* advance to the next 2-hour block */
           hstart=now-(int) now % (2*3600); /* start of 2-hour block */
           TimeEpochToYMDHMS(hstart,&yr,&mo,&dy,&hr,&mt,&sc);
+          if (stcode==NULL) stcode=RadarGetCode(network,snd->stid,0);
           sprintf(dname,"%s/%.4d%.2d%.2d.%.2d.%s.snd",
-                  path,yr,mo,dy,(hr/2)*2,RadarGetCode(network,snd->stid,0));
+                  path,yr,mo,dy,(hr/2)*2,stcode);
         }
 
         fp=fopen(dname,"a");

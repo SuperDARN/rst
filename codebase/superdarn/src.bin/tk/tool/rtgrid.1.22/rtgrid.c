@@ -299,6 +299,8 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"old",'x',&old); 
 
+  OptionAdd(&opt,"name",'t',&stcode);
+
   OptionAdd(&opt,"xtd",'x',&xtd);
   OptionAdd(&opt,"i",'i',&avlen);
   OptionAdd(&opt,"tl",'i',&tlen);
@@ -417,8 +419,13 @@ int main(int argc,char *argv[]) {
   else sprintf(logbuf,"Host:%s Port File:%s",host,port_fname);
   loginfo(logname,logbuf);
 
-  if (old) sprintf(logbuf,"Output file name:%s<stid>.grd",fname);
-  else sprintf(logbuf,"Output file name:%s<stid>.grdmap",fname);
+  if (stcode !=NULL) {
+    if (old) sprintf(logbuf,"Output file name:%s%s.grd",fname,stcode);
+    else sprintf(logbuf,"Output file name:%s%s.grdmap",fname,stcode);
+  } else {
+    if (old) sprintf(logbuf,"Output file name:%s<stid>.grd",fname);
+    else sprintf(logbuf,"Output file name:%s<stid>.grdmap",fname);
+  }
   loginfo(logname,logbuf);
   sprintf(logbuf,"Daily file path:%s",path);
   loginfo(logname,logbuf);
@@ -561,7 +568,7 @@ int main(int argc,char *argv[]) {
               exit(-1);
             }
             site=RadarYMDHMSGetSite(radar,yr,mo,dy,hr,mt,(int) sc);
-            stcode=RadarGetCode(network,out->stid,0);
+            if (stcode==NULL) stcode=RadarGetCode(network,out->stid,0);
 
             strcat(fname,stcode);
             if (channel==1) strcat(fname,".a");
