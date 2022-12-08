@@ -77,8 +77,6 @@ The field [a-d] is used when the data have been separated into multiple files ba
 | *rawacf.revision.minor* | *None*   | int       | Minor version number of the RAWACF algorithm                                            |
 | *thr*                   | *None*   | float     | Threshold factor                                                                        |
 
-!!! Note
-    The original intended usage of the `channel` parameter was to identify the data from the two separate frequency channels of the stereo radars (e.g. Hankasalmi). However, this parameter has sometimes been used for non-stereo radars when data from two different frequencies have been recorded in a single file.
 
 ## Vector Fields
 
