@@ -660,6 +660,9 @@ int main(int argc,char *argv[]) {
   unsigned char cfitflg=0,fitflg=0;
   unsigned char sndflg=0;
 
+  int minbeam=0;
+  int maxbeam=-1;
+
   char *chnstr=NULL;
 
   char *dname=NULL,*iname=NULL;
@@ -880,6 +883,9 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"fan",'x',&fanflg);
   OptionAdd(&opt,"ffan",'x',&ffanflg);
+
+  OptionAdd(&opt,"minbeam",'i',&minbeam);
+  OptionAdd(&opt,"maxbeam",'i',&maxbeam);
 
   OptionAdd(&opt,"gscol",'t',&gscol_txt);
 
@@ -1740,8 +1746,10 @@ int main(int argc,char *argv[]) {
                                    wbox-2*pad,hbox-2*pad,vsf,tfunc,marg,find_color,
                                    &vkey,gscol,gsflg,0.5,vecr);
 
+        if (maxbeam==-1) maxbeam=site->maxbeam;
+
         if (fanflg) plot_outline(plot,&scn->bm[c],&geol.bm[n],0,
-                                 magflg,site->maxbeam,xbox+pad,ybox+pad,
+                                 magflg,minbeam,maxbeam,xbox+pad,ybox+pad,
                                  wbox-2*pad,hbox-2*pad,tfunc,marg,fancol);
       }
 
