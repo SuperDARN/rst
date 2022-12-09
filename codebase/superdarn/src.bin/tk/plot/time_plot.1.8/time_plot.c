@@ -407,6 +407,9 @@ int main(int argc,char *argv[]) {
   int hgt=HEIGHT;
   unsigned int bgcolor=0;
 
+  char *pbgtxt=NULL;
+  unsigned int pbgcolor=0;
+
   float width=0.5;
   char *fontname=NULL;
   char *tfontname=NULL;
@@ -523,6 +526,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"wdt",'i',&wdt); /* width */
   OptionAdd(&opt,"hgt",'i',&hgt); /* height */
   OptionAdd(&opt,"bgcol",'t',&bgtxt); /* background color */
+  OptionAdd(&opt,"pbgcol",'t',&pbgtxt); /* panel background color */
 
   OptionAdd(&opt,"grdcol",'t',&grdtxt); /* grid color */
   OptionAdd(&opt,"txtcol",'t',&txttxt); /* text color */
@@ -712,6 +716,9 @@ int main(int argc,char *argv[]) {
 
   bgcolor=PlotColor(0xff,0xff,0xff,0xff);
   if (bgtxt !=NULL) bgcolor=PlotColorStringRGB(bgtxt);
+
+  pbgcolor=PlotColor(0xff,0xff,0xff,0xff);
+  if (pbgtxt !=NULL) pbgcolor=PlotColorStringRGB(pbgtxt);
 
   gscolor=PlotColor(0xa0,0xa0,0xa0,0xff);
   if (gsctxt !=NULL) gscolor=PlotColorStringRGB(gsctxt);
@@ -1333,6 +1340,13 @@ int main(int argc,char *argv[]) {
   FrameBufferClear(nblk,0x0f,bgcolor);
 
   for (n=0;n<8;n++) if (blk[n] !=NULL) FrameBufferClear(blk[n],0x0f,bgcolor);
+
+  for (i=0;i<cnt;i++) {
+    PlotRectangle(plot,NULL,
+                  plt->xoff+(i % plt->xnum)*(plt->box_wdt+plt->lpad+plt->rpad),
+                  plt->yoff+(i / plt->xnum)*(plt->box_hgt+plt->tpad+plt->bpad),
+                  plt->box_wdt,plt->box_hgt,1,pbgcolor,0x0f,0,NULL);
+  }
 
   do {
 
