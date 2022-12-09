@@ -711,16 +711,16 @@ int main(int argc,char *argv[]) {
   }
 
   bgcolor=PlotColor(0xff,0xff,0xff,0xff);
-  if (bgtxt !=NULL) sscanf(bgtxt,"%x",&bgcolor);
+  if (bgtxt !=NULL) bgcolor=PlotColorStringRGB(bgtxt);
 
   gscolor=PlotColor(0xa0,0xa0,0xa0,0xff);
-  if (gsctxt !=NULL) sscanf(gsctxt,"%x",&gscolor);
+  if (gsctxt !=NULL) gscolor=PlotColorStringRGB(gsctxt);
 
   grdcolor=PlotColor(0x00,0x00,0x00,0xff);
-  if (grdtxt !=NULL) sscanf(grdtxt,"%x",&grdcolor);
+  if (grdtxt !=NULL) grdcolor=PlotColorStringRGB(grdtxt);
 
   txtcolor=PlotColor(0x00,0x00,0x00,0xff);
-  if (txttxt !=NULL)  sscanf(txttxt,"%x",&txtcolor);
+  if (txttxt !=NULL) txtcolor=PlotColorStringRGB(txttxt);
 
   if (pkey_fname !=NULL) {
     if (pkey_path == NULL) pkey_path = getenv("COLOR_TABLE_PATH");
