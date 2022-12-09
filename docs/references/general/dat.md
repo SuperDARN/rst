@@ -12,7 +12,7 @@ They can be converted to the RAWACF file format using RST's `dattorawacf` comman
 
 ## Naming Conventions
 
-The naming convention for DAT files is:
+The community standard for naming DAT files is:
 
 > YYYYMMDDHH.<1-letter radar abbreviation>.dat
 
@@ -28,27 +28,25 @@ The naming convention for DAT files is:
 | w                           | sto                   | Stokkseyri     |
 | e                           | pyk                   | Pykkvibaer     |
 | f                           | han                   | Hankasalmi     |
-| d                           | san                   | Sanae          |
+| d                           | san                   | SANAE          |
 | j                           | sys                   | Syowa South    |
 | n                           | sye                   | Syowa East     |
 | r                           | tig                   | TIGER          |
-| p                           | ker                   | Keruelen       |
+| p                           | ker                   | Kerguelen       |
 | c                           | ksr                   | King Salmon    |
 | u                           | unw                   | Unwin          |
 | i                           | wal                   | Wallops Island |
 
 
 DAT files usually contain 2 hours of data. If the radar restarted or changed to a different control program during a 2-hour interval, a new DAT file is created. When this occurs, a letter is appended to the filename after the 1-letter radar abbreviation.
-!!! Warning
-    Do not confuse the letters in DAT-format filenames with the letters representing channels in RAWACF-format filenames. 
 
 > YYYYMMDDHH.<1-letter radar abbreviation>[a-z].dat
 
-## Fields
-
-Each record in a DAT file contains a set of scalar and vector fields. 
-
-### Scalars
+!!! Warning
+    Do not confuse the letters in DAT-format filenames with the letters representing channels in RAWACF-format filenames. 
+    
+    
+## Scalar Fields
 
 | Field name             | Units     | Data Type | Description                                                                                                                                                                                      |
 | :----------            | :-----:   | :-------: | :---                                                                                                                                                                                             |
@@ -91,7 +89,7 @@ Each record in a DAT file contains a set of scalar and vector fields.
 | *tfreq*                | *kHz*     | short     | Transmitted frequency                                                                                                                                                                            |
 | *mxpwr*                | *None*      | int       | Maximum power                                                                                                                                                                                    |
 | *lvmax*                | *None*    | int       | Maximum noise level allowed                                                                                                                                                                      |
-| usr_resL1              | *None*    | int       | User defined variable            
+| usr_resL1              | *None*    | int       | User defined variable
 | usr_resL2              | *None*    | int       | User defined variable                                                                                                                                                                          |
 | cp                     | *None*     | short     | Control program number                                                                                                                                                                           |
 | usr_resS1              | *None*    | short     | User defined variable                                                                                                                                                                            |
@@ -100,10 +98,9 @@ Each record in a DAT file contains a set of scalar and vector fields.
 | *combf*                | *None*    | string    | Comment buffer, usually contains the control program name                                                                                                                                        |
 
 
-### Vectors 
+## Vector Fields
 
-!!! Note
-    *slist* contains the range gates with lag zero power above the threshold level.
+*slist* contains the range gates with lag zero power above the threshold level.
 
 | Field name  | Units    | Dimensionality | Data Type   | Description                                                                 |
 | :---------- | :-----:  | :-------:      | :---:       | :---                                                                        |
@@ -112,3 +109,4 @@ Each record in a DAT file contains a set of scalar and vector fields.
 | *pwr0*      | *None*     | *[nrang]*      | float       | Lag zero power, estimated from voltage samples (not fitted)  |
 | *acfd*      | *None*   | *[2][mplgs][0-nrang]*    | float       | Calculated ACFs                                                             |
 | *xcfd*      | *None*   | *[2][mplgs][0-nrang]*    | float       | Calculated XCFs                                                             |
+
