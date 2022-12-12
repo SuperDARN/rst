@@ -58,6 +58,8 @@
 </option>
 <option><on>-bgcol <ar>rrggbb</ar></on><od>set the background color to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
 </option>
+<option><on>-pbgcol <ar>rrggbb</ar></on><od>set the panel background color to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
+</option>
 <option><on>-grdcol <ar>rrggbb</ar></on><od>set the color of grid to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
 </option>
 <option><on>-txtcol <ar>rrggbb</ar></on><od>set the color of text to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
