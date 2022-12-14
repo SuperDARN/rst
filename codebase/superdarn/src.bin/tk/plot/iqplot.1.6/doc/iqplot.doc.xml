@@ -50,13 +50,13 @@
 </option>
 <option><on>-n <ar>xnum</ar></on><od>set the number of I&Q samples plotted to <ar>xnum</ar>.</od>
 </option>
-<option><on>-xmaj <ar>xmajor</ar></on><od>set the number of X-axis major tick marks to <ar>xmajor</ar>.</od>
+<option><on>-xmaj <ar>xmajor</ar></on><od>set the X-axis major tick mark interval to <ar>xmajor</ar>.</od>
 </option>
-<option><on>-xmin <ar>xminor</ar></on><od>set the number of X-axis minor tick marks to <ar>xminor</ar>.</od>
+<option><on>-xmin <ar>xminor</ar></on><od>set the X-axis minor tick mark interval to <ar>xminor</ar>.</od>
 </option>
-<option><on>-ymaj <ar>ymajor</ar></on><od>set the number of Y-axis major tick marks to <ar>ymajor</ar>.</od>
+<option><on>-ymaj <ar>ymajor</ar></on><od>set the Y-axis major tick mark interval to <ar>ymajor</ar>.</od>
 </option>
-<option><on>-ymin <ar>yminor</ar></on><od>set the number of Y-axis minor tick marks to <ar>yminor</ar>.</od>
+<option><on>-ymin <ar>yminor</ar></on><od>set the Y-axis minor tick mark interval to <ar>yminor</ar>.</od>
 </option>
 <option><on><ar>name</ar></on><od>the filename of the <code>iqdat</code> format file to plot.</od>
 </option>
