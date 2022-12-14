@@ -40,9 +40,9 @@
 </option>
 <option><on>-int</on><od>plot I&Q samples from the interferometer array instead of the main array.</od>
 </option>
-<option><on>-rcol <ar>rrggbb</ar></on><od>set the color of the real (I) component to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color [default is teal].</od>
+<option><on>-rcol <ar>aarrggbb</ar></on><od>set the color of the real (I) component to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color [default is teal].</od>
 </option>
-<option><on>-icol <ar>rrggbb</ar></on><od>set the color of the imaginary (Q) component to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color [default is red].</od>
+<option><on>-icol <ar>aarrggbb</ar></on><od>set the color of the imaginary (Q) component to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color [default is red].</od>
 </option>
 <option><on>-m <ar>ymax</ar></on><od>set the extent of the Y-axis to +/-<ar>ymax</ar> when plotting I&Q components.</od>
 </option>
