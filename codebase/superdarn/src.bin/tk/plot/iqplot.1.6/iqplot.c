@@ -318,15 +318,29 @@ int main(int argc,char *argv[]) {
 
   struct FrameBuffer *img=NULL;
 
+  unsigned txtcol=0xffffffff;
   unsigned bgcol=0xff000000;
+  unsigned pbgcol=0xff000000;
   unsigned fgcol=0xffffffff;
   unsigned gcol=0xff606060;
   unsigned dgcol=0xff404040;
   unsigned rcol=0xff00ffff;
   unsigned icol=0xffff0000;
 
+  char *txtcol_txt=NULL;
+  char *bgcol_txt=NULL;
+  char *pbgcol_txt=NULL;
+  char *fgcol_txt=NULL;
+  char *gcol_txt=NULL;
+  char *dgcol_txt=NULL;
   char *rcol_txt=NULL;
   char *icol_txt=NULL;
+
+  char *fontname=NULL;
+  char *tfontname=NULL;
+  char *deffont={"Helvetica"};
+  float fontsize=10.0;
+  float tfontsize=12.0;
 
   prm=RadarParmMake();
   iq=IQMake();
@@ -372,6 +386,19 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"rcol",'t',&rcol_txt);
   OptionAdd(&opt,"icol",'t',&icol_txt);
+
+  OptionAdd(&opt,"txtcol",'t',&txtcol_txt);
+  OptionAdd(&opt,"bgcol",'t',&bgcol_txt);
+  OptionAdd(&opt,"pbgcol",'t',&pbgcol_txt);
+  OptionAdd(&opt,"fgcol",'t',&fgcol_txt);
+  OptionAdd(&opt,"gcol",'t',&gcol_txt);
+  OptionAdd(&opt,"dgcol",'t',&dgcol_txt);
+
+  OptionAdd(&opt,"fontname",'t',&fontname);
+  OptionAdd(&opt,"fontsize",'f',&fontsize);
+
+  OptionAdd(&opt,"tfontname",'t',&tfontname);
+  OptionAdd(&opt,"tfontsize",'f',&tfontsize);
 
   OptionAdd(&opt,"xmaj",'i',&xmajor);
   OptionAdd(&opt,"xmin",'i',&xminor);
@@ -430,6 +457,16 @@ int main(int argc,char *argv[]) {
 
   if (rcol_txt !=NULL) rcol=PlotColorStringRGBA(rcol_txt);
   if (icol_txt !=NULL) icol=PlotColorStringRGBA(icol_txt);
+
+  if (txtcol_txt !=NULL) txtcol=PlotColorStringRGBA(txtcol_txt);
+  if (bgcol_txt !=NULL) bgcol=PlotColorStringRGBA(bgcol_txt);
+  if (pbgcol_txt !=NULL) pbgcol=PlotColorStringRGBA(pbgcol_txt);
+  if (fgcol_txt !=NULL) fgcol=PlotColorStringRGBA(fgcol_txt);
+  if (gcol_txt !=NULL) gcol=PlotColorStringRGBA(gcol_txt);
+  if (dgcol_txt !=NULL) dgcol=PlotColorStringRGBA(dgcol_txt);
+
+  if (fontname==NULL) fontname=deffont;
+  if (tfontname==NULL) tfontname=deffont;
 
   if (arg<argc) fp=fopen(argv[arg],"r");
   else fp=stdin;
@@ -562,6 +599,8 @@ int main(int argc,char *argv[]) {
       if (tval == 0) tval=atime;
       PlotPlotStart(plot,"image",wdt,hgt,24);
       PlotRectangle(plot,NULL,0,0,wdt,hgt,1,bgcol,0x0f,0,NULL);
+      PlotRectangle(plot,NULL,plt->xoff,plt->yoff,
+                    plt->box_wdt,plt->box_hgt,1,pbgcol,0x0f,0,NULL);
       pxmin=xmin;
       pxmax=xmax;
       if (pxmax>=iq->smpnum) pxmax=iq->smpnum;
@@ -615,17 +654,19 @@ int main(int argc,char *argv[]) {
       GrplotXaxis(plt,0,xmin,xmax,xmajor,xminor,0x03,fgcol,0x0f,lne);
       GrplotYaxis(plt,0,ymin,ymax,ymajor,yminor,0x03,fgcol,0x0f,lne);
       GrplotXaxisLabel(plt,0,xmin,xmax,xmajor,0x03,mktext,NULL,
-                     "Helvetica",10.0,fgcol,0x0f);
+                       fontname,fontsize,txtcol,0x0f);
+      GrplotXaxisTitle(plt,0,0x01,strlen("Sample Number"),"Sample Number",
+                       fontname,fontsize,txtcol,0x0f);
 
       GrplotYaxisLabel(plt,0,ymin,ymax,ymajor,0x03,mktext,NULL,
-                     "Helvetica",10.0,fgcol,0x0f);
+                       fontname,fontsize,txtcol,0x0f);
 
-      plot_time(plot,2,2,wdt-4,hgt-4,tval,fgcol,0x0f,"Helvetica",12.0,fontdb);
+      plot_time(plot,2,2,wdt-4,hgt-4,tval,txtcol,0x0f,tfontname,tfontsize,fontdb);
 
       plot_ephem(plot,100+2,2,wdt-4,hgt-4,interfer,
                  prm->bmnum,prm->channel,prm->tfreq,
                  prm->noise.search,
-                 prm->nave,n,fgcol,0x0f,"Helvetica",12.0,fontdb);
+                 prm->nave,n,txtcol,0x0f,tfontname,tfontsize,fontdb);
 
       PlotPlotEnd(plot);
       PlotDocumentEnd(plot);
