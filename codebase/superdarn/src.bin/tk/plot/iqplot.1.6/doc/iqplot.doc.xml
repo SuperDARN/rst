@@ -44,6 +44,26 @@
 </option>
 <option><on>-icol <ar>aarrggbb</ar></on><od>set the color of the imaginary (Q) component to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color [default is red].</od>
 </option>
+<option><on>-txtcol <ar>aarrggbb</ar></on><od>set the color of text to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color [default is white].</od>
+</option>
+<option><on>-bgcol <ar>aarrggbb</ar></on><od>set the background color to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color [default is black].</od>
+</option>
+<option><on>-pbgcol <ar>aarrggbb</ar></on><od>set the panel background color to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color [default is black].</od>
+</option>
+<option><on>-fgcol <ar>aarrggbb</ar></on><od>set the axes and tick mark colors to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color [default is white].</od>
+</option>
+<option><on>-gcol <ar>aarrggbb</ar></on><od>set the major grid line color to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color [default is gray].</od>
+</option>
+<option><on>-dgcol <ar>aarrggbb</ar></on><od>set the minor grid line color to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color [default is gray].</od>
+</option>
+<option><on>-fontname <ar>fontname</ar></on><od>plot any labels using the font <ar>fontname</ar>.</od>
+</option>
+<option><on>-fontsize <ar>fontsize</ar></on><od>set the font size to <ar>fontsize</ar> points.</od>
+</option>
+<option><on>-tfontname <ar>tfontname</ar></on><od>plot the title using the font <ar>tfontname</ar>.</od>
+</option>
+<option><on>-tfontsize <ar>tfontsize</ar></on><od>set the title font size to <ar>tfontsize</ar> points.</od>
+</option>
 <option><on>-m <ar>ymax</ar></on><od>set the extent of the Y-axis to +/-<ar>ymax</ar> when plotting I&Q components.</od>
 </option>
 <option><on>-s <ar>xmin</ar></on><od>set the first I&Q sample plotted to <ar>xmin</ar>.</od>
