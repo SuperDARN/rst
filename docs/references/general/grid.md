@@ -3,44 +3,33 @@ author(s): Marina Schmidt
 
 Disclaimer: License under GNU v3.0, the file is found in the root directory under LICENSE 
 
+Modifications:
+    2022-11-28 Emma Bland (UNIS) Updated file format description
+
 -->
 # GRID files 
 
-GRID files are post-processed data produced from FITACF files.
+GRID files are post-processed data produced from FITACF files, in which the fitted data products are placed on a magnetic latitude/longitude grid of equal-area cells spanning 1 degree of magnetic latitude. They may contain data from one radar or from multiple radars. For more information, see the [`make_grid` tutorial](../../user_guide/make_grid.md).
 
-## Naming Conventions
+## Naming Convention
 
-### Single radar GRID files
+The community standard for naming GRID files containing data from only one radar is:
 
-Currently the common naming convention for a single radar GRID file is:
+> YYYYMMDD.<3-letter abbreviation>.grd
 
-> YYYYMMDD.HH.mm.ss.<3-letter abbreviation>.grid
+When the gridded data from multiple radars have been combined, the files are named as:
 
-Some radars provide separate data files for each channel. In this case, the channel is specified after the 3-letter station ID:
+> YYYYMMDD.north.grd
 
-> YYYYMMDD.HH.mm.ss.<3-letter abbreviation>.[a-d].grid
+> YYYYMMDD.south.grd
 
-See [fitacf](fitacf.md) documentation for more information on this naming convention. 
+*In both cases, the grid files contain 24-hours of data.*
 
-If a GRID file is produced for 24-hours using the `-c` option in `make_grid` (see [`make_grid` tutorial](../../user_guide/make_grid.md)) or by combining individual GRID files with `combine_grid`, then the common naming convention is:
+!!! Note
+    Combined grid files should contain data from a single hemisphere only.
 
-> YYYYYMMDD.<3-letter abbreviation>.grid
 
-### Combined GRID files for each hemisphere
-
-After GRID files are produced for separate radars, they may then be combined with other radars' GRID files for eventual processing into convection map files.
-See [combine_grid](../../user_guide/make_grid.md) for instructions on how to combine multiple GRID files.
-
-For further Map Potential processing, separate GRID files should be produced for the Northern and Southern Hemispheres. One naming convention for 24-hr GRID files could be:
-
-> YYYYMMDD.north.grid  
-> YYYYMMDD.south.grid  
-
-## Fields
-
-GRID files contain a record that contains scalar and vector fields. 
-
-### Scalars
+## Scalar Fields
 
 The following times refer to the start and end of the integration period.
 
@@ -61,15 +50,15 @@ The following times refer to the start and end of the integration period.
 | *end.second*    | *s*        | ***short***  | End Seconds |
 
 
-### Vectors 
+## Vector Fields
 
-!!! Note
-    Let the number of radars in a given GRID record be defined as *numstid*, and let the number of gridded velocity vectors in a given record be defined as *numv*. 
+In the table below, *numstid* is the number of radars included in that grid record, and *numv* is the total number of gridded velocity vectors.
+
 
 | Field name  | Units           | Dimensionality | Data Type   | Description                                                                 |
 | :---------- | :-----:         | :-------:      | :---:       | :---                                                                        |
-| *stid*      |  **None**       |  *[numstid]*     | ***short*** | A list of of numeric station IDs that provided data for the record |
-| *channel*   |  **None**       |  *[numstid]*     | ***short*** | A list of channel numbers associated to the station id the record |
+| *stid*      |  **None**       |  *[numstid]*     | ***short*** | A list of numeric station IDs that provided data for the record |
+| *channel*   |  **None**       |  *[numstid]*     | ***short*** | A list of channel numbers associated with the station id |
 | *nvec*      | **None** | *[numstid]*  | ***short*** | Number of velocity vectors for each station|
 | *freq*      | *kHz* | *[numstid]* | ***float*** | Transmitted frequency for each radar |
 | *major.revision* | **None** | *[numstid]* | ***short*** | Major `make_grid` version number                    |
@@ -90,7 +79,7 @@ The following times refer to the start and end of the integration period.
 | *vector.mlon*     | *degrees* | *[numv]* | ***float*** | Magnetic Longitude |
 | *vector.kvect*    | *degrees* | *[numv]*   | ***float*** | Magnetic Azimuth |
 | *vector.stid*     | **None**  | *[numv]*   | ***short*** | Station identifier |
-| *vector.channel*  | **None**  | *[numv]*   | ***short*** | Channel number |  
+| *vector.channel*  | **None**  | *[numv]*   | ***short*** | Channel number |
 | *vector.index*    | **None**  | *[numv]*   | ***int***   | Grid cell index |
 | *vector.vel.median* | *m/s* | *[numv]*   | ***float*** | Weighted mean velocity magnitude |
 | *vector.vel.sd*     | *m/s*   | *[numv]*   | ***float*** | Velocity standard deviation |
@@ -99,6 +88,4 @@ The following times refer to the start and end of the integration period.
 | *vector.wdt.median* | *m/s* | *[numv]*   | ***float*** | Weighted mean spectral width|
 | *vector.wdt.sd      | *m/s* | *[numv]*   | ***float*** | Standard deviation of spectral width|
 
-## File structure
 
-GRID files typically contain up to 24 hours of data. Individual records in a GRID file contain a record for each integration time period (default 120 seconds) from one or more radars.

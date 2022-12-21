@@ -93,37 +93,37 @@
 </option>
 <option><on>-lnewdt <ar>lnewdt</ar></on><od>set the line width to <ar>lnewdt</ar>.</od>
 </option>
-<option><on>-bgcol <ar>rrggbb</ar></on><od>set the background color to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
+<option><on>-bgcol <ar>aarrggbb</ar></on><od>set the background color to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
 </option>
-<option><on>-txtcol <ar>rrggbb</ar></on><od>set the color of the text to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
+<option><on>-txtcol <ar>aarrggbb</ar></on><od>set the color of the text to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
 </option>
-<option><on>-grdcol <ar>rrggbb</ar></on><od>set the color of the grid to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
+<option><on>-grdcol <ar>aarrggbb</ar></on><od>set the color of the grid to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
 </option>
-<option><on>-cstcol <ar>rrggbb</ar></on><od>set the color of the coastline to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
+<option><on>-cstcol <ar>aarrggbb</ar></on><od>set the color of the coastline to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
 </option>
-<option><on>-bndcol <ar>rrggbb</ar></on><od>set the color of the state boundaries to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
+<option><on>-bndcol <ar>aarrggbb</ar></on><od>set the color of the state boundaries to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
 </option>
-<option><on>-lndcol <ar>rrggbb</ar></on><od>set the color of the land to <ar>rrggbb</ar>, specified as the  hexadecimal value for the 24-bit red,green and blue component color.</od>
+<option><on>-lndcol <ar>aarrggbb</ar></on><od>set the color of the land to <ar>aarrggbb</ar>, specified as the  hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
 </option>
-<option><on>-seacol <ar>rrggbb</ar></on><od>set the color of the sea to <ar>rrggbb</ar>, specified as the  hexadecimal value for the 24-bit red,green and blue component color.</od>
+<option><on>-seacol <ar>aarrggbb</ar></on><od>set the color of the sea to <ar>aarrggbb</ar>, specified as the  hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
 </option>
-<option><on>-trmcol <ar>rrggbb</ar></on><od>set the color of the terminator outline to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
+<option><on>-trmcol <ar>aarrggbb</ar></on><od>set the color of the terminator outline to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
 </option>
-<option><on>-ftrmcol <ar>rrggbb</ar></on><od>set the color of the filled terminator to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
+<option><on>-ftrmcol <ar>aarrggbb</ar></on><od>set the color of the filled terminator to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
 </option>
-<option><on>-tmkcol <ar>rrggbb</ar></on><od>set the color of the time clock-dial to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
+<option><on>-tmkcol <ar>aarrggbb</ar></on><od>set the color of the time clock-dial to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
 </option>
-<option><on>-fovcol <ar>rrggbb</ar></on><od>set the color of the field of view outline to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
+<option><on>-fovcol <ar>aarrggbb</ar></on><od>set the color of the field of view outline to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
 </option>
-<option><on>-ffovcol <ar>rrggbb</ar></on><od>set the color of the filled field of view to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
+<option><on>-ffovcol <ar>aarrggbb</ar></on><od>set the color of the filled field of view to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
 </option>
-<option><on>-ofovcol <ar>rrggbb</ar></on><od>set the color of the field of view outline of other radars to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
+<option><on>-ofovcol <ar>aarrggbb</ar></on><od>set the color of the field of view outline of other radars to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
 </option>
-<option><on>-fofovcol <ar>rrggbb</ar></on><od>set the color of the filled field of view of other radars to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
+<option><on>-fofovcol <ar>aarrggbb</ar></on><od>set the color of the filled field of view of other radars to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
 </option>
-<option><on>-cfovcol <ar>rrggbb</ar></on><od>set the color of the field of view outline of radars under construction to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
+<option><on>-cfovcol <ar>aarrggbb</ar></on><od>set the color of the field of view outline of radars under construction to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
 </option>
-<option><on>-fcfovcol <ar>rrggbb</ar></on><od>set the color of the filled field of view of radars under construction to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
+<option><on>-fcfovcol <ar>aarrggbb</ar></on><od>set the color of the filled field of view of radars under construction to <ar>aarrggbb</ar>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color.</od>
 </option>
 <option><on>-d <ar>yyyymmdd</ar></on><od>plot for the date <ar>yyyymmdd</ar>.</od>
 </option>

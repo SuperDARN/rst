@@ -21,9 +21,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 Modifications:
 */
 
-
-
-
 #define CLIENT_MAX 64
 #define BUF_SIZE 10*1024
 

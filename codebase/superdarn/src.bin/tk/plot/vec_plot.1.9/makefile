@@ -7,10 +7,11 @@
 include $(MAKECFG).$(SYSTEM)
  
 INCLUDE = -I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/analysis -I$(IPATH)/superdarn
-SRC = vec_plot.c hlpstr.h plot_time.c plot_time.h \
-      errstr.h plot_radial.c plot_radial.h plot_circle.c plot_circle.h
 
-OBJS = plot_circle.o plot_radial.o plot_time.o vec_plot.o
+SRC = vec_plot.c hlpstr.h errstr.h plot_radial.c \
+	  plot_radial.h plot_circle.c plot_circle.h
+
+OBJS = plot_circle.o plot_radial.o vec_plot.o
 
 DSTPATH = $(BINPATH)
 OUTPUT = vec_plot

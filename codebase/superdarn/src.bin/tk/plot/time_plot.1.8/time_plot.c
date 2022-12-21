@@ -91,7 +91,7 @@ Modifications:
 
 #define HEIGHT 640
 #define WIDTH  540
-#define MAX_RANGE 300
+#define MAX_RANGE 600
 
 struct OptionData opt;
 struct OptionFile *optf=NULL;
@@ -407,6 +407,9 @@ int main(int argc,char *argv[]) {
   int hgt=HEIGHT;
   unsigned int bgcolor=0;
 
+  char *pbgtxt=NULL;
+  unsigned int pbgcolor=0;
+
   float width=0.5;
   char *fontname=NULL;
   char *tfontname=NULL;
@@ -523,6 +526,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"wdt",'i',&wdt); /* width */
   OptionAdd(&opt,"hgt",'i',&hgt); /* height */
   OptionAdd(&opt,"bgcol",'t',&bgtxt); /* background color */
+  OptionAdd(&opt,"pbgcol",'t',&pbgtxt); /* panel background color */
 
   OptionAdd(&opt,"grdcol",'t',&grdtxt); /* grid color */
   OptionAdd(&opt,"txtcol",'t',&txttxt); /* text color */
@@ -711,16 +715,19 @@ int main(int argc,char *argv[]) {
   }
 
   bgcolor=PlotColor(0xff,0xff,0xff,0xff);
-  if (bgtxt !=NULL) sscanf(bgtxt,"%x",&bgcolor);
+  if (bgtxt !=NULL) bgcolor=PlotColorStringRGB(bgtxt);
+
+  pbgcolor=PlotColor(0xff,0xff,0xff,0xff);
+  if (pbgtxt !=NULL) pbgcolor=PlotColorStringRGB(pbgtxt);
 
   gscolor=PlotColor(0xa0,0xa0,0xa0,0xff);
-  if (gsctxt !=NULL) sscanf(gsctxt,"%x",&gscolor);
+  if (gsctxt !=NULL) gscolor=PlotColorStringRGB(gsctxt);
 
   grdcolor=PlotColor(0x00,0x00,0x00,0xff);
-  if (grdtxt !=NULL) sscanf(grdtxt,"%x",&grdcolor);
+  if (grdtxt !=NULL) grdcolor=PlotColorStringRGB(grdtxt);
 
   txtcolor=PlotColor(0x00,0x00,0x00,0xff);
-  if (txttxt !=NULL)  sscanf(txttxt,"%x",&txtcolor);
+  if (txttxt !=NULL) txtcolor=PlotColorStringRGB(txttxt);
 
   if (pkey_fname !=NULL) {
     if (pkey_path == NULL) pkey_path = getenv("COLOR_TABLE_PATH");
@@ -1161,8 +1168,12 @@ int main(int argc,char *argv[]) {
     stid=prm->stid;
     cptab[0]=prm->cp;
     cpnum=1;
-    sprintf(revtxt,"Revision:%d.%d",fit->revision.major,
-            fit->revision.minor);
+    if (fit->algorithm !=NULL) {
+      sprintf(revtxt,"%s",fit->algorithm);
+    } else {
+      sprintf(revtxt,"Revision:%d.%d",fit->revision.major,
+              fit->revision.minor);
+    }
   }
   if (sndflg) {
     stid=snd->stid;
@@ -1329,6 +1340,13 @@ int main(int argc,char *argv[]) {
   FrameBufferClear(nblk,0x0f,bgcolor);
 
   for (n=0;n<8;n++) if (blk[n] !=NULL) FrameBufferClear(blk[n],0x0f,bgcolor);
+
+  for (i=0;i<cnt;i++) {
+    PlotRectangle(plot,NULL,
+                  plt->xoff+(i % plt->xnum)*(plt->box_wdt+plt->lpad+plt->rpad),
+                  plt->yoff+(i / plt->xnum)*(plt->box_hgt+plt->tpad+plt->bpad),
+                  plt->box_wdt,plt->box_hgt,1,pbgcolor,0x0f,0,NULL);
+  }
 
   do {
 
@@ -1652,6 +1670,7 @@ int main(int argc,char *argv[]) {
   if (ymajor==0) {
     if (kmflg) ymajor=(erang-frang)/ytick;
     else if ((geoflg) || (magflg)) ymajor=(latmax-latmin)/ytick;
+    else if ((erng-srng)>150) ymajor=(erng-srng)/ytick;
     else ymajor=15;
   }
   if (yminor==0) yminor=5;

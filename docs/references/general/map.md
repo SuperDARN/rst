@@ -1,39 +1,28 @@
 <!-- 
 copyright (C) 2020 VT SuperDARN, Virginia Polytechnic Institute & State University 
 author: Kevin Sterne
+
+Modifications:
+    2022-11-28 Emma Bland (UNIS) Updated file format description
+    
 -->
 
 # Map files 
 
-Map files are post-processed data produced from grid files.
+Map files are post-processed data produced from grid files. They include all the information included in the original grid file, plus the additional information related to the convection mapping. Map files are generated using a multi-step process described in the [`map_grid` tutorial](../../user_guide/make_grid.md).
 
-## Naming Conventions
+## Naming Convention
 
-### Map files for each hemisphere
+Separate map files should be created for each hemisphere. The community standard for naming these files is:
 
-Map files are processed by starting with the combined (or single radar) [grid file](grid.md) as an input to `map_grd`.
+> YYYYMMDD.north.map
 
-From here, additional processsing occurs by adding additional data sources (Heppner-Maynard Boundary, IMF) and statistical convection models (TS18) before having a spherical harmonic fitting performed.
+> YYYYMMDD.south.map
 
-If a map file contains only a small time amount of data, it may be named:
+## Scalar Fields
 
-> YYYYMMDD.HH.MM.ss.hhhhh.map
+Start and end times refer to the start and end of the integration period (usually 2 minutes).
 
-where `hhhhh` is the hemisphere (north or south).
-
-If a map file is produced with 24-hours of data then the common naming convenction is:
-
-> YYYYMMDD.hhhhh.map
-
-where the hour, minute, and second fields are dropped.
-
-## Fields
-
-Each record of a map file contains scalar and vector fields. 
-
-### Scalars
-
-The following times refer to the start and end of the integration period.
 
 | Field name       | Units      | Data Type    | Description                                  |
 | :----------      | :-----:    | :-------:    | :---                                           |
@@ -66,7 +55,7 @@ The following times refer to the start and end of the integration period.
 | *model.angle*   | **None**   | ***string***  | Statistical clock angle of B |
 | *model.level*   | **None**   | ***string***  | Statistical model level |
 | *model.tilt*    | **None**   | ***string***  | Calculated tilt angle |
-| *model.name*    | **None**   | ***string***  | Name of the statical model used (TS18, CS10, RG96, etc.) |
+| *model.name*    | **None**   | ***string***  | Name of the statistical model used (TS18, CS10, RG96, etc.) |
 | *hemisphere*    | **None**   | ***short***   | Hemisphere flag (north=1) |
 | *noigrf*        | **None**   | ***short***   | Flag for no-IGRF model present |
 | *fit.order*     | **None**   | ***short***   | Order of spherical harmonic fit |
@@ -84,25 +73,29 @@ The following times refer to the start and end of the integration period.
 | *pot.max*       | *V*        | ***double***  | Maximum polar-cap potential     |
 | *pot.max.err*   | *V*        | ***double***  | Maximum polar-cap potential error |
 | *pot.min*       | *V*        | ***double***  | Minimum polar-cap potential     |
-| *pot.min.err*   | *V*        | ***double***  | Minimum polar-cap potentail error |
+| *pot.min.err*   | *V*        | ***double***  | Minimum polar-cap potential error |
  
 
 
-### Arrays 
+## Vector fields 
 
-The array components of the map file format are listed below. The map format is a superset of the grid formt so it contains the same arrays.
+In the table below, the following values describe the dimensionality of the map file fields: 
 
-!!! Note
- - Let the number of radars in a given map record be defined as *numstid*
- - Let the number of gridded velocity vectors in a given record be defined as *numv*
- - Let the number of values for the spherical harmonic analysis be defined as *numft*
- - Let the number of vectors output by the model used be defined as *nummd*
- - Let the number of the Heppner-Maynard boundary outputs be defined as *numbd*
+- *numstid*: the number of radars included in that grid record
+- *numv*: the total number of gridded velocity vectors
+- *numft*: the number of values used in the spherical harmonic analysis
+- *nummd*: the number of vectors output by the statistical convection model
+- *numbd*: the number of points in the Heppner-Maynard boundary
+
+
+A map file will not necessarily contain a complete set of all the variables listed below. The processing is divided into stages and new fields are added to the file as appropriate. For example, the `boundary.mlat` and `boundary.mlon` fields are added by `map_addhmb`, and the `model.mlat`, `model.mlon`, `model.kvect`, and `model.vel.median` are added by `map_addmodel`.
+
+
 
 | Field name  | Units           | Dimensionality | Data Type   | Description                                                                 |
 | :---------- | :-----:         | :-------:      | :---:       | :---                                                                        |
-| *stid*      |  **None**       |  *[numstid]*     | ***short*** | A list of of numeric station IDs that provided data for the record |
-| *channel*   |  **None**       |  *[numstid]*     | ***short*** | A list of channel numbers associated to the station id the record |
+| *stid*      |  **None**       |  *[numstid]*     | ***short*** | A list of numeric station IDs that provided data for the record |
+| *channel*   |  **None**       |  *[numstid]*     | ***short*** | A list of channel numbers associated with the station id |
 | *nvec*      | **None** | *[numstid]*  | ***short*** | Number of velocity vectors for each station |
 | *freq*      | *kHz* | *[numstid]* | ***float*** | Transmitted frequency for each radar |
 | *major.revision* | **None** | *[numstid]* | ***short*** | Major `make_grid` version number |
@@ -123,7 +116,7 @@ The array components of the map file format are listed below. The map format is 
 | *vector.mlon*     | *degrees* | *[numv]* | ***float*** | Magnetic Longitude |
 | *vector.kvect*    | *degrees* | *[numv]*   | ***float*** | Magnetic Azimuth |
 | *vector.stid*     | **None**  | *[numv]*   | ***short*** | Station identifier |
-| *vector.channel*  | **None**  | *[numv]*   | ***short*** | Channel number |  
+| *vector.channel*  | **None**  | *[numv]*   | ***short*** | Channel number |
 | *vector.index*    | **None**  | *[numv]*   | ***int***   | Grid cell index |
 | *vector.vel.median* | *m/s* | *[numv]*   | ***float*** | Weighted mean velocity magnitude |
 | *vector.vel.sd*     | *m/s* | *[numv]*   | ***float*** | Velocity standard deviation |
@@ -134,7 +127,7 @@ The array components of the map file format are listed below. The map format is 
 | *N*               | **None** | *[numft]* | ***double*** | L value of the expansion between 0 and Lmax |
 | *N+1*             | **None** | *[numft]* | ***double*** | M value of the expansion between -L and +L, negative values indicating the sin(M*phi) term |
 | *N+2*             | **None** | *[numft]* | ***double*** | Value of the coefficient  |
-| *N+3*             | **None** | *[numft]* | ***double*** | Stimate of the 1-sigma error of the coefficient |
+| *N+3*             | **None** | *[numft]* | ***double*** | Estimate of the 1-sigma error of the coefficient |
 | *model.mlat*      | *degrees* | [nummd] | ***float*** | Magnetic Latitudes of the model vectors |
 | *model.mlon*      | *degrees* | [nummd] | ***float*** | Magnetic Longitudes of the model vectors |
 | *model.kvect*     | *degrees* | [nummd] | ***float*** | Magnetic Azimuths of the model vectors |
@@ -142,8 +135,3 @@ The array components of the map file format are listed below. The map format is 
 | *boundary.mlat*   | *degrees* | [numbd] | ***float*** | Magnetic Latitudes of the lower latitude boundary |
 | *boundary.mlon*   | *degrees* | [numbd] | ***float*** | Magnetic Longitudes of the lower latitude boundary |
 
-A map file does not necessarily contain a complete set of all the variables listed above. The processing is dvidied up into stages with variables added to the file as needed.  If the statistical model has been calculated the file will contain the arrays `model.mlat`, `model.mlon`, `model.kvect`, and `model.vel.median`.  If the loer boundary ha been found then the file will contain the arrays `boundary.mlat` and `boundary.mlon`.  If the spherical harmonic analysis has been performed, then the file will contain the arrays `N`, `N+1`, `N+2`, and `N+3`.
-
-## File structure
-
-Map files typically contain up to 24 hours of data. Individual records in a map file contain a record for each integration time period (default 120 seconds) from one or more radars depending on the input grid file.

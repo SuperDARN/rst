@@ -3,6 +3,9 @@ author(s): Marina Schmidt
 
 Disclaimer: License under GNU v3.0, the file is found in the root directory under LICENSE 
 
+Modifications:
+    2022-11-28 Emma Bland (UNIS) Updated file format description
+
 -->
 # RAWACF files 
 
@@ -10,27 +13,17 @@ RAWACF files are raw files produced at radar sites.
 
 Sometimes they are post-processed from IQDAT files or converted from the older-format dat files (see `dattorawacf`).
 
-## Naming Conventions
+## Naming Convention
 
-Currently the common naming convention for RAWACF files is:
+The community standard for naming RAWACF files is:
 
-> YYYYMMDD.HH.mm.ss.<3-letter abbreviation>.rawacf
+> YYYYMMDD.HH.mm.ss.<3-letter radar code>.[a-d].rawacf
 
-SuperDARN radars routinely change operating frequency. Some operating modes use multiple frequencies, either at the same time, or by alternating between frequencies. As a result, some files from some radars include all records for all frequencies in the same file and other radars separate out the individual frequencies into separate files, designated by a channel letter in the file name:
+The field [a-d] is used when the data have been separated into multiple files based on a particular operating parameter (e.g. frequency, beam pattern, control program). This field may not be used if all the available data are provided in a single file.
 
-> YYYYMMDD.HH.mm.ss.<3-letter abbreviation>.[a-d].rawacf
 
-For example, on 2019-02-01 the King Salmon radar (KSR) was operating simultaneously on two channels as seen from the file names `20190201.0401.00.ksr.a.rawacf` and `20190201.0401.00.ksr.b.rawacf`.
-Each file contains data from a different frequency channel. 
+## Scalar Fields
 
-!!! Note
-        Sometimes modes like `twofsound` will write data into a single file. In this case the two frequencies are marked as two separate channels, denoted using the `channel` parameter. However, it is important to note that some SuperDARN radars have stereo capability (transmitting and receiving on 2 frequencies simultaneously), which was the original intended usage of the `channel` parameter.
-
-## Fields
-
-RAWACF files contain a record that contains scalar and vector fields. 
-
-### Scalars
 
 | Field name              | Units    | Data Type | Description                                                                             |
 | :----------             | :-----:  | :-------: | :---                                                                                    |
@@ -85,10 +78,7 @@ RAWACF files contain a record that contains scalar and vector fields.
 | *thr*                   | *None*   | float     | Threshold factor                                                                        |
 
 
-### Vectors 
-
-!!! Note
-    *slist* contains the range gates that obtained data points during the integration period of the beam. 
+## Vector Fields
 
 | Field name  | Units    | Dimensionality | Data Type   | Description                                                                 |
 | :---------- | :-----:  | :-------:      | :---:       | :---                                                                        |
@@ -99,12 +89,4 @@ RAWACF files contain a record that contains scalar and vector fields.
 | *acfd*      | *None*   | *[2][mplgs][0-nrang]*    | float       | Calculated ACFs                                                             |
 | *xcfd*      | *None*   | *[2][mplgs][0-nrang]*    | float       | Calculated XCFs                                                             |
 
-## File structure
 
-RAWACF files contain typically 2 hours of data. Individual records in the RAWACF file contain the raw data for a single integration period (usually 3s or 7s, but depends on operating mode of the radar). 
-In the standard operational mode (common mode) where each beam is scanned sequentially, the beam number `bmnum` will increase or decrease by 1 after each integration period. Other control programs may involve different beam sequences, including sampling the beams in a different order, or sampling a subset of the available beams.
-A "scan" is a beam sequence which gets repeated. In the common mode (*normal scan*), one scan is completed when each beam has been sampled sequentially from 0 to `bmnum-1` (or `bmnum-1` to 0). Radars with more than 16 beams *may* sample a subset of beams rather than their full field of view in order to maintain a 1min scan time. 
-Scans usually begin on whole-minute boundaries and last for either 1min or 2min. Custom control programs which define different scan lengths may also exist. The `scan` flag is used to indicate the beginning of each scan pattern. A value of 1 or -1 indicates the beginning of the scan, and then the value changes to 0 for the rest of the scan. When the `scan` value changes from 0 back to 1 this indicates the end of the scan. 
-
-!!! Note 
-    Different *control programs* in general have different beam patterns; `cp` will indicate the *control program* numerical value, and `combf` sometimes contains the *control program's* command/name. 

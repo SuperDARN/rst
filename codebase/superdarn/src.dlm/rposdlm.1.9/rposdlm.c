@@ -1,8 +1,7 @@
 /* rposdlm.c
    ========= 
    Author R.J.Barnes
-*/
-/*
+
 Copyright (C) <year>  <name of author>
 
 This file is part of the Radar Software Toolkit (RST).
@@ -22,6 +21,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
   E.G.Thomas 2021-08: added support for new hdw file fields
+  E.G.Thomas 2022-04: added support for tdiff calibration files
 */
 
 
@@ -49,18 +49,13 @@ Modifications:
 
 static IDL_MSG_DEF msg_arr[] =
   {
-    {  "RPOS_ERROR",   "%NError: %s." }, 
-    {  "RPOS_BADSTRUCT",   "%NFailed to decode data structure %s"},
-    {  "RPOS_BADRNGARR","%NBeam and range arrays must be of equal length %s"},
-    {  "RPOS_BADFRANGARR","%NBeam and frang arrays must be of equal length %s"},
-    {  "RPOS_BADRSEPARR","%NBeam and rsep arrays must be of equal length %s"},
-    {  "RPOS_BADRXRISEARR",
-       "%NBeam and rxrise arrays must be of equal length %s"},
-    {  "RPOS_BADHEIGHTARR",
-        "%NBeam and height arrays must be of equal length %s"},
-
-
- 
+    {"RPOS_ERROR", "%NError: %s."},
+    {"RPOS_BADSTRUCT", "%NFailed to decode data structure %s"},
+    {"RPOS_BADRNGARR", "%NBeam and range arrays must be of equal length %s"},
+    {"RPOS_BADFRANGARR", "%NBeam and frang arrays must be of equal length %s"},
+    {"RPOS_BADRSEPARR", "%NBeam and rsep arrays must be of equal length %s"},
+    {"RPOS_BADRXRISEARR", "%NBeam and rxrise arrays must be of equal length %s"},
+    {"RPOS_BADHEIGHTARR", "%NBeam and height arrays must be of equal length %s"},
   };
 
 static IDL_MSG_BLOCK msg_block;
@@ -94,6 +89,15 @@ struct RadarIDLSite {
   IDL_LONG maxbeam;
 };
 
+struct RadarIDLTdiff {
+  IDL_LONG method;
+  IDL_LONG channel;
+  double freq[2];
+  double tval[2];
+  double tdiff;
+  double tdiff_err;
+};
+
 struct RadarIDLRadar {
   IDL_LONG id;
   IDL_LONG status;
@@ -106,13 +110,16 @@ struct RadarIDLRadar {
   double ed_time;
   IDL_LONG snum;
   struct RadarIDLSite site[32];
+  IDL_LONG tnum;
+  struct RadarIDLTdiff tdiff[32];
 };
 
+
 int IDLRadarCopyFromIDL(int rnum,int sze,char  *iptr,struct Radar *radar) {
-  int r,c,s;
+  int r,c,s,t;
   char *cptr;
   struct RadarIDLRadar *iradar;
- 
+
   memset(radar,0,sizeof(struct Radar)*rnum);
 
   for (r=0;r<rnum;r++) {
@@ -131,15 +138,15 @@ int IDLRadarCopyFromIDL(int rnum,int sze,char  *iptr,struct Radar *radar) {
       }
     }
     if (c !=radar[r].cnum) break;
-    cptr=IDL_STRING_STR(&iradar->name); 
+    cptr=IDL_STRING_STR(&iradar->name);
     radar[r].name=malloc(strlen(cptr)+1);
     if (radar[r].name==NULL) break;
     strcpy(radar[r].name,cptr);
-    cptr=IDL_STRING_STR(&iradar->operator); 
+    cptr=IDL_STRING_STR(&iradar->operator);
     radar[r].operator=malloc(strlen(cptr)+1);
     if (radar[r].operator==NULL) break;
     strcpy(radar[r].operator,cptr);
-    cptr=IDL_STRING_STR(&iradar->hdwfname); 
+    cptr=IDL_STRING_STR(&iradar->hdwfname);
     radar[r].hdwfname=malloc(strlen(cptr)+1);
     if (radar[r].hdwfname==NULL) break;
     strcpy(radar[r].hdwfname,cptr);
@@ -174,15 +181,32 @@ int IDLRadarCopyFromIDL(int rnum,int sze,char  *iptr,struct Radar *radar) {
         radar[r].site[s].maxbeam=iradar->site[s].maxbeam;
       }
     }
+    radar[r].tnum=iradar->tnum;
+    if (radar[r].tnum !=0) {
+      radar[r].tdiff=malloc(sizeof(struct RadarTdiff)*
+                                    radar[r].tnum);
+
+      if (radar[r].tdiff==NULL) break;
+      for (t=0;t<radar[r].tnum;t++) {
+        radar[r].tdiff[t].method=iradar->tdiff[t].method;
+        radar[r].tdiff[t].channel=iradar->tdiff[t].channel;
+        radar[r].tdiff[t].freq[0]=iradar->tdiff[t].freq[0];
+        radar[r].tdiff[t].freq[1]=iradar->tdiff[t].freq[1];
+        radar[r].tdiff[t].tval[0]=iradar->tdiff[t].tval[0];
+        radar[r].tdiff[t].tval[1]=iradar->tdiff[t].tval[1];
+        radar[r].tdiff[t].tdiff=iradar->tdiff[t].tdiff;
+        radar[r].tdiff[t].tdiff_err=iradar->tdiff[t].tdiff_err;
+      }
+    }
   }
   return r;
-
 }
 
-void IDLRadarCopyToIDL(int rnum,struct Radar *radar,int sze,
-		       char *iptr) {
 
-  int r,c,s;
+void IDLRadarCopyToIDL(int rnum,struct Radar *radar,int sze,
+                       char *iptr) {
+
+  int r,c,s,t;
   struct RadarIDLRadar *iradar=NULL;
 
   for (r=0;r<rnum;r++) {
@@ -221,14 +245,26 @@ void IDLRadarCopyToIDL(int rnum,struct Radar *radar,int sze,
       iradar->site[s].maxrange=radar[r].site[s].maxrange;
       iradar->site[s].maxbeam=radar[r].site[s].maxbeam;
     }
-  }     
+    iradar->tnum=radar[r].tnum;
+    for (t=0;t<radar[r].tnum;t++) {
+      iradar->tdiff[t].method=radar[r].tdiff[t].method;
+      iradar->tdiff[t].channel=radar[r].tdiff[t].channel;
+      iradar->tdiff[t].freq[0]=radar[r].tdiff[t].freq[0];
+      iradar->tdiff[t].freq[1]=radar[r].tdiff[t].freq[1];
+      iradar->tdiff[t].tval[0]=radar[r].tdiff[t].tval[0];
+      iradar->tdiff[t].tval[1]=radar[r].tdiff[t].tval[1];
+      iradar->tdiff[t].tdiff=radar[r].tdiff[t].tdiff;
+      iradar->tdiff[t].tdiff_err=radar[r].tdiff[t].tdiff_err;
+    }
+  }
   return;
 }
 
+
 struct RadarIDLSite *IDLRadarMakeSite(IDL_VPTR *vptr) {
- 
+
   void *s;
- 
+
   static IDL_MEMINT tdim[]={1,2};
   static IDL_MEMINT idim[]={1,3};
 
@@ -252,15 +288,40 @@ struct RadarIDLSite *IDLRadarMakeSite(IDL_VPTR *vptr) {
     {"MAXBEAM",0,(void *) IDL_TYP_LONG},
     {0}
   };
-  
+
   static IDL_MEMINT ilDims[IDL_MAX_ARRAY_DIM];
- 
+
   s=IDL_MakeStruct("SITE",site);
 
   ilDims[0]=1;
   return (struct RadarIDLSite *) IDL_MakeTempStruct(s,1,ilDims,vptr,TRUE);
-
 }
+
+
+struct RadarIDLTdiff *IDLRadarMakeTdiff(IDL_VPTR *vptr) {
+
+  void *s;
+
+  static IDL_MEMINT dim[]={1,2};
+
+  static IDL_STRUCT_TAG_DEF tdiff[]={
+    {"METHOD",0,(void *) IDL_TYP_LONG},
+    {"CHANNEL",0,(void *) IDL_TYP_LONG},
+    {"FREQ",dim,(void *) IDL_TYP_DOUBLE},
+    {"TVAL",dim,(void *) IDL_TYP_DOUBLE},
+    {"TDIFF",0,(void *) IDL_TYP_DOUBLE},
+    {"TDIFF_ERR",0,(void *) IDL_TYP_DOUBLE},
+    {0}
+  };
+
+  static IDL_MEMINT ilDims[IDL_MAX_ARRAY_DIM];
+
+  s=IDL_MakeStruct("TDIFF",tdiff);
+
+  ilDims[0]=1;
+  return (struct RadarIDLTdiff *) IDL_MakeTempStruct(s,1,ilDims,vptr,TRUE);
+}
+
 
 struct RadarIDLRadar *IDLRadarMakeRadar(int num,IDL_VPTR *vptr) {
 
@@ -291,7 +352,16 @@ struct RadarIDLRadar *IDLRadarMakeRadar(int num,IDL_VPTR *vptr) {
     {"MAXBEAM",0,(void *) IDL_TYP_LONG},
     {0}
   };
-  
+
+  static IDL_STRUCT_TAG_DEF tdiff[]={
+    {"METHOD",0,(void *) IDL_TYP_LONG},
+    {"CHANNEL",0,(void *) IDL_TYP_LONG},
+    {"FREQ",tdim,(void *) IDL_TYP_DOUBLE},
+    {"TVAL",tdim,(void *) IDL_TYP_DOUBLE},
+    {"TDIFF",0,(void *) IDL_TYP_DOUBLE},
+    {"TDIFF_ERR",0,(void *) IDL_TYP_DOUBLE},
+    {0}
+  };
 
   static IDL_STRUCT_TAG_DEF radar[]={
     {"ID",0,(void *) IDL_TYP_LONG}, /* 0 */
@@ -305,19 +375,20 @@ struct RadarIDLRadar *IDLRadarMakeRadar(int num,IDL_VPTR *vptr) {
     {"ED_TIME",0,(void *) IDL_TYP_DOUBLE}, /* 8 */
     {"SNUM",0,(void *) IDL_TYP_LONG}, /* 9 */
     {"SITE",sdim,NULL}, /* 10 */
+    {"TNUM",0,(void *) IDL_TYP_LONG}, /* 11 */
+    {"TDIFF",sdim,NULL}, /* 12 */
     {0}};
 
     static IDL_MEMINT ilDims[IDL_MAX_ARRAY_DIM];
- 
+
     radar[10].type=IDL_MakeStruct("SITE",site);
+    radar[12].type=IDL_MakeStruct("TDIFF",tdiff);
 
     s=IDL_MakeStruct("RADAR",radar);
 
     ilDims[0]=num;
     return (struct RadarIDLRadar *) IDL_MakeTempStruct(s,1,ilDims,vptr,TRUE);
 }
-
-
 
 
 static IDL_VPTR IDLRadarLoad(int argc,IDL_VPTR *argv) {
@@ -328,7 +399,7 @@ static IDL_VPTR IDLRadarLoad(int argc,IDL_VPTR *argv) {
   IDL_FILE_STAT stat;
 
   FILE *fp=NULL;
-  
+
   IDL_VPTR vradar;
   char *iradar=NULL;
   struct RadarNetwork *network=NULL;
@@ -348,16 +419,16 @@ static IDL_VPTR IDLRadarLoad(int argc,IDL_VPTR *argv) {
 
   IDL_FileFlushUnit(unit);
   IDL_FileStat(unit,&stat);
- 
+
   /* Find the file pointer */
 
   fp=stat.fptr;
-  
+
   if (fp==NULL) {
     s=-1;
     return (IDL_GettmpLong(s));
   }
- 
+
   network=RadarLoad(fp);
 
   iradar=(char *) IDLRadarMakeRadar(network->rnum,&vradar);
@@ -366,9 +437,10 @@ static IDL_VPTR IDLRadarLoad(int argc,IDL_VPTR *argv) {
                     network->radar,sizeof(struct RadarIDLRadar),iradar);
 
   RadarFree(network);
-  
+
   return (vradar);
 }
+
 
 static IDL_VPTR IDLRadarLoadHardware(int argc,IDL_VPTR *argv,char *argk) {
 
@@ -383,20 +455,20 @@ static IDL_VPTR IDLRadarLoadHardware(int argc,IDL_VPTR *argv,char *argk) {
   int num=0,sze;
   IDL_VPTR outargv[8];
   static IDL_KW_PAR kw_pars[]={IDL_KW_FAST_SCAN,
-			       {"PATH",IDL_TYP_STRING,1,
+                               {"PATH",IDL_TYP_STRING,1,
                                 0,&pflg,
                                 IDL_CHARA(spath)},
-				 {NULL}};
+                               {NULL}};
 
   char *path=NULL;
-  
+
   IDL_KWCleanup(IDL_KW_MARK);
   IDL_KWGetParams(argc,argv,argk,kw_pars,outargv,1);
 
   IDL_ENSURE_ARRAY(outargv[0]);
 
   if (pflg) path=IDL_STRING_STR(&spath);
-  
+
   num=outargv[0]->value.s.arr->n_elts;
   sze=outargv[0]->value.s.arr->elt_len;
   iradar=(char *) outargv[0]->value.s.arr->data;
@@ -423,10 +495,8 @@ static IDL_VPTR IDLRadarLoadHardware(int argc,IDL_VPTR *argv,char *argk) {
                          "in RadarLoadHardware()");
   }
 
-
-
   RadarLoadHardware(path,network);
-   
+
   IDLRadarCopyToIDL(num,network->radar,sze,iradar);
 
   RadarFree(network);
@@ -434,8 +504,73 @@ static IDL_VPTR IDLRadarLoadHardware(int argc,IDL_VPTR *argv,char *argk) {
   IDL_KWCleanup(IDL_KW_CLEAN);
 
   return (IDL_GettmpLong(0));
-
 }
+
+
+static IDL_VPTR IDLRadarLoadTdiff(int argc,IDL_VPTR *argv,char *argk) {
+
+  int s=0;
+
+  static IDL_STRING tpath;
+  static int pflg=0;
+
+  char *iradar=NULL;
+  struct RadarNetwork *network=NULL;
+
+  int num=0,sze;
+  IDL_VPTR outargv[8];
+  static IDL_KW_PAR kw_pars[]={IDL_KW_FAST_SCAN,
+                               {"PATH",IDL_TYP_STRING,1,
+                                0,&pflg,
+                                IDL_CHARA(tpath)},
+                               {NULL}};
+
+  char *path=NULL;
+
+  IDL_KWCleanup(IDL_KW_MARK);
+  IDL_KWGetParams(argc,argv,argk,kw_pars,outargv,1);
+
+  IDL_ENSURE_ARRAY(outargv[0]);
+
+  if (pflg) path=IDL_STRING_STR(&tpath);
+
+  num=outargv[0]->value.s.arr->n_elts;
+  sze=outargv[0]->value.s.arr->elt_len;
+  iradar=(char *) outargv[0]->value.s.arr->data;
+
+  network=malloc(sizeof(struct RadarNetwork));
+  if (network==NULL) {
+    IDL_MessageFromBlock(msg_block,RPOS_BADSTRUCT,IDL_MSG_LONGJMP,
+                         "in RadarLoadTdiff()");
+  }
+  network->rnum=num;
+  network->radar=malloc(sizeof(struct Radar)*num);
+
+  if (network->radar==NULL) {
+    free(network);
+    IDL_MessageFromBlock(msg_block,RPOS_BADSTRUCT,IDL_MSG_LONGJMP,
+                         "in RadarLoadTdiff()");
+  }
+
+  s=IDLRadarCopyFromIDL(num,sze,iradar,network->radar);
+
+  if (s !=num) {
+    RadarFree(network);
+    IDL_MessageFromBlock(msg_block,RPOS_BADSTRUCT,IDL_MSG_LONGJMP,
+                         "in RadarLoadTdiff()");
+  }
+
+  RadarLoadTdiff(path,network);
+
+  IDLRadarCopyToIDL(num,network->radar,sze,iradar);
+
+  RadarFree(network);
+
+  IDL_KWCleanup(IDL_KW_CLEAN);
+
+  return (IDL_GettmpLong(0));
+}
+
 
 static IDL_VPTR IDLRadarEpochGetSite(int argc,IDL_VPTR *argv) {
   int s;
@@ -483,18 +618,16 @@ static IDL_VPTR IDLRadarEpochGetSite(int argc,IDL_VPTR *argv) {
   isite->maxbeam=iradar->site[s].maxbeam;
 
   return (vsite);
-
-
 }
 
 
 static IDL_VPTR IDLRadarYMDHMSGetSite(int argc,IDL_VPTR *argv) {
-  
+
   IDL_VPTR vsite;
   struct RadarIDLRadar *iradar=NULL;
   struct RadarIDLSite *isite=NULL;
- 
-  int s; 
+
+  int s;
   double tval;
   int yr,mo,dy,hr,mt,sc;
 
@@ -516,7 +649,6 @@ static IDL_VPTR IDLRadarYMDHMSGetSite(int argc,IDL_VPTR *argv) {
   tval=TimeYMDHMSToEpoch(yr,mo,dy,hr,mt,sc);
 
   iradar=(struct RadarIDLRadar *) argv[0]->value.s.arr->data;
- 
 
   if ((iradar->st_time !=-1) && (tval<iradar->st_time)) 
     return (IDL_GettmpLong(0));
@@ -549,12 +681,121 @@ static IDL_VPTR IDLRadarYMDHMSGetSite(int argc,IDL_VPTR *argv) {
   isite->maxbeam=iradar->site[s].maxbeam;
 
   return (vsite);
+}
 
+
+static IDL_VPTR IDLRadarEpochGetTdiff(int argc,IDL_VPTR *argv) {
+  int t;
+
+  IDL_VPTR vtdiff;
+  struct RadarIDLRadar *iradar=NULL;
+  struct RadarIDLTdiff *itdiff=NULL;
+
+  double tval;
+  int method,channel,tfreq;
+
+  IDL_ENSURE_STRUCTURE(argv[0]);
+  IDL_ENSURE_SCALAR(argv[1]);
+  IDL_ENSURE_SCALAR(argv[2]);
+  IDL_ENSURE_SCALAR(argv[3]);
+  IDL_ENSURE_SCALAR(argv[4]);
+
+  iradar=(struct RadarIDLRadar *) argv[0]->value.s.arr->data;
+  tval=IDL_DoubleScalar(argv[1]);
+  method=IDL_LongScalar(argv[2]);
+  channel=IDL_LongScalar(argv[3]);
+  tfreq=IDL_LongScalar(argv[4]);
+
+  for (t=0;(t<iradar->tnum);t++) {
+    if (iradar->tdiff[t].method !=method) continue;
+    if (iradar->tdiff[t].channel !=channel) continue;
+    if (iradar->tdiff[t].freq[0] > tfreq) continue;
+    if (iradar->tdiff[t].freq[1] < tfreq) continue;
+    if (iradar->tdiff[t].tval[0] > tval) continue;
+    if (iradar->tdiff[t].tval[1] < tval) continue;
+    break;
+  }
+  if (t==iradar->tnum) return (IDL_GettmpLong(0));
+
+  itdiff=IDLRadarMakeTdiff(&vtdiff);
+
+  itdiff->method=iradar->tdiff[t].method;
+  itdiff->channel=iradar->tdiff[t].channel;
+  itdiff->freq[0]=iradar->tdiff[t].freq[0];
+  itdiff->freq[1]=iradar->tdiff[t].freq[1];
+  itdiff->tval[0]=iradar->tdiff[t].tval[0];
+  itdiff->tval[1]=iradar->tdiff[t].tval[1];
+  itdiff->tdiff=iradar->tdiff[t].tdiff;
+  itdiff->tdiff_err=iradar->tdiff[t].tdiff_err;
+
+  return (vtdiff);
+}
+
+
+static IDL_VPTR IDLRadarYMDHMSGetTdiff(int argc,IDL_VPTR *argv) {
+
+  IDL_VPTR vtdiff;
+  struct RadarIDLRadar *iradar=NULL;
+  struct RadarIDLTdiff *itdiff=NULL;
+
+  int t;
+  double tval;
+  int method,channel,tfreq;
+  int yr,mo,dy,hr,mt,sc;
+
+  IDL_ENSURE_STRUCTURE(argv[0]);
+  IDL_ENSURE_SCALAR(argv[1]);
+  IDL_ENSURE_SCALAR(argv[2]);
+  IDL_ENSURE_SCALAR(argv[3]);
+  IDL_ENSURE_SCALAR(argv[4]);
+  IDL_ENSURE_SCALAR(argv[5]);
+  IDL_ENSURE_SCALAR(argv[6]);
+  IDL_ENSURE_SCALAR(argv[7]);
+  IDL_ENSURE_SCALAR(argv[8]);
+  IDL_ENSURE_SCALAR(argv[9]);
+
+  yr=IDL_LongScalar(argv[1]);
+  mo=IDL_LongScalar(argv[2]);
+  dy=IDL_LongScalar(argv[3]);
+  hr=IDL_LongScalar(argv[4]);
+  mt=IDL_LongScalar(argv[5]);
+  sc=IDL_LongScalar(argv[6]);
+  method=IDL_LongScalar(argv[7]);
+  channel=IDL_LongScalar(argv[8]);
+  tfreq=IDL_LongScalar(argv[9]);
+
+  tval=TimeYMDHMSToEpoch(yr,mo,dy,hr,mt,sc);
+
+  iradar=(struct RadarIDLRadar *) argv[0]->value.s.arr->data;
+
+  for (t=0;(t<iradar->tnum);t++) {
+    if (iradar->tdiff[t].method !=method) continue;
+    if (iradar->tdiff[t].channel !=channel) continue;
+    if (iradar->tdiff[t].freq[0] > tfreq) continue;
+    if (iradar->tdiff[t].freq[1] < tfreq) continue;
+    if (iradar->tdiff[t].tval[0] > tval) continue;
+    if (iradar->tdiff[t].tval[1] < tval) continue;
+    break;
+  }
+  if (t==iradar->tnum) return (IDL_GettmpLong(0));
+
+  itdiff=IDLRadarMakeTdiff(&vtdiff);
+
+  itdiff->method=iradar->tdiff[t].method;
+  itdiff->channel=iradar->tdiff[t].channel;
+  itdiff->freq[0]=iradar->tdiff[t].freq[0];
+  itdiff->freq[1]=iradar->tdiff[t].freq[1];
+  itdiff->tval[0]=iradar->tdiff[t].tval[0];
+  itdiff->tval[1]=iradar->tdiff[t].tval[1];
+  itdiff->tdiff=iradar->tdiff[t].tdiff;
+  itdiff->tdiff_err=iradar->tdiff[t].tdiff_err;
+
+  return (vtdiff);
 }
 
 
 static IDL_VPTR IDLRadarGetRadar(int argc,IDL_VPTR *argv) {
- 
+
   IDL_LONG id;
 
   IDL_VPTR vradar;
@@ -562,7 +803,7 @@ static IDL_VPTR IDLRadarGetRadar(int argc,IDL_VPTR *argv) {
   struct RadarIDLRadar *oradar=NULL;
   char *iptr=NULL;
   int num,sze;
-  int r,c,s; 
+  int r,c,s,t;
 
   IDL_ENSURE_ARRAY(argv[0]);
   IDL_ENSURE_SCALAR(argv[1]);
@@ -580,7 +821,6 @@ static IDL_VPTR IDLRadarGetRadar(int argc,IDL_VPTR *argv) {
     if (iradar->id==id) break;
   }
   if (r==num) return (IDL_GettmpLong(0));
-
 
   oradar=IDLRadarMakeRadar(1,&vradar);
 
@@ -621,9 +861,21 @@ static IDL_VPTR IDLRadarGetRadar(int argc,IDL_VPTR *argv) {
     oradar->site[s].maxatten=iradar->site[s].maxatten;
     oradar->site[s].maxrange=iradar->site[s].maxrange;
     oradar->site[s].maxbeam=iradar->site[s].maxbeam;
-  }     
+  }
+  oradar->tnum=iradar->tnum;
+  for (t=0;t<iradar->tnum;t++) {
+    oradar->tdiff[t].method=iradar->tdiff[t].method;
+    oradar->tdiff[t].channel=iradar->tdiff[t].channel;
+    oradar->tdiff[t].freq[0]=iradar->tdiff[t].freq[0];
+    oradar->tdiff[t].freq[1]=iradar->tdiff[t].freq[1];
+    oradar->tdiff[t].tval[0]=iradar->tdiff[t].tval[0];
+    oradar->tdiff[t].tval[1]=iradar->tdiff[t].tval[1];
+    oradar->tdiff[t].tdiff=iradar->tdiff[t].tdiff;
+    oradar->tdiff[t].tdiff_err=iradar->tdiff[t].tdiff_err;
+  }
   return (vradar);
 }
+
 
 static IDL_VPTR IDLRadarConvert(int type,int argc,IDL_VPTR *argv,char *argk) {
   int s=0,n=0;
@@ -704,7 +956,6 @@ static IDL_VPTR IDLRadarConvert(int type,int argc,IDL_VPTR *argv,char *argk) {
                            "in RadarPos()");
     }
 
-
     r.vptr=(void *) argv[2]->value.arr->data;
     rtyp=argv[2]->type;
 
@@ -717,8 +968,7 @@ static IDL_VPTR IDLRadarConvert(int type,int argc,IDL_VPTR *argv,char *argk) {
       frtyp=argv[4]->type;
 
     } else frang=IDL_LongScalar(argv[4]);
-    
-      
+
     if (argv[5]->flags & IDL_V_ARR) {
       if (argv[5]->value.arr->n_elts !=nval) 
         IDL_MessageFromBlock(msg_block,RPOS_BADRSEPARR,IDL_MSG_LONGJMP,
@@ -746,55 +996,54 @@ static IDL_VPTR IDLRadarConvert(int type,int argc,IDL_VPTR *argv,char *argk) {
     latptr=(double *) IDL_MakeTempArray(IDL_TYP_DOUBLE,
                                         argv[1]->value.arr->n_dim,
                                         argv[1]->value.arr->dim,
-					IDL_ARR_INI_ZERO,&vlat);
+                                        IDL_ARR_INI_ZERO,&vlat);
     lonptr=(double *) IDL_MakeTempArray(IDL_TYP_DOUBLE,
                                         argv[1]->value.arr->n_dim,
                                         argv[1]->value.arr->dim,
-					IDL_ARR_INI_ZERO,&vlon);
+                                        IDL_ARR_INI_ZERO,&vlon);
 
     rptr=(double *) IDL_MakeTempArray(IDL_TYP_DOUBLE,
                                       argv[1]->value.arr->n_dim,
                                       argv[1]->value.arr->dim,
-				      IDL_ARR_INI_ZERO,&vr);
-
+                                      IDL_ARR_INI_ZERO,&vr);
 
     for (n=0;n<nval;n++) {
-      
+
       switch (btyp) {
-	case IDL_TYP_BYTE:
-	  bcrd=b.bptr[n];
+        case IDL_TYP_BYTE:
+          bcrd=b.bptr[n];
           break;
-	case IDL_TYP_INT:
-	  bcrd=b.iptr[n];
+        case IDL_TYP_INT:
+          bcrd=b.iptr[n];
           break;
-	case IDL_TYP_LONG:
-	  bcrd=b.lptr[n];
+        case IDL_TYP_LONG:
+          bcrd=b.lptr[n];
           break;
-	case IDL_TYP_FLOAT:
-	  bcrd=b.fptr[n];
+        case IDL_TYP_FLOAT:
+          bcrd=b.fptr[n];
           break;
-	case IDL_TYP_DOUBLE:
-	  bcrd=b.dptr[n];
+        case IDL_TYP_DOUBLE:
+          bcrd=b.dptr[n];
           break;
         default:
           bcrd=0;
-     }
-      
-     switch (rtyp) {
-	case IDL_TYP_BYTE:
-	  rcrd=r.bptr[n];
+      }
+
+      switch (rtyp) {
+        case IDL_TYP_BYTE:
+          rcrd=r.bptr[n];
           break;
-	case IDL_TYP_INT:
-	  rcrd=r.iptr[n];
+        case IDL_TYP_INT:
+          rcrd=r.iptr[n];
           break;
-	case IDL_TYP_LONG:
-	  rcrd=r.lptr[n];
+        case IDL_TYP_LONG:
+          rcrd=r.lptr[n];
           break;
-	case IDL_TYP_FLOAT:
-	  rcrd=r.fptr[n];
+        case IDL_TYP_FLOAT:
+          rcrd=r.fptr[n];
           break;
-	case IDL_TYP_DOUBLE:
-	  rcrd=r.dptr[n];
+        case IDL_TYP_DOUBLE:
+          rcrd=r.dptr[n];
           break;
         default:
           rcrd=0;
@@ -802,88 +1051,86 @@ static IDL_VPTR IDLRadarConvert(int type,int argc,IDL_VPTR *argv,char *argk) {
 
      if (fr.vptr !=NULL) {
        switch (frtyp) {
-	 case IDL_TYP_BYTE:
-	   frang=fr.bptr[n];
+         case IDL_TYP_BYTE:
+           frang=fr.bptr[n];
            break;
-	 case IDL_TYP_INT:
-	   frang=fr.iptr[n];
+         case IDL_TYP_INT:
+           frang=fr.iptr[n];
            break;
-	 case IDL_TYP_LONG:
-	   frang=fr.lptr[n];
+         case IDL_TYP_LONG:
+           frang=fr.lptr[n];
            break;
-	 case IDL_TYP_FLOAT:
-	   frang=fr.fptr[n];
+         case IDL_TYP_FLOAT:
+           frang=fr.fptr[n];
            break;
-	 case IDL_TYP_DOUBLE:
-	   frang=fr.dptr[n];
+         case IDL_TYP_DOUBLE:
+           frang=fr.dptr[n];
            break;
          default:
-          frang=180;
+           frang=180;
        }
      }
 
      if (rs.vptr !=NULL) {
        switch (rstyp) {
-	 case IDL_TYP_BYTE:
-	   rsep=rs.bptr[n];
+         case IDL_TYP_BYTE:
+           rsep=rs.bptr[n];
            break;
-	 case IDL_TYP_INT:
-	   rsep=rs.iptr[n];
+         case IDL_TYP_INT:
+           rsep=rs.iptr[n];
            break;
-	 case IDL_TYP_LONG:
-	   rsep=rs.lptr[n];
+         case IDL_TYP_LONG:
+           rsep=rs.lptr[n];
            break;
-	 case IDL_TYP_FLOAT:
-	   rsep=rs.fptr[n];
+         case IDL_TYP_FLOAT:
+           rsep=rs.fptr[n];
            break;
-	 case IDL_TYP_DOUBLE:
-	   rsep=rs.dptr[n];
+         case IDL_TYP_DOUBLE:
+           rsep=rs.dptr[n];
            break;
          default:
            rsep=45;
        }
      }
 
-
     if (rx.vptr !=NULL) {
        switch (rxtyp) {
-	 case IDL_TYP_BYTE:
-	   rxrise=rx.bptr[n];
+         case IDL_TYP_BYTE:
+           rxrise=rx.bptr[n];
            break;
-	 case IDL_TYP_INT:
-	   rxrise=rx.iptr[n];
+         case IDL_TYP_INT:
+           rxrise=rx.iptr[n];
            break;
-	 case IDL_TYP_LONG:
-	   rxrise=rx.lptr[n];
+         case IDL_TYP_LONG:
+           rxrise=rx.lptr[n];
            break;
-	 case IDL_TYP_FLOAT:
-	   rxrise=rx.fptr[n];
+         case IDL_TYP_FLOAT:
+           rxrise=rx.fptr[n];
            break;
-	 case IDL_TYP_DOUBLE:
-	   rxrise=rx.dptr[n];
+         case IDL_TYP_DOUBLE:
+           rxrise=rx.dptr[n];
            break;
          default:
            rxrise=0;
        }
      }
 
-
     if (ht.vptr !=NULL) {
        switch (httyp) {
-	 case IDL_TYP_BYTE:
-	   height=ht.bptr[n];
+         case IDL_TYP_BYTE:
+           height=ht.bptr[n];
            break;
-	 case IDL_TYP_INT:
-	   height=ht.iptr[n];
+         case IDL_TYP_INT:
+           height=ht.iptr[n];
            break;
-	 case IDL_TYP_LONG:
-	   height=ht.lptr[n];
+         case IDL_TYP_LONG:
+           height=ht.lptr[n];
            break;
-	 case IDL_TYP_FLOAT:
-	   height=ht.fptr[n];
+         case IDL_TYP_FLOAT:
+           height=ht.fptr[n];
            break;
-	 case IDL_TYP_DOUBLE:
-	   height=ht.dptr[n];
+         case IDL_TYP_DOUBLE:
+           height=ht.dptr[n];
            break;
          default:
            height=300;
@@ -891,21 +1138,19 @@ static IDL_VPTR IDLRadarConvert(int type,int argc,IDL_VPTR *argv,char *argk) {
      }
 
     if (type !=0) RPosGeoGS(center,bcrd,rcrd,&site,frang,rsep,rxrise,height,
-         &rho,&lat,&lng);
+                            &rho,&lat,&lng);
     else RPosGeo(center,bcrd,rcrd,&site,frang,rsep,rxrise,height,
-         &rho,&lat,&lng,chisham);
+                 &rho,&lat,&lng,chisham);
 
      rptr[n]=rho;
      latptr[n]=lat;
      lonptr[n]=lng;
-
 
     }
 
     IDL_VarCopy(vr,argv[8]);
     IDL_VarCopy(vlat,argv[9]);
     IDL_VarCopy(vlon,argv[10]);
-
 
   } else {
 
@@ -923,40 +1168,31 @@ static IDL_VPTR IDLRadarConvert(int type,int argc,IDL_VPTR *argv,char *argk) {
     height=IDL_DoubleScalar(argv[7]);
 
     if (type !=0) RPosGeoGS(center,bcrd,rcrd,&site,frang,rsep,rxrise,height,
-         &rho,&lat,&lng);
+                            &rho,&lat,&lng);
     else RPosGeo(center,bcrd,rcrd,&site,frang,rsep,rxrise,height,
-         &rho,&lat,&lng,chisham);
+                 &rho,&lat,&lng,chisham);
 
     IDL_StoreScalar(argv[8],IDL_TYP_DOUBLE,(IDL_ALLTYPES *) &rho);
     IDL_StoreScalar(argv[9],IDL_TYP_DOUBLE,(IDL_ALLTYPES *) &lat);
     IDL_StoreScalar(argv[10],IDL_TYP_DOUBLE,(IDL_ALLTYPES *) &lng);
 
-
   }
-  
 
   IDL_KWCleanup(IDL_KW_CLEAN);
   return (IDL_GettmpLong(s));
-
 }
 
 
 static IDL_VPTR IDLRadarPos(int argc,IDL_VPTR *argv,char *argk) {
 
   return IDLRadarConvert(0,argc,argv,argk);
-
-
 }
-
-
 
 
 static IDL_VPTR IDLRadarPosGS(int argc,IDL_VPTR *argv,char *argk) {
 
     return IDLRadarConvert(1,argc,argv,argk);
-
 }
-
 
 
 int IDL_Load(void) {
@@ -964,13 +1200,15 @@ int IDL_Load(void) {
   static IDL_SYSFUN_DEF2 fnaddr[]={
     { {IDLRadarLoad},"RADARLOAD",1,1,0,0},
     { {IDLRadarLoadHardware},"RADARLOADHARDWARE",1,1,IDL_SYSFUN_DEF_F_KEYWORDS,0},
+    { {IDLRadarLoadTdiff},"RADARLOADTDIFF",1,1,IDL_SYSFUN_DEF_F_KEYWORDS,0},
     { {IDLRadarEpochGetSite},"RADAREPOCHGETSITE",2,2,0,0},
     { {IDLRadarYMDHMSGetSite},"RADARYMDHMSGETSITE",7,7,0,0},
+    { {IDLRadarEpochGetTdiff},"RADAREPOCHGETTDIFF",5,5,0,0},
+    { {IDLRadarYMDHMSGetTdiff},"RADARYMDHMSGETTDIFF",10,10,0,0},
     { {IDLRadarGetRadar},"RADARGETRADAR",2,2,0,0},
     { {IDLRadarPos},"RADARPOS",11,11,IDL_SYSFUN_DEF_F_KEYWORDS,0},
     { {IDLRadarPosGS},"RADARPOSGS",11,11,IDL_SYSFUN_DEF_F_KEYWORDS,0},
   };
-
 
   if (!(msg_block = IDL_MessageDefineBlock("rpos",
                     IDL_CARRAY_ELTS(msg_arr), msg_arr)))

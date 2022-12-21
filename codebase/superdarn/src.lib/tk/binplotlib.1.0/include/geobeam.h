@@ -20,6 +20,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 Modifications:
 */
 
+#ifndef _GEOBEAM_H
+#define _GEOBEAM_H
+
 struct GeoLocBeam {
   int bm;
   int frang;
@@ -44,3 +47,5 @@ int GeoLocCenter(struct RadarSite *site,int mag,float *lat,float *lon,
 int GeoLocBeam(struct RadarSite *site,int year,
                struct GeoLocScan *geol,struct RadarBeam *bm,
                int chisham,int old_aacgm);
+
+#endif

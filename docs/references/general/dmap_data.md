@@ -13,11 +13,11 @@ A description of the DataMap self-describing format
 
 ## Introduction
 
-The DataMap format was developed as a self-describing format to replace the existing SuperDARN binary formats.  Althought many self-describing formats already existed, none was suitable for use in the operational environment of the radar sites.  The format was designed to be the simplest possible implementation of a self-describing format that placed the minimum number of restrictions on the user and developer.  Although DataMap was originally developed as a simple file format, the same encoding method can also be applied to any stream of data.  In fact, the DataMap format is currently used to encode the real-time data stream from the radar sites.
+The DataMap format was developed as a self-describing format to replace the existing SuperDARN binary formats.  Although many self-describing formats already existed, none was suitable for use in the operational environment of the radar sites.  The format was designed to be the simplest possible implementation of a self-describing format that placed the minimum number of restrictions on the user and developer.  Although DataMap was originally developed as a simple file format, the same encoding method can also be applied to any stream of data.  In fact, the DataMap format is currently used to encode the real-time data stream from the radar sites.
 
 ## The Format
 
-DataMap files or streams are comprised of blocks or records.  Each block represents a single packet of information.  A block is comprised of two types of variables that store the data, scalars and arrays.  A scalar variable contains a signle discrete value while an array variable contains multiple values with multiple dimensions.  There is no restriction on the contents of a block, and different blocks can contain different scalars and arrays, although in most cases the same scalars and arrays will appear in each block.
+DataMap files or streams are comprised of blocks or records.  Each block represents a single packet of information.  A block is comprised of two types of variables that store the data, scalars and arrays.  A scalar variable contains a single discrete value while an array variable contains multiple values with multiple dimensions.  There is no restriction on the contents of a block, and different blocks can contain different scalars and arrays, although in most cases the same scalars and arrays will appear in each block.
 
 ### Block Format
 
@@ -61,13 +61,13 @@ Scalar data consists of single discrete values.  To store a scalar value, the Da
 
 ### Array Data
 
-An array is defined by the number of dimensions it posesses and the ranges of those dimensions.  The simplest form of an array is a vector, which consists of a one-dimensional array:
+An array is defined by the number of dimensions it possesses and the ranges of those dimensions.  The simplest form of an array is a vector, which consists of a one-dimensional array:
 
 
 |v=(10.0 5.0 3.0) | A one-dimensional array |
 |v=(10.0 5.0 6.0) <br>    3.0 4.0 2.0 | A two-dimensional array |
 
-Every dimension in an array has a range or extent which represents that maximum value an index along that dimension can have.  Array ranges start at zero and can never have a negative value.  For the two examples above, the range for the one-dimensional array is 3 and for the two dimensional array the ranges are 3 and 2.  Arrays are exactly analogous to arrays in a programming langugage.
+Every dimension in an array has a range or extent which represents that maximum value an index along that dimension can have. Array ranges start at zero and can never have a negative value. For the two examples above, the range for the one-dimensional array is 3 and for the two-dimensional array the ranges are 3 and 2. Arrays are exactly analogous to arrays in a programming language.
 
 An array variable has a name, type, dimension, a set of ranges and the data values contained in the array:
 
@@ -81,7 +81,7 @@ An array variable has a name, type, dimension, a set of ranges and the data valu
 | x+8+4*N | y | multiple              | Array values |
 
 
-The array values stored so that the first dimension is the fastest varying.  For a simple two dimension array with the range of the first dimension being 3 and the second being 2 the array data is ordered as follows:
+The array values stored so that the first dimension is the fastest varying.  For a simple two-dimension array with the range of the first dimension being 3 and the second being 2 the array data is ordered as follows:
 
 
 | v(x,y) | Index into Array Values |
@@ -100,5 +100,5 @@ The array values stored so that the first dimension is the fastest varying.  For
 
 ## History (from RFC)
 
-- 2004/06/22 Iniital Revision, RJB
+- 2004/06/22 Initial Revision, RJB
 

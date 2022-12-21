@@ -19,16 +19,21 @@
 ; 
 ; Modifications:
 ;   E.G.Thomas 2021-08: added support for new hdw file fields
+;   E.G.Thomas 2022-04: added support for tdiff calibration files
 ; 
 ; Public Functions:
 ; -----------------
 ;
 ;  RadarMakeSite
+;  RadarMakeTdiff
 ;  RadarMakeRadar
 ;  RadarLoad
 ;  RadarLoadHardware
+;  RadarLoadTdiff
 ;  RadarEpochGetSite
 ;  RadarYMDHMSGetSite
+;  RadarEpochGetTdiff
+;  RadarYMDHMSGetTdiff
 ;  RadarGetRadar
 ;  RadarPos
 ;  RadarPosGS
@@ -56,7 +61,7 @@
 ;
 ;
 ; CALLING SEQUENCE:
-;       RadarMaksSite,site
+;       RadarMakeSite,site
 ;
 ;       This procedure creates a structure to store the hardware table,
 ;       the structure is returns in site.
@@ -90,6 +95,36 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;+
 ; NAME:
+;       RadarMakeTdiff
+;
+; PURPOSE:
+;       Create a structure to store the tdiff calibration tables
+;
+;
+; CALLING SEQUENCE:
+;       RadarMakeTdiff,tdiff
+;
+;       This procedure creates a structure to store the tdiff values,
+;       the structure is returned in tdiff.
+;
+
+
+pro RadarMakeTdiff,tdiff
+
+  tdiff={RadarTdiff, $
+          method: 0L, $
+          channel: 0L, $
+          freq: dblarr(2), $
+          tval: dblarr(2), $
+          tdiff: 0.0D, $
+          tdiff_err: 0.0D $
+        }
+end
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;+
+; NAME:
 ;       RadarMakeRadar
 ;
 ; PURPOSE:
@@ -97,33 +132,36 @@ end
 ;
 ;
 ; CALLING SEQUENCE:
-;       RadarMaksRadar,radar
+;       RadarMakeRadar,radar
 ;
 ;       This procedure creates a structure to store the radar identification,
 ;       table, the structure is returns in radar.
 ;
 
 
-
-
 pro RadarMakeRadar,radar
     
- RadarMakeSite,site
- radar={Radar, $
-       id: 0L, $
-       status: 0L, $
-       cnum: 0L, $
-       code: strarr(8), $
-       name: '', $
-       operator: '', $
-       hdwfname: '', $
-       st_time: 0.0D, $
-       ed_time: 0.0D, $
-       snum: 0L, $
-       site: replicate(site,32) $
-}    
+  RadarMakeSite,site
+  RadarMakeTdiff,tdiff
+  radar={Radar, $
+          id: 0L, $
+          status: 0L, $
+          cnum: 0L, $
+          code: strarr(8), $
+          name: '', $
+          operator: '', $
+          hdwfname: '', $
+          st_time: 0.0D, $
+          ed_time: 0.0D, $
+          snum: 0L, $
+          site: replicate(site,32), $
+          tnum: 0L, $
+          tdiff: replicate(tdiff,32) $
+        }
 
 end
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;+
@@ -205,7 +243,7 @@ ON_IOERROR, iofail
          e=strpos(txt,'"',s+1)
          rad.code[n]=strmid(txt,s+1,e-s-1)
          n=n+1
-      endwhile   
+      endwhile
       rad.cnum=n
 
       if (c ne 0) then radar=[radar,rad] $
@@ -216,6 +254,8 @@ ON_IOERROR, iofail
 iofail:
    return, radar
 end
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;+
@@ -231,7 +271,7 @@ end
 ;
 ;       This function reads in the radar hardware tables and
 ;       populates the structure radar. The structure should
-;       be created using the LoadRadar function.
+;       be created using the RadarLoad function.
 ;
 ;       The returned value is zero
 ;
@@ -282,8 +322,8 @@ function RadarLoadHardware,radar,path=path
           radar[n].site[x].maxrange=long(tmp[20])
           radar[n].site[x].maxbeam=long(tmp[21])
           x=x+1
-        endif 
-      endwhile    
+        endif
+      endwhile
       radar[n].snum=x
       trap:
         free_lun,unit
@@ -299,11 +339,79 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;+
 ; NAME:
+;       RadarLoadTdiff
+;
+; PURPOSE:
+;       Loads the radar tdiff calibration tables
+;
+;
+; CALLING SEQUENCE:
+;       s = RadarLoadTdiff(radar)
+;
+;       This function reads in the radar tdiff calibration tables and
+;       populates the structure radar. The structure should
+;       be created using the RadarLoad function.
+;
+;       The returned value is zero
+;
+;-----------------------------------------------------------------
+;
+
+
+function RadarLoadTdiff,radar,path=path
+   txt=''
+   for n=0,N_ELEMENTS(radar)-1 do begin
+      if (KEYWORD_SET(path)) then fname=path+'tdiff.dat.'+radar[n].code[0] $
+      else fname='tdiff.dat.'+radar[n].code[0]
+      ON_IOERROR, trap
+      openr,unit,fname,/GET_LUN
+      x=0
+
+      while (~eof(unit)) do begin
+        readf,unit,txt
+        s=strpos(txt,'#')
+        if (s ne -1) then continue
+        if (strlen(txt) eq 0) then continue
+        tmp = strsplit(txt, ' ', /extract)
+
+        syr = long(tmp[4]) / 10000
+        smo = (long(tmp[4]) / 100) mod 100
+        sdy = long(tmp[4]) mod 100
+        stime = fix(strsplit(tmp[5], ':', /extract))
+
+        eyr = long(tmp[6]) / 10000
+        emo = (long(tmp[6]) / 100) mod 100
+        edy = long(tmp[6]) mod 100
+        etime = fix(strsplit(tmp[7], ':', /extract))
+
+        radar[n].tdiff[x].method=long(tmp[0])
+        radar[n].tdiff[x].channel=long(tmp[1])
+        radar[n].tdiff[x].freq[0]=double(tmp[2])
+        radar[n].tdiff[x].freq[1]=double(tmp[3])
+        radar[n].tdiff[x].tval[0]=TimeYMDHMSToEpoch(syr,smo,sdy,stime[0],stime[1],stime[2])
+        radar[n].tdiff[x].tval[1]=TimeYMDHMSToEpoch(eyr,emo,edy,etime[0],etime[1],etime[2])
+        radar[n].tdiff[x].tdiff=double(tmp[8])
+        radar[n].tdiff[x].tdiff_err=double(tmp[9])
+        x=x+1
+      endwhile
+      radar[n].tnum=x
+      trap:
+        free_lun,unit
+   endfor
+
+iofail:
+   return, 0
+end
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;+
+; NAME:
 ;       RadarEpochGetSite
 ;
 ; PURPOSE:
-;       Get the hardware information for a radar 
-;       
+;       Get the hardware information for a radar
+;
 ;
 ; CALLING SEQUENCE:
 ;       site = RadarEpochGetSite(radar,tval)
@@ -322,7 +430,7 @@ function RadarEpochGetSite,radar,tval
   if (radar.st_time ne -1) && (tval lt radar.st_time) then return,0
   if (radar.ed_time ne -1) && (tval gt radar.ed_time) then return,0 
 
-  for s=0,radar.snum do begin
+  for s=0,radar.snum-1 do begin
     if  (radar.site[s].tval gt tval) then break
   endfor
 
@@ -338,8 +446,8 @@ end
 ;       RadarYMDHMSGetSite
 ;
 ; PURPOSE:
-;       Get the hardware information for a radar 
-;       
+;       Get the hardware information for a radar
+;
 ;
 ; CALLING SEQUENCE:
 ;       site = RadarYMDHMSGetSite(radar,yr,mo,dy,hr,mt,sc)
@@ -365,11 +473,80 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;+
 ; NAME:
+;       RadarEpochGetTdiff
+;
+; PURPOSE:
+;       Get the tdiff calibration information for a radar
+;
+;
+; CALLING SEQUENCE:
+;       tdiff = RadarEpochGetTdiff(radar,tval,method,channel,tfreq)
+;
+;       This function finds the tdiff information for a radar.
+;
+;       The returned structure is the tdiff calibration table or zero
+;       if an error occurred.
+;
+;-----------------------------------------------------------------
+;
+
+
+function RadarEpochGetTdiff,radar,tval,method,channel,tfreq
+
+  for t=0,radar.tnum-1 do begin
+    if (radar.tdiff[t].method ne method) then continue
+    if (radar.tdiff[t].channel ne channel) then continue
+    if (radar.tdiff[t].freq[0] gt tfreq) then continue
+    if (radar.tdiff[t].freq[1] lt tfreq) then continue
+    if (radar.tdiff[t].tval[0] gt tval) then continue
+    if (radar.tdiff[t].tval[1] lt tval) then continue
+    return, radar.tdiff[t]
+  endfor
+
+  return, 0
+
+end
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;+
+; NAME:
+;       RadarYMDHMSGetTdiff
+;
+; PURPOSE:
+;       Get the tdiff calibration information for a radar
+;
+;
+; CALLING SEQUENCE:
+;       tdiff = RadarYMDHMSGetTdiff(radar,yr,mo,dy,hr,mt,sc,method,channel,tfreq)
+;
+;       This function finds the tdiff information for a radar.
+;
+;       The returned structure is the tdiff calibration table or zero
+;       if an error occurred.
+;
+;-----------------------------------------------------------------
+;
+
+
+function RadarYMDHMSGetTdiff,radar,yr,mo,dy,hr,mt,sc,method,channel,tfreq
+
+  tval=TimeYMDHMSToEpoch(yr,mo,dy,hr,mt,sc)
+  return, RadarEpochGetTdiff(radar,tval,method,channel,tfreq)
+
+end
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;+
+; NAME:
 ;       RadarGetRadar
 ;
 ; PURPOSE:
-;       Get the hardware information for a radar 
-;       
+;       Get the hardware information for a radar
+;
 ;
 ; CALLING SEQUENCE:
 ;       radar = RadarGetRadar(radar,id)
@@ -449,7 +626,7 @@ pro RadarGeoTGC,iopt,gdlat,gdlon,grho,glat,glon,del
      glat=atan( (b*b)/(a*a)*tan(!PI*gdlat/180.0))*180.0/!PI
      glon=gdlon
      if (glon gt 180) then glon=glon-360
-   endif  else begin
+   endif else begin
      gdlat=atan( (a*a)/(b*b)*tan(!PI*glat/180.0))*180.0/!PI
      gdlon=glon
    endelse
@@ -1034,11 +1211,4 @@ function RadarPosGS,center,bcrd,rcrd,site,frang,rsep,rxrise,$
 
   return, 0
 end
-
-
-
-
-
-
-
 

@@ -12,6 +12,8 @@
 </option>
 <option><on>--version</on><od>print the RST version number and exit.</od>
 </option>
+<option><on>-name <ar>stid</ar></on><od>specify the radar code <ar>stid</ar> to use for the output filename (the default value is taken from the radar parameter block but can sometimes become corrupted and set to tst).</od>
+</option>
 <option><on>-noscan</on><od>ignore scan flag and process all data (usually sounding mode data is indicated by a scan flag of -2).</od>
 </option>
 <option><on>-cn <ar>channel</ar></on><od>process data from a specific channel number for stereo mode data.</od>

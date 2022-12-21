@@ -349,6 +349,9 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
     if (grd->data !=NULL) free(grd->data);
     grd->data=NULL;
   }
+
+  grd->xtd=0;
+
   if (grd->data !=NULL) {
     for (n=26;n<30;n++) if (adata[n] !=NULL) {
       grd->xtd=1;
@@ -364,6 +367,10 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
       grd->data[n].index=adata[23]->data.iptr[n];
       grd->data[n].vel.median=adata[24]->data.fptr[n];
       grd->data[n].vel.sd=adata[25]->data.fptr[n];
+      grd->data[n].pwr.median=0;
+      grd->data[n].pwr.sd=0;
+      grd->data[n].wdt.median=0;
+      grd->data[n].wdt.sd=0;
 
       if (adata[26] !=NULL) grd->data[n].pwr.median=adata[26]->data.fptr[n];
       if (adata[27] !=NULL) grd->data[n].pwr.sd=adata[27]->data.fptr[n];

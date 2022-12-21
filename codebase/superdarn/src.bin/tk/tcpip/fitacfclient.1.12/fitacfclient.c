@@ -128,11 +128,9 @@ int main(int argc,char *argv[]) {
       fprintf(stderr,"stid  = %3d\n", prm->stid);
       fprintf(stderr,"bmnum = %3d  bmazm = %.2f  channel = %2d  intt = %3.1f\n",
                       prm->bmnum,prm->bmazm,prm->channel,prm->intt.sc+prm->intt.us/1.0e6);
-      fprintf(stderr,"frang = %3d  tfreq = %d\n", prm->frang,prm->tfreq);
-      fprintf(stderr,"rsep  = %3d  noise.search = %g\n", prm->rsep,
-                                              prm->noise.search);
-      fprintf(stderr,"scan  = %3d  noise.mean   = %g\n", prm->scan,
-                                              prm->noise.mean);
+      fprintf(stderr,"frang = %3d  nave = %d  tfreq = %d\n", prm->frang,prm->nave,prm->tfreq);
+      fprintf(stderr,"rsep  = %3d  noise.search = %g\n", prm->rsep,prm->noise.search);
+      fprintf(stderr,"scan  = %3d  noise.mean   = %g\n", prm->scan,prm->noise.mean);
       fprintf(stderr,"cpid  = %d\n", prm->cp);
       fprintf(stderr,"origin.code = %d\n", prm->origin.code);
 

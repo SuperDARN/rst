@@ -20,6 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
   E.G.Thomas 2021-08: added support for multi-channel tdiff values
+  E.G.Thomas 2022-03: added support for tdiff calibration files
 */
 
 #ifndef _FITACF_H
@@ -28,6 +29,7 @@ Modifications:
 void FitACFFree(struct FitBlock *fptr); 
 struct FitBlock *FitACFMake(struct RadarSite *hd,int year);
 void FitACF(struct RadarParm *prm,struct RawData *ptr,struct FitBlock *input,
-	    struct FitData *fit,struct RadarSite *hd);
+            struct FitData *fit,struct RadarSite *hd,struct RadarTdiff *tdiff,
+            double tdiff_fix);
 
 #endif

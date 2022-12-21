@@ -106,8 +106,6 @@
 </option>
 <option><on><ar>cfitfname</ar></on><od>filename of the <code>cfit</code> format file.</od>
 </option>
-<option><on>-c</on><od>concatenate multiple input files (from the same radar site). WARNING: This option will be deprecated in the next RST release. Multiple input files from one radar are now detected and concatenated automatically.</od>
-</option>
 <option><on><ar>fitnames</ar></on><od>filenames of the <code>fit</code> format files.</od>
 </option>
 <option><on><ar>fitacfnames</ar></on><od>filenames of the <code>fitacf</code> format files.</od>

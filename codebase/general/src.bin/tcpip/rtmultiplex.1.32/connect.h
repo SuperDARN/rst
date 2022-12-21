@@ -21,8 +21,5 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 Modifications:
 */
 
-
-
-
 void closesock(int i);
 int opensock(int sock,fd_set *fdset);

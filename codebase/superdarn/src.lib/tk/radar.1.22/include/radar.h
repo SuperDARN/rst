@@ -22,6 +22,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
   E.G.Thomas 2021-08: added support for new hdw file fields
+  E.G.Thomas 2022-03: added support for tdiff calibration files
 */ 
 
 
@@ -46,6 +47,15 @@ struct RadarSite {
   int maxbeam;
 };
 
+struct RadarTdiff {
+  int method;
+  int channel;
+  double freq[2];
+  double tval[2];
+  double tdiff;
+  double tdiff_err;
+};
+
 struct Radar {
   int id;
   int status;
@@ -58,6 +68,8 @@ struct Radar {
   double ed_time;
   int snum;
   struct RadarSite *site;
+  int tnum;
+  struct RadarTdiff *tdiff;
 };
 
 struct RadarNetwork {
@@ -67,8 +79,12 @@ struct RadarNetwork {
 
 struct RadarSite *RadarEpochGetSite(struct Radar *ptr,double tval);
 struct RadarSite *RadarYMDHMSGetSite(struct Radar *ptr,int yr,
-				     int mo,int dy,int hr,int mt,
-                                     int sc);
+                                     int mo,int dy,int hr,int mt,int sc);
+struct RadarTdiff *RadarEpochGetTdiff(struct Radar *ptr,double tval,
+                                      int method,int channel,int tfreq);
+struct RadarTdiff *RadarYMDHMSGetTdiff(struct Radar *ptr,int yr,
+                                       int mo,int dy,int hr,int mt,int sc,
+                                       int method,int channel,int tfreq);
 
 
 struct Radar *RadarGetRadar(struct RadarNetwork *ptr,int stid);
@@ -81,8 +97,9 @@ int RadarGetStatus(struct RadarNetwork *ptr,int stid);
 
 
 void RadarFree(struct RadarNetwork *ptr);
-struct RadarNetwork *RadarLoad(FILE *fp); 
-int RadarLoadHardware(char *hdwpath,struct RadarNetwork *ptr); 
+struct RadarNetwork *RadarLoad(FILE *fp);
+int RadarLoadHardware(char *hdwpath,struct RadarNetwork *ptr);
+int RadarLoadTdiff(char *tdiffpath,struct RadarNetwork *ptr);
 struct RadarSite *RadarGetSite(struct RadarNetwork *ptr,
                                int yr,int mo,int dy,int hr,int mt,int sc,
                                int stid);

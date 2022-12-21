@@ -19,6 +19,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+    2022-06-08 Emma Bland (UNIS) Added -wdt command line option
+
 */
 
 #include <stdio.h>
@@ -96,6 +98,7 @@ int main(int argc,char *argv[])
 
   int cnt_req=3;
   int vel_min=100;
+  int wdt_min=0;
   int tflg=0;
 
   int mlti;
@@ -150,6 +153,7 @@ int main(int argc,char *argv[])
 
   OptionAdd(&opt,"cnt",'i',&cnt_req);
   OptionAdd(&opt,"vel",'i',&vel_min);
+  OptionAdd(&opt,"wdt",'i',&wdt_min);
   OptionAdd(&opt,"t",'x',&tflg);
   OptionAdd(&opt,"lf",'t',&lname);
   OptionAdd(&opt,"lat",'f',&hmblat);
@@ -275,6 +279,7 @@ int main(int argc,char *argv[])
         tme=(grd[buf]->st_time+grd[buf]->ed_time)/2.0;
         TimeEpochToYMDHMS(tme,&yr,&mo,&dy,&hr,&mt,&sc);
         AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
+        AACGM_v2_Lock();
       }
     }
 
@@ -295,7 +300,9 @@ int main(int argc,char *argv[])
 
         for (j=0; j<nlat; j++) latcnt[j] = 0;
         for (i=0; i<grd[buf]->vcnum; i++) {
-          if (fabs(grd[buf]->data[i].vel.median) < vel_min) continue;
+        
+          if ( (fabs(grd[buf]->data[i].vel.median) < vel_min) ||
+               ((grd[buf]->xtd) && (grd[buf]->data[i].wdt.median < wdt_min)) ) continue;
 
           /* if on the exclusion list ignore this data */
 

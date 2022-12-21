@@ -331,7 +331,7 @@ static IDL_VPTR IDLFitSeek(int argc,IDL_VPTR *argv,char *argk) {
 
 
 
-  if (outargc>6) {
+  if (outargc>7) {
     /* decode index here */
     finx=malloc(sizeof(struct FitIndex));
     if (finx==NULL) {

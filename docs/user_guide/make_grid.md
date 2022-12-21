@@ -54,6 +54,10 @@ make_grid -cn b 20180101.C0.cly.fitacf > 20180101.cly.2.grid
     ```
 
 ## Combine data from multiple radars
+
+!!! Warning
+    Do not combine data from both hemispheres into a single grid file. This will create problems later when determining the convection pattern.
+
 First, generate grid files for each `fitacf` file you want to include. For example,
 
 ```

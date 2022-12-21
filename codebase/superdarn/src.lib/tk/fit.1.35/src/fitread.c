@@ -19,6 +19,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+    2021-11-12 Emma Bland (UNIS): Added "elv_error" and "elv_fitted" fields for compatability with FitACF3.0
+
 */
 
 #include <stdio.h>
@@ -61,6 +63,9 @@ int FitDecode(struct DataMap *ptr,
   for (c=0;c<ptr->snum;c++) {
     s=ptr->scl[c];
 
+    if ((strcmp(s->name,"algorithm")==0) && (s->type=DATASTRING))
+      FitSetAlgorithm(fit,*((char **) s->data.vptr));
+
     if ((strcmp(s->name,"fitacf.revision.major")==0) && (s->type==DATAINT))
       fit->revision.major=*(s->data.iptr);
     if ((strcmp(s->name,"fitacf.revision.minor")==0) && (s->type==DATAINT))
@@ -72,6 +77,9 @@ int FitDecode(struct DataMap *ptr,
       fit->noise.lag0=*(s->data.fptr);
     if ((strcmp(s->name,"noise.vel")==0) && (s->type==DATAFLOAT))
       fit->noise.vel=*(s->data.fptr);
+
+    if ((strcmp(s->name,"tdiff")==0) && (s->type==DATAFLOAT))
+      fit->tdiff=*(s->data.fptr);
   }
 
   for (c=0;c<ptr->anum;c++) {
@@ -87,7 +95,7 @@ int FitDecode(struct DataMap *ptr,
 
     if ((strcmp(a->name,"pwr0")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) nrang=a->rng[0];
-    if ((strcmp(a->name,"x_v")==0) && (a->type==DATAFLOAT) &&
+    if ((strcmp(a->name,"phi0")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) xcf=1;
   }
 
@@ -278,6 +286,16 @@ int FitDecode(struct DataMap *ptr,
     if ((strcmp(a->name,"elv_high")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) {
       for (x=0;x<a->rng[0];x++) fit->elv[slist[x]].high=a->data.fptr[x];
+    }
+
+    if ((strcmp(a->name,"elv_fitted")==0) && (a->type==DATAFLOAT) &&
+        (a->dim==1)) {
+      for (x=0;x<a->rng[0];x++) fit->elv[slist[x]].fitted=a->data.fptr[x];
+    }
+
+    if ((strcmp(a->name,"elv_error")==0) && (a->type==DATAFLOAT) &&
+        (a->dim==1)) {
+      for (x=0;x<a->rng[0];x++) fit->elv[slist[x]].error=a->data.fptr[x];
     }
 
     if ((strcmp(a->name,"x_sd_l")==0) && (a->type==DATAFLOAT) &&

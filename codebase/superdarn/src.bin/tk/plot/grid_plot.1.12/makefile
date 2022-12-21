@@ -5,9 +5,9 @@ include $(MAKECFG).$(SYSTEM)
 
 INCLUDE=-I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/analysis -I$(IPATH)/imagery -I$(IPATH)/superdarn
 
-SRC = grid_plot.c hlpstr.h plot_time.c plot_time.h errstr.h 
+SRC = grid_plot.c hlpstr.h errstr.h 
 
-OBJS = plot_time.o grid_plot.o 
+OBJS = grid_plot.o 
 
 DSTPATH = $(BINPATH)
 OUTPUT = grid_plot

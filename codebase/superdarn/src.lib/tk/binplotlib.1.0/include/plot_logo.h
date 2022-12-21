@@ -21,6 +21,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 Modifications:
 */
 
+#ifndef _PLOTLOGO_H
+#define _PLOTLOGO_H
+
 void plot_logo(struct Plot *plot, float xoff,float yoff,float wdt,float hgt,
                unsigned int color,unsigned char mask, char *fontname,
                float fontsize, void *txtdata);
@@ -36,4 +39,5 @@ void plot_web(struct Plot *plot, float xoff,float yoff,float wdt,float hgt,
 void plot_credit(struct Plot *plot, float xoff,float yoff,float wdt,float hgt,
                  unsigned int color,unsigned char mask, char *fontname,
                  float fontsize, void *txtdata);
- 
+
+#endif

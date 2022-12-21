@@ -45,9 +45,6 @@ Modifications:
 #include "fork.h"
 
 
-
-
-
 #define MAXSERVER 64
 
 int num=0;
@@ -62,8 +59,6 @@ unsigned  char *buffer[MAXSERVER];
 int size[MAXSERVER];
 int flag[MAXSERVER];
 
-
-
 int outpipe=-1;
 int resetflg=0;
 
@@ -73,19 +68,21 @@ char logfname[256]={"web.rt.log"};
 char timefname[256]={"time.rt"};
 unsigned char vb=0,vt=0;
 
-
 struct OptionData opt;
+
 
 void trappipe(int signal) {
   close(outpipe);
   outpipe=-1;
 }
 
+
 int rst_opterr(char *txt) {
   fprintf(stderr,"Option not recognized: %s\n",txt);
   fprintf(stderr,"Please try: rtmultiplex --help\n");
   return(-1);
 }
+
 
 int main(int argc,char *argv[]) {
   int arg;
@@ -115,7 +112,7 @@ int main(int argc,char *argv[]) {
 
   struct timeval tmout;
   int cnt=0;
- 
+
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
   OptionAdd(&opt,"-version",'x',&version);
@@ -126,10 +123,10 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"lp",'i',&port);
   OptionAdd(&opt,"L",'t',&logstr);
   OptionAdd(&opt,"T",'t',&timestr);
- 
+
   OptionAdd(&opt,"pf",'t',&pnamestr);
   OptionAdd(&opt,"if",'t',&pidstr);
- 
+
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
   if (arg==-1) {
@@ -163,7 +160,7 @@ int main(int argc,char *argv[]) {
   }
   if (pnamestr !=NULL) strcpy(pname,pnamestr);
   if (pidstr !=NULL) strcpy(pidname,pidstr);
- 
+
   for (c=arg;c<argc;c+=2) {
     strcpy(host[num],argv[c]);
     remoteport[num]=atoi(argv[c+1]);
@@ -173,49 +170,47 @@ int main(int argc,char *argv[]) {
 
   sigemptyset(&set);
   sigaddset(&set,SIGPIPE);
- 
+
   act.sa_flags=0;
   act.sa_mask=set;
   act.sa_handler=trappipe;
   sigaction(SIGPIPE,&act,NULL);
 
-  signal(SIGCHLD,SIG_IGN); 
- 
+  signal(SIGCHLD,SIG_IGN);
+
   outpipe=forkinet(port);
 
   do {
     for (c=0;c<num;c++) {
       if (time(NULL) > tick[c]) {
-	 if (sock[c] !=-1) {
-	   sprintf(logbuf,
-                   "Connection to Host %s:%d timed out - connection reset",
-                   host[c],remoteport[c]);
-           loginfo(logfname,logbuf);
-           close(sock[c]);
-           sock[c]=-1;
-	 }
-         sprintf(logbuf,"Connecting to Host %s:%d.",host[c],remoteport[c]);
-         loginfo(logfname,logbuf);
-         sprintf(logbuf,"Timeout: %d seconds.",timeout);
-         loginfo(logfname,logbuf);
-         sprintf(logbuf,"Reset Delay: %d seconds.",resetclk);
-         loginfo(logfname,logbuf);
-         tmout.tv_sec=timeout;
-         tmout.tv_usec=0;
-         sock[c]=ConnexOpen(host[c],remoteport[c],&tmout);
-         if (sock[c]==-1) {
-           sprintf(logbuf,"Could not connect to Host %s:%d.",
-		 host[c],remoteport[c]);
-           loginfo(logfname,logbuf);
-	 } else {
-           sprintf(logbuf,"Connection to Host open.");
-           loginfo(logfname,logbuf);
-	 }
-         tick[c]=time(NULL)+timeout;
+        if (sock[c] !=-1) {
+          sprintf(logbuf,"Connection to Host %s:%d timed out - connection reset",
+                         host[c],remoteport[c]);
+          loginfo(logfname,logbuf);
+          close(sock[c]);
+          sock[c]=-1;
+        }
+        sprintf(logbuf,"Connecting to Host %s:%d.",host[c],remoteport[c]);
+        loginfo(logfname,logbuf);
+        sprintf(logbuf,"Timeout: %d seconds.",timeout);
+        loginfo(logfname,logbuf);
+        sprintf(logbuf,"Reset Delay: %d seconds.",resetclk);
+        loginfo(logfname,logbuf);
+        tmout.tv_sec=timeout;
+        tmout.tv_usec=0;
+        sock[c]=ConnexOpen(host[c],remoteport[c],&tmout);
+        if (sock[c]==-1) {
+          sprintf(logbuf,"Could not connect to Host %s:%d.",
+                         host[c],remoteport[c]);
+          loginfo(logfname,logbuf);
+        } else {
+          sprintf(logbuf,"Connection to Host open.");
+          loginfo(logfname,logbuf);
+        }
+        tick[c]=time(NULL)+timeout;
       }
     }
 
-  
     cnt=0;
     for (c=0;c<num;c++) if (sock[c] !=-1) cnt++;
     if (cnt==0) {
@@ -224,9 +219,7 @@ int main(int argc,char *argv[]) {
     }
 
     if (vb) {
-
-      sprintf(logbuf,"Polling for incoming data. (%d open connections)",
-	      cnt);
+      sprintf(logbuf,"Polling for incoming data. (%d open connections)",cnt);
       loginfo(logfname,logbuf);
     }
 
@@ -238,19 +231,18 @@ int main(int argc,char *argv[]) {
       loginfo(logfname,"select() timed out - restarting connections.");
       for (c=0;c<num;c++) {
         close(sock[c]);
-	sock[c]=-1;
+        sock[c]=-1;
         flag[c]=0;
         tick[c]=time(NULL)+resetclk;
       }
       continue;
     }
 
-
     if (status==-1) {
       loginfo(logfname,"select() failed - restarting connections.");
       for (c=0;c<num;c++) {
         close(sock[c]);
-	sock[c]=-1;
+        sock[c]=-1;
         flag[c]=0;
         tick[c]=time(NULL)+resetclk;
       }
@@ -262,66 +254,41 @@ int main(int argc,char *argv[]) {
       if (flag[c]==-1) {
         if (vb) {
           sprintf(logbuf,"Connection to Host %s:%d failed.",
-	  host[c],remoteport[c]);
+                         host[c],remoteport[c]);
           loginfo(logfname,logbuf);
-	}
+        }
         close(sock[c]);
-	sock[c]=-1;
+        sock[c]=-1;
         flag[c]=0;
         tick[c]=time(NULL)+resetclk;
         continue;
-      }  
+      }
       if ((outpipe==-1) && (time(NULL) > pipewait)) {
         loginfo(logfname,"Child process died - Restarting.");
         outpipe=forkinet(port);
         if (outpipe==-1) {
           pipewait=time(NULL)+resetclk;
           continue;
-	}
+        }
       }
       tick[c]=time(NULL)+timeout;
       if (vb) {
-         sprintf(logbuf,"Received %d bytes from Host %s:%d.",
-	         size[c],host[c],remoteport[c]);
-         loginfo(logfname,logbuf);
+        sprintf(logbuf,"Received %d bytes from Host %s:%d.",
+                       size[c],host[c],remoteport[c]);
+        loginfo(logfname,logbuf);
       }
       if (outpipe==-1) continue;
-      
+
       status=pipewrite(outpipe,buffer[c],size[c]);
       if (status==-1) {
-            loginfo(logfname,"Pipe broken");
-	    close(outpipe);
-            pipewait=time(NULL)+resetclk;
-            outpipe=-1;
+        loginfo(logfname,"Pipe broken");
+        close(outpipe);
+        pipewait=time(NULL)+resetclk;
+        outpipe=-1;
       }
     }
   } while (1);
+
   return 0;
 }
-
-
-   
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

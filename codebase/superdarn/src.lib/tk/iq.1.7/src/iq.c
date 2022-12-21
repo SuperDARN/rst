@@ -203,37 +203,37 @@ void *IQFlatten(struct IQ *ptr,int nave,size_t *size) {
   p=sizeof(struct IQ);
 
   if (ptr->tval !=NULL) {
-    memcpy((int*)buf+p,ptr->tval,nave*sizeof(struct timespec));
+    memcpy(buf+p,ptr->tval,nave*sizeof(struct timespec));
     r->tval=(void *) p;
     p+=nave*sizeof(struct timespec);
   }
 
   if (ptr->atten !=NULL) {
-    memcpy((int*)buf+p,ptr->atten,nave*sizeof(int));
+    memcpy(buf+p,ptr->atten,nave*sizeof(int));
     r->atten=(void *) p;
     p+=nave*sizeof(int);
   }
 
   if (ptr->noise !=NULL) {
-    memcpy((int*)buf+p,ptr->noise,nave*sizeof(float));
+    memcpy(buf+p,ptr->noise,nave*sizeof(float));
     r->noise=(void *) p;
     p+=nave*sizeof(float);
   }
 
   if (ptr->offset !=NULL) {
-    memcpy((int*)buf+p,ptr->offset,nave*sizeof(int));
+    memcpy(buf+p,ptr->offset,nave*sizeof(int));
     r->offset=(void *) p;
     p+=nave*sizeof(int);
   }
 
   if (ptr->size !=NULL) {
-    memcpy((int*)buf+p,ptr->size,nave*sizeof(int));
+    memcpy(buf+p,ptr->size,nave*sizeof(int));
     r->size=(void *) p;
     p+=nave*sizeof(int);
   }
 
   if (ptr->badtr !=NULL) {
-    memcpy((int*)buf+p,ptr->badtr,nave*sizeof(int));
+    memcpy(buf+p,ptr->badtr,nave*sizeof(int));
     r->badtr=(void *) p;
     p+=nave*sizeof(int);
   }
@@ -256,32 +256,32 @@ int IQExpand(struct IQ *ptr,int nave,void *buffer) {
   if (ptr->badtr !=NULL) free(ptr->badtr);
   memcpy(ptr,buffer,sizeof(struct IQ));
   if (ptr->tval !=NULL) {
-    p=(int*)buffer+(size_t) ptr->tval;
+    p=buffer+(size_t) ptr->tval;
     ptr->tval=malloc(nave*sizeof(struct timespec));
     memcpy(ptr->tval,p,nave*sizeof(struct timespec));
   }
   if (ptr->atten !=NULL) {
-    p=(int*)buffer+(size_t) ptr->atten;
+    p=buffer+(size_t) ptr->atten;
     ptr->atten=malloc(nave*sizeof(int));
     memcpy(ptr->atten,p,nave*sizeof(int));
   }
   if (ptr->noise !=NULL) {
-    p=(int*)buffer+(size_t) ptr->noise;
+    p=buffer+(size_t) ptr->noise;
     ptr->noise=malloc(nave*sizeof(float));
     memcpy(ptr->noise,p,nave*sizeof(float));
   }
   if (ptr->offset !=NULL) {
-    p=(int*)buffer+(size_t) ptr->offset;
+    p=buffer+(size_t) ptr->offset;
     ptr->offset=malloc(nave*sizeof(int));
     memcpy(ptr->offset,p,nave*sizeof(int));
   }
   if (ptr->size !=NULL) {
-    p=(int*)buffer+(size_t) ptr->size;
+    p=buffer+(size_t) ptr->size;
     ptr->size=malloc(nave*sizeof(int));
     memcpy(ptr->size,p,nave*sizeof(int));
   }
   if (ptr->badtr !=NULL) {
-    p=(int*)buffer+(size_t) ptr->badtr;
+    p=buffer+(size_t) ptr->badtr;
     ptr->badtr=malloc(nave*sizeof(int));
     memcpy(ptr->badtr,p,nave*sizeof(int));
   }

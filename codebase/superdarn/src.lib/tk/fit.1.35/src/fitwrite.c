@@ -18,6 +18,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 Modifications:
+    2021-11-12 Emma Bland (UNIS): Added "elv_error" and "elv_fitted" fields for FitACF v3
+                                  Only write XCF fitted parameters to file for FitACF v2 and earlier
 */
 
 #include <stdio.h>
@@ -83,30 +85,31 @@ int FitEncode(struct DataMap *ptr,struct RadarParm *prm, struct FitData *fit) {
   float *phi0=NULL;
   float *phi0_e=NULL;
   float *elv=NULL;
-  float *elv_low=NULL;
-  float *elv_high=NULL;
+  float *elv_low=NULL;    // fitacf 1-2
+  float *elv_high=NULL;   // fitacf 1-2
+  float *elv_fitted=NULL; // fitacf 3
+  float *elv_error=NULL;  // fitacf 3
 
   float *x_sd_l=NULL;
   float *x_sd_s=NULL;
   float *x_sd_phi=NULL;
 
-  float sky_noise;
-  float lag0_noise;
-  float vel_noise;
+  float sky_noise=fit->noise.skynoise;
+  float lag0_noise=fit->noise.lag0;
+  float vel_noise=fit->noise.vel;
+
+  DataMapAddScalar(ptr,"algorithm",DATASTRING,&fit->algorithm);
 
   DataMapAddScalar(ptr,"fitacf.revision.major",DATAINT,
 		    &fit->revision.major);
   DataMapAddScalar(ptr,"fitacf.revision.minor",DATAINT,
 		    &fit->revision.minor);
 
-  sky_noise=fit->noise.skynoise;
-  lag0_noise=fit->noise.lag0;
-  vel_noise=fit->noise.vel;
-
   DataMapStoreScalar(ptr,"noise.sky",DATAFLOAT,&sky_noise);
   DataMapStoreScalar(ptr,"noise.lag0",DATAFLOAT,&lag0_noise);
   DataMapStoreScalar(ptr,"noise.vel",DATAFLOAT,&vel_noise);
 
+  DataMapStoreScalar(ptr,"tdiff",DATAFLOAT,&fit->tdiff);
 
   p0num=prm->nrang;
   pwr0=DataMapStoreArray(ptr,"pwr0",DATAFLOAT,1,&p0num,NULL);
@@ -152,32 +155,51 @@ int FitEncode(struct DataMap *ptr,struct RadarParm *prm, struct FitData *fit) {
   sd_phi=DataMapStoreArray(ptr,"sd_phi",DATAFLOAT,1,&snum,NULL);
 
   if (prm->xcf !=0) {
-    x_qflg=DataMapStoreArray(ptr,"x_qflg",DATACHAR,1,&xnum,NULL); 
-    x_gflg=DataMapStoreArray(ptr,"x_gflg",DATACHAR,1,&xnum,NULL); 
   
-    x_p_l=DataMapStoreArray(ptr,"x_p_l",DATAFLOAT,1,&xnum,NULL);   
-    x_p_l_e=DataMapStoreArray(ptr,"x_p_l_e",DATAFLOAT,1,&xnum,NULL); 
-    x_p_s=DataMapStoreArray(ptr,"x_p_s",DATAFLOAT,1,&xnum,NULL); 
-    x_p_s_e=DataMapStoreArray(ptr,"x_p_s_e",DATAFLOAT,1,&xnum,NULL); 
+    /* fit.revision.major has values of 4 and 5 in some historical data. 
+       The logic of the if statements below should be changed if a new major
+       version of FitACF is created in the future */
+    
+    if (fit->revision.major==3) {
+      //XCF fitted parameters for FitACF 3
+      phi0=DataMapStoreArray(ptr,"phi0",DATAFLOAT,1,&xnum,NULL);
+      phi0_e=DataMapStoreArray(ptr,"phi0_e",DATAFLOAT,1,&xnum,NULL);
+      elv=DataMapStoreArray(ptr,"elv",DATAFLOAT,1,&xnum,NULL);
+      elv_fitted=DataMapStoreArray(ptr,"elv_fitted",DATAFLOAT,1,&xnum,NULL);
+      elv_error=DataMapStoreArray(ptr,"elv_error",DATAFLOAT,1,&xnum,NULL);
+      
+      x_sd_phi=DataMapStoreArray(ptr,"x_sd_phi",DATAFLOAT,1,&xnum,NULL);
+    } else {
+      //XCF fitted parameters for FitACF 1-2
+      x_qflg=DataMapStoreArray(ptr,"x_qflg",DATACHAR,1,&xnum,NULL);
+      x_gflg=DataMapStoreArray(ptr,"x_gflg",DATACHAR,1,&xnum,NULL);
   
-    x_v=DataMapStoreArray(ptr,"x_v",DATAFLOAT,1,&xnum,NULL); 
-    x_v_e=DataMapStoreArray(ptr,"x_v_e",DATAFLOAT,1,&xnum,NULL); 
+      x_p_l=DataMapStoreArray(ptr,"x_p_l",DATAFLOAT,1,&xnum,NULL);
+      x_p_l_e=DataMapStoreArray(ptr,"x_p_l_e",DATAFLOAT,1,&xnum,NULL);
+      x_p_s=DataMapStoreArray(ptr,"x_p_s",DATAFLOAT,1,&xnum,NULL);
+      x_p_s_e=DataMapStoreArray(ptr,"x_p_s_e",DATAFLOAT,1,&xnum,NULL);
+  
+      x_v=DataMapStoreArray(ptr,"x_v",DATAFLOAT,1,&xnum,NULL); 
+      x_v_e=DataMapStoreArray(ptr,"x_v_e",DATAFLOAT,1,&xnum,NULL);
  
-    x_w_l=DataMapStoreArray(ptr,"x_w_l",DATAFLOAT,1,&xnum,NULL); 
-    x_w_l_e=DataMapStoreArray(ptr,"x_w_l_e",DATAFLOAT,1,&xnum,NULL);   
-    x_w_s=DataMapStoreArray(ptr,"x_w_s",DATAFLOAT,1,&xnum,NULL); 
-    x_w_s_e=DataMapStoreArray(ptr,"x_w_s_e",DATAFLOAT,1,&xnum,NULL); 
+      x_w_l=DataMapStoreArray(ptr,"x_w_l",DATAFLOAT,1,&xnum,NULL);
+      x_w_l_e=DataMapStoreArray(ptr,"x_w_l_e",DATAFLOAT,1,&xnum,NULL);
+      x_w_s=DataMapStoreArray(ptr,"x_w_s",DATAFLOAT,1,&xnum,NULL);
+      x_w_s_e=DataMapStoreArray(ptr,"x_w_s_e",DATAFLOAT,1,&xnum,NULL);
   
-    phi0=DataMapStoreArray(ptr,"phi0",DATAFLOAT,1,&xnum,NULL); 
-    phi0_e=DataMapStoreArray(ptr,"phi0_e",DATAFLOAT,1,&xnum,NULL); 
-    elv=DataMapStoreArray(ptr,"elv",DATAFLOAT,1,&xnum,NULL); 
-    elv_low=DataMapStoreArray(ptr,"elv_low",DATAFLOAT,1,&xnum,NULL); 
-    elv_high=DataMapStoreArray(ptr,"elv_high",DATAFLOAT,1,&xnum,NULL); 
+      phi0=DataMapStoreArray(ptr,"phi0",DATAFLOAT,1,&xnum,NULL);
+      phi0_e=DataMapStoreArray(ptr,"phi0_e",DATAFLOAT,1,&xnum,NULL);
+      elv=DataMapStoreArray(ptr,"elv",DATAFLOAT,1,&xnum,NULL);
+      elv_low=DataMapStoreArray(ptr,"elv_low",DATAFLOAT,1,&xnum,NULL);
+      elv_high=DataMapStoreArray(ptr,"elv_high",DATAFLOAT,1,&xnum,NULL);
 
-    x_sd_l=DataMapStoreArray(ptr,"x_sd_l",DATAFLOAT,1,&xnum,NULL); 
-    x_sd_s=DataMapStoreArray(ptr,"x_sd_s",DATAFLOAT,1,&xnum,NULL); 
-    x_sd_phi=DataMapStoreArray(ptr,"x_sd_phi",DATAFLOAT,1,&xnum,NULL);   
+      x_sd_l=DataMapStoreArray(ptr,"x_sd_l",DATAFLOAT,1,&xnum,NULL);
+      x_sd_s=DataMapStoreArray(ptr,"x_sd_s",DATAFLOAT,1,&xnum,NULL);
+      x_sd_phi=DataMapStoreArray(ptr,"x_sd_phi",DATAFLOAT,1,&xnum,NULL);
+
+    }
   }
+  
   x=0;
   for (c=0;c<prm->nrang;c++) {
     if ( (fit->rng[c].qflg==1) ||
@@ -206,39 +228,51 @@ int FitEncode(struct DataMap *ptr,struct RadarParm *prm, struct FitData *fit) {
       sd_phi[x]=fit->rng[c].sdev_phi;
 
       if (xnum !=0) {
-        x_qflg[x]=fit->xrng[c].qflg;
-        x_gflg[x]=fit->xrng[c].gsct;
-    
-        x_qflg[x]=fit->xrng[c].qflg;
-        x_gflg[x]=fit->xrng[c].gsct;
         
-        x_p_l[x]=fit->xrng[c].p_l;
-        x_p_l_e[x]=fit->xrng[c].p_l_err;
-        x_p_s[x]=fit->xrng[c].p_s;
-        x_p_s_e[x]=fit->xrng[c].p_s_err;
-        
-        x_v[x]=fit->xrng[c].v;
-        x_v_e[x]=fit->xrng[c].v_err;
+      /* FitACF v3 does not determine XCF fitted parameters, so only 
+         write these data to file for FitACF v1-2. The elevation field 
+         names have also changed. 
+         NB: update if statement logic if new major revision of FitACF
+             is created in the future*/
+        if (fit->revision.major==3) {
+          phi0[x]=fit->xrng[c].phi0;
+          phi0_e[x]=fit->xrng[c].phi0_err;
+          elv[x]=fit->elv[c].normal;
+          elv_fitted[x]=fit->elv[c].fitted;
+          elv_error[x]=fit->elv[c].error;
 
-  
-        x_w_l[x]=fit->xrng[c].w_l;
-        x_w_l_e[x]=fit->xrng[c].w_l_err;
-        x_w_s[x]=fit->xrng[c].w_s;
-        x_w_s_e[x]=fit->xrng[c].w_s_err;
+          x_sd_phi[x]=fit->xrng[c].sdev_phi;
+        } else {
+          x_qflg[x]=fit->xrng[c].qflg;
+          x_gflg[x]=fit->xrng[c].gsct;
 
-        phi0[x]=fit->xrng[c].phi0;
-        phi0_e[x]=fit->xrng[c].phi0_err;
-        elv[x]=fit->elv[c].normal;
-        elv_low[x]=fit->elv[c].low;
-        elv_high[x]=fit->elv[c].high;
+          x_p_l[x]=fit->xrng[c].p_l;
+          x_p_l_e[x]=fit->xrng[c].p_l_err;
+          x_p_s[x]=fit->xrng[c].p_s;
+          x_p_s_e[x]=fit->xrng[c].p_s_err;
 
-        x_sd_l[x]=fit->xrng[c].sdev_l;
-        x_sd_s[x]=fit->xrng[c].sdev_s;
-        x_sd_phi[x]=fit->xrng[c].sdev_phi;
+          x_v[x]=fit->xrng[c].v;
+          x_v_e[x]=fit->xrng[c].v_err;
+
+          x_w_l[x]=fit->xrng[c].w_l;
+          x_w_l_e[x]=fit->xrng[c].w_l_err;
+          x_w_s[x]=fit->xrng[c].w_s;
+          x_w_s_e[x]=fit->xrng[c].w_s_err;
+
+          phi0[x]=fit->xrng[c].phi0;
+          phi0_e[x]=fit->xrng[c].phi0_err;
+          elv[x]=fit->elv[c].normal;
+          elv_low[x]=fit->elv[c].low;
+          elv_high[x]=fit->elv[c].high;
+
+          x_sd_l[x]=fit->xrng[c].sdev_l;
+          x_sd_s[x]=fit->xrng[c].sdev_s;
+          x_sd_phi[x]=fit->xrng[c].sdev_phi;
+        }
       }
       x++;
     }
-  }      
+  }
   return 0;
 }
 

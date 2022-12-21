@@ -17,6 +17,7 @@
  along with this program. If not, see <https://www.gnu.org/licenses/>.
  
  Modifications:
+     2022-01-23 Emma Bland (UNIS): Added "elv_error" and "elv_fitted" fields to support FitACF v3
  
 
 */
@@ -40,6 +41,8 @@
 #include "rprmidl.h"
 #include "fitidl.h"
 
+#define ALGORITHM_SIZE 80
+
 void IDLCopyFitDataFromIDL(int nrang,int xcf,struct FitIDLData *ifit,
                            struct FitData *fit) {
 
@@ -51,11 +54,15 @@ void IDLCopyFitDataFromIDL(int nrang,int xcf,struct FitIDLData *ifit,
      FitSetElv(fit,nrang);
   }
 
+  if (strlen(IDL_STRING_STR(&ifit->algorithm)) !=0)
+    FitSetAlgorithm(fit,IDL_STRING_STR(&ifit->algorithm));
+
   fit->revision.major=ifit->revision.major;
   fit->revision.minor=ifit->revision.minor;
   fit->noise.skynoise=ifit->noise.sky;
   fit->noise.lag0=ifit->noise.lag0;
   fit->noise.vel=ifit->noise.vel;
+  fit->tdiff=ifit->tdiff;
  
   for (n=0;n<nrang;n++) {
     fit->rng[n].p_0=ifit->pwr0[n];
@@ -79,6 +86,8 @@ void IDLCopyFitDataFromIDL(int nrang,int xcf,struct FitIDLData *ifit,
       fit->elv[n].low=ifit->elv_low[n];
       fit->elv[n].normal=ifit->elv[n];
       fit->elv[n].high=ifit->elv_high[n];
+      fit->elv[n].error=ifit->elv_error[n];
+      fit->elv[n].fitted=ifit->elv_fitted[n];
       fit->xrng[n].qflg=ifit->x_qflg[n];
       fit->xrng[n].gsct=ifit->x_gflg[n];
       fit->xrng[n].p_l=ifit->x_p_l[n];
@@ -107,13 +116,23 @@ void IDLCopyFitDataToIDL(int nrang,int xcf,struct FitData *fit,
 
   int n;
 
+  char algorithmtmp[ALGORITHM_SIZE+1];
+
+  memset(&algorithmtmp,0,ALGORITHM_SIZE+1);
+
   memset(ifit,0,sizeof(struct FitIDLData));
+
+  if (fit->algorithm !=NULL) {
+    strncpy(algorithmtmp,fit->algorithm,ALGORITHM_SIZE);
+    IDL_StrStore(&ifit->algorithm,algorithmtmp);
+  }
 
   ifit->revision.major=fit->revision.major;
   ifit->revision.minor=fit->revision.minor;
   ifit->noise.sky=fit->noise.skynoise;
   ifit->noise.lag0=fit->noise.lag0;
   ifit->noise.vel=fit->noise.vel;
+  ifit->tdiff=fit->tdiff;
 
   for (n=0;n<nrang;n++) {
     ifit->pwr0[n]=fit->rng[n].p_0;
@@ -137,6 +156,8 @@ void IDLCopyFitDataToIDL(int nrang,int xcf,struct FitData *fit,
       ifit->elv_low[n]=fit->elv[n].low;
       ifit->elv[n]=fit->elv[n].normal;
       ifit->elv_high[n]=fit->elv[n].high;
+      ifit->elv_fitted[n]=fit->elv[n].fitted;
+      ifit->elv_error[n]=fit->elv[n].error;
       ifit->x_qflg[n]=fit->xrng[n].qflg;
       ifit->x_gflg[n]=fit->xrng[n].gsct;
       ifit->x_p_l[n]=fit->xrng[n].p_l;
@@ -177,53 +198,57 @@ struct FitIDLData *IDLMakeFitData(IDL_VPTR *vptr) {
 
   
   static IDL_STRUCT_TAG_DEF fitdata[]={    
-    {"REVISION",0,NULL},   /* 0 */
-    {"NOISE",0,NULL},   /* 1 */ 
-    {"PWR0",rdim,(void *) IDL_TYP_FLOAT}, /* 2 */
-    {"NLAG",rdim,(void *) IDL_TYP_INT}, /* 3 */
-    {"QFLG",rdim,(void *) IDL_TYP_BYTE}, /* 4 */
-    {"GFLG",rdim,(void *) IDL_TYP_BYTE}, /* 5 */
-    {"P_L",rdim,(void *) IDL_TYP_FLOAT}, /* 6 */
-    {"P_L_E",rdim,(void *) IDL_TYP_FLOAT}, /* 7 */
-    {"P_S",rdim,(void *) IDL_TYP_FLOAT}, /* 8 */
-    {"P_S_E",rdim,(void *) IDL_TYP_FLOAT}, /* 9 */
-    {"V",rdim,(void *) IDL_TYP_FLOAT}, /* 10 */
-    {"V_E",rdim,(void *) IDL_TYP_FLOAT}, /* 11 */
-    {"W_L",rdim,(void *) IDL_TYP_FLOAT}, /* 12 */
-    {"W_L_E",rdim,(void *) IDL_TYP_FLOAT}, /* 13 */
-    {"W_S",rdim,(void *) IDL_TYP_FLOAT}, /* 14 */
-    {"W_S_E",rdim,(void *) IDL_TYP_FLOAT}, /* 15 */
-    {"SD_L",rdim,(void *) IDL_TYP_FLOAT}, /* 16 */
-    {"SD_S",rdim,(void *) IDL_TYP_FLOAT}, /* 17 */
-    {"SD_PHI",rdim,(void *) IDL_TYP_FLOAT}, /* 18 */
-    {"X_QFLG",rdim,(void *) IDL_TYP_BYTE}, /* 19 */
-    {"X_GFLG",rdim,(void *) IDL_TYP_BYTE}, /* 20 */
-    {"X_P_L",rdim,(void *) IDL_TYP_FLOAT}, /* 21 */
-    {"X_P_L_E",rdim,(void *) IDL_TYP_FLOAT}, /* 22 */
-    {"X_P_S",rdim,(void *) IDL_TYP_FLOAT}, /* 23 */
-    {"X_P_S_E",rdim,(void *) IDL_TYP_FLOAT}, /* 24 */
-    {"X_V",rdim,(void *) IDL_TYP_FLOAT}, /* 25 */
-    {"X_V_E",rdim,(void *) IDL_TYP_FLOAT}, /* 26 */
-    {"X_W_L",rdim,(void *) IDL_TYP_FLOAT}, /* 27 */
-    {"X_W_L_E",rdim,(void *) IDL_TYP_FLOAT}, /* 28 */
-    {"X_W_S",rdim,(void *) IDL_TYP_FLOAT}, /* 29 */
-    {"X_W_S_E",rdim,(void *) IDL_TYP_FLOAT}, /* 30 */
-    {"PHI0",rdim,(void *) IDL_TYP_FLOAT}, /* 31 */
-    {"PHI0_E",rdim,(void *) IDL_TYP_FLOAT}, /* 32 */
-    {"ELV",rdim,(void *) IDL_TYP_FLOAT}, /* 33 */  
-    {"ELV_LOW",rdim,(void *) IDL_TYP_FLOAT}, /* 34 */
-    {"ELV_HIGH",rdim,(void *) IDL_TYP_FLOAT}, /* 35 */
-    {"X_SD_L",rdim,(void *) IDL_TYP_FLOAT}, /* 36 */
-    {"X_SD_S",rdim,(void *) IDL_TYP_FLOAT}, /* 37 */
-    {"X_SD_PHI",rdim,(void *) IDL_TYP_FLOAT}, /* 38 */
- 
+    {"ALGORITHM",0,(void *) IDL_TYP_STRING}, /* 0 */
+    {"REVISION",0,NULL},   /* 1 */
+    {"NOISE",0,NULL},   /* 2 */ 
+    {"TDIFF",0,(void *) IDL_TYP_FLOAT}, /* 3 */
+    {"PWR0",rdim,(void *) IDL_TYP_FLOAT}, /* 4 */
+    {"NLAG",rdim,(void *) IDL_TYP_INT}, /* 5 */
+    {"QFLG",rdim,(void *) IDL_TYP_BYTE}, /* 6 */
+    {"GFLG",rdim,(void *) IDL_TYP_BYTE}, /* 7 */
+    {"P_L",rdim,(void *) IDL_TYP_FLOAT}, /* 8 */
+    {"P_L_E",rdim,(void *) IDL_TYP_FLOAT}, /* 9 */
+    {"P_S",rdim,(void *) IDL_TYP_FLOAT}, /* 10 */
+    {"P_S_E",rdim,(void *) IDL_TYP_FLOAT}, /* 11 */
+    {"V",rdim,(void *) IDL_TYP_FLOAT}, /* 12 */
+    {"V_E",rdim,(void *) IDL_TYP_FLOAT}, /* 13 */
+    {"W_L",rdim,(void *) IDL_TYP_FLOAT}, /* 14 */
+    {"W_L_E",rdim,(void *) IDL_TYP_FLOAT}, /* 15 */
+    {"W_S",rdim,(void *) IDL_TYP_FLOAT}, /* 16 */
+    {"W_S_E",rdim,(void *) IDL_TYP_FLOAT}, /* 17 */
+    {"SD_L",rdim,(void *) IDL_TYP_FLOAT}, /* 18 */
+    {"SD_S",rdim,(void *) IDL_TYP_FLOAT}, /* 19 */
+    {"SD_PHI",rdim,(void *) IDL_TYP_FLOAT}, /* 20 */
+    {"X_QFLG",rdim,(void *) IDL_TYP_BYTE}, /* 21 */
+    {"X_GFLG",rdim,(void *) IDL_TYP_BYTE}, /* 22 */
+    {"X_P_L",rdim,(void *) IDL_TYP_FLOAT}, /* 23 */
+    {"X_P_L_E",rdim,(void *) IDL_TYP_FLOAT}, /* 24 */
+    {"X_P_S",rdim,(void *) IDL_TYP_FLOAT}, /* 25 */
+    {"X_P_S_E",rdim,(void *) IDL_TYP_FLOAT}, /* 26 */
+    {"X_V",rdim,(void *) IDL_TYP_FLOAT}, /* 27 */
+    {"X_V_E",rdim,(void *) IDL_TYP_FLOAT}, /* 28 */
+    {"X_W_L",rdim,(void *) IDL_TYP_FLOAT}, /* 29 */
+    {"X_W_L_E",rdim,(void *) IDL_TYP_FLOAT}, /* 30 */
+    {"X_W_S",rdim,(void *) IDL_TYP_FLOAT}, /* 31 */
+    {"X_W_S_E",rdim,(void *) IDL_TYP_FLOAT}, /* 32 */
+    {"PHI0",rdim,(void *) IDL_TYP_FLOAT}, /* 33 */
+    {"PHI0_E",rdim,(void *) IDL_TYP_FLOAT}, /* 34 */
+    {"ELV",rdim,(void *) IDL_TYP_FLOAT}, /* 35 */
+    {"ELV_LOW",rdim,(void *) IDL_TYP_FLOAT}, /* 36 */
+    {"ELV_HIGH",rdim,(void *) IDL_TYP_FLOAT}, /* 37 */
+    {"ELV_FITTED",rdim,(void *) IDL_TYP_FLOAT}, /* 38 */  
+    {"ELV_ERROR",rdim,(void *) IDL_TYP_FLOAT}, /* 39 */ 
+    {"X_SD_L",rdim,(void *) IDL_TYP_FLOAT}, /* 40 */
+    {"X_SD_S",rdim,(void *) IDL_TYP_FLOAT}, /* 41 */
+    {"X_SD_PHI",rdim,(void *) IDL_TYP_FLOAT}, /* 42 */
+    
     {0}};
 
   static IDL_MEMINT ilDims[IDL_MAX_ARRAY_DIM];
  
     
-  fitdata[0].type=IDL_MakeStruct("RLSTR",revision);
-  fitdata[1].type=IDL_MakeStruct("NFSTR",noise);
+  fitdata[1].type=IDL_MakeStruct("RLSTR",revision);
+  fitdata[2].type=IDL_MakeStruct("NFSTR",noise);
 
   s=IDL_MakeStruct("FITDATA",fitdata);
            

@@ -21,8 +21,5 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 Modifications:
 */
 
-
-
-
 int pipewrite(int fildes,unsigned char *buffer,unsigned int size);
 int piperead(int fildes,unsigned char **buffer);

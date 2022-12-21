@@ -1,27 +1,23 @@
 <!--
 (C) copyright 2020 VT SuperDARN, Virginia Polytechnic Institute & State University
 author: Kevin Sterne
+
+Modifications:
+    2022-11-28 Emma Bland (UNIS) Updated file format description
 -->
 
 # IQDat files
 
 IQDat files are a level-zero type data product that reflect the ADC voltages sampled at the radar site.
 
-## Naming Convenctions
+## Naming Convention
 
-Currently the common naming convention for IQDat files is:
+The community standard for naming IQDAT files is:
 
-> YYYYMMDD.HH.mm.ss.<3-letter abbreviation>.iqdat
+> YYYYMMDD.HH.mm.ss.<3-letter radar code>.[a-d].iqdat
 
-SuperDARN radars routinely change operating frequency. Some operating modes use multiple frequencies, either at the same time, or by alternating between frequencies. As a result, some files from some radars include all records for all frequencies in the same file and other radars separate out the individual frequencies into separate files, designated by a channel letter in the file name:
+The field [a-d] is used when the data have been separated into multiple files based on a particular operating parameter (e.g. frequency, beam pattern, control program). This field may not be used if all the available data are provided in a single file.
 
-> YYYYMMDD.HH.mm.ss.<3-letter abbreviation>.[a-d].iqdat
-
-For example, on 2019-02-01 the King Salmon radar (KSR) was operating simultaneously on two channels as seen from the file names `20190201.0401.00.ksr.a.iqdat` and `20190201.0401.00.ksr.b.iqdat`.
-Each file contains data from a different frequency channel. 
-
-!!! Note
-        Sometimes modes like `twofsound` will write data into a single file. In this case the two frequencies are marked as two separate channels, denoted using the `channel` parameter. However, it is important to note that some SuperDARN radars have stereo capability (transmitting and receiving on 2 frequencies simultaneously), which was the original intended usage of the `channel` parameter.
 
 ## Fields
 
@@ -55,7 +51,7 @@ IQDat files are composed of records that contain scalar and vector fields.
 | *stat.lopwr*            | **None** | short     | Low power status word          |
 | *noise.search*          | **None** | float     | Calculated noise from clear frequency search.  |
 | *noise.mean*            | **None** | float     | Average noise across frequency band.  |
-| *channel*               | **None** | short     | Channel number, used to denote different Tx/Rx channels on Stereo radars, and to denote changes in radar operating parameters between scans, eg. alternating between 2 frequency bands scan-to-scan    |
+| *channel*               | **None** | short     | Channel number, used to denote different Tx/Rx channels on Stereo radars, and to denote changes in radar operating parameters between scans, e.g. alternating between 2 frequency bands scan-to-scan    |
 | *bmnum*                 | **None** | short     | Beam number, zero based indexing      |
 | *bmazm*                 | *degrees* | float    | Beam azimuth                   |
 | *scan*                  | **None** | short     | Scan flag.                     |

@@ -204,6 +204,8 @@ int GridRead(int fid,struct GridData *gp) {
      return -1;
   }
 
+  gp->xtd=0;
+
   for (n=26;n<30;n++) if (adata[n] !=NULL) {
     gp->xtd=1;
     break;

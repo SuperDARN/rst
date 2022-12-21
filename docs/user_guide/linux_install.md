@@ -85,20 +85,20 @@ Now install the [CDF library](#cdf-library)
 
 ### Mint 
 
-Mint 18.1 	|
+Mint 20.2 	|
 --------- 	|
 libc6-dev 	|
 libncurses5-dev |
 libnetcdf-dev 	|
-libpng16-dev 	|
+libpng-dev 	|
 libx11-dev 	|
 libxext-dev 	|
 netcdf 		|
 netcdf-devel 	|
 
-**Mint 18.1**
+**Mint 20.2**
     
-    sudo apt-get install libc6-dev libncurses5-dev libnetcdf-dev libpng16-dev libx11-dev libxext-dev
+    apt install libc6-dev libncurses5-dev libnetcdf-dev libpng-dev libx11-dev libxext-dev
 
 
 
@@ -259,8 +259,7 @@ Error: curses.h not found
    This runs a script to find all of the source codes and compile them into binaries.
    A log of this compilation is stored in `$RSTPATH/log`.
 
-### Compiling Old Documentation
-**Warning documentation may be outdated**
+### Compiling HTML Documentation
 
 To compile the html documentation, run `make.doc` from the command line. You may need
 to modify the `URLBASE` environment variable in `$RSTPATH/.profile/rst.bash` for the

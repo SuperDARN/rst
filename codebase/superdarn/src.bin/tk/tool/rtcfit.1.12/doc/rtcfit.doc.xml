@@ -14,6 +14,8 @@
 </option>
 <option><on>-vb</on><od>verbose. Log information to the console.</od>
 </option>
+<option><on>-name <ar>stid</ar></on><od>specify the radar code <ar>stid</ar> to use for the output filename (the default value is taken from the radar parameter block but can sometimes become corrupted and set to tst).</od>
+</option>
 <option><on>-mp <ar>minpwr</ar></on><od>filter out data with values of lag-zero power less than <ar>minpwr</ar>.</od>
 </option>
 <option><on>-L <ar>logname</ar></on><od>log connections and information in the file <ar>logname</ar>. By default, connections are recorded in <code>log.rt</code>.</od>
