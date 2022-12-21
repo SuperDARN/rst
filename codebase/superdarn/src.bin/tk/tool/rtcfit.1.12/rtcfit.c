@@ -115,6 +115,7 @@ int main(int argc,char *argv[]) {
   char *pidstr=NULL;
 
   char *envstr;
+  char *stcode=NULL;
 
   int sock;
 
@@ -189,6 +190,8 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-version",'x',&version);
 
   OptionAdd(&opt,"vb",'x',&vb);
+
+  OptionAdd(&opt,"name",'t',&stcode);
 
   OptionAdd(&opt,"mp",'d',&minpwr);
 
@@ -313,8 +316,9 @@ int main(int argc,char *argv[]) {
          if (dstart==0) {
            dstart=now-(int) now % (24*3600); /* start of day */
            TimeEpochToYMDHMS(dstart,&yr,&mo,&dy,&hr,&mt,&sc);
+           if (stcode==NULL) stcode=RadarGetCode(network,cfit->stid,0);
            sprintf(dname,"%s/%.4d%.2d%.2d.%s.cfit",
-		       path,yr,mo,dy,RadarGetCode(network,cfit->stid,0));
+		           path,yr,mo,dy,stcode);
 	 }
 
 
@@ -325,9 +329,9 @@ int main(int argc,char *argv[]) {
          if ((now-dstart) >= 24*3600) { /* advance to the next day */
            dstart=now-(int) now % (24*3600); /* start of day */
            TimeEpochToYMDHMS(dstart,&yr,&mo,&dy,&hr,&mt,&sc);
+           if (stcode==NULL) stcode=RadarGetCode(network,cfit->stid,0);
            sprintf(dname,"%s/%.4d%.2d%.2d.%s.cfit",
-		       path,yr,mo,dy,
-                       RadarGetCode(network,cfit->stid,0));
+		           path,yr,mo,dy,stcode);
 	 }
 	 
          cnt++;
@@ -342,20 +346,9 @@ int main(int argc,char *argv[]) {
     if (resetflg==1) loginfo(logfname,"Connection timed out.");
     if (resetflg==2) loginfo(logfname,"Connection reset by signal.");
     ConnexClose(sock);
+    sleep(5);
   } while(1);
 
   return 0;
 }
-   
-
- 
-
-
-
-
-
-
-
-
-
 

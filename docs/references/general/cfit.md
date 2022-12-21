@@ -7,17 +7,12 @@ Disclaimer: License under GNU v3.0, the file is found in the root directory unde
 
 # Compressed FitACF (cFit) data format
 
-A description of the compressed FitACF data format "cFit."
+The cFit format is a compressed format for storing a limited sub-set of data from the output of the FitACF algorithm.  The format does not store all of the radar operation parameters or the full set of derived values of the algorithm. Instead it stores sufficient parameters to characterize the operation of the radar, as well as the power, velocity, and spectral width parameters. The advantage of cFit files is that they are considerably smaller than fit or fitacf files. Typically a cFit file is a few megabytes in length, whereas a fit file can be over 100 megabytes.
 
-## Introduction
-
-The cFit format is a compressed format for storing a limited sub-set of data from the output of the FitACF algorithm.  The format does not store all of the radar operation parameters or the full set of derived values of the algorithm, instead it stores sufficient parameters to characterize the operation of the radar and the power, spectral width, and velocity, and the derived errors, from the analysis.
-
-The advantage of cFit files is that they are considerably smaller and more convenient to work with than full fit or fitacf files.  Typically a cFit file is a few megabytes in length, whereas a fit file can be over 100 megabytes.
 
 ## The Format
 
-A cFit file is divided up into blocks or records, each record has the same format but can have varying length depending on the scatter observed by the radar.  Each record is dvidided up in to a header and a data section.  The structure of a record is given below:
+A cFit file is divided into blocks or records. Each record has the same format but can have varying length depending on the amount of scatter observed by the radar. Each record is divided into a header and a data section. The structure of a record is given below:
 
 | Byte Offset | Size (Bytes) | Type | Content |
 | :---        |  :----:      | :--- | :---   |
@@ -42,7 +37,7 @@ A cFit file is divided up into blocks or records, each record has the same forma
 | 47     | m  | m bytes              | Range table    |
 | 47+m   | n  | n bytes              | Data table     |
 
-The remainder of the block consists of the data values for the stored ranges.  The range table indicates which range a data value corresponds to.  For example, if the first entry in the range table contains a value of 23, that indicates that the first set of data values in the data table came from range 23.
+The remainder of the block consists of the data values for the stored ranges.  The range table indicates which range gate a data value corresponds to.  For example, if the first entry in the range table contains a value of 23, that indicates that the first set of data values in the data table came from range gate 23.
 
 Each entry in the data table has the same format shown below:
 

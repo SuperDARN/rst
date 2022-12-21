@@ -25,9 +25,7 @@ Installation guide for:
 
 ## How to cite the RST
 
-Instructions for citing the RST are available on Zenodo. Click on DOI badge:
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.801458.svg)](https://doi.org/10.5281/zenodo.801458)
-Scroll to the bottom and copy the *Share Cite as* text or download the citation in your prefered format under *Export*.
+Instructions for citing the RST are available on [Zenodo](https://doi.org/10.5281/zenodo.801458). Scroll to the end of the page and choose your perferred citation format.
 
 ## Data access and usage policy
 
@@ -47,7 +45,6 @@ For more information, please read [citing SuperDARN data](https://radar-software
 
 The DAWG welcomes new testers and developers to join the team. Here are some ways to contribute:
 
-  - Test pull requests: to determine which [pull requests](https://github.com/SuperDARN/rst/pulls) need to be tested right away, filter them by their milestones
-  - Get involved in projects: the [projects](https://github.com/SuperDARN/rst/projects) page is used to organize our priority areas. Each project board shows items which are in progress, ready for testing/review, and completed.
+ - Test pull requests: to determine which [pull requests](https://github.com/SuperDARN/rst/pulls) need to be tested right away, filter them by their milestones
  - Discuss [issues](https://github.com/SuperDARN/rst/issues) and answer questions
  - Become a developer: if you would like to contribute code to the RST, please submit a new [issue](https://github.com/SuperDARN/rst/issues) on Github, or contact us at darn-dawg *at* isee *dot* nagoya-u *dot* ac *dot* jp.

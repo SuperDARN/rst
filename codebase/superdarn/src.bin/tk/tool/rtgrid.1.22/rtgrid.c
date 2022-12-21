@@ -299,6 +299,8 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"old",'x',&old); 
 
+  OptionAdd(&opt,"name",'t',&stcode);
+
   OptionAdd(&opt,"xtd",'x',&xtd);
   OptionAdd(&opt,"i",'i',&avlen);
   OptionAdd(&opt,"tl",'i',&tlen);
@@ -417,8 +419,13 @@ int main(int argc,char *argv[]) {
   else sprintf(logbuf,"Host:%s Port File:%s",host,port_fname);
   loginfo(logname,logbuf);
 
-  if (old) sprintf(logbuf,"Output file name:%s<stid>.grd",fname);
-  else sprintf(logbuf,"Output file name:%s<stid>.grdmap",fname);
+  if (stcode !=NULL) {
+    if (old) sprintf(logbuf,"Output file name:%s%s.grd",fname,stcode);
+    else sprintf(logbuf,"Output file name:%s%s.grdmap",fname,stcode);
+  } else {
+    if (old) sprintf(logbuf,"Output file name:%s<stid>.grd",fname);
+    else sprintf(logbuf,"Output file name:%s<stid>.grdmap",fname);
+  }
   loginfo(logname,logbuf);
   sprintf(logbuf,"Daily file path:%s",path);
   loginfo(logname,logbuf);
@@ -528,10 +535,10 @@ int main(int argc,char *argv[]) {
         TimeEpochToYMDHMS(src[inx]->st_time,
           &yr,&mo,&dy,&hr,&mt,&sc);
         if (dataflg==1) sprintf(logbuf,
-          "%d:%d:%d:Processing scan %d (data received)",
+          "%02d:%02d:%02d : Processing scan %d (data received)",
           hr,mt,(int) sc,num);
         else sprintf(logbuf,
-          "%d:%d:%d:Processing scan %d (no data received)",
+          "%02d:%02d:%02d : Processing scan %d (no data received)",
           hr,mt,(int) sc,num);
         dataflg=0;
         loginfo(logname,logbuf);
@@ -561,7 +568,7 @@ int main(int argc,char *argv[]) {
               exit(-1);
             }
             site=RadarYMDHMSGetSite(radar,yr,mo,dy,hr,mt,(int) sc);
-            stcode=RadarGetCode(network,out->stid,0);
+            if (stcode==NULL) stcode=RadarGetCode(network,out->stid,0);
 
             strcat(fname,stcode);
             if (channel==1) strcat(fname,".a");
@@ -602,6 +609,7 @@ int main(int argc,char *argv[]) {
     if (resetflg==1) loginfo(logname,"Connection timed out.");
     if (resetflg==2) loginfo(logname,"Connection reset by signal.");
     ConnexClose(sock);
+    sleep(5);
   } while(1);
 
   return 0;

@@ -48,5 +48,5 @@ An entry in the table looks like this:
 
 ## History (from RFC)
 
-- 2004/06/14 Iniital Revision, RJB
+- 2004/06/14 Initial Revision, RJB
 

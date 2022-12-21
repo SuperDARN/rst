@@ -22,8 +22,6 @@ Modifications:
 */
 
 
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
@@ -36,13 +34,13 @@ Modifications:
 
 extern char pname[256];
 extern char pidname[256];
-extern char logfname[256];  
+extern char logfname[256];
 extern char timefname[256];
 
 
 int forkinet(int port) {
   FILE *fp;
-  char logbuf[256];  
+  char logbuf[256];
 
   int sock;
   int pipeid[2];
@@ -56,12 +54,11 @@ int forkinet(int port) {
   /*
     The pipe was non-blocking, but this causes a problem if the client
     cannot cope with the incoming data rate from multiplexed streams.
-  
- 
+
       if ((status=fcntl(pipeid[1],F_GETFL))==-1) return -1;
       status|=O_NONBLOCK;
-      if ((status=fcntl(pipeid[1],F_SETFL,status))==-1) return -1; 
-  */ 
+      if ((status=fcntl(pipeid[1],F_SETFL,status))==-1) return -1;
+  */
 
   if ((cpid=fork()) !=0) {
     close(pipeid[0]);
@@ -73,7 +70,7 @@ int forkinet(int port) {
   loginfo(logfname,"Child Server Process Starting");
 
   sock=createsocket(&port);
- 
+
   if (sock==-1) {
     loginfo(logfname,"Failed to create socket");
     close(pipeid[0]);
@@ -106,7 +103,8 @@ int forkinet(int port) {
   close(sock);
   close(pipeid[0]);
   loginfo(logfname,"Child Server Process Terminating");
-  exit(0); 
+  exit(0);
+
   return -1;
-}    
+}
 

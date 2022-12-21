@@ -47,10 +47,11 @@ Modifications:
 
 
 void plot_outline(struct Plot *plot,struct RadarBeam *sbm,
-		  struct GeoLocBeam *gbm,float latmin,int magflg,int maxbeam,
-               float xoff,float yoff,float wdt,float hgt,
-               int (*trnf)(int,void *,int,void *,void *data),void *data,
-               unsigned int color) {
+                  struct GeoLocBeam *gbm,float latmin,int magflg,
+                  int minbeam,int maxbeam,
+                  float xoff,float yoff,float wdt,float hgt,
+                  int (*trnf)(int,void *,int,void *,void *data),
+                  void *data,unsigned int color) {
 
   float ax=0,ay=0,bx=0,by=0;
   int s=0;
@@ -59,7 +60,7 @@ void plot_outline(struct Plot *plot,struct RadarBeam *sbm,
 
   nrang=sbm->nrang;
 
-  if (gbm->bm==0) {
+  if (gbm->bm==minbeam) {
     for (rng=0;rng<nrang;rng++) {
       if (magflg) {
          map[0]=gbm->mlat[0][rng];

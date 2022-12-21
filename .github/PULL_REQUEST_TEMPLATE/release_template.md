@@ -35,6 +35,7 @@ Please comment in the Pull Request conversation if you need additional time to t
 - [ ] Update hardware files (if required)
 - [ ] Update `.rst.version`
 - [ ] Update author list in `.zenodo.json`
+- [ ] Update author list in `AUTHORS.md`
 
 ## Extra Notes
 

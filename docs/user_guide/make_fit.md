@@ -16,11 +16,11 @@ The fitting algorithms available for processing SuperDARN data are:
 
 | Name       | Notes |
 | :----------| :-----------|
-| `fitacf3`  | Suitable for all scientific applications. Fitted data may appear 'noisy' for some radars due to operational problems (remove with [`fit_speck_removal`](despecking.md)).<br>**Released:** 2017 <br>**References:** (1) [FitACF 3.0 White Paper](https://superdarn.github.io/dawg/files/sup_material/FITACF3_white_paper.pdf), (2) [SuperDARN noise estimation](https://doi.org/10.1002/essoar.10510616.1)|
+| `fitacf3`  | Suitable for all scientific applications. Fitted data may appear 'noisy' for some radars due to operational problems (remove with [`fit_speck_removal`](despecking.md)).<br>**Released:** 2017 <br>**References:** (1) [FitACF 3.0 White Paper](https://superdarn.github.io/dawg/files/sup_material/FITACF3_white_paper.pdf), (2) [SuperDARN noise estimation](https://doi.org/10.1029/2022RS007449)|
 | `fitacf2`  | Suitable for all scientific applications. Generally results in fewer fitted ACFs compared to `fitacf3`. <br>**Released:** 2006<br>**Reference:** [Annales Geophysicae, 24, 115–128, 2006](https://doi.org/10.5194/angeo-24-115-2006) |
-| `lmfit2`   | Suitable for scientific applications of fit-level data. Levenburg-Marquardt fitting of SuperDARN auto-correlation functions (ACFs). With no ad hoc assumptions/conditions. No elevation angles. **Call using separate binary,** `make_lmfit2` <br>**Released:** 2018<br>**Reference:** [Radio Science, 53, 93-111, 2018](10.1002/2017RS006450) |
-| `lmfit1`   | Suitable for scientific applications of fit-level data. A model complex ACF (single component, exponential decay) is fitted to the observed one using the Levenberg-Marquardt algorithm. No elevation angles. <br>**Released:** c.a. 2012<br>**Reference:** [Radio Science, 48, 274–282, 2013](doi:10.1002/rds.20031) |
-| `fitex2` | Intended for use with the `tauscan` multipulse sequence. Phase fitting performed with 120 phase variation models. <br>**Released:** c.a. 2012<br>**Reference:** [Radio Science, 48, 274–282, 2013](doi:10.1002/rds.20031) |
+| `lmfit2`   | Suitable for scientific applications of fit-level data. Levenburg-Marquardt fitting of SuperDARN auto-correlation functions (ACFs). ACF fitting is performed for all range gates. No elevation angles. Takes ~5-10 minutes to process 1 hour of data. **Call using separate binary,** `make_lmfit2` <br>**Released:** 2018<br>**Reference:** [Radio Science, 53, 93-111, 2018](https://doi.org/10.1002/2017RS006450) |
+| `lmfit1`   | Suitable for scientific applications of fit-level data. A model complex ACF (single component, exponential decay) is fitted to the observed one using the Levenberg-Marquardt algorithm. No elevation angles. <br>**Released:** c.a. 2012<br>**Reference:** [Radio Science, 48, 274–282, 2013](https://doi.org/10.1002/rds.20031) |
+| `fitex2` | Intended for use with the `tauscan` multipulse sequence. Phase fitting performed with 120 phase variation models. <br>**Released:** c.a. 2012<br>**Reference:** [Radio Science, 48, 274–282, 2013](https://doi.org/10.1002/rds.20031) |
 | `fitex1` | Original `fitex` algorithm. Not thoroughly tested. No elevation angles. |
 
 <br>
@@ -37,6 +37,18 @@ make_fit -fitacf2 [inputfile].rawacf > [outputfile].fitacf2
 ```
 
 *Use the `-vb` flag to print some information in the terminal during the data processing.*
+
+
+## Supplying TDIFF values
+
+By default, RST reads TDIFF from each radar's hardware file.
+
+To supply TDIFF values from a separate calibration file, use `make_fit -tdiff_method [method]`. A sample calibration file is available in `$RSTPATH/tables/superdarn/tdiff/tdiff.dat.tst`.
+
+The user can also supply a fixed TDIFF value in microseconds using `make_fit -tdiff [tdiff]`
+
+Type `make_fit --help` in the command line for more information.
+
 
 ### Old format files
 The Data Analysis Working Group recommends converting old-format `dat` files to `rawacf` format before calling `make_fit`. For example, 

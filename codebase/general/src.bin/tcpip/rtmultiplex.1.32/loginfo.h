@@ -22,9 +22,4 @@ Modifications:
  
 */
 
-
-
-
 void loginfo(char *fname,char *str);
-
-

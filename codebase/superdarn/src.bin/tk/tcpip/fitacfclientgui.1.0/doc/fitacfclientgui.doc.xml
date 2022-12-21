@@ -21,6 +21,8 @@
 </option>
 <option><on>-w</on><od>plot spectral width.</od>
 </option>
+<option><on>-w</on><od>plot elevation angle.</od>
+</option>
 <option><on>-pmin <ar>pmin</ar></on><od>set the minimum value of the power scale to <ar>pmin</ar>.</od>
 </option>
 <option><on>-pmax <ar>pmax</ar></on><od>set the maximum value of the power scale to <ar>pmax</ar>.</od>
@@ -33,12 +35,16 @@
 </option>
 <option><on>-wmax <ar>wmax</ar></on><od>set the maximum value of the spectral width scale to <ar>wmax</ar>.</od>
 </option>
+<option><on>-emin <ar>emin</ar></on><od>set the minimum value of the elevation angle scale to <ar>emin</ar>.</od>
+</option>
+<option><on>-emax <ar>emax</ar></on><od>set the maximum value of the elevation angle scale to <ar>emax</ar>.</od>
+</option>
 <option><on><ar>host</ar></on><od>hostname or IP address of the system to connect to.</od>
 </option>
 <option><on><ar>port</ar></on><od>port number to connect to on the system.</od></option>
 <synopsis><p>Graphical client program for <code>fitacf</code> TCP/IP data streams.</p></synopsis>
 <description><p>Graphical client program for <code>fitacf</code> TCP/IP data streams.</p>
-<p>The program dumps an ASCII representation of the <code>fitacf</code> data stream to standard output.</p>
+<p>The program dumps an ASCII representation of the <code>fitacf</code> data stream to standard output. When color mode is enabled, users can toggle between power, velocity, spectral width, and elevation angle by pressing 'p', 'v', w', or 'e', respectively. Press any other key to exit the program.</p>
 </description>
 
 <example>

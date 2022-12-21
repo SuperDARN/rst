@@ -1,12 +1,9 @@
 {
+    "title": "SuperDARN Radar Software Toolkit (RST) 5.0",
+
     "creators":[
         {
             "name": "SuperDARN Data Analysis Working Group"
-        },
-        {
-            "affiliation": "Naval Research Laboratory",
-            "name": "Burrell, A.G.",
-            "orcid": "0000-0001-8875-9326"
         },
         {
             "affiliation": "Dartmouth College",
@@ -15,23 +12,38 @@
         },
         {
             "affiliation": "University of Saskatchewan",
-            "name": "Schmidt, M.T.",
-            "orcid": "0000-0002-3265-977X"
+            "name": "Reimer, A.S.",
+            "orcid": "0000-0002-4621-3453"
         },
         {
-            "affiliation": "The Unviersity Centre in Svalbard",
+            "affiliation": "The University Centre in Svalbard",
             "name": "Bland, E.C.",
             "orcid": "0000-0002-0252-0400"
         },
         {
-            "affiliation": "Istituto Nazionale di Geofisica e Vulcanologia",
-            "name": "Coco, I.",
-            "orcid": "0000-0003-4070-6828"
+            "affiliation": "Naval Research Laboratory",
+            "name": "Burrell, A.G.",
+            "orcid": "0000-0001-8875-9326"
+        },
+        {
+            "affiliation": "Lancaster University",
+            "name": "Grocott, A.",
+            "orcid": "0000-0002-6489-095X"
         },
         {
             "affiliation": "University of Saskatchewan",
             "name": "Ponomarenko, P.V.",
             "orcid": "0000-0001-8407-0193"
+        },
+        {
+            "affiliation": "University of Saskatchewan",
+            "name": "Schmidt, M.T.",
+            "orcid": "0000-0002-3265-977X"
+        },
+        {
+            "affiliation": "Dartmouth College",
+            "name": "Shepherd, S.G.",
+            "orcid": "0000-0003-1992-4118"
         },
         {
             "affiliation": "Virginia Tech",
