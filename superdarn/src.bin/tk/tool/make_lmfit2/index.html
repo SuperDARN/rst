@@ -1,0 +1,68 @@
+<head>
+<title>make_lmfit2</title>
+<link rel=stylesheet href="../../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../../superdarn/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/tool/index.html>tool</a></td><td>|</td>
+<td>make_lmfit2</td>
+<td width=100% align=right><a href=../../../../../superdarn/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">make_lmfit2</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+make_lmfit2 --help<br>make_lmfit2 <em>rawacfname</em> <em>fitacfname</em> [<em>inxname</em>]<br>make_lmfit2 -old <em>rawname</em> <em>fitname</em> [<em>inxname</em>]<br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code><em>rawname</em></code></td><td valign="top">filename of the <code>raw</code> (<code>dat</code>) format file.</td></tr>
+<tr><td width="150" valign="top"><code><em>fitname</em></code></td><td valign="top">filename of the <code>fit</code> format file to create.</td></tr>
+<tr><td width="150" valign="top"><code>[<em>inxname</em>]</code></td><td valign="top">filename of the associated index file to create.</td></tr>
+<tr><td width="150" valign="top"><code>-old</code></td><td valign="top">input file is in <code>raw</code> (<code>dat</code>) file format and the output should be in <code>fit</code> file format.</td></tr>
+<tr><td width="150" valign="top"><code><em>rawacfname</em></code></td><td valign="top">filename of the <code>rawacf</code> format file. If this is omitted the file is read from standard input.</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file.</p>
+<p>If the "<code>-new</code>" option is specified then the <code>fitacf</code> format file is written to standard output.</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">make_lmfit2 -vb 19981105.kap.rawacf &gt; 19981105.kap.fitacf</pre></td></tr></table> 
+<p>Generates a fit file from the <code>dat</code> file  "<code>19981105.kap.rawacf</code>" to produce a file called "<code>19981105.kap.fitacf</code>". Status is logged on standard error.</p>
+
+<table ><tr><td class="docbox" ><pre width="80">make_lmfit2 -old 19971020.gbr.dat 19971020.gbr.fit 19971020.gbr.inx</pre></td></tr></table>
+<p>Generates a <code>fit</code> file from the <code>dat</code> file "<code>19971020.gbr.dat</code>" to produce a file called "<code>19971020.gbr.fit</code>" and an index file called "<code>19971020.gbr.inx</code>".</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

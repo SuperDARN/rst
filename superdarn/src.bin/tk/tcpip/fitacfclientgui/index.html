@@ -1,0 +1,76 @@
+<head>
+<title>fitacfclientgui</title>
+<link rel=stylesheet href="../../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../../superdarn/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/tcpip/index.html>tcpip</a></td><td>|</td>
+<td>fitacfclientgui</td>
+<td width=100% align=right><a href=../../../../../superdarn/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">fitacfclientgui</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+fitacfclientgui --help<br>fitacfclientgui <em>host</em> <em>port</em><br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Graphical client program for <code>fitacf</code> TCP/IP data streams.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-nrange <em>nrng</em></code></td><td valign="top">set the maximum number of range gates to display to <em>nrng</em> (default is 75).</td></tr>
+<tr><td width="150" valign="top"><code>-color</code></td><td valign="top">display the data stream in color according to the selected parameter (default is power).</td></tr>
+<tr><td width="150" valign="top"><code>-p</code></td><td valign="top">plot power.</td></tr>
+<tr><td width="150" valign="top"><code>-v</code></td><td valign="top">plot velocity.</td></tr>
+<tr><td width="150" valign="top"><code>-w</code></td><td valign="top">plot spectral width.</td></tr>
+<tr><td width="150" valign="top"><code>-w</code></td><td valign="top">plot elevation angle.</td></tr>
+<tr><td width="150" valign="top"><code>-pmin <em>pmin</em></code></td><td valign="top">set the minimum value of the power scale to <em>pmin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-pmax <em>pmax</em></code></td><td valign="top">set the maximum value of the power scale to <em>pmax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-vmin <em>vmin</em></code></td><td valign="top">set the minimum value of the velocity scale to <em>vmin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-vmax <em>vmax</em></code></td><td valign="top">set the maximum value of the velocity scale to <em>vmax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-wmin <em>wmin</em></code></td><td valign="top">set the minimum value of the spectral width scale to <em>wmin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-wmax <em>wmax</em></code></td><td valign="top">set the maximum value of the spectral width scale to <em>wmax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-emin <em>emin</em></code></td><td valign="top">set the minimum value of the elevation angle scale to <em>emin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-emax <em>emax</em></code></td><td valign="top">set the maximum value of the elevation angle scale to <em>emax</em>.</td></tr>
+<tr><td width="150" valign="top"><code><em>host</em></code></td><td valign="top">hostname or IP address of the system to connect to.</td></tr>
+<tr><td width="150" valign="top"><code><em>port</em></code></td><td valign="top">port number to connect to on the system.</td></tr></table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Graphical client program for <code>fitacf</code> TCP/IP data streams.</p>
+<p>The program dumps an ASCII representation of the <code>fitacf</code> data stream to standard output. When color mode is enabled, users can toggle between power, velocity, spectral width, and elevation angle by pressing 'p', 'v', w', or 'e', respectively. Press any other key to exit the program.</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">fitacfclientgui peanut.jhuapl.edu 1024</pre></td></tr></table>
+<p>Connect to the host <code>peanut.jhuapl.edu</code> at port 1024 and display the data stream.</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

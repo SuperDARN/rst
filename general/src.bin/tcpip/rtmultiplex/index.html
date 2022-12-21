@@ -25,7 +25,7 @@
 <table>
 <tr><td class="docsubtitle" valign=top>Syntax</td></tr>
 <tr><td></td><td width=80% class="docbox" style="font-family: courier;">
-rtmultiplex --help<br>rtmultiplex [-vb] [-t <em>timeout</em>] [-L <em>logname</em>] [-T <em>timename</em>] [-pf <em>portname</em>] [-if <em>pidname</em>] [-lp <em>lport</em>] [-f] <em>hostnames...</em> <em>rports...</em><br></td></tr>
+rtmultiplex --help<br>rtmultiplex [-vb] [-t <em>timeout</em>] [-L <em>logname</em>] [-T <em>timename</em>] [-pf <em>portname</em>] [-if <em>pidname</em>] [-lp <em>lport</em>] <em>hostname</em> <em>rport</em><br></td></tr>
 <tr><td class="docsubtitle">Synopsis</td></tr>
 <tr><td></td><td><p>TCP/IP stream mulitplexer.</p></td></tr>
 
@@ -35,23 +35,22 @@ rtmultiplex --help<br>rtmultiplex [-vb] [-t <em>timeout</em>] [-L <em>logname</e
 <tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
 <tr><td width="150" valign="top"><code>-vb</code></td><td valign="top">verbose. Log information to the console.</td></tr>
 <tr><td width="150" valign="top"><code>-t <em>timeout</em></code></td><td valign="top">reset the connection if no packets are received in <em>timeout</em> seconds. By default, the timeout is 20 seconds.</td></tr>
+<tr><td width="150" valign="top"><code>-r <em>resetclk</em></code></td><td valign="top">attempt to restart the connection on failure after <em>resetclk</em> seconds. By default, the resetclk is 1 second.</td></tr>
 <tr><td width="150" valign="top"><code>-L <em>logname</em></code></td><td valign="top">log connections and information in the file <em>logname</em>. By default, connections are recorded in <code>log.rt</code>.</td></tr>
 <tr><td width="150" valign="top"><code>-T <em>timename</em></code></td><td valign="top">log the time that the last packet was received in the file <em>timename</em>. By default, the time is recorded in <code>time.rt</code>.</td></tr>
 <tr><td width="150" valign="top"><code>-pf <em>portname</em></code></td><td valign="top">record the port number that the server is listening for connections on in the file <em>portname</em>. By default, the port is recorded in <code>port.id</code>.</td></tr>
 <tr><td width="150" valign="top"><code>-if <em>pidname</em></code></td><td valign="top">record the process Identifier (PID) of the server in the file <em>pidname</em>. By default, the PID is recorded in <code>pid.id</code>.</td></tr>
-<tr><td width="150" valign="top"><code>-lp <em>lport</em></code></td><td valign="top">force the server to listen on the local port number <em>port</em>. By default, the server requests a port number from the Operating System.</td></tr><tr><td width="150" valign="top"><code>-f</code></td><td valign="top">allow stream filtering. Each data stream is assigned a numeric identifier.</td></tr>
-<tr><td width="150" valign="top"><code><em>hosts</em></code></td><td valign="top">space separated hostnames or IP numbers of the systems to connect to.</td></tr><tr><td width="150" valign="top"><code><em>rport</em></code></td><td valign="top">space separated list of port numbers to connect to on the servers.</td></tr></table></td></tr>
+<tr><td width="150" valign="top"><code>-lp <em>lport</em></code></td><td valign="top">force the server to listen on the local port number <em>port</em>. By default, the server requests a port number from the Operating System.</td></tr><tr><td width="150" valign="top"><code><em>host</em></code></td><td valign="top">hostname or IP number of the system to connect to.</td></tr><tr><td width="150" valign="top"><code><em>rport</em></code></td><td valign="top">port number to connect to on the server.</td></tr></table></td></tr>
 <tr><td class="docsubtitle">Description</td></tr>
-<tr><td></td><td><p>The task acts as both server and client attaching to multiple remote hosts and multiplexing the data streams together into a single stream that is relayed to the client tasks.</p>
-<p>Each remote data stream is assigned a stream number based on the position that the server name appears in the command line. The clients connecting to the <code>rtmultiplex</code> task can select the stream they wish to receive by sending a single byte back to the server.</p>
+<tr><td></td><td><p>The task acts as both server and client attaching to a remote host and relaying the data stream to the client tasks.</p>
 </td></tr>
 <tr><td class="docsubtitle">Examples</td></tr>
 <tr><td></td><td>
-<table ><tr><td class="docbox" ><pre width="80">rtmultiplex -f port.id -lf log peanut.jhuapl.edu 1024 almond.jhuapl.edu 1024</pre></td></tr></table>
-<p>Connects to the remote host <code>peanut.jhuapl.edu</code> at port 1024, and to host <code>almond.jhuapl.edu</code> at port 1024. Relay data from a port allocated by the operating system. The port number is recorded in the file "<code>port.id</code>" and logs of all transactions are recorded in the file "<code>log.rt</code>".</p>
+<table ><tr><td class="docbox" ><pre width="80">rtmultiplex port.id -lf log peanut.jhuapl.edu 1024</pre></td></tr></table>
+<p>Connects to the remote host <code>peanut.jhuapl.edu</code> at port 1024. Relay data from a port allocated by the operating system. The port number is recorded in the file "<code>port.id</code>" and logs of all transactions are recorded in the file "<code>log.rt</code>".</p>
 
-<table ><tr><td class="docbox" ><pre width="80">rtmultiplex -l 5000 -f port.id -lf log peanut.jhuapl.edu 1200 peanut.jhuapl.edu 1201</pre></td></tr></table>
-<p>Connects to the remote host <code>peanut.jhuapl.edu</code> at ports 1200 and 1201. Relay data from the port 5000. The port number is recorded in the file "<code>port.id</code>" and logs of all transactions are recorded in the file "<code>log.rt</code>".</p>
+<table ><tr><td class="docbox" ><pre width="80">rtmultiplex -l 5000 port.id -lf log peanut.jhuapl.edu 1200</pre></td></tr></table>
+<p>Connects to the remote host <code>peanut.jhuapl.edu</code> at port 1200. Relay data from the port 5000. The port number is recorded in the file "<code>port.id</code>" and logs of all transactions are recorded in the file "<code>log.rt</code>".</p>
 </td></tr>
 
 

@@ -35,10 +35,16 @@ make_sim --help<br>make_sim [<em>options</em>]<br></td></tr>
 <tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
 <tr><td width="150" valign="top"><code>-katscan</code></td><td valign="top">use Kathrn McWilliams' 8-pulse sequence (default).</td></tr>
 <tr><td width="150" valign="top"><code>-tauscan</code></td><td valign="top">use Ray Greenwald's 13-pulse sequence.</td></tr>
+<tr><td width="150" valign="top"><code>-spaletascan</code></td><td valign="top">use Mrinal Balaji / Jef Spaleta's 16-pulse sequence.</td></tr>
 <tr><td width="150" valign="top"><code>-oldscan</code></td><td valign="top">use the old 7-pulse sequence.</td></tr>
+<tr><td width="150" valign="top"><code>-xcf</code></td><td valign="top">calculate interferometer samples and XCFs (default is to use a virtual height model).</td></tr>
+<tr><td width="150" valign="top"><code>-elv <em>elv</em></code></td><td valign="top">set the elevation angle to <em>elv</em> degrees for all ranges (instead of using a virtual height model).</td></tr>
+<tr><td width="150" valign="top"><code>-vht <em>vht</em></code></td><td valign="top">set the virtual height to <em>vht</em> km for all ranges (instead of using a virtual height model).</td></tr>
+<tr><td width="150" valign="top"><code>-tdiff <em>tdiff</em></code></td><td valign="top">set the tdiff value to <em>tdiff</em> microseconds when calculating interferometer samples and XCFs (default is to use hardware value).</td></tr>
 <tr><td width="150" valign="top"><code>-freq <em>f</em></code></td><td valign="top">set the radar frequency to <em>f</em> MHz (default is 12 MHz).</td></tr>
 <tr><td width="150" valign="top"><code>-vel <em>v</em></code></td><td valign="top">set the background Doppler velocity to <em>v</em> m/s (default is 450 m/s).</td></tr>
 <tr><td width="150" valign="top"><code>-v_spread <em>v_s</em></code></td><td valign="top">set the Gaussian Doppler velocity spread (standard deviation) to <em>v_s</em> m/s (default is 0 m/s).</td></tr>
+<tr><td width="150" valign="top"><code>-width <em>w</em></code></td><td valign="top">set the spectral width to <em>w</em> m/s (default is 120 m/s).</td></tr>
 <tr><td width="150" valign="top"><code>-t_d <em>t_d</em></code></td><td valign="top">set the irregularity decay time to <em>t_d</em> milliseconds (default is 40 ms).</td></tr>
 <tr><td width="150" valign="top"><code>-t_g <em>t_g</em></code></td><td valign="top">set the irregularity growth time to <em>t_d</em> microseconds (default is 1 us, ie negligible).</td></tr>
 <tr><td width="150" valign="top"><code>-t_c <em>t_c</em></code></td><td valign="top">set the precipitation time constant (lifetime) to <em>t_c</em> milliseconds (default is 1e6 ms, ie negligible).</td></tr>

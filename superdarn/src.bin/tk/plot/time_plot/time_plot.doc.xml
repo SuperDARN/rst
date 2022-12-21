@@ -58,6 +58,8 @@
 </option>
 <option><on>-bgcol <ar>rrggbb</ar></on><od>set the background color to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
 </option>
+<option><on>-pbgcol <ar>rrggbb</ar></on><od>set the panel background color to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
+</option>
 <option><on>-grdcol <ar>rrggbb</ar></on><od>set the color of grid to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
 </option>
 <option><on>-txtcol <ar>rrggbb</ar></on><od>set the color of text to <ar>rrggbb</ar>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</od>
@@ -142,37 +144,37 @@
 </option>
 <option><on>-p0</on><od>plot lag0 power.</od>
 </option>
-<option><on>-pmin <ar>pmin</ar></on><od>set the minimum value of the power scale to <a>pmin</ar>.</od>
+<option><on>-pmin <ar>pmin</ar></on><od>set the minimum value of the power scale to <ar>pmin</ar>.</od>
 </option>
-<option><on>-pmax <ar>pmax</ar></on><od>set the maximum value of the power scale to <a>pmax</ar>.</od>
+<option><on>-pmax <ar>pmax</ar></on><od>set the maximum value of the power scale to <ar>pmax</ar>.</od>
 </option>
-<option><on>-vmin <ar>vmin</ar></on><od>set the minimum value of the velocity scale to <a>vmin</ar>.</od>
+<option><on>-vmin <ar>vmin</ar></on><od>set the minimum value of the velocity scale to <ar>vmin</ar>.</od>
 </option>
-<option><on>-vmax <ar>vmax</ar></on><od>set the maximum value of the velocity scale to <a>vmax</ar>.</od>
+<option><on>-vmax <ar>vmax</ar></on><od>set the maximum value of the velocity scale to <ar>vmax</ar>.</od>
 </option>
-<option><on>-wmin <ar>wmin</ar></on><od>set the minimum value of the spectral width scale to <a>wmin</ar>.</od>
+<option><on>-wmin <ar>wmin</ar></on><od>set the minimum value of the spectral width scale to <ar>wmin</ar>.</od>
 </option>
-<option><on>-wmax <ar>wmax</ar></on><od>set the maximum value of the spectral width scale to <a>wmax</ar>.</od>
+<option><on>-wmax <ar>wmax</ar></on><od>set the maximum value of the spectral width scale to <ar>wmax</ar>.</od>
 </option>
-<option><on>-phimin <ar>phimin</ar></on><od>set the minimum value of the phi0 scale to <a>phimin</ar>.</od>
+<option><on>-phimin <ar>phimin</ar></on><od>set the minimum value of the phi0 scale to <ar>phimin</ar>.</od>
 </option>
-<option><on>-phimax <ar>phimax</ar></on><od>set the maximum value of the phi0 scale to <a>phimax</ar>.</od>
+<option><on>-phimax <ar>phimax</ar></on><od>set the maximum value of the phi0 scale to <ar>phimax</ar>.</od>
 </option>
-<option><on>-emin <ar>emin</ar></on><od>set the minimum value of the elevation angle scale to <a>emin</ar>.</od>
+<option><on>-emin <ar>emin</ar></on><od>set the minimum value of the elevation angle scale to <ar>emin</ar>.</od>
 </option>
-<option><on>-emax <ar>emax</ar></on><od>set the maximum value of the elevation angle scale to <a>emax</ar>.</od>
+<option><on>-emax <ar>emax</ar></on><od>set the maximum value of the elevation angle scale to <ar>emax</ar>.</od>
 </option>
-<option><on>-vemin <ar>vemin</ar></on><od>set the minimum value of the velocity error scale to <a>vemin</ar>.</od>
+<option><on>-vemin <ar>vemin</ar></on><od>set the minimum value of the velocity error scale to <ar>vemin</ar>.</od>
 </option>
-<option><on>-vemax <ar>vemax</ar></on><od>set the maximum value of the velocity error scale to <a>vemax</ar>.</od>
+<option><on>-vemax <ar>vemax</ar></on><od>set the maximum value of the velocity error scale to <ar>vemax</ar>.</od>
 </option>
-<option><on>-wemin <ar>wemin</ar></on><od>set the minimum value of the spectral width error scale to <a>wemin</ar>.</od>
+<option><on>-wemin <ar>wemin</ar></on><od>set the minimum value of the spectral width error scale to <ar>wemin</ar>.</od>
 </option>
-<option><on>-wemax <ar>wemax</ar></on><od>set the maximum value of the spectral width error scale to <a>wemax</ar>.</od>
+<option><on>-wemax <ar>wemax</ar></on><od>set the maximum value of the spectral width error scale to <ar>wemax</ar>.</od>
 </option>
-<option><on>-p0min <ar>p0min</ar></on><od>set the minimum value of the lag0 power scale to <a>p0min</ar>.</od>
+<option><on>-p0min <ar>p0min</ar></on><od>set the minimum value of the lag0 power scale to <ar>p0min</ar>.</od>
 </option>
-<option><on>-p0max <ar>p0max</ar></on><od>set the maximum value of the lag0 power scale to <a>p0max</ar>.</od>
+<option><on>-p0max <ar>p0max</ar></on><od>set the maximum value of the lag0 power scale to <ar>p0max</ar>.</od>
 </option>
 <option><on>-gs</on><od>color ground scatter.</od>
 </option>

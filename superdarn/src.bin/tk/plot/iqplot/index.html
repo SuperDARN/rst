@@ -48,15 +48,25 @@ iqplot --help<br>iqplot [-display <em>display</em>] [-xoff <em>xoff</em>] [-yoff
 <tr><td width="150" valign="top"><code>-b <em>bmnum</em></code></td><td valign="top">only plot the I&Q samples from beam number <em>bmnum</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-c <em>chnum</em></code></td><td valign="top">only plot the I&Q samples from channel <em>chnum</em> for stereo mode data.</td></tr>
 <tr><td width="150" valign="top"><code>-int</code></td><td valign="top">plot I&Q samples from the interferometer array instead of the main array.</td></tr>
-<tr><td width="150" valign="top"><code>-rcol <em>rrggbb</em></code></td><td valign="top">set the color of the real (I) component to <em>rrggbb</em>, specified as the hexadecimal value for the 24-bit red,green and blue component color [default is teal].</td></tr>
-<tr><td width="150" valign="top"><code>-icol <em>rrggbb</em></code></td><td valign="top">set the color of the imaginary (Q) component to <em>rrggbb</em>, specified as the hexadecimal value for the 24-bit red,green and blue component color [default is red].</td></tr>
+<tr><td width="150" valign="top"><code>-rcol <em>aarrggbb</em></code></td><td valign="top">set the color of the real (I) component to <em>aarrggbb</em>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color [default is teal].</td></tr>
+<tr><td width="150" valign="top"><code>-icol <em>aarrggbb</em></code></td><td valign="top">set the color of the imaginary (Q) component to <em>aarrggbb</em>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color [default is red].</td></tr>
+<tr><td width="150" valign="top"><code>-txtcol <em>aarrggbb</em></code></td><td valign="top">set the color of text to <em>aarrggbb</em>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color [default is white].</td></tr>
+<tr><td width="150" valign="top"><code>-bgcol <em>aarrggbb</em></code></td><td valign="top">set the background color to <em>aarrggbb</em>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color [default is black].</td></tr>
+<tr><td width="150" valign="top"><code>-pbgcol <em>aarrggbb</em></code></td><td valign="top">set the panel background color to <em>aarrggbb</em>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color [default is black].</td></tr>
+<tr><td width="150" valign="top"><code>-fgcol <em>aarrggbb</em></code></td><td valign="top">set the axes and tick mark colors to <em>aarrggbb</em>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color [default is white].</td></tr>
+<tr><td width="150" valign="top"><code>-gcol <em>aarrggbb</em></code></td><td valign="top">set the major grid line color to <em>aarrggbb</em>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color [default is gray].</td></tr>
+<tr><td width="150" valign="top"><code>-dgcol <em>aarrggbb</em></code></td><td valign="top">set the minor grid line color to <em>aarrggbb</em>, specified as the hexadecimal value for the 32-bit alpha,red,green and blue component color [default is gray].</td></tr>
+<tr><td width="150" valign="top"><code>-fontname <em>fontname</em></code></td><td valign="top">plot any labels using the font <em>fontname</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-fontsize <em>fontsize</em></code></td><td valign="top">set the font size to <em>fontsize</em> points.</td></tr>
+<tr><td width="150" valign="top"><code>-tfontname <em>tfontname</em></code></td><td valign="top">plot the title using the font <em>tfontname</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-tfontsize <em>tfontsize</em></code></td><td valign="top">set the title font size to <em>tfontsize</em> points.</td></tr>
 <tr><td width="150" valign="top"><code>-m <em>ymax</em></code></td><td valign="top">set the extent of the Y-axis to +/-<em>ymax</em> when plotting I&Q components.</td></tr>
 <tr><td width="150" valign="top"><code>-s <em>xmin</em></code></td><td valign="top">set the first I&Q sample plotted to <em>xmin</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-n <em>xnum</em></code></td><td valign="top">set the number of I&Q samples plotted to <em>xnum</em>.</td></tr>
-<tr><td width="150" valign="top"><code>-xmaj <em>xmajor</em></code></td><td valign="top">set the number of X-axis major tick marks to <em>xmajor</em>.</td></tr>
-<tr><td width="150" valign="top"><code>-xmin <em>xminor</em></code></td><td valign="top">set the number of X-axis minor tick marks to <em>xminor</em>.</td></tr>
-<tr><td width="150" valign="top"><code>-ymaj <em>ymajor</em></code></td><td valign="top">set the number of Y-axis major tick marks to <em>ymajor</em>.</td></tr>
-<tr><td width="150" valign="top"><code>-ymin <em>yminor</em></code></td><td valign="top">set the number of Y-axis minor tick marks to <em>yminor</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-xmaj <em>xmajor</em></code></td><td valign="top">set the X-axis major tick mark interval to <em>xmajor</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-xmin <em>xminor</em></code></td><td valign="top">set the X-axis minor tick mark interval to <em>xminor</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-ymaj <em>ymajor</em></code></td><td valign="top">set the Y-axis major tick mark interval to <em>ymajor</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-ymin <em>yminor</em></code></td><td valign="top">set the Y-axis minor tick mark interval to <em>yminor</em>.</td></tr>
 <tr><td width="150" valign="top"><code><em>name</em></code></td><td valign="top">the filename of the <code>iqdat</code> format file to plot.</td></tr>
 <tr><td width="150" valign="top"><code>-display <em>display</em></code></td><td valign="top">connect to the xterminal named <em>display</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-xoff <em>xoff</em></code></td><td valign="top">open the window, <em>xoff</em> pixels from the left edge of the screen.</td></tr>

@@ -1,0 +1,60 @@
+
+<head>
+<title>RadarEpochGetTdiff</title>
+<link rel=stylesheet href=../../../../css/doc.css type=text/css>
+</head>
+<body>
+
+<div id="root">
+
+<div id="banner">
+</div>
+
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../superdarn/src.lib/index.html>src.lib</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../superdarn/src.lib/tk/radar/index.html>radar</a></td><td>|</td>
+<td>RadarEpochGetTdiff</td>
+<td width=100% align=right><a href=../../../../superdarn/src.lib/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">RadarEpochGetTdiff</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;"><a href="structRadarTdiff.html"><code>struct RadarTdiff</code></a> *RadarEpochGetTdiff(<a href="structRadar.html"><code>struct Radar</code></a> *ptr,double tval,int method,int channel,int tfreq);</td></tr>
+
+<tr><td class="docsubtitle" valign=top>Header</td></tr>
+<tr><td></td>
+<td class="docbox" style="font-family: courier;">superdarn/radar.h</td></tr>
+
+<tr><td class=docsubtitle>Library</td></tr>
+<tr><td></td><td style="font-family: courier;"><a href="index.html">radar</a></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td class="docbody"><p>The <a href="RadarEpochGetTdiff.html"><code>RadarEpochGetTdiff</code></a> function locates the calibrated tdiff information for one of the radars.</p>
+<p>The argument <em>ptr</em> is a pointer to the structure containing the radar information block. The radar tdiff parameters can vary over time, channel, frequency, and calibration method; so the time for which the tdiff information is requested is given by the arguments <em>tval</em>, expressed in seconds from 0:00UT January 1, 1970, and <em>method</em>, <em>channel</em>, and <em>tfreq</em> give the method, channel, and frequency.</p>
+</td></tr>
+<tr><td class="docsubtitle">Returns</td></tr>
+<tr><td></td><td>Returns a pointer to the radar tdiff information for the desired time and conditions. On error, a <code>NULL</code> pointer is returned.</td></tr>
+<tr><td class="docsubtitle">Errors</td></tr>
+<tr><td></td><td>On error, a <code>NULL</code> pointer is returned.</td></tr>
+<tr><td class="docsubtitle">Example</td></tr>
+<tr><td></td><td>None</td></tr>
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

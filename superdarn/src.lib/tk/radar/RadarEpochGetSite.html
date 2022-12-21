@@ -26,7 +26,7 @@
 <h2 class="doctitle">RadarEpochGetSite</h2>
 <table>
 <tr><td class="docsubtitle" valign=top>Syntax</td></tr>
-<tr><td></td><td class="docbox" style="font-family: courier;">struct RadarSite *RadarEpochGetSite(<a href="structRadar.html"><code>struct Radar</code></a> *ptr,double tval);</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;"><a href="structRadarSite.html"><code>struct RadarSite</code></a> *RadarEpochGetSite(<a href="structRadar.html"><code>struct Radar</code></a> *ptr,double tval);</td></tr>
 
 <tr><td class="docsubtitle" valign=top>Header</td></tr>
 <tr><td></td>
@@ -36,7 +36,7 @@
 <tr><td></td><td style="font-family: courier;"><a href="index.html">radar</a></td></tr>
 <tr><td class="docsubtitle">Description</td></tr>
 <tr><td></td><td class="docbody"><p>The <a href="RadarEpochGetSite.html"><code>RadarEpochGetSite</code></a> function locates the hardware information for one of the radars.</p>
-<p>The argument <em>ptr</em> is a pointer to the structure containing the radar information block. The radar hardware parameters can vary over time, so the time for which the hardware information is requested is given by the argument <em>tval</em>, expressed inseconds from 0:00UT January 1, 1970.</p>
+<p>The argument <em>ptr</em> is a pointer to the structure containing the radar information block. The radar hardware parameters can vary over time, so the time for which the hardware information is requested is given by the argument <em>tval</em>, expressed in seconds from 0:00UT January 1, 1970.</p>
 </td></tr>
 <tr><td class="docsubtitle">Returns</td></tr>
 <tr><td></td><td>Returns a pointer to the radar hardware information for the desired time. On error, a <code>NULL</code> pointer is returned.</td></tr>

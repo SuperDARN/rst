@@ -1,0 +1,71 @@
+<head>
+<title>rpos_v2_test</title>
+<link rel=stylesheet href="../../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../../superdarn/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/testing/index.html>testing</a></td><td>|</td>
+<td>rpos_v2_test</td>
+<td width=100% align=right><a href=../../../../../superdarn/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">rpos_v2_test</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+rpos_v2_test --help<br>rpos_v2_test [-d <em>yyyymmdd</em>] [-stid <em>stid</em>] [-bm <em>beam</em>] [-rn <em>gate</em>]<br>rpos_v2_test [-standard] [-chisham] [-cv] [-gs] [-rear]<br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Calculates the latitude and longitude of a beam and range gate cell.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-d <em>yyyymmdd</em></code></td><td valign="top">calculate for the date <em>yyyymmdd</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-stid <em>stid</em></code></td><td valign="top">set the station identifier code to <em>stid</em> (default is 1 for GBR).</td></tr>
+<tr><td width="150" valign="top"><code>-bm <em>beam</em></code></td><td valign="top">set the radar beam number to <em>beam</em> (default is 7).</td></tr>
+<tr><td width="150" valign="top"><code>-rn <em>gate</em></code></td><td valign="top">set the range gate number to <em>gate</em> (default is 20).</td></tr>
+<tr><td width="150" valign="top"><code>-fh <em>height</em></code></td><td valign="top">set the F-region virtual height for the standard model to <em>height</em> (default is 300 km). If <em>height</em> is less than 90 then it is assumed to be an elevation angle instead.</td></tr>
+<tr><td width="150" valign="top"><code>-hop <em>hop</em></code></td><td valign="top">set the number of hops to <em>hop</em> when using an input elevation angle (default is 0.5).</td></tr>
+<tr><td width="150" valign="top"><code>-standard</code></td><td valign="top">use the standard virtual height model (default).</td></tr>
+<tr><td width="150" valign="top"><code>-chisham</code></td><td valign="top">use the Chisham et al. [2008] Saskatoon virtual height model.</td></tr>
+<tr><td width="150" valign="top"><code>-cv</code></td><td valign="top">use the Thomas and Shepherd [2022] Christmas Valley virtual height model.</td></tr>
+<tr><td width="150" valign="top"><code>-gs</code></td><td valign="top">use the ground scatter component of the Thomas et al. [2022] Christmas Valley virtual height model.</td></tr>
+<tr><td width="150" valign="top"><code>-rear</code></td><td valign="top">calculate position for the rear field of view (FOV).</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Calculates the latitude and longitude of a beam and range gate cell.</p>
+<p>The latitude and longitude are written to standard output.</p></td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">rpos_v2_test -stid 206 -d 20200101 -bm 21 -rn 57 -chisham</pre></td></tr></table>
+<p>Calculates the latitude and longitude of beam 21 and range gate 57 for the Christmas Valley West (CVW) radar on 20200101 using the Chisham et al. [2008] virtual height model.</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+

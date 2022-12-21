@@ -15,13 +15,25 @@
 </option>
 <option><on>-tauscan</on><od>use Ray Greenwald's 13-pulse sequence.</od>
 </option>
+<option><on>-spaletascan</on><od>use Mrinal Balaji / Jef Spaleta's 16-pulse sequence.</od>
+</option>
 <option><on>-oldscan</on><od>use the old 7-pulse sequence.</od>
+</option>
+<option><on>-xcf</on><od>calculate interferometer samples and XCFs (default is to use a virtual height model).</od>
+</option>
+<option><on>-elv <ar>elv</ar></on><od>set the elevation angle to <ar>elv</ar> degrees for all ranges (instead of using a virtual height model).</od>
+</option>
+<option><on>-vht <ar>vht</ar></on><od>set the virtual height to <ar>vht</ar> km for all ranges (instead of using a virtual height model).</od>
+</option>
+<option><on>-tdiff <ar>tdiff</ar></on><od>set the tdiff value to <ar>tdiff</ar> microseconds when calculating interferometer samples and XCFs (default is to use hardware value).</od>
 </option>
 <option><on>-freq <ar>f</ar></on><od>set the radar frequency to <ar>f</ar> MHz (default is 12 MHz).</od>
 </option>
 <option><on>-vel <ar>v</ar></on><od>set the background Doppler velocity to <ar>v</ar> m/s (default is 450 m/s).</od>
 </option>
 <option><on>-v_spread <ar>v_s</ar></on><od>set the Gaussian Doppler velocity spread (standard deviation) to <ar>v_s</ar> m/s (default is 0 m/s).</od>
+</option>
+<option><on>-width <ar>w</ar></on><od>set the spectral width to <ar>w</ar> m/s (default is 120 m/s).</od>
 </option>
 <option><on>-t_d <ar>t_d</ar></on><od>set the irregularity decay time to <ar>t_d</ar> milliseconds (default is 40 ms).</od>
 </option>

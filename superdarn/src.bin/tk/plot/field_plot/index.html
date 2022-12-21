@@ -91,6 +91,9 @@ field_plot --help<br>field_plot [<em>options</em>] <em>fitacfname</em> [<em>inxn
 <tr><td width="150" valign="top"><code>-ffov</code></td><td valign="top">plot the filled radar fields of view of other SuperDARN radars.</td></tr>
 <tr><td width="150" valign="top"><code>-fan</code></td><td valign="top">plot the radar field of view.</td></tr>
 <tr><td width="150" valign="top"><code>-ffan</code></td><td valign="top">plot the filled radar field of view.</td></tr>
+<tr><td width="150" valign="top"><code>-minbeam <em>minbeam</em></code></td><td valign="top">set the minimum beam number to draw for the radar field of view outline to <em>minbeam</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-maxbeam <em>maxbeam</em></code></td><td valign="top">set the maximum number of beams to draw for the radar field of view outline to <em>maxbeam</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-lst</code></td><td valign="top">use local solar time rather than local time.</td></tr>
 <tr><td width="150" valign="top"><code>-tmtick <em>tick</em></code></td><td valign="top">set the grid interval for the time clock-dial to <em>tick</em> hours.</td></tr>
 <tr><td width="150" valign="top"><code>-lst</code></td><td valign="top">use local solar time rather than local time.</td></tr>
 <tr><td width="150" valign="top"><code>-term</code></td><td valign="top">plot the terminator.</td></tr>
@@ -205,8 +208,10 @@ field_plot --help<br>field_plot [<em>options</em>] <em>fitacfname</em> [<em>inxn
          
 <table ><tr><td class="docbox" ><pre width="80">field_plot -wdt 540 -hgt 540 -mag -st 1:00 -lat 90 -lon 0 -tmk -time -latmin 55 -rotate -grd -fcoast -coast -keyp -ffov -fov -r 0 -fan -p</pre></td></tr></table>
 <p>
-Generate rPlot xml plots of power data from the file "<code>20021219.han.fit</code>". Store the plots in files named "<code>xxxx</code>.xml", starting at 01:00UTC. Use magnetic coordinates, rotated so that magnetic local noon is at the top of the plot.Plot filled coastlines, terminator, a clockdial representing time, and the time.</p>
-</td></tr>
+Generate rPlot xml plots of power data from the file "<code>20021219.han.fit</code>". Store the plots in files named "<code>xxxx</code>.xml", starting at 01:00UTC. Use magnetic coordinates, rotated so that magnetic local noon is at the top of the plot.Plot filled coastlines, terminator, a clockdial representing time, and the time.
+</p>
+<br><center><img src="img/example2.png"></img><br></center>
+         </td></tr>
 
 
 </table>

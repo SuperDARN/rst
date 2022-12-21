@@ -26,6 +26,8 @@
 </option>
 <option><on>-vel <ar>vmin</ar></on><od>set the minimum velocity to <ar>vmin</ar>.</od>
 </option>
+<option><on>-wdt <ar>wmin</ar></on><od>set the minimum spectral width to <ar>wmin</ar>.</od>
+</option>
 <option><on>-ex <ar>exlist</ar></on><od>exclude data from the stations listed in <ar>exlist</ar>, which is a</od></option>
 <option><on></on><od>  comma separated list of radar station numbers.</od></option>
 <option><on><ar>mapname</ar></on><od>filename of the <code>cnvmap</code> format file. If this is omitted, the file will</od></option>

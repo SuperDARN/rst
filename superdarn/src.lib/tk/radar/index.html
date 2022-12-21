@@ -72,6 +72,26 @@
 
 
 
+<li><a href="RadarEpochGetTdiff.html">RadarEpochGetTdiff</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <li><a href="RadarFree.html">RadarFree</a></li>
 
 
@@ -272,7 +292,47 @@
 
 
 
+<li><a href="RadarLoadTdiff.html">RadarLoadTdiff</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <li><a href="RadarYMDHMSGetSite.html">RadarYMDHMSGetSite</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="RadarYMDHMSGetTdiff.html">RadarYMDHMSGetTdiff</a></li>
 
 
 
@@ -378,6 +438,26 @@
 
 
 
+<li><a href="structRadarTdiff.html">RadarTdiff</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <li><a href="structRadarSite.html">RadarSite</a></li>
 
 
@@ -450,7 +530,29 @@
 
 
 <table width=540 cellpadding=4>
-<tr><td class="docbox" style="font-family: courier;">struct RadarSite *RadarEpochGetSite(<a href="structRadar.html"><code>struct Radar</code></a> *ptr,double tval);</td></tr></table>
+<tr><td class="docbox" style="font-family: courier;"><a href="structRadarSite.html"><code>struct RadarSite</code></a> *RadarEpochGetSite(<a href="structRadar.html"><code>struct Radar</code></a> *ptr,double tval);</td></tr></table>
+<br clear=both>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table width=540 cellpadding=4>
+<tr><td class="docbox" style="font-family: courier;"><a href="structRadarTdiff.html"><code>struct RadarTdiff</code></a> *RadarEpochGetTdiff(<a href="structRadar.html"><code>struct Radar</code></a> *ptr,double tval,int method,int channel,int tfreq);</td></tr></table>
 <br clear=both>
 
 
@@ -692,7 +794,51 @@
 
 
 <table width=540 cellpadding=4>
+<tr><td class="docbox" style="font-family: courier;">int RadarLoadTdiff(char *tdiffpath,<a href="structRadarNetwork.html"><code>struct RadarNetwork</code></a> *ptr);</td></tr></table>
+<br clear=both>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table width=540 cellpadding=4>
 <tr><td class="docbox" style="font-family: courier;"><a href="structRadarSite.html"><code>struct RadarSite</code></a> *RadarYMDHMSGetSite(<a href="structRadar.html"><code>struct Radar</code></a> *ptr,int yr, int mo,int dy,int hr,int mt,int sc);</td></tr></table>
+<br clear=both>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table width=540 cellpadding=4>
+<tr><td class="docbox" style="font-family: courier;"><a href="structRadarTdiff.html"><code>struct RadarTdiff</code></a> *RadarYMDHMSGetTdiff(<a href="structRadar.html"><code>struct Radar</code></a> *ptr,int yr,int mo,int dy,int hr,int mt,int sc,int method,int channel,int tfreq);</td></tr></table>
 <br clear=both>
 
 

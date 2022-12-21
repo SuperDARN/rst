@@ -43,6 +43,7 @@ time_plot --help<br>time_plot [<em>options</em>] <em>fitacfname</em> [<em>inxnam
 <tr><td width="150" valign="top"><code>-wdt <em>width</em></code></td><td valign="top">set the width of the plot to <em>width</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-hgt <em>height</em></code></td><td valign="top">set the height of the plot to <em>height</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-bgcol <em>rrggbb</em></code></td><td valign="top">set the background color to <em>rrggbb</em>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</td></tr>
+<tr><td width="150" valign="top"><code>-pbgcol <em>rrggbb</em></code></td><td valign="top">set the panel background color to <em>rrggbb</em>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</td></tr>
 <tr><td width="150" valign="top"><code>-grdcol <em>rrggbb</em></code></td><td valign="top">set the color of grid to <em>rrggbb</em>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</td></tr>
 <tr><td width="150" valign="top"><code>-txtcol <em>rrggbb</em></code></td><td valign="top">set the color of text to <em>rrggbb</em>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</td></tr>
 <tr><td width="150" valign="top"><code>-gscol <em>rrggbb</em></code></td><td valign="top">set the color of ground scatter to <em>rrggbb</em>, specified as the hexadecimal value for the 24-bit red,green and blue component color.</td></tr>
@@ -85,22 +86,22 @@ time_plot --help<br>time_plot [<em>options</em>] <em>fitacfname</em> [<em>inxnam
 <tr><td width="150" valign="top"><code>-ve</code></td><td valign="top">plot velocity error.</td></tr>
 <tr><td width="150" valign="top"><code>-we</code></td><td valign="top">plot spectral width error.</td></tr>
 <tr><td width="150" valign="top"><code>-p0</code></td><td valign="top">plot lag0 power.</td></tr>
-<tr><td width="150" valign="top"><code>-pmin <em>pmin</em></code></td><td valign="top">set the minimum value of the power scale to <a>pmin</em>.</td></tr>
-<tr><td width="150" valign="top"><code>-pmax <em>pmax</em></code></td><td valign="top">set the maximum value of the power scale to <a>pmax</em>.</td></tr>
-<tr><td width="150" valign="top"><code>-vmin <em>vmin</em></code></td><td valign="top">set the minimum value of the velocity scale to <a>vmin</em>.</td></tr>
-<tr><td width="150" valign="top"><code>-vmax <em>vmax</em></code></td><td valign="top">set the maximum value of the velocity scale to <a>vmax</em>.</td></tr>
-<tr><td width="150" valign="top"><code>-wmin <em>wmin</em></code></td><td valign="top">set the minimum value of the spectral width scale to <a>wmin</em>.</td></tr>
-<tr><td width="150" valign="top"><code>-wmax <em>wmax</em></code></td><td valign="top">set the maximum value of the spectral width scale to <a>wmax</em>.</td></tr>
-<tr><td width="150" valign="top"><code>-phimin <em>phimin</em></code></td><td valign="top">set the minimum value of the phi0 scale to <a>phimin</em>.</td></tr>
-<tr><td width="150" valign="top"><code>-phimax <em>phimax</em></code></td><td valign="top">set the maximum value of the phi0 scale to <a>phimax</em>.</td></tr>
-<tr><td width="150" valign="top"><code>-emin <em>emin</em></code></td><td valign="top">set the minimum value of the elevation angle scale to <a>emin</em>.</td></tr>
-<tr><td width="150" valign="top"><code>-emax <em>emax</em></code></td><td valign="top">set the maximum value of the elevation angle scale to <a>emax</em>.</td></tr>
-<tr><td width="150" valign="top"><code>-vemin <em>vemin</em></code></td><td valign="top">set the minimum value of the velocity error scale to <a>vemin</em>.</td></tr>
-<tr><td width="150" valign="top"><code>-vemax <em>vemax</em></code></td><td valign="top">set the maximum value of the velocity error scale to <a>vemax</em>.</td></tr>
-<tr><td width="150" valign="top"><code>-wemin <em>wemin</em></code></td><td valign="top">set the minimum value of the spectral width error scale to <a>wemin</em>.</td></tr>
-<tr><td width="150" valign="top"><code>-wemax <em>wemax</em></code></td><td valign="top">set the maximum value of the spectral width error scale to <a>wemax</em>.</td></tr>
-<tr><td width="150" valign="top"><code>-p0min <em>p0min</em></code></td><td valign="top">set the minimum value of the lag0 power scale to <a>p0min</em>.</td></tr>
-<tr><td width="150" valign="top"><code>-p0max <em>p0max</em></code></td><td valign="top">set the maximum value of the lag0 power scale to <a>p0max</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-pmin <em>pmin</em></code></td><td valign="top">set the minimum value of the power scale to <em>pmin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-pmax <em>pmax</em></code></td><td valign="top">set the maximum value of the power scale to <em>pmax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-vmin <em>vmin</em></code></td><td valign="top">set the minimum value of the velocity scale to <em>vmin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-vmax <em>vmax</em></code></td><td valign="top">set the maximum value of the velocity scale to <em>vmax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-wmin <em>wmin</em></code></td><td valign="top">set the minimum value of the spectral width scale to <em>wmin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-wmax <em>wmax</em></code></td><td valign="top">set the maximum value of the spectral width scale to <em>wmax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-phimin <em>phimin</em></code></td><td valign="top">set the minimum value of the phi0 scale to <em>phimin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-phimax <em>phimax</em></code></td><td valign="top">set the maximum value of the phi0 scale to <em>phimax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-emin <em>emin</em></code></td><td valign="top">set the minimum value of the elevation angle scale to <em>emin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-emax <em>emax</em></code></td><td valign="top">set the maximum value of the elevation angle scale to <em>emax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-vemin <em>vemin</em></code></td><td valign="top">set the minimum value of the velocity error scale to <em>vemin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-vemax <em>vemax</em></code></td><td valign="top">set the maximum value of the velocity error scale to <em>vemax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-wemin <em>wemin</em></code></td><td valign="top">set the minimum value of the spectral width error scale to <em>wemin</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-wemax <em>wemax</em></code></td><td valign="top">set the maximum value of the spectral width error scale to <em>wemax</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-p0min <em>p0min</em></code></td><td valign="top">set the minimum value of the lag0 power scale to <em>p0min</em>.</td></tr>
+<tr><td width="150" valign="top"><code>-p0max <em>p0max</em></code></td><td valign="top">set the maximum value of the lag0 power scale to <em>p0max</em>.</td></tr>
 <tr><td width="150" valign="top"><code>-gs</code></td><td valign="top">color ground scatter.</td></tr>
 <tr><td width="150" valign="top"><code>-gm</code></td><td valign="top">mask out ground scatter.</td></tr>
 <tr><td width="150" valign="top"><code>-ns</code></td><td valign="top">ignore non-scan data (data with a scan flag of -1).</td></tr>

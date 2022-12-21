@@ -25,34 +25,26 @@
 <table>
 <tr><td class="docsubtitle" valign=top>Syntax</td></tr>
 <tr><td></td><td width=80% class="docbox" style="font-family: courier;">
-make_fit --help<br>make_fit [<em>rawacfname</em>]<br>make_fit [-fitacf-version <em>version_number</em>] [<em>rawacfname</em>]<br>make_fit -old <em>rawname</em> <em>fitname</em> [<em>inxname</em>]<br>make_fit -old [-fitacf-version <em>version_number</em>] <em>rawname</em> <em>fitname</em> [<em>inxname</em>]<br></td></tr>
+make_fit --help<br>make_fit -fitacf3|-fitacf2|-lmfit1|-fitex2|-fitex1 [<em>rawacfname</em>]<br>make_fit -old -fitacf3|-fitacf2|-lmfit1|-fitex2|-fitex1 <em>rawname</em> <em>fitname</em> [<em>inxname</em>]<br></td></tr>
 <tr><td class="docsubtitle">Synopsis</td></tr>
-<tr><td></td><td><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file.</p></td></tr>
+<tr><td></td><td><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file using one of the SuperDARN fitting algorithms. A description of each fitting algorithm is available at https://radar-software-toolkit-rst.readthedocs.io/en/latest/user_guide/make_fit/</p></td></tr>
 
 <tr><td class="docsubtitle">Options</td></tr>
 <tr><td></td><td>
-<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
-<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
-<tr><td width="150" valign="top"><code><em>rawacfname</em></code></td><td valign="top">filename of the <code>rawacf</code> format file. If this is omitted the file is read from standard input.</td></tr>
-<tr><td width="150" valign="top"><code>-fitacf-version</code></td><td valign="top">Select fitacf version.</td></tr>
-<tr><td width="150" valign="top"><code><em>version_number</em></code></td><td valign="top">Valid choices are 3.0 or 2.5.</td></tr>
-<tr><td width="150" valign="top"><code>-old</code></td><td valign="top">input file is in <code>raw</code> (<code>dat</code>) file format and the output should be in <code>fit</code> file format.</td></tr>
-<tr><td width="150" valign="top"><code>-old_elev</code></td><td valign="top">use old elevation angle algorithm(s).</td></tr>
-<tr><td width="150" valign="top"><code><em>rawname</em></code></td><td valign="top">filename of the <code>raw</code> (<code>dat</code>) format file.</td></tr>
-<tr><td width="150" valign="top"><code><em>fitname</em></code></td><td valign="top">filename of the <code>fit</code> format file to create.</td></tr>
-<tr><td width="150" valign="top"><code>[<em>inxname</em>]</code></td><td valign="top">filename of the associated index file to create.</td></tr>
-</table></td></tr>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr><tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr><tr><td width="150" valign="top"><code><em>rawacfname</em></code></td><td valign="top">filename of the <code>rawacf</code> format file. If this is omitted the file is read from standard input.</td></tr><tr><td width="150" valign="top"><code>-fitacf3</code></td><td valign="top">Uses FitACF 3.0 fitting algorithm</td></tr><tr><td width="150" valign="top"><code>-fitacf2</code></td><td valign="top">Uses FitACF 2.5 fitting algorithm</td></tr><tr><td width="150" valign="top"><code>-lmfit2</code></td><td valign="top">Uses LMFit 2.0 fitting algorithm (Not yet implemented: use make_lmfit2 binary)</td></tr><tr><td width="150" valign="top"><code>-lmfit1</code></td><td valign="top">Uses LMFit 1.0 fitting algorithm</td></tr><tr><td width="150" valign="top"><code>-fitex2</code></td><td valign="top">Uses FitEx 2.0 fitting algorithm</td></tr><tr><td width="150" valign="top"><code>-fitex1</code></td><td valign="top">Uses FitEx 1.0 fitting algorithm</td></tr><tr><td width="150" valign="top"><code>-tdiff <em>tdiff</em></code></td><td valign="top">Use a fixed value of <em>tdiff</em> (in units of microseconds) when calculating elevation angles.</td></tr><tr><td width="150" valign="top"><code>-tdiff_method <em>method</em></code></td><td valign="top">Use tdiff values from the calibration method of <em>method</em> when calculating elevation angles (0: Ponomarenko-2015; 1: Burrell-2016; 2: Ponomarenko-2018; 3: Chisham-2018; 4: Chisham-2021). Note: this option overrides -tdiff</td></tr><tr><td width="150" valign="top"><code>-old</code></td><td valign="top">input file is in <code>raw</code> (<code>dat</code>) file format and the output should be in <code>fit</code> file format.</td></tr><tr><td width="150" valign="top"><code>-old_elev</code></td><td valign="top">use old elevation angle algorithm(s).</td></tr><tr><td width="150" valign="top"><code><em>rawname</em></code></td><td valign="top">filename of the <code>raw</code> (<code>dat</code>) format file.</td></tr><tr><td width="150" valign="top"><code><em>fitname</em></code></td><td valign="top">filename of the <code>fit</code> format file to create.</td></tr><tr><td width="150" valign="top"><code>[<em>inxname</em>]</code></td><td valign="top">filename of the associated index file to create.</td></tr></table></td></tr>
 <tr><td class="docsubtitle">Description</td></tr>
-<tr><td></td><td><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file.</p>
-<p>If the "<code>-old</code>" option is not specified then the <code>fitacf</code> format file is written to standard output.</p>
+<tr><td></td><td><p>Creates a <code>fit</code> or <code>fitacf</code> format file from a <code>raw</code> (<code>dat</code>) or <code>rawacf</code> format file. If the "<code>-old</code>" option is not specified then the <code>fitacf</code> format file is written to standard output.</p>
 </td></tr>
 <tr><td class="docsubtitle">Examples</td></tr>
 <tr><td></td><td>
-<table ><tr><td class="docbox" ><pre width="80">make_fit -vb 19981105.kap.rawacf &gt; 19981105.kap.fitacf</pre></td></tr></table>
-<p>Generates a fitacf file from the <code>rawacf</code> file "<code>19981105.kap.rawacf</code>" to produce a file called "<code>19981105.kap.fitacf</code>". Status is logged on standard error.</p>
+<table ><tr><td class="docbox" ><pre width="80">make_fit -fitacf3 -vb 19981105.kap.rawacf &gt; 19981105.kap.fitacf3</pre></td></tr></table>
+<p>Generates a fitacf file using FitACF3.0 from the <code>rawacf</code> file "<code>19981105.kap.rawacf</code>" to produce a file called "<code>19981105.kap.fitacf</code>". Status is logged on standard error.</p>
 
-<table ><tr><td class="docbox" ><pre width="80">make_fit -old 19971020.gbr.dat 19971020gbr.fit 19971020.gbr.inx</pre></td></tr></table>
-<p>Generates a <code>fit</code> file from the <code>dat</code> file "<code>19971020.gbr.dat</code>" to produce a file called "<code>19971020.gbr.fit</code>" and an index file called "<code>19971020.gbr.inx</code>".</p>
+<table ><tr><td class="docbox" ><pre width="80">make_fit -fitacf2 19981105.kap.rawacf &gt; 19981105.kap.fitacf2</pre></td></tr></table>
+<p>Generates a fitacf file using FitACF2.5 from the <code>rawacf</code> file "<code>19981105.kap.rawacf</code>" to produce a file called "<code>19981105.kap.fitacf</code>". Status is logged on standard error.</p>
+
+<table ><tr><td class="docbox" ><pre width="80">make_fit -fitacf2 -old 19971020.gbr.dat 19971020.gbr.fit 19971020.gbr.inx</pre></td></tr></table>
+<p>Generates a <code>fit</code> file using FitACF2.5 from the <code>dat</code> file "<code>19971020.gbr.dat</code>" to produce a file called "<code>19971020.gbr.fit</code>" and an index file called "<code>19971020.gbr.inx</code>".</p>
 </td></tr>
 
 

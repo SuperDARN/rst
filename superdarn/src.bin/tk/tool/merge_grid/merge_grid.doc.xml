@@ -4,9 +4,9 @@
 <name>merge_grid</name>
 <location>src.bin/tk/tool/merge_grid</location>
 
-<syntax>combine_grid --help</syntax>
-<syntax>combine_grid [-vb] <ar>gridname</ar></syntax>
-<syntax>combine_grid -old [-vb] <ar>gridname</ar></syntax>
+<syntax>merge_grid --help</syntax>
+<syntax>merge_grid [-vb] <ar>gridname</ar></syntax>
+<syntax>merge_grid -old [-vb] <ar>gridname</ar></syntax>
 
 <option><on>--help</on><od>print the help message and exit.</od>
 </option>

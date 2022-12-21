@@ -26,7 +26,7 @@
 <h2 class="doctitle">FitACF</h2>
 <table>
 <tr><td class="docsubtitle" valign=top>Syntax</td></tr>
-<tr><td></td><td class="docbox" style="font-family: courier;">void FitACF(<a href="../../../../superdarn/src.lib/tk/radar/structRadarParm.html"><code>struct RadarParm</code></a> *prm,<a href="../../../../superdarn/src.lib/tk/raw/structRawData.html"><code>struct RawData</code></a> *ptr,<a href="structFitBlock.html"><code>struct FitBlock</code></a> *input,<a href="../../../../superdarn/src.lib/tk/fit/structFitData.html"><code>struct FitData</code></a> *fit);</td></tr>
+<tr><td></td><td class="docbox" style="font-family: courier;">void FitACF(<a href="../../../../superdarn/src.lib/tk/radar/structRadarParm.html"><code>struct RadarParm</code></a> *prm,<a href="../../../../superdarn/src.lib/tk/raw/structRawData.html"><code>struct RawData</code></a> *ptr,<a href="structFitBlock.html"><code>struct FitBlock</code></a> *input,<a href="../../../../superdarn/src.lib/tk/fit/structFitData.html"><code>struct FitData</code></a> *fit,<a href="../../../../superdarn/src.lib/tk/radar/structRadarSite.html"><code>struct RadarSite</code></a> *hd,<a href="../../../../superdarn/src.lib/tk/radar/structRadarTdiff.html"><code>struct RadarTdiff</code></a> *tdiff,double tdiff_fix);</td></tr>
 
 <tr><td class="docsubtitle" valign=top>Header</td></tr>
 <tr><td></td>
@@ -39,6 +39,7 @@
 <p>The argument <em>prm</em> points to the radar parameter block of the data to process and the argument <em>raw</em> points to the raw ACF data.</p>
 <p>The configuration used by the algorithm is stored in the structure pointed to by the argument <em>input</em>.</p>
 <p>The calculated, fitted parameters are stored in the structure pointed to by the argument <em>fit</em>.</p>
+<p>The tdiff information needed for the elevation angle calculation is stored in either the hardware table pointed to by <em>hd</em>, the calibrated tdiff table pointed to by <em>tdiff</em>, or a user-provided argument <em>tdiff_fix</em>.</p>
 </td></tr>
 <tr><td class="docsubtitle">Returns</td></tr>
 <tr><td></td><td>None</td></tr>

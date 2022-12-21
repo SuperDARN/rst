@@ -1,0 +1,66 @@
+<head>
+<title>sim_real</title>
+<link rel=stylesheet href="../../../../../css/doc.css" type=text/css>
+</head>
+<body>
+<div id="root">
+
+<div id="banner">
+
+</div>
+
+<div id="location">
+<table width=100% class="location"><tr>
+<td><a href="../../../../../index.html">Home</a><td>|</td>
+<td><a href=../../../../../superdarn/index.html>superdarn</a></td>
+<td>|</td><td><a href=../../../../../superdarn/src.bin/index.html>src.bin</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/index.html>tk</a></td><td>|</td><td><a href=../../../../../superdarn/src.bin/tk/tool/index.html>tool</a></td><td>|</td>
+<td>sim_real</td>
+<td width=100% align=right><a href=../../../../../superdarn/src.bin/indexdoc.html>Index</a></td>
+</tr>
+</table>
+</div>
+
+<div id="main">
+<h2 class="doctitle">sim_real</h2>
+<table>
+<tr><td class="docsubtitle" valign=top>Syntax</td></tr>
+<tr><td></td><td width=80% class="docbox" style="font-family: courier;">
+sim_real --help<br>sim_real [-vb] <em>fitacfname</em><br></td></tr>
+<tr><td class="docsubtitle">Synopsis</td></tr>
+<tr><td></td><td><p>Generates simulated single-component Lorentzian ACFs based on an input <code>fitacf</code> file.</p></td></tr>
+
+<tr><td class="docsubtitle">Options</td></tr>
+<tr><td></td><td>
+<table width=100%><tr><td width="150" valign="top"><code>--help</code></td><td valign="top">print the help message and exit.</td></tr>
+<tr><td width="150" valign="top"><code>--version</code></td><td valign="top">print the RST version number and exit.</td></tr>
+<tr><td width="150" valign="top"><code>-katscan</code></td><td valign="top">use Kathrn McWilliams' 8-pulse sequence (default).</td></tr>
+<tr><td width="150" valign="top"><code>-tauscan</code></td><td valign="top">use Ray Greenwald's 13-pulse sequence.</td></tr>
+<tr><td width="150" valign="top"><code>-oldscan</code></td><td valign="top">use the old 7-pulse sequence.</td></tr>
+<tr><td width="150" valign="top"><code>-constant</code></td><td valign="top">use a constant irregularity lifetime distribution (default is exponential).</td></tr>
+<tr><td width="150" valign="top"><code>-nocri</code></td><td valign="top">Remove cross-range interference from the ACFs (default is CRI on). WARNING: removing cross-range interference will make the raw samples unusable, since each range gate will have to be integrated separately.</td></tr>
+<tr><td width="150" valign="top"><code>-iq</code></td><td valign="top">Output raw samples (in <code>iqdat</code> format) instead of ACFs (in <code>rawacf</code> format).</td></tr>
+</table></td></tr>
+<tr><td class="docsubtitle">Description</td></tr>
+<tr><td></td><td><p>Reads a <code>fitacf</code> format file and generates simulated single-component Lorentzian ACFs at ranges where scatter was observed in either <code>rawacf</code> (default) or <code>iqdat</code> format, which is then written to standard output.</p>
+</td></tr>
+<tr><td class="docsubtitle">Examples</td></tr>
+<tr><td></td><td>
+<table ><tr><td class="docbox" ><pre width="80">sim_real input.fitacf &gt; output.rawacf</pre></td></tr></table>
+<p>Generates simulated single-component Lorentzian ACFs in <code>rawacf</code> format.</p>
+</td></tr>
+
+
+</table>
+<br><br>
+</div>
+
+<div id="tail">
+</div>
+
+</div>
+
+</body>
+
+
+
+
