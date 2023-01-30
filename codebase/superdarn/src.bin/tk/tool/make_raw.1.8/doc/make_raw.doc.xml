@@ -18,7 +18,7 @@
 </option>
 <option><on>-skip <ar>skpval</ar></on><od>set the number of samples to skip at the start of each sequence to <ar>skpval</ar>. The default value is taken from the IQ structure of the input <code>iqdat</code> format file.</od>
 </option>
-<option><on>-chnnum <ar>chnnum</ar></on><od>set the number of receiver channels to <ar>chnnum</ar>. The default value si taken from the IQ structure of the input <code>iqdat</code> format file.</od>
+<option><on>-chnnum <ar>chnnum</ar></on><od>set the number of receiver channels to <ar>chnnum</ar>. The default value is taken from the IQ structure of the input <code>iqdat</code> format file.</od>
 </option>
 <option><on><ar>iqdatname</ar></on><od>filename of the <code>iqdat</code> format file. If this is omitted the file is read from standard input.</od>
 </option>
