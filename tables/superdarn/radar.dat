@@ -72,4 +72,6 @@
 207  1 20101104 25000101 "Christmas Valley East"   "Dartmouth College"                   "hdw.dat.cve" "cve"
 208 -1 20120906 20181101 "Adak West"               "Penn State University"               "hdw.dat.adw" "adw"
 209 -1 20120906 20181017 "Adak East"               "Penn State University"               "hdw.dat.ade" "ade"
+210  1 20230124 25000101 "Iceland West"            "Dartmouth College"                   "hdw.dat.icw" "icw"
+211  1 20230124 25000101 "Iceland East"            "Dartmouth College"                   "hdw.dat.ice" "ice"
 512  0 20110101 25000101 "EKB Radar"               "Russian Academy of Sciences"         "hdw.dat.ekb" "ekb"
