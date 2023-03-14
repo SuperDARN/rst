@@ -130,6 +130,8 @@
 </option>
 <option><on>-maxbeam <ar>maxbeam</ar></on><od>set the maximum number of beams to draw for the radar field of view outline to <ar>maxbeam</ar>.</od>
 </option>
+<option><on>-databeam</on><od>set the minimum and maximum number of beams to draw for the radar field of view according to the data in each scan (default is to use the radar hardware file).</od>
+</option>
 <option><on>-lst</on><od>use local solar time rather than local time.</od>
 </option>
 <option><on>-tmtick <ar>tick</ar></on><od>set the grid interval for the time clock-dial to <ar>tick</ar> hours.</od>
