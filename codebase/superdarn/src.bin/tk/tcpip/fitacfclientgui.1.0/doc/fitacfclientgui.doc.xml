@@ -21,7 +21,7 @@
 </option>
 <option><on>-w</on><od>plot spectral width.</od>
 </option>
-<option><on>-w</on><od>plot elevation angle.</od>
+<option><on>-e</on><od>plot elevation angle.</od>
 </option>
 <option><on>-pmin <ar>pmin</ar></on><od>set the minimum value of the power scale to <ar>pmin</ar>.</od>
 </option>
