@@ -237,7 +237,7 @@ static IDL_VPTR IDLAACGM_v2_GetDateTime(int argc,IDL_VPTR *argv,char *argk) {
 
     int s=0;
     int yr,mo,dy,hr,mt,sc,dayno;
-    IDL_VPTR outargv[0];
+    IDL_VPTR outargv[7];
 
     static IDL_VPTR month;
     static IDL_VPTR day;
