@@ -326,9 +326,9 @@ int main (int argc,char *argv[]) {
     badrng=ACFBadLagZero(&tprm,prm->mplgs,lag);
 
     if (chnnum > 0) {
-      rngoff = 2*chnnum;
+      rngoff = chnnum;
     } else {
-      rngoff = 2*iq->chnnum;
+      rngoff = iq->chnnum;
     }
 
     if (digital) {

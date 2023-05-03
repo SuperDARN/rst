@@ -61,7 +61,7 @@ int IQEncode(struct DataMap *ptr,struct IQ *iq,
   tnum=iq->seqnum;
   bnum=iq->tbadtr*2;
 
- snum=iq->seqnum*iq->chnnum*iq->smpnum*2*2;   /*2 for main and back  2  to convert to 16 bit */  
+  snum=iq->seqnum*iq->chnnum*iq->smpnum*2;
 
   DataMapAddScalar(ptr,"iqdata.revision.major",DATAINT,
 		    &iq->revision.major);
