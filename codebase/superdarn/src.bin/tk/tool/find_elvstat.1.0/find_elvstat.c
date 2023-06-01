@@ -207,6 +207,9 @@ int main(int argc, char *argv[])
   num_elv = get_fit_elv_stat(fnum, channel, channel_fix, old, stime, sdate,
 			     etime, edate, extime, fitflg, nsflg, vb, vbuf,
 			     iname, dnames);
+  /* Free the filename pointer */
+  for(inum=0; inum<fnum; inum++) free(dnames[inum]);
+  free(dnames);
 
   /* Output the number of potentially valid elevation angles */
   fprintf(stdout, "%d positive elevation angles below 90 degrees\n", num_elv);
