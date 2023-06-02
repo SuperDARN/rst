@@ -15,8 +15,6 @@ jobs:
 
     name: ${{ matrix.cc }} on ${{ matrix.os }} with CDF ${{ matrix.cdf }}
     runs-on: ${{ matrix.os }}
-    env:
-      working-directory: ./
     steps:
     - uses: actions/checkout@v3
 
@@ -36,7 +34,7 @@ jobs:
 
     - name: Build and make code
       run: |
-        export RSTPATH=${{ env.working-directory }}
+        export RSTPATH=$(pwd)
         source .profile.bash
         echo "TEST", $RSTPATH, " : ", $VISUAL
         cd build/script
