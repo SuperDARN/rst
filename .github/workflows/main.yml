@@ -22,7 +22,7 @@ jobs:
       if: startsWith(matrix.os, 'ubuntu')
       run: |
         sudo apt-get update
-        cat requirements.linux | xargs sudo apt-get install
+        cat requirements.ubuntu | xargs sudo apt-get install
         tar -xzvf cdf${{ matrix.cdf }}-dist-cdf.tar.gz
         cd cdf${{ matrix.cdf }}-dist
         make OS=linux ENV=gnu all
