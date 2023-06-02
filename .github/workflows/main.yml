@@ -5,7 +5,7 @@ name: Compilation Test
 on: [push, pull_request]
 
 env:
-  RSTPATH: $HOME/rst
+  RSTPATH: ${{ env.GITHUB_ACTION_PATH }}/rst
 
 jobs:
   build:
@@ -37,7 +37,7 @@ jobs:
 
     - name: Build and make code
       run: |
-        source $RSTPATH/.profile.bash
-        cd $RSTPATH/build/script
+        source ${{ env.RSTPATH }}/.profile.bash
+        cd ${{ env.RSTPATH }}/build/script
         make.build
         make.code
