@@ -36,7 +36,6 @@ jobs:
       run: |
         export RSTPATH=$(pwd)
         source .profile.bash
-        echo "TEST", $RSTPATH, " : ", $VISUAL
         cd build/script
         make.build
         make.code
