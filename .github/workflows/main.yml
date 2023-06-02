@@ -4,6 +4,9 @@ name: Compilation Test
 
 on: [push, pull_request]
 
+env:
+  RSTPATH: $HOME/rst
+
 jobs:
   build:
     strategy:
@@ -32,15 +35,9 @@ jobs:
         make test
         sudo make INSTALLDIR=/usr/local/cdf install
 
-    - name: Bash configuration
-      if: startsWith(matrix.os, 'ubuntu')
-      run: |
-        echo "export RSTPATH=$HOME/rst" >> $HOME/.bashrc
-        echo ". $RSTPATH/.profile.bash" >> $HOME/.bashrc
-        source ~/.bashrc
-
     - name: Build and make code
       run: |
+        source $RSTPATH/.profile.bash
         cd $RSTPATH/build/script
         make.build
         make.code
