@@ -36,7 +36,7 @@ jobs:
       run: |
         export RSTPATH=${{ env.GITHUB_ACTION_PATH }}
         source .profile.bash
-	echo "TEST", $RSTPATH, " ", $VISUAL
+        echo "TEST", $RSTPATH, " ", $VISUAL
         cd build/script
         make.build
         make.code
