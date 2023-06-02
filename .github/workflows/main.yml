@@ -1,0 +1,43 @@
+# This workflow will install RST and eventually run tests
+
+name: Compilation Test
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu-latest"]
+        cc: ["gcc-default"]
+        cdf: ["39_0"]
+
+    name: ${{ matrix.cc }} on ${{ matrix.os }} with CDF ${{ matrix.cdf }}
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install Ubuntu dependencies
+      if: startsWith(matrix.os, 'ubuntu')
+      run: |
+        sudo apt-get update
+        cat requirements.linux | xargs sudo apt-get install
+        tar -xzvf cdf${{ matrix.cdf }}-dist-cdf.tar.gz
+        cd cdf${{ matrix.cdf }}-dist
+        make OS=linux ENV=gnu all
+        make test
+        sudo make INSTALLDIR=/usr/local/cdf install
+
+    - name: Bash configuration
+      if: startsWith(matrix.os, 'ubuntu')
+      run: |
+        echo "export RSTPATH=$HOME/rst" >> $HOME/.bashrc
+        echo ". $RSTPATH/.profile.bash" >> $HOME/.bashrc
+        source ~/.bashrc
+
+    - name: Build and make code
+      run: |
+        cd $RSTPATH/build/script
+        make.build
+        make.code
