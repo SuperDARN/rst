@@ -359,6 +359,7 @@ int main(int argc,char *argv[]) {
         tmstr[24]=0;
         SndSetOriginTime(snd,tmstr);
         SndSetOriginCommand(snd,command);
+        SndSetCombf(snd,prm->combf);
 
         FitToSnd(snd,prm,fit,prm->scan);
 
