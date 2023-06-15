@@ -234,7 +234,7 @@ int main(int argc,char *argv[]) {
 
   s=nc_open(argv[arg+2],NC_WRITE,&ncid);
   if (s !=NC_NOERR) {
-    fprintf(stderr,"Error opening CDF file.\n");
+    fprintf(stderr,"Error opening netCDF file.\n");
     exit(-1);
   }
 
@@ -257,7 +257,7 @@ int main(int argc,char *argv[]) {
       if (n !=snum) { /* mapped variable */
         s=nc_inq_varid(ncid,cdfsname[n],&varid);
         if (s !=NC_NOERR) {
-          fprintf(stderr,"Error accessing CDF file.\n");
+          fprintf(stderr,"Error accessing netCDF file.\n");
           exit(-1);
         }
         index[0]=block;
@@ -287,7 +287,7 @@ int main(int argc,char *argv[]) {
           break;
         }
         if (s !=NC_NOERR) {
-          fprintf(stderr,"Error writing CDF file (%d).\n",s);
+          fprintf(stderr,"Error writing netCDF file (%d).\n",s);
           exit(-1);
         }
 
@@ -308,7 +308,7 @@ int main(int argc,char *argv[]) {
 
         s=nc_inq_varid(ncid,cdfaname[n],&varid);
         if (s !=NC_NOERR) {
-          fprintf(stderr,"Error accessing CDF file.\n");
+          fprintf(stderr,"Error accessing netCDF file.\n");
           exit(-1);
         }
         start[0]=block;
@@ -326,12 +326,12 @@ int main(int argc,char *argv[]) {
           size_t dimlen;
           s=nc_inq_varndims(ncid,varid,&ndims);
           if (s !=NC_NOERR) {
-            fprintf(stderr,"Error accessing CDF file.\n");
+            fprintf(stderr,"Error accessing netCDF file.\n");
             exit(-1);
           }
           s=nc_inq_vardimid(ncid,varid,dimids);
           if (s !=NC_NOERR) {
-            fprintf(stderr,"Error accessing CDF file.\n");
+            fprintf(stderr,"Error accessing netCDF file.\n");
             exit(-1);
           }
           if (ndims-2!=ax->dim) {
@@ -341,7 +341,7 @@ int main(int argc,char *argv[]) {
 
           s=nc_inq_dimlen(ncid,dimids[ndims-1],&dimlen);
           if (s !=NC_NOERR) {
-            fprintf(stderr,"Error accessing CDF file.\n");
+            fprintf(stderr,"Error accessing netCDF file.\n");
             exit(-1);
           }
           strsze=dimlen;
@@ -383,7 +383,7 @@ int main(int argc,char *argv[]) {
         }
 
         if (s !=NC_NOERR) {
-          fprintf(stderr,"Error writing CDF file (%d).\n",s);
+          fprintf(stderr,"Error writing netCDF file (%d).\n",s);
           exit(-1);
         }
 
