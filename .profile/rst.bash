@@ -21,6 +21,7 @@ export IPATH="${RSTPATH}/include"
 
 export PATH="${PATH}:${BUILD}/bin:${BUILD}/script:${RSTPATH}/bin:${RSTPATH}/script"
 export LD_LIBRARY_PATH="${LIBPATH}:/usr/local/cdf/lib"
+export DYLD_LIBRARY_PATH="${LIBPATH}:/Applications/cdf/cdf/lib"
 
 #####################################################################
 #                                                                   #

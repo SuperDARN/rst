@@ -3,7 +3,7 @@
 
 # IDL header directory
 
-export IDL_IPATH="/usr/local/itt/idl/external/include"
+export IDL_IPATH="/Applications/exelis/idl85/external/include"
 
 # RST DLM directory
 
