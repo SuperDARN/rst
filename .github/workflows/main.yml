@@ -36,8 +36,9 @@ jobs:
       run: |
         export RSTPATH=$(pwd)
         source .profile.bash
-        build/script/make.build
-        build/script/make.code
+        cd build/script
+        make.build
+        make.code
 
     - name: Build and make docs
       run: build/script/make.doc
