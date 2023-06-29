@@ -40,4 +40,7 @@ jobs:
         build/script/make.code
 
     - name: Build and make docs
-      run: build/script/make.doc
+      run: |
+        export RSTPATH=$(pwd)
+        source .profile.bash
+        build/script/make.doc
