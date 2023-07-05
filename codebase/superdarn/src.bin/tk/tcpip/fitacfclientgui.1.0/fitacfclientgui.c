@@ -378,7 +378,7 @@ int main(int argc,char *argv[]) {
       clrtoeol();
       printw("rsep  = %3d  noise.search = %g\n", prm->rsep,prm->noise.search);
       clrtoeol();
-      printw("scan  = %3d  noise.mean   = %g\n", prm->scan,prm->noise.mean);
+      printw("scan  = %3d  noise.sky    = %g\n", prm->scan,fit->noise.skynoise);
       clrtoeol();
       printw("mppul = %3d  mpinc = %d\n", prm->mppul,prm->mpinc);
       clrtoeol();
