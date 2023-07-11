@@ -81,7 +81,7 @@ int main(int argc,char *argv[]) {
   int min_beam=100;
   int max_beam=-100;
 
-  unsigned char colorflg=0;
+  unsigned char colorflg=1;
   unsigned char gflg=0;
   unsigned char menu=1;
   double nlevels=5;
@@ -123,7 +123,6 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-version",'x',&version);
   OptionAdd(&opt,"nrange",'i',&nrng);
 
-  OptionAdd(&opt,"color",'x',&colorflg);
   OptionAdd(&opt,"gs",'x',&gflg);
   OptionAdd(&opt,"p",'x',&pwrflg);
   OptionAdd(&opt,"pmin",'d',&pmin);
@@ -191,14 +190,11 @@ int main(int argc,char *argv[]) {
   /* Hide the cursor */
   curs_set(0);
 
+  /* Check for color support */
+  if (has_colors() == FALSE) colorflg = 0;
+
   /* Initialize colors */
   if (colorflg) {
-    if (has_colors() == FALSE) {
-      endwin();
-      fprintf(stderr,"No color support!\n");
-      exit(1);
-    }
-
     start_color();
     init_pair(1, COLOR_MAGENTA, COLOR_BLACK);
     init_pair(2, COLOR_BLUE, COLOR_BLACK);
@@ -547,6 +543,9 @@ int main(int argc,char *argv[]) {
   } while(1);
 
   endwin();
+
+  RadarParmFree(prm);
+  FitFree(fit);
 
   return 0;
 }

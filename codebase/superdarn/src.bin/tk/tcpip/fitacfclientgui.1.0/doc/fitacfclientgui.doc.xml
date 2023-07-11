@@ -13,8 +13,6 @@
 </option>
 <option><on>-nrange <ar>nrng</ar></on><od>set the maximum number of range gates to display to <ar>nrng</ar> (default is 75).</od>
 </option>
-<option><on>-color</on><od>display the data stream in color according to the selected parameter (default is power).</od>
-</option>
 <option><on>-gs</on><od>color ground scatter white (velocity only).</od>
 </option>
 <option><on>-p</on><od>plot power.</od>
