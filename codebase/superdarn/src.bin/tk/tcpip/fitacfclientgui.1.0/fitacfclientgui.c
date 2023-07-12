@@ -50,6 +50,19 @@ Modifications:
 
 
 
+#define MAX_BEAMS 24
+#define MAX_RANGE 300
+
+struct DataBuffer {
+  int beam[MAX_BEAMS];
+  int qflg[MAX_BEAMS][MAX_RANGE];
+  int gsct[MAX_BEAMS][MAX_RANGE];
+  float vel[MAX_BEAMS][MAX_RANGE];
+  float pow[MAX_BEAMS][MAX_RANGE];
+  float wid[MAX_BEAMS][MAX_RANGE];
+  float elv[MAX_BEAMS][MAX_RANGE];
+} buffer;
+
 struct OptionData opt;
 
 int rst_opterr(char *txt) {
@@ -68,7 +81,9 @@ int main(int argc,char *argv[]) {
   int min_beam=100;
   int max_beam=-100;
 
-  unsigned char colorflg=0;
+  unsigned char colorflg=1;
+  unsigned char gflg=0;
+  unsigned char menu=1;
   double nlevels=5;
   double smin=0;
   double smax=0;
@@ -108,7 +123,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-version",'x',&version);
   OptionAdd(&opt,"nrange",'i',&nrng);
 
-  OptionAdd(&opt,"color",'x',&colorflg);
+  OptionAdd(&opt,"gs",'x',&gflg);
   OptionAdd(&opt,"p",'x',&pwrflg);
   OptionAdd(&opt,"pmin",'d',&pmin);
   OptionAdd(&opt,"pmax",'d',&pmax);
@@ -169,17 +184,17 @@ int main(int argc,char *argv[]) {
   cbreak();
   noecho();
 
+  /* Enable the keypad */
+  keypad(stdscr, TRUE);
+
   /* Hide the cursor */
   curs_set(0);
 
+  /* Check for color support */
+  if (has_colors() == FALSE) colorflg = 0;
+
   /* Initialize colors */
   if (colorflg) {
-    if (has_colors() == FALSE) {
-      endwin();
-      fprintf(stderr,"No color support!\n");
-      exit(1);
-    }
-
     start_color();
     init_pair(1, COLOR_MAGENTA, COLOR_BLACK);
     init_pair(2, COLOR_BLUE, COLOR_BLACK);
@@ -194,6 +209,9 @@ int main(int argc,char *argv[]) {
     init_pair(10, COLOR_CYAN, COLOR_CYAN);
     init_pair(11, COLOR_YELLOW, COLOR_YELLOW);
     init_pair(12, COLOR_RED, COLOR_RED);
+
+    init_pair(13, COLOR_WHITE, COLOR_BLACK);
+    init_pair(14, COLOR_WHITE, COLOR_WHITE);
 
     if ((!pwrflg) && (!velflg) && (!widflg) && (!elvflg)) pwrflg=1;
 
@@ -245,6 +263,76 @@ int main(int argc,char *argv[]) {
         elvflg=1;
         smin=emin;
         smax=emax;
+      } else if (c == 'g') {
+        gflg = !gflg;
+      } else if (c == 'n') {
+        menu = !menu;
+      } else if (c == KEY_UP) {
+        if (pwrflg || elvflg ) smax += 5;
+        else if (widflg) smax += 50;
+        else if (velflg) {
+          smax += 100;
+          smin -= 100;
+        }
+      } else if (c == KEY_DOWN) {
+        if (pwrflg || elvflg ) {
+          smax -= 5;
+          if (smax < 5) smax=5;
+        } else if (widflg) {
+          smax -= 50;
+          if (smax < 50) smax=50;
+        } else if (velflg) {
+          smax -= 100;
+          smin += 100;
+          if (smax < 100) {
+            smax=100;
+            smin=-100;
+          }
+        }
+      } else if (c == KEY_RIGHT) {
+        if (pwrflg) {
+          pwrflg=0;
+          velflg=1;
+          smin=vmin;
+          smax=vmax;
+        } else if (velflg) {
+          velflg=0;
+          widflg=1;
+          smin=wmin;
+          smax=wmax;
+        } else if (widflg) {
+          widflg=0;
+          elvflg=1;
+          smin=emin;
+          smax=emax;
+        } else if (elvflg) {
+          elvflg=0;
+          pwrflg=1;
+          smin=pmin;
+          smax=pmax;
+        }
+      } else if (c == KEY_LEFT) {
+        if (pwrflg) {
+          pwrflg=0;
+          elvflg=1;
+          smin=emin;
+          smax=emax;
+        } else if (velflg) {
+          velflg=0;
+          pwrflg=1;
+          smin=pmin;
+          smax=pmax;
+        } else if (widflg) {
+          widflg=0;
+          velflg=1;
+          smin=vmin;
+          smax=vmax;
+        } else if (elvflg) {
+          elvflg=0;
+          widflg=1;
+          smin=wmin;
+          smax=wmax;
+        }
       } else if (c != ERR) break;
     } else if (c != ERR) break;
 
@@ -253,6 +341,21 @@ int main(int argc,char *argv[]) {
     if (status==-1) break;
 
     if (flag !=-1) {
+
+      /* Store data from most recent beam in buffer */
+      buffer.beam[prm->bmnum]=1;
+      for (i=0; i<nrng; i++) {
+        if ((i >= prm->nrang) || (i >= MAX_RANGE)) break;
+        buffer.qflg[prm->bmnum][i]=fit->rng[i].qflg;
+        if (fit->rng[i].qflg == 1) {
+          buffer.gsct[prm->bmnum][i]=fit->rng[i].gsct;
+          buffer.pow[prm->bmnum][i]=fit->rng[i].p_l;
+          buffer.vel[prm->bmnum][i]=fit->rng[i].v;
+          buffer.wid[prm->bmnum][i]=fit->rng[i].w_l;
+          if (prm->xcf !=0 && fit->elv !=NULL) buffer.elv[prm->bmnum][i]=fit->elv[i].normal;
+        }
+      }
+
       /* Print date/time and radar operating parameters */
       move(0, 0);
       clrtoeol();
@@ -271,7 +374,7 @@ int main(int argc,char *argv[]) {
       clrtoeol();
       printw("rsep  = %3d  noise.search = %g\n", prm->rsep,prm->noise.search);
       clrtoeol();
-      printw("scan  = %3d  noise.mean   = %g\n", prm->scan,prm->noise.mean);
+      printw("scan  = %3d  noise.sky    = %g\n", prm->scan,fit->noise.skynoise);
       clrtoeol();
       printw("mppul = %3d  mpinc = %d\n", prm->mppul,prm->mpinc);
       clrtoeol();
@@ -286,10 +389,73 @@ int main(int argc,char *argv[]) {
         printw("origin.command = %s\n\n",prm->origin.command);
       }
 
+      /* Draw a menu explaining the keyboard controls */
+      if (colorflg) {
+        move(0, 50);
+        addch(ACS_ULCORNER);
+        for (i=0;i<3;i++) addch(ACS_HLINE);
+        if (menu) {
+          printw("Keyboard Controls (1/2)");
+          for (i=0;i<3;i++) addch(ACS_HLINE);
+          addch(ACS_URCORNER);
+          move(1, 50); addch(ACS_VLINE);
+          printw(" p : power          n : next");
+          move(1, 80); addch(ACS_VLINE);
+          move(2, 50); addch(ACS_VLINE);
+          printw(" v : velocity           page");
+          move(2, 80); addch(ACS_VLINE);
+          move(3, 50); addch(ACS_VLINE);
+          printw(" w : spectral width");
+          move(3, 80); addch(ACS_VLINE);
+          move(4, 50); addch(ACS_VLINE);
+          printw(" e : elevation angle");
+          move(4, 80); addch(ACS_VLINE);
+          move(5, 50); addch(ACS_VLINE);
+          printw(" g : GS flag (velocity only)");
+        } else {
+          printw("Keyboard Controls (2/2)");
+          for (i=0;i<3;i++) addch(ACS_HLINE);
+          addch(ACS_URCORNER);
+          move(1, 50); addch(ACS_VLINE);
+          printw(" Arrow Keys:        n : prev");
+          move(1, 80); addch(ACS_VLINE);
+          move(2, 50); addch(ACS_VLINE);
+          move(2, 52); addch(ACS_RARROW);
+          printw(" : change param       page");
+          move(2, 80); addch(ACS_VLINE);
+          move(3, 50); addch(ACS_VLINE);
+          move(3, 52); addch(ACS_LARROW);
+          printw(" : change param");
+          move(3, 80); addch(ACS_VLINE);
+          move(4, 50); addch(ACS_VLINE);
+          move(4, 52); addch(ACS_UARROW);
+          printw(" : increase scale");
+          move(4, 80); addch(ACS_VLINE);
+          move(5, 50); addch(ACS_VLINE);
+          move(5, 52); addch(ACS_DARROW);
+          printw(" : decrease scale");
+        }
+        move(5, 80); addch(ACS_VLINE);
+        move(6, 50); addch(ACS_VLINE);
+        move(6, 80); addch(ACS_VLINE);
+        move(7, 50); addch(ACS_VLINE);
+        printw(" Press any other key to quit ");
+        addch(ACS_VLINE);
+        move(8, 50); addch(ACS_LLCORNER);
+        for (i=0;i<29;i++) addch(ACS_HLINE);
+        addch(ACS_LRCORNER);
+      } else {
+        move(0, 53);
+        printw("* Press any key to quit *");
+      }
+
       /* Draw beam and gate labels */
       move(12, 0);
       printw("B\\G 0         ");
-      for (i=1;i*10<nrng;i++) printw("%d        ",i*10);
+      for (i=1;i*10<nrng;i++) {
+        if (i*10 < 100) printw("%d        ",i*10);
+        else            printw("%d       ",i*10);
+      }
       printw("\n");
 
       if (colorflg) {
@@ -301,34 +467,41 @@ int main(int argc,char *argv[]) {
         }
       }
 
-      /* Draw each range gate for beam */
-      move(prm->bmnum+13, 0);
-      clrtoeol();
-      if (colorflg) attron(COLOR_PAIR(6));
-      printw("%02d: ",prm->bmnum);
-      if (colorflg) attroff(COLOR_PAIR(6));
-      for (i=0;i<nrng; i++) {
-        if (fit->rng[i].qflg == 1) {
-          if (colorflg) {
-            if (pwrflg)      val = (int)((fit->rng[i].p_l-smin)/(smax-smin)*nlevels)+1;
-            else if (velflg) val = (int)((fit->rng[i].v-smin)/(smax-smin)*nlevels)+1;
-            else if (widflg) val = (int)((fit->rng[i].w_l-smin)/(smax-smin)*nlevels)+1;
-            else if (elvflg) val = (int)((fit->elv[i].normal-smin)/(smax-smin)*nlevels)+1;
+      /* Draw each range gate for each beam */
+      for (j=0; j<MAX_BEAMS; j++) {
+        if (buffer.beam[j] == 0) continue;
+        move(j+13, 0);
+        clrtoeol();
+        if ((j==prm->bmnum) && colorflg) attron(COLOR_PAIR(6));
+        printw("%02d: ",j);
+        if ((j==prm->bmnum) && colorflg) attroff(COLOR_PAIR(6));
+        for (i=0; i<nrng; i++) {
+          if (buffer.qflg[j][i] == 1) {
+            if (colorflg) {
+              if (pwrflg)      val = (int)((buffer.pow[j][i]-smin)/(smax-smin)*nlevels)+1;
+              else if (velflg) val = (int)((buffer.vel[j][i]-smin)/(smax-smin)*nlevels)+1;
+              else if (widflg) val = (int)((buffer.wid[j][i]-smin)/(smax-smin)*nlevels)+1;
+              else if (elvflg) val = (int)((buffer.elv[j][i]-smin)/(smax-smin)*nlevels)+1;
 
-            if (val < 1) val=1;
-            if (val > nlevels+1) val=nlevels+1;
-            attron(COLOR_PAIR(val));
+              if (val < 1) val=1;
+              if (val > nlevels+1) val=nlevels+1;
+              if (gflg && velflg && buffer.gsct[j][i]) attron(COLOR_PAIR(13));
+              else                                     attron(COLOR_PAIR(val));
+            }
+
+            if (buffer.gsct[j][i] != 0) printw("g");
+            else                        printw("i");
+
+            if (colorflg) {
+              if (gflg && velflg && buffer.gsct[j][i]) attroff(COLOR_PAIR(13));
+              else                                     attroff(COLOR_PAIR(val));
+            }
+          } else {
+            printw("-");
           }
-          
-          if (fit->rng[i].gsct != 0) printw("g");
-          else                       printw("i");
-
-          if (colorflg) attroff(COLOR_PAIR(val));
-        } else {
-          printw("-");
         }
+        printw("\n");
       }
-      printw("\n");
 
       /* Draw a color bar */
       if (colorflg) {
@@ -350,6 +523,17 @@ int main(int argc,char *argv[]) {
           printw("%d",(int)((j-7)*(smax-smin)/nlevels+smin));
           start=start+2;
         }
+
+        if (velflg && gflg) {
+          attron(COLOR_PAIR(14));
+          move(25, nrng+5);
+          printw(" ");
+          attroff(COLOR_PAIR(14));
+          printw(" GS");
+        } else {
+          move(25, nrng+5);
+          clrtoeol();
+        }
       }
 
       refresh();
@@ -359,6 +543,9 @@ int main(int argc,char *argv[]) {
   } while(1);
 
   endwin();
+
+  RadarParmFree(prm);
+  FitFree(fit);
 
   return 0;
 }

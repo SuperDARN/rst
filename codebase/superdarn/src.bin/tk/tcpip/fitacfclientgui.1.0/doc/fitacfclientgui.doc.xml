@@ -13,7 +13,7 @@
 </option>
 <option><on>-nrange <ar>nrng</ar></on><od>set the maximum number of range gates to display to <ar>nrng</ar> (default is 75).</od>
 </option>
-<option><on>-color</on><od>display the data stream in color according to the selected parameter (default is power).</od>
+<option><on>-gs</on><od>color ground scatter white (velocity only).</od>
 </option>
 <option><on>-p</on><od>plot power.</od>
 </option>
@@ -44,7 +44,7 @@
 <option><on><ar>port</ar></on><od>port number to connect to on the system.</od></option>
 <synopsis><p>Graphical client program for <code>fitacf</code> TCP/IP data streams.</p></synopsis>
 <description><p>Graphical client program for <code>fitacf</code> TCP/IP data streams.</p>
-<p>The program dumps an ASCII representation of the <code>fitacf</code> data stream to standard output. When color mode is enabled, users can toggle between power, velocity, spectral width, and elevation angle by pressing 'p', 'v', w', or 'e', respectively. Press any other key to exit the program.</p>
+<p>The program dumps an ASCII representation of the <code>fitacf</code> data stream to standard output. When color mode is enabled, users can toggle between power, velocity, spectral width, and elevation angle by pressing 'p', 'v', w', or 'e', respectively. The 'g' key toggles the ground scatter flag, while the up/down arrow keys adjust the color scale maximum and right/left arrow keys cycle through parameters. Press any other key to exit the program.</p>
 </description>
 
 <example>
