@@ -114,8 +114,11 @@ Error: curses.h not found
 
    `XPATH, NETCDF_PATH, CDF_PATH` 
    To check if the paths are set correctly locate the following header files:
-   For NETCDF_PATH `locate netcdf.h`
-   For CDF_PATH `locate cdf.h`
+   - For XPATH `locate png.h`
+   - For NETCDF_PATH `locate netcdf.h`
+   - For CDF_PATH `locate cdf.h`
+  
+   These locate commands will point to the `\include` sub directory for the respective library. Make sure your path ends in the parent directory above this (e.g., `/Applications/cdf/cdf39_0-dist` and not `/Applications/cdf/cdf39_0-dist/include`. 
    
    - If you have **IDL**, check to see that `IDL_IPATH` in `rst/.profile/idl.bash` is correct.
    	(Note: for users without IDL, modifying the `IDL_IPATH` environment variable is
