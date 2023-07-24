@@ -40,6 +40,13 @@ You also need the CDF library, see below.
 
 Installation line:
 
+> Warning! If you are using a Mac with an ARM64 architecture CPU (M1 and beyond), you must first install Rosetta and perform the install within a Rosetta enabled terminal. To do so, in a regular terminal run:
+
+###  
+    softwareupdate --install-rosetta
+
+> Then locate your terminal application in finder, select "Get Info" from the right click menu, and check the "Open using Rosetta" option. After installation, you may uncheck this option.
+
 ### Macports
     
     sudo port install libhdf5 libnetcdf libcurses libpng16 libx11 netpbm (10.77.03_2+x11)
