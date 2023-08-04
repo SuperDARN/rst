@@ -51,11 +51,13 @@ int FitDecode(struct DataMap *ptr,
   int qflg=0,xqflg=0;
   int xcf=0,nrang=0;
 
+  if (fit->algorithm !=NULL) free(fit->algorithm);
   if (fit->rng !=NULL) free(fit->rng);
   if (fit->xrng !=NULL) free(fit->xrng);
   if (fit->elv !=NULL) free(fit->elv);
 
   memset(fit,0,sizeof(struct FitData));
+  fit->algorithm=NULL;
   fit->rng=NULL;
   fit->xrng=NULL;
   fit->elv=NULL;

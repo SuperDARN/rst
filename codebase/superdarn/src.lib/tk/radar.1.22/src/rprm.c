@@ -185,6 +185,7 @@ int RadarParmDecode(struct DataMap *ptr,struct RadarParm *prm) {
   if (prm->origin.command !=NULL) free(prm->origin.command);
   if (prm->pulse !=NULL) free(prm->pulse);
   for (n=0;n<2;n++) if (prm->lag[n] !=NULL) free(prm->lag[n]);
+  if (prm->combf !=NULL) free(prm->combf);
 
   memset(prm,0,sizeof(struct RadarParm));
   prm->origin.time=NULL;
