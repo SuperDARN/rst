@@ -63,7 +63,7 @@ The field [a-d] is used when the data have been separated into multiple files ba
 | *mpinc*                 | *us*     | short     | Multi-pulse increment (lag separation)                                                                  |
 | *mppul*                 | *None*   | short     | Number of pulses in the sequence                                                        |
 | *mplgs*                 | *None*   | short     | Number of lags in the lag table                                              |
-| *mplgexs*               | *None*   | short     | Number of lags used for tauscan. This field originates from `fitex` algorithm and is not used in RAWACF file format. | 
+| *mplgexs*               | *None*   | short     | Number of lags used for tauscan. This field is stored for fit-level processing. |
 | *ifmode*                | *None*   | short     | A flag indicating that the receiver voltage samples were obtained by digitizing the signal at an intermediate frequency (and then digitally mixed to baseband) instead of directly sampling the RF signals (`ifmode=0`).         |
 | *nrang*                 | *None*   | short     | Number of range gates                                                             |
 | *frang*                 | *km*     | short     | Distance to the first range gate                                                        |
