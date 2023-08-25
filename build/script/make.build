@@ -59,7 +59,7 @@ makebuild() {
 
 liblist="xml/xml xml/xmldb xml/tagdb xml/xmldoclib \
          task/option httpd/rscript"
-binlist="xmldoc/xmldoc xmldoc/scdoc \
+binlist="xmldoc/xmldoc xmldoc/xmldoc xmldoc/scdoc \
          build/addtext build/maketree build/makeall"
 
 rm -f ${LIBPATH}/*
