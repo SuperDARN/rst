@@ -97,7 +97,7 @@ int FitDecode(struct DataMap *ptr,
 
     if ((strcmp(a->name,"pwr0")==0) && (a->type==DATAFLOAT) &&
         (a->dim==1)) nrang=a->rng[0];
-    if ((strcmp(a->name,"phi0")==0) && (a->type==DATAFLOAT) &&
+    if ( ((strcmp(a->name,"phi0")==0) || (strcmp(a->name,"elv")==0)) && (a->type==DATAFLOAT) &&
         (a->dim==1)) xcf=1;
   }
 
