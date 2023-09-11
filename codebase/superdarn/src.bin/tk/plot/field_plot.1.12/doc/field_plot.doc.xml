@@ -92,9 +92,9 @@
 </option>
 <option><on>-flip</on><od>flip the direction of the X-axis.</od>
 </option>
-<option><on>-xshift</on><od>shift the plot horizontally by a percentage of the plotting region (+/- 1.0)</od>
+<option><on>-xshift</on><od>shift the plot horizontally by a proportion of the plotting region (+/- 1.0)</od>
 </option>
-<option><on>-yshift</on><od>shift the plot vertically by a percentage of the plotting region (+/- 1.0)</od>
+<option><on>-yshift</on><od>shift the plot vertically by a proportion of the plotting region (+/- 1.0)</od>
 </option>
 <option><on>-square</on><od>force the use of a square bounding box around the plot.</od>
 </option>
