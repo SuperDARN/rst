@@ -182,6 +182,8 @@ int main(int argc,char *argv[]) {
   int counts[CDF_MAX_DIMS];
   int indices[CDF_MAX_DIMS];
 
+  char text[CDF_STATUSTEXT_LEN+1];
+
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
   OptionAdd(&opt,"-version",'x',&version);
@@ -310,6 +312,8 @@ int main(int argc,char *argv[]) {
         }
         if (status !=CDF_OK) {
           fprintf(stderr,"Error writing CDF file (%d).\n",(int) status);
+          CDFerror(status,text);
+          fprintf(stderr,"%s\n",text);
           exit(-1);
         }
       }
@@ -340,6 +344,7 @@ int main(int argc,char *argv[]) {
           counts[x]=ax->rng[x];
           sze=sze*ax->rng[x];
         }
+
         if (sze==0) continue;
 
         if (ax->type==DATASTRING) {
@@ -418,6 +423,8 @@ int main(int argc,char *argv[]) {
 
         if ((status !=CDF_OK) && (status !=VIRTUAL_RECORD_DATA)) {
           fprintf(stderr,"Error writing CDF file (%d).\n",(int) status);
+          CDFerror(status,text);
+          fprintf(stderr,"%s\n",text);
           exit(-1);
         }
 
