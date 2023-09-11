@@ -3,16 +3,24 @@
 <project>base</project>
 <name>xmldoc</name>
 <location>src.bin/xmldoc/xmldoc</location>
+
 <syntax>xmldoc --help</syntax>
 <syntax>xmldoc [-ilf] <ar>workdir</ar> <ar>cfgname</ar> <ar>xmldoc</ar> [<ar>search</ar>]</syntax>
+
 <option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
 </option>
 <option><on>-ilf</on><od>ignore line feeds in the XML document.</od>
 </option>
 <option><on><ar>workdir</ar></on><od>working directory to operate in.</od>
 </option>
-<option><on><ar>cfgname</ar></on><od>filename of the configuration file.</od></option>
-<option><on><ar>xmldoc</ar></on><od>filename of the XML document to process.</od></option>
-<option><on><ar>search</ar></on><od>search text.</od></option>
+<option><on><ar>cfgname</ar></on><od>filename of the configuration file.</od>
+</option>
+<option><on><ar>xmldoc</ar></on><od>filename of the XML document to process.</od>
+</option>
+<option><on><ar>search</ar></on><od>search text.</od>
+</option>
 <synopsis><p>XML documentation system document parser.</p></synopsis>
+
 </binary>
