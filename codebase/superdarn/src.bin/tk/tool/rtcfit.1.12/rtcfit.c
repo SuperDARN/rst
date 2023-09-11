@@ -110,7 +110,6 @@ int main(int argc,char *argv[]) {
   unsigned char vb=0;
  
   char *logstr=NULL;
-  char *fnamestr=NULL;
   char *pathstr=NULL;
   char *pidstr=NULL;
 
@@ -198,7 +197,6 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"rpf",'x',&port_flag);
   
   OptionAdd(&opt,"L",'t',&logstr);
-  OptionAdd(&opt,"f",'t',&fnamestr);
   OptionAdd(&opt,"p",'t',&pathstr);
   OptionAdd(&opt,"if",'t',&pidstr);
 
