@@ -351,7 +351,7 @@ int main(int argc,char *argv[]) {
   char *txtcol_txt=NULL;
   char *grdcol_txt=NULL;
 
-  float marg[8]={0,0,0,0};
+  float marg[8]={0,0,0,0,0,0};
   int c=0;
 
   int old_aacgm=0;

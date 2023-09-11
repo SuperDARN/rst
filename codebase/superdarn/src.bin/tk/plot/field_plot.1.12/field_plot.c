@@ -510,6 +510,8 @@ int main(int argc,char *argv[]) {
   float lat=1e10,lon=0;
   float latmin=50.0;
   float sf=1.0;
+  float xshift=0.0;
+  float yshift=0.0;
 
   unsigned char magflg=0;
   unsigned char rotflg=0;
@@ -566,7 +568,7 @@ int main(int argc,char *argv[]) {
   unsigned int gscol;
 
   FILE *mapfp;
-  float marg[4];
+  float marg[6];
   int i,n,c;
 
   char *stmestr=NULL;
@@ -838,6 +840,8 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"mag",'x',&magflg);
   OptionAdd(&opt,"rotate",'x',&rotflg);
   OptionAdd(&opt,"flip",'x',&flip);
+  OptionAdd(&opt,"xshift",'f',&xshift);
+  OptionAdd(&opt,"yshift",'f',&yshift);
 
   OptionAdd(&opt,"coast",'x',&mapflg);
   OptionAdd(&opt,"fcoast",'x',&fmapflg);
@@ -1288,6 +1292,9 @@ int main(int argc,char *argv[]) {
   if (ortho) marg[2]=sf;
   else marg[2]=1.25*0.5*sf*90.0/(90-fabs(latmin));
   marg[3]=flip;
+
+  if (abs(xshift) < 1.0) marg[4]=xshift;
+  if (abs(yshift) < 1.0) marg[5]=yshift;
 
   tfunc=MapStereographic;
   if (ortho) tfunc=MapOrthographic;
