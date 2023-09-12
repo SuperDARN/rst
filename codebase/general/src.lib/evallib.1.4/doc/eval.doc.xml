@@ -2,10 +2,10 @@
 <library>
 <project>general</project>
 <name>reval</name>
-<location>src.lib/eval</location>
+<location>src.lib/evallib</location>
 <function>
 <name>Eval</name>
-<location>src.lib/eval</location>
+<location>src.lib/evallib</location>
 <header>general/reval.h</header>
 <syntax>int Eval(char *sum,double *ptr,int (*dvar)(char *ptr,double *val,void *data),void *vdata,int (*dfun)(char *ptr,int argnum,double *argptr,double *val,void *data),void *fdata);</syntax>
 <description><p>The <fn href="Eval.html">Eval</fn> function evaluates a mathematical expression.</p>
