@@ -195,8 +195,6 @@ int RadarParmDecode(struct DataMap *ptr,struct RadarParm *prm) {
   prm->lag[1]=NULL;
   prm->combf=NULL;
 
-  prm->ifmode=-1;
-
   for (c=0;c<ptr->snum;c++) {
     s=ptr->scl[c];
 
