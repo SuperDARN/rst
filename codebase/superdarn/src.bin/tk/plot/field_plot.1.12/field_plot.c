@@ -664,6 +664,7 @@ int main(int argc,char *argv[]) {
 
   int minbeam=0;
   int maxbeam=-1;
+  unsigned char databeam=0;
 
   char *chnstr=NULL;
 
@@ -890,6 +891,7 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"minbeam",'i',&minbeam);
   OptionAdd(&opt,"maxbeam",'i',&maxbeam);
+  OptionAdd(&opt,"databeam",'x',&databeam);
 
   OptionAdd(&opt,"gscol",'t',&gscol_txt);
 
@@ -1727,6 +1729,16 @@ int main(int argc,char *argv[]) {
       if (ffovflg) MapPlotPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,1,
                                  ffovcol,0x0f,0.5,NULL,
                                  rfov,1);
+
+      if (databeam) {
+        minbeam=999;
+        maxbeam=-1;
+        for (c=0;c<scn->num;c++) {
+          if (scn->bm[c].bm < minbeam) minbeam=scn->bm[c].bm;
+          if (scn->bm[c].bm > maxbeam) maxbeam=scn->bm[c].bm;
+        }
+        maxbeam=maxbeam+1;
+      }
 
       for (c=0;c<scn->num;c++) {
         if ((sflg) && (scn->bm[c].scan !=scan)) continue;
