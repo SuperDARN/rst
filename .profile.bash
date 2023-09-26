@@ -5,7 +5,6 @@ export OSTYPE="linux"
 export SYSTEM="linux"
 export VISUAL="vim"
 export EDITOR="$VISUAL"
-export PATH="${PATH}:/opt/local/bin:/usr/bin/:${HOME}/bin:${HOME}/script"
 
 . $RSTPATH/.profile/rst.bash
 . $RSTPATH/.profile/base.bash
