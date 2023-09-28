@@ -235,6 +235,10 @@ int main(int argc,char *argv[]) {
 
   do {
 
+    status=FitCnxRead(1,&sock,prm,fit,&flag,NULL);
+
+    if (status==-1) break;
+
     /* Check for key press to exit */
     c = getch();
     if (colorflg) {
@@ -340,10 +344,6 @@ int main(int argc,char *argv[]) {
         }
       } else if (c != ERR) break;
     } else if (c != ERR) break;
-
-    status=FitCnxRead(1,&sock,prm,fit,&flag,NULL);
-
-    if (status==-1) break;
 
     if (flag !=-1) {
 
