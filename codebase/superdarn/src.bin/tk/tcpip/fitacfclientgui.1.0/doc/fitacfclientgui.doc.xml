@@ -13,6 +13,8 @@
 </option>
 <option><on>-nrange <ar>nrng</ar></on><od>set the maximum number of range gates to display to <ar>nrng</ar> (default is 75).</od>
 </option>
+<option><on>-r</on><od>show slant range (km) instead of range gate number.</od>
+</option>
 <option><on>-gs</on><od>color ground scatter white (velocity only).</od>
 </option>
 <option><on>-p</on><od>plot power.</od>
