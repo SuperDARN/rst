@@ -126,10 +126,10 @@ int GridTableWrite(int fid,struct GridTable *ptr,char *logbuf,int xtd) {
         vchn=(int16 *)  (buf+3*sizeof(float)*npnt+sizeof(int16)*npnt);
         index=(int32 *) (buf+3*sizeof(float)*npnt+2*sizeof(int16)*npnt);
         vlos=(float *)  (buf+3*sizeof(float)*npnt+
-                               sizeof(32)*npnt+
+                               sizeof(int32)*npnt+
                              2*sizeof(int16)*npnt);
         vlos_sd=(float *) (buf+3*sizeof(float)*npnt+
-                                 sizeof(32)*npnt+
+                                 sizeof(int32)*npnt+
                                2*sizeof(int16)*npnt+
                                  sizeof(float)*npnt);
 
