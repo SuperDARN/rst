@@ -54,6 +54,11 @@
             "affiliation": "Lancaster University",
             "name": "Walach, M.-T.",
             "orcid": "0000-0002-9352-0659"
-        }
+        },
+        {
+            "orcid": "0000-0001-8875-9326", 
+            "affiliation": "Naval Research Laboratory", 
+            "name": "Angeline G. Burrell"
+	}
     ]
 }
