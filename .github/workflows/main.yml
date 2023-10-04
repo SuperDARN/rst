@@ -22,7 +22,7 @@ jobs:
       if: startsWith(matrix.os, 'ubuntu')
       run: |
         sudo apt-get update
-        cat .requirements.ubuntu | xargs sudo apt-get install
+        cat .github/workflow/requirements.ubuntu | xargs sudo apt-get install
         echo "Get and install NASA CDF"
         sudo apt-get install wget
         wget https://spdf.gsfc.nasa.gov/pub/software/cdf/dist/latest/linux/cdf${{ matrix.cdf }}-dist-cdf.tar.gz
