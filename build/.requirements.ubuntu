@@ -1,0 +1,8 @@
+build-essential
+libhdf5-serial-dev
+libncurses-dev
+libnetcdf-dev
+libpng-dev
+libx11-dev
+libxext-dev
+netpbm
