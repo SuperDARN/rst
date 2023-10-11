@@ -278,6 +278,7 @@ int main(int argc,char *argv[]) {
 
   double otime=-1;
   double atime=-1;
+  double tatime=-1;
 
   double stime=-1;
   double etime=-1;
@@ -1383,10 +1384,11 @@ int main(int argc,char *argv[]) {
 
     /* SND-format data collected at the end of a scan typically has
      * an integration time of only ~1.5 to 2.0 seconds */
-    if ((sndflg) && (atime-otime)>4) otime=atime-2;
+    if ((sndflg) && (atime-otime)>4) tatime=otime+tplot.intt.sc+tplot.intt.us/1e6;
+    else tatime=atime;
 
     lft=bwdt*(otime-stime)/(etime-stime);
-    rgt=bwdt*(atime-stime)/(etime-stime);
+    rgt=bwdt*(tatime-stime)/(etime-stime);
     if (rgt==lft) rgt++;
     if (lft<0) lft=0;
     if (lft>=bwdt) lft=bwdt-1;
