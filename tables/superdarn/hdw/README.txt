@@ -18,10 +18,10 @@ parameters, their units, and a brief description of their meaning.
 02) Status code (1 operational, -1 offline).
 03) First date that parameter string is valid (YYYYMMDD).
 04) First time that parameter string is valid (HH:MM:SS).
-05) Geographic latitude of radar site (Given in decimal degrees to 3
+05) Geographic latitude of radar site (Given in decimal degrees to 5
     decimal places. Southern hemisphere values are negative)
 06) Geographic longitude of radar site (Given in decimal degrees to
-    3 decimal places. West longitude values are negative)
+    5 decimal places. West longitude values are negative)
 07) Altitude of the radar site (meters)
 08) Physical scanning boresight (Direction of the center beam, measured in
     degrees relative to geographic north. CCW rotations are negative.)
@@ -41,7 +41,7 @@ In order to obtain information on the vertical angle of arrival of
 the backscattered signals, the SuperDARN radars include a four antenna
 interferometer array in addition to the 16 antenna main array. This
 second array is typically displaced from the main array along the
-array normal direction and the different path length due to the
+array normal direction, and the different path length due to the
 displacement and the different cable lengths between the antenna
 arrays and their phasing matrices introduces a phase shift that is
 dependent on the elevation angle of the returning backscattered
@@ -84,7 +84,7 @@ the digital receiver driver.
 20) Analog attenuation stages (Number of stages. This is used for
     gain control of an analog receiver or front-end.)
 
-21) Maximum of range gates used (Number of gates. This is used for
+21) Maximum number of range gates used (Number of gates. This is used for
     allocation of array storage.)
 22) Maximum number of beams to be used at a particular radar site.
     (Number of beams. It is important to specify the true maximum. This

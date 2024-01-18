@@ -6,7 +6,7 @@
 #
 # **********************************************************************
 #
-#                            GEOGRAPHIC             BORE-   OFF  BEAM V  |--------- interferometer ---------| |--- RX ---| RNG MX
-#      YYYYMMDD HH:MM:SS    LAT      LON      ALT   SIGHT   SET  SEP  SG PS  TDIFF  TDIFF    X      Y     Z    RXRIS  ATTN     BM
- 24  1 20141201 00:00:00  -34.620  138.460     0.0  146.5  0.00 -3.24  1  1  0.000  0.000    0.0  -80.0   0.0  100.0  10 7 110 22
+#                              GEOGRAPHIC              BORE-   OFF  BEAM V  |--------- interferometer ---------| |--- RX ---| RNG MX
+#       YYYYMMDD HH:MM:SS     LAT       LON      ALT   SIGHT   SET  SEP  SG PS  TDIFF  TDIFF    X      Y     Z    RXRIS  ATTN     BM
+  24  1 20141201 00:00:00 -34.62710  138.46600    0.0  146.5  0.00 -3.24  1  1  0.000  0.000    0.0  -80.0   0.0  100.0  10 7 110 22
 # EOF
