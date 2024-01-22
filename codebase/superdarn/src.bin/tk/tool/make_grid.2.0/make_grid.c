@@ -73,6 +73,7 @@ Modifications:
 
 #include "aacgm.h"
 #include "aacgmlib_v2.h"
+#include "igrflib.h"
 
 
 struct RadarParm *prm;
@@ -251,6 +252,8 @@ int main(int argc,char *argv[]) {
 
     int chisham=0;
     int old_aacgm=0;
+    int ecdip=0;
+    int magflg=0;
 
     int s=0,i;
     int state=0;
@@ -382,6 +385,7 @@ int main(int argc,char *argv[]) {
 
     OptionAdd(&opt,"chisham",'x',&chisham);     /* Map data using Chisham virtual height model */
     OptionAdd(&opt,"old_aacgm",'x',&old_aacgm); /* Map data using old AACGM coefficients rather than v2 */
+    OptionAdd(&opt,"ecdip",'x',&ecdip);         /* Map data using eccentric dipole rather than AACGM */
 
     OptionAdd(&opt,"fit",'x',&fitflg);   /* Input file is in the fit format */
     OptionAdd(&opt,"cfit",'x',&cfitflg); /* Input file is in the cfit format */
@@ -414,6 +418,10 @@ int main(int argc,char *argv[]) {
         OptionPrintInfo(stderr,errstr);
         exit(-1);
     }
+
+    if (ecdip) magflg = 2;
+    else if (old_aacgm) magflg = 1;
+    else magflg = 0;
 
     /* If 'cn' set then determine Stereo channel, either A or B */
     if (chnstr != NULL) channel = set_stereo_channel(chnstr);
@@ -673,8 +681,9 @@ int main(int argc,char *argv[]) {
          * grid start time (needed to load AACGM_v2 coefficients) */
         TimeEpochToYMDHMS(stime,&yr,&mo,&dy,&hr,&mt,&sc);
 
-        /* Load AACGM coefficients */
-        if (old_aacgm) AACGMInit(yr);
+        /* Load IGRF or AACGM coefficients */
+        if (ecdip) IGRF_SetDateTime(yr,mo,dy,0,0,0);
+        else if (old_aacgm) AACGMInit(yr);
         else AACGM_v2_SetDateTime(yr,mo,dy,0,0,0);
 
         /* This value tracks the number of radar scans which have been
@@ -756,7 +765,7 @@ int main(int argc,char *argv[]) {
                 /* Map radar scan data in structure pointed to by 'out' to an
                  * equi-area grid in magnetic coordinates, storing the output
                  * in the grid GridTable structure */
-                s=GridTableMap(grid,out,site,avlen,iflg,alt,chisham,old_aacgm);
+                s=GridTableMap(grid,out,site,avlen,iflg,alt,chisham,magflg);
 
                 /* Return an error if mapping failed */
                 if (s !=0) {

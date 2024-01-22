@@ -30,6 +30,7 @@ Modifications:
 #include "rmath.h"
 #include "aacgm.h"
 #include "aacgmlib_v2.h"
+#include "igrflib.h"
 #include "magcmp.h"
 #include "radar.h"
 #include "rpos.h"
@@ -298,7 +299,7 @@ int RPosRngBmAzmElv(int bm, int rn, int year,
 int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
                double rsep, double rx, double height,
                double *mlat, double *mlon, double *azm, 
-               int chisham, int old_aacgm) {
+               int chisham, int magflg) {
 
     double flat,flon,frho;
     double fx,fy,fz;
@@ -315,6 +316,8 @@ int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
     double tmp_ht;
     double xlat,xlon,nlat,nlon;
     int s;
+
+    double out[3];
 
     /* Get geodetic latitude/longitude from radar hardware info [deg] */
     gdlat=hdw->geolat;
@@ -391,7 +394,11 @@ int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
     /* Convert range/beam position from geocentric latitude/longitude (flat,flon)
      * at virtual height (tmp_ht) to AACGM magnetic latitude/longitude
      * coordinates (mlat,mlon) */
-    if (old_aacgm) s=AACGMConvert(flat,flon,tmp_ht,mlat,mlon,&dummy,0);
+    if (magflg == 2) {
+      s=geod2ecdip(gdlat,gdlon,tmp_ht,out);
+      *mlat = out[0];
+      *mlon = out[1];
+    } else if (magflg == 1) s=AACGMConvert(flat,flon,tmp_ht,mlat,mlon,&dummy,0);
     else s=AACGM_v2_Convert(flat,flon,tmp_ht,mlat,mlon,&dummy,0);
     if (s==-1) return -1;
 
@@ -403,7 +410,12 @@ int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
     /* Convert pointing direction position from geocentric latitude/longitude
      * (xlat,xlon) at virtual height (tmp_height) to AACGM magnetic
      * latitude/longitude coordinates (nlat,nlon) */
-    if (old_aacgm) s=AACGMConvert(xlat,xlon,tmp_ht,&nlat,&nlon,&dummy,0);
+    if (magflg == 2) {
+      geodtgc(-1,&gdlat,&gdlon,&gdrho,&xlat,&xlon,&dummy);
+      s=geod2ecdip(gdlat,gdlon,tmp_ht,out);
+      nlat = out[0];
+      nlon = out[1];
+    } else if (magflg == 1) s=AACGMConvert(xlat,xlon,tmp_ht,&nlat,&nlon,&dummy,0);
     else s=AACGM_v2_Convert(xlat,xlon,tmp_ht,&nlat,&nlon,&dummy,0);
     if (s==-1) return -1;
 

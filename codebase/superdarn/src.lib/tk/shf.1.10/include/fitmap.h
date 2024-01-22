@@ -29,6 +29,6 @@ Modifications:
 #define _FITMAP_H
 
 int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd,
-                 float decyear,int old_aacgm);
+                 float decyear,int magflg);
 
 #endif

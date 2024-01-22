@@ -4,8 +4,8 @@
 include $(MAKECFG).$(SYSTEM)
 
 INCLUDE=-I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/analysis
-SRC = aacgmlib_v2.c genmag.c
-OBJS = aacgmlib_v2.o genmag.o
+SRC = aacgmlib_v2.c
+OBJS = aacgmlib_v2.o
 INC=$(IPATH)/analysis
 DSTPATH=$(LIBPATH)
 LINK="1"

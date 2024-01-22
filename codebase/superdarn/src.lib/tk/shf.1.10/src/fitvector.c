@@ -53,7 +53,7 @@ void CnvMapLegendreIndex(int,int *,int *);
  */
 double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
                          int order,double latmin,float decyear,
-                         int noigrf,int old_aacgm) {
+                         int noigrf,int magflg) {
   int kmax;
   int i,m,L,k;
 
@@ -134,7 +134,7 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
       bmag[i] = bpolar*(1.0 - 3.0 * Altitude/Re)*
                 sqrt(3.0*(cos(theta[i])*cos(theta[i]))+1.0)/2.0;
     } else {
-      bmag[i] = -calc_bmag(hemi*data[i].lat,data[i].lon,decyear,old_aacgm);
+      bmag[i] = -calc_bmag(hemi*data[i].lat,data[i].lon,decyear,magflg);
     }
   }
 
@@ -238,7 +238,7 @@ double *CnvMapVlosMatrix(int num,struct CnvMapSHFVec *data,
 double CnvMapFitVector(int num,struct CnvMapSHFVec *data,
                        double *coef,double *fitvel,int order,
                        double latmin,float decyear,int noigrf,
-                       int old_aacgm) {
+                       int magflg) {
 
   int kmax;
   int i,k,n,L,m;
@@ -308,7 +308,7 @@ double CnvMapFitVector(int num,struct CnvMapSHFVec *data,
 
   /* Compute the matrix describing the line-of-sight velocities */
 
-  amat=CnvMapVlosMatrix(num,data,order,latmin,decyear,noigrf,old_aacgm);
+  amat=CnvMapVlosMatrix(num,data,order,latmin,decyear,noigrf,magflg);
   if (amat==NULL) { 
     free(result);
     free(soltn);

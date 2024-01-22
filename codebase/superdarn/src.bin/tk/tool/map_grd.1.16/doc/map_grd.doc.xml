@@ -19,6 +19,8 @@
 <option><on></on><od>  <code>map</code> format file.</od></option>
 <option><on>-old_aacgm</on><od>uses the older AACGM software and coefficients. The default</od></option>
 <option><on></on><od>  is to use AACGM-v2.</od></option>
+<option><on>-ecdip</on><od>use eccentric dipole coordinates rather than AACGM.</od>
+</option>
 <option><on>-sh</on><od>the map file is for southern hemisphere data.</od>
 </option>
 <option><on>-l <ar>latmin</ar></on><od>set the lower latitude boundary to <ar>latmin</ar>.</od>

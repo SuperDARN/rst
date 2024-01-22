@@ -22,6 +22,8 @@
 </option>
 <option><on>-old_aacgm</on><od>uses the older AACGM software and coefficients. The default</od></option>
 <option><on></on><od>  is to use AACGM-v2.</od></option>
+<option><on>-ecdip</on><od>use eccentric dipole coordinates rather than AACGM.</od>
+</option>
 <option><on>-cnt <ar>count</ar></on><od>set the number of scatter points to get a match to be <ar>count</ar>.</od>
 </option>
 <option><on>-vel <ar>vmin</ar></on><od>set the minimum velocity to <ar>vmin</ar>.</od>

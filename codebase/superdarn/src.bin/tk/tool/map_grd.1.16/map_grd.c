@@ -45,6 +45,7 @@ Modifications:
 #include "aacgmlib_v2.h"
 #include "mlt.h"
 #include "mlt_v2.h"
+#include "igrflib.h"
 
 #include "radar.h"
 
@@ -100,6 +101,7 @@ int main(int argc,char *argv[]) {
 
   int old=0;
   int old_aacgm=0;
+  int ecdip=0;
 
   int i, arg;
   unsigned char help=0;
@@ -180,6 +182,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"l",'f',&latmin);
   /*OptionAdd(&opt,"s",'f',&latshft);*/ /* latshft option removed at suggestion of JMR */
   OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);
+  OptionAdd(&opt,"ecdip",'x',&ecdip);
 
   OptionAdd(&opt,"empty",'x',&empty);   /* Create empty map file without real data */
   OptionAdd(&opt,"st",'t',&stmestr);    /* Start time in HH:MM format */
@@ -240,7 +243,7 @@ int main(int argc,char *argv[]) {
   if (old_aacgm) MLTCnv = &MLTConvertYrsec;
   else           MLTCnv = &MLTConvertYrsec_v2;
 
-  if (!old_aacgm) AACGM_v2_Lock();
+  if (!ecdip && !old_aacgm) AACGM_v2_Lock();
 
   if (sh==1) map->hemisphere=-1;
 
@@ -298,17 +301,33 @@ int main(int argc,char *argv[]) {
 
     while(grd->st_time<etime) {
       TimeEpochToYMDHMS(grd->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
-      yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
-      map->mlt.start=(*MLTCnv)(yr,yrsec,0.0);
+
+      if (ecdip) IGRF_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
+      else if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
+
+      if (ecdip) {
+        map->mlt.start = ecdip_mlt(yr,mo,dy,hr,mt,(int)sc,0.0);
+      } else {
+        yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
+        map->mlt.start=(*MLTCnv)(yr,yrsec,0.0);
+      }
 
       TimeEpochToYMDHMS(grd->ed_time,&yr,&mo,&dy,&hr,&mt,&sc);
-      yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
-      map->mlt.end=(*MLTCnv)(yr,yrsec,0.0);
+      if (ecdip) {
+        map->mlt.end = ecdip_mlt(yr,mo,dy,hr,mt,(int)sc,0.0);
+      } else {
+        yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
+        map->mlt.end=(*MLTCnv)(yr,yrsec,0.0);
+      }
 
       tme=(grd->st_time+grd->ed_time)/2.0;
       TimeEpochToYMDHMS(tme,&yr,&mo,&dy,&hr,&mt,&sc);
-      yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
-      map->mlt.av=(*MLTCnv)(yr,yrsec,0.0);
+      if (ecdip) {
+        map->mlt.av = ecdip_mlt(yr,mo,dy,hr,mt,(int)sc,0.0);
+      } else {
+        yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
+        map->mlt.av=(*MLTCnv)(yr,yrsec,0.0);
+      }
 
       if (latshft !=0) {
         map->lon_shft=(map->mlt.av-12)*15.0;
@@ -336,7 +355,8 @@ int main(int argc,char *argv[]) {
 
   while ((*Grid_Read)(fp,grd) !=-1) {
     TimeEpochToYMDHMS(grd->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
-    if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
+    if (ecdip) IGRF_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
+    else if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
 
     if (cnt==0) {
       for (i=0;i<grd->stnum;i++) {
@@ -350,17 +370,29 @@ int main(int argc,char *argv[]) {
       }
     } 
 
-    yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
-    map->mlt.start=(*MLTCnv)(yr,yrsec,0.0);
+    if (ecdip) {
+      map->mlt.start = ecdip_mlt(yr,mo,dy,hr,mt,(int)sc,0.0);
+    } else {
+      yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
+      map->mlt.start=(*MLTCnv)(yr,yrsec,0.0);
+    }
 
     TimeEpochToYMDHMS(grd->ed_time,&yr,&mo,&dy,&hr,&mt,&sc);
-    yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
-    map->mlt.end=(*MLTCnv)(yr,yrsec,0.0);
+    if (ecdip) {
+      map->mlt.end = ecdip_mlt(yr,mo,dy,hr,mt,(int)sc,0.0);
+    } else {
+      yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
+      map->mlt.end=(*MLTCnv)(yr,yrsec,0.0);
+    }
 
     tme=(grd->st_time+grd->ed_time)/2.0;
     TimeEpochToYMDHMS(tme,&yr,&mo,&dy,&hr,&mt,&sc);
-    yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
-    map->mlt.av=(*MLTCnv)(yr,yrsec,0.0);
+    if (ecdip) {
+      map->mlt.av = ecdip_mlt(yr,mo,dy,hr,mt,(int)sc,0.0);
+    } else {
+      yrsec=TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
+      map->mlt.av=(*MLTCnv)(yr,yrsec,0.0);
+    }
 
     if (latshft !=0) {
       map->lon_shft=(map->mlt.av-12)*15.0;

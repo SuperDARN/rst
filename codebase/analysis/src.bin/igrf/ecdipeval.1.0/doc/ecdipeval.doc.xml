@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>analysis</project>
+<name>ecdipeval</name>
+<location>src.bin/igrf/ecdipeval</location>
+
+<syntax>ecdipeval --help</syntax>
+<syntax>ecdipeval [-i] [-lat <ar>lat</ar>] [-lon <ar>lon</ar>] [-alt <ar>alt</ar>] [-fmt <ar>format</ar>]</syntax>
+<syntax>ecdipeval [-i] [-f <ar>filename</ar>]  [-fmt <ar>format</ar>]</syntax>
+
+<synopsis><p>Convert to and from eccentric dipole coordinates.</p></synopsis>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-i</on><od>perform the inverse conversion.</od>
+</option>
+<option><on>-mlt</on><od>perform the conversion between magnetic longitude and magnetic local time.</od>
+</option>
+<option><on>-lat <ar>lat</ar></on><od>calculate for the latitude <ar>lat</ar>.</od>
+</option>
+<option><on>-lon <ar>lon</ar></on><od>calculate for the longitude <ar>lon</ar>.</od>
+</option>
+<option><on>-alt <ar>alt</ar></on><od>calculate for the altitude in kilometers, <ar>alt</ar>.</od>
+</option>
+<option><on>-re <ar>Re</ar></on><od>calculate for the Earth radius in kilometers, <ar>Re</ar> (inverse only).</od>
+</option>
+<option><on>-d <ar>yyyymmdd</ar></on><od>calculate for the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-t <ar>hr:mn</ar></on><od>calculate for the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-fmt <ar>format</ar></on><od>use the string <ar>fmt</ar>, to format the output.</od>
+</option>
+<option><on>-f <ar>filename</ar></on><od>read a sequence of latitudes, longitudes and altitudes from the ASCII file, <ar>filename</ar>.</od>
+</option>
+
+<description>
+<p>Converts to and from eccentric dipole coordinates. The output is written to standard output using the formatting string given by the "<code>-fmt</code>" option. The format string should be in the same format as that used by the <code>printf</code> function and will take two double precision floating point numbers as arguments.</p>
+<p>If the "<code>-f</code>" option is given, the latitude,longitude and altitude are read from a space separated ASCII file. If the filename is "<code>-</code>" input is read from standard input.</p>
+</description>
+
+<example>
+<command>ecdipeval -lat 85.4 -lon 32.4 -alt 300.0</command>
+<description>Convert the coordinate given by latitude of 85.4 degrees, longitude 32.4 degrees and altitude of 300 kilometers to eccentric dipole coordinates.</description>
+</example>
+
+<example>
+<command>ecdipeval -i -f ecdip.txt</command>
+<description>Convert the eccentric dipole coordinates in the file "<code>ecdip.txt</code>", back to geographic coordinates.</description>
+</example>
+
+</binary>

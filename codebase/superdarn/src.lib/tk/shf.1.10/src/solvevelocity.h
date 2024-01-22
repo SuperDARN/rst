@@ -25,5 +25,5 @@ Modifications:
 */ 
 
 int CnvMapSolveVelocity(struct CnvMapData *ptr,struct CnvGrid *vptr,
-                        float decyear,int old_aacgm);
+                        float decyear,int magflg);
 

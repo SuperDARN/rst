@@ -71,11 +71,13 @@ struct OptionData opt;
  *
  *
  */
-void add_model(struct CnvMapData *map,int num,struct GridGVec *ptr);
+void add_model(struct CnvMapData *map, int num, struct GridGVec *ptr);
 int solve_model(int num, struct GridGVec *ptr, float latmin, struct model *mod,
-                int hemi, float decyear, int igrf_flag, int old_aacgm);
+                int hemi, float decyear, int igrf_flag, int magflg);
 struct GridGVec *get_model_pos(int Lmax, float latmin, int hemi,
                                int level, int *num);
+struct GridGVec *get_grid_pos(struct GridData *grd, int *num, float mlt);
+struct GridGVec *get_model_pos_all(float latmin, int *num, float mlt);
 
 
 /*-----------------------------------------------------------------------------
@@ -95,6 +97,7 @@ int main(int argc,char *argv[]) {
 
   int old=0;
   int old_aacgm=0;
+  int ecdip=0;
 
   int arg;
   unsigned char help=0;
@@ -137,9 +140,19 @@ int main(int argc,char *argv[]) {
   int ts18_kp = 0;
   int imod = 0;
 
+  int magflg = 0;
+
+  int residuals = 0;
+  float dvel,dazm;
+  float mvel,mazm;
+
+  int all_model = 0;
+  int data_model = 0;
+
   float bndstep = 5.; /* HMB parameters */
   float latref = 59;
   int bndnp;
+  float bfac,del_L,mlt,latmin;
 
   struct GridGVec *mdata=NULL;
 
@@ -156,6 +169,7 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"old",'x',&old);
   OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);
+  OptionAdd(&opt,"ecdip",'x',&ecdip);
   OptionAdd(&opt,"rg96",'x',&rg96);
   OptionAdd(&opt,"psr10",'x',&psr10);
   OptionAdd(&opt,"cs10",'x',&cs10);
@@ -164,10 +178,13 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"nointerp",'x',&nointerp);
   OptionAdd(&opt,"noigrf",'x',&noigrf);        /* SGS: default is to use IGRF
                                                        to compute model vecs  */
+  OptionAdd(&opt,"residuals",'x',&residuals);
+  OptionAdd(&opt,"all_model",'x',&all_model);
+  OptionAdd(&opt,"data_model",'x',&data_model);
+
   OptionAdd(&opt,"vb",'x',&vb);
   OptionAdd(&opt,"o",'i',&order);
   OptionAdd(&opt,"d",'t',&dpstr);
-
 
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
@@ -211,13 +228,22 @@ int main(int argc,char *argv[]) {
   if (ts18_kp) imod = TS18_Kp;
   if (ts18)    imod = TS18;
 
+  if (ecdip && imod != TS18) {
+    fprintf(stderr,"Eccentric dipole coordinates are only valid for TS18 model.\n");
+    exit(-1);
+  }
+
+  if (ecdip) magflg = 2;
+  else if (old_aacgm) magflg = 1;
+  else magflg = 0;
+
   envstr=getenv("SD_MODEL_TABLE");
   if (envstr==NULL) {
     fprintf(stderr,"Environment variable SD_MODEL_TABLE must be defined.\n");
     exit(-1);
   }
 
-  status = load_all_models(envstr,imod);
+  status = load_all_models(envstr,imod,ecdip);
   if (status != 0) {
     fprintf(stderr,"Failed to load statistical model.\n");
     exit(-1);
@@ -245,7 +271,7 @@ int main(int argc,char *argv[]) {
     else     map->noigrf   = noigrf;
 
     if (first) {
-      if (!noigrf)    IGRF_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
+      if (!noigrf || ecdip) IGRF_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
       if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
       first = 0;
     }
@@ -265,31 +291,78 @@ int main(int argc,char *argv[]) {
     }
 
     /* Add lower latitude limit (HMB) from model if not found from data */
-    if (map->latmin == -1) {
+    if (map->latmin == -1 && !residuals && !all_model && !data_model) {
       bndnp = 360/bndstep + 1;
-      map_addhmb(yr,yrsec,map,bndnp,bndstep,latref,mod->latref,old_aacgm);
+      map_addhmb(yr,yrsec,map,bndnp,bndstep,latref,mod->latref,magflg);
     }
 
     if (order != 0)   map->fit_order    = order;
     if (doping != -1) map->doping_level = doping;
 
     /* get the position of the model vectors */
-    if ((mod != oldmod) || (map->latmin != oldlatmin)) {
+    if ((mod != oldmod) || (map->latmin != oldlatmin) || (residuals)) {
 
       if (mdata != NULL) free(mdata);
 
-      mdata = get_model_pos(map->fit_order,fabs(map->latmin),map->hemisphere,
-                            map->doping_level,&num);
+      if (residuals || data_model) {
+        if (map->hemisphere == 1) map->latmin = mod->latref;
+        else                      map->latmin = -mod->latref;
+        mdata = get_grid_pos(grd,&num,map->mlt.av); /* want model at grid data locations */
+      } else if (all_model) {
+        if (map->hemisphere == 1) map->latmin = mod->latref;
+        else                      map->latmin = -mod->latref;
+        mdata = get_model_pos_all(mod->latref,&num,map->mlt.av); /* want model at all possible locations */
+      } else {
+        mdata = get_model_pos(map->fit_order,fabs(map->latmin),map->hemisphere,
+                              map->doping_level,&num);
+      }
 
       /* solve for the model */
-      status = solve_model(num, mdata,fabs(map->latmin), mod, map->hemisphere,
-                           decyear, noigrf, old_aacgm);
+      status = solve_model(num, mdata, fabs(map->latmin), mod, map->hemisphere,
+                           decyear, noigrf, magflg);
       if (status != 0) {
         fprintf(stderr,"Failed to solve statistical model.\n");
         exit(-1);
       }
       oldmod = mod;
       oldlatmin = map->latmin;
+    }
+
+    if (residuals) {
+      /* model HMB parameters */
+      bfac = (90-map->latmin)/(90-latref);
+      del_L = bfac*5.5;
+
+      /* Calculate residuals by subtracting projections of model vectors onto
+         LOS data, from the LOS data */
+      for (i=0; i<num; i++) {
+        dvel = grd->data[i].vel.median;
+        dazm = grd->data[i].azm;
+
+        /* set model vectors below lower latitude limit (HMB) to zero */
+        latmin = map->latmin;
+        mlt = mdata[i].mlon/15.0;
+        if ((mlt>=11) && (mlt<=19))    latmin = map->latmin + del_L*(1+cos((PI/8)*(mlt-11)));
+        else if ((mlt<11) && (mlt>=5)) latmin = map->latmin + del_L*(1+cos((PI/6)*(11-mlt)));
+
+        if (mdata[i].mlat <= latmin) {
+          mdata[i].vel.median = 0.0;
+          mdata[i].azm = 0.0;
+        }
+
+        /* model velocity projected onto vLOS direction */
+        mazm = mdata[i].azm;
+        mvel = mdata[i].vel.median*cos((dazm-mazm)*PI/180.);
+
+        mdata[i].vel.median = dvel - mvel; /* difference from model */
+        mdata[i].azm = grd->data[i].azm;   /* same as LOS direction */
+
+        if (mdata[i].vel.median < 0) {
+          mdata[i].vel.median = -mdata[i].vel.median; /* convention is >0 */
+          if (mdata[i].azm < 0) mdata[i].azm += 180.;
+          else mdata[i].azm -= 180.;
+        }
+      }
     }
 
     /* now transform the model vectors and add them to the map file */
@@ -378,8 +451,66 @@ struct GridGVec *get_model_pos(int Lmax,float latmin,int hemi,
 }
 
 
+struct GridGVec *get_grid_pos(struct GridData *grd,int *num,float mlt)
+{
+  struct GridGVec *ptr=NULL;
+  int cnt=0;
+  int i;
+
+  for (i=0;i<grd->vcnum;i++) {
+    if (ptr == NULL) ptr = malloc(sizeof(struct GridGVec));
+    else             ptr = realloc(ptr,sizeof(struct GridGVec)*(cnt+1));
+    ptr[cnt].mlat       = fabs(grd->data[i].mlat);
+    ptr[cnt].mlon       = grd->data[i].mlon + mlt*15.0;
+    if (ptr[cnt].mlon > 360) ptr[cnt].mlon -= 360.0;
+    ptr[cnt].azm        = 0;
+    ptr[cnt].vel.median = 0;
+    cnt++;
+  }
+
+  *num = cnt;
+
+  return ptr;
+}
+
+
+struct GridGVec *get_model_pos_all(float latmin,int *num,float mlt)
+{
+  struct GridGVec *ptr=NULL;
+  float nlat, nlon;
+  float grdlat;
+  double lspc;
+  int cnt=0;
+  int i, j;
+
+  nlat = (int)(90.0-latmin);
+  for (i=0;i<nlat;i++) {
+    grdlat = i + (int)latmin + 0.5;
+    lspc = ((int)(360*cos(fabs(grdlat)*PI/180)+0.5))/360.;
+    nlon = lspc*360.;
+
+    for (j=0;j<nlon;j++) {
+      if (ptr == NULL) ptr = malloc(sizeof(struct GridGVec));
+      else             ptr = realloc(ptr,sizeof(struct GridGVec)*(cnt+1));
+
+      ptr[cnt].mlat       = grdlat;
+      ptr[cnt].mlon       = ((j*360./nlon)+((360./nlon)/2.0))+mlt*15.0;
+      if (ptr[cnt].mlon > 360) ptr[cnt].mlon -= 360.0;
+      ptr[cnt].azm        = 0;
+      ptr[cnt].vel.median = 0;
+      //ptr[cnt].index = 1000*( (int)ptr[cnt].mlat ) + (int)(ptr[cnt].mlon*lspc);
+      cnt++;
+    }
+  }
+
+  *num = cnt;
+
+  return ptr;
+}
+
+
 int solve_model(int num, struct GridGVec *ptr, float latmin, struct model *mod,
-                int hemi, float decyear, int noigrf, int old_aacgm)
+                int hemi, float decyear, int noigrf, int magflg)
 {
   int i;
   double *ele_phi=NULL,*ele_the=NULL,*pot=NULL;
@@ -432,7 +563,7 @@ int solve_model(int num, struct GridGVec *ptr, float latmin, struct model *mod,
       bmag = -1e3*bpolar*(1 - 3*Altitude/Re)*
               sqrt(3.*(cos(the_col[i])*cos(the_col[i]))+1.)/2.;
     } else {
-      bmag = 1e3*calc_bmag(hemi*ptr[i].mlat,ptr[i].mlon,decyear,old_aacgm);
+      bmag = 1e3*calc_bmag(hemi*ptr[i].mlat,ptr[i].mlon,decyear,magflg);
     }
 
     ptr[i].azm        = atan2(ele_the[i]/bmag,ele_phi[i]/bmag)*180./PI;
@@ -472,11 +603,14 @@ void add_model(struct CnvMapData *map,int num,struct GridGVec *ptr)
   /* now correct for MLT offset */
   for (i=0;i<num;i++) {
 
-    if (map->hemisphere==-1) map->model[i].mlat=-map->model[i].mlat;
-    if (map->hemisphere==-1) map->model[i].azm=-map->model[i].azm;
+    if (map->hemisphere==-1) {
+      map->model[i].mlat=-map->model[i].mlat;
+      map->model[i].azm=-map->model[i].azm;
+    }
 
     map->model[i].mlon-=map->mlt.av*15.0;
-    while (map->model[i].mlon<0) map->model[i].mlon+=360;
-    while (map->model[i].mlon>360) map->model[i].mlon-=360;
+    if ((map->model[i].mlon<0) || (map->model[i].mlon>360)) {
+      map->model[i].mlon -= floor(map->model[i].mlon/360.)*360.;
+    }
   }
 }

@@ -49,7 +49,7 @@ Modifications:
 
 
 int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd,
-                 float decyear,int old_aacgm) {
+                 float decyear,int magflg) {
 
   double terr=0,merr=0;
   double mlat,mlon,tmp;
@@ -166,7 +166,7 @@ int CnvMapFitMap(struct CnvMapData *map,struct GridData *grd,
   }
 
   map->chi_sqr=CnvMapFitVector(num,data,map->coef,fitvel,map->fit_order,
-                               map->latmin,decyear,noigrf,old_aacgm);
+                               map->latmin,decyear,noigrf,magflg);
 
   /* calculate chi_sqr associated with the data values */
 

@@ -74,7 +74,7 @@ int loadlag(FILE *fp,int *lag[2]) {
   while(fgets(txt,255,fp) !=NULL) {
     for (c=0;(txt[c] !=0) && (c<256);c++) 
       if (txt[c]=='#') break;
-    if (txt[c]=='#') continue;
+    if ((c<256) && (txt[c]=='#')) continue;
     if (sscanf(txt,"%d %d\n",&real,&imag) !=2) continue;
     lag[0][lagnum]=real;
     lag[1][lagnum]=imag;

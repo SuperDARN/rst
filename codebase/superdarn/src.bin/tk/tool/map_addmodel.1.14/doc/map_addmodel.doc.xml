@@ -6,8 +6,8 @@
 
 <syntax></syntax>
 <syntax>map_addmodel --help</syntax>
-<syntax>map_addmodel [-vb] [-old] [-nointerp] [-noigrf] [-rg96|-psr10|-cs10|-ts18|-ts18_kp]</syntax>
-<syntax>             [-o <ar>order</ar>] [-d <ar>doping</ar>] [<ar>mapname</ar>]</syntax>
+<syntax>map_addmodel [-vb] [-old] [-nointerp] [-noigrf] [-o <ar>order</ar>] [-d <ar>doping</ar>]</syntax>
+<syntax>             [-residuals] [-rg96|-psr10|-cs10|-ts18|-ts18_kp] [<ar>mapname</ar>]</syntax>
 <syntax></syntax>
 
 <option><on>--help</on><od>print the help message and exits.</od>
@@ -20,6 +20,8 @@
 </option>
 <option><on>-old_aacgm</on><od>uses the older AACGM software and coefficients. The default</od></option>
 <option><on></on><od>  is to use AACGM-v2.</od></option>
+<option><on>-ecdip</on><od>use eccentric dipole coordinates rather than AACGM.</od>
+</option>
 <option><on>-rg96</on><od>uses the RG96 statistical model.</od>
 </option>
 <option><on>-psr10</on><od>uses the PSR10 statistical model (equivalent to the RG05 model.)</od>
@@ -37,6 +39,12 @@
 <option><on>-o <ar>order</ar></on><od>set the order of fit to be <ar>order</ar>.</od>
 </option>
 <option><on>-d <ar>doping</ar></on><od>set the doping level to <ar>dp</ar>. Possible values are low, medium, or high.</od>
+</option>
+<option><on>-residuals</on><od>Compute residual vectors by subtracting model vectors from data.</od>
+</option>
+<option><on>-all_model</on><od>Compute model vectors at all possible grid locations.</od>
+</option>
+<option><on>-data_model</on><od>Compute model vectors at data locations only.</od>
 </option>
 <option><on><ar>mapname</ar></on><od>filename of the <code>cnvmap</code> format file. If this is omitted, the file will</od></option>
 <option><on></on><od>  be read from standard input.</od></option>

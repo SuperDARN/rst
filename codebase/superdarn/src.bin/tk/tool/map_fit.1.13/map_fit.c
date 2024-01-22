@@ -62,6 +62,7 @@ int main(int argc,char *argv[]) {
 
   int old=0;
   int old_aacgm=0;
+  int ecdip=0;
  
   int arg;
   unsigned char help=0;
@@ -91,6 +92,8 @@ int main(int argc,char *argv[]) {
   int minor=-1;
   int order=0;
 
+  int magflg=0;
+
   /* function pointers for file reading/writing (old and new) */
   int (*Map_Read)(FILE *, struct CnvMapData *, struct GridData *);
   int (*Map_Write)(FILE *, struct CnvMapData *, struct GridData *);
@@ -104,6 +107,7 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"old",'x',&old);
   OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);
+  OptionAdd(&opt,"ecdip",'x',&ecdip);
   OptionAdd(&opt,"vb",'x',&vb);
 
   OptionAdd(&opt,"ew",'t',&ewstr);  /* error weight */
@@ -136,6 +140,10 @@ int main(int argc,char *argv[]) {
   }
 
   if (arg !=argc) fname=argv[arg];
+
+  if (ecdip) magflg = 2;
+  else if (old_aacgm) magflg = 1;
+  else magflg = 0;
 
   if (ewstr !=NULL) {
      if (tolower(ewstr[0])=='y') error_wt=1;
@@ -174,7 +182,7 @@ int main(int argc,char *argv[]) {
     noigrf = map->noigrf;
 
     if (first) {
-      if (!noigrf)    IGRF_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
+      if (!noigrf || ecdip) IGRF_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
       if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
       first = 0;
     }
@@ -191,7 +199,7 @@ int main(int argc,char *argv[]) {
 
     if (order !=0) map->fit_order=order;
 
-    CnvMapFitMap(map,grd,decyear,old_aacgm);
+    CnvMapFitMap(map,grd,decyear,magflg);
     (*Map_Write)(stdout,map,grd);
 
     if (vb==1) {

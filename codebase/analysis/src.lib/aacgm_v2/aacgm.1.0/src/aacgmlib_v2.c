@@ -56,9 +56,9 @@
 #include <string.h>
 #include <math.h>
 #include <time.h>
+#include "rtime.h"
 #include "aacgmlib_v2.h"
 #include "igrflib.h"
-#include "genmag.h"
 
 #define DEBUG 0
 

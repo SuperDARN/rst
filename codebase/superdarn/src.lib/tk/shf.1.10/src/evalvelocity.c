@@ -145,7 +145,7 @@ void CnvMapEvalComponent(int Lmax,double *ecoef,double *plm,
 void CnvMapEvalVelocity(int Lmax,double *coef,double *plm,
                         struct CnvGrid *vptr,double latmin,
                         struct CnvMapData *ptr,float decyear,
-                        int old_aacgm) {
+                        int magflg) {
 
   int i;
   double *theta,*phi;
@@ -201,7 +201,7 @@ void CnvMapEvalVelocity(int Lmax,double *coef,double *plm,
       bmag = bpolar*(1.0 - 3.0 * Altitude/Re)*
              sqrt(3.0*(cos(theta[i])*cos(theta[i])) + 1.0)/2.0;
     } else {
-      bmag = -calc_bmag(vptr->lat[i],vptr->lon[i],decyear,old_aacgm);
+      bmag = -calc_bmag(vptr->lat[i],vptr->lon[i],decyear,magflg);
     }
 
     vx=ey[i]/bmag;

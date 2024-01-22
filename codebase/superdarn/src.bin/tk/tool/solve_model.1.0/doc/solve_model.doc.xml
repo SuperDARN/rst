@@ -46,6 +46,8 @@
 </option>
 <option><on>-old_aacgm</on><od>uses the older AACGM software and coefficients. The default is to use AACGM-v2 coefficients.</od>
 </option>
+<option><on>-ecdip</on><od>use eccentric dipole coordinates rather than AACGM.</od>
+</option>
 <option><on>-lat_step <ar>dlat</ar></on><od>set the latitudinal step size of the grid to <ar>dlat</ar> [degrees]. The default value is 1 degree MLAT.</od>
 </option>
 <option><on>-lon_step <ar>dlon</ar></on><od>set the longitudinal step size of the grid to <ar>dlon</ar> [degrees]. The default value is 2 degrees MLON.</od>
