@@ -186,8 +186,8 @@ int main(int argc,char *argv[]) {
     if (fp==NULL) exit(1);
     while(fgets(txt,255,fp) !=NULL) {
       for (c=0;(txt[c] !=0) && (c<256);c++) 
-      if (txt[c]=='#') break;
-      if (txt[c]=='#') continue;
+        if (txt[c]=='#') break;
+      if ((c<256) && (txt[c]=='#')) continue;
       if (sscanf(txt,"%lf %lf %lf\n",
           &ilat,&ilon,&alt) !=3) continue;
       if (old_aacgm) AACGMConvert(ilat,ilon,alt,&olat,&olon,&r,flag);
