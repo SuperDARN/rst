@@ -39,6 +39,6 @@ void CnvMapEvalComponent(int Lmax,double *ecoef,double *plm,
 void CnvMapEvalVelocity(int Lmax,double *coef,double *plm,
                         struct CnvGrid *vptr,double latmin,
                         struct CnvMapData *ptr,float decyear,
-                        int old_aacgm);
+                        int magflg);
 
 #endif

@@ -21,4 +21,4 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 Modifications: 
  */
 
-double calc_bmag(float mlat, float mlon, float date, int old_aacgm);
+double calc_bmag(float mlat, float mlon, float date, int magflg);

@@ -44,6 +44,7 @@ Modifications:
 #include "mlt.h"
 #include "aacgmlib_v2.h"
 #include "mlt_v2.h"
+#include "igrflib.h"
 #include "map_addhmb.h"
 
 float latref=59;
@@ -109,7 +110,7 @@ struct hmbtab *load_hmb(FILE *fp)
 
 
 void add_hmb_grd(float latmin,int yr,int yrsec,struct CnvMapData *map,
-                 int old_aacgm)
+                 int magflg)
 {
   int i;
   float lat;
@@ -122,10 +123,17 @@ void add_hmb_grd(float latmin,int yr,int yrsec,struct CnvMapData *map,
   int c=0;
   int off;
 
+  int mo,dy,hr,mt,sc;
+
   double (*MLTCnv)(int, int, double);
 
-  if (old_aacgm) MLTCnv = &MLTConvertYrsec;
-  else           MLTCnv = &MLTConvertYrsec_v2;
+  if (magflg == 2) {
+    TimeYrsecToYMDHMS(yrsec,yr,&mo,&dy,&hr,&mt,&sc);
+  } else if (magflg == 1) {
+    MLTCnv = &MLTConvertYrsec;
+  } else {
+    MLTCnv = &MLTConvertYrsec_v2;
+  }
 
   /* We should do something about the hemisphere here */
 
@@ -143,7 +151,8 @@ void add_hmb_grd(float latmin,int yr,int yrsec,struct CnvMapData *map,
     lon=0.5*lstp;
     for (i=0;i<nlon;i++) {
 
-      mlt = (*MLTCnv)(yr,yrsec,lon);
+      if (magflg == 2) mlt = ecdip_mlt(yr,mo,dy,hr,mt,sc,lon);
+      else             mlt = (*MLTCnv)(yr,yrsec,lon);
 
       bfac=(90-latmin)/(90-latref);
       del_L=bfac*5.5;
@@ -215,16 +224,23 @@ void make_hmb()
 
 
 void map_addhmb(int yr, int yrsec, struct CnvMapData *map, int bndnp,
-                float bndstep, float latref, float latmin, int old_aacgm)
+                float bndstep, float latref, float latmin, int magflg)
 {
   int i;
   float bfac,del_L;
   float mlt;
 
+  int mo,dy,hr,mt,sc;
+
   double (*MLTCnv)(int, int, double);
 
-  if (old_aacgm) MLTCnv = &MLTConvertYrsec;
-  else           MLTCnv = &MLTConvertYrsec_v2;
+  if (magflg == 2) {
+    TimeYrsecToYMDHMS(yrsec,yr,&mo,&dy,&hr,&mt,&sc);
+  } else if (magflg == 1) {
+    MLTCnv = &MLTConvertYrsec;
+  } else {
+    MLTCnv = &MLTConvertYrsec_v2;
+  }
 
   map->num_bnd=bndnp;
 
@@ -236,7 +252,8 @@ void map_addhmb(int yr, int yrsec, struct CnvMapData *map, int bndnp,
 
   for (i=0;i<map->num_bnd;i++) {
     map->bnd_lon[i]=i*bndstep;
-    mlt = (*MLTCnv)(yr,yrsec,map->bnd_lon[i]);
+    if (magflg == 2) mlt = ecdip_mlt(yr,mo,dy,hr,mt,sc,map->bnd_lon[i]);
+    else             mlt = (*MLTCnv)(yr,yrsec,map->bnd_lon[i]);
 
     bfac=(90-latmin)/(90-latref);
     del_L=bfac*5.5;
@@ -257,7 +274,7 @@ void map_addhmb(int yr, int yrsec, struct CnvMapData *map, int bndnp,
 
   }
 
-  add_hmb_grd(latmin,yr,yrsec,map,old_aacgm);
+  add_hmb_grd(latmin,yr,yrsec,map,magflg);
   if (map->hemisphere==1) map->latmin=latmin;
   else                    map->latmin=-latmin;
 }
