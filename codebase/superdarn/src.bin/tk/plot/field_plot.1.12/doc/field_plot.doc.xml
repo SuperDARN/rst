@@ -134,6 +134,10 @@
 </option>
 <option><on>-maxbeam <ar>maxbeam</ar></on><od>set the maximum number of beams to draw for the radar field of view outline to <ar>maxbeam</ar>.</od>
 </option>
+<option><on>-dot</on><od>Mark the location of the radar site with a dot.</od>
+</option>
+<option><on>-dotr <ar>radius</ar></on><od>set the radius of the dot used to mark the station.</od>
+</option>
 <option><on>-lst</on><od>use local solar time rather than local time.</od>
 </option>
 <option><on>-tmtick <ar>tick</ar></on><od>set the grid interval for the time clock-dial to <ar>tick</ar> hours.</od>
