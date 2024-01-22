@@ -94,6 +94,8 @@
 </option>
 <option><on>-old_aacgm</on><od>calculate the grid file using old AACGM coefficients rather than v2.</od>
 </option>
+<option><on>-ecdip</on><od>calculate the grid file using eccentric dipole rather than AACGM.</od>
+</option>
 <option><on><ar>fitacfname</ar></on><od>filename of the <code>fitacf</code> format file.</od>
 </option>
 <option><on><ar>inxname</ar></on><od>filename of the index file.</od>

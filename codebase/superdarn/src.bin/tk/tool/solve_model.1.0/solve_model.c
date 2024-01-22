@@ -66,7 +66,7 @@ struct mdata {
  *
  */
 int solve_model(int num, struct mdata *ptr, float latmin, struct model *mod,
-                int hemi, float decyear, int igrf_flag, int old_aacgm);
+                int hemi, float decyear, int igrf_flag, int magflg);
 struct mdata *get_model_pos(float latmin, int hemi, int *num,
                             float lat_step, float lon_step, int equal);
 double strdate(char *txt);
@@ -88,6 +88,7 @@ int rst_opterr(char *txt) {
 int main(int argc,char *argv[]) {
 
   int old_aacgm=0;
+  int ecdip=0;
 
   int arg;
   unsigned char help=0;
@@ -133,6 +134,8 @@ int main(int argc,char *argv[]) {
   int ts18_kp = 0;
   int imod = 0;
 
+  int magflg = 0;
+
   float lat_step=1.0;
   float lon_step=2.0;
   int equal=0;
@@ -161,6 +164,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"ts18_kp",'x',&ts18_kp);
   OptionAdd(&opt,"nointerp",'x',&nointerp);
   OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);
+  OptionAdd(&opt,"ecdip",'x',&ecdip);
   OptionAdd(&opt,"noigrf",'x',&noigrf);        /* SGS: default is to use IGRF
                                                        to compute model vecs  */
 
@@ -196,13 +200,22 @@ int main(int argc,char *argv[]) {
   if (ts18_kp) imod = TS18_Kp;
   if (ts18)    imod = TS18;
 
+  if (ecdip && imod != TS18) {
+    fprintf(stderr,"Eccentric dipole coordinates are only valid for TS18 model.\n");
+    exit(-1);
+  }
+
+  if (ecdip) magflg = 2;
+  else if (old_aacgm) magflg = 1;
+  else magflg = 0;
+
   envstr=getenv("SD_MODEL_TABLE");
   if (envstr==NULL) {
     fprintf(stderr,"Environment variable SD_MODEL_TABLE must be defined.\n");
     exit(-1);
   }
 
-  status = load_all_models(envstr,imod);
+  status = load_all_models(envstr,imod,ecdip);
   if (status != 0) {
     fprintf(stderr,"Failed to load statistical model.\n");
     exit(-1);
@@ -225,7 +238,7 @@ int main(int argc,char *argv[]) {
   yrsec = TimeYMDHMSToYrsec(yr,mo,dy,hr,mt,(int) sc);
   decyear = yr + (float)yrsec/TimeYMDHMSToYrsec(yr,12,31,23,59,59);
 
-  if (!noigrf)    IGRF_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
+  if (!noigrf || ecdip) IGRF_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
   if (!old_aacgm) AACGM_v2_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
 
   if ((dtilt == -99) && (imod == TS18 || imod == CS10 || imod == PSR10))
@@ -250,7 +263,7 @@ int main(int argc,char *argv[]) {
 
   /* solve for the model */
   status = solve_model(num, mdata, mod->latref, mod, hemisphere,
-                       decyear, noigrf, old_aacgm);
+                       decyear, noigrf, magflg);
 
   if (status != 0) {
     fprintf(stderr,"Failed to solve statistical model.\n");
@@ -274,7 +287,8 @@ int main(int argc,char *argv[]) {
       else          fprintf(stdout,"\n");
       break;
     case TS18:
-      fprintf(stdout,"Model: TS18\n");
+      if (ecdip) fprintf(stdout,"Model: TS18 (Eccentric Dipole)\n");
+      else       fprintf(stdout,"Model: TS18\n");
       fprintf(stdout,"Bin:   %s, %s, %s",mod->level,mod->angle,mod->tilt);
       if (nointerp) fprintf(stdout," tilt\n");
       else          fprintf(stdout,"\n");
@@ -357,7 +371,7 @@ struct mdata *get_model_pos(float latmin,int hemi,int *num,
 
 
 int solve_model(int num, struct mdata *ptr, float latmin, struct model *mod,
-                int hemi, float decyear, int noigrf, int old_aacgm)
+                int hemi, float decyear, int noigrf, int magflg)
 {
   int i;
   double *ele_phi=NULL,*ele_the=NULL,*pot=NULL;
@@ -408,7 +422,7 @@ int solve_model(int num, struct mdata *ptr, float latmin, struct model *mod,
       bmag = -1.0e3*bpolar*(1.0 - 3.0*Altitude/Re)*
               sqrt(3.0*(cos(the_col[i])*cos(the_col[i]))+1.0)/2.0;
     } else {
-      bmag = 1e3*calc_bmag(hemi*ptr[i].mlat,ptr[i].mlon,decyear,old_aacgm);
+      bmag = 1e3*calc_bmag(hemi*ptr[i].mlat,ptr[i].mlon,decyear,magflg);
     }
 
     ptr[i].azm        = atan2(ele_the[i]/bmag,ele_phi[i]/bmag)*180./PI;
