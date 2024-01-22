@@ -619,6 +619,8 @@ int main(int argc,char *argv[]) {
   unsigned char logoflg=0;
   unsigned char tmeflg=0;
 
+  unsigned char dotflg=0;
+
   unsigned char frmflg=0; 
   unsigned char ovrflg=0; 
 
@@ -696,6 +698,8 @@ int main(int argc,char *argv[]) {
 
   float box[3];
   char txt[256];
+
+  float dotr=2;
 
   int stid=0;
   int cpnum=0;
@@ -962,6 +966,9 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"r",'i',&repeat);
 
   OptionAdd(&opt,"chisham",'x',&chisham); /* use Chisham virtual height model */  
+
+  OptionAdd(&opt,"dotr",'f',&dotr);
+  OptionAdd(&opt,"dot",'x',&dotflg);
 
   farg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
@@ -1767,6 +1774,30 @@ int main(int argc,char *argv[]) {
                            0.5,NULL,rmap,2);
         MapPlotPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,0,cstcol,0x0f,
                        0.5,NULL,rmap,0);
+      }
+
+      if (dotflg) {
+        int s=0;
+        float pnt[2];
+        double mlat,mlon,r;
+        if (magflg) {
+          if (old_aacgm) {
+            s=AACGMConvert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
+            pnt[0]=mlat;
+            pnt[1]=mlon;
+          } else {
+            s=AACGM_v2_Convert(site->geolat,site->geolon,300,&mlat,&mlon,&r,0);
+            pnt[0]=mlat;
+            pnt[1]=mlon;
+          }
+        } else {
+          pnt[0]=site->geolat;
+          pnt[1]=site->geolon;
+        }
+        s=(*tfunc)(sizeof(float)*2,pnt,2*sizeof(float),pnt,marg);
+        if (s==0) PlotEllipse(plot,NULL,pad+pnt[0]*(wdt-2*pad),
+                              pad+pnt[1]*(hgt-2*pad),dotr,dotr,
+                              1,fovcol,0x0f,0,NULL);
       }
 
       if (bndflg) MapPlotOpenPolygon(plot,NULL,xbox+pad,ybox+pad,wbox-2*pad,hbox-2*pad,
