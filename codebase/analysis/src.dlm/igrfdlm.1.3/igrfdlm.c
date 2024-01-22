@@ -249,7 +249,6 @@ static IDL_VPTR IDLIGRF_Tilt(int argc,IDL_VPTR *argv) {
                 default:
                     yrtmp=1970;
             }
-            //should this default year be changed??
 
             switch (motyp) {
                 case IDL_TYP_INT:
