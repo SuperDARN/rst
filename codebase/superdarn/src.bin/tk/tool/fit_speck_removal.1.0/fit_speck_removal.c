@@ -28,6 +28,7 @@ Modifications:
     2021-09-17 E.C.Bland, University Centre in Svalbard (UNIS): fix handling of qflg>1 data from fitacf2.5, 
 	           which in rare cases might include values other than qflg=0 for rejected ACFs.
     2022-02-23 E.C.Bland, (UNIS): add statistics on number of rejected ACFs
+    2024-04-04 E.C.Bland: Bugfix - xqflg also needs to be set to zero to properly remove isolated ACFs
 */
 
 
@@ -325,6 +326,7 @@ int main (int argc,char *argv[]) {
         if (sum < 5) 
         {
             fit->rng[range].qflg=0;
+            if (prm->xcf!=NULL) fit->xrng[range].qflg=0;
             echoes_removed+=1;
         }
         echoes_total+=1;
