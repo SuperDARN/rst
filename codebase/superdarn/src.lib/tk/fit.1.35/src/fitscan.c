@@ -146,7 +146,7 @@ int FitReadRadarScan(int fid, int *state,
         bm->rsep=prm->rsep;
         bm->rxrise=prm->rxrise;
         bm->freq=prm->tfreq;
-        bm->noise=prm->noise.search;
+        bm->noise=fit->noise.skynoise;
         bm->atten=prm->atten;
         bm->channel=prm->channel;
         bm->nrang=prm->nrang;
