@@ -410,7 +410,7 @@ int main(int argc,char *argv[])
     for (i=0;i<10;i++)
       tau[i] = i;
     /*no lag 10*/
-    for (i=10;i<18;i++)
+    for (i=10;i<n_lags;i++)
       tau[i] = (i+1);
   }
   /*spaletascan*/
