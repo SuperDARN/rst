@@ -78,10 +78,8 @@ int main(int argc,char *argv[]) {
   unsigned char option=0;
   unsigned char version=0;
 
-  int min_beam=100;
-  int max_beam=-100;
-
   unsigned char colorflg=1;
+  unsigned char rngflg=0;
   unsigned char gflg=0;
   unsigned char menu=1;
   double nlevels=5;
@@ -121,7 +119,9 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"-help",'x',&help);
   OptionAdd(&opt,"-option",'x',&option);
   OptionAdd(&opt,"-version",'x',&version);
+
   OptionAdd(&opt,"nrange",'i',&nrng);
+  OptionAdd(&opt,"r",'x',&rngflg);
 
   OptionAdd(&opt,"gs",'x',&gflg);
   OptionAdd(&opt,"p",'x',&pwrflg);
@@ -181,6 +181,7 @@ int main(int argc,char *argv[]) {
   /* Make getch a non-blocking call */
   nodelay(stdscr,TRUE);
 
+  /* Disable input line buffering and don't echo */
   cbreak();
   noecho();
 
@@ -230,7 +231,13 @@ int main(int argc,char *argv[]) {
     }
   }
 
+  if (nrng > MAX_RANGE) nrng = MAX_RANGE;
+
   do {
+
+    status=FitCnxRead(1,&sock,prm,fit,&flag,NULL);
+
+    if (status==-1) break;
 
     /* Check for key press to exit */
     c = getch();
@@ -265,6 +272,8 @@ int main(int argc,char *argv[]) {
         smax=emax;
       } else if (c == 'g') {
         gflg = !gflg;
+      } else if (c == 'r') {
+        rngflg = !rngflg;
       } else if (c == 'n') {
         menu = !menu;
       } else if (c == KEY_UP) {
@@ -336,16 +345,12 @@ int main(int argc,char *argv[]) {
       } else if (c != ERR) break;
     } else if (c != ERR) break;
 
-    status=FitCnxRead(1,&sock,prm,fit,&flag,NULL);
-
-    if (status==-1) break;
-
     if (flag !=-1) {
 
       /* Store data from most recent beam in buffer */
       buffer.beam[prm->bmnum]=1;
       for (i=0; i<nrng; i++) {
-        if ((i >= prm->nrang) || (i >= MAX_RANGE)) break;
+        if (i >= prm->nrang) break;
         buffer.qflg[prm->bmnum][i]=fit->rng[i].qflg;
         if (fit->rng[i].qflg == 1) {
           buffer.gsct[prm->bmnum][i]=fit->rng[i].gsct;
@@ -377,17 +382,21 @@ int main(int argc,char *argv[]) {
       printw("scan  = %3d  noise.sky    = %g\n", prm->scan,fit->noise.skynoise);
       clrtoeol();
       printw("mppul = %3d  mpinc = %d\n", prm->mppul,prm->mpinc);
-      clrtoeol();
-      printw("origin.code = %d\n", prm->origin.code);
 
-      if (prm->origin.time != NULL) {
-        clrtoeol();
-        printw("origin.time = %s\n",prm->origin.time);
-      }
-      if (prm->origin.command !=NULL) {
-        clrtoeol();
-        printw("origin.command = %s\n\n",prm->origin.command);
-      }
+      clrtoeol();
+      printw("origin.code = ");
+      if ((prm->origin.time !=NULL) && (prm->origin.command !=NULL)) printw("%d\n", prm->origin.code);
+      else printw("\n");
+
+      clrtoeol();
+      printw("origin.time = ");
+      if (prm->origin.time != NULL) printw("%s\n",prm->origin.time);
+      else printw("\n");
+
+      clrtoeol();
+      printw("origin.command = ");
+      if (prm->origin.command !=NULL) printw("%s\n\n",prm->origin.command);
+      else printw("\n\n");
 
       /* Draw a menu explaining the keyboard controls */
       if (colorflg) {
@@ -429,11 +438,12 @@ int main(int argc,char *argv[]) {
           move(3, 80); addch(ACS_VLINE);
           move(4, 50); addch(ACS_VLINE);
           move(4, 52); addch(ACS_UARROW);
-          printw(" : increase scale");
+          printw(" : increase scale r : show");
           move(4, 80); addch(ACS_VLINE);
           move(5, 50); addch(ACS_VLINE);
           move(5, 52); addch(ACS_DARROW);
-          printw(" : decrease scale");
+          if (rngflg) printw(" : decrease scale     gate");
+          else        printw(" : decrease scale     rng");
         }
         move(5, 80); addch(ACS_VLINE);
         move(6, 50); addch(ACS_VLINE);
@@ -449,23 +459,21 @@ int main(int argc,char *argv[]) {
         printw("* Press any key to quit *");
       }
 
-      /* Draw beam and gate labels */
+      /* Draw range gate labels */
       move(12, 0);
-      printw("B\\G 0         ");
-      for (i=1;i*10<nrng;i++) {
-        if (i*10 < 100) printw("%d        ",i*10);
-        else            printw("%d       ",i*10);
-      }
-      printw("\n");
-
-      if (colorflg) {
-        if (prm->bmnum < min_beam) min_beam = prm->bmnum;
-        if (prm->bmnum > max_beam) max_beam = prm->bmnum;
-        for (i=min_beam;i<max_beam+1; i++) {
-          move(i+13, 0);
-          printw("%02d:",i);
+      if (rngflg) {
+        printw("B\\R %d",prm->frang);
+        for (i=1; i*10<nrng; i++) {
+          printw("%10d",prm->frang+prm->rsep*i*10);
+        }
+      } else {
+        printw("B\\G 0         ");
+        for (i=1; i*10<nrng; i++) {
+          if (i*10 < 100) printw("%d        ",i*10);
+          else            printw("%d       ",i*10);
         }
       }
+      printw("\n");
 
       /* Draw each range gate for each beam */
       for (j=0; j<MAX_BEAMS; j++) {
@@ -536,12 +544,14 @@ int main(int argc,char *argv[]) {
         }
       }
 
+      /* Send output to terminal */
       refresh();
 
     }
 
   } while(1);
 
+  /* Exit and restore terminal settings */
   endwin();
 
   RadarParmFree(prm);
