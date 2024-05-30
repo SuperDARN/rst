@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>find_elvstat</name>
+<location>src.bin/tk/tool/find_elvstat</location>
+
+<syntax>find_elvstat --help</syntax>
+<syntax>find_elvstat [<ar>options</ar>] <ar>fitacfname</ar></syntax>
+<syntax>find_elvstat -old [<ar>options</ar>] <ar>fitname</ar></syntax>
+<syntax>find_elvstat -cfit [<ar>options</ar>] <ar>cfitname</ar></syntax>
+<syntax>find_elvstat -c [<ar>options</ar>] <ar>fitacfnames...</ar></syntax>
+<syntax>find_elvstat -c -old [<ar>options</ar>] <ar>fitnames...</ar></syntax>
+<syntax>find_elvstat -c -cfit [<ar>options</ar>] <ar>cfitnames...</ar></syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on>-sd <ar>yyyymmdd</ar></on><od>start from the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-st <ar>hr:mn</ar></on><od>start from the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ed <ar>yyyymmdd</ar></on><od>stop at the date <ar>yyyymmdd</ar>.</od>
+</option>
+<option><on>-et <ar>hr:mn</ar></on><od>stop at the time <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-ex <ar>hr:mn</ar></on><od>use the interval whose extent is <ar>hr:mn</ar>.</od>
+</option>
+<option><on>-cn <ar>channel</ar></on><od>process data from channel <ar>channel</ar> for stereo mode data.</od>
+</option>
+<option><on>-cn_fix <ar>channel</ar></on><od>manually set <ar>channel</ar> to be processed.</od>
+</option>
+<option><on>-ns</on><od>exclude data with scan flags less than zero.</od>
+</option>
+<option><on><ar>fitacfname</ar></on><od>filename of the <code>fitacf</code> format file.</od>
+</option>
+<option><on>-old</on><od>the input file is in the <code>fit</code> format.</od>
+</option>
+<option><on><ar>fitname</ar></on><od>filename of the <code>fit</code> format file.</od>
+</option>
+<option><on>-cfit</on><od>the input file is in the <code>cfit</code> format.</od>
+</option>
+<option><on><ar>cfitfname</ar></on><od>filename of the <code>cfit</code> format file.</od>
+</option>
+<option><on>-c</on><od>concatenate multiple input files (from the same radar site).</od>
+</option>
+<option><on><ar>fitnames</ar></on><od>filenames of the <code>fit</code> format files.</od>
+</option>
+<option><on><ar>fitacfnames</ar></on><od>filenames of the <code>fitacf</code> format files.</od>
+</option>
+<option><on><ar>cfitnames</ar></on><od>filenames of the <code>cfit</code> format files.</od>
+</option>
+<synopsis><p>Determines the number of potentially valid elevation angles in <code>fitacf</code>, <code>fit</code>, or <code>cfit</code> format files.</p></synopsis>
+<description><p>Determines the number of potentially valid elevation angles in <code>fitacf</code>, <code>fit</code>, or <code>cfit</code> format files.</p>
+<p>The number of potentially valid elevation angles is written to standard output.</p></description>
+
+<example>
+<command>find_elvstat 20040830.gbr.fitacf</command>
+<description>Find the number of potentially valid elevation angles in the <code>fitacf</code> file "<code>20040830.gbr.fitacf</code>".</description>
+</example>
+
+</binary>

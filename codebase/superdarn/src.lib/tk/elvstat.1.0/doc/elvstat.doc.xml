@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<library>
+<project>superdarn</project>
+<name>freqband</name>
+<location>src.lib/tk/freqband</location>
+
+
+<function>
+<name>get_fit_elv_stat</name>
+<location>src.lib/tk/elvstat</location>
+<header>superdarn/elvstat.h</header>
+<syntax>int get_fit_elv_stat(int fnum, int channel, int channel_fix, int old, double stime, double sdate, double etime, double edate, double extime, unsigned char fitflg, unsigned char nsflg, unsigned char vb, char *vbuf, char *iname, char **dnames);</syntax>
+<description><p>The <fn href="get_fit_elv_stat.html">get_fit_elv_stat</fn> function takes the input parameters needed to load cfit, fit, or fitacf files and determine the number of potentially valid elevation angles.</p>
+</description>
+<returns>Returns the number of potentially valid elevation angles.</returns>
+<errors>Returns (-1) if an error is encountered.</errors>
+</function>
+
+</library>
