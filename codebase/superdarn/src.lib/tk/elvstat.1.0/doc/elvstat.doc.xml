@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <library>
 <project>superdarn</project>
-<name>freqband</name>
-<location>src.lib/tk/freqband</location>
+<name>elvstat</name>
+<location>src.lib/tk/elvstat</location>
 
 
 <function>
