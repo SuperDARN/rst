@@ -3,9 +3,13 @@
 <project>base</project>
 <name>scdoc</name>
 <location>src.bin/xmldoc/scdoc</location>
+
 <syntax>scdoc --help</syntax>
 <syntax>scdoc <ar>table</ar> <ar>script</ar></syntax>
+
 <option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
 </option>
 <option><on><ar>table</ar></on><od>filename of the file containing the table of search and replace terms.</od>
 </option>
@@ -44,6 +48,7 @@
 <p>The lookup table and script are read from the two files specified on the command line, the resultant output text is written to standard output.</p>
 <p>This program is primarily used to generate HTML pages for the documentation system.</p>
 </description>
+
 <example>
 <command>scdoc table.xml page.script &gt; page.html</command>
 <description>Read the lookup table from the file "<code>table.xml</code>" and use it to replace text in the script "<code>page.script</code>". Write the HTML output to the file "<code>page.html</code>".

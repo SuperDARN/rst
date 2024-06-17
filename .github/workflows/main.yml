@@ -1,0 +1,46 @@
+# This workflow will install RST and eventually run tests
+
+name: Compilation Test
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu-latest"]
+        cc: ["gcc-default"]
+        cdf: ["39_0"]
+
+    name: ${{ matrix.cc }} on ${{ matrix.os }} with CDF ${{ matrix.cdf }}
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install Ubuntu dependencies
+      if: startsWith(matrix.os, 'ubuntu')
+      run: |
+        sudo apt-get update
+        cat build/.requirements.ubuntu | xargs sudo apt-get install
+        echo "Get and install NASA CDF"
+        sudo apt-get install wget
+        wget https://spdf.gsfc.nasa.gov/pub/software/cdf/dist/latest/linux/cdf${{ matrix.cdf }}-dist-cdf.tar.gz
+        tar -xzvf cdf${{ matrix.cdf }}-dist-cdf.tar.gz
+        cd cdf${{ matrix.cdf }}-dist
+        make OS=linux ENV=gnu all
+        make test
+        sudo make INSTALLDIR=/usr/local/cdf install
+
+    - name: Build and make code
+      run: |
+        export RSTPATH=$(pwd)
+        source .profile.bash
+        build/script/make.build
+        build/script/make.code
+
+    - name: Build and make docs
+      run: |
+        export RSTPATH=$(pwd)
+        source .profile.bash
+        build/script/make.doc

@@ -1,0 +1,12 @@
+#  Hardware parameters for Hejing East radar.
+#
+# **********************************************************************
+# ==Notes==
+#
+#
+# **********************************************************************
+#
+#                              GEOGRAPHIC              BORE-   OFF  BEAM V  |--------- interferometer ---------| |--- RX ---| RNG MX
+#       YYYYMMDD HH:MM:SS     LAT       LON      ALT   SIGHT   SET  SEP  SG PS  TDIFF  TDIFF    X      Y     Z    RXRIS  ATTN     BM
+  55  0 20230101 00:00:00  42.885     83.709   2469.0   39.0  0.00  3.25  1  1  0.000  0.000    0.0 -100.0   0.0    0.0 0.0 0 100 24
+# EOF

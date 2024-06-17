@@ -62,7 +62,7 @@ The field [a-d] is used to separate data sampled at different frequencies into s
 | *mpinc*                 | *us* | ***short***  | Multi-pulse increment                                                                   |
 | *mppul*                 | **None**         | ***short***  | Number of pulses in the sequence                                                        |
 | *mplgs*                 | **None**         | ***short***  | Number of lags estimated from the sequence                                                      |
-| *mplgexs*              | **None**         | ***short***  |   Number of lags used for tauscan. This field originates from `fittex` algorithm and is not used in FITACF file format. | 
+| *mplgexs*              | **None**         | ***short***  |   Number of lags used for tauscan. This field is stored for fit-level processing. |
 | *ifmode*                | **None**         | ***short***  |  A flag indicating that the receiver voltage samples were obtained by digitizing the signal at an intermediate frequency (and then digitally mixed to baseband) instead of mixing to baseband and then digitizing (`ifmode=0`).         |
 | *nrang*                 | **None**         | ***short***  | Number of range gates                                                             |
 | *frang*                 | *km*       | ***short***  | Distance to the first range gate                                                        |

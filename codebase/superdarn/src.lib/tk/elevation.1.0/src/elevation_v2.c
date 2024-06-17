@@ -32,7 +32,6 @@ Modifications:
 
 /* SGS somehow need to pass in options for allowing:                         *
  *     negative elevation angles and residual phase                          */
-//TODO what do these parameters mean  like psi_obs? 
 double elevation_v2(struct FitPrm *prm, double psi_obs)
 {
   static double X,Y,Z;      /* interferometer offsets [m]                    */
@@ -62,31 +61,6 @@ double elevation_v2(struct FitPrm *prm, double psi_obs)
     d   = sqrt(X*X + Y*Y + Z*Z);
   }
 
-  /* SGS: 20180926
-   *
-   * There is still some question as to exactly what the phidiff parameter in
-   * the hdw.dat files means. The note in the hdw.dat files, presumably written
-   * by Ray is:
-
-# 12) Phase sign (Cabling errors can lead to a 180 degree shift of the
-#     interferometry phase measurement. +1 indicates that the sign is
-#     correct, -1 indicates that it must be flipped.)
-
-   * The _only_ hdw.dat file that has this value set to -1 is GBR during the
-   * time period: 19870508 - 19921203
-   *
-   * To my knowlege there is no data available prior to 1993, so dealing with
-   * this parameter is no longer necessary. For this reason I am simply
-   * removing it from this algorithm.
-   */
-/* this is NOT the correct way to handle this parameter being set to -1 */
-/*
-  if (prm->phidiff < 0) {
-    X = -X;
-    Y = -Y;
-    Z = -Z;
-  }
-*/
   sgn = (Y < 0) ? -1 : 1;
 
   boff   = prm->maxbeam/2. - 0.5;

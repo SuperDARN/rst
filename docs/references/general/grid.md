@@ -61,11 +61,11 @@ In the table below, *numstid* is the number of radars included in that grid reco
 | *channel*   |  **None**       |  *[numstid]*     | ***short*** | A list of channel numbers associated with the station id |
 | *nvec*      | **None** | *[numstid]*  | ***short*** | Number of velocity vectors for each station|
 | *freq*      | *kHz* | *[numstid]* | ***float*** | Transmitted frequency for each radar |
-| *major.revision* | **None** | *[numstid]* | ***short*** | Major `make_grid` version number                    |
+| *major.revision* | **None** | *[numstid]* | ***short*** | Major `make_grid` version number |
 | *minor.revision* | **None** | *[numstid]* | ***short*** | Minor `make_grid` version number |
 | *program.id*     | **None** | *[numstid]* | ***short*** | Control program ID | 
-| *noise.mean*      | **None** | *[numstid]* | ***float*** | Mean noise |
-| *noise.sd*        | **None** | *[numstid]* | ***float*** | Noise Standard deviation |
+| *noise.mean*      | **None** | *[numstid]* | ***float*** | Mean sky noise |
+| *noise.sd*        | **None** | *[numstid]* | ***float*** | Sky noise standard deviation |
 | *gsct*            | **None** | *[numstid]* | ***short*** | Groundscatter flag |
 | *v.min*           | *m/s* | *[numstid]* | ***float*** | Minimum velocity threshold |
 | *v.max*           | *m/s* | *[numstid]* | ***float*** | Velocity maximum threshold |
@@ -83,9 +83,9 @@ In the table below, *numstid* is the number of radars included in that grid reco
 | *vector.index*    | **None**  | *[numv]*   | ***int***   | Grid cell index |
 | *vector.vel.median* | *m/s* | *[numv]*   | ***float*** | Weighted mean velocity magnitude |
 | *vector.vel.sd*     | *m/s*   | *[numv]*   | ***float*** | Velocity standard deviation |
-| *vector.pwr.median* | *dB*  | *[numv]*   | ***float*** | Weighted mean power|
-| *vector.pwr.sd*     | *dB*  | *[numv]*   | ***float*** | Power standard deviation|
-| *vector.wdt.median* | *m/s* | *[numv]*   | ***float*** | Weighted mean spectral width|
-| *vector.wdt.sd      | *m/s* | *[numv]*   | ***float*** | Standard deviation of spectral width|
+| *vector.pwr.median* | *dB*  | *[numv]*   | ***float*** | Weighted mean power |
+| *vector.pwr.sd*     | *dB*  | *[numv]*   | ***float*** | Power standard deviation |
+| *vector.wdt.median* | *m/s* | *[numv]*   | ***float*** | Weighted mean spectral width |
+| *vector.wdt.sd*     | *m/s* | *[numv]*   | ***float*** | Standard deviation of spectral width |
 
 

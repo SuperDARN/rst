@@ -33,7 +33,7 @@ rplot -ps  plot.rp.xml &gt; &gt; plot.ps</pre></td>
 <p>When writing data, the application provides a pointer to a function that when supplied a memory pointer to a buffer and a size in bytes will write out the buffer to the correct destination.</p>     
 <h3>Writing a Producer</h3>
 
-<p>The <a href="../src.lib/base/graphic/rplot/"><code>rplot</code></a> library
+<p>The <code>rplot</code> library
 is the programming interface for writing a producer. An application using this library calls functions that generate rPlot primitives. Below is a simple example of a program using the library:</p>
 <center>
 <table width="60%" cellspacing="3" bgcolor="e0e0e0">
@@ -74,7 +74,7 @@ int main(int argc,char *argv[]) {
 </center>
 <p>The program first establishes a data structure to store plot parameters in by calling <code>RplotMake</code>. Next the program calls <code>RplotSetText</code> to tell the <code>Rplot</code> library that it should use the application supplied function <code>stream</code> to write the output. Then the plot is started by calling <code>RplotMakePlot</code>. A simple ellipse and some text are then plotted and then finally a call to <code>RplotEndPlot</code> closes the plot.</p>
 <h3>Writing a Consumer (Renderer)</h3>
-<p>Writing a Consumer or Renderer is slightly more complex. The Consumer must parse the XML and then, depending on the desired output, call a function in one of the graphics rendering libraries. The <a href="../../../base/src.lib/xml/xml/"><code>xml</code></a> library is used to parse the XML. The library extract XML tag pairs and any associated content and passes them onto an application supplied function that decodes them. The <a href="../src.lib/base/graphic/rplotin/"><code>rplotin</code></a> library provides such a decoding function for the rPlot graphics specification.</p>
+<p>Writing a Consumer or Renderer is slightly more complex. The Consumer must parse the XML and then, depending on the desired output, call a function in one of the graphics rendering libraries. The <a href="../../../base/src.lib/xml/xml/index.html"><code>xml</code></a> library is used to parse the XML. The library extract XML tag pairs and any associated content and passes them onto an application supplied function that decodes them. The <code>rplotin</code> library provides such a decoding function for the rPlot graphics specification.</p>
 <p>Below is a simple Renderer that is partially implemented for clarity:</p>
 <center>
 <table width="60%" cellspacing="3" bgcolor="e0e0e0">

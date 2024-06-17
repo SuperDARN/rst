@@ -1,0 +1,12 @@
+#  Hardware parameters for Longjing West radar.
+#
+# **********************************************************************
+# ==Notes==
+#
+#
+# **********************************************************************
+#
+#                              GEOGRAPHIC              BORE-   OFF  BEAM V  |--------- interferometer ---------| |--- RX ---| RNG MX
+#       YYYYMMDD HH:MM:SS     LAT       LON      ALT   SIGHT   SET  SEP  SG PS  TDIFF  TDIFF    X      Y     Z    RXRIS  ATTN     BM
+  52  0 20230101 00:00:00  42.82670  129.41775  333.65 -34.0  0.00  3.25  1  1  0.000  0.000    0.0  -75.0  10.0    0.0 0.0 0 100 24
+# EOF

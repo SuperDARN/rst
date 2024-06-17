@@ -131,6 +131,8 @@ int MapStereographic(int ssze,void *src,int dsze,void *dst,void *data) {
   float plon=0;
   float plat=0;
   float lat,lon;
+  float xshift=0;
+  float yshift=0;
  
   pnt=(float *)src;
   lat=pnt[0];
@@ -146,6 +148,8 @@ int MapStereographic(int ssze,void *src,int dsze,void *dst,void *data) {
     plon=arg[1];
     k=arg[2];
     f=arg[3];
+    xshift=arg[4];
+    yshift=arg[5];
   }
  
   lat=lat*PI/180;
@@ -162,10 +166,10 @@ int MapStereographic(int ssze,void *src,int dsze,void *dst,void *data) {
   k=2*k/(1+z);
 
   pnt=(float *) dst;
-  if (f==0) pnt[0]=(1.0+k*cos(lat)*sin(lon-plon))/2.0;
-  else pnt[0]=(1.0-k*cos(lat)*sin(lon-plon))/2.0;
+  if (f==0) pnt[0]=(1.0+k*cos(lat)*sin(lon-plon))/2.0 + xshift;
+  else pnt[0]=(1.0-k*cos(lat)*sin(lon-plon))/2.0 + xshift;
   pnt[1]=(1.0-k*(cos(plat)*sin(lat)-sin(plat)*cos(lat)*
-                 cos(lon-plon)))/2.0;
+                 cos(lon-plon)))/2.0 + yshift;
  
  return 0;
 }

@@ -40,6 +40,13 @@ You also need the CDF library, see below.
 
 Installation line:
 
+> Warning! If you are using a Mac with an ARM64 architecture CPU (M1 and beyond), you must first install Rosetta and perform the install within a Rosetta enabled terminal. To do so, in a regular terminal run:
+
+###  
+    softwareupdate --install-rosetta
+
+> Then locate your terminal application in finder, select "Get Info" from the right click menu, and check the "Open using Rosetta" option. After installation, you may uncheck this option.
+
 ### Macports
     
     sudo port install libhdf5 libnetcdf libcurses libpng16 libx11 netpbm (10.77.03_2+x11)
@@ -114,8 +121,11 @@ Error: curses.h not found
 
    `XPATH, NETCDF_PATH, CDF_PATH` 
    To check if the paths are set correctly locate the following header files:
-   For NETCDF_PATH `locate netcdf.h`
-   For CDF_PATH `locate cdf.h`
+   - For XPATH `locate png.h`
+   - For NETCDF_PATH `locate netcdf.h`
+   - For CDF_PATH `locate cdf.h`
+  
+   These locate commands will point to the `\include` sub directory for the respective library. Make sure your path ends in the parent directory above this (e.g., `/Applications/cdf/cdf39_0-dist` and not `/Applications/cdf/cdf39_0-dist/include`. 
    
    - If you have **IDL**, check to see that `IDL_IPATH` in `rst/.profile/idl.bash` is correct.
    	(Note: for users without IDL, modifying the `IDL_IPATH` environment variable is

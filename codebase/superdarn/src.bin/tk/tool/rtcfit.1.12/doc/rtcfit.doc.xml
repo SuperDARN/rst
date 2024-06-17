@@ -38,12 +38,12 @@
 </description>
 
 <example>
-<command>make_cfit -L log -if pid.id kapqnx.jhuapl.edu 1024</command>
+<command>rtcfit -L log -if pid.id kapqnx.jhuapl.edu 1024</command>
 <description>Generates <code>cfit</code> files from the host "<code>kapqnx.jhuapl.edu</code>", served at port 1024. The process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyy</em> is the year, <em>mm</em> is the month, and <em>dd</em> is the day.</description>
 </example>
 
 <example>
-<command>make_cfit -L log -if pid.id -rpf port.kap kapqnx.jhuapl.edu</command>
+<command>rtcfit -L log -if pid.id -rpf port.kap kapqnx.jhuapl.edu</command>
 <description>Generates <code>cfit</code> files from the host "<code>kapqnx.jhuapl.edu</code>", served at port contained in the file "<code>port.kap</code>". The process identifier is recorded in the file "<code>pid.id</code>", and logs of all transactions are recorded in the file "<code>log.<em>yyyymmdd</em></code>" where <em>yyyy</em> is the year, <em>mm</em> is the month, and <em>dd</em> is the day.</description>
 </example>
 

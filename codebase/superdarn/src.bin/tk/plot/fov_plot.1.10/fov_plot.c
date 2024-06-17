@@ -378,7 +378,7 @@ int main(int argc,char *argv[]) {
   
 
   FILE *mapfp;
-  float marg[4];
+  float marg[6];
   int i;
 
   char *tmetxt=NULL;
@@ -728,6 +728,8 @@ int main(int argc,char *argv[]) {
   else if (stereo) marg[2]=1.25*0.5*sf*90.0/(90-fabs(latmin));
   else marg[2]=1;
   marg[3]=flip;
+  marg[4]=0.0;
+  marg[5]=0.0;
 
   strcpy(tsfx,"LT");
   if (magflg) strcpy(tsfx,"MLT");

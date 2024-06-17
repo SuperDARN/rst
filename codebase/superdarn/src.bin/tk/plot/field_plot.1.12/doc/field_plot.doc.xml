@@ -92,6 +92,10 @@
 </option>
 <option><on>-flip</on><od>flip the direction of the X-axis.</od>
 </option>
+<option><on>-xshift</on><od>shift the plot horizontally by a proportion of the plotting region (+/- 1.0)</od>
+</option>
+<option><on>-yshift</on><od>shift the plot vertically by a proportion of the plotting region (+/- 1.0)</od>
+</option>
 <option><on>-square</on><od>force the use of a square bounding box around the plot.</od>
 </option>
 <option><on>-coast</on><od>plot coastlines.</od>
@@ -131,6 +135,10 @@
 <option><on>-maxbeam <ar>maxbeam</ar></on><od>set the maximum number of beams to draw for the radar field of view outline to <ar>maxbeam</ar>.</od>
 </option>
 <option><on>-databeam</on><od>set the minimum and maximum number of beams to draw for the radar field of view according to the data in each scan (default is to use the radar hardware file).</od>
+</option>
+<option><on>-dot</on><od>Mark the location of the radar site with a dot.</od>
+</option>
+<option><on>-dotr <ar>radius</ar></on><od>set the radius of the dot used to mark the station.</od>
 </option>
 <option><on>-lst</on><od>use local solar time rather than local time.</od>
 </option>

@@ -14,11 +14,11 @@
 #-------------------------------------------------------------------------------
 # M: Reference number from the section above
 # C: Radar channel number
-# FBAND_MIN/MAX: Transmission frequency band limits in kHz
+# FMIN/FMAX: Transmission frequency band limits in kHz
 # SDATE/EDATE: Starting/ending date (YYYYMMDD)
 # STIME/ETIME: Starting/ending time of day (HH:MM:SS)
 # TDIFF: Estimated tdiff (microsec)
-# TDIFF_ERR: Uncertainty in tdiff (microsec)
+# ERR: Uncertainty in tdiff (microsec)
 # NPNTS: Number of points used in calibration (0, 1, 2) or median (3, 4)
 # VAL: Has tdiff estimate been validated? 1=True, 0=False
 #-------------------------------------------------------------------------------
@@ -28,7 +28,7 @@
 # Inline comments provide more information about reasons behind gaps in data or
 # changes in tdiff estimates
 #-------------------------------------------------------------------------------
-#M C FBAND_MIN FBAND_MAX SDATE STIME EDATE ETIME TDIFF TDIFF_ERR NPNTS VAL
+#M C  FMIN  FMAX   SDATE    STIME    EDATE    ETIME  TDIFF  ERR  NPNTS VAL
 0  1  9900  9985 19951113 00:00:00 19951207 00:00:00 0.013 0.001 36533 1
 0  2  9350 11275 19951115 00:00:00 19951207 00:00:00 0.019 0.003  6788 1
 0  1 12370 12415 19951115 00:00:00 19951207 00:00:00 0.030 0.001  2491 1
