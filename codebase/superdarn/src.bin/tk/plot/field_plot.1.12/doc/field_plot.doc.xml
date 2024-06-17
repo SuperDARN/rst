@@ -134,6 +134,8 @@
 </option>
 <option><on>-maxbeam <ar>maxbeam</ar></on><od>set the maximum number of beams to draw for the radar field of view outline to <ar>maxbeam</ar>.</od>
 </option>
+<option><on>-databeam</on><od>set the minimum and maximum number of beams to draw for the radar field of view according to the data in each scan (default is to use the radar hardware file).</od>
+</option>
 <option><on>-dot</on><od>Mark the location of the radar site with a dot.</od>
 </option>
 <option><on>-dotr <ar>radius</ar></on><od>set the radius of the dot used to mark the station.</od>

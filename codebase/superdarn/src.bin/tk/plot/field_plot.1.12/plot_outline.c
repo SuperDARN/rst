@@ -131,6 +131,7 @@ void plot_outline(struct Plot *plot,struct RadarBeam *sbm,
     }
   }
 
+  if ((gbm->bm < minbeam) || (gbm->bm >= maxbeam)) return;
 
   if (magflg) {
        map[0]=gbm->mlat[0][0];
