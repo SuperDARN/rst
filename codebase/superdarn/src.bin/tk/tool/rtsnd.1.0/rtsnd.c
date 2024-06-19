@@ -350,7 +350,7 @@ int main(int argc,char *argv[]) {
         /* calculate beam azimuth */
         if (prm->bmazm == 0) {
           offset = site->maxbeam/2.0 - 0.5;
-          prm->bmazm = site->boresite + site->bmsep*(prm->bmnum-offset);
+          prm->bmazm = site->boresite + site->bmsep*(prm->bmnum-offset) + site->bmoff;
         }
 
         snd->origin.code=1;
