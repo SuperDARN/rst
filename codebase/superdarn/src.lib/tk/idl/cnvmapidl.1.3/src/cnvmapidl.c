@@ -155,6 +155,7 @@ void IDLCopyCnvMapGVecFromIDL(struct GridIDLGVec *igvec,
     map->model[n].mlat=gptr->mlat;
     map->model[n].mlon=gptr->mlon;
     map->model[n].azm=gptr->azm;
+    map->model[n].srng=gptr->srng;
     map->model[n].vel.median=gptr->vel.median;
     map->model[n].vel.sd=gptr->vel.sd;    
     map->model[n].pwr.median=gptr->pwr.median;
@@ -317,6 +318,7 @@ void IDLCopyCnvMapGVecToIDL(struct CnvMapData *map,int nvec,int size,
      gptr->mlat=map->model[n].mlat;
      gptr->mlon=map->model[n].mlon;
      gptr->azm=map->model[n].azm;
+     gptr->srng=map->model[n].srng;
      gptr->vel.median=map->model[n].vel.median;
      gptr->vel.sd=map->model[n].vel.sd;
      gptr->pwr.median=map->model[n].pwr.median;

@@ -40,12 +40,13 @@ double slant_range(int frang,int rsep,
 void RPosGeo(int center,int bcrd,int rcrd,
              struct RadarSite *pos,
              int lagfr,int smsep,int rxrise,double height,
-             double *rho,double *lat,double *lng,int chisham);
+             double *rho,double *lat,double *lng,double *srng,int chisham);
 
 void RPosMag(int center,int bcrd,int rcrd,
              struct RadarSite *pos,
              int lagfr,int smsep,int rxrise,double height,
-             double *rho,double *lat,double *lng,int chisham,int old_aacgm);
+             double *rho,double *lat,double *lng,double *srng,int chisham,
+             int old_aacgm);
 
 void RPosCubic(int center,int bcrd,int rcrd,
                struct RadarSite *pos,

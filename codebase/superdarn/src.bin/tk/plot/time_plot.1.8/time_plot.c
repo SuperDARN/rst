@@ -1428,18 +1428,18 @@ int main(int argc,char *argv[]) {
         }
 
         if ((geoflg) || (magflg)) {
-          double rho,blat,tlat,lon;
+          double rho,blat,tlat,lon,srng;
           double tmp_swap;
           if (magflg) RPosMag(0,tplot.bmnum,rng-1,site,tplot.frang,
                               tplot.rsep,tplot.rxrise,300,&rho,
-                              &blat,&lon,chisham,old_aacgm);
+                              &blat,&lon,&srng,chisham,old_aacgm);
           else RPosGeo(0,tplot.bmnum,rng-1,site,tplot.frang,tplot.rsep,
-                       tplot.rxrise,300,&rho,&blat,&lon,chisham);
+                       tplot.rxrise,300,&rho,&blat,&lon,&srng,chisham);
 
           if (magflg) RPosMag(0,tplot.bmnum,rng,site,tplot.frang,tplot.rsep,
-                              tplot.rxrise,300,&rho,&tlat,&lon,chisham,old_aacgm);
+                              tplot.rxrise,300,&rho,&tlat,&lon,&srng,chisham,old_aacgm);
           else RPosGeo(0,tplot.bmnum,rng,site,tplot.frang,tplot.rsep,
-                       tplot.rxrise,300,&rho,&tlat,&lon,chisham);
+                       tplot.rxrise,300,&rho,&tlat,&lon,&srng,chisham);
 
           if (tlat<blat) {
             tmp_swap=blat;

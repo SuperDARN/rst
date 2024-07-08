@@ -115,6 +115,7 @@ void IDLCopyGridGVecFromIDL(struct GridIDLGVec *igvec,
     grd->data[n].mlat=gptr->mlat;
     grd->data[n].mlon=gptr->mlon;
     grd->data[n].azm=gptr->azm;
+    grd->data[n].srng=gptr->srng;
     grd->data[n].vel.median=gptr->vel.median;
     grd->data[n].vel.sd=gptr->vel.sd;    
     grd->data[n].pwr.median=gptr->pwr.median;
@@ -207,6 +208,7 @@ void IDLCopyGridGVecToIDL(struct GridData *grd,int nvec,int size,
      gptr->mlat=grd->data[n].mlat;
      gptr->mlon=grd->data[n].mlon;
      gptr->azm=grd->data[n].azm;
+     gptr->srng=grd->data[n].srng;
      gptr->vel.median=grd->data[n].vel.median;
      gptr->vel.sd=grd->data[n].vel.sd;
      gptr->pwr.median=grd->data[n].pwr.median;
@@ -303,31 +305,29 @@ struct GridIDLGVec *IDLMakeGridGVec(int nvec,IDL_VPTR *vptr) {
 
   void *s=NULL;
 
- static IDL_STRUCT_TAG_DEF value[]={
+  static IDL_STRUCT_TAG_DEF value[]={
     {"MEDIAN",0,(void *) IDL_TYP_FLOAT},
     {"SD",0,(void *) IDL_TYP_FLOAT},
     {0}};
 
   static IDL_STRUCT_TAG_DEF gridgvec[]={    
-    {"MLAT",0, (void *) IDL_TYP_FLOAT},   /* 0 */
-    {"MLON",0, (void *) IDL_TYP_FLOAT},   /* 1 */ 
+    {"MLAT",0,(void *) IDL_TYP_FLOAT},   /* 0 */
+    {"MLON",0,(void *) IDL_TYP_FLOAT},   /* 1 */ 
     {"AZM",0,(void *) IDL_TYP_FLOAT}, /* 2 */
-    {"VEL",0,NULL}, /* 3 */
-    {"PWR",0,NULL}, /* 4 */
-    {"WDT",0,NULL}, /* 5 */
-    {"ST_ID",0,(void *) IDL_TYP_INT}, /* 6 */
-    {"CHN",0,(void *) IDL_TYP_INT}, /* 7 */ 
-    {"INDEX",0,(void *) IDL_TYP_LONG}, /* 8 */ 
-
-
+    {"SRNG",0,(void *) IDL_TYP_FLOAT}, /* 3 */
+    {"VEL",0,NULL}, /* 4 */
+    {"PWR",0,NULL}, /* 5 */
+    {"WDT",0,NULL}, /* 6 */
+    {"ST_ID",0,(void *) IDL_TYP_INT}, /* 7 */
+    {"CHN",0,(void *) IDL_TYP_INT}, /* 8 */ 
+    {"INDEX",0,(void *) IDL_TYP_LONG}, /* 9 */ 
     {0}};
 
   static IDL_MEMINT ilDims[IDL_MAX_ARRAY_DIM];
 
-  gridgvec[3].type=IDL_MakeStruct("GRIDVALUE",value);
   gridgvec[4].type=IDL_MakeStruct("GRIDVALUE",value);
   gridgvec[5].type=IDL_MakeStruct("GRIDVALUE",value);
-
+  gridgvec[6].type=IDL_MakeStruct("GRIDVALUE",value);
  
   s=IDL_MakeStruct("GRIDGVEC",gridgvec);
 

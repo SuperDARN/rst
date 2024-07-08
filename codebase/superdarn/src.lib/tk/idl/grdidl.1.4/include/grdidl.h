@@ -85,6 +85,7 @@ struct GridIDLGVec {
   float mlat;
   float mlon;
   float azm;
+  float srng;
   struct {
     float median;
     float sd;

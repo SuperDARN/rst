@@ -333,7 +333,7 @@ void RPosGeo(int center, int bcrd, int rcrd,
              int frang, int rsep,
              int rxrise, double height,
              double *rho, double *lat, double *lng,
-             int chisham) {
+             double *srng, int chisham) {
 
     double rx;
     double psi,d;
@@ -358,6 +358,7 @@ void RPosGeo(int center, int bcrd, int rcrd,
 
     /* Calculate the slant range to the range gate [km] */
     d=slant_range(frang,rsep,rx,range_edge,rcrd+1);
+    *srng=d;
 
     /* If the input height is less than 90 then it is actually an input
      * elevation angle [deg], so we calculat the field point height */
@@ -375,7 +376,7 @@ void RPosMag(int center,int bcrd,int rcrd,
              struct RadarSite *pos,
              int frang,int rsep,int rxrise,double height,
              double *rho,double *lat,double *lng,
-             int chisham,int old_aacgm) {
+             double *srng, int chisham,int old_aacgm) {
 
     double rx;
     double radius;
@@ -396,6 +397,7 @@ void RPosMag(int center,int bcrd,int rcrd,
     offset=pos->maxbeam/2.0-0.5;
     psi=pos->bmsep*(bcrd-offset)+bm_edge+pos->bmoff;
     d=slant_range(frang,rsep,rx,range_edge,rcrd+1);
+    *srng=d;
     if (height < 90) height=-RE+sqrt((RE*RE)+2*d*RE*sind(height)+(d*d));
 
     fldpnth(pos->geolat,pos->geolon,psi,pos->boresite,

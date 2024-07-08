@@ -96,6 +96,7 @@ void GridAverage(struct GridData *mptr,struct GridData *ptr,int flg) {
         else ptr->data=realloc(ptr->data,sizeof(struct GridGVec)*ptr->vcnum);
 
         ptr->data[k].azm=mptr->data[i].azm;
+        ptr->data[k].srng=mptr->data[i].srng;
         ptr->data[k].vel.median=mptr->data[i].vel.median;
         ptr->data[k].vel.sd=mptr->data[i].vel.sd;
         ptr->data[k].pwr.median=mptr->data[i].pwr.median;
@@ -118,6 +119,7 @@ void GridAverage(struct GridData *mptr,struct GridData *ptr,int flg) {
                 ptr->data[k].mlon=mptr->data[i].mlon;
                 ptr->data[k].mlat=mptr->data[i].mlat;
                 ptr->data[k].azm+=mptr->data[i].azm;
+                ptr->data[k].srng+=mptr->data[i].srng;
 
 
                 ptr->data[k].vel.median+=mptr->data[i].vel.median;
@@ -134,6 +136,7 @@ void GridAverage(struct GridData *mptr,struct GridData *ptr,int flg) {
                 ptr->data[k].mlon=mptr->data[i].mlon;
                 ptr->data[k].mlat=mptr->data[i].mlat;
                 ptr->data[k].azm=mptr->data[i].azm;
+                ptr->data[k].srng=mptr->data[i].srng;
                 ptr->data[k].vel.median=mptr->data[i].vel.median;
                 ptr->data[k].vel.sd=mptr->data[i].vel.sd;
                 ptr->data[k].pwr.median=mptr->data[i].pwr.median;
@@ -147,6 +150,7 @@ void GridAverage(struct GridData *mptr,struct GridData *ptr,int flg) {
                 ptr->data[k].mlon=mptr->data[i].mlon;
                 ptr->data[k].mlat=mptr->data[i].mlat;
                 ptr->data[k].azm=mptr->data[i].azm;
+                ptr->data[k].srng=mptr->data[i].srng;
                 ptr->data[k].vel.median=mptr->data[i].vel.median;
                 ptr->data[k].vel.sd=mptr->data[i].vel.sd;
                 ptr->data[k].pwr.median=mptr->data[i].pwr.median;
@@ -160,6 +164,7 @@ void GridAverage(struct GridData *mptr,struct GridData *ptr,int flg) {
                 ptr->data[k].mlon=mptr->data[i].mlon;
                 ptr->data[k].mlat=mptr->data[i].mlat;
                 ptr->data[k].azm=mptr->data[i].azm;
+                ptr->data[k].srng=mptr->data[i].srng;
 
                 ptr->data[k].vel.median=mptr->data[i].vel.median;
                 ptr->data[k].vel.sd=mptr->data[i].vel.sd;
@@ -175,6 +180,7 @@ void GridAverage(struct GridData *mptr,struct GridData *ptr,int flg) {
                 ptr->data[k].mlon=mptr->data[i].mlon;
                 ptr->data[k].mlat=mptr->data[i].mlat;
                 ptr->data[k].azm=mptr->data[i].azm;
+                ptr->data[k].srng=mptr->data[i].srng;
 
                 ptr->data[k].vel.median=mptr->data[i].vel.median;
                 ptr->data[k].vel.sd=mptr->data[i].vel.sd;
@@ -190,6 +196,7 @@ void GridAverage(struct GridData *mptr,struct GridData *ptr,int flg) {
                 ptr->data[k].mlon=mptr->data[i].mlon;
                 ptr->data[k].mlat=mptr->data[i].mlat;
                 ptr->data[k].azm=mptr->data[i].azm;
+                ptr->data[k].srng=mptr->data[i].srng;
 
                 ptr->data[k].vel.median=mptr->data[i].vel.median;
                 ptr->data[k].vel.sd=mptr->data[i].vel.sd;
@@ -205,6 +212,7 @@ void GridAverage(struct GridData *mptr,struct GridData *ptr,int flg) {
                 ptr->data[k].mlon=mptr->data[i].mlon;
                 ptr->data[k].mlat=mptr->data[i].mlat;
                 ptr->data[k].azm=mptr->data[i].azm;
+                ptr->data[k].srng=mptr->data[i].srng;
 
                 ptr->data[k].vel.median=mptr->data[i].vel.median;
                 ptr->data[k].vel.sd=mptr->data[i].vel.sd;
@@ -221,6 +229,7 @@ void GridAverage(struct GridData *mptr,struct GridData *ptr,int flg) {
   if (flg==0) {
     for (i=0;i<ptr->vcnum;i++) {
       ptr->data[i].azm=ptr->data[i].azm/ptr->data[i].st_id;
+      ptr->data[i].srng=ptr->data[i].srng/ptr->data[i].st_id;
       ptr->data[i].vel.median=ptr->data[i].vel.median/ptr->data[i].st_id;
       ptr->data[i].vel.sd=ptr->data[i].vel.sd/ptr->data[i].st_id;
 

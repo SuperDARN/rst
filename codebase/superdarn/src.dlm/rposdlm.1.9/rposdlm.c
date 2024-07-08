@@ -885,7 +885,7 @@ static IDL_VPTR IDLRadarConvert(int type,int argc,IDL_VPTR *argv,char *argk) {
   struct RadarIDLSite *isite;
   int frang=180,rsep=45,rxrise=0;
   double height=300;
-  double rho,lat,lng;
+  double rho,lat,lng,srng;
 
   IDL_VPTR outargv[11];
   static IDL_LONG chisham;
@@ -1140,7 +1140,7 @@ static IDL_VPTR IDLRadarConvert(int type,int argc,IDL_VPTR *argv,char *argk) {
     if (type !=0) RPosGeoGS(center,bcrd,rcrd,&site,frang,rsep,rxrise,height,
                             &rho,&lat,&lng);
     else RPosGeo(center,bcrd,rcrd,&site,frang,rsep,rxrise,height,
-                 &rho,&lat,&lng,chisham);
+                 &rho,&lat,&lng,&srng,chisham);
 
      rptr[n]=rho;
      latptr[n]=lat;
@@ -1170,7 +1170,7 @@ static IDL_VPTR IDLRadarConvert(int type,int argc,IDL_VPTR *argv,char *argk) {
     if (type !=0) RPosGeoGS(center,bcrd,rcrd,&site,frang,rsep,rxrise,height,
                             &rho,&lat,&lng);
     else RPosGeo(center,bcrd,rcrd,&site,frang,rsep,rxrise,height,
-                 &rho,&lat,&lng,chisham);
+                 &rho,&lat,&lng,&srng,chisham);
 
     IDL_StoreScalar(argv[8],IDL_TYP_DOUBLE,(IDL_ALLTYPES *) &rho);
     IDL_StoreScalar(argv[9],IDL_TYP_DOUBLE,(IDL_ALLTYPES *) &lat);

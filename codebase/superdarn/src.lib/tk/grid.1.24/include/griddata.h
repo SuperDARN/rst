@@ -59,6 +59,7 @@ struct GridSVec {
 struct GridGVec {
     double mlat,mlon;
     double azm;
+    double srng;
     struct {
         double median;
         double sd;

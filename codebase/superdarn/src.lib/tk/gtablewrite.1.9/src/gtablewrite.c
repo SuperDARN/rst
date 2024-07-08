@@ -82,6 +82,7 @@ int GridTableWrite(int fid,struct GridTable *ptr,char *logbuf,int xtd) {
     float *gmlon=NULL;
     float *gmlat=NULL;
     float *kvect=NULL;
+    float *srng=NULL;
     int16 *vstid=NULL;
     int16 *vchn=NULL;
     int32 *index=NULL;
@@ -115,38 +116,39 @@ int GridTableWrite(int fid,struct GridTable *ptr,char *logbuf,int xtd) {
     ve_max[0]=ptr->max[3];
 
     if (npnt !=0) {
-        size=npnt*(3*sizeof(float)+sizeof(int32)+2*sizeof(int16)+
+        size=npnt*(4*sizeof(float)+sizeof(int32)+2*sizeof(int16)+
                     (2+4*xtd)*sizeof(float));
         buf=malloc(size);
         if (buf==NULL) return -1;
         gmlon=(float *) (buf);
         gmlat=(float *) (buf+sizeof(float)*npnt);
         kvect=(float *) (buf+2*sizeof(float)*npnt);
-        vstid=(int16 *) (buf+3*sizeof(float)*npnt);
-        vchn=(int16 *)  (buf+3*sizeof(float)*npnt+sizeof(int16)*npnt);
-        index=(int32 *) (buf+3*sizeof(float)*npnt+2*sizeof(int16)*npnt);
-        vlos=(float *)  (buf+3*sizeof(float)*npnt+
+        srng=(float *)  (buf+3*sizeof(float)*npnt);
+        vstid=(int16 *) (buf+4*sizeof(float)*npnt);
+        vchn=(int16 *)  (buf+4*sizeof(float)*npnt+sizeof(int16)*npnt);
+        index=(int32 *) (buf+4*sizeof(float)*npnt+2*sizeof(int16)*npnt);
+        vlos=(float *)  (buf+4*sizeof(float)*npnt+
                                sizeof(int32)*npnt+
                              2*sizeof(int16)*npnt);
-        vlos_sd=(float *) (buf+3*sizeof(float)*npnt+
+        vlos_sd=(float *) (buf+4*sizeof(float)*npnt+
                                  sizeof(int32)*npnt+
                                2*sizeof(int16)*npnt+
                                  sizeof(float)*npnt);
 
         if (xtd) {
-            pwr=(float *) (buf+3*sizeof(float)*npnt+
+            pwr=(float *) (buf+4*sizeof(float)*npnt+
                                  sizeof(int32)*npnt+
                                2*sizeof(int16)*npnt+
                                2*sizeof(float)*npnt);
-            pwr_sd=(float *) (buf+3*sizeof(float)*npnt+
+            pwr_sd=(float *) (buf+4*sizeof(float)*npnt+
                                     sizeof(int32)*npnt+
                                   2*sizeof(int16)*npnt+
                                   3*sizeof(float)*npnt);
-            wdt=(float *) (buf+3*sizeof(float)*npnt+
+            wdt=(float *) (buf+4*sizeof(float)*npnt+
                                  sizeof(int32)*npnt+
                                2*sizeof(int16)*npnt+
                                4*sizeof(float)*npnt);
-            wdt_sd=(float *) (buf+3*sizeof(float)*npnt+
+            wdt_sd=(float *) (buf+4*sizeof(float)*npnt+
                                     sizeof(int32)*npnt+
                                   2*sizeof(int16)*npnt+
                                   5*sizeof(float)*npnt);
@@ -157,6 +159,7 @@ int GridTableWrite(int fid,struct GridTable *ptr,char *logbuf,int xtd) {
             gmlat[n]=ptr->pnt[p].mlat;
             gmlon[n]=ptr->pnt[p].mlon;
             kvect[n]=ptr->pnt[p].azm;
+            srng[n]=ptr->pnt[p].srng;
             vstid[n]=ptr->st_id;
             vchn[n]=ptr->chn;
             index[n]=ptr->pnt[p].ref;
@@ -231,6 +234,7 @@ int GridTableWrite(int fid,struct GridTable *ptr,char *logbuf,int xtd) {
         DataMapAddArray(data,"vector.mlat",DATAFLOAT,1,&npnt,gmlat);
         DataMapAddArray(data,"vector.mlon",DATAFLOAT,1,&npnt,gmlon);
         DataMapAddArray(data,"vector.kvect",DATAFLOAT,1,&npnt,kvect);
+        DataMapAddArray(data,"vector.srng",DATAFLOAT,1,&npnt,srng);
         DataMapAddArray(data,"vector.stid",DATASHORT,1,&npnt,vstid);
         DataMapAddArray(data,"vector.channel",DATASHORT,1,&npnt,vchn);
         DataMapAddArray(data,"vector.index",DATAINT,1,&npnt,index);

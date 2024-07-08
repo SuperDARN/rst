@@ -94,6 +94,7 @@ int CnvMapWrite(int fid,struct CnvMapData *map,struct GridData *grd) {
   float *gmlon=NULL;
   float *gmlat=NULL;
   float *kvect=NULL;
+  float *srng=NULL;
   int16 *vstid=NULL;
   int16 *vchn=NULL;
   int32 *index=NULL;
@@ -137,7 +138,7 @@ int CnvMapWrite(int fid,struct CnvMapData *map,struct GridData *grd) {
 
   for (n=0;n<grd->vcnum;n++) if (grd->data[n].st_id !=-1) npnt++;
 
-  size+=npnt*(3*sizeof(float)+sizeof(int32)*2*sizeof(int16)+
+  size+=npnt*(4*sizeof(float)+sizeof(int32)*2*sizeof(int16)+
                       (2+4*xtd)*sizeof(float));
 
   size+=map->num_coef*4*sizeof(double);
@@ -220,6 +221,8 @@ int CnvMapWrite(int fid,struct CnvMapData *map,struct GridData *grd) {
     bptr+=npnt*sizeof(float);
     kvect=(float *) bptr;
     bptr+=npnt*sizeof(float);
+    srng=(float *) bptr;
+    bptr+=npnt*sizeof(float);
     vstid=(int16 *) bptr;
     bptr+=npnt*sizeof(int16);
     vchn=(int16 *)  bptr;
@@ -246,6 +249,7 @@ int CnvMapWrite(int fid,struct CnvMapData *map,struct GridData *grd) {
       gmlat[n]=grd->data[p].mlat;
       gmlon[n]=grd->data[p].mlon;
       kvect[n]=grd->data[p].azm;
+      srng[n]=grd->data[p].srng;
       vstid[n]=grd->data[p].st_id;
       vchn[n]=grd->data[p].chn;
       index[n]=grd->data[p].index;
@@ -440,6 +444,7 @@ int CnvMapWrite(int fid,struct CnvMapData *map,struct GridData *grd) {
     DataMapAddArray(data,"vector.mlat",DATAFLOAT,1,&npnt,gmlat);
     DataMapAddArray(data,"vector.mlon",DATAFLOAT,1,&npnt,gmlon);
     DataMapAddArray(data,"vector.kvect",DATAFLOAT,1,&npnt,kvect);
+    DataMapAddArray(data,"vector.srng",DATAFLOAT,1,&npnt,srng);
     DataMapAddArray(data,"vector.stid",DATASHORT,1,&npnt,vstid);
     DataMapAddArray(data,"vector.channel",DATASHORT,1,&npnt,vchn);
     DataMapAddArray(data,"vector.index",DATAINT,1,&npnt,index);

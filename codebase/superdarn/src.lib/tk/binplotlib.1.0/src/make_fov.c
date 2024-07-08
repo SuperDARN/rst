@@ -39,7 +39,7 @@ Modifications:
 struct PolygonData *make_fov(double tval,struct RadarNetwork *network,
                              float alt,int chisham) {
 
-    double rho,lat,lon;
+    double rho,lat,lon,srng;
     int i,rn,bm;
     float pnt[2];
     int yr,mo,dy,hr,mt;
@@ -62,7 +62,7 @@ struct PolygonData *make_fov(double tval,struct RadarNetwork *network,
 
         for (rn=0;rn<=maxrange;rn++) {
             RPosGeo(0,0,rn,site,frang,rsep,
-                    site->recrise,alt,&rho,&lat,&lon,chisham);
+                    site->recrise,alt,&rho,&lat,&lon,&srng,chisham);
             pnt[0]=lat;
             pnt[1]=lon;
             PolygonAdd(ptr,pnt);
@@ -70,7 +70,7 @@ struct PolygonData *make_fov(double tval,struct RadarNetwork *network,
 
         for (bm=1;bm<=site->maxbeam;bm++) {
             RPosGeo(0,bm,maxrange,site,frang,rsep,
-                    site->recrise,alt,&rho,&lat,&lon,chisham);
+                    site->recrise,alt,&rho,&lat,&lon,&srng,chisham);
             pnt[0]=lat;
             pnt[1]=lon;
             PolygonAdd(ptr,pnt);
@@ -78,7 +78,7 @@ struct PolygonData *make_fov(double tval,struct RadarNetwork *network,
 
         for (rn=maxrange-1;rn>=0;rn--) {
             RPosGeo(0,site->maxbeam,rn,site,frang,rsep,
-                    site->recrise,alt,&rho,&lat,&lon,chisham);
+                    site->recrise,alt,&rho,&lat,&lon,&srng,chisham);
             pnt[0]=lat;
             pnt[1]=lon;
             PolygonAdd(ptr,pnt);
@@ -86,7 +86,7 @@ struct PolygonData *make_fov(double tval,struct RadarNetwork *network,
 
         for (bm=site->maxbeam-1;bm>0;bm--) {
             RPosGeo(0,bm,0,site,frang,rsep,
-                    site->recrise,alt,&rho,&lat,&lon,chisham);
+                    site->recrise,alt,&rho,&lat,&lon,&srng,chisham);
             pnt[0]=lat;
             pnt[1]=lon;
             PolygonAdd(ptr,pnt);
@@ -99,7 +99,7 @@ struct PolygonData *make_fov(double tval,struct RadarNetwork *network,
 struct PolygonData *make_field_fov(double tval,struct RadarNetwork *network,
                                    int id,int chisham) {
 
-    double rho,lat,lon;
+    double rho,lat,lon,srng;
     int i,rn,bm;
     float pnt[2];
     int yr,mo,dy,hr,mt;
@@ -124,7 +124,7 @@ struct PolygonData *make_field_fov(double tval,struct RadarNetwork *network,
 
         for (rn=0;rn<=maxrange;rn++) {
             RPosGeo(0,0,rn,site,frang,rsep,
-                    site->recrise,0,&rho,&lat,&lon,chisham);
+                    site->recrise,0,&rho,&lat,&lon,&srng,chisham);
             pnt[0]=lat;
             pnt[1]=lon;
             PolygonAdd(ptr,pnt);
@@ -132,7 +132,7 @@ struct PolygonData *make_field_fov(double tval,struct RadarNetwork *network,
 
         for (bm=1;bm<=site->maxbeam;bm++) {
             RPosGeo(0,bm,maxrange,site,frang,rsep,
-                    site->recrise,0,&rho,&lat,&lon,chisham);
+                    site->recrise,0,&rho,&lat,&lon,&srng,chisham);
             pnt[0]=lat;
             pnt[1]=lon;
             PolygonAdd(ptr,pnt);
@@ -140,7 +140,7 @@ struct PolygonData *make_field_fov(double tval,struct RadarNetwork *network,
 
         for (rn=maxrange-1;rn>=0;rn--) {
             RPosGeo(0,site->maxbeam,rn,site,frang,rsep,
-                    site->recrise,0,&rho,&lat,&lon,chisham);
+                    site->recrise,0,&rho,&lat,&lon,&srng,chisham);
             pnt[0]=lat;
             pnt[1]=lon;
             PolygonAdd(ptr,pnt);
@@ -148,7 +148,7 @@ struct PolygonData *make_field_fov(double tval,struct RadarNetwork *network,
 
         for (bm=site->maxbeam-1;bm>0;bm--) {
             RPosGeo(0,bm,0,site,frang,rsep,
-                    site->recrise,0,&rho,&lat,&lon,chisham);
+                    site->recrise,0,&rho,&lat,&lon,&srng,chisham);
             pnt[0]=lat;
             pnt[1]=lon;
             PolygonAdd(ptr,pnt);
@@ -162,7 +162,7 @@ struct PolygonData *make_field_fov(double tval,struct RadarNetwork *network,
 struct PolygonData *make_grid_fov(double tval,struct RadarNetwork *network,
                                   int chisham,int old_aacgm) {
 
-    double rho,lat,lon;
+    double rho,lat,lon,srng;
     int i,rn,bm;
     float pnt[2];
     int yr,mo,dy,hr,mt;
@@ -186,7 +186,7 @@ struct PolygonData *make_grid_fov(double tval,struct RadarNetwork *network,
 
         for (rn=0;rn<=maxrange;rn++) {
             RPosMag(0,0,rn,site,frang,rsep,
-                    site->recrise,0,&rho,&lat,&lon,
+                    site->recrise,0,&rho,&lat,&lon,&srng,
                     chisham,old_aacgm);
             pnt[0]=lat;
             pnt[1]=lon;
@@ -195,7 +195,7 @@ struct PolygonData *make_grid_fov(double tval,struct RadarNetwork *network,
 
         for (bm=1;bm<=site->maxbeam;bm++) {
             RPosMag(0,bm,maxrange,site,frang,rsep,
-                    site->recrise,0,&rho,&lat,&lon,
+                    site->recrise,0,&rho,&lat,&lon,&srng,
                     chisham,old_aacgm);
             pnt[0]=lat;
             pnt[1]=lon;
@@ -204,7 +204,7 @@ struct PolygonData *make_grid_fov(double tval,struct RadarNetwork *network,
 
         for (rn=maxrange-1;rn>=0;rn--) {
             RPosMag(0,site->maxbeam,rn,site,frang,rsep,
-                    site->recrise,0,&rho,&lat,&lon,
+                    site->recrise,0,&rho,&lat,&lon,&srng,
                     chisham,old_aacgm);
             pnt[0]=lat;
             pnt[1]=lon;
@@ -213,7 +213,7 @@ struct PolygonData *make_grid_fov(double tval,struct RadarNetwork *network,
 
         for (bm=site->maxbeam-1;bm>0;bm--) {
             RPosMag(0,bm,0,site,frang,rsep,
-                    site->recrise,0,&rho,&lat,&lon,
+                    site->recrise,0,&rho,&lat,&lon,&srng,
                     chisham,old_aacgm);
             pnt[0]=lat;
             pnt[1]=lon;
@@ -229,7 +229,7 @@ struct PolygonData *make_grid_fov(double tval,struct RadarNetwork *network,
 struct PolygonData *make_grid_fov_data(struct GridData *gptr,struct RadarNetwork *network,
                                        int chisham,int old_aacgm) {
 
-    double rho,lat,lon;
+    double rho,lat,lon,srng;
     int i,j,rn,bm;
     float pnt[2];
     int yr,mo,dy,hr,mt;
@@ -260,7 +260,7 @@ struct PolygonData *make_grid_fov_data(struct GridData *gptr,struct RadarNetwork
 
             for (rn=0;rn<=maxrange;rn++) {
                 RPosMag(0,0,rn,site,frang,rsep,
-                        site->recrise,0,&rho,&lat,&lon,
+                        site->recrise,0,&rho,&lat,&lon,&srng,
                         chisham,old_aacgm);
                 pnt[0]=lat;
                 pnt[1]=lon;
@@ -269,7 +269,7 @@ struct PolygonData *make_grid_fov_data(struct GridData *gptr,struct RadarNetwork
 
             for (bm=1;bm<=site->maxbeam;bm++) {
                 RPosMag(0,bm,maxrange,site,frang,rsep,
-                        site->recrise,0,&rho,&lat,&lon,
+                        site->recrise,0,&rho,&lat,&lon,&srng,
                         chisham,old_aacgm);
                 pnt[0]=lat;
                 pnt[1]=lon;
@@ -278,7 +278,7 @@ struct PolygonData *make_grid_fov_data(struct GridData *gptr,struct RadarNetwork
 
             for (rn=maxrange-1;rn>=0;rn--) {
                 RPosMag(0,site->maxbeam,rn,site,frang,rsep,
-                        site->recrise,0,&rho,&lat,&lon,
+                        site->recrise,0,&rho,&lat,&lon,&srng,
                         chisham,old_aacgm);
                 pnt[0]=lat;
                 pnt[1]=lon;
@@ -287,7 +287,7 @@ struct PolygonData *make_grid_fov_data(struct GridData *gptr,struct RadarNetwork
 
             for (bm=site->maxbeam-1;bm>0;bm--) {
                 RPosMag(0,bm,0,site,frang,rsep,
-                        site->recrise,0,&rho,&lat,&lon,
+                        site->recrise,0,&rho,&lat,&lon,&srng,
                         chisham,old_aacgm);
                 pnt[0]=lat;
                 pnt[1]=lon;
