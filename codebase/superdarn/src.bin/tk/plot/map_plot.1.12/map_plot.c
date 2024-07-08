@@ -202,6 +202,7 @@ unsigned int mag_color(double v,void *data);
 char *label_vel(double val,double min,double max,void *data);
 char *label_wdt(double val,double min,double max,void *data);
 char *label_pwr(double val,double min,double max,void *data);
+char *label_rng(double val,double min,double max,void *data);
 char *label_pot(double val,double min,double max,void *data);
 int calc_degfree(struct CnvMapData *mptr,struct GridData *gptr);
 int calc_degfree_model(struct CnvMapData *mptr,struct GridData *gptr);
@@ -428,6 +429,7 @@ int main(int argc,char *argv[]) {
 
   unsigned char pwrflg=0;
   unsigned char wdtflg=0;
+  unsigned char rngflg=0;
 
   unsigned char tlblflg=0;
   unsigned char modnflg=0;
@@ -449,6 +451,7 @@ int main(int argc,char *argv[]) {
   int cprm=0;
 
   double cmax=70000;
+  double rmax=4000;
   double pmax=30;
   double wmax=500;
   double vmax=1000;
@@ -679,6 +682,7 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"pwr",'x',&pwrflg);
   OptionAdd(&opt,"swd",'x',&wdtflg);
+  OptionAdd(&opt,"rng",'x',&rngflg);
 
   OptionAdd(&opt,"avg",'x',&avgflg);
   OptionAdd(&opt,"max",'x',&maxflg);
@@ -707,6 +711,7 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"cmax",'d',&cmax);
   OptionAdd(&opt,"vmax",'d',&vmax);
+  OptionAdd(&opt,"rmax",'d',&rmax);
   OptionAdd(&opt,"pmax",'d',&pmax);
   OptionAdd(&opt,"wmax",'d',&wmax);
 
@@ -1036,13 +1041,15 @@ int main(int argc,char *argv[]) {
   pkey.min=-cmax;
   pkey.defcol=fpolycol;
 
-  if (pwrflg) xkey.max=pmax;
+  if (rngflg) xkey.max=rmax;
+  else if (pwrflg) xkey.max=pmax;
   else xkey.max=wmax;
 
-  if (pwrflg || wdtflg) {
+  if (pwrflg || wdtflg || rngflg) {
      celflg=1;
      if (pwrflg) cprm=0;
-     else cprm=2;
+     else if (wdtflg) cprm=2;
+     else cprm=3;
   }
 
   if (avgflg || maxflg || minflg) {
@@ -1517,7 +1524,8 @@ int main(int argc,char *argv[]) {
     if ((xkeyflg) && (xkey.num !=0)) {
       double kstp,max;
       if (cprm==0) max=pmax;
-      else max=wmax;
+      else if (cprm==2) max=wmax;
+      else max=rmax;
       if (khgt<80) kstp=max/5.0;
       else kstp=max/10.0;
       if (cprm==0)
@@ -1525,9 +1533,14 @@ int main(int argc,char *argv[]) {
                      0,NULL, txtbox,fontdb,label_pwr,NULL,
                      "Helvetica",10.0,txtcol,0x0f,0.5,
                      xkey.num,xkey.a,xkey.r,xkey.g,xkey.b);
-      else
+      else if (cprm==2)
         GrplotStdKey(plot,px,apad,8,khgt, 0,max,kstp, 0,0,2,
                      0,NULL, txtbox,fontdb,label_wdt,NULL,
+                     "Helvetica",10.0,txtcol,0x0f,0.5,
+                     xkey.num,xkey.a,xkey.r,xkey.g,xkey.b);
+      else
+        GrplotStdKey(plot,px,apad,8,khgt, 0,max,kstp, 0,0,2,
+                     0,NULL, txtbox,fontdb,label_rng,NULL,
                      "Helvetica",10.0,txtcol,0x0f,0.5,
                      xkey.num,xkey.a,xkey.r,xkey.g,xkey.b);
 
@@ -1981,6 +1994,18 @@ char *label_pwr(double val,double min,double max,void *data)
   txt=malloc(32);
   if (val==max) sprintf(txt,"%g",val);
   if (val==min) sprintf(txt,"%g dB (pwr)",val);
+
+  return txt;
+}
+
+char *label_rng(double val,double min,double max,void *data)
+{
+  char *txt=NULL;
+
+  if ((val !=max) && (val !=min)) return NULL;
+  txt=malloc(32);
+  if (val==max) sprintf(txt,"%g",val);
+  if (val==min) sprintf(txt,"%g km (rng)",val);
 
   return txt;
 }

@@ -198,6 +198,8 @@
 </option>
 <option><on>-exc</on><od>plot velocity vectors excluded from the fit.</od>
 </option>
+<option><on>-rng</on><od>plot slant range.</od>
+</option>
 <option><on>-pwr</on><od>plot power.</od>
 </option>
 <option><on>-swd</on><od>plot spectral width.</od>
@@ -237,6 +239,8 @@
 <option><on>-cmax <ar>cmax</ar></on><od>set the potential scale maximum to <ar>cmax</ar> (in units of Volts, not kV).</od>
 </option>
 <option><on>-vmax <ar>vmax</ar></on><od>set the absolute velocity scale maximum to <ar>vmax</ar>.</od>
+</option>
+<option><on>-rmax <ar>rmax</ar></on><od>set the slant range scale maximum to <ar>rmax</ar>.</od>
 </option>
 <option><on>-pmax <ar>pmax</ar></on><od>set the power scale maximum to <ar>pmax</ar>.</od>
 </option>
