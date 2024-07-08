@@ -166,6 +166,8 @@
 </option>
 <option><on>-mrg</on><od>plot merged two-dimensional vectors.</od>
 </option>
+<option><on>-rng</on><od>plot slant range.</od>
+</option>
 <option><on>-pwr</on><od>plot power.</od>
 </option>
 <option><on>-swd</on><od>plot spectral width.</od>
@@ -191,6 +193,8 @@
 <option><on>-time</on><od>plot the time of the plotted data.</od>
 </option>
 <option><on>-vmax <ar>vmax</ar></on><od>set the absolute velocity scale maximum to <ar>vmax</ar>.</od>
+</option>
+<option><on>-rmax <ar>rmax</ar></on><od>set the slant rnage scale maximum to <ar>rmax</ar>.</od>
 </option>
 <option><on>-pmax <ar>pmax</ar></on><od>set the power scale maximum to <ar>pmax</ar>.</od>
 </option>

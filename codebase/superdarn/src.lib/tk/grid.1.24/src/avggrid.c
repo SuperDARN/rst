@@ -46,18 +46,16 @@ void GridAverage(struct GridData *mptr,struct GridData *ptr,int flg) {
 
   int i;
   int k;
- 
 
   ptr->st_time=mptr->st_time;
   ptr->ed_time=mptr->ed_time;
-  ptr->xtd=mptr->xtd;  
+  ptr->xtd=mptr->xtd;
   ptr->vcnum=0;
   ptr->stnum=1;
-  
-  if (ptr->sdata !=NULL) ptr->sdata=realloc(ptr->sdata,
-					    sizeof(struct GridSVec));
+
+  if (ptr->sdata !=NULL) ptr->sdata=realloc(ptr->sdata,sizeof(struct GridSVec));
   else ptr->sdata=malloc(sizeof(struct GridSVec));
-   
+
   ptr->sdata[0].st_id=0;
   ptr->sdata[0].chn=0;
   ptr->sdata[0].freq0=0;
@@ -79,153 +77,178 @@ void GridAverage(struct GridData *mptr,struct GridData *ptr,int flg) {
   ptr->sdata[0].wdt.min=mptr->sdata[0].wdt.min;
   ptr->sdata[0].wdt.max=mptr->sdata[0].wdt.max;
 
-
   if (ptr->data !=NULL) {
     free(ptr->data);
     ptr->data=NULL;
   }
 
-  
   for (i=0;i<mptr->vcnum;i++) {
 
-      k=GridLocateCell(ptr->vcnum,ptr->data,mptr->data[i].index);
-      if (k==ptr->vcnum) {
-        /* new cell */
-        ptr->vcnum++;
-        if (ptr->data==NULL) ptr->data=malloc(sizeof(struct GridGVec));
-        else ptr->data=realloc(ptr->data,sizeof(struct GridGVec)*ptr->vcnum);
+    k=GridLocateCell(ptr->vcnum,ptr->data,mptr->data[i].index);
+    if (k==ptr->vcnum) {
+      /* new cell */
+      ptr->vcnum++;
+      if (ptr->data==NULL) ptr->data=malloc(sizeof(struct GridGVec));
+      else ptr->data=realloc(ptr->data,sizeof(struct GridGVec)*ptr->vcnum);
 
+      ptr->data[k].azm=mptr->data[i].azm;
+      ptr->data[k].srng=mptr->data[i].srng;
+      ptr->data[k].vel.median=mptr->data[i].vel.median;
+      ptr->data[k].vel.sd=mptr->data[i].vel.sd;
+      ptr->data[k].pwr.median=mptr->data[i].pwr.median;
+      ptr->data[k].pwr.sd=mptr->data[i].pwr.sd;
+      ptr->data[k].wdt.median=mptr->data[i].wdt.median;
+      ptr->data[k].wdt.sd=mptr->data[i].wdt.sd;
+      ptr->data[k].mlon=mptr->data[i].mlon;
+      ptr->data[k].mlat=mptr->data[i].mlat;
+      ptr->data[k].index=mptr->data[i].index;
+
+      ptr->data[k].st_id=1;
+      ptr->data[k].chn=0;
+      if (flg !=0) {
+        ptr->data[k].st_id=mptr->data[i].st_id;
+        ptr->data[k].chn=mptr->data[i].chn;
+      }
+    } else {
+      if (flg==0) {
+        ptr->data[k].index=mptr->data[i].index;
+        ptr->data[k].mlon=mptr->data[i].mlon;
+        ptr->data[k].mlat=mptr->data[i].mlat;
+        ptr->data[k].azm+=mptr->data[i].azm;
+        ptr->data[k].srng+=mptr->data[i].srng;
+
+        ptr->data[k].vel.median+=mptr->data[i].vel.median;
+        ptr->data[k].vel.sd+=mptr->data[i].vel.sd;
+        ptr->data[k].pwr.median+=mptr->data[i].pwr.median;
+        ptr->data[k].pwr.sd+=mptr->data[i].pwr.sd;
+        ptr->data[k].wdt.median+=mptr->data[i].wdt.median;
+        ptr->data[k].wdt.sd+=mptr->data[i].wdt.sd;
+
+        ptr->data[k].st_id++;
+      } else if ((flg==1) &&
+                 (mptr->data[i].pwr.median>ptr->data[k].pwr.median)) {
+        ptr->data[k].index=mptr->data[i].index;
+        ptr->data[k].mlon=mptr->data[i].mlon;
+        ptr->data[k].mlat=mptr->data[i].mlat;
         ptr->data[k].azm=mptr->data[i].azm;
         ptr->data[k].srng=mptr->data[i].srng;
+
         ptr->data[k].vel.median=mptr->data[i].vel.median;
         ptr->data[k].vel.sd=mptr->data[i].vel.sd;
         ptr->data[k].pwr.median=mptr->data[i].pwr.median;
         ptr->data[k].pwr.sd=mptr->data[i].pwr.sd;
         ptr->data[k].wdt.median=mptr->data[i].wdt.median;
         ptr->data[k].wdt.sd=mptr->data[i].wdt.sd;
+        ptr->data[k].st_id=mptr->data[i].st_id;
+      } else if ((flg==2) &&
+                 (mptr->data[i].vel.median>ptr->data[k].vel.median)) {
+        ptr->data[k].index=mptr->data[i].index;
         ptr->data[k].mlon=mptr->data[i].mlon;
         ptr->data[k].mlat=mptr->data[i].mlat;
-        ptr->data[k].index=mptr->data[i].index;      
-     
-        ptr->data[k].st_id=1;
-        ptr->data[k].chn=0;
-        if (flg !=0) {
-          ptr->data[k].st_id=mptr->data[i].st_id;
-          ptr->data[k].chn=mptr->data[i].chn;
-	}  
-      } else { 
-        if (flg==0) {
-                ptr->data[k].index=mptr->data[i].index;          
-                ptr->data[k].mlon=mptr->data[i].mlon;
-                ptr->data[k].mlat=mptr->data[i].mlat;
-                ptr->data[k].azm+=mptr->data[i].azm;
-                ptr->data[k].srng+=mptr->data[i].srng;
+        ptr->data[k].azm=mptr->data[i].azm;
+        ptr->data[k].srng=mptr->data[i].srng;
 
+        ptr->data[k].vel.median=mptr->data[i].vel.median;
+        ptr->data[k].vel.sd=mptr->data[i].vel.sd;
+        ptr->data[k].pwr.median=mptr->data[i].pwr.median;
+        ptr->data[k].pwr.sd=mptr->data[i].pwr.sd;
+        ptr->data[k].wdt.median=mptr->data[i].wdt.median;
+        ptr->data[k].wdt.sd=mptr->data[i].wdt.sd;
+        ptr->data[k].st_id=mptr->data[i].st_id;
+      } else if ((flg==3) &&
+                 (mptr->data[i].wdt.median>ptr->data[k].wdt.median)) {
+        ptr->data[k].index=mptr->data[i].index;
+        ptr->data[k].mlon=mptr->data[i].mlon;
+        ptr->data[k].mlat=mptr->data[i].mlat;
+        ptr->data[k].azm=mptr->data[i].azm;
+        ptr->data[k].srng=mptr->data[i].srng;
 
-                ptr->data[k].vel.median+=mptr->data[i].vel.median;
-                ptr->data[k].vel.sd+=mptr->data[i].vel.sd;
-                ptr->data[k].pwr.median+=mptr->data[i].pwr.median;
-                ptr->data[k].pwr.sd+=mptr->data[i].pwr.sd;
-                ptr->data[k].wdt.median+=mptr->data[i].wdt.median;
-                ptr->data[k].wdt.sd+=mptr->data[i].wdt.sd;
+        ptr->data[k].vel.median=mptr->data[i].vel.median;
+        ptr->data[k].vel.sd=mptr->data[i].vel.sd;
+        ptr->data[k].pwr.median=mptr->data[i].pwr.median;
+        ptr->data[k].pwr.sd=mptr->data[i].pwr.sd;
+        ptr->data[k].wdt.median=mptr->data[i].wdt.median;
+        ptr->data[k].wdt.sd=mptr->data[i].wdt.sd;
+        ptr->data[k].st_id=mptr->data[i].st_id;
+      } else if ((flg==4) &&
+                 (mptr->data[i].srng>ptr->data[k].srng)) {
+        ptr->data[k].index=mptr->data[i].index;
+        ptr->data[k].mlon=mptr->data[i].mlon;
+        ptr->data[k].mlat=mptr->data[i].mlat;
+        ptr->data[k].azm=mptr->data[i].azm;
+        ptr->data[k].srng=mptr->data[i].srng;
 
-                ptr->data[k].st_id++;
-              } else if ((flg==1) && 
-                       (mptr->data[i].pwr.median>ptr->data[k].pwr.median)) {
-                ptr->data[k].index=mptr->data[i].index;          
-                ptr->data[k].mlon=mptr->data[i].mlon;
-                ptr->data[k].mlat=mptr->data[i].mlat;
-                ptr->data[k].azm=mptr->data[i].azm;
-                ptr->data[k].srng=mptr->data[i].srng;
-                ptr->data[k].vel.median=mptr->data[i].vel.median;
-                ptr->data[k].vel.sd=mptr->data[i].vel.sd;
-                ptr->data[k].pwr.median=mptr->data[i].pwr.median;
-                ptr->data[k].pwr.sd=mptr->data[i].pwr.sd;
-                ptr->data[k].wdt.median=mptr->data[i].wdt.median;
-                ptr->data[k].wdt.sd=mptr->data[i].wdt.sd;
-                ptr->data[k].st_id=mptr->data[i].st_id;
-	      } else if ((flg==2) && 
-                       (mptr->data[i].vel.median>ptr->data[k].vel.median)) {
-                ptr->data[k].index=mptr->data[i].index;          
-                ptr->data[k].mlon=mptr->data[i].mlon;
-                ptr->data[k].mlat=mptr->data[i].mlat;
-                ptr->data[k].azm=mptr->data[i].azm;
-                ptr->data[k].srng=mptr->data[i].srng;
-                ptr->data[k].vel.median=mptr->data[i].vel.median;
-                ptr->data[k].vel.sd=mptr->data[i].vel.sd;
-                ptr->data[k].pwr.median=mptr->data[i].pwr.median;
-                ptr->data[k].pwr.sd=mptr->data[i].pwr.sd;
-                ptr->data[k].wdt.median=mptr->data[i].wdt.median;
-                ptr->data[k].wdt.sd=mptr->data[i].wdt.sd;
-                ptr->data[k].st_id=mptr->data[i].st_id;
-              } else if ((flg==3) && 
-                       (mptr->data[i].wdt.median>ptr->data[k].wdt.median)) {
-                ptr->data[k].index=mptr->data[i].index;          
-                ptr->data[k].mlon=mptr->data[i].mlon;
-                ptr->data[k].mlat=mptr->data[i].mlat;
-                ptr->data[k].azm=mptr->data[i].azm;
-                ptr->data[k].srng=mptr->data[i].srng;
+        ptr->data[k].vel.median=mptr->data[i].vel.median;
+        ptr->data[k].vel.sd=mptr->data[i].vel.sd;
+        ptr->data[k].pwr.median=mptr->data[i].pwr.median;
+        ptr->data[k].pwr.sd=mptr->data[i].pwr.sd;
+        ptr->data[k].wdt.median=mptr->data[i].wdt.median;
+        ptr->data[k].wdt.sd=mptr->data[i].wdt.sd;
+        ptr->data[k].st_id=mptr->data[i].st_id;
+      } else if ((flg==5) &&
+                 (mptr->data[i].pwr.median<ptr->data[k].pwr.median)) {
+        ptr->data[k].index=mptr->data[i].index;
+        ptr->data[k].mlon=mptr->data[i].mlon;
+        ptr->data[k].mlat=mptr->data[i].mlat;
+        ptr->data[k].azm=mptr->data[i].azm;
+        ptr->data[k].srng=mptr->data[i].srng;
 
-                ptr->data[k].vel.median=mptr->data[i].vel.median;
-                ptr->data[k].vel.sd=mptr->data[i].vel.sd;
-                ptr->data[k].pwr.median=mptr->data[i].pwr.median;
-                ptr->data[k].pwr.sd=mptr->data[i].pwr.sd;
-                ptr->data[k].wdt.median=mptr->data[i].wdt.median;
-                ptr->data[k].wdt.sd=mptr->data[i].wdt.sd;
+        ptr->data[k].vel.median=mptr->data[i].vel.median;
+        ptr->data[k].vel.sd=mptr->data[i].vel.sd;
+        ptr->data[k].pwr.median=mptr->data[i].pwr.median;
+        ptr->data[k].pwr.sd=mptr->data[i].pwr.sd;
+        ptr->data[k].wdt.median=mptr->data[i].wdt.median;
+        ptr->data[k].wdt.sd=mptr->data[i].wdt.sd;
+        ptr->data[k].st_id=mptr->data[i].st_id;
+      } else if ((flg==6) &&
+                 (mptr->data[i].vel.median<ptr->data[k].vel.median)) {
+        ptr->data[k].index=mptr->data[i].index;
+        ptr->data[k].mlon=mptr->data[i].mlon;
+        ptr->data[k].mlat=mptr->data[i].mlat;
+        ptr->data[k].azm=mptr->data[i].azm;
+        ptr->data[k].srng=mptr->data[i].srng;
 
-                ptr->data[k].st_id=mptr->data[i].st_id;
-              } else if ((flg==4) && 
-                       (mptr->data[i].pwr.median<ptr->data[k].pwr.median)) {
-                ptr->data[k].index=mptr->data[i].index;          
-                ptr->data[k].mlon=mptr->data[i].mlon;
-                ptr->data[k].mlat=mptr->data[i].mlat;
-                ptr->data[k].azm=mptr->data[i].azm;
-                ptr->data[k].srng=mptr->data[i].srng;
+        ptr->data[k].vel.median=mptr->data[i].vel.median;
+        ptr->data[k].vel.sd=mptr->data[i].vel.sd;
+        ptr->data[k].pwr.median=mptr->data[i].pwr.median;
+        ptr->data[k].pwr.sd=mptr->data[i].pwr.sd;
+        ptr->data[k].wdt.median=mptr->data[i].wdt.median;
+        ptr->data[k].wdt.sd=mptr->data[i].wdt.sd;
+        ptr->data[k].st_id=mptr->data[i].st_id;
+      } else if ((flg==7) && 
+                 (mptr->data[i].wdt.median<ptr->data[k].wdt.median)) {
+        ptr->data[k].index=mptr->data[i].index;
+        ptr->data[k].mlon=mptr->data[i].mlon;
+        ptr->data[k].mlat=mptr->data[i].mlat;
+        ptr->data[k].azm=mptr->data[i].azm;
+        ptr->data[k].srng=mptr->data[i].srng;
 
-                ptr->data[k].vel.median=mptr->data[i].vel.median;
-                ptr->data[k].vel.sd=mptr->data[i].vel.sd;
-                ptr->data[k].pwr.median=mptr->data[i].pwr.median;
-                ptr->data[k].pwr.sd=mptr->data[i].pwr.sd;
-                ptr->data[k].wdt.median=mptr->data[i].wdt.median;
-                ptr->data[k].wdt.sd=mptr->data[i].wdt.sd;
+        ptr->data[k].vel.median=mptr->data[i].vel.median;
+        ptr->data[k].vel.sd=mptr->data[i].vel.sd;
+        ptr->data[k].pwr.median=mptr->data[i].pwr.median;
+        ptr->data[k].pwr.sd=mptr->data[i].pwr.sd;
+        ptr->data[k].wdt.median=mptr->data[i].wdt.median;
+        ptr->data[k].wdt.sd=mptr->data[i].wdt.sd;
+        ptr->data[k].st_id=mptr->data[i].st_id;
+      } else if ((flg==8) && 
+                 (mptr->data[i].srng<ptr->data[k].srng)) {
+        ptr->data[k].index=mptr->data[i].index;
+        ptr->data[k].mlon=mptr->data[i].mlon;
+        ptr->data[k].mlat=mptr->data[i].mlat;
+        ptr->data[k].azm=mptr->data[i].azm;
+        ptr->data[k].srng=mptr->data[i].srng;
 
-                ptr->data[k].st_id=mptr->data[i].st_id;
-	      } else if ((flg==5) && 
-			(mptr->data[i].vel.median<ptr->data[k].vel.median)) {
-                ptr->data[k].index=mptr->data[i].index;          
-                ptr->data[k].mlon=mptr->data[i].mlon;
-                ptr->data[k].mlat=mptr->data[i].mlat;
-                ptr->data[k].azm=mptr->data[i].azm;
-                ptr->data[k].srng=mptr->data[i].srng;
-
-                ptr->data[k].vel.median=mptr->data[i].vel.median;
-                ptr->data[k].vel.sd=mptr->data[i].vel.sd;
-                ptr->data[k].pwr.median=mptr->data[i].pwr.median;
-                ptr->data[k].pwr.sd=mptr->data[i].pwr.sd;
-                ptr->data[k].wdt.median=mptr->data[i].wdt.median;
-                ptr->data[k].wdt.sd=mptr->data[i].wdt.sd;
-
-                ptr->data[k].st_id=mptr->data[i].st_id;
-              } else if ((flg==6) && 
-                       (mptr->data[i].wdt.median<ptr->data[k].wdt.median)) {
-                ptr->data[k].index=mptr->data[i].index;          
-                ptr->data[k].mlon=mptr->data[i].mlon;
-                ptr->data[k].mlat=mptr->data[i].mlat;
-                ptr->data[k].azm=mptr->data[i].azm;
-                ptr->data[k].srng=mptr->data[i].srng;
-
-                ptr->data[k].vel.median=mptr->data[i].vel.median;
-                ptr->data[k].vel.sd=mptr->data[i].vel.sd;
-                ptr->data[k].pwr.median=mptr->data[i].pwr.median;
-                ptr->data[k].pwr.sd=mptr->data[i].pwr.sd;
-                ptr->data[k].wdt.median=mptr->data[i].wdt.median;
-                ptr->data[k].wdt.sd=mptr->data[i].wdt.sd;
-
-                ptr->data[k].st_id=mptr->data[i].st_id;
-              }
-	    }
-        
+        ptr->data[k].vel.median=mptr->data[i].vel.median;
+        ptr->data[k].vel.sd=mptr->data[i].vel.sd;
+        ptr->data[k].pwr.median=mptr->data[i].pwr.median;
+        ptr->data[k].pwr.sd=mptr->data[i].pwr.sd;
+        ptr->data[k].wdt.median=mptr->data[i].wdt.median;
+        ptr->data[k].wdt.sd=mptr->data[i].wdt.sd;
+        ptr->data[k].st_id=mptr->data[i].st_id;
+      }
+    }
   }
+
   if (flg==0) {
     for (i=0;i<ptr->vcnum;i++) {
       ptr->data[i].azm=ptr->data[i].azm/ptr->data[i].st_id;
@@ -240,22 +263,7 @@ void GridAverage(struct GridData *mptr,struct GridData *ptr,int flg) {
     }
   }
   ptr->sdata[0].npnt=ptr->vcnum;
+
   return;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
