@@ -32,9 +32,9 @@ extern float lathmb[36];
 struct hmbtab *load_hmb(FILE *fp);
 void make_hmb(void);
 void add_hmb_grd(float latmin,int yr,int yrsec,struct CnvMapData *map,
-                 int old_aacgm);
+                 int magflg);
 void map_addhmb(int yr, int yrsec, struct CnvMapData *map, int bndnp,
-                float bndstep, float latref, float latmin, int old_aacgm);
+                float bndstep, float latref, float latmin, int magflg);
 int latcmp(const void *a,const void *b);
 
 #endif

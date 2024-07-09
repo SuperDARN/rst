@@ -258,7 +258,7 @@ struct model *load_model(FILE *fp, int ihem, int ilev, int iang,
 }
 
 
-int load_all_models(char *path, int imod)
+int load_all_models(char *path, int imod, int ecdip)
 {
   char fname[256];
   FILE *fp;
@@ -321,8 +321,13 @@ int load_all_models(char *path, int imod)
       for (i=0; i<TS18_nlev; i++) {
         for (j=0; j<TS18_nang; j++) {
           for (k=0; mod_tilt[k] != NULL; k++) {
-            sprintf(fname,"%s/ts18/mod_%s_%s_%s.spx",path,TS18_mod_lev[i],
-                           TS18_mod_ang[j],mod_tilt[k]);
+            if (ecdip) {
+              sprintf(fname,"%s/ecdip/ts18/mod_%s_%s_%s.spx",path,TS18_mod_lev[i],
+                             TS18_mod_ang[j],mod_tilt[k]);
+            } else {
+              sprintf(fname,"%s/ts18/mod_%s_%s_%s.spx",path,TS18_mod_lev[i],
+                             TS18_mod_ang[j],mod_tilt[k]);
+            }
             fp = fopen(fname,"r");
             if (fp == NULL) continue;
             model[0][k][i][j] = load_model(fp,-1,i,j,k,imod);

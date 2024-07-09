@@ -29,6 +29,6 @@ Modifications:
 #define _CNVMAPSOLVE_H
 
 int CnvMapSolve(struct CnvMapData *ptr,struct CnvGrid *gptr,
-                float decyear,int old_aacgm);
+                float decyear,int magflg);
 
 #endif

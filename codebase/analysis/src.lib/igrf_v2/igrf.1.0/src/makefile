@@ -2,7 +2,7 @@
 #  ============================
 include $(MAKECFG).$(SYSTEM)
 
-INCLUDE=-I$(IPATH)/base -I$(IPATH)/analysis
+INCLUDE=-I$(IPATH)/base -I$(IPATH)/general -I$(IPATH)/analysis
 SRC = igrflib.c
 OBJS = igrflib.o
 INC = $(IPATH)/analysis

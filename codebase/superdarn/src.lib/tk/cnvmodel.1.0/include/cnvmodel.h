@@ -64,6 +64,6 @@ struct model *interp_coeffs(int ih, float tilt, float mag,
         float cang, int imod);
 struct model *load_model(FILE *fp, int ihem, int ilev,
         int iang, int itlt, int imod);
-int load_all_models(char *path, int imod);
+int load_all_models(char *path, int imod, int ecdip);
 
 #endif

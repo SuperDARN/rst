@@ -35,14 +35,22 @@ Modifications:
 #include "shfconst.h"
 #include "igrflib.h"
 
-double calc_bmag(float mlat, float mlon, float date, int old_aacgm)
+double calc_bmag(float mlat, float mlon, float date, int magflg)
 {
-  double rtp[3], brtp[3], bxyz[3];
+  double rtp[3], brtp[3], bxyz[3], out[3];
   double bmag;
   double glat, glon, r;
 
-  if (old_aacgm) AACGMConvert((double)mlat,(double)mlon,1.,&glat,&glon,&r,1);
-  else       AACGM_v2_Convert((double)mlat,(double)mlon,1.,&glat,&glon,&r,1);
+  if (magflg == 2) {
+    ecdip2geod((double)mlat,(double)mlon,1.,out);
+    glat = out[0];
+    glon = out[1];
+    r = out[2];
+  } else if (magflg == 1) {
+    AACGMConvert((double)mlat,(double)mlon,1.,&glat,&glon,&r,1);
+  } else {
+    AACGM_v2_Convert((double)mlat,(double)mlon,1.,&glat,&glon,&r,1);
+  }
 
   rtp[0] = (Re + Altitude)/Re;        /* unitless */
   rtp[1] = (90.-glat)*PI/180.;

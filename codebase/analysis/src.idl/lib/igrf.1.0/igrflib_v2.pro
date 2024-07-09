@@ -647,13 +647,14 @@ end
 ;
 ;+-----------------------------------------------------------------------------
 
-pro IGRF_SetDateTime, year, month, day, hour, minute, second, err=err
+function IGRF_SetDateTime, year, month, day, hour, minute, second
+
   common IGRF_v2_Com
 
   err=0
   if n_elements(IGRF_file) eq 0 then begin
     init_common, err=err
-    if (err) then return
+    if (err) then return, err
   endif
 
   ; set defaults if not all parameters are passed in
@@ -664,8 +665,7 @@ pro IGRF_SetDateTime, year, month, day, hour, minute, second, err=err
   if np lt 3 then day    = 1
   if np lt 2 then month  = 1
   if np lt 1 then begin
-    err = -1
-    return
+    return, -1
   endif
 
   days = -1
@@ -678,8 +678,7 @@ pro IGRF_SetDateTime, year, month, day, hour, minute, second, err=err
     print, 'Date range for IGRF13 is '+strtrim(IGRF_FIRST_EPOCH,2)+'-'+$
                                        strtrim(IGRF_LAST_EPOCH+5,2)
     print, ''
-    err = -1
-    return
+    return, -1
   endif
 
   IGRF_datetime.year       = year
@@ -696,6 +695,8 @@ pro IGRF_SetDateTime, year, month, day, hour, minute, second, err=err
     IGRF_datetime.fyear = fyear
     IGRF_interpolate_coefs, err=err
   endif
+
+  return, err
 
 end
 
@@ -724,11 +725,28 @@ end
 ;
 ;+-----------------------------------------------------------------------------
 
-function IGRF_GetDateTime
+function IGRF_GetDateTime, year, month=month, day=day, $
+                           hour=hour, minute=minute, second=second, $
+                           dyno=dayno, silent=silent
+
   common IGRF_v2_Com
 
-  return, [igrf_date.year,igrf_date.month,igrf_date.day, $
-            igrf_date.hour,igrf_date.minute,igrf_date.second,igrf_date.dayno]
+  if (n_elements(igrf_v2_datetime) eq 0) then begin
+    if not keyword_set(silent) then $
+      print, "Date and Time are not currently set"
+    return, -1
+  endif
+
+  year   = igrf_date.year
+  month  = igrf_date.month
+  day    = igrf_date.day
+  hour   = igrf_date.hour
+  minute = igrf_date.minute
+  second = igrf_date.second
+  dyno   = igrf_date.dayno
+
+  return, 0
+
 end
 
 ;*-----------------------------------------------------------------------------
@@ -747,12 +765,12 @@ end
 ;
 ;+-----------------------------------------------------------------------------
 
-pro IGRF_SetNow, err=err
+function IGRF_SetNow
   common IGRF_v2_Com
 
   if n_elements(IGRF_file) eq 0 then begin
     init_common, err=err
-    if (err) then return
+    if (err) then return, err
   endif
 
   ; use current time (in UT)
@@ -767,8 +785,7 @@ pro IGRF_SetNow, err=err
     print, ''
     print, 'Date range for GUFM1/IGRF13 is 1590-2025'
     print, ''
-    err = -1
-    return
+    return, -1
   endif
 
   IGRF_datetime.year       = year
@@ -785,6 +802,8 @@ pro IGRF_SetNow, err=err
     IGRF_datetime.fyear = fyear
     IGRF_interpolate_coefs, err=err
   endif
+
+  return, err
 
 end
 

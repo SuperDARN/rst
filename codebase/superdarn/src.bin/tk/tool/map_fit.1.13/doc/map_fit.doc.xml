@@ -19,6 +19,8 @@
 </option>
 <option><on>-old_aacgm</on><od>uses the older AACGM software and coefficients. The default is to use AACGM-v2.</od>
 </option>
+<option><on>-ecdip</on><od>use eccentric dipole coordinates rather than AACGM.</od>
+</option>
 <option><on>-ew <ar>errwgt</ar></on><od>set the error weighting to <ar>errwgt</ar>, which can be either yes or no. If yes, the data vector errors will be taken from the values in the grid file (default). If no, the average error of the data vectors will be assigned to all data vectors.</od>
 </option>
 <option><on>-mw <ar>modelwgt</ar></on><od>set the model weighting to <ar>modelwgt</ar>, which can be either yes or no. If no, the average error of the data vectors will be scaled by the order of the fit and then applied to the model vectors (default). If yes, the average error of the data vectors will not be scaled by the order of the fit before being applied to the model vectors.</od>

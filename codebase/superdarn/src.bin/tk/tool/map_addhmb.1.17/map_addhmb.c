@@ -46,6 +46,7 @@ Modifications:
 #include "mlt.h"
 #include "aacgmlib_v2.h"
 #include "mlt_v2.h"
+#include "igrflib.h"
 #include "hlpstr.h"
 #include "map_addhmb.h"
 
@@ -74,6 +75,7 @@ int main(int argc,char *argv[])
 {
   int old=0;
   int old_aacgm=0;
+  int ecdip=0;
 
   int arg;
   unsigned char help=0;
@@ -84,7 +86,7 @@ int main(int argc,char *argv[])
 
   FILE *fp;
   char *lname=NULL;
-  char *fname=NULL; 
+  char *fname=NULL;
   
   int tme;
   int yrsec=0;
@@ -132,6 +134,8 @@ int main(int argc,char *argv[])
 
   int nodef = 0;
 
+  int magflg = 0;
+
   /* function pointers for file reading/writing (old and new) and MLT */
   int (*Map_Read)(FILE *, struct CnvMapData *, struct GridData *);
   int (*Map_Write)(FILE *, struct CnvMapData *, struct GridData *);
@@ -160,6 +164,7 @@ int main(int argc,char *argv[])
   OptionAdd(&opt,"ex",'t',&exstr);
 
   OptionAdd(&opt,"old_aacgm",'x',&old_aacgm);
+  OptionAdd(&opt,"ecdip",'x',&ecdip);
   OptionAdd(&opt,"nodef",'x',&nodef); /* no default latmin: EC */
 
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
@@ -195,7 +200,7 @@ int main(int argc,char *argv[])
   }
    
   if (lname !=NULL) {
-    fp=fopen(lname,"r"); 
+    fp=fopen(lname,"r");
     if (fp !=NULL) {
       hmbtab=load_hmb(fp);
       fclose(fp);
@@ -221,6 +226,10 @@ int main(int argc,char *argv[])
   /* set function pointer to compute MLT or MLT_v2 */
   if (old_aacgm) MLTCnv = &MLTConvertYrsec;
   else           MLTCnv = &MLTConvertYrsec_v2;
+
+  if (ecdip) magflg = 2;
+  else if (old_aacgm) magflg = 1;
+  else magflg = 0;
 
   if ((hmbtab != NULL) || (hmblat != 0))  {
     /*
@@ -249,19 +258,19 @@ int main(int argc,char *argv[])
       }  
 
       if (tflg == 0) {
-        map_addhmb(yr,yrsec,map[0],bndnp,bndstep,latref,latmed,old_aacgm); 
+        map_addhmb(yr,yrsec,map[0],bndnp,bndstep,latref,latmed,magflg);
         (*Map_Write)(stdout,map[0],grd[0]);
         TimeEpochToYMDHMS(grd[0]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
         if (vb==1) 
            fprintf(stderr,"%d-%d-%d %d:%d:%d latmin=%g\n",yr,mo,dy,
-                           hr,mt,(int) sc,map[0]->latmin); 
+                           hr,mt,(int) sc,map[0]->latmin);
       } else {  /* write the boundary */
         TimeEpochToYMDHMS(grd[0]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
         fprintf(stdout,"%.4d %.2d %.2d %.2d %.2d %.2d %.2g %.2g\n",
                         yr,mo,dy,hr,mt,(int) sc,latmed,latmin[0]);
         if (vb==1) 
           fprintf(stderr,"%d-%d-%d %d:%d:%d latmin: median=%g actual=%g\n",
-                yr,mo,dy,hr,mt,(int) sc,latmed,latmin[0]);  
+                yr,mo,dy,hr,mt,(int) sc,latmed,latmin[0]);
       }
       s = (*Map_Read)(fp,map[0],grd[0]);
     }
@@ -273,7 +282,14 @@ int main(int argc,char *argv[])
 
     make_hmb();
     (*Map_Read)(fp,map[buf],grd[buf]);
-    if (!old_aacgm) { /* check to see if time is already set */
+    if (ecdip) {
+      IGRF_GetDateTime(&yr,&mo,&dy,&hr,&mt,&sec,&dyn);
+      if (yr < 0) {
+        tme=(grd[buf]->st_time+grd[buf]->ed_time)/2.0;
+        TimeEpochToYMDHMS(tme,&yr,&mo,&dy,&hr,&mt,&sc);
+        IGRF_SetDateTime(yr,mo,dy,hr,mt,(int)sc);
+      }
+    } else if (!old_aacgm) { /* check to see if time is already set */
       AACGM_v2_GetDateTime(&yr,&mo,&dy,&hr,&mt,&sec,&dyn);
       if (yr < 0) {
         tme=(grd[buf]->st_time+grd[buf]->ed_time)/2.0;
@@ -308,8 +324,9 @@ int main(int argc,char *argv[])
 
           for (j=0; j<exnum; j++) if (grd[buf]->data[i].st_id == exid[j]) break;
           if (j != exnum) continue;
-	  
-          mlti = (int)((*MLTCnv)(yr,yrsec,grd[buf]->data[i].mlon)+0.5);
+
+          if (ecdip) mlti = (int)(ecdip_mlt(yr,mo,dy,hr,mt,(int)sc,grd[buf]->data[i].mlon)+0.5);
+          else       mlti = (int)((*MLTCnv)(yr,yrsec,grd[buf]->data[i].mlon)+0.5);
           if (mlti == 24) mlti = 0;
           latdif = 90;  
           for (j=0; j<nlat; j++) {
@@ -347,14 +364,14 @@ int main(int argc,char *argv[])
 
           if (tflg == 0) {
             if (latmed != -1) map_addhmb(yr,yrsec,map[0],bndnp,bndstep,
-                                         latref,latmed,old_aacgm); 
+                                         latref,latmed,magflg);
             else map[0]->latmin = -1;
             (*Map_Write)(stdout,map[0],grd[0]);
 
             TimeEpochToYMDHMS(grd[0]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
             if (vb == 1) 
               fprintf(stderr,"%d-%d-%d %d:%d:%d latmin=%g\n",yr,mo,dy,
-	                            hr,mt,(int) sc,map[0]->latmin); 
+	                            hr,mt,(int) sc,map[0]->latmin);
           } else {
  
             TimeEpochToYMDHMS(grd[0]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
@@ -362,26 +379,26 @@ int main(int argc,char *argv[])
                             yr,mo,dy,hr,mt,(int) sc,latmed,latmin[0]);
             if (vb == 1) 
               fprintf(stderr,"%d-%d-%d %d:%d:%d latmin: median=%g actual=%g\n",
-                              yr,mo,dy,hr,mt,(int) sc,latmed,latmin[0]);  
+                              yr,mo,dy,hr,mt,(int) sc,latmed,latmin[0]);
 	        }
         }
 
         if (tflg == 0) {
           if (latmed != -1) map_addhmb(yr,yrsec,map[idx],bndnp,bndstep,
-                                       latref,latmed,old_aacgm); 
+                                       latref,latmed,magflg);
           else map[idx]->latmin = -1;
           (*Map_Write)(stdout,map[idx],grd[idx]);
           TimeEpochToYMDHMS(grd[idx]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
           if (vb==1) 
             fprintf(stderr,"%d-%d-%d %d:%d:%d latmin=%g\n",yr,mo,dy,
-	                          hr,mt,(int) sc,map[idx]->latmin);  
+	                          hr,mt,(int) sc,map[idx]->latmin);
         } else {
           TimeEpochToYMDHMS(grd[idx]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
           fprintf(stdout,"%.4d %.2d %.2d %.2d %.2d %.2d %.2g %.2g\n",
                           yr,mo,dy,hr,mt,(int) sc,latmed,latmin[idx]);
           if (vb==1) 
             fprintf(stderr,"%d-%d-%d %d:%d:%d latmin: median=%g actual=%g\n",
-                            yr,mo,dy,hr,mt,(int) sc,latmed,latmin[idx]);  
+                            yr,mo,dy,hr,mt,(int) sc,latmed,latmin[idx]);
         }
       }
       cnt++;
@@ -400,13 +417,13 @@ int main(int argc,char *argv[])
     if (cnt == 2) { /* we must write out the first record */
       if (tflg == 0) {
         if (latmed != -1) map_addhmb(yr,yrsec,map[0],bndnp,bndstep,
-                                     latref,latmed,old_aacgm); 
+                                     latref,latmed,magflg);
         else map[0]->latmin = -1;
         (*Map_Write)(stdout,map[0],grd[0]);
         TimeEpochToYMDHMS(grd[0]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
         if (vb == 1) 
           fprintf(stderr,"%d-%d-%d %d:%d:%d latmin=%g\n",yr,mo,dy,
-                          hr,mt,(int) sc,map[0]->latmin); 
+                          hr,mt,(int) sc,map[0]->latmin);
 	    } else {
 
         TimeEpochToYMDHMS(grd[0]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
@@ -414,26 +431,26 @@ int main(int argc,char *argv[])
                         yr,mo,dy,hr,mt,(int) sc,latmed,latmin[0]);
         if (vb == 1) 
           fprintf(stderr,"%d-%d-%d %d:%d:%d latmin: median=%g actual=%g\n",
-                          yr,mo,dy,hr,mt,(int) sc,latmed,latmin[0]);  
+                          yr,mo,dy,hr,mt,(int) sc,latmed,latmin[0]);
 	    }
     }
  
     if (tflg == 0) {  
       if (latmed != -1) map_addhmb(yr,yrsec,map[idx],bndnp,bndstep,
-                                   latref,latmed,old_aacgm); 
+                                   latref,latmed,magflg);
       else map[idx]->latmin = -1;
       (*Map_Write)(stdout,map[idx],grd[idx]);
       TimeEpochToYMDHMS(grd[idx]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
       if (vb == 1) 
         fprintf(stderr,"%d-%d-%d %d:%d:%d latmin=%g\n",yr,mo,dy,
-	                      hr,mt,(int) sc,map[idx]->latmin);  
+	                      hr,mt,(int) sc,map[idx]->latmin);
     } else {
       TimeEpochToYMDHMS(grd[idx]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
       fprintf(stdout,"%.4d %.2d %.2d %.2d %.2d %.2d %.2g %.2g\n",
                       yr,mo,dy,hr,mt,(int) sc,latmed,latmin[idx]);
       if (vb == 1) 
         fprintf(stderr,"%d-%d-%d %d:%d:%d latmin: median=%g actual=%g\n",
-                        yr,mo,dy,hr,mt,(int) sc,latmed,latmin[idx]);  
+                        yr,mo,dy,hr,mt,(int) sc,latmed,latmin[idx]);
     }
   }
 

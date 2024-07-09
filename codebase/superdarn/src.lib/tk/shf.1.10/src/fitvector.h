@@ -27,4 +27,4 @@ Modifications:
 double CnvMapFitVector(int num,struct CnvMapSHFVec *data,
                        double *coef,double *vel,int order,
                        double latmin,float decyear,int noigrf,
-                       int old_aacgm);
+                       int magflg);
