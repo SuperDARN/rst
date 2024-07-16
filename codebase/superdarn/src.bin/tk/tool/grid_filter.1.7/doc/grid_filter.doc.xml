@@ -12,7 +12,7 @@
 </option>
 <option><on>--version</on><od>print the RST version number and exit.</od>
 </option>
-<option><on>-cpid</on><od>exclude data according to control program ID (not yet implemented!).</od>
+<option><on>-cpid</on><od>exclude data according to control program ID (CPID).</od>
 </option>
 <option><on>-minrng <ar>minrange</ar></on><od>exclude data from slant ranges nearer than <ar>minrange</ar> km (default is 0 km).</od>
 </option>

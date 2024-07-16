@@ -45,9 +45,15 @@ struct OptionData opt;
 struct GridData *igrd;
 struct GridData *ogrd;
 
+struct CpidTable {
+  int num;
+  int *start;
+  int *end;
+};
 
+struct CpidTable *CpidLoadTable(FILE *fp);
 int filter_grid(struct GridData *out, struct GridData *in,
-                double minrng, double maxrng);
+                struct CpidTable *cpid,double minrng, double maxrng);
 
 
 int rst_opterr(char *txt) {
@@ -60,6 +66,8 @@ int rst_opterr(char *txt) {
 int main(int argc,char *argv[]) {
 
   FILE *fp;
+  char *envstr;
+  char cpid_filepath[250];
 
   int old=0;
 
@@ -70,6 +78,7 @@ int main(int argc,char *argv[]) {
 
   unsigned char vb=0;
   unsigned char cpid=0;
+  struct CpidTable *ctable=NULL;
 
   double minrng=0;
   double maxrng=10000;
@@ -112,6 +121,24 @@ int main(int argc,char *argv[]) {
     exit(0);
   }
 
+  if (cpid) {
+    envstr = getenv("RSTPATH");
+    if (envstr == NULL) {
+      fprintf(stderr,"Environment variable RSTPATH must be defined.\n");
+      exit(-1);
+    }
+    sprintf(cpid_filepath,"%s/tables/superdarn/cpid/cpid.dat",envstr);
+    fp = fopen(cpid_filepath, "r");
+    if (fp != NULL) {
+      ctable = CpidLoadTable(fp);
+      fclose(fp);
+      if (ctable == NULL) {
+        fprintf(stderr,"Error loading CPID table %s\n",cpid_filepath);
+        exit(-1);
+      }
+    }
+  }
+
   if (arg !=argc) {
     fp=fopen(argv[arg],"r");
     if (fp==NULL) {
@@ -123,7 +150,7 @@ int main(int argc,char *argv[]) {
   if (old) {
     while (OldGridFread(fp,igrd) !=-1) {
 
-      filter_grid(ogrd,igrd,minrng,maxrng);
+      filter_grid(ogrd,igrd,ctable,minrng,maxrng);
 
       if (vb) {
         TimeEpochToYMDHMS(ogrd->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
@@ -137,7 +164,7 @@ int main(int argc,char *argv[]) {
   } else {
     while (GridFread(fp,igrd) !=-1) {
 
-      filter_grid(ogrd,igrd,minrng,maxrng);
+      filter_grid(ogrd,igrd,ctable,minrng,maxrng);
 
       if (vb) {
         TimeEpochToYMDHMS(ogrd->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
@@ -156,11 +183,52 @@ int main(int argc,char *argv[]) {
 }
 
 
+struct CpidTable *CpidLoadTable(FILE *fp) {
+
+  char line[1024];
+  char *tkn;
+  int i;
+  int s,e,status;
+  struct CpidTable *ptr;
+  ptr=malloc(sizeof(struct CpidTable));
+  if (ptr==NULL) return NULL;
+
+  ptr->num = 0;
+  ptr->start = NULL;
+  ptr->end = NULL;
+
+  while (fgets(line,1024,fp) !=0) {
+    for (i=0; (line[i] != 0) &&
+              ((line[i] == ' ') || (line[i] == '\n')); i++);
+
+    if ((line[i]==0) || (line[i]=='#')) continue;
+
+    tkn = line+i;
+    status = sscanf(tkn, "%d %d", &s, &e);
+    if (status == 2) {
+      if (ptr->start == NULL) ptr->start = malloc(sizeof(int));
+      else                    ptr->start = realloc(ptr->start, sizeof(int)*(ptr->num+1));
+
+      if (ptr->end == NULL) ptr->end = malloc(sizeof(int));
+      else                  ptr->end = realloc(ptr->end, sizeof(int)*(ptr->num+1));
+
+      ptr->start[ptr->num] = s;
+      ptr->end[ptr->num] = e;
+      ptr->num++;
+    }
+  }
+
+  return ptr;
+}
+
+
 int filter_grid(struct GridData *out, struct GridData *in,
-                double minrng, double maxrng) {
+                struct CpidTable *ctable, double minrng, double maxrng) {
 
   int i,j=0;
   int vcnt=0;
+  int status=0;
+  int cpid=0;
 
   out->st_time = in->st_time;
   out->ed_time = in->ed_time;
@@ -181,6 +249,29 @@ int filter_grid(struct GridData *out, struct GridData *in,
   for (i=0; i<in->vcnum; i++) {
     if (in->data[i].srng >= minrng && in->data[i].srng < maxrng) {
 
+      /* Apply CPID criteria if selected */
+      if (ctable != NULL) {
+        status = 0;
+
+        /* Get CPID of grid vector from station info */
+        for (j=0; j<in->stnum; j++) {
+          if (in->data[i].st_id == in->sdata[j].st_id) {
+            cpid = abs(in->sdata[j].prog_id);
+            break;
+          }
+        }
+
+        /* Check if CPID is valid */
+        for (j=0; j<ctable->num; j++) {
+          if ((ctable->start[j] <= cpid) && (cpid <= ctable->end[j])) {
+            status = 1;
+            break;
+          }
+        }
+        if (status == 0) continue;
+      }
+
+      /* All criteria are met, so keep grid vector */
       if (out->data == NULL) out->data = malloc(sizeof(struct GridGVec));
       else                   out->data = realloc(out->data,sizeof(struct GridGVec)*(vcnt+1));
 
