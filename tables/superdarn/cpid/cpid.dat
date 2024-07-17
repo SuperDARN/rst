@@ -1,3 +1,6 @@
-0000 1000
-3300 3310
-3500 3503
+# List of allowable control program ID (CPID) ranges
+# for use with -cpid option of grid_filter
+#
+0000 1000   # Common modes
+3300 3310   # themisscan
+3500 3503   # twofsound
