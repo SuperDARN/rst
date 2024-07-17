@@ -303,8 +303,13 @@
     </member>
 
     <member>
-      <proto>double azimuth;</proto>
+      <proto>double azm;</proto>
       <description>Magnetic azimuth of data point.</description>
+    </member>
+
+    <member>
+      <proto>double srng;</proto>
+      <description>Slant range of data point.</description>
     </member>
 
     <member>

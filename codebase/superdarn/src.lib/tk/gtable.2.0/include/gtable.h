@@ -36,6 +36,7 @@ struct GridBm {
     int rxrise;
     int nrang;
     double *azm;
+    double *srng;
     double *ival;
     int *inx;
 };
@@ -46,7 +47,8 @@ struct GridPnt {
     int ref;
     double mlat;
     double mlon;
-    double azm; 
+    double azm;
+    double srng;
     struct {
         double median;
         double median_n;

@@ -365,6 +365,16 @@ char *label_pwr(double val,double min,double max,void *data) {
   return txt;
 }
 
+char *label_rng(double val,double min,double max,void *data) {
+  char *txt=NULL;
+  if ((val !=max) && (val !=min)) return NULL;
+  txt=malloc(32);
+  if (val==max) sprintf(txt,"%g",val);
+  if (val==min) sprintf(txt,"%g km (rng)",val);
+
+  return txt;
+}
+
 float find_hemisphere(struct GridData *ptr) {
   int i;
   int h=1;
@@ -568,6 +578,7 @@ int main(int argc,char *argv[]) {
   unsigned char gfovflg=0;
   unsigned char pwrflg=0;
   unsigned char wdtflg=0;
+  unsigned char rngflg=0;
 
   unsigned char tlblflg=0;
   unsigned char logoflg=0;
@@ -583,6 +594,7 @@ int main(int argc,char *argv[]) {
   unsigned char celflg=0;
   int cprm=0;
 
+  double rmax=4000;
   double pmax=30;
   double wmax=500;
   double vmax=1000;
@@ -778,6 +790,7 @@ int main(int argc,char *argv[]) {
 
   OptionAdd(&opt,"pwr",'x',&pwrflg);
   OptionAdd(&opt,"swd",'x',&wdtflg);
+  OptionAdd(&opt,"rng",'x',&rngflg);
   
   OptionAdd(&opt,"avg",'x',&avgflg);
   OptionAdd(&opt,"max",'x',&maxflg);
@@ -797,6 +810,7 @@ int main(int argc,char *argv[]) {
   OptionAdd(&opt,"vmax",'d',&vmax);
   OptionAdd(&opt,"pmax",'d',&pmax);
   OptionAdd(&opt,"wmax",'d',&wmax);
+  OptionAdd(&opt,"rmax",'d',&rmax);
 
   OptionAdd(&opt,"frame",'x',&frmflg);
   OptionAdd(&opt,"over",'x',&ovrflg);
@@ -1096,13 +1110,15 @@ int main(int argc,char *argv[]) {
     }
   }
 
-  if (pwrflg) xkey.max=pmax;
+  if (rngflg) xkey.max=rmax;
+  else if (pwrflg) xkey.max=pmax;
   else xkey.max=wmax;
  
-  if (pwrflg || wdtflg) {
+  if (pwrflg || wdtflg || rngflg) {
      celflg=1;
      if (pwrflg) cprm=0;
-     else cprm=2;
+     else if (wdtflg) cprm=2;
+     else cprm=3;
   }
 
   if (avgflg || maxflg || minflg) {
@@ -1465,15 +1481,20 @@ int main(int argc,char *argv[]) {
     if ((xkeyflg) && (xkey.num !=0)) {
       double kstp,max;
       if (cprm==0) max=pmax;
-      else max=wmax;
+      else if (cprm==2) max=wmax;
+      else max=rmax;
       if (khgt<80) kstp=max/5.0;
       else kstp=max/10.0;
       if (cprm==0) GrplotStdKey(plot,px,apad,8,khgt, 0,pmax,kstp, 0,0,2,
                                 0,NULL, txtbox,fontdb,label_pwr,NULL,
                                 "Helvetica",10.0,txtcol,0x0f,0.5,
                                 xkey.num,xkey.a,xkey.r,xkey.g,xkey.b);
-      else GrplotStdKey(plot,px,apad,8,khgt, 0,pmax,kstp, 0,0,2, 0,NULL,
-                        txtbox,fontdb,label_wdt,NULL,
+      else if (cprm==2) GrplotStdKey(plot,px,apad,8,khgt, 0,wmax,kstp, 0,0,2, 0,NULL,
+                                     txtbox,fontdb,label_wdt,NULL,
+                                     "Helvetica",10.0,txtcol,0x0f,0.5,
+                                     xkey.num,xkey.a,xkey.r,xkey.g,xkey.b);
+      else GrplotStdKey(plot,px,apad,8,khgt, 0,rmax,kstp, 0,0,2, 0,NULL,
+                        txtbox,fontdb,label_rng,NULL,
                         "Helvetica",10.0,txtcol,0x0f,0.5,
                         xkey.num,xkey.a,xkey.r,xkey.g,xkey.b);
 

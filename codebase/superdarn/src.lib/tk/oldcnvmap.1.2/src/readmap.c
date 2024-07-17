@@ -81,6 +81,7 @@ int OldCnvMapDecodeOne(char *name,char *unit,char *type,
     mp->model[pnt].mlat=data[1].data.fval;
     mp->model[pnt].mlon=data[0].data.fval;
     mp->model[pnt].azm=data[2].data.fval;
+    mp->model[pnt].srng=0;
     mp->model[pnt].vel.median=data[3].data.fval;
     mp->model[pnt].vel.sd=0;
     mp->model[pnt].pwr.median=0;

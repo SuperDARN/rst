@@ -81,6 +81,7 @@ void GridTableFree(struct GridTable *ptr) {
     if (ptr->bm !=NULL) {
         for (n=0;n<ptr->bnum;n++) {
             if (ptr->bm[n].azm !=NULL) free(ptr->bm[n].azm);
+            if (ptr->bm[n].srng !=NULL) free(ptr->bm[n].srng);
             if (ptr->bm[n].ival !=NULL) free(ptr->bm[n].ival);
             if (ptr->bm[n].inx !=NULL) free(ptr->bm[n].inx);
         }
@@ -103,6 +104,7 @@ int GridTableZero(int pnum, struct GridPnt *ptr) {
     /* Zero out all of the values at each grid cell in the GridPnt structure */
     for (i=0;i<pnum;i++) {
         ptr[i].azm=0;
+        ptr[i].srng=0;
         ptr[i].vel.median_n=0;
         ptr[i].vel.median_e=0;
         ptr[i].vel.sd=0;
@@ -176,6 +178,9 @@ int GridTableTest(struct GridTable *ptr, struct RadarScan *scan) {
 
             /* Calculate azimuth of weighted mean velocity vector */
             ptr->pnt[i].azm=atan2(ptr->pnt[i].vel.median_e,ptr->pnt[i].vel.median_n)*180./acos(-1.);
+
+            /* Calculate average slant range of velocity vector */
+            ptr->pnt[i].srng=ptr->pnt[i].srng/ptr->pnt[i].cnt;
 
             /* Calculate weighted mean of spectral width and power */
             ptr->pnt[i].wdt.median=ptr->pnt[i].wdt.median/ptr->pnt[i].wdt.sd;
@@ -268,7 +273,7 @@ int GridTableAddBeam(struct GridTable *ptr,
 
     int yr,mo,dy,hr,mt;
     double sc;
-    double lat,lon,azm,geoazm,elv,lspc,velco;
+    double lat,lon,azm,geoazm,elv,lspc,velco,srng;
     float grdlat,grdlon;
     int ref;
     int r=0,inx,s;
@@ -312,6 +317,8 @@ int GridTableAddBeam(struct GridTable *ptr,
 
     b->azm=malloc(sizeof(double)*b->nrang);
     if (b->azm==NULL) return -1;
+    b->srng=malloc(sizeof(double)*b->nrang);
+    if (b->srng==NULL) return -1;
     b->ival=malloc(sizeof(double)*b->nrang);
     if (b->ival==NULL) return -1;
     b->inx=malloc(sizeof(int)*b->nrang);
@@ -332,11 +339,11 @@ int GridTableAddBeam(struct GridTable *ptr,
          * break out of loop */
         if (s==-1) break;
 
-        /* Calculate magnetic latitude, longitude, and azimuth of range/beam
-         * position */
+        /* Calculate magnetic latitude, longitude, azimuth, and slant range
+         * of range/beam position */
         s=RPosInvMag(b->bm,r,yr,pos,
                b->frang,b->rsep,b->rxrise,
-               alt,&lat,&lon,&azm,chisham,old_aacgm);
+               alt,&lat,&lon,&azm,&srng,chisham,old_aacgm);
 
         /* If magnetic latitude/longitude/azimuth calculation failed then 
          * break out of loop */
@@ -383,10 +390,11 @@ int GridTableAddBeam(struct GridTable *ptr,
         p->mlat=grdlat;
         p->mlon=grdlon;
 
-        /* Set the index, magnetic azimuth, and inertial velocity correction factor of
-         * the GridBm structure */
-        b->inx[r]=inx;    
+        /* Set the index, magnetic azimuth, slant range, and inertial velocity
+         * correction factor of the GridBm structure */
+        b->inx[r]=inx;
         b->azm[r]=azm;
+        b->srng[r]=srng;
         b->ival[r]=velco*cos(PI*(90+geoazm)/180.0);
 
     }
@@ -515,8 +523,11 @@ int GridTableMap(struct GridTable *ptr, struct RadarScan *scan,
             /* Get grid cell index of radar beam / gate measurement */
             inx=bm->inx[r];
 
-            /*Add magnetic azimuth of radar beam to GridPnt structure */
+            /* Add magnetic azimuth of radar beam to GridPnt structure */
             ptr->pnt[inx].azm+=bm->azm[r];
+
+            /* Add slant range of gate measurement to GridPnt structure */
+            ptr->pnt[inx].srng+=bm->srng[r];
 
             if (iflg !=0) {
                 /* If gridding in inertial frame then add north/east velocities to

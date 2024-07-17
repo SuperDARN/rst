@@ -182,7 +182,8 @@ void plot_grid_cell(struct Plot *plot,struct GridData *ptr,float latmin,int magf
   for (i=0;i<ptr->vcnum;i++) {
     if (cfn !=NULL) {
       if (cprm==0) color=(*cfn)(ptr->data[i].pwr.median,cdata);
-      else color=(*cfn)(ptr->data[i].wdt.median,cdata);
+      else if (cprm==2) color=(*cfn)(ptr->data[i].wdt.median,cdata);
+      else color=(*cfn)(ptr->data[i].srng,cdata);
     }
     lon=ptr->data[i].mlon;
     lat=ptr->data[i].mlat;

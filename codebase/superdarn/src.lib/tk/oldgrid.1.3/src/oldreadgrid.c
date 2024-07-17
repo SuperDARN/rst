@@ -184,6 +184,7 @@ int OldGridDecodeThree(char *name,char *unit,char *type,
     gp->data[pnt].mlat=data[1].data.fval;
     gp->data[pnt].mlon=data[0].data.fval;
     gp->data[pnt].azm=data[2].data.fval;
+    gp->data[pnt].srng=0;
     gp->data[pnt].st_id=data[3].data.ival;
     gp->data[pnt].chn=0;
     gp->data[pnt].index=data[4].data.ival;
@@ -224,6 +225,7 @@ int OldGridDecodeFour(char *name,char *unit,char *type,
     gp->data[pnt].mlat=data[1].data.fval;
     gp->data[pnt].mlon=data[0].data.fval;
     gp->data[pnt].azm=data[2].data.fval;
+    gp->data[pnt].srng=0;
     gp->data[pnt].st_id=data[3].data.ival;
     gp->data[pnt].chn=0;
     gp->data[pnt].index=data[4].data.ival;
@@ -268,6 +270,7 @@ int OldGridDecodeFive(char *name,char *unit,char *type,
     gp->data[pnt].mlat=data[1].data.fval;
     gp->data[pnt].mlon=data[0].data.fval;
     gp->data[pnt].azm=data[2].data.fval;
+    gp->data[pnt].srng=0;
     gp->data[pnt].st_id=data[3].data.ival;
     gp->data[pnt].chn=data[4].data.ival;
 
@@ -310,6 +313,7 @@ int OldGridDecodeSix(char *name,char *unit,char *type,
     gp->data[pnt].mlat=data[1].data.fval;
     gp->data[pnt].mlon=data[0].data.fval;
     gp->data[pnt].azm=data[2].data.fval;
+    gp->data[pnt].srng=0;
     gp->data[pnt].st_id=data[3].data.ival;
     gp->data[pnt].chn=data[4].data.ival;
 

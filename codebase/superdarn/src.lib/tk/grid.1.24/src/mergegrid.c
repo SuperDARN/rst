@@ -170,6 +170,7 @@ void GridMerge(struct GridData *mptr,struct GridData *ptr) {
 
     ptr->data[ptr->vcnum].mlon=data[0]->mlon;
     ptr->data[ptr->vcnum].mlat=data[0]->mlat;
+    ptr->data[ptr->vcnum].srng=data[0]->srng;
     ptr->data[ptr->vcnum].vel.median=sqrt(vpar*vpar+vper*vper);
     ptr->data[ptr->vcnum].vel.sd=0;
     ptr->data[ptr->vcnum].pwr.median=0;

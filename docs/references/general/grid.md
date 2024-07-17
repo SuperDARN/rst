@@ -78,6 +78,7 @@ In the table below, *numstid* is the number of radars included in that grid reco
 | *vector.mlat*     | *degrees* | *[numv]* | ***float*** | Magnetic Latitude |
 | *vector.mlon*     | *degrees* | *[numv]* | ***float*** | Magnetic Longitude |
 | *vector.kvect*    | *degrees* | *[numv]*   | ***float*** | Magnetic Azimuth |
+| *vector.srng*     | *km*      | *[numv]*   | ***float*** | Slant range |
 | *vector.stid*     | **None**  | *[numv]*   | ***short*** | Station identifier |
 | *vector.channel*  | **None**  | *[numv]*   | ***short*** | Channel number |
 | *vector.index*    | **None**  | *[numv]*   | ***int***   | Grid cell index |

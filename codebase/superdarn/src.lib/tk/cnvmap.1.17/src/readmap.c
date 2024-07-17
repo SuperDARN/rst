@@ -137,7 +137,7 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
                  "program.id","noise.mean","noise.sd","gsct",
                  "v.min","v.max","p.min","p.max","w.min","w.max","ve.min",
                  "ve.max",
-                 "vector.mlat","vector.mlon","vector.kvect",
+                 "vector.mlat","vector.mlon","vector.kvect","vector.srng",
                  "vector.stid","vector.channel","vector.index",
                  "vector.vel.median","vector.vel.sd",
                  "vector.pwr.median","vector.pwr.sd",
@@ -152,7 +152,7 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
                DATASHORT,DATAFLOAT,DATAFLOAT,DATASHORT,
                DATAFLOAT,DATAFLOAT,DATAFLOAT,DATAFLOAT,DATAFLOAT,DATAFLOAT,
                DATAFLOAT,DATAFLOAT,
-               DATAFLOAT,DATAFLOAT,DATAFLOAT,
+               DATAFLOAT,DATAFLOAT,DATAFLOAT,DATAFLOAT,
                DATASHORT,DATASHORT,DATAINT,
                DATAFLOAT,DATAFLOAT,
                DATAFLOAT,DATAFLOAT,
@@ -161,7 +161,7 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
                DATAFLOAT,DATAFLOAT,DATAFLOAT,DATAFLOAT,
                DATAFLOAT,DATAFLOAT};
 
-  struct DataMapArray *adata[50];
+  struct DataMapArray *adata[41];
 
   ptr=DataMapReadBlock(fid,&size);
 
@@ -361,26 +361,28 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
       grd->data[n].mlat=adata[18]->data.fptr[n];
       grd->data[n].mlon=adata[19]->data.fptr[n];
       grd->data[n].azm=adata[20]->data.fptr[n];
+      if (adata[21] !=NULL) grd->data[n].srng=adata[21]->data.fptr[n];
+      else grd->data[n].srng=0;
 
-      grd->data[n].st_id=adata[21]->data.sptr[n];
-      grd->data[n].chn=adata[22]->data.sptr[n];
-      grd->data[n].index=adata[23]->data.iptr[n];
-      grd->data[n].vel.median=adata[24]->data.fptr[n];
-      grd->data[n].vel.sd=adata[25]->data.fptr[n];
+      grd->data[n].st_id=adata[22]->data.sptr[n];
+      grd->data[n].chn=adata[23]->data.sptr[n];
+      grd->data[n].index=adata[24]->data.iptr[n];
+      grd->data[n].vel.median=adata[25]->data.fptr[n];
+      grd->data[n].vel.sd=adata[26]->data.fptr[n];
       grd->data[n].pwr.median=0;
       grd->data[n].pwr.sd=0;
       grd->data[n].wdt.median=0;
       grd->data[n].wdt.sd=0;
 
-      if (adata[26] !=NULL) grd->data[n].pwr.median=adata[26]->data.fptr[n];
-      if (adata[27] !=NULL) grd->data[n].pwr.sd=adata[27]->data.fptr[n];
-      if (adata[28] !=NULL) grd->data[n].wdt.median=adata[28]->data.fptr[n];
-      if (adata[29] !=NULL) grd->data[n].wdt.sd=adata[29]->data.fptr[n];
+      if (adata[27] !=NULL) grd->data[n].pwr.median=adata[27]->data.fptr[n];
+      if (adata[28] !=NULL) grd->data[n].pwr.sd=adata[28]->data.fptr[n];
+      if (adata[29] !=NULL) grd->data[n].wdt.median=adata[29]->data.fptr[n];
+      if (adata[30] !=NULL) grd->data[n].wdt.sd=adata[30]->data.fptr[n];
     }
   }
 
-  if (adata[30] !=NULL) {
-   map->num_coef=adata[30]->rng[0];
+  if (adata[31] !=NULL) {
+   map->num_coef=adata[31]->rng[0];
    if (map->coef !=NULL) {
       tmp=realloc(map->coef,sizeof(double)*4*map->num_coef);
       if (tmp==NULL) {
@@ -400,16 +402,16 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
   }
   if (map->coef !=NULL) {
     for (n=0;n<map->num_coef;n++) {
-       map->coef[4*n]=adata[30]->data.dptr[n];
-       map->coef[4*n+1]=adata[31]->data.dptr[n];
-       map->coef[4*n+2]=adata[32]->data.dptr[n];
-       map->coef[4*n+3]=adata[33]->data.dptr[n];
+       map->coef[4*n]=adata[31]->data.dptr[n];
+       map->coef[4*n+1]=adata[32]->data.dptr[n];
+       map->coef[4*n+2]=adata[33]->data.dptr[n];
+       map->coef[4*n+3]=adata[34]->data.dptr[n];
     }
   }
 
 
-  if (adata[34] !=NULL) {
-   map->num_model=adata[34]->rng[0];
+  if (adata[35] !=NULL) {
+   map->num_model=adata[35]->rng[0];
    if (map->model !=NULL) {
       tmp=realloc(map->model,sizeof(struct GridGVec)*map->num_model);
       if (tmp==NULL) {
@@ -429,10 +431,11 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
   }
   if (map->model !=NULL) {
     for (n=0;n<map->num_model;n++) {
-      map->model[n].mlat=adata[34]->data.fptr[n];
-      map->model[n].mlon=adata[35]->data.fptr[n];
-      map->model[n].azm=adata[36]->data.fptr[n];
-      map->model[n].vel.median=adata[37]->data.fptr[n];
+      map->model[n].mlat=adata[35]->data.fptr[n];
+      map->model[n].mlon=adata[36]->data.fptr[n];
+      map->model[n].azm=adata[37]->data.fptr[n];
+      map->model[n].srng=0;
+      map->model[n].vel.median=adata[38]->data.fptr[n];
       map->model[n].vel.sd=0;
       map->model[n].pwr.median=0;
       map->model[n].pwr.sd=0;
@@ -445,9 +448,9 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
   }
 
 
-  if (adata[38] !=NULL) {
+  if (adata[39] !=NULL) {
 
-    map->num_bnd=adata[38]->rng[0];
+    map->num_bnd=adata[39]->rng[0];
     if (map->bnd_lat !=NULL) {
        tmp=realloc(map->bnd_lat,sizeof(double)*map->num_bnd);
        if (tmp==NULL) {
@@ -481,8 +484,8 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
    }
    if (map->bnd_lat !=NULL) {
      for (n=0;n<map->num_bnd;n++) {
-        map->bnd_lat[n]=adata[38]->data.fptr[n];
-        map->bnd_lon[n]=adata[39]->data.fptr[n];
+        map->bnd_lat[n]=adata[39]->data.fptr[n];
+        map->bnd_lon[n]=adata[40]->data.fptr[n];
      }
   }
 

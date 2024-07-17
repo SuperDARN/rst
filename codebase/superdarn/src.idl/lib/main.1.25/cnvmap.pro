@@ -217,7 +217,7 @@ function CnvMapRead,unit,prm,stvec,gvec,mvec,coef,bvec
            'program.id','noise.mean','noise.sd','gsct', $
            'v.min','v.max','p.min','p.max','w.min','w.max','ve.min', $
            've.max', $
-           'vector.mlat','vector.mlon','vector.kvect', $
+           'vector.mlat','vector.mlon','vector.kvect','vector.srng', $
            'vector.stid','vector.channel','vector.index', $
            'vector.vel.median','vector.vel.sd', $
            'vector.pwr.median','vector.pwr.sd', $
@@ -228,7 +228,7 @@ function CnvMapRead,unit,prm,stvec,gvec,mvec,coef,bvec
            
 
   arrtype=[2,2,2,4,2,2,2,4,4,2,4,4,4,4,4,4,4,4, $
-           4,4,4,2,2,3,4,4,4,4,4,4,8,8,8,8,4,4,4,4,4,4]
+           4,4,4,4,2,2,3,4,4,4,4,4,4,8,8,8,8,4,4,4,4,4,4]
 
   arrid=intarr(n_elements(arrname))  
   arrid[*]=-1
@@ -351,47 +351,48 @@ function CnvMapRead,unit,prm,stvec,gvec,mvec,coef,bvec
     gvec[*].mlat=(*(arrvec[arrid[18]].ptr))[*]
     gvec[*].mlon=(*(arrvec[arrid[19]].ptr))[*]
     gvec[*].azm=(*(arrvec[arrid[20]].ptr))[*]
-    gvec[*].st_id=(*(arrvec[arrid[21]].ptr))[*]
-    gvec[*].chn=(*(arrvec[arrid[22]].ptr))[*]
-    gvec[*].index=(*(arrvec[arrid[23]].ptr))[*]
+    gvec[*].srng=(*(arrvec[arrid[21]].ptr))[*]
+    gvec[*].st_id=(*(arrvec[arrid[22]].ptr))[*]
+    gvec[*].chn=(*(arrvec[arrid[23]].ptr))[*]
+    gvec[*].index=(*(arrvec[arrid[24]].ptr))[*]
  
-    gvec[*].vel.median=(*(arrvec[arrid[24]].ptr))[*]
-    gvec[*].vel.sd=(*(arrvec[arrid[25]].ptr))[*]
+    gvec[*].vel.median=(*(arrvec[arrid[25]].ptr))[*]
+    gvec[*].vel.sd=(*(arrvec[arrid[26]].ptr))[*]
 
-    if arrid[26] ne -1 then begin
+    if arrid[27] ne -1 then begin
       prm.xtd=1
-      gvec[*].pwr.median=(*(arrvec[arrid[26]].ptr))[*]
-      gvec[*].pwr.sd=(*(arrvec[arrid[27]].ptr))[*]
-      gvec[*].wdt.median=(*(arrvec[arrid[28]].ptr))[*]
-      gvec[*].wdt.sd=(*(arrvec[arrid[29]].ptr))[*]
+      gvec[*].pwr.median=(*(arrvec[arrid[27]].ptr))[*]
+      gvec[*].pwr.sd=(*(arrvec[arrid[28]].ptr))[*]
+      gvec[*].wdt.median=(*(arrvec[arrid[29]].ptr))[*]
+      gvec[*].wdt.sd=(*(arrvec[arrid[30]].ptr))[*]
     endif
   endif
 
-  if arrid[30] ne -1 then begin
-    prm.coefnum=N_ELEMENTS(*(arrvec[arrid[30]].ptr))
+  if arrid[31] ne -1 then begin
+    prm.coefnum=N_ELEMENTS(*(arrvec[arrid[31]].ptr))
     coef=dblarr(prm.coefnum,4)
-    coef[*,0]=(*(arrvec[arrid[30]].ptr))[*]
-    coef[*,1]=(*(arrvec[arrid[31]].ptr))[*]
-    coef[*,2]=(*(arrvec[arrid[32]].ptr))[*]
-    coef[*,3]=(*(arrvec[arrid[33]].ptr))[*]
+    coef[*,0]=(*(arrvec[arrid[31]].ptr))[*]
+    coef[*,1]=(*(arrvec[arrid[32]].ptr))[*]
+    coef[*,2]=(*(arrvec[arrid[33]].ptr))[*]
+    coef[*,3]=(*(arrvec[arrid[34]].ptr))[*]
   endif
 
-  if arrid[34] ne -1 then begin
+  if arrid[35] ne -1 then begin
     GridMakeGVec,mvec
-    prm.modnum=N_ELEMENTS(*(arrvec[arrid[34]].ptr))
+    prm.modnum=N_ELEMENTS(*(arrvec[arrid[35]].ptr))
     mvec=replicate(mvec,prm.modnum)
-    mvec[*].mlat=(*(arrvec[arrid[34]].ptr))[*]
-    mvec[*].mlon=(*(arrvec[arrid[35]].ptr))[*]
-    mvec[*].azm=(*(arrvec[arrid[36]].ptr))[*] 
-    mvec[*].vel.median=(*(arrvec[arrid[37]].ptr))[*]
+    mvec[*].mlat=(*(arrvec[arrid[35]].ptr))[*]
+    mvec[*].mlon=(*(arrvec[arrid[36]].ptr))[*]
+    mvec[*].azm=(*(arrvec[arrid[37]].ptr))[*] 
+    mvec[*].vel.median=(*(arrvec[arrid[38]].ptr))[*]
   endif
   
-  if arrid[38] ne -1 then begin
+  if arrid[39] ne -1 then begin
     CnvMapMakeBnd,bvec
-    prm.bndnum=N_ELEMENTS(*(arrvec[arrid[38]].ptr))
+    prm.bndnum=N_ELEMENTS(*(arrvec[arrid[39]].ptr))
     bvec=replicate(bvec,prm.bndnum)
-    bvec[*].lat=(*(arrvec[arrid[38]].ptr))[*]
-    bvec[*].lon=(*(arrvec[arrid[39]].ptr))[*]
+    bvec[*].lat=(*(arrvec[arrid[39]].ptr))[*]
+    bvec[*].lon=(*(arrvec[arrid[40]].ptr))[*]
   endif
 
   st=DataMapFreeScalar(sclvec)
@@ -509,6 +510,7 @@ function CnvMapWrite,unit,prm,stvec,gvec,mvec,coef,bvec
     s=DataMapMakeArray('vector.mlat',gvec[0:vcnum-1].mlat,arrvec)
     s=DataMapMakeArray('vector.mlon',gvec[0:vcnum-1].mlon,arrvec)
     s=DataMapMakeArray('vector.kvect',gvec[0:vcnum-1].azm,arrvec)
+    s=DataMapMakeArray('vector.srng',gvec[0:vcnum-1].srng,arrvec)
     s=DataMapMakeArray('vector.stid',gvec[0:vcnum-1].st_id,arrvec)
     s=DataMapMakeArray('vector.channel',gvec[0:vcnum-1].chn,arrvec)
     s=DataMapMakeArray('vector.index',gvec[0:vcnum-1].index,arrvec)

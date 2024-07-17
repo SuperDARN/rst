@@ -113,6 +113,7 @@ void GridIntegrate(struct GridData *a,struct GridData *b,double *err) {
         if (w_e<err[2]) w_e=err[2];
 
         a->data[pnt].azm+=b->data[m].azm;
+        a->data[pnt].srng+=b->data[m].srng;
         a->data[pnt].vel.median+=b->data[m].vel.median*1/(v_e*v_e);
         a->data[pnt].pwr.median+=b->data[m].pwr.median*1/(p_e*p_e);
         a->data[pnt].wdt.median+=b->data[m].wdt.median*1/(w_e*w_e);
@@ -123,6 +124,7 @@ void GridIntegrate(struct GridData *a,struct GridData *b,double *err) {
       }
 
       a->data[pnt].azm=a->data[pnt].azm/(l-k);
+      a->data[pnt].srng=a->data[pnt].srng/(l-k);
       
       a->data[pnt].vel.median=a->data[pnt].vel.median/a->data[pnt].vel.sd;
       a->data[pnt].wdt.median=a->data[pnt].wdt.median/a->data[pnt].wdt.sd;
