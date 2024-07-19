@@ -1,5 +1,5 @@
-# Filename: tdiff.dat.tst
-# Description: Sample phase calibration values (tdiff)
+# Filename: tdiff.dat.cve
+# Description: Christmas Valley East phase calibration values (tdiff)
 #
 # References
 #-------------------------------------------------------------------------------
@@ -29,15 +29,5 @@
 # Inline comments provide more information about reasons behind gaps in data or
 # changes in tdiff estimates
 #-------------------------------------------------------------------------------
-#M C  FMIN  FMAX   SDATE    STIME    EDATE    ETIME  TDIFF  ERR  NPNTS VAL
-0  1  9900  9985 19951113 00:00:00 19951207 00:00:00 0.013 0.001 36533 1
-0  2  9350 11275 19951115 00:00:00 19951207 00:00:00 0.019 0.003  6788 1
-0  1 12370 12415 19951115 00:00:00 19951207 00:00:00 0.030 0.001  2491 1
-0  1 15010 15080 19951115 00:00:00 19951207 00:00:00 0.057 0.005  1129 1
-# Hardware tdiff change after 1995-12-07 00:00:00
-0  1  9900  9985 19951207 09:00:00 19960217 23:59:59 0.125 0.003  4807 1
-# Instrument changes alter tdiff on evening of 1996-02-17
-1  2 19415 19680 19970421 00:00:00 19990306 15:25:00 0.178 0.001   280 1
-# Test values (EGT)
-4  1  8000 20000 19990306 00:00:00 20991231 23:59:59 0.178 0.001   280 1
-4  2  8000 20000 19990306 00:00:00 20991231 23:59:59 0.150 0.001   280 1
+#M C  FMIN  FMAX   SDATE    STIME    EDATE    ETIME   TDIFF  ERR  NPNTS VAL
+5  0  9500 17600 20230404 00:00:00 20240715 23:59:59 -0.398 0.002 2.5e7   1
