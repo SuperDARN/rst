@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<binary>
+<project>superdarn</project>
+<name>oldsndtosnd</name>
+<location>src.bin/tk/reformat/oldsndtosnd</location>
+
+<syntax>oldsndtosnd --help</syntax>
+<syntax>oldsndtosnd [-vb] [<ar>oldsndname</ar>]</syntax>
+
+<option><on>--help</on><od>print the help message and exit.</od>
+</option>
+<option><on>--version</on><od>print the RST version number and exit.</od>
+</option>
+<option><on>-old</on><od>files are in the original binary format with internal compression.</od>
+</option>
+<option><on>-new</on><od>files are in the revised binary format with a variable number of ranges.</od>
+</option>
+<option><on>-adak</on><od>files have a different stime size in header.</od>
+</option>
+<option><on>-vb</on><od>verbose. Log information to the console.</od>
+</option>
+<option><on><ar>oldsndname</ar></on><od>filename of the old binary <code>snd</code> format file to convert. If this is omitted, the file will be read from standard input</od>
+</option>
+<synopsis><p>Converts an old binary <code>snd</code> format file to the new dmap <code>snd</code> format.</p></synopsis>
+<description><p>Converts an old binary <code>snd</code> format file to the new dmap <code>snd</code> format.</p>
+<p>The <code>snd</code> format data is written to standard output</code></description>
+
+<example>
+<command>oldsndtosnd 1999041006gbr.snd &gt; 19990410.06.gbr.snd</command>
+<description>Convert the binary file "<code>1999041006gbr.snd</code>" to produce the dmap <code>snd</code> format file "<code>19990410.06.gbr.snd</code>".</description>
+</example>
+
+</binary>
