@@ -157,7 +157,7 @@ int main(int argc,char *argv[]) {
       }
       if (fblk.prm.xcf) {
         for (j=0;j<fblk.prm.mplgs;j++) {
-          fblk.xcfd[i][j] = CMPLX(raw.xcfd[i][j][0], raw.xcfd[i][j][1]);
+          fblk.xcfd[i][j] = raw.xcfd[i][j][0] + raw.xcfd[i][j][1] * I;
         }
       } 
     }   
