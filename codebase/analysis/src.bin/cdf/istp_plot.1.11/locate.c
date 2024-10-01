@@ -67,12 +67,7 @@ int infname(char *body,char *str) {
   return 1;
 }
 
-
-#ifdef  _DARWIN
-int dsel(struct dirent *dp) {
-#else 
 int dsel(const struct dirent *dp) {
-#endif
   if (dp->d_name[0]=='.') return 0;
   return 1;
 }
