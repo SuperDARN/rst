@@ -59,13 +59,12 @@ jobs:
     - name: Build and make MacOS code
       if: startsWith(matrix.os, 'mac')
       run: |
-        export PATH="/opt/homebrew:$PATH"
         export RSTPATH=$(pwd)
+	cp .github/test_profiles/profile.bash.darwin .profile.bash
+	cp .github/test_profiles/base.bash.darwin .profile/base.bash
         source .profile.bash
-        export OSTYPE="darwin"
-        export SYSTEM="darwin"
-        export NETCDF_PATH="/opt/homebrew/include"
-        echo $PATH
+        echo $SYSTEM
+        echo $OSTYPE
         echo $NETCDF_PATH
         build/script/make.build
         build/script/make.code
