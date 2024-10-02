@@ -36,13 +36,14 @@ jobs:
       if: startsWith(matrix.os, 'mac')
       run: |
         brew update-reset
+        brew install gcc@14
         xargs brew install < build/.requirements.darwin
         echo "Get and install NASA CDF"
         brew install wget
         wget https://spdf.gsfc.nasa.gov/pub/software/cdf/dist/latest/linux/cdf${{ matrix.cdf }}-dist-cdf.tar.gz
         tar -xzvf cdf${{ matrix.cdf }}-dist-cdf.tar.gz
         cd cdf${{ matrix.cdf }}-dist
-        make OS=macos ENV=arm64 all
+        make OS=macos ENV=gnu all
         make test
         sudo make INSTALLDIR=/usr/local/cdf install
 
@@ -57,9 +58,12 @@ jobs:
     - name: Build and make MacOS code
       if: startsWith(matrix.os, 'mac')
       run: |
+        which gcc
+        export CC=/usr/local/bin/gcc-14
         export RSTPATH=$(pwd)
         source .profile.bash
         export OSTYPE="darwin"
+        export SYSTEM="darwin"
         build/script/make.build
         build/script/make.code
         build/script/make.doc
