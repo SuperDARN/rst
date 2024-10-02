@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["ubuntu-latest"]
+        os: ["ubuntu-latest", "macos-latest"]
         cc: ["gcc-default"]
         cdf: ["39_0"]
 
@@ -29,6 +29,21 @@ jobs:
         tar -xzvf cdf${{ matrix.cdf }}-dist-cdf.tar.gz
         cd cdf${{ matrix.cdf }}-dist
         make OS=linux ENV=gnu all
+        make test
+        sudo make INSTALLDIR=/usr/local/cdf install
+
+    - name: Install MacOS dependencies
+      if: startsWith(matrix.os, 'mac')
+      run: |
+        cat build/.requirements.darwin | xargs sudo brew tap
+        cat build/.requirements.darwin | xargs sudo brew install
+        echo "Get and install NASA CDF"
+        sudo brew tap wget
+        sudo brew install wget
+        wget https://spdf.gsfc.nasa.gov/pub/software/cdf/dist/latest/linux/cdf${{ matrix.cdf }}-dist-cdf.tar.gz
+        tar -xzvf cdf${{ matrix.cdf }}-dist-cdf.tar.gz
+        cd cdf${{ matrix.cdf }}-dist
+        make OS=macos ENV=arm all
         make test
         sudo make INSTALLDIR=/usr/local/cdf install
 
