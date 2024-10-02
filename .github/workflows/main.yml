@@ -35,8 +35,8 @@ jobs:
     - name: Install MacOS dependencies
       if: startsWith(matrix.os, 'mac')
       run: |
-        cat build/.requirements.darwin | xargs brew tap
-        cat build/.requirements.darwin | xargs brew install
+        brew tap $(cat build/.requirements.darwin)
+        brew install $(cat build/.requirements.darwin)
         echo "Get and install NASA CDF"
         brew tap wget
         brew install wget
