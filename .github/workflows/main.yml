@@ -42,19 +42,24 @@ jobs:
         wget https://spdf.gsfc.nasa.gov/pub/software/cdf/dist/latest/linux/cdf${{ matrix.cdf }}-dist-cdf.tar.gz
         tar -xzvf cdf${{ matrix.cdf }}-dist-cdf.tar.gz
         cd cdf${{ matrix.cdf }}-dist
-        make OS=macos ENV=arm all
+        make OS=macos ENV=arm64 all
         make test
         sudo make INSTALLDIR=/usr/local/cdf install
 
-    - name: Build and make code
+    - name: Build and make Linux code
       run: |
         export RSTPATH=$(pwd)
         source .profile.bash
         build/script/make.build
         build/script/make.code
+        build/script/make.doc
 
-    - name: Build and make docs
+    - name: Build and make MacOS code
+      if: startsWith(matrix.os, 'mac')
       run: |
         export RSTPATH=$(pwd)
         source .profile.bash
+        export OSTYPE="darwin"
+        build/script/make.build
+        build/script/make.code
         build/script/make.doc
