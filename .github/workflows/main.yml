@@ -47,6 +47,7 @@ jobs:
         sudo make INSTALLDIR=/usr/local/cdf install
 
     - name: Build and make Linux code
+      if: startsWith(matrix.os, 'ubuntu')
       run: |
         export RSTPATH=$(pwd)
         source .profile.bash
