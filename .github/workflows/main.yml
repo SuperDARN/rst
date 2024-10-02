@@ -35,9 +35,9 @@ jobs:
     - name: Install MacOS dependencies
       if: startsWith(matrix.os, 'mac')
       run: |
+        brew update-reset
         xargs brew install < build/.requirements.darwin
         echo "Get and install NASA CDF"
-        brew tap wget
         brew install wget
         wget https://spdf.gsfc.nasa.gov/pub/software/cdf/dist/latest/linux/cdf${{ matrix.cdf }}-dist-cdf.tar.gz
         tar -xzvf cdf${{ matrix.cdf }}-dist-cdf.tar.gz
