@@ -1,0 +1,60 @@
+# Makefile for the libraries
+# =======================================
+# by R.J.Barnes
+#
+#
+
+# Linux (GCC)
+#
+
+CFLAGS = -Wall -pedantic -O3 -D_GNU_SOURCE -D_DARWIN -I/opt/homebrew/include $(INCLUDE)  
+SUF=so
+
+VSTR=$(shell get.version ${CURDIR}/..)
+
+# By default statically link the all programs
+
+.c.o:
+	$(CC) $(CFLAGS) -c $<    
+
+ifdef OUTPUT
+
+  $(OUTPUT): version hdr $(OBJS)
+	mkdir -p ${DSTPATH}
+	libtool -static -o $(DSTPATH)/lib$(OUTPUT).$(VSTR).a $(OBJS)
+	gcc -Wl,-install_name,@rpath/lib$(OUTPUT).$(VSTR).dylib \
+            -dynamiclib -all_load -flat_namespace -undefined suppress \
+            -single_module -o  $(DSTPATH)/lib$(OUTPUT).$(VSTR).dylib \
+                               $(DSTPATH)/lib$(OUTPUT).$(VSTR).a \
+                               -L$(LIBPATH) $(SLIB) 	
+	cd $(DSTPATH); ln -sf lib$(OUTPUT).$(VSTR).a \
+               lib$(OUTPUT).$(LINK).a 
+	cd $(DSTPATH); ln -sf lib$(OUTPUT).$(VSTR).dylib \
+               lib$(OUTPUT).$(LINK).dylib 
+else
+  dummy: hdr
+
+endif
+
+hdr: 
+	make.hdr $(CURDIR)/../include ${INC} 
+
+
+version:
+	make.version $(CURDIR)/..
+
+
+
+clean:
+	rm -f *.o
+
+
+
+
+
+ 
+
+
+
+
+

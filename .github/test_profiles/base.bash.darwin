@@ -15,7 +15,7 @@ export NETCDF_PATH="/opt/homebrew/"
 
 # pathname for the CDF software
 
-export CDF_PATH="$HOME/Applications/cdf/cdf39_0-dist/"
+export CDF_PATH="/usr/local/cdf/"
 
 # SVG library
 
