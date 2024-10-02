@@ -58,10 +58,12 @@ jobs:
     - name: Build and make MacOS code
       if: startsWith(matrix.os, 'mac')
       run: |
+        export PATH="/opt/homebrew:$(PATH)"
         export RSTPATH=$(pwd)
         source .profile.bash
         export OSTYPE="darwin"
         export SYSTEM="darwin"
+	echo $PATH
         build/script/make.build
         build/script/make.code
         build/script/make.doc
