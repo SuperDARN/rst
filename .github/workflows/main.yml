@@ -58,7 +58,7 @@ jobs:
     - name: Build and make MacOS code
       if: startsWith(matrix.os, 'mac')
       run: |
-        export PATH="/opt/homebrew:$(PATH)"
+        export PATH="/opt/homebrew:$PATH"
         export RSTPATH=$(pwd)
         source .profile.bash
         export OSTYPE="darwin"
