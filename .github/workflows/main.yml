@@ -64,8 +64,9 @@ jobs:
         source .profile.bash
         export OSTYPE="darwin"
         export SYSTEM="darwin"
-        export XPATH="/opt/homebrew"
+        export NETCDF_PATH="/opt/homebrew/include"
         echo $PATH
+	echo $NETCDF_PATH
         build/script/make.build
         build/script/make.code
         build/script/make.doc
