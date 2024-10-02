@@ -43,7 +43,7 @@ jobs:
         wget https://spdf.gsfc.nasa.gov/pub/software/cdf/dist/latest/linux/cdf${{ matrix.cdf }}-dist-cdf.tar.gz
         tar -xzvf cdf${{ matrix.cdf }}-dist-cdf.tar.gz
         cd cdf${{ matrix.cdf }}-dist
-        make OS=macos ENV=gnu all
+        make OS=macosx ENV=gnu all
         make test
         sudo make INSTALLDIR=/usr/local/cdf install
 
