@@ -63,6 +63,7 @@ jobs:
         source .profile.bash
         export OSTYPE="darwin"
         export SYSTEM="darwin"
+        export XPATH="/opt/homebrew"
         echo $PATH
         build/script/make.build
         build/script/make.code
