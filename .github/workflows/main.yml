@@ -45,6 +45,7 @@ jobs:
         make OS=macosx ENV=arm all
         make test
         sudo make INSTALLDIR=/usr/local/cdf install
+        brew install --cask xquartz
 
     - name: Build and make Linux code
       if: startsWith(matrix.os, 'ubuntu')
