@@ -63,7 +63,7 @@ jobs:
         source .profile.bash
         export OSTYPE="darwin"
         export SYSTEM="darwin"
-	echo $PATH
+        echo $PATH
         build/script/make.build
         build/script/make.code
         build/script/make.doc
