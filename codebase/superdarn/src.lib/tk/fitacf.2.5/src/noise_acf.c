@@ -58,7 +58,7 @@ double noise_acf(double mnpwr,struct FitPrm *ptr, double *pwr,
   memset(bad,0,sizeof(int)*ptr->mplgs);
 
   for (i=0; i< ptr->mplgs; i++) {
-	n_acf[i] = CMPLX(0, 0);
+	n_acf[i] = 0.0 + 0.0 * I;
 	np[i] = 0;
   }
   plim = PLIM * mnpwr;
@@ -74,8 +74,7 @@ double noise_acf(double mnpwr,struct FitPrm *ptr, double *pwr,
 	    if ((fabs(creal(raw[i*ptr->mplgs+j])) < plim) &&
 			(fabs(cimag(raw[i*ptr->mplgs+j])) < plim) &&
 			(bad[j] == 0)) {
-		  n_acf[j] = CMPLX((creal(n_acf[j]) + creal(raw[i*ptr->mplgs+j])),
-                  (cimag(n_acf[j]) + cimag(raw[i*ptr->mplgs+j])));
+		  n_acf[j] = n_acf[j] + raw[i*ptr->mplgs+j];
 		  ++(np[j]);
 		}
 	  }
@@ -84,7 +83,7 @@ double noise_acf(double mnpwr,struct FitPrm *ptr, double *pwr,
 
   if (np[0] <= 2) {
 	for (i=0; i < ptr->mplgs; ++i) {
-	  n_acf[i] = CMPLX(0, 0);
+	  n_acf[i] = 0.0 + 0.0 * I;
 	}
     free(np);
     free(bad);
@@ -93,9 +92,9 @@ double noise_acf(double mnpwr,struct FitPrm *ptr, double *pwr,
 
   for (i=0; i< ptr->mplgs; i++) {
 	if (np[i] > 2) {
-	  n_acf[i] = CMPLX((creal(n_acf[i])/np[i]), (cimag(n_acf[i])/np[i]));
+	  n_acf[i] = n_acf[i])/np[i];
 	} else {
-	  n_acf[i] = CMPLX(0, 0);
+	  n_acf[i] = 0.0 + 0.0 * I;
 	}
   }
 

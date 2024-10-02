@@ -50,21 +50,21 @@ void fit_noise(double complex *ncf,int *badlag,struct FitACFBadSample *badsmp,
       A = exp(ptr->p_s);
       for (j=0; j < prm->mplgs; ++j) {
         t = (prm->lag[1][j] - prm->lag[0][j])*tau;
-        ncf[j] = CMPLX(A*exp(-ptr->w_l*t)*cos(ptr->v*t), 
-                A*exp(-ptr->w_l*t)*sin(ptr->v*t));
+        ncf[j] = A*exp(-ptr->w_l*t)*cos(ptr->v*t) +
+                 A*exp(-ptr->w_l*t)*sin(ptr->v*t) * I;
       }
     } else {
       if (ptr->p_s > skynoise) ptr->p_s = skynoise;
       A = exp(ptr->p_s);
       for (j=0; j < prm->mplgs; ++j) {
         t = (prm->lag[1][j] - prm->lag[0][j])*tau;
-        ncf[j] = CMPLX( A*exp(-(ptr->w_s*t)*(ptr->w_s*t))*cos(ptr->v*t),
-                A*exp(-(ptr->w_s*t)*(ptr->w_s*t))*sin(ptr->v*t));
+        ncf[j] = A*exp(-(ptr->w_s*t)*(ptr->w_s*t))*cos(ptr->v*t) +
+                 A*exp(-(ptr->w_s*t)*(ptr->w_s*t))*sin(ptr->v*t) * I;
       }
     }
   } else
     for (j=0; j < prm->mplgs; ++j) {
-      ncf[j] = CMPLX(0, 0);
+      ncf[j] = 0.0 + 0.0 * I;
     }
   return;
 }

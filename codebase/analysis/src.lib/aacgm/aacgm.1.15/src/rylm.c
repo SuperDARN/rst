@@ -42,11 +42,11 @@ int rylm(double colat,double lon,int order,
 	  double *ylmval) {
    
     double d1;
-    complex z1, z2;
+    double complex z1, z2;
 
     /* Local variables */
-    complex q_fac;
-    complex q_val;
+    double complex q_fac;
+    double complex q_val;
     int l, m;
     int la,lb,lc,ld,le,lf;
 
@@ -62,9 +62,9 @@ int rylm(double colat,double lon,int order,
     sin_lon = sin(lon);
 
     d1 = -sin_theta;
-    z2 = CMPLX(cos_lon, sin_lon);
+    z2 = cos_lon + sin_lon * I;
 
-    z1 = CMPLX(d1 * creal(z2), d1 * cimag(z2));
+    z1 = d1 * z2;
 
     q_fac = z1;
 
@@ -89,9 +89,8 @@ int rylm(double colat,double lon,int order,
     for (l = 2; l <= order; l++) {
 
 	d1 = l*2 - 1.;
-	z2 = CMPLX(d1 * creal(q_fac), d1 * cimag(q_fac));
-	z1 = CMPLX(creal(z2) * creal(q_val) - cimag(z2) * cimag(q_val), 
-            creal(z2) * cimag(q_val) + cimag(z2) * creal(q_val));
+	z2 = d1 * q_fac;
+	z1 = z2 * q_val;
 	q_val = z1;
 
 	la = l*l + (2*l) + 1;
