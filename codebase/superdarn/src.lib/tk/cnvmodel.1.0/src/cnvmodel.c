@@ -845,8 +845,8 @@ void slv_ylm_mod(float theta, float phi, int order, double complex *ylm_p,
 
       ylm_p[l*(order+1)+m] = Pmm*anorm[l*(order+1)+m]*cos(m*phi) +
               Pmm*anorm[l*(order+1)+m]*sin(m*phi) * I;
-      ylm_n[l*(order+1)+m] = pow(-1,m)*ylm_p[l*(order+1)+m];
-
+      ylm_n[l*(order+1)+m] = pow(-1,m)*creal(ylm_p[l*(order+1)+m]) +
+              (-pow(-1,m)*cimag(ylm_p[l*(order+1)+m])) * I;
     }
   }
 }
