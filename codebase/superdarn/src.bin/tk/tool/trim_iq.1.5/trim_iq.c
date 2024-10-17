@@ -124,6 +124,8 @@ int main (int argc,char *argv[]) {
 
   FILE *fp=NULL;
 
+  int chnnum=0;
+
   // origin time for when the file is produced
   time_t ctime;
   // counter for origin command length  
@@ -145,6 +147,7 @@ int main (int argc,char *argv[]) {
   OptionAdd(&opt,"sd",'t',&sdtestr);
   OptionAdd(&opt,"ed",'t',&edtestr);
   OptionAdd(&opt,"ex",'t',&exstr);
+  OptionAdd(&opt,"chnnum",'i',&chnnum);
 
   arg=OptionProcess(1,argc,argv,&opt,rst_opterr);
 
@@ -234,17 +237,18 @@ int main (int argc,char *argv[]) {
 
   if (extime !=0) etime=stime+extime;
 
-    // initialize array to be empty?
-    command[0]=0;
-    for (int c=0; c<argc; c++) {
-      // check if the origin command is too long
-      n+=strlen(argv[c])+1;
-      // if so cut it off
-      if (n>127) break;
-      // add space between command line arguments and copy to origin command
-      if (c !=0) strcat(command," ");
-      strcat(command, argv[c]);
-    }
+  // initialize array to be empty?
+  command[0]=0;
+  for (int c=0; c<argc; c++) {
+    // check if the origin command is too long
+    n+=strlen(argv[c])+1;
+    // if so cut it off
+    if (n>127) break;
+    // add space between command line arguments and copy to origin command
+    if (c !=0) strcat(command," ");
+    strcat(command, argv[c]);
+  }
+
   do {
 
     atime=TimeYMDHMSToEpoch(prm->time.yr,prm->time.mo,prm->time.dy,
@@ -268,14 +272,16 @@ int main (int argc,char *argv[]) {
       fprintf(stderr,"\n");
     }
 
-      // origin  code 1 means it is not produced on site
-      prm->origin.code=1;
-      // copy it over to the file
-      ctime= time((time_t) 0);
-      RadarParmSetOriginCommand(prm,command);
-      strcpy(tmstr,asctime(gmtime(&ctime)));
-      tmstr[24]=0;
-      RadarParmSetOriginTime(prm,tmstr);
+    // origin  code 1 means it is not produced on site
+    prm->origin.code=1;
+    // copy it over to the file
+    ctime= time((time_t) 0);
+    RadarParmSetOriginCommand(prm,command);
+    strcpy(tmstr,asctime(gmtime(&ctime)));
+    tmstr[24]=0;
+    RadarParmSetOriginTime(prm,tmstr);
+
+    if (chnnum > 0) iq->chnnum=chnnum;
 
     IQFwrite(stdout,prm,iq,badtr,samples);
 

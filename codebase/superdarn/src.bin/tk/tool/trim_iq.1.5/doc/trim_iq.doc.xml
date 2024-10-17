@@ -22,6 +22,8 @@
 </option>
 <option><on>-ex <ar>hr:mn</ar></on><od>extract an interval whose extent is <ar>hr:mn</ar>.</od>
 </option>
+<option><on>-chnnum <ar>chnnum</ar></on><od>set the number of receiver channels to <ar>chnnum</ar>. The default value is taken from the IQ structure of the input <code>iqdat</code> format file.</od>
+</option>
 <option><on><ar>iqdatname</ar></on><od>filename of the <code>iqdat</code> format file to trim. If this is omitted, the file will be read from standard input</od>
 </option>
 
