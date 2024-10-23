@@ -64,9 +64,6 @@ jobs:
         cp .github/test_profiles/base.bash.darwin .profile/base.bash
         cp .github/test_profiles/makelib.darwin build/make/makelib.darwin
         source .profile.bash
-        echo $SYSTEM
-        echo $OSTYPE
-        echo $NETCDF_PATH
         build/script/make.build
         build/script/make.code
         build/script/make.doc
