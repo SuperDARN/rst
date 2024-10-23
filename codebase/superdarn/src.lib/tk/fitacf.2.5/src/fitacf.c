@@ -156,14 +156,14 @@ int fill_fit_block(struct RadarParm *prm, struct RawData *raw,
 
         if (raw->acfd[0] !=NULL) {
             for (j=0;j<input->prm.mplgs;j++) {
-                input->acfd[i*input->prm.mplgs+j] = CMPLX(raw->acfd[0][i*input->prm.mplgs+j], 
-                        raw->acfd[1][i*input->prm.mplgs+j]);
+                input->acfd[i*input->prm.mplgs+j] = raw->acfd[0][i*input->prm.mplgs+j] +
+                        raw->acfd[1][i*input->prm.mplgs+j] * I;
             }
         }
         if (raw->xcfd[0] !=NULL) {
             for (j=0;j<input->prm.mplgs;j++) {
-                input->xcfd[i*input->prm.mplgs+j] = CMPLX(raw->xcfd[0][i*input->prm.mplgs+j], 
-                        raw->xcfd[1][i*input->prm.mplgs+j]);
+                input->xcfd[i*input->prm.mplgs+j] = raw->xcfd[0][i*input->prm.mplgs+j] +
+                        raw->xcfd[1][i*input->prm.mplgs+j] * I;
             }
         }
     }
