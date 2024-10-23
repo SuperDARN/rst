@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["ubuntu-latest"]
+        os: ["ubuntu-latest", "macos-latest"]
         cc: ["gcc-default"]
         cdf: ["39_0"]
 
@@ -32,15 +32,38 @@ jobs:
         make test
         sudo make INSTALLDIR=/usr/local/cdf install
 
-    - name: Build and make code
+    - name: Install MacOS dependencies
+      if: startsWith(matrix.os, 'mac')
+      run: |
+        brew update-reset
+        xargs brew install < build/.requirements.darwin
+        echo "Get and install NASA CDF"
+        brew install wget
+        wget https://spdf.gsfc.nasa.gov/pub/software/cdf/dist/latest/linux/cdf${{ matrix.cdf }}-dist-cdf.tar.gz
+        tar -xzvf cdf${{ matrix.cdf }}-dist-cdf.tar.gz
+        cd cdf${{ matrix.cdf }}-dist
+        make OS=macosx ENV=arm all
+        make test
+        sudo make INSTALLDIR=/usr/local/cdf install
+        brew install --cask xquartz
+
+    - name: Build and make Linux code
+      if: startsWith(matrix.os, 'ubuntu')
       run: |
         export RSTPATH=$(pwd)
         source .profile.bash
         build/script/make.build
         build/script/make.code
+        build/script/make.doc
 
-    - name: Build and make docs
+    - name: Build and make MacOS code
+      if: startsWith(matrix.os, 'mac')
       run: |
         export RSTPATH=$(pwd)
+        cp .github/test_profiles/profile.bash.darwin .profile.bash
+        cp .github/test_profiles/base.bash.darwin .profile/base.bash
+        cp .github/test_profiles/makelib.darwin build/make/makelib.darwin
         source .profile.bash
+        build/script/make.build
+        build/script/make.code
         build/script/make.doc
