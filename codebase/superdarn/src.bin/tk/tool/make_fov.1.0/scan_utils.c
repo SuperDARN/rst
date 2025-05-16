@@ -37,34 +37,48 @@ void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
 			int fovflg[MAX_BMS][MAX_RGS],
 			int fovpast[MAX_BMS][MAX_RGS], float scan_vh[],
 			float scan_elv[], float fovstd[MAX_BMS][MAX_RGS],
-			float fovscore[MAX_BMS][MAX_RGS])
+			float fovscore[MAX_BMS][MAX_RGS],
+			int fovextreme[MAX_BMS][MAX_RGS])
 {
-  int i, irg, ibm, reg_stat;
+  int i, irg, ibm, reg_stat, eflg, *is_extreme;
   int get_fov[2] = {-1, 1};
 
   float max_std, max_score, intercept, sig_intercept, slope, chi2, q, lstd;
-  float sig_slope, line_std, *scan_x;
-  float *lval, *ldev, *abs_ldev, *lscore, *line_dev, *sig;
+  float sig_slope, line_std, high_elv, low_elv, frac_extreme, max_extreme;
+  float *scan_x, *lval, *ldev, *abs_ldev, *lscore, *line_dev, *sig;
 
   /* Initalize the maximum statistics and reference variables */
-  max_std   = 5.0;  /* Used to be 3.0, changed after INV tests */
-  max_score = 3.0;
+  max_std     = 5.0;  /* Used to be 3.0, changed after INV tests */
+  max_score   = 3.0;
+  max_extreme = 1.0;  /* Fraction of points in this group that may possibly */
+  high_elv    = 50.0; /* be aliased in this FoV.                            */
+  low_elv     = 0.0;
   
   /* Initialize the evalutaion statistics to default values */
-  line_std = max_std + 100.0;
-  line_dev = (float *)calloc(num, sizeof(float));
-  sig      = (float *)calloc(num, sizeof(float));
-  lval     = (float *)calloc(num, sizeof(float));
-  ldev     = (float *)calloc(num, sizeof(float));
-  abs_ldev = (float *)calloc(num, sizeof(float));
-  lscore   = (float *)calloc(num, sizeof(float));
-  scan_x   = (float *)calloc(num, sizeof(float));
-  for(i = 0; i < num; i++)
+  line_std   = max_std + 100.0;
+  is_extreme = (int *)calloc(num, sizeof(int));
+  line_dev   = (float *)calloc(num, sizeof(float));
+  sig        = (float *)calloc(num, sizeof(float));
+  lval       = (float *)calloc(num, sizeof(float));
+  ldev       = (float *)calloc(num, sizeof(float));
+  abs_ldev   = (float *)calloc(num, sizeof(float));
+  lscore     = (float *)calloc(num, sizeof(float));
+  scan_x     = (float *)calloc(num, sizeof(float));
+  for(frac_extreme = 0.0, i = 0; i < num; i++)
     {
       scan_x[i]   = (float)scan_rg[i];
       line_dev[i] = line_std;
       sig[i]      = 0.0;
+
+      /* Determine whether or not all elevation angles are extreme */
+      if(scan_elv[i] >= high_elv || scan_elv[i] <= low_elv)
+	{
+	  is_extreme[i] = 1;
+	  frac_extreme += 1.0;
+	}
+      else is_extreme[i] = 0;
     }
+  frac_extreme = frac_extreme / (float)num;
 
   /* Get the linear regression of the elevation angles as a function of    */
   /* range gate. The slope of this line must be flat or negative. Aliasing */
@@ -110,26 +124,33 @@ void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
 		  /* z-score.                                                 */
 		  if(fovflg[ibm][irg] == 0
 		     || (fabs(lscore[i]) < fovscore[ibm][irg]
-			 && lstd <= fovstd[ibm][irg]))
+			 && lstd <= fovstd[ibm][irg]
+			 && frac_extreme <= max_extreme) ||
+		     (is_extreme[i] == 0 && fovextreme[ibm][irg] == 1))
 		    {
-		      /* If the FoV is changing, note that here */
-		      if(fovflg[ibm][irg] != 0
-			 && fovflg[ibm][irg] != get_fov[fov])
-			fovpast[ibm][irg] = fovflg[ibm][irg];
-
 		      /* Update with the new good FoV stats and flag */
 		      fovflg[ibm][irg]   = get_fov[fov];
 		      fovstd[ibm][irg]   = lstd;
 		      fovscore[ibm][irg] = fabs(lscore[i]);
 		    }
 		  else if(fovpast[ibm][irg] == 0)
-		    fovpast[ibm][irg] = get_fov[fov];  /* Other FoV is valid */
+		    {
+		      /* Other FoV is valid */
+		      fovpast[ibm][irg] = get_fov[fov];
+		      fovextreme[ibm][irg] = is_extreme[i];
+		    }
+		  else if(fovpast[ibm][irg] == 0)
+		    {
+		      /* The other FoV is better, but this FoV is also valid */
+		      fovpast[ibm][irg] = get_fov[fov];
+		    }
 		}
 	    }
 	}
     }
 
   /* Free the pointers */
+  free(is_extreme);
   free(line_dev);
   free(sig);
   free(lval);
