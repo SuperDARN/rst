@@ -347,7 +347,6 @@ int main(int argc, char *argv[])
       /* Cycle through the scans, updating the backscatter data in each one */
       /* Based off of DaViTpy routine:                                      */
       /*   pydarn.proc.fov.update_backscatter.update_bs_w_scan              */
-      
       ret_stat = load_fit_update_fov(fnum, channel, channel_fix, old, tlen,
 				     stime, sdate, etime, edate, extime, nsflg,
 				     vb, vbuf, iname, dnames, tdiff_flag, tdiff,

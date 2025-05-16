@@ -39,7 +39,8 @@ void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
 			int fovflg[MAX_BMS][MAX_RGS],
 			int fovpast[MAX_BMS][MAX_RGS], float scan_vh[],
 			float scan_elv[], float fovstd[MAX_BMS][MAX_RGS],
-			float fovscore[MAX_BMS][MAX_RGS]);
+			float fovscore[MAX_BMS][MAX_RGS],
+			int fovextreme[MAX_BMS][MAX_RGS]);
 void eval_fov_flag_consistency(int max_rg, int max_bm, int bmwidth, int D_rgmax,
 			       int D_nrg, int E_rgmax, int E_nrg, int F_rgmax,
 			       int F_nrg, int far_nrg,
