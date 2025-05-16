@@ -85,9 +85,10 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
   int igood[MAX_BMS], bgood[MAX_BMS];
   int group_bm[MAX_BMS * MAX_RGS], group_rg[MAX_BMS * MAX_RGS];
   int fovflg[MAX_BMS][MAX_RGS], fovpast[MAX_BMS][MAX_RGS];
-  int front_num[MAX_BMS][MAX_RGS], back_num[MAX_BMS][MAX_RGS];
-  int fovbelong[MAX_BMS][MAX_RGS][3], opp_in[MAX_BMS][MAX_RGS];
-  int scan_num[3][2][MAX_PATH], scan_bm[3][2][MAX_PATH][MAX_BMS * MAX_RGS];
+  int fovextreme[MAX_BMS][MAX_RGS], front_num[MAX_BMS][MAX_RGS];
+  int back_num[MAX_BMS][MAX_RGS], fovbelong[MAX_BMS][MAX_RGS][3];
+  int opp_in[MAX_BMS][MAX_RGS], scan_num[3][2][MAX_PATH];
+  int scan_bm[3][2][MAX_PATH][MAX_BMS * MAX_RGS];
   int scan_rg[3][2][MAX_PATH][MAX_BMS * MAX_RGS];
 
   float hmin, hmax, hbox, *vmins, *vmaxs;
@@ -130,6 +131,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 	{
 	  fovflg[ibm][irg]    = 0;
 	  fovpast[ibm][irg]   = 0;
+	  fovextreme[ibm][irg] = 0;
 	  fovstd[ibm][irg]    = 0.0;
 	  fovscore[ibm][irg]  = 0.0;
 	  front_num[ibm][irg] = 0;
@@ -162,7 +164,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 	  exit(1);
 	}
 		  
-      for(ifov = 0; ifov < 2; ifov++)
+      for(ifov = 1; ifov >= 0; ifov--)
 	{
 	  for(ipath = 0; ipath < MAX_PATH; ipath++)
 	    {
@@ -370,8 +372,11 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 		      if(bm_new->sct[irg] == 1)
 			{
 			  /* Assign this data to the correct region list for */
-			  /* each FoV (ifov is 0 for back and 1 for front)   */
-			  for(ifov = 0; ifov < 2; ifov++)
+			  /* each FoV (ifov is 0 for back and 1 for front).  */
+			  /* Try the front FoV first, because it is more     */
+			  /* likely to be correct and only assign the rear   */
+			  /* FoV if it is clearly superior.                  */
+			  for(ifov = 1; ifov >= 0; ifov--)
 			    {
 			      if(ifov == 0)
 				{
@@ -439,7 +444,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 		  hbox = F_vh_box;
 		}
 
-	      for(ifov = 0; ifov < 2; ifov++)
+	      for(ifov = 1; ifov >= 0; ifov--)
 		{
 		  for(ipath = 1; ipath < MAX_PATH; ipath++)
 		    {
@@ -494,7 +499,8 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 						       group_bm, group_rg,
 						       fovflg, fovpast,
 						       group_vh, group_elv,
-						       fovstd, fovscore);
+						       fovstd, fovscore,
+						       fovextreme);
 				}
 			    }
 			}
