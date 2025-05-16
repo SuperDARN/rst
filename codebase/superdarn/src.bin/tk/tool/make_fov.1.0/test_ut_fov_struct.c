@@ -52,8 +52,8 @@ void test_ut_fov_struct(unsigned char vb, char *vbuf, int nbms, float min_frac,
 			struct FitMultBSID *mult_bsid)
 {
   int i, iscan, ibm, irg, ireg, ihop, ibox, iwin, istime, ietime, ifov, sbm;
-  int bind, bmid, max_pnts, num_bms, max_rg, max_reg, cpid, bmnum, num_rg;
-  int min_bmnum, max_bmnum, good_fov, bad_fov, has_fov, rmin, rmax;
+  int bind, bmid, max_pnts, num_bms, max_rg, cpid, bmnum, num_rg, min_bmnum;
+  int max_bmnum, good_fov, bad_fov, has_fov, rmin, rmax;
   int fnum[2], bnum[2];
   int ****fovflg, ****region, ****hop, **fov_in, **fov_out, **fov_mix, **opp_in;
 
@@ -81,7 +81,6 @@ void test_ut_fov_struct(unsigned char vb, char *vbuf, int nbms, float min_frac,
 
   /* Initialize the local variables */
   fov_frac = 2.0 / 3.0;
-  max_reg  = 3;
 
   opp_in  = (int **)NULL;
   fov_in  = (int **)NULL;

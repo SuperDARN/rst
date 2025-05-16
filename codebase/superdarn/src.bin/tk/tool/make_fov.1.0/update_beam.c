@@ -48,8 +48,6 @@ void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
 
   float vh_low, vh_high;
 
-  double range_edge;
-
   void EvalGroundScatter(struct FitBSIDBeam *beam);
 
   /* Calculate the 1/2 hop distance and initialize the hop values */
@@ -57,7 +55,6 @@ void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
     {
       if(beam->sct[irg] == 1)
 	{
-	  range_edge = -0.5 * beam->rsep * 20.0 / 3.0;
 	  beam->front_loc[irg].dist = slant_range_no_edge(beam->frang,
 							  beam->rsep,
 							  (double)beam->rxrise,

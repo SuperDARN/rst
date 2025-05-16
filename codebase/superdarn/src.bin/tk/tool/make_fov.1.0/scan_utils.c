@@ -40,7 +40,7 @@ void eval_az_var_in_elv(int num, int fov, int scan_bm[], int scan_rg[],
 			float fovscore[MAX_BMS][MAX_RGS],
 			int fovextreme[MAX_BMS][MAX_RGS])
 {
-  int i, irg, ibm, reg_stat, eflg, *is_extreme;
+  int i, irg, ibm, reg_stat, *is_extreme;
   int get_fov[2] = {-1, 1};
 
   float max_std, max_score, intercept, sig_intercept, slope, chi2, q, lstd;

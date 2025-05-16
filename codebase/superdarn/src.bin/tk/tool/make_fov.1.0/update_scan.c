@@ -85,8 +85,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
   int igood[MAX_BMS], bgood[MAX_BMS];
   int group_bm[MAX_BMS * MAX_RGS], group_rg[MAX_BMS * MAX_RGS];
   int fovflg[MAX_BMS][MAX_RGS], fovpast[MAX_BMS][MAX_RGS];
-  int fovextreme[MAX_BMS][MAX_RGS], front_num[MAX_BMS][MAX_RGS];
-  int back_num[MAX_BMS][MAX_RGS], fovbelong[MAX_BMS][MAX_RGS][3];
+  int fovextreme[MAX_BMS][MAX_RGS], fovbelong[MAX_BMS][MAX_RGS][3];
   int opp_in[MAX_BMS][MAX_RGS], scan_num[3][2][MAX_PATH];
   int scan_bm[3][2][MAX_PATH][MAX_BMS * MAX_RGS];
   int scan_rg[3][2][MAX_PATH][MAX_BMS * MAX_RGS];
@@ -134,8 +133,6 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 	  fovextreme[ibm][irg] = 0;
 	  fovstd[ibm][irg]    = 0.0;
 	  fovscore[ibm][irg]  = 0.0;
-	  front_num[ibm][irg] = 0;
-	  back_num[ibm][irg]  = 0;
 	  opp_in[ibm][irg]    = 0;
 
 	  for(iscan = 0; iscan < 3; iscan++)
