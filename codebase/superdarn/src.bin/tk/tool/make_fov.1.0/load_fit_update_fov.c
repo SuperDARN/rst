@@ -102,7 +102,7 @@ int load_fit_update_fov(int fnum, int channel, int channel_fix, int old,
   struct RadarSite *site = NULL;
   struct RadarParm *prm;
   struct FitData *fit;
-  struct FitIndex *inx;
+  struct FitIndex *inx = NULL;
   struct OldFitFp *oldfitfp = NULL;
   struct RadarScan *scan;
 
