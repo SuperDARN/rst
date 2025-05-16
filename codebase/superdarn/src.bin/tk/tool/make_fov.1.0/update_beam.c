@@ -74,7 +74,7 @@ void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
     {
       if(beam->sct[irg] == 1)
 	{
-	  if(beam->rng[irg].gsct == 1)
+	  if(beam->rng_flgs[irg].gflg == 1)
 	    {
 	      /* Update groundscatter hop and distance */
 	      beam->front_loc[irg].hop = 1.0;
@@ -84,7 +84,7 @@ void UpdateBeamFit(short int strict_gs, float max_hop, float D_hmin,
 	    }
 	  else
 	    {
-	      if((strict_gs == 1) && (beam->rng[irg].gsct == -1))
+	      if((strict_gs == 1) && (beam->rng_flgs[irg].gflg == -1))
 		{
 		  /* Remove bad groundscattter hop and distance by assigning */
 		  /* negative values (since NaN is more complicated)         */
