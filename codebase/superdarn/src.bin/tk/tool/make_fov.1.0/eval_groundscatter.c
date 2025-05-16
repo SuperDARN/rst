@@ -163,7 +163,7 @@ float CalcFracGroundScatter(int box_width, int rg_center,
       if(beam->sct[irg] == 1)
 	{
 	  num++;
-	  if(beam->rng_flg[irg].gflg == 1) frac += 1.0;
+	  if(beam->rng_flgs[irg].gflg == 1) frac += 1.0;
 	}
     }
 
