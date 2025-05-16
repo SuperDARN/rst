@@ -18,7 +18,7 @@
 #include "fitmultbsid.h"
 
 /**
- * @brief Update the groundscatter flag 'gflg' for points already flagged as GS
+ * @brief Set the new groundscatter flag 'gflg'
  *
  * @param[in] beam - radar beam structure
  *
@@ -53,28 +53,28 @@ void EvalGroundScatter(struct FitBSIDBeam *beam)
   /* Check each groundscatter flag, looking for bad values */
   for(irg = 0; irg < beam->nrang; irg++)
     {
-      if(beam->sct[irg] == 1 && beam->rng[irg].gsct == 1)
+      if(beam->sct[irg] == 1 && beam->rng_flgs[irg].gflg == 1)
 	{
-	  gflg = CheckGroundScatter(irg, beam->rng[irg].gsct,
+	  gflg = CheckGroundScatter(irg, beam->rng_flgs[irg].gflg,
 				    beam->front_loc[irg].dist,
 				    beam->rng[irg].p_l, min_rg, max_rg,
 				    max_power);
 
 	  /* Compare new flag with current flag, set groundscatter flag */
 	  /* to -1 if the groundscatter check failed                    */
-	  if(gflg != beam->rng[irg].gsct) beam->rng[irg].gsct = -1;
+	  if(gflg != beam->rng_flgs[irg].gflg) beam->rng_flgs[irg].gflg = -1;
 	}
     }
 
   /* After the single point check, remove any isolated groundscatter points */
   for(irg = 0; irg < beam->nrang; irg++)
     {
-      if(beam->sct[irg] == 1 && beam->rng[irg].gsct == 1)
+      if(beam->sct[irg] == 1 && beam->rng_flgs[irg].gflg == 1)
 	{
 	  npnts = 0;
 	  gflg_frac = CalcFracGroundScatter(box_width, irg, beam, &npnts);
 
-	  if(gflg_frac < gs_tol || npnts < nmin) beam->rng[irg].gsct = -1;
+	  if(gflg_frac < gs_tol || npnts < nmin) beam->rng_flgs[irg].gflg = -1;
 	}
     }
 
@@ -163,7 +163,7 @@ float CalcFracGroundScatter(int box_width, int rg_center,
       if(beam->sct[irg] == 1)
 	{
 	  num++;
-	  if(beam->rng[irg].gsct == 1) frac += 1.0;
+	  if(beam->rng_flg[irg].gflg == 1) frac += 1.0;
 	}
     }
 
