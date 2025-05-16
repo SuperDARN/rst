@@ -80,7 +80,7 @@ void WriteFitBSIDScanASCII(FILE *fp, int stid, struct FitBSIDScan *scan)
     {
       sprintf(scan_info, "#STID");
       sprintf(bm_info, "DATE TIME INTT_US BMNUM BMAZM CPID NAVE FRANG RSEP RXRISE FREQ NOISE ATTEN CHANNEL NRANG");
-      sprintf(rng_info, "RG GFLG FOVFLG FOV_PAST GRPFLG GRPNUM GRPID P_0 P_0_ERR V V_ERR W_L W_L_ERR P_L P_L_ERR PHI0 PHI0_ERR ELV ELV_LOW ELV_HIGH VH VH_ERR VH_METHOD REGION HOP DIST MED_P_0 MED_P_0_ERR MED_V MED_V_ERR MED_W_L MED_W_L_ERR MED_P_L MED_P_L_ERR MED_PHI0 MED_PHI0_ERR OPP_ELV OPP_ELV_LOW OPP_ELV_HIGH OPP_VH OPP_VH_ERR OPP_VH_METHOD OPP_REGION OPP_HOP OPP_DIST");
+      sprintf(rng_info, "RG GFLG NEW_GFLG FOVFLG FOV_PAST GRPFLG GRPNUM GRPID P_0 P_0_ERR V V_ERR W_L W_L_ERR P_L P_L_ERR PHI0 PHI0_ERR ELV ELV_LOW ELV_HIGH VH VH_ERR VH_METHOD REGION HOP DIST MED_P_0 MED_P_0_ERR MED_V MED_V_ERR MED_W_L MED_W_L_ERR MED_P_L MED_P_L_ERR MED_PHI0 MED_PHI0_ERR OPP_ELV OPP_ELV_LOW OPP_ELV_HIGH OPP_VH OPP_VH_ERR OPP_VH_METHOD OPP_REGION OPP_HOP OPP_DIST");
 
       fprintf(fp, "%s %s %s\n", scan_info, bm_info, rng_info);
     }
@@ -127,19 +127,19 @@ void WriteFitBSIDScanASCII(FILE *fp, int stid, struct FitBSIDScan *scan)
 		    }
       
 		  sprintf(rng_info,
-			  "%d %d %d %d %d %d %s %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %s %s %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %s %s %f %f",
-			  irg, rng.gsct, rng_flgs.fov, rng_flgs.fov_past,
-			  rng_flgs.grpflg, rng_flgs.grpnum, rng_flgs.grpid,
-			  rng.p_0, rng.p_0_e, rng.v, rng.v_e, rng.w_l,
-			  rng.w_l_e, rng.p_l, rng.p_l_e, rng.phi0, rng.phi0_e,
-			  elv.normal, elv.low, elv.high, loc.vh, loc.vh_e,
-			  loc.vh_m, loc.region, loc.hop, loc.dist, med_rng.p_0,
-			  med_rng.p_0_e, med_rng.v, med_rng.v_e, med_rng.w_l,
-			  med_rng.w_l_e, med_rng.p_l, med_rng.p_l_e,
-			  med_rng.phi0, med_rng.phi0_e, opp_elv.normal,
-			  opp_elv.low, opp_elv.high, opp_loc.vh, opp_loc.vh_e,
-			  opp_loc.vh_m, opp_loc.region, opp_loc.hop,
-			  opp_loc.dist);
+			  "%d %d %d %d %d %d %d %s %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %s %s %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %s %s %f %f",
+			  irg, rng.gsct, rng_flgs.gflg, rng_flgs.fov,
+			  rng_flgs.fov_past, rng_flgs.grpflg, rng_flgs.grpnum,
+			  rng_flgs.grpid, rng.p_0, rng.p_0_e, rng.v, rng.v_e,
+			  rng.w_l, rng.w_l_e, rng.p_l, rng.p_l_e, rng.phi0,
+			  rng.phi0_e, elv.normal, elv.low, elv.high, loc.vh,
+			  loc.vh_e, loc.vh_m, loc.region, loc.hop, loc.dist,
+			  med_rng.p_0, med_rng.p_0_e, med_rng.v, med_rng.v_e,
+			  med_rng.w_l, med_rng.w_l_e, med_rng.p_l,
+			  med_rng.p_l_e, med_rng.phi0, med_rng.phi0_e,
+			  opp_elv.normal, opp_elv.low, opp_elv.high, opp_loc.vh,
+			  opp_loc.vh_e, opp_loc.vh_m, opp_loc.region,
+			  opp_loc.hop, opp_loc.dist);
 
 		  fprintf(fp, "%s %s %s\n", scan_info, bm_info, rng_info);
 		}

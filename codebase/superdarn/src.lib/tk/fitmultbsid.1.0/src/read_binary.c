@@ -247,6 +247,12 @@ int FitBSIDBeamDecode(FILE *fp, struct FitBSIDBeam *bm)
 	  for(j = 0; j < aptr->rng[0]; j++)
 	    bm->rng[slist[j]].gsct = aptr->data.sptr[j];
 	}
+      else if((strcmp(aptr->name, "gflg") == 0) && (aptr->type == DATASHORT)
+	 && (aptr->dim == 1))
+	{
+	  for(j = 0; j < aptr->rng[0]; j++)
+	    bm->rng_flgs[slist[j]].gflg = aptr->data.sptr[j];
+	}
       else if((strcmp(aptr->name, "fov") == 0) && (aptr->type == DATASHORT)
 	      && (aptr->dim == 1))
 	{

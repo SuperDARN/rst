@@ -51,6 +51,7 @@
 
 struct CellBSIDFlgs
 {
+  int gflg;
   int fov;
   int fov_past;
   int grpflg;

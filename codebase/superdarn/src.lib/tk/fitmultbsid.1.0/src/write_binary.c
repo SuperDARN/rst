@@ -45,7 +45,7 @@ int FitBSIDBeamEncode(int grp_flg, int med_flg, struct DataMap *ptr,
   float bmazm;
   double seconds;
 
-  int16 *slist=NULL, *gflg=NULL, *med_gflg=NULL;
+  int16 *slist=NULL, *gsct=NULL, *gflg=NULL, *med_gflg=NULL;
   int16 *fov=NULL, *fov_past=NULL, *grpflg=NULL, *grpnum=NULL;
   float *pwr0=NULL, *pwr0_e=NULL, *v=NULL, *v_e=NULL;
   float *p_l=NULL, *p_l_e=NULL, *w_l=NULL, *w_l_e=NULL;
@@ -112,7 +112,8 @@ int FitBSIDBeamEncode(int grp_flg, int med_flg, struct DataMap *ptr,
 
   /* Initiallize the range gate information */
   slist    = DataMapStoreArray(ptr, "slist", DATASHORT, 1, &ngood, NULL);
-  gflg     = DataMapStoreArray(ptr, "gsct", DATASHORT, 1, &ngood, NULL);
+  gsct     = DataMapStoreArray(ptr, "gsct", DATASHORT, 1, &ngood, NULL);
+  gflg     = DataMapStoreArray(ptr, "gflg", DATASHORT, 1, &ngood, NULL);
   fov      = DataMapStoreArray(ptr, "fov", DATASHORT, 1, &ngood, NULL);
   fov_past = DataMapStoreArray(ptr, "fov_past", DATASHORT, 1, &ngood, NULL);
   pwr0     = DataMapStoreArray(ptr, "pwr0", DATAFLOAT, 1, &ngood, NULL);
@@ -175,7 +176,8 @@ int FitBSIDBeamEncode(int grp_flg, int med_flg, struct DataMap *ptr,
 	  
 	  /* Assign the basic data at this range gate */
 	  slist[igood]    = irg;
-	  gflg[igood]     = bm.rng[irg].gsct;
+	  gsct[igood]     = bm.rng[irg].gsct;
+	  gflg[igood]     = bm.rng_flgs[irg].gflg;
 	  fov[igood]      = bm.rng_flgs[irg].fov;
 	  fov_past[igood] = bm.rng_flgs[irg].fov_past;
 	  pwr0[igood]     = bm.rng[irg].p_0;
