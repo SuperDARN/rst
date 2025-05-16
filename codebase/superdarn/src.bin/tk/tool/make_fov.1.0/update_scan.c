@@ -354,6 +354,7 @@ void UpdateScanBSFoV(short int strict_gs, int freq_min, int freq_max,
 			  bm_new->rng[irg].elv    = bm_old.rng[irg].elv;
 
 			  /* Initialize the range gate flags */
+			  bm_new->rng_flgs[irg].gflg = bm_new->rng[irg].gsct;
 			  bm_new->rng_flgs[irg].fov      = 0;
 			  bm_new->rng_flgs[irg].fov_past = 0;
 			  bm_new->rng_flgs[irg].grpflg   = 0;
