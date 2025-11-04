@@ -11,7 +11,7 @@ jobs:
       matrix:
         os: ["ubuntu-latest", "macos-latest"]
         cc: ["gcc-default"]
-        cdf: ["39_0"]
+        cdf: ["39_1"]
 
     name: ${{ matrix.cc }} on ${{ matrix.os }} with CDF ${{ matrix.cdf }}
     runs-on: ${{ matrix.os }}
