@@ -18,11 +18,13 @@ SRC =	cnvtcoord.c \
 	calcvector.c \
 	invmag.c \
 	geodtgc.h \
+	rpos_v2.c \
 	elvheight.c
 
 OBJS =	cnvtcoord.o \
 	calcvector.o \
 	invmag.o \
+	rpos_v2.o \
 	elvheight.o
 
 INC=$(IPATH)/superdarn
