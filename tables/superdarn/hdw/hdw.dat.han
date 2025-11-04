@@ -2,8 +2,12 @@
 #
 # **********************************************************************
 # ==Notes==
-#
-#
+# Updated on 15/07/25 by M Jones following the installation of the 'Borealis' SDR system at Han.
+#      - Added entry for system back online 08072025
+#      - Added estimated TDIFF of 225 ns for channel A. Set Channel B TDIFF to 0 ns as not used with Borealis system.
+#      - RXRIS changed to 0 us. Rise time assumed to be < 10 us with Borealis system.
+#      - Number of attenuation stages changed to 0 as no gain control of front end with Borealis system.
+#      - Number of range gates increased to 225 to reflect capability of Borealis system.
 # **********************************************************************
 #
 #                              GEOGRAPHIC              BORE-   OFF  BEAM V  |--------- interferometer ---------| |--- RX ---| RNG MX
@@ -11,4 +15,5 @@
   10  1 19950222 00:00:00  62.31357   26.60562    0.0  -12.0  0.00  3.24  1  1  0.000  0.000    0.0  185.0  -2.2  100.0  10 7  75 16
   10  1 19951207 00:00:00  62.31357   26.60562    0.0  -12.0  0.00  3.24  1  1  0.135  0.181    0.0  185.0  -2.2  100.0  10 7  75 16
   10 -1 20190720 00:00:00  62.31357   26.60562    0.0  -12.0  0.00  3.24  1  1  0.135  0.181    0.0  185.0  -2.2  100.0  10 7  75 16
+  10  1 20250708 00:00:00  62.31357   26.60562    0.0  -12.0  0.00  3.24  1  1  0.225  0.000    0.0  185.0  -2.2    0.0  10 0 225 16
 # EOF
