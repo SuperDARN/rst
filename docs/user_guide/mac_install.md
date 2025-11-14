@@ -113,7 +113,11 @@ Error: curses.h not found
    	(Note: for users without IDL, modifying the `IDL_IPATH` environment variable is
    	not required).
 
-2. Load the RST environment variables. Open and edit your `~/.bashrc` (or `~/.zshrc` if you're on an ARM file, or have switched from bash to zsh) to include:
+3. When compiling RST later, `png.c`, located in `/RSTINSTALLLOCATION/codebase/base/src.lib/graphic/fbuffer.1.19/src/png.c`, doesn't seem to find the `png.h` header file correctly, even though it is located in the XPATH defined in the previous step. As a patch fix while we work out what to do more cleanly, you need to change a line to point directly to `png.h`
+
+	- Go to `png.c` and change line 32 `#png.h>` to `#include </opt/X11/include/png.h>` or `#include </usr/X11/include/png.h>`, for ARM and x86-based Macs, respectively. If your compilation still errors on `png.c`, make sure this is pointed to `png.h` correctly on your machine.
+
+5. Load the RST environment variables. Open and edit your `~/.bashrc` (or `~/.zshrc` if you're on an ARM file, or have switched from bash to zsh) to include:
 
         # bash profile for rst
         export RSTPATH="INSTALL LOCATION"/rst
@@ -125,10 +129,10 @@ Error: curses.h not found
    
        source ~/.bashrc
 
-3. Run `make.build` from the command line.  You may need to change directory to `$RSTPATH/build/script`.
+6. Run `make.build` from the command line.  You may need to change directory to `$RSTPATH/build/script`.
    This runs a helper script that sets up other compiling code.
 
-4. In the same directory run `make.code` to compile all of the code.
+7. In the same directory run `make.code` to compile all of the code.
    This runs a script to find all of the source codes and compile them into binaries.
    A log of this compilation is stored in `$RSTPATH/log`.
 
