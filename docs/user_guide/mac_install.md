@@ -2,16 +2,6 @@
 
 This guide is intended to provide installation instructions on **macOS** for Apple-branded desktops and laptops. It begins with a list of dependencies required with instructions for installing RST. This process was designed for OS **Sierra** and above, but should still work on any machine which can run XCode. If you encounter any problems with installing RST, please create an [issue](https://github.com/superdarn/rst/issues/new) describing your problem and the error message you receive. The community will then help you solve the problem and add it into our troubleshooting section to help other users. 
 
-Table of Contents: 
--------------------
-
-1. [Library Requirements](#library-requirements) 
-    1. [Macports](#macports)
-    2. [Homebrew](#homebrew)
-    3. [CDF](#cdf)
-2. [Installation](#installation) 
-3. [Troubleshooting](#troubleshooting)
-
 ## Library Requirements
 
 > Warning! sudo privileges needed to install the various libraries. 
