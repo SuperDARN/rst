@@ -24,29 +24,25 @@ Note that the names of the following dependencies have been known to change slig
 
 [Macports install guide](https://www.macports.org/install.php)
 
-[Homebrew install guide](https://docs.brew.sh/Installation)
+### Homebrew Install (Recommended)
 
-You also need the CDF library, see below.
+#### For Intel-based (x86, i3, i5, i7, etc)
+If you are on an Intel-based (x86) Mac device, you can install homebrew with the following terminal command:
+###
+	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
+#### For ARM-based Macs (M1 or above)
+If you are on a ARM-based Mac device (M1 or above), you must install the x86 version of homebrew in your `/usr/local` directory. First, if you do not already have itstalled, install Rosetta (Apple x86 compatability layer) by running the following in a terminal window:
+###
+	softwareupdate --install-rosetta
 
-   Dependencies 	 |
- ------------------------| 		
- libhdf5		 |
- libncurses		 |
- libpng16		 |
- libx11			 | 		
- netpbm 		 |
- netcdf			 |
+After Rosetta is installed, close all active terminal windows, right click "get info" on the terminal application (in the /Applications/ directory) and check "Open using Rosetta". After you have finished installing RST, you may safely uncheck this box (RST will continue to work in a non-Rosetta window).
 
-Installation line:
+Install the x86 version of Homebrew in a Rosetta enabled window:
+###
+	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-> Warning! If you are using a Mac with an ARM64 architecture CPU (M1 and beyond), you must first install Rosetta and perform the install within a Rosetta enabled terminal. To do so, in a regular terminal run:
-
-###  
-    softwareupdate --install-rosetta
-
-> Then locate your terminal application in finder, select "Get Info" from the right click menu, and check the "Open using Rosetta" option. After installation, you may uncheck this option.
-
+## Installing pre-requesites
 ### Macports
     
     sudo port install libhdf5 libnetcdf libcurses libpng16 libx11 netpbm (10.77.03_2+x11)
@@ -54,35 +50,31 @@ Installation line:
 ### Homebrew
     
     sudo brew install hdf5 netcdf ncurses libpng netpbm
-    
-For X11, make sure you have XCode installed from the macOS App store
 
-Now install the [CDF](#cdf)
+### ARM-based Macs
 
-### CDF 
+You specifically need the x86 version of `netcdf`. Sometimes, homebrew may try to install the ARM-based version if you have two versions of Homebrew installed (ARM in `/opt/homebrew`, x86 in `/usr/local`), even if you're in a Rosetta window. To force `netcdf` to install an x86 version in the correct place, run:
+###
+	/usr/local/bin/brew install netcdf
 
-!!! Note
+## XCode
+
+All Macs need XCode to get X11 and run RST properly. You can download this normally from the [Mac App Store](https://apps.apple.com/ca/app/xcode/id497799835?mt=12). Nothing different is required for x86 or ARM Macs.
+
+## CDF 
+
+> Note
     **Make sure you successfully installed the ncurses library for your distribution first.** 
-You can find the latest release at: [http://cdf.gsfc.nasa.gov/](http://cdf.gsfc.nasa.gov)
+	
+You can find the latest release at: [http://cdf.gsfc.nasa.gov/](https://spdf.gsfc.nasa.gov/pub/software/cdf/dist/latest/macosx/)
+
 For macOS it is also available through MacPorts, as are all listed dependencies. However, if the MacPorts installation errors or you do not use MacPorts, you may follow the instructions below.
 
-From the above site, navigate to the `macosx` directory and download the pre-compiled binary file `cdf[XX_X]-setup_universal_binary.tar.gz`, where `XX_X` is the version number of the latest release. 
-
-Unpack the binary using the following steps:
-
-
-1. `tar -xzvf cdf[XX_X]-setup_universal_binary.tar.gz`
-2. double-click on the unpacked binary to be led through installation instructions.  
-
-Alternatively, you may follow the instructions given on the [linux page](linux_install.md), replacing:
-
-`make OS=linux ENV=gnu all` with `make OS=macosx ENV=gnu all`.  
-
-You can now delete the `cdfXX_X-dist` directory or binary and the `tar.gz` archive.
+From the above site, navigate to the `/cdf/dist/latest/macosx` directory and download the pkg file `CDFX_X_X-binary_signed.pkg`, where `X_X_X` is the version number of the latest release. Double click the file where you downloaded it and install it like a normal Mac package.
 
 Now go to the [Installation](#installation)
 
-#### TroubleShooting: 
+## TroubleShooting: 
 
 > If you find any problems/solutions, please create a [github issue](https://github.com/superdarn/rst/issues/new) so the community can help you or add it to the documentation
 
@@ -120,18 +112,18 @@ Error: curses.h not found
    Open `rst/.profile/base.bash` to check paths are correctly set:
 
    `XPATH, NETCDF_PATH, CDF_PATH` 
-   To check if the paths are set correctly locate the following header files:
-   - For XPATH `locate png.h`
-   - For NETCDF_PATH `locate netcdf.h`
-   - For CDF_PATH `locate cdf.h`
-  
-   These locate commands will point to the `\include` sub directory for the respective library. Make sure your path ends in the parent directory above this (e.g., `/Applications/cdf/cdf39_0-dist` and not `/Applications/cdf/cdf39_0-dist/include`. 
+   To change the paths to the locations of appropriate header files:
+   - For XPATH, this is the location of X11, which is included with XCode. It should be `"opt/X11/"` for ARM-based Macs and `"usr/X11/"` for x86 Macs. The `/include` folder in here contains .h files (headers) that RST requires, like `png.h`.
+     
+   - For NETCDF_PATH, point this to where you installed netcdf. This should be `"/usr/local/Cellar/netcdf/X.X.X_X"` if you installed it with Homebrew for both types of Macs, where the X's are the version number.
+     
+   - For CDF_PATH, this will be where the CDF package installed. It should be something like `"/Applications/cdf/cdf"`. The directory pointed to should contain the CDF `ReadMe.txt`.
    
    - If you have **IDL**, check to see that `IDL_IPATH` in `rst/.profile/idl.bash` is correct.
    	(Note: for users without IDL, modifying the `IDL_IPATH` environment variable is
    	not required).
 
-2. Load the RST environment variables. Open and edit your `~/.bashrc` file to include:
+2. Load the RST environment variables. Open and edit your `~/.bashrc` (or `~/.zshrc` if you're on an ARM file, or have switch from bash to zsh) to include:
 
         # bash profile for rst
         export RSTPATH="INSTALL LOCATION"/rst
