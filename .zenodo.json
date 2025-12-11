@@ -1,5 +1,5 @@
 {
-    "title": "SuperDARN Radar Software Toolkit (RST) 5.1",
+    "title": "SuperDARN Radar Software Toolkit (RST) 5.1.1",
 
     "creators":[
         {
@@ -54,6 +54,84 @@
             "affiliation": "Lancaster University",
             "name": "Walach, M.-T.",
             "orcid": "0000-0002-9352-0659"
+        },
+        {
+            "affiliation": "University of Saskatchewan",
+            "name": "Andre, D."
+        },
+        {
+            "affiliation": "U.S. National Science Foundation",
+            "name": "Baker, K.B.",
+            "orcid": "0009-0000-0341-3204"
+        },
+        {
+            "affiliation": "Johns Hopkins University Applied Physics Laboratory",
+            "name": "Barnes, R.J."
+        },
+        {
+            "affiliation": "Virginia Tech",
+            "name": "Greenwald, R.A.",
+            "orcid": "0000-0002-7421-5536"
+        },
+        {
+            "affiliation": "Centre National de la Recherche Scientifique",
+            "name": "Hanuise, C."
+        },
+        {
+            "affiliation": "British Antarctic Survey",
+            "name": "Matin, N."
+        },
+        {
+            "affiliation": "University of Bergen",
+            "name": "Oksavik, K.",
+            "orcid": "0000-0003-4312-6992"
+        },
+        {
+            "affiliation": "Lancaster University",
+            "name": "Ruohoniemi, J.M.",
+            "orcid": "0000-0002-2747-7066"
+        },
+        {
+            "affiliation": "Laboratoire de Physique et Chimie de l'Environnement/Centre National de la Recherche Scientifique",
+            "name": "Villain, J.P."
+        },
+        {
+            "affiliation": "Johns Hopkins University",
+            "name": "Wing, S.",
+            "orcid": "0000-0001-9342-1813"
+        },
+        {
+            "affiliation": "Istituto Nazionale di Geofisica e Vulcanologia",
+            "name": "Coco, I.",
+            "orcid": "0000-0003-4070-6828"
+        },
+        {
+            "affiliation": "KBR, Inc.",
+            "name": "Cousins, E.D.P."
+        },
+        {
+            "affiliation": "Lancaster University",
+            "name": "Grocott, A.",
+            "orcid": "0000-0002-6489-095X"
+        },
+        {
+            "affiliation": "LeoLabs, Inc.",
+            "name": "Kotyk, K."
+        },
+        {
+            "affiliation": "LeoLabs, Inc.",
+            "name": "Reimer, A.S.",
+            "orcid": "0000-0002-4621-3453"
+        },
+        {
+            "affiliation": "Anthropic, Inc.",
+            "name": "Ribeiro, A.J."
+        },
+        {
+            "affiliation": "University of Newcastle",
+            "name": "Waters, C.L.",
+            "orcid": "0000-0003-2121-6962"
         }
+
     ]
 }

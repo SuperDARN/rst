@@ -43,7 +43,7 @@
 8   -1 19940601 20190322 "Stokkseyri"              "Lancaster University"                "hdw.dat.sto" "sto" "w"
 9   -1 19951120 20180909 "Pykkvibaer"              "University of Leicester"             "hdw.dat.pyk" "pyk" "e"
 10   1 19950222 25000101 "Hankasalmi"              "University of Leicester"             "hdw.dat.han" "han" "f"
-11   1 19970302 25000101 "SANAE"                   "University of KwaZulu-Natal"         "hdw.dat.san" "san" "d"
+11   1 19970302 25000101 "SANAE"                   "SANSA/University of KwaZulu-Natal"   "hdw.dat.san" "san" "d"
 12   1 19950201 25000101 "Syowa South"             "NIPR"                                "hdw.dat.sys" "sys" "j"
 13   1 19970208 25000101 "Syowa East"              "NIPR"                                "hdw.dat.sye" "sye" "n"
 14   1 19991202 25000101 "TIGER"                   "La Trobe University"                 "hdw.dat.tig" "tig" "r"
