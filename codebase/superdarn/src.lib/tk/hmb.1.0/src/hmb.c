@@ -48,10 +48,10 @@ Modifications:
 #include "map_addhmb.h"
 
 float latref=59;
-int nlat=36;
+int nlat=46;
 
-float bndarr[24][36];
-float lathmb[36];
+float bndarr[24][46];
+float lathmb[46];
 
 #define HMBSTEP 50
 
