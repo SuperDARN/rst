@@ -410,7 +410,7 @@ void RPosMag(int center,int bcrd,int rcrd,
             height,d,rho,lat,lng,chisham);
 
     if (old_aacgm) AACGMConvert(*lat,*lng,(double) height,lat,lng,&radius,0);
-    else           AACGM_v2_Convert(*lat,*lng,(double) height,lat,lng,&radius,0);
+    else           AACGM_v2_Convert(*lat,*lng,(double) height,lat,lng,&radius,GEOCENTRIC);
 
 }
 

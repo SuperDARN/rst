@@ -399,7 +399,7 @@ int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
       *mlat = out[0];
       *mlon = out[1];
     } else if (magflg == 1) s=AACGMConvert(flat,flon,tmp_ht,mlat,mlon,&dummy,0);
-    else s=AACGM_v2_Convert(flat,flon,tmp_ht,mlat,mlon,&dummy,0);
+    else s=AACGM_v2_Convert(flat,flon,tmp_ht,mlat,mlon,&dummy,GEOCENTRIC);
     if (s==-1) return -1;
 
     /* Calculate pointing direction latitude/longitude (xlat,xlon) given
@@ -416,7 +416,7 @@ int RPosInvMag(int bm, int rn, int year, struct RadarSite *hdw, double frang,
       nlat = out[0];
       nlon = out[1];
     } else if (magflg == 1) s=AACGMConvert(xlat,xlon,tmp_ht,&nlat,&nlon,&dummy,0);
-    else s=AACGM_v2_Convert(xlat,xlon,tmp_ht,&nlat,&nlon,&dummy,0);
+    else s=AACGM_v2_Convert(xlat,xlon,tmp_ht,&nlat,&nlon,&dummy,GEOCENTRIC);
     if (s==-1) return -1;
 
     /* Make sure nlon varies between +/- 180 degrees */
