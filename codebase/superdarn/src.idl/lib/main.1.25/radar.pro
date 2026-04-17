@@ -858,6 +858,10 @@ pro RadarFldPnth,gdlat,gdlon,psi,bore,fh,r,frho,flat,flon,chisham=chisham
   
     endrep until (abs(fhx-xh) le 0.5)
 
+    if keyword_set(chisham) and r gt 2137.5 then begin
+        frho = frad + sqrt(rrad*rrad + (r/3.0)*(r/3.0) + 2.0*(r/3.0)*rrad*sin(!PI*xel/180.0)) - rrad
+    endif
+
 end
  
 
