@@ -48,10 +48,10 @@ Modifications:
 #include "map_addhmb.h"
 
 float latref=59;
-int nlat=36;
+int nlat=46;
 
-float bndarr[24][36];
-float lathmb[36];
+float bndarr[24][46];
+float lathmb[46];
 
 #define HMBSTEP 50
 
@@ -104,7 +104,7 @@ struct hmbtab *load_hmb(FILE *fp)
   ptr->time=realloc(ptr->time,sizeof(double)*cnt);
   ptr->median=realloc(ptr->median,sizeof(float)*cnt);
   ptr->actual=realloc(ptr->actual,sizeof(float)*cnt);
- 
+
   return ptr;
 }
 
@@ -137,7 +137,7 @@ void add_hmb_grd(float latmin,int yr,int yrsec,struct CnvMapData *map,
 
   /* We should do something about the hemisphere here */
 
-  for (lat=latmin+0.5;lat<90;lat++) {  
+  for (lat=latmin+0.5;lat<90;lat++) {
     nlon=(int) (360*cos(lat*PI/180)+0.5);
     lstp=360.0/nlon;
 
@@ -157,9 +157,9 @@ void add_hmb_grd(float latmin,int yr,int yrsec,struct CnvMapData *map,
       bfac=(90-latmin)/(90-latref);
       del_L=bfac*5.5;
       latx=latmin;
-      if ((mlt>=11) && (mlt<=19)) 
+      if ((mlt>=11) && (mlt<=19))
         latx=latmin+del_L*(1+cos((PI/8)*(mlt-11)));
-      else if ((mlt<11) && (mlt>=5)) 
+      else if ((mlt<11) && (mlt>=5))
         latx=latmin+del_L*(1+cos((PI/6)*(11-mlt)));
 
       if (lat<=latx) {
@@ -172,7 +172,7 @@ void add_hmb_grd(float latmin,int yr,int yrsec,struct CnvMapData *map,
 
     off=map->num_model;
     map->num_model+=c;
-    if (map->model==NULL) 
+    if (map->model==NULL)
       map->model=malloc(sizeof(struct GridGVec)*map->num_model);
     else map->model=realloc(map->model,sizeof(struct GridGVec)*map->num_model);
 
@@ -207,7 +207,7 @@ void make_hmb()
 
       mlt=m;
 
-      lathmb[n]=n+40.0; /* The +40.0 means we start making the grid used by the iterative HMB-finding algorithm at geomagnetic latitude of 40 degrees. */  
+      lathmb[n]=n+30.0; /* The +30.0 means we start making the grid used by the iterative HMB-finding algorithm at geomagnetic latitude of 30 degrees. */
       latmin=lathmb[n];
 
       bfac=(90-latmin)/(90-latref);
@@ -263,12 +263,12 @@ void map_addhmb(int yr, int yrsec, struct CnvMapData *map, int bndnp,
     if (map->hemisphere==1) {
       if ((mlt>=11) && (mlt<=19))
         map->bnd_lat[i]=latmin+del_L*(1+cos((PI/8)*(mlt-11)));
-      else if ((mlt<11) && (mlt>=5)) 
+      else if ((mlt<11) && (mlt>=5))
         map->bnd_lat[i]=latmin+del_L*(1+cos((PI/6)*(11-mlt)));
     } else {
-      if ((mlt>=11) && (mlt<=19)) 
+      if ((mlt>=11) && (mlt<=19))
         map->bnd_lat[i]=-latmin-del_L*(1+cos((PI/8)*(mlt-11)));
-      else if ((mlt<11) && (mlt>=5)) 
+      else if ((mlt<11) && (mlt>=5))
         map->bnd_lat[i]=-latmin-del_L*(1+cos((PI/6)*(11-mlt)));
     }
 

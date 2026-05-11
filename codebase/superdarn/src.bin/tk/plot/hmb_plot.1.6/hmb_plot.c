@@ -216,7 +216,7 @@ int main(int argc,char *argv[]) {
   char *xtitle="Time";
   int xttl_flg=0x03;
  
-  double ymin=40,ymax=80;
+  double ymin=30,ymax=80;
   double ymajor=5,yminor=1;
   int ytick_flg=0x03;
   int ylbl_flg=0x03;
@@ -422,7 +422,7 @@ int main(int argc,char *argv[]) {
 
   if (map->hemisphere==-1) {
     ymin=-80;
-    ymax=-40;
+    ymax=-30;
   }
 
   GrplotPanel(plt,0,fgcol,0x0f,lne);
