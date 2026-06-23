@@ -29,7 +29,7 @@ Modifications:
 
 
 #define SND_MAJOR_REVISION 1
-#define SND_MINOR_REVISION 1
+#define SND_MINOR_REVISION 2
 
 
 struct SndData {
@@ -83,6 +83,7 @@ struct SndData {
   int16 rsep;
   int16 xcf;
   int16 tfreq;
+  int16 wide;
 
   double sky_noise;
 
