@@ -94,6 +94,7 @@ struct RadarParm {
   int16 tfreq;
   int16 offset; 
   int16 ifmode;
+  int16 wide;
 
   int32 mxpwr;
   int32 lvmax;

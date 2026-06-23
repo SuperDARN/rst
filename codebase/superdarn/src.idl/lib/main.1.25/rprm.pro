@@ -96,6 +96,7 @@ pro RadarMakeRadarPrm,prm
          tfreq: 0, $
          offset: 0, $
          ifmode: 0, $
+         wide: 0, $
          mxpwr: 0L, $
          lvmax: 0L, $
          pulse: intarr(PULSE_SIZE), $
@@ -149,6 +150,7 @@ function RadarEncodeRadarPrm,prm,sclvec,arrvec,new=new
   s=DataMapMakeScalar('mplgs',prm.mplgs,sclvec)
   s=DataMapMakeScalar('mplgexs',prm.mplgexs,sclvec)
   s=DataMapMakeScalar('ifmode',prm.ifmode,sclvec)
+  s=DataMapMakeScalar('wide',prm.wide,sclvec)
   s=DataMapMakeScalar('nrang',prm.nrang,sclvec)
   s=DataMapMakeScalar('frang',prm.frang,sclvec)
   s=DataMapMakeScalar('rsep',prm.rsep,sclvec)
@@ -175,11 +177,11 @@ function RadarDecodeRadarPrm,prm,sclvec,arrvec
            'time.us','txpow','nave','atten','lagfr','smsep','ercod', $
            'stat.agc','stat.lopwr','noise.search','noise.mean','channel', $
            'bmnum','bmazm','scan','offset','rxrise','intt.sc','intt.us', $
-           'txpl', 'mpinc','mppul','mplgs','mplgexs','ifmode','nrang', $
+           'txpl', 'mpinc','mppul','mplgs','mplgexs','ifmode','wide','nrang', $
            'frang', 'rsep','xcf','tfreq', 'mxpwr','lvmax','combf']
 
   scltype=[1,1,1,9,9,2,2,2,2,2,2,2,2,3,2,2,2,2,2,2,2,2,4,4,2,2,4,2,2,2,2,3, $
-           2,2,2,2,2,2,2,2,2,2,2,3,3,9]
+           2,2,2,2,2,2,2,2,2,2,2,2,3,3,9]
   
   sclid=intarr(n_elements(sclname))
   sclid[*]=-1
@@ -258,13 +260,14 @@ function RadarDecodeRadarPrm,prm,sclvec,arrvec
   if (sclid[35] ne -1) then prm.mplgs=*(sclvec[sclid[35]].ptr)
   if (sclid[36] ne -1) then prm.mplgexs=*(sclvec[sclid[36]].ptr)
   if (sclid[37] ne -1) then prm.ifmode=*(sclvec[sclid[37]].ptr)
-  if (sclid[38] ne -1) then prm.nrang=*(sclvec[sclid[38]].ptr)
-  if (sclid[39] ne -1) then prm.frang=*(sclvec[sclid[39]].ptr)
-  if (sclid[40] ne -1) then prm.rsep=*(sclvec[sclid[40]].ptr)
-  if (sclid[41] ne -1) then prm.xcf=*(sclvec[sclid[41]].ptr)
-  if (sclid[42] ne -1) then prm.tfreq=*(sclvec[sclid[42]].ptr)
-  if (sclid[43] ne -1) then prm.mxpwr=*(sclvec[sclid[43]].ptr)
-  if (sclid[44] ne -1) then prm.lvmax=*(sclvec[sclid[44]].ptr)
+  if (sclid[38] ne -1) then prm.wide=*(sclvec[sclid[38]].ptr)
+  if (sclid[39] ne -1) then prm.nrang=*(sclvec[sclid[39]].ptr)
+  if (sclid[40] ne -1) then prm.frang=*(sclvec[sclid[40]].ptr)
+  if (sclid[41] ne -1) then prm.rsep=*(sclvec[sclid[41]].ptr)
+  if (sclid[42] ne -1) then prm.xcf=*(sclvec[sclid[42]].ptr)
+  if (sclid[43] ne -1) then prm.tfreq=*(sclvec[sclid[43]].ptr)
+  if (sclid[44] ne -1) then prm.mxpwr=*(sclvec[sclid[44]].ptr)
+  if (sclid[45] ne -1) then prm.lvmax=*(sclvec[sclid[45]].ptr)
   if (prm.mppul gt 0) && (arrid[0] ne -1) then $
      prm.pulse[0:prm.mppul-1]=*(arrvec[arrid[0]].ptr)
   if (prm.mplgs gt 0) && (arrid[1] ne -1) then $

@@ -87,6 +87,7 @@ void IDLCopyRadarParmFromIDL(struct RadarIDLParm *iprm,struct RadarParm *prm) {
   prm->tfreq=iprm->tfreq;
   prm->offset=iprm->offset;
   prm->ifmode=iprm->ifmode;
+  prm->wide=iprm->wide;
   prm->mxpwr=iprm->mxpwr;
   prm->lvmax=iprm->lvmax;
 
@@ -171,6 +172,7 @@ void IDLCopyRadarParmToIDL(struct RadarParm *prm,struct RadarIDLParm *iprm) {
   iprm->tfreq=prm->tfreq;
   iprm->offset=prm->offset;
   iprm->ifmode=prm->ifmode;
+  iprm->wide=prm->wide;
   iprm->mxpwr=prm->mxpwr;
   iprm->lvmax=prm->lvmax;
 
@@ -264,11 +266,12 @@ struct RadarIDLParm *IDLMakeRadarParm(IDL_VPTR *vptr) {
 
     {"OFFSET",0,(void *) IDL_TYP_INT}, /* 29 */
     {"IFMODE",0,(void *) IDL_TYP_INT}, /* 30 */
-    {"MXPWR",0,(void *) IDL_TYP_LONG}, /* 31 */
-    {"LVMAX",0,(void *) IDL_TYP_LONG}, /* 32 */
-    {"PULSE",pdim,(void *) IDL_TYP_INT}, /* 33 */
-    {"LAG",ldim,(void *) IDL_TYP_INT}, /* 34 */
-    {"COMBF",0,(void *) IDL_TYP_STRING}, /* 35 */   
+    {"WIDE",0,(void *) IDL_TYP_INT},   /* 31 */
+    {"MXPWR",0,(void *) IDL_TYP_LONG}, /* 32 */
+    {"LVMAX",0,(void *) IDL_TYP_LONG}, /* 33 */
+    {"PULSE",pdim,(void *) IDL_TYP_INT}, /* 34 */
+    {"LAG",ldim,(void *) IDL_TYP_INT}, /* 35 */
+    {"COMBF",0,(void *) IDL_TYP_STRING}, /* 36 */
     {0}};
 
   static IDL_MEMINT ilDims[IDL_MAX_ARRAY_DIM];

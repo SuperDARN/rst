@@ -278,6 +278,8 @@ int RadarParmDecode(struct DataMap *ptr,struct RadarParm *prm) {
       prm->mplgexs=*(s->data.sptr);
     if ((strcmp(s->name,"ifmode")==0) && (s->type==DATASHORT))
       prm->ifmode=*(s->data.sptr);
+    if ((strcmp(s->name,"wide")==0) && (s->type==DATASHORT))
+      prm->wide=*(s->data.sptr);
     if ((strcmp(s->name,"nrang")==0) && (s->type==DATASHORT))
       prm->nrang=*(s->data.sptr);
     if ((strcmp(s->name,"frang")==0) && (s->type==DATASHORT))
@@ -363,6 +365,7 @@ int RadarParmEncode(struct DataMap *ptr,struct RadarParm *prm) {
   DataMapAddScalar(ptr,"mplgs",DATASHORT,&prm->mplgs);
   DataMapAddScalar(ptr,"mplgexs",DATASHORT,&prm->mplgexs);
   DataMapAddScalar(ptr,"ifmode",DATASHORT,&prm->ifmode);
+  DataMapAddScalar(ptr,"wide",DATASHORT,&prm->wide);
 
   DataMapAddScalar(ptr,"nrang",DATASHORT,&prm->nrang);
   DataMapAddScalar(ptr,"frang",DATASHORT,&prm->frang);
