@@ -80,7 +80,7 @@ void IDLCopySndDataFromIDL(int nrang, struct SndIDLData *isnd,
   snd->rsep = isnd->rsep;
   snd->xcf = isnd->xcf;
   snd->tfreq = isnd->tfreq;
-  snd->wide = isnd->wide;
+  snd->widetx = isnd->widetx;
   snd->sky_noise = isnd->sky_noise;
 
   if (strlen(IDL_STRING_STR(&isnd->combf)) !=0)
@@ -161,7 +161,7 @@ void IDLCopySndDataToIDL(int nrang, struct SndData *snd,
   isnd->rsep = snd->rsep;
   isnd->xcf = snd->xcf;
   isnd->tfreq = snd->tfreq;
-  isnd->wide = snd->wide;
+  isnd->widetx = snd->widetx;
   isnd->sky_noise = snd->sky_noise;
 
   if (snd->combf !=NULL) {
@@ -257,7 +257,7 @@ struct SndIDLData *IDLMakeSndData(IDL_VPTR *vptr) {
     {"RSEP",0,(void *) IDL_TYP_INT},    /* 17 */
     {"XCF",0,(void *) IDL_TYP_INT},     /* 18 */
     {"TFREQ",0,(void *) IDL_TYP_INT},   /* 19 */
-    {"WIDE",0,(void *) IDL_TYP_INT},    /* 20 */
+    {"WIDETX",0,(void *) IDL_TYP_INT},  /* 20 */
     {"SKY_NOISE",0,(void *) IDL_TYP_FLOAT}, /* 21 */
     {"COMBF",0,(void *) IDL_TYP_STRING}, /* 22 */
     {"FIT_REVISION",0,NULL},             /* 23 */

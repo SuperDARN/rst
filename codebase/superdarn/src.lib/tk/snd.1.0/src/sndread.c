@@ -122,8 +122,8 @@ int SndDecode(struct DataMap *ptr, struct SndData *snd) {
       snd->xcf=*(s->data.sptr);
     if ((strcmp(s->name,"tfreq")==0) && (s->type==DATASHORT))
       snd->tfreq=*(s->data.sptr);
-    if ((strcmp(s->name,"wide")==0) && (s->type==DATASHORT))
-      snd->wide=*(s->data.sptr);
+    if ((strcmp(s->name,"widetx")==0) && (s->type==DATASHORT))
+      snd->widetx=*(s->data.sptr);
     if ((strcmp(s->name,"noise.sky")==0) && (s->type==DATAFLOAT))
       snd->sky_noise=*(s->data.fptr);
     if ((strcmp(s->name,"combf")==0) && (s->type==DATASTRING))

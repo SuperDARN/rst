@@ -96,7 +96,7 @@ int SndWrite(int fid, struct SndData *snd) {
   DataMapAddScalar(ptr,"rsep",DATASHORT,&snd->rsep);
   DataMapAddScalar(ptr,"xcf",DATASHORT,&snd->xcf);
   DataMapAddScalar(ptr,"tfreq",DATASHORT,&snd->tfreq);
-  DataMapAddScalar(ptr,"wide",DATASHORT,&snd->wide);
+  DataMapAddScalar(ptr,"widetx",DATASHORT,&snd->widetx);
 
   sky_noise=snd->sky_noise;
   DataMapStoreScalar(ptr,"noise.sky",DATAFLOAT,&sky_noise);

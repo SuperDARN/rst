@@ -83,7 +83,7 @@ struct SndData {
   int16 rsep;
   int16 xcf;
   int16 tfreq;
-  int16 wide;
+  int16 widetx;
 
   double sky_noise;
 
