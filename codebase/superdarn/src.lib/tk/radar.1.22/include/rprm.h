@@ -42,6 +42,11 @@ struct RadarParm {
     char *command;
   } origin;
 
+  struct {
+    char *time;
+    char *command;
+  } history;
+
   int16 cp;
   int16 stid;
 
@@ -111,6 +116,10 @@ void RadarParmFree(struct RadarParm *ptr);
 int RadarParmSetOriginTime(struct RadarParm *ptr,char *str);
 
 int RadarParmSetOriginCommand(struct RadarParm *ptr,char *str);
+
+int RadarParmSetHistoryTime(struct RadarParm *ptr,char *str);
+
+int RadarParmSetHistoryCommand(struct RadarParm *ptr,char *str);
 
 int RadarParmSetCombf(struct RadarParm *ptr,char *str);
 
