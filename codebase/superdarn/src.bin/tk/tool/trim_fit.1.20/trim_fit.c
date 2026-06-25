@@ -154,13 +154,13 @@ int main (int argc,char *argv[]) {
   char *chnstr=NULL;
   char *cpstr=NULL;
 
-  // origin time for when the file is produced
+  // history time for when the file is produced
   time_t ctime;
-  // counter for origin command length  
+  // counter for history command length
   int n=0;
-  // origin command array to hold the string
+  // history command array to hold the string
   char command[128];
-  // string to hold the origin time 
+  // string to hold the history time
   char tmstr[40];
 
   OptionAdd(&opt,"-help",'x',&help);
@@ -343,11 +343,11 @@ int main (int argc,char *argv[]) {
     // initialize array to be empty?
     command[0]=0;
     for (int c=0; c<argc; c++) {
-      // check if the origin command is too long
+      // check if the history command is too long
       n+=strlen(argv[c])+1;
       // if so cut it off
       if (n>127) break;
-      // add space between command line arguments and copy to origin command
+      // add space between command line arguments and copy to history command
       if (c !=0) strcat(command," ");
       strcat(command, argv[c]);
     }
@@ -440,14 +440,14 @@ int main (int argc,char *argv[]) {
                          (int) sc,prm->channel,
                          prm->bmnum,prm->cp);
 
-      // origin  code 1 means it is not produced on site
+      // origin code 1 means it is not produced on site
       prm->origin.code=1;
       // copy it over to the file
       ctime= time((time_t) 0);
-      RadarParmSetOriginCommand(prm,command);
+      RadarParmSetHistoryCommand(prm,command);
       strcpy(tmstr,asctime(gmtime(&ctime)));
       tmstr[24]=0;
-      RadarParmSetOriginTime(prm,tmstr);
+      RadarParmSetHistoryTime(prm,tmstr);
 
       status=FitFwrite(stdout,prm,fit);
 
