@@ -38,6 +38,8 @@ struct CnvMapData *CnvMapMake() {
   if (ptr==NULL) return 0;
 
   memset(ptr,0,sizeof(struct CnvMapData));
+  ptr->history.time=NULL;
+  ptr->history.command=NULL;
   ptr->coef=NULL;
   ptr->model=NULL;
   ptr->bnd_lat=NULL;
@@ -45,12 +47,71 @@ struct CnvMapData *CnvMapMake() {
   return ptr;
 }
 
+
 void CnvMapFree(struct CnvMapData *ptr) {
   if (ptr==NULL);
+  if (ptr->history.time !=NULL) free(ptr->history.time);
+  if (ptr->history.command !=NULL) free(ptr->history.command);
   if (ptr->coef !=NULL) free(ptr->coef);
   if (ptr->model !=NULL) free(ptr->model);
   if (ptr->bnd_lat !=NULL) free(ptr->bnd_lat);
   if (ptr->bnd_lon !=NULL) free(ptr->bnd_lon);
   free (ptr);
+}
+
+
+int CnvMapSetHistoryTime(struct CnvMapData *ptr,char *str) {
+  char *tmp=NULL;
+  if (ptr==NULL) return -1;
+
+  if (str==NULL) {
+    if (ptr->history.time !=NULL) free(ptr->history.time);
+    ptr->history.time=NULL;
+    return 0;
+  }
+
+  if (ptr->history.time==NULL) tmp=malloc(strlen(str)+1);
+  else tmp=realloc(ptr->history.time,strlen(ptr->history.time)+strlen(str)+3);
+
+  if (tmp==NULL) return -1;
+
+  if (ptr->history.time==NULL) {
+    strcpy(tmp,str);
+  } else {
+    strcat(tmp,"; ");
+    strcat(tmp,str);
+  }
+
+  ptr->history.time=tmp;
+  return 0;
+
+}
+
+
+int CnvMapSetHistoryCommand(struct CnvMapData *ptr,char *str) {
+  char *tmp=NULL;
+  if (ptr==NULL) return -1;
+
+  if (str==NULL) {
+    if (ptr->history.command !=NULL) free(ptr->history.command);
+    ptr->history.command=NULL;
+    return 0;
+  }
+
+  if (ptr->history.command==NULL) tmp=malloc(strlen(str)+1);
+  else tmp=realloc(ptr->history.command,strlen(ptr->history.command)+strlen(str)+3);
+
+  if (tmp==NULL) return -1;
+
+  if (ptr->history.command==NULL) {
+    strcpy(tmp,str);
+  } else {
+    strcat(tmp,"; ");
+    strcat(tmp,str);
+  }
+
+  ptr->history.command=tmp;
+  return 0;
+
 }
 

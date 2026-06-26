@@ -352,6 +352,9 @@ int CnvMapWrite(int fid,struct CnvMapData *map,struct GridData *grd) {
 
   data=DataMapMake();
 
+  DataMapAddScalar(data,"history.time",DATASTRING,&map->history.time);
+  DataMapAddScalar(data,"history.command",DATASTRING,&map->history.command);
+
   DataMapAddScalar(data,"start.year",DATASHORT,&syr);
   DataMapAddScalar(data,"start.month",DATASHORT,&smo);
   DataMapAddScalar(data,"start.day",DATASHORT,&sdy);

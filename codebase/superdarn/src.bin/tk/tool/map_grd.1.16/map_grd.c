@@ -25,6 +25,7 @@ Modifications:
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <math.h>
 #include <sys/types.h>
 #include "rtypes.h"
@@ -142,6 +143,11 @@ int main(int argc,char *argv[]) {
   int (*Map_Write)(FILE *, struct CnvMapData *, struct GridData *);
   double (*MLTCnv)(int, int, double);
 
+  time_t ctime;
+  int c,n;
+  char command[128];
+  char tmstr[40];
+
   grd=GridMake();
   map=CnvMapMake();
 
@@ -229,6 +235,21 @@ int main(int argc,char *argv[]) {
   map->error_wt=1;
   map->hemisphere=1;
   map->lat_shft=latshft;
+
+  command[0]=0;
+  n=0;
+  for (c=0;c<argc;c++) {
+    n+=strlen(argv[c])+1;
+    if (n>127) break;
+    if (c !=0) strcat(command," ");
+    strcat(command,argv[c]);
+  }
+
+  ctime = time((time_t) 0);
+  strcpy(tmstr,asctime(gmtime(&ctime)));
+  tmstr[24]=0;
+  CnvMapSetHistoryTime(map,tmstr);
+  CnvMapSetHistoryCommand(map,command);
 
   /* set function pointer to read/write old or new */
   if (old) {
