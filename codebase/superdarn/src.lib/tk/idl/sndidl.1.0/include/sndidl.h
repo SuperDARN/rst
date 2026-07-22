@@ -83,6 +83,7 @@ struct SndIDLData {
   short rsep;
   short xcf;
   short tfreq;
+  short widetx;
 
   float sky_noise;
 

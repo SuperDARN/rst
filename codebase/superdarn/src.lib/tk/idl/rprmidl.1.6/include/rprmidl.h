@@ -103,6 +103,7 @@ struct RadarIDLParm {
   short tfreq;
   short offset;
   short ifmode;
+  short widetx;
 
   IDL_LONG mxpwr;
   IDL_LONG lvmax;
