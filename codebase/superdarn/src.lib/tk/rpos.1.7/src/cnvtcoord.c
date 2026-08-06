@@ -273,6 +273,12 @@ void fldpnth(double gdlat, double gdlon, double psi, double bore,
     
     } while(fabs(fhx-xh) > 0.5);
 
+    /* Use actual elevation angle for 1.5-hop propagation with Chisham model
+     * to find true virtual height (instead of pseudo virtual height) */
+    if ((chisham) && (r>2137.5)) {
+        *frho = frad + sqrt(rrad*rrad + (r/3.0)*(r/3.0) + 2.0*(r/3.0)*rrad*sind(xel)) - rrad;
+    }
+
 } 
 
 
@@ -404,7 +410,7 @@ void RPosMag(int center,int bcrd,int rcrd,
             height,d,rho,lat,lng,chisham);
 
     if (old_aacgm) AACGMConvert(*lat,*lng,(double) height,lat,lng,&radius,0);
-    else           AACGM_v2_Convert(*lat,*lng,(double) height,lat,lng,&radius,0);
+    else           AACGM_v2_Convert(*lat,*lng,(double) height,lat,lng,&radius,GEOCENTRIC);
 
 }
 
