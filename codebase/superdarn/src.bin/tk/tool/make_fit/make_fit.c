@@ -507,8 +507,8 @@ int main(int argc,char *argv[]) {
     //set origin code = 1 which means produced not at a radar site
     prm->origin.code = 1;
     ctime = time((time_t) 0);
-    if (RadarParmSetOriginCommand(prm,command) == -1) {
-      fprintf(stderr,"Error: cannot set Origin Command\n");
+    if (RadarParmSetHistoryCommand(prm,command) == -1) {
+      fprintf(stderr,"Error: cannot set History Command\n");
       free_radarstructs(network, prm, raw);
       free_files(rawfp, fp, NULL, inxfp);
       free_fitstructs(fit_prms, fit, fblk);
@@ -517,8 +517,8 @@ int main(int argc,char *argv[]) {
 
     strcpy(tmstr,asctime(gmtime(&ctime)));
     tmstr[24]=0;
-    if (RadarParmSetOriginTime(prm,tmstr) == -1) {
-      fprintf(stderr,"Error: cannot set Origin Time\n");
+    if (RadarParmSetHistoryTime(prm,tmstr) == -1) {
+      fprintf(stderr,"Error: cannot set History Time\n");
       free_radarstructs(network, prm, raw);
       free_files(rawfp, fp, NULL, inxfp);
       free_fitstructs(fit_prms, fit, fblk);

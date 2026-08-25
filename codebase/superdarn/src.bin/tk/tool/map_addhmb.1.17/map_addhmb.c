@@ -26,6 +26,7 @@ Modifications:
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <math.h>
 #include <sys/types.h>
 #include "rtypes.h"
@@ -104,7 +105,7 @@ int main(int argc,char *argv[])
   int tflg=0;
 
   int mlti;
-  int c;
+  int c,n;
 
   float latmin[3]={0,0,0};
   float lattmp[3];
@@ -140,6 +141,10 @@ int main(int argc,char *argv[])
   int (*Map_Read)(FILE *, struct CnvMapData *, struct GridData *);
   int (*Map_Write)(FILE *, struct CnvMapData *, struct GridData *);
   double (*MLTCnv)(int, int, double);
+
+  time_t ctime;
+  char command[128];
+  char tmstr[40];
 
   for (i=0;i<3;i++) {
     grd[i]=GridMake();
@@ -214,6 +219,19 @@ int main(int argc,char *argv[])
     exit(-1);
   }
 
+  command[0]=0;
+  n=0;
+  for (c=0;c<argc;c++) {
+    n+=strlen(argv[c])+1;
+    if (n>127) break;
+    if (c !=0) strcat(command," ");
+    strcat(command,argv[c]);
+  }
+
+  ctime = time((time_t) 0);
+  strcpy(tmstr,asctime(gmtime(&ctime)));
+  tmstr[24]=0;
+
   /* set function pointer to read/write old or new */
   if (old) {
     Map_Read  = &OldCnvMapFread;
@@ -259,6 +277,8 @@ int main(int argc,char *argv[])
 
       if (tflg == 0) {
         map_addhmb(yr,yrsec,map[0],bndnp,bndstep,latref,latmed,magflg);
+        CnvMapSetHistoryTime(map[0],tmstr);
+        CnvMapSetHistoryCommand(map[0],command);
         (*Map_Write)(stdout,map[0],grd[0]);
         TimeEpochToYMDHMS(grd[0]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
         if (vb==1) 
@@ -366,6 +386,8 @@ int main(int argc,char *argv[])
             if (latmed != -1) map_addhmb(yr,yrsec,map[0],bndnp,bndstep,
                                          latref,latmed,magflg);
             else map[0]->latmin = -1;
+            CnvMapSetHistoryTime(map[0],tmstr);
+            CnvMapSetHistoryCommand(map[0],command);
             (*Map_Write)(stdout,map[0],grd[0]);
 
             TimeEpochToYMDHMS(grd[0]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
@@ -387,6 +409,8 @@ int main(int argc,char *argv[])
           if (latmed != -1) map_addhmb(yr,yrsec,map[idx],bndnp,bndstep,
                                        latref,latmed,magflg);
           else map[idx]->latmin = -1;
+          CnvMapSetHistoryTime(map[idx],tmstr);
+          CnvMapSetHistoryCommand(map[idx],command);
           (*Map_Write)(stdout,map[idx],grd[idx]);
           TimeEpochToYMDHMS(grd[idx]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
           if (vb==1) 
@@ -409,7 +433,7 @@ int main(int argc,char *argv[])
     }
 
     if (cnt == 0) exit(0); /* no record to write out */
-  
+
     idx = buf-1;
     if (idx < 0) idx += 3;
 
@@ -419,6 +443,8 @@ int main(int argc,char *argv[])
         if (latmed != -1) map_addhmb(yr,yrsec,map[0],bndnp,bndstep,
                                      latref,latmed,magflg);
         else map[0]->latmin = -1;
+        CnvMapSetHistoryTime(map[0],tmstr);
+        CnvMapSetHistoryCommand(map[0],command);
         (*Map_Write)(stdout,map[0],grd[0]);
         TimeEpochToYMDHMS(grd[0]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
         if (vb == 1) 
@@ -439,6 +465,8 @@ int main(int argc,char *argv[])
       if (latmed != -1) map_addhmb(yr,yrsec,map[idx],bndnp,bndstep,
                                    latref,latmed,magflg);
       else map[idx]->latmin = -1;
+      CnvMapSetHistoryTime(map[idx],tmstr);
+      CnvMapSetHistoryCommand(map[idx],command);
       (*Map_Write)(stdout,map[idx],grd[idx]);
       TimeEpochToYMDHMS(grd[idx]->st_time,&yr,&mo,&dy,&hr,&mt,&sc);
       if (vb == 1) 

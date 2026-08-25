@@ -33,6 +33,11 @@ struct CnvMapData {
   int major_rev,minor_rev;
   char source[256];
 
+  struct {
+    char *time;
+    char *command;
+  } history;
+
   double st_time;
   double ed_time;
 
@@ -94,6 +99,9 @@ struct CnvMapData {
 
 struct CnvMapData *CnvMapMake();
 void CnvMapFree(struct CnvMapData *ptr);
+
+int CnvMapSetHistoryTime(struct CnvMapData *ptr,char *str);
+int CnvMapSetHistoryCommand(struct CnvMapData *ptr,char *str);
 
 #endif
 

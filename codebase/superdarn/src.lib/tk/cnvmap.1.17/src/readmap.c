@@ -47,7 +47,8 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
 
   void *tmp;
 
-  char *sname[]={"start.year","start.month","start.day","start.hour",
+  char *sname[]={"history.time","history.command",
+                 "start.year","start.month","start.day","start.hour",
                  "start.minute","start.second",
                  "end.year","end.month","end.day","end.hour",
                  "end.minute","end.second",
@@ -86,11 +87,10 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
                  "pot.max.err",
                  "pot.min",
                  "pot.min.err",
-
-
                  0};
 
-  int stype[]={DATASHORT,DATASHORT,DATASHORT,DATASHORT,DATASHORT,DATADOUBLE,
+  int stype[]={DATASTRING,DATASTRING,
+               DATASHORT,DATASHORT,DATASHORT,DATASHORT,DATASHORT,DATADOUBLE,
                DATASHORT,DATASHORT,DATASHORT,DATASHORT,DATASHORT,DATADOUBLE,
                DATASHORT,DATASHORT,
                DATASTRING,
@@ -130,7 +130,7 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
                0
               };
 
-  struct DataMapScalar *sdata[48];
+  struct DataMapScalar *sdata[50];
 
   char *aname[]={"stid","channel","nvec",
                  "freq","major.revision","minor.revision",
@@ -190,15 +190,15 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
   }
 
   for (x=0;sname[x] !=0;x++) {
-    if (x==14) continue;
-    if (x==23) continue;
-    if (x==24) continue;
-    if (x==25) continue;  /* EGT */
-    if (x==26) continue;  /* SGS */
-    if (x==27) continue;
-    if (x==28) continue;
-    if (x==29) continue;  /* SGS */
-    if (x==31) continue;
+    if (x==16) continue;
+    if (x==25) continue;
+    if (x==26) continue;
+    if (x==27) continue;  /* EGT */
+    if (x==28) continue;  /* SGS */
+    if (x==29) continue;
+    if (x==30) continue;
+    if (x==31) continue;  /* SGS */
+    if (x==33) continue;
     if (sdata[x]==NULL) break;
   }
 
@@ -213,80 +213,83 @@ int CnvMapRead(int fid,struct CnvMapData *map,struct GridData *grd) {
     return -1;
   }
 
-  yr=*(sdata[0]->data.sptr);
-  mo=*(sdata[1]->data.sptr);
-  dy=*(sdata[2]->data.sptr);
-  hr=*(sdata[3]->data.sptr);
-  mt=*(sdata[4]->data.sptr);
-  sc=*(sdata[5]->data.dptr);
+  CnvMapSetHistoryTime(map,*((char **) sdata[0]->data.vptr));
+  CnvMapSetHistoryCommand(map,*((char **) sdata[1]->data.vptr));
+
+  yr=*(sdata[2]->data.sptr);
+  mo=*(sdata[3]->data.sptr);
+  dy=*(sdata[4]->data.sptr);
+  hr=*(sdata[5]->data.sptr);
+  mt=*(sdata[6]->data.sptr);
+  sc=*(sdata[7]->data.dptr);
   grd->st_time=TimeYMDHMSToEpoch(yr,mo,dy,hr,mt,sc);
   map->st_time=TimeYMDHMSToEpoch(yr,mo,dy,hr,mt,sc);
 
-  yr=*(sdata[6]->data.sptr);
-  mo=*(sdata[7]->data.sptr);
-  dy=*(sdata[8]->data.sptr);
-  hr=*(sdata[9]->data.sptr);
-  mt=*(sdata[10]->data.sptr);
-  sc=*(sdata[11]->data.dptr);
+  yr=*(sdata[8]->data.sptr);
+  mo=*(sdata[9]->data.sptr);
+  dy=*(sdata[10]->data.sptr);
+  hr=*(sdata[11]->data.sptr);
+  mt=*(sdata[12]->data.sptr);
+  sc=*(sdata[13]->data.dptr);
   grd->ed_time=TimeYMDHMSToEpoch(yr,mo,dy,hr,mt,sc);
   map->ed_time=TimeYMDHMSToEpoch(yr,mo,dy,hr,mt,sc);
 
-  map->major_rev=*(sdata[12]->data.sptr);
-  map->minor_rev=*(sdata[13]->data.sptr);
+  map->major_rev=*(sdata[14]->data.sptr);
+  map->minor_rev=*(sdata[15]->data.sptr);
 
-  if (sdata[14] !=NULL)
-    strncpy(map->source,*((char **) sdata[14]->data.vptr),256);
+  if (sdata[16] !=NULL)
+    strncpy(map->source,*((char **) sdata[16]->data.vptr),256);
 
-  map->doping_level=*(sdata[15]->data.sptr);
-  map->model_wt=*(sdata[16]->data.sptr);
-  map->error_wt=*(sdata[17]->data.sptr);
-  map->imf_flag=*(sdata[18]->data.sptr);
-  map->imf_delay=*(sdata[19]->data.sptr);
+  map->doping_level=*(sdata[17]->data.sptr);
+  map->model_wt=*(sdata[18]->data.sptr);
+  map->error_wt=*(sdata[19]->data.sptr);
+  map->imf_flag=*(sdata[20]->data.sptr);
+  map->imf_delay=*(sdata[21]->data.sptr);
 
-  map->Bx=*(sdata[20]->data.dptr);
-  map->By=*(sdata[21]->data.dptr);
-  map->Bz=*(sdata[22]->data.dptr);
-  if (sdata[23] !=NULL)
-    map->Vx=*(sdata[23]->data.dptr);
-  if (sdata[24] !=NULL)
-    map->tilt=*(sdata[24]->data.dptr);
+  map->Bx=*(sdata[22]->data.dptr);
+  map->By=*(sdata[23]->data.dptr);
+  map->Bz=*(sdata[24]->data.dptr);
   if (sdata[25] !=NULL)
-    map->Kp=*(sdata[25]->data.dptr);
-
+    map->Vx=*(sdata[25]->data.dptr);
   if (sdata[26] !=NULL)
-    strncpy(map->imf_model[0],*((char **) sdata[26]->data.vptr),64);
+    map->tilt=*(sdata[26]->data.dptr);
   if (sdata[27] !=NULL)
-    strncpy(map->imf_model[1],*((char **) sdata[27]->data.vptr),64);
+    map->Kp=*(sdata[27]->data.dptr);
+
   if (sdata[28] !=NULL)
-    strncpy(map->imf_model[2],*((char **) sdata[28]->data.vptr),64);
+    strncpy(map->imf_model[0],*((char **) sdata[28]->data.vptr),64);
   if (sdata[29] !=NULL)
-    strncpy(map->imf_model[3],*((char **) sdata[29]->data.vptr),64);
-
-  map->hemisphere=*(sdata[30]->data.sptr);
+    strncpy(map->imf_model[1],*((char **) sdata[29]->data.vptr),64);
+  if (sdata[30] !=NULL)
+    strncpy(map->imf_model[2],*((char **) sdata[30]->data.vptr),64);
   if (sdata[31] !=NULL)
-    map->noigrf=*(sdata[31]->data.sptr);
-  map->fit_order=*(sdata[32]->data.sptr);
-  map->latmin=*(sdata[33]->data.fptr);
+    strncpy(map->imf_model[3],*((char **) sdata[31]->data.vptr),64);
 
-  map->chi_sqr=*(sdata[34]->data.dptr);
-  map->chi_sqr_dat=*(sdata[35]->data.dptr);
-  map->rms_err=*(sdata[36]->data.dptr);
+  map->hemisphere=*(sdata[32]->data.sptr);
+  if (sdata[33] !=NULL)
+    map->noigrf=*(sdata[33]->data.sptr);
+  map->fit_order=*(sdata[34]->data.sptr);
+  map->latmin=*(sdata[35]->data.fptr);
 
-  map->lat_shft=*(sdata[37]->data.fptr);
-  map->lon_shft=*(sdata[38]->data.fptr);
+  map->chi_sqr=*(sdata[36]->data.dptr);
+  map->chi_sqr_dat=*(sdata[37]->data.dptr);
+  map->rms_err=*(sdata[38]->data.dptr);
 
-  map->mlt.start=*(sdata[39]->data.dptr);
-  map->mlt.end=*(sdata[40]->data.dptr);
-  map->mlt.av=*(sdata[41]->data.dptr);
+  map->lat_shft=*(sdata[39]->data.fptr);
+  map->lon_shft=*(sdata[40]->data.fptr);
 
-  map->pot_drop=*(sdata[42]->data.dptr);
-  map->pot_drop_err=*(sdata[43]->data.dptr);
+  map->mlt.start=*(sdata[41]->data.dptr);
+  map->mlt.end=*(sdata[42]->data.dptr);
+  map->mlt.av=*(sdata[43]->data.dptr);
 
-  map->pot_max=*(sdata[44]->data.dptr);
-  map->pot_max_err=*(sdata[45]->data.dptr);
+  map->pot_drop=*(sdata[44]->data.dptr);
+  map->pot_drop_err=*(sdata[45]->data.dptr);
 
-  map->pot_min=*(sdata[46]->data.dptr);
-  map->pot_min_err=*(sdata[47]->data.dptr);
+  map->pot_max=*(sdata[46]->data.dptr);
+  map->pot_max_err=*(sdata[47]->data.dptr);
+
+  map->pot_min=*(sdata[48]->data.dptr);
+  map->pot_min_err=*(sdata[49]->data.dptr);
 
   grd->stnum=adata[0]->rng[0];
   if (grd->stnum==0) {
