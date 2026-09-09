@@ -2,6 +2,7 @@
 *.so
 *.o
 *~
+#*
 .DS_Store
 
 bin
@@ -14,6 +15,7 @@ bin
 /lib
 /log
 
+codebase/superdarn/src.lib/tk/idl.tar.gz
 codebase/general/src.lib/stdkey.1.5/src/make_palette
 
 *errstr.h

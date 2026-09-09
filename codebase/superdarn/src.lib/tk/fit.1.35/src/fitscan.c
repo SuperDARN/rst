@@ -166,11 +166,12 @@ int FitReadRadarScan(int fid, int *state,
             bm->rng[r].p_l=fit->rng[r].p_l;
             bm->rng[r].w_l=fit->rng[r].w_l;
             bm->rng[r].v_e=fit->rng[r].v_err;
-            if (fit->xrng !=NULL) bm->rng[r].phi0=fit->xrng[r].phi0;
+            if (fit->xrng != NULL) bm->rng[r].phi0=fit->xrng[r].phi0;
             else bm->rng[r].phi0=0;
-            if (fit->elv !=NULL) bm->rng[r].elv=fit->elv[r].normal;
+            if (fit->elv != NULL) bm->rng[r].elv=fit->elv[r].normal;
             else bm->rng[r].elv=0;
-
+	    if (fit->xrng != NULL) bm->rng[r].phi0_e=fit->rng[r].phi0_err;
+	    else bm->rng[r].phi0_e=0;
         }
 
         /* Calculate end time of radar scan */
@@ -235,8 +236,8 @@ int FitReadRadarScan(int fid, int *state,
      * variable */
     if (flg==1) *state=2;
 
-    /* Return zero on success, 1 if the end of file was reached, or -1 if an error
-     * occurred */
+    /* Return zero on success, 1 if the end of file was reached, or -1 if an
+     * error occurred */
     return flg;
 
 }
