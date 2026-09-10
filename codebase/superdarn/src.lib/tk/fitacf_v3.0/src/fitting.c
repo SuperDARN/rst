@@ -254,11 +254,12 @@ void calculate_phase_sigma(llist_node phase, llist_node range, FITPRMS *fit_prms
     pwr = exp(-1 * fabs(range_node->l_pwr_fit->b) * phase_node->t);
     inverse_pwr_2 = 1/(pwr * pwr);
     phase_node->sigma = sqrt((inverse_alpha_2 * inverse_pwr_2 - 1)/(2 * fit_prms->nave));
-    if(isnan(phase_node->sigma)){
+//  TODO: Figure out why this is here and if something should be done if nan values appear
+/*    if(isnan(phase_node->sigma)){
       fprintf(stderr,"range: %d, inverse_alpha: %f, pwr slope: %f, pwr: %f, inverse pwr: %f\n",
         range_node->range,inverse_alpha_2, range_node->l_pwr_fit->b,pwr,inverse_pwr_2);
     }
-
+*/
 }
 
 /**
