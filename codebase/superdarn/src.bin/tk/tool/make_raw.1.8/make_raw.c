@@ -355,7 +355,7 @@ int main (int argc,char *argv[]) {
       ACFSumPower(&tprm,mplgs,lag,pwr0,
                   ptr,rngoff,skpval !=0,
                   roff,ioff,badrng,
-                  iq->noise[n],prm->mxpwr,prm->atten*atstp,
+                  iq->noise[n],prm->mxpwr,iq->atten[n]*atstp,
                   thr,lmt,&abflg);
 
       ACFCalculate(&tprm,ptr,rngoff,skpval !=0,
