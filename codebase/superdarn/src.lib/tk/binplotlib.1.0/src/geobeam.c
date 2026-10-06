@@ -41,22 +41,9 @@ int GeoLocCenter(struct RadarSite *site,int mag,float *lat,float *lon,
             300.0,&rho,&glat,&glon,&srng,chisham);
 
     if (mag) { 
-        if (old_aacgm) 
-        {
-            s=AACGMConvert(glat,glon,300,&mlat,&mlon,&rho,0);
-            if (s == -1)
-            {
-                fprintf(stderr, "Warning: AACGMConvert returned a -1\n");
-            }
-        }
-        else
-        {
-            s=AACGM_v2_Convert(glat,glon,300,&mlat,&mlon,&rho,0);
-            if (s == -1)
-            {
-                fprintf(stderr, "Warning: AACGMConvert returned a -1\n");
-            }
-        }
+        if (old_aacgm) s=AACGMConvert(glat,glon,300,&mlat,&mlon,&rho,0);
+        else           s=AACGM_v2_Convert(glat,glon,300,&mlat,&mlon,&rho,GEOCENTRIC);
+        if (s == -1) printf(stderr, "Warning: AACGMConvert returned a -1\n");
         *lat=mlat;
         *lon=mlon;
     } else {
@@ -134,29 +121,16 @@ int GeoLocBeam(struct RadarSite *site,int year,
 
         glat=geol->bm[n].glat[0][rng];
         glon=geol->bm[n].glon[0][rng];
-        if (old_aacgm) 
-        {
-            s=AACGMConvert(glat,glon,300,&mlat,&mlon,&rho,0);
-            if (s == -1)
-            {
-                fprintf(stderr, "Warning: AACGMConvert returned a -1\n");
-            }
-        }
-        else           
-        {
-            s=AACGM_v2_Convert(glat,glon,300,&mlat,&mlon,&rho,0);
-            if (s == -1)
-            {
-                fprintf(stderr, "Warning: AACGMConvert returned a -1\n");
-            }
-        }
+        if (old_aacgm) s=AACGMConvert(glat,glon,300,&mlat,&mlon,&rho,0);
+        else           s=AACGM_v2_Convert(glat,glon,300,&mlat,&mlon,&rho,GEOCENTRIC);
+        if (s == -1) fprintf(stderr, "Warning: AACGMConvert returned a -1\n");
         geol->bm[n].mlat[0][rng]=mlat;
         geol->bm[n].mlon[0][rng]=mlon;
 
         glat=geol->bm[n].glat[2][rng];
         glon=geol->bm[n].glon[2][rng];
         if (old_aacgm) s=AACGMConvert(glat,glon,300,&mlat,&mlon,&rho,0);
-        else           s=AACGM_v2_Convert(glat,glon,300,&mlat,&mlon,&rho,0);
+        else           s=AACGM_v2_Convert(glat,glon,300,&mlat,&mlon,&rho,GEOCENTRIC);
         geol->bm[n].mlat[2][rng]=mlat;
         geol->bm[n].mlon[2][rng]=mlon;
         if (rng<bm->nrang) {

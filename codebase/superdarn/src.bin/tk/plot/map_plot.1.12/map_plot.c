@@ -1802,7 +1802,7 @@ int AACGM_v2_transform(int ssze,void *src,int dsze,void *dst,void *data)
   if (data==NULL) {
     glat=pnt[0];
     glon=pnt[1];
-    s=AACGM_v2_Convert(glat,glon,300,&mlat,&mlon,&r,0);
+    s=AACGM_v2_Convert(glat,glon,300,&mlat,&mlon,&r,GEOCENTRIC);
     pnt=(float *)dst;
     pnt[0]=mlat;
     pnt[1]=mlon;
